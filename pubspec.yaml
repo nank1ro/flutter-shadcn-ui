@@ -1,0 +1,19 @@
+name: shadcn_ui
+description: "shadcn-ui ported in Flutter"
+version: 0.0.0
+homepage: https://github.com/nank1ro/shadcn-ui
+
+environment:
+  sdk: ^3.0.0
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^5.1.0
+
+flutter:
