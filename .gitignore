@@ -34,6 +34,8 @@ ios
 macos
 web
 android
+linux
+windows
 
 coverage/
 lcov.info
