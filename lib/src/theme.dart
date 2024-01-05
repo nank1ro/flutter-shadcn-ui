@@ -1,6 +1,171 @@
 import 'package:flutter/material.dart';
 
 @immutable
+abstract class ShadcnBaseTheme {
+  const ShadcnBaseTheme({
+    required this.background,
+    required this.foreground,
+    required this.card,
+    required this.cardForeground,
+    required this.popover,
+    required this.popoverForeground,
+    required this.primary,
+    required this.primaryForeground,
+    required this.secondary,
+    required this.secondaryForeground,
+    required this.muted,
+    required this.mutedForeground,
+    required this.accent,
+    required this.accentForeground,
+    required this.destructive,
+    required this.destructiveForeground,
+    required this.border,
+    required this.input,
+    required this.ring,
+    required this.radius,
+  });
+
+  final Color background;
+  final Color foreground;
+  final Color card;
+  final Color cardForeground;
+  final Color popover;
+  final Color popoverForeground;
+  final Color primary;
+  final Color primaryForeground;
+  final Color secondary;
+  final Color secondaryForeground;
+  final Color muted;
+  final Color mutedForeground;
+  final Color accent;
+  final Color accentForeground;
+  final Color destructive;
+  final Color destructiveForeground;
+  final Color border;
+  final Color input;
+  final Color ring;
+  final BorderRadius radius;
+}
+
+@immutable
+class ZincTheme extends ShadcnBaseTheme {
+  const ZincTheme.raw({
+    required super.background,
+    required super.foreground,
+    required super.card,
+    required super.cardForeground,
+    required super.popover,
+    required super.popoverForeground,
+    required super.primary,
+    required super.primaryForeground,
+    required super.secondary,
+    required super.secondaryForeground,
+    required super.muted,
+    required super.mutedForeground,
+    required super.accent,
+    required super.accentForeground,
+    required super.destructive,
+    required super.destructiveForeground,
+    required super.border,
+    required super.input,
+    required super.ring,
+    required super.radius,
+  });
+
+  factory ZincTheme.light({
+    Color background = const Color(0xFFFFFFFF),
+    Color foreground = const Color(0xff09090b),
+    Color card = const Color(0xffffffff),
+    Color cardForeground = const Color(0xff09090b),
+    Color popover = const Color(0xffffffff),
+    Color popoverForeground = const Color(0xff09090b),
+    Color primary = const Color(0xff18181b),
+    Color primaryForeground = const Color(0xfffafafa),
+    Color secondary = const Color(0xfff4f4f5),
+    Color secondaryForeground = const Color(0xff18181b),
+    Color muted = const Color(0xfff4f4f5),
+    Color mutedForeground = const Color(0xff71717a),
+    Color accent = const Color(0xfff4f4f5),
+    Color accentForeground = const Color(0xff18181b),
+    Color destructive = const Color(0xffdc2626),
+    Color destructiveForeground = const Color(0xfffafafa),
+    Color border = const Color(0xffe4e4e7),
+    Color input = const Color(0xffe4e4e7),
+    Color ring = const Color(0xffa1a1aa),
+    BorderRadius radius = const BorderRadius.all(Radius.circular(8)),
+  }) {
+    return ZincTheme.raw(
+      background: background,
+      foreground: foreground,
+      card: card,
+      cardForeground: cardForeground,
+      popover: popover,
+      popoverForeground: popoverForeground,
+      primary: primary,
+      primaryForeground: primaryForeground,
+      secondary: secondary,
+      secondaryForeground: secondaryForeground,
+      muted: muted,
+      mutedForeground: mutedForeground,
+      accent: accent,
+      accentForeground: accentForeground,
+      destructive: destructive,
+      destructiveForeground: destructiveForeground,
+      border: border,
+      input: input,
+      ring: ring,
+      radius: radius,
+    );
+  }
+
+  factory ZincTheme.dark({
+    Color background = const Color(0xff09090b),
+    Color foreground = const Color(0xfffafafa),
+    Color card = const Color(0xff09090b),
+    Color cardForeground = const Color(0xfffafafa),
+    Color popover = const Color(0xff09090b),
+    Color popoverForeground = const Color(0xfffafafa),
+    Color primary = const Color(0xfffafafa),
+    Color primaryForeground = const Color(0xff18181b),
+    Color secondary = const Color(0xff27272a),
+    Color secondaryForeground = const Color(0xfffafafa),
+    Color muted = const Color(0xff27272a),
+    Color mutedForeground = const Color(0xffa1a1aa),
+    Color accent = const Color(0xff27272a),
+    Color accentForeground = const Color(0xfffafafa),
+    Color destructive = const Color(0xff7f1d1d),
+    Color destructiveForeground = const Color(0xfffafafa),
+    Color border = const Color(0xff27272a),
+    Color input = const Color(0xff27272a),
+    Color ring = const Color(0xffd4d4d8),
+    BorderRadius radius = const BorderRadius.all(Radius.circular(8)),
+  }) {
+    return ZincTheme.raw(
+      background: background,
+      foreground: foreground,
+      card: card,
+      cardForeground: cardForeground,
+      popover: popover,
+      popoverForeground: popoverForeground,
+      primary: primary,
+      primaryForeground: primaryForeground,
+      secondary: secondary,
+      secondaryForeground: secondaryForeground,
+      muted: muted,
+      mutedForeground: mutedForeground,
+      accent: accent,
+      accentForeground: accentForeground,
+      destructive: destructive,
+      destructiveForeground: destructiveForeground,
+      border: border,
+      input: input,
+      ring: ring,
+      radius: radius,
+    );
+  }
+}
+
+@immutable
 class ShadcnThemeData {
   factory ShadcnThemeData({
     Color? background,
@@ -24,37 +189,30 @@ class ShadcnThemeData {
     Color? ring,
     BorderRadius? radius,
   }) {
+    final defaultTheme = ZincTheme.light();
     return ShadcnThemeData.raw(
-      background: background ?? const HSLColor.fromAHSL(1, 0, 0, 1).toColor(),
-      foreground:
-          foregroung ?? const HSLColor.fromAHSL(1, 240, .1, .039).toColor(),
-      card: card ?? const HSLColor.fromAHSL(1, 0, 0, 1).toColor(),
-      cardForeground:
-          cardForeground ?? const HSLColor.fromAHSL(1, 240, .1, .039).toColor(),
-      popover: popover ?? const HSLColor.fromAHSL(1, 0, 0, 1).toColor(),
-      popoverForeground: popoverForeground ??
-          const HSLColor.fromAHSL(1, 240, .1, .039).toColor(),
-      primary: primary ?? const HSLColor.fromAHSL(1, 240, .059, 0.1).toColor(),
-      primaryForeground:
-          primaryForeground ?? const HSLColor.fromAHSL(1, 0, 0, .98).toColor(),
-      secondary:
-          secondary ?? const HSLColor.fromAHSL(1, 240, .048, 0.959).toColor(),
-      secondaryForeground: secondaryForeground ??
-          const HSLColor.fromAHSL(1, 240, .059, .1).toColor(),
-      muted: muted ?? const HSLColor.fromAHSL(1, 240, .048, 0.959).toColor(),
-      mutedForeground: mutedForeground ??
-          const HSLColor.fromAHSL(1, 240, .038, .461).toColor(),
-      accent: accent ?? const HSLColor.fromAHSL(1, 240, .048, 0.959).toColor(),
-      accentForeground: accentForeground ??
-          const HSLColor.fromAHSL(1, 240, .059, .1).toColor(),
-      destructive:
-          destructive ?? const HSLColor.fromAHSL(1, 0, .7222, .5059).toColor(),
-      destructiveForeground: destructiveForeground ??
-          const HSLColor.fromAHSL(1, 0, 0, .98).toColor(),
-      border: border ?? const HSLColor.fromAHSL(1, 240, .059, .9).toColor(),
-      input: input ?? const HSLColor.fromAHSL(1, 240, .059, .9).toColor(),
-      ring: ring ?? const HSLColor.fromAHSL(1, 240, .05, 0.649).toColor(),
-      radius: radius ?? const BorderRadius.all(Radius.circular(8)),
+      background: background ?? defaultTheme.background,
+      foreground: foregroung ?? defaultTheme.foreground,
+      card: card ?? defaultTheme.card,
+      cardForeground: cardForeground ?? defaultTheme.cardForeground,
+      popover: popover ?? defaultTheme.popover,
+      popoverForeground: popoverForeground ?? defaultTheme.popoverForeground,
+      primary: primary ?? defaultTheme.primary,
+      primaryForeground: primaryForeground ?? defaultTheme.primaryForeground,
+      secondary: secondary ?? defaultTheme.secondary,
+      secondaryForeground:
+          secondaryForeground ?? defaultTheme.secondaryForeground,
+      muted: muted ?? defaultTheme.muted,
+      mutedForeground: mutedForeground ?? defaultTheme.mutedForeground,
+      accent: accent ?? defaultTheme.accent,
+      accentForeground: accentForeground ?? defaultTheme.accentForeground,
+      destructive: destructive ?? defaultTheme.destructive,
+      destructiveForeground:
+          destructiveForeground ?? defaultTheme.destructiveForeground,
+      border: border ?? defaultTheme.border,
+      input: input ?? defaultTheme.input,
+      ring: ring ?? defaultTheme.ring,
+      radius: radius ?? defaultTheme.radius,
     );
   }
 
