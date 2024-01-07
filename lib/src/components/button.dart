@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Button extends StatelessWidget {
-  const Button({
+class ShadcnButton extends StatelessWidget {
+  const ShadcnButton({
     super.key,
     required this.child,
     this.onPressed,

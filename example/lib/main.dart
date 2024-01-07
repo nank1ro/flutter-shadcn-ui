@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return Shadcn(
       child: Scaffold(
         body: Center(
-          child: Button(
+          child: ShadcnButton(
             child: const Text('Hello'),
             onPressed: () {
               print(ShadcnTheme.of(context).background);
