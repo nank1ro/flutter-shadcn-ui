@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/src/theme/themes/base.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 @immutable
-class ShadcnZincTheme extends ShadcnBaseTheme {
+class ShadcnZincTheme extends ShadcnThemeData {
   const ShadcnZincTheme({
     required super.background,
     required super.foreground,

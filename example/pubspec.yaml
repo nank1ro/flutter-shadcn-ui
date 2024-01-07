@@ -13,12 +13,16 @@ dependencies:
     sdk: flutter
   shadcn_ui:
     path: ..
+  flutter_solidart: ^1.7.0
+  awesome_flutter_extensions: ^1.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+  solidart_lint: ^1.1.0
+  custom_lint: ^0.5.7
 
 flutter:
   uses-material-design: true

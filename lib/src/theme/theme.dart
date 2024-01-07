@@ -13,21 +13,22 @@ class ShadcnTheme extends StatelessWidget {
 
   static ShadcnThemeData of(BuildContext context) {
     final inheritedTheme =
-        context.dependOnInheritedWidgetOfExactType<_InheritedTheme>();
-    return inheritedTheme?.theme.data ?? ShadcnThemeData();
+        context.dependOnInheritedWidgetOfExactType<ShadcnInheritedTheme>();
+    return inheritedTheme!.theme.data;
   }
 
   @override
   Widget build(BuildContext context) {
-    return _InheritedTheme(
+    return ShadcnInheritedTheme(
       theme: this,
       child: child,
     );
   }
 }
 
-class _InheritedTheme extends InheritedTheme {
-  const _InheritedTheme({
+class ShadcnInheritedTheme extends InheritedTheme {
+  const ShadcnInheritedTheme({
+    super.key,
     required this.theme,
     required super.child,
   });
@@ -40,7 +41,8 @@ class _InheritedTheme extends InheritedTheme {
   }
 
   @override
-  bool updateShouldNotify(_InheritedTheme old) => theme.data != old.theme.data;
+  bool updateShouldNotify(ShadcnInheritedTheme oldWidget) =>
+      theme.data != oldWidget.theme.data;
 }
 
 /// An interpolation between two [ShadcnThemeData]s.
