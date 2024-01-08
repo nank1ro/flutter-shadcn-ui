@@ -4,20 +4,20 @@ import 'package:example/common/enum_property.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-class ButtonsPage extends StatefulWidget {
-  const ButtonsPage({super.key});
+class ButtonPage extends StatefulWidget {
+  const ButtonPage({super.key});
 
   @override
-  State<ButtonsPage> createState() => _ButtonsPageState();
+  State<ButtonPage> createState() => _ButtonPageState();
 }
 
-class _ButtonsPageState extends State<ButtonsPage> {
+class _ButtonPageState extends State<ButtonPage> {
   var size = ShadcnButtonSize.$default;
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      appBarTitle: 'Buttons',
+      appBarTitle: 'Button',
       editable: [
         MyEnumProperty(
           label: 'Size',

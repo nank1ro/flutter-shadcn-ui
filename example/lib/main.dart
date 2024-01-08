@@ -1,5 +1,6 @@
 import 'package:example/common/app_bar.dart';
-import 'package:example/pages/buttons.dart';
+import 'package:example/pages/badge.dart';
+import 'package:example/pages/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -10,7 +11,8 @@ void main() {
 
 // Maps the routes to the specific widget page.
 final routes = <String, WidgetBuilder>{
-  '/buttons': (_) => const ButtonsPage(),
+  '/button': (_) => const ButtonPage(),
+  '/badge': (_) => const BadgePage(),
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-z])');
 

@@ -24,7 +24,6 @@ class ShadcnButton extends StatefulWidget {
     this.text,
     this.icon,
     this.onPressed,
-    this.style,
     this.size = ShadcnButtonSize.$default,
   }) : variant = ShadcnButtonVariant.$default;
 
@@ -35,7 +34,6 @@ class ShadcnButton extends StatefulWidget {
     this.text,
     this.icon,
     this.onPressed,
-    this.style,
   });
 
   const ShadcnButton.destructive({
@@ -43,7 +41,6 @@ class ShadcnButton extends StatefulWidget {
     this.text,
     this.icon,
     this.onPressed,
-    this.style,
     this.size = ShadcnButtonSize.$default,
   }) : variant = ShadcnButtonVariant.destructive;
 
@@ -52,7 +49,6 @@ class ShadcnButton extends StatefulWidget {
     this.text,
     this.icon,
     this.onPressed,
-    this.style,
     this.size = ShadcnButtonSize.$default,
   }) : variant = ShadcnButtonVariant.outline;
 
@@ -61,7 +57,6 @@ class ShadcnButton extends StatefulWidget {
     this.text,
     this.icon,
     this.onPressed,
-    this.style,
     this.size = ShadcnButtonSize.$default,
   }) : variant = ShadcnButtonVariant.secondary;
 
@@ -70,7 +65,6 @@ class ShadcnButton extends StatefulWidget {
     this.text,
     this.icon,
     this.onPressed,
-    this.style,
     this.size = ShadcnButtonSize.$default,
   }) : variant = ShadcnButtonVariant.ghost;
 
@@ -78,7 +72,6 @@ class ShadcnButton extends StatefulWidget {
     super.key,
     required this.text,
     this.onPressed,
-    this.style,
     this.size = ShadcnButtonSize.$default,
   })  : variant = ShadcnButtonVariant.link,
         icon = null;
@@ -86,7 +79,6 @@ class ShadcnButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final Widget? icon;
   final Widget? text;
-  final TextStyle? style;
   final ShadcnButtonVariant variant;
   final ShadcnButtonSize size;
 
@@ -96,6 +88,12 @@ class ShadcnButton extends StatefulWidget {
 
 class _ShadcnButtonState extends State<ShadcnButton> {
   final isHovered = ValueNotifier(false);
+
+  @override
+  void dispose() {
+    isHovered.dispose();
+    super.dispose();
+  }
 
   void assertCheckHasTextOrIcon() {
     assert(
@@ -109,12 +107,6 @@ class _ShadcnButtonState extends State<ShadcnButton> {
       widget.icon == null || widget.size == ShadcnButtonSize.icon,
       'Icon can only be provided if size is set to icon',
     );
-  }
-
-  @override
-  void dispose() {
-    isHovered.dispose();
-    super.dispose();
   }
 
   double get height {
@@ -207,7 +199,6 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     assertCheckIconWithIconSize();
 
     final shadcnTheme = ShadcnTheme.of(context);
-    final effectiveStyle = widget.style ?? const TextStyle(fontSize: 14);
 
     // Applies the foreground color filter to the icon if provided
     var icon = widget.icon;
@@ -261,7 +252,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
                         if (icon != null) icon,
                         if (widget.text != null)
                           DefaultTextStyle(
-                            style: effectiveStyle.copyWith(
+                            style: TextStyle(
                               color: hovered
                                   ? hoverForeground(shadcnTheme)
                                   : foreground(shadcnTheme),
