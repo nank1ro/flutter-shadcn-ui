@@ -1,4 +1,5 @@
 // Coming soon
+export 'src/components/badge.dart';
 export 'src/components/button.dart';
 export 'src/shadcn.dart';
 export 'src/theme/data.dart';
