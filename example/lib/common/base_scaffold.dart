@@ -43,15 +43,7 @@ class BaseScaffold extends StatelessWidget {
           );
 
     return Scaffold(
-      appBar: MyAppBar(
-        title: 'Buttons',
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.settings),
-          ),
-        ],
-      ),
+      appBar: const MyAppBar(title: 'Buttons'),
       body: MultiSplitViewTheme(
         data: MultiSplitViewThemeData(
           dividerPainter: _MyDividerPainter(

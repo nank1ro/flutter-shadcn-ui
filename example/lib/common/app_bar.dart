@@ -5,10 +5,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
     super.key,
     required this.title,
-    this.actions = const [],
   });
 
-  final List<Widget> actions;
   final String title;
   @override
   Widget build(BuildContext context) {
@@ -16,7 +14,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title),
       centerTitle: true,
       actions: [
-        ...actions,
         Padding(
           padding: const EdgeInsets.only(right: 8),
           child: IconButton(
