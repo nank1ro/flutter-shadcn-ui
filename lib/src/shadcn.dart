@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
-import 'package:shadcn_ui/src/theme/themes/base.dart';
+import 'package:shadcn_ui/src/theme/themes/slate.dart';
+
+final shadcnDefaultTheme = ShadcnSlateTheme.dark();
 
 class Shadcn extends StatelessWidget {
   const Shadcn({
@@ -39,6 +41,7 @@ class Shadcn extends StatelessWidget {
               surface: effectiveThemeData.card,
               onSurface: effectiveThemeData.cardForeground,
             ),
+            scaffoldBackgroundColor: effectiveThemeData.background,
           ),
           child: child,
         ),
