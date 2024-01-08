@@ -11,7 +11,7 @@ class ComponentView extends StatelessWidget {
     return Column(children: [
       Text(
         label,
-        style: const TextStyle(fontSize: 20),
+        style: const TextStyle(fontSize: 14),
       ),
       const SizedBox(height: 8),
       child,

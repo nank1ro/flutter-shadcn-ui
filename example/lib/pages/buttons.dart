@@ -28,62 +28,47 @@ class _ButtonsPageState extends State<ButtonsPage> {
       ],
       children: [
         if (size != ShadcnButtonSize.icon) ...[
-          ComponentView(
-            label: 'Primary',
-            child: ShadcnButton(
-              size: size,
-              onPressed: () {},
-              text: const Text('Button'),
-            ),
+          ShadcnButton(
+            size: size,
+            onPressed: () {},
+            text: const Text('Primary'),
           ),
-          ComponentView(
-            label: 'Secondary',
-            child: ShadcnButton.secondary(
-              size: size,
-              onPressed: () {},
-              text: const Text('Button'),
-            ),
+          ShadcnButton.secondary(
+            size: size,
+            onPressed: () {},
+            text: const Text('Secondary'),
           ),
-          ComponentView(
-            label: 'Destructive',
-            child: ShadcnButton.destructive(
-              size: size,
-              onPressed: () {},
-              text: const Text('Button'),
-            ),
+          ShadcnButton.destructive(
+            size: size,
+            onPressed: () {},
+            text: const Text('Destructive'),
           ),
-          ComponentView(
-            label: 'Outline',
-            child: ShadcnButton.outline(
-              size: size,
-              onPressed: () {},
-              text: const Text('Button'),
-            ),
+          ShadcnButton.outline(
+            size: size,
+            onPressed: () {},
+            text: const Text('Outline'),
           ),
-          ComponentView(
-            label: 'Ghost',
-            child: ShadcnButton.ghost(
-              size: size,
-              onPressed: () {},
-              text: const Text('Button'),
-            ),
+          ShadcnButton.ghost(
+            size: size,
+            onPressed: () {},
+            text: const Text('Ghost'),
           ),
-          ComponentView(
-            label: 'Link',
-            child: ShadcnButton.link(
-              size: size,
-              onPressed: () {},
-              text: const Text('Button'),
-            ),
+          ShadcnButton.link(
+            size: size,
+            onPressed: () {},
+            text: const Text('Link'),
           ),
         ],
         if (size == ShadcnButtonSize.icon)
           ComponentView(
             label: 'Icon',
-            child: ShadcnButton(
+            child: ShadcnButton.outline(
               size: size,
               onPressed: () {},
-              icon: const Icon(Icons.chevron_right),
+              icon: const Icon(
+                Icons.chevron_right,
+                size: 16,
+              ),
             ),
           ),
       ],

@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
           final brightness = context.observe<Brightness>();
           return Shadcn(
             themeData: brightness == Brightness.dark
-                ? ShadcnZincTheme.dark()
-                : ShadcnZincTheme.light(),
+                ? ShadcnSlateTheme.dark()
+                : ShadcnSlateTheme.light(),
             child: Navigator(
               onPopPage: (route, result) {
                 return true;

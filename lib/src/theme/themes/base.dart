@@ -1,10 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:shadcn_ui/src/theme/themes/zinc.dart';
-
-final shadcnDefaultTheme = ShadcnZincTheme.dark();
-
 @immutable
 abstract class ShadcnBaseTheme {
   const ShadcnBaseTheme({
