@@ -35,6 +35,7 @@ class ShadcnButton extends StatefulWidget {
     this.foregroundColor,
     this.hoverForegroundColor,
     this.border,
+    this.borderRadius = const BorderRadius.all(Radius.circular(6)),
   }) : variant = ShadcnButtonVariant.$default;
 
   const ShadcnButton.raw({
@@ -54,6 +55,7 @@ class ShadcnButton extends StatefulWidget {
     this.foregroundColor,
     this.hoverForegroundColor,
     this.border,
+    this.borderRadius = const BorderRadius.all(Radius.circular(6)),
   });
 
   const ShadcnButton.destructive({
@@ -72,6 +74,7 @@ class ShadcnButton extends StatefulWidget {
     this.foregroundColor,
     this.hoverForegroundColor,
     this.border,
+    this.borderRadius = const BorderRadius.all(Radius.circular(6)),
   }) : variant = ShadcnButtonVariant.destructive;
 
   const ShadcnButton.outline({
@@ -90,6 +93,7 @@ class ShadcnButton extends StatefulWidget {
     this.foregroundColor,
     this.hoverForegroundColor,
     this.border,
+    this.borderRadius = const BorderRadius.all(Radius.circular(6)),
   }) : variant = ShadcnButtonVariant.outline;
 
   const ShadcnButton.secondary({
@@ -108,6 +112,7 @@ class ShadcnButton extends StatefulWidget {
     this.foregroundColor,
     this.hoverForegroundColor,
     this.border,
+    this.borderRadius = const BorderRadius.all(Radius.circular(6)),
   }) : variant = ShadcnButtonVariant.secondary;
 
   const ShadcnButton.ghost({
@@ -126,6 +131,7 @@ class ShadcnButton extends StatefulWidget {
     this.foregroundColor,
     this.hoverForegroundColor,
     this.border,
+    this.borderRadius = const BorderRadius.all(Radius.circular(6)),
   }) : variant = ShadcnButtonVariant.ghost;
 
   const ShadcnButton.link({
@@ -143,6 +149,7 @@ class ShadcnButton extends StatefulWidget {
     this.foregroundColor,
     this.hoverForegroundColor,
     this.border,
+    this.borderRadius = const BorderRadius.all(Radius.circular(6)),
   })  : variant = ShadcnButtonVariant.link,
         icon = null;
 
@@ -162,6 +169,7 @@ class ShadcnButton extends StatefulWidget {
   final Color? foregroundColor;
   final Color? hoverForegroundColor;
   final BoxBorder? border;
+  final BorderRadius borderRadius;
 
   @override
   State<ShadcnButton> createState() => _ShadcnButtonState();
@@ -322,7 +330,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
                     color: hovered
                         ? hoverBackground(shadcnTheme)
                         : background(shadcnTheme),
-                    borderRadius: const BorderRadius.all(Radius.circular(6)),
+                    borderRadius: widget.borderRadius,
                     border: border(shadcnTheme),
                   ),
                   padding: padding,
