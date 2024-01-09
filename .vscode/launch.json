@@ -5,24 +5,22 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "example",
-            "cwd": "example",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "example (profile mode)",
+            "name": "Example without Material",
             "cwd": "example",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "args": [
+                "--dart-define=MATERIAL=false"
+            ]
         },
         {
-            "name": "example (release mode)",
+            "name": "Example with Material",
             "cwd": "example",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
-        }
+            "args": [
+                "--dart-define=MATERIAL=true"
+            ]
+        },
     ]
 }

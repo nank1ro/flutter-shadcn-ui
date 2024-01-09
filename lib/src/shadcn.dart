@@ -8,13 +8,16 @@ final shadcnDefaultTheme = ShadcnSlateTheme.dark();
 class Shadcn extends StatelessWidget {
   const Shadcn({
     super.key,
-    required this.child,
-    this.textDirection = TextDirection.ltr,
+    this.child,
+    this.builder,
     this.themeData,
-  });
+  }) : assert(
+          (child != null) ^ (builder != null),
+          'Either a child or builder must be provided',
+        );
 
-  final TextDirection textDirection;
-  final Widget child;
+  final Widget? child;
+  final WidgetBuilder? builder;
   final ShadcnThemeData? themeData;
 
   @override
@@ -24,27 +27,26 @@ class Shadcn extends StatelessWidget {
     final effectiveTheme = isDarkMode ? ThemeData.dark() : ThemeData.light();
     return AnimatedShadcnTheme(
       data: effectiveThemeData,
-      child: Directionality(
-        textDirection: textDirection,
-        child: Theme(
-          data: effectiveTheme.copyWith(
-            colorScheme: ColorScheme(
-              brightness: effectiveThemeData.brightness,
-              primary: effectiveThemeData.primary,
-              onPrimary: effectiveThemeData.primaryForeground,
-              secondary: effectiveThemeData.secondary,
-              onSecondary: effectiveThemeData.secondaryForeground,
-              error: effectiveThemeData.destructive,
-              onError: effectiveThemeData.destructiveForeground,
-              background: effectiveThemeData.background,
-              onBackground: effectiveThemeData.foreground,
-              surface: effectiveThemeData.card,
-              onSurface: effectiveThemeData.cardForeground,
-            ),
-            scaffoldBackgroundColor: effectiveThemeData.background,
+      child: Theme(
+        data: effectiveTheme.copyWith(
+          colorScheme: ColorScheme(
+            brightness: effectiveThemeData.brightness,
+            primary: effectiveThemeData.primary,
+            onPrimary: effectiveThemeData.primaryForeground,
+            secondary: effectiveThemeData.secondary,
+            onSecondary: effectiveThemeData.secondaryForeground,
+            error: effectiveThemeData.destructive,
+            onError: effectiveThemeData.destructiveForeground,
+            background: effectiveThemeData.background,
+            onBackground: effectiveThemeData.foreground,
+            surface: effectiveThemeData.card,
+            onSurface: effectiveThemeData.cardForeground,
           ),
-          child: child,
+          scaffoldBackgroundColor: effectiveThemeData.background,
         ),
+        child: builder != null
+            ? Builder(builder: (context) => builder!(context))
+            : child!,
       ),
     );
   }
