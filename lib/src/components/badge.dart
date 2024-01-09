@@ -121,39 +121,42 @@ class _ShadcnBadgeState extends State<ShadcnBadge> {
     assert(debugCheckHasShadcnTheme(context));
     final shadcnTheme = ShadcnTheme.of(context);
 
-    return MouseRegion(
-      onEnter: (_) => isHovered.value = true,
-      onExit: (_) => isHovered.value = false,
-      child: ValueListenableBuilder(
-        valueListenable: isHovered,
-        builder: (context, hovered, child) {
-          return Container(
-            decoration: ShapeDecoration(
-              shape:
-                  widget.shape ?? StadiumBorder(side: borderSide(shadcnTheme)),
-              color: hovered
-                  ? hoverBackground(shadcnTheme)
-                  : background(shadcnTheme),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-            child: child,
-          );
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            DefaultTextStyle(
-              style: TextStyle(
-                color: foreground(shadcnTheme),
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
-                height: 16 / 12,
+    return Semantics(
+      container: true,
+      child: MouseRegion(
+        onEnter: (_) => isHovered.value = true,
+        onExit: (_) => isHovered.value = false,
+        child: ValueListenableBuilder(
+          valueListenable: isHovered,
+          builder: (context, hovered, child) {
+            return Container(
+              decoration: ShapeDecoration(
+                shape: widget.shape ??
+                    StadiumBorder(side: borderSide(shadcnTheme)),
+                color: hovered
+                    ? hoverBackground(shadcnTheme)
+                    : background(shadcnTheme),
               ),
-              textAlign: TextAlign.center,
-              child: widget.text,
-            ),
-          ],
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              child: child,
+            );
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DefaultTextStyle(
+                style: TextStyle(
+                  color: foreground(shadcnTheme),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                  height: 16 / 12,
+                ),
+                textAlign: TextAlign.center,
+                child: widget.text,
+              ),
+            ],
+          ),
         ),
       ),
     );
