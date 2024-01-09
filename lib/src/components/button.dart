@@ -25,6 +25,16 @@ class ShadcnButton extends StatefulWidget {
     this.icon,
     this.onPressed,
     this.size = ShadcnButtonSize.$default,
+    this.applyIconColorFilter = true,
+    this.cursor,
+    this.width,
+    this.height,
+    this.padding,
+    this.backgroundColor,
+    this.hoverBackgroundColor,
+    this.foregroundColor,
+    this.hoverForegroundColor,
+    this.border,
   }) : variant = ShadcnButtonVariant.$default;
 
   const ShadcnButton.raw({
@@ -34,6 +44,16 @@ class ShadcnButton extends StatefulWidget {
     this.text,
     this.icon,
     this.onPressed,
+    this.applyIconColorFilter = true,
+    this.cursor,
+    this.width,
+    this.height,
+    this.padding,
+    this.backgroundColor,
+    this.hoverBackgroundColor,
+    this.foregroundColor,
+    this.hoverForegroundColor,
+    this.border,
   });
 
   const ShadcnButton.destructive({
@@ -42,6 +62,16 @@ class ShadcnButton extends StatefulWidget {
     this.icon,
     this.onPressed,
     this.size = ShadcnButtonSize.$default,
+    this.applyIconColorFilter = true,
+    this.cursor,
+    this.width,
+    this.height,
+    this.padding,
+    this.backgroundColor,
+    this.hoverBackgroundColor,
+    this.foregroundColor,
+    this.hoverForegroundColor,
+    this.border,
   }) : variant = ShadcnButtonVariant.destructive;
 
   const ShadcnButton.outline({
@@ -50,6 +80,16 @@ class ShadcnButton extends StatefulWidget {
     this.icon,
     this.onPressed,
     this.size = ShadcnButtonSize.$default,
+    this.applyIconColorFilter = true,
+    this.cursor,
+    this.width,
+    this.height,
+    this.padding,
+    this.backgroundColor,
+    this.hoverBackgroundColor,
+    this.foregroundColor,
+    this.hoverForegroundColor,
+    this.border,
   }) : variant = ShadcnButtonVariant.outline;
 
   const ShadcnButton.secondary({
@@ -58,6 +98,16 @@ class ShadcnButton extends StatefulWidget {
     this.icon,
     this.onPressed,
     this.size = ShadcnButtonSize.$default,
+    this.applyIconColorFilter = true,
+    this.cursor,
+    this.width,
+    this.height,
+    this.padding,
+    this.backgroundColor,
+    this.hoverBackgroundColor,
+    this.foregroundColor,
+    this.hoverForegroundColor,
+    this.border,
   }) : variant = ShadcnButtonVariant.secondary;
 
   const ShadcnButton.ghost({
@@ -66,6 +116,16 @@ class ShadcnButton extends StatefulWidget {
     this.icon,
     this.onPressed,
     this.size = ShadcnButtonSize.$default,
+    this.applyIconColorFilter = true,
+    this.cursor,
+    this.width,
+    this.height,
+    this.padding,
+    this.backgroundColor,
+    this.hoverBackgroundColor,
+    this.foregroundColor,
+    this.hoverForegroundColor,
+    this.border,
   }) : variant = ShadcnButtonVariant.ghost;
 
   const ShadcnButton.link({
@@ -73,6 +133,16 @@ class ShadcnButton extends StatefulWidget {
     required this.text,
     this.onPressed,
     this.size = ShadcnButtonSize.$default,
+    this.applyIconColorFilter = true,
+    this.cursor,
+    this.width,
+    this.height,
+    this.padding,
+    this.backgroundColor,
+    this.hoverBackgroundColor,
+    this.foregroundColor,
+    this.hoverForegroundColor,
+    this.border,
   })  : variant = ShadcnButtonVariant.link,
         icon = null;
 
@@ -81,6 +151,17 @@ class ShadcnButton extends StatefulWidget {
   final Widget? text;
   final ShadcnButtonVariant variant;
   final ShadcnButtonSize size;
+
+  final bool applyIconColorFilter;
+  final MouseCursor? cursor;
+  final double? width;
+  final double? height;
+  final EdgeInsets? padding;
+  final Color? backgroundColor;
+  final Color? hoverBackgroundColor;
+  final Color? foregroundColor;
+  final Color? hoverForegroundColor;
+  final BoxBorder? border;
 
   @override
   State<ShadcnButton> createState() => _ShadcnButtonState();
@@ -102,14 +183,8 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     );
   }
 
-  void assertCheckIconWithIconSize() {
-    assert(
-      widget.icon == null || widget.size == ShadcnButtonSize.icon,
-      'Icon can only be provided if size is set to icon',
-    );
-  }
-
   double get height {
+    if (widget.height != null) return widget.height!;
     return switch (widget.size) {
       ShadcnButtonSize.$default => 40,
       ShadcnButtonSize.sm => 36,
@@ -119,6 +194,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
   }
 
   double? get width {
+    if (widget.width != null) return widget.width!;
     return switch (widget.size) {
       ShadcnButtonSize.icon => 40,
       _ => null,
@@ -126,6 +202,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
   }
 
   EdgeInsets get padding {
+    if (widget.padding != null) return widget.padding!;
     return switch (widget.size) {
       ShadcnButtonSize.$default =>
         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -137,6 +214,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
   }
 
   Color? background(ShadcnThemeData theme) {
+    if (widget.backgroundColor != null) return widget.backgroundColor!;
     return switch (widget.variant) {
       ShadcnButtonVariant.$default => theme.primary,
       ShadcnButtonVariant.destructive => theme.destructive,
@@ -146,6 +224,9 @@ class _ShadcnButtonState extends State<ShadcnButton> {
   }
 
   Color? hoverBackground(ShadcnThemeData theme) {
+    if (widget.hoverBackgroundColor != null) {
+      return widget.hoverBackgroundColor!;
+    }
     return switch (widget.variant) {
       ShadcnButtonVariant.$default => theme.primary.withOpacity(.9),
       ShadcnButtonVariant.destructive => theme.destructive.withOpacity(.9),
@@ -156,7 +237,8 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     };
   }
 
-  Color? foreground(ShadcnThemeData theme) {
+  Color foreground(ShadcnThemeData theme) {
+    if (widget.foregroundColor != null) return widget.foregroundColor!;
     return switch (widget.variant) {
       ShadcnButtonVariant.$default => theme.primaryForeground,
       ShadcnButtonVariant.destructive => theme.destructiveForeground,
@@ -167,7 +249,10 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     };
   }
 
-  Color? hoverForeground(ShadcnThemeData theme) {
+  Color hoverForeground(ShadcnThemeData theme) {
+    if (widget.hoverForegroundColor != null) {
+      return widget.hoverForegroundColor!;
+    }
     return switch (widget.variant) {
       ShadcnButtonVariant.outline => theme.accentForeground,
       ShadcnButtonVariant.ghost => theme.accentForeground,
@@ -186,6 +271,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
   }
 
   BoxBorder? border(ShadcnThemeData theme) {
+    if (widget.border != null) return widget.border!;
     return switch (widget.variant) {
       ShadcnButtonVariant.outline => Border.all(color: theme.input),
       _ => null,
@@ -196,16 +282,15 @@ class _ShadcnButtonState extends State<ShadcnButton> {
   Widget build(BuildContext context) {
     assert(debugCheckHasShadcnTheme(context));
     assertCheckHasTextOrIcon();
-    assertCheckIconWithIconSize();
 
     final shadcnTheme = ShadcnTheme.of(context);
 
     // Applies the foreground color filter to the icon if provided
     var icon = widget.icon;
-    if (icon != null && foreground(shadcnTheme) != null) {
+    if (icon != null && widget.applyIconColorFilter) {
       icon = ColorFiltered(
         colorFilter: ColorFilter.mode(
-          foreground(shadcnTheme)!,
+          foreground(shadcnTheme),
           BlendMode.srcIn,
         ),
         child: icon,
@@ -217,9 +302,10 @@ class _ShadcnButtonState extends State<ShadcnButton> {
       child: MouseRegion(
         onEnter: (_) => isHovered.value = true,
         onExit: (_) => isHovered.value = false,
-        cursor: widget.onPressed == null
-            ? MouseCursor.defer
-            : SystemMouseCursors.click,
+        cursor: widget.cursor ??
+            (widget.onPressed == null
+                ? MouseCursor.defer
+                : SystemMouseCursors.click),
         child: GestureDetector(
           onTap: widget.onPressed,
           child: ValueListenableBuilder(
@@ -243,15 +329,15 @@ class _ShadcnButtonState extends State<ShadcnButton> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ValueListenableBuilder(
-                  valueListenable: isHovered,
-                  builder: (context, hovered, _) {
-                    return Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (icon != null) icon,
-                        if (widget.text != null)
-                          DefaultTextStyle(
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (icon != null) icon,
+                    if (widget.text != null)
+                      ValueListenableBuilder(
+                        valueListenable: isHovered,
+                        builder: (context, hovered, _) {
+                          return DefaultTextStyle(
                             style: TextStyle(
                               color: hovered
                                   ? hoverForeground(shadcnTheme)
@@ -262,10 +348,10 @@ class _ShadcnButtonState extends State<ShadcnButton> {
                             ),
                             textAlign: TextAlign.center,
                             child: widget.text!,
-                          ),
-                      ],
-                    );
-                  },
+                          );
+                        },
+                      ),
+                  ],
                 ),
               ],
             ),
