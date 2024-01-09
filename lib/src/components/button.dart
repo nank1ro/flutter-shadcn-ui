@@ -36,6 +36,8 @@ class ShadcnButton extends StatefulWidget {
     this.hoverForegroundColor,
     this.border,
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
+    this.autofocus = false,
+    this.focusNode,
   }) : variant = ShadcnButtonVariant.$default;
 
   const ShadcnButton.raw({
@@ -56,6 +58,8 @@ class ShadcnButton extends StatefulWidget {
     this.hoverForegroundColor,
     this.border,
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
+    this.autofocus = false,
+    this.focusNode,
   });
 
   const ShadcnButton.destructive({
@@ -75,6 +79,8 @@ class ShadcnButton extends StatefulWidget {
     this.hoverForegroundColor,
     this.border,
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
+    this.autofocus = false,
+    this.focusNode,
   }) : variant = ShadcnButtonVariant.destructive;
 
   const ShadcnButton.outline({
@@ -94,6 +100,8 @@ class ShadcnButton extends StatefulWidget {
     this.hoverForegroundColor,
     this.border,
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
+    this.autofocus = false,
+    this.focusNode,
   }) : variant = ShadcnButtonVariant.outline;
 
   const ShadcnButton.secondary({
@@ -113,6 +121,8 @@ class ShadcnButton extends StatefulWidget {
     this.hoverForegroundColor,
     this.border,
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
+    this.autofocus = false,
+    this.focusNode,
   }) : variant = ShadcnButtonVariant.secondary;
 
   const ShadcnButton.ghost({
@@ -132,6 +142,8 @@ class ShadcnButton extends StatefulWidget {
     this.hoverForegroundColor,
     this.border,
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
+    this.autofocus = false,
+    this.focusNode,
   }) : variant = ShadcnButtonVariant.ghost;
 
   const ShadcnButton.link({
@@ -150,6 +162,8 @@ class ShadcnButton extends StatefulWidget {
     this.hoverForegroundColor,
     this.border,
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
+    this.autofocus = false,
+    this.focusNode,
   })  : variant = ShadcnButtonVariant.link,
         icon = null;
 
@@ -170,6 +184,8 @@ class ShadcnButton extends StatefulWidget {
   final Color? hoverForegroundColor;
   final BoxBorder? border;
   final BorderRadius borderRadius;
+  final bool autofocus;
+  final FocusNode? focusNode;
 
   @override
   State<ShadcnButton> createState() => _ShadcnButtonState();
@@ -177,10 +193,12 @@ class ShadcnButton extends StatefulWidget {
 
 class _ShadcnButtonState extends State<ShadcnButton> {
   final isHovered = ValueNotifier(false);
+  final isFocused = ValueNotifier(false);
 
   @override
   void dispose() {
     isHovered.dispose();
+    isFocused.dispose();
     super.dispose();
   }
 
@@ -307,65 +325,104 @@ class _ShadcnButtonState extends State<ShadcnButton> {
       );
     }
 
-    return Opacity(
-      opacity: enabled ? 1 : .5,
-      child: AbsorbPointer(
-        absorbing: !enabled,
-        child: MouseRegion(
-          onEnter: (_) => isHovered.value = true,
-          onExit: (_) => isHovered.value = false,
-          cursor: widget.cursor ??
-              (widget.onPressed == null
-                  ? MouseCursor.defer
-                  : SystemMouseCursors.click),
-          child: GestureDetector(
-            onTap: widget.onPressed,
+    return Semantics(
+      container: true,
+      button: true,
+      focusable: enabled,
+      focused: isFocused.value,
+      enabled: enabled,
+      child: Opacity(
+        opacity: enabled ? 1 : .5,
+        child: AbsorbPointer(
+          absorbing: !enabled,
+          child: Focus(
+            canRequestFocus: enabled,
+            autofocus: widget.autofocus,
+            focusNode: widget.focusNode,
+            onFocusChange: (focused) => isFocused.value = focused,
             child: ValueListenableBuilder(
-              valueListenable: isHovered,
-              builder: (context, hovered, child) {
+              valueListenable: isFocused,
+              builder: (context, focused, child) {
+                if (!focused) {
+                  return Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: child,
+                  );
+                }
                 return Container(
-                  height: height,
-                  width: width,
+                  clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
-                    color: hovered
-                        ? hoverBackground(shadcnTheme)
-                        : background(shadcnTheme),
-                    borderRadius: widget.borderRadius,
-                    border: border(shadcnTheme),
+                    border: Border.all(
+                      color: shadcnTheme.ring,
+                      width: 2,
+                    ),
+                    borderRadius:
+                        widget.borderRadius.add(widget.borderRadius / 2),
                   ),
-                  padding: padding,
+                  padding: const EdgeInsets.all(2),
                   child: child,
                 );
               },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (icon != null) icon,
-                      if (widget.text != null)
-                        ValueListenableBuilder(
-                          valueListenable: isHovered,
-                          builder: (context, hovered, _) {
-                            return DefaultTextStyle(
-                              style: TextStyle(
-                                color: hovered
-                                    ? hoverForeground(shadcnTheme)
-                                    : foreground(shadcnTheme),
-                                decoration: textDecoration(hovered: hovered),
-                                decorationColor: foreground(shadcnTheme),
-                                decorationStyle: TextDecorationStyle.solid,
-                              ),
-                              textAlign: TextAlign.center,
-                              child: widget.text!,
-                            );
-                          },
+              child: MouseRegion(
+                onEnter: (_) => isHovered.value = true,
+                onExit: (_) => isHovered.value = false,
+                cursor: widget.cursor ??
+                    (widget.onPressed == null
+                        ? MouseCursor.defer
+                        : SystemMouseCursors.click),
+                child: GestureDetector(
+                  onTap: widget.onPressed,
+                  child: ValueListenableBuilder(
+                    valueListenable: isHovered,
+                    builder: (context, hovered, child) {
+                      return Container(
+                        height: height,
+                        width: width,
+                        decoration: BoxDecoration(
+                          color: hovered
+                              ? hoverBackground(shadcnTheme)
+                              : background(shadcnTheme),
+                          borderRadius: widget.borderRadius,
+                          border: border(shadcnTheme),
                         ),
-                    ],
+                        padding: padding,
+                        child: child,
+                      );
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (icon != null) icon,
+                            if (widget.text != null)
+                              ValueListenableBuilder(
+                                valueListenable: isHovered,
+                                builder: (context, hovered, _) {
+                                  return DefaultTextStyle(
+                                    style: TextStyle(
+                                      color: hovered
+                                          ? hoverForeground(shadcnTheme)
+                                          : foreground(shadcnTheme),
+                                      decoration:
+                                          textDecoration(hovered: hovered),
+                                      decorationColor: foreground(shadcnTheme),
+                                      decorationStyle:
+                                          TextDecorationStyle.solid,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    child: widget.text!,
+                                  );
+                                },
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ],
+                ),
               ),
             ),
           ),
