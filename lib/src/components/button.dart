@@ -183,6 +183,8 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     );
   }
 
+  bool get enabled => widget.onPressed != null;
+
   double get height {
     if (widget.height != null) return widget.height!;
     return switch (widget.size) {
@@ -298,62 +300,65 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     }
 
     return Opacity(
-      opacity: widget.onPressed == null ? .5 : 1,
-      child: MouseRegion(
-        onEnter: (_) => isHovered.value = true,
-        onExit: (_) => isHovered.value = false,
-        cursor: widget.cursor ??
-            (widget.onPressed == null
-                ? MouseCursor.defer
-                : SystemMouseCursors.click),
-        child: GestureDetector(
-          onTap: widget.onPressed,
-          child: ValueListenableBuilder(
-            valueListenable: isHovered,
-            builder: (context, hovered, child) {
-              return Container(
-                height: height,
-                width: width,
-                decoration: BoxDecoration(
-                  color: hovered
-                      ? hoverBackground(shadcnTheme)
-                      : background(shadcnTheme),
-                  borderRadius: const BorderRadius.all(Radius.circular(6)),
-                  border: border(shadcnTheme),
-                ),
-                padding: padding,
-                child: child,
-              );
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (icon != null) icon,
-                    if (widget.text != null)
-                      ValueListenableBuilder(
-                        valueListenable: isHovered,
-                        builder: (context, hovered, _) {
-                          return DefaultTextStyle(
-                            style: TextStyle(
-                              color: hovered
-                                  ? hoverForeground(shadcnTheme)
-                                  : foreground(shadcnTheme),
-                              decoration: textDecoration(hovered: hovered),
-                              decorationColor: foreground(shadcnTheme),
-                              decorationStyle: TextDecorationStyle.solid,
-                            ),
-                            textAlign: TextAlign.center,
-                            child: widget.text!,
-                          );
-                        },
-                      ),
-                  ],
-                ),
-              ],
+      opacity: enabled ? 1 : .5,
+      child: AbsorbPointer(
+        absorbing: !enabled,
+        child: MouseRegion(
+          onEnter: (_) => isHovered.value = true,
+          onExit: (_) => isHovered.value = false,
+          cursor: widget.cursor ??
+              (widget.onPressed == null
+                  ? MouseCursor.defer
+                  : SystemMouseCursors.click),
+          child: GestureDetector(
+            onTap: widget.onPressed,
+            child: ValueListenableBuilder(
+              valueListenable: isHovered,
+              builder: (context, hovered, child) {
+                return Container(
+                  height: height,
+                  width: width,
+                  decoration: BoxDecoration(
+                    color: hovered
+                        ? hoverBackground(shadcnTheme)
+                        : background(shadcnTheme),
+                    borderRadius: const BorderRadius.all(Radius.circular(6)),
+                    border: border(shadcnTheme),
+                  ),
+                  padding: padding,
+                  child: child,
+                );
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (icon != null) icon,
+                      if (widget.text != null)
+                        ValueListenableBuilder(
+                          valueListenable: isHovered,
+                          builder: (context, hovered, _) {
+                            return DefaultTextStyle(
+                              style: TextStyle(
+                                color: hovered
+                                    ? hoverForeground(shadcnTheme)
+                                    : foreground(shadcnTheme),
+                                decoration: textDecoration(hovered: hovered),
+                                decorationColor: foreground(shadcnTheme),
+                                decorationStyle: TextDecorationStyle.solid,
+                              ),
+                              textAlign: TextAlign.center,
+                              child: widget.text!,
+                            );
+                          },
+                        ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
