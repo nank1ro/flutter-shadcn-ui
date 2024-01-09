@@ -13,8 +13,15 @@ class ButtonPage extends StatefulWidget {
 }
 
 class _ButtonPageState extends State<ButtonPage> {
+  final focusNode = FocusNode();
   var size = ShadcnButtonSize.$default;
   var enabled = true;
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,40 +39,60 @@ class _ButtonPageState extends State<ButtonPage> {
           value: enabled,
           onChanged: (value) => setState(() => enabled = value),
         ),
+        MyBoolProperty(
+          label: 'Focused',
+          value: focusNode.hasFocus,
+          onChanged: (value) {
+            setState(() {
+              if (value) {
+                focusNode.requestFocus();
+              } else {
+                focusNode.unfocus();
+              }
+            });
+          },
+        ),
       ],
       children: [
         if (size != ShadcnButtonSize.icon) ...[
           ShadcnButton(
+            focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Primary'),
           ),
           ShadcnButton.secondary(
+            focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Secondary'),
           ),
           ShadcnButton.destructive(
+            focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Destructive'),
           ),
           ShadcnButton.outline(
+            focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Outline'),
           ),
           ShadcnButton.ghost(
+            focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Ghost'),
           ),
           ShadcnButton.link(
+            focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Link'),
           ),
           ShadcnButton(
+            focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Login with Email'),
@@ -78,6 +105,7 @@ class _ButtonPageState extends State<ButtonPage> {
             ),
           ),
           ShadcnButton(
+            focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Please wait'),
@@ -96,6 +124,7 @@ class _ButtonPageState extends State<ButtonPage> {
           ComponentView(
             label: 'Icon',
             child: ShadcnButton.outline(
+              focusNode: focusNode,
               size: size,
               onPressed: enabled ? () {} : null,
               icon: const Icon(
