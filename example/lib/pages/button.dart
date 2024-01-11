@@ -42,15 +42,17 @@ class _ButtonPageState extends State<ButtonPage> {
         MyBoolProperty(
           label: 'Focused',
           value: focusNode.hasFocus,
-          onChanged: (value) {
-            setState(() {
-              if (value) {
-                focusNode.requestFocus();
-              } else {
-                focusNode.unfocus();
-              }
-            });
-          },
+          onChanged: enabled
+              ? (value) {
+                  setState(() {
+                    if (value) {
+                      focusNode.requestFocus();
+                    } else {
+                      focusNode.unfocus();
+                    }
+                  });
+                }
+              : null,
         ),
       ],
       children: [

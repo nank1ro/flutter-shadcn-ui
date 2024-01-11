@@ -9,18 +9,12 @@
             "cwd": "example",
             "request": "launch",
             "type": "dart",
-            "args": [
-                "--dart-define=MATERIAL=false"
-            ]
         },
         {
             "name": "Example with Material",
             "cwd": "example",
             "request": "launch",
             "type": "dart",
-            "args": [
-                "--dart-define=MATERIAL=true"
-            ]
         },
     ]
 }

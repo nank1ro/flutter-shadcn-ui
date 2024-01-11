@@ -18,17 +18,16 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.only(right: 8),
           child: IconButton(
             onPressed: () {
-              context.update<Brightness>(
-                (value) => value == Brightness.light
-                    ? Brightness.dark
-                    : Brightness.light,
+              context.update<ThemeMode>(
+                (value) =>
+                    value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light,
               );
             },
             icon: SignalBuilder(
-              signal: context.get<Signal<Brightness>>(),
-              builder: (context, brightness, child) {
+              signal: context.get<Signal<ThemeMode>>(),
+              builder: (context, themeMode, child) {
                 return Icon(
-                  brightness == Brightness.light
+                  themeMode == ThemeMode.light
                       ? Icons.light_mode
                       : Icons.dark_mode,
                 );

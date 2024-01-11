@@ -6,10 +6,8 @@ import 'package:flutter_solidart/flutter_solidart.dart';
 
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-const useMaterial = bool.fromEnvironment('MATERIAL', defaultValue: false);
-
 void main() {
-  runApp(useMaterial ? const AppWithMaterial() : const AppWithoutMaterial());
+  runApp(const App());
 }
 
 // Maps the routes to the specific widget page.
@@ -19,88 +17,26 @@ final routes = <String, WidgetBuilder>{
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-z])');
 
-class AppWithoutMaterial extends StatelessWidget {
-  const AppWithoutMaterial({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Localizations(
-        locale: const Locale('en'),
-        delegates: const [
-          DefaultMaterialLocalizations.delegate,
-          DefaultWidgetsLocalizations.delegate,
-        ],
-        child: BrightnessProvider(
-          builder: (context) {
-            final brightness = context.observe<Brightness>();
-            return Shadcn(
-              themeData: brightness == Brightness.dark
-                  ? ShadcnSlateTheme.dark()
-                  : ShadcnSlateTheme.light(),
-              child: Navigator(
-                onPopPage: (route, result) {
-                  return true;
-                },
-                onGenerateRoute: (settings) {
-                  return MaterialPageRoute(
-                    settings: settings,
-                    builder: (context) =>
-                        routes[settings.name]?.call(context) ??
-                        const MainPage(),
-                  );
-                },
-                reportsRouteUpdateToEngine: true,
-                clipBehavior: Clip.antiAlias,
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class AppWithMaterial extends StatelessWidget {
-  const AppWithMaterial({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BrightnessProvider(builder: (context) {
-      final brightness = context.observe<Brightness>();
-      return Shadcn(
-        themeData: brightness == Brightness.dark
-            ? ShadcnSlateTheme.dark()
-            : ShadcnSlateTheme.light(),
-        builder: (context) {
-          final theme = Theme.of(context);
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: theme,
-            home: const MainPage(),
-            routes: routes,
-          );
-        },
-      );
-    });
-  }
-}
-
-class BrightnessProvider extends StatelessWidget {
-  const BrightnessProvider({
-    super.key,
-    required this.builder,
-  });
-
-  final WidgetBuilder builder;
   @override
   Widget build(BuildContext context) {
     return Solid(
       providers: [
-        Provider<Signal<Brightness>>(create: () => Signal(Brightness.light)),
+        Provider<Signal<ThemeMode>>(create: () => Signal(ThemeMode.dark)),
       ],
-      builder: builder,
+      builder: (context) {
+        final themeMode = context.observe<ThemeMode>();
+        return ShadcnApp(
+          debugShowCheckedModeBanner: false,
+          theme: ShadcnSlateTheme.light(),
+          darkTheme: ShadcnSlateTheme.dark(),
+          themeMode: themeMode,
+          routes: routes,
+          home: const MainPage(),
+        );
+      },
     );
   }
 }
