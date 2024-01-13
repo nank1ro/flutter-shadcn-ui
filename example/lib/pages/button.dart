@@ -121,6 +121,25 @@ class _ButtonPageState extends State<ButtonPage> {
               ),
             ),
           ),
+          const SizedBox(height: 100),
+          ShadcnButton(
+            focusNode: focusNode,
+            size: size,
+            onPressed: enabled ? () {} : null,
+            gradient: const LinearGradient(colors: [
+              Colors.cyan,
+              Colors.indigo,
+            ]),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.blue.withOpacity(.4),
+                spreadRadius: 4,
+                blurRadius: 10,
+                offset: const Offset(0, 2),
+              ),
+            ],
+            text: const Text('Gradient with Shadow'),
+          ),
         ],
         if (size == ShadcnButtonSize.icon)
           ComponentView(

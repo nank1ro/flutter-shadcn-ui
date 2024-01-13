@@ -40,6 +40,8 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
+    this.boxShadow,
+    this.gradient,
   }) : variant = ShadcnButtonVariant.$default;
 
   const ShadcnButton.raw({
@@ -64,6 +66,8 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
+    this.boxShadow,
+    this.gradient,
   });
 
   const ShadcnButton.destructive({
@@ -87,6 +91,8 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
+    this.boxShadow,
+    this.gradient,
   }) : variant = ShadcnButtonVariant.destructive;
 
   const ShadcnButton.outline({
@@ -110,6 +116,8 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
+    this.boxShadow,
+    this.gradient,
   }) : variant = ShadcnButtonVariant.outline;
 
   const ShadcnButton.secondary({
@@ -133,6 +141,8 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
+    this.boxShadow,
+    this.gradient,
   }) : variant = ShadcnButtonVariant.secondary;
 
   const ShadcnButton.ghost({
@@ -156,6 +166,8 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
+    this.boxShadow,
+    this.gradient,
   }) : variant = ShadcnButtonVariant.ghost;
 
   const ShadcnButton.link({
@@ -178,6 +190,8 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
+    this.boxShadow,
+    this.gradient,
   })  : variant = ShadcnButtonVariant.link,
         icon = null;
 
@@ -202,6 +216,8 @@ class ShadcnButton extends StatefulWidget {
   final FocusNode? focusNode;
   final Color? pressedBackgroundColor;
   final Color? pressedForegroundColor;
+  final List<BoxShadow>? boxShadow;
+  final Gradient? gradient;
 
   @override
   State<ShadcnButton> createState() => _ShadcnButtonState();
@@ -421,6 +437,8 @@ class _ShadcnButtonState extends State<ShadcnButton> {
                                       : background(shadcnTheme),
                               borderRadius: widget.borderRadius,
                               border: border(shadcnTheme),
+                              gradient: widget.gradient,
+                              boxShadow: widget.boxShadow,
                             ),
                             padding: padding,
                             child: child,
