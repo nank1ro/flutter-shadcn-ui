@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/theme/themes/components/button.dart';
 
 @immutable
 abstract class ShadcnBaseTheme {
@@ -25,6 +26,12 @@ abstract class ShadcnBaseTheme {
     required this.ring,
     required this.radius,
     required this.brightness,
+    required this.primaryButtonTheme,
+    required this.secondaryButtonTheme,
+    required this.destructiveButtonTheme,
+    required this.outlineButtonTheme,
+    required this.ghostButtonTheme,
+    required this.linkButtonTheme,
   });
 
   final Color background;
@@ -48,4 +55,10 @@ abstract class ShadcnBaseTheme {
   final Color ring;
   final BorderRadius radius;
   final Brightness brightness;
+  final ShadcnButtonTheme? primaryButtonTheme;
+  final ShadcnButtonTheme? secondaryButtonTheme;
+  final ShadcnButtonTheme? destructiveButtonTheme;
+  final ShadcnButtonTheme? outlineButtonTheme;
+  final ShadcnButtonTheme? ghostButtonTheme;
+  final ShadcnButtonTheme? linkButtonTheme;
 }

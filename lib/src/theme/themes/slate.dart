@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/theme/data.dart';
+import 'package:shadcn_ui/src/theme/themes/components/button.dart';
 
 @immutable
 class ShadcnSlateTheme extends ShadcnThemeData {
@@ -26,6 +27,12 @@ class ShadcnSlateTheme extends ShadcnThemeData {
     required super.ring,
     required super.radius,
     required super.brightness,
+    required super.primaryButtonTheme,
+    required super.secondaryButtonTheme,
+    required super.destructiveButtonTheme,
+    required super.outlineButtonTheme,
+    required super.ghostButtonTheme,
+    required super.linkButtonTheme,
   });
 
   factory ShadcnSlateTheme.light({
@@ -49,6 +56,12 @@ class ShadcnSlateTheme extends ShadcnThemeData {
     Color input = const Color(0xffe2e8f0),
     Color ring = const Color(0xff020817),
     BorderRadius radius = const BorderRadius.all(Radius.circular(8)),
+    ShadcnButtonTheme? primaryButtonTheme,
+    ShadcnButtonTheme? secondaryButtonTheme,
+    ShadcnButtonTheme? destructiveButtonTheme,
+    ShadcnButtonTheme? outlineButtonTheme,
+    ShadcnButtonTheme? ghostButtonTheme,
+    ShadcnButtonTheme? linkButtonTheme,
   }) {
     return ShadcnSlateTheme(
       brightness: Brightness.light,
@@ -72,6 +85,12 @@ class ShadcnSlateTheme extends ShadcnThemeData {
       input: input,
       ring: ring,
       radius: radius,
+      primaryButtonTheme: primaryButtonTheme,
+      secondaryButtonTheme: secondaryButtonTheme,
+      destructiveButtonTheme: destructiveButtonTheme,
+      outlineButtonTheme: outlineButtonTheme,
+      ghostButtonTheme: ghostButtonTheme,
+      linkButtonTheme: linkButtonTheme,
     );
   }
 
@@ -96,6 +115,12 @@ class ShadcnSlateTheme extends ShadcnThemeData {
     Color input = const Color(0xff1e293b),
     Color ring = const Color(0xffcbd5e1),
     BorderRadius radius = const BorderRadius.all(Radius.circular(8)),
+    ShadcnButtonTheme? primaryButtonTheme,
+    ShadcnButtonTheme? secondaryButtonTheme,
+    ShadcnButtonTheme? destructiveButtonTheme,
+    ShadcnButtonTheme? outlineButtonTheme,
+    ShadcnButtonTheme? ghostButtonTheme,
+    ShadcnButtonTheme? linkButtonTheme,
   }) {
     return ShadcnSlateTheme(
       brightness: Brightness.dark,
@@ -119,6 +144,12 @@ class ShadcnSlateTheme extends ShadcnThemeData {
       input: input,
       ring: ring,
       radius: radius,
+      primaryButtonTheme: primaryButtonTheme,
+      secondaryButtonTheme: secondaryButtonTheme,
+      destructiveButtonTheme: destructiveButtonTheme,
+      outlineButtonTheme: outlineButtonTheme,
+      ghostButtonTheme: ghostButtonTheme,
+      linkButtonTheme: linkButtonTheme,
     );
   }
 }

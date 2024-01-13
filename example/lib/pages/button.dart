@@ -121,7 +121,6 @@ class _ButtonPageState extends State<ButtonPage> {
               ),
             ),
           ),
-          const SizedBox(height: 100),
           ShadcnButton(
             focusNode: focusNode,
             size: size,

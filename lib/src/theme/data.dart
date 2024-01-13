@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
+import 'package:shadcn_ui/src/theme/themes/components/button.dart';
 
 @immutable
 class ShadcnThemeData extends ShadcnBaseTheme {
@@ -25,9 +26,14 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     required super.ring,
     required super.radius,
     required super.brightness,
+    required super.primaryButtonTheme,
+    required super.secondaryButtonTheme,
+    required super.destructiveButtonTheme,
+    required super.outlineButtonTheme,
+    required super.ghostButtonTheme,
+    required super.linkButtonTheme,
   });
 
-  // ignore: prefer_constructors_over_static_methods
   static ShadcnThemeData lerp(ShadcnThemeData a, ShadcnThemeData b, double t) {
     if (identical(a, b)) {
       return a;
@@ -58,6 +64,53 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       input: Color.lerp(a.input, b.input, t)!,
       ring: Color.lerp(a.ring, b.ring, t)!,
       brightness: b.brightness,
+      primaryButtonTheme:
+          a.primaryButtonTheme != null && b.primaryButtonTheme != null
+              ? ShadcnButtonTheme.lerp(
+                  a.primaryButtonTheme!,
+                  b.primaryButtonTheme!,
+                  t,
+                )
+              : null,
+      secondaryButtonTheme:
+          a.secondaryButtonTheme != null && b.secondaryButtonTheme != null
+              ? ShadcnButtonTheme.lerp(
+                  a.secondaryButtonTheme!,
+                  b.secondaryButtonTheme!,
+                  t,
+                )
+              : null,
+      destructiveButtonTheme:
+          a.destructiveButtonTheme != null && b.destructiveButtonTheme != null
+              ? ShadcnButtonTheme.lerp(
+                  a.destructiveButtonTheme!,
+                  b.destructiveButtonTheme!,
+                  t,
+                )
+              : null,
+      outlineButtonTheme:
+          a.outlineButtonTheme != null && b.outlineButtonTheme != null
+              ? ShadcnButtonTheme.lerp(
+                  a.outlineButtonTheme!,
+                  b.outlineButtonTheme!,
+                  t,
+                )
+              : null,
+      ghostButtonTheme:
+          a.ghostButtonTheme != null && b.outlineButtonTheme != null
+              ? ShadcnButtonTheme.lerp(
+                  a.ghostButtonTheme!,
+                  b.ghostButtonTheme!,
+                  t,
+                )
+              : null,
+      linkButtonTheme: a.linkButtonTheme != null && b.linkButtonTheme != null
+          ? ShadcnButtonTheme.lerp(
+              a.linkButtonTheme!,
+              b.linkButtonTheme!,
+              t,
+            )
+          : null,
     );
   }
 
@@ -85,7 +138,14 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         other.border == border &&
         other.input == input &&
         other.ring == ring &&
-        other.radius == radius;
+        other.radius == radius &&
+        other.brightness == brightness &&
+        other.primaryButtonTheme == primaryButtonTheme &&
+        other.secondaryButtonTheme == secondaryButtonTheme &&
+        other.destructiveButtonTheme == destructiveButtonTheme &&
+        other.outlineButtonTheme == outlineButtonTheme &&
+        other.ghostButtonTheme == ghostButtonTheme &&
+        other.linkButtonTheme == linkButtonTheme;
   }
 
   @override
@@ -109,6 +169,74 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         border.hashCode ^
         input.hashCode ^
         ring.hashCode ^
-        radius.hashCode;
+        radius.hashCode ^
+        brightness.hashCode ^
+        primaryButtonTheme.hashCode ^
+        secondaryButtonTheme.hashCode ^
+        destructiveButtonTheme.hashCode ^
+        outlineButtonTheme.hashCode ^
+        ghostButtonTheme.hashCode ^
+        linkButtonTheme.hashCode;
+  }
+
+  ShadcnThemeData copyWith({
+    Color? background,
+    Color? foreground,
+    Color? card,
+    Color? cardForeground,
+    Color? popover,
+    Color? popoverForeground,
+    Color? primary,
+    Color? primaryForeground,
+    Color? secondary,
+    Color? secondaryForeground,
+    Color? muted,
+    Color? mutedForeground,
+    Color? accent,
+    Color? accentForeground,
+    Color? destructive,
+    Color? destructiveForeground,
+    Color? border,
+    Color? input,
+    Color? ring,
+    BorderRadius? radius,
+    ShadcnButtonTheme? primaryButtonTheme,
+    ShadcnButtonTheme? secondaryButtonTheme,
+    ShadcnButtonTheme? destructiveButtonTheme,
+    ShadcnButtonTheme? outlineButtonTheme,
+    ShadcnButtonTheme? ghostButtonTheme,
+    ShadcnButtonTheme? linkButtonTheme,
+  }) {
+    return ShadcnThemeData(
+      background: background ?? this.background,
+      foreground: foreground ?? this.foreground,
+      card: card ?? this.card,
+      cardForeground: cardForeground ?? this.cardForeground,
+      popover: popover ?? this.popover,
+      popoverForeground: popoverForeground ?? this.popoverForeground,
+      primary: primary ?? this.primary,
+      primaryForeground: primaryForeground ?? this.primaryForeground,
+      secondary: secondary ?? this.secondary,
+      secondaryForeground: secondaryForeground ?? this.secondaryForeground,
+      muted: muted ?? this.muted,
+      mutedForeground: mutedForeground ?? this.mutedForeground,
+      accent: accent ?? this.accent,
+      accentForeground: accentForeground ?? this.accentForeground,
+      destructive: destructive ?? this.destructive,
+      destructiveForeground:
+          destructiveForeground ?? this.destructiveForeground,
+      border: border ?? this.border,
+      input: input ?? this.input,
+      ring: ring ?? this.ring,
+      radius: radius ?? this.radius,
+      brightness: brightness,
+      primaryButtonTheme: primaryButtonTheme ?? this.primaryButtonTheme,
+      secondaryButtonTheme: secondaryButtonTheme ?? this.secondaryButtonTheme,
+      destructiveButtonTheme:
+          destructiveButtonTheme ?? this.destructiveButtonTheme,
+      outlineButtonTheme: outlineButtonTheme ?? this.outlineButtonTheme,
+      ghostButtonTheme: ghostButtonTheme ?? this.ghostButtonTheme,
+      linkButtonTheme: linkButtonTheme ?? this.linkButtonTheme,
+    );
   }
 }
