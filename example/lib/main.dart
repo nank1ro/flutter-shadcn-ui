@@ -30,8 +30,6 @@ class App extends StatelessWidget {
         final themeMode = context.observe<ThemeMode>();
         return ShadcnApp(
           debugShowCheckedModeBanner: false,
-          theme: ShadcnSlateTheme.light(),
-          darkTheme: ShadcnSlateTheme.dark(),
           themeMode: themeMode,
           routes: routes,
           home: const MainPage(),
