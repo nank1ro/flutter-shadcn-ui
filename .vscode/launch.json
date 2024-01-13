@@ -5,13 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Example without Material",
-            "cwd": "example",
-            "request": "launch",
-            "type": "dart",
-        },
-        {
-            "name": "Example with Material",
+            "name": "Example",
             "cwd": "example",
             "request": "launch",
             "type": "dart",

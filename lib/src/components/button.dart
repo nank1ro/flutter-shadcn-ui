@@ -38,6 +38,8 @@ class ShadcnButton extends StatefulWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
     this.autofocus = false,
     this.focusNode,
+    this.pressedBackgroundColor,
+    this.pressedForegroundColor,
   }) : variant = ShadcnButtonVariant.$default;
 
   const ShadcnButton.raw({
@@ -60,6 +62,8 @@ class ShadcnButton extends StatefulWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
     this.autofocus = false,
     this.focusNode,
+    this.pressedBackgroundColor,
+    this.pressedForegroundColor,
   });
 
   const ShadcnButton.destructive({
@@ -81,6 +85,8 @@ class ShadcnButton extends StatefulWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
     this.autofocus = false,
     this.focusNode,
+    this.pressedBackgroundColor,
+    this.pressedForegroundColor,
   }) : variant = ShadcnButtonVariant.destructive;
 
   const ShadcnButton.outline({
@@ -102,6 +108,8 @@ class ShadcnButton extends StatefulWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
     this.autofocus = false,
     this.focusNode,
+    this.pressedBackgroundColor,
+    this.pressedForegroundColor,
   }) : variant = ShadcnButtonVariant.outline;
 
   const ShadcnButton.secondary({
@@ -123,6 +131,8 @@ class ShadcnButton extends StatefulWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
     this.autofocus = false,
     this.focusNode,
+    this.pressedBackgroundColor,
+    this.pressedForegroundColor,
   }) : variant = ShadcnButtonVariant.secondary;
 
   const ShadcnButton.ghost({
@@ -144,6 +154,8 @@ class ShadcnButton extends StatefulWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
     this.autofocus = false,
     this.focusNode,
+    this.pressedBackgroundColor,
+    this.pressedForegroundColor,
   }) : variant = ShadcnButtonVariant.ghost;
 
   const ShadcnButton.link({
@@ -164,6 +176,8 @@ class ShadcnButton extends StatefulWidget {
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
     this.autofocus = false,
     this.focusNode,
+    this.pressedBackgroundColor,
+    this.pressedForegroundColor,
   })  : variant = ShadcnButtonVariant.link,
         icon = null;
 
@@ -186,6 +200,8 @@ class ShadcnButton extends StatefulWidget {
   final BorderRadius borderRadius;
   final bool autofocus;
   final FocusNode? focusNode;
+  final Color? pressedBackgroundColor;
+  final Color? pressedForegroundColor;
 
   @override
   State<ShadcnButton> createState() => _ShadcnButtonState();
@@ -194,11 +210,13 @@ class ShadcnButton extends StatefulWidget {
 class _ShadcnButtonState extends State<ShadcnButton> {
   final isHovered = ValueNotifier(false);
   final isFocused = ValueNotifier(false);
+  final isPressed = ValueNotifier(false);
 
   @override
   void dispose() {
     isHovered.dispose();
     isFocused.dispose();
+    isPressed.dispose();
     super.dispose();
   }
 
@@ -313,6 +331,8 @@ class _ShadcnButtonState extends State<ShadcnButton> {
 
     final shadcnTheme = ShadcnTheme.of(context);
 
+    final trackPressState = widget.pressedBackgroundColor != null;
+
     // Applies the foreground color filter to the icon if provided
     var icon = widget.icon;
     if (icon != null && widget.applyIconColorFilter) {
@@ -372,21 +392,40 @@ class _ShadcnButtonState extends State<ShadcnButton> {
                         : SystemMouseCursors.click),
                 child: GestureDetector(
                   onTap: widget.onPressed,
+                  onTapDown: (_) {
+                    if (!trackPressState) return;
+                    isPressed.value = true;
+                  },
+                  onTapUp: (_) {
+                    if (!trackPressState) return;
+                    isPressed.value = false;
+                  },
+                  onTapCancel: () {
+                    if (!trackPressState) return;
+                    isPressed.value = false;
+                  },
                   child: ValueListenableBuilder(
                     valueListenable: isHovered,
                     builder: (context, hovered, child) {
-                      return Container(
-                        height: height,
-                        width: width,
-                        decoration: BoxDecoration(
-                          color: hovered
-                              ? hoverBackground(shadcnTheme)
-                              : background(shadcnTheme),
-                          borderRadius: widget.borderRadius,
-                          border: border(shadcnTheme),
-                        ),
-                        padding: padding,
-                        child: child,
+                      return ValueListenableBuilder(
+                        valueListenable: isPressed,
+                        builder: (context, pressed, _) {
+                          return Container(
+                            height: height,
+                            width: width,
+                            decoration: BoxDecoration(
+                              color: trackPressState && pressed
+                                  ? widget.pressedBackgroundColor
+                                  : hovered
+                                      ? hoverBackground(shadcnTheme)
+                                      : background(shadcnTheme),
+                              borderRadius: widget.borderRadius,
+                              border: border(shadcnTheme),
+                            ),
+                            padding: padding,
+                            child: child,
+                          );
+                        },
                       );
                     },
                     child: Column(
@@ -401,19 +440,27 @@ class _ShadcnButtonState extends State<ShadcnButton> {
                               ValueListenableBuilder(
                                 valueListenable: isHovered,
                                 builder: (context, hovered, _) {
-                                  return DefaultTextStyle(
-                                    style: TextStyle(
-                                      color: hovered
-                                          ? hoverForeground(shadcnTheme)
-                                          : foreground(shadcnTheme),
-                                      decoration:
-                                          textDecoration(hovered: hovered),
-                                      decorationColor: foreground(shadcnTheme),
-                                      decorationStyle:
-                                          TextDecorationStyle.solid,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    child: widget.text!,
+                                  return ValueListenableBuilder(
+                                    valueListenable: isPressed,
+                                    builder: (context, pressed, child) {
+                                      return DefaultTextStyle(
+                                        style: TextStyle(
+                                          color: trackPressState && pressed
+                                              ? widget.pressedForegroundColor
+                                              : hovered
+                                                  ? hoverForeground(shadcnTheme)
+                                                  : foreground(shadcnTheme),
+                                          decoration:
+                                              textDecoration(hovered: hovered),
+                                          decorationColor:
+                                              foreground(shadcnTheme),
+                                          decorationStyle:
+                                              TextDecorationStyle.solid,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        child: widget.text!,
+                                      );
+                                    },
                                   );
                                 },
                               ),
