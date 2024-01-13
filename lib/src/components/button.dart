@@ -411,6 +411,16 @@ class _ShadcnButtonState extends State<ShadcnButton> {
         : MouseCursor.defer);
   }
 
+  Gradient? gradient(ShadcnThemeData theme) {
+    if (widget.gradient != null) return widget.gradient!;
+    return buttonTheme(theme)?.gradient;
+  }
+
+  List<BoxShadow>? boxShadow(ShadcnThemeData theme) {
+    if (widget.boxShadow != null) return widget.boxShadow!;
+    return buttonTheme(theme)?.boxShadow;
+  }
+
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadcnTheme(context));
@@ -515,8 +525,8 @@ class _ShadcnButtonState extends State<ShadcnButton> {
                                       : background(shadcnTheme),
                               borderRadius: borderRadius(shadcnTheme),
                               border: border(shadcnTheme),
-                              gradient: widget.gradient,
-                              boxShadow: widget.boxShadow,
+                              gradient: gradient(shadcnTheme),
+                              boxShadow: boxShadow(shadcnTheme),
                             ),
                             padding: padding(shadcnTheme),
                             child: child,
