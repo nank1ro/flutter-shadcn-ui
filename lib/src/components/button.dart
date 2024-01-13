@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 
+typedef FocusWidgetBuilder = Widget Function(
+  BuildContext context,
+  bool focused,
+  Widget child,
+);
+
 enum ShadcnButtonVariant {
   $default,
   destructive,
@@ -42,6 +48,7 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.boxShadow,
     this.gradient,
+    this.focusBuilder,
   }) : variant = ShadcnButtonVariant.$default;
 
   const ShadcnButton.raw({
@@ -68,6 +75,7 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.boxShadow,
     this.gradient,
+    this.focusBuilder,
   });
 
   const ShadcnButton.destructive({
@@ -93,6 +101,7 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.boxShadow,
     this.gradient,
+    this.focusBuilder,
   }) : variant = ShadcnButtonVariant.destructive;
 
   const ShadcnButton.outline({
@@ -118,6 +127,7 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.boxShadow,
     this.gradient,
+    this.focusBuilder,
   }) : variant = ShadcnButtonVariant.outline;
 
   const ShadcnButton.secondary({
@@ -143,6 +153,7 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.boxShadow,
     this.gradient,
+    this.focusBuilder,
   }) : variant = ShadcnButtonVariant.secondary;
 
   const ShadcnButton.ghost({
@@ -168,6 +179,7 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.boxShadow,
     this.gradient,
+    this.focusBuilder,
   }) : variant = ShadcnButtonVariant.ghost;
 
   const ShadcnButton.link({
@@ -192,6 +204,7 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.boxShadow,
     this.gradient,
+    this.focusBuilder,
   })  : variant = ShadcnButtonVariant.link,
         icon = null;
 
@@ -218,6 +231,7 @@ class ShadcnButton extends StatefulWidget {
   final Color? pressedForegroundColor;
   final List<BoxShadow>? boxShadow;
   final Gradient? gradient;
+  final FocusWidgetBuilder? focusBuilder;
 
   @override
   State<ShadcnButton> createState() => _ShadcnButtonState();
@@ -470,6 +484,16 @@ class _ShadcnButtonState extends State<ShadcnButton> {
             child: ValueListenableBuilder(
               valueListenable: isFocused,
               builder: (context, focused, child) {
+                if (widget.focusBuilder != null) {
+                  return widget.focusBuilder!(context, focused, child!);
+                }
+                if (buttonTheme(shadcnTheme)?.focusBuilder != null) {
+                  return buttonTheme(shadcnTheme)!.focusBuilder!(
+                    context,
+                    focused,
+                    child!,
+                  );
+                }
                 if (!focused) {
                   return Padding(
                     padding: const EdgeInsets.all(4),

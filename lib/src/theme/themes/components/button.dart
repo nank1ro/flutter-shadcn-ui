@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/components/button.dart';
 
 /// The theme for ShadcnButton.
 ///
@@ -23,6 +24,7 @@ class ShadcnButtonTheme {
     this.boxShadow,
     this.gradient,
     this.textDecoration,
+    this.focusBuilder,
   });
 
   final bool applyIconColorFilter;
@@ -41,6 +43,7 @@ class ShadcnButtonTheme {
   final List<BoxShadow>? boxShadow;
   final Gradient? gradient;
   final TextDecoration? textDecoration;
+  final FocusWidgetBuilder? focusBuilder;
 
   static ShadcnButtonTheme lerp(
     ShadcnButtonTheme a,
@@ -71,6 +74,7 @@ class ShadcnButtonTheme {
       gradient: b.gradient,
       textDecoration: b.textDecoration,
       cursor: b.cursor,
+      focusBuilder: b.focusBuilder,
     );
   }
 
@@ -92,6 +96,7 @@ class ShadcnButtonTheme {
     List<BoxShadow>? boxShadow,
     Gradient? gradient,
     TextDecoration? textDecoration,
+    FocusWidgetBuilder? focusBuilder,
   }) {
     return ShadcnButtonTheme(
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
@@ -112,6 +117,7 @@ class ShadcnButtonTheme {
       boxShadow: boxShadow ?? this.boxShadow,
       gradient: gradient ?? this.gradient,
       textDecoration: textDecoration ?? this.textDecoration,
+      focusBuilder: focusBuilder ?? this.focusBuilder,
     );
   }
 
@@ -135,7 +141,8 @@ class ShadcnButtonTheme {
         other.pressedForegroundColor == pressedForegroundColor &&
         listEquals(other.boxShadow, boxShadow) &&
         other.gradient == gradient &&
-        other.textDecoration == textDecoration;
+        other.textDecoration == textDecoration &&
+        other.focusBuilder == focusBuilder;
   }
 
   @override
@@ -155,6 +162,7 @@ class ShadcnButtonTheme {
         pressedForegroundColor.hashCode ^
         boxShadow.hashCode ^
         gradient.hashCode ^
-        textDecoration.hashCode;
+        textDecoration.hashCode ^
+        focusBuilder.hashCode;
   }
 }
