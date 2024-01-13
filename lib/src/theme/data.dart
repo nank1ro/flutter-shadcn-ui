@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 
@@ -32,6 +33,10 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     required super.outlineButtonTheme,
     required super.ghostButtonTheme,
     required super.linkButtonTheme,
+    required super.primaryBadgeTheme,
+    required super.secondaryBadgeTheme,
+    required super.destructiveBadgeTheme,
+    required super.outlineBadgeTheme,
   });
 
   static ShadcnThemeData lerp(ShadcnThemeData a, ShadcnThemeData b, double t) {
@@ -111,6 +116,38 @@ class ShadcnThemeData extends ShadcnBaseTheme {
               t,
             )
           : null,
+      primaryBadgeTheme:
+          a.primaryBadgeTheme != null && b.primaryBadgeTheme != null
+              ? ShadcnBadgeTheme.lerp(
+                  a.primaryBadgeTheme!,
+                  b.primaryBadgeTheme!,
+                  t,
+                )
+              : null,
+      secondaryBadgeTheme:
+          a.secondaryBadgeTheme != null && b.secondaryBadgeTheme != null
+              ? ShadcnBadgeTheme.lerp(
+                  a.secondaryBadgeTheme!,
+                  b.secondaryBadgeTheme!,
+                  t,
+                )
+              : null,
+      destructiveBadgeTheme:
+          a.destructiveBadgeTheme != null && b.destructiveBadgeTheme != null
+              ? ShadcnBadgeTheme.lerp(
+                  a.destructiveBadgeTheme!,
+                  b.destructiveBadgeTheme!,
+                  t,
+                )
+              : null,
+      outlineBadgeTheme:
+          a.outlineBadgeTheme != null && b.outlineBadgeTheme != null
+              ? ShadcnBadgeTheme.lerp(
+                  a.outlineBadgeTheme!,
+                  b.outlineBadgeTheme!,
+                  t,
+                )
+              : null,
     );
   }
 
@@ -145,7 +182,11 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         other.destructiveButtonTheme == destructiveButtonTheme &&
         other.outlineButtonTheme == outlineButtonTheme &&
         other.ghostButtonTheme == ghostButtonTheme &&
-        other.linkButtonTheme == linkButtonTheme;
+        other.linkButtonTheme == linkButtonTheme &&
+        other.primaryBadgeTheme == primaryBadgeTheme &&
+        other.secondaryBadgeTheme == secondaryBadgeTheme &&
+        other.destructiveBadgeTheme == destructiveBadgeTheme &&
+        other.outlineBadgeTheme == outlineBadgeTheme;
   }
 
   @override
@@ -176,7 +217,11 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         destructiveButtonTheme.hashCode ^
         outlineButtonTheme.hashCode ^
         ghostButtonTheme.hashCode ^
-        linkButtonTheme.hashCode;
+        linkButtonTheme.hashCode ^
+        primaryBadgeTheme.hashCode ^
+        secondaryBadgeTheme.hashCode ^
+        outlineBadgeTheme.hashCode ^
+        destructiveBadgeTheme.hashCode;
   }
 
   ShadcnThemeData copyWith({
@@ -206,6 +251,10 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     ShadcnButtonTheme? outlineButtonTheme,
     ShadcnButtonTheme? ghostButtonTheme,
     ShadcnButtonTheme? linkButtonTheme,
+    ShadcnBadgeTheme? primaryBadgeTheme,
+    ShadcnBadgeTheme? secondaryBadgeTheme,
+    ShadcnBadgeTheme? destructiveBadgeTheme,
+    ShadcnBadgeTheme? outlineBadgeTheme,
   }) {
     return ShadcnThemeData(
       background: background ?? this.background,
@@ -237,6 +286,11 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       outlineButtonTheme: outlineButtonTheme ?? this.outlineButtonTheme,
       ghostButtonTheme: ghostButtonTheme ?? this.ghostButtonTheme,
       linkButtonTheme: linkButtonTheme ?? this.linkButtonTheme,
+      primaryBadgeTheme: primaryBadgeTheme ?? this.primaryBadgeTheme,
+      secondaryBadgeTheme: secondaryBadgeTheme ?? this.secondaryBadgeTheme,
+      destructiveBadgeTheme:
+          destructiveBadgeTheme ?? this.destructiveBadgeTheme,
+      outlineBadgeTheme: outlineBadgeTheme ?? this.outlineBadgeTheme,
     );
   }
 }

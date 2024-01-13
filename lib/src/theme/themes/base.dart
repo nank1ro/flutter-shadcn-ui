@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 
 @immutable
@@ -32,6 +33,10 @@ abstract class ShadcnBaseTheme {
     required this.outlineButtonTheme,
     required this.ghostButtonTheme,
     required this.linkButtonTheme,
+    required this.primaryBadgeTheme,
+    required this.secondaryBadgeTheme,
+    required this.destructiveBadgeTheme,
+    required this.outlineBadgeTheme,
   });
 
   final Color background;
@@ -61,4 +66,8 @@ abstract class ShadcnBaseTheme {
   final ShadcnButtonTheme? outlineButtonTheme;
   final ShadcnButtonTheme? ghostButtonTheme;
   final ShadcnButtonTheme? linkButtonTheme;
+  final ShadcnBadgeTheme? primaryBadgeTheme;
+  final ShadcnBadgeTheme? secondaryBadgeTheme;
+  final ShadcnBadgeTheme? destructiveBadgeTheme;
+  final ShadcnBadgeTheme? outlineBadgeTheme;
 }

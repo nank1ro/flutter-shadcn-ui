@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 
@@ -33,6 +34,10 @@ class ShadcnZincTheme extends ShadcnThemeData {
     required super.outlineButtonTheme,
     required super.ghostButtonTheme,
     required super.linkButtonTheme,
+    required super.primaryBadgeTheme,
+    required super.secondaryBadgeTheme,
+    required super.destructiveBadgeTheme,
+    required super.outlineBadgeTheme,
   });
 
   factory ShadcnZincTheme.light({
@@ -62,6 +67,10 @@ class ShadcnZincTheme extends ShadcnThemeData {
     ShadcnButtonTheme? outlineButtonTheme,
     ShadcnButtonTheme? ghostButtonTheme,
     ShadcnButtonTheme? linkButtonTheme,
+    ShadcnBadgeTheme? primaryBadgeTheme,
+    ShadcnBadgeTheme? secondaryBadgeTheme,
+    ShadcnBadgeTheme? destructiveBadgeTheme,
+    ShadcnBadgeTheme? outlineBadgeTheme,
   }) {
     return ShadcnZincTheme(
       brightness: Brightness.light,
@@ -91,6 +100,10 @@ class ShadcnZincTheme extends ShadcnThemeData {
       outlineButtonTheme: outlineButtonTheme,
       ghostButtonTheme: ghostButtonTheme,
       linkButtonTheme: linkButtonTheme,
+      primaryBadgeTheme: primaryBadgeTheme,
+      secondaryBadgeTheme: secondaryBadgeTheme,
+      destructiveBadgeTheme: destructiveBadgeTheme,
+      outlineBadgeTheme: outlineBadgeTheme,
     );
   }
 
@@ -121,6 +134,10 @@ class ShadcnZincTheme extends ShadcnThemeData {
     ShadcnButtonTheme? outlineButtonTheme,
     ShadcnButtonTheme? ghostButtonTheme,
     ShadcnButtonTheme? linkButtonTheme,
+    ShadcnBadgeTheme? primaryBadgeTheme,
+    ShadcnBadgeTheme? secondaryBadgeTheme,
+    ShadcnBadgeTheme? destructiveBadgeTheme,
+    ShadcnBadgeTheme? outlineBadgeTheme,
   }) {
     return ShadcnZincTheme(
       brightness: Brightness.dark,
@@ -150,6 +167,10 @@ class ShadcnZincTheme extends ShadcnThemeData {
       outlineButtonTheme: outlineButtonTheme,
       ghostButtonTheme: ghostButtonTheme,
       linkButtonTheme: linkButtonTheme,
+      primaryBadgeTheme: primaryBadgeTheme,
+      secondaryBadgeTheme: secondaryBadgeTheme,
+      destructiveBadgeTheme: destructiveBadgeTheme,
+      outlineBadgeTheme: outlineBadgeTheme,
     );
   }
 }
