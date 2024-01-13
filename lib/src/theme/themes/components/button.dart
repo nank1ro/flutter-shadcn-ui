@@ -18,8 +18,6 @@ class ShadcnButtonTheme {
     this.hoverForegroundColor,
     this.border,
     this.borderRadius,
-    this.autofocus,
-    this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
     this.boxShadow,
@@ -38,8 +36,6 @@ class ShadcnButtonTheme {
   final Color? hoverForegroundColor;
   final BoxBorder? border;
   final BorderRadius? borderRadius;
-  final bool? autofocus;
-  final FocusNode? focusNode;
   final Color? pressedBackgroundColor;
   final Color? pressedForegroundColor;
   final List<BoxShadow>? boxShadow;
@@ -67,8 +63,6 @@ class ShadcnButtonTheme {
           Color.lerp(a.hoverForegroundColor, b.hoverForegroundColor, t),
       border: b.border,
       borderRadius: BorderRadius.lerp(a.borderRadius, b.borderRadius, t),
-      autofocus: b.autofocus,
-      focusNode: b.focusNode,
       pressedBackgroundColor:
           Color.lerp(a.pressedBackgroundColor, b.pressedBackgroundColor, t),
       pressedForegroundColor:
@@ -93,8 +87,6 @@ class ShadcnButtonTheme {
     Color? hoverForegroundColor,
     BoxBorder? border,
     BorderRadius? borderRadius,
-    bool? autofocus,
-    FocusNode? focusNode,
     Color? pressedBackgroundColor,
     Color? pressedForegroundColor,
     List<BoxShadow>? boxShadow,
@@ -113,8 +105,6 @@ class ShadcnButtonTheme {
       hoverForegroundColor: hoverForegroundColor ?? this.hoverForegroundColor,
       border: border ?? this.border,
       borderRadius: borderRadius ?? this.borderRadius,
-      autofocus: autofocus ?? this.autofocus,
-      focusNode: focusNode ?? this.focusNode,
       pressedBackgroundColor:
           pressedBackgroundColor ?? this.pressedBackgroundColor,
       pressedForegroundColor:
@@ -141,8 +131,6 @@ class ShadcnButtonTheme {
         other.hoverForegroundColor == hoverForegroundColor &&
         other.border == border &&
         other.borderRadius == borderRadius &&
-        other.autofocus == autofocus &&
-        other.focusNode == focusNode &&
         other.pressedBackgroundColor == pressedBackgroundColor &&
         other.pressedForegroundColor == pressedForegroundColor &&
         listEquals(other.boxShadow, boxShadow) &&
@@ -163,8 +151,6 @@ class ShadcnButtonTheme {
         hoverForegroundColor.hashCode ^
         border.hashCode ^
         borderRadius.hashCode ^
-        autofocus.hashCode ^
-        focusNode.hashCode ^
         pressedBackgroundColor.hashCode ^
         pressedForegroundColor.hashCode ^
         boxShadow.hashCode ^

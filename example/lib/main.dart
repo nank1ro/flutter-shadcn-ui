@@ -32,6 +32,20 @@ class App extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           themeMode: themeMode,
           routes: routes,
+          theme: ShadcnSlateTheme.light(
+            primaryButtonTheme: ShadcnButtonTheme(
+                borderRadius: BorderRadius.circular(50),
+                cursor: SystemMouseCursors.copy,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.red.withOpacity(0.25),
+                    spreadRadius: 0,
+                    blurRadius: 4,
+                    offset: const Offset(0, 4),
+                  ),
+                ]),
+          ),
+          darkTheme: ShadcnSlateTheme.dark(),
           home: const MainPage(),
         );
       },
