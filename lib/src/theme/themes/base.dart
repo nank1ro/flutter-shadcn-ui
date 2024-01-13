@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/src/theme/themes/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/button.dart';
 
 @immutable
 abstract class ShadcnBaseTheme {
