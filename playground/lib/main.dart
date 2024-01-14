@@ -40,7 +40,7 @@ final _router = GoRouter(
     GoRoute(
       path: '/button',
       builder: (context, state) {
-        final style = state.uri.queryParameters['style'] ?? '\$default';
+        final style = state.uri.queryParameters['style'] ?? 'primary';
         return ButtonPage(
           style: PlagroundButtonStyle.values.byName(style),
         );
