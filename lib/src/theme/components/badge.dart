@@ -3,12 +3,14 @@ import 'package:flutter/widgets.dart';
 @immutable
 class ShadcnBadgeTheme {
   const ShadcnBadgeTheme({
-    required this.shape,
-    required this.backgroundColor,
-    required this.hoverBackgroundColor,
-    required this.foregroundColor,
+    this.inherit = true,
+    this.shape,
+    this.backgroundColor,
+    this.hoverBackgroundColor,
+    this.foregroundColor,
   });
 
+  final bool inherit;
   final ShapeBorder? shape;
   final Color? backgroundColor;
   final Color? hoverBackgroundColor;
@@ -19,10 +21,9 @@ class ShadcnBadgeTheme {
     ShadcnBadgeTheme b,
     double t,
   ) {
-    if (identical(a, b)) {
-      return a;
-    }
+    if (identical(a, b)) return a;
     return ShadcnBadgeTheme(
+      inherit: b.inherit,
       shape: ShapeBorder.lerp(a.shape, b.shape, t),
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       hoverBackgroundColor:
@@ -32,12 +33,14 @@ class ShadcnBadgeTheme {
   }
 
   ShadcnBadgeTheme copyWith({
+    bool? inherit,
     ShapeBorder? shape,
     Color? backgroundColor,
     Color? hoverBackgroundColor,
     Color? foregroundColor,
   }) {
     return ShadcnBadgeTheme(
+      inherit: inherit ?? this.inherit,
       shape: shape ?? this.shape,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       hoverBackgroundColor: hoverBackgroundColor ?? this.hoverBackgroundColor,
@@ -50,6 +53,7 @@ class ShadcnBadgeTheme {
     if (identical(this, other)) return true;
 
     return other is ShadcnBadgeTheme &&
+        other.inherit == inherit &&
         other.shape == shape &&
         other.backgroundColor == backgroundColor &&
         other.hoverBackgroundColor == hoverBackgroundColor &&
@@ -59,6 +63,7 @@ class ShadcnBadgeTheme {
   @override
   int get hashCode {
     return shape.hashCode ^
+        inherit.hashCode ^
         backgroundColor.hashCode ^
         hoverBackgroundColor.hashCode ^
         foregroundColor.hashCode;

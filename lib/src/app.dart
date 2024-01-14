@@ -7,9 +7,9 @@ import 'package:flutter_localizations/flutter_localizations.dart'
         GlobalCupertinoLocalizations,
         GlobalMaterialLocalizations,
         GlobalWidgetsLocalizations;
+import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
-import 'package:shadcn_ui/src/theme/themes/slate.dart';
 
 class ShadcnApp extends StatefulWidget {
   const ShadcnApp({
@@ -396,9 +396,18 @@ class _ShadcnAppState extends State<ShadcnApp> {
     final data = () {
       late ShadcnThemeData result;
       if (useDarkStyle) {
-        result = widget.darkTheme ?? widget.theme ?? ShadcnSlateTheme.dark();
+        result = widget.darkTheme ??
+            widget.theme ??
+            ShadcnThemeData(
+              colorScheme: const ShadcnSlateColorScheme.dark(),
+              brightness: Brightness.dark,
+            );
       } else {
-        result = widget.theme ?? ShadcnSlateTheme.light();
+        result = widget.theme ??
+            ShadcnThemeData(
+              colorScheme: const ShadcnSlateColorScheme.light(),
+              brightness: Brightness.light,
+            );
       }
       return result;
     }();
@@ -412,20 +421,21 @@ class _ShadcnAppState extends State<ShadcnApp> {
     return AnimatedTheme(
       data: mTheme?.data ??
           ThemeData(
+            extensions: themeData.extensions,
             colorScheme: ColorScheme(
               brightness: themeData.brightness,
-              primary: themeData.primary,
-              onPrimary: themeData.primaryForeground,
-              secondary: themeData.secondary,
-              onSecondary: themeData.secondaryForeground,
-              error: themeData.destructive,
-              onError: themeData.destructiveForeground,
-              background: themeData.background,
-              onBackground: themeData.foreground,
-              surface: themeData.card,
-              onSurface: themeData.cardForeground,
+              primary: themeData.colorScheme.primary,
+              onPrimary: themeData.colorScheme.primaryForeground,
+              secondary: themeData.colorScheme.secondary,
+              onSecondary: themeData.colorScheme.secondaryForeground,
+              error: themeData.colorScheme.destructive,
+              onError: themeData.colorScheme.destructiveForeground,
+              background: themeData.colorScheme.background,
+              onBackground: themeData.colorScheme.foreground,
+              surface: themeData.colorScheme.card,
+              onSurface: themeData.colorScheme.cardForeground,
             ),
-            scaffoldBackgroundColor: themeData.background,
+            scaffoldBackgroundColor: themeData.colorScheme.background,
             brightness: themeData.brightness,
           ),
       child: AnimatedShadcnTheme(

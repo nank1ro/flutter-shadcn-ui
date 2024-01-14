@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
@@ -77,50 +78,36 @@ class _ShadcnBadgeState extends State<ShadcnBadge> {
     super.dispose();
   }
 
-  Color? background(ShadcnThemeData theme) {
-    if (widget.backgroundColor != null) return widget.backgroundColor!;
+  ShadcnBadgeTheme badgeTheme(ShadcnThemeData theme) {
     return switch (widget.variant) {
-      ShadcnBadgeVariant.$default => theme.primary,
-      ShadcnBadgeVariant.secondary => theme.secondary,
-      ShadcnBadgeVariant.destructive => theme.destructive,
-      ShadcnBadgeVariant.outline => null,
+      ShadcnBadgeVariant.$default => theme.primaryBadgeTheme,
+      ShadcnBadgeVariant.secondary => theme.secondaryBadgeTheme,
+      ShadcnBadgeVariant.destructive => theme.destructiveBadgeTheme,
+      ShadcnBadgeVariant.outline => theme.outlineBadgeTheme,
     };
+  }
+
+  Color? background(ShadcnThemeData theme) {
+    return widget.backgroundColor ?? badgeTheme(theme).backgroundColor;
   }
 
   Color? hoverBackground(ShadcnThemeData theme) {
-    if (widget.hoverBackgroundColor != null) {
-      return widget.hoverBackgroundColor!;
-    }
-    return switch (widget.variant) {
-      ShadcnBadgeVariant.$default => theme.primary.withOpacity(.8),
-      ShadcnBadgeVariant.secondary => theme.secondary.withOpacity(.8),
-      ShadcnBadgeVariant.destructive => theme.destructive.withOpacity(.8),
-      ShadcnBadgeVariant.outline => null,
-    };
+    return widget.hoverBackgroundColor ??
+        badgeTheme(theme).hoverBackgroundColor;
   }
 
   Color? foreground(ShadcnThemeData theme) {
-    if (widget.foregroundColor != null) return widget.foregroundColor!;
-    return switch (widget.variant) {
-      ShadcnBadgeVariant.$default => theme.primaryForeground,
-      ShadcnBadgeVariant.secondary => theme.secondaryForeground,
-      ShadcnBadgeVariant.destructive => theme.destructiveForeground,
-      ShadcnBadgeVariant.outline => theme.foreground,
-    };
+    return widget.foregroundColor ?? badgeTheme(theme).foregroundColor;
   }
 
-  BorderSide borderSide(ShadcnThemeData theme) {
-    return switch (widget.variant) {
-      ShadcnBadgeVariant.outline => BorderSide(color: theme.border),
-      _ => BorderSide.none,
-    };
+  ShapeBorder shape(ShadcnThemeData theme) {
+    return widget.shape ?? badgeTheme(theme).shape ?? const StadiumBorder();
   }
 
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadcnTheme(context));
     final shadcnTheme = ShadcnTheme.of(context);
-
     return Semantics(
       container: true,
       child: MouseRegion(
@@ -131,8 +118,7 @@ class _ShadcnBadgeState extends State<ShadcnBadge> {
           builder: (context, hovered, child) {
             return Container(
               decoration: ShapeDecoration(
-                shape: widget.shape ??
-                    StadiumBorder(side: borderSide(shadcnTheme)),
+                shape: shape(shadcnTheme),
                 color: hovered
                     ? hoverBackground(shadcnTheme)
                     : background(shadcnTheme),

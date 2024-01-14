@@ -1,32 +1,14 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 
 @immutable
 abstract class ShadcnBaseTheme {
   const ShadcnBaseTheme({
-    required this.background,
-    required this.foreground,
-    required this.card,
-    required this.cardForeground,
-    required this.popover,
-    required this.popoverForeground,
-    required this.primary,
-    required this.primaryForeground,
-    required this.secondary,
-    required this.secondaryForeground,
-    required this.muted,
-    required this.mutedForeground,
-    required this.accent,
-    required this.accentForeground,
-    required this.destructive,
-    required this.destructiveForeground,
-    required this.border,
-    required this.input,
-    required this.ring,
-    required this.radius,
+    required this.colorScheme,
     required this.brightness,
+    required this.extensions,
     required this.primaryButtonTheme,
     required this.secondaryButtonTheme,
     required this.destructiveButtonTheme,
@@ -39,35 +21,17 @@ abstract class ShadcnBaseTheme {
     required this.outlineBadgeTheme,
   });
 
-  final Color background;
-  final Color foreground;
-  final Color card;
-  final Color cardForeground;
-  final Color popover;
-  final Color popoverForeground;
-  final Color primary;
-  final Color primaryForeground;
-  final Color secondary;
-  final Color secondaryForeground;
-  final Color muted;
-  final Color mutedForeground;
-  final Color accent;
-  final Color accentForeground;
-  final Color destructive;
-  final Color destructiveForeground;
-  final Color border;
-  final Color input;
-  final Color ring;
-  final BorderRadius radius;
+  final ShadcnColorScheme colorScheme;
   final Brightness brightness;
-  final ShadcnButtonTheme? primaryButtonTheme;
-  final ShadcnButtonTheme? secondaryButtonTheme;
-  final ShadcnButtonTheme? destructiveButtonTheme;
-  final ShadcnButtonTheme? outlineButtonTheme;
-  final ShadcnButtonTheme? ghostButtonTheme;
-  final ShadcnButtonTheme? linkButtonTheme;
-  final ShadcnBadgeTheme? primaryBadgeTheme;
-  final ShadcnBadgeTheme? secondaryBadgeTheme;
-  final ShadcnBadgeTheme? destructiveBadgeTheme;
-  final ShadcnBadgeTheme? outlineBadgeTheme;
+  final Iterable<ThemeExtension<dynamic>>? extensions;
+  final ShadcnButtonTheme primaryButtonTheme;
+  final ShadcnButtonTheme secondaryButtonTheme;
+  final ShadcnButtonTheme destructiveButtonTheme;
+  final ShadcnButtonTheme outlineButtonTheme;
+  final ShadcnButtonTheme ghostButtonTheme;
+  final ShadcnButtonTheme linkButtonTheme;
+  final ShadcnBadgeTheme primaryBadgeTheme;
+  final ShadcnBadgeTheme secondaryBadgeTheme;
+  final ShadcnBadgeTheme destructiveBadgeTheme;
+  final ShadcnBadgeTheme outlineBadgeTheme;
 }
