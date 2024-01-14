@@ -10,5 +10,15 @@
             "request": "launch",
             "type": "dart",
         },
+        {
+            "name": "Playground",
+            "cwd": "playground",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "-d",
+                "chrome"
+            ]
+        },
     ]
 }

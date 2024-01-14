@@ -1,0 +1,28 @@
+name: playground
+description: "The components playground rendered in the Docs site."
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.2.3 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  flutter_solidart: ^1.7.0
+  go_router: ^13.0.1
+  shadcn_ui:
+    path: ..
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
