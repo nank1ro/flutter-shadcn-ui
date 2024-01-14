@@ -40,18 +40,18 @@ final _router = GoRouter(
     GoRoute(
       path: '/button',
       builder: (context, state) {
-        final variant = state.uri.queryParameters['variant'] ?? '\$default';
+        final style = state.uri.queryParameters['style'] ?? '\$default';
         return ButtonPage(
-          variant: ShadcnButtonVariant.values.byName(variant),
+          style: PlagroundButtonStyle.values.byName(style),
         );
       },
     ),
     GoRoute(
       path: '/badge',
       builder: (context, state) {
-        final variant = state.uri.queryParameters['variant'] ?? '\$default';
+        final style = state.uri.queryParameters['style'] ?? '\$default';
         return BadgePage(
-          variant: ShadcnBadgeVariant.values.byName(variant),
+          variant: ShadcnBadgeVariant.values.byName(style),
         );
       },
     ),
