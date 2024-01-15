@@ -287,7 +287,9 @@ class _ShadcnButtonState extends State<ShadcnButton> {
   }
 
   ShadcnButtonSizeTheme buttonSizeTheme(
-      ShadcnThemeData theme, ShadcnButtonSize size) {
+    ShadcnThemeData theme,
+    ShadcnButtonSize size,
+  ) {
     switch (size) {
       case ShadcnButtonSize.sm:
         return buttonTheme(theme).buttonSizesTheme.sm;
@@ -309,7 +311,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     if (widget.size != null) {
       return defaultHeightForSize(theme, widget.size!);
     }
-    return defaultHeightForSize(theme, ShadcnButtonSize.$default);
+    return defaultHeightForSize(theme, buttonTheme(theme).size);
   }
 
   double? defaultWidthForSize(ShadcnThemeData theme, ShadcnButtonSize size) {
@@ -321,11 +323,13 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     if (widget.size != null) {
       return defaultWidthForSize(theme, widget.size!);
     }
-    return defaultWidthForSize(theme, ShadcnButtonSize.$default);
+    return defaultWidthForSize(theme, buttonTheme(theme).size);
   }
 
   EdgeInsets defaultPaddingForSize(
-      ShadcnThemeData theme, ShadcnButtonSize size) {
+    ShadcnThemeData theme,
+    ShadcnButtonSize size,
+  ) {
     return buttonSizeTheme(theme, size).padding;
   }
 
@@ -334,7 +338,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     if (widget.size != null) {
       return defaultPaddingForSize(theme, widget.size!);
     }
-    return defaultPaddingForSize(theme, ShadcnButtonSize.$default);
+    return defaultPaddingForSize(theme, buttonTheme(theme).size);
   }
 
   Color? background(ShadcnThemeData theme) {

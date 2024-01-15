@@ -180,7 +180,7 @@ class ShadcnButtonTheme {
   final bool merge;
   final bool applyIconColorFilter;
   final MouseCursor? cursor;
-  final ShadcnButtonSize? size;
+  final ShadcnButtonSize size;
   final ShadcnButtonSizesTheme buttonSizesTheme;
   final Color? backgroundColor;
   final Color? hoverBackgroundColor;
