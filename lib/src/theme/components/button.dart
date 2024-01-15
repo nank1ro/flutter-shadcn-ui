@@ -2,6 +2,47 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 
+// The theme for an individual size of ShadcnButton.
+@immutable
+class ShadcnButtonSizeTheme {
+  const ShadcnButtonSizeTheme({
+    required this.height,
+    required this.padding,
+    this.width,
+  });
+  final double height;
+  final EdgeInsets padding;
+  final double? width;
+}
+
+// The theme for the predefined sizes of ShadcnButton.
+@immutable
+class ShadcnButtonSizesTheme {
+  const ShadcnButtonSizesTheme({
+    this.$default = const ShadcnButtonSizeTheme(
+      height: 40,
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    ),
+    this.sm = const ShadcnButtonSizeTheme(
+      height: 36,
+      padding: EdgeInsets.symmetric(horizontal: 12),
+    ),
+    this.lg = const ShadcnButtonSizeTheme(
+      height: 44,
+      padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+    ),
+    this.icon = const ShadcnButtonSizeTheme(
+      height: 40,
+      width: 40,
+      padding: EdgeInsets.zero,
+    ),
+  });
+  final ShadcnButtonSizeTheme $default;
+  final ShadcnButtonSizeTheme sm;
+  final ShadcnButtonSizeTheme lg;
+  final ShadcnButtonSizeTheme icon;
+}
+
 /// The theme for ShadcnButton.
 ///
 /// Use this class to override some properties to all buttons in just one place.
@@ -12,6 +53,7 @@ class ShadcnButtonTheme {
     this.applyIconColorFilter = true,
     this.cursor,
     this.size = ShadcnButtonSize.$default,
+    this.buttonSizesTheme = const ShadcnButtonSizesTheme(),
     this.width,
     this.height,
     this.padding,
@@ -50,6 +92,7 @@ class ShadcnButtonTheme {
   final TextDecoration? textDecoration;
   final TextDecoration? hoverTextDecoration;
   final FocusWidgetBuilder? focusBuilder;
+  final ShadcnButtonSizesTheme buttonSizesTheme;
 
   static ShadcnButtonTheme lerp(
     ShadcnButtonTheme a,
