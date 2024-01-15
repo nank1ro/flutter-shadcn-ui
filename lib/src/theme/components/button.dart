@@ -100,7 +100,7 @@ class ShadcnButtonTheme {
     BorderRadius? borderRadius,
     Color? pressedBackgroundColor,
     Color? pressedForegroundColor,
-    List<BoxShadow>? boxShadow,
+    List<BoxShadow>? shadows,
     Gradient? gradient,
     TextDecoration? textDecoration,
     TextDecoration? hoverTextDecoration,
@@ -123,7 +123,7 @@ class ShadcnButtonTheme {
           pressedBackgroundColor ?? this.pressedBackgroundColor,
       pressedForegroundColor:
           pressedForegroundColor ?? this.pressedForegroundColor,
-      shadows: boxShadow ?? this.shadows,
+      shadows: shadows ?? this.shadows,
       gradient: gradient ?? this.gradient,
       textDecoration: textDecoration ?? this.textDecoration,
       hoverTextDecoration: hoverTextDecoration ?? this.hoverTextDecoration,
