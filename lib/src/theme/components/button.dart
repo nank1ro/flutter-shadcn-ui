@@ -8,7 +8,7 @@ import 'package:shadcn_ui/src/components/button.dart';
 @immutable
 class ShadcnButtonTheme {
   const ShadcnButtonTheme({
-    this.inherit = true,
+    this.merge = true,
     this.applyIconColorFilter = true,
     this.cursor,
     this.size = ShadcnButtonSize.$default,
@@ -30,7 +30,7 @@ class ShadcnButtonTheme {
     this.focusBuilder,
   });
 
-  final bool inherit;
+  final bool merge;
   final bool applyIconColorFilter;
   final MouseCursor? cursor;
   final ShadcnButtonSize? size;

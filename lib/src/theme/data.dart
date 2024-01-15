@@ -99,7 +99,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         hoverForegroundColor: colorScheme.primaryForeground,
       );
     }
-    if (userTheme.inherit) {
+    if (userTheme.merge) {
       return userTheme.copyWith(
         backgroundColor: userTheme.backgroundColor ?? colorScheme.primary,
         hoverBackgroundColor: userTheme.hoverBackgroundColor ??
@@ -125,7 +125,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         hoverForegroundColor: colorScheme.secondaryForeground,
       );
     }
-    if (userTheme.inherit) {
+    if (userTheme.merge) {
       return userTheme.copyWith(
         backgroundColor: userTheme.backgroundColor ?? colorScheme.secondary,
         hoverBackgroundColor: userTheme.hoverBackgroundColor ??
@@ -151,7 +151,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         hoverForegroundColor: colorScheme.destructiveForeground,
       );
     }
-    if (userTheme.inherit) {
+    if (userTheme.merge) {
       return userTheme.copyWith(
         backgroundColor: userTheme.backgroundColor ?? colorScheme.destructive,
         hoverBackgroundColor: userTheme.hoverBackgroundColor ??
@@ -176,7 +176,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         hoverForegroundColor: colorScheme.accentForeground,
       );
     }
-    if (userTheme.inherit) {
+    if (userTheme.merge) {
       return userTheme.copyWith(
         hoverBackgroundColor:
             userTheme.hoverBackgroundColor ?? colorScheme.accent,
@@ -200,7 +200,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         border: Border.all(color: colorScheme.input),
       );
     }
-    if (userTheme.inherit) {
+    if (userTheme.merge) {
       return userTheme.copyWith(
         hoverBackgroundColor:
             userTheme.hoverBackgroundColor ?? colorScheme.accent,
@@ -224,7 +224,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         hoverTextDecoration: TextDecoration.underline,
       );
     }
-    if (userTheme.inherit) {
+    if (userTheme.merge) {
       return userTheme.copyWith(
         foregroundColor: userTheme.foregroundColor ?? colorScheme.primary,
         hoverForegroundColor:
@@ -249,7 +249,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       );
     }
-    if (userTheme.inherit) {
+    if (userTheme.merge) {
       return userTheme.copyWith(
         backgroundColor: userTheme.backgroundColor ?? colorScheme.primary,
         hoverBackgroundColor: userTheme.hoverBackgroundColor ??
@@ -276,7 +276,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       );
     }
-    if (userTheme.inherit) {
+    if (userTheme.merge) {
       return userTheme.copyWith(
         backgroundColor: userTheme.backgroundColor ?? colorScheme.secondary,
         hoverBackgroundColor: userTheme.hoverBackgroundColor ??
@@ -303,7 +303,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       );
     }
-    if (userTheme.inherit) {
+    if (userTheme.merge) {
       return userTheme.copyWith(
         backgroundColor: userTheme.backgroundColor ?? colorScheme.destructive,
         hoverBackgroundColor: userTheme.hoverBackgroundColor ??
@@ -328,7 +328,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       );
     }
-    if (userTheme.inherit) {
+    if (userTheme.merge) {
       return userTheme.copyWith(
         foregroundColor: userTheme.foregroundColor ?? colorScheme.foreground,
         shape: userTheme.shape ??
