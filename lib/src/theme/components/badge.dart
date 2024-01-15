@@ -8,6 +8,7 @@ class ShadcnBadgeTheme {
     this.backgroundColor,
     this.hoverBackgroundColor,
     this.foregroundColor,
+    this.padding,
   });
 
   final bool inherit;
@@ -15,6 +16,7 @@ class ShadcnBadgeTheme {
   final Color? backgroundColor;
   final Color? hoverBackgroundColor;
   final Color? foregroundColor;
+  final EdgeInsets? padding;
 
   static ShadcnBadgeTheme lerp(
     ShadcnBadgeTheme a,
@@ -29,6 +31,7 @@ class ShadcnBadgeTheme {
       hoverBackgroundColor:
           Color.lerp(a.hoverBackgroundColor, b.hoverBackgroundColor, t),
       foregroundColor: Color.lerp(a.foregroundColor, b.foregroundColor, t),
+      padding: EdgeInsets.lerp(a.padding, b.padding, t),
     );
   }
 
@@ -38,6 +41,7 @@ class ShadcnBadgeTheme {
     Color? backgroundColor,
     Color? hoverBackgroundColor,
     Color? foregroundColor,
+    EdgeInsets? padding,
   }) {
     return ShadcnBadgeTheme(
       inherit: inherit ?? this.inherit,
@@ -45,6 +49,7 @@ class ShadcnBadgeTheme {
       backgroundColor: backgroundColor ?? this.backgroundColor,
       hoverBackgroundColor: hoverBackgroundColor ?? this.hoverBackgroundColor,
       foregroundColor: foregroundColor ?? this.foregroundColor,
+      padding: padding ?? this.padding,
     );
   }
 
@@ -57,7 +62,8 @@ class ShadcnBadgeTheme {
         other.shape == shape &&
         other.backgroundColor == backgroundColor &&
         other.hoverBackgroundColor == hoverBackgroundColor &&
-        other.foregroundColor == foregroundColor;
+        other.foregroundColor == foregroundColor &&
+        other.padding == padding;
   }
 
   @override
@@ -66,6 +72,7 @@ class ShadcnBadgeTheme {
         inherit.hashCode ^
         backgroundColor.hashCode ^
         hoverBackgroundColor.hashCode ^
-        foregroundColor.hashCode;
+        foregroundColor.hashCode ^
+        padding.hashCode;
   }
 }

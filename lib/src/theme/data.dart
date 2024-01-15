@@ -243,6 +243,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         hoverBackgroundColor: colorScheme.primary.withOpacity(.8),
         foregroundColor: colorScheme.primaryForeground,
         shape: const StadiumBorder(),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       );
     }
     if (userTheme.inherit) {
@@ -253,6 +254,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         foregroundColor:
             userTheme.foregroundColor ?? colorScheme.primaryForeground,
         shape: userTheme.shape ?? const StadiumBorder(),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       );
     }
     return userTheme;
@@ -268,6 +270,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         hoverBackgroundColor: colorScheme.secondary.withOpacity(.8),
         foregroundColor: colorScheme.secondaryForeground,
         shape: const StadiumBorder(),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       );
     }
     if (userTheme.inherit) {
@@ -278,6 +281,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         foregroundColor:
             userTheme.foregroundColor ?? colorScheme.secondaryForeground,
         shape: userTheme.shape ?? const StadiumBorder(),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       );
     }
     return userTheme;
@@ -293,6 +297,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         hoverBackgroundColor: colorScheme.destructive.withOpacity(.8),
         foregroundColor: colorScheme.destructiveForeground,
         shape: const StadiumBorder(),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       );
     }
     if (userTheme.inherit) {
@@ -303,6 +308,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         foregroundColor:
             userTheme.foregroundColor ?? colorScheme.destructiveForeground,
         shape: userTheme.shape ?? const StadiumBorder(),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       );
     }
     return userTheme;
@@ -316,6 +322,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       return ShadcnBadgeTheme(
         foregroundColor: colorScheme.foreground,
         shape: StadiumBorder(side: BorderSide(color: colorScheme.border)),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       );
     }
     if (userTheme.inherit) {
@@ -323,6 +330,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         foregroundColor: userTheme.foregroundColor ?? colorScheme.foreground,
         shape: userTheme.shape ??
             StadiumBorder(side: BorderSide(color: colorScheme.border)),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       );
     }
     return userTheme;
