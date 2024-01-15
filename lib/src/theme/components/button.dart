@@ -23,7 +23,7 @@ class ShadcnButtonTheme {
     this.borderRadius = const BorderRadius.all(Radius.circular(6)),
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
-    this.boxShadow,
+    this.shadows,
     this.gradient,
     this.textDecoration,
     this.hoverTextDecoration,
@@ -45,7 +45,7 @@ class ShadcnButtonTheme {
   final BorderRadius borderRadius;
   final Color? pressedBackgroundColor;
   final Color? pressedForegroundColor;
-  final List<BoxShadow>? boxShadow;
+  final List<BoxShadow>? shadows;
   final Gradient? gradient;
   final TextDecoration? textDecoration;
   final TextDecoration? hoverTextDecoration;
@@ -74,7 +74,7 @@ class ShadcnButtonTheme {
           Color.lerp(a.pressedBackgroundColor, b.pressedBackgroundColor, t),
       pressedForegroundColor:
           Color.lerp(a.pressedForegroundColor, b.pressedForegroundColor, t),
-      boxShadow: b.boxShadow,
+      shadows: b.shadows,
       gradient: b.gradient,
       textDecoration: b.textDecoration,
       hoverTextDecoration: b.hoverTextDecoration,
@@ -123,7 +123,7 @@ class ShadcnButtonTheme {
           pressedBackgroundColor ?? this.pressedBackgroundColor,
       pressedForegroundColor:
           pressedForegroundColor ?? this.pressedForegroundColor,
-      boxShadow: boxShadow ?? this.boxShadow,
+      shadows: boxShadow ?? this.shadows,
       gradient: gradient ?? this.gradient,
       textDecoration: textDecoration ?? this.textDecoration,
       hoverTextDecoration: hoverTextDecoration ?? this.hoverTextDecoration,
@@ -150,7 +150,7 @@ class ShadcnButtonTheme {
         other.borderRadius == borderRadius &&
         other.pressedBackgroundColor == pressedBackgroundColor &&
         other.pressedForegroundColor == pressedForegroundColor &&
-        listEquals(other.boxShadow, boxShadow) &&
+        listEquals(other.shadows, shadows) &&
         other.gradient == gradient &&
         other.textDecoration == textDecoration &&
         other.hoverTextDecoration == hoverTextDecoration &&
@@ -173,7 +173,7 @@ class ShadcnButtonTheme {
         borderRadius.hashCode ^
         pressedBackgroundColor.hashCode ^
         pressedForegroundColor.hashCode ^
-        boxShadow.hashCode ^
+        shadows.hashCode ^
         gradient.hashCode ^
         textDecoration.hashCode ^
         hoverTextDecoration.hashCode ^
