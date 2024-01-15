@@ -66,7 +66,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         userTheme: outlineBadgeTheme,
         colorScheme: colorScheme,
       ),
-      radius: radius ?? BorderRadius.all(Radius.circular(6)),
+      radius: radius ?? const BorderRadius.all(Radius.circular(6)),
     );
   }
 
