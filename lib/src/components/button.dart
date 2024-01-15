@@ -126,7 +126,7 @@ class ShadcnButton extends StatefulWidget {
     this.foregroundColor,
     this.hoverForegroundColor,
     this.border,
-    this.borderRadius = const BorderRadius.all(Radius.circular(6)),
+    this.borderRadius,
     this.autofocus = false,
     this.focusNode,
     this.pressedBackgroundColor,
