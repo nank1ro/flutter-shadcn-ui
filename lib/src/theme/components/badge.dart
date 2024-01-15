@@ -53,6 +53,18 @@ class ShadcnBadgeTheme {
     );
   }
 
+  ShadcnBadgeTheme mergeWith(ShadcnBadgeTheme? other) {
+    if (other == null) return this;
+    if (!other.merge) return other;
+    return copyWith(
+      shape: other.shape,
+      backgroundColor: other.backgroundColor,
+      hoverBackgroundColor: other.hoverBackgroundColor,
+      foregroundColor: other.foregroundColor,
+      padding: other.padding,
+    );
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

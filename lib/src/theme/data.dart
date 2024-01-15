@@ -3,6 +3,7 @@ import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
+import 'package:shadcn_ui/src/theme/themes/component_default.dart';
 
 @immutable
 class ShadcnThemeData extends ShadcnBaseTheme {
@@ -26,46 +27,37 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       colorScheme: colorScheme,
       brightness: brightness,
       extensions: extensions,
-      primaryButtonTheme: _generatePrimaryButtonTheme(
-        userTheme: primaryButtonTheme,
+      primaryButtonTheme: ShadcnComponentDefaultTheme.primaryButtonTheme(
         colorScheme: colorScheme,
-      ),
-      secondaryButtonTheme: _generateSecondaryButtonTheme(
-        userTheme: secondaryButtonTheme,
+      ).mergeWith(primaryButtonTheme),
+      secondaryButtonTheme: ShadcnComponentDefaultTheme.secondaryButtonTheme(
         colorScheme: colorScheme,
-      ),
-      destructiveButtonTheme: _generateDescructiveButtonTheme(
-        userTheme: destructiveButtonTheme,
+      ).mergeWith(secondaryButtonTheme),
+      destructiveButtonTheme:
+          ShadcnComponentDefaultTheme.destructiveButtonTheme(
         colorScheme: colorScheme,
-      ),
-      outlineButtonTheme: _generateOutlineButtonTheme(
-        userTheme: outlineButtonTheme,
+      ).mergeWith(destructiveButtonTheme),
+      outlineButtonTheme: ShadcnComponentDefaultTheme.outlineButtonTheme(
         colorScheme: colorScheme,
-      ),
-      ghostButtonTheme: _generateGhostButtonTheme(
-        userTheme: ghostButtonTheme,
+      ).mergeWith(outlineButtonTheme),
+      ghostButtonTheme: ShadcnComponentDefaultTheme.ghostButtonTheme(
         colorScheme: colorScheme,
-      ),
-      linkButtonTheme: _generateLinkButtonTheme(
-        userTheme: linkButtonTheme,
+      ).mergeWith(ghostButtonTheme),
+      linkButtonTheme: ShadcnComponentDefaultTheme.linkButtonTheme(
         colorScheme: colorScheme,
-      ),
-      primaryBadgeTheme: _generatePrimaryBadgeTheme(
-        userTheme: primaryBadgeTheme,
+      ).mergeWith(linkButtonTheme),
+      primaryBadgeTheme: ShadcnComponentDefaultTheme.primaryBadgeTheme(
         colorScheme: colorScheme,
-      ),
-      secondaryBadgeTheme: _generateSecondaryBadgeTheme(
-        userTheme: secondaryBadgeTheme,
+      ).mergeWith(primaryBadgeTheme),
+      secondaryBadgeTheme: ShadcnComponentDefaultTheme.secondaryBadgeTheme(
         colorScheme: colorScheme,
-      ),
-      destructiveBadgeTheme: _generateDestructiveBadgeTheme(
-        userTheme: destructiveBadgeTheme,
+      ).mergeWith(secondaryBadgeTheme),
+      destructiveBadgeTheme: ShadcnComponentDefaultTheme.destructiveBadgeTheme(
         colorScheme: colorScheme,
-      ),
-      outlineBadgeTheme: _generateOutlineBadgeTheme(
-        userTheme: outlineBadgeTheme,
+      ).mergeWith(destructiveBadgeTheme),
+      outlineBadgeTheme: ShadcnComponentDefaultTheme.outlineBadgeTheme(
         colorScheme: colorScheme,
-      ),
+      ).mergeWith(outlineBadgeTheme),
       radius: radius ?? const BorderRadius.all(Radius.circular(6)),
     );
   }
@@ -86,258 +78,6 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     required super.outlineBadgeTheme,
     required super.radius,
   });
-
-  static ShadcnButtonTheme _generatePrimaryButtonTheme({
-    required ShadcnButtonTheme? userTheme,
-    required ShadcnColorScheme colorScheme,
-  }) {
-    if (userTheme == null) {
-      return ShadcnButtonTheme(
-        backgroundColor: colorScheme.primary,
-        hoverBackgroundColor: colorScheme.primary.withOpacity(.9),
-        foregroundColor: colorScheme.primaryForeground,
-        hoverForegroundColor: colorScheme.primaryForeground,
-      );
-    }
-    if (userTheme.merge) {
-      return userTheme.copyWith(
-        backgroundColor: userTheme.backgroundColor ?? colorScheme.primary,
-        hoverBackgroundColor: userTheme.hoverBackgroundColor ??
-            colorScheme.primary.withOpacity(.9),
-        foregroundColor:
-            userTheme.foregroundColor ?? colorScheme.primaryForeground,
-        hoverForegroundColor:
-            userTheme.hoverForegroundColor ?? colorScheme.primaryForeground,
-      );
-    }
-    return userTheme;
-  }
-
-  static ShadcnButtonTheme _generateSecondaryButtonTheme({
-    required ShadcnButtonTheme? userTheme,
-    required ShadcnColorScheme colorScheme,
-  }) {
-    if (userTheme == null) {
-      return ShadcnButtonTheme(
-        backgroundColor: colorScheme.secondary,
-        hoverBackgroundColor: colorScheme.secondary.withOpacity(.8),
-        foregroundColor: colorScheme.secondaryForeground,
-        hoverForegroundColor: colorScheme.secondaryForeground,
-      );
-    }
-    if (userTheme.merge) {
-      return userTheme.copyWith(
-        backgroundColor: userTheme.backgroundColor ?? colorScheme.secondary,
-        hoverBackgroundColor: userTheme.hoverBackgroundColor ??
-            colorScheme.secondary.withOpacity(.8),
-        foregroundColor:
-            userTheme.foregroundColor ?? colorScheme.secondaryForeground,
-        hoverForegroundColor:
-            userTheme.hoverForegroundColor ?? colorScheme.secondaryForeground,
-      );
-    }
-    return userTheme;
-  }
-
-  static ShadcnButtonTheme _generateDescructiveButtonTheme({
-    required ShadcnButtonTheme? userTheme,
-    required ShadcnColorScheme colorScheme,
-  }) {
-    if (userTheme == null) {
-      return ShadcnButtonTheme(
-        backgroundColor: colorScheme.destructive,
-        hoverBackgroundColor: colorScheme.destructive.withOpacity(.9),
-        foregroundColor: colorScheme.destructiveForeground,
-        hoverForegroundColor: colorScheme.destructiveForeground,
-      );
-    }
-    if (userTheme.merge) {
-      return userTheme.copyWith(
-        backgroundColor: userTheme.backgroundColor ?? colorScheme.destructive,
-        hoverBackgroundColor: userTheme.hoverBackgroundColor ??
-            colorScheme.destructive.withOpacity(.9),
-        foregroundColor:
-            userTheme.foregroundColor ?? colorScheme.destructiveForeground,
-        hoverForegroundColor:
-            userTheme.hoverForegroundColor ?? colorScheme.destructiveForeground,
-      );
-    }
-    return userTheme;
-  }
-
-  static ShadcnButtonTheme _generateGhostButtonTheme({
-    required ShadcnButtonTheme? userTheme,
-    required ShadcnColorScheme colorScheme,
-  }) {
-    if (userTheme == null) {
-      return ShadcnButtonTheme(
-        hoverBackgroundColor: colorScheme.accent,
-        foregroundColor: colorScheme.primary,
-        hoverForegroundColor: colorScheme.accentForeground,
-      );
-    }
-    if (userTheme.merge) {
-      return userTheme.copyWith(
-        hoverBackgroundColor:
-            userTheme.hoverBackgroundColor ?? colorScheme.accent,
-        foregroundColor: userTheme.foregroundColor ?? colorScheme.primary,
-        hoverForegroundColor:
-            userTheme.hoverForegroundColor ?? colorScheme.accentForeground,
-      );
-    }
-    return userTheme;
-  }
-
-  static ShadcnButtonTheme _generateOutlineButtonTheme({
-    required ShadcnButtonTheme? userTheme,
-    required ShadcnColorScheme colorScheme,
-  }) {
-    if (userTheme == null) {
-      return ShadcnButtonTheme(
-        hoverBackgroundColor: colorScheme.accent,
-        foregroundColor: colorScheme.primary,
-        hoverForegroundColor: colorScheme.accentForeground,
-        border: Border.all(color: colorScheme.input),
-      );
-    }
-    if (userTheme.merge) {
-      return userTheme.copyWith(
-        hoverBackgroundColor:
-            userTheme.hoverBackgroundColor ?? colorScheme.accent,
-        foregroundColor: userTheme.foregroundColor ?? colorScheme.primary,
-        hoverForegroundColor:
-            userTheme.hoverForegroundColor ?? colorScheme.accentForeground,
-        border: userTheme.border ?? Border.all(color: colorScheme.input),
-      );
-    }
-    return userTheme;
-  }
-
-  static ShadcnButtonTheme _generateLinkButtonTheme({
-    required ShadcnButtonTheme? userTheme,
-    required ShadcnColorScheme colorScheme,
-  }) {
-    if (userTheme == null) {
-      return ShadcnButtonTheme(
-        foregroundColor: colorScheme.primary,
-        hoverForegroundColor: colorScheme.primary,
-        hoverTextDecoration: TextDecoration.underline,
-      );
-    }
-    if (userTheme.merge) {
-      return userTheme.copyWith(
-        foregroundColor: userTheme.foregroundColor ?? colorScheme.primary,
-        hoverForegroundColor:
-            userTheme.hoverForegroundColor ?? colorScheme.primary,
-        hoverTextDecoration:
-            userTheme.hoverTextDecoration ?? TextDecoration.underline,
-      );
-    }
-    return userTheme;
-  }
-
-  static ShadcnBadgeTheme _generatePrimaryBadgeTheme({
-    required ShadcnBadgeTheme? userTheme,
-    required ShadcnColorScheme colorScheme,
-  }) {
-    if (userTheme == null) {
-      return ShadcnBadgeTheme(
-        backgroundColor: colorScheme.primary,
-        hoverBackgroundColor: colorScheme.primary.withOpacity(.8),
-        foregroundColor: colorScheme.primaryForeground,
-        shape: const StadiumBorder(),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      );
-    }
-    if (userTheme.merge) {
-      return userTheme.copyWith(
-        backgroundColor: userTheme.backgroundColor ?? colorScheme.primary,
-        hoverBackgroundColor: userTheme.hoverBackgroundColor ??
-            colorScheme.primary.withOpacity(.8),
-        foregroundColor:
-            userTheme.foregroundColor ?? colorScheme.primaryForeground,
-        shape: userTheme.shape ?? const StadiumBorder(),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      );
-    }
-    return userTheme;
-  }
-
-  static ShadcnBadgeTheme _generateSecondaryBadgeTheme({
-    required ShadcnBadgeTheme? userTheme,
-    required ShadcnColorScheme colorScheme,
-  }) {
-    if (userTheme == null) {
-      return ShadcnBadgeTheme(
-        backgroundColor: colorScheme.secondary,
-        hoverBackgroundColor: colorScheme.secondary.withOpacity(.8),
-        foregroundColor: colorScheme.secondaryForeground,
-        shape: const StadiumBorder(),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      );
-    }
-    if (userTheme.merge) {
-      return userTheme.copyWith(
-        backgroundColor: userTheme.backgroundColor ?? colorScheme.secondary,
-        hoverBackgroundColor: userTheme.hoverBackgroundColor ??
-            colorScheme.secondary.withOpacity(.8),
-        foregroundColor:
-            userTheme.foregroundColor ?? colorScheme.secondaryForeground,
-        shape: userTheme.shape ?? const StadiumBorder(),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      );
-    }
-    return userTheme;
-  }
-
-  static ShadcnBadgeTheme _generateDestructiveBadgeTheme({
-    required ShadcnBadgeTheme? userTheme,
-    required ShadcnColorScheme colorScheme,
-  }) {
-    if (userTheme == null) {
-      return ShadcnBadgeTheme(
-        backgroundColor: colorScheme.destructive,
-        hoverBackgroundColor: colorScheme.destructive.withOpacity(.8),
-        foregroundColor: colorScheme.destructiveForeground,
-        shape: const StadiumBorder(),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      );
-    }
-    if (userTheme.merge) {
-      return userTheme.copyWith(
-        backgroundColor: userTheme.backgroundColor ?? colorScheme.destructive,
-        hoverBackgroundColor: userTheme.hoverBackgroundColor ??
-            colorScheme.destructive.withOpacity(.8),
-        foregroundColor:
-            userTheme.foregroundColor ?? colorScheme.destructiveForeground,
-        shape: userTheme.shape ?? const StadiumBorder(),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      );
-    }
-    return userTheme;
-  }
-
-  static ShadcnBadgeTheme _generateOutlineBadgeTheme({
-    required ShadcnBadgeTheme? userTheme,
-    required ShadcnColorScheme colorScheme,
-  }) {
-    if (userTheme == null) {
-      return ShadcnBadgeTheme(
-        foregroundColor: colorScheme.foreground,
-        shape: StadiumBorder(side: BorderSide(color: colorScheme.border)),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      );
-    }
-    if (userTheme.merge) {
-      return userTheme.copyWith(
-        foregroundColor: userTheme.foregroundColor ?? colorScheme.foreground,
-        shape: userTheme.shape ??
-            StadiumBorder(side: BorderSide(color: colorScheme.border)),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      );
-    }
-    return userTheme;
-  }
 
   static ShadcnThemeData lerp(ShadcnThemeData a, ShadcnThemeData b, double t) {
     if (identical(a, b)) {

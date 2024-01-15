@@ -131,6 +131,32 @@ class ShadcnButtonTheme {
     );
   }
 
+  ShadcnButtonTheme mergeWith(ShadcnButtonTheme? other) {
+    if (other == null) return this;
+    if (!other.merge) return other;
+    return copyWith(
+      applyIconColorFilter: other.applyIconColorFilter,
+      cursor: other.cursor,
+      size: other.size,
+      width: other.width,
+      height: other.height,
+      padding: other.padding,
+      backgroundColor: other.backgroundColor,
+      hoverBackgroundColor: other.hoverBackgroundColor,
+      foregroundColor: other.foregroundColor,
+      hoverForegroundColor: other.hoverForegroundColor,
+      border: other.border,
+      radius: other.radius,
+      pressedBackgroundColor: other.pressedBackgroundColor,
+      pressedForegroundColor: other.pressedForegroundColor,
+      shadows: other.shadows,
+      gradient: other.gradient,
+      textDecoration: other.textDecoration,
+      hoverTextDecoration: other.hoverTextDecoration,
+      focusBuilder: other.focusBuilder,
+    );
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
