@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 
@@ -6,19 +9,70 @@ import 'package:shadcn_ui/src/components/button.dart';
 @immutable
 class ShadcnButtonSizeTheme {
   const ShadcnButtonSizeTheme({
+    this.merge = true,
     required this.height,
     required this.padding,
     this.width,
   });
+  final bool merge;
   final double height;
   final EdgeInsets padding;
   final double? width;
+
+  ShadcnButtonSizeTheme copyWith({
+    double? height,
+    EdgeInsets? padding,
+    double? width,
+  }) {
+    return ShadcnButtonSizeTheme(
+      height: height ?? this.height,
+      padding: padding ?? this.padding,
+      width: width ?? this.width,
+    );
+  }
+
+  static ShadcnButtonSizeTheme lerp(
+    ShadcnButtonSizeTheme a,
+    ShadcnButtonSizeTheme b,
+    double t,
+  ) {
+    if (identical(a, b)) return a;
+    return ShadcnButtonSizeTheme(
+      height: lerpDouble(a.height, b.height, t)!,
+      padding: EdgeInsets.lerp(a.padding, b.padding, t)!,
+      width: lerpDouble(a.width, b.width, t),
+    );
+  }
+
+  ShadcnButtonSizeTheme mergeWith(ShadcnButtonSizeTheme? other) {
+    if (other == null) return this;
+    if (!other.merge) return other;
+    return copyWith(
+      height: other.height,
+      padding: other.padding,
+      width: other.width,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShadcnButtonSizeTheme &&
+        other.height == height &&
+        other.padding == padding &&
+        other.width == width;
+  }
+
+  @override
+  int get hashCode => height.hashCode ^ padding.hashCode ^ width.hashCode;
 }
 
 // The theme for the predefined sizes of ShadcnButton.
 @immutable
 class ShadcnButtonSizesTheme {
   const ShadcnButtonSizesTheme({
+    this.merge = true,
     this.$default = const ShadcnButtonSizeTheme(
       height: 40,
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -37,10 +91,64 @@ class ShadcnButtonSizesTheme {
       padding: EdgeInsets.zero,
     ),
   });
+  final bool merge;
   final ShadcnButtonSizeTheme $default;
   final ShadcnButtonSizeTheme sm;
   final ShadcnButtonSizeTheme lg;
   final ShadcnButtonSizeTheme icon;
+
+  static ShadcnButtonSizesTheme lerp(
+    ShadcnButtonSizesTheme a,
+    ShadcnButtonSizesTheme b,
+    double t,
+  ) {
+    if (identical(a, b)) return a;
+    return ShadcnButtonSizesTheme(
+      $default: ShadcnButtonSizeTheme.lerp(a.$default, b.$default, t),
+      sm: ShadcnButtonSizeTheme.lerp(a.sm, b.sm, t),
+      lg: ShadcnButtonSizeTheme.lerp(a.lg, b.lg, t),
+      icon: ShadcnButtonSizeTheme.lerp(a.icon, b.icon, t),
+    );
+  }
+
+  ShadcnButtonSizesTheme copyWith({
+    ShadcnButtonSizeTheme? $default,
+    ShadcnButtonSizeTheme? sm,
+    ShadcnButtonSizeTheme? lg,
+    ShadcnButtonSizeTheme? icon,
+  }) {
+    return ShadcnButtonSizesTheme(
+      $default: $default ?? this.$default,
+      sm: sm ?? this.sm,
+      lg: lg ?? this.lg,
+      icon: icon ?? this.icon,
+    );
+  }
+
+  ShadcnButtonSizesTheme mergeWith(ShadcnButtonSizesTheme? other) {
+    if (other == null) return this;
+    if (!other.merge) return other;
+    return copyWith(
+      $default: other.$default,
+      sm: other.sm,
+      lg: other.lg,
+      icon: other.icon,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ShadcnButtonSizesTheme &&
+        other.$default == $default &&
+        other.sm == sm &&
+        other.lg == lg &&
+        other.icon == icon;
+  }
+
+  @override
+  int get hashCode =>
+      $default.hashCode ^ sm.hashCode ^ lg.hashCode ^ icon.hashCode;
 }
 
 /// The theme for ShadcnButton.
@@ -54,9 +162,6 @@ class ShadcnButtonTheme {
     this.cursor,
     this.size = ShadcnButtonSize.$default,
     this.buttonSizesTheme = const ShadcnButtonSizesTheme(),
-    this.width,
-    this.height,
-    this.padding,
     this.backgroundColor,
     this.hoverBackgroundColor,
     this.foregroundColor,
@@ -76,9 +181,7 @@ class ShadcnButtonTheme {
   final bool applyIconColorFilter;
   final MouseCursor? cursor;
   final ShadcnButtonSize? size;
-  final double? width;
-  final double? height;
-  final EdgeInsets? padding;
+  final ShadcnButtonSizesTheme buttonSizesTheme;
   final Color? backgroundColor;
   final Color? hoverBackgroundColor;
   final Color? foregroundColor;
@@ -92,7 +195,6 @@ class ShadcnButtonTheme {
   final TextDecoration? textDecoration;
   final TextDecoration? hoverTextDecoration;
   final FocusWidgetBuilder? focusBuilder;
-  final ShadcnButtonSizesTheme buttonSizesTheme;
 
   static ShadcnButtonTheme lerp(
     ShadcnButtonTheme a,
@@ -102,9 +204,11 @@ class ShadcnButtonTheme {
     if (identical(a, b)) return a;
     return ShadcnButtonTheme(
       applyIconColorFilter: b.applyIconColorFilter,
-      width: b.width,
-      height: b.height,
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      buttonSizesTheme: ShadcnButtonSizesTheme.lerp(
+        a.buttonSizesTheme,
+        b.buttonSizesTheme,
+        t,
+      ),
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       hoverBackgroundColor:
           Color.lerp(a.hoverBackgroundColor, b.hoverBackgroundColor, t),
@@ -132,9 +236,7 @@ class ShadcnButtonTheme {
     MouseCursor? cursor,
     MouseCursor? disabledCursor,
     ShadcnButtonSize? size,
-    double? width,
-    double? height,
-    EdgeInsets? padding,
+    ShadcnButtonSizesTheme? buttonSizesTheme,
     Color? backgroundColor,
     Color? hoverBackgroundColor,
     Color? foregroundColor,
@@ -153,9 +255,7 @@ class ShadcnButtonTheme {
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
       cursor: cursor ?? this.cursor,
       size: size ?? this.size,
-      width: width ?? this.width,
-      height: height ?? this.height,
-      padding: padding ?? this.padding,
+      buttonSizesTheme: buttonSizesTheme ?? this.buttonSizesTheme,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       hoverBackgroundColor: hoverBackgroundColor ?? this.hoverBackgroundColor,
       foregroundColor: foregroundColor ?? this.foregroundColor,
@@ -181,9 +281,6 @@ class ShadcnButtonTheme {
       applyIconColorFilter: other.applyIconColorFilter,
       cursor: other.cursor,
       size: other.size,
-      width: other.width,
-      height: other.height,
-      padding: other.padding,
       backgroundColor: other.backgroundColor,
       hoverBackgroundColor: other.hoverBackgroundColor,
       foregroundColor: other.foregroundColor,
@@ -208,9 +305,7 @@ class ShadcnButtonTheme {
         other.applyIconColorFilter == applyIconColorFilter &&
         other.cursor == cursor &&
         other.size == size &&
-        other.width == width &&
-        other.height == height &&
-        other.padding == padding &&
+        other.buttonSizesTheme == buttonSizesTheme &&
         other.backgroundColor == backgroundColor &&
         other.hoverBackgroundColor == hoverBackgroundColor &&
         other.foregroundColor == foregroundColor &&
@@ -231,9 +326,7 @@ class ShadcnButtonTheme {
     return applyIconColorFilter.hashCode ^
         cursor.hashCode ^
         size.hashCode ^
-        width.hashCode ^
-        height.hashCode ^
-        padding.hashCode ^
+        buttonSizesTheme.hashCode ^
         backgroundColor.hashCode ^
         hoverBackgroundColor.hashCode ^
         foregroundColor.hashCode ^

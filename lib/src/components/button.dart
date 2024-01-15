@@ -309,9 +309,6 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     if (widget.size != null) {
       return defaultHeightForSize(theme, widget.size!);
     }
-    if (buttonTheme(theme).height != null) {
-      return buttonTheme(theme).height!;
-    }
     return defaultHeightForSize(theme, ShadcnButtonSize.$default);
   }
 
@@ -323,9 +320,6 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     if (widget.width != null) return widget.width!;
     if (widget.size != null) {
       return defaultWidthForSize(theme, widget.size!);
-    }
-    if (buttonTheme(theme).width != null) {
-      return buttonTheme(theme).width!;
     }
     return defaultWidthForSize(theme, ShadcnButtonSize.$default);
   }
@@ -339,9 +333,6 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     if (widget.padding != null) return widget.padding!;
     if (widget.size != null) {
       return defaultPaddingForSize(theme, widget.size!);
-    }
-    if (buttonTheme(theme).padding != null) {
-      return buttonTheme(theme).padding!;
     }
     return defaultPaddingForSize(theme, ShadcnButtonSize.$default);
   }
