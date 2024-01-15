@@ -20,6 +20,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     ShadcnBadgeTheme? secondaryBadgeTheme,
     ShadcnBadgeTheme? destructiveBadgeTheme,
     ShadcnBadgeTheme? outlineBadgeTheme,
+    BorderRadius? radius,
   }) {
     return ShadcnThemeData._internal(
       colorScheme: colorScheme,
@@ -65,6 +66,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         userTheme: outlineBadgeTheme,
         colorScheme: colorScheme,
       ),
+      radius: radius ?? BorderRadius.all(Radius.circular(6)),
     );
   }
 
@@ -82,6 +84,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     required super.secondaryBadgeTheme,
     required super.destructiveBadgeTheme,
     required super.outlineBadgeTheme,
+    required super.radius,
   });
 
   static ShadcnButtonTheme _generatePrimaryButtonTheme({
@@ -375,6 +378,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       ),
       outlineBadgeTheme:
           ShadcnBadgeTheme.lerp(a.outlineBadgeTheme, b.outlineBadgeTheme, t),
+      radius: BorderRadius.lerp(a.radius, b.radius, t),
     );
   }
 
@@ -394,7 +398,8 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         other.primaryBadgeTheme == primaryBadgeTheme &&
         other.secondaryBadgeTheme == secondaryBadgeTheme &&
         other.destructiveBadgeTheme == destructiveBadgeTheme &&
-        other.outlineBadgeTheme == outlineBadgeTheme;
+        other.outlineBadgeTheme == outlineBadgeTheme &&
+        other.radius == radius;
   }
 
   @override
@@ -410,7 +415,8 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         primaryBadgeTheme.hashCode ^
         secondaryBadgeTheme.hashCode ^
         outlineBadgeTheme.hashCode ^
-        destructiveBadgeTheme.hashCode;
+        destructiveBadgeTheme.hashCode ^
+        radius.hashCode;
   }
 
   ShadcnThemeData copyWith({
@@ -425,10 +431,14 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     ShadcnBadgeTheme? secondaryBadgeTheme,
     ShadcnBadgeTheme? destructiveBadgeTheme,
     ShadcnBadgeTheme? outlineBadgeTheme,
+    Brightness? brightness,
+    Iterable<ThemeExtension<dynamic>>? extensions,
+    BorderRadius? radius,
   }) {
     return ShadcnThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
-      brightness: brightness,
+      extensions: extensions ?? this.extensions,
+      brightness: brightness ?? this.brightness,
       primaryButtonTheme: primaryButtonTheme ?? this.primaryButtonTheme,
       secondaryButtonTheme: secondaryButtonTheme ?? this.secondaryButtonTheme,
       destructiveButtonTheme:
@@ -441,6 +451,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       destructiveBadgeTheme:
           destructiveBadgeTheme ?? this.destructiveBadgeTheme,
       outlineBadgeTheme: outlineBadgeTheme ?? this.outlineBadgeTheme,
+      radius: radius ?? this.radius,
     );
   }
 }

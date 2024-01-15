@@ -19,6 +19,7 @@ abstract class ShadcnBaseTheme {
     required this.secondaryBadgeTheme,
     required this.destructiveBadgeTheme,
     required this.outlineBadgeTheme,
+    required this.radius,
   });
 
   final ShadcnColorScheme colorScheme;
@@ -34,4 +35,5 @@ abstract class ShadcnBaseTheme {
   final ShadcnBadgeTheme secondaryBadgeTheme;
   final ShadcnBadgeTheme destructiveBadgeTheme;
   final ShadcnBadgeTheme outlineBadgeTheme;
+  final BorderRadius radius;
 }

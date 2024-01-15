@@ -413,7 +413,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
   }
 
   BorderRadius borderRadius(ShadcnThemeData theme) {
-    return widget.borderRadius ?? buttonTheme(theme).borderRadius;
+    return widget.borderRadius ?? buttonTheme(theme).radius ?? theme.radius;
   }
 
   MouseCursor cursor(ShadcnThemeData theme) {

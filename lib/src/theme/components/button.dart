@@ -20,7 +20,7 @@ class ShadcnButtonTheme {
     this.foregroundColor,
     this.hoverForegroundColor,
     this.border,
-    this.borderRadius = const BorderRadius.all(Radius.circular(6)),
+    this.radius,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
     this.shadows,
@@ -42,7 +42,7 @@ class ShadcnButtonTheme {
   final Color? foregroundColor;
   final Color? hoverForegroundColor;
   final BoxBorder? border;
-  final BorderRadius borderRadius;
+  final BorderRadius? radius;
   final Color? pressedBackgroundColor;
   final Color? pressedForegroundColor;
   final List<BoxShadow>? shadows;
@@ -69,7 +69,7 @@ class ShadcnButtonTheme {
       hoverForegroundColor:
           Color.lerp(a.hoverForegroundColor, b.hoverForegroundColor, t),
       border: b.border,
-      borderRadius: BorderRadius.lerp(a.borderRadius, b.borderRadius, t)!,
+      radius: BorderRadius.lerp(a.radius, b.radius, t),
       pressedBackgroundColor:
           Color.lerp(a.pressedBackgroundColor, b.pressedBackgroundColor, t),
       pressedForegroundColor:
@@ -97,7 +97,7 @@ class ShadcnButtonTheme {
     Color? foregroundColor,
     Color? hoverForegroundColor,
     BoxBorder? border,
-    BorderRadius? borderRadius,
+    BorderRadius? radius,
     Color? pressedBackgroundColor,
     Color? pressedForegroundColor,
     List<BoxShadow>? shadows,
@@ -118,7 +118,7 @@ class ShadcnButtonTheme {
       foregroundColor: foregroundColor ?? this.foregroundColor,
       hoverForegroundColor: hoverForegroundColor ?? this.hoverForegroundColor,
       border: border ?? this.border,
-      borderRadius: borderRadius ?? this.borderRadius,
+      radius: radius ?? this.radius,
       pressedBackgroundColor:
           pressedBackgroundColor ?? this.pressedBackgroundColor,
       pressedForegroundColor:
@@ -147,7 +147,7 @@ class ShadcnButtonTheme {
         other.foregroundColor == foregroundColor &&
         other.hoverForegroundColor == hoverForegroundColor &&
         other.border == border &&
-        other.borderRadius == borderRadius &&
+        other.radius == radius &&
         other.pressedBackgroundColor == pressedBackgroundColor &&
         other.pressedForegroundColor == pressedForegroundColor &&
         listEquals(other.shadows, shadows) &&
@@ -170,7 +170,7 @@ class ShadcnButtonTheme {
         foregroundColor.hashCode ^
         hoverForegroundColor.hashCode ^
         border.hashCode ^
-        borderRadius.hashCode ^
+        radius.hashCode ^
         pressedBackgroundColor.hashCode ^
         pressedForegroundColor.hashCode ^
         shadows.hashCode ^
