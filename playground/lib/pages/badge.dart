@@ -14,7 +14,7 @@ class BadgePage extends StatelessWidget {
       body: Center(
         child: () {
           return switch (variant) {
-            ShadcnBadgeVariant.$default => const ShadcnBadge(
+            ShadcnBadgeVariant.primary => const ShadcnBadge(
                 text: Text('Primary'),
               ),
             ShadcnBadgeVariant.secondary => const ShadcnBadge.secondary(

@@ -49,7 +49,7 @@ final _router = GoRouter(
     GoRoute(
       path: '/badge',
       builder: (context, state) {
-        final style = state.uri.queryParameters['style'] ?? '\$default';
+        final style = state.uri.queryParameters['style'] ?? 'primary';
         return BadgePage(
           variant: ShadcnBadgeVariant.values.byName(style),
         );

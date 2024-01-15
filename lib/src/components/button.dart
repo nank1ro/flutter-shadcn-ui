@@ -9,7 +9,7 @@ typedef FocusWidgetBuilder = Widget Function(
 );
 
 enum ShadcnButtonVariant {
-  $default,
+  primary,
   destructive,
   outline,
   secondary,
@@ -46,12 +46,12 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
-    this.boxShadow,
+    this.shadows,
     this.gradient,
     this.focusBuilder,
     this.textDecoration,
     this.hoverTextDecoration,
-  }) : variant = ShadcnButtonVariant.$default;
+  }) : variant = ShadcnButtonVariant.primary;
 
   const ShadcnButton.raw({
     super.key,
@@ -75,7 +75,7 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
-    this.boxShadow,
+    this.shadows,
     this.gradient,
     this.focusBuilder,
     this.textDecoration,
@@ -103,7 +103,7 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
-    this.boxShadow,
+    this.shadows,
     this.gradient,
     this.focusBuilder,
     this.textDecoration,
@@ -131,7 +131,7 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
-    this.boxShadow,
+    this.shadows,
     this.gradient,
     this.focusBuilder,
     this.textDecoration,
@@ -159,7 +159,7 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
-    this.boxShadow,
+    this.shadows,
     this.gradient,
     this.focusBuilder,
     this.textDecoration,
@@ -187,7 +187,7 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
-    this.boxShadow,
+    this.shadows,
     this.gradient,
     this.focusBuilder,
     this.textDecoration,
@@ -214,7 +214,7 @@ class ShadcnButton extends StatefulWidget {
     this.focusNode,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
-    this.boxShadow,
+    this.shadows,
     this.gradient,
     this.focusBuilder,
     this.textDecoration,
@@ -243,7 +243,7 @@ class ShadcnButton extends StatefulWidget {
   final FocusNode? focusNode;
   final Color? pressedBackgroundColor;
   final Color? pressedForegroundColor;
-  final List<BoxShadow>? boxShadow;
+  final List<BoxShadow>? shadows;
   final Gradient? gradient;
   final FocusWidgetBuilder? focusBuilder;
   final TextDecoration? textDecoration;
@@ -277,7 +277,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
 
   ShadcnButtonTheme buttonTheme(ShadcnThemeData theme) {
     return switch (widget.variant) {
-      ShadcnButtonVariant.$default => theme.primaryButtonTheme,
+      ShadcnButtonVariant.primary => theme.primaryButtonTheme,
       ShadcnButtonVariant.destructive => theme.destructiveButtonTheme,
       ShadcnButtonVariant.secondary => theme.secondaryButtonTheme,
       ShadcnButtonVariant.ghost => theme.ghostButtonTheme,
@@ -427,8 +427,8 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     return widget.gradient ?? buttonTheme(theme).gradient;
   }
 
-  List<BoxShadow>? boxShadow(ShadcnThemeData theme) {
-    return widget.boxShadow ?? buttonTheme(theme).boxShadow;
+  List<BoxShadow>? shadows(ShadcnThemeData theme) {
+    return widget.shadows ?? buttonTheme(theme).shadows;
   }
 
   @override
@@ -545,7 +545,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
                               borderRadius: borderRadius(shadcnTheme),
                               border: border(shadcnTheme),
                               gradient: gradient(shadcnTheme),
-                              boxShadow: boxShadow(shadcnTheme),
+                              boxShadow: shadows(shadcnTheme),
                             ),
                             padding: padding(shadcnTheme),
                             child: child,
