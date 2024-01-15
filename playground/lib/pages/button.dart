@@ -50,6 +50,7 @@ class ButtonPage extends StatelessWidget {
                 onPressed: () {},
               ),
             PlagroundButtonStyle.icon => ShadcnButton.outline(
+                size: ShadcnButtonSize.icon,
                 icon: const Icon(
                   Icons.chevron_right,
                   size: 16,
