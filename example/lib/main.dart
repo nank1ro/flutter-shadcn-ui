@@ -38,12 +38,7 @@ class App extends StatelessWidget {
           ),
           darkTheme: ShadcnThemeData(
             brightness: Brightness.dark,
-            colorScheme: const ShadcnSlateColorScheme.dark(
-              background: Colors.blue,
-            ),
-            primaryButtonTheme: const ShadcnButtonTheme(
-              backgroundColor: Colors.cyan,
-            ),
+            colorScheme: const ShadcnSlateColorScheme.dark(),
           ),
           home: const MainPage(),
         );
