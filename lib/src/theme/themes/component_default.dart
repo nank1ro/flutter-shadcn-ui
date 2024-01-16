@@ -69,6 +69,28 @@ abstract class ShadcnComponentDefaultTheme {
     );
   }
 
+  static ShadcnButtonSizesTheme buttonSizesTheme() {
+    return const ShadcnButtonSizesTheme(
+      $default: ShadcnButtonSizeTheme(
+        height: 40,
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      ),
+      sm: ShadcnButtonSizeTheme(
+        height: 36,
+        padding: EdgeInsets.symmetric(horizontal: 12),
+      ),
+      lg: ShadcnButtonSizeTheme(
+        height: 44,
+        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+      ),
+      icon: ShadcnButtonSizeTheme(
+        height: 40,
+        width: 40,
+        padding: EdgeInsets.zero,
+      ),
+    );
+  }
+
   static ShadcnBadgeTheme primaryBadgeTheme({
     required ShadcnColorScheme colorScheme,
   }) {

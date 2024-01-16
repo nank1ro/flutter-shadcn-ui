@@ -22,6 +22,7 @@ abstract class ShadcnBaseTheme {
     required this.outlineBadgeTheme,
     required this.radius,
     required this.avatarTheme,
+    required this.buttonSizesTheme,
   });
 
   final ShadcnColorScheme colorScheme;
@@ -39,4 +40,5 @@ abstract class ShadcnBaseTheme {
   final ShadcnBadgeTheme outlineBadgeTheme;
   final BorderRadius radius;
   final ShadcnAvatarTheme avatarTheme;
+  final ShadcnButtonSizesTheme buttonSizesTheme;
 }

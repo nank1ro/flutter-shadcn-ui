@@ -24,6 +24,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     ShadcnBadgeTheme? outlineBadgeTheme,
     BorderRadius? radius,
     ShadcnAvatarTheme? avatarTheme,
+    ShadcnButtonSizesTheme? buttonSizesTheme,
   }) {
     return ShadcnThemeData._internal(
       colorScheme: colorScheme,
@@ -60,6 +61,8 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       outlineBadgeTheme: ShadcnComponentDefaultTheme.outlineBadgeTheme(
         colorScheme: colorScheme,
       ).mergeWith(outlineBadgeTheme),
+      buttonSizesTheme: ShadcnComponentDefaultTheme.buttonSizesTheme()
+          .mergeWith(buttonSizesTheme),
       radius: radius ?? const BorderRadius.all(Radius.circular(6)),
       avatarTheme: ShadcnComponentDefaultTheme.avatarTheme(
         colorScheme: colorScheme,
@@ -83,6 +86,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     required super.outlineBadgeTheme,
     required super.radius,
     required super.avatarTheme,
+    required super.buttonSizesTheme,
   });
 
   static ShadcnThemeData lerp(ShadcnThemeData a, ShadcnThemeData b, double t) {
@@ -126,6 +130,11 @@ class ShadcnThemeData extends ShadcnBaseTheme {
           ShadcnBadgeTheme.lerp(a.outlineBadgeTheme, b.outlineBadgeTheme, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       avatarTheme: ShadcnAvatarTheme.lerp(a.avatarTheme, b.avatarTheme, t),
+      buttonSizesTheme: ShadcnButtonSizesTheme.lerp(
+        a.buttonSizesTheme,
+        b.buttonSizesTheme,
+        t,
+      ),
     );
   }
 
@@ -147,7 +156,8 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         other.destructiveBadgeTheme == destructiveBadgeTheme &&
         other.outlineBadgeTheme == outlineBadgeTheme &&
         other.radius == radius &&
-        other.avatarTheme == avatarTheme;
+        other.avatarTheme == avatarTheme &&
+        other.buttonSizesTheme == buttonSizesTheme;
   }
 
   @override
@@ -165,7 +175,8 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         outlineBadgeTheme.hashCode ^
         destructiveBadgeTheme.hashCode ^
         radius.hashCode ^
-        avatarTheme.hashCode;
+        avatarTheme.hashCode ^
+        buttonSizesTheme.hashCode;
   }
 
   ShadcnThemeData copyWith({
@@ -184,6 +195,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     Iterable<ThemeExtension<dynamic>>? extensions,
     BorderRadius? radius,
     ShadcnAvatarTheme? avatarTheme,
+    ShadcnButtonSizesTheme? buttonSizesTheme,
   }) {
     return ShadcnThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -203,6 +215,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       outlineBadgeTheme: outlineBadgeTheme ?? this.outlineBadgeTheme,
       radius: radius ?? this.radius,
       avatarTheme: avatarTheme ?? this.avatarTheme,
+      buttonSizesTheme: buttonSizesTheme ?? this.buttonSizesTheme,
     );
   }
 }

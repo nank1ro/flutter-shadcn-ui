@@ -15,7 +15,7 @@ class ShadcnButtonTheme {
     this.applyIconColorFilter = true,
     this.cursor,
     this.size = ShadcnButtonSize.$default,
-    this.sizesTheme = const ShadcnButtonSizesTheme(),
+    this.sizesTheme,
     this.backgroundColor,
     this.hoverBackgroundColor,
     this.foregroundColor,
@@ -30,12 +30,11 @@ class ShadcnButtonTheme {
     this.hoverTextDecoration,
     this.focusBuilder,
   });
-
   final bool merge;
   final bool applyIconColorFilter;
   final MouseCursor? cursor;
   final ShadcnButtonSize size;
-  final ShadcnButtonSizesTheme sizesTheme;
+  final ShadcnButtonSizesTheme? sizesTheme;
   final Color? backgroundColor;
   final Color? hoverBackgroundColor;
   final Color? foregroundColor;
@@ -90,7 +89,7 @@ class ShadcnButtonTheme {
     MouseCursor? cursor,
     MouseCursor? disabledCursor,
     ShadcnButtonSize? size,
-    ShadcnButtonSizesTheme? buttonSizesTheme,
+    ShadcnButtonSizesTheme? sizesTheme,
     Color? backgroundColor,
     Color? hoverBackgroundColor,
     Color? foregroundColor,
@@ -109,7 +108,7 @@ class ShadcnButtonTheme {
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
       cursor: cursor ?? this.cursor,
       size: size ?? this.size,
-      sizesTheme: buttonSizesTheme ?? this.sizesTheme,
+      sizesTheme: sizesTheme ?? this.sizesTheme,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       hoverBackgroundColor: hoverBackgroundColor ?? this.hoverBackgroundColor,
       foregroundColor: foregroundColor ?? this.foregroundColor,
@@ -223,16 +222,16 @@ class ShadcnButtonSizeTheme {
     );
   }
 
-  static ShadcnButtonSizeTheme lerp(
-    ShadcnButtonSizeTheme a,
-    ShadcnButtonSizeTheme b,
+  static ShadcnButtonSizeTheme? lerp(
+    ShadcnButtonSizeTheme? a,
+    ShadcnButtonSizeTheme? b,
     double t,
   ) {
     if (identical(a, b)) return a;
     return ShadcnButtonSizeTheme(
-      height: lerpDouble(a.height, b.height, t)!,
-      padding: EdgeInsets.lerp(a.padding, b.padding, t)!,
-      width: lerpDouble(a.width, b.width, t),
+      height: lerpDouble(a?.height, b?.height, t)!,
+      padding: EdgeInsets.lerp(a?.padding, b?.padding, t)!,
+      width: lerpDouble(a?.width, b?.width, t),
     );
   }
 
@@ -265,41 +264,28 @@ class ShadcnButtonSizeTheme {
 class ShadcnButtonSizesTheme {
   const ShadcnButtonSizesTheme({
     this.merge = true,
-    this.$default = const ShadcnButtonSizeTheme(
-      height: 40,
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    ),
-    this.sm = const ShadcnButtonSizeTheme(
-      height: 36,
-      padding: EdgeInsets.symmetric(horizontal: 12),
-    ),
-    this.lg = const ShadcnButtonSizeTheme(
-      height: 44,
-      padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-    ),
-    this.icon = const ShadcnButtonSizeTheme(
-      height: 40,
-      width: 40,
-      padding: EdgeInsets.zero,
-    ),
+    this.$default,
+    this.sm,
+    this.lg,
+    this.icon,
   });
   final bool merge;
-  final ShadcnButtonSizeTheme $default;
-  final ShadcnButtonSizeTheme sm;
-  final ShadcnButtonSizeTheme lg;
-  final ShadcnButtonSizeTheme icon;
+  final ShadcnButtonSizeTheme? $default;
+  final ShadcnButtonSizeTheme? sm;
+  final ShadcnButtonSizeTheme? lg;
+  final ShadcnButtonSizeTheme? icon;
 
-  static ShadcnButtonSizesTheme lerp(
-    ShadcnButtonSizesTheme a,
-    ShadcnButtonSizesTheme b,
+  static ShadcnButtonSizesTheme? lerp(
+    ShadcnButtonSizesTheme? a,
+    ShadcnButtonSizesTheme? b,
     double t,
   ) {
     if (identical(a, b)) return a;
     return ShadcnButtonSizesTheme(
-      $default: ShadcnButtonSizeTheme.lerp(a.$default, b.$default, t),
-      sm: ShadcnButtonSizeTheme.lerp(a.sm, b.sm, t),
-      lg: ShadcnButtonSizeTheme.lerp(a.lg, b.lg, t),
-      icon: ShadcnButtonSizeTheme.lerp(a.icon, b.icon, t),
+      $default: ShadcnButtonSizeTheme.lerp(a?.$default, b?.$default, t),
+      sm: ShadcnButtonSizeTheme.lerp(a?.sm, b?.sm, t),
+      lg: ShadcnButtonSizeTheme.lerp(a?.lg, b?.lg, t),
+      icon: ShadcnButtonSizeTheme.lerp(a?.icon, b?.icon, t),
     );
   }
 

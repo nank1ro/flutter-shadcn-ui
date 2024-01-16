@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/data.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 
 typedef FocusWidgetBuilder = Widget Function(
@@ -226,7 +228,6 @@ class ShadcnButton extends StatefulWidget {
   final Widget? icon;
   final Widget? text;
   final ShadcnButtonVariant variant;
-
   final ShadcnButtonSize? size;
   final bool? applyIconColorFilter;
   final MouseCursor? cursor;
@@ -292,13 +293,13 @@ class _ShadcnButtonState extends State<ShadcnButton> {
   ) {
     switch (size) {
       case ShadcnButtonSize.sm:
-        return buttonTheme(theme).sizesTheme.sm;
+        return buttonTheme(theme).sizesTheme!.sm!;
       case ShadcnButtonSize.lg:
-        return buttonTheme(theme).sizesTheme.lg;
+        return buttonTheme(theme).sizesTheme!.lg!;
       case ShadcnButtonSize.icon:
-        return buttonTheme(theme).sizesTheme.icon;
+        return buttonTheme(theme).sizesTheme!.icon!;
       case ShadcnButtonSize.$default:
-        return buttonTheme(theme).sizesTheme.$default;
+        return buttonTheme(theme).sizesTheme!.$default!;
     }
   }
 
