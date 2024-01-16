@@ -286,24 +286,24 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     };
   }
 
-  ShadcnButtonSizeTheme buttonSizeTheme(
+  ShadcnButtonSizeTheme sizeTheme(
     ShadcnThemeData theme,
     ShadcnButtonSize size,
   ) {
     switch (size) {
       case ShadcnButtonSize.sm:
-        return buttonTheme(theme).buttonSizesTheme.sm;
+        return buttonTheme(theme).sizesTheme.sm;
       case ShadcnButtonSize.lg:
-        return buttonTheme(theme).buttonSizesTheme.lg;
+        return buttonTheme(theme).sizesTheme.lg;
       case ShadcnButtonSize.icon:
-        return buttonTheme(theme).buttonSizesTheme.icon;
+        return buttonTheme(theme).sizesTheme.icon;
       case ShadcnButtonSize.$default:
-        return buttonTheme(theme).buttonSizesTheme.$default;
+        return buttonTheme(theme).sizesTheme.$default;
     }
   }
 
   double defaultHeightForSize(ShadcnThemeData theme, ShadcnButtonSize size) {
-    return buttonSizeTheme(theme, size).height;
+    return sizeTheme(theme, size).height;
   }
 
   double height(ShadcnThemeData theme) {
@@ -315,7 +315,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
   }
 
   double? defaultWidthForSize(ShadcnThemeData theme, ShadcnButtonSize size) {
-    return buttonSizeTheme(theme, size).width;
+    return sizeTheme(theme, size).width;
   }
 
   double? width(ShadcnThemeData theme) {
@@ -330,7 +330,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     ShadcnThemeData theme,
     ShadcnButtonSize size,
   ) {
-    return buttonSizeTheme(theme, size).padding;
+    return sizeTheme(theme, size).padding;
   }
 
   EdgeInsets padding(ShadcnThemeData theme) {
