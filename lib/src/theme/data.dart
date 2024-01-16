@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
+import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
@@ -22,6 +23,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     ShadcnBadgeTheme? destructiveBadgeTheme,
     ShadcnBadgeTheme? outlineBadgeTheme,
     BorderRadius? radius,
+    ShadcnAvatarTheme? avatarTheme,
   }) {
     return ShadcnThemeData._internal(
       colorScheme: colorScheme,
@@ -59,6 +61,9 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         colorScheme: colorScheme,
       ).mergeWith(outlineBadgeTheme),
       radius: radius ?? const BorderRadius.all(Radius.circular(6)),
+      avatarTheme: ShadcnComponentDefaultTheme.avatarTheme(
+        colorScheme: colorScheme,
+      ).mergeWith(avatarTheme),
     );
   }
 
@@ -77,6 +82,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     required super.destructiveBadgeTheme,
     required super.outlineBadgeTheme,
     required super.radius,
+    required super.avatarTheme,
   });
 
   static ShadcnThemeData lerp(ShadcnThemeData a, ShadcnThemeData b, double t) {
@@ -119,6 +125,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       outlineBadgeTheme:
           ShadcnBadgeTheme.lerp(a.outlineBadgeTheme, b.outlineBadgeTheme, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
+      avatarTheme: ShadcnAvatarTheme.lerp(a.avatarTheme, b.avatarTheme, t),
     );
   }
 
@@ -139,7 +146,8 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         other.secondaryBadgeTheme == secondaryBadgeTheme &&
         other.destructiveBadgeTheme == destructiveBadgeTheme &&
         other.outlineBadgeTheme == outlineBadgeTheme &&
-        other.radius == radius;
+        other.radius == radius &&
+        other.avatarTheme == avatarTheme;
   }
 
   @override
@@ -156,7 +164,8 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         secondaryBadgeTheme.hashCode ^
         outlineBadgeTheme.hashCode ^
         destructiveBadgeTheme.hashCode ^
-        radius.hashCode;
+        radius.hashCode ^
+        avatarTheme.hashCode;
   }
 
   ShadcnThemeData copyWith({
@@ -174,6 +183,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     Brightness? brightness,
     Iterable<ThemeExtension<dynamic>>? extensions,
     BorderRadius? radius,
+    ShadcnAvatarTheme? avatarTheme,
   }) {
     return ShadcnThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -192,6 +202,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
           destructiveBadgeTheme ?? this.destructiveBadgeTheme,
       outlineBadgeTheme: outlineBadgeTheme ?? this.outlineBadgeTheme,
       radius: radius ?? this.radius,
+      avatarTheme: avatarTheme ?? this.avatarTheme,
     );
   }
 }

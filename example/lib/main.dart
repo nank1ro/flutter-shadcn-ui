@@ -1,4 +1,5 @@
 import 'package:example/common/app_bar.dart';
+import 'package:example/pages/avatar.dart';
 import 'package:example/pages/badge.dart';
 import 'package:example/pages/button.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ void main() {
 final routes = <String, WidgetBuilder>{
   '/button': (_) => const ButtonPage(),
   '/badge': (_) => const BadgePage(),
+  '/avatar': (_) => const AvatarPage(),
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-z])');
 

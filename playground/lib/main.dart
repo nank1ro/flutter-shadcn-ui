@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:playground/pages/avatar.dart';
 import 'package:playground/pages/badge.dart';
 import 'package:playground/pages/button.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -54,6 +55,10 @@ final _router = GoRouter(
           variant: ShadcnBadgeVariant.values.byName(style),
         );
       },
+    ),
+    GoRoute(
+      path: '/avatar',
+      builder: (context, state) => const AvatarPage(),
     ),
   ],
 );

@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
+import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 
@@ -111,6 +112,16 @@ abstract class ShadcnComponentDefaultTheme {
       foregroundColor: colorScheme.foreground,
       shape: StadiumBorder(side: BorderSide(color: colorScheme.border)),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+    );
+  }
+
+  static ShadcnAvatarTheme avatarTheme({
+    required ShadcnColorScheme colorScheme,
+  }) {
+    return ShadcnAvatarTheme(
+      size: const Size.square(40),
+      shape: const CircleBorder(),
+      backgroundColor: colorScheme.muted,
     );
   }
 }
