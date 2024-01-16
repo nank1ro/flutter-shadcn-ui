@@ -286,72 +286,24 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     };
   }
 
-  double defaultHeightForSize(ShadcnButtonSize size) {
-    return switch (size) {
-      ShadcnButtonSize.$default => 40,
-      ShadcnButtonSize.sm => 36,
-      ShadcnButtonSize.lg => 44,
-      ShadcnButtonSize.icon => 40,
-    };
+  ShadcnButtonSize size(ShadcnThemeData theme) {
+    return widget.size ?? buttonTheme(theme).size ?? ShadcnButtonSize.$default;
   }
 
   double height(ShadcnThemeData theme) {
     if (widget.height != null) return widget.height!;
-    if (widget.size != null) {
-      return defaultHeightForSize(widget.size!);
-    }
-    if (buttonTheme(theme).height != null) {
-      return buttonTheme(theme).height!;
-    }
-    return defaultHeightForSize(size(theme) ?? ShadcnButtonSize.$default);
-  }
-
-  double? defaultWidthForSize(ShadcnButtonSize size) {
-    return switch (size) {
-      ShadcnButtonSize.icon => 40,
-      _ => null,
-    };
-  }
-
-  ShadcnButtonSize? size(ShadcnThemeData theme) {
-    if (widget.size != null) return widget.size!;
-    if (buttonTheme(theme).size != null) {
-      return buttonTheme(theme).size!;
-    }
-    return null;
+    return buttonTheme(theme).height?.resolve(size(theme)) ?? 40;
   }
 
   double? width(ShadcnThemeData theme) {
     if (widget.width != null) return widget.width!;
-    if (widget.size != null) {
-      return defaultWidthForSize(widget.size!);
-    }
-    if (buttonTheme(theme).width != null) {
-      return buttonTheme(theme).width!;
-    }
-    return defaultWidthForSize(size(theme) ?? ShadcnButtonSize.$default);
-  }
-
-  EdgeInsets defaultPaddingForSize(ShadcnButtonSize size) {
-    return switch (size) {
-      ShadcnButtonSize.$default =>
-        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      ShadcnButtonSize.sm => const EdgeInsets.symmetric(horizontal: 12),
-      ShadcnButtonSize.lg =>
-        const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-      ShadcnButtonSize.icon => EdgeInsets.zero,
-    };
+    return buttonTheme(theme).width?.resolve(size(theme));
   }
 
   EdgeInsets padding(ShadcnThemeData theme) {
     if (widget.padding != null) return widget.padding!;
-    if (size(theme) != null) {
-      return defaultPaddingForSize(size(theme)!);
-    }
-    if (buttonTheme(theme).padding != null) {
-      return buttonTheme(theme).padding!;
-    }
-    return defaultPaddingForSize(ShadcnButtonSize.$default);
+    return buttonTheme(theme).padding?.resolve(size(theme)) ??
+        const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
   }
 
   Color? background(ShadcnThemeData theme) {
