@@ -1,0 +1,47 @@
+import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
+
+enum ImageStyle {
+  local,
+  remote,
+  svg,
+  riv,
+}
+
+class ImagePage extends StatelessWidget {
+  const ImagePage({
+    super.key,
+    required this.style,
+  });
+
+  final ImageStyle style;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: () {
+          return switch (style) {
+            ImageStyle.local => const ShadcnImage(
+                'assets/banner.png',
+                height: 100,
+                fit: BoxFit.fitHeight,
+              ),
+            ImageStyle.remote => const ShadcnImage.square(
+                'https://avatars.githubusercontent.com/u/124599?v=4',
+                size: 50,
+              ),
+            ImageStyle.svg => const ShadcnImage.square(
+                'assets/flutter.svg',
+                size: 50,
+              ),
+            ImageStyle.riv => const ShadcnImage.square(
+                'assets/off_road_car.riv',
+                size: 200,
+              ),
+          };
+        }(),
+      ),
+    );
+  }
+}

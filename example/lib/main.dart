@@ -2,6 +2,7 @@ import 'package:example/common/app_bar.dart';
 import 'package:example/pages/avatar.dart';
 import 'package:example/pages/badge.dart';
 import 'package:example/pages/button.dart';
+import 'package:example/pages/image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 
@@ -16,6 +17,7 @@ final routes = <String, WidgetBuilder>{
   '/button': (_) => const ButtonPage(),
   '/badge': (_) => const BadgePage(),
   '/avatar': (_) => const AvatarPage(),
+  '/image': (_) => const ImagePage(),
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-z])');
 

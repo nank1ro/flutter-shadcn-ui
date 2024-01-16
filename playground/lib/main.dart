@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:playground/pages/avatar.dart';
 import 'package:playground/pages/badge.dart';
 import 'package:playground/pages/button.dart';
+import 'package:playground/pages/image.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
@@ -59,6 +60,15 @@ final _router = GoRouter(
     GoRoute(
       path: '/avatar',
       builder: (context, state) => const AvatarPage(),
+    ),
+    GoRoute(
+      path: '/image',
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ?? 'local';
+        return ImagePage(
+          style: ImageStyle.values.byName(style),
+        );
+      },
     ),
   ],
 );

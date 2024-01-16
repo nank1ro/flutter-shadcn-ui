@@ -6,7 +6,7 @@ class ShadcnAvatar extends StatelessWidget {
   const ShadcnAvatar(
     this.src, {
     super.key,
-    this.fallback,
+    this.placeholder,
     this.size,
     this.shape,
     this.backgroundColor,
@@ -15,7 +15,7 @@ class ShadcnAvatar extends StatelessWidget {
   });
 
   final String src;
-  final Widget? fallback;
+  final Widget? placeholder;
   final Size? size;
   final ShapeBorder? shape;
   final Color? backgroundColor;
@@ -48,27 +48,13 @@ class ShadcnAvatar extends StatelessWidget {
     int? frame,
     bool wasSynchronouslyLoaded,
   ) {
-    return frame == null ? fallback ?? const SizedBox.shrink() : child;
+    return frame == null ? placeholder ?? const SizedBox.shrink() : child;
   }
 
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadcnTheme(context));
     final theme = ShadcnTheme.of(context);
-
-    final child = isRemote
-        ? Image.network(
-            src,
-            frameBuilder: frameBuilder,
-            fit: effectiveFit(theme),
-          )
-        : Image.asset(
-            src,
-            package: package,
-            fit: effectiveFit(theme),
-            frameBuilder: frameBuilder,
-          );
-
     final size = effectiveSize(theme);
 
     return Container(
@@ -80,7 +66,10 @@ class ShadcnAvatar extends StatelessWidget {
         shape: effectiveShape(theme),
         color: effectiveBackgroundColor(theme),
       ),
-      child: child,
+      child: ShadcnImage(
+        src,
+        placeholder: placeholder,
+      ),
     );
   }
 }

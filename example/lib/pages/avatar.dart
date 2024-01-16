@@ -13,7 +13,7 @@ class AvatarPage extends StatelessWidget {
       children: [
         ShadcnAvatar(
           'https://avatars.githubusercontent.com/u/124599?v=4',
-          fallback: Text('CN'),
+          placeholder: Text('CN'),
         ),
       ],
     );

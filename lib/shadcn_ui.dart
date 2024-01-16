@@ -7,6 +7,7 @@ export 'src/app.dart';
 export 'src/components/avatar.dart';
 export 'src/components/badge.dart';
 export 'src/components/button.dart';
+export 'src/components/image.dart';
 
 // App Themes
 export 'src/theme/color_scheme/slate.dart';
