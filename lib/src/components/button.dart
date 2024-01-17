@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/data.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 
 typedef FocusWidgetBuilder = Widget Function(
@@ -226,7 +228,6 @@ class ShadcnButton extends StatefulWidget {
   final Widget? icon;
   final Widget? text;
   final ShadcnButtonVariant variant;
-
   final ShadcnButtonSize? size;
   final bool? applyIconColorFilter;
   final MouseCursor? cursor;
@@ -286,72 +287,59 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     };
   }
 
-  double defaultHeightForSize(ShadcnButtonSize size) {
-    return switch (size) {
-      ShadcnButtonSize.$default => 40,
-      ShadcnButtonSize.sm => 36,
-      ShadcnButtonSize.lg => 44,
-      ShadcnButtonSize.icon => 40,
-    };
+  ShadcnButtonSizeTheme sizeTheme(
+    ShadcnThemeData theme,
+    ShadcnButtonSize size,
+  ) {
+    switch (size) {
+      case ShadcnButtonSize.sm:
+        return buttonTheme(theme).sizesTheme!.sm!;
+      case ShadcnButtonSize.lg:
+        return buttonTheme(theme).sizesTheme!.lg!;
+      case ShadcnButtonSize.icon:
+        return buttonTheme(theme).sizesTheme!.icon!;
+      case ShadcnButtonSize.$default:
+        return buttonTheme(theme).sizesTheme!.$default!;
+    }
+  }
+
+  double defaultHeightForSize(ShadcnThemeData theme, ShadcnButtonSize size) {
+    return sizeTheme(theme, size).height;
   }
 
   double height(ShadcnThemeData theme) {
     if (widget.height != null) return widget.height!;
     if (widget.size != null) {
-      return defaultHeightForSize(widget.size!);
+      return defaultHeightForSize(theme, widget.size!);
     }
-    if (buttonTheme(theme).height != null) {
-      return buttonTheme(theme).height!;
-    }
-    return defaultHeightForSize(size(theme) ?? ShadcnButtonSize.$default);
+    return defaultHeightForSize(theme, buttonTheme(theme).size);
   }
 
-  double? defaultWidthForSize(ShadcnButtonSize size) {
-    return switch (size) {
-      ShadcnButtonSize.icon => 40,
-      _ => null,
-    };
-  }
-
-  ShadcnButtonSize? size(ShadcnThemeData theme) {
-    if (widget.size != null) return widget.size!;
-    if (buttonTheme(theme).size != null) {
-      return buttonTheme(theme).size!;
-    }
-    return null;
+  double? defaultWidthForSize(ShadcnThemeData theme, ShadcnButtonSize size) {
+    return sizeTheme(theme, size).width;
   }
 
   double? width(ShadcnThemeData theme) {
     if (widget.width != null) return widget.width!;
     if (widget.size != null) {
-      return defaultWidthForSize(widget.size!);
+      return defaultWidthForSize(theme, widget.size!);
     }
-    if (buttonTheme(theme).width != null) {
-      return buttonTheme(theme).width!;
-    }
-    return defaultWidthForSize(size(theme) ?? ShadcnButtonSize.$default);
+    return defaultWidthForSize(theme, buttonTheme(theme).size);
   }
 
-  EdgeInsets defaultPaddingForSize(ShadcnButtonSize size) {
-    return switch (size) {
-      ShadcnButtonSize.$default =>
-        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      ShadcnButtonSize.sm => const EdgeInsets.symmetric(horizontal: 12),
-      ShadcnButtonSize.lg =>
-        const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-      ShadcnButtonSize.icon => EdgeInsets.zero,
-    };
+  EdgeInsets defaultPaddingForSize(
+    ShadcnThemeData theme,
+    ShadcnButtonSize size,
+  ) {
+    return sizeTheme(theme, size).padding;
   }
 
   EdgeInsets padding(ShadcnThemeData theme) {
     if (widget.padding != null) return widget.padding!;
-    if (size(theme) != null) {
-      return defaultPaddingForSize(size(theme)!);
+    if (widget.size != null) {
+      return defaultPaddingForSize(theme, widget.size!);
     }
-    if (buttonTheme(theme).padding != null) {
-      return buttonTheme(theme).padding!;
-    }
-    return defaultPaddingForSize(ShadcnButtonSize.$default);
+    return defaultPaddingForSize(theme, buttonTheme(theme).size);
   }
 
   Color? background(ShadcnThemeData theme) {
