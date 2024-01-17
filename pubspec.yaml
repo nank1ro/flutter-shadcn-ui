@@ -1,7 +1,11 @@
 name: shadcn_ui
-description: "shadcn-ui ported in Flutter"
+description: shadcn-ui ported in Flutter. Awesome UI components for Flutter, fully customizable.
 version: 0.0.0
-homepage: https://github.com/nank1ro/shadcn-ui
+homepage: https://mariuti.com/shadcn-ui
+repository: https://github.com/nank1ro/shadcn-ui
+documentation: https://mariuti.com/shadcn-ui
+topics:
+  - ui
 
 environment:
   sdk: ^3.0.0

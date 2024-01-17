@@ -8,9 +8,9 @@ Current progress:
 - [ ] Accordion
 - [ ] Alert
 - [ ] Dialog
-- [x] Avatar
-- [x] Badge
-- [x] Button
+- [x] [Avatar](https://mariuti.com/shadcn-ui/components/avatar/)
+- [x] [Badge](https://mariuti.com/shadcn-ui/components/badge/)
+- [x] [Button](https://mariuti.com/shadcn-ui/components/button/)
 - [ ] Calendar
 - [ ] Card
 - [ ] Carousel
@@ -25,6 +25,7 @@ Current progress:
 - [ ] Dropdown Menu
 - [ ] Form (?)
 - [ ] Hover Card
+- [x] [Image](https://mariuti.com/shadcn-ui/components/image/)
 - [ ] Input
 - [ ] Label
 - [ ] Menubar
