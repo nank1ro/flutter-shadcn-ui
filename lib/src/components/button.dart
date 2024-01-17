@@ -293,13 +293,15 @@ class _ShadcnButtonState extends State<ShadcnButton> {
   ) {
     switch (size) {
       case ShadcnButtonSize.sm:
-        return buttonTheme(theme).sizesTheme!.sm!;
+        return buttonTheme(theme).sizesTheme?.sm ?? theme.buttonSizesTheme.sm!;
       case ShadcnButtonSize.lg:
-        return buttonTheme(theme).sizesTheme!.lg!;
+        return buttonTheme(theme).sizesTheme?.lg ?? theme.buttonSizesTheme.lg!;
       case ShadcnButtonSize.icon:
-        return buttonTheme(theme).sizesTheme!.icon!;
+        return buttonTheme(theme).sizesTheme?.icon ??
+            theme.buttonSizesTheme.icon!;
       case ShadcnButtonSize.regular:
-        return buttonTheme(theme).sizesTheme!.regular!;
+        return buttonTheme(theme).sizesTheme?.regular ??
+            theme.buttonSizesTheme.regular!;
     }
   }
 
