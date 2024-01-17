@@ -14,7 +14,7 @@ class ShadcnButtonTheme {
     this.merge = true,
     this.applyIconColorFilter = true,
     this.cursor,
-    this.size = ShadcnButtonSize.$default,
+    this.size = ShadcnButtonSize.regular,
     this.sizesTheme,
     this.backgroundColor,
     this.hoverBackgroundColor,
@@ -264,13 +264,13 @@ class ShadcnButtonSizeTheme {
 class ShadcnButtonSizesTheme {
   const ShadcnButtonSizesTheme({
     this.merge = true,
-    this.$default,
+    this.regular,
     this.sm,
     this.lg,
     this.icon,
   });
   final bool merge;
-  final ShadcnButtonSizeTheme? $default;
+  final ShadcnButtonSizeTheme? regular;
   final ShadcnButtonSizeTheme? sm;
   final ShadcnButtonSizeTheme? lg;
   final ShadcnButtonSizeTheme? icon;
@@ -282,7 +282,7 @@ class ShadcnButtonSizesTheme {
   ) {
     if (identical(a, b)) return a;
     return ShadcnButtonSizesTheme(
-      $default: ShadcnButtonSizeTheme.lerp(a?.$default, b?.$default, t),
+      regular: ShadcnButtonSizeTheme.lerp(a?.regular, b?.regular, t),
       sm: ShadcnButtonSizeTheme.lerp(a?.sm, b?.sm, t),
       lg: ShadcnButtonSizeTheme.lerp(a?.lg, b?.lg, t),
       icon: ShadcnButtonSizeTheme.lerp(a?.icon, b?.icon, t),
@@ -290,13 +290,13 @@ class ShadcnButtonSizesTheme {
   }
 
   ShadcnButtonSizesTheme copyWith({
-    ShadcnButtonSizeTheme? $default,
+    ShadcnButtonSizeTheme? regular,
     ShadcnButtonSizeTheme? sm,
     ShadcnButtonSizeTheme? lg,
     ShadcnButtonSizeTheme? icon,
   }) {
     return ShadcnButtonSizesTheme(
-      $default: $default ?? this.$default,
+      regular: regular ?? this.regular,
       sm: sm ?? this.sm,
       lg: lg ?? this.lg,
       icon: icon ?? this.icon,
@@ -307,7 +307,7 @@ class ShadcnButtonSizesTheme {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
-      $default: other.$default,
+      regular: other.regular,
       sm: other.sm,
       lg: other.lg,
       icon: other.icon,
@@ -318,7 +318,7 @@ class ShadcnButtonSizesTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is ShadcnButtonSizesTheme &&
-        other.$default == $default &&
+        other.regular == regular &&
         other.sm == sm &&
         other.lg == lg &&
         other.icon == icon;
@@ -326,5 +326,5 @@ class ShadcnButtonSizesTheme {
 
   @override
   int get hashCode =>
-      $default.hashCode ^ sm.hashCode ^ lg.hashCode ^ icon.hashCode;
+      regular.hashCode ^ sm.hashCode ^ lg.hashCode ^ icon.hashCode;
 }

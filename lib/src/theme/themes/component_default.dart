@@ -71,7 +71,7 @@ abstract class ShadcnComponentDefaultTheme {
 
   static ShadcnButtonSizesTheme buttonSizesTheme() {
     return const ShadcnButtonSizesTheme(
-      $default: ShadcnButtonSizeTheme(
+      regular: ShadcnButtonSizeTheme(
         height: 40,
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),

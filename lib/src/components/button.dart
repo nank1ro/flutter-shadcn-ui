@@ -20,7 +20,7 @@ enum ShadcnButtonVariant {
 }
 
 enum ShadcnButtonSize {
-  $default,
+  regular,
   sm,
   lg,
   icon,
@@ -298,8 +298,8 @@ class _ShadcnButtonState extends State<ShadcnButton> {
         return buttonTheme(theme).sizesTheme!.lg!;
       case ShadcnButtonSize.icon:
         return buttonTheme(theme).sizesTheme!.icon!;
-      case ShadcnButtonSize.$default:
-        return buttonTheme(theme).sizesTheme!.$default!;
+      case ShadcnButtonSize.regular:
+        return buttonTheme(theme).sizesTheme!.regular!;
     }
   }
 

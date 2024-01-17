@@ -14,7 +14,7 @@ class ButtonPage extends StatefulWidget {
 
 class _ButtonPageState extends State<ButtonPage> {
   final focusNode = FocusNode();
-  var size = ShadcnButtonSize.$default;
+  var size = ShadcnButtonSize.regular;
   var enabled = true;
 
   @override
