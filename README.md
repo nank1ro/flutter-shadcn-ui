@@ -49,7 +49,7 @@ Current progress:
 - [ ] Toast
 - [ ] Toggle
 - [ ] ToggleGroup
-- [ ] Tooltip
+- [x] [Tooltip](https://mariuti.com/shadcn-ui/components/tooltip/)
 
 
 

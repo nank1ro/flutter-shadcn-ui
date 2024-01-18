@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart'
         GlobalCupertinoLocalizations,
         GlobalMaterialLocalizations,
         GlobalWidgetsLocalizations;
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -382,7 +383,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
       behavior: widget.scrollBehavior,
       child: HeroControllerScope(
         controller: heroController,
-        child: result,
+        child: Portal(child: result),
       ),
     );
   }

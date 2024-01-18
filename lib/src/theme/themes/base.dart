@@ -3,6 +3,7 @@ import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 
 @immutable
 abstract class ShadcnBaseTheme {
@@ -23,6 +24,7 @@ abstract class ShadcnBaseTheme {
     required this.radius,
     required this.avatarTheme,
     required this.buttonSizesTheme,
+    required this.tooltipTheme,
   });
 
   final ShadcnColorScheme colorScheme;
@@ -41,4 +43,5 @@ abstract class ShadcnBaseTheme {
   final BorderRadius radius;
   final ShadcnAvatarTheme avatarTheme;
   final ShadcnButtonSizesTheme buttonSizesTheme;
+  final ShadcnTooltipTheme tooltipTheme;
 }
