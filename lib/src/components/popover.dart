@@ -7,22 +7,24 @@ import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
 /// Controls the visibility of a [ShadcnPopover].
 class ShadcnPopoverController extends ChangeNotifier {
-  ShadcnPopoverController();
-
+  /// Indicates if the popover is visible.
   bool isOpen = false;
 
+  /// Displays the popover.
   void show() {
     assert(isOpen == false, 'popover is already visible');
     isOpen = true;
     notifyListeners();
   }
 
+  /// Hides the popover.
   void hide() {
     assert(isOpen == true, 'popover is already hidden');
     isOpen = false;
     notifyListeners();
   }
 
+  /// Toggles the visibility of the popover.
   void toggle() => isOpen ? hide() : show();
 }
 
