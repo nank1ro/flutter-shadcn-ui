@@ -24,7 +24,6 @@ class _TooltipPageState extends State<TooltipPage> {
     return BaseScaffold(
       appBarTitle: 'Tooltip',
       children: [
-        const SizedBox(height: 50),
         ShadcnTooltip(
           focusNode: focusNode,
           tooltip: const Text('Add to library'),

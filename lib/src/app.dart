@@ -7,7 +7,6 @@ import 'package:flutter_localizations/flutter_localizations.dart'
         GlobalCupertinoLocalizations,
         GlobalMaterialLocalizations,
         GlobalWidgetsLocalizations;
-import 'package:flutter_portal/flutter_portal.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -378,12 +377,11 @@ class _ShadcnAppState extends State<ShadcnApp> {
 
   @override
   Widget build(BuildContext context) {
-    final result = _buildApp(context);
     return ScrollConfiguration(
       behavior: widget.scrollBehavior,
       child: HeroControllerScope(
         controller: heroController,
-        child: Portal(child: result),
+        child: _buildApp(context),
       ),
     );
   }

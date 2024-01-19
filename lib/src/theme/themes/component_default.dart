@@ -170,6 +170,8 @@ abstract class ShadcnComponentDefaultTheme {
         color: colorScheme.popover,
         boxShadow: ShadcnShadows.md,
       ),
+      alignment: Alignment.topCenter,
+      childAlignment: Alignment.bottomCenter,
     );
   }
 }

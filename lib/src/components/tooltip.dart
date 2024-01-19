@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_portal/flutter_portal.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
+// import 'package:flutter_portal/flutter_portal.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
@@ -174,14 +175,14 @@ class _ShadcnTooltipState extends State<ShadcnTooltip> {
           setState(() => visible = false);
         }
       },
-      child: PortalTarget(
+      child: Portal(
         visible: visible,
-        anchor: Aligned(
-          target: effectiveAlignment,
-          follower: effectiveChildAlignment,
+        anchor: Anchor(
+          childAlignment: effectiveAlignment,
+          overlayAlignment: effectiveChildAlignment,
           offset: effectiveOffset,
         ),
-        portalFollower: tooltip,
+        overlay: tooltip,
         child: widget.child,
       ),
     );
