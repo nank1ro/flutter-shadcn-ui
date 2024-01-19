@@ -3,6 +3,7 @@ import 'package:example/pages/avatar.dart';
 import 'package:example/pages/badge.dart';
 import 'package:example/pages/button.dart';
 import 'package:example/pages/image.dart';
+import 'package:example/pages/popover.dart';
 import 'package:example/pages/tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
@@ -20,6 +21,7 @@ final routes = <String, WidgetBuilder>{
   '/avatar': (_) => const AvatarPage(),
   '/image': (_) => const ImagePage(),
   '/tooltip': (_) => const TooltipPage(),
+  '/popover': (_) => const PopoverPage(),
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-z])');
 

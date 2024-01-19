@@ -4,6 +4,7 @@ import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
@@ -172,6 +173,31 @@ abstract class ShadcnComponentDefaultTheme {
       ),
       alignment: Alignment.topCenter,
       childAlignment: Alignment.bottomCenter,
+    );
+  }
+
+  static ShadcnPopoverTheme popoverTheme({
+    required ShadcnColorScheme colorScheme,
+    required BorderRadius radius,
+  }) {
+    return ShadcnPopoverTheme(
+      effects: const [
+        FadeEffect(),
+        ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
+        MoveEffect(begin: Offset(0, 2), end: Offset.zero),
+      ],
+      shadows: ShadcnShadows.md,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        borderRadius: radius,
+        border: Border.all(
+          color: colorScheme.border,
+        ),
+        color: colorScheme.popover,
+        boxShadow: ShadcnShadows.md,
+      ),
+      alignment: Alignment.bottomCenter,
+      childAlignment: Alignment.topCenter,
     );
   }
 }

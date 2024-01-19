@@ -8,6 +8,7 @@ export 'src/components/avatar.dart';
 export 'src/components/badge.dart';
 export 'src/components/button.dart';
 export 'src/components/image.dart';
+export 'src/components/popover.dart';
 export 'src/components/tooltip.dart';
 
 // App Themes
