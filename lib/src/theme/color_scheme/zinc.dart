@@ -41,11 +41,11 @@ class ShadcnZincColorScheme extends ShadcnColorScheme {
     super.mutedForeground = const Color(0xff71717a),
     super.accent = const Color(0xfff4f4f5),
     super.accentForeground = const Color(0xff18181b),
-    super.destructive = const Color(0xffdc2626),
+    super.destructive = const Color(0xffef4444),
     super.destructiveForeground = const Color(0xfffafafa),
     super.border = const Color(0xffe4e4e7),
     super.input = const Color(0xffe4e4e7),
-    super.ring = const Color(0xffa1a1aa),
+    super.ring = const Color(0xff18181b),
   });
 
   const ShadcnZincColorScheme.dark({
