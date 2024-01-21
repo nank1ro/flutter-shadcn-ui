@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 /// The theme for ShadcnButton.
 ///
@@ -28,7 +29,7 @@ class ShadcnButtonTheme {
     this.gradient,
     this.textDecoration,
     this.hoverTextDecoration,
-    this.focusBuilder,
+    this.decoration,
   });
   final bool merge;
   final bool applyIconColorFilter;
@@ -47,7 +48,7 @@ class ShadcnButtonTheme {
   final Gradient? gradient;
   final TextDecoration? textDecoration;
   final TextDecoration? hoverTextDecoration;
-  final FocusWidgetBuilder? focusBuilder;
+  final ShadcnDecorationTheme? decoration;
 
   static ShadcnButtonTheme lerp(
     ShadcnButtonTheme a,
@@ -79,8 +80,12 @@ class ShadcnButtonTheme {
       textDecoration: b.textDecoration,
       hoverTextDecoration: b.hoverTextDecoration,
       cursor: b.cursor,
-      focusBuilder: b.focusBuilder,
       size: b.size,
+      decoration: ShadcnDecorationTheme.lerp(
+        a.decoration,
+        b.decoration,
+        t,
+      ),
     );
   }
 
@@ -102,7 +107,7 @@ class ShadcnButtonTheme {
     Gradient? gradient,
     TextDecoration? textDecoration,
     TextDecoration? hoverTextDecoration,
-    FocusWidgetBuilder? focusBuilder,
+    ShadcnDecorationTheme? decoration,
   }) {
     return ShadcnButtonTheme(
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
@@ -123,7 +128,7 @@ class ShadcnButtonTheme {
       gradient: gradient ?? this.gradient,
       textDecoration: textDecoration ?? this.textDecoration,
       hoverTextDecoration: hoverTextDecoration ?? this.hoverTextDecoration,
-      focusBuilder: focusBuilder ?? this.focusBuilder,
+      decoration: decoration ?? this.decoration,
     );
   }
 
@@ -146,7 +151,7 @@ class ShadcnButtonTheme {
       gradient: other.gradient,
       textDecoration: other.textDecoration,
       hoverTextDecoration: other.hoverTextDecoration,
-      focusBuilder: other.focusBuilder,
+      decoration: other.decoration,
     );
   }
 
@@ -171,7 +176,7 @@ class ShadcnButtonTheme {
         other.gradient == gradient &&
         other.textDecoration == textDecoration &&
         other.hoverTextDecoration == hoverTextDecoration &&
-        other.focusBuilder == focusBuilder;
+        other.decoration == decoration;
   }
 
   @override
@@ -192,7 +197,7 @@ class ShadcnButtonTheme {
         gradient.hashCode ^
         textDecoration.hashCode ^
         hoverTextDecoration.hashCode ^
-        focusBuilder.hashCode;
+        decoration.hashCode;
   }
 }
 

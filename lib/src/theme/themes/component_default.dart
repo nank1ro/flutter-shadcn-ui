@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
@@ -198,6 +199,21 @@ abstract class ShadcnComponentDefaultTheme {
       ),
       alignment: Alignment.bottomCenter,
       childAlignment: Alignment.topCenter,
+    );
+  }
+
+  static ShadcnDecorationTheme decoration({
+    required ShadcnColorScheme colorScheme,
+    required BorderRadius radius,
+  }) {
+    return ShadcnDecorationTheme(
+      border: const ShadcnBorder(padding: EdgeInsets.all(4)),
+      focusedBorder: ShadcnBorder(
+        width: 2,
+        color: colorScheme.ring,
+        radius: radius.add(radius / 2),
+        padding: const EdgeInsets.all(2),
+      ),
     );
   }
 }

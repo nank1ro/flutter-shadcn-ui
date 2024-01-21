@@ -175,9 +175,9 @@ class _ShadcnTooltipState extends State<ShadcnTooltip> {
           setState(() => visible = false);
         }
       },
-      child: Portal(
+      child: ShadcnPortal(
         visible: visible,
-        anchor: Anchor(
+        anchor: ShadcnAnchor(
           childAlignment: effectiveAlignment,
           overlayAlignment: effectiveChildAlignment,
           offset: effectiveOffset,

@@ -33,7 +33,8 @@ class ShadcnPopover extends StatefulWidget {
     super.key,
     required this.child,
     required this.popover,
-    required this.controller,
+    this.controller,
+    this.visible,
     this.focusNode,
     this.waitDuration,
     this.showDuration,
@@ -44,7 +45,10 @@ class ShadcnPopover extends StatefulWidget {
     this.childAlignment,
     this.padding,
     this.decoration,
-  });
+  }) : assert(
+          (controller != null) ^ (visible != null),
+          'Either controller or visible must be provided',
+        );
 
   /// The widget displayed as a popover.
   final Widget popover;
@@ -53,7 +57,9 @@ class ShadcnPopover extends StatefulWidget {
   final Widget child;
 
   /// The controller that controls the visibility of the [popover].
-  final ShadcnPopoverController controller;
+  final ShadcnPopoverController? controller;
+
+  final bool? visible;
 
   /// The focus node of the child, the [popover] will be shown when focused.
   final FocusNode? focusNode;
@@ -117,6 +123,35 @@ class ShadcnPopover extends StatefulWidget {
 }
 
 class _ShadcnPopoverState extends State<ShadcnPopover> {
+  late final ShadcnPopoverController? _controller;
+  ShadcnPopoverController get controller => widget.controller ?? _controller!;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller == null) {
+      _controller = ShadcnPopoverController();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadcnPopover oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.visible != null) {
+      if (widget.visible! && !controller.isOpen) {
+        controller.show();
+      } else if (!widget.visible! && controller.isOpen) {
+        controller.hide();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadcnTheme.of(context);
@@ -154,12 +189,12 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
     }
 
     return ListenableBuilder(
-      listenable: widget.controller,
+      listenable: controller,
       builder: (context, _) {
-        return Portal(
+        return ShadcnPortal(
           overlay: popover,
-          visible: widget.controller.isOpen,
-          anchor: Anchor(
+          visible: controller.isOpen,
+          anchor: ShadcnAnchor(
             childAlignment: effectiveAlignment,
             overlayAlignment: effectiveChildAlignment,
             offset: effectiveOffset,

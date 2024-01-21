@@ -12,6 +12,13 @@ class PopoverPage extends StatefulWidget {
 class _PopoverPageState extends State<PopoverPage> {
   final popoverController = ShadcnPopoverController();
 
+  final List<({String name, String initialValue})> layer = [
+    (name: 'Width', initialValue: '100%'),
+    (name: 'Max. width', initialValue: '300px'),
+    (name: 'Height', initialValue: '25px'),
+    (name: 'Max. height', initialValue: 'none'),
+  ];
+
   @override
   void dispose() {
     popoverController.dispose();
@@ -25,9 +32,10 @@ class _PopoverPageState extends State<PopoverPage> {
       children: [
         ShadcnPopover(
           controller: popoverController,
-          popover: Container(
+          popover: SizedBox(
             width: 288,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Builder(builder: (context) {
@@ -36,16 +44,26 @@ class _PopoverPageState extends State<PopoverPage> {
                     style: Theme.of(context).textTheme.titleMedium,
                   );
                 }),
-                Text('Set the dimensions for the layer.'),
-                Row(
-                  children: [
-                    Expanded(child: Text('Width')),
-                    Expanded(
-                      flex: 2,
-                      child: TextField(),
-                    )
-                  ],
-                )
+                const Text('Set the dimensions for the layer.'),
+                const SizedBox(height: 4),
+                ...layer
+                    .map((e) => Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                                child: Text(
+                              e.name,
+                              textAlign: TextAlign.start,
+                            )),
+                            Expanded(
+                              flex: 2,
+                              child: ShadcnInput(
+                                initialValue: e.initialValue,
+                              ),
+                            )
+                          ],
+                        ))
+                    .toList(),
               ],
             ),
           ),

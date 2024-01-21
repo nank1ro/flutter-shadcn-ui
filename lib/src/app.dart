@@ -436,6 +436,37 @@ class _ShadcnAppState extends State<ShadcnApp> {
             ),
             scaffoldBackgroundColor: themeData.colorScheme.background,
             brightness: themeData.brightness,
+            inputDecorationTheme: InputDecorationTheme(
+              // TODO(nank1ro): refactor after we have ShadcnTextTheme
+              hintStyle: TextStyle(
+                fontSize: 14,
+                height: 20 / 14,
+                color: themeData.colorScheme.mutedForeground,
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ),
+              constraints: const BoxConstraints.tightFor(height: 40),
+              border: OutlineInputBorder(
+                borderRadius: themeData.radius,
+                borderSide: BorderSide(
+                  color: themeData.colorScheme.border,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: themeData.radius,
+                borderSide: BorderSide(
+                  color: themeData.colorScheme.border,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: themeData.radius,
+                borderSide: BorderSide(
+                  color: themeData.colorScheme.border,
+                ),
+              ),
+            ),
           ),
       child: AnimatedShadcnTheme(
         curve: widget.themeCurve,
