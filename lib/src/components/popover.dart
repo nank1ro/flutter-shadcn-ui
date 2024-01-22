@@ -35,6 +35,7 @@ class ShadcnPopover extends StatefulWidget {
     required this.popover,
     this.controller,
     this.visible,
+    this.closeOnTapOutside = true,
     this.focusNode,
     this.waitDuration,
     this.showDuration,
@@ -59,7 +60,11 @@ class ShadcnPopover extends StatefulWidget {
   /// The controller that controls the visibility of the [popover].
   final ShadcnPopoverController? controller;
 
+  /// Indicates if the popover should be visible.
   final bool? visible;
+
+  /// Closes the popover when the user taps outside, defaults to true.
+  final bool closeOnTapOutside;
 
   /// The focus node of the child, the [popover] will be shown when focused.
   final FocusNode? focusNode;
@@ -184,6 +189,14 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
     if (effectiveEffects.isNotEmpty) {
       popover = Animate(
         effects: effectiveEffects,
+        child: popover,
+      );
+    }
+
+    if (widget.closeOnTapOutside) {
+      popover = TapRegion(
+        behavior: HitTestBehavior.opaque,
+        onTapOutside: (_) => controller.hide(),
         child: popover,
       );
     }
