@@ -27,6 +27,7 @@ class _PopoverPageState extends State<PopoverPage> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = ShadcnTheme.of(context).textTheme;
     return BaseScaffold(
       appBarTitle: 'Popover',
       children: [
@@ -41,10 +42,13 @@ class _PopoverPageState extends State<PopoverPage> {
                 Builder(builder: (context) {
                   return Text(
                     'Dimensions',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: textTheme.h4,
                   );
                 }),
-                const Text('Set the dimensions for the layer.'),
+                Text(
+                  'Set the dimensions for the layer.',
+                  style: textTheme.p,
+                ),
                 const SizedBox(height: 4),
                 ...layer
                     .map((e) => Row(
