@@ -534,7 +534,8 @@ class _ShadcnButtonState extends State<ShadcnButton> {
                                     valueListenable: isPressed,
                                     builder: (context, pressed, child) {
                                       return DefaultTextStyle(
-                                        style: TextStyle(
+                                        style: shadcnTheme.textTheme.small
+                                            .copyWith(
                                           color: hasPressedForegroundColor &&
                                                   pressed
                                               ? pressedForegroundColor(

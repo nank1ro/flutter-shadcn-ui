@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
+import 'package:shadcn_ui/src/theme/text_theme/data.dart';
 
 @immutable
 abstract class ShadcnBaseTheme {
@@ -29,6 +30,7 @@ abstract class ShadcnBaseTheme {
     required this.tooltipTheme,
     required this.popoverTheme,
     required this.decoration,
+    required this.textTheme,
   });
 
   final ShadcnColorScheme colorScheme;
@@ -50,4 +52,5 @@ abstract class ShadcnBaseTheme {
   final ShadcnTooltipTheme tooltipTheme;
   final ShadcnPopoverTheme popoverTheme;
   final ShadcnDecorationTheme decoration;
+  final ShadcnTextThemeData textTheme;
 }

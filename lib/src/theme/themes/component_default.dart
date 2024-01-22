@@ -1,12 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
+import 'package:shadcn_ui/src/theme/text_theme/data.dart';
+import 'package:shadcn_ui/src/theme/text_theme/defaults.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
 abstract class ShadcnComponentDefaultTheme {
@@ -214,6 +216,26 @@ abstract class ShadcnComponentDefaultTheme {
         radius: radius.add(radius / 2),
         padding: const EdgeInsets.all(2),
       ),
+    );
+  }
+
+  static ShadcnTextThemeData textTheme({
+    required ShadcnColorScheme colorScheme,
+  }) {
+    return ShadcnTextThemeData(
+      h1Large: ShadcnTextDefaultTheme.h1Large(colorScheme: colorScheme),
+      h1: ShadcnTextDefaultTheme.h1(colorScheme: colorScheme),
+      h2: ShadcnTextDefaultTheme.h2(colorScheme: colorScheme),
+      h3: ShadcnTextDefaultTheme.h3(colorScheme: colorScheme),
+      h4: ShadcnTextDefaultTheme.h4(colorScheme: colorScheme),
+      p: ShadcnTextDefaultTheme.p(colorScheme: colorScheme),
+      blockquote: ShadcnTextDefaultTheme.blockquote(colorScheme: colorScheme),
+      table: ShadcnTextDefaultTheme.table(colorScheme: colorScheme),
+      list: ShadcnTextDefaultTheme.list(colorScheme: colorScheme),
+      lead: ShadcnTextDefaultTheme.lead(colorScheme: colorScheme),
+      large: ShadcnTextDefaultTheme.large(colorScheme: colorScheme),
+      small: ShadcnTextDefaultTheme.small(colorScheme: colorScheme),
+      muted: ShadcnTextDefaultTheme.muted(colorScheme: colorScheme),
     );
   }
 }

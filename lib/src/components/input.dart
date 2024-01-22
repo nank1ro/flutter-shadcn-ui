@@ -266,11 +266,8 @@ class _ShadcnInputState extends State<ShadcnInput>
   @override
   Widget build(BuildContext context) {
     final theme = ShadcnTheme.of(context);
-    // TODO(nank1ro): refactor after we have ShadcnTextTheme
     final effectiveTextStyle = widget.style ??
-        TextStyle(
-          fontSize: 14,
-          height: 20 / 14,
+        theme.textTheme.muted.copyWith(
           color: theme.colorScheme.foreground,
         );
     return ValueListenableBuilder(
@@ -288,6 +285,9 @@ class _ShadcnInputState extends State<ShadcnInput>
                     .applyDefaults(Theme.of(context).inputDecorationTheme)
                     .copyWith(
                       hintText: widget.placeholder,
+                      hintStyle: effectiveTextStyle.copyWith(
+                        color: theme.colorScheme.mutedForeground,
+                      ),
                     ),
                 child: child,
               );

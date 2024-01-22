@@ -6,6 +6,7 @@ import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
+import 'package:shadcn_ui/src/theme/text_theme/data.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
 import 'package:shadcn_ui/src/theme/themes/component_default.dart';
 
@@ -31,6 +32,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     ShadcnTooltipTheme? tooltipTheme,
     ShadcnPopoverTheme? popoverTheme,
     ShadcnDecorationTheme? decoration,
+    ShadcnTextThemeData? textTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -87,6 +89,8 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         colorScheme: colorScheme,
         radius: effectiveRadius,
       ).mergeWith(decoration),
+      textTheme: ShadcnComponentDefaultTheme.textTheme(colorScheme: colorScheme)
+          .mergeWith(textTheme),
     );
   }
 
@@ -110,6 +114,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     required super.tooltipTheme,
     required super.popoverTheme,
     required super.decoration,
+    required super.textTheme,
   });
 
   static ShadcnThemeData lerp(ShadcnThemeData a, ShadcnThemeData b, double t) {
@@ -161,6 +166,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       tooltipTheme: ShadcnTooltipTheme.lerp(a.tooltipTheme, b.tooltipTheme, t),
       popoverTheme: ShadcnPopoverTheme.lerp(a.popoverTheme, b.popoverTheme, t),
       decoration: ShadcnDecorationTheme.lerp(a.decoration, b.decoration, t),
+      textTheme: ShadcnTextThemeData.lerp(a.textTheme, b.textTheme, t),
     );
   }
 
@@ -186,7 +192,8 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         other.buttonSizesTheme == buttonSizesTheme &&
         other.tooltipTheme == tooltipTheme &&
         other.popoverTheme == popoverTheme &&
-        other.decoration == decoration;
+        other.decoration == decoration &&
+        other.textTheme == textTheme;
   }
 
   @override
@@ -208,7 +215,8 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         buttonSizesTheme.hashCode ^
         tooltipTheme.hashCode ^
         popoverTheme.hashCode ^
-        decoration.hashCode;
+        decoration.hashCode ^
+        textTheme.hashCode;
   }
 
   ShadcnThemeData copyWith({
@@ -231,6 +239,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     ShadcnTooltipTheme? tooltipTheme,
     ShadcnPopoverTheme? popoverTheme,
     ShadcnDecorationTheme? decoration,
+    ShadcnTextThemeData? textTheme,
   }) {
     return ShadcnThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -254,6 +263,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       tooltipTheme: tooltipTheme ?? this.tooltipTheme,
       popoverTheme: popoverTheme ?? this.popoverTheme,
       decoration: decoration ?? this.decoration,
+      textTheme: textTheme ?? this.textTheme,
     );
   }
 }

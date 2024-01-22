@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 @immutable
 abstract class ShadcnBaseTextTheme {
   const ShadcnBaseTextTheme({
+    required this.h1Large,
     required this.h1,
     required this.h2,
     required this.h3,
@@ -17,6 +18,7 @@ abstract class ShadcnBaseTextTheme {
     required this.muted,
   });
 
+  final TextStyle h1Large;
   final TextStyle h1;
   final TextStyle h2;
   final TextStyle h3;

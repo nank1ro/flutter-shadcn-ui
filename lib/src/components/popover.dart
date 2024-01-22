@@ -123,7 +123,7 @@ class ShadcnPopover extends StatefulWidget {
 }
 
 class _ShadcnPopoverState extends State<ShadcnPopover> {
-  late final ShadcnPopoverController? _controller;
+  ShadcnPopoverController? _controller;
   ShadcnPopoverController get controller => widget.controller ?? _controller!;
 
   @override

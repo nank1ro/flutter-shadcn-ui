@@ -141,9 +141,8 @@ class _ShadcnTooltipState extends State<ShadcnTooltip> {
       padding: effectivePadding,
       decoration: effectiveDecoration?.copyWith(boxShadow: effectiveShadows),
       child: DefaultTextStyle(
-        style: TextStyle(
-          color: theme.colorScheme.popoverForeground,
-        ),
+        style: theme.textTheme.muted
+            .copyWith(color: theme.colorScheme.popoverForeground),
         textAlign: TextAlign.center,
         child: widget.tooltip,
       ),
