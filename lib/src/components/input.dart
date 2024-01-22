@@ -303,8 +303,9 @@ class _ShadcnInputState extends State<ShadcnInput>
                 backgroundCursorColor: Colors.grey,
                 selectionColor: focused
                     ? widget.selectionColor ??
-                        Colors.blue[
-                            theme.brightness == Brightness.light ? 100 : 700]
+                        (theme.brightness == Brightness.dark
+                            ? const Color(0xFF355172)
+                            : const Color(0xFFB4D7FF))
                     : null,
                 keyboardType: widget.keyboardType,
                 textInputAction: widget.textInputAction,
