@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 
 @immutable
-class ShadcnZincColorScheme extends ShadcnColorScheme {
-  const ShadcnZincColorScheme({
+class ShadcnRoseColorScheme extends ShadcnColorScheme {
+  const ShadcnRoseColorScheme({
     required super.background,
     required super.foreground,
     required super.card,
@@ -26,15 +26,15 @@ class ShadcnZincColorScheme extends ShadcnColorScheme {
     required super.ring,
   });
 
-  const ShadcnZincColorScheme.light({
-    super.background = const Color(0xFFFFFFFF),
+  const ShadcnRoseColorScheme.light({
+    super.background = const Color(0xffffffff),
     super.foreground = const Color(0xff09090b),
     super.card = const Color(0xffffffff),
     super.cardForeground = const Color(0xff09090b),
     super.popover = const Color(0xffffffff),
     super.popoverForeground = const Color(0xff09090b),
-    super.primary = const Color(0xff18181b),
-    super.primaryForeground = const Color(0xfffafafa),
+    super.primary = const Color(0xffe11d48),
+    super.primaryForeground = const Color(0xfffff1f2),
     super.secondary = const Color(0xfff4f4f5),
     super.secondaryForeground = const Color(0xff18181b),
     super.muted = const Color(0xfff4f4f5),
@@ -45,28 +45,28 @@ class ShadcnZincColorScheme extends ShadcnColorScheme {
     super.destructiveForeground = const Color(0xfffafafa),
     super.border = const Color(0xffe4e4e7),
     super.input = const Color(0xffe4e4e7),
-    super.ring = const Color(0xff18181b),
+    super.ring = const Color(0xffe11d48),
   });
 
-  const ShadcnZincColorScheme.dark({
-    super.background = const Color(0xff09090b),
-    super.foreground = const Color(0xfffafafa),
-    super.card = const Color(0xff09090b),
-    super.cardForeground = const Color(0xfffafafa),
-    super.popover = const Color(0xff09090b),
-    super.popoverForeground = const Color(0xfffafafa),
-    super.primary = const Color(0xfffafafa),
-    super.primaryForeground = const Color(0xff18181b),
+  const ShadcnRoseColorScheme.dark({
+    super.background = const Color(0xff0c0a09),
+    super.foreground = const Color(0xfff2f2f2),
+    super.card = const Color(0xff1c1917),
+    super.cardForeground = const Color(0xfff2f2f2),
+    super.popover = const Color(0xff171717),
+    super.popoverForeground = const Color(0xfff2f2f2),
+    super.primary = const Color(0xffe11d48),
+    super.primaryForeground = const Color(0xfffff1f2),
     super.secondary = const Color(0xff27272a),
     super.secondaryForeground = const Color(0xfffafafa),
-    super.muted = const Color(0xff27272a),
+    super.muted = const Color(0xff262626),
     super.mutedForeground = const Color(0xffa1a1aa),
-    super.accent = const Color(0xff27272a),
+    super.accent = const Color(0xff292524),
     super.accentForeground = const Color(0xfffafafa),
     super.destructive = const Color(0xff7f1d1d),
-    super.destructiveForeground = const Color(0xfffafafa),
+    super.destructiveForeground = const Color(0xfffef2f2),
     super.border = const Color(0xff27272a),
     super.input = const Color(0xff27272a),
-    super.ring = const Color(0xffd4d4d8),
+    super.ring = const Color(0xffe11d48),
   });
 }
