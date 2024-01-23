@@ -22,6 +22,7 @@ class ShadcnColorScheme {
     required this.border,
     required this.input,
     required this.ring,
+    required this.selectionColor,
   });
 
   final Color background;
@@ -43,6 +44,7 @@ class ShadcnColorScheme {
   final Color border;
   final Color input;
   final Color ring;
+  final Color selectionColor;
 
   static ShadcnColorScheme lerp(
     ShadcnColorScheme a,
@@ -73,6 +75,7 @@ class ShadcnColorScheme {
       border: Color.lerp(a.border, b.border, t)!,
       input: Color.lerp(a.input, b.input, t)!,
       ring: Color.lerp(a.ring, b.ring, t)!,
+      selectionColor: Color.lerp(a.selectionColor, b.selectionColor, t)!,
     );
   }
 
@@ -99,7 +102,8 @@ class ShadcnColorScheme {
         other.destructiveForeground == destructiveForeground &&
         other.border == border &&
         other.input == input &&
-        other.ring == ring;
+        other.ring == ring &&
+        other.selectionColor == selectionColor;
   }
 
   @override
@@ -122,6 +126,7 @@ class ShadcnColorScheme {
         destructiveForeground.hashCode ^
         border.hashCode ^
         input.hashCode ^
-        ring.hashCode;
+        ring.hashCode ^
+        selectionColor.hashCode;
   }
 }
