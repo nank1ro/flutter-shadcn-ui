@@ -28,50 +28,54 @@ class _PopoverPageState extends State<PopoverPage> {
   Widget build(BuildContext context) {
     final textTheme = ShadcnTheme.of(context).textTheme;
     return Scaffold(
-      body: Center(
-        child: ShadcnPopover(
-          controller: popoverController,
-          popover: SizedBox(
-            width: 288,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Builder(builder: (context) {
-                  return Text(
-                    'Dimensions',
-                    style: textTheme.h4,
-                  );
-                }),
-                Text(
-                  'Set the dimensions for the layer.',
-                  style: textTheme.p,
-                ),
-                const SizedBox(height: 4),
-                ...layer
-                    .map((e) => Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                child: Text(
-                              e.name,
-                              textAlign: TextAlign.start,
-                            )),
-                            Expanded(
-                              flex: 2,
-                              child: ShadcnInput(
-                                initialValue: e.initialValue,
-                              ),
-                            )
-                          ],
-                        ))
-                    .toList(),
-              ],
+      body: Padding(
+        padding: const EdgeInsets.only(top: 24),
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ShadcnPopover(
+            controller: popoverController,
+            popover: SizedBox(
+              width: 288,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Builder(builder: (context) {
+                    return Text(
+                      'Dimensions',
+                      style: textTheme.h4,
+                    );
+                  }),
+                  Text(
+                    'Set the dimensions for the layer.',
+                    style: textTheme.p,
+                  ),
+                  const SizedBox(height: 4),
+                  ...layer
+                      .map((e) => Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                  child: Text(
+                                e.name,
+                                textAlign: TextAlign.start,
+                              )),
+                              Expanded(
+                                flex: 2,
+                                child: ShadcnInput(
+                                  initialValue: e.initialValue,
+                                ),
+                              )
+                            ],
+                          ))
+                      .toList(),
+                ],
+              ),
             ),
-          ),
-          child: ShadcnButton.outline(
-            text: const Text('Open popover'),
-            onPressed: popoverController.toggle,
+            child: ShadcnButton.outline(
+              text: const Text('Open popover'),
+              onPressed: popoverController.toggle,
+            ),
           ),
         ),
       ),
