@@ -17,7 +17,6 @@ dependencies:
   flutter_animate: ^4.4.0
   flutter_localizations:
     sdk: flutter
-  flutter_portal: ^1.1.4
   flutter_svg: ^2.0.9
   rive: ^0.12.4
   vector_graphics: ^1.1.9+2

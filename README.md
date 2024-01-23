@@ -26,12 +26,12 @@ Current progress:
 - [ ] Form (?)
 - [ ] Hover Card
 - [x] [Image](https://mariuti.com/shadcn-ui/components/image/)
-- [ ] Input
+- [x] [Input](https://mariuti.com/shadcn-ui/components/input/)
 - [ ] Label
 - [ ] Menubar
 - [ ] Navigation Menu
 - [ ] Pagination
-- [ ] Popover
+- [x] [Popover](https://mariuti.com/shadcn-ui/components/popover/)
 - [ ] Progress
 - [ ] RadioGroup
 - [ ] Resizable

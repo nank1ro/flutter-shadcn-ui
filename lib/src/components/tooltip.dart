@@ -141,9 +141,8 @@ class _ShadcnTooltipState extends State<ShadcnTooltip> {
       padding: effectivePadding,
       decoration: effectiveDecoration?.copyWith(boxShadow: effectiveShadows),
       child: DefaultTextStyle(
-        style: TextStyle(
-          color: theme.colorScheme.popoverForeground,
-        ),
+        style: theme.textTheme.muted
+            .copyWith(color: theme.colorScheme.popoverForeground),
         textAlign: TextAlign.center,
         child: widget.tooltip,
       ),
@@ -175,9 +174,9 @@ class _ShadcnTooltipState extends State<ShadcnTooltip> {
           setState(() => visible = false);
         }
       },
-      child: Portal(
+      child: ShadcnPortal(
         visible: visible,
-        anchor: Anchor(
+        anchor: ShadcnAnchor(
           childAlignment: effectiveAlignment,
           overlayAlignment: effectiveChildAlignment,
           offset: effectiveOffset,

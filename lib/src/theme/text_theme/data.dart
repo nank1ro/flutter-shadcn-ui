@@ -1,40 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/theme/text_theme/base.dart';
-import 'package:shadcn_ui/src/theme/text_theme/text_defaults.dart';
 
 @immutable
 class ShadcnTextThemeData extends ShadcnBaseTextTheme {
-  factory ShadcnTextThemeData({
-    TextStyle? h1,
-    TextStyle? h2,
-    TextStyle? h3,
-    TextStyle? h4,
-    TextStyle? p,
-    TextStyle? blockquote,
-    TextStyle? table,
-    TextStyle? list,
-    TextStyle? lead,
-    TextStyle? large,
-    TextStyle? small,
-    TextStyle? muted,
-  }) {
-    return ShadcnTextThemeData._internal(
-      h1: ShadcnTextDefaultTheme.h1().merge(h1),
-      h2: ShadcnTextDefaultTheme.h2().merge(h2),
-      h3: ShadcnTextDefaultTheme.h3().merge(h3),
-      h4: ShadcnTextDefaultTheme.h4().merge(h4),
-      p: ShadcnTextDefaultTheme.p().merge(p),
-      blockquote: ShadcnTextDefaultTheme.blockquote().merge(blockquote),
-      table: ShadcnTextDefaultTheme.table().merge(table),
-      list: ShadcnTextDefaultTheme.list().merge(list),
-      lead: ShadcnTextDefaultTheme.lead().merge(lead),
-      large: ShadcnTextDefaultTheme.large().merge(large),
-      small: ShadcnTextDefaultTheme.small().merge(small),
-      muted: ShadcnTextDefaultTheme.muted().merge(muted),
-    );
-  }
-
-  const ShadcnTextThemeData._internal({
+  const ShadcnTextThemeData({
+    this.merge = true,
+    required super.h1Large,
     required super.h1,
     required super.h2,
     required super.h3,
@@ -49,7 +20,10 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
     required super.muted,
   });
 
+  final bool merge;
+
   ShadcnTextThemeData copyWith({
+    TextStyle? h1Large,
     TextStyle? h1,
     TextStyle? h2,
     TextStyle? h3,
@@ -64,6 +38,8 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
     TextStyle? muted,
   }) {
     return ShadcnTextThemeData(
+      merge: merge,
+      h1Large: h1Large ?? this.h1Large,
       h1: h1 ?? this.h1,
       h2: h2 ?? this.h2,
       h3: h3 ?? this.h3,
@@ -81,7 +57,9 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
 
   ShadcnTextThemeData mergeWith(ShadcnTextThemeData? other) {
     if (other == null) return this;
+    if (!other.merge) return other;
     return copyWith(
+      h1Large: h1Large.merge(other.h1Large),
       h1: h1.merge(other.h1),
       h2: h2.merge(other.h2),
       h3: h3.merge(other.h3),
@@ -110,13 +88,25 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
     TextDecorationStyle? decorationStyle,
   }) {
     return ShadcnTextThemeData(
+      merge: merge,
+      h1Large: h1Large.apply(
+        fontFamily: fontFamily,
+        fontFamilyFallback: fontFamilyFallback,
+        package: package,
+        fontSizeFactor: fontSizeFactor,
+        fontSizeDelta: fontSizeDelta,
+        color: displayColor,
+        decoration: decoration,
+        decorationColor: decorationColor,
+        decorationStyle: decorationStyle,
+      ),
       h1: h1.apply(
         fontFamily: fontFamily,
         fontFamilyFallback: fontFamilyFallback,
         package: package,
         fontSizeFactor: fontSizeFactor,
         fontSizeDelta: fontSizeDelta,
-        color: displayColor, // TODO: Change color source
+        color: displayColor,
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
@@ -127,7 +117,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
         package: package,
         fontSizeFactor: fontSizeFactor,
         fontSizeDelta: fontSizeDelta,
-        color: displayColor, // TODO: Change color source
+        color: displayColor,
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
@@ -138,7 +128,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
         package: package,
         fontSizeFactor: fontSizeFactor,
         fontSizeDelta: fontSizeDelta,
-        color: displayColor, // TODO: Change color source
+        color: displayColor,
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
@@ -149,7 +139,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
         package: package,
         fontSizeFactor: fontSizeFactor,
         fontSizeDelta: fontSizeDelta,
-        color: displayColor, // TODO: Change color source
+        color: displayColor,
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
@@ -160,7 +150,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
         package: package,
         fontSizeFactor: fontSizeFactor,
         fontSizeDelta: fontSizeDelta,
-        color: bodyColor, // TODO: Change color source
+        color: bodyColor,
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
@@ -171,7 +161,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
         package: package,
         fontSizeFactor: fontSizeFactor,
         fontSizeDelta: fontSizeDelta,
-        color: bodyColor, // TODO: Change color source
+        color: bodyColor,
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
@@ -182,7 +172,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
         package: package,
         fontSizeFactor: fontSizeFactor,
         fontSizeDelta: fontSizeDelta,
-        color: bodyColor, // TODO: Change color source
+        color: bodyColor,
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
@@ -193,7 +183,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
         package: package,
         fontSizeFactor: fontSizeFactor,
         fontSizeDelta: fontSizeDelta,
-        color: bodyColor, // TODO: Change color source
+        color: bodyColor,
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
@@ -204,7 +194,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
         package: package,
         fontSizeFactor: fontSizeFactor,
         fontSizeDelta: fontSizeDelta,
-        color: bodyColor, // TODO: Change color source
+        color: bodyColor,
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
@@ -218,7 +208,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
-        color: bodyColor, // TODO: Change color source
+        color: bodyColor,
       ),
       small: small.apply(
         fontFamily: fontFamily,
@@ -229,7 +219,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
-        color: bodyColor, // TODO: Change color source
+        color: bodyColor,
       ),
       muted: muted.apply(
         fontFamily: fontFamily,
@@ -237,7 +227,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
         package: package,
         fontSizeFactor: fontSizeFactor,
         fontSizeDelta: fontSizeDelta,
-        color: bodyColor, // TODO: Change color source
+        color: bodyColor,
         decoration: decoration,
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
@@ -254,18 +244,19 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
       return a;
     }
     return ShadcnTextThemeData(
-      h1: TextStyle.lerp(a?.h1, b?.h1, t),
-      h2: TextStyle.lerp(a?.h2, b?.h2, t),
-      h3: TextStyle.lerp(a?.h3, b?.h3, t),
-      h4: TextStyle.lerp(a?.h4, b?.h4, t),
-      p: TextStyle.lerp(a?.p, b?.p, t),
-      blockquote: TextStyle.lerp(a?.blockquote, b?.blockquote, t),
-      table: TextStyle.lerp(a?.table, b?.table, t),
-      list: TextStyle.lerp(a?.list, b?.list, t),
-      lead: TextStyle.lerp(a?.lead, b?.lead, t),
-      large: TextStyle.lerp(a?.large, b?.large, t),
-      small: TextStyle.lerp(a?.small, b?.small, t),
-      muted: TextStyle.lerp(a?.muted, b?.muted, t),
+      h1Large: TextStyle.lerp(a!.h1Large, b!.h1Large, t)!,
+      h1: TextStyle.lerp(a.h1, b.h1, t)!,
+      h2: TextStyle.lerp(a.h2, b.h2, t)!,
+      h3: TextStyle.lerp(a.h3, b.h3, t)!,
+      h4: TextStyle.lerp(a.h4, b.h4, t)!,
+      p: TextStyle.lerp(a.p, b.p, t)!,
+      blockquote: TextStyle.lerp(a.blockquote, b.blockquote, t)!,
+      table: TextStyle.lerp(a.table, b.table, t)!,
+      list: TextStyle.lerp(a.list, b.list, t)!,
+      lead: TextStyle.lerp(a.lead, b.lead, t)!,
+      large: TextStyle.lerp(a.large, b.large, t)!,
+      small: TextStyle.lerp(a.small, b.small, t)!,
+      muted: TextStyle.lerp(a.muted, b.muted, t)!,
     );
   }
 
@@ -278,6 +269,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
       return false;
     }
     return other is ShadcnTextThemeData &&
+        other.h1Large == h1Large &&
         other.h1 == h1 &&
         other.h2 == h2 &&
         other.h3 == h3 &&
@@ -295,6 +287,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
   @override
   int get hashCode {
     return Object.hash(
+      h1Large,
       h1,
       h2,
       h3,

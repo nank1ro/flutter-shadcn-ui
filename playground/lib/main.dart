@@ -4,7 +4,10 @@ import 'package:playground/pages/avatar.dart';
 import 'package:playground/pages/badge.dart';
 import 'package:playground/pages/button.dart';
 import 'package:playground/pages/image.dart';
+import 'package:playground/pages/input.dart';
+import 'package:playground/pages/popover.dart';
 import 'package:playground/pages/tooltip.dart';
+import 'package:playground/pages/typography.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
@@ -74,6 +77,23 @@ final _router = GoRouter(
     GoRoute(
       path: '/tooltip',
       builder: (context, state) => const TooltipPage(),
+    ),
+    GoRoute(
+      path: '/input',
+      builder: (context, state) => const InputPage(),
+    ),
+    GoRoute(
+      path: '/popover',
+      builder: (context, state) => const PopoverPage(),
+    ),
+    GoRoute(
+      path: '/typography',
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ?? 'h1Large';
+        return TypographyPage(
+          style: TypographyStyle.values.byName(style),
+        );
+      },
     ),
   ],
 );

@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
-
-typedef FocusWidgetBuilder = Widget Function(
-  BuildContext context,
-  bool focused,
-  Widget child,
-);
 
 enum ShadcnButtonVariant {
   primary,
@@ -50,9 +45,9 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.shadows,
     this.gradient,
-    this.focusBuilder,
     this.textDecoration,
     this.hoverTextDecoration,
+    this.decoration,
   }) : variant = ShadcnButtonVariant.primary;
 
   const ShadcnButton.raw({
@@ -79,9 +74,9 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.shadows,
     this.gradient,
-    this.focusBuilder,
     this.textDecoration,
     this.hoverTextDecoration,
+    this.decoration,
   });
 
   const ShadcnButton.destructive({
@@ -107,9 +102,9 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.shadows,
     this.gradient,
-    this.focusBuilder,
     this.textDecoration,
     this.hoverTextDecoration,
+    this.decoration,
   }) : variant = ShadcnButtonVariant.destructive;
 
   const ShadcnButton.outline({
@@ -135,9 +130,9 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.shadows,
     this.gradient,
-    this.focusBuilder,
     this.textDecoration,
     this.hoverTextDecoration,
+    this.decoration,
   }) : variant = ShadcnButtonVariant.outline;
 
   const ShadcnButton.secondary({
@@ -163,9 +158,9 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.shadows,
     this.gradient,
-    this.focusBuilder,
     this.textDecoration,
     this.hoverTextDecoration,
+    this.decoration,
   }) : variant = ShadcnButtonVariant.secondary;
 
   const ShadcnButton.ghost({
@@ -191,9 +186,9 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.shadows,
     this.gradient,
-    this.focusBuilder,
     this.textDecoration,
     this.hoverTextDecoration,
+    this.decoration,
   }) : variant = ShadcnButtonVariant.ghost;
 
   const ShadcnButton.link({
@@ -218,9 +213,9 @@ class ShadcnButton extends StatefulWidget {
     this.pressedForegroundColor,
     this.shadows,
     this.gradient,
-    this.focusBuilder,
     this.textDecoration,
     this.hoverTextDecoration,
+    this.decoration,
   })  : variant = ShadcnButtonVariant.link,
         icon = null;
 
@@ -246,9 +241,9 @@ class ShadcnButton extends StatefulWidget {
   final Color? pressedForegroundColor;
   final List<BoxShadow>? shadows;
   final Gradient? gradient;
-  final FocusWidgetBuilder? focusBuilder;
   final TextDecoration? textDecoration;
   final TextDecoration? hoverTextDecoration;
+  final ShadcnDecorationTheme? decoration;
 
   @override
   State<ShadcnButton> createState() => _ShadcnButtonState();
@@ -439,6 +434,10 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     final applyIconColorFilter = widget.applyIconColorFilter ??
         shadcnTheme.primaryButtonTheme.applyIconColorFilter;
 
+    final effectiveDecoration = widget.decoration ??
+        buttonTheme(shadcnTheme).decoration ??
+        shadcnTheme.decoration;
+
     // Applies the foreground color filter to the icon if provided
     var icon = widget.icon;
     if (icon != null && applyIconColorFilter) {
@@ -469,34 +468,10 @@ class _ShadcnButtonState extends State<ShadcnButton> {
             child: ValueListenableBuilder(
               valueListenable: isFocused,
               builder: (context, focused, child) {
-                if (widget.focusBuilder != null) {
-                  return widget.focusBuilder!(context, focused, child!);
-                }
-                if (buttonTheme(shadcnTheme).focusBuilder != null) {
-                  return buttonTheme(shadcnTheme).focusBuilder!(
-                    context,
-                    focused,
-                    child!,
-                  );
-                }
-                if (!focused) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: child,
-                  );
-                }
-                final br = borderRadius(shadcnTheme);
-                return Container(
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: shadcnTheme.colorScheme.ring,
-                      width: 2,
-                    ),
-                    borderRadius: br.add(br / 2),
-                  ),
-                  padding: const EdgeInsets.all(2),
-                  child: child,
+                return ShadcnDecorator(
+                  decoration: effectiveDecoration,
+                  focused: focused,
+                  child: child!,
                 );
               },
               child: MouseRegion(
@@ -559,7 +534,8 @@ class _ShadcnButtonState extends State<ShadcnButton> {
                                     valueListenable: isPressed,
                                     builder: (context, pressed, child) {
                                       return DefaultTextStyle(
-                                        style: TextStyle(
+                                        style: shadcnTheme.textTheme.small
+                                            .copyWith(
                                           color: hasPressedForegroundColor &&
                                                   pressed
                                               ? pressedForegroundColor(
