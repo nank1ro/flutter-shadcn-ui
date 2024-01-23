@@ -39,12 +39,10 @@ class _PopoverPageState extends State<PopoverPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Builder(builder: (context) {
-                  return Text(
-                    'Dimensions',
-                    style: textTheme.h4,
-                  );
-                }),
+                Text(
+                  'Dimensions',
+                  style: textTheme.h4,
+                ),
                 Text(
                   'Set the dimensions for the layer.',
                   style: textTheme.p,
