@@ -7,6 +7,7 @@ export 'src/app.dart';
 export 'src/components/avatar.dart';
 export 'src/components/badge.dart';
 export 'src/components/button.dart';
+export 'src/components/card.dart';
 export 'src/components/image.dart';
 export 'src/components/input.dart';
 export 'src/components/popover.dart';
