@@ -6,6 +6,7 @@ import 'package:example/pages/image.dart';
 import 'package:example/pages/input.dart';
 import 'package:example/pages/popover.dart';
 import 'package:example/pages/tooltip.dart';
+import 'package:example/pages/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 
@@ -17,6 +18,7 @@ void main() {
 
 // Maps the routes to the specific widget page.
 final routes = <String, WidgetBuilder>{
+  '/typography': (_) => const TypographyPage(),
   '/button': (_) => const ButtonPage(),
   '/badge': (_) => const BadgePage(),
   '/avatar': (_) => const AvatarPage(),
