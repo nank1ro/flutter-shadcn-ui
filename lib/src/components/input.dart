@@ -302,7 +302,7 @@ class _ShadcnInputState extends State<ShadcnInput>
                 cursorColor: widget.cursorColor ?? theme.colorScheme.primary,
                 backgroundCursorColor: Colors.grey,
                 selectionColor: focused
-                    ? widget.selectionColor ?? theme.colorScheme.selectionColor
+                    ? widget.selectionColor ?? theme.colorScheme.selection
                     : null,
                 keyboardType: widget.keyboardType,
                 textInputAction: widget.textInputAction,
