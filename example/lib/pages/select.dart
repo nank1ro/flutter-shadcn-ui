@@ -8,17 +8,19 @@ class SelectPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const BaseScaffold(
+    return BaseScaffold(
       appBarTitle: 'Select',
       children: [
         ShadcnSelect(
-          options: [
+          placeholder: const Text('Select a fruit'),
+          options: const [
             ShadcnOption(value: 'apple', child: Text('Apple')),
             ShadcnOption(value: 'banana', child: Text('Banana')),
             ShadcnOption(value: 'blueberry', child: Text('Blueberry')),
             ShadcnOption(value: 'grapes', child: Text('Grapes')),
             ShadcnOption(value: 'pineapple', child: Text('Pineapple')),
           ],
+          selectedOptionBuilder: (context, value) => Text(value),
         ),
       ],
     );

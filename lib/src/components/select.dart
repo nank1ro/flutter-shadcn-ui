@@ -7,14 +7,23 @@ import 'package:shadcn_ui/src/raw_components/even_sized_column.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 
+typedef ShadcnSelectedOptionBuilder<T> = Widget Function(
+  BuildContext context,
+  T value,
+);
+
 class ShadcnSelect<T> extends StatefulWidget {
   const ShadcnSelect({
     super.key,
     required this.options,
-    this.child,
+    required this.selectedOptionBuilder,
+    this.placeholder,
+    this.initialValue,
   });
 
-  final Widget? child;
+  final T? initialValue;
+  final Widget? placeholder;
+  final ShadcnSelectedOptionBuilder<T> selectedOptionBuilder;
   final List<ShadcnOption<T>> options;
 
   static ShadcnSelectState<T> of<T>(BuildContext context) {
@@ -32,7 +41,7 @@ class ShadcnSelect<T> extends StatefulWidget {
 }
 
 class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
-  T? selected;
+  late T? selected = widget.initialValue;
   bool visible = false;
 
   void select(T value, {bool hideOptions = true}) {
@@ -75,7 +84,9 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
           ),
         ),
         child: ShadcnButton(
-          text: Text(selected?.toString() ?? 'Select'),
+          text: selected is T
+              ? widget.selectedOptionBuilder(context, selected as T)
+              : widget.placeholder,
           onPressed: () {
             setState(() {
               visible = !visible;
