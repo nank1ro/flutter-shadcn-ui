@@ -8,25 +8,6 @@ import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-@immutable
-class ShadcnSelectedOption<T> {
-  const ShadcnSelectedOption({
-    required this.value,
-  });
-
-  final T? value;
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ShadcnSelectedOption<T> && other.value == value;
-  }
-
-  @override
-  int get hashCode => value.hashCode;
-}
-
 class ShadcnSelect<T> extends StatefulWidget {
   const ShadcnSelect({
     super.key,
@@ -37,13 +18,13 @@ class ShadcnSelect<T> extends StatefulWidget {
   final Widget? child;
   final List<ShadcnOption<T>> options;
 
-  static ShadcnSelectState<dynamic> of(BuildContext context) {
-    return maybeOf(context)!;
+  static ShadcnSelectState<T> of<T>(BuildContext context) {
+    return maybeOf<T>(context)!;
   }
 
-  static ShadcnSelectState<dynamic>? maybeOf(BuildContext context) {
+  static ShadcnSelectState<T>? maybeOf<T>(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()
+        .dependOnInheritedWidgetOfExactType<_InheritedStateContainer<T>>()
         ?.data;
   }
 
@@ -52,12 +33,12 @@ class ShadcnSelect<T> extends StatefulWidget {
 }
 
 class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
-  ShadcnSelectedOption<T>? selected;
+  T? selected;
   bool visible = false;
 
   void select(T value) {
     if (selected == value) return;
-    setState(() => selected = ShadcnSelectedOption(value: value));
+    setState(() => selected = value);
   }
 
   @override
@@ -70,21 +51,6 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
 
     return _InheritedStateContainer(
       data: this,
-      // child: Column(
-      //   children: [
-      //     ShadcnButton(
-      //       text: const Text('Select'),
-      //       onPressed: () {
-      //         setState(() {
-      //           visible = !visible;
-      //         });
-      //       },
-      //     ),
-      //     EvenSized(
-      //       children: widget.options,
-      //     ),
-      //   ],
-      // ),
       child: ShadcnPopover(
         padding: EdgeInsets.zero,
         visible: visible,
@@ -111,82 +77,17 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   }
 }
 
-class _InheritedStateContainer extends InheritedWidget {
-  // You must pass through a child and your state.
+class _InheritedStateContainer<T> extends InheritedWidget {
   const _InheritedStateContainer({
     required this.data,
     required super.child,
   });
 
-  // Data is your entire state. In our case just 'User'
-  final ShadcnSelectState<dynamic> data;
+  final ShadcnSelectState<T> data;
 
-  // This is a built in method which you can use to check if
-  // any state has changed. If not, no reason to rebuild all the widgets
-  // that rely on your state.
   @override
-  bool updateShouldNotify(_InheritedStateContainer old) => true;
+  bool updateShouldNotify(_InheritedStateContainer<T> old) => true;
 }
-
-// class ShadcnSelect<T> extends StatefulWidget {
-//   const ShadcnSelect({
-//     super.key,
-//     required this.options,
-//   });
-
-//   final List<ShadcnOption<T>> options;
-
-//   static ShadcnSeleectState of(BuildContext context) {
-//     return maybeOf(context)!;
-//   }
-
-//   static ShadcnSeleectState? maybeOf(BuildContext context) {
-//     return context
-//         .dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()
-//         ?.data;
-//   }
-
-//   @override
-//   State<ShadcnSelect<T>> createState() => _ShadcnSelectState<T>();
-// }
-
-// class _ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
-//   var visible = false;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final optionValues = widget.options.map((e) => e.value).toList();
-//     assert(
-//       listEquals(optionValues.toSet().toList(), optionValues),
-//       'The values of the options must be unique',
-//     );
-
-//     return Container(
-//       child: ShadcnPopover(
-//         padding: EdgeInsets.zero,
-//         visible: visible,
-//         alignment: Alignment.bottomLeft,
-//         childAlignment: Alignment.topLeft,
-//         popover: ConstrainedBox(
-//           constraints: const BoxConstraints(
-//             maxHeight: 384,
-//           ),
-//           child: EvenSized(
-//             children: widget.options,
-//           ),
-//         ),
-//         child: ShadcnButton(
-//           text: const Text('Select'),
-//           onPressed: () {
-//             setState(() {
-//               visible = !visible;
-//             });
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class ShadcnOption<T> extends StatefulWidget {
   const ShadcnOption({
@@ -216,10 +117,11 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
   Widget build(BuildContext context) {
     final theme = ShadcnTheme.of(context);
     assert(
-      ShadcnSelect.maybeOf(context) != null,
+      ShadcnSelect.maybeOf<T>(context) != null,
       'Cannot find ShadcnSelect InheritedWidget',
     );
-    final selected = ShadcnSelect.of(context).selected?.value == widget.value;
+    final inheritedSelect = ShadcnSelect.of<T>(context);
+    final selected = inheritedSelect.selected == widget.value;
     return Focus(
       focusNode: focusNode,
       child: MouseRegion(
@@ -230,9 +132,7 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
           if (hovered) setState(() => hovered = false);
         },
         child: GestureDetector(
-          onTap: () {
-            ShadcnSelect.of(context).select(widget.value);
-          },
+          onTap: () => inheritedSelect.select(widget.value),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             decoration: BoxDecoration(
