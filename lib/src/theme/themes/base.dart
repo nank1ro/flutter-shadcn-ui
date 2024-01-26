@@ -31,6 +31,7 @@ abstract class ShadcnBaseTheme {
     required this.popoverTheme,
     required this.decoration,
     required this.textTheme,
+    required this.disabledOpacity,
   });
 
   final ShadcnColorScheme colorScheme;
@@ -53,4 +54,5 @@ abstract class ShadcnBaseTheme {
   final ShadcnPopoverTheme popoverTheme;
   final ShadcnDecorationTheme decoration;
   final ShadcnTextThemeData textTheme;
+  final double disabledOpacity;
 }
