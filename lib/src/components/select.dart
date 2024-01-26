@@ -27,18 +27,14 @@ class ShadcnSelect<T> extends StatefulWidget {
     this.initialValue,
     this.enabled = true,
     this.focusNode,
-    this.header,
-    this.footer,
   });
 
   final bool enabled;
   final T? initialValue;
   final Widget? placeholder;
   final ShadcnSelectedOptionBuilder<T> selectedOptionBuilder;
-  final List<ShadcnOption<T>> options;
+  final List<Widget> options;
   final FocusNode? focusNode;
-  final Widget? header;
-  final Widget? footer;
 
   static ShadcnSelectState<T> of<T>(BuildContext context) {
     return maybeOf<T>(context)!;
@@ -74,7 +70,6 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   }
 
   void select(T value, {bool hideOptions = true}) {
-    if (selected == value) return;
     setState(() {
       if (hideOptions) visible = false;
       selected = value;
@@ -84,11 +79,6 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final optionValues = widget.options.map((e) => e.value).toList();
-    assert(
-      optionValues.toSet().length == optionValues.length,
-      'The values of the options must be unique',
-    );
     assert(debugCheckHasShadcnTheme(context));
 
     final theme = ShadcnTheme.of(context);
@@ -113,24 +103,13 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
                 border: Border.all(color: theme.colorScheme.border),
                 boxShadow: ShadcnShadows.md,
               ),
-              padding: const EdgeInsets.all(4),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (widget.header != null) widget.header!,
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: 384,
-                      minWidth: max(128, constraints.minWidth) -
-                          decorationHorizontalPadding -
-                          8,
-                    ),
-                    child: ShadEvenSizedColumn(children: widget.options),
-                  ),
-                  if (widget.footer != null) widget.footer!,
-                ],
+              constraints: BoxConstraints(
+                maxHeight: 384,
+                minWidth: max(128, constraints.minWidth) -
+                    decorationHorizontalPadding,
               ),
+              padding: const EdgeInsets.all(4),
+              child: ShadEvenSizedColumn(children: widget.options),
             ),
             child: ShadDisabled(
               disabled: !widget.enabled,

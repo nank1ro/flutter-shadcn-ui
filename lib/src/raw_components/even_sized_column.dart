@@ -30,27 +30,22 @@ class _EvenSizedColumnBoxy extends BoxyDelegate {
         child.render.getMaxIntrinsicWidth(double.infinity),
       );
     }
-
-    var childHeight = constraints.heightConstraints().minHeight;
-    for (final child in children) {
-      childHeight = max(
-        childHeight,
-        child.render.getMinIntrinsicHeight(childWidth),
-      );
-    }
-
-    final childConstraints = BoxConstraints.tight(
-      Size(childWidth, childHeight),
-    );
-
+    var childrenHeight = 0.0;
     var x = 0.0;
     for (final child in children) {
+      final childHeight = max(
+        constraints.heightConstraints().minHeight,
+        child.render.getMinIntrinsicHeight(childWidth),
+      );
+      childrenHeight += childHeight;
+      final childConstraints = BoxConstraints.tight(
+        Size(childWidth, childHeight),
+      );
       child
         ..layout(childConstraints)
         ..position(Offset(0, x));
       x += childHeight;
     }
-
-    return Size(childWidth, childHeight * children.length);
+    return Size(childWidth, childrenHeight);
   }
 }

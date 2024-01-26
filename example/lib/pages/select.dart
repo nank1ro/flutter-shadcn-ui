@@ -29,25 +29,25 @@ class _SelectPageState extends State<SelectPage> {
       children: [
         ConstrainedBox(
           constraints: const BoxConstraints(minWidth: 180),
-          child: ShadcnSelect(
+          child: ShadcnSelect<String>(
             enabled: enabled,
             placeholder: const Text('Select a fruit'),
-            header: Padding(
-              padding: const EdgeInsets.only(left: 32, top: 6, bottom: 6),
-              child: Text(
-                'Fruits',
-                style: theme.textTheme.muted.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.popoverForeground,
+            options: [
+              Padding(
+                padding: const EdgeInsets.only(left: 32, top: 6, bottom: 6),
+                child: Text(
+                  'Fruits',
+                  style: theme.textTheme.muted.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.popoverForeground,
+                  ),
                 ),
               ),
-            ),
-            options: const [
-              ShadcnOption(value: 'Apple', child: Text('Apple')),
-              ShadcnOption(value: 'Banana', child: Text('Banana')),
-              ShadcnOption(value: 'Blueberry', child: Text('Blueberry')),
-              ShadcnOption(value: 'Grapes', child: Text('Grapes')),
-              ShadcnOption(value: 'Pineapple', child: Text('Pineapple')),
+              const ShadcnOption(value: 'Apple', child: Text('Apple')),
+              const ShadcnOption(value: 'Banana', child: Text('Banana')),
+              const ShadcnOption(value: 'Blueberry', child: Text('Blueberry')),
+              const ShadcnOption(value: 'Grapes', child: Text('Grapes')),
+              const ShadcnOption(value: 'Pineapple', child: Text('Pineapple')),
             ],
             selectedOptionBuilder: (context, value) => Text(value),
           ),
