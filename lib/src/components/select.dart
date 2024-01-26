@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/src/assets.dart';
 
 import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/even_sized_column.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -47,8 +49,8 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   void select(T value, {bool hideOptions = true}) {
     if (selected == value) return;
     setState(() {
-      selected = value;
       if (hideOptions) visible = false;
+      selected = value;
     });
   }
 
@@ -164,11 +166,12 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
               children: [
                 Visibility.maintain(
                   visible: selected,
-                  child: const Padding(
-                    padding: EdgeInsets.only(right: 8),
-                    child: Icon(
-                      Icons.check,
-                      size: 24,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: ShadcnImage.square(
+                      ShadAssets.check,
+                      size: 16,
+                      color: theme.colorScheme.popoverForeground,
                     ),
                   ),
                 ),
