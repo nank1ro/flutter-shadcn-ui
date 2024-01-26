@@ -16,6 +16,7 @@ class _SelectPageState extends State<SelectPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadcnTheme.of(context);
     return BaseScaffold(
       appBarTitle: 'Select',
       editable: [
@@ -31,6 +32,16 @@ class _SelectPageState extends State<SelectPage> {
           child: ShadcnSelect(
             enabled: enabled,
             placeholder: const Text('Select a fruit'),
+            header: Padding(
+              padding: const EdgeInsets.only(left: 32, top: 6, bottom: 6),
+              child: Text(
+                'Fruits',
+                style: theme.textTheme.muted.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.popoverForeground,
+                ),
+              ),
+            ),
             options: const [
               ShadcnOption(value: 'Apple', child: Text('Apple')),
               ShadcnOption(value: 'Banana', child: Text('Banana')),

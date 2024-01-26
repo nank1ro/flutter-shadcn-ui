@@ -27,6 +27,8 @@ class ShadcnSelect<T> extends StatefulWidget {
     this.initialValue,
     this.enabled = true,
     this.focusNode,
+    this.header,
+    this.footer,
   });
 
   final bool enabled;
@@ -35,6 +37,8 @@ class ShadcnSelect<T> extends StatefulWidget {
   final ShadcnSelectedOptionBuilder<T> selectedOptionBuilder;
   final List<ShadcnOption<T>> options;
   final FocusNode? focusNode;
+  final Widget? header;
+  final Widget? footer;
 
   static ShadcnSelectState<T> of<T>(BuildContext context) {
     return maybeOf<T>(context)!;
@@ -110,13 +114,22 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
                 boxShadow: ShadcnShadows.md,
               ),
               padding: const EdgeInsets.all(4),
-              constraints: BoxConstraints(
-                maxHeight: 384,
-                minWidth: max(128, constraints.minWidth) -
-                    decorationHorizontalPadding,
-              ),
-              child: ShadEvenSizedColumn(
-                children: widget.options,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (widget.header != null) widget.header!,
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: 384,
+                      minWidth: max(128, constraints.minWidth) -
+                          decorationHorizontalPadding -
+                          8,
+                    ),
+                    child: ShadEvenSizedColumn(children: widget.options),
+                  ),
+                  if (widget.footer != null) widget.footer!,
+                ],
               ),
             ),
             child: ShadDisabled(
