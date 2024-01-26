@@ -5,6 +5,7 @@ import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/even_sized_column.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/debug_check.dart';
 
 class ShadcnSelect<T> extends StatefulWidget {
   const ShadcnSelect({
@@ -46,6 +47,8 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
       listEquals(optionValues.toSet().toList(), optionValues),
       'The values of the options must be unique',
     );
+    assert(debugCheckHasShadcnTheme(context));
+    final theme = ShadcnTheme.of(context);
 
     return _InheritedSelectContainer(
       data: this,
@@ -54,9 +57,15 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
         visible: visible,
         alignment: Alignment.bottomLeft,
         childAlignment: Alignment.topLeft,
-        popoverBuilder: (_) => ConstrainedBox(
+        popoverBuilder: (_) => Container(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.popover,
+            borderRadius: theme.radius,
+            border: Border.all(color: theme.colorScheme.border),
+          ),
           constraints: const BoxConstraints(
             maxHeight: 384,
+            minWidth: 128,
           ),
           child: ShadEvenSizedColumn(
             children: widget.options,
@@ -150,7 +159,9 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
                   ),
                 ),
                 DefaultTextStyle(
-                  style: theme.textTheme.muted,
+                  style: theme.textTheme.muted.copyWith(
+                    color: theme.colorScheme.popoverForeground,
+                  ),
                   child: widget.child,
                 ),
               ],
