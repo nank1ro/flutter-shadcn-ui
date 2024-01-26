@@ -1,12 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/assets.dart';
+import 'package:shadcn_ui/src/components/disabled.dart';
 
-import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/even_sized_column.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 
 typedef ShadcnSelectedOptionBuilder<T> = Widget Function(
@@ -21,8 +25,10 @@ class ShadcnSelect<T> extends StatefulWidget {
     required this.selectedOptionBuilder,
     this.placeholder,
     this.initialValue,
+    this.enabled = true,
   });
 
+  final bool enabled;
   final T? initialValue;
   final Widget? placeholder;
   final ShadcnSelectedOptionBuilder<T> selectedOptionBuilder;
@@ -63,39 +69,80 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
     );
     assert(debugCheckHasShadcnTheme(context));
     final theme = ShadcnTheme.of(context);
-
-    return _InheritedSelectContainer(
-      data: this,
-      child: ShadcnPopover(
-        padding: EdgeInsets.zero,
-        visible: visible,
-        alignment: Alignment.bottomLeft,
-        childAlignment: Alignment.topLeft,
-        popoverBuilder: (_) => Container(
-          decoration: BoxDecoration(
-            color: theme.colorScheme.popover,
-            borderRadius: theme.radius,
-            border: Border.all(color: theme.colorScheme.border),
+    final effectiveDecoration = theme.decoration;
+    final decorationHorizontalPadding =
+        effectiveDecoration.border?.padding?.horizontal ?? 0.0;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        print(constraints.minWidth);
+        return _InheritedSelectContainer(
+          data: this,
+          child: ShadcnPopover(
+            padding: EdgeInsets.zero,
+            visible: visible,
+            offset: const Offset(4, 2),
+            alignment: Alignment.bottomLeft,
+            childAlignment: Alignment.topLeft,
+            popoverBuilder: (_) => Container(
+              decoration: BoxDecoration(
+                color: theme.colorScheme.popover,
+                borderRadius: theme.radius,
+                border: Border.all(color: theme.colorScheme.border),
+                boxShadow: ShadcnShadows.md,
+              ),
+              padding: const EdgeInsets.all(4),
+              constraints: BoxConstraints(
+                maxHeight: 384,
+                minWidth: max(128, constraints.minWidth) -
+                    decorationHorizontalPadding,
+              ),
+              child: ShadEvenSizedColumn(
+                children: widget.options,
+              ),
+            ),
+            child: ShadDisabled(
+              disabled: !widget.enabled,
+              child: ShadcnDecorator(
+                decoration: effectiveDecoration,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      visible = !visible;
+                    });
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.background,
+                      borderRadius: theme.radius,
+                      border: Border.all(color: theme.colorScheme.input),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (selected is T)
+                          widget.selectedOptionBuilder(context, selected as T)
+                        else
+                          widget.placeholder!,
+                        ShadcnImage.square(
+                          ShadAssets.chevronDown,
+                          size: 16,
+                          color: theme.colorScheme.popoverForeground
+                              .withOpacity(.5),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
-          constraints: const BoxConstraints(
-            maxHeight: 384,
-            minWidth: 128,
-          ),
-          child: ShadEvenSizedColumn(
-            children: widget.options,
-          ),
-        ),
-        child: ShadcnButton(
-          text: selected is T
-              ? widget.selectedOptionBuilder(context, selected as T)
-              : widget.placeholder,
-          onPressed: () {
-            setState(() {
-              visible = !visible;
-            });
-          },
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -160,6 +207,7 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             decoration: BoxDecoration(
               color: hovered ? theme.colorScheme.accent : null,
+              borderRadius: theme.radius,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
