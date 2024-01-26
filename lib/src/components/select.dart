@@ -35,9 +35,12 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   T? selected;
   bool visible = false;
 
-  void select(T value) {
+  void select(T value, {bool hideOptions = true}) {
     if (selected == value) return;
-    setState(() => selected = value);
+    setState(() {
+      selected = value;
+      if (hideOptions) visible = false;
+    });
   }
 
   @override
@@ -72,7 +75,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
           ),
         ),
         child: ShadcnButton(
-          text: const Text('Select'),
+          text: Text(selected?.toString() ?? 'Select'),
           onPressed: () {
             setState(() {
               visible = !visible;
