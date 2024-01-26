@@ -1,11 +1,9 @@
-import 'dart:math';
-
-import 'package:boxy/boxy.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
+import 'package:shadcn_ui/src/raw_components/even_sized_column.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadcnSelect<T> extends StatefulWidget {
@@ -24,7 +22,7 @@ class ShadcnSelect<T> extends StatefulWidget {
 
   static ShadcnSelectState<T>? maybeOf<T>(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<_InheritedStateContainer<T>>()
+        .dependOnInheritedWidgetOfExactType<_InheritedSelectContainer<T>>()
         ?.data;
   }
 
@@ -49,7 +47,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
       'The values of the options must be unique',
     );
 
-    return _InheritedStateContainer(
+    return _InheritedSelectContainer(
       data: this,
       child: ShadcnPopover(
         padding: EdgeInsets.zero,
@@ -60,7 +58,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
           constraints: const BoxConstraints(
             maxHeight: 384,
           ),
-          child: EvenSized(
+          child: ShadEvenSizedColumn(
             children: widget.options,
           ),
         ),
@@ -77,8 +75,8 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   }
 }
 
-class _InheritedStateContainer<T> extends InheritedWidget {
-  const _InheritedStateContainer({
+class _InheritedSelectContainer<T> extends InheritedWidget {
+  const _InheritedSelectContainer({
     required this.data,
     required super.child,
   });
@@ -86,7 +84,7 @@ class _InheritedStateContainer<T> extends InheritedWidget {
   final ShadcnSelectState<T> data;
 
   @override
-  bool updateShouldNotify(_InheritedStateContainer<T> old) => true;
+  bool updateShouldNotify(_InheritedSelectContainer<T> old) => true;
 }
 
 class ShadcnOption<T> extends StatefulWidget {
@@ -161,57 +159,5 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
         ),
       ),
     );
-  }
-}
-
-class EvenSized extends StatelessWidget {
-  const EvenSized({
-    super.key,
-    required this.children,
-  });
-
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomBoxy(
-      delegate: EvenSizedBoxy(),
-      children: children,
-    );
-  }
-}
-
-class EvenSizedBoxy extends BoxyDelegate {
-  @override
-  Size layout() {
-    var childWidth = 0.0;
-    for (final child in children) {
-      childWidth = max(
-        childWidth,
-        child.render.getMaxIntrinsicWidth(double.infinity),
-      );
-    }
-
-    var childHeight = 0.0;
-    for (final child in children) {
-      childHeight = max(
-        childHeight,
-        child.render.getMinIntrinsicHeight(childWidth),
-      );
-    }
-
-    final childConstraints = BoxConstraints.tight(
-      Size(childWidth, childHeight),
-    );
-
-    var x = 0.0;
-    for (final child in children) {
-      child
-        ..layout(childConstraints)
-        ..position(Offset(0, x));
-      x += childHeight;
-    }
-
-    return Size(childWidth, childHeight * children.length);
   }
 }
