@@ -437,12 +437,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
             scaffoldBackgroundColor: themeData.colorScheme.background,
             brightness: themeData.brightness,
             inputDecorationTheme: InputDecorationTheme(
-              // TODO(nank1ro): refactor after we have ShadcnTextTheme
-              hintStyle: TextStyle(
-                fontSize: 14,
-                height: 20 / 14,
-                color: themeData.colorScheme.mutedForeground,
-              ),
+              hintStyle: themeData.textTheme.muted,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12,
                 vertical: 8,

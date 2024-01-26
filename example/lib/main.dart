@@ -5,6 +5,7 @@ import 'package:example/pages/button.dart';
 import 'package:example/pages/image.dart';
 import 'package:example/pages/input.dart';
 import 'package:example/pages/popover.dart';
+import 'package:example/pages/select.dart';
 import 'package:example/pages/tooltip.dart';
 import 'package:example/pages/typography.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ final routes = <String, WidgetBuilder>{
   '/tooltip': (_) => const TooltipPage(),
   '/popover': (_) => const PopoverPage(),
   '/input': (_) => const InputPage(),
+  '/select': (_) => const SelectPage(),
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-z])');
 

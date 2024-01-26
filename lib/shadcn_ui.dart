@@ -11,6 +11,7 @@ export 'src/components/image.dart';
 export 'src/components/input.dart';
 export 'src/components/popover.dart';
 export 'src/components/tooltip.dart';
+export 'src/components/select.dart';
 
 // Raw Components
 export 'src/raw_components/portal.dart';
