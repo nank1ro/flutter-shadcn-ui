@@ -1,7 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/assets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 
@@ -64,17 +63,18 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   Widget build(BuildContext context) {
     final optionValues = widget.options.map((e) => e.value).toList();
     assert(
-      listEquals(optionValues.toSet().toList(), optionValues),
+      optionValues.toSet().length == optionValues.length,
       'The values of the options must be unique',
     );
     assert(debugCheckHasShadcnTheme(context));
+
     final theme = ShadcnTheme.of(context);
     final effectiveDecoration = theme.decoration;
     final decorationHorizontalPadding =
         effectiveDecoration.border?.padding?.horizontal ?? 0.0;
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        print(constraints.minWidth);
         return _InheritedSelectContainer(
           data: this,
           child: ShadcnPopover(
