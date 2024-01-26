@@ -30,3 +30,5 @@ dev_dependencies:
 flutter:
   assets:
     - assets/check.svg
+    - assets/chevron-down.svg
+    - assets/chevron-up.svg
