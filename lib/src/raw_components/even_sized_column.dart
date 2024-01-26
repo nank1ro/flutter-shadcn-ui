@@ -23,7 +23,7 @@ class ShadEvenSizedColumn extends StatelessWidget {
 class _EvenSizedColumnBoxy extends BoxyDelegate {
   @override
   Size layout() {
-    var childWidth = 0.0;
+    var childWidth = constraints.widthConstraints().minWidth;
     for (final child in children) {
       childWidth = max(
         childWidth,
@@ -31,7 +31,7 @@ class _EvenSizedColumnBoxy extends BoxyDelegate {
       );
     }
 
-    var childHeight = 0.0;
+    var childHeight = constraints.heightConstraints().minHeight;
     for (final child in children) {
       childHeight = max(
         childHeight,
