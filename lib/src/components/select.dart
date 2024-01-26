@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/assets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
+import 'package:shadcn_ui/src/components/focusable.dart';
 
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
@@ -25,6 +26,7 @@ class ShadcnSelect<T> extends StatefulWidget {
     this.placeholder,
     this.initialValue,
     this.enabled = true,
+    this.focusNode,
   });
 
   final bool enabled;
@@ -32,6 +34,7 @@ class ShadcnSelect<T> extends StatefulWidget {
   final Widget? placeholder;
   final ShadcnSelectedOptionBuilder<T> selectedOptionBuilder;
   final List<ShadcnOption<T>> options;
+  final FocusNode? focusNode;
 
   static ShadcnSelectState<T> of<T>(BuildContext context) {
     return maybeOf<T>(context)!;
@@ -48,8 +51,23 @@ class ShadcnSelect<T> extends StatefulWidget {
 }
 
 class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
+  FocusNode? internalFocusNode;
   late T? selected = widget.initialValue;
   bool visible = false;
+
+  FocusNode get focusNode => widget.focusNode ?? internalFocusNode!;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.focusNode == null) internalFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    internalFocusNode?.dispose();
+    super.dispose();
+  }
 
   void select(T value, {bool hideOptions = true}) {
     if (selected == value) return;
@@ -57,6 +75,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
       if (hideOptions) visible = false;
       selected = value;
     });
+    focusNode.requestFocus();
   }
 
   @override
@@ -102,42 +121,52 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
             ),
             child: ShadDisabled(
               disabled: !widget.enabled,
-              child: ShadcnDecorator(
-                decoration: effectiveDecoration,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      visible = !visible;
-                    });
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.background,
-                      borderRadius: theme.radius,
-                      border: Border.all(color: theme.colorScheme.input),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (selected is T)
-                          widget.selectedOptionBuilder(context, selected as T)
-                        else
-                          widget.placeholder!,
-                        ShadcnImage.square(
-                          ShadAssets.chevronDown,
-                          size: 16,
-                          color: theme.colorScheme.popoverForeground
-                              .withOpacity(.5),
+              child: ShadFocused(
+                focusNode: focusNode,
+                builder: (context, focused) {
+                  return ShadcnDecorator(
+                    focused: focused,
+                    decoration: effectiveDecoration,
+                    child: GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        setState(() {
+                          visible = !visible;
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
                         ),
-                      ],
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.background,
+                          borderRadius: theme.radius,
+                          border: Border.all(color: theme.colorScheme.input),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (selected is T)
+                              widget.selectedOptionBuilder(
+                                context,
+                                selected as T,
+                              )
+                            else
+                              widget.placeholder!,
+                            ShadcnImage.square(
+                              ShadAssets.chevronDown,
+                              size: 16,
+                              color: theme.colorScheme.popoverForeground
+                                  .withOpacity(.5),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
           ),
