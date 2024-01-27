@@ -6,6 +6,7 @@ import 'package:playground/pages/button.dart';
 import 'package:playground/pages/image.dart';
 import 'package:playground/pages/input.dart';
 import 'package:playground/pages/popover.dart';
+import 'package:playground/pages/select.dart';
 import 'package:playground/pages/tooltip.dart';
 import 'package:playground/pages/typography.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -92,6 +93,15 @@ final _router = GoRouter(
         final style = state.uri.queryParameters['style'] ?? 'h1Large';
         return TypographyPage(
           style: TypographyStyle.values.byName(style),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/select',
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ?? 'fruits';
+        return SelectPage(
+          variant: SelectVariant.values.byName(style),
         );
       },
     ),

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/assets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -38,6 +39,8 @@ class ShadcnSelect<T> extends StatefulWidget {
     this.radius,
     this.border,
     this.optionsPadding,
+    this.showScrollToBottomChevron,
+    this.showScrollToTopChevron,
   });
 
   /// Whether the [ShadcnSelect] is enabled, defaults to `true`.
@@ -103,6 +106,12 @@ class ShadcnSelect<T> extends StatefulWidget {
   /// `EdgeInsets.all(4)`.
   final EdgeInsets? optionsPadding;
 
+  /// Whether to show the scroll-to-top chevron, defaults to true.
+  final bool? showScrollToTopChevron;
+
+  /// Whether to show the scroll-to-bottom chevron, defaults to true.
+  final bool? showScrollToBottomChevron;
+
   static ShadcnSelectState<T> of<T>(BuildContext context) {
     return maybeOf<T>(context)!;
   }
@@ -121,6 +130,12 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   FocusNode? internalFocusNode;
   late T? selected = widget.initialValue;
   final controller = ShadcnPopoverController();
+  final scrollController = ScrollController();
+
+  final showScrollToBottom = ValueNotifier(false);
+  final showScrollToTop = ValueNotifier(false);
+  bool shouldAnimateToTop = false;
+  bool shouldAnimateToBottom = false;
 
   FocusNode get focusNode => widget.focusNode ?? internalFocusNode!;
 
@@ -128,13 +143,48 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   void initState() {
     super.initState();
     if (widget.focusNode == null) internalFocusNode = FocusNode();
+    scrollController.addListener(() {
+      if (!scrollController.hasClients) return;
+      showScrollToBottom.value =
+          scrollController.offset < scrollController.position.maxScrollExtent;
+      showScrollToTop.value = scrollController.offset > 0;
+    });
   }
 
   @override
   void dispose() {
     internalFocusNode?.dispose();
     controller.dispose();
+    scrollController.dispose();
+    showScrollToBottom.dispose();
+    showScrollToTop.dispose();
     super.dispose();
+  }
+
+  Future<void> animateToTop() async {
+    while (shouldAnimateToTop) {
+      shouldAnimateToTop = scrollController.offset > 0;
+      await scrollController.animateTo(
+        max(scrollController.offset - 30, 0),
+        duration: const Duration(milliseconds: 20),
+        curve: Curves.easeInOutCubic,
+      );
+    }
+  }
+
+  Future<void> animateToBottom() async {
+    while (shouldAnimateToBottom) {
+      shouldAnimateToBottom =
+          scrollController.offset < scrollController.position.maxScrollExtent;
+      await scrollController.animateTo(
+        min(
+          scrollController.offset + 30,
+          scrollController.position.maxScrollExtent,
+        ),
+        duration: const Duration(milliseconds: 20),
+        curve: Curves.easeInOutCubic,
+      );
+    }
   }
 
   void select(T value, {bool hideOptions = true}) {
@@ -235,6 +285,64 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        final calculatedMinWidth =
+            max(effectiveMinWidth, constraints.minWidth) -
+                decorationHorizontalPadding;
+
+        final scrollToTopChild = ValueListenableBuilder(
+          valueListenable: showScrollToTop,
+          builder: (context, show, child) {
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: show
+                  ? MouseRegion(
+                      onEnter: (_) {
+                        shouldAnimateToTop = true;
+                        animateToTop();
+                      },
+                      onExit: (_) => shouldAnimateToTop = false,
+                      child: Container(
+                        width: calculatedMinWidth,
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: ShadcnImage.square(
+                          ShadAssets.chevronUp,
+                          size: 16,
+                          color: theme.colorScheme.popoverForeground,
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
+            );
+          },
+        );
+
+        final scrollToBottomChild = ValueListenableBuilder(
+          valueListenable: showScrollToBottom,
+          builder: (context, show, child) {
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: show
+                  ? MouseRegion(
+                      onEnter: (_) {
+                        shouldAnimateToBottom = true;
+                        animateToBottom();
+                      },
+                      onExit: (_) => shouldAnimateToBottom = false,
+                      child: Container(
+                        width: calculatedMinWidth,
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: ShadcnImage.square(
+                          ShadAssets.chevronDown,
+                          size: 16,
+                          color: theme.colorScheme.popoverForeground,
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
+            );
+          },
+        );
+
         return ShadcnInheritedSelectContainer(
           data: this,
           child: ShadcnPopover(
@@ -250,8 +358,21 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
                 minWidth: max(effectiveMinWidth, constraints.minWidth) -
                     decorationHorizontalPadding,
               ),
-              padding: effectiveOptionsPadding,
-              child: ShadSameWidthColumn(children: widget.options),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (false != widget.showScrollToTopChevron) scrollToTopChild,
+                  Flexible(
+                    child: SingleChildScrollView(
+                      padding: effectiveOptionsPadding,
+                      controller: scrollController,
+                      child: ShadSameWidthColumn(children: widget.options),
+                    ),
+                  ),
+                  if (false != widget.showScrollToBottomChevron)
+                    scrollToBottomChild,
+                ],
+              ),
             ),
             child: select,
           ),
