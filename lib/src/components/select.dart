@@ -9,6 +9,7 @@ import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/same_width_column.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 
@@ -27,15 +28,80 @@ class ShadcnSelect<T> extends StatefulWidget {
     this.enabled = true,
     this.focusNode,
     this.closeOnTapOutside = true,
+    this.minWidth,
+    this.maxHeight,
+    this.decoration,
+    this.offset,
+    this.trailing,
+    this.padding,
+    this.backgroundColor,
+    this.radius,
+    this.border,
+    this.optionsPadding,
   });
 
+  /// Whether the [ShadcnSelect] is enabled, defaults to `true`.
   final bool enabled;
+
+  /// The initial value of the [ShadcnSelect], defaults to `null`.
   final T? initialValue;
+
+  /// The placeholder of the [ShadcnSelect], displayed when the value is null.
   final Widget? placeholder;
+
+  /// The builder for the selected option of the [ShadcnSelect].
   final ShadcnSelectedOptionBuilder<T> selectedOptionBuilder;
+
+  /// The options of the [ShadcnSelect].
   final List<Widget> options;
+
+  /// The focus node of the [ShadcnSelect].
   final FocusNode? focusNode;
+
+  /// Whether to close the [ShadcnSelect] when the user taps outside of it,
+  /// defaults to `true`.
   final bool closeOnTapOutside;
+
+  /// The minimum width of the [ShadcnSelect], defaults to
+  /// `max(kDefaultSelectMinWidth, constraints.minWidth)`.
+  ///
+  /// This value is not guaranteed to be respected, because the effective
+  /// minWidth is calculated from the max of this value and the min width of the
+  /// view itself.
+  final double? minWidth;
+
+  /// The maximum height of the [ShadcnSelect], defaults to
+  /// `kDefaultSelectMaxHeight`.
+  final double? maxHeight;
+
+  /// The decoration of the [ShadcnSelect].
+  final ShadcnDecorationTheme? decoration;
+
+  /// The offset of the [ShadcnSelect], defaults to `Offset(4, 0)`.
+  final Offset? offset;
+
+  /// The trailing widget of the [ShadcnSelect], defaults to a chevron-right
+  /// icon.
+  final Widget? trailing;
+
+  /// The padding of the [ShadcnSelect], defaults to
+  /// `EdgeInsets.symmetric(horizontal: 12, vertical: 8)`.
+  final EdgeInsets? padding;
+
+  /// The background color of the [ShadcnSelect], defaults to
+  /// the color scheme color.
+  final Color? backgroundColor;
+
+  /// The radius of the [ShadcnSelect], defaults to `ShadcnThemeData.radius`.
+  final BorderRadius? radius;
+
+  /// The border of the [ShadcnSelect], defaults to
+  /// `Border.all(color: kDefaultSelectBorderColor)`.
+  final Border? border;
+
+  /// The padding of the options of the [ShadcnSelect], defaults to
+  /// `EdgeInsets.all(4)`.
+  final EdgeInsets? optionsPadding;
 
   static ShadcnSelectState<T> of<T>(BuildContext context) {
     return maybeOf<T>(context)!;
@@ -43,7 +109,7 @@ class ShadcnSelect<T> extends StatefulWidget {
 
   static ShadcnSelectState<T>? maybeOf<T>(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<_InheritedSelectContainer<T>>()
+        .dependOnInheritedWidgetOfExactType<ShadcnInheritedSelectContainer<T>>()
         ?.data;
   }
 
@@ -84,79 +150,110 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
     assert(debugCheckHasShadcnTheme(context));
 
     final theme = ShadcnTheme.of(context);
-    final effectiveDecoration = theme.decoration;
+    final effectiveDecoration = widget.decoration ?? theme.decoration;
     final decorationHorizontalPadding =
         effectiveDecoration.border?.padding?.horizontal ?? 0.0;
+    final effectivePadding = widget.padding ??
+        theme.selectTheme.padding ??
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+    final effectiveBackgroundColor = widget.backgroundColor ??
+        theme.selectTheme.backgroundColor ??
+        theme.colorScheme.background;
+    final effectiveRadius =
+        widget.radius ?? theme.selectTheme.radius ?? theme.radius;
+    final effectiveBorder = widget.border ??
+        theme.selectTheme.border ??
+        Border.all(color: theme.colorScheme.input);
+
+    final Widget effectiveText;
+    if (selected is T) {
+      effectiveText = widget.selectedOptionBuilder(
+        context,
+        selected as T,
+      );
+    } else {
+      assert(
+        widget.placeholder != null,
+        'placeholder must not be null when value is null',
+      );
+      effectiveText = widget.placeholder!;
+    }
+
+    final effectiveTrailing = widget.trailing ??
+        ShadcnImage.square(
+          ShadAssets.chevronDown,
+          size: 16,
+          color: theme.colorScheme.popoverForeground.withOpacity(.5),
+        );
+
+    final select = ShadDisabled(
+      disabled: !widget.enabled,
+      child: ShadFocused(
+        canRequestFocus: widget.enabled,
+        focusNode: focusNode,
+        builder: (context, focused) {
+          return ShadcnDecorator(
+            focused: focused,
+            decoration: effectiveDecoration,
+            child: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                controller.toggle();
+              },
+              child: Container(
+                padding: effectivePadding,
+                decoration: BoxDecoration(
+                  color: effectiveBackgroundColor,
+                  borderRadius: effectiveRadius,
+                  border: effectiveBorder,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    effectiveText,
+                    effectiveTrailing,
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+
+    final effectiveOffset =
+        widget.offset ?? theme.selectTheme.offset ?? const Offset(4, 0);
+    final effectiveMinWidth =
+        widget.minWidth ?? theme.selectTheme.minWidth ?? kDefaultSelectMinWidth;
+    final effectiveMaxHeight = widget.maxHeight ??
+        theme.selectTheme.maxHeight ??
+        kDefaultSelectMaxHeight;
+    final effectiveOptionsPadding = widget.optionsPadding ??
+        theme.selectTheme.optionsPadding ??
+        const EdgeInsets.all(4);
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        return _InheritedSelectContainer(
+        return ShadcnInheritedSelectContainer(
           data: this,
           child: ShadcnPopover(
             padding: EdgeInsets.zero,
             controller: controller,
-            offset: const Offset(4, 0),
+            offset: effectiveOffset,
             alignment: Alignment.bottomLeft,
             childAlignment: Alignment.topLeft,
             closeOnTapOutside: widget.closeOnTapOutside,
             popoverBuilder: (_) => Container(
               constraints: BoxConstraints(
-                maxHeight: 384,
-                minWidth: max(128, constraints.minWidth) -
+                maxHeight: effectiveMaxHeight,
+                minWidth: max(effectiveMinWidth, constraints.minWidth) -
                     decorationHorizontalPadding,
               ),
-              padding: const EdgeInsets.all(4),
+              padding: effectiveOptionsPadding,
               child: ShadSameWidthColumn(children: widget.options),
             ),
-            child: ShadDisabled(
-              disabled: !widget.enabled,
-              child: ShadFocused(
-                canRequestFocus: widget.enabled,
-                focusNode: focusNode,
-                builder: (context, focused) {
-                  return ShadcnDecorator(
-                    focused: focused,
-                    decoration: effectiveDecoration,
-                    child: GestureDetector(
-                      onTap: () {
-                        FocusScope.of(context).unfocus();
-                        controller.toggle();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.background,
-                          borderRadius: theme.radius,
-                          border: Border.all(color: theme.colorScheme.input),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (selected is T)
-                              widget.selectedOptionBuilder(
-                                context,
-                                selected as T,
-                              )
-                            else
-                              widget.placeholder!,
-                            ShadcnImage.square(
-                              ShadAssets.chevronDown,
-                              size: 16,
-                              color: theme.colorScheme.popoverForeground
-                                  .withOpacity(.5),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+            child: select,
           ),
         );
       },
@@ -164,8 +261,9 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   }
 }
 
-class _InheritedSelectContainer<T> extends InheritedWidget {
-  const _InheritedSelectContainer({
+class ShadcnInheritedSelectContainer<T> extends InheritedWidget {
+  const ShadcnInheritedSelectContainer({
+    super.key,
     required this.data,
     required super.child,
   });
@@ -173,7 +271,7 @@ class _InheritedSelectContainer<T> extends InheritedWidget {
   final ShadcnSelectState<T> data;
 
   @override
-  bool updateShouldNotify(_InheritedSelectContainer<T> old) => true;
+  bool updateShouldNotify(ShadcnInheritedSelectContainer<T> oldWidget) => true;
 }
 
 class ShadcnOption<T> extends StatefulWidget {

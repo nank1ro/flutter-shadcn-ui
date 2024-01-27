@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
+import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/data.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
@@ -36,6 +37,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     ShadcnDecorationTheme? decoration,
     ShadcnTextThemeData? textTheme,
     double? disabledOpacity,
+    ShadcnSelectTheme? selectTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -95,6 +97,9 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       textTheme: ShadcnComponentDefaultTheme.textTheme(colorScheme: colorScheme)
           .mergeWith(textTheme),
       disabledOpacity: disabledOpacity ?? .5,
+      selectTheme:
+          ShadcnComponentDefaultTheme.selectTheme(colorScheme: colorScheme)
+              .mergeWith(selectTheme),
     );
   }
 
@@ -120,6 +125,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     required super.decoration,
     required super.textTheme,
     required super.disabledOpacity,
+    required super.selectTheme,
   });
 
   static ShadcnThemeData lerp(ShadcnThemeData a, ShadcnThemeData b, double t) {
@@ -173,6 +179,11 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       decoration: ShadcnDecorationTheme.lerp(a.decoration, b.decoration, t),
       textTheme: ShadcnTextThemeData.lerp(a.textTheme, b.textTheme, t),
       disabledOpacity: lerpDouble(a.disabledOpacity, b.disabledOpacity, t),
+      selectTheme: ShadcnSelectTheme.lerp(
+        a.selectTheme,
+        b.selectTheme,
+        t,
+      ),
     );
   }
 
@@ -200,7 +211,8 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         other.popoverTheme == popoverTheme &&
         other.decoration == decoration &&
         other.textTheme == textTheme &&
-        other.disabledOpacity == disabledOpacity;
+        other.disabledOpacity == disabledOpacity &&
+        other.selectTheme == selectTheme;
   }
 
   @override
@@ -224,7 +236,8 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         popoverTheme.hashCode ^
         decoration.hashCode ^
         textTheme.hashCode ^
-        disabledOpacity.hashCode;
+        disabledOpacity.hashCode ^
+        selectTheme.hashCode;
   }
 
   ShadcnThemeData copyWith({
@@ -249,6 +262,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     ShadcnDecorationTheme? decoration,
     ShadcnTextThemeData? textTheme,
     double? disabledOpacity,
+    ShadcnSelectTheme? selectTheme,
   }) {
     return ShadcnThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -274,6 +288,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
       decoration: decoration ?? this.decoration,
       textTheme: textTheme ?? this.textTheme,
       disabledOpacity: disabledOpacity ?? this.disabledOpacity,
+      selectTheme: selectTheme ?? this.selectTheme,
     );
   }
 }
