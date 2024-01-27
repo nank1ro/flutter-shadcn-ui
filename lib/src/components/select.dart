@@ -10,7 +10,6 @@ import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/even_sized_column.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
-import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 
 typedef ShadcnSelectedOptionBuilder<T> = Widget Function(
@@ -27,6 +26,7 @@ class ShadcnSelect<T> extends StatefulWidget {
     this.initialValue,
     this.enabled = true,
     this.focusNode,
+    this.closeOnTapOutside = true,
   });
 
   final bool enabled;
@@ -35,6 +35,7 @@ class ShadcnSelect<T> extends StatefulWidget {
   final ShadcnSelectedOptionBuilder<T> selectedOptionBuilder;
   final List<Widget> options;
   final FocusNode? focusNode;
+  final bool closeOnTapOutside;
 
   static ShadcnSelectState<T> of<T>(BuildContext context) {
     return maybeOf<T>(context)!;
@@ -53,7 +54,7 @@ class ShadcnSelect<T> extends StatefulWidget {
 class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   FocusNode? internalFocusNode;
   late T? selected = widget.initialValue;
-  bool visible = false;
+  final controller = ShadcnPopoverController();
 
   FocusNode get focusNode => widget.focusNode ?? internalFocusNode!;
 
@@ -66,12 +67,13 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   @override
   void dispose() {
     internalFocusNode?.dispose();
+    controller.dispose();
     super.dispose();
   }
 
   void select(T value, {bool hideOptions = true}) {
     setState(() {
-      if (hideOptions) visible = false;
+      if (hideOptions) controller.hide();
       selected = value;
     });
     focusNode.requestFocus();
@@ -92,17 +94,12 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
           data: this,
           child: ShadcnPopover(
             padding: EdgeInsets.zero,
-            visible: visible,
-            offset: const Offset(4, 2),
+            controller: controller,
+            offset: const Offset(4, 0),
             alignment: Alignment.bottomLeft,
             childAlignment: Alignment.topLeft,
+            closeOnTapOutside: widget.closeOnTapOutside,
             popoverBuilder: (_) => Container(
-              decoration: BoxDecoration(
-                color: theme.colorScheme.popover,
-                borderRadius: theme.radius,
-                border: Border.all(color: theme.colorScheme.border),
-                boxShadow: ShadcnShadows.md,
-              ),
               constraints: BoxConstraints(
                 maxHeight: 384,
                 minWidth: max(128, constraints.minWidth) -
@@ -122,9 +119,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
                     child: GestureDetector(
                       onTap: () {
                         FocusScope.of(context).unfocus();
-                        setState(() {
-                          visible = !visible;
-                        });
+                        controller.toggle();
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
-// import 'package:flutter_portal/flutter_portal.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
@@ -132,6 +131,7 @@ class ShadcnPopover extends StatefulWidget {
 class _ShadcnPopoverState extends State<ShadcnPopover> {
   ShadcnPopoverController? _controller;
   ShadcnPopoverController get controller => widget.controller ?? _controller!;
+  bool animating = false;
 
   @override
   void initState() {
@@ -184,7 +184,9 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
           color: theme.colorScheme.popoverForeground,
         ),
         textAlign: TextAlign.center,
-        child: widget.popoverBuilder(context),
+        child: Builder(
+          builder: widget.popoverBuilder,
+        ),
       ),
     );
 
@@ -197,26 +199,30 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
 
     if (widget.closeOnTapOutside) {
       popover = TapRegion(
+        groupId: #popover,
         behavior: HitTestBehavior.opaque,
         onTapOutside: (_) => controller.hide(),
         child: popover,
       );
     }
 
-    return ListenableBuilder(
-      listenable: controller,
-      builder: (context, _) {
-        return ShadcnPortal(
-          portalBuilder: widget.popoverBuilder,
-          visible: controller.isOpen,
-          anchor: ShadcnAnchor(
-            childAlignment: effectiveAlignment,
-            overlayAlignment: effectiveChildAlignment,
-            offset: effectiveOffset,
-          ),
-          child: widget.child,
-        );
-      },
+    return TapRegion(
+      groupId: #popover,
+      child: ListenableBuilder(
+        listenable: controller,
+        builder: (context, _) {
+          return ShadcnPortal(
+            portalBuilder: (_) => popover,
+            visible: controller.isOpen,
+            anchor: ShadcnAnchor(
+              childAlignment: effectiveAlignment,
+              overlayAlignment: effectiveChildAlignment,
+              offset: effectiveOffset,
+            ),
+            child: widget.child,
+          );
+        },
+      ),
     );
   }
 }
