@@ -7,7 +7,7 @@ import 'package:shadcn_ui/src/components/focusable.dart';
 
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
-import 'package:shadcn_ui/src/raw_components/even_sized_column.dart';
+import 'package:shadcn_ui/src/raw_components/same_width_column.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
@@ -106,7 +106,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
                     decorationHorizontalPadding,
               ),
               padding: const EdgeInsets.all(4),
-              child: ShadEvenSizedColumn(children: widget.options),
+              child: ShadSameWidthColumn(children: widget.options),
             ),
             child: ShadDisabled(
               disabled: !widget.enabled,

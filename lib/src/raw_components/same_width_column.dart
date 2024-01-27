@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:boxy/boxy.dart';
 import 'package:flutter/widgets.dart';
 
-class ShadEvenSizedColumn extends StatelessWidget {
-  const ShadEvenSizedColumn({
+class ShadSameWidthColumn extends StatelessWidget {
+  const ShadSameWidthColumn({
     super.key,
     required this.children,
   });
@@ -31,7 +31,7 @@ class _EvenSizedColumnBoxy extends BoxyDelegate {
       );
     }
     var childrenHeight = 0.0;
-    var x = 0.0;
+    var y = 0.0;
     for (final child in children) {
       final childHeight = max(
         constraints.heightConstraints().minHeight,
@@ -43,8 +43,8 @@ class _EvenSizedColumnBoxy extends BoxyDelegate {
       );
       child
         ..layout(childConstraints)
-        ..position(Offset(0, x));
-      x += childHeight;
+        ..position(Offset(0, y));
+      y += childHeight;
     }
     return Size(childWidth, childrenHeight);
   }
