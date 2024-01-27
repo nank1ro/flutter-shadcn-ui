@@ -111,6 +111,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
             child: ShadDisabled(
               disabled: !widget.enabled,
               child: ShadFocused(
+                canRequestFocus: widget.enabled,
                 focusNode: focusNode,
                 builder: (context, focused) {
                   return ShadcnDecorator(
