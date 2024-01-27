@@ -143,6 +143,8 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   void initState() {
     super.initState();
     if (widget.focusNode == null) internalFocusNode = FocusNode();
+
+    // react to the scroll position
     scrollController.addListener(() {
       if (!scrollController.hasClients) return;
       showScrollToBottom.value =
@@ -352,28 +354,41 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
             alignment: Alignment.bottomLeft,
             childAlignment: Alignment.topLeft,
             closeOnTapOutside: widget.closeOnTapOutside,
-            popoverBuilder: (_) => Container(
-              constraints: BoxConstraints(
-                maxHeight: effectiveMaxHeight,
-                minWidth: max(effectiveMinWidth, constraints.minWidth) -
-                    decorationHorizontalPadding,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (false != widget.showScrollToTopChevron) scrollToTopChild,
-                  Flexible(
-                    child: SingleChildScrollView(
-                      padding: effectiveOptionsPadding,
-                      controller: scrollController,
-                      child: ShadSameWidthColumn(children: widget.options),
+            popoverBuilder: (_) {
+              // set the initial value for showScrollToBottom and
+              // showScrollToTop, after the popover is rendered
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                if (scrollController.hasClients) {
+                  showScrollToBottom.value = scrollController.offset <
+                      scrollController.position.maxScrollExtent;
+                  showScrollToTop.value = scrollController.offset > 0;
+                }
+              });
+
+              return Container(
+                constraints: BoxConstraints(
+                  maxHeight: effectiveMaxHeight,
+                  minWidth: max(effectiveMinWidth, constraints.minWidth) -
+                      decorationHorizontalPadding,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (false != widget.showScrollToTopChevron)
+                      scrollToTopChild,
+                    Flexible(
+                      child: SingleChildScrollView(
+                        padding: effectiveOptionsPadding,
+                        controller: scrollController,
+                        child: ShadSameWidthColumn(children: widget.options),
+                      ),
                     ),
-                  ),
-                  if (false != widget.showScrollToBottomChevron)
-                    scrollToBottomChild,
-                ],
-              ),
-            ),
+                    if (false != widget.showScrollToBottomChevron)
+                      scrollToBottomChild,
+                  ],
+                ),
+              );
+            },
             child: select,
           ),
         );
