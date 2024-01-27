@@ -279,22 +279,44 @@ class ShadcnOption<T> extends StatefulWidget {
     super.key,
     required this.value,
     required this.child,
+    this.hoveredBackgroundColor,
+    this.padding,
+    this.selectedIcon,
+    this.radius,
   });
 
+  /// The value of the [ShadcnOption], it must be unique above the options.
   final T value;
+
+  /// The child widget.
   final Widget child;
+
+  /// The background color of the [ShadcnOption] when hovered, defaults to
+  /// `ShadcnThemeData.accent`.
+  final Color? hoveredBackgroundColor;
+
+  /// The padding of the [ShadcnOption], defaults to
+  /// `EdgeInsets.symmetric(horizontal: 8, vertical: 6)`
+  final EdgeInsets? padding;
+
+  /// The icon of the [ShadcnOption] when selected.
+  final Widget? selectedIcon;
+
+  /// The radius of the [ShadcnOption], defaults to `ShadcnThemeData.radius`.
+  final BorderRadius? radius;
 
   @override
   State<ShadcnOption<T>> createState() => _ShadcnOptionState<T>();
 }
 
 class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
-  bool hovered = false;
+  final hovered = ValueNotifier(false);
   final focusNode = FocusNode();
 
   @override
   void dispose() {
     focusNode.dispose();
+    hovered.dispose();
     super.dispose();
   }
 
@@ -307,37 +329,50 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
     );
     final inheritedSelect = ShadcnSelect.of<T>(context);
     final selected = inheritedSelect.selected == widget.value;
+
+    final effectiveHoveredBackgroundColor = widget.hoveredBackgroundColor ??
+        theme.optionTheme.hoveredBackgroundColor ??
+        theme.colorScheme.accent;
+    final effectivePadding = widget.padding ??
+        theme.optionTheme.padding ??
+        const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
+    final effectiveRadius =
+        widget.radius ?? theme.optionTheme.radius ?? theme.radius;
+
     return Focus(
       focusNode: focusNode,
       child: MouseRegion(
-        onEnter: (_) {
-          if (!hovered) setState(() => hovered = true);
-        },
-        onExit: (_) {
-          if (hovered) setState(() => hovered = false);
-        },
+        onEnter: (_) => hovered.value = true,
+        onExit: (_) => hovered.value = false,
         child: GestureDetector(
           onTap: () => inheritedSelect.select(widget.value),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-            decoration: BoxDecoration(
-              color: hovered ? theme.colorScheme.accent : null,
-              borderRadius: theme.radius,
-            ),
+          child: ValueListenableBuilder(
+            valueListenable: hovered,
+            builder: (context, hovered, child) {
+              return Container(
+                padding: effectivePadding,
+                decoration: BoxDecoration(
+                  color: hovered ? effectiveHoveredBackgroundColor : null,
+                  borderRadius: effectiveRadius,
+                ),
+                child: child,
+              );
+            },
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Visibility.maintain(
-                  visible: selected,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: ShadcnImage.square(
-                      ShadAssets.check,
-                      size: 16,
-                      color: theme.colorScheme.popoverForeground,
+                widget.selectedIcon ??
+                    Visibility.maintain(
+                      visible: selected,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: ShadcnImage.square(
+                          ShadAssets.check,
+                          size: 16,
+                          color: theme.colorScheme.popoverForeground,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
                 DefaultTextStyle(
                   style: theme.textTheme.muted.copyWith(
                     color: theme.colorScheme.popoverForeground,

@@ -4,6 +4,7 @@ import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
@@ -34,6 +35,7 @@ abstract class ShadcnBaseTheme {
     required this.textTheme,
     required this.disabledOpacity,
     required this.selectTheme,
+    required this.optionTheme,
   });
 
   final ShadcnColorScheme colorScheme;
@@ -58,4 +60,5 @@ abstract class ShadcnBaseTheme {
   final ShadcnTextThemeData textTheme;
   final double disabledOpacity;
   final ShadcnSelectTheme selectTheme;
+  final ShadcnOptionTheme optionTheme;
 }
