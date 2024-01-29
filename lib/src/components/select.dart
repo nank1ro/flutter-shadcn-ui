@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/assets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -365,28 +366,26 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
                 }
               });
 
-              return Container(
-                constraints: BoxConstraints(
-                  maxHeight: effectiveMaxHeight,
-                  minWidth: max(effectiveMinWidth, constraints.minWidth) -
-                      decorationHorizontalPadding,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (false != widget.showScrollToTopChevron)
-                      scrollToTopChild,
-                    Flexible(
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (false != widget.showScrollToTopChevron) scrollToTopChild,
+                  Flexible(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: effectiveMaxHeight,
+                        minWidth: calculatedMinWidth,
+                      ),
                       child: SingleChildScrollView(
                         padding: effectiveOptionsPadding,
                         controller: scrollController,
                         child: ShadSameWidthColumn(children: widget.options),
                       ),
                     ),
-                    if (false != widget.showScrollToBottomChevron)
-                      scrollToBottomChild,
-                  ],
-                ),
+                  ),
+                  if (false != widget.showScrollToBottomChevron)
+                    scrollToBottomChild,
+                ],
               );
             },
             child: select,
@@ -465,6 +464,18 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
     );
     final inheritedSelect = ShadcnSelect.of<T>(context);
     final selected = inheritedSelect.selected == widget.value;
+    if (selected) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        final scrollable = Scrollable.maybeOf(context);
+        if (scrollable != null) {
+          scrollable.position.ensureVisible(
+            context.findRenderObject()!,
+            alignmentPolicy: ScrollPositionAlignmentPolicy.keepVisibleAtEnd,
+          );
+        }
+      });
+    }
 
     final effectiveHoveredBackgroundColor = widget.hoveredBackgroundColor ??
         theme.optionTheme.hoveredBackgroundColor ??
