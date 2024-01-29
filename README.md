@@ -36,7 +36,7 @@ Current progress:
 - [ ] RadioGroup
 - [ ] Resizable
 - [ ] Scroll Area (?)
-- [ ] Select
+- [x] [Select](https://mariuti.com/shadcn-ui/components/select/)
 - [ ] Separator
 - [ ] Sheet
 - [ ] Skeleton
