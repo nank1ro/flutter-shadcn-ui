@@ -26,7 +26,7 @@ class ShadcnSelect<T> extends StatefulWidget {
     required this.selectedOptionBuilder,
     this.placeholder,
     this.initialValue,
-    this.enabled = true,
+    this.onChanged,
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
@@ -44,8 +44,8 @@ class ShadcnSelect<T> extends StatefulWidget {
     this.scrollController,
   });
 
-  /// Whether the [ShadcnSelect] is enabled, defaults to `true`.
-  final bool enabled;
+  /// The callback that is called when the value of the [ShadcnSelect] changes.
+  final ValueChanged<T?>? onChanged;
 
   /// The initial value of the [ShadcnSelect], defaults to `null`.
   final T? initialValue;
@@ -207,6 +207,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
       selected = value;
     });
     focusNode.requestFocus();
+    widget.onChanged?.call(value);
   }
 
   @override
@@ -259,9 +260,9 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
         );
 
     final select = ShadDisabled(
-      disabled: !widget.enabled,
+      disabled: widget.onChanged == null,
       child: ShadFocused(
-        canRequestFocus: widget.enabled,
+        canRequestFocus: widget.onChanged != null,
         focusNode: focusNode,
         builder: (context, focused) {
           return ShadcnDecorator(

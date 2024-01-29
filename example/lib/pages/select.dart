@@ -1,3 +1,6 @@
+// ignore_for_file: avoid_print
+
+import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:flutter/material.dart';
@@ -125,7 +128,7 @@ class _SelectPageState extends State<SelectPage> {
         ConstrainedBox(
           constraints: const BoxConstraints(minWidth: 180),
           child: ShadcnSelect<String>(
-            enabled: enabled,
+            onChanged: enabled ? (v) => print(v) : null,
             focusNode: focusNodes[0],
             placeholder: const Text('Select a fruit'),
             options: [
@@ -133,25 +136,24 @@ class _SelectPageState extends State<SelectPage> {
                 padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
                 child: Text(
                   'Fruits',
-                  style: theme.textTheme.muted.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.popoverForeground,
-                  ),
+                  style: theme.textTheme.large,
                   textAlign: TextAlign.start,
                 ),
               ),
-              ...fruits.entries
-                  .map((e) => ShadcnOption(value: e.key, child: Text(e.value)))
-                  .toList(),
+              const ShadcnOption(value: 'apple', child: Text('Apple')),
+              const ShadcnOption(value: 'banana', child: Text('Banana')),
+              const ShadcnOption(value: 'blueberry', child: Text('Blueberry')),
+              const ShadcnOption(value: 'grapes', child: Text('Grapes')),
+              const ShadcnOption(value: 'pineapple', child: Text('Pineapple')),
             ],
-            selectedOptionBuilder: (context, value) => Text(fruits[value]!),
+            selectedOptionBuilder: (context, value) => Text(value.capitalize()),
           ),
         ),
         ConstrainedBox(
           constraints: const BoxConstraints(minWidth: 280),
           child: ShadcnSelect<String>(
             focusNode: focusNodes[1],
-            enabled: enabled,
+            onChanged: enabled ? (v) => print(v) : null,
             placeholder: const Text('Select a timezone'),
             options: getTimezonesWidgets(theme),
             selectedOptionBuilder: (context, value) {
