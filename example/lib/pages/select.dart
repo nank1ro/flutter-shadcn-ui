@@ -71,6 +71,28 @@ class _SelectPageState extends State<SelectPage> {
     super.dispose();
   }
 
+  List<Widget> getTimezonesWidgets(ShadcnThemeData theme) {
+    final widgets = <Widget>[];
+    for (final zone in timezones.entries) {
+      widgets.add(
+        Padding(
+          padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+          child: Text(
+            zone.key,
+            style: theme.textTheme.muted.copyWith(
+              fontWeight: FontWeight.w600,
+              color: theme.colorScheme.popoverForeground,
+            ),
+            textAlign: TextAlign.start,
+          ),
+        ),
+      );
+      widgets.addAll(zone.value.entries
+          .map((e) => ShadcnOption(value: e.key, child: Text(e.value))));
+    }
+    return widgets;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadcnTheme.of(context);
@@ -131,29 +153,7 @@ class _SelectPageState extends State<SelectPage> {
             focusNode: focusNodes[1],
             enabled: enabled,
             placeholder: const Text('Select a timezone'),
-            options: timezones.entries.map((e) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-                    child: Text(
-                      e.key,
-                      style: theme.textTheme.muted.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.popoverForeground,
-                      ),
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                  ...e.value.entries
-                      .map((e) =>
-                          ShadcnOption(value: e.key, child: Text(e.value)))
-                      .toList(),
-                ],
-              );
-            }).toList(),
+            options: getTimezonesWidgets(theme),
             selectedOptionBuilder: (context, value) {
               final timezone = timezones.entries
                   .firstWhere((element) => element.value.containsKey(value))
