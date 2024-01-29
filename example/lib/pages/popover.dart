@@ -33,7 +33,7 @@ class _PopoverPageState extends State<PopoverPage> {
       children: [
         ShadcnPopover(
           controller: popoverController,
-          popover: SizedBox(
+          popover: (_) => SizedBox(
             width: 288,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

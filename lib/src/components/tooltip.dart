@@ -9,7 +9,7 @@ class ShadcnTooltip extends StatefulWidget {
   const ShadcnTooltip({
     super.key,
     required this.child,
-    required this.tooltip,
+    required this.builder,
     this.focusNode,
     this.waitDuration,
     this.showDuration,
@@ -23,12 +23,12 @@ class ShadcnTooltip extends StatefulWidget {
   });
 
   /// The widget displayed as a tooltip.
-  final Widget tooltip;
+  final WidgetBuilder builder;
 
-  /// The child widget that will show the [tooltip] when hovered or focused.
+  /// The child widget that will show the tooltip when hovered or focused.
   final Widget child;
 
-  /// The focus node of the child, the [tooltip] will be shown when focused.
+  /// The focus node of the child, the tooltip will be shown when focused.
   final FocusNode? focusNode;
 
   /// {@template tooltip.waitDuration}
@@ -53,19 +53,19 @@ class ShadcnTooltip extends StatefulWidget {
   final Offset? offset;
 
   /// {@template tooltip.effects}
-  /// The animation effects applied to the [tooltip]. Defaults to
+  /// The animation effects applied to the tooltip. Defaults to
   /// [FadeEffect(), ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
   /// MoveEffect(begin: Offset(0, 2), end: Offset(0, 0))].
   /// {@endtemplate}
   final List<Effect<dynamic>>? effects;
 
   /// {@template tooltip.shadows}
-  /// The shadows applied to the [tooltip], defaults to [ShadcnShadows.md].
+  /// The shadows applied to the tooltip, defaults to [ShadcnShadows.md].
   /// {@endtemplate}
   final List<BoxShadow>? shadows;
 
   /// {@template tooltip.alignment}
-  /// The alignment of the [tooltip], defaults to [Alignment.topCenter].
+  /// The alignment of the tooltip, defaults to [Alignment.topCenter].
   /// {@endtemplate}
   final Alignment? alignment;
 
@@ -75,13 +75,13 @@ class ShadcnTooltip extends StatefulWidget {
   final Alignment? childAlignment;
 
   /// {@template tooltip.padding}
-  /// The padding of the [tooltip], defaults to
+  /// The padding of the tooltip, defaults to
   /// `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
   /// {@endtemplate}
   final EdgeInsets? padding;
 
   /// {@template tooltip.decoration}
-  /// The decoration of the [tooltip].
+  /// The decoration of the tooltip.
   /// {@endtemplate}
   final BoxDecoration? decoration;
 
@@ -137,24 +137,6 @@ class _ShadcnTooltipState extends State<ShadcnTooltip> {
     final effectiveOffset =
         widget.offset ?? theme.tooltipTheme.offset ?? Offset.zero;
 
-    Widget tooltip = Container(
-      padding: effectivePadding,
-      decoration: effectiveDecoration?.copyWith(boxShadow: effectiveShadows),
-      child: DefaultTextStyle(
-        style: theme.textTheme.muted
-            .copyWith(color: theme.colorScheme.popoverForeground),
-        textAlign: TextAlign.center,
-        child: widget.tooltip,
-      ),
-    );
-
-    if (effectiveEffects.isNotEmpty) {
-      tooltip = Animate(
-        effects: effectiveEffects,
-        child: tooltip,
-      );
-    }
-
     return MouseRegion(
       onEnter: (_) async {
         hovered = true;
@@ -181,7 +163,27 @@ class _ShadcnTooltipState extends State<ShadcnTooltip> {
           overlayAlignment: effectiveChildAlignment,
           offset: effectiveOffset,
         ),
-        overlay: tooltip,
+        portalBuilder: (context) {
+          Widget tooltip = Container(
+            padding: effectivePadding,
+            decoration:
+                effectiveDecoration?.copyWith(boxShadow: effectiveShadows),
+            child: DefaultTextStyle(
+              style: theme.textTheme.muted
+                  .copyWith(color: theme.colorScheme.popoverForeground),
+              textAlign: TextAlign.center,
+              child: widget.builder(context),
+            ),
+          );
+
+          if (effectiveEffects.isNotEmpty) {
+            tooltip = Animate(
+              effects: effectiveEffects,
+              child: tooltip,
+            );
+          }
+          return tooltip;
+        },
         child: widget.child,
       ),
     );

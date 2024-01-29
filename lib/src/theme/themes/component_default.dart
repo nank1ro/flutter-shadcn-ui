@@ -5,7 +5,9 @@ import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
+import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/data.dart';
 import 'package:shadcn_ui/src/theme/text_theme/defaults.dart';
@@ -236,6 +238,31 @@ abstract class ShadcnComponentDefaultTheme {
       large: ShadcnTextDefaultTheme.large(colorScheme: colorScheme),
       small: ShadcnTextDefaultTheme.small(colorScheme: colorScheme),
       muted: ShadcnTextDefaultTheme.muted(colorScheme: colorScheme),
+    );
+  }
+
+  static ShadcnSelectTheme selectTheme({
+    required ShadcnColorScheme colorScheme,
+  }) {
+    return ShadcnSelectTheme(
+      minWidth: kDefaultSelectMinWidth,
+      maxHeight: kDefaultSelectMaxHeight,
+      offset: const Offset(4, 0),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      backgroundColor: colorScheme.background,
+      border: Border.all(color: colorScheme.input),
+      optionsPadding: const EdgeInsets.all(4),
+      showScrollToTopChevron: true,
+      showScrollToBottomChevron: true,
+    );
+  }
+
+  static ShadcnOptionTheme optionTheme({
+    required ShadcnColorScheme colorScheme,
+  }) {
+    return ShadcnOptionTheme(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      hoveredBackgroundColor: colorScheme.accent,
     );
   }
 }
