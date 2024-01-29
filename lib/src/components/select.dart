@@ -465,6 +465,7 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
     final inheritedSelect = ShadcnSelect.of<T>(context);
     final selected = inheritedSelect.selected == widget.value;
     if (selected) {
+      // scroll to the selected option
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
         final scrollable = Scrollable.maybeOf(context);
