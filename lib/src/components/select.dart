@@ -174,6 +174,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   }
 
   Future<void> animateToTop() async {
+    await Future<void>.delayed(const Duration(milliseconds: 200));
     while (shouldAnimateToTop) {
       shouldAnimateToTop = scrollController.offset > 0;
       await scrollController.animateTo(
@@ -185,6 +186,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   }
 
   Future<void> animateToBottom() async {
+    await Future<void>.delayed(const Duration(milliseconds: 200));
     while (shouldAnimateToBottom) {
       shouldAnimateToBottom =
           scrollController.offset < scrollController.position.maxScrollExtent;
@@ -376,7 +378,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
             alignment: Alignment.bottomLeft,
             childAlignment: Alignment.topLeft,
             closeOnTapOutside: widget.closeOnTapOutside,
-            popoverBuilder: (_) {
+            popover: (_) {
               // set the initial value for showScrollToBottom and
               // showScrollToTop, after the popover is rendered
               WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

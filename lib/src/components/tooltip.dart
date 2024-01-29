@@ -9,7 +9,7 @@ class ShadcnTooltip extends StatefulWidget {
   const ShadcnTooltip({
     super.key,
     required this.child,
-    required this.tooltipBuilder,
+    required this.builder,
     this.focusNode,
     this.waitDuration,
     this.showDuration,
@@ -23,7 +23,7 @@ class ShadcnTooltip extends StatefulWidget {
   });
 
   /// The widget displayed as a tooltip.
-  final WidgetBuilder tooltipBuilder;
+  final WidgetBuilder builder;
 
   /// The child widget that will show the tooltip when hovered or focused.
   final Widget child;
@@ -172,7 +172,7 @@ class _ShadcnTooltipState extends State<ShadcnTooltip> {
               style: theme.textTheme.muted
                   .copyWith(color: theme.colorScheme.popoverForeground),
               textAlign: TextAlign.center,
-              child: widget.tooltipBuilder(context),
+              child: widget.builder(context),
             ),
           );
 

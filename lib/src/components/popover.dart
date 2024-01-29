@@ -31,7 +31,7 @@ class ShadcnPopover extends StatefulWidget {
   const ShadcnPopover({
     super.key,
     required this.child,
-    required this.popoverBuilder,
+    required this.popover,
     this.controller,
     this.visible,
     this.closeOnTapOutside = true,
@@ -51,12 +51,12 @@ class ShadcnPopover extends StatefulWidget {
         );
 
   /// The widget displayed as a popover.
-  final WidgetBuilder popoverBuilder;
+  final WidgetBuilder popover;
 
   /// The child widget.
   final Widget child;
 
-  /// The controller that controls the visibility of the [popoverBuilder].
+  /// The controller that controls the visibility of the [popover].
   final ShadcnPopoverController? controller;
 
   /// Indicates if the popover should be visible.
@@ -65,7 +65,7 @@ class ShadcnPopover extends StatefulWidget {
   /// Closes the popover when the user taps outside, defaults to true.
   final bool closeOnTapOutside;
 
-  /// The focus node of the child, the [popoverBuilder] will be shown when
+  /// The focus node of the child, the [popover] will be shown when
   /// focused.
   final FocusNode? focusNode;
 
@@ -91,20 +91,20 @@ class ShadcnPopover extends StatefulWidget {
   final Offset? offset;
 
   /// {@template tooltip.effects}
-  /// The animation effects applied to the [popoverBuilder]. Defaults to
+  /// The animation effects applied to the [popover]. Defaults to
   /// [FadeEffect(), ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
   /// MoveEffect(begin: Offset(0, 2), end: Offset(0, 0))].
   /// {@endtemplate}
   final List<Effect<dynamic>>? effects;
 
   /// {@template tooltip.shadows}
-  /// The shadows applied to the [popoverBuilder], defaults to
+  /// The shadows applied to the [popover], defaults to
   /// [ShadcnShadows.md].
   /// {@endtemplate}
   final List<BoxShadow>? shadows;
 
   /// {@template tooltip.alignment}
-  /// The alignment of the [popoverBuilder], defaults to [Alignment.topCenter].
+  /// The alignment of the [popover], defaults to [Alignment.topCenter].
   /// {@endtemplate}
   final Alignment? alignment;
 
@@ -114,13 +114,13 @@ class ShadcnPopover extends StatefulWidget {
   final Alignment? childAlignment;
 
   /// {@template tooltip.padding}
-  /// The padding of the [popoverBuilder], defaults to
+  /// The padding of the [popover], defaults to
   /// `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
   /// {@endtemplate}
   final EdgeInsets? padding;
 
   /// {@template tooltip.decoration}
-  /// The decoration of the [popoverBuilder].
+  /// The decoration of the [popover].
   /// {@endtemplate}
   final BoxDecoration? decoration;
 
@@ -186,7 +186,7 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
         ),
         textAlign: TextAlign.center,
         child: Builder(
-          builder: widget.popoverBuilder,
+          builder: widget.popover,
         ),
       ),
     );
