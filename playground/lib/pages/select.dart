@@ -6,6 +6,54 @@ enum SelectVariant {
   timezone,
 }
 
+final fruits = {
+  'apple': 'Apple',
+  'banana': 'Banana',
+  'blueberry': 'Blueberry',
+  'grapes': 'Grapes',
+  'pineapple': 'Pineapple',
+};
+
+final timezones = {
+  'North America': {
+    'est': 'Eastern Standard Time (EST)',
+    'cst': 'Central Standard Time (CST)',
+    'mst': 'Mountain Standard Time (MST)',
+    'pst': 'Pacific Standard Time (PST)',
+    'akst': 'Alaska Standard Time (AKST)',
+    'hst': 'Hawaii Standard Time (HST)',
+  },
+  'Europe & Africa': {
+    'gmt': 'Greenwich Mean Time (GMT)',
+    'cet': 'Central European Time (CET)',
+    'eet': 'Eastern European Time (EET)',
+    'west': 'Western European Summer Time (WEST)',
+    'cat': 'Central Africa Time (CAT)',
+    'eat': 'Eastern Africa Time (EAT)',
+  },
+  'Asia': {
+    'msk': 'Moscow Time (MSK)',
+    'ist': 'India Standard Time (IST)',
+    'cst_china': 'China Standard Time (CST)',
+    'jst': 'Japan Standard Time (JST)',
+    'kst': 'Korea Standard Time (KST)',
+    'ist_indonasia': 'Indonesia Standard Time (IST)',
+  },
+  'Australia & Pacific': {
+    'awst': 'Australian Western Standard Time (AWST)',
+    'acst': 'Australian Central Standard Time (ACST)',
+    'aest': 'Australian Eastern Standard Time (AEST)',
+    'nzst': 'New Zealand Standard Time (NZST)',
+    'fjt': 'Fiji Time (FJT)',
+  },
+  'South America': {
+    'art': 'Argentina Time (ART)',
+    'bot': 'Bolivia Time (BOT)',
+    'brt': 'Brasilia Time (BRT)',
+    'clt': 'Chile Standard Time (CLT)',
+  },
+};
+
 class SelectPage extends StatelessWidget {
   const SelectPage({
     super.key,
@@ -40,189 +88,49 @@ class SelectPage extends StatelessWidget {
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      const ShadcnOption(value: 'Apple', child: Text('Apple')),
-                      const ShadcnOption(
-                          value: 'Banana', child: Text('Banana')),
-                      const ShadcnOption(
-                          value: 'Blueberry', child: Text('Blueberry')),
-                      const ShadcnOption(
-                          value: 'Grapes', child: Text('Grapes')),
-                      const ShadcnOption(
-                          value: 'Pineapple', child: Text('Pineapple')),
+                      ...fruits.entries
+                          .map((e) =>
+                              ShadcnOption(value: e.key, child: Text(e.value)))
+                          .toList(),
                     ],
-                    selectedOptionBuilder: (context, value) => Text(value),
+                    selectedOptionBuilder: (context, value) =>
+                        Text(fruits[value]!),
                   ),
                 ),
               SelectVariant.timezone => ConstrainedBox(
                   constraints: const BoxConstraints(minWidth: 280),
                   child: ShadcnSelect<String>(
                     placeholder: const Text('Select a timezone'),
-                    options: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-                        child: Text(
-                          'North America',
-                          style: theme.textTheme.muted.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.popoverForeground,
+                    options: timezones.entries.map((e) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+                            child: Text(
+                              e.key,
+                              style: theme.textTheme.muted.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: theme.colorScheme.popoverForeground,
+                              ),
+                              textAlign: TextAlign.start,
+                            ),
                           ),
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      const ShadcnOption(
-                        value: 'est',
-                        child: Text('Eastern Standard Time (EST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'cst',
-                        child: Text('Central Standard Time (CST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'mst',
-                        child: Text('Mountain Standard Time (MST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'pst',
-                        child: Text('Pacific Standard Time (PST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'akst',
-                        child: Text('Alaska Standard Time (AKST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'hst',
-                        child: Text('Hawaii Standard Time (HST)'),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-                        child: Text(
-                          'Europe & Africa',
-                          style: theme.textTheme.muted.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.popoverForeground,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      const ShadcnOption(
-                        value: 'gmt',
-                        child: Text('Greenwich Mean Time (GMT)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'cet',
-                        child: Text('Central European Time (CET)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'eet',
-                        child: Text('Eastern European Time (EET)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'west',
-                        child: Text('Western European Summer Time (WEST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'cat',
-                        child: Text('Central Africa Time (CAT)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'eat',
-                        child: Text('East Africa Time (EAT)'),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-                        child: Text(
-                          'Asia',
-                          style: theme.textTheme.muted.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.popoverForeground,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      const ShadcnOption(
-                        value: 'msk',
-                        child: Text('Moscow Time (MSK)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'ist',
-                        child: Text('India Standard Time (IST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'cst_china',
-                        child: Text('China Standard Time (CST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'jst',
-                        child: Text('Japan Standard Time (JST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'kst',
-                        child: Text('Korea Standard Time (KST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'ist_indonesia',
-                        child: Text('Indonesia Central Standard Time (WITA)'),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-                        child: Text(
-                          'Australia & Pacific',
-                          style: theme.textTheme.muted.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.popoverForeground,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      const ShadcnOption(
-                        value: 'awst',
-                        child: Text('Australian Western Standard Time (AWST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'acst',
-                        child: Text('Australian Central Standard Time (ACST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'aest',
-                        child: Text('Australian Eastern Standard Time (AEST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'nzst',
-                        child: Text('New Zealand Standard Time (NZST)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'fjt',
-                        child: Text('Fiji Time (FJT)'),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-                        child: Text(
-                          'South America',
-                          style: theme.textTheme.muted.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.popoverForeground,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                      ),
-                      const ShadcnOption(
-                        value: 'art',
-                        child: Text('Argentina Time (ART)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'bot',
-                        child: Text('Bolivia Time (BOT)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'brt',
-                        child: Text('Brasilia Time (BRT)'),
-                      ),
-                      const ShadcnOption(
-                        value: 'clt',
-                        child: Text('Chile Standard Time (CLT)'),
-                      ),
-                    ],
-                    selectedOptionBuilder: (context, value) => Text(value),
+                          ...e.value.entries
+                              .map((e) => ShadcnOption(
+                                  value: e.key, child: Text(e.value)))
+                              .toList(),
+                        ],
+                      );
+                    }).toList(),
+                    selectedOptionBuilder: (context, value) {
+                      final timezone = timezones.entries
+                          .firstWhere(
+                              (element) => element.value.containsKey(value))
+                          .value[value];
+                      return Text(timezone!);
+                    },
                   ),
                 )
             };
