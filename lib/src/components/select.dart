@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/assets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -42,6 +41,7 @@ class ShadcnSelect<T> extends StatefulWidget {
     this.optionsPadding,
     this.showScrollToBottomChevron,
     this.showScrollToTopChevron,
+    this.scrollController,
   });
 
   /// Whether the [ShadcnSelect] is enabled, defaults to `true`.
@@ -113,6 +113,9 @@ class ShadcnSelect<T> extends StatefulWidget {
   /// Whether to show the scroll-to-bottom chevron, defaults to true.
   final bool? showScrollToBottomChevron;
 
+  /// The scroll controller of the [ShadcnSelect].
+  final ScrollController? scrollController;
+
   static ShadcnSelectState<T> of<T>(BuildContext context) {
     return maybeOf<T>(context)!;
   }
@@ -131,7 +134,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   FocusNode? internalFocusNode;
   late T? selected = widget.initialValue;
   final controller = ShadcnPopoverController();
-  final scrollController = ScrollController();
+  ScrollController? _scrollController;
 
   final showScrollToBottom = ValueNotifier(false);
   final showScrollToTop = ValueNotifier(false);
@@ -140,9 +143,15 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
 
   FocusNode get focusNode => widget.focusNode ?? internalFocusNode!;
 
+  ScrollController get scrollController =>
+      widget.scrollController ?? _scrollController!;
+
   @override
   void initState() {
     super.initState();
+    if (widget.scrollController == null) {
+      _scrollController = ScrollController();
+    }
     if (widget.focusNode == null) internalFocusNode = FocusNode();
 
     // react to the scroll position
@@ -158,7 +167,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   void dispose() {
     internalFocusNode?.dispose();
     controller.dispose();
-    scrollController.dispose();
+    _scrollController?.dispose();
     showScrollToBottom.dispose();
     showScrollToTop.dispose();
     super.dispose();
