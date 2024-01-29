@@ -132,6 +132,7 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
   ShadcnPopoverController? _controller;
   ShadcnPopoverController get controller => widget.controller ?? _controller!;
   bool animating = false;
+  final popoverKey = UniqueKey();
 
   @override
   void initState() {
@@ -199,7 +200,7 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
 
     if (widget.closeOnTapOutside) {
       popover = TapRegion(
-        groupId: #popover,
+        groupId: popoverKey,
         behavior: HitTestBehavior.opaque,
         onTapOutside: (_) => controller.hide(),
         child: popover,
@@ -207,7 +208,7 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
     }
 
     return TapRegion(
-      groupId: #popover,
+      groupId: popoverKey,
       child: ListenableBuilder(
         listenable: controller,
         builder: (context, _) {
