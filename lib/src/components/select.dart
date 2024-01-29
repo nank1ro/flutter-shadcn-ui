@@ -264,7 +264,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    effectiveText,
+                    Flexible(child: effectiveText),
                     effectiveTrailing,
                   ],
                 ),
