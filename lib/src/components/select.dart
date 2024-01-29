@@ -292,59 +292,63 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
             max(effectiveMinWidth, constraints.minWidth) -
                 decorationHorizontalPadding;
 
-        final scrollToTopChild = ValueListenableBuilder(
-          valueListenable: showScrollToTop,
-          builder: (context, show, child) {
-            return AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: show
-                  ? MouseRegion(
-                      onEnter: (_) {
-                        shouldAnimateToTop = true;
-                        animateToTop();
-                      },
-                      onExit: (_) => shouldAnimateToTop = false,
-                      child: Container(
-                        width: calculatedMinWidth,
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: ShadcnImage.square(
-                          ShadAssets.chevronUp,
-                          size: 16,
-                          color: theme.colorScheme.popoverForeground,
-                        ),
-                      ),
-                    )
-                  : const SizedBox(),
-            );
-          },
-        );
+        final scrollToTopChild = false != widget.showScrollToTopChevron
+            ? ValueListenableBuilder(
+                valueListenable: showScrollToTop,
+                builder: (context, show, child) {
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: show
+                        ? MouseRegion(
+                            onEnter: (_) {
+                              shouldAnimateToTop = true;
+                              animateToTop();
+                            },
+                            onExit: (_) => shouldAnimateToTop = false,
+                            child: Container(
+                              width: calculatedMinWidth,
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: ShadcnImage.square(
+                                ShadAssets.chevronUp,
+                                size: 16,
+                                color: theme.colorScheme.popoverForeground,
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                  );
+                },
+              )
+            : null;
 
-        final scrollToBottomChild = ValueListenableBuilder(
-          valueListenable: showScrollToBottom,
-          builder: (context, show, child) {
-            return AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: show
-                  ? MouseRegion(
-                      onEnter: (_) {
-                        shouldAnimateToBottom = true;
-                        animateToBottom();
-                      },
-                      onExit: (_) => shouldAnimateToBottom = false,
-                      child: Container(
-                        width: calculatedMinWidth,
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: ShadcnImage.square(
-                          ShadAssets.chevronDown,
-                          size: 16,
-                          color: theme.colorScheme.popoverForeground,
-                        ),
-                      ),
-                    )
-                  : const SizedBox(),
-            );
-          },
-        );
+        final scrollToBottomChild = false != widget.showScrollToTopChevron
+            ? ValueListenableBuilder(
+                valueListenable: showScrollToBottom,
+                builder: (context, show, child) {
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: show
+                        ? MouseRegion(
+                            onEnter: (_) {
+                              shouldAnimateToBottom = true;
+                              animateToBottom();
+                            },
+                            onExit: (_) => shouldAnimateToBottom = false,
+                            child: Container(
+                              width: calculatedMinWidth,
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: ShadcnImage.square(
+                                ShadAssets.chevronDown,
+                                size: 16,
+                                color: theme.colorScheme.popoverForeground,
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                  );
+                },
+              )
+            : null;
 
         return ShadcnInheritedSelectContainer(
           data: this,
@@ -369,7 +373,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (false != widget.showScrollToTopChevron) scrollToTopChild,
+                  if (scrollToTopChild != null) scrollToTopChild,
                   Flexible(
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
@@ -383,8 +387,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
                       ),
                     ),
                   ),
-                  if (false != widget.showScrollToBottomChevron)
-                    scrollToBottomChild,
+                  if (scrollToBottomChild != null) scrollToBottomChild,
                 ],
               );
             },
