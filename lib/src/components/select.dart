@@ -218,6 +218,14 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
         theme.selectTheme.border ??
         Border.all(color: theme.colorScheme.input);
 
+    final effectiveShowScrollToTopChevron = widget.showScrollToTopChevron ??
+        theme.selectTheme.showScrollToTopChevron ??
+        true;
+    final effectiveShowScrollToBottomChevron =
+        widget.showScrollToBottomChevron ??
+            theme.selectTheme.showScrollToBottomChevron ??
+            true;
+
     final Widget effectiveText;
     if (selected is T) {
       effectiveText = widget.selectedOptionBuilder(
@@ -292,7 +300,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
             max(effectiveMinWidth, constraints.minWidth) -
                 decorationHorizontalPadding;
 
-        final scrollToTopChild = false != widget.showScrollToTopChevron
+        final scrollToTopChild = effectiveShowScrollToTopChevron
             ? ValueListenableBuilder(
                 valueListenable: showScrollToTop,
                 builder: (context, show, child) {
@@ -321,7 +329,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
               )
             : null;
 
-        final scrollToBottomChild = false != widget.showScrollToTopChevron
+        final scrollToBottomChild = effectiveShowScrollToBottomChevron
             ? ValueListenableBuilder(
                 valueListenable: showScrollToBottom,
                 builder: (context, show, child) {

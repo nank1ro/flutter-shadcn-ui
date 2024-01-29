@@ -252,6 +252,8 @@ abstract class ShadcnComponentDefaultTheme {
       backgroundColor: colorScheme.background,
       border: Border.all(color: colorScheme.input),
       optionsPadding: const EdgeInsets.all(4),
+      showScrollToTopChevron: true,
+      showScrollToBottomChevron: true,
     );
   }
 

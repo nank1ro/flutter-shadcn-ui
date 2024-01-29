@@ -19,6 +19,8 @@ class ShadcnSelectTheme {
     this.backgroundColor,
     this.radius,
     this.border,
+    this.showScrollToTopChevron,
+    this.showScrollToBottomChevron,
   });
 
   final bool merge;
@@ -31,6 +33,8 @@ class ShadcnSelectTheme {
   final Color? backgroundColor;
   final BorderRadius? radius;
   final Border? border;
+  final bool? showScrollToTopChevron;
+  final bool? showScrollToBottomChevron;
 
   static ShadcnSelectTheme lerp(
     ShadcnSelectTheme a,
@@ -49,6 +53,8 @@ class ShadcnSelectTheme {
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       border: Border.lerp(a.border, b.border, t),
       optionsPadding: EdgeInsets.lerp(a.optionsPadding, b.optionsPadding, t),
+      showScrollToTopChevron: b.showScrollToTopChevron,
+      showScrollToBottomChevron: b.showScrollToBottomChevron,
     );
   }
 
@@ -63,6 +69,8 @@ class ShadcnSelectTheme {
     BorderRadius? radius,
     Border? border,
     EdgeInsets? optionsPadding,
+    bool? showScrollToTopChevron,
+    bool? showScrollToBottomChevron,
   }) {
     return ShadcnSelectTheme(
       merge: merge ?? this.merge,
@@ -75,6 +83,10 @@ class ShadcnSelectTheme {
       radius: radius ?? this.radius,
       border: border ?? this.border,
       optionsPadding: optionsPadding ?? this.optionsPadding,
+      showScrollToTopChevron:
+          showScrollToTopChevron ?? this.showScrollToTopChevron,
+      showScrollToBottomChevron:
+          showScrollToBottomChevron ?? this.showScrollToBottomChevron,
     );
   }
 
@@ -91,6 +103,8 @@ class ShadcnSelectTheme {
       radius: other.radius,
       border: other.border,
       optionsPadding: other.optionsPadding,
+      showScrollToTopChevron: other.showScrollToTopChevron,
+      showScrollToBottomChevron: other.showScrollToBottomChevron,
     );
   }
 
@@ -108,7 +122,9 @@ class ShadcnSelectTheme {
         other.backgroundColor == backgroundColor &&
         other.radius == radius &&
         other.border == border &&
-        other.optionsPadding == optionsPadding;
+        other.optionsPadding == optionsPadding &&
+        other.showScrollToTopChevron == showScrollToTopChevron &&
+        other.showScrollToBottomChevron == showScrollToBottomChevron;
   }
 
   @override
@@ -122,6 +138,8 @@ class ShadcnSelectTheme {
         backgroundColor.hashCode ^
         radius.hashCode ^
         border.hashCode ^
-        optionsPadding.hashCode;
+        optionsPadding.hashCode ^
+        showScrollToTopChevron.hashCode ^
+        showScrollToBottomChevron.hashCode;
   }
 }
