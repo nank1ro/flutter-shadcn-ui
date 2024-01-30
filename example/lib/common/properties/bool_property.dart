@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 class MyBoolProperty extends StatelessWidget {
   const MyBoolProperty({
@@ -21,7 +22,7 @@ class MyBoolProperty extends StatelessWidget {
           style: const TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 8),
-        Switch(value: value, onChanged: onChanged)
+        ShadSwitch(value: value, onChanged: onChanged)
       ],
     );
   }

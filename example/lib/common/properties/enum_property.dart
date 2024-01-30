@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
-class MyEnumProperty<T> extends StatelessWidget {
+class MyEnumProperty<T extends Enum> extends StatelessWidget {
   const MyEnumProperty({
     super.key,
     required this.label,
@@ -11,7 +12,7 @@ class MyEnumProperty<T> extends StatelessWidget {
 
   final String label;
   final T value;
-  final List<Enum> values;
+  final List<T> values;
   final ValueChanged<T> onChanged;
 
   @override
@@ -23,19 +24,22 @@ class MyEnumProperty<T> extends StatelessWidget {
           style: const TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 8),
-        DropdownButton(
-          value: value,
-          items: values
+        ShadcnSelect<T>(
+          initialValue: value,
+          options: values
               .map(
-                (e) => DropdownMenuItem(
+                (e) => ShadcnOption(
                   value: e,
                   child: Text(e.name.replaceAll('\$', '')),
                 ),
               )
               .toList(),
+          selectedOptionBuilder: (context, value) {
+            return Text(value.name.replaceAll('\$', ''));
+          },
           onChanged: (v) {
             if (v == null) return;
-            onChanged(v as T);
+            onChanged(v);
           },
         ),
       ],
