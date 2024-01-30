@@ -493,13 +493,9 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
       // scroll to the selected option
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
-        final scrollable = Scrollable.maybeOf(context);
-        if (scrollable != null) {
-          scrollable.position.ensureVisible(
-            context.findRenderObject()!,
-            alignmentPolicy: ScrollPositionAlignmentPolicy.keepVisibleAtEnd,
-          );
-        }
+        Scrollable.maybeOf(context)
+            ?.position
+            .ensureVisible(context.findRenderObject()!);
       });
     }
 
