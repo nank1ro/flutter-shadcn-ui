@@ -73,6 +73,7 @@ class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     if (widget.focusNode == null) _focusNode = FocusNode();
+    controller.animateTo(widget.value ? 1 : 0, duration: Duration.zero);
   }
 
   @override
