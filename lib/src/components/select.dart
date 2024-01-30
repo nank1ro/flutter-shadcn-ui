@@ -391,25 +391,26 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
                 }
               });
 
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (scrollToTopChild != null) scrollToTopChild,
-                  Flexible(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: effectiveMaxHeight,
-                        minWidth: calculatedMinWidth,
-                      ),
-                      child: SingleChildScrollView(
-                        padding: effectiveOptionsPadding,
-                        controller: scrollController,
-                        child: ShadSameWidthColumn(children: widget.options),
+              return ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: effectiveMaxHeight),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (scrollToTopChild != null) scrollToTopChild,
+                    Flexible(
+                      child: ConstrainedBox(
+                        constraints:
+                            BoxConstraints(minWidth: calculatedMinWidth),
+                        child: SingleChildScrollView(
+                          padding: effectiveOptionsPadding,
+                          controller: scrollController,
+                          child: ShadSameWidthColumn(children: widget.options),
+                        ),
                       ),
                     ),
-                  ),
-                  if (scrollToBottomChild != null) scrollToBottomChild,
-                ],
+                    if (scrollToBottomChild != null) scrollToBottomChild,
+                  ],
+                ),
               );
             },
             child: select,
