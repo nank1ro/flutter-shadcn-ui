@@ -23,7 +23,8 @@ class ShadDisabled extends StatelessWidget {
       absorbing: disabled,
       child: child,
     );
-    if (showForbiddenCursor) {
+
+    if (showForbiddenCursor && disabled) {
       view = MouseRegion(cursor: SystemMouseCursors.forbidden, child: view);
     }
 
