@@ -135,7 +135,7 @@ class _CardPageState extends State<CardPage> {
                       ValueListenableBuilder(
                         valueListenable: pushNotifications,
                         builder: (context, value, child) {
-                          return Switch(
+                          return ShadSwitch(
                             value: value,
                             onChanged: (v) => pushNotifications.value = v,
                           );
