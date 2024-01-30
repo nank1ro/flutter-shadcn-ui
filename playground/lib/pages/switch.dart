@@ -15,7 +15,6 @@ class _SwitchPageState extends State<SwitchPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
     return Scaffold(
       body: Center(
         child: Row(
@@ -26,7 +25,10 @@ class _SwitchPageState extends State<SwitchPage> {
               onChanged: (v) => setState(() => value = v),
             ),
             const SizedBox(width: 8),
-            Text('Airplane Mode', style: theme.textTheme.small),
+            Text(
+              'Airplane Mode',
+              style: ShadcnTheme.of(context).textTheme.small,
+            ),
           ],
         ),
       ),
