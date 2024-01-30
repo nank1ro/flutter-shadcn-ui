@@ -7,21 +7,27 @@ class ShadDisabled extends StatelessWidget {
     super.key,
     required this.disabled,
     required this.child,
+    this.showForbiddenCursor = false,
   });
 
   final bool disabled;
   final Widget child;
+  final bool showForbiddenCursor;
 
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadcnTheme(context));
     final theme = ShadcnTheme.of(context);
-    return Opacity(
-      opacity: disabled ? theme.disabledOpacity : 1,
-      child: AbsorbPointer(
-        absorbing: disabled,
-        child: child,
-      ),
+
+    Widget view = AbsorbPointer(
+      absorbing: disabled,
+      child: child,
     );
+
+    if (showForbiddenCursor && disabled) {
+      view = MouseRegion(cursor: SystemMouseCursors.forbidden, child: view);
+    }
+
+    return Opacity(opacity: disabled ? theme.disabledOpacity : 1, child: view);
   }
 }

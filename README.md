@@ -42,7 +42,7 @@ Current progress:
 - [ ] Skeleton
 - [ ] Slider
 - [ ] Sonner (?)
-- [ ] Switch
+- [x] [Switch](https://mariuti.com/shadcn-ui/components/switch/)
 - [ ] Table
 - [ ] Tabs
 - [ ] TextArea

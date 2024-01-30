@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 @immutable
 class ShadcnBorder {
@@ -126,7 +127,7 @@ class ShadcnDecorator extends StatelessWidget {
   const ShadcnDecorator({
     super.key,
     required this.child,
-    required this.decoration,
+    this.decoration,
     this.focused = false,
   });
 
@@ -134,14 +135,18 @@ class ShadcnDecorator extends StatelessWidget {
   final Widget child;
 
   /// The decoration to apply to the child.
-  final ShadcnDecorationTheme decoration;
+  final ShadcnDecorationTheme? decoration;
 
   /// Whether the child has focus, defaults to false.
   final bool focused;
 
   @override
   Widget build(BuildContext context) {
-    final border = focused ? decoration.focusedBorder : decoration.border;
+    final theme = ShadcnTheme.of(context);
+    final effectiveDecoration = decoration ?? theme.decoration;
+    final border = focused
+        ? effectiveDecoration.focusedBorder
+        : effectiveDecoration.border;
 
     return Container(
       decoration: BoxDecoration(
