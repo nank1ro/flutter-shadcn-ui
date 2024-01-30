@@ -117,6 +117,7 @@ class SelectPage extends StatelessWidget {
                     ],
                     selectedOptionBuilder: (context, value) =>
                         Text(fruits[value]!),
+                    onChanged: print,
                   ),
                 ),
               SelectVariant.timezone => ConstrainedBox(
@@ -124,6 +125,7 @@ class SelectPage extends StatelessWidget {
                   child: ShadcnSelect<String>(
                     placeholder: const Text('Select a timezone'),
                     options: getTimezonesWidgets(theme),
+                    onChanged: print,
                     selectedOptionBuilder: (context, value) {
                       final timezone = timezones.entries
                           .firstWhere(
