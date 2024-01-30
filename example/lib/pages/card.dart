@@ -3,33 +3,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+const frameworks = {
+  'next': 'Next.js',
+  'react': 'React',
+  'astro': 'Astro',
+  'nuxt': 'Nuxt.js',
+};
+
 class CardPage extends StatelessWidget {
   const CardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadcnTheme.of(context);
     return BaseScaffold(
       appBarTitle: 'Card',
       children: [
         SizedBox(
           width: 350,
           child: ShadcnCard(
-            title: const Text('Create project'),
+            title: Text('Create project', style: theme.textTheme.h4),
             description: const Text('Deploy your new project in one-click.'),
-            content: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
+            content: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // TODO: use ShadcnInputFormField
-                  Text('Name'),
-                  ShadcnInput(placeholder: 'Name of your project'),
-
-                  SizedBox(height: 6),
-                  // TODO: use ShadcnSelect
-                  Text('Framework'),
-                  ShadcnInput(placeholder: 'Select'),
+                  const Text('Name'),
+                  const ShadcnInput(placeholder: 'Name of your project'),
+                  const SizedBox(height: 6),
+                  const Text('Framework'),
+                  ShadcnSelect<String>(
+                    placeholder: const Text('Select'),
+                    options: frameworks.entries
+                        .map((e) =>
+                            ShadcnOption(value: e.key, child: Text(e.value)))
+                        .toList(),
+                    selectedOptionBuilder: (context, value) {
+                      return Text(frameworks[value]!);
+                    },
+                    onChanged: (value) {},
+                  ),
                 ],
               ),
             ),
