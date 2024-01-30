@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
@@ -8,6 +9,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
+import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/data.dart';
 import 'package:shadcn_ui/src/theme/text_theme/defaults.dart';
@@ -263,6 +265,32 @@ abstract class ShadcnComponentDefaultTheme {
     return ShadcnOptionTheme(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       hoveredBackgroundColor: colorScheme.accent,
+    );
+  }
+
+  static ShadcnSwitchTheme switchTheme({
+    required ShadcnColorScheme colorScheme,
+  }) {
+    return ShadcnSwitchTheme(
+      radius: const BorderRadius.all(Radius.circular(24)),
+      width: 44,
+      margin: 2,
+      duration: 100.milliseconds,
+      thumbColor: colorScheme.background,
+      uncheckedTrackColor: colorScheme.input,
+      checkedTrackColor: colorScheme.primary,
+      decoration: ShadcnDecorationTheme(
+        border: const ShadcnBorder(width: 4, color: Colors.transparent),
+        focusedBorder: ShadcnBorder(
+          width: 2,
+          color: colorScheme.ring,
+          // the outer radius is calculated as
+          // outerRadius = innerRadius + innerRadius / 2
+          // outerRadius = 24 + 24 / 2 = 36
+          radius: const BorderRadius.all(Radius.circular(36)),
+          padding: const EdgeInsets.all(2),
+        ),
+      ),
     );
   }
 }

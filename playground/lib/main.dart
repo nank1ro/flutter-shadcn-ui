@@ -7,6 +7,7 @@ import 'package:playground/pages/image.dart';
 import 'package:playground/pages/input.dart';
 import 'package:playground/pages/popover.dart';
 import 'package:playground/pages/select.dart';
+import 'package:playground/pages/switch.dart';
 import 'package:playground/pages/tooltip.dart';
 import 'package:playground/pages/typography.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -104,6 +105,10 @@ final _router = GoRouter(
           variant: SelectVariant.values.byName(style),
         );
       },
+    ),
+    GoRoute(
+      path: '/switch',
+      builder: (context, state) => const SwitchPage(),
     ),
   ],
 );
