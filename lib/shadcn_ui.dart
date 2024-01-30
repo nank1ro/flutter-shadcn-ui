@@ -10,8 +10,9 @@ export 'src/components/button.dart';
 export 'src/components/image.dart';
 export 'src/components/input.dart';
 export 'src/components/popover.dart';
-export 'src/components/tooltip.dart';
 export 'src/components/select.dart';
+export 'src/components/switch.dart';
+export 'src/components/tooltip.dart';
 
 // Assets
 export 'src/assets.dart';
