@@ -17,6 +17,7 @@ dependencies:
   go_router: ^13.0.1
   shadcn_ui:
     path: ..
+  awesome_flutter_extensions: ^1.2.0
 
 dev_dependencies:
   flutter_test:
