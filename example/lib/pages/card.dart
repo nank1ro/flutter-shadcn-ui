@@ -1,3 +1,4 @@
+import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:example/common/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,8 +11,36 @@ const frameworks = {
   'nuxt': 'Nuxt.js',
 };
 
-class CardPage extends StatelessWidget {
+const notifications = [
+  (
+    title: "Your call has been confirmed.",
+    description: "1 hour ago",
+  ),
+  (
+    title: "You have a new message!",
+    description: "1 hour ago",
+  ),
+  (
+    title: "Your subscription is expiring soon!",
+    description: "2 hours ago",
+  ),
+];
+
+class CardPage extends StatefulWidget {
   const CardPage({super.key});
+
+  @override
+  State<CardPage> createState() => _CardPageState();
+}
+
+class _CardPageState extends State<CardPage> {
+  final pushNotifications = ValueNotifier(false);
+
+  @override
+  void dispose() {
+    pushNotifications.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +51,7 @@ class CardPage extends StatelessWidget {
         SizedBox(
           width: 350,
           child: ShadcnCard(
-            title: Text('Create project', style: theme.textTheme.h4),
+            title: const Text('Create project'),
             description: const Text('Deploy your new project in one-click.'),
             content: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -63,6 +92,107 @@ class CardPage extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(height: 40),
+        SizedBox(
+          width: 380,
+          child: ShadcnCard(
+            title: const Text('Notifications'),
+            description: const Text('You have 3 unread messages.'),
+            content: Column(
+              children: [
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: theme.radius,
+                    border: Border.all(color: theme.colorScheme.border),
+                  ),
+                  child: Row(
+                    children: [
+                      ShadcnImage.square(
+                        ShadAssets.bellRing,
+                        size: 24,
+                        color: theme.colorScheme.foreground,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Push Notifications',
+                                style: theme.textTheme.small,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Send notifications to device.',
+                                style: theme.textTheme.muted,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      ValueListenableBuilder(
+                        valueListenable: pushNotifications,
+                        builder: (context, value, child) {
+                          return Switch(
+                            value: value,
+                            onChanged: (v) => pushNotifications.value = v,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ...notifications
+                    .map(
+                      (n) => Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            margin: const EdgeInsets.only(top: 4),
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF0CA5E9),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Your call has been confirmed.',
+                                      style: theme.textTheme.small),
+                                  const SizedBox(height: 4),
+                                  Text(n.description,
+                                      style: theme.textTheme.muted),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                    .separatedBy(const SizedBox(height: 16)),
+                const SizedBox(height: 16),
+              ],
+            ),
+            footer: ShadcnButton(
+              width: double.infinity,
+              text: const Text('Mark all as read'),
+              icon: const Padding(
+                padding: EdgeInsets.only(right: 8),
+                child: ShadcnImage.square(ShadAssets.check, size: 16),
+              ),
+              onPressed: () {},
+            ),
+          ),
+        )
       ],
     );
   }
