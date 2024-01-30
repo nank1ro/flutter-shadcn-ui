@@ -34,13 +34,13 @@ class ShadcnPortal extends StatefulWidget {
   const ShadcnPortal({
     super.key,
     required this.child,
-    required this.overlay,
+    required this.portalBuilder,
     required this.visible,
     required this.anchor,
   });
 
   final Widget child;
-  final Widget overlay;
+  final WidgetBuilder portalBuilder;
   final bool visible;
   final ShadcnAnchor anchor;
 
@@ -50,7 +50,7 @@ class ShadcnPortal extends StatefulWidget {
 
 class _ShadcnPortalState extends State<ShadcnPortal> {
   final layerLink = LayerLink();
-  OverlayEntry? entry;
+  final overlayPortalController = OverlayPortalController();
 
   @override
   void initState() {
@@ -66,47 +66,50 @@ class _ShadcnPortalState extends State<ShadcnPortal> {
 
   @override
   void dispose() {
-    hideOverlay();
+    hide();
     super.dispose();
   }
 
   void updateVisibility() {
-    final shouldShow = widget.visible && entry == null;
+    final shouldShow = widget.visible;
 
     WidgetsBinding.instance.addPostFrameCallback((timer) {
-      shouldShow ? showOverlay() : hideOverlay();
+      shouldShow ? show() : hide();
     });
   }
 
-  void hideOverlay() {
-    entry?.remove();
-    entry = null;
+  void hide() {
+    if (overlayPortalController.isShowing) {
+      overlayPortalController.hide();
+    }
   }
 
-  void showOverlay() {
-    if (entry != null) return;
-    entry = OverlayEntry(
-      builder: (context) => Material(
-        type: MaterialType.transparency,
-        child: Center(
-          child: CompositedTransformFollower(
-            link: layerLink,
-            offset: widget.anchor.offset,
-            followerAnchor: widget.anchor.overlayAlignment,
-            targetAnchor: widget.anchor.childAlignment,
-            child: widget.overlay,
-          ),
-        ),
-      ),
-    );
-    Overlay.of(context).insert(entry!);
+  void show() {
+    if (!overlayPortalController.isShowing) {
+      overlayPortalController.show();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
       link: layerLink,
-      child: widget.child,
+      child: OverlayPortal(
+        controller: overlayPortalController,
+        overlayChildBuilder: (context) => Material(
+          type: MaterialType.transparency,
+          child: Center(
+            child: CompositedTransformFollower(
+              link: layerLink,
+              offset: widget.anchor.offset,
+              followerAnchor: widget.anchor.overlayAlignment,
+              targetAnchor: widget.anchor.childAlignment,
+              child: widget.portalBuilder(context),
+            ),
+          ),
+        ),
+        child: widget.child,
+      ),
     );
   }
 }

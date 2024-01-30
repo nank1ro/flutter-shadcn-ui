@@ -12,6 +12,7 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  boxy: ^2.2.0
   flutter:
     sdk: flutter
   flutter_animate: ^4.4.0
@@ -27,3 +28,7 @@ dev_dependencies:
   very_good_analysis: ^5.1.0
 
 flutter:
+  assets:
+    - assets/check.svg
+    - assets/chevron-down.svg
+    - assets/chevron-up.svg

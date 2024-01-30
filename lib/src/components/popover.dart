@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
-// import 'package:flutter_portal/flutter_portal.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
@@ -52,7 +51,7 @@ class ShadcnPopover extends StatefulWidget {
         );
 
   /// The widget displayed as a popover.
-  final Widget popover;
+  final WidgetBuilder popover;
 
   /// The child widget.
   final Widget child;
@@ -66,7 +65,8 @@ class ShadcnPopover extends StatefulWidget {
   /// Closes the popover when the user taps outside, defaults to true.
   final bool closeOnTapOutside;
 
-  /// The focus node of the child, the [popover] will be shown when focused.
+  /// The focus node of the child, the [popover] will be shown when
+  /// focused.
   final FocusNode? focusNode;
 
   /// {@template tooltip.waitDuration}
@@ -98,7 +98,8 @@ class ShadcnPopover extends StatefulWidget {
   final List<Effect<dynamic>>? effects;
 
   /// {@template tooltip.shadows}
-  /// The shadows applied to the [popover], defaults to [ShadcnShadows.md].
+  /// The shadows applied to the [popover], defaults to
+  /// [ShadcnShadows.md].
   /// {@endtemplate}
   final List<BoxShadow>? shadows;
 
@@ -130,6 +131,8 @@ class ShadcnPopover extends StatefulWidget {
 class _ShadcnPopoverState extends State<ShadcnPopover> {
   ShadcnPopoverController? _controller;
   ShadcnPopoverController get controller => widget.controller ?? _controller!;
+  bool animating = false;
+  final popoverKey = UniqueKey();
 
   @override
   void initState() {
@@ -182,7 +185,9 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
           color: theme.colorScheme.popoverForeground,
         ),
         textAlign: TextAlign.center,
-        child: widget.popover,
+        child: Builder(
+          builder: widget.popover,
+        ),
       ),
     );
 
@@ -195,26 +200,30 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
 
     if (widget.closeOnTapOutside) {
       popover = TapRegion(
+        groupId: popoverKey,
         behavior: HitTestBehavior.opaque,
         onTapOutside: (_) => controller.hide(),
         child: popover,
       );
     }
 
-    return ListenableBuilder(
-      listenable: controller,
-      builder: (context, _) {
-        return ShadcnPortal(
-          overlay: popover,
-          visible: controller.isOpen,
-          anchor: ShadcnAnchor(
-            childAlignment: effectiveAlignment,
-            overlayAlignment: effectiveChildAlignment,
-            offset: effectiveOffset,
-          ),
-          child: widget.child,
-        );
-      },
+    return TapRegion(
+      groupId: popoverKey,
+      child: ListenableBuilder(
+        listenable: controller,
+        builder: (context, _) {
+          return ShadcnPortal(
+            portalBuilder: (_) => popover,
+            visible: controller.isOpen,
+            anchor: ShadcnAnchor(
+              childAlignment: effectiveAlignment,
+              overlayAlignment: effectiveChildAlignment,
+              offset: effectiveOffset,
+            ),
+            child: widget.child,
+          );
+        },
+      ),
     );
   }
 }

@@ -25,7 +25,7 @@ class _TooltipPageState extends State<TooltipPage> {
       body: Center(
         child: ShadcnTooltip(
           focusNode: focusNode,
-          tooltip: const Text('Add to library'),
+          builder: (context) => const Text('Add to library'),
           child: ShadcnButton.outline(
             focusNode: focusNode,
             text: const Text('Hover/Focus'),

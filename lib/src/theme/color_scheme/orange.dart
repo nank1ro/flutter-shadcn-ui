@@ -24,7 +24,7 @@ class ShadcnOrangeColorScheme extends ShadcnColorScheme {
     required super.border,
     required super.input,
     required super.ring,
-    required super.selectionColor,
+    required super.selection,
   });
 
   const ShadcnOrangeColorScheme.light({
@@ -47,7 +47,7 @@ class ShadcnOrangeColorScheme extends ShadcnColorScheme {
     super.border = const Color(0xffe7e5e4),
     super.input = const Color(0xffe7e5e4),
     super.ring = const Color(0xfff97316),
-    super.selectionColor = const Color(0xFFB4D7FF),
+    super.selection = const Color(0xFFB4D7FF),
   });
 
   const ShadcnOrangeColorScheme.dark({
@@ -70,6 +70,6 @@ class ShadcnOrangeColorScheme extends ShadcnColorScheme {
     super.border = const Color(0xff292524),
     super.input = const Color(0xff292524),
     super.ring = const Color(0xffea580c),
-    super.selectionColor = const Color(0xFF355172),
+    super.selection = const Color(0xFF355172),
   });
 }
