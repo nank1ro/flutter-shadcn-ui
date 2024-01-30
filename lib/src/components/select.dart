@@ -202,12 +202,13 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   }
 
   void select(T value, {bool hideOptions = true}) {
+    final changed = value != selected;
     setState(() {
       if (hideOptions) controller.hide();
       selected = value;
     });
     focusNode.requestFocus();
-    widget.onChanged?.call(value);
+    if (changed) widget.onChanged?.call(value);
   }
 
   @override
