@@ -4,6 +4,7 @@ import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
@@ -263,6 +264,18 @@ abstract class ShadcnComponentDefaultTheme {
     return ShadcnOptionTheme(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       hoveredBackgroundColor: colorScheme.accent,
+    );
+  }
+
+  static ShadcnCardTheme cardTheme({
+    required ShadcnColorScheme colorScheme,
+  }) {
+    return ShadcnCardTheme(
+      backgroundColor: colorScheme.card,
+      padding: const EdgeInsets.all(24),
+      border: Border.all(color: colorScheme.border),
+      radius: const BorderRadius.all(Radius.circular(8)),
+      shadows: ShadcnShadows.sm,
     );
   }
 }

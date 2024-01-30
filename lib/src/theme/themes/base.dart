@@ -3,6 +3,7 @@ import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
@@ -36,6 +37,7 @@ abstract class ShadcnBaseTheme {
     required this.disabledOpacity,
     required this.selectTheme,
     required this.optionTheme,
+    required this.cardTheme,
   });
 
   final ShadcnColorScheme colorScheme;
@@ -61,4 +63,5 @@ abstract class ShadcnBaseTheme {
   final double disabledOpacity;
   final ShadcnSelectTheme selectTheme;
   final ShadcnOptionTheme optionTheme;
+  final ShadcnCardTheme cardTheme;
 }

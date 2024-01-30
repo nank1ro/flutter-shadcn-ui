@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
-import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
 class ShadcnCard extends StatelessWidget {
   const ShadcnCard({
@@ -9,6 +8,11 @@ class ShadcnCard extends StatelessWidget {
     this.description,
     this.content,
     this.footer,
+    this.padding,
+    this.backgroundColor,
+    this.radius,
+    this.border,
+    this.shadows,
   });
 
   final Widget? title;
@@ -16,16 +20,37 @@ class ShadcnCard extends StatelessWidget {
   final Widget? content;
   final Widget? footer;
 
+  final EdgeInsets? padding;
+  final Color? backgroundColor;
+  final BorderRadius? radius;
+  final Border? border;
+  final List<BoxShadow>? shadows;
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadcnTheme.of(context);
+
+    final effectivePadding =
+        padding ?? theme.cardTheme.padding ?? const EdgeInsets.all(24);
+
+    final effectiveBackgroundColor = backgroundColor ??
+        theme.cardTheme.backgroundColor ??
+        theme.colorScheme.card;
+
+    final effectiveRadius = radius ?? theme.cardTheme.radius ?? theme.radius;
+
+    final effectiveBorder = border ??
+        theme.cardTheme.border ??
+        Border.all(color: theme.colorScheme.border);
+
+    final effectiveShadows = shadows ?? theme.cardTheme.shadows;
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: effectivePadding,
       decoration: BoxDecoration(
-        color: theme.colorScheme.card,
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        border: Border.all(color: theme.colorScheme.border),
-        boxShadow: ShadcnShadows.sm,
+        color: effectiveBackgroundColor,
+        borderRadius: effectiveRadius,
+        border: effectiveBorder,
+        boxShadow: effectiveShadows,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
