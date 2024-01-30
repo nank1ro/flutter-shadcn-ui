@@ -94,47 +94,39 @@ class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final theme = ShadcnTheme.of(context);
-    final effectiveRadius =
-        widget.radius ?? const BorderRadius.all(Radius.circular(24));
-    final effectiveThumbColor =
-        widget.thumbColor ?? theme.colorScheme.background;
-    final effectiveUncheckedTrackColor =
-        widget.uncheckedTrackColor ?? theme.colorScheme.input;
-    final effectiveCheckedTrackColor =
-        widget.checkedTrackColor ?? theme.colorScheme.primary;
-    final effectiveWidth = widget.width ?? 44;
-    final effectiveMargin = widget.margin ?? 2;
+    final effectiveRadius = widget.radius ??
+        theme.switchTheme.radius ??
+        const BorderRadius.all(Radius.circular(24));
+    final effectiveThumbColor = widget.thumbColor ??
+        theme.switchTheme.thumbColor ??
+        theme.colorScheme.background;
+    final effectiveUncheckedTrackColor = widget.uncheckedTrackColor ??
+        theme.switchTheme.uncheckedTrackColor ??
+        theme.colorScheme.input;
+    final effectiveCheckedTrackColor = widget.checkedTrackColor ??
+        theme.switchTheme.checkedTrackColor ??
+        theme.colorScheme.primary;
+    final effectiveWidth = widget.width ?? theme.switchTheme.width ?? 44;
+    final effectiveMargin = widget.margin ?? theme.switchTheme.margin ?? 2;
     final effectiveHeight = effectiveWidth * 0.54;
     final effectiveThumbSize = effectiveHeight - effectiveMargin * 2;
     final transitionStep =
         effectiveWidth - effectiveMargin * 2 - effectiveThumbSize;
     final effectiveDuration = widget.duration ?? 100.milliseconds;
-    final effectiveDecoration = widget.decoration ?? theme.decoration;
-    final outerRadius = effectiveRadius + effectiveRadius / 2;
+    final effectiveDecoration =
+        widget.decoration ?? theme.switchTheme.decoration ?? theme.decoration;
 
     return Semantics(
       toggled: widget.value,
       child: ShadDisabled(
+        showForbiddenCursor: true,
         disabled: !enabled,
         child: ShadFocused(
           focusNode: focusNode,
           builder: (context, focused) {
             return ShadcnDecorator(
               focused: focused,
-              decoration: effectiveDecoration.copyWith(
-                border:
-                    effectiveDecoration.border?.copyWith(radius: outerRadius) ??
-                        const ShadcnBorder(width: 4, color: Colors.transparent),
-                focusedBorder: effectiveDecoration.focusedBorder?.copyWith(
-                      radius: outerRadius,
-                    ) ??
-                    ShadcnBorder(
-                      width: 2,
-                      color: theme.colorScheme.ring,
-                      radius: outerRadius,
-                      padding: const EdgeInsets.all(2),
-                    ),
-              ),
+              decoration: effectiveDecoration,
               child: MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
