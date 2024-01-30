@@ -231,7 +231,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         other.disabledOpacity == disabledOpacity &&
         other.selectTheme == selectTheme &&
         other.optionTheme == optionTheme &&
-        other.cardTheme == cardTheme;
+        other.cardTheme == cardTheme &&
         other.optionTheme == optionTheme &&
         other.switchTheme == switchTheme;
   }
@@ -260,7 +260,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         disabledOpacity.hashCode ^
         selectTheme.hashCode ^
         optionTheme.hashCode ^
-        cardTheme.hashCode;
+        cardTheme.hashCode ^
         optionTheme.hashCode ^
         switchTheme.hashCode;
   }
