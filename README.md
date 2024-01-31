@@ -27,7 +27,7 @@ Current progress:
 - [x] <strike>Hover Card</strike> Use Popover instead
 - [x] [Image](https://mariuti.com/shadcn-ui/components/image/)
 - [x] [Input](https://mariuti.com/shadcn-ui/components/input/)
-- [ ] Label
+- [x] <strike>Label</strike> Use Text instead
 - [ ] Menubar
 - [ ] Navigation Menu
 - [ ] Pagination
@@ -35,9 +35,9 @@ Current progress:
 - [ ] Progress
 - [ ] RadioGroup
 - [ ] Resizable
-- [ ] Scroll Area (?)
+- [x] <strike>Scroll Area</strike> Use SingleScrollView, ListView etc. instead
 - [x] [Select](https://mariuti.com/shadcn-ui/components/select/)
-- [ ] Separator
+- [x] <strike>Separator</strike> Use Divider instead
 - [ ] Sheet
 - [ ] Skeleton
 - [ ] Slider
