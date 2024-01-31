@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 typedef FocusWidgetBuilder = Widget Function(
   BuildContext context,
   bool focused,
+  Widget? child,
 );
 
 class ShadFocused extends StatefulWidget {
@@ -55,7 +56,8 @@ class _ShadFocusedState extends State<ShadFocused> {
       focusNode: focusNode,
       child: ValueListenableBuilder(
         valueListenable: isFocused,
-        builder: (context, value, child) => widget.builder(context, value),
+        builder: (context, value, child) =>
+            widget.builder(context, value, child),
         child: widget.child,
       ),
     );
