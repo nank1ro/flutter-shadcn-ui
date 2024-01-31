@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:shadcn_ui/src/components/focusable.dart';
+import 'package:shadcn_ui/src/components/focused.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 
-enum ShadcnButtonVariant {
+enum ShadButtonVariant {
   primary,
   destructive,
   outline,
@@ -15,15 +15,15 @@ enum ShadcnButtonVariant {
   link,
 }
 
-enum ShadcnButtonSize {
+enum ShadButtonSize {
   regular,
   sm,
   lg,
   icon,
 }
 
-class ShadcnButton extends StatefulWidget {
-  const ShadcnButton({
+class ShadButton extends StatefulWidget {
+  const ShadButton({
     super.key,
     this.text,
     this.icon,
@@ -49,9 +49,9 @@ class ShadcnButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
-  }) : variant = ShadcnButtonVariant.primary;
+  }) : variant = ShadButtonVariant.primary;
 
-  const ShadcnButton.raw({
+  const ShadButton.raw({
     super.key,
     required this.variant,
     this.size,
@@ -80,7 +80,7 @@ class ShadcnButton extends StatefulWidget {
     this.decoration,
   });
 
-  const ShadcnButton.destructive({
+  const ShadButton.destructive({
     super.key,
     this.text,
     this.icon,
@@ -106,9 +106,9 @@ class ShadcnButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
-  }) : variant = ShadcnButtonVariant.destructive;
+  }) : variant = ShadButtonVariant.destructive;
 
-  const ShadcnButton.outline({
+  const ShadButton.outline({
     super.key,
     this.text,
     this.icon,
@@ -134,9 +134,9 @@ class ShadcnButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
-  }) : variant = ShadcnButtonVariant.outline;
+  }) : variant = ShadButtonVariant.outline;
 
-  const ShadcnButton.secondary({
+  const ShadButton.secondary({
     super.key,
     this.text,
     this.icon,
@@ -162,9 +162,9 @@ class ShadcnButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
-  }) : variant = ShadcnButtonVariant.secondary;
+  }) : variant = ShadButtonVariant.secondary;
 
-  const ShadcnButton.ghost({
+  const ShadButton.ghost({
     super.key,
     this.text,
     this.icon,
@@ -190,9 +190,9 @@ class ShadcnButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
-  }) : variant = ShadcnButtonVariant.ghost;
+  }) : variant = ShadButtonVariant.ghost;
 
-  const ShadcnButton.link({
+  const ShadButton.link({
     super.key,
     required this.text,
     this.onPressed,
@@ -217,14 +217,14 @@ class ShadcnButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
-  })  : variant = ShadcnButtonVariant.link,
+  })  : variant = ShadButtonVariant.link,
         icon = null;
 
   final VoidCallback? onPressed;
   final Widget? icon;
   final Widget? text;
-  final ShadcnButtonVariant variant;
-  final ShadcnButtonSize? size;
+  final ShadButtonVariant variant;
+  final ShadButtonSize? size;
   final bool? applyIconColorFilter;
   final MouseCursor? cursor;
   final double? width;
@@ -244,13 +244,13 @@ class ShadcnButton extends StatefulWidget {
   final Gradient? gradient;
   final TextDecoration? textDecoration;
   final TextDecoration? hoverTextDecoration;
-  final ShadcnDecorationTheme? decoration;
+  final ShadDecorationTheme? decoration;
 
   @override
-  State<ShadcnButton> createState() => _ShadcnButtonState();
+  State<ShadButton> createState() => _ShadButtonState();
 }
 
-class _ShadcnButtonState extends State<ShadcnButton> {
+class _ShadButtonState extends State<ShadButton> {
   FocusNode? _focusNode;
   final isHovered = ValueNotifier(false);
   final isPressed = ValueNotifier(false);
@@ -280,40 +280,40 @@ class _ShadcnButtonState extends State<ShadcnButton> {
 
   bool get enabled => widget.onPressed != null;
 
-  ShadcnButtonTheme buttonTheme(ShadcnThemeData theme) {
+  ShadButtonTheme buttonTheme(ShadThemeData theme) {
     return switch (widget.variant) {
-      ShadcnButtonVariant.primary => theme.primaryButtonTheme,
-      ShadcnButtonVariant.destructive => theme.destructiveButtonTheme,
-      ShadcnButtonVariant.secondary => theme.secondaryButtonTheme,
-      ShadcnButtonVariant.ghost => theme.ghostButtonTheme,
-      ShadcnButtonVariant.outline => theme.outlineButtonTheme,
-      ShadcnButtonVariant.link => theme.linkButtonTheme,
+      ShadButtonVariant.primary => theme.primaryButtonTheme,
+      ShadButtonVariant.destructive => theme.destructiveButtonTheme,
+      ShadButtonVariant.secondary => theme.secondaryButtonTheme,
+      ShadButtonVariant.ghost => theme.ghostButtonTheme,
+      ShadButtonVariant.outline => theme.outlineButtonTheme,
+      ShadButtonVariant.link => theme.linkButtonTheme,
     };
   }
 
-  ShadcnButtonSizeTheme sizeTheme(
-    ShadcnThemeData theme,
-    ShadcnButtonSize size,
+  ShadButtonSizeTheme sizeTheme(
+    ShadThemeData theme,
+    ShadButtonSize size,
   ) {
     switch (size) {
-      case ShadcnButtonSize.sm:
+      case ShadButtonSize.sm:
         return buttonTheme(theme).sizesTheme?.sm ?? theme.buttonSizesTheme.sm!;
-      case ShadcnButtonSize.lg:
+      case ShadButtonSize.lg:
         return buttonTheme(theme).sizesTheme?.lg ?? theme.buttonSizesTheme.lg!;
-      case ShadcnButtonSize.icon:
+      case ShadButtonSize.icon:
         return buttonTheme(theme).sizesTheme?.icon ??
             theme.buttonSizesTheme.icon!;
-      case ShadcnButtonSize.regular:
+      case ShadButtonSize.regular:
         return buttonTheme(theme).sizesTheme?.regular ??
             theme.buttonSizesTheme.regular!;
     }
   }
 
-  double defaultHeightForSize(ShadcnThemeData theme, ShadcnButtonSize size) {
+  double defaultHeightForSize(ShadThemeData theme, ShadButtonSize size) {
     return sizeTheme(theme, size).height;
   }
 
-  double height(ShadcnThemeData theme) {
+  double height(ShadThemeData theme) {
     if (widget.height != null) return widget.height!;
     if (widget.size != null) {
       return defaultHeightForSize(theme, widget.size!);
@@ -321,11 +321,11 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     return defaultHeightForSize(theme, buttonTheme(theme).size);
   }
 
-  double? defaultWidthForSize(ShadcnThemeData theme, ShadcnButtonSize size) {
+  double? defaultWidthForSize(ShadThemeData theme, ShadButtonSize size) {
     return sizeTheme(theme, size).width;
   }
 
-  double? width(ShadcnThemeData theme) {
+  double? width(ShadThemeData theme) {
     if (widget.width != null) return widget.width!;
     if (widget.size != null) {
       return defaultWidthForSize(theme, widget.size!);
@@ -334,13 +334,13 @@ class _ShadcnButtonState extends State<ShadcnButton> {
   }
 
   EdgeInsets defaultPaddingForSize(
-    ShadcnThemeData theme,
-    ShadcnButtonSize size,
+    ShadThemeData theme,
+    ShadButtonSize size,
   ) {
     return sizeTheme(theme, size).padding;
   }
 
-  EdgeInsets padding(ShadcnThemeData theme) {
+  EdgeInsets padding(ShadThemeData theme) {
     if (widget.padding != null) return widget.padding!;
     if (widget.size != null) {
       return defaultPaddingForSize(theme, widget.size!);
@@ -348,27 +348,27 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     return defaultPaddingForSize(theme, buttonTheme(theme).size);
   }
 
-  Color? background(ShadcnThemeData theme) {
+  Color? background(ShadThemeData theme) {
     return widget.backgroundColor ?? buttonTheme(theme).backgroundColor;
   }
 
-  Color? hoverBackground(ShadcnThemeData theme) {
+  Color? hoverBackground(ShadThemeData theme) {
     return widget.hoverBackgroundColor ??
         buttonTheme(theme).hoverBackgroundColor;
   }
 
-  Color foreground(ShadcnThemeData theme) {
+  Color foreground(ShadThemeData theme) {
     if (widget.foregroundColor != null) return widget.foregroundColor!;
 
     final btnThemeForegroundColor = buttonTheme(theme).foregroundColor;
     assert(
       btnThemeForegroundColor != null,
-      'Button foregroundColor is null in ShadcnButtonTheme',
+      'Button foregroundColor is null in ShadButtonTheme',
     );
     return buttonTheme(theme).foregroundColor!;
   }
 
-  Color hoverForeground(ShadcnThemeData theme) {
+  Color hoverForeground(ShadThemeData theme) {
     if (widget.hoverForegroundColor != null) {
       return widget.hoverForegroundColor!;
     }
@@ -376,23 +376,23 @@ class _ShadcnButtonState extends State<ShadcnButton> {
         buttonTheme(theme).hoverForegroundColor;
     assert(
       btnThemeHoverForegroundColor != null,
-      'Button hoverForegroundColor is null in ShadcnButtonTheme',
+      'Button hoverForegroundColor is null in ShadButtonTheme',
     );
     return buttonTheme(theme).hoverForegroundColor!;
   }
 
-  Color pressedBackgroundColor(ShadcnThemeData theme) {
+  Color pressedBackgroundColor(ShadThemeData theme) {
     return widget.pressedBackgroundColor ??
         buttonTheme(theme).pressedBackgroundColor!;
   }
 
-  Color pressedForegroundColor(ShadcnThemeData theme) {
+  Color pressedForegroundColor(ShadThemeData theme) {
     return widget.pressedForegroundColor ??
         buttonTheme(theme).pressedForegroundColor!;
   }
 
   TextDecoration? textDecoration(
-    ShadcnThemeData theme, {
+    ShadThemeData theme, {
     required bool hovered,
   }) {
     if (hovered) {
@@ -402,57 +402,56 @@ class _ShadcnButtonState extends State<ShadcnButton> {
     return widget.textDecoration ?? buttonTheme(theme).textDecoration;
   }
 
-  BoxBorder? border(ShadcnThemeData theme) {
+  BoxBorder? border(ShadThemeData theme) {
     return widget.border ?? buttonTheme(theme).border;
   }
 
-  BorderRadius borderRadius(ShadcnThemeData theme) {
+  BorderRadius borderRadius(ShadThemeData theme) {
     return widget.borderRadius ?? buttonTheme(theme).radius ?? theme.radius;
   }
 
-  MouseCursor cursor(ShadcnThemeData theme) {
+  MouseCursor cursor(ShadThemeData theme) {
     if (widget.cursor != null) return widget.cursor!;
     return (enabled
         ? buttonTheme(theme).cursor ?? SystemMouseCursors.click
         : MouseCursor.defer);
   }
 
-  Gradient? gradient(ShadcnThemeData theme) {
+  Gradient? gradient(ShadThemeData theme) {
     return widget.gradient ?? buttonTheme(theme).gradient;
   }
 
-  List<BoxShadow>? shadows(ShadcnThemeData theme) {
+  List<BoxShadow>? shadows(ShadThemeData theme) {
     return widget.shadows ?? buttonTheme(theme).shadows;
   }
 
   @override
   Widget build(BuildContext context) {
-    assert(debugCheckHasShadcnTheme(context));
+    assert(debugCheckHasShadTheme(context));
     assertCheckHasTextOrIcon();
 
-    final shadcnTheme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
 
     final hasPressedBackgroundColor = widget.pressedBackgroundColor != null ||
-        buttonTheme(shadcnTheme).pressedBackgroundColor != null;
+        buttonTheme(theme).pressedBackgroundColor != null;
     final hasPressedForegroundColor = widget.pressedForegroundColor != null ||
-        buttonTheme(shadcnTheme).pressedForegroundColor != null;
+        buttonTheme(theme).pressedForegroundColor != null;
 
     final trackPressState =
         hasPressedForegroundColor || hasPressedBackgroundColor;
 
     final applyIconColorFilter = widget.applyIconColorFilter ??
-        shadcnTheme.primaryButtonTheme.applyIconColorFilter;
+        theme.primaryButtonTheme.applyIconColorFilter;
 
-    final effectiveDecoration = widget.decoration ??
-        buttonTheme(shadcnTheme).decoration ??
-        shadcnTheme.decoration;
+    final effectiveDecoration =
+        widget.decoration ?? buttonTheme(theme).decoration ?? theme.decoration;
 
     // Applies the foreground color filter to the icon if provided
     var icon = widget.icon;
     if (icon != null && applyIconColorFilter) {
       icon = ColorFiltered(
         colorFilter: ColorFilter.mode(
-          foreground(shadcnTheme),
+          foreground(theme),
           BlendMode.srcIn,
         ),
         child: icon,
@@ -472,7 +471,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
             canRequestFocus: enabled,
             autofocus: widget.autofocus,
             focusNode: focusNode,
-            builder: (context, focused, child) => ShadcnDecorator(
+            builder: (context, focused, child) => ShadDecorator(
               decoration: effectiveDecoration,
               focused: focused,
               child: child!,
@@ -480,7 +479,7 @@ class _ShadcnButtonState extends State<ShadcnButton> {
             child: MouseRegion(
               onEnter: (_) => isHovered.value = true,
               onExit: (_) => isHovered.value = false,
-              cursor: cursor(shadcnTheme),
+              cursor: cursor(theme),
               child: GestureDetector(
                 onTap: widget.onPressed == null
                     ? null
@@ -509,20 +508,20 @@ class _ShadcnButtonState extends State<ShadcnButton> {
                       valueListenable: isPressed,
                       builder: (context, pressed, _) {
                         return Container(
-                          height: height(shadcnTheme),
-                          width: width(shadcnTheme),
+                          height: height(theme),
+                          width: width(theme),
                           decoration: BoxDecoration(
                             color: hasPressedBackgroundColor && pressed
-                                ? pressedBackgroundColor(shadcnTheme)
+                                ? pressedBackgroundColor(theme)
                                 : hovered
-                                    ? hoverBackground(shadcnTheme)
-                                    : background(shadcnTheme),
-                            borderRadius: borderRadius(shadcnTheme),
-                            border: border(shadcnTheme),
-                            gradient: gradient(shadcnTheme),
-                            boxShadow: shadows(shadcnTheme),
+                                    ? hoverBackground(theme)
+                                    : background(theme),
+                            borderRadius: borderRadius(theme),
+                            border: border(theme),
+                            gradient: gradient(theme),
+                            boxShadow: shadows(theme),
                           ),
-                          padding: padding(shadcnTheme),
+                          padding: padding(theme),
                           child: child,
                         );
                       },
@@ -544,22 +543,20 @@ class _ShadcnButtonState extends State<ShadcnButton> {
                                   valueListenable: isPressed,
                                   builder: (context, pressed, child) {
                                     return DefaultTextStyle(
-                                      style:
-                                          shadcnTheme.textTheme.small.copyWith(
-                                        color: hasPressedForegroundColor &&
-                                                pressed
-                                            ? pressedForegroundColor(
-                                                shadcnTheme,
-                                              )
-                                            : hovered
-                                                ? hoverForeground(shadcnTheme)
-                                                : foreground(shadcnTheme),
+                                      style: theme.textTheme.small.copyWith(
+                                        color:
+                                            hasPressedForegroundColor && pressed
+                                                ? pressedForegroundColor(
+                                                    theme,
+                                                  )
+                                                : hovered
+                                                    ? hoverForeground(theme)
+                                                    : foreground(theme),
                                         decoration: textDecoration(
-                                          shadcnTheme,
+                                          theme,
                                           hovered: hovered,
                                         ),
-                                        decorationColor:
-                                            foreground(shadcnTheme),
+                                        decorationColor: foreground(theme),
                                         decorationStyle:
                                             TextDecorationStyle.solid,
                                       ),

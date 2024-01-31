@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 
 @immutable
-class ShadcnNeutralColorScheme extends ShadcnColorScheme {
-  const ShadcnNeutralColorScheme({
+class ShadNeutralColorScheme extends ShadColorScheme {
+  const ShadNeutralColorScheme({
     required super.background,
     required super.foreground,
     required super.card,
@@ -27,7 +27,7 @@ class ShadcnNeutralColorScheme extends ShadcnColorScheme {
     required super.selection,
   });
 
-  const ShadcnNeutralColorScheme.light({
+  const ShadNeutralColorScheme.light({
     super.background = const Color(0xffffffff),
     super.foreground = const Color(0xff0a0a0a),
     super.card = const Color(0xffffffff),
@@ -50,7 +50,7 @@ class ShadcnNeutralColorScheme extends ShadcnColorScheme {
     super.selection = const Color(0xFFB4D7FF),
   });
 
-  const ShadcnNeutralColorScheme.dark({
+  const ShadNeutralColorScheme.dark({
     super.background = const Color(0xff0a0a0a),
     super.foreground = const Color(0xfffafafa),
     super.card = const Color(0xff0a0a0a),

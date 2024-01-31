@@ -7,8 +7,8 @@ const kDefaultSelectMinWidth = 128.0;
 const kDefaultSelectMaxHeight = 384.0;
 
 @immutable
-class ShadcnSelectTheme {
-  const ShadcnSelectTheme({
+class ShadSelectTheme {
+  const ShadSelectTheme({
     this.merge = true,
     this.decoration,
     this.offset,
@@ -24,7 +24,7 @@ class ShadcnSelectTheme {
   });
 
   final bool merge;
-  final ShadcnDecorationTheme? decoration;
+  final ShadDecorationTheme? decoration;
   final Offset? offset;
   final double? minWidth;
   final double? maxHeight;
@@ -36,15 +36,15 @@ class ShadcnSelectTheme {
   final bool? showScrollToTopChevron;
   final bool? showScrollToBottomChevron;
 
-  static ShadcnSelectTheme lerp(
-    ShadcnSelectTheme a,
-    ShadcnSelectTheme b,
+  static ShadSelectTheme lerp(
+    ShadSelectTheme a,
+    ShadSelectTheme b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadcnSelectTheme(
+    return ShadSelectTheme(
       merge: b.merge,
-      decoration: ShadcnDecorationTheme.lerp(a.decoration, b.decoration, t),
+      decoration: ShadDecorationTheme.lerp(a.decoration, b.decoration, t),
       offset: Offset.lerp(a.offset, b.offset, t),
       minWidth: lerpDouble(a.minWidth, b.minWidth, t),
       maxHeight: lerpDouble(a.maxHeight, b.maxHeight, t),
@@ -58,9 +58,9 @@ class ShadcnSelectTheme {
     );
   }
 
-  ShadcnSelectTheme copyWith({
+  ShadSelectTheme copyWith({
     bool? merge,
-    ShadcnDecorationTheme? decoration,
+    ShadDecorationTheme? decoration,
     Offset? offset,
     double? minWidth,
     double? maxHeight,
@@ -72,7 +72,7 @@ class ShadcnSelectTheme {
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
   }) {
-    return ShadcnSelectTheme(
+    return ShadSelectTheme(
       merge: merge ?? this.merge,
       decoration: decoration ?? this.decoration,
       offset: offset ?? this.offset,
@@ -90,7 +90,7 @@ class ShadcnSelectTheme {
     );
   }
 
-  ShadcnSelectTheme mergeWith(ShadcnSelectTheme? other) {
+  ShadSelectTheme mergeWith(ShadSelectTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -112,7 +112,7 @@ class ShadcnSelectTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnSelectTheme &&
+    return other is ShadSelectTheme &&
         other.merge == merge &&
         other.decoration == decoration &&
         other.offset == offset &&

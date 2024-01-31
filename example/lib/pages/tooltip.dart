@@ -24,10 +24,10 @@ class _TooltipPageState extends State<TooltipPage> {
     return BaseScaffold(
       appBarTitle: 'Tooltip',
       children: [
-        ShadcnTooltip(
+        ShadTooltip(
           focusNode: focusNode,
           builder: (context) => const Text('Add to library'),
-          child: ShadcnButton.outline(
+          child: ShadButton.outline(
             focusNode: focusNode,
             text: const Text('Hover/Focus'),
             onPressed: () {},

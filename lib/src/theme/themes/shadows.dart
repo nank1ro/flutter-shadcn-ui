@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-abstract class ShadcnShadows {
+abstract class ShadShadows {
   static const sm = [
     BoxShadow(
       color: Color(0x0d000000),

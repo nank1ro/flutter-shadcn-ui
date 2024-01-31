@@ -1,75 +1,75 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 
-class ShadcnTheme extends StatelessWidget {
-  const ShadcnTheme({
+class ShadTheme extends StatelessWidget {
+  const ShadTheme({
     super.key,
     required this.data,
     required this.child,
   });
 
-  final ShadcnThemeData data;
+  final ShadThemeData data;
   final Widget child;
 
-  static ShadcnThemeData of(BuildContext context) {
+  static ShadThemeData of(BuildContext context) {
     final inheritedTheme =
-        context.dependOnInheritedWidgetOfExactType<ShadcnInheritedTheme>();
+        context.dependOnInheritedWidgetOfExactType<ShadInheritedTheme>();
     return inheritedTheme!.theme.data;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ShadcnInheritedTheme(
+    return ShadInheritedTheme(
       theme: this,
       child: child,
     );
   }
 }
 
-class ShadcnInheritedTheme extends InheritedTheme {
-  const ShadcnInheritedTheme({
+class ShadInheritedTheme extends InheritedTheme {
+  const ShadInheritedTheme({
     super.key,
     required this.theme,
     required super.child,
   });
 
-  final ShadcnTheme theme;
+  final ShadTheme theme;
 
   @override
   Widget wrap(BuildContext context, Widget child) {
-    return ShadcnTheme(data: theme.data, child: child);
+    return ShadTheme(data: theme.data, child: child);
   }
 
   @override
-  bool updateShouldNotify(ShadcnInheritedTheme oldWidget) =>
+  bool updateShouldNotify(ShadInheritedTheme oldWidget) =>
       theme.data != oldWidget.theme.data;
 }
 
-/// An interpolation between two [ShadcnThemeData]s.
+/// An interpolation between two [ShadThemeData]s.
 ///
-/// This class specializes the interpolation of [Tween<ShadcnThemeData>] to call
-/// the [ShadcnThemeData.lerp] method.
+/// This class specializes the interpolation of [Tween<ShadThemeData>] to call
+/// the [ShadThemeData.lerp] method.
 ///
 /// See [Tween] for a discussion on how to use interpolation objects.
-class ShadcnThemeDataTween extends Tween<ShadcnThemeData> {
-  /// Creates a [ShadcnThemeData] tween.
+class ShadThemeDataTween extends Tween<ShadThemeData> {
+  /// Creates a [ShadThemeData] tween.
   ///
   /// The [begin] and [end] properties must be non-null before the tween is
   /// first used, but the arguments can be null if the values are going to be
   /// filled in later.
-  ShadcnThemeDataTween({super.begin, super.end});
+  ShadThemeDataTween({super.begin, super.end});
 
   @override
-  ShadcnThemeData lerp(double t) => ShadcnThemeData.lerp(begin!, end!, t);
+  ShadThemeData lerp(double t) => ShadThemeData.lerp(begin!, end!, t);
 }
 
-/// Animated version of [ShadcnTheme] which automatically transitions the colors
+/// Animated version of [ShadTheme] which automatically transitions the colors
 /// etc, over a given duration whenever the given theme changes.
-class AnimatedShadcnTheme extends ImplicitlyAnimatedWidget {
+class AnimatedShadTheme extends ImplicitlyAnimatedWidget {
   /// Creates an animated theme.
   ///
   /// By default, the theme transition uses a linear curve.
-  const AnimatedShadcnTheme({
+  const AnimatedShadTheme({
     super.key,
     required this.data,
     required this.child,
@@ -79,32 +79,32 @@ class AnimatedShadcnTheme extends ImplicitlyAnimatedWidget {
   });
 
   /// Specifies the color and typography values for descendant widgets.
-  final ShadcnThemeData data;
+  final ShadThemeData data;
 
   /// The widget below this widget in the tree.
   final Widget child;
 
   @override
-  AnimatedWidgetBaseState<AnimatedShadcnTheme> createState() =>
-      _ShadcnAnimatedThemeState();
+  AnimatedWidgetBaseState<AnimatedShadTheme> createState() =>
+      _ShadAnimatedThemeState();
 }
 
-class _ShadcnAnimatedThemeState
-    extends AnimatedWidgetBaseState<AnimatedShadcnTheme> {
-  ShadcnThemeDataTween? _data;
+class _ShadAnimatedThemeState
+    extends AnimatedWidgetBaseState<AnimatedShadTheme> {
+  ShadThemeDataTween? _data;
 
   @override
   void forEachTween(TweenVisitor<dynamic> visitor) {
     _data = visitor(
       _data,
       widget.data,
-      (dynamic value) => ShadcnThemeDataTween(begin: value as ShadcnThemeData),
-    )! as ShadcnThemeDataTween;
+      (dynamic value) => ShadThemeDataTween(begin: value as ShadThemeData),
+    )! as ShadThemeDataTween;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ShadcnTheme(
+    return ShadTheme(
       data: _data!.evaluate(animation),
       child: widget.child,
     );

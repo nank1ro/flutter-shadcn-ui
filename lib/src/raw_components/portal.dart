@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ShadcnAnchor {
-  const ShadcnAnchor({
+class ShadAnchor {
+  const ShadAnchor({
     required this.childAlignment,
     required this.overlayAlignment,
     required this.offset,
@@ -11,18 +11,18 @@ class ShadcnAnchor {
   final Alignment overlayAlignment;
   final Offset offset;
 
-  static const center = ShadcnAnchor(
+  static const center = ShadAnchor(
     childAlignment: Alignment.topCenter,
     overlayAlignment: Alignment.bottomCenter,
     offset: Offset.zero,
   );
 
-  ShadcnAnchor copyWith({
+  ShadAnchor copyWith({
     Alignment? childAlignment,
     Alignment? overlayAlignment,
     Offset? offset,
   }) {
-    return ShadcnAnchor(
+    return ShadAnchor(
       childAlignment: childAlignment ?? this.childAlignment,
       overlayAlignment: overlayAlignment ?? this.overlayAlignment,
       offset: offset ?? this.offset,
@@ -30,8 +30,8 @@ class ShadcnAnchor {
   }
 }
 
-class ShadcnPortal extends StatefulWidget {
-  const ShadcnPortal({
+class ShadPortal extends StatefulWidget {
+  const ShadPortal({
     super.key,
     required this.child,
     required this.portalBuilder,
@@ -42,13 +42,13 @@ class ShadcnPortal extends StatefulWidget {
   final Widget child;
   final WidgetBuilder portalBuilder;
   final bool visible;
-  final ShadcnAnchor anchor;
+  final ShadAnchor anchor;
 
   @override
-  State<ShadcnPortal> createState() => _ShadcnPortalState();
+  State<ShadPortal> createState() => _ShadPortalState();
 }
 
-class _ShadcnPortalState extends State<ShadcnPortal> {
+class _ShadPortalState extends State<ShadPortal> {
   final layerLink = LayerLink();
   final overlayPortalController = OverlayPortalController();
 
@@ -59,7 +59,7 @@ class _ShadcnPortalState extends State<ShadcnPortal> {
   }
 
   @override
-  void didUpdateWidget(covariant ShadcnPortal oldWidget) {
+  void didUpdateWidget(covariant ShadPortal oldWidget) {
     super.didUpdateWidget(oldWidget);
     updateVisibility();
   }

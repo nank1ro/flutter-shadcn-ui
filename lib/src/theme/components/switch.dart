@@ -4,8 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 @immutable
-class ShadcnSwitchTheme {
-  const ShadcnSwitchTheme({
+class ShadSwitchTheme {
+  const ShadSwitchTheme({
     this.merge = true,
     this.thumbColor,
     this.trackColor,
@@ -35,15 +35,15 @@ class ShadcnSwitchTheme {
 
   final BorderRadius? radius;
 
-  final ShadcnDecorationTheme? decoration;
+  final ShadDecorationTheme? decoration;
 
-  static ShadcnSwitchTheme lerp(
-    ShadcnSwitchTheme a,
-    ShadcnSwitchTheme b,
+  static ShadSwitchTheme lerp(
+    ShadSwitchTheme a,
+    ShadSwitchTheme b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadcnSwitchTheme(
+    return ShadSwitchTheme(
       merge: b.merge,
       thumbColor: Color.lerp(a.thumbColor, b.thumbColor, t),
       trackColor: Color.lerp(a.trackColor, b.trackColor, t),
@@ -55,11 +55,11 @@ class ShadcnSwitchTheme {
       margin: lerpDouble(a.margin, b.margin, t),
       duration: b.duration,
       radius: BorderRadius.lerp(a.radius, b.radius, t),
-      decoration: ShadcnDecorationTheme.lerp(a.decoration, b.decoration, t),
+      decoration: ShadDecorationTheme.lerp(a.decoration, b.decoration, t),
     );
   }
 
-  ShadcnSwitchTheme copyWith({
+  ShadSwitchTheme copyWith({
     bool? merge,
     Color? thumbColor,
     Color? trackColor,
@@ -69,9 +69,9 @@ class ShadcnSwitchTheme {
     double? margin,
     Duration? duration,
     BorderRadius? radius,
-    ShadcnDecorationTheme? decoration,
+    ShadDecorationTheme? decoration,
   }) {
-    return ShadcnSwitchTheme(
+    return ShadSwitchTheme(
       merge: merge ?? this.merge,
       thumbColor: thumbColor ?? this.thumbColor,
       trackColor: trackColor ?? this.trackColor,
@@ -85,7 +85,7 @@ class ShadcnSwitchTheme {
     );
   }
 
-  ShadcnSwitchTheme mergeWith(ShadcnSwitchTheme? other) {
+  ShadSwitchTheme mergeWith(ShadSwitchTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -105,7 +105,7 @@ class ShadcnSwitchTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnSwitchTheme &&
+    return other is ShadSwitchTheme &&
         other.merge == merge &&
         other.thumbColor == thumbColor &&
         other.trackColor == trackColor &&

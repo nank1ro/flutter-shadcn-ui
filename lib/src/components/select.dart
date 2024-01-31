@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/assets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
-import 'package:shadcn_ui/src/components/focusable.dart';
+import 'package:shadcn_ui/src/components/focused.dart';
 
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
@@ -15,13 +15,13 @@ import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 
-typedef ShadcnSelectedOptionBuilder<T> = Widget Function(
+typedef ShadSelectedOptionBuilder<T> = Widget Function(
   BuildContext context,
   T value,
 );
 
-class ShadcnSelect<T> extends StatefulWidget {
-  const ShadcnSelect({
+class ShadSelect<T> extends StatefulWidget {
+  const ShadSelect({
     super.key,
     required this.options,
     required this.selectedOptionBuilder,
@@ -45,29 +45,29 @@ class ShadcnSelect<T> extends StatefulWidget {
     this.scrollController,
   });
 
-  /// The callback that is called when the value of the [ShadcnSelect] changes.
+  /// The callback that is called when the value of the [ShadSelect] changes.
   final ValueChanged<T?>? onChanged;
 
-  /// The initial value of the [ShadcnSelect], defaults to `null`.
+  /// The initial value of the [ShadSelect], defaults to `null`.
   final T? initialValue;
 
-  /// The placeholder of the [ShadcnSelect], displayed when the value is null.
+  /// The placeholder of the [ShadSelect], displayed when the value is null.
   final Widget? placeholder;
 
-  /// The builder for the selected option of the [ShadcnSelect].
-  final ShadcnSelectedOptionBuilder<T> selectedOptionBuilder;
+  /// The builder for the selected option of the [ShadSelect].
+  final ShadSelectedOptionBuilder<T> selectedOptionBuilder;
 
-  /// The options of the [ShadcnSelect].
+  /// The options of the [ShadSelect].
   final List<Widget> options;
 
-  /// The focus node of the [ShadcnSelect].
+  /// The focus node of the [ShadSelect].
   final FocusNode? focusNode;
 
-  /// Whether to close the [ShadcnSelect] when the user taps outside of it,
+  /// Whether to close the [ShadSelect] when the user taps outside of it,
   /// defaults to `true`.
   final bool closeOnTapOutside;
 
-  /// The minimum width of the [ShadcnSelect], defaults to
+  /// The minimum width of the [ShadSelect], defaults to
   /// `max(kDefaultSelectMinWidth, constraints.minWidth)`.
   ///
   /// This value is not guaranteed to be respected, because the effective
@@ -75,36 +75,36 @@ class ShadcnSelect<T> extends StatefulWidget {
   /// view itself.
   final double? minWidth;
 
-  /// The maximum height of the [ShadcnSelect], defaults to
+  /// The maximum height of the [ShadSelect], defaults to
   /// `kDefaultSelectMaxHeight`.
   final double? maxHeight;
 
-  /// The decoration of the [ShadcnSelect].
-  final ShadcnDecorationTheme? decoration;
+  /// The decoration of the [ShadSelect].
+  final ShadDecorationTheme? decoration;
 
-  /// The offset of the [ShadcnSelect], defaults to `Offset(4, 0)`.
+  /// The offset of the [ShadSelect], defaults to `Offset(4, 0)`.
   final Offset? offset;
 
-  /// The trailing widget of the [ShadcnSelect], defaults to a chevron-right
+  /// The trailing widget of the [ShadSelect], defaults to a chevron-right
   /// icon.
   final Widget? trailing;
 
-  /// The padding of the [ShadcnSelect], defaults to
+  /// The padding of the [ShadSelect], defaults to
   /// `EdgeInsets.symmetric(horizontal: 12, vertical: 8)`.
   final EdgeInsets? padding;
 
-  /// The background color of the [ShadcnSelect], defaults to
+  /// The background color of the [ShadSelect], defaults to
   /// the color scheme color.
   final Color? backgroundColor;
 
-  /// The radius of the [ShadcnSelect], defaults to `ShadcnThemeData.radius`.
+  /// The radius of the [ShadSelect], defaults to `ShadThemeData.radius`.
   final BorderRadius? radius;
 
-  /// The border of the [ShadcnSelect], defaults to
+  /// The border of the [ShadSelect], defaults to
   /// `Border.all(color: kDefaultSelectBorderColor)`.
   final Border? border;
 
-  /// The padding of the options of the [ShadcnSelect], defaults to
+  /// The padding of the options of the [ShadSelect], defaults to
   /// `EdgeInsets.all(4)`.
   final EdgeInsets? optionsPadding;
 
@@ -114,27 +114,27 @@ class ShadcnSelect<T> extends StatefulWidget {
   /// Whether to show the scroll-to-bottom chevron, defaults to true.
   final bool? showScrollToBottomChevron;
 
-  /// The scroll controller of the [ShadcnSelect].
+  /// The scroll controller of the [ShadSelect].
   final ScrollController? scrollController;
 
-  static ShadcnSelectState<T> of<T>(BuildContext context) {
+  static ShadSelectState<T> of<T>(BuildContext context) {
     return maybeOf<T>(context)!;
   }
 
-  static ShadcnSelectState<T>? maybeOf<T>(BuildContext context) {
+  static ShadSelectState<T>? maybeOf<T>(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<ShadcnInheritedSelectContainer<T>>()
+        .dependOnInheritedWidgetOfExactType<ShadInheritedSelectContainer<T>>()
         ?.data;
   }
 
   @override
-  ShadcnSelectState<T> createState() => ShadcnSelectState();
+  ShadSelectState<T> createState() => ShadSelectState();
 }
 
-class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
+class ShadSelectState<T> extends State<ShadSelect<T>> {
   FocusNode? internalFocusNode;
   late T? selected = widget.initialValue;
-  final controller = ShadcnPopoverController();
+  final controller = ShadPopoverController();
   ScrollController? _scrollController;
 
   final showScrollToBottom = ValueNotifier(false);
@@ -230,9 +230,9 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
 
   @override
   Widget build(BuildContext context) {
-    assert(debugCheckHasShadcnTheme(context));
+    assert(debugCheckHasShadTheme(context));
 
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
     final effectiveDecoration = widget.decoration ?? theme.decoration;
     final decorationHorizontalPadding =
         effectiveDecoration.border?.padding?.horizontal ?? 0.0;
@@ -271,7 +271,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
     }
 
     final effectiveTrailing = widget.trailing ??
-        ShadcnImage.square(
+        ShadImage.square(
           ShadAssets.chevronDown,
           size: 16,
           color: theme.colorScheme.popoverForeground.withOpacity(.5),
@@ -283,7 +283,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
         canRequestFocus: widget.onChanged != null,
         focusNode: focusNode,
         builder: (context, focused, child) {
-          return ShadcnDecorator(
+          return ShadDecorator(
             focused: focused,
             decoration: effectiveDecoration,
             child: child!,
@@ -347,7 +347,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
                             child: Container(
                               width: calculatedMinWidth,
                               padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: ShadcnImage.square(
+                              child: ShadImage.square(
                                 ShadAssets.chevronUp,
                                 size: 16,
                                 color: theme.colorScheme.popoverForeground,
@@ -376,7 +376,7 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
                             child: Container(
                               width: calculatedMinWidth,
                               padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: ShadcnImage.square(
+                              child: ShadImage.square(
                                 ShadAssets.chevronDown,
                                 size: 16,
                                 color: theme.colorScheme.popoverForeground,
@@ -389,9 +389,9 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
               )
             : null;
 
-        return ShadcnInheritedSelectContainer(
+        return ShadInheritedSelectContainer(
           data: this,
-          child: ShadcnPopover(
+          child: ShadPopover(
             padding: EdgeInsets.zero,
             controller: controller,
             offset: effectiveOffset,
@@ -439,21 +439,21 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
   }
 }
 
-class ShadcnInheritedSelectContainer<T> extends InheritedWidget {
-  const ShadcnInheritedSelectContainer({
+class ShadInheritedSelectContainer<T> extends InheritedWidget {
+  const ShadInheritedSelectContainer({
     super.key,
     required this.data,
     required super.child,
   });
 
-  final ShadcnSelectState<T> data;
+  final ShadSelectState<T> data;
 
   @override
-  bool updateShouldNotify(ShadcnInheritedSelectContainer<T> oldWidget) => true;
+  bool updateShouldNotify(ShadInheritedSelectContainer<T> oldWidget) => true;
 }
 
-class ShadcnOption<T> extends StatefulWidget {
-  const ShadcnOption({
+class ShadOption<T> extends StatefulWidget {
+  const ShadOption({
     super.key,
     required this.value,
     required this.child,
@@ -463,31 +463,31 @@ class ShadcnOption<T> extends StatefulWidget {
     this.radius,
   });
 
-  /// The value of the [ShadcnOption], it must be unique above the options.
+  /// The value of the [ShadOption], it must be unique above the options.
   final T value;
 
   /// The child widget.
   final Widget child;
 
-  /// The background color of the [ShadcnOption] when hovered, defaults to
-  /// `ShadcnThemeData.accent`.
+  /// The background color of the [ShadOption] when hovered, defaults to
+  /// `ShadThemeData.accent`.
   final Color? hoveredBackgroundColor;
 
-  /// The padding of the [ShadcnOption], defaults to
+  /// The padding of the [ShadOption], defaults to
   /// `EdgeInsets.symmetric(horizontal: 8, vertical: 6)`
   final EdgeInsets? padding;
 
-  /// The icon of the [ShadcnOption] when selected.
+  /// The icon of the [ShadOption] when selected.
   final Widget? selectedIcon;
 
-  /// The radius of the [ShadcnOption], defaults to `ShadcnThemeData.radius`.
+  /// The radius of the [ShadOption], defaults to `ShadThemeData.radius`.
   final BorderRadius? radius;
 
   @override
-  State<ShadcnOption<T>> createState() => _ShadcnOptionState<T>();
+  State<ShadOption<T>> createState() => _ShadOptionState<T>();
 }
 
-class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
+class _ShadOptionState<T> extends State<ShadOption<T>> {
   final hovered = ValueNotifier(false);
   final focusNode = FocusNode();
 
@@ -500,12 +500,12 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
     assert(
-      ShadcnSelect.maybeOf<T>(context) != null,
-      'Cannot find ShadcnSelect InheritedWidget',
+      ShadSelect.maybeOf<T>(context) != null,
+      'Cannot find ShadSelect InheritedWidget',
     );
-    final inheritedSelect = ShadcnSelect.of<T>(context);
+    final inheritedSelect = ShadSelect.of<T>(context);
     final selected = inheritedSelect.selected == widget.value;
     if (selected) {
       // scroll to the selected option
@@ -554,7 +554,7 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
                       visible: selected,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 8),
-                        child: ShadcnImage.square(
+                        child: ShadImage.square(
                           ShadAssets.check,
                           size: 16,
                           color: theme.colorScheme.popoverForeground,

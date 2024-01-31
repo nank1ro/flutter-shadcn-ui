@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 
-abstract class ShadcnTextDefaultTheme {
+abstract class ShadTextDefaultTheme {
   static TextStyle h1Large({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return const TextStyle(
       fontSize: 48,
@@ -16,7 +16,7 @@ abstract class ShadcnTextDefaultTheme {
   }
 
   static TextStyle h1({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return const TextStyle(
       fontSize: 36,
@@ -29,7 +29,7 @@ abstract class ShadcnTextDefaultTheme {
   }
 
   static TextStyle h2({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return const TextStyle(
       fontSize: 30,
@@ -42,7 +42,7 @@ abstract class ShadcnTextDefaultTheme {
   }
 
   static TextStyle h3({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return const TextStyle(
       fontSize: 24,
@@ -55,7 +55,7 @@ abstract class ShadcnTextDefaultTheme {
   }
 
   static TextStyle h4({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return const TextStyle(
       fontSize: 20,
@@ -68,7 +68,7 @@ abstract class ShadcnTextDefaultTheme {
   }
 
   static TextStyle p({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return const TextStyle(
       fontSize: 16,
@@ -81,7 +81,7 @@ abstract class ShadcnTextDefaultTheme {
   }
 
   static TextStyle blockquote({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return const TextStyle(
       fontSize: 16,
@@ -94,7 +94,7 @@ abstract class ShadcnTextDefaultTheme {
   }
 
   static TextStyle table({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return const TextStyle(
       fontSize: 16,
@@ -107,7 +107,7 @@ abstract class ShadcnTextDefaultTheme {
   }
 
   static TextStyle list({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return const TextStyle(
       fontSize: 16,
@@ -120,7 +120,7 @@ abstract class ShadcnTextDefaultTheme {
   }
 
   static TextStyle lead({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return TextStyle(
       fontSize: 20,
@@ -134,7 +134,7 @@ abstract class ShadcnTextDefaultTheme {
   }
 
   static TextStyle large({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return const TextStyle(
       fontSize: 18,
@@ -147,7 +147,7 @@ abstract class ShadcnTextDefaultTheme {
   }
 
   static TextStyle small({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return const TextStyle(
       fontSize: 14,
@@ -160,7 +160,7 @@ abstract class ShadcnTextDefaultTheme {
   }
 
   static TextStyle muted({
-    required ShadcnColorScheme colorScheme,
+    required ShadColorScheme colorScheme,
   }) {
     return TextStyle(
       fontSize: 14,

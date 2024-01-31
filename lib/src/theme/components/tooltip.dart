@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 @immutable
-class ShadcnTooltipTheme {
-  const ShadcnTooltipTheme({
+class ShadTooltipTheme {
+  const ShadTooltipTheme({
     this.merge = true,
     this.waitDuration,
     this.showDuration,
@@ -46,18 +46,18 @@ class ShadcnTooltipTheme {
   /// {@macro tooltip.decoration}
   final BoxDecoration? decoration;
 
-  static ShadcnTooltipTheme lerp(
-    ShadcnTooltipTheme a,
-    ShadcnTooltipTheme b,
+  static ShadTooltipTheme lerp(
+    ShadTooltipTheme a,
+    ShadTooltipTheme b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadcnTooltipTheme(
+    return ShadTooltipTheme(
       merge: b.merge,
     );
   }
 
-  ShadcnTooltipTheme copyWith({
+  ShadTooltipTheme copyWith({
     bool? merge,
     Duration? waitDuration,
     Duration? showDuration,
@@ -69,7 +69,7 @@ class ShadcnTooltipTheme {
     EdgeInsetsGeometry? padding,
     BoxDecoration? decoration,
   }) {
-    return ShadcnTooltipTheme(
+    return ShadTooltipTheme(
       merge: merge ?? this.merge,
       waitDuration: waitDuration ?? this.waitDuration,
       showDuration: showDuration ?? this.showDuration,
@@ -83,7 +83,7 @@ class ShadcnTooltipTheme {
     );
   }
 
-  ShadcnTooltipTheme mergeWith(ShadcnTooltipTheme? other) {
+  ShadTooltipTheme mergeWith(ShadTooltipTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -103,7 +103,7 @@ class ShadcnTooltipTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnTooltipTheme &&
+    return other is ShadTooltipTheme &&
         other.merge == merge &&
         other.waitDuration == waitDuration &&
         other.showDuration == showDuration &&

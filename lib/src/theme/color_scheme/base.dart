@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 @immutable
-class ShadcnColorScheme {
-  const ShadcnColorScheme({
+class ShadColorScheme {
+  const ShadColorScheme({
     required this.background,
     required this.foreground,
     required this.card,
@@ -46,12 +46,12 @@ class ShadcnColorScheme {
   final Color ring;
   final Color selection;
 
-  static ShadcnColorScheme lerp(
-    ShadcnColorScheme a,
-    ShadcnColorScheme b,
+  static ShadColorScheme lerp(
+    ShadColorScheme a,
+    ShadColorScheme b,
     double t,
   ) {
-    return ShadcnColorScheme(
+    return ShadColorScheme(
       background: Color.lerp(a.background, b.background, t)!,
       foreground: Color.lerp(a.foreground, b.foreground, t)!,
       card: Color.lerp(a.card, b.card, t)!,
@@ -83,7 +83,7 @@ class ShadcnColorScheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnColorScheme &&
+    return other is ShadColorScheme &&
         other.background == background &&
         other.foreground == foreground &&
         other.card == card &&

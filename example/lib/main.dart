@@ -46,15 +46,15 @@ class App extends StatelessWidget {
       ],
       builder: (context) {
         final themeMode = context.observe<ThemeMode>();
-        return ShadcnApp(
+        return ShadApp(
           debugShowCheckedModeBanner: false,
           themeMode: themeMode,
           routes: routes,
-          theme: ShadcnThemeData(
+          theme: ShadThemeData(
             brightness: Brightness.light,
             colorScheme: const ShadcnZincColorScheme.light(),
           ),
-          darkTheme: ShadcnThemeData(
+          darkTheme: ShadThemeData(
             brightness: Brightness.dark,
             colorScheme: const ShadcnZincColorScheme.dark(),
           ),

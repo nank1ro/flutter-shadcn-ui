@@ -10,7 +10,7 @@ class AvatarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: ShadcnAvatar(
+        child: ShadAvatar(
           'https://app.requestly.io/delay/2000/avatars.githubusercontent.com/u/124599?v=4',
           placeholder: Text('CN'),
         ),

@@ -6,16 +6,16 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
-/// The theme for ShadcnButton.
+/// The theme for ShadButton.
 ///
 /// Use this class to override some properties to all buttons in just one place.
 @immutable
-class ShadcnButtonTheme {
-  const ShadcnButtonTheme({
+class ShadButtonTheme {
+  const ShadButtonTheme({
     this.merge = true,
     this.applyIconColorFilter = true,
     this.cursor,
-    this.size = ShadcnButtonSize.regular,
+    this.size = ShadButtonSize.regular,
     this.sizesTheme,
     this.backgroundColor,
     this.hoverBackgroundColor,
@@ -34,8 +34,8 @@ class ShadcnButtonTheme {
   final bool merge;
   final bool applyIconColorFilter;
   final MouseCursor? cursor;
-  final ShadcnButtonSize size;
-  final ShadcnButtonSizesTheme? sizesTheme;
+  final ShadButtonSize size;
+  final ShadButtonSizesTheme? sizesTheme;
   final Color? backgroundColor;
   final Color? hoverBackgroundColor;
   final Color? foregroundColor;
@@ -48,17 +48,17 @@ class ShadcnButtonTheme {
   final Gradient? gradient;
   final TextDecoration? textDecoration;
   final TextDecoration? hoverTextDecoration;
-  final ShadcnDecorationTheme? decoration;
+  final ShadDecorationTheme? decoration;
 
-  static ShadcnButtonTheme lerp(
-    ShadcnButtonTheme a,
-    ShadcnButtonTheme b,
+  static ShadButtonTheme lerp(
+    ShadButtonTheme a,
+    ShadButtonTheme b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadcnButtonTheme(
+    return ShadButtonTheme(
       applyIconColorFilter: b.applyIconColorFilter,
-      sizesTheme: ShadcnButtonSizesTheme.lerp(
+      sizesTheme: ShadButtonSizesTheme.lerp(
         a.sizesTheme,
         b.sizesTheme,
         t,
@@ -81,7 +81,7 @@ class ShadcnButtonTheme {
       hoverTextDecoration: b.hoverTextDecoration,
       cursor: b.cursor,
       size: b.size,
-      decoration: ShadcnDecorationTheme.lerp(
+      decoration: ShadDecorationTheme.lerp(
         a.decoration,
         b.decoration,
         t,
@@ -89,12 +89,12 @@ class ShadcnButtonTheme {
     );
   }
 
-  ShadcnButtonTheme copyWith({
+  ShadButtonTheme copyWith({
     bool? applyIconColorFilter,
     MouseCursor? cursor,
     MouseCursor? disabledCursor,
-    ShadcnButtonSize? size,
-    ShadcnButtonSizesTheme? sizesTheme,
+    ShadButtonSize? size,
+    ShadButtonSizesTheme? sizesTheme,
     Color? backgroundColor,
     Color? hoverBackgroundColor,
     Color? foregroundColor,
@@ -107,9 +107,9 @@ class ShadcnButtonTheme {
     Gradient? gradient,
     TextDecoration? textDecoration,
     TextDecoration? hoverTextDecoration,
-    ShadcnDecorationTheme? decoration,
+    ShadDecorationTheme? decoration,
   }) {
-    return ShadcnButtonTheme(
+    return ShadButtonTheme(
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
       cursor: cursor ?? this.cursor,
       size: size ?? this.size,
@@ -132,7 +132,7 @@ class ShadcnButtonTheme {
     );
   }
 
-  ShadcnButtonTheme mergeWith(ShadcnButtonTheme? other) {
+  ShadButtonTheme mergeWith(ShadButtonTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -159,7 +159,7 @@ class ShadcnButtonTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnButtonTheme &&
+    return other is ShadButtonTheme &&
         other.applyIconColorFilter == applyIconColorFilter &&
         other.cursor == cursor &&
         other.size == size &&
@@ -201,10 +201,10 @@ class ShadcnButtonTheme {
   }
 }
 
-// The theme for an individual size of ShadcnButton.
+// The theme for an individual size of ShadButton.
 @immutable
-class ShadcnButtonSizeTheme {
-  const ShadcnButtonSizeTheme({
+class ShadButtonSizeTheme {
+  const ShadButtonSizeTheme({
     this.merge = true,
     required this.height,
     required this.padding,
@@ -215,32 +215,32 @@ class ShadcnButtonSizeTheme {
   final EdgeInsets padding;
   final double? width;
 
-  ShadcnButtonSizeTheme copyWith({
+  ShadButtonSizeTheme copyWith({
     double? height,
     EdgeInsets? padding,
     double? width,
   }) {
-    return ShadcnButtonSizeTheme(
+    return ShadButtonSizeTheme(
       height: height ?? this.height,
       padding: padding ?? this.padding,
       width: width ?? this.width,
     );
   }
 
-  static ShadcnButtonSizeTheme? lerp(
-    ShadcnButtonSizeTheme? a,
-    ShadcnButtonSizeTheme? b,
+  static ShadButtonSizeTheme? lerp(
+    ShadButtonSizeTheme? a,
+    ShadButtonSizeTheme? b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadcnButtonSizeTheme(
+    return ShadButtonSizeTheme(
       height: lerpDouble(a?.height, b?.height, t)!,
       padding: EdgeInsets.lerp(a?.padding, b?.padding, t)!,
       width: lerpDouble(a?.width, b?.width, t),
     );
   }
 
-  ShadcnButtonSizeTheme mergeWith(ShadcnButtonSizeTheme? other) {
+  ShadButtonSizeTheme mergeWith(ShadButtonSizeTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -254,7 +254,7 @@ class ShadcnButtonSizeTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnButtonSizeTheme &&
+    return other is ShadButtonSizeTheme &&
         other.height == height &&
         other.padding == padding &&
         other.width == width;
@@ -264,10 +264,10 @@ class ShadcnButtonSizeTheme {
   int get hashCode => height.hashCode ^ padding.hashCode ^ width.hashCode;
 }
 
-// The theme for the predefined sizes of ShadcnButton.
+// The theme for the predefined sizes of ShadButton.
 @immutable
-class ShadcnButtonSizesTheme {
-  const ShadcnButtonSizesTheme({
+class ShadButtonSizesTheme {
+  const ShadButtonSizesTheme({
     this.merge = true,
     this.regular,
     this.sm,
@@ -275,32 +275,32 @@ class ShadcnButtonSizesTheme {
     this.icon,
   });
   final bool merge;
-  final ShadcnButtonSizeTheme? regular;
-  final ShadcnButtonSizeTheme? sm;
-  final ShadcnButtonSizeTheme? lg;
-  final ShadcnButtonSizeTheme? icon;
+  final ShadButtonSizeTheme? regular;
+  final ShadButtonSizeTheme? sm;
+  final ShadButtonSizeTheme? lg;
+  final ShadButtonSizeTheme? icon;
 
-  static ShadcnButtonSizesTheme? lerp(
-    ShadcnButtonSizesTheme? a,
-    ShadcnButtonSizesTheme? b,
+  static ShadButtonSizesTheme? lerp(
+    ShadButtonSizesTheme? a,
+    ShadButtonSizesTheme? b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadcnButtonSizesTheme(
-      regular: ShadcnButtonSizeTheme.lerp(a?.regular, b?.regular, t),
-      sm: ShadcnButtonSizeTheme.lerp(a?.sm, b?.sm, t),
-      lg: ShadcnButtonSizeTheme.lerp(a?.lg, b?.lg, t),
-      icon: ShadcnButtonSizeTheme.lerp(a?.icon, b?.icon, t),
+    return ShadButtonSizesTheme(
+      regular: ShadButtonSizeTheme.lerp(a?.regular, b?.regular, t),
+      sm: ShadButtonSizeTheme.lerp(a?.sm, b?.sm, t),
+      lg: ShadButtonSizeTheme.lerp(a?.lg, b?.lg, t),
+      icon: ShadButtonSizeTheme.lerp(a?.icon, b?.icon, t),
     );
   }
 
-  ShadcnButtonSizesTheme copyWith({
-    ShadcnButtonSizeTheme? regular,
-    ShadcnButtonSizeTheme? sm,
-    ShadcnButtonSizeTheme? lg,
-    ShadcnButtonSizeTheme? icon,
+  ShadButtonSizesTheme copyWith({
+    ShadButtonSizeTheme? regular,
+    ShadButtonSizeTheme? sm,
+    ShadButtonSizeTheme? lg,
+    ShadButtonSizeTheme? icon,
   }) {
-    return ShadcnButtonSizesTheme(
+    return ShadButtonSizesTheme(
       regular: regular ?? this.regular,
       sm: sm ?? this.sm,
       lg: lg ?? this.lg,
@@ -308,7 +308,7 @@ class ShadcnButtonSizesTheme {
     );
   }
 
-  ShadcnButtonSizesTheme mergeWith(ShadcnButtonSizesTheme? other) {
+  ShadButtonSizesTheme mergeWith(ShadButtonSizesTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -322,7 +322,7 @@ class ShadcnButtonSizesTheme {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is ShadcnButtonSizesTheme &&
+    return other is ShadButtonSizesTheme &&
         other.regular == regular &&
         other.sm == sm &&
         other.lg == lg &&

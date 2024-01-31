@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 @immutable
-class ShadcnBadgeTheme {
-  const ShadcnBadgeTheme({
+class ShadBadgeTheme {
+  const ShadBadgeTheme({
     this.merge = true,
     this.shape,
     this.backgroundColor,
@@ -18,13 +18,13 @@ class ShadcnBadgeTheme {
   final Color? foregroundColor;
   final EdgeInsets? padding;
 
-  static ShadcnBadgeTheme lerp(
-    ShadcnBadgeTheme a,
-    ShadcnBadgeTheme b,
+  static ShadBadgeTheme lerp(
+    ShadBadgeTheme a,
+    ShadBadgeTheme b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadcnBadgeTheme(
+    return ShadBadgeTheme(
       merge: b.merge,
       shape: ShapeBorder.lerp(a.shape, b.shape, t),
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
@@ -35,7 +35,7 @@ class ShadcnBadgeTheme {
     );
   }
 
-  ShadcnBadgeTheme copyWith({
+  ShadBadgeTheme copyWith({
     bool? merge,
     ShapeBorder? shape,
     Color? backgroundColor,
@@ -43,7 +43,7 @@ class ShadcnBadgeTheme {
     Color? foregroundColor,
     EdgeInsets? padding,
   }) {
-    return ShadcnBadgeTheme(
+    return ShadBadgeTheme(
       merge: merge ?? this.merge,
       shape: shape ?? this.shape,
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -53,7 +53,7 @@ class ShadcnBadgeTheme {
     );
   }
 
-  ShadcnBadgeTheme mergeWith(ShadcnBadgeTheme? other) {
+  ShadBadgeTheme mergeWith(ShadBadgeTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -69,7 +69,7 @@ class ShadcnBadgeTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnBadgeTheme &&
+    return other is ShadBadgeTheme &&
         other.merge == merge &&
         other.shape == shape &&
         other.backgroundColor == backgroundColor &&

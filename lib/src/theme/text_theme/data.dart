@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/theme/text_theme/base.dart';
 
 @immutable
-class ShadcnTextThemeData extends ShadcnBaseTextTheme {
-  const ShadcnTextThemeData({
+class ShadTextThemeData extends ShadBaseTextTheme {
+  const ShadTextThemeData({
     this.merge = true,
     required super.h1Large,
     required super.h1,
@@ -22,7 +22,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
 
   final bool merge;
 
-  ShadcnTextThemeData copyWith({
+  ShadTextThemeData copyWith({
     TextStyle? h1Large,
     TextStyle? h1,
     TextStyle? h2,
@@ -37,7 +37,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
     TextStyle? small,
     TextStyle? muted,
   }) {
-    return ShadcnTextThemeData(
+    return ShadTextThemeData(
       merge: merge,
       h1Large: h1Large ?? this.h1Large,
       h1: h1 ?? this.h1,
@@ -55,7 +55,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
     );
   }
 
-  ShadcnTextThemeData mergeWith(ShadcnTextThemeData? other) {
+  ShadTextThemeData mergeWith(ShadTextThemeData? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -75,7 +75,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
     );
   }
 
-  ShadcnTextThemeData apply({
+  ShadTextThemeData apply({
     String? fontFamily,
     List<String>? fontFamilyFallback,
     String? package,
@@ -87,7 +87,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
     TextDecoration? decoration,
     TextDecorationStyle? decorationStyle,
   }) {
-    return ShadcnTextThemeData(
+    return ShadTextThemeData(
       merge: merge,
       h1Large: h1Large.apply(
         fontFamily: fontFamily,
@@ -235,15 +235,15 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
     );
   }
 
-  static ShadcnTextThemeData lerp(
-    ShadcnTextThemeData? a,
-    ShadcnTextThemeData? b,
+  static ShadTextThemeData lerp(
+    ShadTextThemeData? a,
+    ShadTextThemeData? b,
     double t,
   ) {
     if (identical(a, b) && a != null) {
       return a;
     }
-    return ShadcnTextThemeData(
+    return ShadTextThemeData(
       h1Large: TextStyle.lerp(a!.h1Large, b!.h1Large, t)!,
       h1: TextStyle.lerp(a.h1, b.h1, t)!,
       h2: TextStyle.lerp(a.h2, b.h2, t)!,
@@ -268,7 +268,7 @@ class ShadcnTextThemeData extends ShadcnBaseTextTheme {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is ShadcnTextThemeData &&
+    return other is ShadTextThemeData &&
         other.h1Large == h1Large &&
         other.h1 == h1 &&
         other.h2 == h2 &&

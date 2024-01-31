@@ -26,15 +26,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Uri.base.queryParameters['theme'] ?? 'dark';
 
-    return ShadcnApp.router(
+    return ShadApp.router(
       title: 'shadcn-ui Flutter Playground',
       routerConfig: _router,
       themeMode: theme == 'dark' ? ThemeMode.dark : ThemeMode.light,
-      theme: ShadcnThemeData(
+      theme: ShadThemeData(
         colorScheme: const ShadcnZincColorScheme.light(),
         brightness: Brightness.light,
       ),
-      darkTheme: ShadcnThemeData(
+      darkTheme: ShadThemeData(
         colorScheme: const ShadcnZincColorScheme.dark(),
         brightness: Brightness.dark,
       ),
@@ -60,7 +60,7 @@ final _router = GoRouter(
       builder: (context, state) {
         final style = state.uri.queryParameters['style'] ?? 'primary';
         return BadgePage(
-          variant: ShadcnBadgeVariant.values.byName(style),
+          variant: ShadBadgeVariant.values.byName(style),
         );
       },
     ),

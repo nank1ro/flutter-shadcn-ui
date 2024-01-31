@@ -42,10 +42,10 @@ class CardProject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
     return SizedBox(
       width: 350,
-      child: ShadcnCard(
+      child: ShadCard(
         title: Text('Create project', style: theme.textTheme.h4),
         description: const Text('Deploy your new project in one-click.'),
         content: Padding(
@@ -55,14 +55,13 @@ class CardProject extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text('Name'),
-              const ShadcnInput(placeholder: 'Name of your project'),
+              const ShadInput(placeholder: 'Name of your project'),
               const SizedBox(height: 6),
               const Text('Framework'),
-              ShadcnSelect<String>(
+              ShadSelect<String>(
                 placeholder: const Text('Select'),
                 options: frameworks.entries
-                    .map(
-                        (e) => ShadcnOption(value: e.key, child: Text(e.value)))
+                    .map((e) => ShadOption(value: e.key, child: Text(e.value)))
                     .toList(),
                 selectedOptionBuilder: (context, value) {
                   return Text(frameworks[value]!);
@@ -75,11 +74,11 @@ class CardProject extends StatelessWidget {
         footer: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ShadcnButton.outline(
+            ShadButton.outline(
               text: const Text('Cancel'),
               onPressed: () {},
             ),
-            ShadcnButton(
+            ShadButton(
               text: const Text('Deploy'),
               onPressed: () {},
             ),
@@ -123,10 +122,10 @@ class _CardNotificationsState extends State<CardNotifications> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
     return SizedBox(
       width: 380,
-      child: ShadcnCard(
+      child: ShadCard(
         title: const Text('Notifications'),
         description: const Text('You have 3 unread messages.'),
         content: Column(
@@ -140,7 +139,7 @@ class _CardNotificationsState extends State<CardNotifications> {
               ),
               child: Row(
                 children: [
-                  ShadcnImage.square(
+                  ShadImage.square(
                     ShadAssets.bellRing,
                     size: 24,
                     color: theme.colorScheme.foreground,
@@ -212,12 +211,12 @@ class _CardNotificationsState extends State<CardNotifications> {
             const SizedBox(height: 16),
           ],
         ),
-        footer: ShadcnButton(
+        footer: ShadButton(
           width: double.infinity,
           text: const Text('Mark all as read'),
           icon: const Padding(
             padding: EdgeInsets.only(right: 8),
-            child: ShadcnImage.square(ShadAssets.check, size: 16),
+            child: ShadImage.square(ShadAssets.check, size: 16),
           ),
           onPressed: () {},
         ),

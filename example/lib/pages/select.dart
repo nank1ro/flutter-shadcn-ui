@@ -74,7 +74,7 @@ class _SelectPageState extends State<SelectPage> {
     super.dispose();
   }
 
-  List<Widget> getTimezonesWidgets(ShadcnThemeData theme) {
+  List<Widget> getTimezonesWidgets(ShadThemeData theme) {
     final widgets = <Widget>[];
     for (final zone in timezones.entries) {
       widgets.add(
@@ -91,14 +91,14 @@ class _SelectPageState extends State<SelectPage> {
         ),
       );
       widgets.addAll(zone.value.entries
-          .map((e) => ShadcnOption(value: e.key, child: Text(e.value))));
+          .map((e) => ShadOption(value: e.key, child: Text(e.value))));
     }
     return widgets;
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
     return BaseScaffold(
       appBarTitle: 'Select',
       editable: [
@@ -127,7 +127,7 @@ class _SelectPageState extends State<SelectPage> {
       children: [
         ConstrainedBox(
           constraints: const BoxConstraints(minWidth: 180),
-          child: ShadcnSelect<String>(
+          child: ShadSelect<String>(
             onChanged: enabled ? (v) => print(v) : null,
             focusNode: focusNodes[0],
             placeholder: const Text('Select a fruit'),
@@ -140,18 +140,18 @@ class _SelectPageState extends State<SelectPage> {
                   textAlign: TextAlign.start,
                 ),
               ),
-              const ShadcnOption(value: 'apple', child: Text('Apple')),
-              const ShadcnOption(value: 'banana', child: Text('Banana')),
-              const ShadcnOption(value: 'blueberry', child: Text('Blueberry')),
-              const ShadcnOption(value: 'grapes', child: Text('Grapes')),
-              const ShadcnOption(value: 'pineapple', child: Text('Pineapple')),
+              const ShadOption(value: 'apple', child: Text('Apple')),
+              const ShadOption(value: 'banana', child: Text('Banana')),
+              const ShadOption(value: 'blueberry', child: Text('Blueberry')),
+              const ShadOption(value: 'grapes', child: Text('Grapes')),
+              const ShadOption(value: 'pineapple', child: Text('Pineapple')),
             ],
             selectedOptionBuilder: (context, value) => Text(value.capitalize()),
           ),
         ),
         ConstrainedBox(
           constraints: const BoxConstraints(minWidth: 280),
-          child: ShadcnSelect<String>(
+          child: ShadSelect<String>(
             focusNode: focusNodes[1],
             onChanged: enabled ? (v) => print(v) : null,
             placeholder: const Text('Select a timezone'),

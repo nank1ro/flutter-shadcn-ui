@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 @immutable
-class ShadcnAvatarTheme {
-  const ShadcnAvatarTheme({
+class ShadAvatarTheme {
+  const ShadAvatarTheme({
     this.merge = true,
     this.size,
     this.shape,
@@ -16,13 +16,13 @@ class ShadcnAvatarTheme {
   final Color? backgroundColor;
   final BoxFit? fit;
 
-  static ShadcnAvatarTheme lerp(
-    ShadcnAvatarTheme a,
-    ShadcnAvatarTheme b,
+  static ShadAvatarTheme lerp(
+    ShadAvatarTheme a,
+    ShadAvatarTheme b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadcnAvatarTheme(
+    return ShadAvatarTheme(
       merge: b.merge,
       shape: ShapeBorder.lerp(a.shape, b.shape, t),
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
@@ -31,14 +31,14 @@ class ShadcnAvatarTheme {
     );
   }
 
-  ShadcnAvatarTheme copyWith({
+  ShadAvatarTheme copyWith({
     bool? merge,
     Size? size,
     ShapeBorder? shape,
     Color? backgroundColor,
     BoxFit? fit,
   }) {
-    return ShadcnAvatarTheme(
+    return ShadAvatarTheme(
       merge: merge ?? this.merge,
       shape: shape ?? this.shape,
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -47,7 +47,7 @@ class ShadcnAvatarTheme {
     );
   }
 
-  ShadcnAvatarTheme mergeWith(ShadcnAvatarTheme? other) {
+  ShadAvatarTheme mergeWith(ShadAvatarTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -62,7 +62,7 @@ class ShadcnAvatarTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnAvatarTheme &&
+    return other is ShadAvatarTheme &&
         other.merge == merge &&
         other.shape == shape &&
         other.backgroundColor == backgroundColor &&

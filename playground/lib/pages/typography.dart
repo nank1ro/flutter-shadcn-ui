@@ -35,55 +35,55 @@ class TypographyPage extends StatelessWidget {
             return switch (style) {
               TypographyStyle.h1Large => Text(
                   'Taxing Laughter: The Joke Tax Chronicles',
-                  style: ShadcnTheme.of(context).textTheme.h1Large,
+                  style: ShadTheme.of(context).textTheme.h1Large,
                 ),
               TypographyStyle.h1 => Text(
                   'Taxing Laughter: The Joke Tax Chronicles',
-                  style: ShadcnTheme.of(context).textTheme.h1,
+                  style: ShadTheme.of(context).textTheme.h1,
                 ),
               TypographyStyle.h2 => Text(
                   'The People of the Kingdom',
-                  style: ShadcnTheme.of(context).textTheme.h2,
+                  style: ShadTheme.of(context).textTheme.h2,
                 ),
               TypographyStyle.h3 => Text(
                   'The Joke Tax',
-                  style: ShadcnTheme.of(context).textTheme.h3,
+                  style: ShadTheme.of(context).textTheme.h3,
                 ),
               TypographyStyle.h4 => Text(
                   'People stopped telling jokes',
-                  style: ShadcnTheme.of(context).textTheme.h4,
+                  style: ShadTheme.of(context).textTheme.h4,
                 ),
               TypographyStyle.p => Text(
                   'The king, seeing how much happier his subjects were, realized the error of his ways and repealed the joke tax.',
-                  style: ShadcnTheme.of(context).textTheme.p,
+                  style: ShadTheme.of(context).textTheme.p,
                 ),
               TypographyStyle.blockquote => Text(
                   '"After all," he said, "everyone enjoys a good joke, so it\'s only fair that they should pay for the privilege."',
-                  style: ShadcnTheme.of(context).textTheme.blockquote,
+                  style: ShadTheme.of(context).textTheme.blockquote,
                 ),
               TypographyStyle.table => Text(
                   "King's Treasury",
-                  style: ShadcnTheme.of(context).textTheme.table,
+                  style: ShadTheme.of(context).textTheme.table,
                 ),
               TypographyStyle.list => Text(
                   '1st level of puns: 5 gold coins',
-                  style: ShadcnTheme.of(context).textTheme.list,
+                  style: ShadTheme.of(context).textTheme.list,
                 ),
               TypographyStyle.lead => Text(
                   'A modal dialog that interrupts the user with important content and expects a response.',
-                  style: ShadcnTheme.of(context).textTheme.lead,
+                  style: ShadTheme.of(context).textTheme.lead,
                 ),
               TypographyStyle.large => Text(
                   'Are you absolutely sure?',
-                  style: ShadcnTheme.of(context).textTheme.large,
+                  style: ShadTheme.of(context).textTheme.large,
                 ),
               TypographyStyle.small => Text(
                   'Email address',
-                  style: ShadcnTheme.of(context).textTheme.small,
+                  style: ShadTheme.of(context).textTheme.small,
                 ),
               TypographyStyle.muted => Text(
                   'Enter your email address.',
-                  style: ShadcnTheme.of(context).textTheme.muted,
+                  style: ShadTheme.of(context).textTheme.muted,
                 ),
             };
           }(),
