@@ -31,11 +31,11 @@ class MyApp extends StatelessWidget {
       routerConfig: _router,
       themeMode: theme == 'dark' ? ThemeMode.dark : ThemeMode.light,
       theme: ShadThemeData(
-        colorScheme: const ShadcnZincColorScheme.light(),
+        colorScheme: const ShadZincColorScheme.light(),
         brightness: Brightness.light,
       ),
       darkTheme: ShadThemeData(
-        colorScheme: const ShadcnZincColorScheme.dark(),
+        colorScheme: const ShadZincColorScheme.dark(),
         brightness: Brightness.dark,
       ),
     );

@@ -52,11 +52,11 @@ class App extends StatelessWidget {
           routes: routes,
           theme: ShadThemeData(
             brightness: Brightness.light,
-            colorScheme: const ShadcnZincColorScheme.light(),
+            colorScheme: const ShadZincColorScheme.light(),
           ),
           darkTheme: ShadThemeData(
             brightness: Brightness.dark,
-            colorScheme: const ShadcnZincColorScheme.dark(),
+            colorScheme: const ShadZincColorScheme.dark(),
           ),
           home: const MainPage(),
         );
