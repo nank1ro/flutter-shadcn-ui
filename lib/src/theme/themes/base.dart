@@ -4,6 +4,7 @@ import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
+import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
@@ -40,6 +41,7 @@ abstract class ShadBaseTheme {
     required this.optionTheme,
     required this.cardTheme,
     required this.switchTheme,
+    required this.checkboxTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -67,4 +69,5 @@ abstract class ShadBaseTheme {
   final ShadOptionTheme optionTheme;
   final ShadCardTheme cardTheme;
   final ShadSwitchTheme switchTheme;
+  final ShadCheckboxTheme checkboxTheme;
 }

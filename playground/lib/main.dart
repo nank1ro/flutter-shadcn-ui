@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Uri.base.queryParameters['theme'] ?? 'dark';
+    final theme = Uri.base.queryParameters['theme'] ?? 'light';
 
     return ShadApp.router(
       title: 'shadcn-ui Flutter Playground',

@@ -4,6 +4,7 @@ import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/components/focused.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/debug_check.dart';
 
 class ShadSwitch extends StatefulWidget {
   const ShadSwitch({
@@ -62,7 +63,8 @@ class ShadSwitch extends StatefulWidget {
   State<ShadSwitch> createState() => _ShadSwitchState();
 }
 
-class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
+class _ShadSwitchState extends State<ShadSwitch>
+    with SingleTickerProviderStateMixin {
   FocusNode? _focusNode;
   late final controller = AnimationController(vsync: this);
 
@@ -77,13 +79,6 @@ class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
   }
 
   @override
-  void dispose() {
-    _focusNode?.dispose();
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   void didUpdateWidget(covariant ShadSwitch oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
@@ -92,7 +87,15 @@ class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    _focusNode?.dispose();
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    assert(debugCheckHasShadTheme(context));
     final theme = ShadTheme.of(context);
     final effectiveRadius = widget.radius ??
         theme.switchTheme.radius ??
