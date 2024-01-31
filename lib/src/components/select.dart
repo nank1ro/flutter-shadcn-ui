@@ -282,34 +282,35 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
       child: ShadFocused(
         canRequestFocus: widget.onChanged != null,
         focusNode: focusNode,
-        builder: (context, focused) {
+        builder: (context, focused, child) {
           return ShadcnDecorator(
             focused: focused,
             decoration: effectiveDecoration,
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                controller.toggle();
-              },
-              child: Container(
-                padding: effectivePadding,
-                decoration: BoxDecoration(
-                  color: effectiveBackgroundColor,
-                  borderRadius: effectiveRadius,
-                  border: effectiveBorder,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(child: effectiveText),
-                    effectiveTrailing,
-                  ],
-                ),
-              ),
-            ),
+            child: child!,
           );
         },
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            controller.toggle();
+          },
+          child: Container(
+            padding: effectivePadding,
+            decoration: BoxDecoration(
+              color: effectiveBackgroundColor,
+              borderRadius: effectiveRadius,
+              border: effectiveBorder,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(child: effectiveText),
+                effectiveTrailing,
+              ],
+            ),
+          ),
+        ),
       ),
     );
 
