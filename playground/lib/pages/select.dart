@@ -62,7 +62,7 @@ class SelectPage extends StatelessWidget {
 
   final SelectVariant variant;
 
-  List<Widget> getTimezonesWidgets(ShadcnThemeData theme) {
+  List<Widget> getTimezonesWidgets(ShadThemeData theme) {
     final widgets = <Widget>[];
     for (final zone in timezones.entries) {
       widgets.add(
@@ -79,14 +79,14 @@ class SelectPage extends StatelessWidget {
         ),
       );
       widgets.addAll(zone.value.entries
-          .map((e) => ShadcnOption(value: e.key, child: Text(e.value))));
+          .map((e) => ShadOption(value: e.key, child: Text(e.value))));
     }
     return widgets;
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 24),
@@ -96,7 +96,7 @@ class SelectPage extends StatelessWidget {
             return switch (variant) {
               SelectVariant.fruits => ConstrainedBox(
                   constraints: const BoxConstraints(minWidth: 180),
-                  child: ShadcnSelect<String>(
+                  child: ShadSelect<String>(
                     placeholder: const Text('Select a fruit'),
                     options: [
                       Padding(
@@ -112,7 +112,7 @@ class SelectPage extends StatelessWidget {
                       ),
                       ...fruits.entries
                           .map((e) =>
-                              ShadcnOption(value: e.key, child: Text(e.value)))
+                              ShadOption(value: e.key, child: Text(e.value)))
                           .toList(),
                     ],
                     selectedOptionBuilder: (context, value) =>
@@ -122,7 +122,7 @@ class SelectPage extends StatelessWidget {
                 ),
               SelectVariant.timezone => ConstrainedBox(
                   constraints: const BoxConstraints(minWidth: 280),
-                  child: ShadcnSelect<String>(
+                  child: ShadSelect<String>(
                     placeholder: const Text('Select a timezone'),
                     options: getTimezonesWidgets(theme),
                     onChanged: print,

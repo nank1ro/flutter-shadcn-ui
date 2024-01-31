@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 @immutable
-class ShadcnOptionTheme {
-  const ShadcnOptionTheme({
+class ShadOptionTheme {
+  const ShadOptionTheme({
     this.merge = true,
     this.hoveredBackgroundColor,
     this.padding,
@@ -15,13 +15,13 @@ class ShadcnOptionTheme {
   final EdgeInsets? padding;
   final BorderRadius? radius;
 
-  static ShadcnOptionTheme lerp(
-    ShadcnOptionTheme a,
-    ShadcnOptionTheme b,
+  static ShadOptionTheme lerp(
+    ShadOptionTheme a,
+    ShadOptionTheme b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadcnOptionTheme(
+    return ShadOptionTheme(
       merge: b.merge,
       hoveredBackgroundColor:
           Color.lerp(a.hoveredBackgroundColor, b.hoveredBackgroundColor, t),
@@ -30,13 +30,13 @@ class ShadcnOptionTheme {
     );
   }
 
-  ShadcnOptionTheme copyWith({
+  ShadOptionTheme copyWith({
     bool? merge,
     Color? hoveredBackgroundColor,
     EdgeInsets? padding,
     BorderRadius? radius,
   }) {
-    return ShadcnOptionTheme(
+    return ShadOptionTheme(
       merge: merge ?? this.merge,
       hoveredBackgroundColor:
           hoveredBackgroundColor ?? this.hoveredBackgroundColor,
@@ -45,7 +45,7 @@ class ShadcnOptionTheme {
     );
   }
 
-  ShadcnOptionTheme mergeWith(ShadcnOptionTheme? other) {
+  ShadOptionTheme mergeWith(ShadOptionTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -59,7 +59,7 @@ class ShadcnOptionTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnOptionTheme &&
+    return other is ShadOptionTheme &&
         other.merge == merge &&
         other.hoveredBackgroundColor == hoveredBackgroundColor &&
         other.padding == padding &&

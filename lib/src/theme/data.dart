@@ -17,108 +17,107 @@ import 'package:shadcn_ui/src/theme/themes/base.dart';
 import 'package:shadcn_ui/src/theme/themes/component_default.dart';
 
 @immutable
-class ShadcnThemeData extends ShadcnBaseTheme {
-  factory ShadcnThemeData({
-    required ShadcnColorScheme colorScheme,
+class ShadThemeData extends ShadBaseTheme {
+  factory ShadThemeData({
+    required ShadColorScheme colorScheme,
     required Brightness brightness,
     Iterable<ThemeExtension<dynamic>>? extensions,
-    ShadcnButtonTheme? primaryButtonTheme,
-    ShadcnButtonTheme? secondaryButtonTheme,
-    ShadcnButtonTheme? destructiveButtonTheme,
-    ShadcnButtonTheme? outlineButtonTheme,
-    ShadcnButtonTheme? ghostButtonTheme,
-    ShadcnButtonTheme? linkButtonTheme,
-    ShadcnBadgeTheme? primaryBadgeTheme,
-    ShadcnBadgeTheme? secondaryBadgeTheme,
-    ShadcnBadgeTheme? destructiveBadgeTheme,
-    ShadcnBadgeTheme? outlineBadgeTheme,
+    ShadButtonTheme? primaryButtonTheme,
+    ShadButtonTheme? secondaryButtonTheme,
+    ShadButtonTheme? destructiveButtonTheme,
+    ShadButtonTheme? outlineButtonTheme,
+    ShadButtonTheme? ghostButtonTheme,
+    ShadButtonTheme? linkButtonTheme,
+    ShadBadgeTheme? primaryBadgeTheme,
+    ShadBadgeTheme? secondaryBadgeTheme,
+    ShadBadgeTheme? destructiveBadgeTheme,
+    ShadBadgeTheme? outlineBadgeTheme,
     BorderRadius? radius,
-    ShadcnAvatarTheme? avatarTheme,
-    ShadcnButtonSizesTheme? buttonSizesTheme,
-    ShadcnTooltipTheme? tooltipTheme,
-    ShadcnPopoverTheme? popoverTheme,
-    ShadcnDecorationTheme? decoration,
-    ShadcnTextThemeData? textTheme,
+    ShadAvatarTheme? avatarTheme,
+    ShadButtonSizesTheme? buttonSizesTheme,
+    ShadTooltipTheme? tooltipTheme,
+    ShadPopoverTheme? popoverTheme,
+    ShadDecorationTheme? decoration,
+    ShadTextThemeData? textTheme,
     double? disabledOpacity,
-    ShadcnSelectTheme? selectTheme,
-    ShadcnOptionTheme? optionTheme,
-    ShadcnCardTheme? cardTheme,
-    ShadcnSwitchTheme? switchTheme,
+    ShadSelectTheme? selectTheme,
+    ShadOptionTheme? optionTheme,
+    ShadCardTheme? cardTheme,
+    ShadSwitchTheme? switchTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
-    return ShadcnThemeData._internal(
+    return ShadThemeData._internal(
       colorScheme: colorScheme,
       brightness: brightness,
       extensions: extensions,
-      primaryButtonTheme: ShadcnComponentDefaultTheme.primaryButtonTheme(
+      primaryButtonTheme: ShadComponentDefaultTheme.primaryButtonTheme(
         colorScheme: colorScheme,
       ).mergeWith(primaryButtonTheme),
-      secondaryButtonTheme: ShadcnComponentDefaultTheme.secondaryButtonTheme(
+      secondaryButtonTheme: ShadComponentDefaultTheme.secondaryButtonTheme(
         colorScheme: colorScheme,
       ).mergeWith(secondaryButtonTheme),
-      destructiveButtonTheme:
-          ShadcnComponentDefaultTheme.destructiveButtonTheme(
+      destructiveButtonTheme: ShadComponentDefaultTheme.destructiveButtonTheme(
         colorScheme: colorScheme,
       ).mergeWith(destructiveButtonTheme),
-      outlineButtonTheme: ShadcnComponentDefaultTheme.outlineButtonTheme(
+      outlineButtonTheme: ShadComponentDefaultTheme.outlineButtonTheme(
         colorScheme: colorScheme,
       ).mergeWith(outlineButtonTheme),
-      ghostButtonTheme: ShadcnComponentDefaultTheme.ghostButtonTheme(
+      ghostButtonTheme: ShadComponentDefaultTheme.ghostButtonTheme(
         colorScheme: colorScheme,
       ).mergeWith(ghostButtonTheme),
-      linkButtonTheme: ShadcnComponentDefaultTheme.linkButtonTheme(
+      linkButtonTheme: ShadComponentDefaultTheme.linkButtonTheme(
         colorScheme: colorScheme,
       ).mergeWith(linkButtonTheme),
-      primaryBadgeTheme: ShadcnComponentDefaultTheme.primaryBadgeTheme(
+      primaryBadgeTheme: ShadComponentDefaultTheme.primaryBadgeTheme(
         colorScheme: colorScheme,
       ).mergeWith(primaryBadgeTheme),
-      secondaryBadgeTheme: ShadcnComponentDefaultTheme.secondaryBadgeTheme(
+      secondaryBadgeTheme: ShadComponentDefaultTheme.secondaryBadgeTheme(
         colorScheme: colorScheme,
       ).mergeWith(secondaryBadgeTheme),
-      destructiveBadgeTheme: ShadcnComponentDefaultTheme.destructiveBadgeTheme(
+      destructiveBadgeTheme: ShadComponentDefaultTheme.destructiveBadgeTheme(
         colorScheme: colorScheme,
       ).mergeWith(destructiveBadgeTheme),
-      outlineBadgeTheme: ShadcnComponentDefaultTheme.outlineBadgeTheme(
+      outlineBadgeTheme: ShadComponentDefaultTheme.outlineBadgeTheme(
         colorScheme: colorScheme,
       ).mergeWith(outlineBadgeTheme),
-      buttonSizesTheme: ShadcnComponentDefaultTheme.buttonSizesTheme()
+      buttonSizesTheme: ShadComponentDefaultTheme.buttonSizesTheme()
           .mergeWith(buttonSizesTheme),
       radius: effectiveRadius,
-      avatarTheme: ShadcnComponentDefaultTheme.avatarTheme(
+      avatarTheme: ShadComponentDefaultTheme.avatarTheme(
         colorScheme: colorScheme,
       ).mergeWith(avatarTheme),
-      tooltipTheme: ShadcnComponentDefaultTheme.tooltipTheme(
+      tooltipTheme: ShadComponentDefaultTheme.tooltipTheme(
         colorScheme: colorScheme,
         radius: effectiveRadius,
       ).mergeWith(tooltipTheme),
-      popoverTheme: ShadcnComponentDefaultTheme.popoverTheme(
+      popoverTheme: ShadComponentDefaultTheme.popoverTheme(
         colorScheme: colorScheme,
         radius: effectiveRadius,
       ).mergeWith(popoverTheme),
-      decoration: ShadcnComponentDefaultTheme.decoration(
+      decoration: ShadComponentDefaultTheme.decoration(
         colorScheme: colorScheme,
         radius: effectiveRadius,
       ).mergeWith(decoration),
-      textTheme: ShadcnComponentDefaultTheme.textTheme(colorScheme: colorScheme)
+      textTheme: ShadComponentDefaultTheme.textTheme(colorScheme: colorScheme)
           .mergeWith(textTheme),
       disabledOpacity: disabledOpacity ?? .5,
       selectTheme:
-          ShadcnComponentDefaultTheme.selectTheme(colorScheme: colorScheme)
+          ShadComponentDefaultTheme.selectTheme(colorScheme: colorScheme)
               .mergeWith(selectTheme),
-      optionTheme: ShadcnComponentDefaultTheme.optionTheme(
+      optionTheme: ShadComponentDefaultTheme.optionTheme(
         colorScheme: colorScheme,
       ).mergeWith(optionTheme),
-      cardTheme: ShadcnComponentDefaultTheme.cardTheme(
+      cardTheme: ShadComponentDefaultTheme.cardTheme(
         colorScheme: colorScheme,
       ).mergeWith(cardTheme),
-      switchTheme: ShadcnComponentDefaultTheme.switchTheme(
+      switchTheme: ShadComponentDefaultTheme.switchTheme(
         colorScheme: colorScheme,
       ).mergeWith(switchTheme),
     );
   }
 
-  const ShadcnThemeData._internal({
+  const ShadThemeData._internal({
     required super.colorScheme,
     required super.brightness,
     required super.extensions,
@@ -146,61 +145,61 @@ class ShadcnThemeData extends ShadcnBaseTheme {
     required super.switchTheme,
   });
 
-  static ShadcnThemeData lerp(ShadcnThemeData a, ShadcnThemeData b, double t) {
+  static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
     if (identical(a, b)) {
       return a;
     }
-    return ShadcnThemeData(
-      colorScheme: ShadcnColorScheme.lerp(a.colorScheme, b.colorScheme, t),
+    return ShadThemeData(
+      colorScheme: ShadColorScheme.lerp(a.colorScheme, b.colorScheme, t),
       brightness: b.brightness,
       primaryButtonTheme:
-          ShadcnButtonTheme.lerp(a.primaryButtonTheme, b.primaryButtonTheme, t),
-      secondaryButtonTheme: ShadcnButtonTheme.lerp(
+          ShadButtonTheme.lerp(a.primaryButtonTheme, b.primaryButtonTheme, t),
+      secondaryButtonTheme: ShadButtonTheme.lerp(
         a.secondaryButtonTheme,
         b.secondaryButtonTheme,
         t,
       ),
-      destructiveButtonTheme: ShadcnButtonTheme.lerp(
+      destructiveButtonTheme: ShadButtonTheme.lerp(
         a.destructiveButtonTheme,
         b.destructiveButtonTheme,
         t,
       ),
       outlineButtonTheme:
-          ShadcnButtonTheme.lerp(a.outlineButtonTheme, b.outlineButtonTheme, t),
+          ShadButtonTheme.lerp(a.outlineButtonTheme, b.outlineButtonTheme, t),
       ghostButtonTheme:
-          ShadcnButtonTheme.lerp(a.ghostButtonTheme, b.ghostButtonTheme, t),
+          ShadButtonTheme.lerp(a.ghostButtonTheme, b.ghostButtonTheme, t),
       linkButtonTheme:
-          ShadcnButtonTheme.lerp(a.linkButtonTheme, b.linkButtonTheme, t),
+          ShadButtonTheme.lerp(a.linkButtonTheme, b.linkButtonTheme, t),
       primaryBadgeTheme:
-          ShadcnBadgeTheme.lerp(a.primaryBadgeTheme, b.primaryBadgeTheme, t),
-      secondaryBadgeTheme: ShadcnBadgeTheme.lerp(
+          ShadBadgeTheme.lerp(a.primaryBadgeTheme, b.primaryBadgeTheme, t),
+      secondaryBadgeTheme: ShadBadgeTheme.lerp(
         a.secondaryBadgeTheme,
         b.secondaryBadgeTheme,
         t,
       ),
-      destructiveBadgeTheme: ShadcnBadgeTheme.lerp(
+      destructiveBadgeTheme: ShadBadgeTheme.lerp(
         a.destructiveBadgeTheme,
         b.destructiveBadgeTheme,
         t,
       ),
       outlineBadgeTheme:
-          ShadcnBadgeTheme.lerp(a.outlineBadgeTheme, b.outlineBadgeTheme, t),
+          ShadBadgeTheme.lerp(a.outlineBadgeTheme, b.outlineBadgeTheme, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
-      avatarTheme: ShadcnAvatarTheme.lerp(a.avatarTheme, b.avatarTheme, t),
-      buttonSizesTheme: ShadcnButtonSizesTheme.lerp(
+      avatarTheme: ShadAvatarTheme.lerp(a.avatarTheme, b.avatarTheme, t),
+      buttonSizesTheme: ShadButtonSizesTheme.lerp(
         a.buttonSizesTheme,
         b.buttonSizesTheme,
         t,
       ),
-      tooltipTheme: ShadcnTooltipTheme.lerp(a.tooltipTheme, b.tooltipTheme, t),
-      popoverTheme: ShadcnPopoverTheme.lerp(a.popoverTheme, b.popoverTheme, t),
-      decoration: ShadcnDecorationTheme.lerp(a.decoration, b.decoration, t),
-      textTheme: ShadcnTextThemeData.lerp(a.textTheme, b.textTheme, t),
+      tooltipTheme: ShadTooltipTheme.lerp(a.tooltipTheme, b.tooltipTheme, t),
+      popoverTheme: ShadPopoverTheme.lerp(a.popoverTheme, b.popoverTheme, t),
+      decoration: ShadDecorationTheme.lerp(a.decoration, b.decoration, t),
+      textTheme: ShadTextThemeData.lerp(a.textTheme, b.textTheme, t),
       disabledOpacity: lerpDouble(a.disabledOpacity, b.disabledOpacity, t),
-      selectTheme: ShadcnSelectTheme.lerp(a.selectTheme, b.selectTheme, t),
-      optionTheme: ShadcnOptionTheme.lerp(a.optionTheme, b.optionTheme, t),
-      cardTheme: ShadcnCardTheme.lerp(a.cardTheme, b.cardTheme, t),
-      switchTheme: ShadcnSwitchTheme.lerp(a.switchTheme, b.switchTheme, t),
+      selectTheme: ShadSelectTheme.lerp(a.selectTheme, b.selectTheme, t),
+      optionTheme: ShadOptionTheme.lerp(a.optionTheme, b.optionTheme, t),
+      cardTheme: ShadCardTheme.lerp(a.cardTheme, b.cardTheme, t),
+      switchTheme: ShadSwitchTheme.lerp(a.switchTheme, b.switchTheme, t),
     );
   }
 
@@ -208,7 +207,7 @@ class ShadcnThemeData extends ShadcnBaseTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnBaseTheme &&
+    return other is ShadBaseTheme &&
         other.colorScheme == colorScheme &&
         other.brightness == brightness &&
         other.primaryButtonTheme == primaryButtonTheme &&
@@ -265,34 +264,34 @@ class ShadcnThemeData extends ShadcnBaseTheme {
         switchTheme.hashCode;
   }
 
-  ShadcnThemeData copyWith({
-    ShadcnColorScheme? colorScheme,
-    ShadcnButtonTheme? primaryButtonTheme,
-    ShadcnButtonTheme? secondaryButtonTheme,
-    ShadcnButtonTheme? destructiveButtonTheme,
-    ShadcnButtonTheme? outlineButtonTheme,
-    ShadcnButtonTheme? ghostButtonTheme,
-    ShadcnButtonTheme? linkButtonTheme,
-    ShadcnBadgeTheme? primaryBadgeTheme,
-    ShadcnBadgeTheme? secondaryBadgeTheme,
-    ShadcnBadgeTheme? destructiveBadgeTheme,
-    ShadcnBadgeTheme? outlineBadgeTheme,
+  ShadThemeData copyWith({
+    ShadColorScheme? colorScheme,
+    ShadButtonTheme? primaryButtonTheme,
+    ShadButtonTheme? secondaryButtonTheme,
+    ShadButtonTheme? destructiveButtonTheme,
+    ShadButtonTheme? outlineButtonTheme,
+    ShadButtonTheme? ghostButtonTheme,
+    ShadButtonTheme? linkButtonTheme,
+    ShadBadgeTheme? primaryBadgeTheme,
+    ShadBadgeTheme? secondaryBadgeTheme,
+    ShadBadgeTheme? destructiveBadgeTheme,
+    ShadBadgeTheme? outlineBadgeTheme,
     Brightness? brightness,
     Iterable<ThemeExtension<dynamic>>? extensions,
     BorderRadius? radius,
-    ShadcnAvatarTheme? avatarTheme,
-    ShadcnButtonSizesTheme? buttonSizesTheme,
-    ShadcnTooltipTheme? tooltipTheme,
-    ShadcnPopoverTheme? popoverTheme,
-    ShadcnDecorationTheme? decoration,
-    ShadcnTextThemeData? textTheme,
+    ShadAvatarTheme? avatarTheme,
+    ShadButtonSizesTheme? buttonSizesTheme,
+    ShadTooltipTheme? tooltipTheme,
+    ShadPopoverTheme? popoverTheme,
+    ShadDecorationTheme? decoration,
+    ShadTextThemeData? textTheme,
     double? disabledOpacity,
-    ShadcnSelectTheme? selectTheme,
-    ShadcnOptionTheme? optionTheme,
-    ShadcnCardTheme? cardTheme,
-    ShadcnSwitchTheme? switchTheme,
+    ShadSelectTheme? selectTheme,
+    ShadOptionTheme? optionTheme,
+    ShadCardTheme? cardTheme,
+    ShadSwitchTheme? switchTheme,
   }) {
-    return ShadcnThemeData(
+    return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
       extensions: extensions ?? this.extensions,
       brightness: brightness ?? this.brightness,

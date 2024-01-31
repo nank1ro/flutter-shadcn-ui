@@ -10,7 +10,7 @@ class PopoverPage extends StatefulWidget {
 }
 
 class _PopoverPageState extends State<PopoverPage> {
-  final popoverController = ShadcnPopoverController();
+  final popoverController = ShadPopoverController();
 
   final List<({String name, String initialValue})> layer = [
     (name: 'Width', initialValue: '100%'),
@@ -27,11 +27,11 @@ class _PopoverPageState extends State<PopoverPage> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = ShadcnTheme.of(context).textTheme;
+    final textTheme = ShadTheme.of(context).textTheme;
     return BaseScaffold(
       appBarTitle: 'Popover',
       children: [
-        ShadcnPopover(
+        ShadPopover(
           controller: popoverController,
           popover: (_) => SizedBox(
             width: 288,
@@ -59,7 +59,7 @@ class _PopoverPageState extends State<PopoverPage> {
                             )),
                             Expanded(
                               flex: 2,
-                              child: ShadcnInput(
+                              child: ShadInput(
                                 initialValue: e.initialValue,
                               ),
                             )
@@ -69,7 +69,7 @@ class _PopoverPageState extends State<PopoverPage> {
               ],
             ),
           ),
-          child: ShadcnButton.outline(
+          child: ShadButton.outline(
             text: const Text('Open popover'),
             onPressed: popoverController.toggle,
           ),

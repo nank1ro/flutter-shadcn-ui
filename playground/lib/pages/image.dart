@@ -22,20 +22,20 @@ class ImagePage extends StatelessWidget {
       body: Center(
         child: () {
           return switch (style) {
-            ImageStyle.local => const ShadcnImage(
+            ImageStyle.local => const ShadImage(
                 'assets/banner.png',
                 height: 100,
                 fit: BoxFit.fitHeight,
               ),
-            ImageStyle.remote => const ShadcnImage.square(
+            ImageStyle.remote => const ShadImage.square(
                 'https://avatars.githubusercontent.com/u/124599?v=4',
                 size: 50,
               ),
-            ImageStyle.svg => const ShadcnImage.square(
+            ImageStyle.svg => const ShadImage.square(
                 'assets/flutter.svg',
                 size: 50,
               ),
-            ImageStyle.riv => const ShadcnImage.square(
+            ImageStyle.riv => const ShadImage.square(
                 'assets/off_road_car.riv',
                 size: 200,
               ),

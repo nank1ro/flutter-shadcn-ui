@@ -4,15 +4,15 @@ import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 
-enum ShadcnBadgeVariant {
+enum ShadBadgeVariant {
   primary,
   secondary,
   outline,
   destructive,
 }
 
-class ShadcnBadge extends StatefulWidget {
-  const ShadcnBadge({
+class ShadBadge extends StatefulWidget {
+  const ShadBadge({
     super.key,
     required this.text,
     this.shape,
@@ -20,9 +20,9 @@ class ShadcnBadge extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
-  }) : variant = ShadcnBadgeVariant.primary;
+  }) : variant = ShadBadgeVariant.primary;
 
-  const ShadcnBadge.secondary({
+  const ShadBadge.secondary({
     super.key,
     required this.text,
     this.shape,
@@ -30,9 +30,9 @@ class ShadcnBadge extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
-  }) : variant = ShadcnBadgeVariant.secondary;
+  }) : variant = ShadBadgeVariant.secondary;
 
-  const ShadcnBadge.outline({
+  const ShadBadge.outline({
     super.key,
     required this.text,
     this.shape,
@@ -40,9 +40,9 @@ class ShadcnBadge extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
-  }) : variant = ShadcnBadgeVariant.outline;
+  }) : variant = ShadBadgeVariant.outline;
 
-  const ShadcnBadge.destructive({
+  const ShadBadge.destructive({
     super.key,
     required this.text,
     this.shape,
@@ -50,9 +50,9 @@ class ShadcnBadge extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
-  }) : variant = ShadcnBadgeVariant.destructive;
+  }) : variant = ShadBadgeVariant.destructive;
 
-  const ShadcnBadge.raw({
+  const ShadBadge.raw({
     super.key,
     required this.variant,
     required this.text,
@@ -63,7 +63,7 @@ class ShadcnBadge extends StatefulWidget {
     this.padding,
   });
 
-  final ShadcnBadgeVariant variant;
+  final ShadBadgeVariant variant;
   final Widget text;
   final ShapeBorder? shape;
   final Color? backgroundColor;
@@ -72,10 +72,10 @@ class ShadcnBadge extends StatefulWidget {
   final EdgeInsets? padding;
 
   @override
-  State<ShadcnBadge> createState() => _ShadcnBadgeState();
+  State<ShadBadge> createState() => _ShadBadgeState();
 }
 
-class _ShadcnBadgeState extends State<ShadcnBadge> {
+class _ShadBadgeState extends State<ShadBadge> {
   final isHovered = ValueNotifier(false);
 
   @override
@@ -84,40 +84,40 @@ class _ShadcnBadgeState extends State<ShadcnBadge> {
     super.dispose();
   }
 
-  ShadcnBadgeTheme badgeTheme(ShadcnThemeData theme) {
+  ShadBadgeTheme badgeTheme(ShadThemeData theme) {
     return switch (widget.variant) {
-      ShadcnBadgeVariant.primary => theme.primaryBadgeTheme,
-      ShadcnBadgeVariant.secondary => theme.secondaryBadgeTheme,
-      ShadcnBadgeVariant.destructive => theme.destructiveBadgeTheme,
-      ShadcnBadgeVariant.outline => theme.outlineBadgeTheme,
+      ShadBadgeVariant.primary => theme.primaryBadgeTheme,
+      ShadBadgeVariant.secondary => theme.secondaryBadgeTheme,
+      ShadBadgeVariant.destructive => theme.destructiveBadgeTheme,
+      ShadBadgeVariant.outline => theme.outlineBadgeTheme,
     };
   }
 
-  Color? background(ShadcnThemeData theme) {
+  Color? background(ShadThemeData theme) {
     return widget.backgroundColor ?? badgeTheme(theme).backgroundColor;
   }
 
-  Color? hoverBackground(ShadcnThemeData theme) {
+  Color? hoverBackground(ShadThemeData theme) {
     return widget.hoverBackgroundColor ??
         badgeTheme(theme).hoverBackgroundColor;
   }
 
-  Color? foreground(ShadcnThemeData theme) {
+  Color? foreground(ShadThemeData theme) {
     return widget.foregroundColor ?? badgeTheme(theme).foregroundColor;
   }
 
-  ShapeBorder shape(ShadcnThemeData theme) {
+  ShapeBorder shape(ShadThemeData theme) {
     return widget.shape ?? badgeTheme(theme).shape ?? const StadiumBorder();
   }
 
-  EdgeInsets? padding(ShadcnThemeData theme) {
+  EdgeInsets? padding(ShadThemeData theme) {
     return widget.padding ?? badgeTheme(theme).padding;
   }
 
   @override
   Widget build(BuildContext context) {
-    assert(debugCheckHasShadcnTheme(context));
-    final shadcnTheme = ShadcnTheme.of(context);
+    assert(debugCheckHasShadTheme(context));
+    final theme = ShadTheme.of(context);
     return Semantics(
       container: true,
       child: MouseRegion(
@@ -128,12 +128,10 @@ class _ShadcnBadgeState extends State<ShadcnBadge> {
           builder: (context, hovered, child) {
             return Container(
               decoration: ShapeDecoration(
-                shape: shape(shadcnTheme),
-                color: hovered
-                    ? hoverBackground(shadcnTheme)
-                    : background(shadcnTheme),
+                shape: shape(theme),
+                color: hovered ? hoverBackground(theme) : background(theme),
               ),
-              padding: padding(shadcnTheme),
+              padding: padding(theme),
               child: child,
             );
           },
@@ -143,7 +141,7 @@ class _ShadcnBadgeState extends State<ShadcnBadge> {
             children: [
               DefaultTextStyle(
                 style: TextStyle(
-                  color: foreground(shadcnTheme),
+                  color: foreground(theme),
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
                   height: 16 / 12,

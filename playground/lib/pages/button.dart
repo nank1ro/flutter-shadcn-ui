@@ -25,39 +25,39 @@ class ButtonPage extends StatelessWidget {
       body: Center(
         child: () {
           return switch (style) {
-            PlagroundButtonStyle.primary => ShadcnButton(
+            PlagroundButtonStyle.primary => ShadButton(
                 text: const Text('Primary'),
                 onPressed: () {},
               ),
-            PlagroundButtonStyle.secondary => ShadcnButton.secondary(
+            PlagroundButtonStyle.secondary => ShadButton.secondary(
                 text: const Text('Secondary'),
                 onPressed: () {},
               ),
-            PlagroundButtonStyle.destructive => ShadcnButton.destructive(
+            PlagroundButtonStyle.destructive => ShadButton.destructive(
                 text: const Text('Destructive'),
                 onPressed: () {},
               ),
-            PlagroundButtonStyle.outline => ShadcnButton.outline(
+            PlagroundButtonStyle.outline => ShadButton.outline(
                 text: const Text('Outline'),
                 onPressed: () {},
               ),
-            PlagroundButtonStyle.ghost => ShadcnButton.ghost(
+            PlagroundButtonStyle.ghost => ShadButton.ghost(
                 text: const Text('Ghost'),
                 onPressed: () {},
               ),
-            PlagroundButtonStyle.link => ShadcnButton.link(
+            PlagroundButtonStyle.link => ShadButton.link(
                 text: const Text('Link'),
                 onPressed: () {},
               ),
-            PlagroundButtonStyle.icon => ShadcnButton.outline(
-                size: ShadcnButtonSize.icon,
+            PlagroundButtonStyle.icon => ShadButton.outline(
+                size: ShadButtonSize.icon,
                 icon: const Icon(
                   Icons.chevron_right,
                   size: 16,
                 ),
                 onPressed: () {},
               ),
-            PlagroundButtonStyle.textIcon => ShadcnButton(
+            PlagroundButtonStyle.textIcon => ShadButton(
                 onPressed: () {},
                 text: const Text('Login with Email'),
                 icon: const Padding(
@@ -68,7 +68,7 @@ class ButtonPage extends StatelessWidget {
                   ),
                 ),
               ),
-            PlagroundButtonStyle.loading => ShadcnButton(
+            PlagroundButtonStyle.loading => ShadButton(
                 onPressed: () {},
                 text: const Text('Please wait'),
                 icon: const Padding(
@@ -81,7 +81,7 @@ class ButtonPage extends StatelessWidget {
                   ),
                 ),
               ),
-            PlagroundButtonStyle.gradientShadow => ShadcnButton(
+            PlagroundButtonStyle.gradientShadow => ShadButton(
                 onPressed: () {},
                 gradient: const LinearGradient(colors: [
                   Colors.cyan,

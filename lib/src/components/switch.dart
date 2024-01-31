@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
-import 'package:shadcn_ui/src/components/focusable.dart';
+import 'package:shadcn_ui/src/components/focused.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
@@ -56,7 +56,7 @@ class ShadSwitch extends StatefulWidget {
   final BorderRadius? radius;
 
   /// The decoration of the switch.
-  final ShadcnDecorationTheme? decoration;
+  final ShadDecorationTheme? decoration;
 
   @override
   State<ShadSwitch> createState() => _ShadSwitchState();
@@ -93,7 +93,7 @@ class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
     final effectiveRadius = widget.radius ??
         theme.switchTheme.radius ??
         const BorderRadius.all(Radius.circular(24));
@@ -124,7 +124,7 @@ class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
         child: ShadFocused(
           focusNode: focusNode,
           builder: (context, focused, child) {
-            return ShadcnDecorator(
+            return ShadDecorator(
               focused: focused,
               decoration: effectiveDecoration,
               child: child!,

@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 @immutable
-class ShadcnPopoverTheme {
-  const ShadcnPopoverTheme({
+class ShadPopoverTheme {
+  const ShadPopoverTheme({
     this.merge = true,
     this.waitDuration,
     this.showDuration,
@@ -46,18 +46,18 @@ class ShadcnPopoverTheme {
   /// {@macro popover.decoration}
   final BoxDecoration? decoration;
 
-  static ShadcnPopoverTheme lerp(
-    ShadcnPopoverTheme a,
-    ShadcnPopoverTheme b,
+  static ShadPopoverTheme lerp(
+    ShadPopoverTheme a,
+    ShadPopoverTheme b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadcnPopoverTheme(
+    return ShadPopoverTheme(
       merge: b.merge,
     );
   }
 
-  ShadcnPopoverTheme copyWith({
+  ShadPopoverTheme copyWith({
     bool? merge,
     Duration? waitDuration,
     Duration? showDuration,
@@ -69,7 +69,7 @@ class ShadcnPopoverTheme {
     EdgeInsetsGeometry? padding,
     BoxDecoration? decoration,
   }) {
-    return ShadcnPopoverTheme(
+    return ShadPopoverTheme(
       merge: merge ?? this.merge,
       waitDuration: waitDuration ?? this.waitDuration,
       showDuration: showDuration ?? this.showDuration,
@@ -83,7 +83,7 @@ class ShadcnPopoverTheme {
     );
   }
 
-  ShadcnPopoverTheme mergeWith(ShadcnPopoverTheme? other) {
+  ShadPopoverTheme mergeWith(ShadPopoverTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -103,7 +103,7 @@ class ShadcnPopoverTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnPopoverTheme &&
+    return other is ShadPopoverTheme &&
         other.merge == merge &&
         other.waitDuration == waitDuration &&
         other.showDuration == showDuration &&

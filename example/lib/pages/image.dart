@@ -12,19 +12,19 @@ class ImagePage extends StatelessWidget {
     return const BaseScaffold(
       appBarTitle: 'Image',
       children: [
-        ShadcnImage.square(
+        ShadImage.square(
           'https://avatars.githubusercontent.com/u/124599?v=4',
           size: 50,
         ),
-        ShadcnImage.square(
+        ShadImage.square(
           Assets.offRoadCar,
           size: 200,
         ),
-        ShadcnImage.square(
+        ShadImage.square(
           Assets.flutter,
           size: 50,
         ),
-        ShadcnImage(
+        ShadImage(
           Assets.banner,
           height: 100,
           fit: BoxFit.fitHeight,

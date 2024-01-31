@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-class ShadcnCard extends StatelessWidget {
-  const ShadcnCard({
+class ShadCard extends StatelessWidget {
+  const ShadCard({
     super.key,
     this.title,
     this.description,
@@ -28,7 +28,7 @@ class ShadcnCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
 
     final effectivePadding =
         padding ?? theme.cardTheme.padding ?? const EdgeInsets.all(24);

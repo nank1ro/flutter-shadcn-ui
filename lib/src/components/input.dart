@@ -7,8 +7,8 @@ import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-class ShadcnInput extends StatefulWidget {
-  const ShadcnInput({
+class ShadInput extends StatefulWidget {
+  const ShadInput({
     super.key,
     this.initialValue,
     this.placeholder,
@@ -85,7 +85,7 @@ class ShadcnInput extends StatefulWidget {
           'Either initialValue or controller must be specified',
         );
 
-  final ShadcnDecorationTheme? decoration;
+  final ShadDecorationTheme? decoration;
 
   final String? initialValue;
 
@@ -214,10 +214,10 @@ class ShadcnInput extends StatefulWidget {
   final Color? selectionColor;
 
   @override
-  State<ShadcnInput> createState() => _ShadcnInputState();
+  State<ShadInput> createState() => _ShadInputState();
 }
 
-class _ShadcnInputState extends State<ShadcnInput>
+class _ShadInputState extends State<ShadInput>
     implements TextSelectionGestureDetectorBuilderDelegate {
   late FocusNode focusNode;
   final hasFocus = ValueNotifier(false);
@@ -235,7 +235,7 @@ class _ShadcnInputState extends State<ShadcnInput>
   }
 
   @override
-  void didUpdateWidget(ShadcnInput oldWidget) {
+  void didUpdateWidget(ShadInput oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
       focusNode.removeListener(onFocusChange);
@@ -266,7 +266,7 @@ class _ShadcnInputState extends State<ShadcnInput>
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
     final effectiveTextStyle = widget.style ??
         theme.textTheme.muted.copyWith(
           color: theme.colorScheme.foreground,
@@ -276,7 +276,7 @@ class _ShadcnInputState extends State<ShadcnInput>
       child: ValueListenableBuilder(
         valueListenable: hasFocus,
         builder: (context, focused, _) {
-          return ShadcnDecorator(
+          return ShadDecorator(
             decoration: widget.decoration ?? theme.decoration,
             focused: focused,
             child: ValueListenableBuilder(
@@ -374,11 +374,11 @@ class _ShadcnInputState extends State<ShadcnInput>
 class _InputSelectionGestureDetectorBuilder
     extends TextSelectionGestureDetectorBuilder {
   _InputSelectionGestureDetectorBuilder({
-    required _ShadcnInputState state,
+    required _ShadInputState state,
   })  : _state = state,
         super(delegate: state);
 
-  final _ShadcnInputState _state;
+  final _ShadInputState _state;
 
   @override
   void onForcePressStart(ForcePressDetails details) {

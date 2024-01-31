@@ -27,7 +27,7 @@ class _SwitchPageState extends State<SwitchPage> {
             const SizedBox(width: 8),
             Text(
               'Airplane Mode',
-              style: ShadcnTheme.of(context).textTheme.small,
+              style: ShadTheme.of(context).textTheme.small,
             ),
           ],
         ),

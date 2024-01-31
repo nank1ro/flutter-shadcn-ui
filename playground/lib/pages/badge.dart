@@ -7,23 +7,23 @@ class BadgePage extends StatelessWidget {
     required this.variant,
   });
 
-  final ShadcnBadgeVariant variant;
+  final ShadBadgeVariant variant;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: () {
           return switch (variant) {
-            ShadcnBadgeVariant.primary => const ShadcnBadge(
+            ShadBadgeVariant.primary => const ShadBadge(
                 text: Text('Primary'),
               ),
-            ShadcnBadgeVariant.secondary => const ShadcnBadge.secondary(
+            ShadBadgeVariant.secondary => const ShadBadge.secondary(
                 text: Text('Secondary'),
               ),
-            ShadcnBadgeVariant.outline => const ShadcnBadge.outline(
+            ShadBadgeVariant.outline => const ShadBadge.outline(
                 text: Text('Outline'),
               ),
-            ShadcnBadgeVariant.destructive => const ShadcnBadge.destructive(
+            ShadBadgeVariant.destructive => const ShadBadge.destructive(
                 text: Text('Destructive'),
               ),
           };

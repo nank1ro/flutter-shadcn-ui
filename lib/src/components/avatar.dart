@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 
-class ShadcnAvatar extends StatelessWidget {
-  const ShadcnAvatar(
+class ShadAvatar extends StatelessWidget {
+  const ShadAvatar(
     this.src, {
     super.key,
     this.placeholder,
@@ -24,21 +24,21 @@ class ShadcnAvatar extends StatelessWidget {
 
   bool get isRemote => Uri.tryParse(src)?.host.isNotEmpty ?? false;
 
-  Size effectiveSize(ShadcnThemeData theme) {
+  Size effectiveSize(ShadThemeData theme) {
     return size ?? theme.avatarTheme.size ?? const Size.square(40);
   }
 
-  ShapeBorder effectiveShape(ShadcnThemeData theme) {
+  ShapeBorder effectiveShape(ShadThemeData theme) {
     return shape ?? theme.avatarTheme.shape ?? const CircleBorder();
   }
 
-  Color? effectiveBackgroundColor(ShadcnThemeData theme) {
+  Color? effectiveBackgroundColor(ShadThemeData theme) {
     return backgroundColor ??
         theme.avatarTheme.backgroundColor ??
         theme.colorScheme.muted;
   }
 
-  BoxFit? effectiveFit(ShadcnThemeData theme) {
+  BoxFit? effectiveFit(ShadThemeData theme) {
     return fit ?? theme.avatarTheme.fit;
   }
 
@@ -53,8 +53,8 @@ class ShadcnAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    assert(debugCheckHasShadcnTheme(context));
-    final theme = ShadcnTheme.of(context);
+    assert(debugCheckHasShadTheme(context));
+    final theme = ShadTheme.of(context);
     final size = effectiveSize(theme);
 
     return Container(
@@ -66,7 +66,7 @@ class ShadcnAvatar extends StatelessWidget {
         shape: effectiveShape(theme),
         color: effectiveBackgroundColor(theme),
       ),
-      child: ShadcnImage(
+      child: ShadImage(
         src,
         placeholder: placeholder,
       ),

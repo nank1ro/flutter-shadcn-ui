@@ -11,8 +11,8 @@ import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-class ShadcnApp extends StatefulWidget {
-  const ShadcnApp({
+class ShadApp extends StatefulWidget {
+  const ShadApp({
     super.key,
     this.navigatorKey,
     this.onGenerateRoute,
@@ -42,7 +42,7 @@ class ShadcnApp extends StatefulWidget {
     this.darkTheme,
     this.themeMode,
     this.restorationScopeId,
-    this.scrollBehavior = const ShadcnScrollBehavior(),
+    this.scrollBehavior = const ShadScrollBehavior(),
     this.pageRouteBuilder,
     this.themeCurve = Curves.linear,
   })  : routeInformationProvider = null,
@@ -51,8 +51,8 @@ class ShadcnApp extends StatefulWidget {
         backButtonDispatcher = null,
         routerConfig = null;
 
-  /// Creates a [ShadcnApp] that uses the [Router] instead of a [Navigator].
-  const ShadcnApp.router({
+  /// Creates a [ShadApp] that uses the [Router] instead of a [Navigator].
+  const ShadApp.router({
     super.key,
     this.theme,
     this.darkTheme,
@@ -79,7 +79,7 @@ class ShadcnApp extends StatefulWidget {
     this.shortcuts,
     this.actions,
     this.restorationScopeId,
-    this.scrollBehavior = const ShadcnScrollBehavior(),
+    this.scrollBehavior = const ShadScrollBehavior(),
     this.themeCurve = Curves.linear,
   })  : navigatorObservers = null,
         navigatorKey = null,
@@ -92,17 +92,17 @@ class ShadcnApp extends StatefulWidget {
         pageRouteBuilder = null;
 
   /// Default visual properties, like colors fonts and shapes, for this app's
-  /// shadcn widgets.
+  /// shad widgets.
   ///
-  /// A second [darkTheme] [ShadcnThemeData] value, which is used to provide a
+  /// A second [darkTheme] [ShadThemeData] value, which is used to provide a
   /// dark version of the user interface can also be specified. [themeMode] will
   /// control which theme will be used if a [darkTheme] is provided.
   ///
   /// The default value of this property is the value of
-  /// `ShadcnThemeData(brightness: Brightness.light)`.
-  final ShadcnThemeData? theme;
+  /// `ShadThemeData(brightness: Brightness.light)`.
+  final ShadThemeData? theme;
 
-  /// The [ShadcnThemeData] to use when a 'dark mode' is requested by the
+  /// The [ShadThemeData] to use when a 'dark mode' is requested by the
   /// system.
   ///
   /// Some host platforms allow the users to select a system-wide 'dark mode',
@@ -110,13 +110,13 @@ class ShadcnApp extends StatefulWidget {
   /// dark theme just for this application. This is theme that will be used for
   /// such cases. [themeMode] will control which theme will be used.
   ///
-  /// This theme should have a [ShadcnThemeData.brightness] set to
+  /// This theme should have a [ShadThemeData.brightness] set to
   /// [Brightness.dark].
   ///
   /// Uses [theme] instead when null. Defaults to the value of
-  /// [ShadcnThemeData(brightness: Brightness.light)] when both [darkTheme] and
+  /// [ShadThemeData(brightness: Brightness.light)] when both [darkTheme] and
   /// [theme] are null.
-  final ShadcnThemeData? darkTheme;
+  final ShadThemeData? darkTheme;
 
   /// Determines which theme will be used by the application if both [theme]
   /// and [darkTheme] are provided.
@@ -270,12 +270,12 @@ class ShadcnApp extends StatefulWidget {
   /// add your own [Shortcuts] widget.
   ///
   /// Alternatively, you could insert a [Shortcuts] widget with just the mapping
-  /// you want to add between the [ShadcnApp] and its child and get the same
+  /// you want to add between the [ShadApp] and its child and get the same
   /// effect.
   ///
   /// ```dart
   /// Widget build(BuildContext context) {
-  ///   return ShadcnApp(
+  ///   return ShadApp(
   ///     shortcuts: <ShortcutActivator, Intent>{
   ///       ... WidgetsApp.defaultShortcuts,
   ///       const SingleActivator(LogicalKeyboardKey.select):
@@ -299,12 +299,12 @@ class ShadcnApp extends StatefulWidget {
   /// add your own [Actions] widget.
   ///
   /// Alternatively, you could insert a [Actions] widget with just the mapping
-  /// you want to add between the [ShadcnApp] and its child and get the same
+  /// you want to add between the [ShadApp] and its child and get the same
   /// effect.
   ///
   /// ```dart
   /// Widget build(BuildContext context) {
-  ///   return ShadcnApp(
+  ///   return ShadApp(
   ///     actions: <Type, Action<Intent>>{
   ///       ... WidgetsApp.defaultActions,
   ///       ActivateAction: CallbackAction(
@@ -336,15 +336,15 @@ class ShadcnApp extends StatefulWidget {
   ///    in a subtree.
   final ScrollBehavior scrollBehavior;
 
-  /// The curve used to animated from one [ShadcnThemeData] to another, defaults
+  /// The curve used to animated from one [ShadThemeData] to another, defaults
   /// to [Curves.linear].
   final Curve themeCurve;
 
   @override
-  State<ShadcnApp> createState() => _ShadcnAppState();
+  State<ShadApp> createState() => _ShadAppState();
 }
 
-class _ShadcnAppState extends State<ShadcnApp> {
+class _ShadAppState extends State<ShadApp> {
   final heroController = HeroController();
 
   bool get usesRouter =>
@@ -386,25 +386,25 @@ class _ShadcnAppState extends State<ShadcnApp> {
     );
   }
 
-  ShadcnThemeData theme(BuildContext context) {
+  ShadThemeData theme(BuildContext context) {
     final mode = widget.themeMode ?? ThemeMode.system;
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
     final useDarkStyle = mode == ThemeMode.dark ||
         (mode == ThemeMode.system && platformBrightness == Brightness.dark);
 
     final data = () {
-      late ShadcnThemeData result;
+      late ShadThemeData result;
       if (useDarkStyle) {
         result = widget.darkTheme ??
             widget.theme ??
-            ShadcnThemeData(
-              colorScheme: const ShadcnSlateColorScheme.dark(),
+            ShadThemeData(
+              colorScheme: const ShadSlateColorScheme.dark(),
               brightness: Brightness.dark,
             );
       } else {
         result = widget.theme ??
-            ShadcnThemeData(
-              colorScheme: const ShadcnSlateColorScheme.light(),
+            ShadThemeData(
+              colorScheme: const ShadSlateColorScheme.light(),
               brightness: Brightness.light,
             );
       }
@@ -463,7 +463,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
               ),
             ),
           ),
-      child: AnimatedShadcnTheme(
+      child: AnimatedShadTheme(
         curve: widget.themeCurve,
         data: themeData,
         child: widget.builder != null
@@ -552,7 +552,7 @@ class _ShadcnAppState extends State<ShadcnApp> {
   }
 }
 
-/// Describes how [Scrollable] widgets behave for [ShadcnApp]s.
+/// Describes how [Scrollable] widgets behave for [ShadApp]s.
 ///
 /// {@macro flutter.widgets.scrollBehavior}
 ///
@@ -565,11 +565,11 @@ class _ShadcnAppState extends State<ShadcnApp> {
 /// By default we will use [CupertinoScrollbar] for iOS and macOS platforms
 /// for windows and Linux [Scrollbar]
 /// for Android and Fuchsia we will return the child
-class ShadcnScrollBehavior extends ScrollBehavior {
-  /// Creates a ShadcnScrollBehavior that decorates [Scrollable]s with
+class ShadScrollBehavior extends ScrollBehavior {
+  /// Creates a ShadScrollBehavior that decorates [Scrollable]s with
   /// [Scrollbar]s based on the current platform and provided
   /// [ScrollableDetails].
-  const ShadcnScrollBehavior();
+  const ShadScrollBehavior();
 
   @override
   Widget buildScrollbar(

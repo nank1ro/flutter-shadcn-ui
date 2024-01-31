@@ -15,11 +15,11 @@ import 'package:shadcn_ui/src/theme/text_theme/data.dart';
 import 'package:shadcn_ui/src/theme/text_theme/defaults.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
-abstract class ShadcnComponentDefaultTheme {
-  static ShadcnButtonTheme primaryButtonTheme({
-    required ShadcnColorScheme colorScheme,
+abstract class ShadComponentDefaultTheme {
+  static ShadButtonTheme primaryButtonTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnButtonTheme(
+    return ShadButtonTheme(
       backgroundColor: colorScheme.primary,
       hoverBackgroundColor: colorScheme.primary.withOpacity(.9),
       foregroundColor: colorScheme.primaryForeground,
@@ -27,10 +27,10 @@ abstract class ShadcnComponentDefaultTheme {
     );
   }
 
-  static ShadcnButtonTheme secondaryButtonTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadButtonTheme secondaryButtonTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnButtonTheme(
+    return ShadButtonTheme(
       backgroundColor: colorScheme.secondary,
       hoverBackgroundColor: colorScheme.secondary.withOpacity(.8),
       foregroundColor: colorScheme.secondaryForeground,
@@ -38,10 +38,10 @@ abstract class ShadcnComponentDefaultTheme {
     );
   }
 
-  static ShadcnButtonTheme destructiveButtonTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadButtonTheme destructiveButtonTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnButtonTheme(
+    return ShadButtonTheme(
       backgroundColor: colorScheme.destructive,
       hoverBackgroundColor: colorScheme.destructive.withOpacity(.9),
       foregroundColor: colorScheme.destructiveForeground,
@@ -49,10 +49,10 @@ abstract class ShadcnComponentDefaultTheme {
     );
   }
 
-  static ShadcnButtonTheme outlineButtonTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadButtonTheme outlineButtonTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnButtonTheme(
+    return ShadButtonTheme(
       hoverBackgroundColor: colorScheme.accent,
       foregroundColor: colorScheme.primary,
       hoverForegroundColor: colorScheme.accentForeground,
@@ -60,41 +60,41 @@ abstract class ShadcnComponentDefaultTheme {
     );
   }
 
-  static ShadcnButtonTheme ghostButtonTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadButtonTheme ghostButtonTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnButtonTheme(
+    return ShadButtonTheme(
       hoverBackgroundColor: colorScheme.accent,
       foregroundColor: colorScheme.primary,
       hoverForegroundColor: colorScheme.accentForeground,
     );
   }
 
-  static ShadcnButtonTheme linkButtonTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadButtonTheme linkButtonTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnButtonTheme(
+    return ShadButtonTheme(
       foregroundColor: colorScheme.primary,
       hoverForegroundColor: colorScheme.primary,
       hoverTextDecoration: TextDecoration.underline,
     );
   }
 
-  static ShadcnButtonSizesTheme buttonSizesTheme() {
-    return const ShadcnButtonSizesTheme(
-      regular: ShadcnButtonSizeTheme(
+  static ShadButtonSizesTheme buttonSizesTheme() {
+    return const ShadButtonSizesTheme(
+      regular: ShadButtonSizeTheme(
         height: 40,
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
-      sm: ShadcnButtonSizeTheme(
+      sm: ShadButtonSizeTheme(
         height: 36,
         padding: EdgeInsets.symmetric(horizontal: 12),
       ),
-      lg: ShadcnButtonSizeTheme(
+      lg: ShadButtonSizeTheme(
         height: 44,
         padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
       ),
-      icon: ShadcnButtonSizeTheme(
+      icon: ShadButtonSizeTheme(
         height: 40,
         width: 40,
         padding: EdgeInsets.zero,
@@ -102,10 +102,10 @@ abstract class ShadcnComponentDefaultTheme {
     );
   }
 
-  static ShadcnBadgeTheme primaryBadgeTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadBadgeTheme primaryBadgeTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnBadgeTheme(
+    return ShadBadgeTheme(
       backgroundColor: colorScheme.primary,
       hoverBackgroundColor: colorScheme.primary.withOpacity(.8),
       foregroundColor: colorScheme.primaryForeground,
@@ -114,10 +114,10 @@ abstract class ShadcnComponentDefaultTheme {
     );
   }
 
-  static ShadcnBadgeTheme secondaryBadgeTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadBadgeTheme secondaryBadgeTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnBadgeTheme(
+    return ShadBadgeTheme(
       backgroundColor: colorScheme.secondary,
       hoverBackgroundColor: colorScheme.secondary.withOpacity(.8),
       foregroundColor: colorScheme.secondaryForeground,
@@ -126,10 +126,10 @@ abstract class ShadcnComponentDefaultTheme {
     );
   }
 
-  static ShadcnBadgeTheme destructiveBadgeTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadBadgeTheme destructiveBadgeTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnBadgeTheme(
+    return ShadBadgeTheme(
       backgroundColor: colorScheme.destructive,
       hoverBackgroundColor: colorScheme.destructive.withOpacity(.8),
       foregroundColor: colorScheme.destructiveForeground,
@@ -138,37 +138,37 @@ abstract class ShadcnComponentDefaultTheme {
     );
   }
 
-  static ShadcnBadgeTheme outlineBadgeTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadBadgeTheme outlineBadgeTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnBadgeTheme(
+    return ShadBadgeTheme(
       foregroundColor: colorScheme.foreground,
       shape: StadiumBorder(side: BorderSide(color: colorScheme.border)),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
     );
   }
 
-  static ShadcnAvatarTheme avatarTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadAvatarTheme avatarTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnAvatarTheme(
+    return ShadAvatarTheme(
       size: const Size.square(40),
       shape: const CircleBorder(),
       backgroundColor: colorScheme.muted,
     );
   }
 
-  static ShadcnTooltipTheme tooltipTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadTooltipTheme tooltipTheme({
+    required ShadColorScheme colorScheme,
     required BorderRadius radius,
   }) {
-    return ShadcnTooltipTheme(
+    return ShadTooltipTheme(
       effects: const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
         MoveEffect(begin: Offset(0, 2), end: Offset.zero),
       ],
-      shadows: ShadcnShadows.md,
+      shadows: ShadShadows.md,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         borderRadius: radius,
@@ -176,24 +176,24 @@ abstract class ShadcnComponentDefaultTheme {
           color: colorScheme.border,
         ),
         color: colorScheme.popover,
-        boxShadow: ShadcnShadows.md,
+        boxShadow: ShadShadows.md,
       ),
       alignment: Alignment.topCenter,
       childAlignment: Alignment.bottomCenter,
     );
   }
 
-  static ShadcnPopoverTheme popoverTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadPopoverTheme popoverTheme({
+    required ShadColorScheme colorScheme,
     required BorderRadius radius,
   }) {
-    return ShadcnPopoverTheme(
+    return ShadPopoverTheme(
       effects: const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
         MoveEffect(begin: Offset(0, 2), end: Offset.zero),
       ],
-      shadows: ShadcnShadows.md,
+      shadows: ShadShadows.md,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         borderRadius: radius,
@@ -201,20 +201,20 @@ abstract class ShadcnComponentDefaultTheme {
           color: colorScheme.border,
         ),
         color: colorScheme.popover,
-        boxShadow: ShadcnShadows.md,
+        boxShadow: ShadShadows.md,
       ),
       alignment: Alignment.bottomCenter,
       childAlignment: Alignment.topCenter,
     );
   }
 
-  static ShadcnDecorationTheme decoration({
-    required ShadcnColorScheme colorScheme,
+  static ShadDecorationTheme decoration({
+    required ShadColorScheme colorScheme,
     required BorderRadius radius,
   }) {
-    return ShadcnDecorationTheme(
-      border: const ShadcnBorder(padding: EdgeInsets.all(4)),
-      focusedBorder: ShadcnBorder(
+    return ShadDecorationTheme(
+      border: const ShadBorder(padding: EdgeInsets.all(4)),
+      focusedBorder: ShadBorder(
         width: 2,
         color: colorScheme.ring,
         radius: radius.add(radius / 2),
@@ -223,30 +223,30 @@ abstract class ShadcnComponentDefaultTheme {
     );
   }
 
-  static ShadcnTextThemeData textTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadTextThemeData textTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnTextThemeData(
-      h1Large: ShadcnTextDefaultTheme.h1Large(colorScheme: colorScheme),
-      h1: ShadcnTextDefaultTheme.h1(colorScheme: colorScheme),
-      h2: ShadcnTextDefaultTheme.h2(colorScheme: colorScheme),
-      h3: ShadcnTextDefaultTheme.h3(colorScheme: colorScheme),
-      h4: ShadcnTextDefaultTheme.h4(colorScheme: colorScheme),
-      p: ShadcnTextDefaultTheme.p(colorScheme: colorScheme),
-      blockquote: ShadcnTextDefaultTheme.blockquote(colorScheme: colorScheme),
-      table: ShadcnTextDefaultTheme.table(colorScheme: colorScheme),
-      list: ShadcnTextDefaultTheme.list(colorScheme: colorScheme),
-      lead: ShadcnTextDefaultTheme.lead(colorScheme: colorScheme),
-      large: ShadcnTextDefaultTheme.large(colorScheme: colorScheme),
-      small: ShadcnTextDefaultTheme.small(colorScheme: colorScheme),
-      muted: ShadcnTextDefaultTheme.muted(colorScheme: colorScheme),
+    return ShadTextThemeData(
+      h1Large: ShadTextDefaultTheme.h1Large(colorScheme: colorScheme),
+      h1: ShadTextDefaultTheme.h1(colorScheme: colorScheme),
+      h2: ShadTextDefaultTheme.h2(colorScheme: colorScheme),
+      h3: ShadTextDefaultTheme.h3(colorScheme: colorScheme),
+      h4: ShadTextDefaultTheme.h4(colorScheme: colorScheme),
+      p: ShadTextDefaultTheme.p(colorScheme: colorScheme),
+      blockquote: ShadTextDefaultTheme.blockquote(colorScheme: colorScheme),
+      table: ShadTextDefaultTheme.table(colorScheme: colorScheme),
+      list: ShadTextDefaultTheme.list(colorScheme: colorScheme),
+      lead: ShadTextDefaultTheme.lead(colorScheme: colorScheme),
+      large: ShadTextDefaultTheme.large(colorScheme: colorScheme),
+      small: ShadTextDefaultTheme.small(colorScheme: colorScheme),
+      muted: ShadTextDefaultTheme.muted(colorScheme: colorScheme),
     );
   }
 
-  static ShadcnSelectTheme selectTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadSelectTheme selectTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnSelectTheme(
+    return ShadSelectTheme(
       minWidth: kDefaultSelectMinWidth,
       maxHeight: kDefaultSelectMaxHeight,
       offset: const Offset(4, 0),
@@ -259,31 +259,31 @@ abstract class ShadcnComponentDefaultTheme {
     );
   }
 
-  static ShadcnOptionTheme optionTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadOptionTheme optionTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnOptionTheme(
+    return ShadOptionTheme(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       hoveredBackgroundColor: colorScheme.accent,
     );
   }
 
-  static ShadcnCardTheme cardTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadCardTheme cardTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnCardTheme(
+    return ShadCardTheme(
       backgroundColor: colorScheme.card,
       padding: const EdgeInsets.all(24),
       border: Border.all(color: colorScheme.border),
       radius: const BorderRadius.all(Radius.circular(8)),
-      shadows: ShadcnShadows.sm,
+      shadows: ShadShadows.sm,
     );
   }
 
-  static ShadcnSwitchTheme switchTheme({
-    required ShadcnColorScheme colorScheme,
+  static ShadSwitchTheme switchTheme({
+    required ShadColorScheme colorScheme,
   }) {
-    return ShadcnSwitchTheme(
+    return ShadSwitchTheme(
       radius: const BorderRadius.all(Radius.circular(24)),
       width: 44,
       margin: 2,
@@ -291,9 +291,9 @@ abstract class ShadcnComponentDefaultTheme {
       thumbColor: colorScheme.background,
       uncheckedTrackColor: colorScheme.input,
       checkedTrackColor: colorScheme.primary,
-      decoration: ShadcnDecorationTheme(
-        border: const ShadcnBorder(width: 4, color: Colors.transparent),
-        focusedBorder: ShadcnBorder(
+      decoration: ShadDecorationTheme(
+        border: const ShadBorder(width: 4, color: Colors.transparent),
+        focusedBorder: ShadBorder(
           width: 2,
           color: colorScheme.ring,
           // the outer radius is calculated as

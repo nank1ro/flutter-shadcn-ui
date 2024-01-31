@@ -43,13 +43,13 @@ class _CardPageState extends State<CardPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
     return BaseScaffold(
       appBarTitle: 'Card',
       children: [
         SizedBox(
           width: 350,
-          child: ShadcnCard(
+          child: ShadCard(
             title: const Text('Create project'),
             description: const Text('Deploy your new project in one-click.'),
             content: Padding(
@@ -59,14 +59,14 @@ class _CardPageState extends State<CardPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Text('Name'),
-                  const ShadcnInput(placeholder: 'Name of your project'),
+                  const ShadInput(placeholder: 'Name of your project'),
                   const SizedBox(height: 6),
                   const Text('Framework'),
-                  ShadcnSelect<String>(
+                  ShadSelect<String>(
                     placeholder: const Text('Select'),
                     options: frameworks.entries
                         .map((e) =>
-                            ShadcnOption(value: e.key, child: Text(e.value)))
+                            ShadOption(value: e.key, child: Text(e.value)))
                         .toList(),
                     selectedOptionBuilder: (context, value) {
                       return Text(frameworks[value]!);
@@ -79,11 +79,11 @@ class _CardPageState extends State<CardPage> {
             footer: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ShadcnButton.outline(
+                ShadButton.outline(
                   text: const Text('Cancel'),
                   onPressed: () {},
                 ),
-                ShadcnButton(
+                ShadButton(
                   text: const Text('Deploy'),
                   onPressed: () {},
                 ),
@@ -94,7 +94,7 @@ class _CardPageState extends State<CardPage> {
         const SizedBox(height: 40),
         SizedBox(
           width: 380,
-          child: ShadcnCard(
+          child: ShadCard(
             title: const Text('Notifications'),
             description: const Text('You have 3 unread messages.'),
             content: Column(
@@ -108,7 +108,7 @@ class _CardPageState extends State<CardPage> {
                   ),
                   child: Row(
                     children: [
-                      ShadcnImage.square(
+                      ShadImage.square(
                         ShadAssets.bellRing,
                         size: 24,
                         color: theme.colorScheme.foreground,
@@ -181,12 +181,12 @@ class _CardPageState extends State<CardPage> {
                 const SizedBox(height: 16),
               ],
             ),
-            footer: ShadcnButton(
+            footer: ShadButton(
               width: double.infinity,
               text: const Text('Mark all as read'),
               icon: const Padding(
                 padding: EdgeInsets.only(right: 8),
-                child: ShadcnImage.square(ShadAssets.check, size: 16),
+                child: ShadImage.square(ShadAssets.check, size: 16),
               ),
               onPressed: () {},
             ),

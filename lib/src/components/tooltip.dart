@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
-// import 'package:flutter_portal/flutter_portal.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
-class ShadcnTooltip extends StatefulWidget {
-  const ShadcnTooltip({
+class ShadTooltip extends StatefulWidget {
+  const ShadTooltip({
     super.key,
     required this.child,
     required this.builder,
@@ -60,7 +59,7 @@ class ShadcnTooltip extends StatefulWidget {
   final List<Effect<dynamic>>? effects;
 
   /// {@template tooltip.shadows}
-  /// The shadows applied to the tooltip, defaults to [ShadcnShadows.md].
+  /// The shadows applied to the tooltip, defaults to [ShadShadows.md].
   /// {@endtemplate}
   final List<BoxShadow>? shadows;
 
@@ -86,10 +85,10 @@ class ShadcnTooltip extends StatefulWidget {
   final BoxDecoration? decoration;
 
   @override
-  State<ShadcnTooltip> createState() => _ShadcnTooltipState();
+  State<ShadTooltip> createState() => _ShadTooltipState();
 }
 
-class _ShadcnTooltipState extends State<ShadcnTooltip> {
+class _ShadTooltipState extends State<ShadTooltip> {
   bool hovered = false;
   bool visible = false;
 
@@ -108,7 +107,7 @@ class _ShadcnTooltipState extends State<ShadcnTooltip> {
   }
 
   @override
-  void didUpdateWidget(ShadcnTooltip oldWidget) {
+  void didUpdateWidget(ShadTooltip oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
       oldWidget.focusNode?.removeListener(onFocusChange);
@@ -122,7 +121,7 @@ class _ShadcnTooltipState extends State<ShadcnTooltip> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
 
     final effectiveEffects = widget.effects ?? theme.tooltipTheme.effects ?? [];
     final effectivePadding = widget.padding ?? theme.tooltipTheme.padding;
@@ -156,9 +155,9 @@ class _ShadcnTooltipState extends State<ShadcnTooltip> {
           setState(() => visible = false);
         }
       },
-      child: ShadcnPortal(
+      child: ShadPortal(
         visible: visible,
-        anchor: ShadcnAnchor(
+        anchor: ShadAnchor(
           childAlignment: effectiveAlignment,
           overlayAlignment: effectiveChildAlignment,
           offset: effectiveOffset,

@@ -13,8 +13,8 @@ import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/data.dart';
 
 @immutable
-abstract class ShadcnBaseTheme {
-  const ShadcnBaseTheme({
+abstract class ShadBaseTheme {
+  const ShadBaseTheme({
     required this.colorScheme,
     required this.brightness,
     required this.extensions,
@@ -42,29 +42,29 @@ abstract class ShadcnBaseTheme {
     required this.switchTheme,
   });
 
-  final ShadcnColorScheme colorScheme;
+  final ShadColorScheme colorScheme;
   final Brightness brightness;
   final Iterable<ThemeExtension<dynamic>>? extensions;
-  final ShadcnButtonTheme primaryButtonTheme;
-  final ShadcnButtonTheme secondaryButtonTheme;
-  final ShadcnButtonTheme destructiveButtonTheme;
-  final ShadcnButtonTheme outlineButtonTheme;
-  final ShadcnButtonTheme ghostButtonTheme;
-  final ShadcnButtonTheme linkButtonTheme;
-  final ShadcnBadgeTheme primaryBadgeTheme;
-  final ShadcnBadgeTheme secondaryBadgeTheme;
-  final ShadcnBadgeTheme destructiveBadgeTheme;
-  final ShadcnBadgeTheme outlineBadgeTheme;
+  final ShadButtonTheme primaryButtonTheme;
+  final ShadButtonTheme secondaryButtonTheme;
+  final ShadButtonTheme destructiveButtonTheme;
+  final ShadButtonTheme outlineButtonTheme;
+  final ShadButtonTheme ghostButtonTheme;
+  final ShadButtonTheme linkButtonTheme;
+  final ShadBadgeTheme primaryBadgeTheme;
+  final ShadBadgeTheme secondaryBadgeTheme;
+  final ShadBadgeTheme destructiveBadgeTheme;
+  final ShadBadgeTheme outlineBadgeTheme;
   final BorderRadius radius;
-  final ShadcnAvatarTheme avatarTheme;
-  final ShadcnButtonSizesTheme buttonSizesTheme;
-  final ShadcnTooltipTheme tooltipTheme;
-  final ShadcnPopoverTheme popoverTheme;
-  final ShadcnDecorationTheme decoration;
-  final ShadcnTextThemeData textTheme;
+  final ShadAvatarTheme avatarTheme;
+  final ShadButtonSizesTheme buttonSizesTheme;
+  final ShadTooltipTheme tooltipTheme;
+  final ShadPopoverTheme popoverTheme;
+  final ShadDecorationTheme decoration;
+  final ShadTextThemeData textTheme;
   final double disabledOpacity;
-  final ShadcnSelectTheme selectTheme;
-  final ShadcnOptionTheme optionTheme;
-  final ShadcnCardTheme cardTheme;
-  final ShadcnSwitchTheme switchTheme;
+  final ShadSelectTheme selectTheme;
+  final ShadOptionTheme optionTheme;
+  final ShadCardTheme cardTheme;
+  final ShadSwitchTheme switchTheme;
 }

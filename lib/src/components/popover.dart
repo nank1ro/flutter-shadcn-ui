@@ -4,8 +4,8 @@ import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
-/// Controls the visibility of a [ShadcnPopover].
-class ShadcnPopoverController extends ChangeNotifier {
+/// Controls the visibility of a [ShadPopover].
+class ShadPopoverController extends ChangeNotifier {
   /// Indicates if the popover is visible.
   bool isOpen = false;
 
@@ -27,8 +27,8 @@ class ShadcnPopoverController extends ChangeNotifier {
   void toggle() => isOpen ? hide() : show();
 }
 
-class ShadcnPopover extends StatefulWidget {
-  const ShadcnPopover({
+class ShadPopover extends StatefulWidget {
+  const ShadPopover({
     super.key,
     required this.child,
     required this.popover,
@@ -57,7 +57,7 @@ class ShadcnPopover extends StatefulWidget {
   final Widget child;
 
   /// The controller that controls the visibility of the [popover].
-  final ShadcnPopoverController? controller;
+  final ShadPopoverController? controller;
 
   /// Indicates if the popover should be visible.
   final bool? visible;
@@ -99,7 +99,7 @@ class ShadcnPopover extends StatefulWidget {
 
   /// {@template tooltip.shadows}
   /// The shadows applied to the [popover], defaults to
-  /// [ShadcnShadows.md].
+  /// [ShadShadows.md].
   /// {@endtemplate}
   final List<BoxShadow>? shadows;
 
@@ -125,12 +125,12 @@ class ShadcnPopover extends StatefulWidget {
   final BoxDecoration? decoration;
 
   @override
-  State<ShadcnPopover> createState() => _ShadcnPopoverState();
+  State<ShadPopover> createState() => _ShadPopoverState();
 }
 
-class _ShadcnPopoverState extends State<ShadcnPopover> {
-  ShadcnPopoverController? _controller;
-  ShadcnPopoverController get controller => widget.controller ?? _controller!;
+class _ShadPopoverState extends State<ShadPopover> {
+  ShadPopoverController? _controller;
+  ShadPopoverController get controller => widget.controller ?? _controller!;
   bool animating = false;
   final popoverKey = UniqueKey();
 
@@ -138,12 +138,12 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
   void initState() {
     super.initState();
     if (widget.controller == null) {
-      _controller = ShadcnPopoverController();
+      _controller = ShadPopoverController();
     }
   }
 
   @override
-  void didUpdateWidget(covariant ShadcnPopover oldWidget) {
+  void didUpdateWidget(covariant ShadPopover oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.visible != null) {
       if (widget.visible! && !controller.isOpen) {
@@ -162,7 +162,7 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
 
     final effectiveEffects = widget.effects ?? theme.popoverTheme.effects ?? [];
     final effectivePadding = widget.padding ?? theme.popoverTheme.padding;
@@ -212,10 +212,10 @@ class _ShadcnPopoverState extends State<ShadcnPopover> {
       child: ListenableBuilder(
         listenable: controller,
         builder: (context, _) {
-          return ShadcnPortal(
+          return ShadPortal(
             portalBuilder: (_) => popover,
             visible: controller.isOpen,
-            anchor: ShadcnAnchor(
+            anchor: ShadAnchor(
               childAlignment: effectiveAlignment,
               overlayAlignment: effectiveChildAlignment,
               offset: effectiveOffset,

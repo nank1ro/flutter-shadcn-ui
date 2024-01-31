@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 @immutable
-abstract class ShadcnBaseTextTheme {
-  const ShadcnBaseTextTheme({
+abstract class ShadBaseTextTheme {
+  const ShadBaseTextTheme({
     required this.h1Large,
     required this.h1,
     required this.h2,

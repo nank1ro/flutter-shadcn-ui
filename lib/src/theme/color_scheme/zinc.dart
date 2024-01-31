@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 
 @immutable
-class ShadcnZincColorScheme extends ShadcnColorScheme {
-  const ShadcnZincColorScheme({
+class ShadZincColorScheme extends ShadColorScheme {
+  const ShadZincColorScheme({
     required super.background,
     required super.foreground,
     required super.card,
@@ -27,7 +27,7 @@ class ShadcnZincColorScheme extends ShadcnColorScheme {
     required super.selection,
   });
 
-  const ShadcnZincColorScheme.light({
+  const ShadZincColorScheme.light({
     super.background = const Color(0xFFFFFFFF),
     super.foreground = const Color(0xff09090b),
     super.card = const Color(0xffffffff),
@@ -50,7 +50,7 @@ class ShadcnZincColorScheme extends ShadcnColorScheme {
     super.selection = const Color(0xFFB4D7FF),
   });
 
-  const ShadcnZincColorScheme.dark({
+  const ShadZincColorScheme.dark({
     super.background = const Color(0xff09090b),
     super.foreground = const Color(0xfffafafa),
     super.card = const Color(0xff09090b),

@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 @immutable
-class ShadcnCardTheme {
-  const ShadcnCardTheme({
+class ShadCardTheme {
+  const ShadCardTheme({
     this.merge = true,
     this.backgroundColor,
     this.padding,
@@ -18,13 +18,13 @@ class ShadcnCardTheme {
   final Border? border;
   final List<BoxShadow>? shadows;
 
-  static ShadcnCardTheme lerp(
-    ShadcnCardTheme a,
-    ShadcnCardTheme b,
+  static ShadCardTheme lerp(
+    ShadCardTheme a,
+    ShadCardTheme b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadcnCardTheme(
+    return ShadCardTheme(
       merge: b.merge,
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
@@ -34,7 +34,7 @@ class ShadcnCardTheme {
     );
   }
 
-  ShadcnCardTheme copyWith({
+  ShadCardTheme copyWith({
     bool? merge,
     Color? backgroundColor,
     EdgeInsets? padding,
@@ -42,7 +42,7 @@ class ShadcnCardTheme {
     Border? border,
     List<BoxShadow>? shadows,
   }) {
-    return ShadcnCardTheme(
+    return ShadCardTheme(
       merge: merge ?? this.merge,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       padding: padding ?? this.padding,
@@ -52,7 +52,7 @@ class ShadcnCardTheme {
     );
   }
 
-  ShadcnCardTheme mergeWith(ShadcnCardTheme? other) {
+  ShadCardTheme mergeWith(ShadCardTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -68,7 +68,7 @@ class ShadcnCardTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnCardTheme &&
+    return other is ShadCardTheme &&
         other.merge == merge &&
         other.backgroundColor == backgroundColor &&
         other.padding == padding &&

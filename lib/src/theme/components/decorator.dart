@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 @immutable
-class ShadcnBorder {
-  const ShadcnBorder({
+class ShadBorder {
+  const ShadBorder({
     this.width,
     this.color,
     this.radius,
@@ -24,12 +24,12 @@ class ShadcnBorder {
   /// The padding of the border, defaults to null.
   final EdgeInsets? padding;
 
-  static ShadcnBorder lerp(
-    ShadcnBorder? a,
-    ShadcnBorder? b,
+  static ShadBorder lerp(
+    ShadBorder? a,
+    ShadBorder? b,
     double t,
   ) {
-    return ShadcnBorder(
+    return ShadBorder(
       width: lerpDouble(a?.width, b?.width, t),
       color: Color.lerp(a?.color, b?.color, t),
       radius: BorderRadiusGeometry.lerp(a?.radius, b?.radius, t),
@@ -37,13 +37,13 @@ class ShadcnBorder {
     );
   }
 
-  ShadcnBorder copyWith({
+  ShadBorder copyWith({
     double? width,
     Color? color,
     BorderRadiusGeometry? radius,
     EdgeInsets? padding,
   }) {
-    return ShadcnBorder(
+    return ShadBorder(
       width: width ?? this.width,
       color: color ?? this.color,
       radius: radius ?? this.radius,
@@ -55,7 +55,7 @@ class ShadcnBorder {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnBorder &&
+    return other is ShadBorder &&
         other.width == width &&
         other.color == color &&
         other.radius == radius &&
@@ -69,29 +69,29 @@ class ShadcnBorder {
 }
 
 @immutable
-class ShadcnDecorationTheme {
-  const ShadcnDecorationTheme({
+class ShadDecorationTheme {
+  const ShadDecorationTheme({
     this.merge = true,
     this.border,
     this.focusedBorder,
   });
 
   final bool merge;
-  final ShadcnBorder? border;
-  final ShadcnBorder? focusedBorder;
+  final ShadBorder? border;
+  final ShadBorder? focusedBorder;
 
-  static ShadcnDecorationTheme lerp(
-    ShadcnDecorationTheme? a,
-    ShadcnDecorationTheme? b,
+  static ShadDecorationTheme lerp(
+    ShadDecorationTheme? a,
+    ShadDecorationTheme? b,
     double t,
   ) {
-    return ShadcnDecorationTheme(
-      border: ShadcnBorder.lerp(a?.border, b?.border, t),
-      focusedBorder: ShadcnBorder.lerp(a?.focusedBorder, b?.focusedBorder, t),
+    return ShadDecorationTheme(
+      border: ShadBorder.lerp(a?.border, b?.border, t),
+      focusedBorder: ShadBorder.lerp(a?.focusedBorder, b?.focusedBorder, t),
     );
   }
 
-  ShadcnDecorationTheme mergeWith(ShadcnDecorationTheme? other) {
+  ShadDecorationTheme mergeWith(ShadDecorationTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -100,11 +100,11 @@ class ShadcnDecorationTheme {
     );
   }
 
-  ShadcnDecorationTheme copyWith({
-    ShadcnBorder? border,
-    ShadcnBorder? focusedBorder,
+  ShadDecorationTheme copyWith({
+    ShadBorder? border,
+    ShadBorder? focusedBorder,
   }) {
-    return ShadcnDecorationTheme(
+    return ShadDecorationTheme(
       border: border ?? this.border,
       focusedBorder: focusedBorder ?? this.focusedBorder,
     );
@@ -114,7 +114,7 @@ class ShadcnDecorationTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadcnDecorationTheme &&
+    return other is ShadDecorationTheme &&
         other.border == border &&
         other.focusedBorder == focusedBorder;
   }
@@ -123,8 +123,8 @@ class ShadcnDecorationTheme {
   int get hashCode => border.hashCode ^ focusedBorder.hashCode;
 }
 
-class ShadcnDecorator extends StatelessWidget {
-  const ShadcnDecorator({
+class ShadDecorator extends StatelessWidget {
+  const ShadDecorator({
     super.key,
     required this.child,
     this.decoration,
@@ -135,14 +135,14 @@ class ShadcnDecorator extends StatelessWidget {
   final Widget child;
 
   /// The decoration to apply to the child.
-  final ShadcnDecorationTheme? decoration;
+  final ShadDecorationTheme? decoration;
 
   /// Whether the child has focus, defaults to false.
   final bool focused;
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadcnTheme.of(context);
+    final theme = ShadTheme.of(context);
     final effectiveDecoration = decoration ?? theme.decoration;
     final border = focused
         ? effectiveDecoration.focusedBorder

@@ -11,7 +11,7 @@ class AvatarPage extends StatelessWidget {
     return const BaseScaffold(
       appBarTitle: 'Avatar',
       children: [
-        ShadcnAvatar(
+        ShadAvatar(
           'https://avatars.githubusercontent.com/u/124599?v=4',
           placeholder: Text('CN'),
         ),

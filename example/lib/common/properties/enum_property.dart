@@ -24,11 +24,11 @@ class MyEnumProperty<T extends Enum> extends StatelessWidget {
           style: const TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 8),
-        ShadcnSelect<T>(
+        ShadSelect<T>(
           initialValue: value,
           options: values
               .map(
-                (e) => ShadcnOption(
+                (e) => ShadOption(
                   value: e,
                   child: Text(e.name.replaceAll('\$', '')),
                 ),

@@ -19,9 +19,9 @@ import 'package:vector_graphics/vector_graphics.dart';
 ///
 /// Finally it takes a [fit], that defauls to [BoxFit.contain].
 /// {@endtemplate}
-class ShadcnImage extends StatelessWidget {
+class ShadImage extends StatelessWidget {
   /// {@macro image}
-  const ShadcnImage(
+  const ShadImage(
     this.src, {
     super.key,
     this.width,
@@ -43,7 +43,7 @@ class ShadcnImage extends StatelessWidget {
   });
 
   /// {@macro image}
-  const ShadcnImage.square(
+  const ShadImage.square(
     this.src, {
     super.key,
     required double size,

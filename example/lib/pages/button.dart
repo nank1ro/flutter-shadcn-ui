@@ -14,7 +14,7 @@ class ButtonPage extends StatefulWidget {
 
 class _ButtonPageState extends State<ButtonPage> {
   final focusNode = FocusNode();
-  var size = ShadcnButtonSize.regular;
+  var size = ShadButtonSize.regular;
   var enabled = true;
 
   @override
@@ -31,7 +31,7 @@ class _ButtonPageState extends State<ButtonPage> {
         MyEnumProperty(
           label: 'Size',
           value: size,
-          values: ShadcnButtonSize.values,
+          values: ShadButtonSize.values,
           onChanged: (value) => setState(() => size = value),
         ),
         MyBoolProperty(
@@ -56,44 +56,44 @@ class _ButtonPageState extends State<ButtonPage> {
         ),
       ],
       children: [
-        if (size != ShadcnButtonSize.icon) ...[
-          ShadcnButton(
+        if (size != ShadButtonSize.icon) ...[
+          ShadButton(
             focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Primary'),
           ),
-          ShadcnButton.secondary(
+          ShadButton.secondary(
             focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Secondary'),
           ),
-          ShadcnButton.destructive(
+          ShadButton.destructive(
             focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Destructive'),
           ),
-          ShadcnButton.outline(
+          ShadButton.outline(
             focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Outline'),
           ),
-          ShadcnButton.ghost(
+          ShadButton.ghost(
             focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Ghost'),
           ),
-          ShadcnButton.link(
+          ShadButton.link(
             focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
             text: const Text('Link'),
           ),
-          ShadcnButton(
+          ShadButton(
             focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
@@ -106,7 +106,7 @@ class _ButtonPageState extends State<ButtonPage> {
               ),
             ),
           ),
-          ShadcnButton(
+          ShadButton(
             focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
@@ -121,7 +121,7 @@ class _ButtonPageState extends State<ButtonPage> {
               ),
             ),
           ),
-          ShadcnButton(
+          ShadButton(
             focusNode: focusNode,
             size: size,
             onPressed: enabled ? () {} : null,
@@ -140,10 +140,10 @@ class _ButtonPageState extends State<ButtonPage> {
             text: const Text('Gradient with Shadow'),
           ),
         ],
-        if (size == ShadcnButtonSize.icon)
+        if (size == ShadButtonSize.icon)
           ComponentView(
             label: 'Icon',
-            child: ShadcnButton.outline(
+            child: ShadButton.outline(
               focusNode: focusNode,
               size: size,
               onPressed: enabled ? () {} : null,
