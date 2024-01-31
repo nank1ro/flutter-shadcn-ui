@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/assets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -154,6 +155,22 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
     }
     if (widget.focusNode == null) internalFocusNode = FocusNode();
 
+    // Toggle the popover when the user presses enter
+    focusNode.onKeyEvent = (node, event) {
+      if (event.logicalKey == LogicalKeyboardKey.enter &&
+          event is KeyDownEvent) {
+        if (controller.isOpen) {
+          controller.hide();
+          focusNode.requestFocus();
+        } else {
+          FocusScope.of(context).unfocus();
+          controller.show();
+        }
+        return KeyEventResult.handled;
+      }
+      return KeyEventResult.ignored;
+    };
+
     // react to the scroll position
     scrollController.addListener(() {
       if (!scrollController.hasClients) return;
@@ -265,34 +282,35 @@ class ShadcnSelectState<T> extends State<ShadcnSelect<T>> {
       child: ShadFocused(
         canRequestFocus: widget.onChanged != null,
         focusNode: focusNode,
-        builder: (context, focused) {
+        builder: (context, focused, child) {
           return ShadcnDecorator(
             focused: focused,
             decoration: effectiveDecoration,
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                controller.toggle();
-              },
-              child: Container(
-                padding: effectivePadding,
-                decoration: BoxDecoration(
-                  color: effectiveBackgroundColor,
-                  borderRadius: effectiveRadius,
-                  border: effectiveBorder,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(child: effectiveText),
-                    effectiveTrailing,
-                  ],
-                ),
-              ),
-            ),
+            child: child!,
           );
         },
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            controller.toggle();
+          },
+          child: Container(
+            padding: effectivePadding,
+            decoration: BoxDecoration(
+              color: effectiveBackgroundColor,
+              borderRadius: effectiveRadius,
+              border: effectiveBorder,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(child: effectiveText),
+                effectiveTrailing,
+              ],
+            ),
+          ),
+        ),
       ),
     );
 
@@ -510,6 +528,7 @@ class _ShadcnOptionState<T> extends State<ShadcnOption<T>> {
 
     return Focus(
       focusNode: focusNode,
+      canRequestFocus: true,
       child: MouseRegion(
         onEnter: (_) => hovered.value = true,
         onExit: (_) => hovered.value = false,

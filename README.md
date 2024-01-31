@@ -12,7 +12,7 @@ Current progress:
 - [x] [Badge](https://mariuti.com/shadcn-ui/components/badge/)
 - [x] [Button](https://mariuti.com/shadcn-ui/components/button/)
 - [ ] Calendar
-- [ ] Card
+- [x] [Card](https://mariuti.com/shadcn-ui/components/card/)
 - [ ] Carousel
 - [ ] Checkbox
 - [ ] Collapsible
@@ -24,7 +24,7 @@ Current progress:
 - [ ] Drawer
 - [ ] Dropdown Menu
 - [ ] Form (?)
-- [ ] Hover Card
+- [x] <strike>Hover Card</strike> Use Popover instead
 - [x] [Image](https://mariuti.com/shadcn-ui/components/image/)
 - [x] [Input](https://mariuti.com/shadcn-ui/components/input/)
 - [ ] Label

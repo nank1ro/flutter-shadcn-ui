@@ -2,6 +2,7 @@ import 'package:example/common/app_bar.dart';
 import 'package:example/pages/avatar.dart';
 import 'package:example/pages/badge.dart';
 import 'package:example/pages/button.dart';
+import 'package:example/pages/card.dart';
 import 'package:example/pages/image.dart';
 import 'package:example/pages/input.dart';
 import 'package:example/pages/popover.dart';
@@ -26,6 +27,7 @@ final routes = <String, WidgetBuilder>{
   '/image': (_) => const ImagePage(),
   '/input': (_) => const InputPage(),
   '/popover': (_) => const PopoverPage(),
+  '/card': (_) => const CardPage(),
   '/select': (_) => const SelectPage(),
   '/switch': (_) => const SwitchPage(),
   '/tooltip': (_) => const TooltipPage(),

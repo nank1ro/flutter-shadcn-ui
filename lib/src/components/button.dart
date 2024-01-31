@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/src/components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
@@ -250,14 +251,22 @@ class ShadcnButton extends StatefulWidget {
 }
 
 class _ShadcnButtonState extends State<ShadcnButton> {
+  FocusNode? _focusNode;
   final isHovered = ValueNotifier(false);
-  final isFocused = ValueNotifier(false);
   final isPressed = ValueNotifier(false);
+
+  FocusNode get focusNode => widget.focusNode ?? _focusNode!;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.focusNode == null) _focusNode = FocusNode();
+  }
 
   @override
   void dispose() {
+    _focusNode?.dispose();
     isHovered.dispose();
-    isFocused.dispose();
     isPressed.dispose();
     super.dispose();
   }
@@ -454,116 +463,116 @@ class _ShadcnButtonState extends State<ShadcnButton> {
       container: true,
       button: true,
       focusable: enabled,
-      focused: isFocused.value,
       enabled: enabled,
       child: Opacity(
         opacity: enabled ? 1 : .5,
         child: AbsorbPointer(
           absorbing: !enabled,
-          child: Focus(
+          child: ShadFocused(
             canRequestFocus: enabled,
             autofocus: widget.autofocus,
-            focusNode: widget.focusNode,
-            onFocusChange: (focused) => isFocused.value = focused,
-            child: ValueListenableBuilder(
-              valueListenable: isFocused,
-              builder: (context, focused, child) {
-                return ShadcnDecorator(
-                  decoration: effectiveDecoration,
-                  focused: focused,
-                  child: child!,
-                );
-              },
-              child: MouseRegion(
-                onEnter: (_) => isHovered.value = true,
-                onExit: (_) => isHovered.value = false,
-                cursor: cursor(shadcnTheme),
-                child: GestureDetector(
-                  onTap: widget.onPressed,
-                  onTapDown: (_) {
-                    if (!trackPressState) return;
-                    isPressed.value = true;
+            focusNode: focusNode,
+            builder: (context, focused, child) => ShadcnDecorator(
+              decoration: effectiveDecoration,
+              focused: focused,
+              child: child!,
+            ),
+            child: MouseRegion(
+              onEnter: (_) => isHovered.value = true,
+              onExit: (_) => isHovered.value = false,
+              cursor: cursor(shadcnTheme),
+              child: GestureDetector(
+                onTap: widget.onPressed == null
+                    ? null
+                    : () {
+                        widget.onPressed!();
+                        if (!focusNode.hasFocus) {
+                          FocusScope.of(context).unfocus();
+                        }
+                      },
+                onTapDown: (_) {
+                  if (!trackPressState) return;
+                  isPressed.value = true;
+                },
+                onTapUp: (_) {
+                  if (!trackPressState) return;
+                  isPressed.value = false;
+                },
+                onTapCancel: () {
+                  if (!trackPressState) return;
+                  isPressed.value = false;
+                },
+                child: ValueListenableBuilder(
+                  valueListenable: isHovered,
+                  builder: (context, hovered, child) {
+                    return ValueListenableBuilder(
+                      valueListenable: isPressed,
+                      builder: (context, pressed, _) {
+                        return Container(
+                          height: height(shadcnTheme),
+                          width: width(shadcnTheme),
+                          decoration: BoxDecoration(
+                            color: hasPressedBackgroundColor && pressed
+                                ? pressedBackgroundColor(shadcnTheme)
+                                : hovered
+                                    ? hoverBackground(shadcnTheme)
+                                    : background(shadcnTheme),
+                            borderRadius: borderRadius(shadcnTheme),
+                            border: border(shadcnTheme),
+                            gradient: gradient(shadcnTheme),
+                            boxShadow: shadows(shadcnTheme),
+                          ),
+                          padding: padding(shadcnTheme),
+                          child: child,
+                        );
+                      },
+                    );
                   },
-                  onTapUp: (_) {
-                    if (!trackPressState) return;
-                    isPressed.value = false;
-                  },
-                  onTapCancel: () {
-                    if (!trackPressState) return;
-                    isPressed.value = false;
-                  },
-                  child: ValueListenableBuilder(
-                    valueListenable: isHovered,
-                    builder: (context, hovered, child) {
-                      return ValueListenableBuilder(
-                        valueListenable: isPressed,
-                        builder: (context, pressed, _) {
-                          return Container(
-                            height: height(shadcnTheme),
-                            width: width(shadcnTheme),
-                            decoration: BoxDecoration(
-                              color: hasPressedBackgroundColor && pressed
-                                  ? pressedBackgroundColor(shadcnTheme)
-                                  : hovered
-                                      ? hoverBackground(shadcnTheme)
-                                      : background(shadcnTheme),
-                              borderRadius: borderRadius(shadcnTheme),
-                              border: border(shadcnTheme),
-                              gradient: gradient(shadcnTheme),
-                              boxShadow: shadows(shadcnTheme),
-                            ),
-                            padding: padding(shadcnTheme),
-                            child: child,
-                          );
-                        },
-                      );
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (icon != null) icon,
-                            if (widget.text != null)
-                              ValueListenableBuilder(
-                                valueListenable: isHovered,
-                                builder: (context, hovered, _) {
-                                  return ValueListenableBuilder(
-                                    valueListenable: isPressed,
-                                    builder: (context, pressed, child) {
-                                      return DefaultTextStyle(
-                                        style: shadcnTheme.textTheme.small
-                                            .copyWith(
-                                          color: hasPressedForegroundColor &&
-                                                  pressed
-                                              ? pressedForegroundColor(
-                                                  shadcnTheme,
-                                                )
-                                              : hovered
-                                                  ? hoverForeground(shadcnTheme)
-                                                  : foreground(shadcnTheme),
-                                          decoration: textDecoration(
-                                            shadcnTheme,
-                                            hovered: hovered,
-                                          ),
-                                          decorationColor:
-                                              foreground(shadcnTheme),
-                                          decorationStyle:
-                                              TextDecorationStyle.solid,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (icon != null) icon,
+                          if (widget.text != null)
+                            ValueListenableBuilder(
+                              valueListenable: isHovered,
+                              builder: (context, hovered, _) {
+                                return ValueListenableBuilder(
+                                  valueListenable: isPressed,
+                                  builder: (context, pressed, child) {
+                                    return DefaultTextStyle(
+                                      style:
+                                          shadcnTheme.textTheme.small.copyWith(
+                                        color: hasPressedForegroundColor &&
+                                                pressed
+                                            ? pressedForegroundColor(
+                                                shadcnTheme,
+                                              )
+                                            : hovered
+                                                ? hoverForeground(shadcnTheme)
+                                                : foreground(shadcnTheme),
+                                        decoration: textDecoration(
+                                          shadcnTheme,
+                                          hovered: hovered,
                                         ),
-                                        textAlign: TextAlign.center,
-                                        child: widget.text!,
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
+                                        decorationColor:
+                                            foreground(shadcnTheme),
+                                        decorationStyle:
+                                            TextDecorationStyle.solid,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      child: widget.text!,
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),

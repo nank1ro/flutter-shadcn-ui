@@ -123,54 +123,60 @@ class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
         disabled: !enabled,
         child: ShadFocused(
           focusNode: focusNode,
-          builder: (context, focused) {
+          builder: (context, focused, child) {
             return ShadcnDecorator(
               focused: focused,
               decoration: effectiveDecoration,
-              child: MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  onTap: widget.onChanged == null
-                      ? null
-                      : () => widget.onChanged!(!widget.value),
-                  child: Container(
-                    width: effectiveWidth,
-                    height: effectiveHeight,
-                    decoration: BoxDecoration(
-                      color: widget.value
-                          ? effectiveCheckedTrackColor
-                          : effectiveUncheckedTrackColor,
-                      border: Border.all(
-                        width: effectiveMargin,
-                        color: Colors.transparent,
-                      ),
-                      borderRadius: effectiveRadius,
+              child: child!,
+            );
+          },
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: widget.onChanged == null
+                  ? null
+                  : () {
+                      widget.onChanged!(!widget.value);
+                      if (!focusNode.hasFocus) {
+                        FocusScope.of(context).unfocus();
+                      }
+                    },
+              child: Container(
+                width: effectiveWidth,
+                height: effectiveHeight,
+                decoration: BoxDecoration(
+                  color: widget.value
+                      ? effectiveCheckedTrackColor
+                      : effectiveUncheckedTrackColor,
+                  border: Border.all(
+                    width: effectiveMargin,
+                    color: Colors.transparent,
+                  ),
+                  borderRadius: effectiveRadius,
+                ),
+                alignment: Alignment.centerLeft,
+                child: Animate(
+                  controller: controller,
+                  autoPlay: false,
+                  effects: [
+                    MoveEffect(
+                      begin: Offset.zero,
+                      end: Offset(transitionStep, 0),
+                      duration: effectiveDuration,
                     ),
-                    alignment: Alignment.centerLeft,
-                    child: Animate(
-                      controller: controller,
-                      autoPlay: false,
-                      effects: [
-                        MoveEffect(
-                          begin: Offset.zero,
-                          end: Offset(transitionStep, 0),
-                          duration: effectiveDuration,
-                        ),
-                      ],
-                      child: Container(
-                        width: effectiveThumbSize,
-                        height: effectiveThumbSize,
-                        decoration: BoxDecoration(
-                          color: effectiveThumbColor,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
+                  ],
+                  child: Container(
+                    width: effectiveThumbSize,
+                    height: effectiveThumbSize,
+                    decoration: BoxDecoration(
+                      color: effectiveThumbColor,
+                      shape: BoxShape.circle,
                     ),
                   ),
                 ),
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );

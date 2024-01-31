@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:playground/pages/avatar.dart';
 import 'package:playground/pages/badge.dart';
 import 'package:playground/pages/button.dart';
+import 'package:playground/pages/card.dart';
 import 'package:playground/pages/image.dart';
 import 'package:playground/pages/input.dart';
 import 'package:playground/pages/popover.dart';
@@ -30,11 +31,11 @@ class MyApp extends StatelessWidget {
       routerConfig: _router,
       themeMode: theme == 'dark' ? ThemeMode.dark : ThemeMode.light,
       theme: ShadcnThemeData(
-        colorScheme: const ShadcnSlateColorScheme.light(),
+        colorScheme: const ShadcnZincColorScheme.light(),
         brightness: Brightness.light,
       ),
       darkTheme: ShadcnThemeData(
-        colorScheme: const ShadcnSlateColorScheme.dark(),
+        colorScheme: const ShadcnZincColorScheme.dark(),
         brightness: Brightness.dark,
       ),
     );
@@ -104,6 +105,14 @@ final _router = GoRouter(
         return SelectPage(
           variant: SelectVariant.values.byName(style),
         );
+      },
+    ),
+    GoRoute(
+      path: '/card',
+      builder: (context, state) {
+        final style =
+            state.uri.queryParameters['style'] ?? CardStyle.project.name;
+        return CardPage(style: CardStyle.values.byName(style));
       },
     ),
     GoRoute(
