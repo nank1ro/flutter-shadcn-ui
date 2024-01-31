@@ -16,9 +16,11 @@ class ShadSwitchTheme {
     this.duration,
     this.radius,
     this.decoration,
+    this.padding,
   });
 
   final bool merge;
+
   final Color? thumbColor;
 
   final Color? trackColor;
@@ -36,6 +38,8 @@ class ShadSwitchTheme {
   final BorderRadius? radius;
 
   final ShadDecorationTheme? decoration;
+
+  final EdgeInsets? padding;
 
   static ShadSwitchTheme lerp(
     ShadSwitchTheme a,
@@ -56,6 +60,7 @@ class ShadSwitchTheme {
       duration: b.duration,
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       decoration: ShadDecorationTheme.lerp(a.decoration, b.decoration, t),
+      padding: EdgeInsets.lerp(a.padding, b.padding, t),
     );
   }
 
@@ -70,6 +75,7 @@ class ShadSwitchTheme {
     Duration? duration,
     BorderRadius? radius,
     ShadDecorationTheme? decoration,
+    EdgeInsets? padding,
   }) {
     return ShadSwitchTheme(
       merge: merge ?? this.merge,
@@ -82,6 +88,7 @@ class ShadSwitchTheme {
       duration: duration ?? this.duration,
       radius: radius ?? this.radius,
       decoration: decoration ?? this.decoration,
+      padding: padding ?? this.padding,
     );
   }
 
@@ -98,6 +105,7 @@ class ShadSwitchTheme {
       duration: other.duration,
       radius: other.radius,
       decoration: other.decoration,
+      padding: other.padding,
     );
   }
 
@@ -115,7 +123,8 @@ class ShadSwitchTheme {
         other.margin == margin &&
         other.duration == duration &&
         other.radius == radius &&
-        other.decoration == decoration;
+        other.decoration == decoration &&
+        other.padding == padding;
   }
 
   @override
@@ -129,6 +138,7 @@ class ShadSwitchTheme {
         margin.hashCode ^
         duration.hashCode ^
         radius.hashCode ^
-        decoration.hashCode;
+        decoration.hashCode ^
+        padding.hashCode;
   }
 }

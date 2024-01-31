@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-class SwitchPage extends StatefulWidget {
-  const SwitchPage({super.key});
+class CheckboxPage extends StatefulWidget {
+  const CheckboxPage({super.key});
 
   @override
-  State<SwitchPage> createState() => _SwitchPageState();
+  State<CheckboxPage> createState() => _CheckboxPageState();
 }
 
-class _SwitchPageState extends State<SwitchPage> {
+class _CheckboxPageState extends State<CheckboxPage> {
   bool value = false;
   bool enabled = true;
   final focusNode = FocusNode();
@@ -19,7 +19,7 @@ class _SwitchPageState extends State<SwitchPage> {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      appBarTitle: 'Switch',
+      appBarTitle: 'Checkbox',
       editable: [
         MyBoolProperty(
           label: 'Enabled',
@@ -43,7 +43,7 @@ class _SwitchPageState extends State<SwitchPage> {
         ),
       ],
       children: [
-        ShadSwitch(
+        ShadCheckbox(
           value: value,
           focusNode: focusNode,
           onChanged: enabled
@@ -51,7 +51,10 @@ class _SwitchPageState extends State<SwitchPage> {
                   setState(() => value = v);
                 }
               : null,
-          label: const Text('Airplane Mode'),
+          label: const Text('Accept terms and conditions'),
+          sublabel: const Text(
+            'You agree to our Terms of Service and Privacy Policy.',
+          ),
         ),
       ],
     );

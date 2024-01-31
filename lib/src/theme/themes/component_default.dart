@@ -5,6 +5,7 @@ import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
+import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
@@ -300,6 +301,31 @@ abstract class ShadComponentDefaultTheme {
           // outerRadius = innerRadius + innerRadius / 2
           // outerRadius = 24 + 24 / 2 = 36
           radius: const BorderRadius.all(Radius.circular(36)),
+          padding: const EdgeInsets.all(2),
+        ),
+      ),
+    );
+  }
+
+  static ShadCheckboxTheme checkboxTheme({
+    required ShadColorScheme colorScheme,
+  }) {
+    return ShadCheckboxTheme(
+      size: 16,
+      duration: 100.milliseconds,
+      radius: const BorderRadius.all(Radius.circular(4)),
+      color: colorScheme.primary,
+      borderWidth: 1,
+      padding: const EdgeInsets.only(left: 8),
+      decoration: ShadDecorationTheme(
+        border: const ShadBorder(width: 4, color: Colors.transparent),
+        focusedBorder: ShadBorder(
+          width: 2,
+          color: colorScheme.ring,
+          // the outer radius is calculated as
+          // outerRadius = innerRadius + innerRadius / 2
+          // outerRadius = 4 + 4 / 2 = 6
+          radius: const BorderRadius.all(Radius.circular(6)),
           padding: const EdgeInsets.all(2),
         ),
       ),

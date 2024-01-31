@@ -8,11 +8,13 @@ class ShadDisabled extends StatelessWidget {
     required this.disabled,
     required this.child,
     this.showForbiddenCursor = false,
+    this.disabledOpacity,
   });
 
   final bool disabled;
   final Widget child;
   final bool showForbiddenCursor;
+  final double? disabledOpacity;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,11 @@ class ShadDisabled extends StatelessWidget {
       view = MouseRegion(cursor: SystemMouseCursors.forbidden, child: view);
     }
 
-    return Opacity(opacity: disabled ? theme.disabledOpacity : 1, child: view);
+    final effectiveDisabledOpacity = disabledOpacity ?? theme.disabledOpacity;
+
+    return Opacity(
+      opacity: disabled ? effectiveDisabledOpacity : 1,
+      child: view,
+    );
   }
 }

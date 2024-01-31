@@ -4,6 +4,7 @@ import 'package:playground/pages/avatar.dart';
 import 'package:playground/pages/badge.dart';
 import 'package:playground/pages/button.dart';
 import 'package:playground/pages/card.dart';
+import 'package:playground/pages/checkbox.dart';
 import 'package:playground/pages/image.dart';
 import 'package:playground/pages/input.dart';
 import 'package:playground/pages/popover.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Uri.base.queryParameters['theme'] ?? 'dark';
+    final theme = Uri.base.queryParameters['theme'] ?? 'light';
 
     return ShadApp.router(
       title: 'shadcn-ui Flutter Playground',
@@ -118,6 +119,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/switch',
       builder: (context, state) => const SwitchPage(),
+    ),
+    GoRoute(
+      path: '/checkbox',
+      builder: (context, state) => const CheckboxPage(),
     ),
   ],
 );

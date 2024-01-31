@@ -17,19 +17,10 @@ class _SwitchPageState extends State<SwitchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ShadSwitch(
-              value: value,
-              onChanged: (v) => setState(() => value = v),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              'Airplane Mode',
-              style: ShadTheme.of(context).textTheme.small,
-            ),
-          ],
+        child: ShadSwitch(
+          value: value,
+          onChanged: (v) => setState(() => value = v),
+          label: const Text('Airplane Mode'),
         ),
       ),
     );

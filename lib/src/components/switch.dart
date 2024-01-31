@@ -4,6 +4,7 @@ import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/components/focused.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/debug_check.dart';
 
 class ShadSwitch extends StatefulWidget {
   const ShadSwitch({
@@ -20,6 +21,10 @@ class ShadSwitch extends StatefulWidget {
     this.duration,
     this.decoration,
     this.radius,
+    this.direction,
+    this.label,
+    this.sublabel,
+    this.padding,
   });
 
   /// Whether the switch is on or off.
@@ -58,11 +63,26 @@ class ShadSwitch extends StatefulWidget {
   /// The decoration of the switch.
   final ShadDecorationTheme? decoration;
 
+  /// An optional label for the switch, displayed on the right side if
+  /// the [direction] is `TextDirection.ltr`.
+  final Widget? label;
+
+  /// An optional sublabel for the switch, displayed below the label.
+  final Widget? sublabel;
+
+  /// The padding between the switch and the label, defaults to
+  /// `EdgeInsets.only(left: 8)`.
+  final EdgeInsets? padding;
+
+  /// The direction of the switch.
+  final TextDirection? direction;
+
   @override
   State<ShadSwitch> createState() => _ShadSwitchState();
 }
 
-class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
+class _ShadSwitchState extends State<ShadSwitch>
+    with SingleTickerProviderStateMixin {
   FocusNode? _focusNode;
   late final controller = AnimationController(vsync: this);
 
@@ -77,13 +97,6 @@ class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
   }
 
   @override
-  void dispose() {
-    _focusNode?.dispose();
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   void didUpdateWidget(covariant ShadSwitch oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
@@ -92,7 +105,15 @@ class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    _focusNode?.dispose();
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    assert(debugCheckHasShadTheme(context));
     final theme = ShadTheme.of(context);
     final effectiveRadius = widget.radius ??
         theme.switchTheme.radius ??
@@ -115,8 +136,11 @@ class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
     final effectiveDuration = widget.duration ?? 100.milliseconds;
     final effectiveDecoration =
         widget.decoration ?? theme.switchTheme.decoration ?? theme.decoration;
+    final effectivePadding = widget.padding ??
+        theme.switchTheme.padding ??
+        const EdgeInsets.only(left: 8);
 
-    return Semantics(
+    final switchWidget = Semantics(
       toggled: widget.value,
       child: ShadDisabled(
         showForbiddenCursor: true,
@@ -132,51 +156,95 @@ class _ShadSwitchState extends State<ShadSwitch> with TickerProviderStateMixin {
           },
           child: MouseRegion(
             cursor: SystemMouseCursors.click,
-            child: GestureDetector(
-              onTap: widget.onChanged == null
-                  ? null
-                  : () {
-                      widget.onChanged!(!widget.value);
-                      if (!focusNode.hasFocus) {
-                        FocusScope.of(context).unfocus();
-                      }
-                    },
-              child: Container(
-                width: effectiveWidth,
-                height: effectiveHeight,
-                decoration: BoxDecoration(
-                  color: widget.value
-                      ? effectiveCheckedTrackColor
-                      : effectiveUncheckedTrackColor,
-                  border: Border.all(
-                    width: effectiveMargin,
-                    color: Colors.transparent,
-                  ),
-                  borderRadius: effectiveRadius,
+            child: Container(
+              width: effectiveWidth,
+              height: effectiveHeight,
+              decoration: BoxDecoration(
+                color: widget.value
+                    ? effectiveCheckedTrackColor
+                    : effectiveUncheckedTrackColor,
+                border: Border.all(
+                  width: effectiveMargin,
+                  color: Colors.transparent,
                 ),
-                alignment: Alignment.centerLeft,
-                child: Animate(
-                  controller: controller,
-                  autoPlay: false,
-                  effects: [
-                    MoveEffect(
-                      begin: Offset.zero,
-                      end: Offset(transitionStep, 0),
-                      duration: effectiveDuration,
-                    ),
-                  ],
-                  child: Container(
-                    width: effectiveThumbSize,
-                    height: effectiveThumbSize,
-                    decoration: BoxDecoration(
-                      color: effectiveThumbColor,
-                      shape: BoxShape.circle,
-                    ),
+                borderRadius: effectiveRadius,
+              ),
+              alignment: Alignment.centerLeft,
+              child: Animate(
+                controller: controller,
+                autoPlay: false,
+                effects: [
+                  MoveEffect(
+                    begin: Offset.zero,
+                    end: Offset(transitionStep, 0),
+                    duration: effectiveDuration,
+                  ),
+                ],
+                child: Container(
+                  width: effectiveThumbSize,
+                  height: effectiveThumbSize,
+                  decoration: BoxDecoration(
+                    color: effectiveThumbColor,
+                    shape: BoxShape.circle,
                   ),
                 ),
               ),
             ),
           ),
+        ),
+      ),
+    );
+
+    return ShadDisabled(
+      showForbiddenCursor: true,
+      disabled: !enabled,
+      disabledOpacity: 1,
+      child: GestureDetector(
+        onTap: widget.onChanged == null
+            ? null
+            : () {
+                widget.onChanged!(!widget.value);
+                if (!focusNode.hasFocus) {
+                  FocusScope.of(context).unfocus();
+                }
+              },
+        child: Row(
+          textDirection: widget.direction,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            switchWidget,
+            if (widget.label != null)
+              Flexible(
+                child: Padding(
+                  padding: effectivePadding,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: DefaultTextStyle(
+                          style: theme.textTheme.muted.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: theme.colorScheme.foreground,
+                          ),
+                          child: widget.label!,
+                        ),
+                      ),
+                      if (widget.sublabel != null)
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: DefaultTextStyle(
+                            style: theme.textTheme.muted,
+                            child: widget.sublabel!,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );
