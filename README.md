@@ -14,7 +14,7 @@ Current progress:
 - [ ] Calendar
 - [x] [Card](https://mariuti.com/shadcn-ui/components/card/)
 - [ ] Carousel
-- [ ] Checkbox
+- [x] [Checkbox](https://mariuti.com/shadcn-ui/components/checkbox/)
 - [ ] Collapsible
 - [ ] Combobox
 - [ ] Command
