@@ -51,6 +51,7 @@ class _SwitchPageState extends State<SwitchPage> {
                   setState(() => value = v);
                 }
               : null,
+          label: const Text('Airplane Mode'),
         ),
       ],
     );

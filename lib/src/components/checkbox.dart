@@ -58,7 +58,8 @@ class ShadCheckbox extends StatefulWidget {
   /// The border width of the checkbox, defaults to 1.
   final double? borderWidth;
 
-  /// An optional label for the checkbox, displayed on the right side.
+  /// An optional label for the checkbox, displayed on the right side if
+  /// the [direction] is `TextDirection.ltr`.
   final Widget? label;
 
   /// An optional sublabel for the checkbox, displayed below the label.
