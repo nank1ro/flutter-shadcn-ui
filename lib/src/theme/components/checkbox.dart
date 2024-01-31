@@ -14,6 +14,7 @@ class ShadCheckboxTheme {
     this.decoration,
     this.size,
     this.borderWidth,
+    this.padding,
   });
 
   final bool merge;
@@ -29,6 +30,7 @@ class ShadCheckboxTheme {
   final ShadDecorationTheme? decoration;
 
   final double? borderWidth;
+  final EdgeInsets? padding;
 
   static ShadCheckboxTheme lerp(
     ShadCheckboxTheme a,
@@ -44,6 +46,7 @@ class ShadCheckboxTheme {
       decoration: ShadDecorationTheme.lerp(a.decoration, b.decoration, t),
       size: lerpDouble(a.size, b.size, t),
       borderWidth: lerpDouble(a.borderWidth, b.borderWidth, t),
+      padding: EdgeInsets.lerp(a.padding, b.padding, t),
     );
   }
 
@@ -55,6 +58,7 @@ class ShadCheckboxTheme {
     BorderRadius? radius,
     ShadDecorationTheme? decoration,
     double? borderWidth,
+    EdgeInsets? padding,
   }) {
     return ShadCheckboxTheme(
       merge: merge ?? this.merge,
@@ -64,6 +68,7 @@ class ShadCheckboxTheme {
       size: size ?? this.size,
       borderWidth: borderWidth ?? this.borderWidth,
       color: color ?? this.color,
+      padding: padding ?? this.padding,
     );
   }
 
@@ -77,6 +82,7 @@ class ShadCheckboxTheme {
       decoration: other.decoration,
       size: other.size,
       borderWidth: other.borderWidth,
+      padding: other.padding,
     );
   }
 
@@ -91,7 +97,8 @@ class ShadCheckboxTheme {
         other.duration == duration &&
         other.radius == radius &&
         other.decoration == decoration &&
-        other.borderWidth == borderWidth;
+        other.borderWidth == borderWidth &&
+        other.padding == padding;
   }
 
   @override
@@ -102,6 +109,7 @@ class ShadCheckboxTheme {
         duration.hashCode ^
         radius.hashCode ^
         decoration.hashCode ^
-        borderWidth.hashCode;
+        borderWidth.hashCode ^
+        padding.hashCode;
   }
 }

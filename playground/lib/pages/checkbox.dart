@@ -17,19 +17,13 @@ class _CheckboxPageState extends State<CheckboxPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ShadCheckbox(
-              value: value,
-              onChanged: (v) => setState(() => value = v),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              'Accept terms and conditions',
-              style: ShadTheme.of(context).textTheme.small,
-            ),
-          ],
+        child: ShadCheckbox(
+          value: value,
+          onChanged: (v) => setState(() => value = v),
+          label: const Text('Accept terms and conditions'),
+          sublabel: const Text(
+            'You agree to our Terms of Service and Privacy Policy.',
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/assets.dart';
@@ -21,6 +22,10 @@ class ShadCheckbox extends StatefulWidget {
     this.icon,
     this.borderWidth,
     this.color,
+    this.label,
+    this.sublabel,
+    this.padding,
+    this.direction,
   });
 
   /// Whether the checkbox is on or off.
@@ -53,6 +58,19 @@ class ShadCheckbox extends StatefulWidget {
   /// The border width of the checkbox, defaults to 1.
   final double? borderWidth;
 
+  /// An optional label for the checkbox, displayed on the right side.
+  final Widget? label;
+
+  /// An optional sublabel for the checkbox, displayed below the label.
+  final Widget? sublabel;
+
+  /// The padding between the checkbox and the label, defaults to
+  /// `EdgeInsets.only(left: 8)`.
+  final EdgeInsets? padding;
+
+  /// The direction of the checkbox.
+  final TextDirection? direction;
+
   @override
   State<ShadCheckbox> createState() => _ShadCheckboxState();
 }
@@ -82,7 +100,6 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
 
     final effectiveDecoration =
         widget.decoration ?? theme.checkboxTheme.decoration ?? theme.decoration;
-
     final effectiveSize = widget.size ?? theme.checkboxTheme.size ?? 16;
     final effectiveRadius =
         widget.radius ?? theme.checkboxTheme.radius ?? theme.radius;
@@ -98,8 +115,11 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
         widget.borderWidth ?? theme.checkboxTheme.borderWidth ?? 1;
     final effectiveDuration =
         widget.duration ?? theme.checkboxTheme.duration ?? 100.milliseconds;
+    final effectivePadding = widget.padding ??
+        theme.checkboxTheme.padding ??
+        const EdgeInsets.only(left: 8);
 
-    return Semantics(
+    final checkbox = Semantics(
       checked: widget.value,
       child: ShadDisabled(
         showForbiddenCursor: true,
@@ -115,34 +135,78 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
           },
           child: MouseRegion(
             cursor: SystemMouseCursors.click,
-            child: GestureDetector(
-              onTap: widget.onChanged == null
-                  ? null
-                  : () {
-                      widget.onChanged!(!widget.value);
-                      if (!focusNode.hasFocus) {
-                        FocusScope.of(context).unfocus();
-                      }
-                    },
-              child: Container(
-                width: effectiveSize,
-                height: effectiveSize,
-                decoration: BoxDecoration(
-                  color: widget.value ? effectiveColor : null,
-                  border: Border.all(
-                    width: effectiveBorderWidth,
-                    color: effectiveColor,
-                  ),
-                  borderRadius: effectiveRadius,
+            child: Container(
+              width: effectiveSize,
+              height: effectiveSize,
+              decoration: BoxDecoration(
+                color: widget.value ? effectiveColor : null,
+                border: Border.all(
+                  width: effectiveBorderWidth,
+                  color: effectiveColor,
                 ),
-                alignment: Alignment.center,
-                child: AnimatedSwitcher(
-                  duration: effectiveDuration,
-                  child: widget.value ? effectiveIcon : const SizedBox(),
-                ),
+                borderRadius: effectiveRadius,
+              ),
+              alignment: Alignment.center,
+              child: AnimatedSwitcher(
+                duration: effectiveDuration,
+                child: widget.value ? effectiveIcon : const SizedBox(),
               ),
             ),
           ),
+        ),
+      ),
+    );
+
+    return ShadDisabled(
+      showForbiddenCursor: true,
+      disabled: !enabled,
+      disabledOpacity: 1,
+      child: GestureDetector(
+        onTap: widget.onChanged == null
+            ? null
+            : () {
+                widget.onChanged!(!widget.value);
+                if (!focusNode.hasFocus) {
+                  FocusScope.of(context).unfocus();
+                }
+              },
+        child: Row(
+          textDirection: widget.direction,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            checkbox,
+            if (widget.label != null)
+              Flexible(
+                child: Padding(
+                  padding: effectivePadding,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: DefaultTextStyle(
+                          style: theme.textTheme.muted.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: theme.colorScheme.foreground,
+                          ),
+                          child: widget.label!,
+                        ),
+                      ),
+                      if (widget.sublabel != null)
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: DefaultTextStyle(
+                            style: theme.textTheme.muted,
+                            child: widget.sublabel!,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );

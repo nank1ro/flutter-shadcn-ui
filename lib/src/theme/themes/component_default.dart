@@ -316,6 +316,7 @@ abstract class ShadComponentDefaultTheme {
       radius: const BorderRadius.all(Radius.circular(4)),
       color: colorScheme.primary,
       borderWidth: 1,
+      padding: const EdgeInsets.only(left: 8),
       decoration: ShadDecorationTheme(
         border: const ShadBorder(width: 4, color: Colors.transparent),
         focusedBorder: ShadBorder(
