@@ -62,7 +62,6 @@ class ShadFormScope extends InheritedWidget {
 
   final ShadFormState _formState;
 
-  /// The [Form] associated with this widget.
   ShadForm get form => _formState.widget;
 
   @override
