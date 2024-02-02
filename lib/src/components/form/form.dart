@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shadcn_ui/src/components/form/field.dart';
 
-typedef ShadFormFields
-    = Map<String, ShadFormFieldState<ShadField<dynamic>, dynamic>>;
+typedef ShadFormFields = Map<Object,
+    ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic>>;
 
 class ShadForm extends StatefulWidget {
   const ShadForm({
@@ -34,6 +35,20 @@ class ShadForm extends StatefulWidget {
 class ShadFormState extends State<ShadForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ShadFormFields _fields = {};
+
+  void registerField(
+    Object id,
+    ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
+  ) {
+    _fields[id] = field;
+  }
+
+  void unregisterField(
+    Object id,
+    ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
+  ) {
+    _fields.remove(id);
+  }
 
   @override
   Widget build(BuildContext context) {
