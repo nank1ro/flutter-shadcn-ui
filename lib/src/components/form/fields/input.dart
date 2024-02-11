@@ -23,6 +23,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     super.error,
     super.description,
     super.onChanged,
+    super.valueTransformer,
     ShadDecoration? decoration,
     ShadDecoration? inputDecoration,
     Widget? placeholder,
@@ -210,7 +211,6 @@ class _ShadFormBuilderInputState
   @override
   void didChange(String? value) {
     super.didChange(value);
-
     if (controller.text != value) {
       controller.text = value ?? '';
     }
@@ -219,8 +219,8 @@ class _ShadFormBuilderInputState
   @override
   void reset() {
     super.reset();
+    didChange(initialValue);
     controller.text = initialValue ?? '';
-    super.reset();
     widget.onChanged?.call(controller.text);
   }
 

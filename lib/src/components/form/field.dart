@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/form.dart';
 
+typedef ValueTransformer<T> = dynamic Function(T value);
+
 @immutable
 class ShadFormBuilderField<T> extends FormField<T> {
   const ShadFormBuilderField({
@@ -18,6 +20,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.error,
     this.description,
     this.onChanged,
+    this.valueTransformer,
   });
 
   /// Used to reference the field within the form, or to reference form data
@@ -30,6 +33,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
   final Widget? error;
   final Widget? description;
   final ValueChanged<T?>? onChanged;
+  final ValueTransformer<T?>? valueTransformer;
 
   @override
   ShadFormBuilderFieldState<ShadFormBuilderField<T>, T> createState() =>
@@ -46,7 +50,12 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   @override
   F get widget => super.widget as F;
 
-  T? get initialValue => widget.initialValue;
+  T? get initialValue =>
+      widget.initialValue ??
+      (_parentForm?.widget.initialValue[widget.id] as T?);
+
+  bool get enabled => widget.enabled && (_parentForm?.enabled ?? true);
+  bool get readOnly => !(_parentForm?.widget.skipDisabled ?? false);
 
   @override
   void initState() {
@@ -69,7 +78,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   @override
   void didChange(T? value) {
     super.didChange(value);
-    // _informFormForFieldChange();
+    _informFormForFieldChange();
     widget.onChanged?.call(value);
   }
 
@@ -86,5 +95,30 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
 
   void ensureVisible() {
     Scrollable.ensureVisible(context);
+  }
+
+  @override
+  void setValue(T? value, {bool populateForm = true}) {
+    super.setValue(value);
+    if (populateForm) {
+      _informFormForFieldChange();
+    }
+  }
+
+  void _informFormForFieldChange() {
+    if (_parentForm != null) {
+      if (enabled || readOnly) {
+        _parentForm!.setInternalFieldValue<T>(widget.id, value);
+        return;
+      }
+      _parentForm!.removeInternalFieldValue(widget.id);
+    }
+  }
+
+  void registerTransformer(Map<Object, Function> map) {
+    final fun = widget.valueTransformer;
+    if (fun != null) {
+      map[widget.id] = fun;
+    }
   }
 }

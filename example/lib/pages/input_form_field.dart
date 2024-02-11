@@ -19,6 +19,7 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
   Widget build(BuildContext context) {
     return ShadForm(
       key: formKey,
+      // initialValue: const {'name': 'Alex'}
       child: BaseScaffold(
         appBarTitle: 'InputFormField',
         children: [
@@ -28,7 +29,7 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ShadInputFormField(
-                  id: #name,
+                  id: 'name',
                   label: const Text('Name'),
                   placeholder: const Text('Enter your name'),
                   description: const Text('This is your public display name.'),
@@ -43,8 +44,9 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
                 ShadButton(
                   text: const Text('Submit'),
                   onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      print('validated successfully');
+                    if (formKey.currentState!.saveAndValidate()) {
+                      print('validation passed');
+                      print(formKey.currentState!.value);
                     } else {
                       print('validation failed');
                     }

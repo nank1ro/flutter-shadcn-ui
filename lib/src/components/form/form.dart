@@ -8,15 +8,23 @@ class ShadForm extends StatefulWidget {
   const ShadForm({
     super.key,
     required this.child,
+    this.onChanged,
     this.canPop,
     this.onPopInvoked,
     this.autovalidateMode,
+    this.initialValue = const {},
+    this.enabled = true,
+    this.skipDisabled = false,
   });
 
+  final VoidCallback? onChanged;
   final bool? canPop;
   final void Function(bool)? onPopInvoked;
   final AutovalidateMode? autovalidateMode;
   final Widget child;
+  final Map<Object, dynamic> initialValue;
+  final bool enabled;
+  final bool skipDisabled;
 
   @override
   State<ShadForm> createState() => ShadFormState();
@@ -38,14 +46,43 @@ class ShadForm extends StatefulWidget {
 class ShadFormState extends State<ShadForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ShadFormFields _fields = {};
+  final Map<Object, dynamic> _value = {};
+  final Map<Object, Function> _transformers = {};
 
   ShadFormFields get fields => _fields;
+
+  Map<Object, dynamic> get initialValue => widget.initialValue;
+
+  bool get enabled => widget.enabled;
+
+  Map<Object, dynamic> get value => Map<Object, dynamic>.unmodifiable(
+        _value.map(
+          (key, value) =>
+              // ignore: avoid_dynamic_calls
+              MapEntry(key, _transformers[key]?.call(value) ?? value),
+        ),
+      );
 
   void registerField(
     Object id,
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
   ) {
+    final oldField = _fields[id];
     _fields[id] = field;
+    field
+      ..registerTransformer(_transformers)
+      ..setValue(
+        oldField?.value ?? (_value[id] ??= field.initialValue),
+      );
+  }
+
+  void setInternalFieldValue<T>(Object id, T? value) {
+    _value[id] = value;
+    widget.onChanged?.call();
+  }
+
+  void removeInternalFieldValue(Object id) {
+    _value.remove(id);
   }
 
   void unregisterField(
@@ -53,6 +90,8 @@ class ShadFormState extends State<ShadForm> {
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
   ) {
     _fields.remove(id);
+    _value.remove(id);
+    _transformers.remove(id);
   }
 
   bool validate({
@@ -73,6 +112,17 @@ class ShadFormState extends State<ShadForm> {
       }
     }
     return !hasError;
+  }
+
+  bool saveAndValidate({
+    bool focusOnInvalid = true,
+    bool autoScrollWhenFocusOnInvalid = false,
+  }) {
+    save();
+    return validate(
+      focusOnInvalid: focusOnInvalid,
+      autoScrollWhenFocusOnInvalid: autoScrollWhenFocusOnInvalid,
+    );
   }
 
   void reset() {
