@@ -20,6 +20,7 @@ class _FormPageState extends State<FormPage> {
     return Scaffold(
       body: Center(
         child: ShadForm(
+          key: formKey,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 350),
             child: Column(

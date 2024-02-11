@@ -18,7 +18,6 @@
             "args": [
                 "-d",
                 "chrome",
-                "--release"
             ]
         },
     ]
