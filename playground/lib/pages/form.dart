@@ -25,6 +25,7 @@ class _FormPageState extends State<FormPage> {
             constraints: const BoxConstraints(maxWidth: 350),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 ShadInputFormField(
                   id: 'username',
