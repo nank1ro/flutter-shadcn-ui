@@ -15,12 +15,12 @@ dependencies:
   boxy: ^2.2.0
   flutter:
     sdk: flutter
-  flutter_animate: ^4.4.0
+  flutter_animate: ^4.5.0
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.9
   rive: ^0.12.4
-  vector_graphics: ^1.1.9+2
+  vector_graphics: ^1.1.10+1
 
 dev_dependencies:
   flutter_test:

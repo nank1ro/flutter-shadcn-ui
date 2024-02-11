@@ -17,7 +17,8 @@
             "type": "dart",
             "args": [
                 "-d",
-                "chrome"
+                "chrome",
+                "--release"
             ]
         },
     ]
