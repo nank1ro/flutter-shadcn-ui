@@ -23,6 +23,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     super.description,
     super.onChanged,
     super.valueTransformer,
+    super.onReset,
     ShadDecoration? decoration,
     ShadDecoration? inputDecoration,
     Widget? placeholder,
