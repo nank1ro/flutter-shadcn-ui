@@ -37,6 +37,7 @@ export 'src/theme/themes/shadows.dart';
 export 'src/theme/components/avatar.dart';
 export 'src/theme/components/badge.dart';
 export 'src/theme/components/button.dart';
+export 'src/theme/components/card.dart';
 export 'src/theme/components/checkbox.dart';
 export 'src/theme/components/decorator.dart';
 export 'src/theme/components/input.dart';
