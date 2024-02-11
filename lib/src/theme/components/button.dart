@@ -48,7 +48,7 @@ class ShadButtonTheme {
   final Gradient? gradient;
   final TextDecoration? textDecoration;
   final TextDecoration? hoverTextDecoration;
-  final ShadDecorationTheme? decoration;
+  final ShadDecoration? decoration;
 
   static ShadButtonTheme lerp(
     ShadButtonTheme a,
@@ -81,7 +81,7 @@ class ShadButtonTheme {
       hoverTextDecoration: b.hoverTextDecoration,
       cursor: b.cursor,
       size: b.size,
-      decoration: ShadDecorationTheme.lerp(
+      decoration: ShadDecoration.lerp(
         a.decoration,
         b.decoration,
         t,
@@ -107,7 +107,7 @@ class ShadButtonTheme {
     Gradient? gradient,
     TextDecoration? textDecoration,
     TextDecoration? hoverTextDecoration,
-    ShadDecorationTheme? decoration,
+    ShadDecoration? decoration,
   }) {
     return ShadButtonTheme(
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,

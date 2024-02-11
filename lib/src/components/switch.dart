@@ -61,7 +61,7 @@ class ShadSwitch extends StatefulWidget {
   final BorderRadius? radius;
 
   /// The decoration of the switch.
-  final ShadDecorationTheme? decoration;
+  final ShadDecoration? decoration;
 
   /// An optional label for the switch, displayed on the right side if
   /// the [direction] is `TextDirection.ltr`.

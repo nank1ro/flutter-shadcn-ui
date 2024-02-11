@@ -85,11 +85,11 @@ class ShadInput extends StatefulWidget {
           'Either initialValue or controller must be specified',
         );
 
-  final ShadDecorationTheme? decoration;
+  final ShadDecoration? decoration;
 
   final String? initialValue;
 
-  final String? placeholder;
+  final Widget? placeholder;
 
   final TextMagnifierConfiguration magnifierConfiguration;
 
@@ -214,19 +214,20 @@ class ShadInput extends StatefulWidget {
   final Color? selectionColor;
 
   @override
-  State<ShadInput> createState() => _ShadInputState();
+  State<ShadInput> createState() => ShadInputState();
 }
 
-class _ShadInputState extends State<ShadInput>
+class ShadInputState extends State<ShadInput>
     implements TextSelectionGestureDetectorBuilderDelegate {
-  late FocusNode focusNode;
+  FocusNode? _focusNode;
+  FocusNode get focusNode => widget.focusNode ?? _focusNode!;
   final hasFocus = ValueNotifier(false);
   late TextEditingController controller;
 
   @override
   void initState() {
     super.initState();
-    focusNode = widget.focusNode ?? FocusNode();
+    if (widget.focusNode == null) _focusNode = FocusNode();
     focusNode.addListener(onFocusChange);
     controller = widget.controller ??
         TextEditingController.fromValue(
@@ -238,8 +239,7 @@ class _ShadInputState extends State<ShadInput>
   void didUpdateWidget(ShadInput oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
-      focusNode.removeListener(onFocusChange);
-      focusNode = widget.focusNode ?? FocusNode();
+      oldWidget.focusNode?.removeListener(onFocusChange);
       focusNode.addListener(onFocusChange);
     }
   }
@@ -271,86 +271,79 @@ class _ShadInputState extends State<ShadInput>
         theme.textTheme.muted.copyWith(
           color: theme.colorScheme.foreground,
         );
+    final effectiveDecoration =
+        widget.decoration ?? theme.inputTheme.decoration ?? theme.decoration;
+
     return ShadDisabled(
       disabled: !widget.enabled,
       child: ValueListenableBuilder(
         valueListenable: hasFocus,
         builder: (context, focused, _) {
-          return ShadDecorator(
-            decoration: widget.decoration ?? theme.decoration,
-            focused: focused,
-            child: ValueListenableBuilder(
-              valueListenable: controller,
-              builder: (context, textEditingValue, child) {
-                return InputDecorator(
-                  isEmpty: textEditingValue.text.isEmpty,
-                  decoration:
-                      (widget.inputDecoration ?? const InputDecoration())
-                          .applyDefaults(Theme.of(context).inputDecorationTheme)
-                          .copyWith(
-                            hintText: widget.placeholder,
-                            hintStyle: effectiveTextStyle.copyWith(
-                              color: theme.colorScheme.mutedForeground,
-                            ),
-                          ),
-                  child: child,
-                );
-              },
-              child: _selectionGestureDetectorBuilder.buildGestureDetector(
-                behavior: HitTestBehavior.translucent,
-                child: EditableText(
-                  key: editableTextKey,
-                  controller: controller,
-                  focusNode: focusNode,
-                  style: effectiveTextStyle,
-                  cursorColor: widget.cursorColor ?? theme.colorScheme.primary,
-                  backgroundCursorColor: Colors.grey,
-                  selectionColor: focused
-                      ? widget.selectionColor ?? theme.colorScheme.selection
-                      : null,
-                  keyboardType: widget.keyboardType,
-                  textInputAction: widget.textInputAction,
-                  textCapitalization: widget.textCapitalization,
-                  autofocus: widget.autofocus,
-                  obscureText: widget.obscureText,
-                  autocorrect: widget.autocorrect,
-                  magnifierConfiguration: widget.magnifierConfiguration,
-                  smartDashesType: widget.smartDashesType,
-                  smartQuotesType: widget.smartQuotesType,
-                  enableSuggestions: widget.enableSuggestions,
-                  maxLines: widget.maxLines,
-                  minLines: widget.minLines,
-                  expands: widget.expands,
-                  onChanged: widget.onChanged,
-                  onEditingComplete: widget.onEditingComplete,
-                  onSubmitted: widget.onSubmitted,
-                  onAppPrivateCommand: widget.onAppPrivateCommand,
-                  inputFormatters: widget.inputFormatters,
-                  cursorWidth: widget.cursorWidth,
-                  cursorHeight: widget.cursorHeight,
-                  cursorRadius: widget.cursorRadius,
-                  selectionHeightStyle: widget.selectionHeightStyle,
-                  selectionWidthStyle: widget.selectionWidthStyle,
-                  scrollPadding: widget.scrollPadding,
-                  dragStartBehavior: widget.dragStartBehavior,
-                  scrollController: widget.scrollController,
-                  scrollPhysics: widget.scrollPhysics,
-                  autofillHints: widget.autofillHints,
-                  clipBehavior: widget.clipBehavior,
-                  restorationId: widget.restorationId,
-                  scribbleEnabled: widget.scribbleEnabled,
-                  enableIMEPersonalizedLearning:
-                      widget.enableIMEPersonalizedLearning,
-                  contentInsertionConfiguration:
-                      widget.contentInsertionConfiguration,
-                  contextMenuBuilder: widget.contextMenuBuilder,
-                  selectionControls: widget.selectionControls,
-                  mouseCursor: widget.mouseCursor,
-                  enableInteractiveSelection: widget.enableInteractiveSelection,
-                  undoController: widget.undoController,
-                  spellCheckConfiguration: widget.spellCheckConfiguration,
-                  onTapOutside: widget.onTapOutside,
-                ),
+          return ValueListenableBuilder(
+            valueListenable: controller,
+            builder: (context, textEditingValue, child) {
+              return ShadDecorator(
+                decoration: effectiveDecoration,
+                focused: focused,
+                isEmpty: textEditingValue.text.isEmpty,
+                placeholder: widget.placeholder,
+                child: child!,
+              );
+            },
+            child: _selectionGestureDetectorBuilder.buildGestureDetector(
+              behavior: HitTestBehavior.translucent,
+              child: EditableText(
+                key: editableTextKey,
+                controller: controller,
+                focusNode: focusNode,
+                style: effectiveTextStyle,
+                cursorColor: widget.cursorColor ?? theme.colorScheme.primary,
+                backgroundCursorColor: Colors.grey,
+                selectionColor: focused
+                    ? widget.selectionColor ?? theme.colorScheme.selection
+                    : null,
+                keyboardType: widget.keyboardType,
+                textInputAction: widget.textInputAction,
+                textCapitalization: widget.textCapitalization,
+                autofocus: widget.autofocus,
+                obscureText: widget.obscureText,
+                autocorrect: widget.autocorrect,
+                magnifierConfiguration: widget.magnifierConfiguration,
+                smartDashesType: widget.smartDashesType,
+                smartQuotesType: widget.smartQuotesType,
+                enableSuggestions: widget.enableSuggestions,
+                maxLines: widget.maxLines,
+                minLines: widget.minLines,
+                expands: widget.expands,
+                onChanged: widget.onChanged,
+                onEditingComplete: widget.onEditingComplete,
+                onSubmitted: widget.onSubmitted,
+                onAppPrivateCommand: widget.onAppPrivateCommand,
+                inputFormatters: widget.inputFormatters,
+                cursorWidth: widget.cursorWidth,
+                cursorHeight: widget.cursorHeight,
+                cursorRadius: widget.cursorRadius,
+                selectionHeightStyle: widget.selectionHeightStyle,
+                selectionWidthStyle: widget.selectionWidthStyle,
+                scrollPadding: widget.scrollPadding,
+                dragStartBehavior: widget.dragStartBehavior,
+                scrollController: widget.scrollController,
+                scrollPhysics: widget.scrollPhysics,
+                autofillHints: widget.autofillHints,
+                clipBehavior: widget.clipBehavior,
+                restorationId: widget.restorationId,
+                scribbleEnabled: widget.scribbleEnabled,
+                enableIMEPersonalizedLearning:
+                    widget.enableIMEPersonalizedLearning,
+                contentInsertionConfiguration:
+                    widget.contentInsertionConfiguration,
+                contextMenuBuilder: widget.contextMenuBuilder,
+                selectionControls: widget.selectionControls,
+                mouseCursor: widget.mouseCursor,
+                enableInteractiveSelection: widget.enableInteractiveSelection,
+                undoController: widget.undoController,
+                spellCheckConfiguration: widget.spellCheckConfiguration,
+                onTapOutside: widget.onTapOutside,
               ),
             ),
           );
@@ -374,11 +367,11 @@ class _ShadInputState extends State<ShadInput>
 class _InputSelectionGestureDetectorBuilder
     extends TextSelectionGestureDetectorBuilder {
   _InputSelectionGestureDetectorBuilder({
-    required _ShadInputState state,
+    required ShadInputState state,
   })  : _state = state,
         super(delegate: state);
 
-  final _ShadInputState _state;
+  final ShadInputState _state;
 
   @override
   void onForcePressStart(ForcePressDetails details) {

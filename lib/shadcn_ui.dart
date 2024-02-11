@@ -15,6 +15,9 @@ export 'src/components/popover.dart';
 export 'src/components/select.dart';
 export 'src/components/switch.dart';
 export 'src/components/tooltip.dart';
+export 'src/components/form/form.dart';
+export 'src/components/form/field.dart';
+export 'src/components/form/fields/input.dart';
 
 // Assets
 export 'src/assets.dart';
@@ -36,6 +39,7 @@ export 'src/theme/components/badge.dart';
 export 'src/theme/components/button.dart';
 export 'src/theme/components/checkbox.dart';
 export 'src/theme/components/decorator.dart';
+export 'src/theme/components/input.dart';
 export 'src/theme/components/option.dart';
 export 'src/theme/components/popover.dart';
 export 'src/theme/components/select.dart';

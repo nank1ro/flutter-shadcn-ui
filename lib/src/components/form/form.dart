@@ -27,14 +27,19 @@ class ShadForm extends StatefulWidget {
     return state!;
   }
 
-  static ShadFormState? maybeOf(BuildContext context) =>
-      context.getElementForInheritedWidgetOfExactType<ShadFormScope>()?.widget
-          as ShadFormState?;
+  static ShadFormState? maybeOf(BuildContext context) {
+    return (context
+            .getElementForInheritedWidgetOfExactType<ShadFormScope>()
+            ?.widget as ShadFormScope?)
+        ?._formState;
+  }
 }
 
 class ShadFormState extends State<ShadForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ShadFormFields _fields = {};
+
+  ShadFormFields get fields => _fields;
 
   void registerField(
     Object id,
@@ -48,6 +53,37 @@ class ShadFormState extends State<ShadForm> {
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
   ) {
     _fields.remove(id);
+  }
+
+  bool validate({
+    bool focusOnInvalid = true,
+    bool autoScrollWhenFocusOnInvalid = false,
+  }) {
+    print('validate');
+    // _focusOnInvalid = focusOnInvalid;
+    final hasError = !_formKey.currentState!.validate();
+    if (hasError) {
+      final wrongFields =
+          _fields.values.where((element) => element.hasError).toList();
+      print('wrongFields: $wrongFields');
+      if (wrongFields.isNotEmpty) {
+        if (focusOnInvalid) {
+          wrongFields.first.focus();
+        }
+        if (autoScrollWhenFocusOnInvalid) {
+          wrongFields.first.ensureVisible();
+        }
+      }
+    }
+    return !hasError;
+  }
+
+  void reset() {
+    _formKey.currentState?.reset();
+  }
+
+  void save() {
+    _formKey.currentState!.save();
   }
 
   @override

@@ -80,7 +80,7 @@ class ShadSelect<T> extends StatefulWidget {
   final double? maxHeight;
 
   /// The decoration of the [ShadSelect].
-  final ShadDecorationTheme? decoration;
+  final ShadDecoration? decoration;
 
   /// The offset of the [ShadSelect], defaults to `Offset(4, 0)`.
   final Offset? offset;
@@ -277,43 +277,6 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
           color: theme.colorScheme.popoverForeground.withOpacity(.5),
         );
 
-    final select = ShadDisabled(
-      disabled: widget.onChanged == null,
-      child: ShadFocused(
-        canRequestFocus: widget.onChanged != null,
-        focusNode: focusNode,
-        builder: (context, focused, child) {
-          return ShadDecorator(
-            focused: focused,
-            decoration: effectiveDecoration,
-            child: child!,
-          );
-        },
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-            controller.toggle();
-          },
-          child: Container(
-            padding: effectivePadding,
-            decoration: BoxDecoration(
-              color: effectiveBackgroundColor,
-              borderRadius: effectiveRadius,
-              border: effectiveBorder,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Flexible(child: effectiveText),
-                effectiveTrailing,
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-
     final effectiveOffset =
         widget.offset ?? theme.selectTheme.offset ?? const Offset(4, 0);
     final effectiveMinWidth =
@@ -330,6 +293,44 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         final calculatedMinWidth =
             max(effectiveMinWidth, constraints.minWidth) -
                 decorationHorizontalPadding;
+
+        final Widget select = ShadDisabled(
+          disabled: widget.onChanged == null,
+          child: ShadFocused(
+            canRequestFocus: widget.onChanged != null,
+            focusNode: focusNode,
+            builder: (context, focused, child) {
+              return ShadDecorator(
+                focused: focused,
+                decoration: effectiveDecoration,
+                child: child!,
+              );
+            },
+            child: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+                controller.toggle();
+              },
+              child: Container(
+                padding: effectivePadding,
+                constraints: BoxConstraints(minWidth: calculatedMinWidth),
+                decoration: BoxDecoration(
+                  color: effectiveBackgroundColor,
+                  borderRadius: effectiveRadius,
+                  border: effectiveBorder,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(child: effectiveText),
+                    effectiveTrailing,
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
 
         final scrollToTopChild = effectiveShowScrollToTopChevron
             ? ValueListenableBuilder(

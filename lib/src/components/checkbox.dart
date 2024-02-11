@@ -38,7 +38,7 @@ class ShadCheckbox extends StatefulWidget {
   final FocusNode? focusNode;
 
   /// The decoration of the checkbox.
-  final ShadDecorationTheme? decoration;
+  final ShadDecoration? decoration;
 
   /// The radius of the checkbox.
   final BorderRadius? radius;

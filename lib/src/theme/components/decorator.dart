@@ -69,44 +69,102 @@ class ShadBorder {
 }
 
 @immutable
-class ShadDecorationTheme {
-  const ShadDecorationTheme({
+class ShadDecoration {
+  const ShadDecoration({
     this.merge = true,
     this.border,
     this.focusedBorder,
+    this.labelStyle,
+    this.errorLabelStyle,
+    this.errorStyle,
+    this.descriptionStyle,
+    this.labelPadding,
+    this.placeholderStyle,
+    this.descriptionPadding,
+    this.errorPadding,
+    this.padding,
   });
 
   final bool merge;
+  final TextStyle? labelStyle;
+  final TextStyle? errorLabelStyle;
   final ShadBorder? border;
   final ShadBorder? focusedBorder;
+  final TextStyle? errorStyle;
+  final TextStyle? placeholderStyle;
+  final TextStyle? descriptionStyle;
+  final EdgeInsets? labelPadding;
+  final EdgeInsets? descriptionPadding;
+  final EdgeInsets? errorPadding;
+  final EdgeInsets? padding;
 
-  static ShadDecorationTheme lerp(
-    ShadDecorationTheme? a,
-    ShadDecorationTheme? b,
+  static ShadDecoration lerp(
+    ShadDecoration? a,
+    ShadDecoration? b,
     double t,
   ) {
-    return ShadDecorationTheme(
+    return ShadDecoration(
       border: ShadBorder.lerp(a?.border, b?.border, t),
       focusedBorder: ShadBorder.lerp(a?.focusedBorder, b?.focusedBorder, t),
+      labelStyle: TextStyle.lerp(a?.labelStyle, b?.labelStyle, t),
+      errorLabelStyle:
+          TextStyle.lerp(a?.errorLabelStyle, b?.errorLabelStyle, t),
+      errorStyle: TextStyle.lerp(a?.errorStyle, b?.errorStyle, t),
+      descriptionStyle:
+          TextStyle.lerp(a?.descriptionStyle, b?.descriptionStyle, t),
+      labelPadding: EdgeInsets.lerp(a?.labelPadding, b?.labelPadding, t),
+      descriptionPadding:
+          EdgeInsets.lerp(a?.descriptionPadding, b?.descriptionPadding, t),
+      errorPadding: EdgeInsets.lerp(a?.errorPadding, b?.errorPadding, t),
+      padding: EdgeInsets.lerp(a?.padding, b?.padding, t),
+      placeholderStyle:
+          TextStyle.lerp(a?.placeholderStyle, b?.placeholderStyle, t),
     );
   }
 
-  ShadDecorationTheme mergeWith(ShadDecorationTheme? other) {
+  ShadDecoration mergeWith(ShadDecoration? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
       border: other.border ?? border,
       focusedBorder: other.focusedBorder ?? focusedBorder,
+      labelStyle: other.labelStyle ?? labelStyle,
+      errorLabelStyle: other.errorLabelStyle ?? errorLabelStyle,
+      errorStyle: other.errorStyle ?? errorStyle,
+      descriptionStyle: other.descriptionStyle ?? descriptionStyle,
+      labelPadding: other.labelPadding ?? labelPadding,
+      descriptionPadding: other.descriptionPadding ?? descriptionPadding,
+      errorPadding: other.errorPadding ?? errorPadding,
+      padding: other.padding ?? padding,
+      placeholderStyle: other.placeholderStyle ?? placeholderStyle,
     );
   }
 
-  ShadDecorationTheme copyWith({
+  ShadDecoration copyWith({
     ShadBorder? border,
     ShadBorder? focusedBorder,
+    TextStyle? labelStyle,
+    TextStyle? errorLabelStyle,
+    TextStyle? errorStyle,
+    TextStyle? descriptionStyle,
+    EdgeInsets? labelPadding,
+    EdgeInsets? descriptionPadding,
+    EdgeInsets? errorPadding,
+    EdgeInsets? padding,
+    TextStyle? placeholderStyle,
   }) {
-    return ShadDecorationTheme(
+    return ShadDecoration(
       border: border ?? this.border,
       focusedBorder: focusedBorder ?? this.focusedBorder,
+      labelStyle: labelStyle ?? this.labelStyle,
+      errorLabelStyle: errorLabelStyle ?? this.errorLabelStyle,
+      errorStyle: errorStyle ?? this.errorStyle,
+      descriptionStyle: descriptionStyle ?? this.descriptionStyle,
+      labelPadding: labelPadding ?? this.labelPadding,
+      descriptionPadding: descriptionPadding ?? this.descriptionPadding,
+      errorPadding: errorPadding ?? this.errorPadding,
+      padding: padding ?? this.padding,
+      placeholderStyle: placeholderStyle ?? this.placeholderStyle,
     );
   }
 
@@ -114,13 +172,33 @@ class ShadDecorationTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadDecorationTheme &&
+    return other is ShadDecoration &&
         other.border == border &&
-        other.focusedBorder == focusedBorder;
+        other.focusedBorder == focusedBorder &&
+        other.labelStyle == labelStyle &&
+        other.errorLabelStyle == errorLabelStyle &&
+        other.errorStyle == errorStyle &&
+        other.descriptionStyle == descriptionStyle &&
+        other.labelPadding == labelPadding &&
+        other.descriptionPadding == descriptionPadding &&
+        other.errorPadding == errorPadding &&
+        other.padding == padding &&
+        other.placeholderStyle == placeholderStyle;
   }
 
   @override
-  int get hashCode => border.hashCode ^ focusedBorder.hashCode;
+  int get hashCode =>
+      border.hashCode ^
+      focusedBorder.hashCode ^
+      labelStyle.hashCode ^
+      errorLabelStyle.hashCode ^
+      errorStyle.hashCode ^
+      descriptionStyle.hashCode ^
+      labelPadding.hashCode ^
+      descriptionPadding.hashCode ^
+      errorPadding.hashCode ^
+      padding.hashCode ^
+      placeholderStyle.hashCode;
 }
 
 class ShadDecorator extends StatelessWidget {
@@ -128,17 +206,33 @@ class ShadDecorator extends StatelessWidget {
     super.key,
     required this.child,
     this.decoration,
+    this.hasError = false,
     this.focused = false,
+    this.isEmpty = false,
+    this.label,
+    this.error,
+    this.description,
+    this.placeholder,
   });
 
   /// The child to decorate.
   final Widget child;
 
   /// The decoration to apply to the child.
-  final ShadDecorationTheme? decoration;
+  final ShadDecoration? decoration;
 
   /// Whether the child has focus, defaults to false.
   final bool focused;
+
+  final bool isEmpty;
+
+  final bool hasError;
+
+  final Widget? label;
+
+  final Widget? error;
+  final Widget? description;
+  final Widget? placeholder;
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +241,32 @@ class ShadDecorator extends StatelessWidget {
     final border = focused
         ? effectiveDecoration.focusedBorder
         : effectiveDecoration.border;
+
+    final TextStyle effectiveLabelStyle;
+    final effectiveErrorStyle = effectiveDecoration.errorStyle ??
+        effectiveDecoration.errorLabelStyle ??
+        theme.textTheme.muted.copyWith(
+          fontWeight: FontWeight.w500,
+          color: theme.colorScheme.destructive,
+        );
+
+    if (!hasError) {
+      effectiveLabelStyle = effectiveDecoration.labelStyle ??
+          effectiveDecoration.labelStyle ??
+          theme.textTheme.muted.copyWith(
+            fontWeight: FontWeight.w500,
+            color: theme.colorScheme.foreground,
+          );
+    } else {
+      effectiveLabelStyle = effectiveDecoration.errorLabelStyle ??
+          theme.textTheme.muted.copyWith(
+            fontWeight: FontWeight.w500,
+            color: theme.colorScheme.destructive,
+          );
+    }
+
+    final effectivePlaceholderStyle =
+        effectiveDecoration.placeholderStyle ?? theme.textTheme.muted;
 
     return Container(
       decoration: BoxDecoration(
@@ -158,8 +278,55 @@ class ShadDecorator extends StatelessWidget {
               ),
         borderRadius: border?.radius,
       ),
-      padding: border?.padding,
-      child: child,
+      padding: (effectiveDecoration.padding ?? EdgeInsets.zero) +
+          (border?.padding ?? EdgeInsets.zero),
+      // padding: const EdgeInsets.symmetric(
+      //   horizontal: 12,
+      //   vertical: 8,
+      // ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (label != null)
+            Padding(
+              padding: effectiveDecoration.labelPadding ??
+                  const EdgeInsets.only(bottom: 8),
+              child: DefaultTextStyle(
+                style: effectiveLabelStyle,
+                child: label!,
+              ),
+            ),
+          Stack(
+            children: [
+              if (isEmpty && placeholder != null)
+                DefaultTextStyle(
+                  style: effectivePlaceholderStyle,
+                  child: placeholder!,
+                ),
+              child,
+            ],
+          ),
+          if (description != null)
+            Padding(
+              padding: effectiveDecoration.descriptionPadding ??
+                  const EdgeInsets.only(top: 8),
+              child: DefaultTextStyle(
+                style: effectiveDecoration.descriptionStyle ??
+                    theme.textTheme.muted,
+                child: description!,
+              ),
+            ),
+          if (error != null)
+            Padding(
+              padding: effectiveDecoration.errorPadding ??
+                  const EdgeInsets.only(top: 8),
+              child: DefaultTextStyle(
+                style: effectiveErrorStyle,
+                child: error!,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

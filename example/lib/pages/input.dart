@@ -26,7 +26,7 @@ class _InputPageState extends State<InputPage> {
       ],
       children: [
         ShadInput(
-          placeholder: 'Email',
+          placeholder: const Text('Email'),
           enabled: enabled,
         ),
       ],

@@ -24,7 +24,7 @@ class ShadSelectTheme {
   });
 
   final bool merge;
-  final ShadDecorationTheme? decoration;
+  final ShadDecoration? decoration;
   final Offset? offset;
   final double? minWidth;
   final double? maxHeight;
@@ -44,7 +44,7 @@ class ShadSelectTheme {
     if (identical(a, b)) return a;
     return ShadSelectTheme(
       merge: b.merge,
-      decoration: ShadDecorationTheme.lerp(a.decoration, b.decoration, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       offset: Offset.lerp(a.offset, b.offset, t),
       minWidth: lerpDouble(a.minWidth, b.minWidth, t),
       maxHeight: lerpDouble(a.maxHeight, b.maxHeight, t),
@@ -60,7 +60,7 @@ class ShadSelectTheme {
 
   ShadSelectTheme copyWith({
     bool? merge,
-    ShadDecorationTheme? decoration,
+    ShadDecoration? decoration,
     Offset? offset,
     double? minWidth,
     double? maxHeight,

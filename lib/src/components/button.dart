@@ -244,7 +244,7 @@ class ShadButton extends StatefulWidget {
   final Gradient? gradient;
   final TextDecoration? textDecoration;
   final TextDecoration? hoverTextDecoration;
-  final ShadDecorationTheme? decoration;
+  final ShadDecoration? decoration;
 
   @override
   State<ShadButton> createState() => _ShadButtonState();
