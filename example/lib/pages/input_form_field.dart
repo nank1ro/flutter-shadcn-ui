@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:example/common/base_scaffold.dart';
+import 'package:example/common/properties/bool_property.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -13,15 +14,23 @@ class InputFormFieldPage extends StatefulWidget {
 }
 
 class _InputFormFieldPageState extends State<InputFormFieldPage> {
+  bool enabled = true;
   final formKey = GlobalKey<ShadFormState>();
 
   @override
   Widget build(BuildContext context) {
     return ShadForm(
       key: formKey,
-      // initialValue: const {'name': 'Alex'}
+      enabled: enabled,
       child: BaseScaffold(
         appBarTitle: 'InputFormField',
+        editable: [
+          MyBoolProperty(
+            label: 'Enabled',
+            value: enabled,
+            onChanged: (value) => setState(() => enabled = value),
+          ),
+        ],
         children: [
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 350),
