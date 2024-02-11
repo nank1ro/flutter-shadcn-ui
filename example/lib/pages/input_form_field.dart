@@ -2,6 +2,8 @@
 
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
+import 'package:example/common/properties/enum_property.dart';
+import 'package:example/common/properties/string_property.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -15,6 +17,8 @@ class InputFormFieldPage extends StatefulWidget {
 
 class _InputFormFieldPageState extends State<InputFormFieldPage> {
   bool enabled = true;
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  String? initialValue;
   final formKey = GlobalKey<ShadFormState>();
 
   @override
@@ -22,6 +26,8 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
     return ShadForm(
       key: formKey,
       enabled: enabled,
+      autovalidateMode: autovalidateMode,
+      initialValue: {if (initialValue != null) 'name': initialValue},
       child: BaseScaffold(
         appBarTitle: 'InputFormField',
         editable: [
@@ -29,6 +35,26 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
             label: 'Enabled',
             value: enabled,
             onChanged: (value) => setState(() => enabled = value),
+          ),
+          MyEnumProperty(
+            label: 'autovalidateMode',
+            value: autovalidateMode,
+            values: AutovalidateMode.values,
+            onChanged: (value) => setState(() => autovalidateMode = value),
+          ),
+          MyStringProperty(
+            label: 'Form Initial Value',
+            initialValue: initialValue,
+            placeholder: const Text('Name'),
+            onChanged: (value) {
+              setState(() {
+                value.isEmpty ? initialValue = null : initialValue = value;
+              });
+              // Reset the form
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                formKey.currentState!.reset();
+              });
+            },
           ),
         ],
         children: [

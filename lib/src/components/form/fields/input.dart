@@ -88,27 +88,11 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
           initialValue: controller != null ? controller.text : initialValue,
           builder: (field) {
             final state = field as _ShadFormBuilderInputState;
-            final theme = ShadTheme.of(field.context);
             final hasError = state.hasError;
 
             final effectiveError = state.errorText == null
                 ? null
                 : error ?? Text(state.errorText!);
-
-            // Move the placeholder based on the padding and border of the input
-            final effectiveInputPadding = padding ??
-                theme.inputTheme.padding ??
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
-            final effectiveInputBorder =
-                border ?? theme.inputTheme.border ?? Border.all(width: 2);
-            final effectivePlaceholder = Padding(
-              padding: EdgeInsets.only(
-                top: effectiveInputPadding.top + effectiveInputBorder.top.width,
-                left: effectiveInputPadding.left +
-                    effectiveInputBorder.left.width,
-              ),
-              child: placeholder,
-            );
 
             return ShadDecorator(
               decoration: decoration,
@@ -166,7 +150,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
                 undoController: undoController,
                 spellCheckConfiguration: spellCheckConfiguration,
                 onTapOutside: onTapOutside,
-                placeholder: effectivePlaceholder,
+                placeholder: placeholder,
                 onTap: onTap,
                 keyboardAppearance: keyboardAppearance,
                 cursorOpacityAnimates: cursorOpacityAnimates,
@@ -179,8 +163,8 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
                 showCursor: showCursor,
                 maxLength: maxLength,
                 maxLengthEnforcement: maxLengthEnforcement,
-                padding: effectiveInputPadding,
-                border: effectiveInputBorder,
+                padding: padding,
+                border: border,
                 radius: radius,
               ),
             );

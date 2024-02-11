@@ -306,7 +306,13 @@ class ShadInputState extends State<ShadInput>
                 decoration: effectiveDecoration,
                 focused: focused,
                 isEmpty: textEditingValue.text.isEmpty,
-                placeholder: widget.placeholder,
+                placeholder: Padding(
+                  padding: EdgeInsets.only(
+                    top: effectivePadding.top + effectiveBorder.top.width,
+                    left: effectivePadding.left + effectiveBorder.left.width,
+                  ),
+                  child: widget.placeholder,
+                ),
                 child: child!,
               );
             },

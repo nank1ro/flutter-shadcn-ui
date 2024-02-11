@@ -21,6 +21,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.description,
     this.onChanged,
     this.valueTransformer,
+    this.onReset,
   });
 
   /// Used to reference the field within the form, or to reference form data
@@ -34,6 +35,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
   final Widget? description;
   final ValueChanged<T?>? onChanged;
   final ValueTransformer<T?>? valueTransformer;
+  final VoidCallback? onReset;
 
   @override
   ShadFormBuilderFieldState<ShadFormBuilderField<T>, T> createState() =>
@@ -80,6 +82,13 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     super.didChange(value);
     _informFormForFieldChange();
     widget.onChanged?.call(value);
+  }
+
+  @override
+  void reset() {
+    super.reset();
+    didChange(initialValue);
+    widget.onReset?.call();
   }
 
   @override
