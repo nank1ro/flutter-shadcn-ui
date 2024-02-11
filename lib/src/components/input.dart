@@ -72,6 +72,9 @@ class ShadInput extends StatefulWidget {
     this.spellCheckConfiguration,
     this.magnifierConfiguration = TextMagnifierConfiguration.disabled,
     this.selectionColor,
+    this.padding,
+    this.border,
+    this.radius,
   })  : smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ??
@@ -85,11 +88,11 @@ class ShadInput extends StatefulWidget {
           'Either initialValue or controller must be specified',
         );
 
-  final ShadDecorationTheme? decoration;
+  final ShadDecoration? decoration;
 
   final String? initialValue;
 
-  final String? placeholder;
+  final Widget? placeholder;
 
   final TextMagnifierConfiguration magnifierConfiguration;
 
@@ -213,20 +216,26 @@ class ShadInput extends StatefulWidget {
 
   final Color? selectionColor;
 
+  final EdgeInsets? padding;
+  final Border? border;
+  final BorderRadius? radius;
+
   @override
-  State<ShadInput> createState() => _ShadInputState();
+  State<ShadInput> createState() => ShadInputState();
 }
 
-class _ShadInputState extends State<ShadInput>
+class ShadInputState extends State<ShadInput>
     implements TextSelectionGestureDetectorBuilderDelegate {
-  late FocusNode focusNode;
+  // ignore: use_late_for_private_fields_and_variables
+  FocusNode? _focusNode;
+  FocusNode get focusNode => widget.focusNode ?? _focusNode!;
   final hasFocus = ValueNotifier(false);
   late TextEditingController controller;
 
   @override
   void initState() {
     super.initState();
-    focusNode = widget.focusNode ?? FocusNode();
+    if (widget.focusNode == null) _focusNode = FocusNode();
     focusNode.addListener(onFocusChange);
     controller = widget.controller ??
         TextEditingController.fromValue(
@@ -238,8 +247,7 @@ class _ShadInputState extends State<ShadInput>
   void didUpdateWidget(ShadInput oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
-      focusNode.removeListener(onFocusChange);
-      focusNode = widget.focusNode ?? FocusNode();
+      oldWidget.focusNode?.removeListener(onFocusChange);
       focusNode.addListener(onFocusChange);
     }
   }
@@ -271,31 +279,49 @@ class _ShadInputState extends State<ShadInput>
         theme.textTheme.muted.copyWith(
           color: theme.colorScheme.foreground,
         );
+    final effectiveDecoration =
+        widget.decoration ?? theme.inputTheme.decoration ?? theme.decoration;
+    final effectivePadding = widget.padding ??
+        theme.inputTheme.padding ??
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+
+    final effectiveBorder = widget.border ??
+        theme.inputTheme.border ??
+        Border.all(
+          color: theme.colorScheme.border,
+          width: 2,
+        );
+    final effectiveRadius =
+        widget.radius ?? theme.inputTheme.radius ?? theme.radius;
+
     return ShadDisabled(
       disabled: !widget.enabled,
       child: ValueListenableBuilder(
         valueListenable: hasFocus,
         builder: (context, focused, _) {
-          return ShadDecorator(
-            decoration: widget.decoration ?? theme.decoration,
-            focused: focused,
-            child: ValueListenableBuilder(
-              valueListenable: controller,
-              builder: (context, textEditingValue, child) {
-                return InputDecorator(
-                  isEmpty: textEditingValue.text.isEmpty,
-                  decoration:
-                      (widget.inputDecoration ?? const InputDecoration())
-                          .applyDefaults(Theme.of(context).inputDecorationTheme)
-                          .copyWith(
-                            hintText: widget.placeholder,
-                            hintStyle: effectiveTextStyle.copyWith(
-                              color: theme.colorScheme.mutedForeground,
-                            ),
-                          ),
-                  child: child,
-                );
-              },
+          return ValueListenableBuilder(
+            valueListenable: controller,
+            builder: (context, textEditingValue, child) {
+              return ShadDecorator(
+                decoration: effectiveDecoration,
+                focused: focused,
+                isEmpty: textEditingValue.text.isEmpty,
+                placeholder: Padding(
+                  padding: EdgeInsets.only(
+                    top: effectivePadding.top + effectiveBorder.top.width,
+                    left: effectivePadding.left + effectiveBorder.left.width,
+                  ),
+                  child: widget.placeholder,
+                ),
+                child: child!,
+              );
+            },
+            child: Container(
+              padding: effectivePadding,
+              decoration: BoxDecoration(
+                border: effectiveBorder,
+                borderRadius: effectiveRadius,
+              ),
               child: _selectionGestureDetectorBuilder.buildGestureDetector(
                 behavior: HitTestBehavior.translucent,
                 child: EditableText(
@@ -374,11 +400,11 @@ class _ShadInputState extends State<ShadInput>
 class _InputSelectionGestureDetectorBuilder
     extends TextSelectionGestureDetectorBuilder {
   _InputSelectionGestureDetectorBuilder({
-    required _ShadInputState state,
+    required ShadInputState state,
   })  : _state = state,
         super(delegate: state);
 
-  final _ShadInputState _state;
+  final ShadInputState _state;
 
   @override
   void onForcePressStart(ForcePressDetails details) {

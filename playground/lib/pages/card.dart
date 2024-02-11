@@ -55,7 +55,7 @@ class CardProject extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text('Name'),
-              const ShadInput(placeholder: 'Name of your project'),
+              const ShadInput(placeholder: Text('Name of your project')),
               const SizedBox(height: 6),
               const Text('Framework'),
               ShadSelect<String>(

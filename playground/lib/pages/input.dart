@@ -13,7 +13,7 @@ class InputPage extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 320),
           child: const ShadInput(
-            placeholder: 'Email',
+            placeholder: Text('Email'),
           ),
         ),
       ),

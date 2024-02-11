@@ -27,7 +27,7 @@ class ShadCheckboxTheme {
 
   final BorderRadius? radius;
 
-  final ShadDecorationTheme? decoration;
+  final ShadDecoration? decoration;
 
   final double? borderWidth;
   final EdgeInsets? padding;
@@ -43,7 +43,7 @@ class ShadCheckboxTheme {
       color: Color.lerp(a.color, b.color, t),
       duration: b.duration,
       radius: BorderRadius.lerp(a.radius, b.radius, t),
-      decoration: ShadDecorationTheme.lerp(a.decoration, b.decoration, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       size: lerpDouble(a.size, b.size, t),
       borderWidth: lerpDouble(a.borderWidth, b.borderWidth, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
@@ -56,7 +56,7 @@ class ShadCheckboxTheme {
     double? size,
     Duration? duration,
     BorderRadius? radius,
-    ShadDecorationTheme? decoration,
+    ShadDecoration? decoration,
     double? borderWidth,
     EdgeInsets? padding,
   }) {

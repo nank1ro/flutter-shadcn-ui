@@ -37,7 +37,7 @@ class ShadSwitchTheme {
 
   final BorderRadius? radius;
 
-  final ShadDecorationTheme? decoration;
+  final ShadDecoration? decoration;
 
   final EdgeInsets? padding;
 
@@ -59,7 +59,7 @@ class ShadSwitchTheme {
       margin: lerpDouble(a.margin, b.margin, t),
       duration: b.duration,
       radius: BorderRadius.lerp(a.radius, b.radius, t),
-      decoration: ShadDecorationTheme.lerp(a.decoration, b.decoration, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
     );
   }
@@ -74,7 +74,7 @@ class ShadSwitchTheme {
     double? margin,
     Duration? duration,
     BorderRadius? radius,
-    ShadDecorationTheme? decoration,
+    ShadDecoration? decoration,
     EdgeInsets? padding,
   }) {
     return ShadSwitchTheme(

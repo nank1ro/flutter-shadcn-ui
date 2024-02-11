@@ -23,7 +23,7 @@ Current progress:
 - [ ] Date Picker
 - [ ] Drawer
 - [ ] Dropdown Menu
-- [ ] Form (?)
+- [x] [Form](https://mariuti.com/shadcn-ui/components/form/)
 - [x] <strike>Hover Card</strike> Use Popover instead
 - [x] [Image](https://mariuti.com/shadcn-ui/components/image/)
 - [x] [Input](https://mariuti.com/shadcn-ui/components/input/)

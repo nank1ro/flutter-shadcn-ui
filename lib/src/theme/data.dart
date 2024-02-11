@@ -8,6 +8,7 @@ import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
@@ -38,7 +39,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadButtonSizesTheme? buttonSizesTheme,
     ShadTooltipTheme? tooltipTheme,
     ShadPopoverTheme? popoverTheme,
-    ShadDecorationTheme? decoration,
+    ShadDecoration? decoration,
     ShadTextThemeData? textTheme,
     double? disabledOpacity,
     ShadSelectTheme? selectTheme,
@@ -46,9 +47,13 @@ class ShadThemeData extends ShadBaseTheme {
     ShadCardTheme? cardTheme,
     ShadSwitchTheme? switchTheme,
     ShadCheckboxTheme? checkboxTheme,
+    ShadInputTheme? inputTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
+    final effectiveTextTheme =
+        ShadComponentDefaultTheme.textTheme(colorScheme: colorScheme)
+            .mergeWith(textTheme);
     return ShadThemeData._internal(
       colorScheme: colorScheme,
       brightness: brightness,
@@ -100,9 +105,9 @@ class ShadThemeData extends ShadBaseTheme {
       decoration: ShadComponentDefaultTheme.decoration(
         colorScheme: colorScheme,
         radius: effectiveRadius,
+        textTheme: effectiveTextTheme,
       ).mergeWith(decoration),
-      textTheme: ShadComponentDefaultTheme.textTheme(colorScheme: colorScheme)
-          .mergeWith(textTheme),
+      textTheme: effectiveTextTheme,
       disabledOpacity: disabledOpacity ?? .5,
       selectTheme:
           ShadComponentDefaultTheme.selectTheme(colorScheme: colorScheme)
@@ -119,6 +124,11 @@ class ShadThemeData extends ShadBaseTheme {
       checkboxTheme: ShadComponentDefaultTheme.checkboxTheme(
         colorScheme: colorScheme,
       ).mergeWith(checkboxTheme),
+      inputTheme: ShadComponentDefaultTheme.inputTheme(
+        colorScheme: colorScheme,
+        radius: effectiveRadius,
+        textTheme: effectiveTextTheme,
+      ).mergeWith(inputTheme),
     );
   }
 
@@ -149,6 +159,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.cardTheme,
     required super.switchTheme,
     required super.checkboxTheme,
+    required super.inputTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -199,7 +210,7 @@ class ShadThemeData extends ShadBaseTheme {
       ),
       tooltipTheme: ShadTooltipTheme.lerp(a.tooltipTheme, b.tooltipTheme, t),
       popoverTheme: ShadPopoverTheme.lerp(a.popoverTheme, b.popoverTheme, t),
-      decoration: ShadDecorationTheme.lerp(a.decoration, b.decoration, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       textTheme: ShadTextThemeData.lerp(a.textTheme, b.textTheme, t),
       disabledOpacity: lerpDouble(a.disabledOpacity, b.disabledOpacity, t),
       selectTheme: ShadSelectTheme.lerp(a.selectTheme, b.selectTheme, t),
@@ -208,6 +219,7 @@ class ShadThemeData extends ShadBaseTheme {
       switchTheme: ShadSwitchTheme.lerp(a.switchTheme, b.switchTheme, t),
       checkboxTheme:
           ShadCheckboxTheme.lerp(a.checkboxTheme, b.checkboxTheme, t),
+      inputTheme: ShadInputTheme.lerp(a.inputTheme, b.inputTheme, t),
     );
   }
 
@@ -241,7 +253,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.cardTheme == cardTheme &&
         other.optionTheme == optionTheme &&
         other.switchTheme == switchTheme &&
-        other.checkboxTheme == checkboxTheme;
+        other.checkboxTheme == checkboxTheme &&
+        other.inputTheme == inputTheme;
   }
 
   @override
@@ -271,7 +284,8 @@ class ShadThemeData extends ShadBaseTheme {
         cardTheme.hashCode ^
         optionTheme.hashCode ^
         switchTheme.hashCode ^
-        checkboxTheme.hashCode;
+        checkboxTheme.hashCode ^
+        inputTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -293,7 +307,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadButtonSizesTheme? buttonSizesTheme,
     ShadTooltipTheme? tooltipTheme,
     ShadPopoverTheme? popoverTheme,
-    ShadDecorationTheme? decoration,
+    ShadDecoration? decoration,
     ShadTextThemeData? textTheme,
     double? disabledOpacity,
     ShadSelectTheme? selectTheme,
@@ -301,6 +315,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadCardTheme? cardTheme,
     ShadSwitchTheme? switchTheme,
     ShadCheckboxTheme? checkboxTheme,
+    ShadInputTheme? inputTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -331,6 +346,7 @@ class ShadThemeData extends ShadBaseTheme {
       cardTheme: cardTheme ?? this.cardTheme,
       switchTheme: switchTheme ?? this.switchTheme,
       checkboxTheme: checkboxTheme ?? this.checkboxTheme,
+      inputTheme: inputTheme ?? this.inputTheme,
     );
   }
 }
