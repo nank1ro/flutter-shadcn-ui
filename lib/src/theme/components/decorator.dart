@@ -82,7 +82,6 @@ class ShadDecoration {
     this.placeholderStyle,
     this.descriptionPadding,
     this.errorPadding,
-    this.padding,
   });
 
   final bool merge;
@@ -96,7 +95,6 @@ class ShadDecoration {
   final EdgeInsets? labelPadding;
   final EdgeInsets? descriptionPadding;
   final EdgeInsets? errorPadding;
-  final EdgeInsets? padding;
 
   static ShadDecoration lerp(
     ShadDecoration? a,
@@ -116,7 +114,6 @@ class ShadDecoration {
       descriptionPadding:
           EdgeInsets.lerp(a?.descriptionPadding, b?.descriptionPadding, t),
       errorPadding: EdgeInsets.lerp(a?.errorPadding, b?.errorPadding, t),
-      padding: EdgeInsets.lerp(a?.padding, b?.padding, t),
       placeholderStyle:
           TextStyle.lerp(a?.placeholderStyle, b?.placeholderStyle, t),
     );
@@ -135,7 +132,6 @@ class ShadDecoration {
       labelPadding: other.labelPadding ?? labelPadding,
       descriptionPadding: other.descriptionPadding ?? descriptionPadding,
       errorPadding: other.errorPadding ?? errorPadding,
-      padding: other.padding ?? padding,
       placeholderStyle: other.placeholderStyle ?? placeholderStyle,
     );
   }
@@ -150,7 +146,6 @@ class ShadDecoration {
     EdgeInsets? labelPadding,
     EdgeInsets? descriptionPadding,
     EdgeInsets? errorPadding,
-    EdgeInsets? padding,
     TextStyle? placeholderStyle,
   }) {
     return ShadDecoration(
@@ -163,7 +158,6 @@ class ShadDecoration {
       labelPadding: labelPadding ?? this.labelPadding,
       descriptionPadding: descriptionPadding ?? this.descriptionPadding,
       errorPadding: errorPadding ?? this.errorPadding,
-      padding: padding ?? this.padding,
       placeholderStyle: placeholderStyle ?? this.placeholderStyle,
     );
   }
@@ -182,7 +176,6 @@ class ShadDecoration {
         other.labelPadding == labelPadding &&
         other.descriptionPadding == descriptionPadding &&
         other.errorPadding == errorPadding &&
-        other.padding == padding &&
         other.placeholderStyle == placeholderStyle;
   }
 
@@ -197,7 +190,6 @@ class ShadDecoration {
       labelPadding.hashCode ^
       descriptionPadding.hashCode ^
       errorPadding.hashCode ^
-      padding.hashCode ^
       placeholderStyle.hashCode;
 }
 
@@ -278,12 +270,7 @@ class ShadDecorator extends StatelessWidget {
               ),
         borderRadius: border?.radius,
       ),
-      padding: (effectiveDecoration.padding ?? EdgeInsets.zero) +
-          (border?.padding ?? EdgeInsets.zero),
-      // padding: const EdgeInsets.symmetric(
-      //   horizontal: 12,
-      //   vertical: 8,
-      // ),
+      padding: border?.padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

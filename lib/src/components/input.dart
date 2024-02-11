@@ -72,6 +72,9 @@ class ShadInput extends StatefulWidget {
     this.spellCheckConfiguration,
     this.magnifierConfiguration = TextMagnifierConfiguration.disabled,
     this.selectionColor,
+    this.padding,
+    this.border,
+    this.radius,
   })  : smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ??
@@ -213,6 +216,10 @@ class ShadInput extends StatefulWidget {
 
   final Color? selectionColor;
 
+  final EdgeInsets? padding;
+  final Border? border;
+  final BorderRadius? radius;
+
   @override
   State<ShadInput> createState() => ShadInputState();
 }
@@ -274,6 +281,18 @@ class ShadInputState extends State<ShadInput>
         );
     final effectiveDecoration =
         widget.decoration ?? theme.inputTheme.decoration ?? theme.decoration;
+    final effectivePadding = widget.padding ??
+        theme.inputTheme.padding ??
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+
+    final effectiveBorder = widget.border ??
+        theme.inputTheme.border ??
+        Border.all(
+          color: theme.colorScheme.border,
+          width: 2,
+        );
+    final effectiveRadius =
+        widget.radius ?? theme.inputTheme.radius ?? theme.radius;
 
     return ShadDisabled(
       disabled: !widget.enabled,
@@ -291,60 +310,67 @@ class ShadInputState extends State<ShadInput>
                 child: child!,
               );
             },
-            child: _selectionGestureDetectorBuilder.buildGestureDetector(
-              behavior: HitTestBehavior.translucent,
-              child: EditableText(
-                key: editableTextKey,
-                controller: controller,
-                focusNode: focusNode,
-                style: effectiveTextStyle,
-                cursorColor: widget.cursorColor ?? theme.colorScheme.primary,
-                backgroundCursorColor: Colors.grey,
-                selectionColor: focused
-                    ? widget.selectionColor ?? theme.colorScheme.selection
-                    : null,
-                keyboardType: widget.keyboardType,
-                textInputAction: widget.textInputAction,
-                textCapitalization: widget.textCapitalization,
-                autofocus: widget.autofocus,
-                obscureText: widget.obscureText,
-                autocorrect: widget.autocorrect,
-                magnifierConfiguration: widget.magnifierConfiguration,
-                smartDashesType: widget.smartDashesType,
-                smartQuotesType: widget.smartQuotesType,
-                enableSuggestions: widget.enableSuggestions,
-                maxLines: widget.maxLines,
-                minLines: widget.minLines,
-                expands: widget.expands,
-                onChanged: widget.onChanged,
-                onEditingComplete: widget.onEditingComplete,
-                onSubmitted: widget.onSubmitted,
-                onAppPrivateCommand: widget.onAppPrivateCommand,
-                inputFormatters: widget.inputFormatters,
-                cursorWidth: widget.cursorWidth,
-                cursorHeight: widget.cursorHeight,
-                cursorRadius: widget.cursorRadius,
-                selectionHeightStyle: widget.selectionHeightStyle,
-                selectionWidthStyle: widget.selectionWidthStyle,
-                scrollPadding: widget.scrollPadding,
-                dragStartBehavior: widget.dragStartBehavior,
-                scrollController: widget.scrollController,
-                scrollPhysics: widget.scrollPhysics,
-                autofillHints: widget.autofillHints,
-                clipBehavior: widget.clipBehavior,
-                restorationId: widget.restorationId,
-                scribbleEnabled: widget.scribbleEnabled,
-                enableIMEPersonalizedLearning:
-                    widget.enableIMEPersonalizedLearning,
-                contentInsertionConfiguration:
-                    widget.contentInsertionConfiguration,
-                contextMenuBuilder: widget.contextMenuBuilder,
-                selectionControls: widget.selectionControls,
-                mouseCursor: widget.mouseCursor,
-                enableInteractiveSelection: widget.enableInteractiveSelection,
-                undoController: widget.undoController,
-                spellCheckConfiguration: widget.spellCheckConfiguration,
-                onTapOutside: widget.onTapOutside,
+            child: Container(
+              padding: effectivePadding,
+              decoration: BoxDecoration(
+                border: effectiveBorder,
+                borderRadius: effectiveRadius,
+              ),
+              child: _selectionGestureDetectorBuilder.buildGestureDetector(
+                behavior: HitTestBehavior.translucent,
+                child: EditableText(
+                  key: editableTextKey,
+                  controller: controller,
+                  focusNode: focusNode,
+                  style: effectiveTextStyle,
+                  cursorColor: widget.cursorColor ?? theme.colorScheme.primary,
+                  backgroundCursorColor: Colors.grey,
+                  selectionColor: focused
+                      ? widget.selectionColor ?? theme.colorScheme.selection
+                      : null,
+                  keyboardType: widget.keyboardType,
+                  textInputAction: widget.textInputAction,
+                  textCapitalization: widget.textCapitalization,
+                  autofocus: widget.autofocus,
+                  obscureText: widget.obscureText,
+                  autocorrect: widget.autocorrect,
+                  magnifierConfiguration: widget.magnifierConfiguration,
+                  smartDashesType: widget.smartDashesType,
+                  smartQuotesType: widget.smartQuotesType,
+                  enableSuggestions: widget.enableSuggestions,
+                  maxLines: widget.maxLines,
+                  minLines: widget.minLines,
+                  expands: widget.expands,
+                  onChanged: widget.onChanged,
+                  onEditingComplete: widget.onEditingComplete,
+                  onSubmitted: widget.onSubmitted,
+                  onAppPrivateCommand: widget.onAppPrivateCommand,
+                  inputFormatters: widget.inputFormatters,
+                  cursorWidth: widget.cursorWidth,
+                  cursorHeight: widget.cursorHeight,
+                  cursorRadius: widget.cursorRadius,
+                  selectionHeightStyle: widget.selectionHeightStyle,
+                  selectionWidthStyle: widget.selectionWidthStyle,
+                  scrollPadding: widget.scrollPadding,
+                  dragStartBehavior: widget.dragStartBehavior,
+                  scrollController: widget.scrollController,
+                  scrollPhysics: widget.scrollPhysics,
+                  autofillHints: widget.autofillHints,
+                  clipBehavior: widget.clipBehavior,
+                  restorationId: widget.restorationId,
+                  scribbleEnabled: widget.scribbleEnabled,
+                  enableIMEPersonalizedLearning:
+                      widget.enableIMEPersonalizedLearning,
+                  contentInsertionConfiguration:
+                      widget.contentInsertionConfiguration,
+                  contextMenuBuilder: widget.contextMenuBuilder,
+                  selectionControls: widget.selectionControls,
+                  mouseCursor: widget.mouseCursor,
+                  enableInteractiveSelection: widget.enableInteractiveSelection,
+                  undoController: widget.undoController,
+                  spellCheckConfiguration: widget.spellCheckConfiguration,
+                  onTapOutside: widget.onTapOutside,
+                ),
               ),
             ),
           );

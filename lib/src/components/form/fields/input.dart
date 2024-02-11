@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadInputFormField extends ShadFormBuilderField<String> {
   ShadInputFormField({
@@ -79,15 +80,34 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     UndoHistoryController? undoController,
     SpellCheckConfiguration? spellCheckConfiguration,
     Color? selectionColor,
+    EdgeInsets? padding,
+    Border? border,
+    BorderRadius? radius,
   }) : super(
           initialValue: controller != null ? controller.text : initialValue,
           builder: (field) {
             final state = field as _ShadFormBuilderInputState;
+            final theme = ShadTheme.of(field.context);
             final hasError = state.hasError;
 
             final effectiveError = state.errorText == null
                 ? null
                 : error ?? Text(state.errorText!);
+
+            // Move the placeholder based on the padding and border of the input
+            final effectiveInputPadding = padding ??
+                theme.inputTheme.padding ??
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+            final effectiveInputBorder =
+                border ?? theme.inputTheme.border ?? Border.all(width: 2);
+            final effectivePlaceholder = Padding(
+              padding: EdgeInsets.only(
+                top: effectiveInputPadding.top + effectiveInputBorder.top.width,
+                left: effectiveInputPadding.left +
+                    effectiveInputBorder.left.width,
+              ),
+              child: placeholder,
+            );
 
             return ShadDecorator(
               decoration: decoration,
@@ -145,7 +165,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
                 undoController: undoController,
                 spellCheckConfiguration: spellCheckConfiguration,
                 onTapOutside: onTapOutside,
-                placeholder: placeholder,
+                placeholder: effectivePlaceholder,
                 onTap: onTap,
                 keyboardAppearance: keyboardAppearance,
                 cursorOpacityAnimates: cursorOpacityAnimates,
@@ -158,6 +178,9 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
                 showCursor: showCursor,
                 maxLength: maxLength,
                 maxLengthEnforcement: maxLengthEnforcement,
+                padding: effectiveInputPadding,
+                border: effectiveInputBorder,
+                radius: radius,
               ),
             );
           },

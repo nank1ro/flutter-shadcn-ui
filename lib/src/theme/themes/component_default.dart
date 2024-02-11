@@ -358,14 +358,10 @@ abstract class ShadComponentDefaultTheme {
     return ShadInputTheme(
       decoration: ShadDecoration(
         placeholderStyle: textTheme.muted,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 8,
-        ),
         border: ShadBorder(
           width: 2,
-          color: colorScheme.border,
-          // padding: const EdgeInsets.all(2),
+          color: Colors.transparent,
+          padding: const EdgeInsets.all(2),
           radius: radius,
         ),
         focusedBorder: ShadBorder(
@@ -373,10 +369,16 @@ abstract class ShadComponentDefaultTheme {
           color: colorScheme.ring,
           // the outer radius is calculated as
           // outerRadius = innerRadius + innerRadius / 2
-          // outerRadius = 4 + 4 / 2 = 6
-          radius: const BorderRadius.all(Radius.circular(6)),
+          radius: radius.add(radius / 2),
+          padding: const EdgeInsets.all(2),
         ),
       ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      border: Border.all(
+        color: colorScheme.border,
+        width: 2,
+      ),
+      radius: radius,
     );
   }
 }
