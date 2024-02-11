@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'dart:convert';
+
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
@@ -19,10 +21,12 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
   bool enabled = true;
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   String? initialValue;
+  Map<Object, dynamic> formValue = {};
   final formKey = GlobalKey<ShadFormState>();
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
     return ShadForm(
       key: formKey,
       enabled: enabled,
@@ -80,13 +84,30 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
                   text: const Text('Submit'),
                   onPressed: () {
                     if (formKey.currentState!.saveAndValidate()) {
-                      print('validation passed');
-                      print(formKey.currentState!.value);
+                      setState(() {
+                        formValue = formKey.currentState!.value;
+                      });
                     } else {
                       print('validation failed');
                     }
                   },
                 ),
+                if (formValue.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 24, left: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('FormValue', style: theme.textTheme.p),
+                        const SizedBox(height: 4),
+                        SelectableText(
+                          const JsonEncoder.withIndent('    ')
+                              .convert(formValue),
+                          style: theme.textTheme.small,
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
