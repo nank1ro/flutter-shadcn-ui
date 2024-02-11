@@ -110,10 +110,8 @@ class SelectPage extends StatelessWidget {
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      ...fruits.entries
-                          .map((e) =>
-                              ShadOption(value: e.key, child: Text(e.value)))
-                          .toList(),
+                      ...fruits.entries.map((e) =>
+                          ShadOption(value: e.key, child: Text(e.value))),
                     ],
                     selectedOptionBuilder: (context, value) =>
                         Text(fruits[value]!),

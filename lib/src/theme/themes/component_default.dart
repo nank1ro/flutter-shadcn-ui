@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
@@ -209,12 +210,29 @@ abstract class ShadComponentDefaultTheme {
     );
   }
 
-  static ShadDecorationTheme decoration({
+  static ShadDecoration decoration({
     required ShadColorScheme colorScheme,
     required BorderRadius radius,
+    required ShadTextThemeData textTheme,
   }) {
-    return ShadDecorationTheme(
+    return ShadDecoration(
       border: const ShadBorder(padding: EdgeInsets.all(4)),
+      labelStyle: textTheme.muted.copyWith(
+        fontWeight: FontWeight.w500,
+        color: colorScheme.foreground,
+      ),
+      errorStyle: textTheme.muted.copyWith(
+        fontWeight: FontWeight.w500,
+        color: colorScheme.destructive,
+      ),
+      labelPadding: const EdgeInsets.only(bottom: 8),
+      descriptionStyle: textTheme.muted,
+      descriptionPadding: const EdgeInsets.only(top: 8),
+      errorPadding: const EdgeInsets.only(top: 8),
+      errorLabelStyle: textTheme.muted.copyWith(
+        fontWeight: FontWeight.w500,
+        color: colorScheme.destructive,
+      ),
       focusedBorder: ShadBorder(
         width: 2,
         color: colorScheme.ring,
@@ -292,7 +310,7 @@ abstract class ShadComponentDefaultTheme {
       thumbColor: colorScheme.background,
       uncheckedTrackColor: colorScheme.input,
       checkedTrackColor: colorScheme.primary,
-      decoration: ShadDecorationTheme(
+      decoration: ShadDecoration(
         border: const ShadBorder(width: 4, color: Colors.transparent),
         focusedBorder: ShadBorder(
           width: 2,
@@ -317,7 +335,7 @@ abstract class ShadComponentDefaultTheme {
       color: colorScheme.primary,
       borderWidth: 1,
       padding: const EdgeInsets.only(left: 8),
-      decoration: ShadDecorationTheme(
+      decoration: ShadDecoration(
         border: const ShadBorder(width: 4, color: Colors.transparent),
         focusedBorder: ShadBorder(
           width: 2,
@@ -329,6 +347,38 @@ abstract class ShadComponentDefaultTheme {
           padding: const EdgeInsets.all(2),
         ),
       ),
+    );
+  }
+
+  static ShadInputTheme inputTheme({
+    required ShadColorScheme colorScheme,
+    required BorderRadius radius,
+    required ShadTextThemeData textTheme,
+  }) {
+    return ShadInputTheme(
+      decoration: ShadDecoration(
+        placeholderStyle: textTheme.muted,
+        border: ShadBorder(
+          width: 2,
+          color: Colors.transparent,
+          padding: const EdgeInsets.all(2),
+          radius: radius,
+        ),
+        focusedBorder: ShadBorder(
+          width: 2,
+          color: colorScheme.ring,
+          // the outer radius is calculated as
+          // outerRadius = innerRadius + innerRadius / 2
+          radius: radius.add(radius / 2),
+          padding: const EdgeInsets.all(2),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      border: Border.all(
+        color: colorScheme.border,
+        width: 2,
+      ),
+      radius: radius,
     );
   }
 }

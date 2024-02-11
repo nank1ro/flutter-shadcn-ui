@@ -6,6 +6,7 @@ import 'package:example/pages/card.dart';
 import 'package:example/pages/checkbox.dart';
 import 'package:example/pages/image.dart';
 import 'package:example/pages/input.dart';
+import 'package:example/pages/input_form_field.dart';
 import 'package:example/pages/popover.dart';
 import 'package:example/pages/select.dart';
 import 'package:example/pages/switch.dart';
@@ -29,6 +30,7 @@ final routes = <String, WidgetBuilder>{
   '/checkbox': (_) => const CheckboxPage(),
   '/image': (_) => const ImagePage(),
   '/input': (_) => const InputPage(),
+  '/input-form-field': (_) => const InputFormFieldPage(),
   '/popover': (_) => const PopoverPage(),
   '/select': (_) => const SelectPage(),
   '/switch': (_) => const SwitchPage(),

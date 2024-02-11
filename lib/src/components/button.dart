@@ -244,7 +244,7 @@ class ShadButton extends StatefulWidget {
   final Gradient? gradient;
   final TextDecoration? textDecoration;
   final TextDecoration? hoverTextDecoration;
-  final ShadDecorationTheme? decoration;
+  final ShadDecoration? decoration;
 
   @override
   State<ShadButton> createState() => _ShadButtonState();
@@ -484,10 +484,10 @@ class _ShadButtonState extends State<ShadButton> {
                 onTap: widget.onPressed == null
                     ? null
                     : () {
-                        widget.onPressed!();
                         if (!focusNode.hasFocus) {
                           FocusScope.of(context).unfocus();
                         }
+                        widget.onPressed!();
                       },
                 onTapDown: (_) {
                   if (!trackPressState) return;

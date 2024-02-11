@@ -49,24 +49,24 @@ class _PopoverPageState extends State<PopoverPage> {
                     style: textTheme.p,
                   ),
                   const SizedBox(height: 4),
-                  ...layer
-                      .map((e) => Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                  child: Text(
-                                e.name,
-                                textAlign: TextAlign.start,
-                              )),
-                              Expanded(
-                                flex: 2,
-                                child: ShadInput(
-                                  initialValue: e.initialValue,
-                                ),
-                              )
-                            ],
-                          ))
-                      .toList(),
+                  ...layer.map(
+                    (e) => Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            child: Text(
+                          e.name,
+                          textAlign: TextAlign.start,
+                        )),
+                        Expanded(
+                          flex: 2,
+                          child: ShadInput(
+                            initialValue: e.initialValue,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
