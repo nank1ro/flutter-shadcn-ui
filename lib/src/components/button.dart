@@ -484,10 +484,10 @@ class _ShadButtonState extends State<ShadButton> {
                 onTap: widget.onPressed == null
                     ? null
                     : () {
-                        widget.onPressed!();
                         if (!focusNode.hasFocus) {
                           FocusScope.of(context).unfocus();
                         }
+                        widget.onPressed!();
                       },
                 onTapDown: (_) {
                   if (!trackPressState) return;
