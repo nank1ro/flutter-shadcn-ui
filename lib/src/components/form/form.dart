@@ -59,13 +59,10 @@ class ShadFormState extends State<ShadForm> {
     bool focusOnInvalid = true,
     bool autoScrollWhenFocusOnInvalid = false,
   }) {
-    print('validate');
-    // _focusOnInvalid = focusOnInvalid;
     final hasError = !_formKey.currentState!.validate();
     if (hasError) {
       final wrongFields =
           _fields.values.where((element) => element.hasError).toList();
-      print('wrongFields: $wrongFields');
       if (wrongFields.isNotEmpty) {
         if (focusOnInvalid) {
           wrongFields.first.focus();

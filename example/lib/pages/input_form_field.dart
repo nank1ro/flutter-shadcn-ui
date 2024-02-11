@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:example/common/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

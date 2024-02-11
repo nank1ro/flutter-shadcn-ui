@@ -219,6 +219,7 @@ class ShadInput extends StatefulWidget {
 
 class ShadInputState extends State<ShadInput>
     implements TextSelectionGestureDetectorBuilderDelegate {
+  // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
   final hasFocus = ValueNotifier(false);
