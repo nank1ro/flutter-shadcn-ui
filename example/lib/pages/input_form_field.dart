@@ -31,7 +31,7 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
       key: formKey,
       enabled: enabled,
       autovalidateMode: autovalidateMode,
-      initialValue: {if (initialValue != null) 'name': initialValue},
+      initialValue: {if (initialValue != null) 'username': initialValue},
       child: BaseScaffold(
         appBarTitle: 'InputFormField',
         editable: [
@@ -68,13 +68,13 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ShadInputFormField(
-                  id: 'name',
-                  label: const Text('Name'),
-                  placeholder: const Text('Enter your name'),
+                  id: 'username',
+                  label: const Text('Username'),
+                  placeholder: const Text('Enter your username'),
                   description: const Text('This is your public display name.'),
                   validator: (v) {
-                    if (v == null || v.isEmpty) {
-                      return 'Name is required';
+                    if ((v ?? '').length < 2) {
+                      return 'Username must be at least 2 characters.';
                     }
                     return null;
                   },
@@ -83,6 +83,7 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
                 ShadButton(
                   text: const Text('Submit'),
                   onPressed: () {
+                    print('submitted');
                     if (formKey.currentState!.saveAndValidate()) {
                       setState(() {
                         formValue = formKey.currentState!.value;
