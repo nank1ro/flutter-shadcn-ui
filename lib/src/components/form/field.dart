@@ -1,13 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/form.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 typedef ValueTransformer<T> = dynamic Function(T value);
 
 @immutable
 class ShadFormBuilderField<T> extends FormField<T> {
-  const ShadFormBuilderField({
+  ShadFormBuilderField({
     super.key,
-    required super.builder,
+    required Widget Function(FormFieldState<T>) builder,
     super.onSaved,
     super.validator,
     super.initialValue,
@@ -22,7 +23,24 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.onChanged,
     this.valueTransformer,
     this.onReset,
-  });
+    this.decoration,
+  }) : super(
+          builder: (field) {
+            final hasError = field.hasError;
+
+            final effectiveError =
+                hasError ? error ?? Text(field.errorText!) : null;
+
+            return ShadDecorator(
+              decoration: decoration,
+              label: label,
+              hasError: hasError,
+              error: effectiveError,
+              description: description,
+              child: builder(field),
+            );
+          },
+        );
 
   /// Used to reference the field within the form, or to reference form data
   /// after the form is submitted.
@@ -36,6 +54,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
   final ValueChanged<T?>? onChanged;
   final ValueTransformer<T?>? valueTransformer;
   final VoidCallback? onReset;
+  final ShadDecoration? decoration;
 
   @override
   ShadFormBuilderFieldState<ShadFormBuilderField<T>, T> createState() =>

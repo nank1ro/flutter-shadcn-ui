@@ -33,7 +33,7 @@ class _FormPageState extends State<FormPage> {
                   placeholder: const Text('Enter your username'),
                   description: const Text('This is your public display name.'),
                   validator: (v) {
-                    if ((v ?? '').length < 2) {
+                    if (v.length < 2) {
                       return 'Username must be at least 2 characters.';
                     }
                     return null;
