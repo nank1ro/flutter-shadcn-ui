@@ -11,6 +11,7 @@ import 'package:example/pages/input_form_field.dart';
 import 'package:example/pages/popover.dart';
 import 'package:example/pages/select.dart';
 import 'package:example/pages/switch.dart';
+import 'package:example/pages/switch_form_field.dart';
 import 'package:example/pages/tooltip.dart';
 import 'package:example/pages/typography.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ final routes = <String, WidgetBuilder>{
   '/input': (_) => const InputPage(),
   '/input-form-field': (_) => const InputFormFieldPage(),
   '/checkbox-form-field': (_) => const CheckboxFormFieldPage(),
+  '/switch-form-field': (_) => const SwitchFormFieldPage(),
   '/popover': (_) => const PopoverPage(),
   '/select': (_) => const SelectPage(),
   '/switch': (_) => const SwitchPage(),
