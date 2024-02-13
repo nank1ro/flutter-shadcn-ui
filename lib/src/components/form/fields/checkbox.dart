@@ -46,12 +46,8 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
             final state = field as _ShadFormBuilderCheckboxState;
             return ShadCheckbox(
               value: state.value!,
-              onChanged: onChanged != null && state.enabled
-                  ? (v) {
-                      state.didChange(v);
-                      onChanged(v);
-                    }
-                  : null,
+              onChanged:
+                  onChanged != null && state.enabled ? state.didChange : null,
               focusNode: state.focusNode,
               decoration: inputDecoration,
               radius: radius,

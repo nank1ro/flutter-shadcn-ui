@@ -45,15 +45,11 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
                   return validator(v ?? false);
                 },
           builder: (field) {
-            final state = field as _ShadFormBuilderCheckboxState;
+            final state = field as _ShadFormBuilderSwitchState;
             return ShadSwitch(
               value: state.value!,
-              onChanged: onChanged != null && state.enabled
-                  ? (v) {
-                      state.didChange(v);
-                      onChanged(v);
-                    }
-                  : null,
+              onChanged:
+                  onChanged != null && state.enabled ? state.didChange : null,
               focusNode: state.focusNode,
               decoration: inputDecoration,
               radius: radius,
@@ -74,8 +70,8 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
 
   @override
   ShadFormBuilderFieldState<ShadSwitchFormField, bool> createState() =>
-      _ShadFormBuilderCheckboxState();
+      _ShadFormBuilderSwitchState();
 }
 
-class _ShadFormBuilderCheckboxState
+class _ShadFormBuilderSwitchState
     extends ShadFormBuilderFieldState<ShadSwitchFormField, bool> {}

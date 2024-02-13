@@ -192,7 +192,6 @@ class _ShadFormBuilderInputState
   @override
   void reset() {
     super.reset();
-    didChange(initialValue);
     controller.text = initialValue ?? '';
     widget.onChanged?.call(controller.text);
   }
