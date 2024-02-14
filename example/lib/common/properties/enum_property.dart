@@ -37,10 +37,7 @@ class MyEnumProperty<T extends Enum> extends StatelessWidget {
           selectedOptionBuilder: (context, value) {
             return Text(value.name.replaceAll('\$', ''));
           },
-          onChanged: (v) {
-            if (v == null) return;
-            onChanged(v);
-          },
+          onChanged: onChanged,
         ),
       ],
     );

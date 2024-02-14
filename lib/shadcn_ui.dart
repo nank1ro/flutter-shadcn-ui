@@ -18,6 +18,9 @@ export 'src/components/tooltip.dart';
 export 'src/components/form/form.dart';
 export 'src/components/form/field.dart';
 export 'src/components/form/fields/input.dart';
+export 'src/components/form/fields/checkbox.dart';
+export 'src/components/form/fields/switch.dart';
+export 'src/components/form/fields/select.dart';
 
 // Assets
 export 'src/assets.dart';

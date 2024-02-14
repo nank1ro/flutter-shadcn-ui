@@ -5,21 +5,20 @@ import 'dart:convert';
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
-import 'package:example/common/properties/string_property.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-class InputFormFieldPage extends StatefulWidget {
-  const InputFormFieldPage({super.key});
+class SwitchFormFieldPage extends StatefulWidget {
+  const SwitchFormFieldPage({super.key});
 
   @override
-  State<InputFormFieldPage> createState() => _InputFormFieldPageState();
+  State<SwitchFormFieldPage> createState() => _SwitchFormFieldPageState();
 }
 
-class _InputFormFieldPageState extends State<InputFormFieldPage> {
+class _SwitchFormFieldPageState extends State<SwitchFormFieldPage> {
   bool enabled = true;
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
-  String? initialValue;
+  bool initialValue = false;
   Map<Object, dynamic> formValue = {};
   final formKey = GlobalKey<ShadFormState>();
 
@@ -30,9 +29,9 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
       key: formKey,
       enabled: enabled,
       autovalidateMode: autovalidateMode,
-      initialValue: {if (initialValue != null) 'username': initialValue},
+      initialValue: {'terms': initialValue},
       child: BaseScaffold(
-        appBarTitle: 'InputFormField',
+        appBarTitle: 'SwitchFormField',
         editable: [
           MyBoolProperty(
             label: 'Enabled',
@@ -45,13 +44,12 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
             values: AutovalidateMode.values,
             onChanged: (value) => setState(() => autovalidateMode = value),
           ),
-          MyStringProperty(
+          MyBoolProperty(
             label: 'Form Initial Value',
-            initialValue: initialValue,
-            placeholder: const Text('Name'),
+            value: initialValue,
             onChanged: (value) {
               setState(() {
-                value.isEmpty ? initialValue = null : initialValue = value;
+                initialValue = value;
               });
               // Reset the form
               WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -66,14 +64,16 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ShadInputFormField(
-                  id: 'username',
-                  label: const Text('Username'),
-                  placeholder: const Text('Enter your username'),
-                  description: const Text('This is your public display name.'),
+                ShadSwitchFormField(
+                  id: 'terms',
+                  initialValue: initialValue,
+                  inputLabel: const Text('I accept the terms and conditions'),
+                  onChanged: (v) {},
+                  inputSublabel:
+                      const Text('You agree to our Terms and Conditions'),
                   validator: (v) {
-                    if (v.length < 2) {
-                      return 'Username must be at least 2 characters.';
+                    if (!v) {
+                      return 'You must accept the terms and conditions';
                     }
                     return null;
                   },

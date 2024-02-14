@@ -272,6 +272,7 @@ class ShadDecorator extends StatelessWidget {
       ),
       padding: border?.padding,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (label != null)

@@ -1,4 +1,3 @@
-import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:example/common/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -49,24 +48,24 @@ class _PopoverPageState extends State<PopoverPage> {
                   style: textTheme.p,
                 ),
                 const SizedBox(height: 4),
-                ...layer
-                    .map((e) => Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                child: Text(
-                              e.name,
-                              textAlign: TextAlign.start,
-                            )),
-                            Expanded(
-                              flex: 2,
-                              child: ShadInput(
-                                initialValue: e.initialValue,
-                              ),
-                            )
-                          ],
-                        ))
-                    .separatedBy(const SizedBox(height: 2)),
+                ...layer.map(
+                  (e) => Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child: Text(
+                        e.name,
+                        textAlign: TextAlign.start,
+                      )),
+                      Expanded(
+                        flex: 2,
+                        child: ShadInput(
+                          initialValue: e.initialValue,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

@@ -4,12 +4,15 @@ import 'package:example/pages/badge.dart';
 import 'package:example/pages/button.dart';
 import 'package:example/pages/card.dart';
 import 'package:example/pages/checkbox.dart';
+import 'package:example/pages/checkbox_form_field.dart';
 import 'package:example/pages/image.dart';
 import 'package:example/pages/input.dart';
 import 'package:example/pages/input_form_field.dart';
 import 'package:example/pages/popover.dart';
 import 'package:example/pages/select.dart';
+import 'package:example/pages/select_form_field.dart';
 import 'package:example/pages/switch.dart';
+import 'package:example/pages/switch_form_field.dart';
 import 'package:example/pages/tooltip.dart';
 import 'package:example/pages/typography.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +34,9 @@ final routes = <String, WidgetBuilder>{
   '/image': (_) => const ImagePage(),
   '/input': (_) => const InputPage(),
   '/input-form-field': (_) => const InputFormFieldPage(),
+  '/checkbox-form-field': (_) => const CheckboxFormFieldPage(),
+  '/switch-form-field': (_) => const SwitchFormFieldPage(),
+  '/select-form-field': (_) => const SelectFormFieldPage(),
   '/popover': (_) => const PopoverPage(),
   '/select': (_) => const SelectPage(),
   '/switch': (_) => const SwitchPage(),

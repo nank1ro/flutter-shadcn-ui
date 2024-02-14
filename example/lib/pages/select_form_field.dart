@@ -5,20 +5,24 @@ import 'dart:convert';
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
-import 'package:example/common/properties/string_property.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-class InputFormFieldPage extends StatefulWidget {
-  const InputFormFieldPage({super.key});
+class SelectFormFieldPage extends StatefulWidget {
+  const SelectFormFieldPage({super.key});
 
   @override
-  State<InputFormFieldPage> createState() => _InputFormFieldPageState();
+  State<SelectFormFieldPage> createState() => _SelectFormFieldPageState();
 }
 
-class _InputFormFieldPageState extends State<InputFormFieldPage> {
+class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
   bool enabled = true;
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  final verifiedEmails = [
+    'm@example.com',
+    'm@google.com',
+    'm@support.com',
+  ];
   String? initialValue;
   Map<Object, dynamic> formValue = {};
   final formKey = GlobalKey<ShadFormState>();
@@ -30,9 +34,9 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
       key: formKey,
       enabled: enabled,
       autovalidateMode: autovalidateMode,
-      initialValue: {if (initialValue != null) 'username': initialValue},
+      initialValue: {'email': initialValue},
       child: BaseScaffold(
-        appBarTitle: 'InputFormField',
+        appBarTitle: 'SelectFormField',
         editable: [
           MyBoolProperty(
             label: 'Enabled',
@@ -45,19 +49,22 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
             values: AutovalidateMode.values,
             onChanged: (value) => setState(() => autovalidateMode = value),
           ),
-          MyStringProperty(
-            label: 'Form Initial Value',
+          ShadSelect(
+            options: ['none', ...verifiedEmails].map(
+              (e) => ShadOption(value: e, child: Text(e.toString())),
+            ),
             initialValue: initialValue,
-            placeholder: const Text('Name'),
-            onChanged: (value) {
-              setState(() {
-                value.isEmpty ? initialValue = null : initialValue = value;
-              });
+            placeholder: const Text('Form Initial Value'),
+            onChanged: (v) {
+              setState(() => initialValue = v);
               // Reset the form
               WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                 formKey.currentState!.reset();
               });
             },
+            selectedOptionBuilder: (context, value) => Text(
+              value.toString(),
+            ),
           ),
         ],
         children: [
@@ -66,14 +73,22 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ShadInputFormField(
-                  id: 'username',
-                  label: const Text('Username'),
-                  placeholder: const Text('Enter your username'),
-                  description: const Text('This is your public display name.'),
+                ShadSelectFormField(
+                  id: 'email',
+                  minWidth: 350,
+                  initialValue: initialValue,
+                  onChanged: (v) {},
+                  options: verifiedEmails
+                      .map((email) =>
+                          ShadOption(value: email, child: Text(email)))
+                      .toList(),
+                  selectedOptionBuilder: (context, value) => value == 'none'
+                      ? const Text('Select a verified email to display')
+                      : Text(value),
+                  placeholder: const Text('Select a verified email to display'),
                   validator: (v) {
-                    if (v.length < 2) {
-                      return 'Username must be at least 2 characters.';
+                    if (v == null) {
+                      return 'Please select an email to display';
                     }
                     return null;
                   },

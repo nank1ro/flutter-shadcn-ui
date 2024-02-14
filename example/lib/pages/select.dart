@@ -125,44 +125,41 @@ class _SelectPageState extends State<SelectPage> {
         ),
       ],
       children: [
-        ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 180),
-          child: ShadSelect<String>(
-            onChanged: enabled ? (v) => print(v) : null,
-            focusNode: focusNodes[0],
-            placeholder: const Text('Select a fruit'),
-            options: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-                child: Text(
-                  'Fruits',
-                  style: theme.textTheme.large,
-                  textAlign: TextAlign.start,
-                ),
+        ShadSelect<String>(
+          minWidth: 180,
+          onChanged: enabled ? (v) => print(v) : null,
+          focusNode: focusNodes[0],
+          placeholder: const Text('Select a fruit'),
+          options: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+              child: Text(
+                'Fruits',
+                style: theme.textTheme.large,
+                textAlign: TextAlign.start,
               ),
-              const ShadOption(value: 'apple', child: Text('Apple')),
-              const ShadOption(value: 'banana', child: Text('Banana')),
-              const ShadOption(value: 'blueberry', child: Text('Blueberry')),
-              const ShadOption(value: 'grapes', child: Text('Grapes')),
-              const ShadOption(value: 'pineapple', child: Text('Pineapple')),
-            ],
-            selectedOptionBuilder: (context, value) => Text(value.capitalize()),
-          ),
+            ),
+            ...fruits.entries.map(
+              (e) => ShadOption(
+                value: e.key,
+                child: Text(e.value),
+              ),
+            ),
+          ],
+          selectedOptionBuilder: (context, value) => Text(value.capitalize()),
         ),
-        ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 280),
-          child: ShadSelect<String>(
-            focusNode: focusNodes[1],
-            onChanged: enabled ? (v) => print(v) : null,
-            placeholder: const Text('Select a timezone'),
-            options: getTimezonesWidgets(theme),
-            selectedOptionBuilder: (context, value) {
-              final timezone = timezones.entries
-                  .firstWhere((element) => element.value.containsKey(value))
-                  .value[value];
-              return Text(timezone!);
-            },
-          ),
+        ShadSelect<String>(
+          minWidth: 280,
+          focusNode: focusNodes[1],
+          onChanged: enabled ? (v) => print(v) : null,
+          placeholder: const Text('Select a timezone'),
+          options: getTimezonesWidgets(theme),
+          selectedOptionBuilder: (context, value) {
+            final timezone = timezones.entries
+                .firstWhere((element) => element.value.containsKey(value))
+                .value[value];
+            return Text(timezone!);
+          },
         ),
       ],
     );

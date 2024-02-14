@@ -46,7 +46,7 @@ class ShadSelect<T> extends StatefulWidget {
   });
 
   /// The callback that is called when the value of the [ShadSelect] changes.
-  final ValueChanged<T?>? onChanged;
+  final ValueChanged<T>? onChanged;
 
   /// The initial value of the [ShadSelect], defaults to `null`.
   final T? initialValue;
@@ -58,7 +58,7 @@ class ShadSelect<T> extends StatefulWidget {
   final ShadSelectedOptionBuilder<T> selectedOptionBuilder;
 
   /// The options of the [ShadSelect].
-  final List<Widget> options;
+  final Iterable<Widget> options;
 
   /// The focus node of the [ShadSelect].
   final FocusNode? focusNode;
@@ -178,6 +178,14 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
           scrollController.offset < scrollController.position.maxScrollExtent;
       showScrollToTop.value = scrollController.offset > 0;
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadSelect<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialValue != oldWidget.initialValue) {
+      selected = widget.initialValue;
+    }
   }
 
   @override

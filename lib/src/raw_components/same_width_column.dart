@@ -9,13 +9,13 @@ class ShadSameWidthColumn extends StatelessWidget {
     required this.children,
   });
 
-  final List<Widget> children;
+  final Iterable<Widget> children;
 
   @override
   Widget build(BuildContext context) {
     return CustomBoxy(
       delegate: _EvenSizedColumnBoxy(),
-      children: children,
+      children: children.toList(),
     );
   }
 }

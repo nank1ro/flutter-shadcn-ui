@@ -127,7 +127,11 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/form',
-      builder: (context, state) => const FormPage(),
+      builder: (context, state) {
+        final style =
+            state.uri.queryParameters['style'] ?? FormStyle.inputField.name;
+        return FormPage(style: FormStyle.values.byName(style));
+      },
     ),
   ],
 );
