@@ -9,6 +9,7 @@ import 'package:playground/pages/form.dart';
 import 'package:playground/pages/image.dart';
 import 'package:playground/pages/input.dart';
 import 'package:playground/pages/popover.dart';
+import 'package:playground/pages/radio_group.dart';
 import 'package:playground/pages/select.dart';
 import 'package:playground/pages/switch.dart';
 import 'package:playground/pages/tooltip.dart';
@@ -132,6 +133,10 @@ final _router = GoRouter(
             state.uri.queryParameters['style'] ?? FormStyle.inputField.name;
         return FormPage(style: FormStyle.values.byName(style));
       },
+    ),
+    GoRoute(
+      path: '/radio-group',
+      builder: (context, state) => const RadioGroupPage(),
     ),
   ],
 );
