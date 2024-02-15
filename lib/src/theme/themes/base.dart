@@ -9,6 +9,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
+import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
@@ -44,6 +45,7 @@ abstract class ShadBaseTheme {
     required this.switchTheme,
     required this.checkboxTheme,
     required this.inputTheme,
+    required this.radioTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -73,4 +75,5 @@ abstract class ShadBaseTheme {
   final ShadSwitchTheme switchTheme;
   final ShadCheckboxTheme checkboxTheme;
   final ShadInputTheme inputTheme;
+  final ShadRadioTheme radioTheme;
 }

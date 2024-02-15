@@ -34,20 +34,14 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
     TextDirection? direction,
   }) : super(
           initialValue: initialValue,
-          onChanged: (!enabled || onChanged == null)
-              ? null
-              : (v) => onChanged(v ?? false),
-          validator: validator == null
-              ? null
-              : (v) {
-                  return validator(v ?? false);
-                },
+          onChanged: onChanged == null ? null : (v) => onChanged(v ?? false),
+          validator: validator == null ? null : (v) => validator(v ?? false),
           builder: (field) {
             final state = field as _ShadFormBuilderCheckboxState;
             return ShadCheckbox(
               value: state.value!,
-              onChanged:
-                  onChanged != null && state.enabled ? state.didChange : null,
+              onChanged: state.didChange,
+              enabled: state.enabled,
               focusNode: state.focusNode,
               decoration: inputDecoration,
               radius: radius,

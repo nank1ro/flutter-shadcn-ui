@@ -13,6 +13,7 @@ class ShadCheckbox extends StatefulWidget {
   const ShadCheckbox({
     super.key,
     required this.value,
+    this.enabled = true,
     this.onChanged,
     this.focusNode,
     this.decoration,
@@ -30,6 +31,9 @@ class ShadCheckbox extends StatefulWidget {
 
   /// Whether the checkbox is on or off.
   final bool value;
+
+  /// Whether the checkbox is enabled, defaults to true.
+  final bool enabled;
 
   /// Called when the user toggles the checkbox on or off.
   final ValueChanged<bool>? onChanged;
@@ -79,7 +83,6 @@ class ShadCheckbox extends StatefulWidget {
 class _ShadCheckboxState extends State<ShadCheckbox> {
   FocusNode? _focusNode;
 
-  bool get enabled => widget.onChanged != null;
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
 
   @override
@@ -124,7 +127,7 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
       checked: widget.value,
       child: ShadDisabled(
         showForbiddenCursor: true,
-        disabled: !enabled,
+        disabled: !widget.enabled,
         child: ShadFocused(
           focusNode: focusNode,
           builder: (context, focused, child) {
@@ -160,7 +163,7 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
 
     return ShadDisabled(
       showForbiddenCursor: true,
-      disabled: !enabled,
+      disabled: !widget.enabled,
       disabledOpacity: 1,
       child: GestureDetector(
         onTap: widget.onChanged == null

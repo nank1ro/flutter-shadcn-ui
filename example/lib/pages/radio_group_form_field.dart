@@ -8,17 +8,32 @@ import 'package:example/common/properties/enum_property.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-class CheckboxFormFieldPage extends StatefulWidget {
-  const CheckboxFormFieldPage({super.key});
+enum NotifyAbout {
+  all,
+  mentions,
+  nothing;
 
-  @override
-  State<CheckboxFormFieldPage> createState() => _CheckboxFormFieldPageState();
+  String get message {
+    return switch (this) {
+      all => 'All new messages',
+      mentions => 'Direct messages and mentions',
+      nothing => 'Nothing',
+    };
+  }
 }
 
-class _CheckboxFormFieldPageState extends State<CheckboxFormFieldPage> {
+class RadioGroupFormFieldPage extends StatefulWidget {
+  const RadioGroupFormFieldPage({super.key});
+
+  @override
+  State<RadioGroupFormFieldPage> createState() =>
+      _RadioGroupFormFieldPageState();
+}
+
+class _RadioGroupFormFieldPageState extends State<RadioGroupFormFieldPage> {
   bool enabled = true;
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
-  bool initialValue = false;
+  NotifyAbout? initialValue;
   Map<Object, dynamic> formValue = {};
   final formKey = GlobalKey<ShadFormState>();
 
@@ -29,9 +44,9 @@ class _CheckboxFormFieldPageState extends State<CheckboxFormFieldPage> {
       key: formKey,
       enabled: enabled,
       autovalidateMode: autovalidateMode,
-      initialValue: {'terms': initialValue},
+      initialValue: {'notify': initialValue},
       child: BaseScaffold(
-        appBarTitle: 'CheckboxFormField',
+        appBarTitle: 'RadioGroupFormField',
         editable: [
           MyBoolProperty(
             label: 'Enabled',
@@ -44,9 +59,10 @@ class _CheckboxFormFieldPageState extends State<CheckboxFormFieldPage> {
             values: AutovalidateMode.values,
             onChanged: (value) => setState(() => autovalidateMode = value),
           ),
-          MyBoolProperty(
+          MyEnumProperty<NotifyAbout>(
             label: 'Form Initial Value',
-            value: initialValue,
+            value: NotifyAbout.nothing,
+            values: NotifyAbout.values,
             onChanged: (value) {
               setState(() {
                 initialValue = value;
@@ -64,16 +80,22 @@ class _CheckboxFormFieldPageState extends State<CheckboxFormFieldPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ShadCheckboxFormField(
-                  id: 'terms',
+                ShadRadioGroupFormField(
+                  id: 'notify',
+                  enabled: enabled,
                   initialValue: initialValue,
-                  inputLabel: const Text('I accept the terms and conditions'),
-                  onChanged: print,
-                  inputSublabel:
-                      const Text('You agree to our Terms and Conditions'),
+                  valueTransformer: (value) => value?.name,
+                  items: NotifyAbout.values.map(
+                    (e) => ShadRadio<NotifyAbout>(
+                      value: e,
+                      label: Text(e.message),
+                    ),
+                  ),
+                  label: const Text('Notify me about'),
+                  onChanged: (v) {},
                   validator: (v) {
-                    if (!v) {
-                      return 'You must accept the terms and conditions';
+                    if (v == null) {
+                      return 'You need to select a notification type.';
                     }
                     return null;
                   },

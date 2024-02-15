@@ -127,7 +127,8 @@ class _SelectPageState extends State<SelectPage> {
       children: [
         ShadSelect<String>(
           minWidth: 180,
-          onChanged: enabled ? (v) => print(v) : null,
+          onChanged: print,
+          enabled: enabled,
           focusNode: focusNodes[0],
           placeholder: const Text('Select a fruit'),
           options: [
@@ -151,7 +152,8 @@ class _SelectPageState extends State<SelectPage> {
         ShadSelect<String>(
           minWidth: 280,
           focusNode: focusNodes[1],
-          onChanged: enabled ? (v) => print(v) : null,
+          onChanged: print,
+          enabled: enabled,
           placeholder: const Text('Select a timezone'),
           options: getTimezonesWidgets(theme),
           selectedOptionBuilder: (context, value) {

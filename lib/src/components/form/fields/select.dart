@@ -47,8 +47,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               focusNode: state.focusNode,
               placeholder: placeholder,
               initialValue: initialValue,
-              onChanged:
-                  onChanged != null && state.enabled ? state.didChange : null,
+              enabled: state.enabled,
+              onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
               minWidth: minWidth,
               maxHeight: maxHeight,
