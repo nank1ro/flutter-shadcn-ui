@@ -4,7 +4,7 @@ import 'package:shadcn_ui/src/components/radio.dart';
 
 class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
   ShadRadioGroupFormField({
-    required super.id,
+    super.id,
     super.key,
     super.onSaved,
     super.label,
@@ -26,8 +26,7 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
             final state = field as _ShadFormBuilderRadioGroupState;
             return ShadRadioGroup(
               items: items,
-              onChanged:
-                  onChanged != null && state.enabled ? state.didChange : null,
+              onChanged: state.didChange,
               enabled: enabled,
               initialValue: initialValue,
             );

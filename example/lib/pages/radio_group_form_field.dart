@@ -92,7 +92,6 @@ class _RadioGroupFormFieldPageState extends State<RadioGroupFormFieldPage> {
                     ),
                   ),
                   label: const Text('Notify me about'),
-                  onChanged: (v) {},
                   validator: (v) {
                     if (v == null) {
                       return 'You need to select a notification type.';

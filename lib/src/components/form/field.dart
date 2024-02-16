@@ -15,7 +15,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
     super.enabled,
     super.autovalidateMode,
     super.restorationId,
-    required this.id,
+    this.id,
     this.focusNode,
     this.label,
     this.error,
@@ -44,7 +44,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
 
   /// Used to reference the field within the form, or to reference form data
   /// after the form is submitted.
-  final Object id;
+  final Object? id;
 
   final FocusNode? focusNode;
 
@@ -84,15 +84,17 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     _focusNode = widget.focusNode ?? FocusNode();
     // Register this field when there is a parent ShadForm
     _parentForm = ShadForm.maybeOf(context);
-    _parentForm?.registerField(widget.id, this);
+    if (widget.id != null) _parentForm?.registerField(widget.id!, this);
   }
 
   @override
   void didUpdateWidget(covariant ShadFormBuilderField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.id != oldWidget.id) {
-      _parentForm?.unregisterField(oldWidget.id, this);
-      _parentForm?.registerField(widget.id, this);
+      if (oldWidget.id != null) {
+        _parentForm?.unregisterField(oldWidget.id!, this);
+      }
+      if (widget.id != null) _parentForm?.registerField(widget.id!, this);
     }
   }
 
@@ -112,7 +114,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
 
   @override
   void dispose() {
-    _parentForm?.unregisterField(widget.id, this);
+    if (widget.id != null) _parentForm?.unregisterField(widget.id!, this);
     _focusNode?.dispose();
     super.dispose();
   }
@@ -136,17 +138,20 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   void _informFormForFieldChange() {
     if (_parentForm != null) {
       if (enabled || readOnly) {
-        _parentForm!.setInternalFieldValue<T>(widget.id, value);
+        if (widget.id != null) {
+          _parentForm!.setInternalFieldValue<T>(widget.id!, value);
+        }
         return;
       }
-      _parentForm!.removeInternalFieldValue(widget.id);
+      if (widget.id != null) _parentForm!.removeInternalFieldValue(widget.id!);
     }
   }
 
   void registerTransformer(Map<Object, Function> map) {
+    if (widget.id == null) return;
     final fun = widget.valueTransformer;
     if (fun != null) {
-      map[widget.id] = fun;
+      map[widget.id!] = fun;
     }
   }
 }

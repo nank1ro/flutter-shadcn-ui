@@ -5,7 +5,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
   ShadSelectFormField({
-    required super.id,
+    super.id,
     super.key,
     super.onSaved,
     super.label,

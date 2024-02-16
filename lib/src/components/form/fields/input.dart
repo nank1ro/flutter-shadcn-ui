@@ -9,7 +9,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 class ShadInputFormField extends ShadFormBuilderField<String> {
   ShadInputFormField({
-    required super.id,
+    super.id,
     super.key,
     super.onSaved,
     String? Function(String)? validator,

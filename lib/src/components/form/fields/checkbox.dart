@@ -5,7 +5,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
   ShadCheckboxFormField({
-    required super.id,
+    super.id,
     super.key,
     super.onSaved,
     super.label,
