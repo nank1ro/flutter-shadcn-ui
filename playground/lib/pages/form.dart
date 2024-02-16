@@ -8,6 +8,21 @@ enum FormStyle {
   checkboxField,
   switchField,
   selectField,
+  radioField,
+}
+
+enum NotifyAbout {
+  all,
+  mentions,
+  nothing;
+
+  String get message {
+    return switch (this) {
+      all => 'All new messages',
+      mentions => 'Direct messages and mentions',
+      nothing => 'Nothing',
+    };
+  }
 }
 
 class FormPage extends StatefulWidget {
@@ -109,7 +124,15 @@ class _FormPageState extends State<FormPage> {
                           }
                           return null;
                         },
-                      )
+                      ),
+                    FormStyle.radioField => ShadRadioGroup<NotifyAbout>(
+                        items: NotifyAbout.values.map(
+                          (e) => ShadRadio<NotifyAbout>(
+                            value: e,
+                            label: Text(e.message),
+                          ),
+                        ),
+                      ),
                   };
                 }(),
                 const SizedBox(height: 16),
