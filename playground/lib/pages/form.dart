@@ -125,13 +125,21 @@ class _FormPageState extends State<FormPage> {
                           return null;
                         },
                       ),
-                    FormStyle.radioField => ShadRadioGroup<NotifyAbout>(
+                    FormStyle.radioField =>
+                      ShadRadioGroupFormField<NotifyAbout>(
+                        label: const Text('Notify me about'),
                         items: NotifyAbout.values.map(
                           (e) => ShadRadio<NotifyAbout>(
                             value: e,
                             label: Text(e.message),
                           ),
                         ),
+                        validator: (v) {
+                          if (v == null) {
+                            return 'You need to select a notification type.';
+                          }
+                          return null;
+                        },
                       ),
                   };
                 }(),
