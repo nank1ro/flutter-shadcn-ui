@@ -129,7 +129,7 @@ class _FormPageState extends State<FormPage> {
                       ShadRadioGroupFormField<NotifyAbout>(
                         label: const Text('Notify me about'),
                         items: NotifyAbout.values.map(
-                          (e) => ShadRadio<NotifyAbout>(
+                          (e) => ShadRadio(
                             value: e,
                             label: Text(e.message),
                           ),
