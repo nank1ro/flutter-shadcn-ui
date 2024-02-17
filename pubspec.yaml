@@ -34,3 +34,25 @@ flutter:
     - assets/chevron-up.svg
     - assets/bell-ring.svg
     - assets/x.svg
+
+  fonts:
+    - family: Geist
+      fonts:
+        - asset: fonts/Geist-Thin.otf
+          weight: 100
+        - asset: fonts/Geist-UltraLight.otf
+          weight: 200
+        - asset: fonts/Geist-Light.otf
+          weight: 300
+        - asset: fonts/Geist-Regular.otf
+          weight: 400
+        - asset: fonts/Geist-Medium.otf
+          weight: 500
+        - asset: fonts/Geist-SemiBold.otf
+          weight: 600
+        - asset: fonts/Geist-Bold.otf
+          weight: 700
+        - asset: fonts/Geist-Black.otf
+          weight: 800
+        - asset: fonts/Geist-UltraBlack.otf
+          weight: 900

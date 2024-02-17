@@ -10,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart'
 import 'package:shadcn_ui/src/components/toast.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
+import 'package:shadcn_ui/src/theme/text_theme/defaults.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadApp extends StatefulWidget {
@@ -421,6 +422,8 @@ class _ShadAppState extends State<ShadApp> {
     return AnimatedTheme(
       data: mTheme?.data ??
           ThemeData(
+            fontFamily: kDefaultFontFamily,
+            package: 'shadcn_ui',
             extensions: themeData.extensions,
             colorScheme: ColorScheme(
               brightness: themeData.brightness,
