@@ -436,32 +436,6 @@ class _ShadAppState extends State<ShadApp> {
             ),
             scaffoldBackgroundColor: themeData.colorScheme.background,
             brightness: themeData.brightness,
-            inputDecorationTheme: InputDecorationTheme(
-              hintStyle: themeData.textTheme.muted,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 8,
-              ),
-              constraints: const BoxConstraints.tightFor(height: 40),
-              border: OutlineInputBorder(
-                borderRadius: themeData.radius,
-                borderSide: BorderSide(
-                  color: themeData.colorScheme.border,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: themeData.radius,
-                borderSide: BorderSide(
-                  color: themeData.colorScheme.border,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: themeData.radius,
-                borderSide: BorderSide(
-                  color: themeData.colorScheme.border,
-                ),
-              ),
-            ),
           ),
       child: AnimatedShadTheme(
         curve: widget.themeCurve,
