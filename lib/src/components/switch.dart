@@ -10,6 +10,7 @@ class ShadSwitch extends StatefulWidget {
   const ShadSwitch({
     super.key,
     required this.value,
+    this.enabled = true,
     this.onChanged,
     this.focusNode,
     this.thumbColor,
@@ -29,6 +30,9 @@ class ShadSwitch extends StatefulWidget {
 
   /// Whether the switch is on or off.
   final bool value;
+
+  /// Whether the switch is enabled, defaults to true.
+  final bool enabled;
 
   /// Called when the user toggles the switch on or off.
   final ValueChanged<bool>? onChanged;
@@ -86,7 +90,6 @@ class _ShadSwitchState extends State<ShadSwitch>
   FocusNode? _focusNode;
   late final controller = AnimationController(vsync: this);
 
-  bool get enabled => widget.onChanged != null;
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
 
   @override
@@ -144,7 +147,7 @@ class _ShadSwitchState extends State<ShadSwitch>
       toggled: widget.value,
       child: ShadDisabled(
         showForbiddenCursor: true,
-        disabled: !enabled,
+        disabled: !widget.enabled,
         child: ShadFocused(
           focusNode: focusNode,
           builder: (context, focused, child) {
@@ -197,7 +200,7 @@ class _ShadSwitchState extends State<ShadSwitch>
 
     return ShadDisabled(
       showForbiddenCursor: true,
-      disabled: !enabled,
+      disabled: !widget.enabled,
       disabledOpacity: 1,
       child: GestureDetector(
         onTap: widget.onChanged == null

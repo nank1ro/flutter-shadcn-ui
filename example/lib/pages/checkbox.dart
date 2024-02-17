@@ -46,11 +46,8 @@ class _CheckboxPageState extends State<CheckboxPage> {
         ShadCheckbox(
           value: value,
           focusNode: focusNode,
-          onChanged: enabled
-              ? (v) {
-                  setState(() => value = v);
-                }
-              : null,
+          onChanged: (v) => setState(() => value = v),
+          enabled: enabled,
           label: const Text('Accept terms and conditions'),
           sublabel: const Text(
             'You agree to our Terms of Service and Privacy Policy.',

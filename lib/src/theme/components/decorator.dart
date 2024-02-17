@@ -236,7 +236,6 @@ class ShadDecorator extends StatelessWidget {
 
     final TextStyle effectiveLabelStyle;
     final effectiveErrorStyle = effectiveDecoration.errorStyle ??
-        effectiveDecoration.errorLabelStyle ??
         theme.textTheme.muted.copyWith(
           fontWeight: FontWeight.w500,
           color: theme.colorScheme.destructive,
@@ -244,7 +243,6 @@ class ShadDecorator extends StatelessWidget {
 
     if (!hasError) {
       effectiveLabelStyle = effectiveDecoration.labelStyle ??
-          effectiveDecoration.labelStyle ??
           theme.textTheme.muted.copyWith(
             fontWeight: FontWeight.w500,
             color: theme.colorScheme.foreground,

@@ -11,6 +11,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
+import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
@@ -48,6 +49,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadSwitchTheme? switchTheme,
     ShadCheckboxTheme? checkboxTheme,
     ShadInputTheme? inputTheme,
+    ShadRadioTheme? radioTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -129,6 +131,9 @@ class ShadThemeData extends ShadBaseTheme {
         radius: effectiveRadius,
         textTheme: effectiveTextTheme,
       ).mergeWith(inputTheme),
+      radioTheme: ShadComponentDefaultTheme.radioTheme(
+        colorScheme: colorScheme,
+      ).mergeWith(radioTheme),
     );
   }
 
@@ -160,6 +165,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.switchTheme,
     required super.checkboxTheme,
     required super.inputTheme,
+    required super.radioTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -220,6 +226,7 @@ class ShadThemeData extends ShadBaseTheme {
       checkboxTheme:
           ShadCheckboxTheme.lerp(a.checkboxTheme, b.checkboxTheme, t),
       inputTheme: ShadInputTheme.lerp(a.inputTheme, b.inputTheme, t),
+      radioTheme: ShadRadioTheme.lerp(a.radioTheme, b.radioTheme, t),
     );
   }
 
@@ -254,7 +261,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.optionTheme == optionTheme &&
         other.switchTheme == switchTheme &&
         other.checkboxTheme == checkboxTheme &&
-        other.inputTheme == inputTheme;
+        other.inputTheme == inputTheme &&
+        other.radioTheme == radioTheme;
   }
 
   @override
@@ -285,7 +293,8 @@ class ShadThemeData extends ShadBaseTheme {
         optionTheme.hashCode ^
         switchTheme.hashCode ^
         checkboxTheme.hashCode ^
-        inputTheme.hashCode;
+        inputTheme.hashCode ^
+        radioTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -316,6 +325,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadSwitchTheme? switchTheme,
     ShadCheckboxTheme? checkboxTheme,
     ShadInputTheme? inputTheme,
+    ShadRadioTheme? radioTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -347,6 +357,7 @@ class ShadThemeData extends ShadBaseTheme {
       switchTheme: switchTheme ?? this.switchTheme,
       checkboxTheme: checkboxTheme ?? this.checkboxTheme,
       inputTheme: inputTheme ?? this.inputTheme,
+      radioTheme: radioTheme ?? this.radioTheme,
     );
   }
 }

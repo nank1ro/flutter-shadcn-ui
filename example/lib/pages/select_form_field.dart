@@ -77,7 +77,7 @@ class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
                   id: 'email',
                   minWidth: 350,
                   initialValue: initialValue,
-                  onChanged: (v) {},
+                  onChanged: print,
                   options: verifiedEmails
                       .map((email) =>
                           ShadOption(value: email, child: Text(email)))

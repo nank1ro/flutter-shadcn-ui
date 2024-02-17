@@ -25,6 +25,7 @@ class ShadSelect<T> extends StatefulWidget {
     super.key,
     required this.options,
     required this.selectedOptionBuilder,
+    this.enabled = true,
     this.placeholder,
     this.initialValue,
     this.onChanged,
@@ -47,6 +48,9 @@ class ShadSelect<T> extends StatefulWidget {
 
   /// The callback that is called when the value of the [ShadSelect] changes.
   final ValueChanged<T>? onChanged;
+
+  /// Whether the [ShadSelect] is enabled, defaults to true.
+  final bool enabled;
 
   /// The initial value of the [ShadSelect], defaults to `null`.
   final T? initialValue;
@@ -303,9 +307,9 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                 decorationHorizontalPadding;
 
         final Widget select = ShadDisabled(
-          disabled: widget.onChanged == null,
+          disabled: !widget.enabled,
           child: ShadFocused(
-            canRequestFocus: widget.onChanged != null,
+            canRequestFocus: widget.enabled,
             focusNode: focusNode,
             builder: (context, focused, child) {
               return ShadDecorator(

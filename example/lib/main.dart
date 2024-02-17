@@ -9,6 +9,8 @@ import 'package:example/pages/image.dart';
 import 'package:example/pages/input.dart';
 import 'package:example/pages/input_form_field.dart';
 import 'package:example/pages/popover.dart';
+import 'package:example/pages/radio_group.dart';
+import 'package:example/pages/radio_group_form_field.dart';
 import 'package:example/pages/select.dart';
 import 'package:example/pages/select_form_field.dart';
 import 'package:example/pages/switch.dart';
@@ -31,15 +33,17 @@ final routes = <String, WidgetBuilder>{
   '/button': (_) => const ButtonPage(),
   '/card': (_) => const CardPage(),
   '/checkbox': (_) => const CheckboxPage(),
+  '/checkbox-form-field': (_) => const CheckboxFormFieldPage(),
   '/image': (_) => const ImagePage(),
   '/input': (_) => const InputPage(),
   '/input-form-field': (_) => const InputFormFieldPage(),
-  '/checkbox-form-field': (_) => const CheckboxFormFieldPage(),
-  '/switch-form-field': (_) => const SwitchFormFieldPage(),
-  '/select-form-field': (_) => const SelectFormFieldPage(),
   '/popover': (_) => const PopoverPage(),
+  '/radio-group': (_) => const RadioPage(),
+  '/radio-group-form-field': (_) => const RadioGroupFormFieldPage(),
   '/select': (_) => const SelectPage(),
+  '/select-form-field': (_) => const SelectFormFieldPage(),
   '/switch': (_) => const SwitchPage(),
+  '/switch-form-field': (_) => const SwitchFormFieldPage(),
   '/tooltip': (_) => const TooltipPage(),
   '/typography': (_) => const TypographyPage(),
 };

@@ -10,6 +10,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
+import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
@@ -379,6 +380,27 @@ abstract class ShadComponentDefaultTheme {
         width: 2,
       ),
       radius: radius,
+    );
+  }
+
+  static ShadRadioTheme radioTheme({
+    required ShadColorScheme colorScheme,
+  }) {
+    return ShadRadioTheme(
+      size: 16,
+      duration: 100.milliseconds,
+      color: colorScheme.primary,
+      borderWidth: 1,
+      padding: const EdgeInsets.only(left: 8),
+      decoration: ShadDecoration(
+        border: const ShadBorder(width: 4, color: Colors.transparent),
+        focusedBorder: ShadBorder(
+          width: 2,
+          color: colorScheme.ring,
+          radius: const BorderRadius.all(Radius.circular(16)),
+          padding: const EdgeInsets.all(2),
+        ),
+      ),
     );
   }
 }

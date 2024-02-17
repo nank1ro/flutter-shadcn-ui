@@ -5,7 +5,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 class ShadSwitchFormField extends ShadFormBuilderField<bool> {
   ShadSwitchFormField({
-    required super.id,
+    super.id,
     super.key,
     super.onSaved,
     super.label,
@@ -48,8 +48,8 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
             final state = field as _ShadFormBuilderSwitchState;
             return ShadSwitch(
               value: state.value!,
-              onChanged:
-                  onChanged != null && state.enabled ? state.didChange : null,
+              onChanged: state.didChange,
+              enabled: state.enabled,
               focusNode: state.focusNode,
               decoration: inputDecoration,
               radius: radius,

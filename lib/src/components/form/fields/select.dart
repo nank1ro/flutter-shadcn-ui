@@ -5,7 +5,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
   ShadSelectFormField({
-    required super.id,
+    super.id,
     super.key,
     super.onSaved,
     super.label,
@@ -47,8 +47,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               focusNode: state.focusNode,
               placeholder: placeholder,
               initialValue: initialValue,
-              onChanged:
-                  onChanged != null && state.enabled ? state.didChange : null,
+              enabled: state.enabled,
+              onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
               minWidth: minWidth,
               maxHeight: maxHeight,

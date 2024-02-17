@@ -9,11 +9,13 @@ class BaseScaffold extends StatelessWidget {
     required this.children,
     required this.appBarTitle,
     this.editable,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
   });
 
   final List<Widget> children;
   final String appBarTitle;
   final List<Widget>? editable;
+  final CrossAxisAlignment crossAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class BaseScaffold extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: crossAxisAlignment,
           children: children.separatedBy(const SizedBox(height: 8)),
         ),
       ),
