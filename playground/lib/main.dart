@@ -12,6 +12,7 @@ import 'package:playground/pages/popover.dart';
 import 'package:playground/pages/radio_group.dart';
 import 'package:playground/pages/select.dart';
 import 'package:playground/pages/switch.dart';
+import 'package:playground/pages/toast.dart';
 import 'package:playground/pages/tooltip.dart';
 import 'package:playground/pages/typography.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -137,6 +138,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/radio-group',
       builder: (context, state) => const RadioGroupPage(),
+    ),
+    GoRoute(
+      path: '/toast',
+      builder: (context, state) => const ToastPage(),
     ),
   ],
 );
