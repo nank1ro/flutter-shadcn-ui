@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 
+const kDefaultFontFamily = 'Geist';
+
 abstract class ShadTextDefaultTheme {
   static TextStyle h1Large({
     required ShadColorScheme colorScheme,
@@ -12,6 +14,8 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w800,
       height: 48 / 48,
       letterSpacing: -0.4,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 
@@ -25,6 +29,8 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w800,
       height: 40 / 36,
       letterSpacing: -0.4,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 
@@ -38,6 +44,8 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w600,
       height: 36 / 30,
       letterSpacing: -0.4,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 
@@ -51,6 +59,8 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w600,
       height: 32 / 24,
       letterSpacing: -0.4,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 
@@ -64,6 +74,8 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w600,
       height: 28 / 20,
       letterSpacing: -0.4,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 
@@ -77,6 +89,8 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w400,
       height: 28 / 16,
       letterSpacing: 0,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 
@@ -90,6 +104,8 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w400,
       height: 24 / 16,
       letterSpacing: 0,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 
@@ -103,6 +119,8 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w700,
       height: 24 / 16,
       letterSpacing: 0,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 
@@ -116,6 +134,8 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w400,
       height: 24 / 16,
       letterSpacing: 0,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 
@@ -130,6 +150,8 @@ abstract class ShadTextDefaultTheme {
       height: 28 / 20,
       letterSpacing: 0,
       color: colorScheme.mutedForeground,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 
@@ -143,6 +165,8 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w600,
       height: 28 / 18,
       letterSpacing: 0,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 
@@ -156,6 +180,8 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w500,
       height: 14 / 14,
       letterSpacing: 0,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 
@@ -170,6 +196,8 @@ abstract class ShadTextDefaultTheme {
       height: 20 / 14,
       letterSpacing: 0,
       color: colorScheme.mutedForeground,
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
     );
   }
 }
