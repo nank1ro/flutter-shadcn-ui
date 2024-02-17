@@ -52,7 +52,11 @@ export 'src/theme/components/popover.dart';
 export 'src/theme/components/radio.dart';
 export 'src/theme/components/select.dart';
 export 'src/theme/components/switch.dart';
+export 'src/theme/components/toast.dart';
 export 'src/theme/components/tooltip.dart';
+
+// Utils
+export 'src/utils/position.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart';

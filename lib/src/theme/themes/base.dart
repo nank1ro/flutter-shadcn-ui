@@ -12,6 +12,7 @@ import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
+import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/data.dart';
 
@@ -46,6 +47,7 @@ abstract class ShadBaseTheme {
     required this.checkboxTheme,
     required this.inputTheme,
     required this.radioTheme,
+    required this.toastTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -76,4 +78,5 @@ abstract class ShadBaseTheme {
   final ShadCheckboxTheme checkboxTheme;
   final ShadInputTheme inputTheme;
   final ShadRadioTheme radioTheme;
+  final ShadToastTheme toastTheme;
 }
