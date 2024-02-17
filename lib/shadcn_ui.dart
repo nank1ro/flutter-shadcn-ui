@@ -48,6 +48,7 @@ export 'src/theme/components/decorator.dart';
 export 'src/theme/components/input.dart';
 export 'src/theme/components/option.dart';
 export 'src/theme/components/popover.dart';
+export 'src/theme/components/radio.dart';
 export 'src/theme/components/select.dart';
 export 'src/theme/components/switch.dart';
 export 'src/theme/components/tooltip.dart';
