@@ -5,4 +5,5 @@ abstract class ShadAssets {
   static const chevronDown = '$_assetsFolder/chevron-down.svg';
   static const chevronUp = '$_assetsFolder/chevron-up.svg';
   static const bellRing = '$_assetsFolder/bell-ring.svg';
+  static const x = '$_assetsFolder/x.svg';
 }

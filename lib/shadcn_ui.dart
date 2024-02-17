@@ -22,6 +22,7 @@ export 'src/components/popover.dart';
 export 'src/components/radio.dart';
 export 'src/components/select.dart';
 export 'src/components/switch.dart';
+export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
 
 // Assets
