@@ -69,6 +69,7 @@ class ShadToasterState extends State<ShadToaster>
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+
     return ShadToasterScope(
       shadMessengerState: this,
       child: Stack(
@@ -80,8 +81,12 @@ class ShadToasterState extends State<ShadToaster>
               return ValueListenableBuilder(
                 valueListenable: _visibleToast,
                 builder: (context, toast, child) {
+                  final effectiveToastTheme = switch (toast?.variant) {
+                    ShadToastVariant.primary || null => theme.primaryToastTheme,
+                    ShadToastVariant.destructive => theme.destructiveToastTheme,
+                  };
                   final effectiveAnimateIn = toast?.animateIn ??
-                      theme.toastTheme.animateIn ??
+                      effectiveToastTheme.animateIn ??
                       [
                         SlideEffect(
                           begin: const Offset(0, 1),
@@ -90,7 +95,7 @@ class ShadToasterState extends State<ShadToaster>
                         ),
                       ];
                   final effectiveAnimateOut = toast?.animateOut ??
-                      theme.toastTheme.animateOut ??
+                      effectiveToastTheme.animateOut ??
                       [
                         SlideEffect(
                           begin: Offset.zero,
@@ -99,10 +104,10 @@ class ShadToasterState extends State<ShadToaster>
                         ),
                       ];
                   final effectiveOffset = toast?.offset ??
-                      theme.toastTheme.offset ??
+                      effectiveToastTheme.offset ??
                       const Offset(16, 16);
                   final effectiveAlignment = toast?.alignment ??
-                      theme.toastTheme.alignment ??
+                      effectiveToastTheme.alignment ??
                       Alignment.bottomRight;
                   return Animate(
                     controller: _controller,
@@ -141,9 +146,67 @@ class ShadToasterScope extends InheritedWidget {
       shadMessengerState != oldWidget.shadMessengerState;
 }
 
+enum ShadToastVariant {
+  primary,
+  destructive,
+}
+
 class ShadToast extends StatefulWidget {
   const ShadToast({
     super.key,
+    this.title,
+    this.description,
+    this.action,
+    this.closeIcon,
+    this.closeIconSrc,
+    this.alignment,
+    this.offset,
+    this.duration,
+    this.textDirection,
+    this.animateIn,
+    this.animateOut,
+    this.crossAxisAlignment,
+    this.showCloseIconOnlyWhenHovered,
+    this.titleStyle,
+    this.descriptionStyle,
+    this.actionPadding,
+    this.border,
+    this.radius,
+    this.shadows,
+    this.backgroundColor,
+    this.padding,
+    this.closeIconPosition,
+  }) : variant = ShadToastVariant.primary;
+
+  const ShadToast.destructive({
+    super.key,
+    this.title,
+    this.description,
+    this.action,
+    this.closeIcon,
+    this.closeIconSrc,
+    this.alignment,
+    this.offset,
+    this.duration,
+    this.textDirection,
+    this.animateIn,
+    this.animateOut,
+    this.crossAxisAlignment,
+    this.showCloseIconOnlyWhenHovered,
+    this.titleStyle,
+    this.descriptionStyle,
+    this.actionPadding,
+    this.border,
+    this.radius,
+    this.shadows,
+    this.backgroundColor,
+    this.padding,
+    this.closeIconPosition,
+  }) : variant = ShadToastVariant.destructive;
+
+  const ShadToast.raw({
+    super.key,
+    required this.variant,
     this.title,
     this.description,
     this.action,
@@ -190,6 +253,7 @@ class ShadToast extends StatefulWidget {
   final Color? backgroundColor;
   final EdgeInsets? padding;
   final ShadPosition? closeIconPosition;
+  final ShadToastVariant variant;
 
   @override
   State<ShadToast> createState() => _ShadToastState();
@@ -207,57 +271,69 @@ class _ShadToastState extends State<ShadToast> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+
+    final effectiveToastTheme = switch (widget.variant) {
+      ShadToastVariant.primary => theme.primaryToastTheme,
+      ShadToastVariant.destructive => theme.destructiveToastTheme,
+    };
+    final effectiveForegroundColor = switch (widget.variant) {
+      ShadToastVariant.primary => theme.colorScheme.foreground,
+      ShadToastVariant.destructive => theme.colorScheme.destructiveForeground,
+    };
+
     final effectiveCloseIcon = widget.closeIcon ??
         ShadButton.ghost(
           icon: ShadImage.square(
             size: 16,
             widget.closeIconSrc ??
-                theme.toastTheme.closeIconSrc ??
+                effectiveToastTheme.closeIconSrc ??
                 ShadAssets.x,
           ),
           width: 20,
           height: 20,
           padding: EdgeInsets.zero,
-          foregroundColor: theme.colorScheme.foreground.withOpacity(.5),
-          hoverForegroundColor: theme.colorScheme.foreground,
-          pressedForegroundColor: theme.colorScheme.foreground,
+          foregroundColor: effectiveForegroundColor.withOpacity(.5),
+          hoverBackgroundColor: Colors.transparent,
+          hoverForegroundColor: effectiveForegroundColor,
+          pressedForegroundColor: effectiveForegroundColor,
           onPressed: () => ShadToaster.of(context).hide(),
         );
     final effectiveTitleStyle = widget.titleStyle ??
-        theme.toastTheme.titleStyle ??
+        effectiveToastTheme.titleStyle ??
         theme.textTheme.muted.copyWith(
           fontWeight: FontWeight.w500,
-          color: theme.colorScheme.foreground,
+          color: effectiveForegroundColor,
         );
     final effectiveDescriptionStyle = widget.descriptionStyle ??
-        theme.toastTheme.descriptionStyle ??
+        effectiveToastTheme.descriptionStyle ??
         theme.textTheme.muted.copyWith(
-          color: theme.colorScheme.foreground.withOpacity(.9),
+          color: effectiveForegroundColor.withOpacity(.9),
         );
     final effectiveActionPadding = widget.actionPadding ??
-        theme.toastTheme.actionPadding ??
-        const EdgeInsets.only(left: 16, right: 8);
+        effectiveToastTheme.actionPadding ??
+        const EdgeInsets.only(left: 16);
     final effectiveBorder = widget.border ??
-        theme.toastTheme.border ??
+        effectiveToastTheme.border ??
         Border.all(color: theme.colorScheme.border);
     final effectiveBorderRadius =
-        widget.radius ?? theme.toastTheme.radius ?? theme.radius;
+        widget.radius ?? effectiveToastTheme.radius ?? theme.radius;
     final effectiveShadows =
-        widget.shadows ?? theme.toastTheme.shadows ?? ShadShadows.lg;
+        widget.shadows ?? effectiveToastTheme.shadows ?? ShadShadows.lg;
     final effectiveBackgroundColor = widget.backgroundColor ??
-        theme.toastTheme.backgroundColor ??
+        effectiveToastTheme.backgroundColor ??
         theme.colorScheme.background;
-    final effectivePadding =
-        widget.padding ?? theme.toastTheme.padding ?? const EdgeInsets.all(24);
+    final effectivePadding = widget.padding ??
+        effectiveToastTheme.padding ??
+        const EdgeInsets.fromLTRB(24, 24, 32, 24);
     final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
-        theme.toastTheme.crossAxisAlignment ??
+        effectiveToastTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
     final effectiveCloseIconPosition = widget.closeIconPosition ??
-        theme.toastTheme.closeIconPosition ??
+        effectiveToastTheme.closeIconPosition ??
         const ShadPosition(top: 8, right: 8);
     final effectiveShowCloseIconOnlyWhenHovered =
         widget.showCloseIconOnlyWhenHovered ??
-            theme.toastTheme.showCloseIconOnlyWhenHovered ??
+            effectiveToastTheme.showCloseIconOnlyWhenHovered ??
             true;
 
     return MouseRegion(

@@ -51,7 +51,8 @@ class ShadThemeData extends ShadBaseTheme {
     ShadCheckboxTheme? checkboxTheme,
     ShadInputTheme? inputTheme,
     ShadRadioTheme? radioTheme,
-    ShadToastTheme? toastTheme,
+    ShadToastTheme? primaryToastTheme,
+    ShadToastTheme? destructiveToastTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -136,11 +137,16 @@ class ShadThemeData extends ShadBaseTheme {
       radioTheme: ShadComponentDefaultTheme.radioTheme(
         colorScheme: colorScheme,
       ).mergeWith(radioTheme),
-      toastTheme: ShadComponentDefaultTheme.toastTheme(
+      primaryToastTheme: ShadComponentDefaultTheme.primaryToastTheme(
         colorScheme: colorScheme,
         radius: effectiveRadius,
         textTheme: effectiveTextTheme,
-      ).mergeWith(toastTheme),
+      ).mergeWith(primaryToastTheme),
+      destructiveToastTheme: ShadComponentDefaultTheme.destructiveToastTheme(
+        colorScheme: colorScheme,
+        radius: effectiveRadius,
+        textTheme: effectiveTextTheme,
+      ).mergeWith(destructiveToastTheme),
     );
   }
 
@@ -173,7 +179,8 @@ class ShadThemeData extends ShadBaseTheme {
     required super.checkboxTheme,
     required super.inputTheme,
     required super.radioTheme,
-    required super.toastTheme,
+    required super.primaryToastTheme,
+    required super.destructiveToastTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -235,7 +242,13 @@ class ShadThemeData extends ShadBaseTheme {
           ShadCheckboxTheme.lerp(a.checkboxTheme, b.checkboxTheme, t),
       inputTheme: ShadInputTheme.lerp(a.inputTheme, b.inputTheme, t),
       radioTheme: ShadRadioTheme.lerp(a.radioTheme, b.radioTheme, t),
-      toastTheme: ShadToastTheme.lerp(a.toastTheme, b.toastTheme, t),
+      primaryToastTheme:
+          ShadToastTheme.lerp(a.primaryToastTheme, b.primaryToastTheme, t),
+      destructiveToastTheme: ShadToastTheme.lerp(
+        a.destructiveToastTheme,
+        b.destructiveToastTheme,
+        t,
+      ),
     );
   }
 
@@ -272,7 +285,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.checkboxTheme == checkboxTheme &&
         other.inputTheme == inputTheme &&
         other.radioTheme == radioTheme &&
-        other.toastTheme == toastTheme;
+        other.primaryToastTheme == primaryToastTheme &&
+        other.destructiveToastTheme == destructiveToastTheme;
   }
 
   @override
@@ -305,7 +319,8 @@ class ShadThemeData extends ShadBaseTheme {
         checkboxTheme.hashCode ^
         inputTheme.hashCode ^
         radioTheme.hashCode ^
-        toastTheme.hashCode;
+        primaryToastTheme.hashCode ^
+        destructiveToastTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -337,7 +352,8 @@ class ShadThemeData extends ShadBaseTheme {
     ShadCheckboxTheme? checkboxTheme,
     ShadInputTheme? inputTheme,
     ShadRadioTheme? radioTheme,
-    ShadToastTheme? toastTheme,
+    ShadToastTheme? primaryToastTheme,
+    ShadToastTheme? destructiveToastTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -370,7 +386,9 @@ class ShadThemeData extends ShadBaseTheme {
       checkboxTheme: checkboxTheme ?? this.checkboxTheme,
       inputTheme: inputTheme ?? this.inputTheme,
       radioTheme: radioTheme ?? this.radioTheme,
-      toastTheme: toastTheme ?? this.toastTheme,
+      primaryToastTheme: primaryToastTheme ?? this.primaryToastTheme,
+      destructiveToastTheme:
+          destructiveToastTheme ?? this.destructiveToastTheme,
     );
   }
 }

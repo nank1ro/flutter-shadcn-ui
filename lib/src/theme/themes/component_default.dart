@@ -407,7 +407,7 @@ abstract class ShadComponentDefaultTheme {
     );
   }
 
-  static ShadToastTheme toastTheme({
+  static ShadToastTheme primaryToastTheme({
     required ShadColorScheme colorScheme,
     required BorderRadius radius,
     required ShadTextThemeData textTheme,
@@ -437,13 +437,55 @@ abstract class ShadComponentDefaultTheme {
       descriptionStyle: textTheme.muted.copyWith(
         color: colorScheme.foreground.withOpacity(.9),
       ),
-      actionPadding: const EdgeInsets.only(left: 16, right: 8),
+      actionPadding: const EdgeInsets.only(left: 16),
       border: Border.all(color: colorScheme.border),
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.background,
       crossAxisAlignment: CrossAxisAlignment.center,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
+      padding: const EdgeInsets.fromLTRB(24, 24, 32, 24),
+    );
+  }
+
+  static ShadToastTheme destructiveToastTheme({
+    required ShadColorScheme colorScheme,
+    required BorderRadius radius,
+    required ShadTextThemeData textTheme,
+  }) {
+    return ShadToastTheme(
+      animateIn: [
+        SlideEffect(
+          begin: const Offset(0, 1),
+          end: Offset.zero,
+          duration: 300.milliseconds,
+        ),
+      ],
+      animateOut: [
+        SlideEffect(
+          begin: Offset.zero,
+          end: const Offset(1, 0),
+          duration: 300.milliseconds,
+        ),
+      ],
+      offset: const Offset(16, 16),
+      alignment: Alignment.bottomRight,
+      closeIconSrc: ShadAssets.x,
+      titleStyle: textTheme.muted.copyWith(
+        fontWeight: FontWeight.w500,
+        color: colorScheme.destructiveForeground,
+      ),
+      descriptionStyle: textTheme.muted.copyWith(
+        color: colorScheme.destructiveForeground.withOpacity(.9),
+      ),
+      actionPadding: const EdgeInsets.only(left: 16),
+      border: Border.all(color: colorScheme.border),
+      shadows: ShadShadows.lg,
+      backgroundColor: colorScheme.destructive,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      closeIconPosition: const ShadPosition(top: 8, right: 8),
+      showCloseIconOnlyWhenHovered: true,
+      padding: const EdgeInsets.fromLTRB(24, 24, 32, 24),
     );
   }
 }

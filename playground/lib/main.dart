@@ -141,7 +141,13 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/toast',
-      builder: (context, state) => const ToastPage(),
+      builder: (context, state) {
+        final style =
+            state.uri.queryParameters['style'] ?? ToastStyle.schedule.name;
+        return ToastPage(
+          style: ToastStyle.values.byName(style),
+        );
+      },
     ),
   ],
 );

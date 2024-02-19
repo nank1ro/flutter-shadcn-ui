@@ -47,7 +47,8 @@ abstract class ShadBaseTheme {
     required this.checkboxTheme,
     required this.inputTheme,
     required this.radioTheme,
-    required this.toastTheme,
+    required this.primaryToastTheme,
+    required this.destructiveToastTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -78,5 +79,6 @@ abstract class ShadBaseTheme {
   final ShadCheckboxTheme checkboxTheme;
   final ShadInputTheme inputTheme;
   final ShadRadioTheme radioTheme;
-  final ShadToastTheme toastTheme;
+  final ShadToastTheme primaryToastTheme;
+  final ShadToastTheme destructiveToastTheme;
 }
