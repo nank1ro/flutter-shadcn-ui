@@ -252,8 +252,8 @@ class ShadButton extends StatefulWidget {
 
 class _ShadButtonState extends State<ShadButton> {
   FocusNode? _focusNode;
-  final isHovered = ValueNotifier(false);
-  final isPressed = ValueNotifier(false);
+  bool hovered = false;
+  bool pressed = false;
 
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
 
@@ -266,8 +266,6 @@ class _ShadButtonState extends State<ShadButton> {
   @override
   void dispose() {
     _focusNode?.dispose();
-    isHovered.dispose();
-    isPressed.dispose();
     super.dispose();
   }
 
@@ -451,7 +449,11 @@ class _ShadButtonState extends State<ShadButton> {
     if (icon != null && applyIconColorFilter) {
       icon = ColorFiltered(
         colorFilter: ColorFilter.mode(
-          foreground(theme),
+          trackPressState && pressed
+              ? pressedForegroundColor(theme)
+              : hovered
+                  ? hoverForeground(theme)
+                  : foreground(theme),
           BlendMode.srcIn,
         ),
         child: icon,
@@ -477,8 +479,14 @@ class _ShadButtonState extends State<ShadButton> {
               child: child!,
             ),
             child: MouseRegion(
-              onEnter: (_) => isHovered.value = true,
-              onExit: (_) => isHovered.value = false,
+              onEnter: (_) {
+                if (hovered) return;
+                setState(() => hovered = true);
+              },
+              onExit: (_) {
+                if (!hovered) return;
+                setState(() => hovered = false);
+              },
               cursor: cursor(theme),
               child: GestureDetector(
                 onTap: widget.onPressed == null
@@ -491,42 +499,34 @@ class _ShadButtonState extends State<ShadButton> {
                       },
                 onTapDown: (_) {
                   if (!trackPressState) return;
-                  isPressed.value = true;
+                  if (pressed) return;
+                  setState(() => pressed = true);
                 },
                 onTapUp: (_) {
                   if (!trackPressState) return;
-                  isPressed.value = false;
+                  if (!pressed) return;
+                  setState(() => pressed = false);
                 },
                 onTapCancel: () {
                   if (!trackPressState) return;
-                  isPressed.value = false;
+                  if (!pressed) return;
+                  setState(() => pressed = false);
                 },
-                child: ValueListenableBuilder(
-                  valueListenable: isHovered,
-                  builder: (context, hovered, child) {
-                    return ValueListenableBuilder(
-                      valueListenable: isPressed,
-                      builder: (context, pressed, _) {
-                        return Container(
-                          height: height(theme),
-                          width: width(theme),
-                          decoration: BoxDecoration(
-                            color: hasPressedBackgroundColor && pressed
-                                ? pressedBackgroundColor(theme)
-                                : hovered
-                                    ? hoverBackground(theme)
-                                    : background(theme),
-                            borderRadius: borderRadius(theme),
-                            border: border(theme),
-                            gradient: gradient(theme),
-                            boxShadow: shadows(theme),
-                          ),
-                          padding: padding(theme),
-                          child: child,
-                        );
-                      },
-                    );
-                  },
+                child: Container(
+                  height: height(theme),
+                  width: width(theme),
+                  decoration: BoxDecoration(
+                    color: hasPressedBackgroundColor && pressed
+                        ? pressedBackgroundColor(theme)
+                        : hovered
+                            ? hoverBackground(theme)
+                            : background(theme),
+                    borderRadius: borderRadius(theme),
+                    border: border(theme),
+                    gradient: gradient(theme),
+                    boxShadow: shadows(theme),
+                  ),
+                  padding: padding(theme),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -536,36 +536,22 @@ class _ShadButtonState extends State<ShadButton> {
                         children: [
                           if (icon != null) icon,
                           if (widget.text != null)
-                            ValueListenableBuilder(
-                              valueListenable: isHovered,
-                              builder: (context, hovered, _) {
-                                return ValueListenableBuilder(
-                                  valueListenable: isPressed,
-                                  builder: (context, pressed, child) {
-                                    return DefaultTextStyle(
-                                      style: theme.textTheme.small.copyWith(
-                                        color:
-                                            hasPressedForegroundColor && pressed
-                                                ? pressedForegroundColor(
-                                                    theme,
-                                                  )
-                                                : hovered
-                                                    ? hoverForeground(theme)
-                                                    : foreground(theme),
-                                        decoration: textDecoration(
-                                          theme,
-                                          hovered: hovered,
-                                        ),
-                                        decorationColor: foreground(theme),
-                                        decorationStyle:
-                                            TextDecorationStyle.solid,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                      child: widget.text!,
-                                    );
-                                  },
-                                );
-                              },
+                            DefaultTextStyle(
+                              style: theme.textTheme.small.copyWith(
+                                color: hasPressedForegroundColor && pressed
+                                    ? pressedForegroundColor(theme)
+                                    : hovered
+                                        ? hoverForeground(theme)
+                                        : foreground(theme),
+                                decoration: textDecoration(
+                                  theme,
+                                  hovered: hovered,
+                                ),
+                                decorationColor: foreground(theme),
+                                decorationStyle: TextDecorationStyle.solid,
+                              ),
+                              textAlign: TextAlign.center,
+                              child: widget.text!,
                             ),
                         ],
                       ),

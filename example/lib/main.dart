@@ -15,6 +15,7 @@ import 'package:example/pages/select.dart';
 import 'package:example/pages/select_form_field.dart';
 import 'package:example/pages/switch.dart';
 import 'package:example/pages/switch_form_field.dart';
+import 'package:example/pages/toast.dart';
 import 'package:example/pages/tooltip.dart';
 import 'package:example/pages/typography.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,7 @@ final routes = <String, WidgetBuilder>{
   '/select-form-field': (_) => const SelectFormFieldPage(),
   '/switch': (_) => const SwitchPage(),
   '/switch-form-field': (_) => const SwitchFormFieldPage(),
+  '/toast': (_) => const ToastPage(),
   '/tooltip': (_) => const TooltipPage(),
   '/typography': (_) => const TypographyPage(),
 };
