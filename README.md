@@ -46,7 +46,7 @@ Current progress:
 - [ ] Table
 - [ ] Tabs
 - [ ] TextArea
-- [ ] Toast
+- [x] [Toast](https://mariuti.com/shadcn-ui/components/toast/)
 - [ ] Toggle
 - [ ] ToggleGroup
 - [x] [Tooltip](https://mariuti.com/shadcn-ui/components/tooltip/)
