@@ -26,6 +26,7 @@ class ShadToastTheme {
     this.shadows,
     this.padding,
     this.closeIconPosition,
+    this.constraints,
   });
 
   final bool merge;
@@ -47,6 +48,7 @@ class ShadToastTheme {
   final List<BoxShadow>? shadows;
   final EdgeInsets? padding;
   final ShadPosition? closeIconPosition;
+  final BoxConstraints? constraints;
 
   static ShadToastTheme lerp(
     ShadToastTheme a,
@@ -75,6 +77,7 @@ class ShadToastTheme {
       shadows: b.shadows,
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       closeIconPosition: b.closeIconPosition,
+      constraints: b.constraints,
     );
   }
 
@@ -98,6 +101,7 @@ class ShadToastTheme {
     List<BoxShadow>? shadows,
     EdgeInsets? padding,
     ShadPosition? closeIconPosition,
+    BoxConstraints? constraints,
   }) {
     return ShadToastTheme(
       merge: merge ?? this.merge,
@@ -120,6 +124,7 @@ class ShadToastTheme {
       shadows: shadows ?? this.shadows,
       padding: padding ?? this.padding,
       closeIconPosition: closeIconPosition ?? this.closeIconPosition,
+      constraints: constraints ?? this.constraints,
     );
   }
 
@@ -145,6 +150,7 @@ class ShadToastTheme {
       shadows: other.shadows,
       padding: other.padding,
       closeIconPosition: other.closeIconPosition,
+      constraints: other.constraints,
     );
   }
 
@@ -171,7 +177,8 @@ class ShadToastTheme {
         other.radius == radius &&
         listEquals(other.shadows, shadows) &&
         other.padding == padding &&
-        other.closeIconPosition == closeIconPosition;
+        other.closeIconPosition == closeIconPosition &&
+        other.constraints == constraints;
   }
 
   @override
@@ -194,6 +201,7 @@ class ShadToastTheme {
         radius.hashCode ^
         shadows.hashCode ^
         padding.hashCode ^
-        closeIconPosition.hashCode;
+        closeIconPosition.hashCode ^
+        constraints.hashCode;
   }
 }

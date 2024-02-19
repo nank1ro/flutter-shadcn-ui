@@ -9,6 +9,7 @@ import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
+import 'package:shadcn_ui/src/utils/responsive.dart';
 
 const kDefaultToastDuration = Duration(seconds: 5);
 
@@ -176,6 +177,7 @@ class ShadToast extends StatefulWidget {
     this.backgroundColor,
     this.padding,
     this.closeIconPosition,
+    this.constraints,
   }) : variant = ShadToastVariant.primary;
 
   const ShadToast.destructive({
@@ -202,6 +204,7 @@ class ShadToast extends StatefulWidget {
     this.backgroundColor,
     this.padding,
     this.closeIconPosition,
+    this.constraints,
   }) : variant = ShadToastVariant.destructive;
 
   const ShadToast.raw({
@@ -229,6 +232,7 @@ class ShadToast extends StatefulWidget {
     this.backgroundColor,
     this.padding,
     this.closeIconPosition,
+    this.constraints,
   });
 
   final Widget? title;
@@ -254,6 +258,7 @@ class ShadToast extends StatefulWidget {
   final EdgeInsets? padding;
   final ShadPosition? closeIconPosition;
   final ShadToastVariant variant;
+  final BoxConstraints? constraints;
 
   @override
   State<ShadToast> createState() => _ShadToastState();
@@ -339,67 +344,79 @@ class _ShadToastState extends State<ShadToast> {
     return MouseRegion(
       onEnter: (_) => hovered.value = true,
       onExit: (_) => hovered.value = false,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          border: effectiveBorder,
-          borderRadius: effectiveBorderRadius,
-          boxShadow: effectiveShadows,
-          color: effectiveBackgroundColor,
-        ),
-        child: Stack(
-          children: [
-            Padding(
-              padding: effectivePadding,
-              child: Row(
-                textDirection: widget.textDirection,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: effectiveCrossAxisAlignment,
-                children: [
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (widget.title != null)
-                          DefaultTextStyle(
-                            style: effectiveTitleStyle,
-                            child: widget.title!,
-                          ),
-                        if (widget.description != null)
-                          DefaultTextStyle(
-                            style: effectiveDescriptionStyle,
-                            child: widget.description!,
-                          ),
-                      ],
-                    ),
+      child: ShadResponsiveBuilder(
+        builder: (context, breakpoint) {
+          return Container(
+            constraints: widget.constraints ??
+                effectiveToastTheme.constraints ??
+                BoxConstraints(
+                  minWidth:
+                      breakpoint >= ShadBreakpoint.md ? 0 : double.infinity,
+                  maxWidth:
+                      breakpoint >= ShadBreakpoint.md ? 420 : double.infinity,
+                ),
+            decoration: BoxDecoration(
+              border: effectiveBorder,
+              borderRadius: effectiveBorderRadius,
+              boxShadow: effectiveShadows,
+              color: effectiveBackgroundColor,
+            ),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: effectivePadding,
+                  child: Row(
+                    textDirection: widget.textDirection,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: effectiveCrossAxisAlignment,
+                    children: [
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (widget.title != null)
+                              DefaultTextStyle(
+                                style: effectiveTitleStyle,
+                                child: widget.title!,
+                              ),
+                            if (widget.description != null)
+                              DefaultTextStyle(
+                                style: effectiveDescriptionStyle,
+                                child: widget.description!,
+                              ),
+                          ],
+                        ),
+                      ),
+                      if (widget.action != null)
+                        Padding(
+                          padding: effectiveActionPadding,
+                          child: widget.action,
+                        ),
+                    ],
                   ),
-                  if (widget.action != null)
-                    Padding(
-                      padding: effectiveActionPadding,
-                      child: widget.action,
-                    ),
-                ],
-              ),
+                ),
+                Positioned(
+                  top: effectiveCloseIconPosition.top,
+                  right: effectiveCloseIconPosition.right,
+                  bottom: effectiveCloseIconPosition.bottom,
+                  left: effectiveCloseIconPosition.left,
+                  child: ValueListenableBuilder(
+                    valueListenable: hovered,
+                    builder: (context, hovered, child) {
+                      if (!effectiveShowCloseIconOnlyWhenHovered) return child!;
+                      return Visibility.maintain(
+                        visible: hovered,
+                        child: child!,
+                      );
+                    },
+                    child: effectiveCloseIcon,
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              top: effectiveCloseIconPosition.top,
-              right: effectiveCloseIconPosition.right,
-              bottom: effectiveCloseIconPosition.bottom,
-              left: effectiveCloseIconPosition.left,
-              child: ValueListenableBuilder(
-                valueListenable: hovered,
-                builder: (context, hovered, child) {
-                  if (!effectiveShowCloseIconOnlyWhenHovered) return child!;
-                  return Visibility.maintain(
-                    visible: hovered,
-                    child: child!,
-                  );
-                },
-                child: effectiveCloseIcon,
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
