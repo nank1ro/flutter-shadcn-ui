@@ -19,6 +19,7 @@ import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/data.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
 import 'package:shadcn_ui/src/theme/themes/component_default.dart';
+import 'package:shadcn_ui/src/utils/responsive.dart';
 
 @immutable
 class ShadThemeData extends ShadBaseTheme {
@@ -53,6 +54,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadRadioTheme? radioTheme,
     ShadToastTheme? primaryToastTheme,
     ShadToastTheme? destructiveToastTheme,
+    ShadBreakpoints? breakpoints,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -147,6 +149,7 @@ class ShadThemeData extends ShadBaseTheme {
         radius: effectiveRadius,
         textTheme: effectiveTextTheme,
       ).mergeWith(destructiveToastTheme),
+      breakpoints: breakpoints ?? ShadBreakpoints(),
     );
   }
 
@@ -181,6 +184,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.radioTheme,
     required super.primaryToastTheme,
     required super.destructiveToastTheme,
+    required super.breakpoints,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -249,6 +253,7 @@ class ShadThemeData extends ShadBaseTheme {
         b.destructiveToastTheme,
         t,
       ),
+      breakpoints: ShadBreakpoints.lerp(a.breakpoints, b.breakpoints, t),
     );
   }
 
@@ -286,7 +291,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.inputTheme == inputTheme &&
         other.radioTheme == radioTheme &&
         other.primaryToastTheme == primaryToastTheme &&
-        other.destructiveToastTheme == destructiveToastTheme;
+        other.destructiveToastTheme == destructiveToastTheme &&
+        other.breakpoints == breakpoints;
   }
 
   @override
@@ -320,7 +326,8 @@ class ShadThemeData extends ShadBaseTheme {
         inputTheme.hashCode ^
         radioTheme.hashCode ^
         primaryToastTheme.hashCode ^
-        destructiveToastTheme.hashCode;
+        destructiveToastTheme.hashCode ^
+        breakpoints.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -354,6 +361,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadRadioTheme? radioTheme,
     ShadToastTheme? primaryToastTheme,
     ShadToastTheme? destructiveToastTheme,
+    ShadBreakpoints? breakpoints,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -389,6 +397,7 @@ class ShadThemeData extends ShadBaseTheme {
       primaryToastTheme: primaryToastTheme ?? this.primaryToastTheme,
       destructiveToastTheme:
           destructiveToastTheme ?? this.destructiveToastTheme,
+      breakpoints: breakpoints ?? this.breakpoints,
     );
   }
 }

@@ -351,9 +351,10 @@ class _ShadToastState extends State<ShadToast> {
                 effectiveToastTheme.constraints ??
                 BoxConstraints(
                   minWidth:
-                      breakpoint >= ShadBreakpoint.md ? 0 : double.infinity,
-                  maxWidth:
-                      breakpoint >= ShadBreakpoint.md ? 420 : double.infinity,
+                      breakpoint >= theme.breakpoints.md ? 0 : double.infinity,
+                  maxWidth: breakpoint >= theme.breakpoints.md
+                      ? 420
+                      : double.infinity,
                 ),
             decoration: BoxDecoration(
               border: effectiveBorder,

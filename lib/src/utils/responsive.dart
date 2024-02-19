@@ -1,14 +1,58 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
-enum ShadBreakpoint {
-  tiny(0),
-  sm(640),
-  md(768),
-  lg(1024),
-  xl(1280),
-  xxl(1536);
+class ShadBreakpoints {
+  ShadBreakpoints({
+    double tiny = 0,
+    double sm = 640,
+    double md = 768,
+    double lg = 1024,
+    double xl = 1280,
+    double xxl = 1536,
+  })  : tiny = ShadBreakpointTiny(tiny),
+        sm = ShadBreakpointSmall(sm),
+        md = ShadBreakpointMedium(md),
+        lg = ShadBreakpointLarge(lg),
+        xl = ShadBreakpointExtraLarge(xl),
+        xxl = ShadBreakpointExtraExtraLarge(xxl);
 
+  final ShadBreakpoint tiny;
+  final ShadBreakpoint sm;
+  final ShadBreakpoint md;
+  final ShadBreakpoint lg;
+  final ShadBreakpoint xl;
+  final ShadBreakpoint xxl;
+
+  ShadBreakpoint fromWidth(double width) {
+    if (width < sm.value) return tiny;
+    if (width < md.value) return sm;
+    if (width < lg.value) return md;
+    if (width < xl.value) return lg;
+    if (width < xxl.value) return xl;
+    return xxl;
+  }
+
+  static ShadBreakpoints lerp(
+    ShadBreakpoints? a,
+    ShadBreakpoints? b,
+    double t,
+  ) {
+    return ShadBreakpoints(
+      tiny: ShadBreakpoint.lerp(a!.tiny, b!.tiny, t),
+      sm: ShadBreakpoint.lerp(a.sm, b.sm, t),
+      md: ShadBreakpoint.lerp(a.md, b.md, t),
+      lg: ShadBreakpoint.lerp(a.lg, b.lg, t),
+      xl: ShadBreakpoint.lerp(a.xl, b.xl, t),
+      xxl: ShadBreakpoint.lerp(a.xxl, b.xxl, t),
+    );
+  }
+}
+
+sealed class ShadBreakpoint {
   const ShadBreakpoint(this.value);
+
   final double value;
 
   bool operator <(ShadBreakpoint other) {
@@ -27,16 +71,33 @@ enum ShadBreakpoint {
     return value >= other.value;
   }
 
-  static ShadBreakpoint fromWidth(double width) {
-    return switch (width) {
-      < 640 => ShadBreakpoint.tiny,
-      < 768 => ShadBreakpoint.sm,
-      < 1024 => ShadBreakpoint.md,
-      < 1280 => ShadBreakpoint.lg,
-      < 1536 => ShadBreakpoint.xl,
-      _ => ShadBreakpoint.xxl,
-    };
+  static double lerp(ShadBreakpoint a, ShadBreakpoint b, double t) {
+    return lerpDouble(a.value, b.value, t)!;
   }
+}
+
+class ShadBreakpointTiny extends ShadBreakpoint {
+  const ShadBreakpointTiny(super.value);
+}
+
+class ShadBreakpointSmall extends ShadBreakpoint {
+  const ShadBreakpointSmall(super.value);
+}
+
+class ShadBreakpointMedium extends ShadBreakpoint {
+  const ShadBreakpointMedium(super.value);
+}
+
+class ShadBreakpointLarge extends ShadBreakpoint {
+  const ShadBreakpointLarge(super.value);
+}
+
+class ShadBreakpointExtraLarge extends ShadBreakpoint {
+  const ShadBreakpointExtraLarge(super.value);
+}
+
+class ShadBreakpointExtraExtraLarge extends ShadBreakpoint {
+  const ShadBreakpointExtraExtraLarge(super.value);
 }
 
 typedef ResponsiveWidgetBuilder = Widget Function(
@@ -55,6 +116,8 @@ class ShadResponsiveBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
-    return builder(context, ShadBreakpoint.fromWidth(width));
+    final breakpoints = ShadTheme.of(context).breakpoints;
+    final breakpoint = breakpoints.fromWidth(width);
+    return builder(context, breakpoint);
   }
 }

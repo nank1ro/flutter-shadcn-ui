@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
@@ -49,6 +50,7 @@ abstract class ShadBaseTheme {
     required this.radioTheme,
     required this.primaryToastTheme,
     required this.destructiveToastTheme,
+    required this.breakpoints,
   });
 
   final ShadColorScheme colorScheme;
@@ -81,4 +83,5 @@ abstract class ShadBaseTheme {
   final ShadRadioTheme radioTheme;
   final ShadToastTheme primaryToastTheme;
   final ShadToastTheme destructiveToastTheme;
+  final ShadBreakpoints breakpoints;
 }
