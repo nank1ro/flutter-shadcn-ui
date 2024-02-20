@@ -6,7 +6,7 @@ shadcn/ui ported in flutter
 
 Current progress:
 - [ ] Accordion
-- [ ] Alert
+- [x] [Alert](https://mariuti.com/shadcn-ui/components/alert/)
 - [ ] Dialog
 - [x] [Avatar](https://mariuti.com/shadcn-ui/components/avatar/)
 - [x] [Badge](https://mariuti.com/shadcn-ui/components/badge/)
