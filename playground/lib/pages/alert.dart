@@ -15,7 +15,7 @@ class AlertPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 40),
           child: () {
             return switch (style) {
               ShadAlertVariant.primary => const ShadAlert(
