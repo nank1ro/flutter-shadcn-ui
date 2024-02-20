@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
+import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
@@ -55,6 +56,8 @@ class ShadThemeData extends ShadBaseTheme {
     ShadToastTheme? primaryToastTheme,
     ShadToastTheme? destructiveToastTheme,
     ShadBreakpoints? breakpoints,
+    ShadAlertTheme? primaryAlertTheme,
+    ShadAlertTheme? destructiveAlertTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -150,6 +153,16 @@ class ShadThemeData extends ShadBaseTheme {
         textTheme: effectiveTextTheme,
       ).mergeWith(destructiveToastTheme),
       breakpoints: breakpoints ?? ShadBreakpoints(),
+      primaryAlertTheme: ShadComponentDefaultTheme.primaryAlertTheme(
+        colorScheme: colorScheme,
+        textTheme: effectiveTextTheme,
+        radius: effectiveRadius,
+      ).mergeWith(primaryAlertTheme),
+      destructiveAlertTheme: ShadComponentDefaultTheme.destructiveAlertTheme(
+        colorScheme: colorScheme,
+        textTheme: effectiveTextTheme,
+        radius: effectiveRadius,
+      ).mergeWith(destructiveAlertTheme),
     );
   }
 
@@ -185,6 +198,8 @@ class ShadThemeData extends ShadBaseTheme {
     required super.primaryToastTheme,
     required super.destructiveToastTheme,
     required super.breakpoints,
+    required super.primaryAlertTheme,
+    required super.destructiveAlertTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -254,6 +269,13 @@ class ShadThemeData extends ShadBaseTheme {
         t,
       ),
       breakpoints: ShadBreakpoints.lerp(a.breakpoints, b.breakpoints, t),
+      primaryAlertTheme:
+          ShadAlertTheme.lerp(a.primaryAlertTheme, b.primaryAlertTheme, t),
+      destructiveAlertTheme: ShadAlertTheme.lerp(
+        a.destructiveAlertTheme,
+        b.destructiveAlertTheme,
+        t,
+      ),
     );
   }
 
@@ -292,7 +314,9 @@ class ShadThemeData extends ShadBaseTheme {
         other.radioTheme == radioTheme &&
         other.primaryToastTheme == primaryToastTheme &&
         other.destructiveToastTheme == destructiveToastTheme &&
-        other.breakpoints == breakpoints;
+        other.breakpoints == breakpoints &&
+        other.primaryAlertTheme == primaryAlertTheme &&
+        other.destructiveAlertTheme == destructiveAlertTheme;
   }
 
   @override
@@ -327,7 +351,9 @@ class ShadThemeData extends ShadBaseTheme {
         radioTheme.hashCode ^
         primaryToastTheme.hashCode ^
         destructiveToastTheme.hashCode ^
-        breakpoints.hashCode;
+        breakpoints.hashCode ^
+        primaryAlertTheme.hashCode ^
+        destructiveAlertTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -362,6 +388,8 @@ class ShadThemeData extends ShadBaseTheme {
     ShadToastTheme? primaryToastTheme,
     ShadToastTheme? destructiveToastTheme,
     ShadBreakpoints? breakpoints,
+    ShadAlertTheme? primaryAlertTheme,
+    ShadAlertTheme? destructiveAlertTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -398,6 +426,9 @@ class ShadThemeData extends ShadBaseTheme {
       destructiveToastTheme:
           destructiveToastTheme ?? this.destructiveToastTheme,
       breakpoints: breakpoints ?? this.breakpoints,
+      primaryAlertTheme: primaryAlertTheme ?? this.primaryAlertTheme,
+      destructiveAlertTheme:
+          destructiveAlertTheme ?? this.destructiveAlertTheme,
     );
   }
 }

@@ -29,10 +29,12 @@ dev_dependencies:
 
 flutter:
   assets:
+    - assets/alert-circle.svg
+    - assets/bell-ring.svg
     - assets/check.svg
     - assets/chevron-down.svg
     - assets/chevron-up.svg
-    - assets/bell-ring.svg
+    - assets/terminal.svg
     - assets/x.svg
 
   fonts:

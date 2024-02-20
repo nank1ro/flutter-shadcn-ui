@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
+import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
@@ -16,6 +16,7 @@ import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/data.dart';
+import 'package:shadcn_ui/src/utils/responsive.dart';
 
 @immutable
 abstract class ShadBaseTheme {
@@ -51,6 +52,8 @@ abstract class ShadBaseTheme {
     required this.primaryToastTheme,
     required this.destructiveToastTheme,
     required this.breakpoints,
+    required this.primaryAlertTheme,
+    required this.destructiveAlertTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -84,4 +87,6 @@ abstract class ShadBaseTheme {
   final ShadToastTheme primaryToastTheme;
   final ShadToastTheme destructiveToastTheme;
   final ShadBreakpoints breakpoints;
+  final ShadAlertTheme primaryAlertTheme;
+  final ShadAlertTheme destructiveAlertTheme;
 }
