@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/assets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
+import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
@@ -486,6 +487,60 @@ abstract class ShadComponentDefaultTheme {
       closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsets.fromLTRB(24, 24, 32, 24),
+    );
+  }
+
+  static ShadAlertTheme primaryAlertTheme({
+    required ShadColorScheme colorScheme,
+    required BorderRadius radius,
+    required ShadTextThemeData textTheme,
+  }) {
+    return ShadAlertTheme(
+      iconPadding: const EdgeInsets.only(right: 12),
+      decoration: ShadDecoration(
+        border: ShadBorder(
+          color: colorScheme.border,
+          radius: radius,
+          padding: const EdgeInsets.all(16),
+        ),
+      ),
+      iconSize: const Size.square(16),
+      iconColor: colorScheme.foreground,
+      titleStyle: textTheme.p.copyWith(
+        color: colorScheme.foreground,
+        fontWeight: FontWeight.w500,
+        height: 1,
+      ),
+      descriptionStyle: textTheme.muted.copyWith(
+        color: colorScheme.foreground,
+      ),
+    );
+  }
+
+  static ShadAlertTheme destructiveAlertTheme({
+    required ShadColorScheme colorScheme,
+    required BorderRadius radius,
+    required ShadTextThemeData textTheme,
+  }) {
+    return ShadAlertTheme(
+      iconPadding: const EdgeInsets.only(right: 12),
+      decoration: ShadDecoration(
+        border: ShadBorder(
+          color: colorScheme.destructive,
+          radius: radius,
+          padding: const EdgeInsets.all(16),
+        ),
+      ),
+      iconSize: const Size.square(16),
+      iconColor: colorScheme.destructive,
+      titleStyle: textTheme.p.copyWith(
+        color: colorScheme.destructive,
+        fontWeight: FontWeight.w500,
+        height: 1,
+      ),
+      descriptionStyle: textTheme.muted.copyWith(
+        color: colorScheme.destructive,
+      ),
     );
   }
 }

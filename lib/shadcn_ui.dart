@@ -4,6 +4,7 @@
 export 'src/app.dart';
 
 // Components
+export 'src/components/alert.dart';
 export 'src/components/avatar.dart';
 export 'src/components/badge.dart';
 export 'src/components/button.dart';
@@ -40,6 +41,7 @@ export 'src/theme/themes/base.dart';
 export 'src/theme/themes/shadows.dart';
 
 // Component Themes
+export 'src/theme/components/alert.dart';
 export 'src/theme/components/avatar.dart';
 export 'src/theme/components/badge.dart';
 export 'src/theme/components/button.dart';
