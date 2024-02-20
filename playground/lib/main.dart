@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:playground/pages/alert.dart';
 import 'package:playground/pages/avatar.dart';
 import 'package:playground/pages/badge.dart';
 import 'package:playground/pages/button.dart';
@@ -146,6 +147,16 @@ final _router = GoRouter(
             state.uri.queryParameters['style'] ?? ToastStyle.schedule.name;
         return ToastPage(
           style: ToastStyle.values.byName(style),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/alert',
+      builder: (context, state) {
+        final style =
+            state.uri.queryParameters['style'] ?? ShadAlertVariant.primary.name;
+        return AlertPage(
+          style: ShadAlertVariant.values.byName(style),
         );
       },
     ),
