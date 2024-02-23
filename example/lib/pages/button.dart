@@ -60,43 +60,43 @@ class _ButtonPageState extends State<ButtonPage> {
           ShadButton(
             focusNode: focusNode,
             size: size,
-            onPressed: enabled ? () {} : null,
+            enabled: enabled,
             text: const Text('Primary'),
           ),
           ShadButton.secondary(
             focusNode: focusNode,
             size: size,
-            onPressed: enabled ? () {} : null,
+            enabled: enabled,
             text: const Text('Secondary'),
           ),
           ShadButton.destructive(
             focusNode: focusNode,
             size: size,
-            onPressed: enabled ? () {} : null,
+            enabled: enabled,
             text: const Text('Destructive'),
           ),
           ShadButton.outline(
             focusNode: focusNode,
             size: size,
-            onPressed: enabled ? () {} : null,
+            enabled: enabled,
             text: const Text('Outline'),
           ),
           ShadButton.ghost(
             focusNode: focusNode,
             size: size,
-            onPressed: enabled ? () {} : null,
+            enabled: enabled,
             text: const Text('Ghost'),
           ),
           ShadButton.link(
             focusNode: focusNode,
             size: size,
-            onPressed: enabled ? () {} : null,
+            enabled: enabled,
             text: const Text('Link'),
           ),
           ShadButton(
             focusNode: focusNode,
             size: size,
-            onPressed: enabled ? () {} : null,
+            enabled: enabled,
             text: const Text('Login with Email'),
             icon: const Padding(
               padding: EdgeInsets.only(right: 8),
@@ -109,7 +109,7 @@ class _ButtonPageState extends State<ButtonPage> {
           ShadButton(
             focusNode: focusNode,
             size: size,
-            onPressed: enabled ? () {} : null,
+            enabled: enabled,
             text: const Text('Please wait'),
             icon: const Padding(
               padding: EdgeInsets.only(right: 8),
@@ -124,7 +124,7 @@ class _ButtonPageState extends State<ButtonPage> {
           ShadButton(
             focusNode: focusNode,
             size: size,
-            onPressed: enabled ? () {} : null,
+            enabled: enabled,
             gradient: const LinearGradient(colors: [
               Colors.cyan,
               Colors.indigo,
@@ -146,7 +146,7 @@ class _ButtonPageState extends State<ButtonPage> {
             child: ShadButton.outline(
               focusNode: focusNode,
               size: size,
-              onPressed: enabled ? () {} : null,
+              enabled: enabled,
               icon: const Icon(
                 Icons.chevron_right,
                 size: 16,

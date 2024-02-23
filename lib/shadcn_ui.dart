@@ -10,6 +10,7 @@ export 'src/components/badge.dart';
 export 'src/components/button.dart';
 export 'src/components/card.dart';
 export 'src/components/checkbox.dart';
+export 'src/components/dialog.dart';
 export 'src/components/form/field.dart';
 export 'src/components/form/fields/checkbox.dart';
 export 'src/components/form/fields/input.dart';
@@ -25,7 +26,6 @@ export 'src/components/select.dart';
 export 'src/components/switch.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
-
 // Assets
 export 'src/assets.dart';
 

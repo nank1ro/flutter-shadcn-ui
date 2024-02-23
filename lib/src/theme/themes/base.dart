@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
@@ -54,6 +55,8 @@ abstract class ShadBaseTheme {
     required this.breakpoints,
     required this.primaryAlertTheme,
     required this.destructiveAlertTheme,
+    required this.primaryDialogTheme,
+    required this.alertDialogTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -89,4 +92,6 @@ abstract class ShadBaseTheme {
   final ShadBreakpoints breakpoints;
   final ShadAlertTheme primaryAlertTheme;
   final ShadAlertTheme destructiveAlertTheme;
+  final ShadDialogTheme primaryDialogTheme;
+  final ShadDialogTheme alertDialogTheme;
 }

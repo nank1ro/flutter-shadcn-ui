@@ -9,6 +9,7 @@ import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
@@ -542,5 +543,23 @@ abstract class ShadComponentDefaultTheme {
         color: colorScheme.destructive,
       ),
     );
+  }
+
+  static ShadDialogTheme primaryDialogTheme({
+    required ShadColorScheme colorScheme,
+    required BorderRadius radius,
+    required ShadTextThemeData textTheme,
+  }) {
+    return ShadDialogTheme(
+      closeIconSrc: ShadAssets.x,
+    );
+  }
+
+  static ShadDialogTheme alertDialogTheme({
+    required ShadColorScheme colorScheme,
+    required BorderRadius radius,
+    required ShadTextThemeData textTheme,
+  }) {
+    return ShadDialogTheme();
   }
 }
