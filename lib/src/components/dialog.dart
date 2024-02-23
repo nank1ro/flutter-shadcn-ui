@@ -5,7 +5,9 @@ import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/raw_components/same_width_column.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
+import 'package:shadcn_ui/src/utils/responsive.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 enum ShadDialogVariant {
@@ -91,46 +93,58 @@ class ShadDialog extends StatelessWidget {
         ],
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 512),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: theme.colorScheme.background,
-              borderRadius: effectiveRadius,
-            ),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: ShadSameWidthColumn(
-                    children: [
-                      if (title != null)
-                        DefaultTextStyle(
-                          style: theme.textTheme.large.copyWith(
-                            color: theme.colorScheme.foreground,
-                          ),
-                          textAlign: TextAlign.start,
-                          child: title!,
-                        ),
-                      if (description != null)
-                        DefaultTextStyle(
-                          style: theme.textTheme.muted,
-                          textAlign: TextAlign.start,
-                          child: description!,
-                        ),
-                      if (content != null) content!,
-                      if (actions.isNotEmpty)
-                        Flex(
-                          direction: Axis.horizontal,
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: actions,
-                        ),
-                    ].separatedBy(const SizedBox(height: 8)),
-                  ),
+          child: ShadResponsiveBuilder(
+            builder: (context, breakpoint) {
+              final sm = breakpoint >= theme.breakpoints.small;
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.background,
+                  borderRadius:
+                      sm ? const BorderRadius.all(Radius.circular(8)) : null,
+                  border: Border.all(color: theme.colorScheme.border),
+                  boxShadow: ShadShadows.lg,
                 ),
-                if (effectiveCloseIcon != null)
-                  effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),
-              ],
-            ),
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: ShadSameWidthColumn(
+                        children: [
+                          if (title != null)
+                            DefaultTextStyle(
+                              style: theme.textTheme.large.copyWith(
+                                color: theme.colorScheme.foreground,
+                              ),
+                              textAlign:
+                                  sm ? TextAlign.start : TextAlign.center,
+                              child: title!,
+                            ),
+                          if (description != null)
+                            DefaultTextStyle(
+                              style: theme.textTheme.muted,
+                              textAlign:
+                                  sm ? TextAlign.start : TextAlign.center,
+                              child: description!,
+                            ),
+                          if (content != null) content!,
+                          if (actions.isNotEmpty)
+                            Flex(
+                              direction: sm ? Axis.horizontal : Axis.vertical,
+                              mainAxisSize:
+                                  sm ? MainAxisSize.min : MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: actions,
+                            ),
+                        ].separatedBy(const SizedBox(height: 8)),
+                      ),
+                    ),
+                    if (effectiveCloseIcon != null)
+                      effectiveCloseIcon
+                          .positionedWith(effectiveCloseIconPosition),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
