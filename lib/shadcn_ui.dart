@@ -48,6 +48,7 @@ export 'src/theme/components/button.dart';
 export 'src/theme/components/card.dart';
 export 'src/theme/components/checkbox.dart';
 export 'src/theme/components/decorator.dart';
+export 'src/theme/components/dialog.dart';
 export 'src/theme/components/input.dart';
 export 'src/theme/components/option.dart';
 export 'src/theme/components/popover.dart';
