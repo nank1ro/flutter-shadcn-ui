@@ -7,7 +7,7 @@ abstract class ShadTextDefaultTheme {
   static TextStyle h1Large({
     required ShadColorScheme colorScheme,
   }) {
-    return const TextStyle(
+    return TextStyle(
       fontSize: 48,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -16,13 +16,14 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: -0.4,
       fontFamily: kDefaultFontFamily,
       package: 'shadcn_ui',
+      color: colorScheme.foreground,
     );
   }
 
   static TextStyle h1({
     required ShadColorScheme colorScheme,
   }) {
-    return const TextStyle(
+    return TextStyle(
       fontSize: 36,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -31,13 +32,14 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: -0.4,
       fontFamily: kDefaultFontFamily,
       package: 'shadcn_ui',
+      color: colorScheme.foreground,
     );
   }
 
   static TextStyle h2({
     required ShadColorScheme colorScheme,
   }) {
-    return const TextStyle(
+    return TextStyle(
       fontSize: 30,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -46,13 +48,14 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: -0.4,
       fontFamily: kDefaultFontFamily,
       package: 'shadcn_ui',
+      color: colorScheme.foreground,
     );
   }
 
   static TextStyle h3({
     required ShadColorScheme colorScheme,
   }) {
-    return const TextStyle(
+    return TextStyle(
       fontSize: 24,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -61,13 +64,14 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: -0.4,
       fontFamily: kDefaultFontFamily,
       package: 'shadcn_ui',
+      color: colorScheme.foreground,
     );
   }
 
   static TextStyle h4({
     required ShadColorScheme colorScheme,
   }) {
-    return const TextStyle(
+    return TextStyle(
       fontSize: 20,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -76,13 +80,14 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: -0.4,
       fontFamily: kDefaultFontFamily,
       package: 'shadcn_ui',
+      color: colorScheme.foreground,
     );
   }
 
   static TextStyle p({
     required ShadColorScheme colorScheme,
   }) {
-    return const TextStyle(
+    return TextStyle(
       fontSize: 16,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -91,13 +96,14 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       fontFamily: kDefaultFontFamily,
       package: 'shadcn_ui',
+      color: colorScheme.foreground,
     );
   }
 
   static TextStyle blockquote({
     required ShadColorScheme colorScheme,
   }) {
-    return const TextStyle(
+    return TextStyle(
       fontSize: 16,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.italic,
@@ -106,13 +112,14 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       fontFamily: kDefaultFontFamily,
       package: 'shadcn_ui',
+      color: colorScheme.foreground,
     );
   }
 
   static TextStyle table({
     required ShadColorScheme colorScheme,
   }) {
-    return const TextStyle(
+    return TextStyle(
       fontSize: 16,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -121,13 +128,14 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       fontFamily: kDefaultFontFamily,
       package: 'shadcn_ui',
+      color: colorScheme.foreground,
     );
   }
 
   static TextStyle list({
     required ShadColorScheme colorScheme,
   }) {
-    return const TextStyle(
+    return TextStyle(
       fontSize: 16,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -136,6 +144,7 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       fontFamily: kDefaultFontFamily,
       package: 'shadcn_ui',
+      color: colorScheme.foreground,
     );
   }
 
@@ -158,7 +167,7 @@ abstract class ShadTextDefaultTheme {
   static TextStyle large({
     required ShadColorScheme colorScheme,
   }) {
-    return const TextStyle(
+    return TextStyle(
       fontSize: 18,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -167,13 +176,14 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       fontFamily: kDefaultFontFamily,
       package: 'shadcn_ui',
+      color: colorScheme.foreground,
     );
   }
 
   static TextStyle small({
     required ShadColorScheme colorScheme,
   }) {
-    return const TextStyle(
+    return TextStyle(
       fontSize: 14,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -182,6 +192,7 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       fontFamily: kDefaultFontFamily,
       package: 'shadcn_ui',
+      color: colorScheme.foreground,
     );
   }
 

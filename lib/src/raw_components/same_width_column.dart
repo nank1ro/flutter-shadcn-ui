@@ -30,6 +30,8 @@ class _EvenSizedColumnBoxy extends BoxyDelegate {
         child.render.getMaxIntrinsicWidth(double.infinity),
       );
     }
+    // do not go over the constraints max width.
+    childWidth = min(childWidth, constraints.widthConstraints().maxWidth);
     var childrenHeight = 0.0;
     var y = 0.0;
     for (final child in children) {

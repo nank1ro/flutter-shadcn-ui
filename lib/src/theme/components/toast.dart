@@ -76,7 +76,8 @@ class ShadToastTheme {
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       shadows: b.shadows,
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
-      closeIconPosition: b.closeIconPosition,
+      closeIconPosition:
+          ShadPosition.lerp(a.closeIconPosition, b.closeIconPosition, t),
       constraints: b.constraints,
     );
   }

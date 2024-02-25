@@ -49,6 +49,7 @@ class ShadButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
+    this.enabled = true,
   }) : variant = ShadButtonVariant.primary;
 
   const ShadButton.raw({
@@ -78,6 +79,7 @@ class ShadButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
+    this.enabled = true,
   });
 
   const ShadButton.destructive({
@@ -106,6 +108,7 @@ class ShadButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
+    this.enabled = true,
   }) : variant = ShadButtonVariant.destructive;
 
   const ShadButton.outline({
@@ -134,6 +137,7 @@ class ShadButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
+    this.enabled = true,
   }) : variant = ShadButtonVariant.outline;
 
   const ShadButton.secondary({
@@ -162,6 +166,7 @@ class ShadButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
+    this.enabled = true,
   }) : variant = ShadButtonVariant.secondary;
 
   const ShadButton.ghost({
@@ -190,6 +195,7 @@ class ShadButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
+    this.enabled = true,
   }) : variant = ShadButtonVariant.ghost;
 
   const ShadButton.link({
@@ -217,6 +223,7 @@ class ShadButton extends StatefulWidget {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
+    this.enabled = true,
   })  : variant = ShadButtonVariant.link,
         icon = null;
 
@@ -245,6 +252,7 @@ class ShadButton extends StatefulWidget {
   final TextDecoration? textDecoration;
   final TextDecoration? hoverTextDecoration;
   final ShadDecoration? decoration;
+  final bool enabled;
 
   @override
   State<ShadButton> createState() => _ShadButtonState();
@@ -275,8 +283,6 @@ class _ShadButtonState extends State<ShadButton> {
       'Either text or icon must be provided',
     );
   }
-
-  bool get enabled => widget.onPressed != null;
 
   ShadButtonTheme buttonTheme(ShadThemeData theme) {
     return switch (widget.variant) {
@@ -313,6 +319,9 @@ class _ShadButtonState extends State<ShadButton> {
 
   double height(ShadThemeData theme) {
     if (widget.height != null) return widget.height!;
+    if (buttonTheme(theme).height != null) {
+      return buttonTheme(theme).height!;
+    }
     if (widget.size != null) {
       return defaultHeightForSize(theme, widget.size!);
     }
@@ -325,6 +334,9 @@ class _ShadButtonState extends State<ShadButton> {
 
   double? width(ShadThemeData theme) {
     if (widget.width != null) return widget.width!;
+    if (buttonTheme(theme).width != null) {
+      return buttonTheme(theme).width!;
+    }
     if (widget.size != null) {
       return defaultWidthForSize(theme, widget.size!);
     }
@@ -410,7 +422,7 @@ class _ShadButtonState extends State<ShadButton> {
 
   MouseCursor cursor(ShadThemeData theme) {
     if (widget.cursor != null) return widget.cursor!;
-    return (enabled
+    return (widget.enabled
         ? buttonTheme(theme).cursor ?? SystemMouseCursors.click
         : MouseCursor.defer);
   }
@@ -463,14 +475,14 @@ class _ShadButtonState extends State<ShadButton> {
     return Semantics(
       container: true,
       button: true,
-      focusable: enabled,
-      enabled: enabled,
+      focusable: widget.enabled,
+      enabled: widget.enabled,
       child: Opacity(
-        opacity: enabled ? 1 : .5,
+        opacity: widget.enabled ? 1 : .5,
         child: AbsorbPointer(
-          absorbing: !enabled,
+          absorbing: !widget.enabled,
           child: ShadFocused(
-            canRequestFocus: enabled,
+            canRequestFocus: widget.enabled,
             autofocus: widget.autofocus,
             focusNode: focusNode,
             builder: (context, focused, child) => ShadDecorator(

@@ -396,25 +396,19 @@ class _ShadToastState extends State<ShadToast> {
                       ],
                     ),
                   ),
-                  Positioned(
-                    top: effectiveCloseIconPosition.top,
-                    right: effectiveCloseIconPosition.right,
-                    bottom: effectiveCloseIconPosition.bottom,
-                    left: effectiveCloseIconPosition.left,
-                    child: ValueListenableBuilder(
-                      valueListenable: hovered,
-                      builder: (context, hovered, child) {
-                        if (!effectiveShowCloseIconOnlyWhenHovered) {
-                          return child!;
-                        }
-                        return Visibility.maintain(
-                          visible: hovered,
-                          child: child!,
-                        );
-                      },
-                      child: effectiveCloseIcon,
-                    ),
-                  ),
+                  ValueListenableBuilder(
+                    valueListenable: hovered,
+                    builder: (context, hovered, child) {
+                      if (!effectiveShowCloseIconOnlyWhenHovered) {
+                        return child!;
+                      }
+                      return Visibility.maintain(
+                        visible: hovered,
+                        child: child!,
+                      );
+                    },
+                    child: effectiveCloseIcon,
+                  ).positionedWith(effectiveCloseIconPosition),
                 ],
               ),
             ),

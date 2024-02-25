@@ -9,6 +9,7 @@ import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
@@ -541,6 +542,55 @@ abstract class ShadComponentDefaultTheme {
       descriptionStyle: textTheme.muted.copyWith(
         color: colorScheme.destructive,
       ),
+    );
+  }
+
+  static ShadDialogTheme primaryDialogTheme({
+    required ShadColorScheme colorScheme,
+    required BorderRadius radius,
+    required ShadTextThemeData textTheme,
+  }) {
+    return ShadDialogTheme(
+      closeIconSrc: ShadAssets.x,
+      radius: const BorderRadius.all(Radius.circular(8)),
+      backgroundColor: colorScheme.background,
+      removeBorderRadiusWhenTiny: true,
+      expandActionsWhenTiny: true,
+      closeIconPosition: const ShadPosition(top: 8, right: 8),
+      effects: const [
+        FadeEffect(),
+        ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
+      ],
+      constraints: const BoxConstraints(maxWidth: 512),
+      shadows: ShadShadows.lg,
+      padding: const EdgeInsets.all(24),
+      gap: 8,
+      titleStyle: textTheme.large,
+      descriptionStyle: textTheme.muted,
+    );
+  }
+
+  static ShadDialogTheme alertDialogTheme({
+    required ShadColorScheme colorScheme,
+    required BorderRadius radius,
+    required ShadTextThemeData textTheme,
+  }) {
+    return ShadDialogTheme(
+      backgroundColor: colorScheme.background,
+      radius: const BorderRadius.all(Radius.circular(8)),
+      removeBorderRadiusWhenTiny: true,
+      expandActionsWhenTiny: true,
+      closeIconPosition: const ShadPosition(top: 8, right: 8),
+      effects: const [
+        FadeEffect(),
+        ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
+      ],
+      constraints: const BoxConstraints(maxWidth: 512),
+      shadows: ShadShadows.lg,
+      padding: const EdgeInsets.all(24),
+      gap: 8,
+      titleStyle: textTheme.large,
+      descriptionStyle: textTheme.muted,
     );
   }
 }

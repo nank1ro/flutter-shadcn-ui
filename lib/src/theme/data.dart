@@ -9,6 +9,7 @@ import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
@@ -58,6 +59,8 @@ class ShadThemeData extends ShadBaseTheme {
     ShadBreakpoints? breakpoints,
     ShadAlertTheme? primaryAlertTheme,
     ShadAlertTheme? destructiveAlertTheme,
+    ShadDialogTheme? primaryDialogTheme,
+    ShadDialogTheme? alertDialogTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -163,6 +166,16 @@ class ShadThemeData extends ShadBaseTheme {
         textTheme: effectiveTextTheme,
         radius: effectiveRadius,
       ).mergeWith(destructiveAlertTheme),
+      primaryDialogTheme: ShadComponentDefaultTheme.primaryDialogTheme(
+        colorScheme: colorScheme,
+        textTheme: effectiveTextTheme,
+        radius: effectiveRadius,
+      ).mergeWith(primaryDialogTheme),
+      alertDialogTheme: ShadComponentDefaultTheme.alertDialogTheme(
+        colorScheme: colorScheme,
+        textTheme: effectiveTextTheme,
+        radius: effectiveRadius,
+      ).mergeWith(alertDialogTheme),
     );
   }
 
@@ -200,6 +213,8 @@ class ShadThemeData extends ShadBaseTheme {
     required super.breakpoints,
     required super.primaryAlertTheme,
     required super.destructiveAlertTheme,
+    required super.primaryDialogTheme,
+    required super.alertDialogTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -316,7 +331,9 @@ class ShadThemeData extends ShadBaseTheme {
         other.destructiveToastTheme == destructiveToastTheme &&
         other.breakpoints == breakpoints &&
         other.primaryAlertTheme == primaryAlertTheme &&
-        other.destructiveAlertTheme == destructiveAlertTheme;
+        other.destructiveAlertTheme == destructiveAlertTheme &&
+        other.primaryDialogTheme == primaryDialogTheme &&
+        other.alertDialogTheme == alertDialogTheme;
   }
 
   @override
@@ -353,7 +370,9 @@ class ShadThemeData extends ShadBaseTheme {
         destructiveToastTheme.hashCode ^
         breakpoints.hashCode ^
         primaryAlertTheme.hashCode ^
-        destructiveAlertTheme.hashCode;
+        destructiveAlertTheme.hashCode ^
+        primaryDialogTheme.hashCode ^
+        alertDialogTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -390,6 +409,8 @@ class ShadThemeData extends ShadBaseTheme {
     ShadBreakpoints? breakpoints,
     ShadAlertTheme? primaryAlertTheme,
     ShadAlertTheme? destructiveAlertTheme,
+    ShadDialogTheme? primaryDialogTheme,
+    ShadDialogTheme? alertDialogTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -429,6 +450,8 @@ class ShadThemeData extends ShadBaseTheme {
       primaryAlertTheme: primaryAlertTheme ?? this.primaryAlertTheme,
       destructiveAlertTheme:
           destructiveAlertTheme ?? this.destructiveAlertTheme,
+      primaryDialogTheme: primaryDialogTheme ?? this.primaryDialogTheme,
+      alertDialogTheme: alertDialogTheme ?? this.alertDialogTheme,
     );
   }
 }
