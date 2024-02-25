@@ -6,6 +6,7 @@ import 'package:playground/pages/badge.dart';
 import 'package:playground/pages/button.dart';
 import 'package:playground/pages/card.dart';
 import 'package:playground/pages/checkbox.dart';
+import 'package:playground/pages/dialog.dart';
 import 'package:playground/pages/form.dart';
 import 'package:playground/pages/image.dart';
 import 'package:playground/pages/input.dart';
@@ -157,6 +158,16 @@ final _router = GoRouter(
             state.uri.queryParameters['style'] ?? ShadAlertVariant.primary.name;
         return AlertPage(
           style: ShadAlertVariant.values.byName(style),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/dialog',
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ??
+            ShadDialogVariant.primary.name;
+        return DialogPage(
+          style: ShadDialogVariant.values.byName(style),
         );
       },
     ),
