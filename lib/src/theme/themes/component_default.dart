@@ -552,6 +552,21 @@ abstract class ShadComponentDefaultTheme {
   }) {
     return ShadDialogTheme(
       closeIconSrc: ShadAssets.x,
+      radius: const BorderRadius.all(Radius.circular(8)),
+      backgroundColor: colorScheme.background,
+      removeBorderRadiusWhenTiny: true,
+      expandActionsWhenTiny: true,
+      closeIconPosition: const ShadPosition(top: 8, right: 8),
+      effects: const [
+        FadeEffect(),
+        ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
+      ],
+      constraints: const BoxConstraints(maxWidth: 512),
+      shadows: ShadShadows.lg,
+      padding: const EdgeInsets.all(24),
+      gap: 8,
+      titleStyle: textTheme.large,
+      descriptionStyle: textTheme.muted,
     );
   }
 
@@ -560,6 +575,22 @@ abstract class ShadComponentDefaultTheme {
     required BorderRadius radius,
     required ShadTextThemeData textTheme,
   }) {
-    return ShadDialogTheme();
+    return ShadDialogTheme(
+      backgroundColor: colorScheme.background,
+      radius: const BorderRadius.all(Radius.circular(8)),
+      removeBorderRadiusWhenTiny: true,
+      expandActionsWhenTiny: true,
+      closeIconPosition: const ShadPosition(top: 8, right: 8),
+      effects: const [
+        FadeEffect(),
+        ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
+      ],
+      constraints: const BoxConstraints(maxWidth: 512),
+      shadows: ShadShadows.lg,
+      padding: const EdgeInsets.all(24),
+      gap: 8,
+      titleStyle: textTheme.large,
+      descriptionStyle: textTheme.muted,
+    );
   }
 }

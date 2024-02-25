@@ -30,6 +30,8 @@ class ShadButtonTheme {
     this.textDecoration,
     this.hoverTextDecoration,
     this.decoration,
+    this.width,
+    this.height,
   });
   final bool merge;
   final bool applyIconColorFilter;
@@ -49,6 +51,8 @@ class ShadButtonTheme {
   final TextDecoration? textDecoration;
   final TextDecoration? hoverTextDecoration;
   final ShadDecoration? decoration;
+  final double? width;
+  final double? height;
 
   static ShadButtonTheme lerp(
     ShadButtonTheme a,
@@ -81,11 +85,9 @@ class ShadButtonTheme {
       hoverTextDecoration: b.hoverTextDecoration,
       cursor: b.cursor,
       size: b.size,
-      decoration: ShadDecoration.lerp(
-        a.decoration,
-        b.decoration,
-        t,
-      ),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      width: lerpDouble(a.width, b.width, t),
+      height: lerpDouble(a.height, b.height, t),
     );
   }
 
@@ -108,6 +110,8 @@ class ShadButtonTheme {
     TextDecoration? textDecoration,
     TextDecoration? hoverTextDecoration,
     ShadDecoration? decoration,
+    double? width,
+    double? height,
   }) {
     return ShadButtonTheme(
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
@@ -129,6 +133,8 @@ class ShadButtonTheme {
       textDecoration: textDecoration ?? this.textDecoration,
       hoverTextDecoration: hoverTextDecoration ?? this.hoverTextDecoration,
       decoration: decoration ?? this.decoration,
+      width: width ?? this.width,
+      height: height ?? this.height,
     );
   }
 
@@ -152,6 +158,8 @@ class ShadButtonTheme {
       textDecoration: other.textDecoration,
       hoverTextDecoration: other.hoverTextDecoration,
       decoration: other.decoration,
+      width: other.width,
+      height: other.height,
     );
   }
 
@@ -176,7 +184,9 @@ class ShadButtonTheme {
         other.gradient == gradient &&
         other.textDecoration == textDecoration &&
         other.hoverTextDecoration == hoverTextDecoration &&
-        other.decoration == decoration;
+        other.decoration == decoration &&
+        other.width == width &&
+        other.height == height;
   }
 
   @override
@@ -197,7 +207,9 @@ class ShadButtonTheme {
         gradient.hashCode ^
         textDecoration.hashCode ^
         hoverTextDecoration.hashCode ^
-        decoration.hashCode;
+        decoration.hashCode ^
+        width.hashCode ^
+        height.hashCode;
   }
 }
 

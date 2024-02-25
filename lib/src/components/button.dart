@@ -319,6 +319,9 @@ class _ShadButtonState extends State<ShadButton> {
 
   double height(ShadThemeData theme) {
     if (widget.height != null) return widget.height!;
+    if (buttonTheme(theme).height != null) {
+      return buttonTheme(theme).height!;
+    }
     if (widget.size != null) {
       return defaultHeightForSize(theme, widget.size!);
     }
@@ -331,6 +334,9 @@ class _ShadButtonState extends State<ShadButton> {
 
   double? width(ShadThemeData theme) {
     if (widget.width != null) return widget.width!;
+    if (buttonTheme(theme).width != null) {
+      return buttonTheme(theme).width!;
+    }
     if (widget.size != null) {
       return defaultWidthForSize(theme, widget.size!);
     }
