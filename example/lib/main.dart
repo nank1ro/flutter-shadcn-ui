@@ -15,6 +15,7 @@ import 'package:example/pages/radio_group.dart';
 import 'package:example/pages/radio_group_form_field.dart';
 import 'package:example/pages/select.dart';
 import 'package:example/pages/select_form_field.dart';
+import 'package:example/pages/slider.dart';
 import 'package:example/pages/switch.dart';
 import 'package:example/pages/switch_form_field.dart';
 import 'package:example/pages/toast.dart';
@@ -47,6 +48,7 @@ final routes = <String, WidgetBuilder>{
   '/radio-group-form-field': (_) => const RadioGroupFormFieldPage(),
   '/select': (_) => const SelectPage(),
   '/select-form-field': (_) => const SelectFormFieldPage(),
+  '/slider': (_) => const SliderPage(),
   '/switch': (_) => const SwitchPage(),
   '/switch-form-field': (_) => const SwitchFormFieldPage(),
   '/toast': (_) => const ToastPage(),

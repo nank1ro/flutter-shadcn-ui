@@ -40,7 +40,7 @@ Current progress:
 - [x] <strike>Separator</strike> Use Divider instead
 - [ ] Sheet
 - [ ] Skeleton
-- [ ] Slider
+- [x] [Slider](https://mariuti.com/shadcn-ui/components/slider/)
 - [ ] Sonner (?)
 - [x] [Switch](https://mariuti.com/shadcn-ui/components/switch/)
 - [ ] Table
