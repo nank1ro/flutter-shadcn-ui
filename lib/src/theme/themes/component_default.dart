@@ -15,6 +15,7 @@ import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
+import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
@@ -591,6 +592,27 @@ abstract class ShadComponentDefaultTheme {
       gap: 8,
       titleStyle: textTheme.large,
       descriptionStyle: textTheme.muted,
+    );
+  }
+
+  static ShadSliderTheme sliderTheme({
+    required ShadColorScheme colorScheme,
+  }) {
+    return ShadSliderTheme(
+      mouseCursor: SystemMouseCursors.click,
+      disabledMouseCursor: SystemMouseCursors.forbidden,
+      min: 0,
+      max: 1,
+      thumbColor: colorScheme.background,
+      thumbBorderColor: colorScheme.primary,
+      disabledThumbColor: colorScheme.background,
+      disabledThumbBorderColor: colorScheme.primary.withOpacity(.5),
+      activeTrackColor: colorScheme.primary,
+      inactiveTrackColor: colorScheme.secondary,
+      disabledActiveTrackColor: colorScheme.primary.withOpacity(.5),
+      disabledInactiveTrackColor: colorScheme.secondary.withOpacity(.5),
+      trackHeight: 8,
+      thumbRadius: 10,
     );
   }
 }

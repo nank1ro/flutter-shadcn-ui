@@ -23,9 +23,11 @@ export 'src/components/input.dart';
 export 'src/components/popover.dart';
 export 'src/components/radio.dart';
 export 'src/components/select.dart';
+export 'src/components/slider.dart';
 export 'src/components/switch.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
+
 // Assets
 export 'src/assets.dart';
 
@@ -54,6 +56,7 @@ export 'src/theme/components/option.dart';
 export 'src/theme/components/popover.dart';
 export 'src/theme/components/radio.dart';
 export 'src/theme/components/select.dart';
+export 'src/theme/components/slider.dart';
 export 'src/theme/components/switch.dart';
 export 'src/theme/components/toast.dart';
 export 'src/theme/components/tooltip.dart';

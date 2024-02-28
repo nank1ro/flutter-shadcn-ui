@@ -13,6 +13,7 @@ import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
+import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
@@ -57,6 +58,7 @@ abstract class ShadBaseTheme {
     required this.destructiveAlertTheme,
     required this.primaryDialogTheme,
     required this.alertDialogTheme,
+    required this.sliderTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -94,4 +96,5 @@ abstract class ShadBaseTheme {
   final ShadAlertTheme destructiveAlertTheme;
   final ShadDialogTheme primaryDialogTheme;
   final ShadDialogTheme alertDialogTheme;
+  final ShadSliderTheme sliderTheme;
 }
