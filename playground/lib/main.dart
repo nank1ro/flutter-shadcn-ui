@@ -13,6 +13,7 @@ import 'package:playground/pages/input.dart';
 import 'package:playground/pages/popover.dart';
 import 'package:playground/pages/radio_group.dart';
 import 'package:playground/pages/select.dart';
+import 'package:playground/pages/slider.dart';
 import 'package:playground/pages/switch.dart';
 import 'package:playground/pages/toast.dart';
 import 'package:playground/pages/tooltip.dart';
@@ -170,6 +171,10 @@ final _router = GoRouter(
           style: ShadDialogVariant.values.byName(style),
         );
       },
+    ),
+    GoRoute(
+      path: '/slider',
+      builder: (context, state) => const SliderPage(),
     ),
   ],
 );
