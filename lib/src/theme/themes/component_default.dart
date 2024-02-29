@@ -394,6 +394,7 @@ abstract class ShadComponentDefaultTheme {
   }) {
     return ShadRadioTheme(
       size: 16,
+      circleSize: 10,
       duration: 100.milliseconds,
       color: colorScheme.primary,
       borderWidth: 1,

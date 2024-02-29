@@ -96,6 +96,7 @@ class ShadRadio<T> extends StatefulWidget {
     this.focusNode,
     this.decoration,
     this.size,
+    this.circleSize,
     this.duration,
     this.borderWidth,
     this.color,
@@ -118,6 +119,9 @@ class ShadRadio<T> extends StatefulWidget {
 
   /// The size of the radio, defaults to 16.
   final double? size;
+
+  /// The circle size of the radio, defaults to 10.
+  final double? circleSize;
 
   /// The duration of the radio animation, defaults to 100ms.
   final Duration? duration;
@@ -178,6 +182,8 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
     final effectiveDecoration =
         widget.decoration ?? theme.radioTheme.decoration ?? theme.decoration;
     final effectiveSize = widget.size ?? theme.radioTheme.size ?? 16;
+    final effectiveCircleSize =
+        widget.circleSize ?? theme.radioTheme.circleSize ?? 10;
     final effectiveColor =
         widget.color ?? theme.radioTheme.color ?? theme.colorScheme.primary;
     final effectiveBorderWidth =
@@ -217,12 +223,14 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
                 child: AnimatedSwitcher(
                   duration: effectiveDuration,
                   child: selected
-                      ? SizedBox.square(
-                          dimension: 10,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: effectiveColor,
+                      ? Align(
+                          child: SizedBox.square(
+                            dimension: effectiveCircleSize,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: effectiveColor,
+                              ),
                             ),
                           ),
                         )

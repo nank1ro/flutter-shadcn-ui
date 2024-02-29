@@ -14,6 +14,7 @@ class ShadRadioTheme {
     this.size,
     this.borderWidth,
     this.padding,
+    this.circleSize,
   });
 
   final bool merge;
@@ -27,7 +28,10 @@ class ShadRadioTheme {
   final ShadDecoration? decoration;
 
   final double? borderWidth;
+
   final EdgeInsets? padding;
+
+  final double? circleSize;
 
   static ShadRadioTheme lerp(
     ShadRadioTheme a,
@@ -43,6 +47,7 @@ class ShadRadioTheme {
       size: lerpDouble(a.size, b.size, t),
       borderWidth: lerpDouble(a.borderWidth, b.borderWidth, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      circleSize: lerpDouble(a.circleSize, b.circleSize, t),
     );
   }
 
@@ -54,6 +59,7 @@ class ShadRadioTheme {
     ShadDecoration? decoration,
     double? borderWidth,
     EdgeInsets? padding,
+    double? circleSize,
   }) {
     return ShadRadioTheme(
       merge: merge ?? this.merge,
@@ -63,6 +69,7 @@ class ShadRadioTheme {
       borderWidth: borderWidth ?? this.borderWidth,
       color: color ?? this.color,
       padding: padding ?? this.padding,
+      circleSize: circleSize ?? this.circleSize,
     );
   }
 
@@ -76,6 +83,7 @@ class ShadRadioTheme {
       size: other.size,
       borderWidth: other.borderWidth,
       padding: other.padding,
+      circleSize: other.circleSize,
     );
   }
 
@@ -90,7 +98,8 @@ class ShadRadioTheme {
         other.duration == duration &&
         other.decoration == decoration &&
         other.borderWidth == borderWidth &&
-        other.padding == padding;
+        other.padding == padding &&
+        other.circleSize == circleSize;
   }
 
   @override
@@ -101,6 +110,7 @@ class ShadRadioTheme {
         duration.hashCode ^
         decoration.hashCode ^
         borderWidth.hashCode ^
-        padding.hashCode;
+        padding.hashCode ^
+        circleSize.hashCode;
   }
 }
