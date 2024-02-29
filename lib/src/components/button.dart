@@ -50,6 +50,7 @@ class ShadButton extends StatefulWidget {
     this.hoverTextDecoration,
     this.decoration,
     this.enabled = true,
+    this.onLongPress,
   }) : variant = ShadButtonVariant.primary;
 
   const ShadButton.raw({
@@ -80,6 +81,7 @@ class ShadButton extends StatefulWidget {
     this.hoverTextDecoration,
     this.decoration,
     this.enabled = true,
+    this.onLongPress,
   });
 
   const ShadButton.destructive({
@@ -109,6 +111,7 @@ class ShadButton extends StatefulWidget {
     this.hoverTextDecoration,
     this.decoration,
     this.enabled = true,
+    this.onLongPress,
   }) : variant = ShadButtonVariant.destructive;
 
   const ShadButton.outline({
@@ -138,6 +141,7 @@ class ShadButton extends StatefulWidget {
     this.hoverTextDecoration,
     this.decoration,
     this.enabled = true,
+    this.onLongPress,
   }) : variant = ShadButtonVariant.outline;
 
   const ShadButton.secondary({
@@ -167,6 +171,7 @@ class ShadButton extends StatefulWidget {
     this.hoverTextDecoration,
     this.decoration,
     this.enabled = true,
+    this.onLongPress,
   }) : variant = ShadButtonVariant.secondary;
 
   const ShadButton.ghost({
@@ -196,6 +201,7 @@ class ShadButton extends StatefulWidget {
     this.hoverTextDecoration,
     this.decoration,
     this.enabled = true,
+    this.onLongPress,
   }) : variant = ShadButtonVariant.ghost;
 
   const ShadButton.link({
@@ -224,10 +230,12 @@ class ShadButton extends StatefulWidget {
     this.hoverTextDecoration,
     this.decoration,
     this.enabled = true,
+    this.onLongPress,
   })  : variant = ShadButtonVariant.link,
         icon = null;
 
   final VoidCallback? onPressed;
+  final VoidCallback? onLongPress;
   final Widget? icon;
   final Widget? text;
   final ShadButtonVariant variant;
@@ -501,6 +509,7 @@ class _ShadButtonState extends State<ShadButton> {
               },
               cursor: cursor(theme),
               child: GestureDetector(
+                onLongPress: widget.onLongPress,
                 onTap: widget.onPressed == null
                     ? null
                     : () {
