@@ -64,6 +64,7 @@ export 'src/theme/components/tooltip.dart';
 // Utils
 export 'src/utils/position.dart';
 export 'src/utils/responsive.dart';
+export 'src/utils/states_controller.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart';
