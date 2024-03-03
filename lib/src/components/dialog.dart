@@ -10,6 +10,68 @@ import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
+Future<T?> showShadDialog<T>({
+  required BuildContext context,
+  required WidgetBuilder builder,
+  bool barrierDismissible = true,
+  Color barrierColor = const Color(0xcc000000),
+  String barrierLabel = '',
+  bool useRootNavigator = true,
+  RouteSettings? routeSettings,
+  Offset? anchorPoint,
+  List<Effect<dynamic>>? animateIn,
+  List<Effect<dynamic>>? animateOut,
+  ShadDialogVariant variant = ShadDialogVariant.primary,
+}) {
+  final theme = ShadTheme.of(context);
+  final effectiveDialogTheme = switch (variant) {
+    ShadDialogVariant.primary => theme.primaryDialogTheme,
+    ShadDialogVariant.alert => theme.alertDialogTheme,
+  };
+
+  final effectiveAnimateIn = animateIn ??
+      effectiveDialogTheme.animateIn ??
+      const [
+        FadeEffect(),
+        ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
+      ];
+
+  final effectiveAnimateOut = animateOut ??
+      effectiveDialogTheme.animateOut ??
+      const [
+        FadeEffect(begin: 1, end: 0),
+        ScaleEffect(begin: Offset(1, 1), end: Offset(.95, .95)),
+      ];
+
+  var maxDuration = Animate.defaultDuration;
+  for (final e in [...effectiveAnimateIn, ...effectiveAnimateOut]) {
+    final duration = e.duration ?? Duration.zero;
+    maxDuration = maxDuration > duration ? maxDuration : duration;
+  }
+
+  return showGeneralDialog(
+    context: context,
+    pageBuilder: (context, animation, secondaryAnimation) => builder(context),
+    barrierColor: barrierColor,
+    barrierDismissible: barrierDismissible,
+    barrierLabel: barrierLabel,
+    useRootNavigator: useRootNavigator,
+    routeSettings: routeSettings,
+    anchorPoint: anchorPoint,
+    transitionDuration: maxDuration,
+    transitionBuilder: (context, animation, secondaryAnimation, child) {
+      if (animation.status == AnimationStatus.completed) {
+        return child;
+      }
+      final animateIn = animation.status == AnimationStatus.forward;
+      return Animate(
+        effects: animateIn ? effectiveAnimateIn : effectiveAnimateOut,
+        child: child,
+      );
+    },
+  );
+}
+
 enum ShadDialogVariant {
   primary,
   alert,
@@ -30,7 +92,6 @@ class ShadDialog extends StatelessWidget {
     this.expandActionsWhenTiny,
     this.padding,
     this.gap,
-    this.effects,
     this.constraints,
     this.border,
     this.shadows,
@@ -43,6 +104,7 @@ class ShadDialog extends StatelessWidget {
     this.descriptionStyle,
     this.titleTextAlign,
     this.descriptionTextAlign,
+    this.alignment,
   }) : variant = ShadDialogVariant.primary;
 
   const ShadDialog.alert({
@@ -59,7 +121,6 @@ class ShadDialog extends StatelessWidget {
     this.expandActionsWhenTiny,
     this.padding,
     this.gap,
-    this.effects,
     this.constraints,
     this.border,
     this.shadows,
@@ -72,6 +133,7 @@ class ShadDialog extends StatelessWidget {
     this.descriptionStyle,
     this.titleTextAlign,
     this.descriptionTextAlign,
+    this.alignment,
   }) : variant = ShadDialogVariant.alert;
 
   final Widget? title;
@@ -87,7 +149,6 @@ class ShadDialog extends StatelessWidget {
   final bool? expandActionsWhenTiny;
   final EdgeInsets? padding;
   final double? gap;
-  final List<Effect<dynamic>>? effects;
   final BoxConstraints? constraints;
   final Axis? actionsAxis;
   final MainAxisSize? actionsMainAxisSize;
@@ -100,6 +161,7 @@ class ShadDialog extends StatelessWidget {
   final TextStyle? descriptionStyle;
   final TextAlign? titleTextAlign;
   final TextAlign? descriptionTextAlign;
+  final Alignment? alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -144,13 +206,6 @@ class ShadDialog extends StatelessWidget {
         effectiveDialogTheme.expandActionsWhenTiny ??
         true;
 
-    final effectiveEffects = effects ??
-        effectiveDialogTheme.effects ??
-        const [
-          FadeEffect(),
-          ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
-        ];
-
     final effectiveConstraints = constraints ??
         effectiveDialogTheme.constraints ??
         const BoxConstraints(maxWidth: 512);
@@ -177,106 +232,107 @@ class ShadDialog extends StatelessWidget {
         effectiveDialogTheme.descriptionStyle ??
         theme.textTheme.muted;
 
+    final effectiveAlignment =
+        alignment ?? effectiveDialogTheme.alignment ?? Alignment.center;
+
     return Align(
-      child: Animate(
-        effects: effectiveEffects,
-        child: ConstrainedBox(
-          constraints: effectiveConstraints,
-          child: ShadResponsiveBuilder(
-            builder: (context, breakpoint) {
-              final sm = breakpoint >= theme.breakpoints.small;
+      alignment: effectiveAlignment,
+      child: ConstrainedBox(
+        constraints: effectiveConstraints,
+        child: ShadResponsiveBuilder(
+          builder: (context, breakpoint) {
+            final sm = breakpoint >= theme.breakpoints.small;
 
-              final effectiveActionsAxis = actionsAxis ??
-                  effectiveDialogTheme.actionsAxis ??
-                  (sm ? Axis.horizontal : Axis.vertical);
+            final effectiveActionsAxis = actionsAxis ??
+                effectiveDialogTheme.actionsAxis ??
+                (sm ? Axis.horizontal : Axis.vertical);
 
-              final effectiveActionsMainAxisSize = actionsMainAxisSize ??
-                  effectiveDialogTheme.actionsMainAxisSize ??
-                  (sm ? MainAxisSize.min : MainAxisSize.max);
+            final effectiveActionsMainAxisSize = actionsMainAxisSize ??
+                effectiveDialogTheme.actionsMainAxisSize ??
+                (sm ? MainAxisSize.min : MainAxisSize.max);
 
-              final effectiveActionsMainAxisAlignment =
-                  actionsMainAxisAlignment ??
-                      effectiveDialogTheme.actionsMainAxisAlignment ??
-                      MainAxisAlignment.end;
+            final effectiveActionsMainAxisAlignment =
+                actionsMainAxisAlignment ??
+                    effectiveDialogTheme.actionsMainAxisAlignment ??
+                    MainAxisAlignment.end;
 
-              final effectiveActionsVerticalDirection =
-                  actionsVerticalDirection ??
-                      effectiveDialogTheme.actionsVerticalDirection ??
-                      (sm ? VerticalDirection.down : VerticalDirection.up);
+            final effectiveActionsVerticalDirection =
+                actionsVerticalDirection ??
+                    effectiveDialogTheme.actionsVerticalDirection ??
+                    (sm ? VerticalDirection.down : VerticalDirection.up);
 
-              final effectiveTitleTextAlign = titleTextAlign ??
-                  effectiveDialogTheme.titleTextAlign ??
-                  (sm ? TextAlign.start : TextAlign.center);
+            final effectiveTitleTextAlign = titleTextAlign ??
+                effectiveDialogTheme.titleTextAlign ??
+                (sm ? TextAlign.start : TextAlign.center);
 
-              final effectiveDescriptionTextAlign = descriptionTextAlign ??
-                  effectiveDialogTheme.descriptionTextAlign ??
-                  (sm ? TextAlign.start : TextAlign.center);
+            final effectiveDescriptionTextAlign = descriptionTextAlign ??
+                effectiveDialogTheme.descriptionTextAlign ??
+                (sm ? TextAlign.start : TextAlign.center);
 
-              Widget effectiveActions = Flex(
-                direction: effectiveActionsAxis,
-                mainAxisSize: effectiveActionsMainAxisSize,
-                mainAxisAlignment: effectiveActionsMainAxisAlignment,
-                verticalDirection: effectiveActionsVerticalDirection,
-                children: actions,
-              );
+            Widget effectiveActions = Flex(
+              direction: effectiveActionsAxis,
+              mainAxisSize: effectiveActionsMainAxisSize,
+              mainAxisAlignment: effectiveActionsMainAxisAlignment,
+              verticalDirection: effectiveActionsVerticalDirection,
+              children: actions,
+            );
 
-              if (!sm && effectiveExpandActionsWhenTiny) {
-                effectiveActions = ShadTheme(
-                  data: theme.copyWith(
-                    primaryButtonTheme: theme.primaryButtonTheme
-                        .copyWith(width: double.infinity),
-                    secondaryButtonTheme: theme.secondaryButtonTheme
-                        .copyWith(width: double.infinity),
-                    outlineButtonTheme: theme.outlineButtonTheme
-                        .copyWith(width: double.infinity),
-                    ghostButtonTheme:
-                        theme.ghostButtonTheme.copyWith(width: double.infinity),
-                    destructiveButtonTheme: theme.destructiveButtonTheme
-                        .copyWith(width: double.infinity),
-                  ),
-                  child: effectiveActions,
-                );
-              }
-              return DecoratedBox(
-                decoration: BoxDecoration(
-                  color: effectiveBackgroundColor,
-                  borderRadius: (!sm && effectiveRemoveBorderRadiusWhenTiny)
-                      ? null
-                      : effectiveRadius,
-                  border: effectiveBorder,
-                  boxShadow: effectiveShadows,
+            if (!sm && effectiveExpandActionsWhenTiny) {
+              effectiveActions = ShadTheme(
+                data: theme.copyWith(
+                  primaryButtonTheme:
+                      theme.primaryButtonTheme.copyWith(width: double.infinity),
+                  secondaryButtonTheme: theme.secondaryButtonTheme
+                      .copyWith(width: double.infinity),
+                  outlineButtonTheme:
+                      theme.outlineButtonTheme.copyWith(width: double.infinity),
+                  ghostButtonTheme:
+                      theme.ghostButtonTheme.copyWith(width: double.infinity),
+                  destructiveButtonTheme: theme.destructiveButtonTheme
+                      .copyWith(width: double.infinity),
                 ),
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: effectivePadding,
-                      child: ShadSameWidthColumn(
-                        children: [
-                          if (title != null)
-                            DefaultTextStyle(
-                              style: effectiveTitleStyle,
-                              textAlign: effectiveTitleTextAlign,
-                              child: title!,
-                            ),
-                          if (description != null)
-                            DefaultTextStyle(
-                              style: effectiveDescriptionStyle,
-                              textAlign: effectiveDescriptionTextAlign,
-                              child: description!,
-                            ),
-                          if (content != null) content!,
-                          if (actions.isNotEmpty) effectiveActions,
-                        ].separatedBy(SizedBox(height: effectiveGap)),
-                      ),
+                child: effectiveActions,
+              );
+            }
+            return DecoratedBox(
+              decoration: BoxDecoration(
+                color: effectiveBackgroundColor,
+                borderRadius: (!sm && effectiveRemoveBorderRadiusWhenTiny)
+                    ? null
+                    : effectiveRadius,
+                border: effectiveBorder,
+                boxShadow: effectiveShadows,
+              ),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: effectivePadding,
+                    child: ShadSameWidthColumn(
+                      children: [
+                        if (title != null)
+                          DefaultTextStyle(
+                            style: effectiveTitleStyle,
+                            textAlign: effectiveTitleTextAlign,
+                            child: title!,
+                          ),
+                        if (description != null)
+                          DefaultTextStyle(
+                            style: effectiveDescriptionStyle,
+                            textAlign: effectiveDescriptionTextAlign,
+                            child: description!,
+                          ),
+                        if (content != null) content!,
+                        if (actions.isNotEmpty) effectiveActions,
+                      ].separatedBy(SizedBox(height: effectiveGap)),
                     ),
-                    if (effectiveCloseIcon != null)
-                      effectiveCloseIcon
-                          .positionedWith(effectiveCloseIconPosition),
-                  ],
-                ),
-              );
-            },
-          ),
+                  ),
+                  if (effectiveCloseIcon != null)
+                    effectiveCloseIcon
+                        .positionedWith(effectiveCloseIconPosition),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

@@ -19,9 +19,8 @@ class DialogPage extends StatelessWidget {
         ShadButton.outline(
           text: const Text('Edit Profile'),
           onPressed: () {
-            showDialog(
+            showShadDialog(
               context: context,
-              barrierColor: Colors.black.withOpacity(.8),
               builder: (context) => ShadDialog(
                 title: const Text('Edit Profile'),
                 description: const Text(
@@ -62,9 +61,8 @@ class DialogPage extends StatelessWidget {
         ShadButton.outline(
           text: const Text('Show Dialog'),
           onPressed: () {
-            showDialog(
+            showShadDialog(
               context: context,
-              barrierColor: Colors.black.withOpacity(.8),
               builder: (context) => ShadDialog.alert(
                 title: const Text('Are you absolutely sure?'),
                 description: const Padding(
