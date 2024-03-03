@@ -13,6 +13,7 @@ import 'package:playground/pages/input.dart';
 import 'package:playground/pages/popover.dart';
 import 'package:playground/pages/radio_group.dart';
 import 'package:playground/pages/select.dart';
+import 'package:playground/pages/sheet.dart';
 import 'package:playground/pages/slider.dart';
 import 'package:playground/pages/switch.dart';
 import 'package:playground/pages/toast.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       title: 'shadcn-ui Flutter Playground',
       routerConfig: _router,
       themeMode: theme == 'dark' ? ThemeMode.dark : ThemeMode.light,
+      debugShowCheckedModeBanner: false,
       theme: ShadThemeData(
         colorScheme: const ShadZincColorScheme.light(),
         brightness: Brightness.light,
@@ -175,6 +177,16 @@ final _router = GoRouter(
     GoRoute(
       path: '/slider',
       builder: (context, state) => const SliderPage(),
+    ),
+    GoRoute(
+      path: '/sheet',
+      builder: (context, state) {
+        final style =
+            state.uri.queryParameters['style'] ?? SheetStyle.primary.name;
+        return SheetPage(
+          style: SheetStyle.values.byName(style),
+        );
+      },
     ),
   ],
 );
