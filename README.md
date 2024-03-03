@@ -38,7 +38,7 @@ Current progress:
 - [x] <strike>Scroll Area</strike> Use SingleScrollView, ListView etc. instead
 - [x] [Select](https://mariuti.com/shadcn-ui/components/select/)
 - [x] <strike>Separator</strike> Use Divider instead
-- [ ] Sheet
+- [x] [Sheet](https://mariuti.com/shadcn-ui/components/sheet/)
 - [ ] Skeleton
 - [x] [Slider](https://mariuti.com/shadcn-ui/components/slider/)
 - [ ] Sonner (?)
