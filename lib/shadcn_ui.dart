@@ -4,6 +4,7 @@
 export 'src/app.dart';
 
 // Components
+export 'src/components/accordion.dart';
 export 'src/components/alert.dart';
 export 'src/components/avatar.dart';
 export 'src/components/badge.dart';
@@ -23,11 +24,11 @@ export 'src/components/input.dart';
 export 'src/components/popover.dart';
 export 'src/components/radio.dart';
 export 'src/components/select.dart';
+export 'src/components/sheet.dart';
 export 'src/components/slider.dart';
 export 'src/components/switch.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
-export 'src/components/sheet.dart';
 
 // Assets
 export 'src/assets.dart';
@@ -44,6 +45,7 @@ export 'src/theme/themes/base.dart';
 export 'src/theme/themes/shadows.dart';
 
 // Component Themes
+export 'src/theme/components/accordion.dart';
 export 'src/theme/components/alert.dart';
 export 'src/theme/components/avatar.dart';
 export 'src/theme/components/badge.dart';
