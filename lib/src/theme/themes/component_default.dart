@@ -15,6 +15,7 @@ import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
+import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
@@ -559,9 +560,13 @@ abstract class ShadComponentDefaultTheme {
       removeBorderRadiusWhenTiny: true,
       expandActionsWhenTiny: true,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
-      effects: const [
+      animateIn: const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
+      ],
+      animateOut: const [
+        FadeEffect(begin: 1, end: 0),
+        ScaleEffect(begin: Offset(1, 1), end: Offset(.95, .95)),
       ],
       constraints: const BoxConstraints(maxWidth: 512),
       shadows: ShadShadows.lg,
@@ -569,6 +574,7 @@ abstract class ShadComponentDefaultTheme {
       gap: 8,
       titleStyle: textTheme.large,
       descriptionStyle: textTheme.muted,
+      alignment: Alignment.center,
     );
   }
 
@@ -583,9 +589,13 @@ abstract class ShadComponentDefaultTheme {
       removeBorderRadiusWhenTiny: true,
       expandActionsWhenTiny: true,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
-      effects: const [
+      animateIn: const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
+      ],
+      animateOut: const [
+        FadeEffect(begin: 1, end: 0),
+        ScaleEffect(begin: Offset(1, 1), end: Offset(.95, .95)),
       ],
       constraints: const BoxConstraints(maxWidth: 512),
       shadows: ShadShadows.lg,
@@ -593,6 +603,7 @@ abstract class ShadComponentDefaultTheme {
       gap: 8,
       titleStyle: textTheme.large,
       descriptionStyle: textTheme.muted,
+      alignment: Alignment.center,
     );
   }
 
@@ -614,6 +625,16 @@ abstract class ShadComponentDefaultTheme {
       disabledInactiveTrackColor: colorScheme.secondary.withOpacity(.5),
       trackHeight: 8,
       thumbRadius: 10,
+    );
+  }
+
+  static ShadSheetTheme sheetTheme({
+    required ShadColorScheme colorScheme,
+    required ShadTextThemeData textTheme,
+  }) {
+    return const ShadSheetTheme(
+      radius: BorderRadius.zero,
+      expandCrossSide: true,
     );
   }
 }

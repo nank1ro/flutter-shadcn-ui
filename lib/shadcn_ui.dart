@@ -27,6 +27,7 @@ export 'src/components/slider.dart';
 export 'src/components/switch.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
+export 'src/components/sheet.dart';
 
 // Assets
 export 'src/assets.dart';
@@ -60,6 +61,7 @@ export 'src/theme/components/slider.dart';
 export 'src/theme/components/switch.dart';
 export 'src/theme/components/toast.dart';
 export 'src/theme/components/tooltip.dart';
+export 'src/theme/components/sheet.dart';
 
 // Utils
 export 'src/utils/position.dart';

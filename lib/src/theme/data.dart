@@ -15,6 +15,7 @@ import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
+import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
@@ -63,6 +64,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadDialogTheme? primaryDialogTheme,
     ShadDialogTheme? alertDialogTheme,
     ShadSliderTheme? sliderTheme,
+    ShadSheetTheme? sheetTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -181,6 +183,10 @@ class ShadThemeData extends ShadBaseTheme {
       sliderTheme: ShadComponentDefaultTheme.sliderTheme(
         colorScheme: colorScheme,
       ).mergeWith(sliderTheme),
+      sheetTheme: ShadComponentDefaultTheme.sheetTheme(
+        colorScheme: colorScheme,
+        textTheme: effectiveTextTheme,
+      ).mergeWith(sheetTheme),
     );
   }
 
@@ -221,6 +227,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.primaryDialogTheme,
     required super.alertDialogTheme,
     required super.sliderTheme,
+    required super.sheetTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -345,7 +352,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.destructiveAlertTheme == destructiveAlertTheme &&
         other.primaryDialogTheme == primaryDialogTheme &&
         other.alertDialogTheme == alertDialogTheme &&
-        other.sliderTheme == sliderTheme;
+        other.sliderTheme == sliderTheme &&
+        other.sheetTheme == sheetTheme;
   }
 
   @override
@@ -385,7 +393,8 @@ class ShadThemeData extends ShadBaseTheme {
         destructiveAlertTheme.hashCode ^
         primaryDialogTheme.hashCode ^
         alertDialogTheme.hashCode ^
-        sliderTheme.hashCode;
+        sliderTheme.hashCode ^
+        sheetTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -425,6 +434,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadDialogTheme? primaryDialogTheme,
     ShadDialogTheme? alertDialogTheme,
     ShadSliderTheme? sliderTheme,
+    ShadSheetTheme? sheetTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -467,6 +477,7 @@ class ShadThemeData extends ShadBaseTheme {
       primaryDialogTheme: primaryDialogTheme ?? this.primaryDialogTheme,
       alertDialogTheme: alertDialogTheme ?? this.alertDialogTheme,
       sliderTheme: sliderTheme ?? this.sliderTheme,
+      sheetTheme: sheetTheme ?? this.sheetTheme,
     );
   }
 }
