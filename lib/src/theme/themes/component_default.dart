@@ -418,20 +418,6 @@ abstract class ShadComponentDefaultTheme {
     required ShadTextThemeData textTheme,
   }) {
     return ShadToastTheme(
-      animateIn: [
-        SlideEffect(
-          begin: const Offset(0, 1),
-          end: Offset.zero,
-          duration: 300.milliseconds,
-        ),
-      ],
-      animateOut: [
-        SlideEffect(
-          begin: Offset.zero,
-          end: const Offset(1, 0),
-          duration: 300.milliseconds,
-        ),
-      ],
       offset: const Offset(16, 16),
       alignment: Alignment.bottomRight,
       closeIconSrc: ShadAssets.x,
@@ -459,20 +445,6 @@ abstract class ShadComponentDefaultTheme {
     required ShadTextThemeData textTheme,
   }) {
     return ShadToastTheme(
-      animateIn: [
-        SlideEffect(
-          begin: const Offset(0, 1),
-          end: Offset.zero,
-          duration: 300.milliseconds,
-        ),
-      ],
-      animateOut: [
-        SlideEffect(
-          begin: Offset.zero,
-          end: const Offset(1, 0),
-          duration: 300.milliseconds,
-        ),
-      ],
       offset: const Offset(16, 16),
       alignment: Alignment.bottomRight,
       closeIconSrc: ShadAssets.x,

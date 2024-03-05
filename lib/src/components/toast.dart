@@ -86,30 +86,109 @@ class ShadToasterState extends State<ShadToaster>
                     ShadToastVariant.primary || null => theme.primaryToastTheme,
                     ShadToastVariant.destructive => theme.destructiveToastTheme,
                   };
-                  final effectiveAnimateIn = toast?.animateIn ??
-                      effectiveToastTheme.animateIn ??
-                      [
-                        SlideEffect(
-                          begin: const Offset(0, 1),
-                          end: Offset.zero,
-                          duration: 300.milliseconds,
-                        ),
-                      ];
-                  final effectiveAnimateOut = toast?.animateOut ??
-                      effectiveToastTheme.animateOut ??
-                      [
-                        SlideEffect(
-                          begin: Offset.zero,
-                          end: const Offset(1, 0),
-                          duration: 300.milliseconds,
-                        ),
-                      ];
-                  final effectiveOffset = toast?.offset ??
-                      effectiveToastTheme.offset ??
-                      const Offset(16, 16);
                   final effectiveAlignment = toast?.alignment ??
                       effectiveToastTheme.alignment ??
                       Alignment.bottomRight;
+                  // ignore: omit_local_variable_types
+                  final List<Effect<dynamic>> defaultAnimateIn =
+                      switch (effectiveAlignment) {
+                    Alignment.bottomRight ||
+                    Alignment.bottomLeft ||
+                    Alignment.bottomCenter =>
+                      [
+                        const SlideEffect(
+                          begin: Offset(0, 1),
+                          end: Offset.zero,
+                        ),
+                      ],
+                    Alignment.topRight ||
+                    Alignment.topLeft ||
+                    Alignment.topCenter =>
+                      [
+                        const SlideEffect(
+                          begin: Offset(0, -1),
+                          end: Offset.zero,
+                        ),
+                      ],
+                    Alignment.centerRight ||
+                    Alignment.topRight ||
+                    Alignment.bottomRight =>
+                      [
+                        const SlideEffect(
+                          begin: Offset(1, 0),
+                          end: Offset.zero,
+                        ),
+                      ],
+                    Alignment.centerLeft ||
+                    Alignment.topLeft ||
+                    Alignment.bottomLeft =>
+                      [
+                        const SlideEffect(
+                          begin: Offset(-1, 0),
+                          end: Offset.zero,
+                        ),
+                      ],
+                    Alignment.center || Alignment() => [
+                        const FadeEffect(),
+                        const ScaleEffect(
+                          begin: Offset(.95, .95),
+                          end: Offset(1, 1),
+                        ),
+                      ],
+                  };
+
+                  // ignore: omit_local_variable_types
+                  final List<Effect<dynamic>> defaultAnimateOut =
+                      switch (effectiveAlignment) {
+                    Alignment.bottomRight ||
+                    Alignment.topRight ||
+                    Alignment.centerRight =>
+                      const [
+                        SlideEffect(
+                          begin: Offset.zero,
+                          end: Offset(1, 0),
+                        ),
+                      ],
+                    Alignment.topLeft ||
+                    Alignment.centerLeft ||
+                    Alignment.bottomLeft =>
+                      const [
+                        SlideEffect(
+                          begin: Offset.zero,
+                          end: Offset(-1, 0),
+                        ),
+                      ],
+                    Alignment.topCenter => [
+                        const SlideEffect(
+                          begin: Offset.zero,
+                          end: Offset(0, -1),
+                        ),
+                      ],
+                    Alignment.bottomCenter => [
+                        const SlideEffect(
+                          begin: Offset.zero,
+                          end: Offset(0, 1),
+                        ),
+                      ],
+                    Alignment.center || Alignment() => [
+                        const FadeEffect(begin: 1, end: 0),
+                        const ScaleEffect(
+                          begin: Offset(1, 1),
+                          end: Offset(.95, .95),
+                        ),
+                      ],
+                  };
+
+                  final effectiveAnimateIn = toast?.animateIn ??
+                      effectiveToastTheme.animateIn ??
+                      defaultAnimateIn;
+                  final effectiveAnimateOut = toast?.animateOut ??
+                      effectiveToastTheme.animateOut ??
+                      defaultAnimateOut;
+                  final effectiveOffset = toast?.offset ??
+                      effectiveToastTheme.offset ??
+                      const Offset(16, 16);
+
                   return Animate(
                     controller: _controller,
                     effects: visible ? effectiveAnimateIn : effectiveAnimateOut,
