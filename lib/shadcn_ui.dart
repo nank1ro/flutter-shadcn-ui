@@ -35,6 +35,7 @@ export 'src/assets.dart';
 
 // Raw Components
 export 'src/raw_components/portal.dart';
+export 'src/raw_components/same_width_column.dart';
 
 // App Themes
 export 'src/theme/color_scheme/slate.dart';
@@ -72,3 +73,5 @@ export 'src/utils/states_controller.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart';
+export 'package:boxy/boxy.dart';
+export 'package:boxy/flex.dart';
