@@ -28,31 +28,37 @@ class _AccordionPageState extends State<AccordionPage> {
       ],
       children: [
         if (type == ShadAccordionType.single)
-          ShadAccordion<String>(
-            children: List.generate(
-              3,
-              (index) {
-                final n = index + 1;
-                return ShadAccordionItem(
-                  value: 'item-$n',
-                  title: Text('Title $n'),
-                  content: Text('Content $n'),
-                );
-              },
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: double.infinity),
+            child: ShadAccordion<String>(
+              children: List.generate(
+                3,
+                (index) {
+                  final n = index + 1;
+                  return ShadAccordionItem(
+                    value: 'item-$n',
+                    title: Text('Title $n'),
+                    content: Text('Content $n'),
+                  );
+                },
+              ),
             ),
           )
         else
-          ShadAccordion<String>.multiple(
-            children: List.generate(
-              3,
-              (index) {
-                final n = index + 1;
-                return ShadAccordionItem(
-                  value: 'item-$n',
-                  title: Text('Title $n'),
-                  content: Text('Content $n'),
-                );
-              },
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: double.infinity),
+            child: ShadAccordion<String>.multiple(
+              children: List.generate(
+                3,
+                (index) {
+                  final n = index + 1;
+                  return ShadAccordionItem(
+                    value: 'item-$n',
+                    title: Text('Title $n'),
+                    content: Text('Content $n'),
+                  );
+                },
+              ),
             ),
           ),
       ],

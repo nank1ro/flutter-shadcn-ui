@@ -8,6 +8,7 @@ import 'package:shadcn_ui/src/assets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/raw_components/same_width_column.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 enum ShadAccordionType {
   single,
@@ -61,7 +62,7 @@ class ShadAccordionState<T> extends State<ShadAccordion<T>> {
   Widget build(BuildContext context) {
     return ShadAccordionInheritedWidget<T>(
       data: this,
-      child: Column(
+      child: ShadSameWidthColumn(
         children: widget.children,
       ),
     );
@@ -93,7 +94,7 @@ class ShadAccordionInheritedWidget<T> extends InheritedWidget {
   }
 }
 
-class ShadAccordionItem<T> extends StatelessWidget {
+class ShadAccordionItem<T> extends StatefulWidget {
   const ShadAccordionItem({
     super.key,
     required this.value,
@@ -106,56 +107,87 @@ class ShadAccordionItem<T> extends StatelessWidget {
   final Widget content;
 
   @override
+  State<ShadAccordionItem<T>> createState() => _ShadAccordionItemState<T>();
+}
+
+class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>> {
+  final hovered = ValueNotifier(false);
+
+  @override
+  void dispose() {
+    hovered.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final inherited = ShadAccordionInheritedWidget.of<T>(context);
-    final expanded = inherited.values.contains(value);
+    final expanded = inherited.values.contains(widget.value);
+    final theme = ShadTheme.of(context);
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: GestureDetector(
-            onTap: () => inherited.toggle(value),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ShadButton.link(
-                    text: title,
-                    padding: EdgeInsets.zero,
-                    onPressed: () => inherited.toggle(value),
-                  ),
-                  Animate(
-                    target: expanded ? 1 : 0,
-                    effects: [
-                      RotateEffect(
-                        begin: 0,
-                        end: .5,
-                        duration: 200.milliseconds,
-                      )
-                    ],
-                    child: const ShadImage.square(
-                      ShadAssets.chevronDown,
-                      size: 16,
+        ColoredBox(
+          color: Colors.red,
+          child: MouseRegion(
+            onEnter: (_) => hovered.value = true,
+            onExit: (_) => hovered.value = false,
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => inherited.toggle(widget.value),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ValueListenableBuilder(
+                      valueListenable: hovered,
+                      builder: (context, hovered, child) {
+                        return DefaultTextStyle(
+                          style: theme.textTheme.list.copyWith(
+                            decoration:
+                                hovered ? TextDecoration.underline : null,
+                          ),
+                          child: child!,
+                        );
+                      },
+                      child: widget.title,
                     ),
-                  )
-                  // AnimatedRotation(
-                  //   duration: 200.milliseconds,
-                  //   turns: expanded ? 0.5 : 0.0,
-                  //   child: const ShadImage.square(
-                  //     ShadAssets.chevronDown,
-                  //     size: 16,
-                  //   ),
-                  // ),
-                ],
+
+                    Animate(
+                      target: expanded ? 1 : 0,
+                      effects: [
+                        RotateEffect(
+                          begin: 0,
+                          end: .5,
+                          duration: 200.milliseconds,
+                        )
+                      ],
+                      child: const ShadImage.square(
+                        ShadAssets.chevronDown,
+                        size: 16,
+                      ),
+                    )
+                    // AnimatedRotation(
+                    //   duration: 200.milliseconds,
+                    //   turns: expanded ? 0.5 : 0.0,
+                    //   child: const ShadImage.square(
+                    //     ShadAssets.chevronDown,
+                    //     size: 16,
+                    //   ),
+                    // ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
         AnimatedSwitcher(
           duration: 200.milliseconds,
-          child: expanded ? content : const SizedBox(),
+          child: expanded ? widget.content : const SizedBox.shrink(),
         ),
       ],
     );
