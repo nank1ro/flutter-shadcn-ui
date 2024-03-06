@@ -74,28 +74,6 @@ class _SelectPageState extends State<SelectPage> {
     super.dispose();
   }
 
-  List<Widget> getTimezonesWidgets(ShadThemeData theme) {
-    final widgets = <Widget>[];
-    for (final zone in timezones.entries) {
-      widgets.add(
-        Padding(
-          padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-          child: Text(
-            zone.key,
-            style: theme.textTheme.muted.copyWith(
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.popoverForeground,
-            ),
-            textAlign: TextAlign.start,
-          ),
-        ),
-      );
-      widgets.addAll(zone.value.entries
-          .map((e) => ShadOption(value: e.key, child: Text(e.value))));
-    }
-    return widgets;
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -155,7 +133,26 @@ class _SelectPageState extends State<SelectPage> {
           onChanged: print,
           enabled: enabled,
           placeholder: const Text('Select a timezone'),
-          options: getTimezonesWidgets(theme),
+          options: timezones.entries.map(
+            (zone) => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+                  child: Text(
+                    zone.key,
+                    style: theme.textTheme.muted.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.popoverForeground,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+                ...zone.value.entries
+                    .map((e) => ShadOption(value: e.key, child: Text(e.value)))
+              ],
+            ),
+          ),
           selectedOptionBuilder: (context, value) {
             final timezone = timezones.entries
                 .firstWhere((element) => element.value.containsKey(value))
