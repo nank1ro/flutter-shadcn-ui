@@ -13,7 +13,14 @@ import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/text_theme/defaults.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
+enum ShadAppType {
+  shadcn,
+  material,
+  cupertino,
+}
+
 class ShadApp extends StatefulWidget {
+  /// Creates a [ShadApp] providing a [ShadTheme].
   const ShadApp({
     super.key,
     this.navigatorKey,
@@ -51,7 +58,8 @@ class ShadApp extends StatefulWidget {
         routeInformationParser = null,
         routerDelegate = null,
         backButtonDispatcher = null,
-        routerConfig = null;
+        routerConfig = null,
+        type = ShadAppType.shadcn;
 
   /// Creates a [ShadApp] that uses the [Router] instead of a [Navigator].
   const ShadApp.router({
@@ -91,7 +99,179 @@ class ShadApp extends StatefulWidget {
         onUnknownRoute = null,
         routes = null,
         initialRoute = null,
-        pageRouteBuilder = null;
+        pageRouteBuilder = null,
+        type = ShadAppType.shadcn;
+
+  /// Creates a [MaterialApp] wrapped by a [ShadTheme].
+  const ShadApp.material({
+    super.key,
+    this.navigatorKey,
+    this.onGenerateRoute,
+    this.onGenerateInitialRoutes,
+    this.onUnknownRoute,
+    this.navigatorObservers = const <NavigatorObserver>[],
+    this.initialRoute,
+    this.home,
+    this.routes = const <String, WidgetBuilder>{},
+    this.builder,
+    this.title = '',
+    this.onGenerateTitle,
+    this.color,
+    this.locale,
+    this.localizationsDelegates,
+    this.localeListResolutionCallback,
+    this.localeResolutionCallback,
+    this.supportedLocales = const <Locale>[Locale('en', 'US')],
+    this.showPerformanceOverlay = false,
+    this.checkerboardRasterCacheImages = false,
+    this.checkerboardOffscreenLayers = false,
+    this.showSemanticsDebugger = false,
+    this.debugShowCheckedModeBanner = true,
+    this.shortcuts,
+    this.actions,
+    this.theme,
+    this.darkTheme,
+    this.themeMode,
+    this.restorationScopeId,
+    this.scrollBehavior = const MaterialScrollBehavior(),
+    this.pageRouteBuilder,
+    this.themeCurve = Curves.linear,
+  })  : routeInformationProvider = null,
+        routeInformationParser = null,
+        routerDelegate = null,
+        backButtonDispatcher = null,
+        routerConfig = null,
+        type = ShadAppType.material;
+
+  /// Creates a [MaterialApp] wrapped by a [ShadTheme] that uses the [Router] instead of a [Navigator].
+  const ShadApp.materialRouter({
+    super.key,
+    this.theme,
+    this.darkTheme,
+    this.themeMode,
+    this.routeInformationProvider,
+    this.routeInformationParser,
+    this.routerDelegate,
+    this.backButtonDispatcher,
+    this.routerConfig,
+    this.builder,
+    this.title = '',
+    this.onGenerateTitle,
+    this.color,
+    this.locale,
+    this.localizationsDelegates,
+    this.localeListResolutionCallback,
+    this.localeResolutionCallback,
+    this.supportedLocales = const <Locale>[Locale('en', 'US')],
+    this.showPerformanceOverlay = false,
+    this.checkerboardRasterCacheImages = false,
+    this.checkerboardOffscreenLayers = false,
+    this.showSemanticsDebugger = false,
+    this.debugShowCheckedModeBanner = true,
+    this.shortcuts,
+    this.actions,
+    this.restorationScopeId,
+    this.scrollBehavior = const MaterialScrollBehavior(),
+    this.themeCurve = Curves.linear,
+  })  : navigatorObservers = null,
+        navigatorKey = null,
+        onGenerateRoute = null,
+        home = null,
+        onGenerateInitialRoutes = null,
+        onUnknownRoute = null,
+        routes = null,
+        initialRoute = null,
+        pageRouteBuilder = null,
+        type = ShadAppType.material;
+
+  /// Creates a [CupertinoApp] wrapped by a [ShadTheme].
+  const ShadApp.cupertino({
+    super.key,
+    this.navigatorKey,
+    this.onGenerateRoute,
+    this.onGenerateInitialRoutes,
+    this.onUnknownRoute,
+    this.navigatorObservers = const <NavigatorObserver>[],
+    this.initialRoute,
+    this.home,
+    this.routes = const <String, WidgetBuilder>{},
+    this.builder,
+    this.title = '',
+    this.onGenerateTitle,
+    this.color,
+    this.locale,
+    this.localizationsDelegates,
+    this.localeListResolutionCallback,
+    this.localeResolutionCallback,
+    this.supportedLocales = const <Locale>[Locale('en', 'US')],
+    this.showPerformanceOverlay = false,
+    this.checkerboardRasterCacheImages = false,
+    this.checkerboardOffscreenLayers = false,
+    this.showSemanticsDebugger = false,
+    this.debugShowCheckedModeBanner = true,
+    this.shortcuts,
+    this.actions,
+    this.theme,
+    this.darkTheme,
+    this.themeMode,
+    this.restorationScopeId,
+    this.scrollBehavior = const CupertinoScrollBehavior(),
+    this.pageRouteBuilder,
+    this.themeCurve = Curves.linear,
+  })  : routeInformationProvider = null,
+        routeInformationParser = null,
+        routerDelegate = null,
+        backButtonDispatcher = null,
+        routerConfig = null,
+        type = ShadAppType.cupertino;
+
+  /// Creates a [CupertinoApp] wrapped by a [ShadTheme] that uses the [Router] instead of a [Navigator].
+  const ShadApp.cupertinoRouter({
+    super.key,
+    this.theme,
+    this.darkTheme,
+    this.themeMode,
+    this.routeInformationProvider,
+    this.routeInformationParser,
+    this.routerDelegate,
+    this.backButtonDispatcher,
+    this.routerConfig,
+    this.builder,
+    this.title = '',
+    this.onGenerateTitle,
+    this.color,
+    this.locale,
+    this.localizationsDelegates,
+    this.localeListResolutionCallback,
+    this.localeResolutionCallback,
+    this.supportedLocales = const <Locale>[Locale('en', 'US')],
+    this.showPerformanceOverlay = false,
+    this.checkerboardRasterCacheImages = false,
+    this.checkerboardOffscreenLayers = false,
+    this.showSemanticsDebugger = false,
+    this.debugShowCheckedModeBanner = true,
+    this.shortcuts,
+    this.actions,
+    this.restorationScopeId,
+    this.scrollBehavior = const CupertinoScrollBehavior(),
+    this.themeCurve = Curves.linear,
+  })  : navigatorObservers = null,
+        navigatorKey = null,
+        onGenerateRoute = null,
+        home = null,
+        onGenerateInitialRoutes = null,
+        onUnknownRoute = null,
+        routes = null,
+        initialRoute = null,
+        pageRouteBuilder = null,
+        type = ShadAppType.cupertino;
+
+  /// The type of app to use.
+  ///
+  /// If you are going to use only Shad components, use [ShadAppType.shadcn].
+  /// If you are going to use also Material components, use [ShadAppType.material].
+  /// If you are going to use also Cupertino components, use [ShadAppType/cupertino].
+  final ShadAppType type;
 
   /// Default visual properties, like colors fonts and shapes, for this app's
   /// shad widgets.
@@ -383,7 +563,11 @@ class _ShadAppState extends State<ShadApp> {
       behavior: widget.scrollBehavior,
       child: HeroControllerScope(
         controller: heroController,
-        child: _buildApp(context),
+        child: AnimatedShadTheme(
+          data: theme(context),
+          curve: widget.themeCurve,
+          child: _buildApp(context),
+        ),
       ),
     );
   }
@@ -415,120 +599,262 @@ class _ShadAppState extends State<ShadApp> {
     return data;
   }
 
-  Widget _builder(BuildContext context, Widget? child) {
+  ThemeData materialTheme(BuildContext context) {
     final themeData = theme(context);
     final mTheme = context.findAncestorWidgetOfExactType<Theme>();
-
-    return AnimatedTheme(
-      data: mTheme?.data ??
-          ThemeData(
-            fontFamily: kDefaultFontFamily,
-            package: 'shadcn_ui',
-            extensions: themeData.extensions,
-            colorScheme: ColorScheme(
-              brightness: themeData.brightness,
-              primary: themeData.colorScheme.primary,
-              onPrimary: themeData.colorScheme.primaryForeground,
-              secondary: themeData.colorScheme.secondary,
-              onSecondary: themeData.colorScheme.secondaryForeground,
-              error: themeData.colorScheme.destructive,
-              onError: themeData.colorScheme.destructiveForeground,
-              background: themeData.colorScheme.background,
-              onBackground: themeData.colorScheme.foreground,
-              surface: themeData.colorScheme.card,
-              onSurface: themeData.colorScheme.cardForeground,
-            ),
-            scaffoldBackgroundColor: themeData.colorScheme.background,
+    return mTheme?.data ??
+        ThemeData(
+          fontFamily: kDefaultFontFamily,
+          package: 'shadcn_ui',
+          extensions: themeData.extensions,
+          colorScheme: ColorScheme(
             brightness: themeData.brightness,
+            primary: themeData.colorScheme.primary,
+            onPrimary: themeData.colorScheme.primaryForeground,
+            secondary: themeData.colorScheme.secondary,
+            onSecondary: themeData.colorScheme.secondaryForeground,
+            error: themeData.colorScheme.destructive,
+            onError: themeData.colorScheme.destructiveForeground,
+            background: themeData.colorScheme.background,
+            onBackground: themeData.colorScheme.foreground,
+            surface: themeData.colorScheme.card,
+            onSurface: themeData.colorScheme.cardForeground,
           ),
-      child: AnimatedShadTheme(
-        curve: widget.themeCurve,
-        data: themeData,
-        child: ShadToaster(
-          child: widget.builder != null
-              ? Builder(
-                  builder: (BuildContext context) {
-                    // Why are we surrounding a builder with a builder?
-                    //
-                    // The widget.builder may contain code that invokes
-                    // Theme.of(), which should return the theme we selected
-                    // above in AnimatedTheme. However, if we invoke
-                    // widget.builder() directly as the child of AnimatedTheme
-                    // then there is no Context separating them, and the
-                    // widget.builder() will not find the theme. Therefore, we
-                    // surround widget.builder with yet another builder so that
-                    // a context separates them and Theme.of() correctly
-                    // resolves to the theme we passed to AnimatedTheme.
-                    return widget.builder!(context, child);
-                  },
-                )
-              : child ?? const SizedBox.shrink(),
-        ),
-      ),
+          scaffoldBackgroundColor: themeData.colorScheme.background,
+          brightness: themeData.brightness,
+        );
+  }
+
+  CupertinoThemeData cupertinoTheme(BuildContext context) {
+    final themeData = theme(context);
+    final cTheme = context.findAncestorWidgetOfExactType<CupertinoTheme>();
+    return cTheme?.data ??
+        CupertinoThemeData(
+          primaryColor: themeData.colorScheme.primary,
+          primaryContrastingColor: themeData.colorScheme.primaryForeground,
+          scaffoldBackgroundColor: themeData.colorScheme.background,
+          barBackgroundColor: themeData.colorScheme.primary,
+          brightness: themeData.brightness,
+        );
+  }
+
+  Widget _builder(BuildContext context, Widget? child) {
+    return ShadToaster(
+      child: widget.builder != null
+          ? Builder(
+              builder: (BuildContext context) {
+                // Why are we surrounding a builder with a builder?
+                //
+                // The widget.builder may contain code that invokes
+                // Theme.of(), which should return the theme we selected
+                // above in AnimatedTheme. However, if we invoke
+                // widget.builder() directly as the child of AnimatedTheme
+                // then there is no Context separating them, and the
+                // widget.builder() will not find the theme. Therefore, we
+                // surround widget.builder with yet another builder so that
+                // a context separates them and Theme.of() correctly
+                // resolves to the theme we passed to AnimatedTheme.
+                return widget.builder!(context, child);
+              },
+            )
+          : child ?? const SizedBox.shrink(),
     );
   }
 
   Widget _buildApp(BuildContext context) {
-    if (usesRouter) {
-      return WidgetsApp.router(
-        key: GlobalObjectKey(this),
-        routeInformationProvider: widget.routeInformationProvider,
-        routeInformationParser: widget.routeInformationParser,
-        routerDelegate: widget.routerDelegate,
-        routerConfig: widget.routerConfig,
-        backButtonDispatcher: widget.backButtonDispatcher,
-        builder: _builder,
-        title: widget.title,
-        onGenerateTitle: widget.onGenerateTitle,
-        color: widget.color ?? Colors.blue,
-        locale: widget.locale,
-        localeResolutionCallback: widget.localeResolutionCallback,
-        localeListResolutionCallback: widget.localeListResolutionCallback,
-        supportedLocales: widget.supportedLocales,
-        showPerformanceOverlay: widget.showPerformanceOverlay,
-        checkerboardRasterCacheImages: widget.checkerboardRasterCacheImages,
-        checkerboardOffscreenLayers: widget.checkerboardOffscreenLayers,
-        showSemanticsDebugger: widget.showSemanticsDebugger,
-        debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
-        shortcuts: widget.shortcuts,
-        actions: widget.actions,
-        restorationScopeId: widget.restorationScopeId,
-        localizationsDelegates: localizationsDelegates,
-      );
-    }
+    switch (widget.type) {
+      case ShadAppType.shadcn:
+        if (usesRouter) {
+          return AnimatedTheme(
+            data: materialTheme(context),
+            child: WidgetsApp.router(
+              key: GlobalObjectKey(this),
+              routeInformationProvider: widget.routeInformationProvider,
+              routeInformationParser: widget.routeInformationParser,
+              routerDelegate: widget.routerDelegate,
+              routerConfig: widget.routerConfig,
+              backButtonDispatcher: widget.backButtonDispatcher,
+              builder: _builder,
+              title: widget.title,
+              onGenerateTitle: widget.onGenerateTitle,
+              color: widget.color ?? Colors.blue,
+              locale: widget.locale,
+              localeResolutionCallback: widget.localeResolutionCallback,
+              localeListResolutionCallback: widget.localeListResolutionCallback,
+              supportedLocales: widget.supportedLocales,
+              showPerformanceOverlay: widget.showPerformanceOverlay,
+              checkerboardRasterCacheImages:
+                  widget.checkerboardRasterCacheImages,
+              checkerboardOffscreenLayers: widget.checkerboardOffscreenLayers,
+              showSemanticsDebugger: widget.showSemanticsDebugger,
+              debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
+              shortcuts: widget.shortcuts,
+              actions: widget.actions,
+              restorationScopeId: widget.restorationScopeId,
+              localizationsDelegates: localizationsDelegates,
+            ),
+          );
+        }
 
-    return WidgetsApp(
-      key: GlobalObjectKey(this),
-      navigatorKey: widget.navigatorKey,
-      navigatorObservers: widget.navigatorObservers!,
-      home: widget.home,
-      routes: widget.routes!,
-      initialRoute: widget.initialRoute,
-      onGenerateRoute: widget.onGenerateRoute,
-      onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
-      onUnknownRoute: widget.onUnknownRoute,
-      builder: _builder,
-      title: widget.title,
-      onGenerateTitle: widget.onGenerateTitle,
-      color: widget.color ?? Colors.blue,
-      locale: widget.locale,
-      localeResolutionCallback: widget.localeResolutionCallback,
-      localeListResolutionCallback: widget.localeListResolutionCallback,
-      supportedLocales: widget.supportedLocales,
-      showPerformanceOverlay: widget.showPerformanceOverlay,
-      checkerboardRasterCacheImages: widget.checkerboardRasterCacheImages,
-      checkerboardOffscreenLayers: widget.checkerboardOffscreenLayers,
-      showSemanticsDebugger: widget.showSemanticsDebugger,
-      debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
-      shortcuts: widget.shortcuts,
-      actions: widget.actions,
-      restorationScopeId: widget.restorationScopeId,
-      localizationsDelegates: localizationsDelegates,
-      pageRouteBuilder: widget.pageRouteBuilder ??
-          <T>(RouteSettings settings, WidgetBuilder builder) {
-            return MaterialPageRoute<T>(settings: settings, builder: builder);
-          },
-    );
+        return AnimatedTheme(
+          data: materialTheme(context),
+          child: WidgetsApp(
+            key: GlobalObjectKey(this),
+            navigatorKey: widget.navigatorKey,
+            navigatorObservers: widget.navigatorObservers!,
+            home: widget.home,
+            routes: widget.routes!,
+            initialRoute: widget.initialRoute,
+            onGenerateRoute: widget.onGenerateRoute,
+            onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
+            onUnknownRoute: widget.onUnknownRoute,
+            builder: _builder,
+            title: widget.title,
+            onGenerateTitle: widget.onGenerateTitle,
+            color: widget.color ?? Colors.blue,
+            locale: widget.locale,
+            localeResolutionCallback: widget.localeResolutionCallback,
+            localeListResolutionCallback: widget.localeListResolutionCallback,
+            supportedLocales: widget.supportedLocales,
+            showPerformanceOverlay: widget.showPerformanceOverlay,
+            checkerboardRasterCacheImages: widget.checkerboardRasterCacheImages,
+            checkerboardOffscreenLayers: widget.checkerboardOffscreenLayers,
+            showSemanticsDebugger: widget.showSemanticsDebugger,
+            debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
+            shortcuts: widget.shortcuts,
+            actions: widget.actions,
+            restorationScopeId: widget.restorationScopeId,
+            localizationsDelegates: localizationsDelegates,
+            pageRouteBuilder: widget.pageRouteBuilder ??
+                <T>(RouteSettings settings, WidgetBuilder builder) {
+                  return MaterialPageRoute<T>(
+                    settings: settings,
+                    builder: builder,
+                  );
+                },
+          ),
+        );
+      case ShadAppType.material:
+        if (usesRouter) {
+          return MaterialApp.router(
+            routeInformationProvider: widget.routeInformationProvider,
+            routeInformationParser: widget.routeInformationParser,
+            routerDelegate: widget.routerDelegate,
+            routerConfig: widget.routerConfig,
+            backButtonDispatcher: widget.backButtonDispatcher,
+            builder: _builder,
+            theme: materialTheme(context),
+            title: widget.title,
+            onGenerateTitle: widget.onGenerateTitle,
+            color: widget.color ?? Colors.blue,
+            locale: widget.locale,
+            localeResolutionCallback: widget.localeResolutionCallback,
+            localeListResolutionCallback: widget.localeListResolutionCallback,
+            supportedLocales: widget.supportedLocales,
+            showPerformanceOverlay: widget.showPerformanceOverlay,
+            checkerboardRasterCacheImages: widget.checkerboardRasterCacheImages,
+            checkerboardOffscreenLayers: widget.checkerboardOffscreenLayers,
+            showSemanticsDebugger: widget.showSemanticsDebugger,
+            debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
+            shortcuts: widget.shortcuts,
+            actions: widget.actions,
+            restorationScopeId: widget.restorationScopeId,
+            localizationsDelegates: localizationsDelegates,
+          );
+        }
+        return MaterialApp(
+          navigatorKey: widget.navigatorKey,
+          navigatorObservers: widget.navigatorObservers!,
+          home: widget.home,
+          routes: widget.routes!,
+          initialRoute: widget.initialRoute,
+          onGenerateRoute: widget.onGenerateRoute,
+          onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
+          onUnknownRoute: widget.onUnknownRoute,
+          builder: _builder,
+          theme: materialTheme(context),
+          title: widget.title,
+          onGenerateTitle: widget.onGenerateTitle,
+          color: widget.color ?? Colors.blue,
+          locale: widget.locale,
+          localeResolutionCallback: widget.localeResolutionCallback,
+          localeListResolutionCallback: widget.localeListResolutionCallback,
+          supportedLocales: widget.supportedLocales,
+          showPerformanceOverlay: widget.showPerformanceOverlay,
+          checkerboardRasterCacheImages: widget.checkerboardRasterCacheImages,
+          checkerboardOffscreenLayers: widget.checkerboardOffscreenLayers,
+          showSemanticsDebugger: widget.showSemanticsDebugger,
+          debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
+          shortcuts: widget.shortcuts,
+          actions: widget.actions,
+          restorationScopeId: widget.restorationScopeId,
+          localizationsDelegates: localizationsDelegates,
+        );
+
+      case ShadAppType.cupertino:
+        if (usesRouter) {
+          return AnimatedTheme(
+            data: materialTheme(context),
+            child: CupertinoApp.router(
+              routeInformationProvider: widget.routeInformationProvider,
+              routeInformationParser: widget.routeInformationParser,
+              routerDelegate: widget.routerDelegate,
+              routerConfig: widget.routerConfig,
+              backButtonDispatcher: widget.backButtonDispatcher,
+              builder: _builder,
+              theme: cupertinoTheme(context),
+              title: widget.title,
+              onGenerateTitle: widget.onGenerateTitle,
+              color: widget.color ?? Colors.blue,
+              locale: widget.locale,
+              localeResolutionCallback: widget.localeResolutionCallback,
+              localeListResolutionCallback: widget.localeListResolutionCallback,
+              supportedLocales: widget.supportedLocales,
+              showPerformanceOverlay: widget.showPerformanceOverlay,
+              checkerboardRasterCacheImages:
+                  widget.checkerboardRasterCacheImages,
+              checkerboardOffscreenLayers: widget.checkerboardOffscreenLayers,
+              showSemanticsDebugger: widget.showSemanticsDebugger,
+              debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
+              shortcuts: widget.shortcuts,
+              actions: widget.actions,
+              restorationScopeId: widget.restorationScopeId,
+              localizationsDelegates: localizationsDelegates,
+            ),
+          );
+        }
+        return AnimatedTheme(
+          data: materialTheme(context),
+          child: CupertinoApp(
+            navigatorKey: widget.navigatorKey,
+            navigatorObservers: widget.navigatorObservers!,
+            home: widget.home,
+            routes: widget.routes!,
+            initialRoute: widget.initialRoute,
+            onGenerateRoute: widget.onGenerateRoute,
+            onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
+            onUnknownRoute: widget.onUnknownRoute,
+            builder: _builder,
+            theme: cupertinoTheme(context),
+            title: widget.title,
+            onGenerateTitle: widget.onGenerateTitle,
+            color: widget.color ?? Colors.blue,
+            locale: widget.locale,
+            localeResolutionCallback: widget.localeResolutionCallback,
+            localeListResolutionCallback: widget.localeListResolutionCallback,
+            supportedLocales: widget.supportedLocales,
+            showPerformanceOverlay: widget.showPerformanceOverlay,
+            checkerboardRasterCacheImages: widget.checkerboardRasterCacheImages,
+            checkerboardOffscreenLayers: widget.checkerboardOffscreenLayers,
+            showSemanticsDebugger: widget.showSemanticsDebugger,
+            debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
+            shortcuts: widget.shortcuts,
+            actions: widget.actions,
+            restorationScopeId: widget.restorationScopeId,
+            localizationsDelegates: localizationsDelegates,
+          ),
+        );
+    }
   }
 }
 
