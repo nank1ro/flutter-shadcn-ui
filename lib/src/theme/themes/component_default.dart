@@ -418,7 +418,6 @@ abstract class ShadComponentDefaultTheme {
     required ShadTextThemeData textTheme,
   }) {
     return ShadToastTheme(
-      offset: const Offset(16, 16),
       alignment: Alignment.bottomRight,
       closeIconSrc: ShadAssets.x,
       titleStyle: textTheme.muted.copyWith(
@@ -445,7 +444,6 @@ abstract class ShadComponentDefaultTheme {
     required ShadTextThemeData textTheme,
   }) {
     return ShadToastTheme(
-      offset: const Offset(16, 16),
       alignment: Alignment.bottomRight,
       closeIconSrc: ShadAssets.x,
       titleStyle: textTheme.muted.copyWith(

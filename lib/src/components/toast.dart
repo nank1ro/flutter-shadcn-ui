@@ -185,9 +185,22 @@ class ShadToasterState extends State<ShadToaster>
                   final effectiveAnimateOut = toast?.animateOut ??
                       effectiveToastTheme.animateOut ??
                       defaultAnimateOut;
+
+                  final defaultOffset = switch (effectiveAlignment) {
+                    Alignment.topCenter ||
+                    Alignment.topLeft ||
+                    Alignment.topRight =>
+                      Offset(16, MediaQuery.paddingOf(context).top + 16),
+                    Alignment.bottomCenter ||
+                    Alignment.bottomLeft ||
+                    Alignment.bottomRight =>
+                      Offset(16, MediaQuery.paddingOf(context).bottom + 16),
+                    _ => const Offset(16, 16),
+                  };
+
                   final effectiveOffset = toast?.offset ??
                       effectiveToastTheme.offset ??
-                      const Offset(16, 16);
+                      defaultOffset;
 
                   return Animate(
                     controller: _controller,

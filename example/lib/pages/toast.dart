@@ -58,14 +58,15 @@ class _ToastPageState extends State<ToastPage> {
         ShadButton.outline(
           text: const Text('Add to calendar'),
           onPressed: () {
-            ShadToaster.of(context).show(
+            final toaster = ShadToaster.of(context);
+            toaster.show(
               ShadToast(
                 alignment: alignment.toAlignment(),
                 title: const Text('Scheduled: Catch up'),
                 description: const Text('Friday, February 10, 2023 at 5:57 PM'),
                 action: ShadButton.outline(
                   text: const Text('Undo'),
-                  onPressed: () => ShadToaster.of(context).hide(),
+                  onPressed: () => toaster.hide(),
                 ),
               ),
             );
