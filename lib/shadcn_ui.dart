@@ -27,6 +27,7 @@ export 'src/components/slider.dart';
 export 'src/components/switch.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
+export 'src/components/progress.dart';
 
 // Assets
 export 'src/assets.dart';

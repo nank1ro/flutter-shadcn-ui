@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:playground/pages/alert.dart';
 import 'package:playground/pages/avatar.dart';
@@ -11,6 +12,7 @@ import 'package:playground/pages/form.dart';
 import 'package:playground/pages/image.dart';
 import 'package:playground/pages/input.dart';
 import 'package:playground/pages/popover.dart';
+import 'package:playground/pages/progress.dart';
 import 'package:playground/pages/radio_group.dart';
 import 'package:playground/pages/select.dart';
 import 'package:playground/pages/slider.dart';
@@ -19,7 +21,6 @@ import 'package:playground/pages/toast.dart';
 import 'package:playground/pages/tooltip.dart';
 import 'package:playground/pages/typography.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 
 void main() {
   usePathUrlStrategy();
@@ -175,6 +176,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/slider',
       builder: (context, state) => const SliderPage(),
+    ),
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const ProgressPage(),
     ),
   ],
 );
