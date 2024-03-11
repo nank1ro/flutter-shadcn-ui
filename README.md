@@ -32,7 +32,7 @@ Current progress:
 - [ ] Navigation Menu
 - [ ] Pagination
 - [x] [Popover](https://mariuti.com/shadcn-ui/components/popover/)
-- [ ] Progress
+- [x] [Progress](https://mariuti.com/shadcn-ui/components/progress/)
 - [x] [RadioGroup](https://mariuti.com/shadcn-ui/components/radio-group/)
 - [ ] Resizable
 - [x] <strike>Scroll Area</strike> Use SingleScrollView, ListView etc. instead
