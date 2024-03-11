@@ -13,6 +13,7 @@ import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
+import 'package:shadcn_ui/src/theme/components/progress.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
@@ -65,6 +66,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadDialogTheme? alertDialogTheme,
     ShadSliderTheme? sliderTheme,
     ShadSheetTheme? sheetTheme,
+    ShadProgressTheme? progressTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -187,6 +189,9 @@ class ShadThemeData extends ShadBaseTheme {
         colorScheme: colorScheme,
         textTheme: effectiveTextTheme,
       ).mergeWith(sheetTheme),
+      progressTheme: ShadComponentDefaultTheme.progressTheme(
+        colorScheme: colorScheme,
+      ).mergeWith(progressTheme),
     );
   }
 
@@ -228,6 +233,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.alertDialogTheme,
     required super.sliderTheme,
     required super.sheetTheme,
+    required super.progressTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -309,6 +315,8 @@ class ShadThemeData extends ShadBaseTheme {
       alertDialogTheme:
           ShadDialogTheme.lerp(a.alertDialogTheme, b.alertDialogTheme, t),
       sliderTheme: ShadSliderTheme.lerp(a.sliderTheme, b.sliderTheme, t),
+      progressTheme:
+          ShadProgressTheme.lerp(a.progressTheme, b.progressTheme, t),
     );
   }
 
@@ -353,7 +361,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.primaryDialogTheme == primaryDialogTheme &&
         other.alertDialogTheme == alertDialogTheme &&
         other.sliderTheme == sliderTheme &&
-        other.sheetTheme == sheetTheme;
+        other.sheetTheme == sheetTheme &&
+        other.progressTheme == progressTheme;
   }
 
   @override
@@ -394,7 +403,8 @@ class ShadThemeData extends ShadBaseTheme {
         primaryDialogTheme.hashCode ^
         alertDialogTheme.hashCode ^
         sliderTheme.hashCode ^
-        sheetTheme.hashCode;
+        sheetTheme.hashCode ^
+        progressTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -435,6 +445,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadDialogTheme? alertDialogTheme,
     ShadSliderTheme? sliderTheme,
     ShadSheetTheme? sheetTheme,
+    ShadProgressTheme? progressTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -478,6 +489,7 @@ class ShadThemeData extends ShadBaseTheme {
       alertDialogTheme: alertDialogTheme ?? this.alertDialogTheme,
       sliderTheme: sliderTheme ?? this.sliderTheme,
       sheetTheme: sheetTheme ?? this.sheetTheme,
+      progressTheme: progressTheme ?? this.progressTheme,
     );
   }
 }

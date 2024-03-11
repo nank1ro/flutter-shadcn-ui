@@ -13,6 +13,7 @@ import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
+import 'package:shadcn_ui/src/theme/components/progress.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
@@ -605,6 +606,17 @@ abstract class ShadComponentDefaultTheme {
     return const ShadSheetTheme(
       radius: BorderRadius.zero,
       expandCrossSide: true,
+    );
+  }
+
+  static ShadProgressTheme progressTheme({
+    required ShadColorScheme colorScheme,
+  }) {
+    return ShadProgressTheme(
+      minHeight: 16,
+      color: colorScheme.primary,
+      backgroundColor: colorScheme.secondary,
+      borderRadius: const BorderRadius.all(Radius.circular(16)),
     );
   }
 }
