@@ -11,6 +11,7 @@ import 'package:playground/pages/form.dart';
 import 'package:playground/pages/image.dart';
 import 'package:playground/pages/input.dart';
 import 'package:playground/pages/popover.dart';
+import 'package:playground/pages/progress.dart';
 import 'package:playground/pages/radio_group.dart';
 import 'package:playground/pages/select.dart';
 import 'package:playground/pages/sheet.dart';
@@ -187,6 +188,10 @@ final _router = GoRouter(
           style: SheetStyle.values.byName(style),
         );
       },
+    ),
+    GoRoute(
+      path: '/progress',
+      builder: (context, state) => const ProgressPage(),
     ),
   ],
 );
