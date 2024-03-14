@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
+import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
@@ -63,6 +64,7 @@ abstract class ShadBaseTheme {
     required this.sliderTheme,
     required this.sheetTheme,
     required this.progressTheme,
+    required this.accordionTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -103,4 +105,5 @@ abstract class ShadBaseTheme {
   final ShadSliderTheme sliderTheme;
   final ShadSheetTheme sheetTheme;
   final ShadProgressTheme progressTheme;
+  final ShadAccordionTheme accordionTheme;
 }

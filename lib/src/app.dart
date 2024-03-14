@@ -622,6 +622,10 @@ class _ShadAppState extends State<ShadApp> {
           ),
           scaffoldBackgroundColor: themeData.colorScheme.background,
           brightness: themeData.brightness,
+          dividerTheme: DividerThemeData(
+            color: themeData.colorScheme.border,
+            thickness: 1,
+          ),
         );
   }
 
