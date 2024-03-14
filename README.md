@@ -5,7 +5,7 @@ shadcn/ui ported in flutter
 > Follow my progress on [X (Twitter)](https://twitter.com/nank1ro)
 
 Current progress:
-- [ ] Accordion
+- [x] [Accordion](https://mariuti.com/shadcn-ui/components/accordion/)
 - [x] [Alert](https://mariuti.com/shadcn-ui/components/alert/)
 - [x] [Dialog](https://mariuti.com/shadcn-ui/components/dialog/)
 - [x] [Avatar](https://mariuti.com/shadcn-ui/components/avatar/)
