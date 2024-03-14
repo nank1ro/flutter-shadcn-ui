@@ -4,6 +4,7 @@
 export 'src/app.dart';
 
 // Components
+export 'src/components/accordion.dart';
 export 'src/components/alert.dart';
 export 'src/components/avatar.dart';
 export 'src/components/badge.dart';
@@ -46,6 +47,7 @@ export 'src/theme/themes/base.dart';
 export 'src/theme/themes/shadows.dart';
 
 // Component Themes
+export 'src/theme/components/accordion.dart';
 export 'src/theme/components/alert.dart';
 export 'src/theme/components/avatar.dart';
 export 'src/theme/components/badge.dart';
@@ -70,6 +72,8 @@ export 'src/theme/components/tooltip.dart';
 export 'src/utils/position.dart';
 export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
+export 'src/utils/animation_builder.dart';
+export 'src/utils/extensions.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart';

@@ -1,4 +1,5 @@
 import 'package:example/common/app_bar.dart';
+import 'package:example/pages/accordion.dart';
 import 'package:example/pages/alert.dart';
 import 'package:example/pages/avatar.dart';
 import 'package:example/pages/badge.dart';
@@ -34,6 +35,7 @@ void main() {
 
 // Maps the routes to the specific widget page.
 final routes = <String, WidgetBuilder>{
+  '/accordion': (_) => const AccordionPage(),
   '/alert': (_) => const AlertPage(),
   '/avatar': (_) => const AvatarPage(),
   '/badge': (_) => const BadgePage(),

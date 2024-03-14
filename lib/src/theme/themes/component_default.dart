@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/assets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
+import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
@@ -24,6 +25,7 @@ import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/data.dart';
 import 'package:shadcn_ui/src/theme/text_theme/defaults.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/extensions.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 
 abstract class ShadComponentDefaultTheme {
@@ -617,6 +619,49 @@ abstract class ShadComponentDefaultTheme {
       color: colorScheme.primary,
       backgroundColor: colorScheme.secondary,
       borderRadius: const BorderRadius.all(Radius.circular(16)),
+    );
+  }
+
+  static ShadAccordionTheme accordionTheme({
+    required ShadColorScheme colorScheme,
+    required ShadTextThemeData textTheme,
+  }) {
+    const bezierCurve = Cubic(0.87, 0, 0.13, 1);
+    const duration = Duration(milliseconds: 300);
+    return ShadAccordionTheme(
+      iconSrc: ShadAssets.chevronDown,
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      underlineTitleOnHover: true,
+      duration: duration,
+      iconEffects: const [
+        RotateEffect(
+          begin: 0,
+          end: .5,
+          duration: duration,
+          curve: bezierCurve,
+        ),
+      ],
+      curve: bezierCurve,
+      transitionBuilder: (animation, child) {
+        return AnimatedPadding(
+          padding: EdgeInsets.only(bottom: animation.value * 16),
+          curve: Curves.fastEaseInToSlowEaseOut,
+          duration: duration.divide(2),
+          child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 1),
+              end: Offset.zero,
+            ).animate(animation),
+            child: SizeTransition(
+              sizeFactor: animation,
+              child: child,
+            ),
+          ),
+        );
+      },
+      titleStyle: textTheme.list.copyWith(
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 }

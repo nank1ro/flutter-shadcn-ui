@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
+import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
@@ -67,6 +68,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadSliderTheme? sliderTheme,
     ShadSheetTheme? sheetTheme,
     ShadProgressTheme? progressTheme,
+    ShadAccordionTheme? accordionTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -192,6 +194,10 @@ class ShadThemeData extends ShadBaseTheme {
       progressTheme: ShadComponentDefaultTheme.progressTheme(
         colorScheme: colorScheme,
       ).mergeWith(progressTheme),
+      accordionTheme: ShadComponentDefaultTheme.accordionTheme(
+        colorScheme: colorScheme,
+        textTheme: effectiveTextTheme,
+      ).mergeWith(accordionTheme),
     );
   }
 
@@ -234,6 +240,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.sliderTheme,
     required super.sheetTheme,
     required super.progressTheme,
+    required super.accordionTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -241,83 +248,84 @@ class ShadThemeData extends ShadBaseTheme {
       return a;
     }
     return ShadThemeData(
-      colorScheme: ShadColorScheme.lerp(a.colorScheme, b.colorScheme, t),
-      brightness: b.brightness,
-      primaryButtonTheme:
-          ShadButtonTheme.lerp(a.primaryButtonTheme, b.primaryButtonTheme, t),
-      secondaryButtonTheme: ShadButtonTheme.lerp(
-        a.secondaryButtonTheme,
-        b.secondaryButtonTheme,
-        t,
-      ),
-      destructiveButtonTheme: ShadButtonTheme.lerp(
-        a.destructiveButtonTheme,
-        b.destructiveButtonTheme,
-        t,
-      ),
-      outlineButtonTheme:
-          ShadButtonTheme.lerp(a.outlineButtonTheme, b.outlineButtonTheme, t),
-      ghostButtonTheme:
-          ShadButtonTheme.lerp(a.ghostButtonTheme, b.ghostButtonTheme, t),
-      linkButtonTheme:
-          ShadButtonTheme.lerp(a.linkButtonTheme, b.linkButtonTheme, t),
-      primaryBadgeTheme:
-          ShadBadgeTheme.lerp(a.primaryBadgeTheme, b.primaryBadgeTheme, t),
-      secondaryBadgeTheme: ShadBadgeTheme.lerp(
-        a.secondaryBadgeTheme,
-        b.secondaryBadgeTheme,
-        t,
-      ),
-      destructiveBadgeTheme: ShadBadgeTheme.lerp(
-        a.destructiveBadgeTheme,
-        b.destructiveBadgeTheme,
-        t,
-      ),
-      outlineBadgeTheme:
-          ShadBadgeTheme.lerp(a.outlineBadgeTheme, b.outlineBadgeTheme, t),
-      radius: BorderRadius.lerp(a.radius, b.radius, t),
-      avatarTheme: ShadAvatarTheme.lerp(a.avatarTheme, b.avatarTheme, t),
-      buttonSizesTheme: ShadButtonSizesTheme.lerp(
-        a.buttonSizesTheme,
-        b.buttonSizesTheme,
-        t,
-      ),
-      tooltipTheme: ShadTooltipTheme.lerp(a.tooltipTheme, b.tooltipTheme, t),
-      popoverTheme: ShadPopoverTheme.lerp(a.popoverTheme, b.popoverTheme, t),
-      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
-      textTheme: ShadTextThemeData.lerp(a.textTheme, b.textTheme, t),
-      disabledOpacity: lerpDouble(a.disabledOpacity, b.disabledOpacity, t),
-      selectTheme: ShadSelectTheme.lerp(a.selectTheme, b.selectTheme, t),
-      optionTheme: ShadOptionTheme.lerp(a.optionTheme, b.optionTheme, t),
-      cardTheme: ShadCardTheme.lerp(a.cardTheme, b.cardTheme, t),
-      switchTheme: ShadSwitchTheme.lerp(a.switchTheme, b.switchTheme, t),
-      checkboxTheme:
-          ShadCheckboxTheme.lerp(a.checkboxTheme, b.checkboxTheme, t),
-      inputTheme: ShadInputTheme.lerp(a.inputTheme, b.inputTheme, t),
-      radioTheme: ShadRadioTheme.lerp(a.radioTheme, b.radioTheme, t),
-      primaryToastTheme:
-          ShadToastTheme.lerp(a.primaryToastTheme, b.primaryToastTheme, t),
-      destructiveToastTheme: ShadToastTheme.lerp(
-        a.destructiveToastTheme,
-        b.destructiveToastTheme,
-        t,
-      ),
-      breakpoints: ShadBreakpoints.lerp(a.breakpoints, b.breakpoints, t),
-      primaryAlertTheme:
-          ShadAlertTheme.lerp(a.primaryAlertTheme, b.primaryAlertTheme, t),
-      destructiveAlertTheme: ShadAlertTheme.lerp(
-        a.destructiveAlertTheme,
-        b.destructiveAlertTheme,
-        t,
-      ),
-      primaryDialogTheme:
-          ShadDialogTheme.lerp(a.primaryDialogTheme, b.primaryDialogTheme, t),
-      alertDialogTheme:
-          ShadDialogTheme.lerp(a.alertDialogTheme, b.alertDialogTheme, t),
-      sliderTheme: ShadSliderTheme.lerp(a.sliderTheme, b.sliderTheme, t),
-      progressTheme:
-          ShadProgressTheme.lerp(a.progressTheme, b.progressTheme, t),
-    );
+        colorScheme: ShadColorScheme.lerp(a.colorScheme, b.colorScheme, t),
+        brightness: b.brightness,
+        primaryButtonTheme:
+            ShadButtonTheme.lerp(a.primaryButtonTheme, b.primaryButtonTheme, t),
+        secondaryButtonTheme: ShadButtonTheme.lerp(
+          a.secondaryButtonTheme,
+          b.secondaryButtonTheme,
+          t,
+        ),
+        destructiveButtonTheme: ShadButtonTheme.lerp(
+          a.destructiveButtonTheme,
+          b.destructiveButtonTheme,
+          t,
+        ),
+        outlineButtonTheme:
+            ShadButtonTheme.lerp(a.outlineButtonTheme, b.outlineButtonTheme, t),
+        ghostButtonTheme:
+            ShadButtonTheme.lerp(a.ghostButtonTheme, b.ghostButtonTheme, t),
+        linkButtonTheme:
+            ShadButtonTheme.lerp(a.linkButtonTheme, b.linkButtonTheme, t),
+        primaryBadgeTheme:
+            ShadBadgeTheme.lerp(a.primaryBadgeTheme, b.primaryBadgeTheme, t),
+        secondaryBadgeTheme: ShadBadgeTheme.lerp(
+          a.secondaryBadgeTheme,
+          b.secondaryBadgeTheme,
+          t,
+        ),
+        destructiveBadgeTheme: ShadBadgeTheme.lerp(
+          a.destructiveBadgeTheme,
+          b.destructiveBadgeTheme,
+          t,
+        ),
+        outlineBadgeTheme:
+            ShadBadgeTheme.lerp(a.outlineBadgeTheme, b.outlineBadgeTheme, t),
+        radius: BorderRadius.lerp(a.radius, b.radius, t),
+        avatarTheme: ShadAvatarTheme.lerp(a.avatarTheme, b.avatarTheme, t),
+        buttonSizesTheme: ShadButtonSizesTheme.lerp(
+          a.buttonSizesTheme,
+          b.buttonSizesTheme,
+          t,
+        ),
+        tooltipTheme: ShadTooltipTheme.lerp(a.tooltipTheme, b.tooltipTheme, t),
+        popoverTheme: ShadPopoverTheme.lerp(a.popoverTheme, b.popoverTheme, t),
+        decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+        textTheme: ShadTextThemeData.lerp(a.textTheme, b.textTheme, t),
+        disabledOpacity: lerpDouble(a.disabledOpacity, b.disabledOpacity, t),
+        selectTheme: ShadSelectTheme.lerp(a.selectTheme, b.selectTheme, t),
+        optionTheme: ShadOptionTheme.lerp(a.optionTheme, b.optionTheme, t),
+        cardTheme: ShadCardTheme.lerp(a.cardTheme, b.cardTheme, t),
+        switchTheme: ShadSwitchTheme.lerp(a.switchTheme, b.switchTheme, t),
+        checkboxTheme:
+            ShadCheckboxTheme.lerp(a.checkboxTheme, b.checkboxTheme, t),
+        inputTheme: ShadInputTheme.lerp(a.inputTheme, b.inputTheme, t),
+        radioTheme: ShadRadioTheme.lerp(a.radioTheme, b.radioTheme, t),
+        primaryToastTheme:
+            ShadToastTheme.lerp(a.primaryToastTheme, b.primaryToastTheme, t),
+        destructiveToastTheme: ShadToastTheme.lerp(
+          a.destructiveToastTheme,
+          b.destructiveToastTheme,
+          t,
+        ),
+        breakpoints: ShadBreakpoints.lerp(a.breakpoints, b.breakpoints, t),
+        primaryAlertTheme:
+            ShadAlertTheme.lerp(a.primaryAlertTheme, b.primaryAlertTheme, t),
+        destructiveAlertTheme: ShadAlertTheme.lerp(
+          a.destructiveAlertTheme,
+          b.destructiveAlertTheme,
+          t,
+        ),
+        primaryDialogTheme:
+            ShadDialogTheme.lerp(a.primaryDialogTheme, b.primaryDialogTheme, t),
+        alertDialogTheme:
+            ShadDialogTheme.lerp(a.alertDialogTheme, b.alertDialogTheme, t),
+        sliderTheme: ShadSliderTheme.lerp(a.sliderTheme, b.sliderTheme, t),
+        progressTheme:
+            ShadProgressTheme.lerp(a.progressTheme, b.progressTheme, t),
+        accordionTheme:
+            ShadAccordionTheme.lerp(a.accordionTheme, b.accordionTheme, t));
   }
 
   @override
@@ -362,7 +370,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.alertDialogTheme == alertDialogTheme &&
         other.sliderTheme == sliderTheme &&
         other.sheetTheme == sheetTheme &&
-        other.progressTheme == progressTheme;
+        other.progressTheme == progressTheme &&
+        other.accordionTheme == accordionTheme;
   }
 
   @override
@@ -404,7 +413,8 @@ class ShadThemeData extends ShadBaseTheme {
         alertDialogTheme.hashCode ^
         sliderTheme.hashCode ^
         sheetTheme.hashCode ^
-        progressTheme.hashCode;
+        progressTheme.hashCode ^
+        accordionTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -446,6 +456,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadSliderTheme? sliderTheme,
     ShadSheetTheme? sheetTheme,
     ShadProgressTheme? progressTheme,
+    ShadAccordionTheme? accordionTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -490,6 +501,7 @@ class ShadThemeData extends ShadBaseTheme {
       sliderTheme: sliderTheme ?? this.sliderTheme,
       sheetTheme: sheetTheme ?? this.sheetTheme,
       progressTheme: progressTheme ?? this.progressTheme,
+      accordionTheme: accordionTheme ?? this.accordionTheme,
     );
   }
 }
