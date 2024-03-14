@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:playground/pages/accordion.dart';
 import 'package:playground/pages/alert.dart';
 import 'package:playground/pages/avatar.dart';
 import 'package:playground/pages/badge.dart';
@@ -192,6 +193,16 @@ final _router = GoRouter(
     GoRoute(
       path: '/progress',
       builder: (context, state) => const ProgressPage(),
+    ),
+    GoRoute(
+      path: '/accordion',
+      builder: (context, state) {
+        final style =
+            state.uri.queryParameters['style'] ?? ShadAccordionType.single.name;
+        return AccordionPage(
+          style: ShadAccordionType.values.byName(style),
+        );
+      },
     ),
   ],
 );

@@ -66,11 +66,9 @@ class _AccordionPageState extends State<AccordionPage> {
           child: type == ShadAccordionType.single
               ? ShadAccordion<({String content, String title})>(
                   children: children,
-                  initialValue: details.first,
                 )
               : ShadAccordion<({String content, String title})>.multiple(
                   children: children,
-                  initialValue: details,
                 ),
         ),
       ],
