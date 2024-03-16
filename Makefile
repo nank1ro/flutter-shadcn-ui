@@ -5,3 +5,6 @@ deploy:
 	cd playground && firebase deploy
 
 compile_and_deploy: compile deploy
+
+publish:
+	dart pub publish

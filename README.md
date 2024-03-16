@@ -1,12 +1,17 @@
-# flutter-shadcn-ui
+# Flutter ShadcnUI
 
 [![](https://dcbadge.vercel.app/api/server/ZhRMAPNh5Y)](https://discord.gg/ZhRMAPNh5Y)
 
-shadcn/ui ported in flutter
+ShadcnUI ported in Flutter.
+Awesome UI components for Flutter, fully customizable.
 
-> Follow my progress on [X (Twitter)](https://twitter.com/nank1ro)
+## Documentation
+See the [documentation](https://mariuti.com/shadcn-ui/) to interact with the components and see the code.
 
-Current progress:
+## Progress
+
+> Follow the progress on [X (Twitter)](https://twitter.com/nank1ro)
+
 - [x] [Accordion](https://mariuti.com/shadcn-ui/components/accordion/)
 - [x] [Alert](https://mariuti.com/shadcn-ui/components/alert/)
 - [x] [Dialog](https://mariuti.com/shadcn-ui/components/dialog/)
