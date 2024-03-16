@@ -12,6 +12,7 @@ import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/text_theme/defaults.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/from_material_theme.dart';
 
 enum ShadAppType {
   shadcn,
@@ -602,7 +603,7 @@ class _ShadAppState extends State<ShadApp> {
   ThemeData materialTheme(BuildContext context) {
     final themeData = theme(context);
     final mTheme = context.findAncestorWidgetOfExactType<Theme>();
-    return mTheme?.data ??
+    final effectiveTheme = mTheme?.data ??
         ThemeData(
           fontFamily: kDefaultFontFamily,
           package: 'shadcn_ui',
@@ -627,6 +628,8 @@ class _ShadAppState extends State<ShadApp> {
             thickness: 1,
           ),
         );
+
+    return effectiveTheme.mergeWith(themeData);
   }
 
   CupertinoThemeData cupertinoTheme(BuildContext context) {
