@@ -1,5 +1,7 @@
 # flutter-shadcn-ui
 
+[![](https://dcbadge.vercel.app/api/server/ZhRMAPNh5Y)](https://discord.gg/ZhRMAPNh5Y)
+
 shadcn/ui ported in flutter
 
 > Follow my progress on [X (Twitter)](https://twitter.com/nank1ro)
