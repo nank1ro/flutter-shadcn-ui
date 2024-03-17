@@ -76,7 +76,6 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
       (_parentForm?.widget.initialValue[widget.id] as T?);
 
   bool get enabled => widget.enabled && (_parentForm?.enabled ?? true);
-  bool get readOnly => !(_parentForm?.widget.skipDisabled ?? false);
 
   @override
   void initState() {
@@ -137,7 +136,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
 
   void _informFormForFieldChange() {
     if (_parentForm != null) {
-      if (enabled || readOnly) {
+      if (enabled) {
         if (widget.id != null) {
           _parentForm!.setInternalFieldValue<T>(widget.id!, value);
         }
