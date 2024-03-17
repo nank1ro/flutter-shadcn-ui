@@ -327,6 +327,7 @@ class ShadInputState extends State<ShadInput>
                 child: EditableText(
                   key: editableTextKey,
                   controller: controller,
+                  readOnly: widget.readOnly,
                   focusNode: focusNode,
                   style: effectiveTextStyle,
                   cursorColor: widget.cursorColor ?? theme.colorScheme.primary,
