@@ -59,6 +59,8 @@ class ShadApp extends StatefulWidget {
         routerDelegate = null,
         backButtonDispatcher = null,
         routerConfig = null,
+        materialThemeBuilder = null,
+        cupertinoThemeBuilder = null,
         type = ShadAppType.shadcn;
 
   /// Creates a [ShadApp] that uses the [Router] instead of a [Navigator].
@@ -100,6 +102,8 @@ class ShadApp extends StatefulWidget {
         routes = null,
         initialRoute = null,
         pageRouteBuilder = null,
+        materialThemeBuilder = null,
+        cupertinoThemeBuilder = null,
         type = ShadAppType.shadcn;
 
   /// Creates a [MaterialApp] wrapped by a [ShadTheme].
@@ -136,11 +140,13 @@ class ShadApp extends StatefulWidget {
     this.scrollBehavior = const MaterialScrollBehavior(),
     this.pageRouteBuilder,
     this.themeCurve = Curves.linear,
+    this.materialThemeBuilder,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
         backButtonDispatcher = null,
         routerConfig = null,
+        cupertinoThemeBuilder = null,
         type = ShadAppType.material;
 
   /// Creates a [MaterialApp] wrapped by a [ShadTheme] that uses the [Router] instead of a [Navigator].
@@ -173,6 +179,7 @@ class ShadApp extends StatefulWidget {
     this.restorationScopeId,
     this.scrollBehavior = const MaterialScrollBehavior(),
     this.themeCurve = Curves.linear,
+    this.materialThemeBuilder,
   })  : navigatorObservers = null,
         navigatorKey = null,
         onGenerateRoute = null,
@@ -182,6 +189,7 @@ class ShadApp extends StatefulWidget {
         routes = null,
         initialRoute = null,
         pageRouteBuilder = null,
+        cupertinoThemeBuilder = null,
         type = ShadAppType.material;
 
   /// Creates a [CupertinoApp] wrapped by a [ShadTheme].
@@ -218,11 +226,13 @@ class ShadApp extends StatefulWidget {
     this.scrollBehavior = const CupertinoScrollBehavior(),
     this.pageRouteBuilder,
     this.themeCurve = Curves.linear,
+    this.cupertinoThemeBuilder,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
         backButtonDispatcher = null,
         routerConfig = null,
+        materialThemeBuilder = null,
         type = ShadAppType.cupertino;
 
   /// Creates a [CupertinoApp] wrapped by a [ShadTheme] that uses the [Router] instead of a [Navigator].
@@ -255,6 +265,7 @@ class ShadApp extends StatefulWidget {
     this.restorationScopeId,
     this.scrollBehavior = const CupertinoScrollBehavior(),
     this.themeCurve = Curves.linear,
+    this.cupertinoThemeBuilder,
   })  : navigatorObservers = null,
         navigatorKey = null,
         onGenerateRoute = null,
@@ -264,6 +275,7 @@ class ShadApp extends StatefulWidget {
         routes = null,
         initialRoute = null,
         pageRouteBuilder = null,
+        materialThemeBuilder = null,
         type = ShadAppType.cupertino;
 
   /// The type of app to use.
@@ -522,6 +534,14 @@ class ShadApp extends StatefulWidget {
   /// to [Curves.linear].
   final Curve themeCurve;
 
+  final ThemeData Function(BuildContext context, ThemeData theme)?
+      materialThemeBuilder;
+
+  final CupertinoThemeData Function(
+    BuildContext context,
+    CupertinoThemeData theme,
+  )? cupertinoThemeBuilder;
+
   @override
   State<ShadApp> createState() => _ShadAppState();
 }
@@ -601,45 +621,50 @@ class _ShadAppState extends State<ShadApp> {
 
   ThemeData materialTheme(BuildContext context) {
     final themeData = theme(context);
-    final mTheme = context.findAncestorWidgetOfExactType<Theme>();
-    return mTheme?.data ??
-        ThemeData(
-          fontFamily: kDefaultFontFamily,
-          package: 'shadcn_ui',
-          extensions: themeData.extensions,
-          colorScheme: ColorScheme(
-            brightness: themeData.brightness,
-            primary: themeData.colorScheme.primary,
-            onPrimary: themeData.colorScheme.primaryForeground,
-            secondary: themeData.colorScheme.secondary,
-            onSecondary: themeData.colorScheme.secondaryForeground,
-            error: themeData.colorScheme.destructive,
-            onError: themeData.colorScheme.destructiveForeground,
-            background: themeData.colorScheme.background,
-            onBackground: themeData.colorScheme.foreground,
-            surface: themeData.colorScheme.card,
-            onSurface: themeData.colorScheme.cardForeground,
-          ),
-          scaffoldBackgroundColor: themeData.colorScheme.background,
-          brightness: themeData.brightness,
-          dividerTheme: DividerThemeData(
-            color: themeData.colorScheme.border,
-            thickness: 1,
-          ),
-        );
+    final mTheme = ThemeData(
+      fontFamily: kDefaultFontFamily,
+      package: 'shadcn_ui',
+      extensions: themeData.extensions,
+      colorScheme: ColorScheme(
+        brightness: themeData.brightness,
+        primary: themeData.colorScheme.primary,
+        onPrimary: themeData.colorScheme.primaryForeground,
+        secondary: themeData.colorScheme.secondary,
+        onSecondary: themeData.colorScheme.secondaryForeground,
+        error: themeData.colorScheme.destructive,
+        onError: themeData.colorScheme.destructiveForeground,
+        background: themeData.colorScheme.background,
+        onBackground: themeData.colorScheme.foreground,
+        surface: themeData.colorScheme.card,
+        onSurface: themeData.colorScheme.cardForeground,
+      ),
+      scaffoldBackgroundColor: themeData.colorScheme.background,
+      brightness: themeData.brightness,
+      dividerTheme: DividerThemeData(
+        color: themeData.colorScheme.border,
+        thickness: 1,
+      ),
+    );
+    if (widget.materialThemeBuilder == null) {
+      return mTheme;
+    }
+    return widget.materialThemeBuilder!(context, mTheme);
   }
 
   CupertinoThemeData cupertinoTheme(BuildContext context) {
     final themeData = theme(context);
-    final cTheme = context.findAncestorWidgetOfExactType<CupertinoTheme>();
-    return cTheme?.data ??
-        CupertinoThemeData(
-          primaryColor: themeData.colorScheme.primary,
-          primaryContrastingColor: themeData.colorScheme.primaryForeground,
-          scaffoldBackgroundColor: themeData.colorScheme.background,
-          barBackgroundColor: themeData.colorScheme.primary,
-          brightness: themeData.brightness,
-        );
+    final cTheme = CupertinoThemeData(
+      primaryColor: themeData.colorScheme.primary,
+      primaryContrastingColor: themeData.colorScheme.primaryForeground,
+      scaffoldBackgroundColor: themeData.colorScheme.background,
+      barBackgroundColor: themeData.colorScheme.primary,
+      brightness: themeData.brightness,
+    );
+
+    if (widget.cupertinoThemeBuilder == null) {
+      return cTheme;
+    }
+    return widget.cupertinoThemeBuilder!(context, cTheme);
   }
 
   Widget _builder(BuildContext context, Widget? child) {
