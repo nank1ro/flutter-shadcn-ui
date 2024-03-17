@@ -65,11 +65,11 @@ class ShadThemeDataTween extends Tween<ShadThemeData> {
 
 /// Animated version of [ShadTheme] which automatically transitions the colors
 /// etc, over a given duration whenever the given theme changes.
-class AnimatedShadTheme extends ImplicitlyAnimatedWidget {
+class ShadAnimatedTheme extends ImplicitlyAnimatedWidget {
   /// Creates an animated theme.
   ///
   /// By default, the theme transition uses a linear curve.
-  const AnimatedShadTheme({
+  const ShadAnimatedTheme({
     super.key,
     required this.data,
     required this.child,
@@ -85,12 +85,12 @@ class AnimatedShadTheme extends ImplicitlyAnimatedWidget {
   final Widget child;
 
   @override
-  AnimatedWidgetBaseState<AnimatedShadTheme> createState() =>
+  AnimatedWidgetBaseState<ShadAnimatedTheme> createState() =>
       _ShadAnimatedThemeState();
 }
 
 class _ShadAnimatedThemeState
-    extends AnimatedWidgetBaseState<AnimatedShadTheme> {
+    extends AnimatedWidgetBaseState<ShadAnimatedTheme> {
   ShadThemeDataTween? _data;
 
   @override

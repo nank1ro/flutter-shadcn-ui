@@ -583,7 +583,7 @@ class _ShadAppState extends State<ShadApp> {
       behavior: widget.scrollBehavior,
       child: HeroControllerScope(
         controller: heroController,
-        child: AnimatedShadTheme(
+        child: ShadAnimatedTheme(
           data: theme(context),
           curve: widget.themeCurve,
           child: _buildApp(context),
