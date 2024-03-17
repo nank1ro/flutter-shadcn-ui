@@ -93,7 +93,6 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
             return ShadInput(
               key: state.inputKey,
               controller: state.controller,
-              initialValue: initialValue,
               restorationId: restorationId,
               enabled: state.enabled,
               focusNode: state.focusNode,
