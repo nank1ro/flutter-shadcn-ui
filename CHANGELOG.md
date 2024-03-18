@@ -1,7 +1,14 @@
+## 0.2.0
+
+- Add `materialThemeBuilder` and `cupertinoThemeBuilder` to `ShadApp`
+- Fix `readOnly` for `ShadInput`
+- Fix `initialValue` for `ShadInputFormField`
+- Rename `AnimatedShadTheme` into `ShadAnimatedTheme`
+
 ## 0.1.0
 
-- new `Progress` component
-- new `Accordion` component
+- new `ShadProgress` component
+- new `ShadAccordion` component
 - new `ShadSheet` component
 - add `onLongPress` to buttons
 - add `ShadStatesController` to buttons
