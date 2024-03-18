@@ -227,12 +227,12 @@ class ShadApp extends StatefulWidget {
     this.pageRouteBuilder,
     this.themeCurve = Curves.linear,
     this.cupertinoThemeBuilder,
+    this.materialThemeBuilder,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
         backButtonDispatcher = null,
         routerConfig = null,
-        materialThemeBuilder = null,
         type = ShadAppType.cupertino;
 
   /// Creates a [CupertinoApp] wrapped by a [ShadTheme] that uses the [Router] instead of a [Navigator].
@@ -266,6 +266,7 @@ class ShadApp extends StatefulWidget {
     this.scrollBehavior = const CupertinoScrollBehavior(),
     this.themeCurve = Curves.linear,
     this.cupertinoThemeBuilder,
+    this.materialThemeBuilder,
   })  : navigatorObservers = null,
         navigatorKey = null,
         onGenerateRoute = null,
@@ -275,7 +276,6 @@ class ShadApp extends StatefulWidget {
         routes = null,
         initialRoute = null,
         pageRouteBuilder = null,
-        materialThemeBuilder = null,
         type = ShadAppType.cupertino;
 
   /// The type of app to use.
