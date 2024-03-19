@@ -1,3 +1,7 @@
+## 0.2.1
+
+- Fix export of color schemes (thanks to @Pietervdw)
+
 ## 0.2.0
 
 - Add `materialThemeBuilder` and `cupertinoThemeBuilder` to `ShadApp`
