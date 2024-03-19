@@ -12,6 +12,8 @@ class ShadBorder {
     this.padding,
   });
 
+  static const ShadBorder none = ShadBorder();
+
   /// The width of the border, defaults to 1.0.
   final double? width;
 
@@ -83,6 +85,8 @@ class ShadDecoration {
     this.descriptionPadding,
     this.errorPadding,
   });
+
+  static const ShadDecoration none = ShadDecoration(merge: false);
 
   final bool merge;
   final TextStyle? labelStyle;
