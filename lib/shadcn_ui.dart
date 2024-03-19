@@ -41,6 +41,16 @@ export 'src/raw_components/same_width_column.dart';
 // App Themes
 export 'src/theme/color_scheme/slate.dart';
 export 'src/theme/color_scheme/zinc.dart';
+export 'src/theme/color_scheme/blue.dart';
+export 'src/theme/color_scheme/gray.dart';
+export 'src/theme/color_scheme/green.dart';
+export 'src/theme/color_scheme/neutral.dart';
+export 'src/theme/color_scheme/orange.dart';
+export 'src/theme/color_scheme/red.dart';
+export 'src/theme/color_scheme/rose.dart';
+export 'src/theme/color_scheme/stone.dart';
+export 'src/theme/color_scheme/violet.dart';
+export 'src/theme/color_scheme/yellow.dart';
 export 'src/theme/data.dart';
 export 'src/theme/theme.dart';
 export 'src/theme/themes/base.dart';
