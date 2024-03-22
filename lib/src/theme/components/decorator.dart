@@ -26,11 +26,12 @@ class ShadBorder {
   /// The padding of the border, defaults to null.
   final EdgeInsets? padding;
 
-  static ShadBorder lerp(
+  static ShadBorder? lerp(
     ShadBorder? a,
     ShadBorder? b,
     double t,
   ) {
+    if (a == null && b == null) return null;
     return ShadBorder(
       width: lerpDouble(a?.width, b?.width, t),
       color: Color.lerp(a?.color, b?.color, t),
@@ -100,11 +101,12 @@ class ShadDecoration {
   final EdgeInsets? descriptionPadding;
   final EdgeInsets? errorPadding;
 
-  static ShadDecoration lerp(
+  static ShadDecoration? lerp(
     ShadDecoration? a,
     ShadDecoration? b,
     double t,
   ) {
+    if (a == null && b == null) return null;
     return ShadDecoration(
       border: ShadBorder.lerp(a?.border, b?.border, t),
       focusedBorder: ShadBorder.lerp(a?.focusedBorder, b?.focusedBorder, t),
