@@ -1,3 +1,8 @@
+## 0.2.2
+
+- Fix lerp of `ShadDecoration` and `ShadBorder`
+- Add `ShadDecoration.none` and `ShadBorder.none`
+
 ## 0.2.1
 
 - Fix export of color schemes (thanks to @Pietervdw)
