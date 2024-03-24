@@ -3,6 +3,7 @@
 - Expose `ShadTextTheme`
 - Fix `ShadTextTheme` to add ability to change font family
 - Add `materialThemeBuilder` to default `ShadApp`
+- Add `ShadTextTheme.fromGoogleFont` to use a Google Font
 
 ## 0.2.2
 
