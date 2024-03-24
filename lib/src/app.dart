@@ -54,12 +54,12 @@ class ShadApp extends StatefulWidget {
     this.scrollBehavior = const ShadScrollBehavior(),
     this.pageRouteBuilder,
     this.themeCurve = Curves.linear,
+    this.materialThemeBuilder,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
         backButtonDispatcher = null,
         routerConfig = null,
-        materialThemeBuilder = null,
         cupertinoThemeBuilder = null,
         type = ShadAppType.shadcn;
 
@@ -93,6 +93,7 @@ class ShadApp extends StatefulWidget {
     this.restorationScopeId,
     this.scrollBehavior = const ShadScrollBehavior(),
     this.themeCurve = Curves.linear,
+    this.materialThemeBuilder,
   })  : navigatorObservers = null,
         navigatorKey = null,
         onGenerateRoute = null,
@@ -102,7 +103,6 @@ class ShadApp extends StatefulWidget {
         routes = null,
         initialRoute = null,
         pageRouteBuilder = null,
-        materialThemeBuilder = null,
         cupertinoThemeBuilder = null,
         type = ShadAppType.shadcn;
 
