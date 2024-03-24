@@ -406,35 +406,19 @@ class ShadTextTheme {
     if (!other.merge) return other;
 
     return copyWith(
-      h1Large: other.h1Large is GoogleFontTextStyle
-          ? other.h1Large
-          : h1Large.merge(other.h1Large),
-      h1: other.h1 is GoogleFontTextStyle ? other.h1 : h1.merge(other.h1),
-      h2: other.h2 is GoogleFontTextStyle ? other.h2 : h2.merge(other.h2),
-      h3: other.h3 is GoogleFontTextStyle ? other.h3 : h3.merge(other.h3),
-      h4: other.h4 is GoogleFontTextStyle ? other.h4 : h4.merge(other.h4),
-      p: other.p is GoogleFontTextStyle ? other.p : p.merge(other.p),
-      blockquote: other.blockquote is GoogleFontTextStyle
-          ? other.blockquote
-          : blockquote.merge(other.blockquote),
-      table: other.table is GoogleFontTextStyle
-          ? other.table
-          : table.merge(other.table),
-      list: other.list is GoogleFontTextStyle
-          ? other.list
-          : list.merge(other.list),
-      lead: other.lead is GoogleFontTextStyle
-          ? other.lead
-          : lead.merge(other.lead),
-      large: other.large is GoogleFontTextStyle
-          ? other.large
-          : large.merge(other.large),
-      small: other.small is GoogleFontTextStyle
-          ? other.small
-          : small.merge(other.small),
-      muted: other.muted is GoogleFontTextStyle
-          ? other.muted
-          : muted.merge(other.muted),
+      h1Large: h1Large.merge(other.h1Large),
+      h1: h1.merge(other.h1),
+      h2: h2.merge(other.h2),
+      h3: h3.merge(other.h3),
+      h4: h4.merge(other.h4),
+      p: p.merge(other.p),
+      blockquote: blockquote.merge(other.blockquote),
+      table: table.merge(other.table),
+      list: list.merge(other.list),
+      lead: lead.merge(other.lead),
+      large: large.merge(other.large),
+      small: small.merge(other.small),
+      muted: muted.merge(other.muted),
       family: other.family,
     );
   }
