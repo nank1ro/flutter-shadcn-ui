@@ -81,6 +81,11 @@ class App extends StatelessWidget {
           theme: ShadThemeData(
             brightness: Brightness.light,
             colorScheme: const ShadZincColorScheme.light(),
+            // Example with google fonts
+            // textTheme: ShadTextTheme.fromGoogleFont(
+            //   from: GoogleFonts.pottaOne,
+            //   colorScheme: const ShadZincColorScheme.light(),
+            // ),
             // Example of custom font family
             // textTheme: ShadTextTheme(
             //   colorScheme: const ShadZincColorScheme.light(),

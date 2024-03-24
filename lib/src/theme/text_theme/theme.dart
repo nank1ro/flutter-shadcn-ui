@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
+import 'package:shadcn_ui/src/theme/themes/component_default.dart';
 
 @immutable
 class ShadTextTheme {
@@ -113,6 +114,35 @@ class ShadTextTheme {
     required this.muted,
     required this.family,
   });
+
+  factory ShadTextTheme.fromGoogleFont({
+    required TextStyle Function({
+      TextStyle? textStyle,
+    }) from,
+    required ShadColorScheme colorScheme,
+    ShadTextTheme? textTheme,
+  }) {
+    final effectiveTextTheme = textTheme ??
+        ShadComponentDefaultTheme.textTheme(colorScheme: colorScheme);
+    final h1Large = from(textStyle: effectiveTextTheme.h1Large);
+    return ShadTextTheme(
+      colorScheme: colorScheme,
+      h1Large: h1Large,
+      h1: from(textStyle: effectiveTextTheme.h1),
+      h2: from(textStyle: effectiveTextTheme.h2),
+      h3: from(textStyle: effectiveTextTheme.h3),
+      h4: from(textStyle: effectiveTextTheme.h4),
+      p: from(textStyle: effectiveTextTheme.p),
+      blockquote: from(textStyle: effectiveTextTheme.blockquote),
+      table: from(textStyle: effectiveTextTheme.table),
+      list: from(textStyle: effectiveTextTheme.list),
+      lead: from(textStyle: effectiveTextTheme.lead),
+      large: from(textStyle: effectiveTextTheme.large),
+      small: from(textStyle: effectiveTextTheme.small),
+      muted: from(textStyle: effectiveTextTheme.muted),
+      family: h1Large.fontFamily ?? effectiveTextTheme.family,
+    );
+  }
 
   final TextStyle h1Large;
   final TextStyle h1;
