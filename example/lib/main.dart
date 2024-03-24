@@ -26,6 +26,7 @@ import 'package:example/pages/tooltip.dart';
 import 'package:example/pages/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -83,7 +84,7 @@ class App extends StatelessWidget {
             colorScheme: const ShadZincColorScheme.light(),
             // Example with google fonts
             // textTheme: ShadTextTheme.fromGoogleFont(
-            //   from: GoogleFonts.pottaOne,
+            //   GoogleFonts.pottaOne,
             //   colorScheme: const ShadZincColorScheme.light(),
             // ),
             // Example of custom font family

@@ -115,10 +115,10 @@ class ShadTextTheme {
     required this.family,
   });
 
-  factory ShadTextTheme.fromGoogleFont({
-    required TextStyle Function({
+  factory ShadTextTheme.fromGoogleFont(
+    TextStyle Function({
       TextStyle? textStyle,
-    }) from,
+    }) from, {
     required ShadColorScheme colorScheme,
     ShadTextTheme? textTheme,
   }) {
