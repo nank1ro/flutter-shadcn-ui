@@ -1,3 +1,9 @@
+## 0.2.3
+
+- Expose `ShadTextTheme`
+- Fix `ShadTextTheme` to add ability to change font family
+- Add `materialThemeBuilder` to default `ShadApp`
+
 ## 0.2.2
 
 - Fix lerp of `ShadDecoration` and `ShadBorder`
