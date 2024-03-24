@@ -16,6 +16,7 @@ dependencies:
   flutter_solidart: ^1.7.0
   awesome_flutter_extensions: ^1.2.0
   multi_split_view: ^2.4.0
+  google_fonts: 6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -29,3 +30,15 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+
+  fonts:
+    - family: UbuntuMono
+      fonts:
+        - asset: fonts/UbuntuMono-Regular.ttf
+        - asset: fonts/UbuntuMono-Bold.ttf
+          weight: 700
+        - asset: fonts/UbuntuMono-Italic.ttf
+          style: italic
+        - asset: fonts/UbuntuMono-BoldItalic.ttf
+          weight: 700
+          style: italic
