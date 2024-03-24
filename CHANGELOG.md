@@ -1,3 +1,8 @@
+## 0.2.4
+
+- Add workaround for google_fonts issue about font weights. see https://github.com/material-foundation/flutter-packages/issues/35
+- Make `from` of `ShadTextTheme.fromGoogleFont` unnamed.
+
 ## 0.2.3
 
 - Expose `ShadTextTheme`

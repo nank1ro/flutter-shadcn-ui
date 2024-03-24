@@ -22,8 +22,8 @@ import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
-import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
+import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/extensions.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
@@ -256,7 +256,7 @@ abstract class ShadComponentDefaultTheme {
   static ShadTextTheme textTheme({
     required ShadColorScheme colorScheme,
   }) {
-    final defaultFontFamily = 'packages/shadcn_ui/$kDefaultFontFamily';
+    const defaultFontFamily = 'packages/shadcn_ui/$kDefaultFontFamily';
     return ShadTextTheme.custom(
       h1Large: ShadTextDefaultTheme.h1Large(
         colorScheme: colorScheme,
