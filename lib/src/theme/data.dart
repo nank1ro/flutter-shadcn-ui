@@ -22,7 +22,7 @@ import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
-import 'package:shadcn_ui/src/theme/text_theme/data.dart';
+import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
 import 'package:shadcn_ui/src/theme/themes/component_default.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
@@ -49,7 +49,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadTooltipTheme? tooltipTheme,
     ShadPopoverTheme? popoverTheme,
     ShadDecoration? decoration,
-    ShadTextThemeData? textTheme,
+    ShadTextTheme? textTheme,
     double? disabledOpacity,
     ShadSelectTheme? selectTheme,
     ShadOptionTheme? optionTheme,
@@ -72,9 +72,11 @@ class ShadThemeData extends ShadBaseTheme {
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
+
     final effectiveTextTheme =
         ShadComponentDefaultTheme.textTheme(colorScheme: colorScheme)
             .mergeWith(textTheme);
+
     return ShadThemeData._internal(
       colorScheme: colorScheme,
       brightness: brightness,
@@ -292,7 +294,7 @@ class ShadThemeData extends ShadBaseTheme {
       tooltipTheme: ShadTooltipTheme.lerp(a.tooltipTheme, b.tooltipTheme, t),
       popoverTheme: ShadPopoverTheme.lerp(a.popoverTheme, b.popoverTheme, t),
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
-      textTheme: ShadTextThemeData.lerp(a.textTheme, b.textTheme, t),
+      textTheme: ShadTextTheme.lerp(a.textTheme, b.textTheme, t),
       disabledOpacity: lerpDouble(a.disabledOpacity, b.disabledOpacity, t),
       selectTheme: ShadSelectTheme.lerp(a.selectTheme, b.selectTheme, t),
       optionTheme: ShadOptionTheme.lerp(a.optionTheme, b.optionTheme, t),
@@ -438,7 +440,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadTooltipTheme? tooltipTheme,
     ShadPopoverTheme? popoverTheme,
     ShadDecoration? decoration,
-    ShadTextThemeData? textTheme,
+    ShadTextTheme? textTheme,
     double? disabledOpacity,
     ShadSelectTheme? selectTheme,
     ShadOptionTheme? optionTheme,
