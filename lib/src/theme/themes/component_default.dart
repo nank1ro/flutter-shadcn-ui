@@ -256,60 +256,61 @@ abstract class ShadComponentDefaultTheme {
   static ShadTextTheme textTheme({
     required ShadColorScheme colorScheme,
   }) {
+    final defaultFontFamily = 'packages/shadcn_ui/$kDefaultFontFamily';
     return ShadTextTheme.custom(
       h1Large: ShadTextDefaultTheme.h1Large(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
       h1: ShadTextDefaultTheme.h1(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
       h2: ShadTextDefaultTheme.h2(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
       h3: ShadTextDefaultTheme.h3(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
       h4: ShadTextDefaultTheme.h4(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
       p: ShadTextDefaultTheme.p(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
       blockquote: ShadTextDefaultTheme.blockquote(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
       table: ShadTextDefaultTheme.table(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
       list: ShadTextDefaultTheme.list(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
       lead: ShadTextDefaultTheme.lead(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
       large: ShadTextDefaultTheme.large(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
       small: ShadTextDefaultTheme.small(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
       muted: ShadTextDefaultTheme.muted(
         colorScheme: colorScheme,
-        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+        family: defaultFontFamily,
       ),
-      family: kDefaultFontFamily,
+      family: defaultFontFamily,
     );
   }
 
