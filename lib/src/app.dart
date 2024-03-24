@@ -10,7 +10,6 @@ import 'package:flutter_localizations/flutter_localizations.dart'
 import 'package:shadcn_ui/src/components/toast.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
-import 'package:shadcn_ui/src/theme/text_theme/defaults.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 enum ShadAppType {
@@ -622,8 +621,7 @@ class _ShadAppState extends State<ShadApp> {
   ThemeData materialTheme(BuildContext context) {
     final themeData = theme(context);
     final mTheme = ThemeData(
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: themeData.textTheme.family,
       extensions: themeData.extensions,
       colorScheme: ColorScheme(
         brightness: themeData.brightness,
