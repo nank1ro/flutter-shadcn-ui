@@ -22,8 +22,8 @@ import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
-import 'package:shadcn_ui/src/theme/text_theme/data.dart';
-import 'package:shadcn_ui/src/theme/text_theme/defaults.dart';
+import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
+import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/extensions.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
@@ -224,7 +224,7 @@ abstract class ShadComponentDefaultTheme {
   static ShadDecoration decoration({
     required ShadColorScheme colorScheme,
     required BorderRadius radius,
-    required ShadTextThemeData textTheme,
+    required ShadTextTheme textTheme,
   }) {
     return ShadDecoration(
       border: const ShadBorder(padding: EdgeInsets.all(4)),
@@ -253,23 +253,63 @@ abstract class ShadComponentDefaultTheme {
     );
   }
 
-  static ShadTextThemeData textTheme({
+  static ShadTextTheme textTheme({
     required ShadColorScheme colorScheme,
   }) {
-    return ShadTextThemeData(
-      h1Large: ShadTextDefaultTheme.h1Large(colorScheme: colorScheme),
-      h1: ShadTextDefaultTheme.h1(colorScheme: colorScheme),
-      h2: ShadTextDefaultTheme.h2(colorScheme: colorScheme),
-      h3: ShadTextDefaultTheme.h3(colorScheme: colorScheme),
-      h4: ShadTextDefaultTheme.h4(colorScheme: colorScheme),
-      p: ShadTextDefaultTheme.p(colorScheme: colorScheme),
-      blockquote: ShadTextDefaultTheme.blockquote(colorScheme: colorScheme),
-      table: ShadTextDefaultTheme.table(colorScheme: colorScheme),
-      list: ShadTextDefaultTheme.list(colorScheme: colorScheme),
-      lead: ShadTextDefaultTheme.lead(colorScheme: colorScheme),
-      large: ShadTextDefaultTheme.large(colorScheme: colorScheme),
-      small: ShadTextDefaultTheme.small(colorScheme: colorScheme),
-      muted: ShadTextDefaultTheme.muted(colorScheme: colorScheme),
+    return ShadTextTheme.custom(
+      h1Large: ShadTextDefaultTheme.h1Large(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      h1: ShadTextDefaultTheme.h1(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      h2: ShadTextDefaultTheme.h2(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      h3: ShadTextDefaultTheme.h3(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      h4: ShadTextDefaultTheme.h4(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      p: ShadTextDefaultTheme.p(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      blockquote: ShadTextDefaultTheme.blockquote(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      table: ShadTextDefaultTheme.table(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      list: ShadTextDefaultTheme.list(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      lead: ShadTextDefaultTheme.lead(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      large: ShadTextDefaultTheme.large(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      small: ShadTextDefaultTheme.small(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      muted: ShadTextDefaultTheme.muted(
+        colorScheme: colorScheme,
+        family: 'packages/shadcn_ui/$kDefaultFontFamily',
+      ),
+      family: kDefaultFontFamily,
     );
   }
 
@@ -364,7 +404,7 @@ abstract class ShadComponentDefaultTheme {
   static ShadInputTheme inputTheme({
     required ShadColorScheme colorScheme,
     required BorderRadius radius,
-    required ShadTextThemeData textTheme,
+    required ShadTextTheme textTheme,
   }) {
     return ShadInputTheme(
       decoration: ShadDecoration(
@@ -418,7 +458,7 @@ abstract class ShadComponentDefaultTheme {
   static ShadToastTheme primaryToastTheme({
     required ShadColorScheme colorScheme,
     required BorderRadius radius,
-    required ShadTextThemeData textTheme,
+    required ShadTextTheme textTheme,
   }) {
     return ShadToastTheme(
       alignment: Alignment.bottomRight,
@@ -444,7 +484,7 @@ abstract class ShadComponentDefaultTheme {
   static ShadToastTheme destructiveToastTheme({
     required ShadColorScheme colorScheme,
     required BorderRadius radius,
-    required ShadTextThemeData textTheme,
+    required ShadTextTheme textTheme,
   }) {
     return ShadToastTheme(
       alignment: Alignment.bottomRight,
@@ -470,7 +510,7 @@ abstract class ShadComponentDefaultTheme {
   static ShadAlertTheme primaryAlertTheme({
     required ShadColorScheme colorScheme,
     required BorderRadius radius,
-    required ShadTextThemeData textTheme,
+    required ShadTextTheme textTheme,
   }) {
     return ShadAlertTheme(
       iconPadding: const EdgeInsets.only(right: 12),
@@ -497,7 +537,7 @@ abstract class ShadComponentDefaultTheme {
   static ShadAlertTheme destructiveAlertTheme({
     required ShadColorScheme colorScheme,
     required BorderRadius radius,
-    required ShadTextThemeData textTheme,
+    required ShadTextTheme textTheme,
   }) {
     return ShadAlertTheme(
       iconPadding: const EdgeInsets.only(right: 12),
@@ -524,7 +564,7 @@ abstract class ShadComponentDefaultTheme {
   static ShadDialogTheme primaryDialogTheme({
     required ShadColorScheme colorScheme,
     required BorderRadius radius,
-    required ShadTextThemeData textTheme,
+    required ShadTextTheme textTheme,
   }) {
     return ShadDialogTheme(
       closeIconSrc: ShadAssets.x,
@@ -554,7 +594,7 @@ abstract class ShadComponentDefaultTheme {
   static ShadDialogTheme alertDialogTheme({
     required ShadColorScheme colorScheme,
     required BorderRadius radius,
-    required ShadTextThemeData textTheme,
+    required ShadTextTheme textTheme,
   }) {
     return ShadDialogTheme(
       backgroundColor: colorScheme.background,
@@ -603,7 +643,7 @@ abstract class ShadComponentDefaultTheme {
 
   static ShadSheetTheme sheetTheme({
     required ShadColorScheme colorScheme,
-    required ShadTextThemeData textTheme,
+    required ShadTextTheme textTheme,
   }) {
     return const ShadSheetTheme(
       radius: BorderRadius.zero,
@@ -624,7 +664,7 @@ abstract class ShadComponentDefaultTheme {
 
   static ShadAccordionTheme accordionTheme({
     required ShadColorScheme colorScheme,
-    required ShadTextThemeData textTheme,
+    required ShadTextTheme textTheme,
   }) {
     const bezierCurve = Cubic(0.87, 0, 0.13, 1);
     const duration = Duration(milliseconds: 300);

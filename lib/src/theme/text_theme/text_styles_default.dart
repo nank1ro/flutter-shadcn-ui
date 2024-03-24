@@ -6,6 +6,7 @@ const kDefaultFontFamily = 'Geist';
 abstract class ShadTextDefaultTheme {
   static TextStyle h1Large({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 48,
@@ -14,14 +15,14 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w800,
       height: 48 / 48,
       letterSpacing: -0.4,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
       color: colorScheme.foreground,
     );
   }
 
   static TextStyle h1({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 36,
@@ -30,14 +31,14 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w800,
       height: 40 / 36,
       letterSpacing: -0.4,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
       color: colorScheme.foreground,
     );
   }
 
   static TextStyle h2({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 30,
@@ -46,14 +47,14 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w600,
       height: 36 / 30,
       letterSpacing: -0.4,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
       color: colorScheme.foreground,
     );
   }
 
   static TextStyle h3({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 24,
@@ -62,14 +63,14 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w600,
       height: 32 / 24,
       letterSpacing: -0.4,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
       color: colorScheme.foreground,
     );
   }
 
   static TextStyle h4({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 20,
@@ -78,14 +79,14 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w600,
       height: 28 / 20,
       letterSpacing: -0.4,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
       color: colorScheme.foreground,
     );
   }
 
   static TextStyle p({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 16,
@@ -94,14 +95,14 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w400,
       height: 28 / 16,
       letterSpacing: 0,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
       color: colorScheme.foreground,
     );
   }
 
   static TextStyle blockquote({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 16,
@@ -110,14 +111,14 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w400,
       height: 24 / 16,
       letterSpacing: 0,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
       color: colorScheme.foreground,
     );
   }
 
   static TextStyle table({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 16,
@@ -126,14 +127,14 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w700,
       height: 24 / 16,
       letterSpacing: 0,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
       color: colorScheme.foreground,
     );
   }
 
   static TextStyle list({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 16,
@@ -142,14 +143,14 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w400,
       height: 24 / 16,
       letterSpacing: 0,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
       color: colorScheme.foreground,
     );
   }
 
   static TextStyle lead({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 20,
@@ -159,13 +160,13 @@ abstract class ShadTextDefaultTheme {
       height: 28 / 20,
       letterSpacing: 0,
       color: colorScheme.mutedForeground,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
     );
   }
 
   static TextStyle large({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 18,
@@ -174,14 +175,14 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w600,
       height: 28 / 18,
       letterSpacing: 0,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
       color: colorScheme.foreground,
     );
   }
 
   static TextStyle small({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 14,
@@ -190,14 +191,14 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w500,
       height: 14 / 14,
       letterSpacing: 0,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
       color: colorScheme.foreground,
     );
   }
 
   static TextStyle muted({
     required ShadColorScheme colorScheme,
+    required String family,
   }) {
     return TextStyle(
       fontSize: 14,
@@ -207,8 +208,7 @@ abstract class ShadTextDefaultTheme {
       height: 20 / 14,
       letterSpacing: 0,
       color: colorScheme.mutedForeground,
-      fontFamily: kDefaultFontFamily,
-      package: 'shadcn_ui',
+      fontFamily: family,
     );
   }
 }

@@ -20,7 +20,7 @@ import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
-import 'package:shadcn_ui/src/theme/text_theme/data.dart';
+import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 
 @immutable
@@ -86,7 +86,7 @@ abstract class ShadBaseTheme {
   final ShadTooltipTheme tooltipTheme;
   final ShadPopoverTheme popoverTheme;
   final ShadDecoration decoration;
-  final ShadTextThemeData textTheme;
+  final ShadTextTheme textTheme;
   final double disabledOpacity;
   final ShadSelectTheme selectTheme;
   final ShadOptionTheme optionTheme;
