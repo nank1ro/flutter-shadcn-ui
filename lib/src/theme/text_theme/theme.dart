@@ -57,7 +57,7 @@ typedef GoogleFontBuilder = TextStyle Function({
   double? decorationThickness,
 });
 
-// Workaround for google fonts, see https://github.com/material-foundation/flutter-packages/issues/35#issuecomment-1774974729
+// Workaround for google fonts, see https://github.com/material-foundation/flutter-packages/issues/35
 class GoogleFontTextStyle extends TextStyle {
   GoogleFontTextStyle(
     TextStyle textStyle, {
