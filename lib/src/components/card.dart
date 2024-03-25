@@ -13,6 +13,16 @@ class ShadCard extends StatelessWidget {
     this.radius,
     this.border,
     this.shadows,
+    this.width,
+    this.height,
+    this.leading,
+    this.trailing,
+    this.rowMainAxisAlignment,
+    this.rowCrossAxisAlignment,
+    this.columnMainAxisAlignment,
+    this.columnCrossAxisAlignment,
+    this.rowMainAxisSize,
+    this.columnMainAxisSize,
   });
 
   final Widget? title;
@@ -25,6 +35,16 @@ class ShadCard extends StatelessWidget {
   final BorderRadius? radius;
   final Border? border;
   final List<BoxShadow>? shadows;
+  final double? width;
+  final double? height;
+  final Widget? leading;
+  final Widget? trailing;
+  final MainAxisAlignment? rowMainAxisAlignment;
+  final CrossAxisAlignment? rowCrossAxisAlignment;
+  final MainAxisAlignment? columnMainAxisAlignment;
+  final CrossAxisAlignment? columnCrossAxisAlignment;
+  final MainAxisSize? rowMainAxisSize;
+  final MainAxisSize? columnMainAxisSize;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +61,32 @@ class ShadCard extends StatelessWidget {
         Border.all(color: theme.colorScheme.border);
     final effectiveShadows = shadows ?? theme.cardTheme.shadows;
 
+    final effectiveRowMainAxisSize =
+        rowMainAxisSize ?? theme.cardTheme.rowMainAxisSize ?? MainAxisSize.min;
+
+    final effectiveRowMainAxisAlignment = rowMainAxisAlignment ??
+        theme.cardTheme.rowMainAxisAlignment ??
+        MainAxisAlignment.spaceBetween;
+
+    final effectiveRowCrossAxisAlignment = rowCrossAxisAlignment ??
+        theme.cardTheme.rowCrossAxisAlignment ??
+        CrossAxisAlignment.start;
+
+    final effectiveColumnMainAxisSize = columnMainAxisSize ??
+        theme.cardTheme.columnMainAxisSize ??
+        MainAxisSize.min;
+
+    final effectiveColumnMainAxisAlignment = columnMainAxisAlignment ??
+        theme.cardTheme.columnMainAxisAlignment ??
+        MainAxisAlignment.start;
+
+    final effectiveColumnCrossAxisAlignment = columnCrossAxisAlignment ??
+        theme.cardTheme.columnCrossAxisAlignment ??
+        CrossAxisAlignment.start;
+
     return Container(
+      width: width,
+      height: height,
       padding: effectivePadding,
       decoration: BoxDecoration(
         color: effectiveBackgroundColor,
@@ -49,23 +94,35 @@ class ShadCard extends StatelessWidget {
         border: effectiveBorder,
         boxShadow: effectiveShadows,
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisSize: effectiveRowMainAxisSize,
+        mainAxisAlignment: effectiveRowMainAxisAlignment,
+        crossAxisAlignment: effectiveRowCrossAxisAlignment,
         children: [
-          if (title != null)
-            DefaultTextStyle(
-              style: theme.textTheme.h3
-                  .copyWith(color: theme.colorScheme.cardForeground),
-              child: title!,
+          if (leading != null) leading!,
+          Flexible(
+            child: Column(
+              mainAxisSize: effectiveColumnMainAxisSize,
+              crossAxisAlignment: effectiveColumnCrossAxisAlignment,
+              mainAxisAlignment: effectiveColumnMainAxisAlignment,
+              children: [
+                if (title != null)
+                  DefaultTextStyle(
+                    style: theme.textTheme.h3
+                        .copyWith(color: theme.colorScheme.cardForeground),
+                    child: title!,
+                  ),
+                if (description != null)
+                  DefaultTextStyle(
+                    style: theme.textTheme.muted,
+                    child: description!,
+                  ),
+                if (content != null) content!,
+                if (footer != null) footer!,
+              ],
             ),
-          if (description != null)
-            DefaultTextStyle(
-              style: theme.textTheme.muted,
-              child: description!,
-            ),
-          if (content != null) content!,
-          if (footer != null) footer!,
+          ),
+          if (trailing != null) trailing!,
         ],
       ),
     );

@@ -348,6 +348,12 @@ abstract class ShadComponentDefaultTheme {
       border: Border.all(color: colorScheme.border),
       radius: const BorderRadius.all(Radius.circular(8)),
       shadows: ShadShadows.sm,
+      rowMainAxisSize: MainAxisSize.min,
+      rowCrossAxisAlignment: CrossAxisAlignment.start,
+      rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
+      columnMainAxisSize: MainAxisSize.min,
+      columnCrossAxisAlignment: CrossAxisAlignment.start,
+      columnMainAxisAlignment: MainAxisAlignment.start,
     );
   }
 

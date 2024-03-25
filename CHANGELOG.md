@@ -1,3 +1,8 @@
+## 0.2.5
+
+- Add `width` and `height` to `ShadCard`
+- Add `leading` and `trailing` to `ShadCard`
+
 ## 0.2.4
 
 - Add workaround for google_fonts issue about font weights. see https://github.com/material-foundation/flutter-packages/issues/35
