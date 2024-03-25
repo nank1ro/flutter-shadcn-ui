@@ -21,6 +21,8 @@ class ShadSelectTheme {
     this.border,
     this.showScrollToTopChevron,
     this.showScrollToBottomChevron,
+    this.alignment,
+    this.childAlignment,
   });
 
   final bool merge;
@@ -35,6 +37,8 @@ class ShadSelectTheme {
   final Border? border;
   final bool? showScrollToTopChevron;
   final bool? showScrollToBottomChevron;
+  final Alignment? alignment;
+  final Alignment? childAlignment;
 
   static ShadSelectTheme lerp(
     ShadSelectTheme a,
@@ -55,6 +59,8 @@ class ShadSelectTheme {
       optionsPadding: EdgeInsets.lerp(a.optionsPadding, b.optionsPadding, t),
       showScrollToTopChevron: b.showScrollToTopChevron,
       showScrollToBottomChevron: b.showScrollToBottomChevron,
+      alignment: Alignment.lerp(a.alignment, b.alignment, t),
+      childAlignment: Alignment.lerp(a.childAlignment, b.childAlignment, t),
     );
   }
 
@@ -71,6 +77,8 @@ class ShadSelectTheme {
     EdgeInsets? optionsPadding,
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
+    Alignment? alignment,
+    Alignment? childAlignment,
   }) {
     return ShadSelectTheme(
       merge: merge ?? this.merge,
@@ -87,6 +95,8 @@ class ShadSelectTheme {
           showScrollToTopChevron ?? this.showScrollToTopChevron,
       showScrollToBottomChevron:
           showScrollToBottomChevron ?? this.showScrollToBottomChevron,
+      alignment: alignment ?? this.alignment,
+      childAlignment: childAlignment ?? this.childAlignment,
     );
   }
 
@@ -105,6 +115,8 @@ class ShadSelectTheme {
       optionsPadding: other.optionsPadding,
       showScrollToTopChevron: other.showScrollToTopChevron,
       showScrollToBottomChevron: other.showScrollToBottomChevron,
+      alignment: other.alignment,
+      childAlignment: other.childAlignment,
     );
   }
 
@@ -124,7 +136,9 @@ class ShadSelectTheme {
         other.border == border &&
         other.optionsPadding == optionsPadding &&
         other.showScrollToTopChevron == showScrollToTopChevron &&
-        other.showScrollToBottomChevron == showScrollToBottomChevron;
+        other.showScrollToBottomChevron == showScrollToBottomChevron &&
+        other.alignment == alignment &&
+        other.childAlignment == childAlignment;
   }
 
   @override
@@ -140,6 +154,8 @@ class ShadSelectTheme {
         border.hashCode ^
         optionsPadding.hashCode ^
         showScrollToTopChevron.hashCode ^
-        showScrollToBottomChevron.hashCode;
+        showScrollToBottomChevron.hashCode ^
+        alignment.hashCode ^
+        childAlignment.hashCode;
   }
 }

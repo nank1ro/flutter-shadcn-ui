@@ -327,6 +327,8 @@ abstract class ShadComponentDefaultTheme {
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
+      alignment: Alignment.bottomLeft,
+      childAlignment: Alignment.topLeft,
     );
   }
 

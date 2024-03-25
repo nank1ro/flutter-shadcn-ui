@@ -44,6 +44,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.showScrollToBottomChevron,
     this.showScrollToTopChevron,
     this.scrollController,
+    this.alignment,
+    this.childAlignment,
   });
 
   /// The callback that is called when the value of the [ShadSelect] changes.
@@ -120,6 +122,13 @@ class ShadSelect<T> extends StatefulWidget {
 
   /// The scroll controller of the [ShadSelect].
   final ScrollController? scrollController;
+
+  /// The alignment of the overlay, defaults to `Alignment.bottomLeft`.
+  final Alignment? alignment;
+
+  /// The child alignment of the selected option, defaults to
+  /// `Alignment.topLeft`.
+  final Alignment? childAlignment;
 
   static ShadSelectState<T> of<T>(BuildContext context) {
     return maybeOf<T>(context)!;
@@ -268,6 +277,13 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             theme.selectTheme.showScrollToBottomChevron ??
             true;
 
+    final effectiveAlignment =
+        widget.alignment ?? theme.selectTheme.alignment ?? Alignment.bottomLeft;
+
+    final effectiveChildAlignment = widget.childAlignment ??
+        theme.selectTheme.childAlignment ??
+        Alignment.topLeft;
+
     final Widget effectiveText;
     if (selected is T) {
       effectiveText = widget.selectedOptionBuilder(
@@ -408,8 +424,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             padding: EdgeInsets.zero,
             controller: controller,
             offset: effectiveOffset,
-            alignment: Alignment.bottomLeft,
-            childAlignment: Alignment.topLeft,
+            alignment: effectiveAlignment,
+            childAlignment: effectiveChildAlignment,
             closeOnTapOutside: widget.closeOnTapOutside,
             popover: (_) {
               // set the initial value for showScrollToBottom and
