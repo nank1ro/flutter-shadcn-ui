@@ -533,11 +533,9 @@ class _ShadButtonState extends State<ShadButton> {
                 ),
                 child: MouseRegion(
                   onEnter: (_) {
-                    if (hovered) return;
                     statesController.update(ShadState.hovered, true);
                   },
                   onExit: (_) {
-                    if (!hovered) return;
                     statesController.update(ShadState.hovered, false);
                   },
                   cursor: cursor(theme),
@@ -552,15 +550,12 @@ class _ShadButtonState extends State<ShadButton> {
                             widget.onPressed!();
                           },
                     onTapDown: (_) {
-                      if (pressed) return;
                       statesController.update(ShadState.pressed, true);
                     },
                     onTapUp: (_) {
-                      if (!pressed) return;
                       statesController.update(ShadState.pressed, false);
                     },
                     onTapCancel: () {
-                      if (!pressed) return;
                       statesController.update(ShadState.pressed, false);
                     },
                     child: Container(
