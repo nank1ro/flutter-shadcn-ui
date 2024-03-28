@@ -192,7 +192,11 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/progress',
-      builder: (context, state) => const ProgressPage(),
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ??
+            ProgressStyle.determinate.name;
+        return ProgressPage(style: ProgressStyle.values.byName(style));
+      },
     ),
     GoRoute(
       path: '/accordion',
