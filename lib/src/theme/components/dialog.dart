@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/src/components/image.dart';
 
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -35,7 +36,7 @@ class ShadDialogTheme {
   });
 
   final bool merge;
-  final String? closeIconSrc;
+  final ShadImageSrc? closeIconSrc;
   final ShadPosition? closeIconPosition;
   final BorderRadius? radius;
   final Color? backgroundColor;
@@ -95,7 +96,7 @@ class ShadDialogTheme {
 
   ShadDialogTheme copyWith({
     bool? merge,
-    String? closeIconSrc,
+    ShadImageSrc? closeIconSrc,
     ShadPosition? closeIconPosition,
     BorderRadius? radius,
     Color? backgroundColor,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/assets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/raw_components/same_width_column.dart';
@@ -142,7 +142,7 @@ class ShadDialog extends StatelessWidget {
   final ShadDialogVariant variant;
   final List<Widget> actions;
   final Widget? closeIcon;
-  final String? closeIconSrc;
+  final ShadImageSrc? closeIconSrc;
   final ShadPosition? closeIconPosition;
   final BorderRadius? radius;
   final Color? backgroundColor;
@@ -183,7 +183,7 @@ class ShadDialog extends StatelessWidget {
                   size: 16,
                   closeIconSrc ??
                       effectiveDialogTheme.closeIconSrc ??
-                      ShadAssets.x,
+                      LucideIcons.x,
                 ),
                 width: 20,
                 height: 20,

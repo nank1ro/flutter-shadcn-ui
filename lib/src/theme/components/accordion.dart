@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/src/components/image.dart';
 
 @immutable
 class ShadAccordionTheme {
@@ -17,7 +18,7 @@ class ShadAccordionTheme {
   });
 
   final bool merge;
-  final String? iconSrc;
+  final ShadImageSrc? iconSrc;
   final List<Effect<dynamic>>? iconEffects;
   final Widget Function(Animation<double> animation, Widget child)?
       transitionBuilder;
@@ -89,7 +90,7 @@ class ShadAccordionTheme {
 
   ShadAccordionTheme copyWith({
     bool? merge,
-    String? iconSrc,
+    ShadImageSrc? iconSrc,
     List<Effect<dynamic>>? iconEffects,
     EdgeInsets? padding,
     bool? underlineTitleOnHover,

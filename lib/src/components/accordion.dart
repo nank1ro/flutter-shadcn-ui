@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/assets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/animation_builder.dart';
@@ -116,7 +116,7 @@ class ShadAccordionItem<T> extends StatefulWidget {
   final Widget content;
   final Widget? separator;
   final Widget? icon;
-  final String? iconSrc;
+  final ShadImageSrc? iconSrc;
   final List<Effect<dynamic>>? iconEffects;
   final Widget Function(Animation<double> animation, Widget child)?
       transitionBuilder;
@@ -177,7 +177,7 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
 
     final effectiveIconSrc = widget.iconSrc ??
         theme.accordionTheme.iconSrc ??
-        ShadAssets.chevronDown;
+        LucideIcons.chevronDown;
 
     final effectiveIcon = widget.icon ??
         ShadImage.square(

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/src/components/image.dart';
 
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -39,7 +40,7 @@ class ShadSheetTheme {
   final BoxConstraints? constraints;
   final bool? expandCrossSide;
   final Widget? closeIcon;
-  final String? closeIconSrc;
+  final ShadImageSrc? closeIconSrc;
   final ShadPosition? closeIconPosition;
   final BorderRadius? radius;
   final Color? backgroundColor;
@@ -100,7 +101,7 @@ class ShadSheetTheme {
     BoxConstraints? constraints,
     bool? expandCrossSide,
     Widget? closeIcon,
-    String? closeIconSrc,
+    ShadImageSrc? closeIconSrc,
     ShadPosition? closeIconPosition,
     BorderRadius? radius,
     Color? backgroundColor,

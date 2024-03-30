@@ -19,13 +19,13 @@ class AlertPage extends StatelessWidget {
           child: () {
             return switch (style) {
               ShadAlertVariant.primary => const ShadAlert(
-                  iconSrc: ShadAssets.terminal,
+                  iconSrc: LucideIcons.terminal,
                   title: Text('Heads up!'),
                   description:
                       Text('You can add components to your app using the cli.'),
                 ),
               ShadAlertVariant.destructive => const ShadAlert.destructive(
-                  iconSrc: ShadAssets.alertCircle,
+                  iconSrc: LucideIcons.circleAlert,
                   title: Text('Error'),
                   description:
                       Text('Your session has expired. Please log in again.'),

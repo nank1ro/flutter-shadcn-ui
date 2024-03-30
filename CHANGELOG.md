@@ -1,3 +1,8 @@
+## 0.2.6
+
+- Fix buttons state not updated correctly
+- Remove `ShadAssets` in favor of `LucideIcons`
+
 ## 0.2.5
 
 - Add `width` and `height` to `ShadCard`
