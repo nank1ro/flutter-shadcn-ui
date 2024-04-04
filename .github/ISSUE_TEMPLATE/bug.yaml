@@ -44,6 +44,7 @@ body:
     id: platform
     attributes:
       label: Platform
+      multiple: true
       description: In which platform do you experience the bug?
       options:
         - MacOS
