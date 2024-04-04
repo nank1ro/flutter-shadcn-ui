@@ -305,7 +305,11 @@ class ShadInputState extends State<ShadInput>
                 isEmpty: textEditingValue.text.isEmpty,
                 placeholder: Padding(
                   padding: EdgeInsets.only(
+                    top: effectivePadding.top + effectiveBorder.top.width,
                     left: effectivePadding.left + effectiveBorder.left.width,
+                    right: effectivePadding.right + effectiveBorder.right.width,
+                    bottom:
+                        effectivePadding.bottom + effectiveBorder.bottom.width,
                   ),
                   child: widget.placeholder,
                 ),
