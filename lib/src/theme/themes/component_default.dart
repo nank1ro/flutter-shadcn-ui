@@ -418,6 +418,7 @@ abstract class ShadComponentDefaultTheme {
     return ShadInputTheme(
       decoration: ShadDecoration(
         placeholderStyle: textTheme.muted,
+        placeholderAlignment: Alignment.topLeft,
         border: ShadBorder(
           width: 2,
           color: Colors.transparent,
