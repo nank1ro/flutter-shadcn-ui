@@ -281,7 +281,6 @@ class ShadDecorator extends StatelessWidget {
     final effectivePlaceholderAlignment =
         effectiveDecoration.placeholderAlignment ?? Alignment.topLeft;
 
-    print(effectivePlaceholderAlignment);
     return Container(
       decoration: BoxDecoration(
         border: border?.width == null && border?.color == null
