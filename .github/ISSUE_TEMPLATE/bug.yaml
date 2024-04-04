@@ -40,6 +40,21 @@ body:
       description: Please tell us what is actually happening.
     validations:
       required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: In which platform do you experience the bug?
+      options:
+        - MacOS
+        - Windows
+        - Linux
+        - Android
+        - iOS
+        - Web
+      default: 0
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: Code sample
