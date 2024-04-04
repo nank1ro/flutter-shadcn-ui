@@ -248,7 +248,8 @@ class ShadDecorator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveDecoration = decoration ?? theme.decoration;
+
+    final effectiveDecoration = theme.decoration.mergeWith(decoration);
     final border = focused
         ? effectiveDecoration.focusedBorder
         : effectiveDecoration.border;
