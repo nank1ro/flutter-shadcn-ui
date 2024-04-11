@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/assets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
@@ -418,6 +418,7 @@ abstract class ShadComponentDefaultTheme {
     return ShadInputTheme(
       decoration: ShadDecoration(
         placeholderStyle: textTheme.muted,
+        placeholderAlignment: Alignment.topLeft,
         border: ShadBorder(
           width: 2,
           color: Colors.transparent,
@@ -471,7 +472,7 @@ abstract class ShadComponentDefaultTheme {
   }) {
     return ShadToastTheme(
       alignment: Alignment.bottomRight,
-      closeIconSrc: ShadAssets.x,
+      closeIconSrc: LucideIcons.x,
       titleStyle: textTheme.muted.copyWith(
         fontWeight: FontWeight.w500,
         color: colorScheme.foreground,
@@ -497,7 +498,7 @@ abstract class ShadComponentDefaultTheme {
   }) {
     return ShadToastTheme(
       alignment: Alignment.bottomRight,
-      closeIconSrc: ShadAssets.x,
+      closeIconSrc: LucideIcons.x,
       titleStyle: textTheme.muted.copyWith(
         fontWeight: FontWeight.w500,
         color: colorScheme.destructiveForeground,
@@ -576,7 +577,7 @@ abstract class ShadComponentDefaultTheme {
     required ShadTextTheme textTheme,
   }) {
     return ShadDialogTheme(
-      closeIconSrc: ShadAssets.x,
+      closeIconSrc: LucideIcons.x,
       radius: const BorderRadius.all(Radius.circular(8)),
       backgroundColor: colorScheme.background,
       removeBorderRadiusWhenTiny: true,
@@ -678,7 +679,7 @@ abstract class ShadComponentDefaultTheme {
     const bezierCurve = Cubic(0.87, 0, 0.13, 1);
     const duration = Duration(milliseconds: 300);
     return ShadAccordionTheme(
-      iconSrc: ShadAssets.chevronDown,
+      iconSrc: LucideIcons.chevronDown,
       padding: const EdgeInsets.symmetric(vertical: 16),
       underlineTitleOnHover: true,
       duration: duration,

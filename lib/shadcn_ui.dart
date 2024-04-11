@@ -32,9 +32,6 @@ export 'src/components/table.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
 
-// Assets
-export 'src/assets.dart';
-
 // Raw Components
 export 'src/raw_components/portal.dart';
 export 'src/raw_components/same_width_column.dart';
@@ -94,3 +91,4 @@ export 'src/utils/extensions.dart';
 export 'package:flutter_animate/flutter_animate.dart';
 export 'package:boxy/boxy.dart';
 export 'package:boxy/flex.dart';
+export 'package:lucide_icons_flutter/lucide_icons.dart';

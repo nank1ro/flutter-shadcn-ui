@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rive/rive.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
+typedef ShadImageSrc = Object;
+
 /// {@template image}
 /// Unifies the display of an image.
 ///
@@ -19,7 +21,7 @@ import 'package:vector_graphics/vector_graphics.dart';
 ///
 /// Finally it takes a [fit], that defauls to [BoxFit.contain].
 /// {@endtemplate}
-class ShadImage extends StatelessWidget {
+class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
   /// {@macro image}
   const ShadImage(
     this.src, {
@@ -40,7 +42,10 @@ class ShadImage extends StatelessWidget {
     this.controllers = const [],
     this.onInit,
     this.svgTheme,
-  });
+  }) : assert(
+          src is String || src is IconData,
+          'src must be a String or IconData',
+        );
 
   /// {@macro image}
   const ShadImage.square(
@@ -62,7 +67,11 @@ class ShadImage extends StatelessWidget {
     this.onInit,
     this.svgTheme,
   })  : width = size,
-        height = size;
+        height = size,
+        assert(
+          src is String || src is IconData,
+          'src must be a String or IconData',
+        );
 
   /// The src of the image.
   ///
@@ -74,7 +83,7 @@ class ShadImage extends StatelessWidget {
   /// - assets/email.svg
   /// - assets/email.svg.vec
   /// - https://picsum.photos/200
-  final String src;
+  final T src;
 
   /// The width of the image
   final double? width;
@@ -125,16 +134,16 @@ class ShadImage extends StatelessWidget {
   final SvgTheme? svgTheme;
 
   /// Returns `true` if the image is remote.
-  bool get isRemote => Uri.tryParse(src)?.host.isNotEmpty ?? false;
+  bool get isRemote => Uri.tryParse(src as String)?.host.isNotEmpty ?? false;
 
   /// Returns `true` if the image is an svg.
-  bool get isSvg => src.contains('.svg');
+  bool get isSvg => (src as String).contains('.svg');
 
   /// Returns `true` if the image is a rive asset.
-  bool get isRive => src.contains('.riv');
+  bool get isRive => (src as String).contains('.riv');
 
   /// Returns `true` if the image is a vector asset.
-  bool get isSvgVector => src.contains('.svg.vec');
+  bool get isSvgVector => (src as String).contains('.svg.vec');
 
   @override
   Widget build(BuildContext context) {
@@ -144,15 +153,100 @@ class ShadImage extends StatelessWidget {
         : null;
 
     final Widget image;
-    // If the image is remote, download and display it.
-    // Otherwise if the image is a svg image, use the [SvgPicture] class
-    // In any other case, display the image as a [png/jpg].
-    //
-    // Finally, if there is a [gradient], apply a shader mask to the image.
-    if (isRemote) {
-      if (isSvg) {
-        image = SvgPicture.network(
-          src,
+
+    // If the image is an IconData, use it as an icon
+    if (src is IconData) {
+      image = Icon(
+        src as IconData,
+        size: width,
+        color: imageColor,
+        semanticLabel: semanticLabel,
+      );
+    } else {
+      final sourceString = src as String;
+      // If the image is remote, download and display it.
+      // Otherwise if the image is a svg image, use the [SvgPicture] class
+      // In any other case, display the image as a [png/jpg].
+      //
+      // Finally, if there is a [gradient], apply a shader mask to the image.
+      if (isRemote) {
+        if (isSvg) {
+          image = SvgPicture.network(
+            sourceString,
+            width: width,
+            height: height,
+            fit: fit,
+            colorFilter: colorFilter,
+            clipBehavior: Clip.antiAlias,
+            alignment: alignment,
+            placeholderBuilder:
+                placeholder != null ? (_) => placeholder! : null,
+            semanticsLabel: semanticLabel,
+          );
+        } else if (isRive) {
+          image = SizedBox(
+            width: width,
+            height: height,
+            child: RiveAnimation.network(
+              sourceString,
+              fit: fit,
+              animations: animations,
+              artboard: artboard,
+              stateMachines: stateMachines,
+              placeHolder: placeholder,
+              alignment: alignment,
+              antialiasing: antialiasing,
+              useArtboardSize: useArtboardSize,
+              controllers: controllers,
+              onInit: onInit,
+            ),
+          );
+        } else if (isSvg) {
+          image = SvgPicture.network(
+            sourceString,
+            width: width,
+            height: height,
+            fit: fit,
+            colorFilter: colorFilter,
+            clipBehavior: Clip.antiAlias,
+            alignment: alignment,
+            placeholderBuilder:
+                placeholder != null ? (_) => placeholder! : null,
+            semanticsLabel: semanticLabel,
+          );
+        } else {
+          image = Image.network(
+            sourceString,
+            width: width,
+            height: height,
+            fit: fit,
+            semanticLabel: semanticLabel,
+            color: imageColor,
+            alignment: alignment,
+            isAntiAlias: antialiasing,
+            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+              if (frame == null) {
+                return placeholder ?? const SizedBox.shrink();
+              }
+              return child;
+            },
+          );
+        }
+      } else if (isSvgVector) {
+        image = SvgPicture(
+          AssetBytesLoader(sourceString),
+          width: width,
+          height: height,
+          fit: fit,
+          alignment: alignment,
+          colorFilter: colorFilter,
+          clipBehavior: Clip.antiAlias,
+          placeholderBuilder: placeholder != null ? (_) => placeholder! : null,
+          semanticsLabel: semanticLabel,
+        );
+      } else if (isSvg) {
+        image = SvgPicture.asset(
+          sourceString,
           width: width,
           height: height,
           fit: fit,
@@ -166,10 +260,9 @@ class ShadImage extends StatelessWidget {
         image = SizedBox(
           width: width,
           height: height,
-          child: RiveAnimation.network(
-            src,
+          child: RiveAnimation.asset(
+            sourceString,
             fit: fit,
-            animations: animations,
             artboard: artboard,
             stateMachines: stateMachines,
             placeHolder: placeholder,
@@ -180,95 +273,26 @@ class ShadImage extends StatelessWidget {
             onInit: onInit,
           ),
         );
-      } else if (isSvg) {
-        image = SvgPicture.network(
-          src,
-          width: width,
-          height: height,
-          fit: fit,
-          colorFilter: colorFilter,
-          clipBehavior: Clip.antiAlias,
-          alignment: alignment,
-          placeholderBuilder: placeholder != null ? (_) => placeholder! : null,
-          semanticsLabel: semanticLabel,
-        );
       } else {
-        image = Image.network(
-          src,
+        image = Image.asset(
+          sourceString,
           width: width,
           height: height,
           fit: fit,
-          semanticLabel: semanticLabel,
           color: imageColor,
-          alignment: alignment,
           isAntiAlias: antialiasing,
+          alignment: alignment,
           frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
             if (frame == null) {
               return placeholder ?? const SizedBox.shrink();
             }
             return child;
           },
+          semanticLabel: semanticLabel,
         );
       }
-    } else if (isSvgVector) {
-      image = SvgPicture(
-        AssetBytesLoader(src),
-        width: width,
-        height: height,
-        fit: fit,
-        alignment: alignment,
-        colorFilter: colorFilter,
-        clipBehavior: Clip.antiAlias,
-        placeholderBuilder: placeholder != null ? (_) => placeholder! : null,
-        semanticsLabel: semanticLabel,
-      );
-    } else if (isSvg) {
-      image = SvgPicture.asset(
-        src,
-        width: width,
-        height: height,
-        fit: fit,
-        colorFilter: colorFilter,
-        clipBehavior: Clip.antiAlias,
-        alignment: alignment,
-        placeholderBuilder: placeholder != null ? (_) => placeholder! : null,
-        semanticsLabel: semanticLabel,
-      );
-    } else if (isRive) {
-      image = SizedBox(
-        width: width,
-        height: height,
-        child: RiveAnimation.asset(
-          src,
-          fit: fit,
-          artboard: artboard,
-          stateMachines: stateMachines,
-          placeHolder: placeholder,
-          alignment: alignment,
-          antialiasing: antialiasing,
-          useArtboardSize: useArtboardSize,
-          controllers: controllers,
-          onInit: onInit,
-        ),
-      );
-    } else {
-      image = Image.asset(
-        src,
-        width: width,
-        height: height,
-        fit: fit,
-        color: imageColor,
-        isAntiAlias: antialiasing,
-        alignment: alignment,
-        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-          if (frame == null) {
-            return placeholder ?? const SizedBox.shrink();
-          }
-          return child;
-        },
-        semanticLabel: semanticLabel,
-      );
     }
+
     if (gradient == null) return image;
 
     return ShaderMask(

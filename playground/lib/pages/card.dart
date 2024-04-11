@@ -137,7 +137,7 @@ class _CardNotificationsState extends State<CardNotifications> {
             child: Row(
               children: [
                 ShadImage.square(
-                  ShadAssets.bellRing,
+                  LucideIcons.bellRing,
                   size: 24,
                   color: theme.colorScheme.foreground,
                 ),
@@ -213,7 +213,7 @@ class _CardNotificationsState extends State<CardNotifications> {
         text: const Text('Mark all as read'),
         icon: const Padding(
           padding: EdgeInsets.only(right: 8),
-          child: ShadImage.square(ShadAssets.check, size: 16),
+          child: ShadImage.square(LucideIcons.check, size: 16),
         ),
         onPressed: () {},
       ),

@@ -49,7 +49,7 @@ class ShadAlert extends StatelessWidget {
 
   final ShadAlertVariant variant;
   final Widget? icon;
-  final String? iconSrc;
+  final ShadImageSrc? iconSrc;
   final Widget? title;
   final Widget? description;
   final TextDirection? textDirection;

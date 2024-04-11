@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/dialog.dart';
+import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -157,7 +158,7 @@ class ShadSheet extends StatelessWidget {
   final BoxConstraints? constraints;
   final bool? expandCrossSide;
   final Widget? closeIcon;
-  final String? closeIconSrc;
+  final ShadImageSrc? closeIconSrc;
   final ShadPosition? closeIconPosition;
   final BorderRadius? radius;
   final Color? backgroundColor;

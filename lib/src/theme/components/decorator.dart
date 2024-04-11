@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 @immutable
@@ -85,6 +86,7 @@ class ShadDecoration {
     this.placeholderStyle,
     this.descriptionPadding,
     this.errorPadding,
+    this.placeholderAlignment,
   });
 
   static const ShadDecoration none = ShadDecoration(merge: false);
@@ -100,6 +102,7 @@ class ShadDecoration {
   final EdgeInsets? labelPadding;
   final EdgeInsets? descriptionPadding;
   final EdgeInsets? errorPadding;
+  final AlignmentGeometry? placeholderAlignment;
 
   static ShadDecoration? lerp(
     ShadDecoration? a,
@@ -122,6 +125,11 @@ class ShadDecoration {
       errorPadding: EdgeInsets.lerp(a?.errorPadding, b?.errorPadding, t),
       placeholderStyle:
           TextStyle.lerp(a?.placeholderStyle, b?.placeholderStyle, t),
+      placeholderAlignment: AlignmentGeometry.lerp(
+        a?.placeholderAlignment,
+        b?.placeholderAlignment,
+        t,
+      ),
     );
   }
 
@@ -139,6 +147,7 @@ class ShadDecoration {
       descriptionPadding: other.descriptionPadding ?? descriptionPadding,
       errorPadding: other.errorPadding ?? errorPadding,
       placeholderStyle: other.placeholderStyle ?? placeholderStyle,
+      placeholderAlignment: other.placeholderAlignment ?? placeholderAlignment,
     );
   }
 
@@ -153,6 +162,7 @@ class ShadDecoration {
     EdgeInsets? descriptionPadding,
     EdgeInsets? errorPadding,
     TextStyle? placeholderStyle,
+    AlignmentGeometry? placeholderAlignment,
   }) {
     return ShadDecoration(
       border: border ?? this.border,
@@ -165,6 +175,7 @@ class ShadDecoration {
       descriptionPadding: descriptionPadding ?? this.descriptionPadding,
       errorPadding: errorPadding ?? this.errorPadding,
       placeholderStyle: placeholderStyle ?? this.placeholderStyle,
+      placeholderAlignment: placeholderAlignment ?? this.placeholderAlignment,
     );
   }
 
@@ -182,7 +193,8 @@ class ShadDecoration {
         other.labelPadding == labelPadding &&
         other.descriptionPadding == descriptionPadding &&
         other.errorPadding == errorPadding &&
-        other.placeholderStyle == placeholderStyle;
+        other.placeholderStyle == placeholderStyle &&
+        other.placeholderAlignment == placeholderAlignment;
   }
 
   @override
@@ -196,7 +208,8 @@ class ShadDecoration {
       labelPadding.hashCode ^
       descriptionPadding.hashCode ^
       errorPadding.hashCode ^
-      placeholderStyle.hashCode;
+      placeholderStyle.hashCode ^
+      placeholderAlignment.hashCode;
 }
 
 class ShadDecorator extends StatelessWidget {
@@ -235,7 +248,8 @@ class ShadDecorator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveDecoration = decoration ?? theme.decoration;
+
+    final effectiveDecoration = theme.decoration.mergeWith(decoration);
     final border = focused
         ? effectiveDecoration.focusedBorder
         : effectiveDecoration.border;
@@ -264,6 +278,9 @@ class ShadDecorator extends StatelessWidget {
     final effectivePlaceholderStyle =
         effectiveDecoration.placeholderStyle ?? theme.textTheme.muted;
 
+    final effectivePlaceholderAlignment =
+        effectiveDecoration.placeholderAlignment ?? Alignment.topLeft;
+
     return Container(
       decoration: BoxDecoration(
         border: border?.width == null && border?.color == null
@@ -291,9 +308,14 @@ class ShadDecorator extends StatelessWidget {
           Stack(
             children: [
               if (isEmpty && placeholder != null)
-                DefaultTextStyle(
-                  style: effectivePlaceholderStyle,
-                  child: placeholder!,
+                Positioned.fill(
+                  child: Align(
+                    alignment: effectivePlaceholderAlignment,
+                    child: DefaultTextStyle(
+                      style: effectivePlaceholderStyle,
+                      child: placeholder!,
+                    ),
+                  ),
                 ),
               child,
             ],

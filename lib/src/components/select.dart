@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/src/assets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/components/focused.dart';
 
@@ -300,7 +300,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
     final effectiveTrailing = widget.trailing ??
         ShadImage.square(
-          ShadAssets.chevronDown,
+          LucideIcons.chevronDown,
           size: 16,
           color: theme.colorScheme.popoverForeground.withOpacity(.5),
         );
@@ -377,7 +377,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                               width: calculatedMinWidth,
                               padding: const EdgeInsets.symmetric(vertical: 4),
                               child: ShadImage.square(
-                                ShadAssets.chevronUp,
+                                LucideIcons.chevronUp,
                                 size: 16,
                                 color: theme.colorScheme.popoverForeground,
                               ),
@@ -406,7 +406,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                               width: calculatedMinWidth,
                               padding: const EdgeInsets.symmetric(vertical: 4),
                               child: ShadImage.square(
-                                ShadAssets.chevronDown,
+                                LucideIcons.chevronDown,
                                 size: 16,
                                 color: theme.colorScheme.popoverForeground,
                               ),
@@ -584,7 +584,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
                       child: Padding(
                         padding: const EdgeInsets.only(right: 8),
                         child: ShadImage.square(
-                          ShadAssets.check,
+                          LucideIcons.check,
                           size: 16,
                           color: theme.colorScheme.popoverForeground,
                         ),

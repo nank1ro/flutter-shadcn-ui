@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/src/components/image.dart';
 
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -31,7 +32,7 @@ class ShadToastTheme {
 
   final bool merge;
   final Color? backgroundColor;
-  final String? closeIconSrc;
+  final ShadImageSrc? closeIconSrc;
   final Alignment? alignment;
   final Offset? offset;
   final Duration? duration;
@@ -85,7 +86,7 @@ class ShadToastTheme {
   ShadToastTheme copyWith({
     bool? merge,
     Color? backgroundColor,
-    String? closeIconSrc,
+    ShadImageSrc? closeIconSrc,
     Alignment? alignment,
     Offset? offset,
     Duration? duration,

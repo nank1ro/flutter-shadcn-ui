@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:shadcn_ui/src/assets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -331,7 +331,7 @@ class ShadToast extends StatefulWidget {
   final Widget? description;
   final Widget? action;
   final Widget? closeIcon;
-  final String? closeIconSrc;
+  final ShadImageSrc? closeIconSrc;
   final Alignment? alignment;
   final Offset? offset;
   final Duration? duration;
@@ -384,7 +384,7 @@ class _ShadToastState extends State<ShadToast> {
             size: 16,
             widget.closeIconSrc ??
                 effectiveToastTheme.closeIconSrc ??
-                ShadAssets.x,
+                LucideIcons.x,
           ),
           width: 20,
           height: 20,

@@ -23,7 +23,6 @@ class ShadInput extends StatefulWidget {
     this.style,
     this.strutStyle,
     this.textAlign = TextAlign.start,
-    this.textAlignVertical,
     this.textDirection,
     this.readOnly = false,
     this.showCursor,
@@ -113,8 +112,6 @@ class ShadInput extends StatefulWidget {
   final StrutStyle? strutStyle;
 
   final TextAlign textAlign;
-
-  final TextAlignVertical? textAlignVertical;
 
   final TextDirection? textDirection;
 
@@ -310,6 +307,9 @@ class ShadInputState extends State<ShadInput>
                   padding: EdgeInsets.only(
                     top: effectivePadding.top + effectiveBorder.top.width,
                     left: effectivePadding.left + effectiveBorder.left.width,
+                    right: effectivePadding.right + effectiveBorder.right.width,
+                    bottom:
+                        effectivePadding.bottom + effectiveBorder.bottom.width,
                   ),
                   child: widget.placeholder,
                 ),
@@ -377,6 +377,7 @@ class ShadInputState extends State<ShadInput>
                   undoController: widget.undoController,
                   spellCheckConfiguration: widget.spellCheckConfiguration,
                   onTapOutside: widget.onTapOutside,
+                  textAlign: widget.textAlign,
                 ),
               ),
             ),

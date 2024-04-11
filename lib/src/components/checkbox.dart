@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/assets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/components/focused.dart';
 import 'package:shadcn_ui/src/components/image.dart';
@@ -109,7 +109,7 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
         widget.radius ?? theme.checkboxTheme.radius ?? theme.radius;
     final effectiveIcon = widget.icon ??
         ShadImage.square(
-          ShadAssets.check,
+          LucideIcons.check,
           color: theme.colorScheme.primaryForeground,
           size: effectiveSize,
         );
