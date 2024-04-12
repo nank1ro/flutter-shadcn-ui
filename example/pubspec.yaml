@@ -17,6 +17,7 @@ dependencies:
   awesome_flutter_extensions: ^1.2.0
   multi_split_view: ^2.4.0
   google_fonts: 6.1.0
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:
