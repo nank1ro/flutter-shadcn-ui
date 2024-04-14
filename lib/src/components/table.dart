@@ -100,7 +100,6 @@ class ShadTable extends StatefulWidget {
     required this.maxHeight,
     ShadTableCell Function(BuildContext context, int column)? header,
     ShadTableCell Function(BuildContext context, int column)? footer,
-    this.caption,
     this.height,
     this.columnBuilder,
     this.rowBuilder,
@@ -131,7 +130,6 @@ class ShadTable extends StatefulWidget {
     required this.maxHeight,
     this.header,
     this.footer,
-    this.caption,
     this.height,
     this.columnBuilder,
     this.rowBuilder,
@@ -161,7 +159,6 @@ class ShadTable extends StatefulWidget {
   final ShadTableCell Function(BuildContext context, int column)? footerBuilder;
   final Iterable<ShadTableCell>? header;
   final Iterable<ShadTableCell>? footer;
-  final Widget? caption;
   final ShadTableCellBuilder? builder;
   final int columnCount;
   final int rowCount;
@@ -194,7 +191,6 @@ class ShadTable extends StatefulWidget {
 
 class _ShadTableState extends State<ShadTable> {
   int hoveredIndex = -1;
-  late double? tableHeight = widget.height;
 
   /// This is a workaround to avoid rebuilding the same row when the pointer
   /// doesn't move, because when you call setState, the onExit callback is
@@ -206,45 +202,6 @@ class _ShadTableState extends State<ShadTable> {
       widget.rowCount +
       (widget.header != null ? 1 : 0) +
       (widget.footer != null ? 1 : 0);
-
-  @override
-  void initState() {
-    super.initState();
-    tableHeight ??= calculateTableHeight();
-  }
-
-  @override
-  void didUpdateWidget(covariant ShadTable oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.height != oldWidget.height ||
-        widget.rowCount != oldWidget.rowCount ||
-        widget.rowSpanExtent != oldWidget.rowSpanExtent) {
-      tableHeight = widget.height;
-      tableHeight ??= calculateTableHeight();
-    }
-  }
-
-  double? calculateTableHeight() {
-    const defaultRowHeight = 48.0;
-    var calculatedHeight = 0.0;
-    for (var i = 0; i < effectiveRowCount; i++) {
-      var rowHeight = 0.0;
-      final extent = widget.rowSpanExtent?.call(i);
-      if (extent != null) {
-        rowHeight = extent.calculateExtent(
-          TableSpanExtentDelegate(
-            viewportExtent: widget.maxHeight,
-            precedingExtent: calculatedHeight,
-          ),
-        );
-      } else {
-        rowHeight = defaultRowHeight;
-      }
-      calculatedHeight += rowHeight;
-    }
-
-    return calculatedHeight;
-  }
 
   TableSpan _buildColumnSpan(int index) {
     final requestedColumnSpanExtent = widget.columnSpanExtent?.call(index);
@@ -311,12 +268,6 @@ class _ShadTableState extends State<ShadTable> {
         theme.tableTheme.columnBuilder ??
         _buildColumnSpan;
 
-    final effectiveTableHeight = tableHeight == null
-        ? null
-        : tableHeight! > widget.maxHeight
-            ? null
-            : tableHeight;
-
     final effectivePinnedRowCount = widget.pinnedRowCount ?? 0;
     final effectivePinnedColumnCount = widget.pinnedColumnCount ?? 0;
     final effectivePrimary = widget.primary;
@@ -333,7 +284,7 @@ class _ShadTableState extends State<ShadTable> {
         theme.tableTheme.keyboardDismissBehavior ??
         ScrollViewKeyboardDismissBehavior.manual;
 
-    Widget table = switch (widget.children) {
+    return switch (widget.children) {
       // list
       != null => TableView.list(
           primary: effectivePrimary,
@@ -392,30 +343,5 @@ class _ShadTableState extends State<ShadTable> {
           pinnedColumnCount: effectivePinnedColumnCount,
         ),
     };
-
-    if (widget.caption != null) {
-      table = Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: SizedBox(
-              width: double.infinity,
-              height: effectiveTableHeight,
-              child: table,
-            ),
-          ),
-          DefaultTextStyle(
-            style: theme.textTheme.muted,
-            textAlign: TextAlign.center,
-            child: widget.caption!,
-          ),
-        ],
-      );
-    }
-
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: widget.maxHeight),
-      child: table,
-    );
   }
 }

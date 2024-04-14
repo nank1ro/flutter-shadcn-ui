@@ -81,12 +81,8 @@ class TablePage extends StatelessWidget {
                   child: Text(r'$2500.00'),
                 ),
               ],
-              caption: const Padding(
-                padding: EdgeInsets.only(top: 16),
-                child: Text('A list of your recent invoices.'),
-              ),
               columnSpanExtent: (index) {
-                if (index == 2) return const FixedTableSpanExtent(150);
+                if (index == 2) return const FixedTableSpanExtent(130);
                 if (index == 3) {
                   return const MaxTableSpanExtent(
                     FixedTableSpanExtent(120),
@@ -94,9 +90,6 @@ class TablePage extends StatelessWidget {
                   );
                 }
                 return null;
-              },
-              onHoveredRowIndex: (index) {
-                print('hoveredRowIndex: $index');
               },
               children: invoicesList
                   .map(
@@ -183,7 +176,6 @@ final headings = [
 ];
 
 ShadTable(
-  maxHeight: MediaQuery.sizeOf(context).height - kToolbarHeight,
   columnCount: invoices[0].length,
   rowCount: invoices.length,
   header: (context, column) {
@@ -236,9 +228,5 @@ ShadTable(
     }
     return const ShadTableCell(child: SizedBox());
   },
-  caption: const Padding(
-    padding: EdgeInsets.only(top: 16),
-    child: Text('A list of your recent invoices.'),
-  ),
 )
 */
