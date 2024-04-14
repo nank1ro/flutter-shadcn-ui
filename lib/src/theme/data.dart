@@ -202,7 +202,10 @@ class ShadThemeData extends ShadBaseTheme {
         colorScheme: colorScheme,
         textTheme: effectiveTextTheme,
       ).mergeWith(accordionTheme),
-      tableTheme: ShadComponentDefaultTheme.tableTheme().mergeWith(tableTheme),
+      tableTheme: ShadComponentDefaultTheme.tableTheme(
+        colorScheme: colorScheme,
+        textTheme: effectiveTextTheme,
+      ).mergeWith(tableTheme),
     );
   }
 
