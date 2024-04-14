@@ -1,3 +1,8 @@
+## 0.3.0
+
+- Add `ShadTable` component
+- Improved `ShadInput` placeholder alignment
+
 ## 0.2.6
 
 - Fix buttons state not updated correctly

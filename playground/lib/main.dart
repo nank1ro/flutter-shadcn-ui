@@ -18,6 +18,7 @@ import 'package:playground/pages/select.dart';
 import 'package:playground/pages/sheet.dart';
 import 'package:playground/pages/slider.dart';
 import 'package:playground/pages/switch.dart';
+import 'package:playground/pages/table.dart';
 import 'package:playground/pages/toast.dart';
 import 'package:playground/pages/tooltip.dart';
 import 'package:playground/pages/typography.dart';
@@ -207,6 +208,10 @@ final _router = GoRouter(
           style: ShadAccordionType.values.byName(style),
         );
       },
+    ),
+    GoRoute(
+      path: '/table',
+      builder: (context, state) => const TablePage(),
     ),
   ],
 );

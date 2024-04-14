@@ -2,7 +2,7 @@ import 'package:example/common/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-const invoicesList = [
+const invoices = [
   (
     invoice: "INV001",
     paymentStatus: "Paid",
@@ -90,7 +90,7 @@ class TablePage extends StatelessWidget {
                 // uses the default value
                 return null;
               },
-              children: invoicesList
+              children: invoices
                   .map(
                     (invoice) => [
                       ShadTableCell(
