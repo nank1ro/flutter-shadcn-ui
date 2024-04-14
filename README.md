@@ -50,7 +50,7 @@ See the [documentation](https://mariuti.com/shadcn-ui/) to interact with the com
 - [x] [Slider](https://mariuti.com/shadcn-ui/components/slider/)
 - [ ] Sonner (?)
 - [x] [Switch](https://mariuti.com/shadcn-ui/components/switch/)
-- [ ] Table
+- [x] [Table](https://mariuti.com/shadcn-ui/components/table/)
 - [ ] Tabs
 - [ ] TextArea
 - [x] [Toast](https://mariuti.com/shadcn-ui/components/toast/)

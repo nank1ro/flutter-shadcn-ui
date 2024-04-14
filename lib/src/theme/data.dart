@@ -20,6 +20,7 @@ import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
+import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
@@ -69,6 +70,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadSheetTheme? sheetTheme,
     ShadProgressTheme? progressTheme,
     ShadAccordionTheme? accordionTheme,
+    ShadTableTheme? tableTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -200,6 +202,10 @@ class ShadThemeData extends ShadBaseTheme {
         colorScheme: colorScheme,
         textTheme: effectiveTextTheme,
       ).mergeWith(accordionTheme),
+      tableTheme: ShadComponentDefaultTheme.tableTheme(
+        colorScheme: colorScheme,
+        textTheme: effectiveTextTheme,
+      ).mergeWith(tableTheme),
     );
   }
 
@@ -243,6 +249,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.sheetTheme,
     required super.progressTheme,
     required super.accordionTheme,
+    required super.tableTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -328,6 +335,7 @@ class ShadThemeData extends ShadBaseTheme {
           ShadProgressTheme.lerp(a.progressTheme, b.progressTheme, t),
       accordionTheme:
           ShadAccordionTheme.lerp(a.accordionTheme, b.accordionTheme, t),
+      tableTheme: ShadTableTheme.lerp(a.tableTheme, b.tableTheme, t),
     );
   }
 
@@ -374,7 +382,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.sliderTheme == sliderTheme &&
         other.sheetTheme == sheetTheme &&
         other.progressTheme == progressTheme &&
-        other.accordionTheme == accordionTheme;
+        other.accordionTheme == accordionTheme &&
+        other.tableTheme == tableTheme;
   }
 
   @override
@@ -417,7 +426,8 @@ class ShadThemeData extends ShadBaseTheme {
         sliderTheme.hashCode ^
         sheetTheme.hashCode ^
         progressTheme.hashCode ^
-        accordionTheme.hashCode;
+        accordionTheme.hashCode ^
+        tableTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -460,6 +470,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadSheetTheme? sheetTheme,
     ShadProgressTheme? progressTheme,
     ShadAccordionTheme? accordionTheme,
+    ShadTableTheme? tableTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -505,6 +516,7 @@ class ShadThemeData extends ShadBaseTheme {
       sheetTheme: sheetTheme ?? this.sheetTheme,
       progressTheme: progressTheme ?? this.progressTheme,
       accordionTheme: accordionTheme ?? this.accordionTheme,
+      tableTheme: tableTheme ?? this.tableTheme,
     );
   }
 }

@@ -28,6 +28,7 @@ export 'src/components/select.dart';
 export 'src/components/sheet.dart';
 export 'src/components/slider.dart';
 export 'src/components/switch.dart';
+export 'src/components/table.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
 
@@ -73,10 +74,11 @@ export 'src/theme/components/select.dart';
 export 'src/theme/components/sheet.dart';
 export 'src/theme/components/slider.dart';
 export 'src/theme/components/switch.dart';
+export 'src/theme/components/table.dart';
 export 'src/theme/components/toast.dart';
 export 'src/theme/components/tooltip.dart';
-export 'src/theme/text_theme/theme.dart';
 export 'src/theme/text_theme/text_styles_default.dart';
+export 'src/theme/text_theme/theme.dart';
 
 // Utils
 export 'src/utils/position.dart';
@@ -90,3 +92,4 @@ export 'package:flutter_animate/flutter_animate.dart';
 export 'package:boxy/boxy.dart';
 export 'package:boxy/flex.dart';
 export 'package:lucide_icons_flutter/lucide_icons.dart';
+export 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';

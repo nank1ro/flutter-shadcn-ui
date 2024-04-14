@@ -10,27 +10,35 @@ class BaseScaffold extends StatelessWidget {
     required this.appBarTitle,
     this.editable,
     this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.wrapChildrenInScrollable = true,
+    this.wrapSingleChildInColumn = true,
   });
 
   final List<Widget> children;
   final String appBarTitle;
   final List<Widget>? editable;
   final CrossAxisAlignment crossAxisAlignment;
+  final bool wrapChildrenInScrollable;
+  final bool wrapSingleChildInColumn;
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
 
-    final Widget left = SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-      child: Center(
-        child: Column(
-          crossAxisAlignment: crossAxisAlignment,
-          children: children.separatedBy(const SizedBox(height: 8)),
-        ),
-      ),
-    );
+    Widget left = children.length == 1 && !wrapSingleChildInColumn
+        ? children[0]
+        : Column(
+            crossAxisAlignment: crossAxisAlignment,
+            children: children.separatedBy(const SizedBox(height: 8)),
+          );
+
+    if (wrapChildrenInScrollable) {
+      left = SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: left,
+      );
+    }
 
     final Widget? right = editable == null
         ? null
@@ -46,19 +54,19 @@ class BaseScaffold extends StatelessWidget {
 
     return Scaffold(
       appBar: MyAppBar(title: appBarTitle),
-      body: MultiSplitViewTheme(
-        data: MultiSplitViewThemeData(
-          dividerPainter: _MyDividerPainter(
-            backgroundColor: isDarkMode ? Colors.white10 : Colors.black12,
-            highlightedBackgroundColor:
-                isDarkMode ? Colors.white24 : Colors.black26,
-          ),
-        ),
-        child: ScrollConfiguration(
-          behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-          child: right == null
-              ? left
-              : MultiSplitView(
+      body: right != null
+          ? MultiSplitViewTheme(
+              data: MultiSplitViewThemeData(
+                dividerPainter: _MyDividerPainter(
+                  backgroundColor: isDarkMode ? Colors.white10 : Colors.black12,
+                  highlightedBackgroundColor:
+                      isDarkMode ? Colors.white24 : Colors.black26,
+                ),
+              ),
+              child: ScrollConfiguration(
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
+                child: MultiSplitView(
                   initialAreas: [
                     Area(
                       minimalSize: size.width / 2,
@@ -73,8 +81,9 @@ class BaseScaffold extends StatelessWidget {
                     right,
                   ],
                 ),
-        ),
-      ),
+              ),
+            )
+          : left,
     );
   }
 }

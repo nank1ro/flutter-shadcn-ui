@@ -21,6 +21,7 @@ import 'package:example/pages/sheet.dart';
 import 'package:example/pages/slider.dart';
 import 'package:example/pages/switch.dart';
 import 'package:example/pages/switch_form_field.dart';
+import 'package:example/pages/table.dart';
 import 'package:example/pages/toast.dart';
 import 'package:example/pages/tooltip.dart';
 import 'package:example/pages/typography.dart';
@@ -57,6 +58,7 @@ final routes = <String, WidgetBuilder>{
   '/slider': (_) => const SliderPage(),
   '/switch': (_) => const SwitchPage(),
   '/switch-form-field': (_) => const SwitchFormFieldPage(),
+  '/table': (_) => const TablePage(),
   '/toast': (_) => const ToastPage(),
   '/tooltip': (_) => const TooltipPage(),
   '/typography': (_) => const TypographyPage(),
