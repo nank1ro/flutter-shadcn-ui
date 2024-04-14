@@ -11,6 +11,12 @@ class ShadTableTheme {
     this.keyboardDismissBehavior,
     this.columnBuilder,
     this.rowBuilder,
+    this.cellAlignment,
+    this.cellHeight,
+    this.cellPadding,
+    this.cellStyle,
+    this.cellHeaderStyle,
+    this.cellFooterStyle,
   });
 
   final bool merge;
@@ -19,6 +25,12 @@ class ShadTableTheme {
   final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
   final TableSpanBuilder? columnBuilder;
   final TableSpanBuilder? rowBuilder;
+  final Alignment? cellAlignment;
+  final double? cellHeight;
+  final EdgeInsets? cellPadding;
+  final TextStyle? cellHeaderStyle;
+  final TextStyle? cellStyle;
+  final TextStyle? cellFooterStyle;
 
   static ShadTableTheme lerp(
     ShadTableTheme a,
@@ -34,6 +46,12 @@ class ShadTableTheme {
           b.keyboardDismissBehavior ?? a.keyboardDismissBehavior,
       columnBuilder: b.columnBuilder ?? a.columnBuilder,
       rowBuilder: b.rowBuilder ?? a.rowBuilder,
+      cellAlignment: b.cellAlignment ?? a.cellAlignment,
+      cellHeight: b.cellHeight ?? a.cellHeight,
+      cellPadding: b.cellPadding ?? a.cellPadding,
+      cellStyle: b.cellStyle ?? a.cellStyle,
+      cellHeaderStyle: b.cellHeaderStyle ?? a.cellHeaderStyle,
+      cellFooterStyle: b.cellFooterStyle ?? a.cellFooterStyle,
     );
   }
 
@@ -47,6 +65,12 @@ class ShadTableTheme {
           other.keyboardDismissBehavior ?? keyboardDismissBehavior,
       columnBuilder: other.columnBuilder ?? columnBuilder,
       rowBuilder: other.rowBuilder ?? rowBuilder,
+      cellAlignment: other.cellAlignment ?? cellAlignment,
+      cellHeight: other.cellHeight ?? cellHeight,
+      cellPadding: other.cellPadding ?? cellPadding,
+      cellStyle: other.cellStyle ?? cellStyle,
+      cellHeaderStyle: other.cellHeaderStyle ?? cellHeaderStyle,
+      cellFooterStyle: other.cellFooterStyle ?? cellFooterStyle,
     );
   }
 
@@ -57,6 +81,12 @@ class ShadTableTheme {
     ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior,
     TableSpanBuilder? columnBuilder,
     TableSpanBuilder? rowBuilder,
+    Alignment? cellAlignment,
+    double? cellHeight,
+    EdgeInsets? cellPadding,
+    TextStyle? cellStyle,
+    TextStyle? cellHeaderStyle,
+    TextStyle? cellFooterStyle,
   }) {
     return ShadTableTheme(
       merge: merge ?? this.merge,
@@ -66,6 +96,12 @@ class ShadTableTheme {
           keyboardDismissBehavior ?? this.keyboardDismissBehavior,
       columnBuilder: columnBuilder ?? this.columnBuilder,
       rowBuilder: rowBuilder ?? this.rowBuilder,
+      cellAlignment: cellAlignment ?? this.cellAlignment,
+      cellHeight: cellHeight ?? this.cellHeight,
+      cellPadding: cellPadding ?? this.cellPadding,
+      cellStyle: cellStyle ?? this.cellStyle,
+      cellHeaderStyle: cellHeaderStyle ?? this.cellHeaderStyle,
+      cellFooterStyle: cellFooterStyle ?? this.cellFooterStyle,
     );
   }
 
@@ -79,7 +115,13 @@ class ShadTableTheme {
         other.dragStartBehavior == dragStartBehavior &&
         other.keyboardDismissBehavior == keyboardDismissBehavior &&
         other.columnBuilder == columnBuilder &&
-        other.rowBuilder == rowBuilder;
+        other.rowBuilder == rowBuilder &&
+        other.cellAlignment == cellAlignment &&
+        other.cellHeight == cellHeight &&
+        other.cellPadding == cellPadding &&
+        other.cellStyle == cellStyle &&
+        other.cellHeaderStyle == cellHeaderStyle &&
+        other.cellFooterStyle == cellFooterStyle;
   }
 
   @override
@@ -89,6 +131,12 @@ class ShadTableTheme {
         dragStartBehavior.hashCode ^
         keyboardDismissBehavior.hashCode ^
         columnBuilder.hashCode ^
-        rowBuilder.hashCode;
+        rowBuilder.hashCode ^
+        cellAlignment.hashCode ^
+        cellHeight.hashCode ^
+        cellPadding.hashCode ^
+        cellStyle.hashCode ^
+        cellHeaderStyle.hashCode ^
+        cellFooterStyle.hashCode;
   }
 }

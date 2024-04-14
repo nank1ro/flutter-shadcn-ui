@@ -23,6 +23,7 @@ class ShadTableCell extends TableViewCell {
     this.height,
     required super.child,
     this.padding,
+    this.style,
   }) : type = ShadTableCellType.cell;
 
   const ShadTableCell.header({
@@ -31,6 +32,7 @@ class ShadTableCell extends TableViewCell {
     this.height,
     required super.child,
     this.padding,
+    this.style,
   }) : type = ShadTableCellType.header;
 
   const ShadTableCell.footer({
@@ -39,43 +41,43 @@ class ShadTableCell extends TableViewCell {
     this.height,
     required super.child,
     this.padding,
+    this.style,
   }) : type = ShadTableCellType.footer;
 
   final ShadTableCellType type;
   final Alignment? alignment;
   final double? height;
   final EdgeInsets? padding;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    final effectiveAlignment = alignment
-        // ?? theme.tableCellTheme.alignment
-        ??
-        Alignment.centerLeft;
+    final effectiveAlignment =
+        alignment ?? theme.tableTheme.cellAlignment ?? Alignment.centerLeft;
 
-    final effectiveHeight = height
-        //?? theme.tableCellTheme.height
-        ??
-        48;
+    final effectiveHeight = height ?? theme.tableTheme.cellHeight ?? 48;
 
-    final effectivePadding = padding
-        // ?? theme.tableCellTheme.padding
-        ??
+    final effectivePadding = padding ??
+        theme.tableTheme.cellPadding ??
         const EdgeInsets.symmetric(horizontal: 16);
 
-    final textStyle = switch (type) {
-      ShadTableCellType.cell =>
-        theme.textTheme.muted.copyWith(color: theme.colorScheme.foreground),
-      ShadTableCellType.header => theme.textTheme.muted.copyWith(
-          fontWeight: FontWeight.w500,
-        ),
-      ShadTableCellType.footer => theme.textTheme.muted.copyWith(
-          fontWeight: FontWeight.w500,
-          color: theme.colorScheme.foreground,
-        ),
-    };
+    final textStyle = style ??
+        switch (type) {
+          ShadTableCellType.cell => theme.tableTheme.cellStyle ??
+              theme.textTheme.muted
+                  .copyWith(color: theme.colorScheme.foreground),
+          ShadTableCellType.header => theme.tableTheme.cellHeaderStyle ??
+              theme.textTheme.muted.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+          ShadTableCellType.footer => theme.tableTheme.cellFooterStyle ??
+              theme.textTheme.muted.copyWith(
+                fontWeight: FontWeight.w500,
+                color: theme.colorScheme.foreground,
+              ),
+        };
 
     return TableViewCell(
       child: Container(

@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
@@ -22,6 +21,7 @@ import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
+import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
@@ -717,11 +717,21 @@ abstract class ShadComponentDefaultTheme {
     );
   }
 
-  static ShadTableTheme tableTheme() {
-    return const ShadTableTheme(
+  static ShadTableTheme tableTheme({
+    required ShadTextTheme textTheme,
+    required ShadColorScheme colorScheme,
+  }) {
+    return ShadTableTheme(
       diagonalDragBehavior: DiagonalDragBehavior.none,
       dragStartBehavior: DragStartBehavior.start,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+      cellAlignment: Alignment.centerLeft,
+      cellHeight: 48,
+      cellPadding: const EdgeInsets.symmetric(horizontal: 16),
+      cellStyle: textTheme.muted.copyWith(color: colorScheme.foreground),
+      cellHeaderStyle: textTheme.muted.copyWith(fontWeight: FontWeight.w500),
+      cellFooterStyle: textTheme.muted
+          .copyWith(color: colorScheme.foreground, fontWeight: FontWeight.w500),
     );
   }
 }
