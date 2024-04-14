@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
@@ -712,6 +714,14 @@ abstract class ShadComponentDefaultTheme {
       titleStyle: textTheme.list.copyWith(
         fontWeight: FontWeight.w500,
       ),
+    );
+  }
+
+  static ShadTableTheme tableTheme() {
+    return const ShadTableTheme(
+      diagonalDragBehavior: DiagonalDragBehavior.none,
+      dragStartBehavior: DragStartBehavior.start,
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
     );
   }
 }
