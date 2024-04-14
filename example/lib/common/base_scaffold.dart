@@ -11,6 +11,7 @@ class BaseScaffold extends StatelessWidget {
     this.editable,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.wrapChildrenInScrollable = true,
+    this.wrapSingleChildInColumn = true,
   });
 
   final List<Widget> children;
@@ -18,13 +19,14 @@ class BaseScaffold extends StatelessWidget {
   final List<Widget>? editable;
   final CrossAxisAlignment crossAxisAlignment;
   final bool wrapChildrenInScrollable;
+  final bool wrapSingleChildInColumn;
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
 
-    Widget left = children.length == 1
+    Widget left = children.length == 1 && !wrapSingleChildInColumn
         ? children[0]
         : Column(
             crossAxisAlignment: crossAxisAlignment,

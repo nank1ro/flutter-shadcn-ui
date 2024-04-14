@@ -55,14 +55,12 @@ class TablePage extends StatelessWidget {
     return BaseScaffold(
       appBarTitle: 'Table',
       wrapChildrenInScrollable: false,
+      wrapSingleChildInColumn: false,
       children: [
         Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 600),
             child: ShadTable.list(
-              // this is needed to prevent the table to overflow the screen
-              // when the table is too big
-              maxHeight: MediaQuery.sizeOf(context).height - kToolbarHeight,
               header: const [
                 ShadTableCell.header(child: Text('Invoice')),
                 ShadTableCell.header(child: Text('Status')),
@@ -89,6 +87,7 @@ class TablePage extends StatelessWidget {
                     RemainingTableSpanExtent(),
                   );
                 }
+                // uses the default value
                 return null;
               },
               children: invoicesList

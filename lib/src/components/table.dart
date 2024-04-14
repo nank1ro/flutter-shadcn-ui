@@ -94,15 +94,18 @@ class ShadTableCell extends TableViewCell {
 }
 
 class ShadTable extends StatefulWidget {
+  /// Creates a [ShadTable] of widgets that are created on demand.
+  ///
+  /// This constructor is appropriate for table views with a large
+  /// number of cells because the [builder] is called only for those
+  /// cells that are actually visible.
   const ShadTable({
     super.key,
     required ShadTableCellBuilder this.builder,
     required this.columnCount,
     required this.rowCount,
-    required this.maxHeight,
     ShadTableCell Function(BuildContext context, int column)? header,
     ShadTableCell Function(BuildContext context, int column)? footer,
-    this.height,
     this.columnBuilder,
     this.rowBuilder,
     this.rowSpanExtent,
@@ -126,13 +129,18 @@ class ShadTable extends StatefulWidget {
         header = null,
         footer = null;
 
+  /// Creates a [ShadTable] from an explicit two dimensional array of
+  /// [children].
+  ///
+  /// This constructor is appropriate for list views with a small number of
+  /// children because constructing the [List] requires doing work for every
+  /// child that could possibly be displayed in the list view instead of just
+  /// those children that are actually visible.
   ShadTable.list({
     super.key,
-    required List<List<ShadTableCell>> this.children,
-    required this.maxHeight,
+    required Iterable<Iterable<ShadTableCell>> this.children,
     this.header,
     this.footer,
-    this.height,
     this.columnBuilder,
     this.rowBuilder,
     this.rowSpanExtent,
@@ -154,7 +162,7 @@ class ShadTable extends StatefulWidget {
         assert(children.isNotEmpty, 'children cannot be empty'),
         headerBuilder = null,
         footerBuilder = null,
-        columnCount = children[0].length,
+        columnCount = children.elementAt(0).length,
         rowCount = children.length;
 
   final ShadTableCell Function(BuildContext context, int column)? headerBuilder;
@@ -164,8 +172,6 @@ class ShadTable extends StatefulWidget {
   final ShadTableCellBuilder? builder;
   final int columnCount;
   final int rowCount;
-  final double? height;
-  final double maxHeight;
   final Iterable<Iterable<ShadTableCell>>? children;
   final TableSpanBuilder? columnBuilder;
   final TableSpanBuilder? rowBuilder;
@@ -192,7 +198,7 @@ class ShadTable extends StatefulWidget {
 }
 
 class _ShadTableState extends State<ShadTable> {
-  int hoveredIndex = -1;
+  final hoveredRowIndex = ValueNotifier<int?>(null);
 
   /// This is a workaround to avoid rebuilding the same row when the pointer
   /// doesn't move, because when you call setState, the onExit callback is
@@ -204,6 +210,20 @@ class _ShadTableState extends State<ShadTable> {
       widget.rowCount +
       (widget.header != null ? 1 : 0) +
       (widget.footer != null ? 1 : 0);
+
+  @override
+  void initState() {
+    super.initState();
+    hoveredRowIndex.addListener(() {
+      widget.onHoveredRowIndex?.call(hoveredRowIndex.value);
+    });
+  }
+
+  @override
+  void dispose() {
+    hoveredRowIndex.dispose();
+    super.dispose();
+  }
 
   TableSpan _buildColumnSpan(int index) {
     final requestedColumnSpanExtent = widget.columnSpanExtent?.call(index);
@@ -230,7 +250,7 @@ class _ShadTableState extends State<ShadTable> {
     return TableSpan(
       backgroundDecoration: widget.rowSpanBackgroundDecoration?.call(index) ??
           TableSpanDecoration(
-            color: hoveredIndex == index
+            color: hoveredRowIndex.value == index
                 ? colorScheme.muted.withOpacity(isFooter ? 1 : .5)
                 : isFooter
                     ? colorScheme.muted.withOpacity(.5)
@@ -244,16 +264,12 @@ class _ShadTableState extends State<ShadTable> {
       foregroundDecoration: widget.rowSpanForegroundDecoration?.call(index),
       extent: effectiveRowSpanExtent,
       onEnter: (p) {
-        if (hoveredIndex == index) return;
         previousPointerOffset = p.position;
-        setState(() => hoveredIndex = index);
-        widget.onHoveredRowIndex?.call(index);
+        hoveredRowIndex.value = index;
       },
       onExit: (p) {
-        if (hoveredIndex != index) return;
         if (previousPointerOffset == p.position) return;
-        setState(() => hoveredIndex = -1);
-        widget.onHoveredRowIndex?.call(null);
+        hoveredRowIndex.value = null;
       },
     );
   }
@@ -286,31 +302,33 @@ class _ShadTableState extends State<ShadTable> {
         theme.tableTheme.keyboardDismissBehavior ??
         ScrollViewKeyboardDismissBehavior.manual;
 
-    return switch (widget.children) {
-      // list
-      != null => TableView.list(
-          primary: effectivePrimary,
-          diagonalDragBehavior: effectiveDiagonalDragBehavior,
-          dragStartBehavior: effectiveDragStartBehavior,
-          keyboardDismissBehavior: effectiveKeyboardDismissBehavior,
-          columnBuilder: effectiveColumnBuilder,
-          rowBuilder: effectiveRowBuilder,
-          verticalDetails: ScrollableDetails.vertical(
-            controller: widget.verticalScrollController,
-          ),
-          horizontalDetails: ScrollableDetails.horizontal(
-            controller: widget.horizontalScrollController,
-          ),
-          cells: [
-            if (widget.header != null) widget.header!.toList(),
-            ...widget.children!.map((e) => e.toList()),
-            if (widget.footer != null) widget.footer!.toList(),
-          ],
-          pinnedRowCount: effectivePinnedRowCount,
-          pinnedColumnCount: effectivePinnedColumnCount,
-        ),
-      // builder
-      _ => TableView.builder(
+    return ValueListenableBuilder(
+      valueListenable: hoveredRowIndex,
+      builder: (context, value, child) {
+        if (widget.children != null) {
+          return TableView.list(
+            primary: effectivePrimary,
+            diagonalDragBehavior: effectiveDiagonalDragBehavior,
+            dragStartBehavior: effectiveDragStartBehavior,
+            keyboardDismissBehavior: effectiveKeyboardDismissBehavior,
+            columnBuilder: effectiveColumnBuilder,
+            rowBuilder: effectiveRowBuilder,
+            verticalDetails: ScrollableDetails.vertical(
+              controller: widget.verticalScrollController,
+            ),
+            horizontalDetails: ScrollableDetails.horizontal(
+              controller: widget.horizontalScrollController,
+            ),
+            cells: [
+              if (widget.header != null) widget.header!.toList(),
+              ...widget.children!.map((e) => e.toList()),
+              if (widget.footer != null) widget.footer!.toList(),
+            ],
+            pinnedRowCount: effectivePinnedRowCount,
+            pinnedColumnCount: effectivePinnedColumnCount,
+          );
+        }
+        return TableView.builder(
           primary: effectivePrimary,
           diagonalDragBehavior: effectiveDiagonalDragBehavior,
           dragStartBehavior: effectiveDragStartBehavior,
@@ -343,7 +361,8 @@ class _ShadTableState extends State<ShadTable> {
           rowBuilder: effectiveRowBuilder,
           pinnedRowCount: effectivePinnedRowCount,
           pinnedColumnCount: effectivePinnedColumnCount,
-        ),
-    };
+        );
+      },
+    );
   }
 }
