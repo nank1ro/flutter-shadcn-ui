@@ -221,7 +221,7 @@ abstract class ShadComponentDefaultTheme {
         color: colorScheme.popover,
         boxShadow: ShadShadows.md,
       ),
-      anchor: const ShadAnchorAuto(preferBelow: false, verticalOffset: 24),
+      anchor: const ShadAnchorAuto(preferBelow: true, verticalOffset: 24),
     );
   }
 
@@ -330,7 +330,7 @@ abstract class ShadComponentDefaultTheme {
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
-      anchor: const ShadAnchorAuto(preferBelow: false, verticalOffset: 24),
+      anchor: const ShadAnchorAuto(preferBelow: true, verticalOffset: 24),
     );
   }
 

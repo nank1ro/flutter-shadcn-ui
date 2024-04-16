@@ -120,7 +120,7 @@ class ShadSelect<T> extends StatefulWidget {
   final ScrollController? scrollController;
 
   /// The anchor of the [ShadSelect], defaults to
-  /// `ShadAnchorAutoPosition(verticalOffset: 24, preferBelow: false)`.
+  /// `ShadAnchorAutoPosition(verticalOffset: 24, preferBelow: true)`.
   final ShadAnchorBase? anchor;
 
   static ShadSelectState<T> of<T>(BuildContext context) {
@@ -274,7 +274,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         theme.selectTheme.anchor ??
         const ShadAnchorAuto(
           verticalOffset: 24,
-          preferBelow: false,
+          preferBelow: true,
         );
 
     final Widget effectiveText;

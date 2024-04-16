@@ -87,7 +87,7 @@ class ShadPopover extends StatefulWidget {
   /// The position of the [popover] in the global coordinate system.
   ///
   /// Defaults to
-  /// `ShadAnchorAutoPosition(verticalOffset: 24, preferBelow: false)`.
+  /// `ShadAnchorAutoPosition(verticalOffset: 24, preferBelow: true)`.
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
@@ -164,7 +164,7 @@ class _ShadPopoverState extends State<ShadPopover> {
         theme.popoverTheme.anchor ??
         const ShadAnchorAuto(
           verticalOffset: 24,
-          preferBelow: false,
+          preferBelow: true,
         );
 
     Widget popover = Container(
