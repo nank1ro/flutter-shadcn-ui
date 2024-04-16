@@ -26,12 +26,13 @@ class BaseScaffold extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
 
-    Widget left = children.length == 1 && !wrapSingleChildInColumn
-        ? children[0]
-        : Column(
-            crossAxisAlignment: crossAxisAlignment,
-            children: children.separatedBy(const SizedBox(height: 8)),
-          );
+    Widget left = Center(
+        child: children.length == 1 && !wrapSingleChildInColumn
+            ? children[0]
+            : Column(
+                crossAxisAlignment: crossAxisAlignment,
+                children: children.separatedBy(const SizedBox(height: 8)),
+              ));
 
     if (wrapChildrenInScrollable) {
       left = SingleChildScrollView(
