@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/select.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
@@ -28,7 +29,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     double? minWidth,
     double? maxHeight,
     ShadDecoration? inputDecoration,
-    Offset? offset,
     Widget? trailing,
     EdgeInsets? padding,
     Color? backgroundColor,
@@ -38,6 +38,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ScrollController? scrollController,
+    ShadAnchorBase? anchor,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderSelectState;
@@ -50,10 +51,10 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
+              anchor: anchor,
               minWidth: minWidth,
               maxHeight: maxHeight,
               decoration: inputDecoration,
-              offset: offset,
               trailing: trailing,
               padding: padding,
               backgroundColor: backgroundColor,

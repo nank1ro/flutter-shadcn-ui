@@ -38,11 +38,9 @@ class ShadPopover extends StatefulWidget {
     this.focusNode,
     this.waitDuration,
     this.showDuration,
-    this.offset,
+    this.anchor,
     this.effects,
     this.shadows,
-    this.alignment,
-    this.childAlignment,
     this.padding,
     this.decoration,
   }) : assert(
@@ -69,7 +67,7 @@ class ShadPopover extends StatefulWidget {
   /// focused.
   final FocusNode? focusNode;
 
-  /// {@template tooltip.waitDuration}
+  /// {@template popover.waitDuration}
   /// The length of time that a pointer must hover over a tooltip's widget
   /// before the tooltip will be shown.
   ///
@@ -77,7 +75,7 @@ class ShadPopover extends StatefulWidget {
   /// {@endtemplate}
   final Duration? waitDuration;
 
-  /// {@template tooltip.showDuration}
+  /// {@template popover.showDuration}
   /// The length of time that the tooltip will be shown after a mouse pointer
   /// exits the widget.
   ///
@@ -85,41 +83,34 @@ class ShadPopover extends StatefulWidget {
   /// {@endtemplate}
   final Duration? showDuration;
 
-  /// {@template tooltip.offset}
-  /// The tooltip offset from the child, defaults to [Offset.zero].
+  ///{@template popover.anchor}
+  /// The position of the [popover] in the global coordinate system.
+  ///
+  /// Defaults to
+  /// `ShadAnchorAutoPosition(verticalOffset: 24, preferBelow: false)`.
   /// {@endtemplate}
-  final Offset? offset;
+  final ShadAnchorBase? anchor;
 
-  /// {@template tooltip.effects}
+  /// {@template popover.effects}
   /// The animation effects applied to the [popover]. Defaults to
   /// [FadeEffect(), ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
   /// MoveEffect(begin: Offset(0, 2), end: Offset(0, 0))].
   /// {@endtemplate}
   final List<Effect<dynamic>>? effects;
 
-  /// {@template tooltip.shadows}
+  /// {@template popover.shadows}
   /// The shadows applied to the [popover], defaults to
   /// [ShadShadows.md].
   /// {@endtemplate}
   final List<BoxShadow>? shadows;
 
-  /// {@template tooltip.alignment}
-  /// The alignment of the [popover], defaults to [Alignment.topCenter].
-  /// {@endtemplate}
-  final Alignment? alignment;
-
-  /// {@template tooltip.childAlignment}
-  /// The alignment of the [child], defaults to [Alignment.bottomCenter].
-  /// {@endtemplate}
-  final Alignment? childAlignment;
-
-  /// {@template tooltip.padding}
+  /// {@template popover.padding}
   /// The padding of the [popover], defaults to
   /// `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
   /// {@endtemplate}
   final EdgeInsets? padding;
 
-  /// {@template tooltip.decoration}
+  /// {@template popover.decoration}
   /// The decoration of the [popover].
   /// {@endtemplate}
   final BoxDecoration? decoration;
@@ -169,13 +160,12 @@ class _ShadPopoverState extends State<ShadPopover> {
     final effectiveShadows = widget.shadows ?? theme.popoverTheme.shadows;
     final effectiveDecoration =
         widget.decoration ?? theme.popoverTheme.decoration;
-    final effectiveAlignment =
-        widget.alignment ?? theme.popoverTheme.alignment ?? Alignment.topCenter;
-    final effectiveChildAlignment = widget.childAlignment ??
-        theme.popoverTheme.childAlignment ??
-        Alignment.bottomCenter;
-    final effectiveOffset =
-        widget.offset ?? theme.popoverTheme.offset ?? Offset.zero;
+    final effectiveAnchor = widget.anchor ??
+        theme.popoverTheme.anchor ??
+        const ShadAnchorAuto(
+          verticalOffset: 24,
+          preferBelow: false,
+        );
 
     Widget popover = Container(
       padding: effectivePadding,
@@ -215,11 +205,7 @@ class _ShadPopoverState extends State<ShadPopover> {
           return ShadPortal(
             portalBuilder: (_) => popover,
             visible: controller.isOpen,
-            anchor: ShadAnchor(
-              childAlignment: effectiveAlignment,
-              overlayAlignment: effectiveChildAlignment,
-              offset: effectiveOffset,
-            ),
+            anchor: effectiveAnchor,
             child: widget.child,
           );
         },

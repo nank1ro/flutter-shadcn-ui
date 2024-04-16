@@ -9,6 +9,7 @@ import 'package:shadcn_ui/src/components/focused.dart';
 
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/raw_components/same_width_column.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
@@ -34,7 +35,6 @@ class ShadSelect<T> extends StatefulWidget {
     this.minWidth,
     this.maxHeight,
     this.decoration,
-    this.offset,
     this.trailing,
     this.padding,
     this.backgroundColor,
@@ -44,8 +44,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.showScrollToBottomChevron,
     this.showScrollToTopChevron,
     this.scrollController,
-    this.alignment,
-    this.childAlignment,
+    this.anchor,
   });
 
   /// The callback that is called when the value of the [ShadSelect] changes.
@@ -88,9 +87,6 @@ class ShadSelect<T> extends StatefulWidget {
   /// The decoration of the [ShadSelect].
   final ShadDecoration? decoration;
 
-  /// The offset of the [ShadSelect], defaults to `Offset(4, 0)`.
-  final Offset? offset;
-
   /// The trailing widget of the [ShadSelect], defaults to a chevron-right
   /// icon.
   final Widget? trailing;
@@ -123,12 +119,9 @@ class ShadSelect<T> extends StatefulWidget {
   /// The scroll controller of the [ShadSelect].
   final ScrollController? scrollController;
 
-  /// The alignment of the overlay, defaults to `Alignment.bottomLeft`.
-  final Alignment? alignment;
-
-  /// The child alignment of the selected option, defaults to
-  /// `Alignment.topLeft`.
-  final Alignment? childAlignment;
+  /// The anchor of the [ShadSelect], defaults to
+  /// `ShadAnchorAutoPosition(verticalOffset: 24, preferBelow: false)`.
+  final ShadAnchorBase? anchor;
 
   static ShadSelectState<T> of<T>(BuildContext context) {
     return maybeOf<T>(context)!;
@@ -277,12 +270,12 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             theme.selectTheme.showScrollToBottomChevron ??
             true;
 
-    final effectiveAlignment =
-        widget.alignment ?? theme.selectTheme.alignment ?? Alignment.bottomLeft;
-
-    final effectiveChildAlignment = widget.childAlignment ??
-        theme.selectTheme.childAlignment ??
-        Alignment.topLeft;
+    final effectiveAnchor = widget.anchor ??
+        theme.selectTheme.anchor ??
+        const ShadAnchorAuto(
+          verticalOffset: 24,
+          preferBelow: false,
+        );
 
     final Widget effectiveText;
     if (selected is T) {
@@ -305,8 +298,6 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
           color: theme.colorScheme.popoverForeground.withOpacity(.5),
         );
 
-    final effectiveOffset =
-        widget.offset ?? theme.selectTheme.offset ?? const Offset(4, 0);
     final effectiveMinWidth =
         widget.minWidth ?? theme.selectTheme.minWidth ?? kDefaultSelectMinWidth;
     final effectiveMaxHeight = widget.maxHeight ??
@@ -423,9 +414,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
           child: ShadPopover(
             padding: EdgeInsets.zero,
             controller: controller,
-            offset: effectiveOffset,
-            alignment: effectiveAlignment,
-            childAlignment: effectiveChildAlignment,
+            anchor: effectiveAnchor,
             closeOnTapOutside: widget.closeOnTapOutside,
             popover: (_) {
               // set the initial value for showScrollToBottom and
