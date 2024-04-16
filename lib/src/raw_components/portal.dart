@@ -1,6 +1,26 @@
 import 'package:flutter/material.dart';
 
-class ShadAnchor {
+/// The position of the [ShadPortal] in the global coordinate system.
+sealed class ShadAnchorBase {
+  const ShadAnchorBase();
+}
+
+/// Automatically infers the position of the [ShadPortal] in the global
+/// coordinate system adjusting according to the [verticalOffset] and
+/// [preferBelow] properties.
+class ShadAnchorAuto extends ShadAnchorBase {
+  const ShadAnchorAuto({
+    required this.verticalOffset,
+    required this.preferBelow,
+  });
+
+  final double verticalOffset;
+  final bool preferBelow;
+}
+
+/// Manually specifies the position of the [ShadPortal] in the global
+/// coordinate system.
+class ShadAnchor extends ShadAnchorBase {
   const ShadAnchor({
     required this.childAlignment,
     required this.overlayAlignment,
@@ -42,7 +62,7 @@ class ShadPortal extends StatefulWidget {
   final Widget child;
   final WidgetBuilder portalBuilder;
   final bool visible;
-  final ShadAnchor anchor;
+  final ShadAnchorBase anchor;
 
   @override
   State<ShadPortal> createState() => _ShadPortalState();
@@ -90,26 +110,108 @@ class _ShadPortalState extends State<ShadPortal> {
     }
   }
 
+  Widget buildAutoPosition(
+    BuildContext context,
+    ShadAnchorAuto anchor,
+  ) {
+    final overlayState = Overlay.of(context, debugRequiredFor: widget);
+    final box = this.context.findRenderObject()! as RenderBox;
+    final target = box.localToGlobal(
+      box.size.center(Offset.zero),
+      ancestor: overlayState.context.findRenderObject(),
+    );
+    return CustomSingleChildLayout(
+      delegate: ShadPositionDelegate(
+        target: target,
+        verticalOffset: anchor.verticalOffset,
+        preferBelow: anchor.preferBelow,
+      ),
+      child: widget.portalBuilder(context),
+    );
+  }
+
+  Widget buildManualPosition(
+    BuildContext context,
+    ShadAnchor anchor,
+  ) {
+    return CompositedTransformFollower(
+      link: layerLink,
+      offset: anchor.offset,
+      followerAnchor: anchor.overlayAlignment,
+      targetAnchor: anchor.childAlignment,
+      child: widget.portalBuilder(context),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
       link: layerLink,
       child: OverlayPortal(
         controller: overlayPortalController,
-        overlayChildBuilder: (context) => Material(
-          type: MaterialType.transparency,
-          child: Center(
-            child: CompositedTransformFollower(
-              link: layerLink,
-              offset: widget.anchor.offset,
-              followerAnchor: widget.anchor.overlayAlignment,
-              targetAnchor: widget.anchor.childAlignment,
-              child: widget.portalBuilder(context),
+        overlayChildBuilder: (context) {
+          return Material(
+            type: MaterialType.transparency,
+            child: Center(
+              widthFactor: 1,
+              heightFactor: 1,
+              child: switch (widget.anchor) {
+                final ShadAnchorAuto anchor =>
+                  buildAutoPosition(context, anchor),
+                final ShadAnchor anchor => buildManualPosition(context, anchor),
+              },
             ),
-          ),
-        ),
+          );
+        },
         child: widget.child,
       ),
     );
+  }
+}
+
+/// A delegate for computing the layout of an overlay to be displayed above or
+/// below a target specified in the global coordinate system.
+class ShadPositionDelegate extends SingleChildLayoutDelegate {
+  /// Creates a delegate for computing the layout of an overlay.
+  ShadPositionDelegate({
+    required this.target,
+    required this.verticalOffset,
+    required this.preferBelow,
+  });
+
+  /// The offset of the target the overlay is positioned near in the global
+  /// coordinate system.
+  final Offset target;
+
+  /// The amount of vertical distance between the target and the displayed
+  /// overlay.
+  final double verticalOffset;
+
+  /// Whether the overlay is displayed below its widget by default.
+  ///
+  /// If there is insufficient space to display the tooltip in the preferred
+  /// direction, the tooltip will be displayed in the opposite direction.
+  final bool preferBelow;
+
+  @override
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) =>
+      constraints.loosen();
+
+  @override
+  Offset getPositionForChild(Size size, Size childSize) {
+    return positionDependentBox(
+      size: size,
+      childSize: childSize,
+      target: target,
+      verticalOffset: verticalOffset,
+      preferBelow: preferBelow,
+    );
+  }
+
+  @override
+  bool shouldRelayout(ShadPositionDelegate oldDelegate) {
+    return target != oldDelegate.target ||
+        verticalOffset != oldDelegate.verticalOffset ||
+        preferBelow != oldDelegate.preferBelow;
   }
 }
