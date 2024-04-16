@@ -1,3 +1,7 @@
+## 0.3.1
+
+- Add `ShadAnchorAuto` to `ShadPortal`, to automatically adjust the position of the overlay. This applies to all components that use `ShadPortal`, like `ShadSelect`, `ShadTooltip`, `ShadPopover`.
+
 ## 0.3.0
 
 - Add `ShadTable` component
