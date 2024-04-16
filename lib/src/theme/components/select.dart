@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 const kDefaultSelectMinWidth = 128.0;
@@ -11,7 +12,6 @@ class ShadSelectTheme {
   const ShadSelectTheme({
     this.merge = true,
     this.decoration,
-    this.offset,
     this.minWidth,
     this.maxHeight,
     this.padding,
@@ -21,13 +21,11 @@ class ShadSelectTheme {
     this.border,
     this.showScrollToTopChevron,
     this.showScrollToBottomChevron,
-    this.alignment,
-    this.childAlignment,
+    this.anchor,
   });
 
   final bool merge;
   final ShadDecoration? decoration;
-  final Offset? offset;
   final double? minWidth;
   final double? maxHeight;
   final EdgeInsets? padding;
@@ -37,8 +35,7 @@ class ShadSelectTheme {
   final Border? border;
   final bool? showScrollToTopChevron;
   final bool? showScrollToBottomChevron;
-  final Alignment? alignment;
-  final Alignment? childAlignment;
+  final ShadAnchorBase? anchor;
 
   static ShadSelectTheme lerp(
     ShadSelectTheme a,
@@ -49,7 +46,6 @@ class ShadSelectTheme {
     return ShadSelectTheme(
       merge: b.merge,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
-      offset: Offset.lerp(a.offset, b.offset, t),
       minWidth: lerpDouble(a.minWidth, b.minWidth, t),
       maxHeight: lerpDouble(a.maxHeight, b.maxHeight, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
@@ -59,15 +55,13 @@ class ShadSelectTheme {
       optionsPadding: EdgeInsets.lerp(a.optionsPadding, b.optionsPadding, t),
       showScrollToTopChevron: b.showScrollToTopChevron,
       showScrollToBottomChevron: b.showScrollToBottomChevron,
-      alignment: Alignment.lerp(a.alignment, b.alignment, t),
-      childAlignment: Alignment.lerp(a.childAlignment, b.childAlignment, t),
+      anchor: b.anchor,
     );
   }
 
   ShadSelectTheme copyWith({
     bool? merge,
     ShadDecoration? decoration,
-    Offset? offset,
     double? minWidth,
     double? maxHeight,
     EdgeInsets? padding,
@@ -77,13 +71,11 @@ class ShadSelectTheme {
     EdgeInsets? optionsPadding,
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
-    Alignment? alignment,
-    Alignment? childAlignment,
+    ShadAnchorBase? anchor,
   }) {
     return ShadSelectTheme(
       merge: merge ?? this.merge,
       decoration: decoration ?? this.decoration,
-      offset: offset ?? this.offset,
       minWidth: minWidth ?? this.minWidth,
       maxHeight: maxHeight ?? this.maxHeight,
       padding: padding ?? this.padding,
@@ -95,8 +87,7 @@ class ShadSelectTheme {
           showScrollToTopChevron ?? this.showScrollToTopChevron,
       showScrollToBottomChevron:
           showScrollToBottomChevron ?? this.showScrollToBottomChevron,
-      alignment: alignment ?? this.alignment,
-      childAlignment: childAlignment ?? this.childAlignment,
+      anchor: anchor ?? this.anchor,
     );
   }
 
@@ -105,7 +96,6 @@ class ShadSelectTheme {
     if (!other.merge) return other;
     return copyWith(
       decoration: other.decoration,
-      offset: other.offset,
       minWidth: other.minWidth,
       maxHeight: other.maxHeight,
       padding: other.padding,
@@ -115,8 +105,7 @@ class ShadSelectTheme {
       optionsPadding: other.optionsPadding,
       showScrollToTopChevron: other.showScrollToTopChevron,
       showScrollToBottomChevron: other.showScrollToBottomChevron,
-      alignment: other.alignment,
-      childAlignment: other.childAlignment,
+      anchor: other.anchor,
     );
   }
 
@@ -127,7 +116,6 @@ class ShadSelectTheme {
     return other is ShadSelectTheme &&
         other.merge == merge &&
         other.decoration == decoration &&
-        other.offset == offset &&
         other.minWidth == minWidth &&
         other.maxHeight == maxHeight &&
         other.padding == padding &&
@@ -137,15 +125,13 @@ class ShadSelectTheme {
         other.optionsPadding == optionsPadding &&
         other.showScrollToTopChevron == showScrollToTopChevron &&
         other.showScrollToBottomChevron == showScrollToBottomChevron &&
-        other.alignment == alignment &&
-        other.childAlignment == childAlignment;
+        other.anchor == anchor;
   }
 
   @override
   int get hashCode {
     return merge.hashCode ^
         decoration.hashCode ^
-        offset.hashCode ^
         minWidth.hashCode ^
         maxHeight.hashCode ^
         padding.hashCode ^
@@ -155,7 +141,6 @@ class ShadSelectTheme {
         optionsPadding.hashCode ^
         showScrollToTopChevron.hashCode ^
         showScrollToBottomChevron.hashCode ^
-        alignment.hashCode ^
-        childAlignment.hashCode;
+        anchor.hashCode;
   }
 }

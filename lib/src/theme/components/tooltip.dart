@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
 
 @immutable
 class ShadTooltipTheme {
@@ -8,13 +9,11 @@ class ShadTooltipTheme {
     this.merge = true,
     this.waitDuration,
     this.showDuration,
-    this.offset,
     this.effects,
     this.shadows,
-    this.alignment,
-    this.childAlignment,
     this.padding,
     this.decoration,
+    this.anchor,
   });
 
   final bool merge;
@@ -25,20 +24,14 @@ class ShadTooltipTheme {
   /// {@macro tooltip.showDuration}
   final Duration? showDuration;
 
-  /// {@macro tooltip.offset}
-  final Offset? offset;
-
   /// {@macro tooltip.effects}
   final List<Effect<dynamic>>? effects;
 
   /// {@macro tooltip.shadows}
   final List<BoxShadow>? shadows;
 
-  /// {@macro tooltip.alignment}
-  final Alignment? alignment;
-
-  /// {@macro tooltip.childAlignment}
-  final Alignment? childAlignment;
+  /// {@macro tooltip.anchor}
+  final ShadAnchorBase? anchor;
 
   /// {@macro tooltip.padding}
   final EdgeInsetsGeometry? padding;
@@ -61,25 +54,21 @@ class ShadTooltipTheme {
     bool? merge,
     Duration? waitDuration,
     Duration? showDuration,
-    Offset? offset,
     List<Effect<dynamic>>? effects,
     List<BoxShadow>? shadows,
-    Alignment? alignment,
-    Alignment? childAlignment,
     EdgeInsetsGeometry? padding,
     BoxDecoration? decoration,
+    ShadAnchorBase? anchor,
   }) {
     return ShadTooltipTheme(
       merge: merge ?? this.merge,
       waitDuration: waitDuration ?? this.waitDuration,
       showDuration: showDuration ?? this.showDuration,
-      offset: offset ?? this.offset,
       effects: effects ?? this.effects,
       shadows: shadows ?? this.shadows,
-      alignment: alignment ?? this.alignment,
-      childAlignment: childAlignment ?? this.childAlignment,
       padding: padding ?? this.padding,
       decoration: decoration ?? this.decoration,
+      anchor: anchor ?? this.anchor,
     );
   }
 
@@ -89,13 +78,11 @@ class ShadTooltipTheme {
     return copyWith(
       waitDuration: other.waitDuration,
       showDuration: other.showDuration,
-      offset: other.offset,
       effects: other.effects,
       shadows: other.shadows,
-      alignment: other.alignment,
-      childAlignment: other.childAlignment,
       padding: other.padding,
       decoration: other.decoration,
+      anchor: other.anchor,
     );
   }
 
@@ -107,13 +94,11 @@ class ShadTooltipTheme {
         other.merge == merge &&
         other.waitDuration == waitDuration &&
         other.showDuration == showDuration &&
-        other.offset == offset &&
         listEquals(other.effects, effects) &&
         listEquals(other.shadows, shadows) &&
-        other.alignment == alignment &&
-        other.childAlignment == childAlignment &&
         other.padding == padding &&
-        other.decoration == decoration;
+        other.decoration == decoration &&
+        other.anchor == anchor;
   }
 
   @override
@@ -121,12 +106,10 @@ class ShadTooltipTheme {
     return merge.hashCode ^
         waitDuration.hashCode ^
         showDuration.hashCode ^
-        offset.hashCode ^
         effects.hashCode ^
         shadows.hashCode ^
-        alignment.hashCode ^
-        childAlignment.hashCode ^
         padding.hashCode ^
-        decoration.hashCode;
+        decoration.hashCode ^
+        anchor.hashCode;
   }
 }

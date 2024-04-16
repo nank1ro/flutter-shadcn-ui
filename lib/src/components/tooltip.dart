@@ -12,13 +12,11 @@ class ShadTooltip extends StatefulWidget {
     this.focusNode,
     this.waitDuration,
     this.showDuration,
-    this.offset,
     this.effects,
     this.shadows,
-    this.alignment,
-    this.childAlignment,
     this.padding,
     this.decoration,
+    this.anchor,
   });
 
   /// The widget displayed as a tooltip.
@@ -46,11 +44,6 @@ class ShadTooltip extends StatefulWidget {
   /// {@endtemplate}
   final Duration? showDuration;
 
-  /// {@template tooltip.offset}
-  /// The tooltip offset from the child, defaults to [Offset.zero].
-  /// {@endtemplate}
-  final Offset? offset;
-
   /// {@template tooltip.effects}
   /// The animation effects applied to the tooltip. Defaults to
   /// [FadeEffect(), ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
@@ -63,16 +56,6 @@ class ShadTooltip extends StatefulWidget {
   /// {@endtemplate}
   final List<BoxShadow>? shadows;
 
-  /// {@template tooltip.alignment}
-  /// The alignment of the tooltip, defaults to [Alignment.topCenter].
-  /// {@endtemplate}
-  final Alignment? alignment;
-
-  /// {@template tooltip.childAlignment}
-  /// The alignment of the [child], defaults to [Alignment.bottomCenter].
-  /// {@endtemplate}
-  final Alignment? childAlignment;
-
   /// {@template tooltip.padding}
   /// The padding of the tooltip, defaults to
   /// `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
@@ -83,6 +66,12 @@ class ShadTooltip extends StatefulWidget {
   /// The decoration of the tooltip.
   /// {@endtemplate}
   final BoxDecoration? decoration;
+
+  /// {@template tooltip.anchor}
+  /// The position of the [ShadTooltip], defaults to
+  /// `ShadAnchorAutoPosition(preferBelow: false, verticalOffset: 24)`.
+  /// {@endtemplate}
+  final ShadAnchorBase? anchor;
 
   @override
   State<ShadTooltip> createState() => _ShadTooltipState();
@@ -128,13 +117,12 @@ class _ShadTooltipState extends State<ShadTooltip> {
     final effectiveShadows = widget.shadows ?? theme.tooltipTheme.shadows;
     final effectiveDecoration =
         widget.decoration ?? theme.tooltipTheme.decoration;
-    final effectiveAlignment =
-        widget.alignment ?? theme.tooltipTheme.alignment ?? Alignment.topCenter;
-    final effectiveChildAlignment = widget.childAlignment ??
-        theme.tooltipTheme.childAlignment ??
-        Alignment.bottomCenter;
-    final effectiveOffset =
-        widget.offset ?? theme.tooltipTheme.offset ?? Offset.zero;
+    final effectiveAnchor = widget.anchor ??
+        theme.tooltipTheme.anchor ??
+        const ShadAnchorAuto(
+          preferBelow: false,
+          verticalOffset: 24,
+        );
 
     return MouseRegion(
       onEnter: (_) async {
@@ -157,11 +145,7 @@ class _ShadTooltipState extends State<ShadTooltip> {
       },
       child: ShadPortal(
         visible: visible,
-        anchor: ShadAnchor(
-          childAlignment: effectiveAlignment,
-          overlayAlignment: effectiveChildAlignment,
-          offset: effectiveOffset,
-        ),
+        anchor: effectiveAnchor,
         portalBuilder: (context) {
           Widget tooltip = Container(
             padding: effectivePadding,
