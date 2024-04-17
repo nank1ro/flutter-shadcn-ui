@@ -1,3 +1,11 @@
+## 0.3.3
+
+- Improve pub dev score
+
+## 0.3.2
+
+- Fix `preferBelow` default value for `ShadSelect` and `ShadPopover`
+
 ## 0.3.1
 
 - Add `ShadAnchorAuto` to `ShadPortal`, to automatically adjust the position of the overlay. This applies to all components that use `ShadPortal`, like `ShadSelect`, `ShadTooltip`, `ShadPopover`.
