@@ -1,5 +1,13 @@
 import 'package:flutter/cupertino.dart';
 
+extension ProviderReadExt on BuildContext {
+  T read<T>() => ShadProvider.of<T>(this, listen: false);
+}
+
+extension ProviderWatchExt on BuildContext {
+  T watch<T>() => ShadProvider.of<T>(this);
+}
+
 class ShadProvider<T> extends InheritedWidget {
   const ShadProvider({
     super.key,
