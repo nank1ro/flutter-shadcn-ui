@@ -27,7 +27,9 @@ class _ResizablePageState extends State<ResizablePage> {
             initialValue: handleSize.toInt().toString(),
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             onChanged: (v) {
-              setState(() => handleSize = double.parse(v));
+              final value = double.tryParse(v);
+              if (value == null) return;
+              setState(() => handleSize = value);
             })
       ],
       children: [
@@ -43,6 +45,7 @@ class _ResizablePageState extends State<ResizablePage> {
             borderRadius: theme.radius,
             child: ShadResizablePanelGroup(
               mainAxisSize: MainAxisSize.min,
+              height: 200,
               children: [
                 ShadResizablePanel(
                   initialSize: 200,

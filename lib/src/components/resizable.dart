@@ -13,7 +13,9 @@ class ShadResizablePanelGroup extends StatefulWidget {
     this.mainAxisSize,
     this.textDirection,
     this.verticalDirection,
-  });
+    this.height,
+  }) : assert(axis == Axis.vertical || height != null,
+            'Height must be set for horizontal panels');
 
   final Axis axis;
   final List<Widget> children;
@@ -22,6 +24,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
   final MainAxisSize? mainAxisSize;
   final TextDirection? textDirection;
   final VerticalDirection? verticalDirection;
+  final double? height;
 
   @override
   ShadResizablePanelGroupState createState() => ShadResizablePanelGroupState();
@@ -78,7 +81,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
   @override
   Widget build(BuildContext context) {
-    final child = Flex(
+    Widget child = Flex(
       direction: widget.axis,
       mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.start,
       crossAxisAlignment:
@@ -89,13 +92,17 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
       children: widget.children,
     );
 
+    if (widget.height != null) {
+      child = SizedBox(
+        height: widget.height,
+        child: child,
+      );
+    }
+
     return ShadProvider(
       data: this,
       notifyUpdate: (_) => true,
-      child: switch (widget.axis) {
-        Axis.horizontal => IntrinsicHeight(child: child),
-        Axis.vertical => child,
-      },
+      child: child,
     );
   }
 }
