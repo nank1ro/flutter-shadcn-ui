@@ -185,16 +185,8 @@ class _ShadResizableHandleState extends State<ShadResizableHandle> {
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onHorizontalDragUpdate: axis == Axis.horizontal
-          ? (details) {
-              onHandleDrag(details.delta);
-            }
-          : null,
-      onVerticalDragUpdate: axis == Axis.vertical
-          ? (details) {
-              onHandleDrag(details.delta);
-            }
-          : null,
+      onHorizontalDragUpdate: (details) => onHandleDrag(details.delta),
+      onVerticalDragUpdate: (details) => onHandleDrag(details.delta),
       child: MouseRegion(
         cursor: switch (axis) {
           Axis.horizontal => SystemMouseCursors.resizeColumn,
