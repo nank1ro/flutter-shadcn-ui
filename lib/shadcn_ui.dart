@@ -87,7 +87,7 @@ export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
 export 'src/utils/animation_builder.dart';
 export 'src/utils/extensions.dart';
-export 'src/utils/provider.dart';
+export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart';
