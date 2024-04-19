@@ -28,7 +28,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
 }
 
 class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
-  final panelToSizeMap = <Key, double>{};
+  final resizableWidgetToSizeMap = <Key, double>{};
 
   /// Contains the keys of all the panels and handles, the order is important
   /// for the resize logic
@@ -39,13 +39,16 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     required double size,
   }) {
     resizableWidgets.add(key);
-    panelToSizeMap[key] = size;
+    resizableWidgetToSizeMap[key] = size;
   }
 
-  void registerHandle({required Key key}) => resizableWidgets.add(key);
+  void registerHandle({required Key key, required double size}) {
+    resizableWidgets.add(key);
+    resizableWidgetToSizeMap[key] = size;
+  }
 
   double getPanelSize(Key key) {
-    final size = panelToSizeMap[key];
+    final size = resizableWidgetToSizeMap[key];
     if (size == null) throw Exception('Panel size not found for key: $key');
     return size;
   }
@@ -58,8 +61,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     final leadingPanelKey = resizableWidgets[indexOfLeadingPanel];
     final trailingPanelKey = resizableWidgets[indexOfTrailingPanel];
 
-    final sizeOfLeadingPanel = panelToSizeMap[leadingPanelKey]!;
-    final sizeOfTrailingPanel = panelToSizeMap[trailingPanelKey]!;
+    final sizeOfLeadingPanel = resizableWidgetToSizeMap[leadingPanelKey]!;
+    final sizeOfTrailingPanel = resizableWidgetToSizeMap[trailingPanelKey]!;
 
     final axisOffset = widget.axis == Axis.horizontal ? offset.dx : offset.dy;
 
@@ -69,21 +72,9 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     if (newLeadingSize < 0 || newTrailingSize < 0) return;
 
     setState(() {
-      panelToSizeMap[leadingPanelKey] = newLeadingSize;
-      panelToSizeMap[trailingPanelKey] = newTrailingSize;
+      resizableWidgetToSizeMap[leadingPanelKey] = newLeadingSize;
+      resizableWidgetToSizeMap[trailingPanelKey] = newTrailingSize;
     });
-  }
-
-  double? get totalWidth {
-    if (widget.axis == Axis.vertical) return null;
-    return panelToSizeMap.values
-        .fold<double>(1, (previousValue, size) => size + previousValue);
-  }
-
-  double? get totalHeight {
-    if (widget.axis == Axis.horizontal) return null;
-    return panelToSizeMap.values
-        .fold<double>(1, (previousValue, size) => size + previousValue);
   }
 
   @override
@@ -173,7 +164,9 @@ class _ShadResizableHandleState extends State<ShadResizableHandle> {
   @override
   void initState() {
     super.initState();
-    context.read<ShadResizablePanelGroupState>().registerHandle(key: handleKey);
+    context
+        .read<ShadResizablePanelGroupState>()
+        .registerHandle(key: handleKey, size: widget.size ?? 1);
   }
 
   void onHandleDrag(Offset offset) {
@@ -211,6 +204,7 @@ class _ShadResizableHandleState extends State<ShadResizableHandle> {
           Axis.horizontal => VerticalDivider(
               indent: 0,
               endIndent: 0,
+              thickness: effectiveSize,
               width: effectiveSize,
               color: theme.colorScheme.border,
             ),
@@ -218,6 +212,7 @@ class _ShadResizableHandleState extends State<ShadResizableHandle> {
               indent: 0,
               endIndent: 0,
               height: effectiveSize,
+              thickness: effectiveSize,
               color: theme.colorScheme.border,
             ),
         },
