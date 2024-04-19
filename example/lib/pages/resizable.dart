@@ -24,7 +24,7 @@ class _ResizablePageState extends State<ResizablePage> {
       editable: [
         MyStringProperty(
             label: 'Handle size',
-            initialValue: handleSize.toString(),
+            initialValue: handleSize.toInt().toString(),
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             onChanged: (v) {
               setState(() => handleSize = double.parse(v));
