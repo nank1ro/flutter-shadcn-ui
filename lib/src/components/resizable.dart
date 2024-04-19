@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 import 'package:shadcn_ui/src/utils/provider.dart';
 
@@ -23,40 +24,204 @@ class ShadResizablePanelGroup extends StatefulWidget {
   final VerticalDirection? verticalDirection;
 
   @override
-  State<ShadResizablePanelGroup> createState() =>
-      ShadResizablePanelGroupState();
+  ShadResizablePanelGroupState createState() => ShadResizablePanelGroupState();
 }
 
 class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
+  final panelToSizeMap = <Key, double>{};
+
+  /// Contains the keys of all the panels and handles, the order is important
+  /// for the resize logic
+  final resizableWidgets = <Key>[];
+
+  void registerPanel({
+    required Key key,
+    required double size,
+  }) {
+    resizableWidgets.add(key);
+    panelToSizeMap[key] = size;
+  }
+
+  void registerHandle({required Key key}) => resizableWidgets.add(key);
+
+  double getPanelSize(Key key) {
+    final size = panelToSizeMap[key];
+    if (size == null) throw Exception('Panel size not found for key: $key');
+    return size;
+  }
+
+  void onHandleDrag({required Key key, required Offset offset}) {
+    final indexOfHandle = resizableWidgets.indexOf(key);
+    final indexOfLeadingPanel = indexOfHandle - 1;
+    final indexOfTrailingPanel = indexOfHandle + 1;
+
+    final leadingPanelKey = resizableWidgets[indexOfLeadingPanel];
+    final trailingPanelKey = resizableWidgets[indexOfTrailingPanel];
+
+    final sizeOfLeadingPanel = panelToSizeMap[leadingPanelKey]!;
+    final sizeOfTrailingPanel = panelToSizeMap[trailingPanelKey]!;
+
+    final axisOffset = widget.axis == Axis.horizontal ? offset.dx : offset.dy;
+
+    final newLeadingSize = sizeOfLeadingPanel + axisOffset;
+    final newTrailingSize = sizeOfTrailingPanel - axisOffset;
+    // cannot resize, the panel size cannot be lower than 0
+    if (newLeadingSize < 0 || newTrailingSize < 0) return;
+
+    setState(() {
+      panelToSizeMap[leadingPanelKey] = newLeadingSize;
+      panelToSizeMap[trailingPanelKey] = newTrailingSize;
+    });
+  }
+
+  double? get totalWidth {
+    if (widget.axis == Axis.vertical) return null;
+    return panelToSizeMap.values
+        .fold<double>(1, (previousValue, size) => size + previousValue);
+  }
+
+  double? get totalHeight {
+    if (widget.axis == Axis.horizontal) return null;
+    return panelToSizeMap.values
+        .fold<double>(1, (previousValue, size) => size + previousValue);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final child = Flex(
+      direction: widget.axis,
+      mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.start,
+      crossAxisAlignment:
+          widget.crossAxisAlignment ?? CrossAxisAlignment.center,
+      mainAxisSize: widget.mainAxisSize ?? MainAxisSize.max,
+      textDirection: widget.textDirection,
+      verticalDirection: widget.verticalDirection ?? VerticalDirection.down,
+      children: widget.children,
+    );
+
     return ShadProvider(
       data: this,
-      child: Flex(
-        direction: widget.axis,
-        mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.start,
-        crossAxisAlignment:
-            widget.crossAxisAlignment ?? CrossAxisAlignment.center,
-        mainAxisSize: widget.mainAxisSize ?? MainAxisSize.max,
-        textDirection: widget.textDirection,
-        verticalDirection: widget.verticalDirection ?? VerticalDirection.down,
-        children: widget.children,
-      ),
+      notifyUpdate: (_) => true,
+      child: switch (widget.axis) {
+        Axis.horizontal => IntrinsicHeight(child: child),
+        Axis.vertical => child,
+      },
     );
   }
 }
 
-class ShadResizablePanel extends StatelessWidget {
+class ShadResizablePanel extends StatefulWidget {
   const ShadResizablePanel({
     super.key,
     required this.child,
+    required this.initialSize,
   });
 
   final Widget child;
+  final double initialSize;
+
+  @override
+  State<ShadResizablePanel> createState() => _ShadResizablePanelState();
+}
+
+class _ShadResizablePanelState extends State<ShadResizablePanel> {
+  final panelKey = UniqueKey();
+
+  @override
+  void initState() {
+    super.initState();
+    context
+        .read<ShadResizablePanelGroupState>()
+        .registerPanel(key: panelKey, size: widget.initialSize);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final inherited = ShadProvider.of<ShadResizablePanelGroupState>(context);
-    print(inherited.widget.axis);
-    return child;
+    final inherited = context.watch<ShadResizablePanelGroupState>();
+    final axis = inherited.widget.axis;
+    final theme = ShadTheme.of(context);
+
+    final panelSize = inherited.getPanelSize(panelKey);
+    final effectiveChild = SizedBox(
+      width: axis == Axis.horizontal ? panelSize : null,
+      height: axis == Axis.vertical ? panelSize : null,
+      child: widget.child,
+    );
+
+    return ColoredBox(
+      color: theme.colorScheme.background,
+      child: effectiveChild,
+    );
+  }
+}
+
+class ShadResizableHandle extends StatefulWidget {
+  const ShadResizableHandle({
+    super.key,
+    this.size,
+  });
+
+  final double? size;
+
+  @override
+  State<ShadResizableHandle> createState() => _ShadResizableHandleState();
+}
+
+class _ShadResizableHandleState extends State<ShadResizableHandle> {
+  final handleKey = UniqueKey();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ShadResizablePanelGroupState>().registerHandle(key: handleKey);
+  }
+
+  void onHandleDrag(Offset offset) {
+    context
+        .read<ShadResizablePanelGroupState>()
+        .onHandleDrag(key: handleKey, offset: offset);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final inherited = context.watch<ShadResizablePanelGroupState>();
+    final theme = ShadTheme.of(context);
+
+    final axis = inherited.widget.axis;
+    final effectiveSize = widget.size ?? 1;
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onHorizontalDragUpdate: axis == Axis.horizontal
+          ? (details) {
+              onHandleDrag(details.delta);
+            }
+          : null,
+      onVerticalDragUpdate: axis == Axis.vertical
+          ? (details) {
+              onHandleDrag(details.delta);
+            }
+          : null,
+      child: MouseRegion(
+        cursor: switch (axis) {
+          Axis.horizontal => SystemMouseCursors.resizeColumn,
+          Axis.vertical => SystemMouseCursors.resizeRow,
+        },
+        child: switch (axis) {
+          Axis.horizontal => VerticalDivider(
+              indent: 0,
+              endIndent: 0,
+              width: effectiveSize,
+              color: theme.colorScheme.border,
+            ),
+          Axis.vertical => Divider(
+              indent: 0,
+              endIndent: 0,
+              height: effectiveSize,
+              color: theme.colorScheme.border,
+            ),
+        },
+      ),
+    );
   }
 }
