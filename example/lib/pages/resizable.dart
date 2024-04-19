@@ -1,6 +1,7 @@
 import 'package:example/common/base_scaffold.dart';
-import 'package:example/common/properties/enum_property.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class ResizablePage extends StatefulWidget {
@@ -11,40 +12,54 @@ class ResizablePage extends StatefulWidget {
 }
 
 class _ResizablePageState extends State<ResizablePage> {
-  var axis = Axis.horizontal;
-
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
     return BaseScaffold(
       appBarTitle: 'Resizable',
-      editable: [
-        MyEnumProperty(
-          label: 'Axis',
-          value: axis,
-          values: Axis.values,
-          onChanged: (v) => setState(() => axis = v),
-        ),
-      ],
       children: [
-        ShadResizablePanelGroup(
-          mainAxisSize: MainAxisSize.min,
-          axis: axis,
-          children: [
-            ShadResizablePanel(
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.red,
-              ),
+        ShadDecorator(
+          decoration: ShadDecoration(
+            border: ShadBorder(
+              width: 1,
+              color: theme.colorScheme.border,
+              radius: theme.radius,
             ),
-            ShadResizablePanel(
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.green,
-              ),
+          ),
+          child: ClipRRect(
+            borderRadius: theme.radius,
+            child: ShadResizablePanelGroup(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ShadResizablePanel(
+                  initialSize: 200,
+                  child: Center(
+                    child: Text('One', style: theme.textTheme.large),
+                  ),
+                ),
+                const ShadResizableHandle(),
+                ShadResizablePanel(
+                  initialSize: 200,
+                  child: ShadResizablePanelGroup(
+                    axis: Axis.vertical,
+                    children: [
+                      ShadResizablePanel(
+                        initialSize: 50,
+                        child: Center(
+                            child: Text('Two', style: theme.textTheme.large)),
+                      ),
+                      const ShadResizableHandle(),
+                      ShadResizablePanel(
+                        initialSize: 100,
+                        child: Align(
+                            child: Text('Three', style: theme.textTheme.large)),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ],
     );
