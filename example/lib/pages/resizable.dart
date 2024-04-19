@@ -1,6 +1,8 @@
 import 'package:example/common/base_scaffold.dart';
+import 'package:example/common/properties/string_property.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -12,11 +14,22 @@ class ResizablePage extends StatefulWidget {
 }
 
 class _ResizablePageState extends State<ResizablePage> {
+  var handleSize = 1.0;
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     return BaseScaffold(
       appBarTitle: 'Resizable',
+      editable: [
+        MyStringProperty(
+            label: 'Handle size',
+            initialValue: handleSize.toString(),
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            onChanged: (v) {
+              setState(() => handleSize = double.parse(v));
+            })
+      ],
       children: [
         ShadDecorator(
           decoration: ShadDecoration(
@@ -37,7 +50,7 @@ class _ResizablePageState extends State<ResizablePage> {
                     child: Text('One', style: theme.textTheme.large),
                   ),
                 ),
-                const ShadResizableHandle(),
+                ShadResizableHandle(size: handleSize),
                 ShadResizablePanel(
                   initialSize: 200,
                   child: ShadResizablePanelGroup(
@@ -48,7 +61,7 @@ class _ResizablePageState extends State<ResizablePage> {
                         child: Center(
                             child: Text('Two', style: theme.textTheme.large)),
                       ),
-                      const ShadResizableHandle(),
+                      ShadResizableHandle(size: handleSize),
                       ShadResizablePanel(
                         initialSize: 100,
                         child: Align(
