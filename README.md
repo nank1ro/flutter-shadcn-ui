@@ -34,6 +34,7 @@ See the [documentation](https://mariuti.com/shadcn-ui/) to interact with the com
 - [x] <strike>Hover Card</strike> Use Popover instead
 - [x] [Image](https://mariuti.com/shadcn-ui/components/image/)
 - [x] [Input](https://mariuti.com/shadcn-ui/components/input/)
+- [ ] Input OTP
 - [x] <strike>Label</strike> Use Text instead
 - [ ] Menubar
 - [ ] Navigation Menu
