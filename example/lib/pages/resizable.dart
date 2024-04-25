@@ -14,24 +14,11 @@ class ResizablePage extends StatefulWidget {
 }
 
 class _ResizablePageState extends State<ResizablePage> {
-  var handleSize = 1.0;
-
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     return BaseScaffold(
       appBarTitle: 'Resizable',
-      editable: [
-        MyStringProperty(
-            label: 'Handle size',
-            initialValue: handleSize.toInt().toString(),
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            onChanged: (v) {
-              final value = double.tryParse(v);
-              if (value == null) return;
-              setState(() => handleSize = value);
-            })
-      ],
       children: [
         ShadDecorator(
           decoration: ShadDecoration(
@@ -53,7 +40,9 @@ class _ResizablePageState extends State<ResizablePage> {
                     child: Text('One', style: theme.textTheme.large),
                   ),
                 ),
-                ShadResizableHandle(size: handleSize),
+                const ShadResizableHandle(
+                  iconSrc: LucideIcons.gripVertical,
+                ),
                 ShadResizablePanel(
                   initialSize: 200,
                   child: ShadResizablePanelGroup(
@@ -64,9 +53,11 @@ class _ResizablePageState extends State<ResizablePage> {
                         child: Center(
                             child: Text('Two', style: theme.textTheme.large)),
                       ),
-                      ShadResizableHandle(size: handleSize),
+                      const ShadResizableHandle(
+                        iconSrc: LucideIcons.gripHorizontal,
+                      ),
                       ShadResizablePanel(
-                        initialSize: 100,
+                        initialSize: 150 - 26, // remove the handle size
                         child: Align(
                             child: Text('Three', style: theme.textTheme.large)),
                       ),
