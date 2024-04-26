@@ -432,13 +432,12 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
       ],
     );
 
-    final totalWidth = isHorizontal
-        ? effectivesSizes.reduce((value, element) => value + element)
-        : null;
+    final totalSize =
+        effectivesSizes.reduce((value, element) => value + element);
 
     child = SizedBox(
-      height: widget.height,
-      width: totalWidth,
+      height: isVertical ? totalSize : widget.height,
+      width: isHorizontal ? totalSize : null,
       child: child,
     );
 

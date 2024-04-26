@@ -106,7 +106,6 @@ class VerticalResizable extends StatelessWidget {
         borderRadius: theme.radius,
         child: ShadResizablePanelGroup(
           axis: Axis.vertical,
-          height: 200,
           children: [
             ShadResizablePanel(
               defaultSize: 50,
