@@ -80,6 +80,7 @@ export 'src/theme/components/toast.dart';
 export 'src/theme/components/tooltip.dart';
 export 'src/theme/text_theme/text_styles_default.dart';
 export 'src/theme/text_theme/theme.dart';
+export 'src/theme/components/resizable.dart';
 
 // Utils
 export 'src/utils/position.dart';
