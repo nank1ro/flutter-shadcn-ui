@@ -1,11 +1,107 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/mouse_region_provider.dart';
 
 import 'package:shadcn_ui/src/utils/provider.dart';
+
+/// The result of resizing a panel
+enum ShadResizeResult {
+  success,
+  failedLeading,
+  failedTrailing,
+}
+
+/// The size information of a panel
+class ShadPanelInfo {
+  ShadPanelInfo({
+    required this.defaultSize,
+    double? minSize,
+    double? maxSize,
+  })  : _size = defaultSize,
+        minSize = minSize ?? 0,
+        maxSize = maxSize ?? double.infinity;
+
+  double get size => _size;
+
+  set size(double value) {
+    if (value < minSize) throw Exception('Size must be greater than minSize');
+    if (value > maxSize) throw Exception('Size must be less than maxSize');
+    _size = value;
+  }
+
+  final double defaultSize;
+  final double minSize;
+  final double maxSize;
+  double _size;
+}
+
+class ShadResizableController extends ChangeNotifier {
+  ShadResizableController();
+
+  final panelsInfo = <ShadPanelInfo>[];
+  final defaultSizes = <double>[];
+
+  /// Register a panel and returns the index of the panel
+  int registerPanel(ShadPanelInfo info) {
+    panelsInfo.add(info);
+    defaultSizes.add(info.defaultSize);
+    return panelsInfo.length - 1;
+  }
+
+  /// Get the panel info at the given index
+  ShadPanelInfo getPanelInfo(int index) {
+    final contains = panelsInfo.length > index;
+    if (!contains) throw Exception('Panel info not found for index: $index');
+    return panelsInfo[index];
+  }
+
+  /// Resize the leading and trailing panels of [offset] pixels.
+  ///
+  /// Returns the result of the resize operation:
+  /// - If the resize operation is successful, the panel info will be updated
+  /// - If the resize operation is unsuccessful, the panel info will not b
+  /// updated and the result will be [ShadResizeResult.failedLeading or
+  /// [ShadResizeResult.failedTrailing] depending on the resize direction
+  ShadResizeResult resize(
+    int leadingIndex,
+    int trailingIndex,
+    double offset,
+  ) {
+    final leadingPanelInfo = getPanelInfo(leadingIndex);
+    final trailingPanelInfo = getPanelInfo(trailingIndex);
+
+    final newLeadingSize = leadingPanelInfo.size + offset;
+    final newTrailingSize = trailingPanelInfo.size - offset;
+
+    if (newLeadingSize < leadingPanelInfo.minSize ||
+        newTrailingSize > trailingPanelInfo.maxSize) {
+      return ShadResizeResult.failedLeading;
+    }
+
+    if (newTrailingSize < trailingPanelInfo.minSize ||
+        newLeadingSize > leadingPanelInfo.maxSize) {
+      return ShadResizeResult.failedTrailing;
+    }
+
+    leadingPanelInfo.size = newLeadingSize;
+    trailingPanelInfo.size = newTrailingSize;
+    notifyListeners();
+    return ShadResizeResult.success;
+  }
+
+  /// Reset the default sizes of the leading and trailing panels.
+  void resetDefaultSizes(int leadingIndex, int trailingIndex) {
+    assert((leadingIndex - trailingIndex).abs() == 1);
+    final leadingPanelInfo = getPanelInfo(leadingIndex);
+    final trailingPanelInfo = getPanelInfo(trailingIndex);
+    leadingPanelInfo.size = defaultSizes[leadingIndex];
+    trailingPanelInfo.size = defaultSizes[trailingIndex];
+    notifyListeners();
+  }
+}
 
 class ShadResizablePanelGroup extends StatefulWidget {
   const ShadResizablePanelGroup({
@@ -18,39 +114,65 @@ class ShadResizablePanelGroup extends StatefulWidget {
     this.textDirection,
     this.verticalDirection,
     this.height,
+    this.controller,
+    this.showHandle,
+    this.handleIconSrc,
+    this.handleIcon,
+    this.dividerSize,
+    this.onDividerDoubleTap,
+    this.resetOnDoubleTap,
   }) : assert(
           axis == Axis.vertical || height != null,
           'Height must be set for horizontal panels',
         );
 
   final Axis axis;
-  final List<Widget> children;
+  final List<ShadResizablePanel> children;
   final MainAxisAlignment? mainAxisAlignment;
   final CrossAxisAlignment? crossAxisAlignment;
   final MainAxisSize? mainAxisSize;
   final TextDirection? textDirection;
   final VerticalDirection? verticalDirection;
   final double? height;
+  final ShadResizableController? controller;
+  final bool? showHandle;
+  final ShadImageSrc? handleIconSrc;
+  final Widget? handleIcon;
+  final double? dividerSize;
+  final VoidCallback? onDividerDoubleTap;
+  final bool? resetOnDoubleTap;
 
   @override
   ShadResizablePanelGroupState createState() => ShadResizablePanelGroupState();
 }
 
 class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
-  final panelsToSizeMap = <Key, double>{};
+  ShadResizableController? _internalController;
 
-  /// Contains the keys of all the panels and handles, the order is important
-  /// for the resize logic
-  final resizableWidgets = <Key>[];
+  late final mouseCursorInherited =
+      context.read<ShadMouseRegionProviderState>();
+
+  late final List<double> defaultSizes;
 
   final dragging = ValueNotifier<bool>(false);
+
+  bool get isHorizontal => widget.axis == Axis.horizontal;
+
+  bool get isVertical => widget.axis == Axis.vertical;
+
+  int get dividersCount => widget.children.length - 1;
+
+  ShadResizableController get controller {
+    if (widget.controller != null) return widget.controller!;
+    return _internalController ??= ShadResizableController();
+  }
+
+  List<ShadPanelInfo> get panelInfos => controller.panelsInfo;
 
   @override
   void initState() {
     super.initState();
-
-    final mouseCursorInherited = context.read<ShadMouseRegionProviderState>();
-
+    defaultSizes = widget.children.map((e) => e.defaultSize).toList();
     dragging.addListener(() {
       if (!dragging.value) mouseCursorInherited.setCursor(MouseCursor.defer);
     });
@@ -59,74 +181,82 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
   @override
   void dispose() {
     dragging.dispose();
+    _internalController?.dispose();
     super.dispose();
   }
 
-  void registerPanel({
-    required Key key,
-    required double size,
+  int registerPanel(ShadPanelInfo info) => controller.registerPanel(info);
+
+  ShadPanelInfo getPanelInfo(int index) => controller.getPanelInfo(index);
+
+  void onHandleDrag({
+    required int indexOfLeadingPanel,
+    required int indexOfTrailingPanel,
+    required Offset offset,
   }) {
-    resizableWidgets.add(key);
-    panelsToSizeMap[key] = size;
-  }
-
-  void registerHandle({required Key key}) {
-    resizableWidgets.add(key);
-  }
-
-  double getPanelSize(Key key) {
-    final size = panelsToSizeMap[key];
-    if (size == null) throw Exception('Panel size not found for key: $key');
-    return size;
-  }
-
-  void onHandleDrag({required Key key, required Offset offset}) {
-    final indexOfHandle = resizableWidgets.indexOf(key);
-    final indexOfLeadingPanel = indexOfHandle - 1;
-    final indexOfTrailingPanel = indexOfHandle + 1;
-
-    final leadingPanelKey = resizableWidgets[indexOfLeadingPanel];
-    final trailingPanelKey = resizableWidgets[indexOfTrailingPanel];
-
-    final sizeOfLeadingPanel = getPanelSize(leadingPanelKey);
-    final sizeOfTrailingPanel = getPanelSize(trailingPanelKey);
-
     final axisOffset = widget.axis == Axis.horizontal ? offset.dx : offset.dy;
-
-    final newLeadingSize = sizeOfLeadingPanel + axisOffset;
-    final newTrailingSize = sizeOfTrailingPanel - axisOffset;
-    // cannot resize, the panel size cannot be lower than 0
-    final mouseCursorProvider = context.read<ShadMouseRegionProviderState>();
-    if (newLeadingSize < 0) {
-      final cursor = switch (widget.axis) {
-        Axis.horizontal => SystemMouseCursors.resizeRight,
-        Axis.vertical => SystemMouseCursors.resizeDown,
-      };
-      mouseCursorProvider.setCursor(cursor);
-      return;
+    final result = controller.resize(
+      indexOfLeadingPanel,
+      indexOfTrailingPanel,
+      axisOffset,
+    );
+    switch (result) {
+      case ShadResizeResult.success:
+        final cursor = switch (widget.axis) {
+          Axis.horizontal => SystemMouseCursors.resizeLeftRight,
+          Axis.vertical => SystemMouseCursors.resizeUpDown,
+        };
+        mouseCursorInherited.setCursor(cursor);
+        setState(() {});
+      case ShadResizeResult.failedLeading:
+        final cursor = switch (widget.axis) {
+          Axis.horizontal => SystemMouseCursors.resizeRight,
+          Axis.vertical => SystemMouseCursors.resizeDown,
+        };
+        mouseCursorInherited.setCursor(cursor);
+      case ShadResizeResult.failedTrailing:
+        final cursor = switch (widget.axis) {
+          Axis.horizontal => SystemMouseCursors.resizeLeft,
+          Axis.vertical => SystemMouseCursors.resizeUp,
+        };
+        mouseCursorInherited.setCursor(cursor);
     }
-    if (newTrailingSize < 0) {
-      final cursor = switch (widget.axis) {
-        Axis.horizontal => SystemMouseCursors.resizeLeft,
-        Axis.vertical => SystemMouseCursors.resizeUp,
-      };
-      mouseCursorProvider.setCursor(cursor);
-      return;
-    }
+  }
 
-    final cursor = switch (widget.axis) {
-      Axis.horizontal => SystemMouseCursors.resizeLeftRight,
-      Axis.vertical => SystemMouseCursors.resizeUpDown,
-    };
-    mouseCursorProvider.setCursor(cursor);
-
-    panelsToSizeMap[leadingPanelKey] = newLeadingSize;
-    panelsToSizeMap[trailingPanelKey] = newTrailingSize;
+  void resetDefaultSizes(int leadingIndex, int trailingIndex) {
+    assert((leadingIndex - trailingIndex).abs() == 1);
+    controller.resetDefaultSizes(leadingIndex, trailingIndex);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final effectiveShowHandle = widget.showHandle ?? false;
+    final effectiveDividerSize = widget.dividerSize ?? 1;
+    final effectiveResetOnDoubleTap = widget.resetOnDoubleTap ?? true;
+
+    final divider = switch (widget.axis) {
+      Axis.horizontal => VerticalDivider(
+          indent: 0,
+          endIndent: 0,
+          thickness: effectiveDividerSize,
+          width: effectiveDividerSize,
+          color: theme.colorScheme.border,
+        ),
+      Axis.vertical => SizedBox(
+          // double.infinity doesn't work, just providing a big number
+          width: 50000,
+          child: Divider(
+            indent: 0,
+            endIndent: 0,
+            height: effectiveDividerSize,
+            thickness: effectiveDividerSize,
+            color: theme.colorScheme.border,
+          ),
+        ),
+    };
+
     Widget child = Flex(
       direction: widget.axis,
       mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.start,
@@ -138,28 +268,131 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
       children: widget.children,
     );
 
+    // lazy, will be initialized when the handle is needed
+    late final handle = widget.handleIcon ??
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.border,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(4),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: widget.axis == Axis.vertical ? 3 : 1,
+              vertical: widget.axis == Axis.vertical ? 1 : 3,
+            ),
+            child: ShadImage.square(
+              widget.handleIconSrc ??
+                  (isHorizontal
+                      ? LucideIcons.gripVertical
+                      : LucideIcons.gripHorizontal),
+              size: 10,
+            ),
+          ),
+        );
+
+    final dividers = <Widget>[];
+    for (var i = 0; i < dividersCount; i++) {
+      final effectivesSizes = panelInfos.length == widget.children.length
+          ? panelInfos.map((e) => e.size).toList()
+          : defaultSizes;
+
+      final leadingPosition = effectivesSizes.sublist(0, i + 1).fold<double>(
+            0,
+            (previousValue, element) => previousValue + element,
+          );
+      dividers.add(
+        Positioned(
+          top: isHorizontal ? 0 : leadingPosition,
+          left: isHorizontal ? leadingPosition : null,
+          bottom: isHorizontal ? 0 : null,
+          child: GestureDetector(
+            onDoubleTap: widget.onDividerDoubleTap ??
+                () {
+                  if (!effectiveResetOnDoubleTap) return;
+                  resetDefaultSizes(i, i + 1);
+                },
+            onHorizontalDragStart:
+                isHorizontal ? (_) => dragging.value = true : null,
+            onHorizontalDragEnd: (_) =>
+                isHorizontal ? dragging.value = false : null,
+            onHorizontalDragCancel: () =>
+                isHorizontal ? dragging.value = false : null,
+            onHorizontalDragUpdate: (details) => isHorizontal
+                ? onHandleDrag(
+                    offset: details.delta,
+                    indexOfLeadingPanel: i,
+                    indexOfTrailingPanel: i + 1,
+                  )
+                : null,
+            onVerticalDragStart:
+                isVertical ? (_) => dragging.value = true : null,
+            onVerticalDragEnd: (_) =>
+                isVertical ? dragging.value = false : null,
+            onVerticalDragCancel: () =>
+                isVertical ? dragging.value = false : null,
+            onVerticalDragUpdate: (details) => isVertical
+                ? onHandleDrag(
+                    offset: details.delta,
+                    indexOfLeadingPanel: i,
+                    indexOfTrailingPanel: i + 1,
+                  )
+                : null,
+            child: MouseRegion(
+              onEnter: (_) {
+                final cursor = switch (widget.axis) {
+                  Axis.horizontal => SystemMouseCursors.resizeLeftRight,
+                  Axis.vertical => SystemMouseCursors.resizeUpDown,
+                };
+
+                mouseCursorInherited.setCursor(cursor);
+              },
+              onExit: (details) async {
+                if (dragging.value) return;
+                mouseCursorInherited.setCursor(MouseCursor.defer);
+              },
+              child: SizedBox(
+                width: widget.axis == Axis.horizontal
+                    ? effectiveDividerSize
+                    : null,
+                height:
+                    widget.axis == Axis.vertical ? effectiveDividerSize : null,
+                child: effectiveShowHandle
+                    ? Stack(
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          divider,
+                          OverflowBox(
+                            maxWidth: 50,
+                            maxHeight: 50,
+                            fit: OverflowBoxFit.deferToChild,
+                            child: handle,
+                          ),
+                        ],
+                      )
+                    : divider,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    child = Stack(
+      alignment: AlignmentDirectional.center,
+      children: [
+        child,
+        ...dividers,
+      ],
+    );
+
     if (widget.height != null) {
       child = SizedBox(
         height: widget.height,
         child: child,
       );
     }
-
-    // child = ValueListenableBuilder(
-    //   valueListenable: dragging,
-    //   builder: (context, value, child) {
-    //     return MouseRegion(
-    //       cursor: value
-    //           ? switch (widget.axis) {
-    //               Axis.horizontal => SystemMouseCursors.resizeColumn,
-    //               Axis.vertical => SystemMouseCursors.resizeRow,
-    //             }
-    //           : SystemMouseCursors.basic,
-    //       child: child,
-    //     );
-    //   },
-    //   child: child,
-    // );
 
     return ShadProvider(
       data: this,
@@ -173,249 +406,67 @@ class ShadResizablePanel extends StatefulWidget {
   const ShadResizablePanel({
     super.key,
     required this.child,
-    required this.initialSize,
-  });
+    required this.defaultSize,
+    this.minSize,
+    this.maxSize,
+  })  : assert(
+          minSize == null || minSize >= 0,
+          'minSize must be greater than or equal to 0',
+        ),
+        assert(
+          maxSize == null || maxSize >= 0,
+          'maxSize must be greater than or equal to 0',
+        ),
+        assert(
+          minSize == null || maxSize == null || minSize <= maxSize,
+          'minSize must be less than or equal to maxSize',
+        ),
+        assert(
+          defaultSize >= (minSize ?? 0) &&
+              defaultSize <= (maxSize ?? double.infinity),
+          'defaultSize must be greater than or equal to minSize and less than'
+          ' or equal to maxSize',
+        );
 
   final Widget child;
-  final double initialSize;
+  final double defaultSize;
+  final double? minSize;
+  final double? maxSize;
 
   @override
   State<ShadResizablePanel> createState() => _ShadResizablePanelState();
 }
 
 class _ShadResizablePanelState extends State<ShadResizablePanel> {
-  final panelKey = UniqueKey();
+  late final int index;
 
   @override
   void initState() {
     super.initState();
-    context
-        .read<ShadResizablePanelGroupState>()
-        .registerPanel(key: panelKey, size: widget.initialSize);
+    index = context.read<ShadResizablePanelGroupState>().registerPanel(
+          ShadPanelInfo(
+            defaultSize: widget.defaultSize,
+            minSize: widget.minSize,
+            maxSize: widget.maxSize,
+          ),
+        );
   }
 
   @override
   Widget build(BuildContext context) {
     final inherited = context.watch<ShadResizablePanelGroupState>();
     final axis = inherited.widget.axis;
-    final theme = ShadTheme.of(context);
 
-    final panelSize = inherited.getPanelSize(panelKey);
+    final panelSize = inherited.getPanelInfo(index).size;
     final effectiveChild = SizedBox(
       width: axis == Axis.horizontal ? panelSize : null,
       height: axis == Axis.vertical ? panelSize : null,
       child: widget.child,
     );
 
-    return ColoredBox(
-      color: theme.colorScheme.background,
+    return ClipRRect(
+      clipBehavior: Clip.hardEdge,
       child: effectiveChild,
     );
-  }
-}
-
-class ShadResizableHandle extends StatefulWidget {
-  const ShadResizableHandle({
-    super.key,
-    this.size,
-    this.icon,
-    this.iconSrc,
-  });
-
-  final double? size;
-  final Widget? icon;
-  final ShadImageSrc? iconSrc;
-
-  @override
-  State<ShadResizableHandle> createState() => _ShadResizableHandleState();
-}
-
-class _ShadResizableHandleState extends State<ShadResizableHandle> {
-  final handleKey = UniqueKey();
-
-  @override
-  void initState() {
-    super.initState();
-    context.read<ShadResizablePanelGroupState>().registerHandle(key: handleKey);
-  }
-
-  void onHandleDrag(Offset offset) {
-    context
-        .read<ShadResizablePanelGroupState>()
-        .onHandleDrag(key: handleKey, offset: offset);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final inherited = context.watch<ShadResizablePanelGroupState>();
-    final mouseCursorInherited = context.read<ShadMouseRegionProviderState>();
-    final theme = ShadTheme.of(context);
-
-    final axis = inherited.widget.axis;
-    final effectiveSize = widget.size ?? 1;
-
-    final divider = switch (axis) {
-      Axis.horizontal => VerticalDivider(
-          indent: 0,
-          endIndent: 0,
-          thickness: effectiveSize,
-          width: effectiveSize,
-          color: theme.colorScheme.border,
-        ),
-      Axis.vertical => Divider(
-          indent: 0,
-          endIndent: 0,
-          height: effectiveSize,
-          thickness: effectiveSize,
-          color: theme.colorScheme.border,
-        ),
-    };
-
-    return GridPaper(
-      divisions: 3,
-      subdivisions: 10,
-      color: Colors.blue,
-      child: ClipPath(
-        clipBehavior: Clip.hardEdge,
-        clipper: MyClipper(
-          dividerSize: effectiveSize,
-          iconSize: const Size(30, 30),
-          axis: axis,
-        ),
-        child: GridPaper(
-          divisions: 3,
-          subdivisions: 10,
-          color: Colors.red,
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onVerticalDragStart: axis == Axis.horizontal
-                ? null
-                : (_) => inherited.dragging.value = true,
-            onVerticalDragCancel: axis == Axis.horizontal
-                ? null
-                : () => inherited.dragging.value = false,
-            onVerticalDragEnd: axis == Axis.horizontal
-                ? null
-                : (_) => inherited.dragging.value = false,
-            onHorizontalDragStart: axis == Axis.vertical
-                ? null
-                : (_) => inherited.dragging.value = true,
-            onHorizontalDragEnd: axis == Axis.vertical
-                ? null
-                : (_) => inherited.dragging.value = false,
-            onHorizontalDragCancel: axis == Axis.vertical
-                ? null
-                : () => inherited.dragging.value = false,
-            onHorizontalDragUpdate: (details) => onHandleDrag(details.delta),
-            onVerticalDragUpdate: (details) => onHandleDrag(details.delta),
-            child: MouseRegion(
-              onEnter: (_) {
-                final cursor = switch (axis) {
-                  Axis.horizontal => SystemMouseCursors.resizeLeftRight,
-                  Axis.vertical => SystemMouseCursors.resizeUpDown,
-                };
-
-                context.read<ShadMouseRegionProviderState>().setCursor(cursor);
-              },
-              onExit: (details) async {
-                // the GestureDetector is fired after onExit, so we need to wait a
-                // little bit
-                Future.delayed(const Duration(milliseconds: 100), () {
-                  if (!mounted) return;
-                  if (inherited.dragging.value) return;
-                  mouseCursorInherited.setCursor(MouseCursor.defer);
-                });
-              },
-              child: Stack(
-                alignment: AlignmentDirectional.center,
-                children: [
-                  divider,
-                  if (widget.icon != null || widget.iconSrc != null)
-                    widget.icon ??
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            // color: theme.colorScheme.border,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(4)),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: axis == Axis.vertical ? 3 : 1,
-                              vertical: axis == Axis.vertical ? 1 : 3,
-                            ),
-                            child: ShadImage.square(
-                              widget.iconSrc!,
-                              size: 24,
-                            ),
-                          ),
-                        ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class MyClipper extends CustomClipper<Path> {
-  MyClipper({
-    super.reclip,
-    required this.dividerSize,
-    required this.iconSize,
-    required this.axis,
-  });
-
-  final double dividerSize;
-  final Size iconSize;
-  final Axis axis;
-
-  @override
-  Path getClip(Size size) {
-    print(size);
-    final path = Path();
-
-    final centerX = size.width / 2;
-    final centerY = size.height / 2;
-
-    if (axis == Axis.horizontal) {
-      //  divider path
-      path
-        ..moveTo(centerX - dividerSize / 2, 0)
-        ..lineTo(centerX - dividerSize / 2, size.height)
-        ..lineTo(centerX + dividerSize / 2, size.height)
-        ..lineTo(centerX + dividerSize / 2, 0)
-        ..close()
-
-        // icon path
-        ..moveTo(0, centerY - iconSize.height / 2)
-        ..lineTo(0, centerY + iconSize.height / 2)
-        ..lineTo(iconSize.width, centerY + iconSize.height / 2)
-        ..lineTo(iconSize.width, centerY - iconSize.height / 2)
-        ..close();
-    } else {
-      //  divider path
-      path
-        ..moveTo(0, centerY - dividerSize / 2)
-        ..lineTo(size.width, centerY - dividerSize / 2)
-        ..lineTo(size.width, centerY + dividerSize / 2)
-        ..lineTo(0, centerY + dividerSize / 2)
-        ..close()
-
-        // icon path
-        ..moveTo(centerX - iconSize.width / 2, 0)
-        ..lineTo(centerX + iconSize.width / 2, 0)
-        ..lineTo(centerX + iconSize.width / 2, size.height)
-        ..lineTo(centerX - iconSize.width / 2, size.height)
-        ..close();
-    }
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return false;
   }
 }
