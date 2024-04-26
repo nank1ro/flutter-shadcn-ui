@@ -289,6 +289,10 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     final effectiveTextDirection =
         widget.textDirection ?? theme.resizableTheme.textDirection;
 
+    final effectivesSizes = panelInfos.length == widget.children.length
+        ? panelInfos.map((e) => e.size).toList()
+        : defaultSizes;
+
     final divider = switch (widget.axis) {
       Axis.horizontal => VerticalDivider(
           indent: 0,
@@ -339,10 +343,6 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
     final dividers = <Widget>[];
     for (var i = 0; i < dividersCount; i++) {
-      final effectivesSizes = panelInfos.length == widget.children.length
-          ? panelInfos.map((e) => e.size).toList()
-          : defaultSizes;
-
       final leadingPosition = effectivesSizes.sublist(0, i + 1).fold<double>(
             0,
             (previousValue, element) => previousValue + element,
@@ -432,12 +432,15 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
       ],
     );
 
-    if (widget.height != null) {
-      child = SizedBox(
-        height: widget.height,
-        child: child,
-      );
-    }
+    final totalWidth = isHorizontal
+        ? effectivesSizes.reduce((value, element) => value + element)
+        : null;
+
+    child = SizedBox(
+      height: widget.height,
+      width: totalWidth,
+      child: child,
+    );
 
     return ShadProvider(
       data: this,

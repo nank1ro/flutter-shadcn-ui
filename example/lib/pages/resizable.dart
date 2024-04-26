@@ -51,14 +51,9 @@ class _ResizablePageState extends State<ResizablePage> {
                             child: Text('Two', style: theme.textTheme.large)),
                       ),
                       ShadResizablePanel(
-                        defaultSize: 100,
+                        defaultSize: 150,
                         child: Align(
                             child: Text('Three', style: theme.textTheme.large)),
-                      ),
-                      ShadResizablePanel(
-                        defaultSize: 50,
-                        child: Align(
-                            child: Text('Four', style: theme.textTheme.large)),
                       ),
                     ],
                   ),
