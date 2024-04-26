@@ -1,8 +1,6 @@
 import 'package:example/common/base_scaffold.dart';
-import 'package:example/common/properties/string_property.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -32,34 +30,37 @@ class _ResizablePageState extends State<ResizablePage> {
             borderRadius: theme.radius,
             child: ShadResizablePanelGroup(
               mainAxisSize: MainAxisSize.min,
+              showHandle: true,
               height: 200,
               children: [
                 ShadResizablePanel(
-                  initialSize: 200,
+                  defaultSize: 200,
+                  minSize: 50,
+                  maxSize: 300,
                   child: Center(
                     child: Text('One', style: theme.textTheme.large),
                   ),
                 ),
-                const ShadResizableHandle(
-                  iconSrc: LucideIcons.gripVertical,
-                ),
                 ShadResizablePanel(
-                  initialSize: 200,
+                  defaultSize: 200,
                   child: ShadResizablePanelGroup(
+                    showHandle: true,
                     axis: Axis.vertical,
                     children: [
                       ShadResizablePanel(
-                        initialSize: 50,
+                        defaultSize: 50,
                         child: Center(
                             child: Text('Two', style: theme.textTheme.large)),
                       ),
-                      const ShadResizableHandle(
-                        iconSrc: LucideIcons.gripHorizontal,
-                      ),
                       ShadResizablePanel(
-                        initialSize: 150 - 26, // remove the handle size
+                        defaultSize: 100,
                         child: Align(
                             child: Text('Three', style: theme.textTheme.large)),
+                      ),
+                      ShadResizablePanel(
+                        defaultSize: 50,
+                        child: Align(
+                            child: Text('Four', style: theme.textTheme.large)),
                       ),
                     ],
                   ),
