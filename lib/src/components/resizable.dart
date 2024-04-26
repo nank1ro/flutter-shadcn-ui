@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
-import 'package:shadcn_ui/src/utils/mouse_region_provider.dart';
+import 'package:shadcn_ui/src/utils/mouse_cursor_provider.dart';
 
 import 'package:shadcn_ui/src/utils/provider.dart';
 
@@ -70,6 +70,10 @@ class ShadResizableController extends ChangeNotifier {
     int trailingIndex,
     double offset,
   ) {
+    assert(
+      (leadingIndex - trailingIndex).abs() == 1,
+      'The indexes resized must be adjacent',
+    );
     final leadingPanelInfo = getPanelInfo(leadingIndex);
     final trailingPanelInfo = getPanelInfo(trailingIndex);
 
@@ -94,7 +98,10 @@ class ShadResizableController extends ChangeNotifier {
 
   /// Reset the default sizes of the leading and trailing panels.
   void resetDefaultSizes(int leadingIndex, int trailingIndex) {
-    assert((leadingIndex - trailingIndex).abs() == 1);
+    assert(
+      (leadingIndex - trailingIndex).abs() == 1,
+      'The indexes resized must be adjacent',
+    );
     final leadingPanelInfo = getPanelInfo(leadingIndex);
     final trailingPanelInfo = getPanelInfo(trailingIndex);
     leadingPanelInfo.size = defaultSizes[leadingIndex];
@@ -121,6 +128,10 @@ class ShadResizablePanelGroup extends StatefulWidget {
     this.dividerSize,
     this.onDividerDoubleTap,
     this.resetOnDoubleTap,
+    this.dividerColor,
+    this.handleDecoration,
+    this.handlePadding,
+    this.handleSize,
   }) : assert(
           axis == Axis.vertical || height != null,
           'Height must be set for horizontal panels',
@@ -141,6 +152,10 @@ class ShadResizablePanelGroup extends StatefulWidget {
   final double? dividerSize;
   final VoidCallback? onDividerDoubleTap;
   final bool? resetOnDoubleTap;
+  final Color? dividerColor;
+  final BoxDecoration? handleDecoration;
+  final EdgeInsets? handlePadding;
+  final Size? handleSize;
 
   @override
   ShadResizablePanelGroupState createState() => ShadResizablePanelGroupState();
@@ -149,8 +164,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
 class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
   ShadResizableController? _internalController;
 
-  late final mouseCursorInherited =
-      context.read<ShadMouseRegionProviderState>();
+  late final mouseCursorController = context.read<ShadMouseCursorController>();
 
   late final List<double> defaultSizes;
 
@@ -174,7 +188,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     super.initState();
     defaultSizes = widget.children.map((e) => e.defaultSize).toList();
     dragging.addListener(() {
-      if (!dragging.value) mouseCursorInherited.setCursor(MouseCursor.defer);
+      if (!dragging.value) mouseCursorController.cursor = MouseCursor.defer;
     });
   }
 
@@ -206,20 +220,20 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           Axis.horizontal => SystemMouseCursors.resizeLeftRight,
           Axis.vertical => SystemMouseCursors.resizeUpDown,
         };
-        mouseCursorInherited.setCursor(cursor);
+        mouseCursorController.cursor = cursor;
         setState(() {});
       case ShadResizeResult.failedLeading:
         final cursor = switch (widget.axis) {
           Axis.horizontal => SystemMouseCursors.resizeRight,
           Axis.vertical => SystemMouseCursors.resizeDown,
         };
-        mouseCursorInherited.setCursor(cursor);
+        mouseCursorController.cursor = cursor;
       case ShadResizeResult.failedTrailing:
         final cursor = switch (widget.axis) {
           Axis.horizontal => SystemMouseCursors.resizeLeft,
           Axis.vertical => SystemMouseCursors.resizeUp,
         };
-        mouseCursorInherited.setCursor(cursor);
+        mouseCursorController.cursor = cursor;
     }
   }
 
@@ -232,9 +246,48 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveShowHandle = widget.showHandle ?? false;
-    final effectiveDividerSize = widget.dividerSize ?? 1;
-    final effectiveResetOnDoubleTap = widget.resetOnDoubleTap ?? true;
+    final effectiveShowHandle =
+        widget.showHandle ?? theme.resizableTheme.showHandle ?? false;
+    final effectiveDividerSize =
+        widget.dividerSize ?? theme.resizableTheme.dividerSize ?? 1;
+    final effectiveResetOnDoubleTap = widget.resetOnDoubleTap ??
+        theme.resizableTheme.resetOnDoubleTap ??
+        true;
+    final effectiveDividerColor = widget.dividerColor ??
+        theme.resizableTheme.dividerColor ??
+        theme.colorScheme.border;
+    final effectiveHandleDecoration = widget.handleDecoration ??
+        theme.resizableTheme.handleDecoration ??
+        BoxDecoration(
+          color: theme.colorScheme.border,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(4),
+          ),
+        );
+    final effectiveHandlePadding = widget.handlePadding ??
+        theme.resizableTheme.handlePadding ??
+        EdgeInsets.symmetric(
+          horizontal: widget.axis == Axis.vertical ? 3 : 1,
+          vertical: widget.axis == Axis.vertical ? 1 : 3,
+        );
+    final effectiveHandleSize = widget.handleSize ??
+        theme.resizableTheme.handleSize ??
+        const Size.square(10);
+
+    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
+        theme.resizableTheme.mainAxisAlignment ??
+        MainAxisAlignment.start;
+    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+        theme.resizableTheme.crossAxisAlignment ??
+        CrossAxisAlignment.center;
+    final effectiveMainAxisSize = widget.mainAxisSize ??
+        theme.resizableTheme.mainAxisSize ??
+        MainAxisSize.max;
+    final effectiveVerticalDirection = widget.verticalDirection ??
+        theme.resizableTheme.verticalDirection ??
+        VerticalDirection.down;
+    final effectiveTextDirection =
+        widget.textDirection ?? theme.resizableTheme.textDirection;
 
     final divider = switch (widget.axis) {
       Axis.horizontal => VerticalDivider(
@@ -242,7 +295,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           endIndent: 0,
           thickness: effectiveDividerSize,
           width: effectiveDividerSize,
-          color: theme.colorScheme.border,
+          color: effectiveDividerColor,
         ),
       Axis.vertical => SizedBox(
           // double.infinity doesn't work, just providing a big number
@@ -252,42 +305,34 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
             endIndent: 0,
             height: effectiveDividerSize,
             thickness: effectiveDividerSize,
-            color: theme.colorScheme.border,
+            color: effectiveDividerColor,
           ),
         ),
     };
 
     Widget child = Flex(
       direction: widget.axis,
-      mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.start,
-      crossAxisAlignment:
-          widget.crossAxisAlignment ?? CrossAxisAlignment.center,
-      mainAxisSize: widget.mainAxisSize ?? MainAxisSize.max,
-      textDirection: widget.textDirection,
-      verticalDirection: widget.verticalDirection ?? VerticalDirection.down,
+      mainAxisAlignment: effectiveMainAxisAlignment,
+      crossAxisAlignment: effectiveCrossAxisAlignment,
+      mainAxisSize: effectiveMainAxisSize,
+      textDirection: effectiveTextDirection,
+      verticalDirection: effectiveVerticalDirection,
       children: widget.children,
     );
 
     // lazy, will be initialized when the handle is needed
     late final handle = widget.handleIcon ??
         DecoratedBox(
-          decoration: BoxDecoration(
-            color: theme.colorScheme.border,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(4),
-            ),
-          ),
+          decoration: effectiveHandleDecoration,
           child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: widget.axis == Axis.vertical ? 3 : 1,
-              vertical: widget.axis == Axis.vertical ? 1 : 3,
-            ),
-            child: ShadImage.square(
+            padding: effectiveHandlePadding,
+            child: ShadImage(
               widget.handleIconSrc ??
                   (isHorizontal
                       ? LucideIcons.gripVertical
                       : LucideIcons.gripHorizontal),
-              size: 10,
+              width: effectiveHandleSize.width,
+              height: effectiveHandleSize.height,
             ),
           ),
         );
@@ -346,11 +391,11 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
                   Axis.vertical => SystemMouseCursors.resizeUpDown,
                 };
 
-                mouseCursorInherited.setCursor(cursor);
+                mouseCursorController.cursor = cursor;
               },
               onExit: (details) async {
                 if (dragging.value) return;
-                mouseCursorInherited.setCursor(MouseCursor.defer);
+                mouseCursorController.cursor = MouseCursor.defer;
               },
               child: SizedBox(
                 width: widget.axis == Axis.horizontal
@@ -364,8 +409,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
                         children: [
                           divider,
                           OverflowBox(
-                            maxWidth: 50,
-                            maxHeight: 50,
+                            maxWidth: effectiveHandleSize.width * 2,
+                            maxHeight: effectiveHandleSize.height * 2,
                             fit: OverflowBoxFit.deferToChild,
                             child: handle,
                           ),

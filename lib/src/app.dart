@@ -11,7 +11,7 @@ import 'package:shadcn_ui/src/components/toast.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
-import 'package:shadcn_ui/src/utils/mouse_region_provider.dart';
+import 'package:shadcn_ui/src/utils/mouse_cursor_provider.dart';
 
 enum ShadAppType {
   shadcn,
@@ -586,7 +586,7 @@ class _ShadAppState extends State<ShadApp> {
         child: ShadAnimatedTheme(
           data: theme(context),
           curve: widget.themeCurve,
-          child: ShadMouseRegionProvider(
+          child: ShadMouseCursorProvider(
             child: _buildApp(context),
           ),
         ),

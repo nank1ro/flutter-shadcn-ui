@@ -18,6 +18,7 @@ import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/progress.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
+import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
@@ -732,6 +733,28 @@ abstract class ShadComponentDefaultTheme {
       cellHeaderStyle: textTheme.muted.copyWith(fontWeight: FontWeight.w500),
       cellFooterStyle: textTheme.muted
           .copyWith(color: colorScheme.foreground, fontWeight: FontWeight.w500),
+    );
+  }
+
+  static ShadResizableTheme resizableTheme({
+    required ShadColorScheme colorScheme,
+  }) {
+    return ShadResizableTheme(
+      showHandle: false,
+      dividerSize: 1,
+      dividerColor: colorScheme.border,
+      resetOnDoubleTap: true,
+      handleDecoration: BoxDecoration(
+        color: colorScheme.border,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(4),
+        ),
+      ),
+      handleSize: const Size.square(10),
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      verticalDirection: VerticalDirection.down,
     );
   }
 }
