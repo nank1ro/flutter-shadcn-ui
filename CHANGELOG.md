@@ -1,3 +1,7 @@
+## 0.4.1
+
+- Expose `ShadResizableTheme`.
+
 ## 0.4.0
 
 - Add `ShadResizable` component
