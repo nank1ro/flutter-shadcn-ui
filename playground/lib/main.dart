@@ -14,6 +14,7 @@ import 'package:playground/pages/input.dart';
 import 'package:playground/pages/popover.dart';
 import 'package:playground/pages/progress.dart';
 import 'package:playground/pages/radio_group.dart';
+import 'package:playground/pages/resizable.dart';
 import 'package:playground/pages/select.dart';
 import 'package:playground/pages/sheet.dart';
 import 'package:playground/pages/slider.dart';
@@ -212,6 +213,16 @@ final _router = GoRouter(
     GoRoute(
       path: '/table',
       builder: (context, state) => const TablePage(),
+    ),
+    GoRoute(
+      path: '/resizable',
+      builder: (context, state) {
+        final style =
+            state.uri.queryParameters['style'] ?? ShadResizableStyle.basic.name;
+        return ResizablePage(
+          style: ShadResizableStyle.values.byName(style),
+        );
+      },
     ),
   ],
 );

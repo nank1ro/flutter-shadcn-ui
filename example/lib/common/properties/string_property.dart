@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class MyStringProperty extends StatelessWidget {
@@ -8,12 +9,14 @@ class MyStringProperty extends StatelessWidget {
     required this.initialValue,
     required this.onChanged,
     this.placeholder,
+    this.inputFormatters,
   });
 
   final String label;
   final Widget? placeholder;
   final String? initialValue;
   final ValueChanged<String>? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +31,7 @@ class MyStringProperty extends StatelessWidget {
           initialValue: initialValue,
           onChanged: onChanged,
           placeholder: placeholder,
+          inputFormatters: inputFormatters,
         )
       ],
     );
