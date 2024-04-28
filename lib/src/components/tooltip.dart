@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 class ShadTooltip extends StatefulWidget {
   const ShadTooltip({
@@ -124,23 +125,36 @@ class _ShadTooltipState extends State<ShadTooltip> {
           verticalOffset: 24,
         );
 
-    return MouseRegion(
-      onEnter: (_) async {
-        hovered = true;
-        if (widget.waitDuration != null) {
-          await Future<void>.delayed(widget.waitDuration!);
-        }
-        if (hovered) {
-          setState(() => visible = true);
-        }
-      },
-      onExit: (_) async {
-        hovered = false;
-        if (widget.showDuration != null) {
-          await Future<void>.delayed(widget.showDuration!);
-        }
-        if (!hovered && !hasFocus) {
-          setState(() => visible = false);
+    return ShadGestureDetector(
+      hoverStrategies: const [
+        ShadHoverMobileStrategy.onTapDown,
+        ShadHoverMobileStrategy.onTap,
+        ShadHoverMobileStrategy.onLongPressDown,
+        ShadHoverMobileStrategy.onLongPressStart,
+      ],
+      unhoverStrategies: const [
+        ShadHoverMobileStrategy.onTapUp,
+        ShadHoverMobileStrategy.onTapCancel,
+        ShadHoverMobileStrategy.onLongPressUp,
+        ShadHoverMobileStrategy.onLongPressCancel,
+      ],
+      hovered: (value) async {
+        if (hovered == value) return;
+        hovered = value;
+        if (value) {
+          if (widget.waitDuration != null) {
+            await Future<void>.delayed(widget.waitDuration!);
+          }
+          if (hovered) {
+            setState(() => visible = true);
+          }
+        } else {
+          if (widget.showDuration != null) {
+            await Future<void>.delayed(widget.showDuration!);
+          }
+          if (!hovered && !hasFocus) {
+            setState(() => visible = false);
+          }
         }
       },
       child: ShadPortal(
