@@ -307,7 +307,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           child: Divider(
             indent: 0,
             endIndent: 0,
-            height: effectiveDividerSize,
+            // height: effectiveDividerSize,
             thickness: effectiveDividerSize,
             color: effectiveDividerColor,
           ),
@@ -345,7 +345,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     for (var i = 0; i < dividersCount; i++) {
       final leadingPosition = effectivesSizes.sublist(0, i + 1).fold<double>(
             0,
-            (previousValue, element) => previousValue + element,
+            (previousValue, element) => previousValue + element - 8,
           );
       dividers.add(
         Positioned(
@@ -397,27 +397,15 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
                 if (dragging.value) return;
                 mouseCursorController.cursor = MouseCursor.defer;
               },
-              child: SizedBox(
-                width: widget.axis == Axis.horizontal
-                    ? effectiveDividerSize
-                    : null,
-                height:
-                    widget.axis == Axis.vertical ? effectiveDividerSize : null,
-                child: effectiveShowHandle
-                    ? Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          divider,
-                          OverflowBox(
-                            maxWidth: effectiveHandleSize.width * 2,
-                            maxHeight: effectiveHandleSize.height * 2,
-                            fit: OverflowBoxFit.deferToChild,
-                            child: handle,
-                          ),
-                        ],
-                      )
-                    : divider,
-              ),
+              child: effectiveShowHandle
+                  ? Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        divider,
+                        handle,
+                      ],
+                    )
+                  : divider,
             ),
           ),
         ),
