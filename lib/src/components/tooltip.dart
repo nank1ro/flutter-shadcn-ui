@@ -138,8 +138,7 @@ class _ShadTooltipState extends State<ShadTooltip> {
     return ShadGestureDetector(
       hoverStrategies: effectiveHoverStrategies,
       hovered: (value) async {
-        if (hoverd == value) return;
-        // TODO: i'm a todo
+        if (hovered == value) return;
         hovered = value;
         if (value) {
           if (widget.waitDuration != null) {
