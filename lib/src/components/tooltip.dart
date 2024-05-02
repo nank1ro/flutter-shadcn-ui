@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
+
+/// Controls the visibility of a [ShadTooltip].
+typedef ShadTooltipController = ShadPopoverController;
 
 class ShadTooltip extends StatefulWidget {
   const ShadTooltip({
@@ -19,6 +23,7 @@ class ShadTooltip extends StatefulWidget {
     this.decoration,
     this.anchor,
     this.hoverStrategies,
+    this.controller,
   });
 
   /// The widget displayed as a tooltip.
@@ -80,25 +85,33 @@ class ShadTooltip extends StatefulWidget {
   /// {@endtemplate}
   final ShadHoverStrategies? hoverStrategies;
 
+  /// The controller that controls the visibility of the [ShadTooltip].
+  final ShadTooltipController? controller;
+
   @override
   State<ShadTooltip> createState() => _ShadTooltipState();
 }
 
 class _ShadTooltipState extends State<ShadTooltip> {
+  ShadTooltipController? _controller;
   bool hovered = false;
-  bool visible = false;
-
   bool get hasFocus => widget.focusNode?.hasFocus ?? false;
+
+  ShadTooltipController get controller => widget.controller ?? _controller!;
 
   @override
   void initState() {
     super.initState();
+    if (widget.controller == null) {
+      _controller = ShadPopoverController();
+    }
     widget.focusNode?.addListener(onFocusChange);
   }
 
   @override
   void dispose() {
     widget.focusNode?.removeListener(onFocusChange);
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -111,9 +124,7 @@ class _ShadTooltipState extends State<ShadTooltip> {
     }
   }
 
-  Future<void> onFocusChange() async {
-    setState(() => visible = hasFocus);
-  }
+  void onFocusChange() => hasFocus ? controller.show() : controller.hide();
 
   @override
   Widget build(BuildContext context) {
@@ -145,42 +156,47 @@ class _ShadTooltipState extends State<ShadTooltip> {
             await Future<void>.delayed(widget.waitDuration!);
           }
           if (hovered) {
-            setState(() => visible = true);
+            controller.show();
           }
         } else {
           if (widget.showDuration != null) {
             await Future<void>.delayed(widget.showDuration!);
           }
           if (!hovered && !hasFocus) {
-            setState(() => visible = false);
+            controller.hide();
           }
         }
       },
-      child: ShadPortal(
-        visible: visible,
-        anchor: effectiveAnchor,
-        portalBuilder: (context) {
-          Widget tooltip = Container(
-            padding: effectivePadding,
-            decoration:
-                effectiveDecoration?.copyWith(boxShadow: effectiveShadows),
-            child: DefaultTextStyle(
-              style: theme.textTheme.muted
-                  .copyWith(color: theme.colorScheme.popoverForeground),
-              textAlign: TextAlign.center,
-              child: widget.builder(context),
-            ),
-          );
+      child: ListenableBuilder(
+        listenable: controller,
+        builder: (context, child) {
+          return ShadPortal(
+            visible: controller.isOpen,
+            anchor: effectiveAnchor,
+            portalBuilder: (context) {
+              Widget tooltip = Container(
+                padding: effectivePadding,
+                decoration:
+                    effectiveDecoration?.copyWith(boxShadow: effectiveShadows),
+                child: DefaultTextStyle(
+                  style: theme.textTheme.muted
+                      .copyWith(color: theme.colorScheme.popoverForeground),
+                  textAlign: TextAlign.center,
+                  child: widget.builder(context),
+                ),
+              );
 
-          if (effectiveEffects.isNotEmpty) {
-            tooltip = Animate(
-              effects: effectiveEffects,
-              child: tooltip,
-            );
-          }
-          return tooltip;
+              if (effectiveEffects.isNotEmpty) {
+                tooltip = Animate(
+                  effects: effectiveEffects,
+                  child: tooltip,
+                );
+              }
+              return tooltip;
+            },
+            child: widget.child,
+          );
         },
-        child: widget.child,
       ),
     );
   }
