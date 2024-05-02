@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 @immutable
 class ShadTooltipTheme {
@@ -14,6 +15,7 @@ class ShadTooltipTheme {
     this.padding,
     this.decoration,
     this.anchor,
+    this.hoverStrategies,
   });
 
   final bool merge;
@@ -39,6 +41,9 @@ class ShadTooltipTheme {
   /// {@macro tooltip.decoration}
   final BoxDecoration? decoration;
 
+  /// {@macro tooltip.hoverStrategies}
+  final ShadHoverStrategies? hoverStrategies;
+
   static ShadTooltipTheme lerp(
     ShadTooltipTheme a,
     ShadTooltipTheme b,
@@ -59,6 +64,7 @@ class ShadTooltipTheme {
     EdgeInsetsGeometry? padding,
     BoxDecoration? decoration,
     ShadAnchorBase? anchor,
+    ShadHoverStrategies? hoverStrategies,
   }) {
     return ShadTooltipTheme(
       merge: merge ?? this.merge,
@@ -69,6 +75,7 @@ class ShadTooltipTheme {
       padding: padding ?? this.padding,
       decoration: decoration ?? this.decoration,
       anchor: anchor ?? this.anchor,
+      hoverStrategies: hoverStrategies ?? this.hoverStrategies,
     );
   }
 
@@ -83,6 +90,7 @@ class ShadTooltipTheme {
       padding: other.padding,
       decoration: other.decoration,
       anchor: other.anchor,
+      hoverStrategies: other.hoverStrategies,
     );
   }
 
@@ -98,7 +106,8 @@ class ShadTooltipTheme {
         listEquals(other.shadows, shadows) &&
         other.padding == padding &&
         other.decoration == decoration &&
-        other.anchor == anchor;
+        other.anchor == anchor &&
+        other.hoverStrategies == hoverStrategies;
   }
 
   @override
@@ -110,6 +119,7 @@ class ShadTooltipTheme {
         shadows.hashCode ^
         padding.hashCode ^
         decoration.hashCode ^
-        anchor.hashCode;
+        anchor.hashCode ^
+        hoverStrategies.hashCode;
   }
 }
