@@ -250,10 +250,10 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     final effectiveShowHandle =
         widget.showHandle ?? theme.resizableTheme.showHandle ?? false;
     final effectiveDividerSize =
-        widget.dividerSize ?? theme.resizableTheme.dividerSize ?? 1;
+        widget.dividerSize ?? theme.resizableTheme.dividerSize ?? 8.0;
 
     final effectiveDividerThickness =
-        widget.dividerThickness ?? theme.resizableTheme.dividerThickness ?? 8.0;
+        widget.dividerThickness ?? theme.resizableTheme.dividerThickness ?? 1.0;
     final effectiveResetOnDoubleTap = widget.resetOnDoubleTap ??
         theme.resizableTheme.resetOnDoubleTap ??
         true;
