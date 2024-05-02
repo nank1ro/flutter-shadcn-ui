@@ -1,3 +1,9 @@
+## 0.4.2
+
+- Add `ShadGestureDetector` with hover strategies for touchscreens.
+- Add `ShadTooltipController` to `ShadTooltip`.
+- Increase the divider size in the `ShadResizable` component.
+
 ## 0.4.1
 
 - Expose `ShadResizableTheme`.
