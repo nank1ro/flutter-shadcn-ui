@@ -23,6 +23,7 @@ import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 
 @immutable
@@ -69,6 +70,7 @@ abstract class ShadBaseTheme {
     required this.accordionTheme,
     required this.tableTheme,
     required this.resizableTheme,
+    required this.hoverStrategies,
   });
 
   final ShadColorScheme colorScheme;
@@ -112,4 +114,5 @@ abstract class ShadBaseTheme {
   final ShadAccordionTheme accordionTheme;
   final ShadTableTheme tableTheme;
   final ShadResizableTheme resizableTheme;
+  final ShadHoverStrategies hoverStrategies;
 }
