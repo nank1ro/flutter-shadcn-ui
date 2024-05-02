@@ -1,3 +1,11 @@
+## 0.4.1
+
+- Expose `ShadResizableTheme`.
+
+## 0.4.0
+
+- Add `ShadResizable` component
+
 ## 0.3.3
 
 - Improve pub dev score

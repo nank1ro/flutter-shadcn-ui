@@ -42,7 +42,7 @@ See the [documentation](https://mariuti.com/shadcn-ui/) to interact with the com
 - [x] [Popover](https://mariuti.com/shadcn-ui/components/popover/)
 - [x] [Progress](https://mariuti.com/shadcn-ui/components/progress/)
 - [x] [RadioGroup](https://mariuti.com/shadcn-ui/components/radio-group/)
-- [ ] Resizable
+- [x] [Resizable](https://mariuti.com/shadcn-ui/components/resizable/)
 - [x] <strike>Scroll Area</strike> Use SingleScrollView, ListView etc. instead
 - [x] [Select](https://mariuti.com/shadcn-ui/components/select/)
 - [x] <strike>Separator</strike> Use Divider instead

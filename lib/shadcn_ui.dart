@@ -31,6 +31,7 @@ export 'src/components/switch.dart';
 export 'src/components/table.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
+export 'src/components/resizable.dart';
 
 // Raw Components
 export 'src/raw_components/portal.dart';
@@ -79,6 +80,7 @@ export 'src/theme/components/toast.dart';
 export 'src/theme/components/tooltip.dart';
 export 'src/theme/text_theme/text_styles_default.dart';
 export 'src/theme/text_theme/theme.dart';
+export 'src/theme/components/resizable.dart';
 
 // Utils
 export 'src/utils/position.dart';
@@ -86,6 +88,8 @@ export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
 export 'src/utils/animation_builder.dart';
 export 'src/utils/extensions.dart';
+export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
+export 'src/utils/gesture_detector.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart';

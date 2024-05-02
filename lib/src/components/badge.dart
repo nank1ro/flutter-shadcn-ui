@@ -3,6 +3,7 @@ import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 enum ShadBadgeVariant {
   primary,
@@ -120,9 +121,8 @@ class _ShadBadgeState extends State<ShadBadge> {
     final theme = ShadTheme.of(context);
     return Semantics(
       container: true,
-      child: MouseRegion(
-        onEnter: (_) => isHovered.value = true,
-        onExit: (_) => isHovered.value = false,
+      child: ShadGestureDetector(
+        onHoverChange: (value) => isHovered.value = value,
         child: ValueListenableBuilder(
           valueListenable: isHovered,
           builder: (context, hovered, child) {

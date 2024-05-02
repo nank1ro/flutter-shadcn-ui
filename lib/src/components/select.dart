@@ -15,6 +15,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 typedef ShadSelectedOptionBuilder<T> = Widget Function(
   BuildContext context,
@@ -547,46 +548,43 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     return Focus(
       focusNode: focusNode,
       canRequestFocus: true,
-      child: MouseRegion(
-        onEnter: (_) => hovered.value = true,
-        onExit: (_) => hovered.value = false,
-        child: GestureDetector(
-          onTap: () => inheritedSelect.select(widget.value),
-          child: ValueListenableBuilder(
-            valueListenable: hovered,
-            builder: (context, hovered, child) {
-              return Container(
-                padding: effectivePadding,
-                decoration: BoxDecoration(
-                  color: hovered ? effectiveHoveredBackgroundColor : null,
-                  borderRadius: effectiveRadius,
-                ),
-                child: child,
-              );
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                widget.selectedIcon ??
-                    Visibility.maintain(
-                      visible: selected,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: ShadImage.square(
-                          LucideIcons.check,
-                          size: 16,
-                          color: theme.colorScheme.popoverForeground,
-                        ),
+      child: ShadGestureDetector(
+        onHoverChange: (value) => hovered.value = value,
+        onTap: () => inheritedSelect.select(widget.value),
+        child: ValueListenableBuilder(
+          valueListenable: hovered,
+          builder: (context, hovered, child) {
+            return Container(
+              padding: effectivePadding,
+              decoration: BoxDecoration(
+                color: hovered ? effectiveHoveredBackgroundColor : null,
+                borderRadius: effectiveRadius,
+              ),
+              child: child,
+            );
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              widget.selectedIcon ??
+                  Visibility.maintain(
+                    visible: selected,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: ShadImage.square(
+                        LucideIcons.check,
+                        size: 16,
+                        color: theme.colorScheme.popoverForeground,
                       ),
                     ),
-                DefaultTextStyle(
-                  style: theme.textTheme.muted.copyWith(
-                    color: theme.colorScheme.popoverForeground,
                   ),
-                  child: widget.child,
+              DefaultTextStyle(
+                style: theme.textTheme.muted.copyWith(
+                  color: theme.colorScheme.popoverForeground,
                 ),
-              ],
-            ),
+                child: widget.child,
+              ),
+            ],
           ),
         ),
       ),

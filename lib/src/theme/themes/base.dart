@@ -14,6 +14,7 @@ import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/progress.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
+import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
@@ -22,6 +23,7 @@ import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 
 @immutable
@@ -67,6 +69,8 @@ abstract class ShadBaseTheme {
     required this.progressTheme,
     required this.accordionTheme,
     required this.tableTheme,
+    required this.resizableTheme,
+    required this.hoverStrategies,
   });
 
   final ShadColorScheme colorScheme;
@@ -109,4 +113,6 @@ abstract class ShadBaseTheme {
   final ShadProgressTheme progressTheme;
   final ShadAccordionTheme accordionTheme;
   final ShadTableTheme tableTheme;
+  final ShadResizableTheme resizableTheme;
+  final ShadHoverStrategies hoverStrategies;
 }
