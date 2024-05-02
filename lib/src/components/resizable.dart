@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -126,6 +125,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
     this.handleIconSrc,
     this.handleIcon,
     this.dividerSize,
+    this.dividerThickness,
     this.onDividerDoubleTap,
     this.resetOnDoubleTap,
     this.dividerColor,
@@ -150,6 +150,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
   final ShadImageSrc? handleIconSrc;
   final Widget? handleIcon;
   final double? dividerSize;
+  final double? dividerThickness;
   final VoidCallback? onDividerDoubleTap;
   final bool? resetOnDoubleTap;
   final Color? dividerColor;
@@ -250,9 +251,13 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
         widget.showHandle ?? theme.resizableTheme.showHandle ?? false;
     final effectiveDividerSize =
         widget.dividerSize ?? theme.resizableTheme.dividerSize ?? 1;
+
+    final effectiveDividerThickness =
+        widget.dividerThickness ?? theme.resizableTheme.dividerThickness ?? 8.0;
     final effectiveResetOnDoubleTap = widget.resetOnDoubleTap ??
         theme.resizableTheme.resetOnDoubleTap ??
         true;
+
     final effectiveDividerColor = widget.dividerColor ??
         theme.resizableTheme.dividerColor ??
         theme.colorScheme.border;
@@ -297,7 +302,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
       Axis.horizontal => VerticalDivider(
           indent: 0,
           endIndent: 0,
-          thickness: effectiveDividerSize,
+          thickness: effectiveDividerThickness,
           width: effectiveDividerSize,
           color: effectiveDividerColor,
         ),
@@ -307,8 +312,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           child: Divider(
             indent: 0,
             endIndent: 0,
-            // height: effectiveDividerSize,
-            thickness: effectiveDividerSize,
+            height: effectiveDividerSize,
+            thickness: effectiveDividerThickness,
             color: effectiveDividerColor,
           ),
         ),
@@ -343,10 +348,11 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
     final dividers = <Widget>[];
     for (var i = 0; i < dividersCount; i++) {
-      final leadingPosition = effectivesSizes.sublist(0, i + 1).fold<double>(
+      var leadingPosition = effectivesSizes.sublist(0, i + 1).fold<double>(
             0,
-            (previousValue, element) => previousValue + element - 8,
+            (previousValue, element) => previousValue + element,
           );
+      leadingPosition -= (effectiveDividerSize - effectiveDividerThickness);
       dividers.add(
         Positioned(
           top: isHorizontal ? 0 : leadingPosition,

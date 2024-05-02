@@ -742,7 +742,8 @@ abstract class ShadComponentDefaultTheme {
   }) {
     return ShadResizableTheme(
       showHandle: false,
-      dividerSize: 1,
+      dividerThickness: 1,
+      dividerSize: 8,
       dividerColor: colorScheme.border,
       resetOnDoubleTap: true,
       handleDecoration: BoxDecoration(
