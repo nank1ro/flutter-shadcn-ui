@@ -5,6 +5,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
 enum ShadButtonVariant {
@@ -531,78 +532,73 @@ class _ShadButtonState extends State<ShadButton> {
                   focused: focused,
                   child: child!,
                 ),
-                child: MouseRegion(
-                  onEnter: (_) {
-                    statesController.update(ShadState.hovered, true);
-                  },
-                  onExit: (_) {
-                    statesController.update(ShadState.hovered, false);
+                child: ShadGestureDetector(
+                  onHoverChange: (value) {
+                    statesController.update(ShadState.hovered, value);
                   },
                   cursor: cursor(theme),
-                  child: GestureDetector(
-                    onLongPress: widget.onLongPress,
-                    onTap: widget.onPressed == null
-                        ? null
-                        : () {
-                            if (!focusNode.hasFocus) {
-                              FocusScope.of(context).unfocus();
-                            }
-                            widget.onPressed!();
-                          },
-                    onTapDown: (_) {
-                      statesController.update(ShadState.pressed, true);
-                    },
-                    onTapUp: (_) {
-                      statesController.update(ShadState.pressed, false);
-                    },
-                    onTapCancel: () {
-                      statesController.update(ShadState.pressed, false);
-                    },
-                    child: Container(
-                      height: height(theme),
-                      width: width(theme),
-                      decoration: BoxDecoration(
-                        color: hasPressedBackgroundColor && pressed
-                            ? pressedBackgroundColor(theme)
-                            : hovered
-                                ? hoverBackground(theme)
-                                : background(theme),
-                        borderRadius: borderRadius(theme),
-                        border: border(theme),
-                        gradient: gradient(theme),
-                        boxShadow: shadows(theme),
-                      ),
-                      padding: padding(theme),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (icon != null) icon,
-                              if (widget.text != null)
-                                DefaultTextStyle(
-                                  style: theme.textTheme.small.copyWith(
-                                    color: hasPressedForegroundColor && pressed
-                                        ? pressedForegroundColor(theme)
-                                        : hovered
-                                            ? hoverForeground(theme)
-                                            : foreground(theme),
-                                    decoration: textDecoration(
-                                      theme,
-                                      hovered: hovered,
-                                    ),
-                                    decorationColor: foreground(theme),
-                                    decorationStyle: TextDecorationStyle.solid,
+                  onLongPress: widget.onLongPress,
+                  onTap: widget.onPressed == null
+                      ? null
+                      : () {
+                          if (!focusNode.hasFocus) {
+                            FocusScope.of(context).unfocus();
+                          }
+                          widget.onPressed!();
+                        },
+                  onTapDown: (_) {
+                    statesController.update(ShadState.pressed, true);
+                  },
+                  onTapUp: (_) {
+                    statesController.update(ShadState.pressed, false);
+                  },
+                  onTapCancel: () {
+                    statesController.update(ShadState.pressed, false);
+                  },
+                  child: Container(
+                    height: height(theme),
+                    width: width(theme),
+                    decoration: BoxDecoration(
+                      color: hasPressedBackgroundColor && pressed
+                          ? pressedBackgroundColor(theme)
+                          : hovered
+                              ? hoverBackground(theme)
+                              : background(theme),
+                      borderRadius: borderRadius(theme),
+                      border: border(theme),
+                      gradient: gradient(theme),
+                      boxShadow: shadows(theme),
+                    ),
+                    padding: padding(theme),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (icon != null) icon,
+                            if (widget.text != null)
+                              DefaultTextStyle(
+                                style: theme.textTheme.small.copyWith(
+                                  color: hasPressedForegroundColor && pressed
+                                      ? pressedForegroundColor(theme)
+                                      : hovered
+                                          ? hoverForeground(theme)
+                                          : foreground(theme),
+                                  decoration: textDecoration(
+                                    theme,
+                                    hovered: hovered,
                                   ),
-                                  textAlign: TextAlign.center,
-                                  child: widget.text!,
+                                  decorationColor: foreground(theme),
+                                  decorationStyle: TextDecorationStyle.solid,
                                 ),
-                            ],
-                          ),
-                        ],
-                      ),
+                                textAlign: TextAlign.center,
+                                child: widget.text!,
+                              ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),

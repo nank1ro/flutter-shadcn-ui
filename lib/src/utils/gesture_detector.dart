@@ -60,8 +60,9 @@ class ShadGestureDetector extends StatelessWidget {
   const ShadGestureDetector({
     super.key,
     required this.child,
+    this.cursor = MouseCursor.defer,
     this.hoverStrategies,
-    this.hovered,
+    this.onHoverChange,
     this.onTap,
     this.onTapDown,
     this.onTapUp,
@@ -78,7 +79,8 @@ class ShadGestureDetector extends StatelessWidget {
   });
 
   final ShadHoverStrategies? hoverStrategies;
-  final ValueChanged<bool>? hovered;
+  final ValueChanged<bool>? onHoverChange;
+  final MouseCursor cursor;
   final Widget child;
   final VoidCallback? onTap;
   final ValueChanged<TapDownDetails>? onTapDown;
@@ -115,18 +117,19 @@ class ShadGestureDetector extends StatelessWidget {
       if (supportsMouse) return;
 
       if (effectiveHoverStrategies.hover.contains(strategy)) {
-        hovered?.call(true);
+        onHoverChange?.call(true);
       } else if (effectiveHoverStrategies.unhover.contains(strategy)) {
-        hovered?.call(false);
+        onHoverChange?.call(false);
       }
     }
 
     return MouseRegion(
+      cursor: cursor,
       onEnter: (_) {
-        hovered?.call(true);
+        onHoverChange?.call(true);
       },
       onExit: (_) {
-        hovered?.call(false);
+        onHoverChange?.call(false);
       },
       child: GestureDetector(
         onTap: onTap,
