@@ -1,28 +1,65 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
-enum ShadHoverMobileStrategy {
-  onTap,
+@immutable
+class ShadHoverStrategies {
+  const ShadHoverStrategies({
+    this.hover = const {},
+    this.unhover = const {},
+  });
+
+  final Set<ShadHoverStrategy> hover;
+  final Set<ShadHoverStrategy> unhover;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShadHoverStrategies &&
+        setEquals(other.hover, hover) &&
+        setEquals(other.unhover, unhover);
+  }
+
+  @override
+  int get hashCode => hover.hashCode ^ unhover.hashCode;
+
+  ShadHoverStrategies copyWith({
+    Set<ShadHoverStrategy>? hover,
+    Set<ShadHoverStrategy>? unhover,
+  }) {
+    return ShadHoverStrategies(
+      hover: hover ?? this.hover,
+      unhover: unhover ?? this.unhover,
+    );
+  }
+}
+
+enum ShadHoverStrategy {
   onTapDown,
   onTapUp,
   onTapCancel,
-  onLongPress,
   onLongPressStart,
   onLongPressCancel,
   onLongPressUp,
   onLongPressDown,
   onLongPressEnd,
-  onDoubleTap,
   onDoubleTapDown,
   onDoubleTapCancel,
 }
 
+/// A special [GestureDetector] that handles the hovering state of the [child]
+/// on devices where the hover is not supported (eg mobile) with the help of
+/// [hoverStrategies].
+///
+/// If the device supports mouse, the [hoverStrategies] will be ignored and
+/// [MouseRegion] will be used instead.
 class ShadGestureDetector extends StatelessWidget {
   const ShadGestureDetector({
     super.key,
     required this.child,
     this.hoverStrategies,
-    this.unhoverStrategies,
     this.hovered,
     this.onTap,
     this.onTapDown,
@@ -39,8 +76,7 @@ class ShadGestureDetector extends StatelessWidget {
     this.onDoubleTapCancel,
   });
 
-  final List<ShadHoverMobileStrategy>? hoverStrategies;
-  final List<ShadHoverMobileStrategy>? unhoverStrategies;
+  final ShadHoverStrategies? hoverStrategies;
   final ValueChanged<bool>? hovered;
   final Widget child;
   final VoidCallback? onTap;
@@ -57,21 +93,33 @@ class ShadGestureDetector extends StatelessWidget {
   final ValueChanged<TapDownDetails>? onDoubleTapDown;
   final VoidCallback? onDoubleTapCancel;
 
-  bool hasStrategy(ShadHoverMobileStrategy strategy) =>
-      hoverStrategies?.contains(strategy) ??
-      unhoverStrategies?.contains(strategy) ??
-      false;
-
-  void setHover(ShadHoverMobileStrategy strategy) {
-    if (hoverStrategies?.contains(strategy) ?? false) {
-      hovered?.call(true);
-    } else if (unhoverStrategies?.contains(strategy) ?? false) {
-      hovered?.call(false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final supportsMouse = switch (defaultTargetPlatform) {
+      TargetPlatform.android ||
+      TargetPlatform.iOS ||
+      TargetPlatform.fuchsia =>
+        false,
+      TargetPlatform.windows ||
+      TargetPlatform.macOS ||
+      TargetPlatform.linux =>
+        true,
+    };
+
+    final effectiveHoverStrategies = hoverStrategies ?? theme.hoverStrategies;
+
+    void setHover(ShadHoverStrategy strategy) {
+      // If the device supports mouse, we don't need to use any hover strategy.
+      if (supportsMouse) return;
+
+      if (effectiveHoverStrategies.hover.contains(strategy)) {
+        hovered?.call(true);
+      } else if (effectiveHoverStrategies.unhover.contains(strategy)) {
+        hovered?.call(false);
+      }
+    }
+
     return MouseRegion(
       onEnter: (_) {
         hovered?.call(true);
@@ -80,62 +128,47 @@ class ShadGestureDetector extends StatelessWidget {
         hovered?.call(false);
       },
       child: GestureDetector(
-        onTap: () {
-          setHover(ShadHoverMobileStrategy.onTap);
-          onTap?.call();
-        },
+        onTap: onTap,
         onTapDown: (d) {
-          print('onTapDown');
-          setHover(ShadHoverMobileStrategy.onTapDown);
+          setHover(ShadHoverStrategy.onTapDown);
           onTapDown?.call(d);
         },
         onTapUp: (d) {
-          print('onTapUp');
-          setHover(ShadHoverMobileStrategy.onTapUp);
+          setHover(ShadHoverStrategy.onTapUp);
           onTapUp?.call(d);
         },
         onTapCancel: () {
-          setHover(ShadHoverMobileStrategy.onTapCancel);
+          setHover(ShadHoverStrategy.onTapCancel);
           onTapCancel?.call();
         },
-        onLongPress: () {
-          setHover(ShadHoverMobileStrategy.onLongPress);
-          onLongPress?.call();
-        },
+        onLongPress: onLongPress,
         onLongPressStart: (d) {
-          print('onLongPressStart');
-          setHover(ShadHoverMobileStrategy.onLongPressStart);
+          setHover(ShadHoverStrategy.onLongPressStart);
           onLongPressStart?.call(d);
         },
         onLongPressCancel: () {
-          print('onLongPressCancel');
-          setHover(ShadHoverMobileStrategy.onLongPressCancel);
+          setHover(ShadHoverStrategy.onLongPressCancel);
           onLongPressCancel?.call();
         },
         onLongPressUp: () {
-          print('onLongPressUp');
-          setHover(ShadHoverMobileStrategy.onLongPressUp);
+          setHover(ShadHoverStrategy.onLongPressUp);
           onLongPressUp?.call();
         },
         onLongPressDown: (d) {
-          print('onLongPressDown');
-          setHover(ShadHoverMobileStrategy.onLongPressDown);
+          setHover(ShadHoverStrategy.onLongPressDown);
           onLongPressDown?.call(d);
         },
         onLongPressEnd: (d) {
-          setHover(ShadHoverMobileStrategy.onLongPressEnd);
+          setHover(ShadHoverStrategy.onLongPressEnd);
           onLongPressEnd?.call(d);
         },
-        onDoubleTap: () {
-          setHover(ShadHoverMobileStrategy.onDoubleTap);
-          onDoubleTap?.call();
-        },
+        onDoubleTap: onDoubleTap,
         onDoubleTapDown: (d) {
-          setHover(ShadHoverMobileStrategy.onDoubleTapDown);
+          setHover(ShadHoverStrategy.onDoubleTapDown);
           onDoubleTapDown?.call(d);
         },
         onDoubleTapCancel: () {
-          setHover(ShadHoverMobileStrategy.onDoubleTapCancel);
+          setHover(ShadHoverStrategy.onDoubleTapCancel);
           onDoubleTapCancel?.call();
         },
         child: child,

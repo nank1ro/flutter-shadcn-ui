@@ -18,6 +18,7 @@ class ShadTooltip extends StatefulWidget {
     this.padding,
     this.decoration,
     this.anchor,
+    this.hoverStrategies,
   });
 
   /// The widget displayed as a tooltip.
@@ -74,6 +75,11 @@ class ShadTooltip extends StatefulWidget {
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
+  /// {@template tooltip.hoverStrategies}
+  /// The hover strategies to use for the tooltip on devices with touchscreens.
+  /// {@endtemplate}
+  final ShadHoverStrategies? hoverStrategies;
+
   @override
   State<ShadTooltip> createState() => _ShadTooltipState();
 }
@@ -125,21 +131,15 @@ class _ShadTooltipState extends State<ShadTooltip> {
           verticalOffset: 24,
         );
 
+    final effectiveHoverStrategies = widget.hoverStrategies ??
+        theme.tooltipTheme.hoverStrategies ??
+        theme.hoverStrategies;
+
     return ShadGestureDetector(
-      hoverStrategies: const [
-        ShadHoverMobileStrategy.onTapDown,
-        ShadHoverMobileStrategy.onTap,
-        ShadHoverMobileStrategy.onLongPressDown,
-        ShadHoverMobileStrategy.onLongPressStart,
-      ],
-      unhoverStrategies: const [
-        ShadHoverMobileStrategy.onTapUp,
-        ShadHoverMobileStrategy.onTapCancel,
-        ShadHoverMobileStrategy.onLongPressUp,
-        ShadHoverMobileStrategy.onLongPressCancel,
-      ],
+      hoverStrategies: effectiveHoverStrategies,
       hovered: (value) async {
-        if (hovered == value) return;
+        if (hoverd == value) return;
+        // TODO: i'm a todo
         hovered = value;
         if (value) {
           if (widget.waitDuration != null) {
