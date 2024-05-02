@@ -14,6 +14,7 @@ See the [documentation](https://mariuti.com/shadcn-ui/) to interact with the com
 
 - [x] [Accordion](https://mariuti.com/shadcn-ui/components/accordion/)
 - [x] [Alert](https://mariuti.com/shadcn-ui/components/alert/)
+- [ ] Breadcrumb
 - [x] [Dialog](https://mariuti.com/shadcn-ui/components/dialog/)
 - [x] [Avatar](https://mariuti.com/shadcn-ui/components/avatar/)
 - [x] [Badge](https://mariuti.com/shadcn-ui/components/badge/)
