@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 @immutable
@@ -96,7 +97,7 @@ class ShadGestureDetector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final supportsMouse = switch (defaultTargetPlatform) {
+    final supportsMouse = switch (Theme.of(context).platform) {
       TargetPlatform.android ||
       TargetPlatform.iOS ||
       TargetPlatform.fuchsia =>
