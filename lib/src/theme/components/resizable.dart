@@ -20,6 +20,7 @@ class ShadResizableTheme {
     this.handleDecoration,
     this.handlePadding,
     this.handleSize,
+    this.dividerThickness,
     this.dividerColor,
   });
 
@@ -36,6 +37,7 @@ class ShadResizableTheme {
   final BoxDecoration? handleDecoration;
   final EdgeInsets? handlePadding;
   final Size? handleSize;
+  final double? dividerThickness;
   final Color? dividerColor;
 
   static ShadResizableTheme lerp(
@@ -60,6 +62,7 @@ class ShadResizableTheme {
       handlePadding: EdgeInsets.lerp(a.handlePadding, b.handlePadding, t),
       handleSize: Size.lerp(a.handleSize, b.handleSize, t),
       dividerColor: Color.lerp(a.dividerColor, b.dividerColor, t),
+      dividerThickness: lerpDouble(a.dividerThickness, b.dividerThickness, t),
     );
   }
 
@@ -80,6 +83,7 @@ class ShadResizableTheme {
       handlePadding: other.handlePadding,
       handleSize: other.handleSize,
       dividerColor: other.dividerColor,
+      dividerThickness: other.dividerThickness,
     );
   }
 
@@ -98,6 +102,7 @@ class ShadResizableTheme {
     EdgeInsets? handlePadding,
     Size? handleSize,
     Color? dividerColor,
+    double? dividerThickness,
   }) {
     return ShadResizableTheme(
       merge: merge ?? this.merge,
@@ -114,6 +119,7 @@ class ShadResizableTheme {
       handlePadding: handlePadding ?? this.handlePadding,
       handleSize: handleSize ?? this.handleSize,
       dividerColor: dividerColor ?? this.dividerColor,
+      dividerThickness: dividerThickness ?? this.dividerThickness,
     );
   }
 
@@ -135,7 +141,8 @@ class ShadResizableTheme {
         other.handleDecoration == handleDecoration &&
         other.handlePadding == handlePadding &&
         other.handleSize == handleSize &&
-        other.dividerColor == dividerColor;
+        other.dividerColor == dividerColor &&
+        other.dividerThickness == dividerThickness;
   }
 
   @override
@@ -153,6 +160,7 @@ class ShadResizableTheme {
         handleDecoration.hashCode ^
         handlePadding.hashCode ^
         handleSize.hashCode ^
-        dividerColor.hashCode;
+        dividerColor.hashCode ^
+        dividerThickness.hashCode;
   }
 }

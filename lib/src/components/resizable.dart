@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -126,6 +125,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
     this.handleIconSrc,
     this.handleIcon,
     this.dividerSize,
+    this.dividerThickness,
     this.onDividerDoubleTap,
     this.resetOnDoubleTap,
     this.dividerColor,
@@ -150,6 +150,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
   final ShadImageSrc? handleIconSrc;
   final Widget? handleIcon;
   final double? dividerSize;
+  final double? dividerThickness;
   final VoidCallback? onDividerDoubleTap;
   final bool? resetOnDoubleTap;
   final Color? dividerColor;
@@ -249,10 +250,14 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     final effectiveShowHandle =
         widget.showHandle ?? theme.resizableTheme.showHandle ?? false;
     final effectiveDividerSize =
-        widget.dividerSize ?? theme.resizableTheme.dividerSize ?? 1;
+        widget.dividerSize ?? theme.resizableTheme.dividerSize ?? 8.0;
+
+    final effectiveDividerThickness =
+        widget.dividerThickness ?? theme.resizableTheme.dividerThickness ?? 1.0;
     final effectiveResetOnDoubleTap = widget.resetOnDoubleTap ??
         theme.resizableTheme.resetOnDoubleTap ??
         true;
+
     final effectiveDividerColor = widget.dividerColor ??
         theme.resizableTheme.dividerColor ??
         theme.colorScheme.border;
@@ -297,7 +302,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
       Axis.horizontal => VerticalDivider(
           indent: 0,
           endIndent: 0,
-          thickness: effectiveDividerSize,
+          thickness: effectiveDividerThickness,
           width: effectiveDividerSize,
           color: effectiveDividerColor,
         ),
@@ -308,7 +313,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
             indent: 0,
             endIndent: 0,
             height: effectiveDividerSize,
-            thickness: effectiveDividerSize,
+            thickness: effectiveDividerThickness,
             color: effectiveDividerColor,
           ),
         ),
@@ -343,10 +348,11 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
     final dividers = <Widget>[];
     for (var i = 0; i < dividersCount; i++) {
-      final leadingPosition = effectivesSizes.sublist(0, i + 1).fold<double>(
+      var leadingPosition = effectivesSizes.sublist(0, i + 1).fold<double>(
             0,
             (previousValue, element) => previousValue + element,
           );
+      leadingPosition -= (effectiveDividerSize - effectiveDividerThickness);
       dividers.add(
         Positioned(
           top: isHorizontal ? 0 : leadingPosition,
@@ -397,27 +403,15 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
                 if (dragging.value) return;
                 mouseCursorController.cursor = MouseCursor.defer;
               },
-              child: SizedBox(
-                width: widget.axis == Axis.horizontal
-                    ? effectiveDividerSize
-                    : null,
-                height:
-                    widget.axis == Axis.vertical ? effectiveDividerSize : null,
-                child: effectiveShowHandle
-                    ? Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          divider,
-                          OverflowBox(
-                            maxWidth: effectiveHandleSize.width * 2,
-                            maxHeight: effectiveHandleSize.height * 2,
-                            fit: OverflowBoxFit.deferToChild,
-                            child: handle,
-                          ),
-                        ],
-                      )
-                    : divider,
-              ),
+              child: effectiveShowHandle
+                  ? Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        divider,
+                        handle,
+                      ],
+                    )
+                  : divider,
             ),
           ),
         ),

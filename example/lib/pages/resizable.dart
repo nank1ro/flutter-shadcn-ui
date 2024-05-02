@@ -31,9 +31,10 @@ class _ResizablePageState extends State<ResizablePage> {
             child: ShadResizablePanelGroup(
               mainAxisSize: MainAxisSize.min,
               height: 200,
+              showHandle: true,
               children: [
                 ShadResizablePanel(
-                  defaultSize: 200,
+                  defaultSize: 150,
                   minSize: 50,
                   maxSize: 300,
                   child: Center(
@@ -41,9 +42,10 @@ class _ResizablePageState extends State<ResizablePage> {
                   ),
                 ),
                 ShadResizablePanel(
-                  defaultSize: 200,
+                  defaultSize: 150,
                   child: ShadResizablePanelGroup(
                     axis: Axis.vertical,
+                    showHandle: true,
                     children: [
                       ShadResizablePanel(
                         defaultSize: 50,
