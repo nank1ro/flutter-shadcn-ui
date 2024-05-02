@@ -102,9 +102,7 @@ class _ShadTooltipState extends State<ShadTooltip> {
   @override
   void initState() {
     super.initState();
-    if (widget.controller == null) {
-      _controller = ShadPopoverController();
-    }
+    if (widget.controller == null) _controller = ShadTooltipController();
     widget.focusNode?.addListener(onFocusChange);
   }
 
