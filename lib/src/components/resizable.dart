@@ -348,11 +348,11 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
     final dividers = <Widget>[];
     for (var i = 0; i < dividersCount; i++) {
-      var leadingPosition = effectivesSizes.sublist(0, i + 1).fold<double>(
-            0,
-            (previousValue, element) => previousValue + element,
-          );
-      leadingPosition -= (effectiveDividerSize - effectiveDividerThickness);
+      final leadingPosition = effectivesSizes.sublist(0, i + 1).fold<double>(
+                0,
+                (previousValue, element) => previousValue + element,
+              ) -
+          (effectiveDividerSize / 2 + effectiveDividerThickness / 2);
       dividers.add(
         Positioned(
           top: isHorizontal ? 0 : leadingPosition,

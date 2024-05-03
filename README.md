@@ -1,5 +1,10 @@
 # Flutter ShadcnUI
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-purple.svg)](https://github.com/nank1ro/flutter-shadcn-ui/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/nank1ro/flutter-shadcn-ui)](https://gitHub.com/nank1ro/flutter-shadcn-ui/stargazers/)
+[![GitHub issues](https://img.shields.io/github/issues/nank1ro/flutter-shadcn-ui)](https://gitHub.com/nank1ro/flutter-shadcn-ui/issues/)
+[![GitHub pull-requests](https://img.shields.io/github/issues-pr/nank1ro/flutter-shadcn-ui.svg)](https://gitHub.com/nank1ro/flutter-shadcn-ui/pull/)
+[![shadcn_ui Pub Version (including pre-releases)](https://img.shields.io/pub/v/shadcn_ui?include_prereleases)](https://pub.dev/packages/shadcn_ui)
 [![](https://dcbadge.vercel.app/api/server/ZhRMAPNh5Y)](https://discord.gg/ZhRMAPNh5Y)
 
 ShadcnUI ported in Flutter.
@@ -59,8 +64,3 @@ See the [documentation](https://mariuti.com/shadcn-ui/) to interact with the com
 - [ ] Toggle
 - [ ] ToggleGroup
 - [x] [Tooltip](https://mariuti.com/shadcn-ui/components/tooltip/)
-
-
-
-
-
