@@ -123,6 +123,8 @@ class ShadTable extends StatefulWidget {
     this.diagonalDragBehavior,
     this.dragStartBehavior,
     this.keyboardDismissBehavior,
+    this.verticalScrollPhysics,
+    this.horizontalScrollPhysics,
   })  : children = null,
         headerBuilder = header,
         footerBuilder = footer,
@@ -158,6 +160,8 @@ class ShadTable extends StatefulWidget {
     this.diagonalDragBehavior,
     this.dragStartBehavior,
     this.keyboardDismissBehavior,
+    this.verticalScrollPhysics,
+    this.horizontalScrollPhysics,
   })  : builder = null,
         assert(children.isNotEmpty, 'children cannot be empty'),
         headerBuilder = null,
@@ -192,6 +196,8 @@ class ShadTable extends StatefulWidget {
   final DiagonalDragBehavior? diagonalDragBehavior;
   final DragStartBehavior? dragStartBehavior;
   final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
+  final ScrollPhysics? verticalScrollPhysics;
+  final ScrollPhysics? horizontalScrollPhysics;
 
   @override
   State<ShadTable> createState() => _ShadTableState();
@@ -315,9 +321,11 @@ class _ShadTableState extends State<ShadTable> {
             rowBuilder: effectiveRowBuilder,
             verticalDetails: ScrollableDetails.vertical(
               controller: widget.verticalScrollController,
+              physics: widget.verticalScrollPhysics,
             ),
             horizontalDetails: ScrollableDetails.horizontal(
               controller: widget.horizontalScrollController,
+              physics: widget.horizontalScrollPhysics,
             ),
             cells: [
               if (widget.header != null) widget.header!.toList(),
@@ -335,9 +343,11 @@ class _ShadTableState extends State<ShadTable> {
           keyboardDismissBehavior: effectiveKeyboardDismissBehavior,
           verticalDetails: ScrollableDetails.vertical(
             controller: widget.verticalScrollController,
+            physics: widget.verticalScrollPhysics,
           ),
           horizontalDetails: ScrollableDetails.horizontal(
             controller: widget.horizontalScrollController,
+            physics: widget.horizontalScrollPhysics,
           ),
           cellBuilder: (context, index) {
             if (index.row == 0 && widget.headerBuilder != null) {
