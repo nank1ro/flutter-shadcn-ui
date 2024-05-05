@@ -321,7 +321,11 @@ class ShadDialog extends StatelessWidget {
                             textAlign: effectiveDescriptionTextAlign,
                             child: description!,
                           ),
-                        if (content != null) content!,
+                        if (content != null)
+                          DefaultTextStyle(
+                            style: effectiveDescriptionStyle,
+                            child: content!,
+                          ),
                         if (actions.isNotEmpty) effectiveActions,
                       ].separatedBy(SizedBox(height: effectiveGap)),
                     ),
