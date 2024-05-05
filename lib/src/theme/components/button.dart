@@ -32,7 +32,10 @@ class ShadButtonTheme {
     this.decoration,
     this.width,
     this.height,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   });
+
   final bool merge;
   final bool applyIconColorFilter;
   final MouseCursor? cursor;
@@ -53,6 +56,8 @@ class ShadButtonTheme {
   final ShadDecoration? decoration;
   final double? width;
   final double? height;
+  final MainAxisAlignment? mainAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
 
   static ShadButtonTheme lerp(
     ShadButtonTheme a,
@@ -88,6 +93,8 @@ class ShadButtonTheme {
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       width: lerpDouble(a.width, b.width, t),
       height: lerpDouble(a.height, b.height, t),
+      mainAxisAlignment: b.mainAxisAlignment,
+      crossAxisAlignment: b.crossAxisAlignment,
     );
   }
 
@@ -112,6 +119,8 @@ class ShadButtonTheme {
     ShadDecoration? decoration,
     double? width,
     double? height,
+    MainAxisAlignment? mainAxisAlignment,
+    CrossAxisAlignment? crossAxisAlignment,
   }) {
     return ShadButtonTheme(
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
@@ -135,6 +144,8 @@ class ShadButtonTheme {
       decoration: decoration ?? this.decoration,
       width: width ?? this.width,
       height: height ?? this.height,
+      mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
     );
   }
 
@@ -160,6 +171,8 @@ class ShadButtonTheme {
       decoration: other.decoration,
       width: other.width,
       height: other.height,
+      mainAxisAlignment: other.mainAxisAlignment,
+      crossAxisAlignment: other.crossAxisAlignment,
     );
   }
 
@@ -186,7 +199,9 @@ class ShadButtonTheme {
         other.hoverTextDecoration == hoverTextDecoration &&
         other.decoration == decoration &&
         other.width == width &&
-        other.height == height;
+        other.height == height &&
+        other.mainAxisAlignment == mainAxisAlignment &&
+        other.crossAxisAlignment == crossAxisAlignment;
   }
 
   @override
@@ -209,7 +224,9 @@ class ShadButtonTheme {
         hoverTextDecoration.hashCode ^
         decoration.hashCode ^
         width.hashCode ^
-        height.hashCode;
+        height.hashCode ^
+        mainAxisAlignment.hashCode ^
+        crossAxisAlignment.hashCode;
   }
 }
 

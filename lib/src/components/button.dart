@@ -54,6 +54,8 @@ class ShadButton extends StatefulWidget {
     this.enabled = true,
     this.onLongPress,
     this.statesController,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   }) : variant = ShadButtonVariant.primary;
 
   const ShadButton.raw({
@@ -86,6 +88,8 @@ class ShadButton extends StatefulWidget {
     this.enabled = true,
     this.onLongPress,
     this.statesController,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   });
 
   const ShadButton.destructive({
@@ -117,6 +121,8 @@ class ShadButton extends StatefulWidget {
     this.enabled = true,
     this.onLongPress,
     this.statesController,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   }) : variant = ShadButtonVariant.destructive;
 
   const ShadButton.outline({
@@ -148,6 +154,8 @@ class ShadButton extends StatefulWidget {
     this.enabled = true,
     this.onLongPress,
     this.statesController,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   }) : variant = ShadButtonVariant.outline;
 
   const ShadButton.secondary({
@@ -179,6 +187,8 @@ class ShadButton extends StatefulWidget {
     this.enabled = true,
     this.onLongPress,
     this.statesController,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   }) : variant = ShadButtonVariant.secondary;
 
   const ShadButton.ghost({
@@ -210,6 +220,8 @@ class ShadButton extends StatefulWidget {
     this.enabled = true,
     this.onLongPress,
     this.statesController,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   }) : variant = ShadButtonVariant.ghost;
 
   const ShadButton.link({
@@ -240,6 +252,8 @@ class ShadButton extends StatefulWidget {
     this.enabled = true,
     this.onLongPress,
     this.statesController,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   })  : variant = ShadButtonVariant.link,
         icon = null;
 
@@ -271,6 +285,8 @@ class ShadButton extends StatefulWidget {
   final ShadDecoration? decoration;
   final bool enabled;
   final ShadStatesController? statesController;
+  final MainAxisAlignment? mainAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
 
   @override
   State<ShadButton> createState() => _ShadButtonState();
@@ -492,6 +508,14 @@ class _ShadButtonState extends State<ShadButton> {
     final effectiveDecoration =
         widget.decoration ?? buttonTheme(theme).decoration ?? theme.decoration;
 
+    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
+        buttonTheme(theme).mainAxisAlignment ??
+        MainAxisAlignment.start;
+
+    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+        buttonTheme(theme).crossAxisAlignment ??
+        CrossAxisAlignment.center;
+
     return ValueListenableBuilder(
       valueListenable: statesController,
       builder: (context, states, _) {
@@ -570,34 +594,30 @@ class _ShadButtonState extends State<ShadButton> {
                       boxShadow: shadows(theme),
                     ),
                     padding: padding(theme),
-                    child: Column(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: effectiveCrossAxisAlignment,
+                      mainAxisAlignment: effectiveMainAxisAlignment,
                       children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (icon != null) icon,
-                            if (widget.text != null)
-                              DefaultTextStyle(
-                                style: theme.textTheme.small.copyWith(
-                                  color: hasPressedForegroundColor && pressed
-                                      ? pressedForegroundColor(theme)
-                                      : hovered
-                                          ? hoverForeground(theme)
-                                          : foreground(theme),
-                                  decoration: textDecoration(
-                                    theme,
-                                    hovered: hovered,
-                                  ),
-                                  decorationColor: foreground(theme),
-                                  decorationStyle: TextDecorationStyle.solid,
-                                ),
-                                textAlign: TextAlign.center,
-                                child: widget.text!,
+                        if (icon != null) icon,
+                        if (widget.text != null)
+                          DefaultTextStyle(
+                            style: theme.textTheme.small.copyWith(
+                              color: hasPressedForegroundColor && pressed
+                                  ? pressedForegroundColor(theme)
+                                  : hovered
+                                      ? hoverForeground(theme)
+                                      : foreground(theme),
+                              decoration: textDecoration(
+                                theme,
+                                hovered: hovered,
                               ),
-                          ],
-                        ),
+                              decorationColor: foreground(theme),
+                              decorationStyle: TextDecorationStyle.solid,
+                            ),
+                            textAlign: TextAlign.center,
+                            child: widget.text!,
+                          ),
                       ],
                     ),
                   ),
