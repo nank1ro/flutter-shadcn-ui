@@ -11,14 +11,14 @@ class ShadPopoverController extends ChangeNotifier {
 
   /// Displays the popover.
   void show() {
-    assert(isOpen == false, 'popover is already visible');
+    if (isOpen) return;
     isOpen = true;
     notifyListeners();
   }
 
   /// Hides the popover.
   void hide() {
-    assert(isOpen == true, 'popover is already hidden');
+    if (!isOpen) return;
     isOpen = false;
     notifyListeners();
   }
