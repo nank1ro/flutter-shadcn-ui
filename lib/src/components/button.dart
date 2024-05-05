@@ -285,7 +285,19 @@ class ShadButton extends StatefulWidget {
   final ShadDecoration? decoration;
   final bool enabled;
   final ShadStatesController? statesController;
+
+  /// {@template ShadButton.mainAxisAlignment}
+  /// The main axis alignment of the button.
+  ///
+  /// Defaults to [MainAxisAlignment.center]
+  /// {@endtemplate}
   final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@template ShadButton.crossAxisAlignment}
+  /// The cross axis alignment of the button.
+  ///
+  /// Defaults to [CrossAxisAlignment.center]
+  /// {@endtemplate}
   final CrossAxisAlignment? crossAxisAlignment;
 
   @override
@@ -510,7 +522,7 @@ class _ShadButtonState extends State<ShadButton> {
 
     final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
         buttonTheme(theme).mainAxisAlignment ??
-        MainAxisAlignment.start;
+        MainAxisAlignment.center;
 
     final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
         buttonTheme(theme).crossAxisAlignment ??

@@ -56,7 +56,11 @@ class ShadButtonTheme {
   final ShadDecoration? decoration;
   final double? width;
   final double? height;
+
+  /// {@macro ShadButton.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@macro ShadButton.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
 
   static ShadButtonTheme lerp(
