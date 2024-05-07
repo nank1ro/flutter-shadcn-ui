@@ -71,6 +71,7 @@ class ShadInput extends StatefulWidget {
     this.spellCheckConfiguration,
     this.magnifierConfiguration = TextMagnifierConfiguration.disabled,
     this.selectionColor,
+    this.backgroundColor,
     this.padding,
     this.border,
     this.radius,
@@ -213,6 +214,8 @@ class ShadInput extends StatefulWidget {
 
   final Color? selectionColor;
 
+  final Color? backgroundColor;
+
   final EdgeInsets? padding;
   final Border? border;
   final BorderRadius? radius;
@@ -320,6 +323,7 @@ class ShadInputState extends State<ShadInput>
               padding: effectivePadding,
               decoration: BoxDecoration(
                 border: effectiveBorder,
+                color: widget.backgroundColor,
                 borderRadius: effectiveRadius,
               ),
               child: _selectionGestureDetectorBuilder.buildGestureDetector(
