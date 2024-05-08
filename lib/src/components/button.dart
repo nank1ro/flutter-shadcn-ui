@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/components/focused.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
@@ -56,6 +57,20 @@ class ShadButton extends StatefulWidget {
     this.statesController,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.hoverStrategies,
+    this.onHoverChange,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onLongPressStart,
+    this.onLongPressCancel,
+    this.onLongPressUp,
+    this.onLongPressDown,
+    this.onLongPressEnd,
+    this.onDoubleTap,
+    this.onDoubleTapDown,
+    this.onDoubleTapCancel,
+    this.longPressDuration,
   }) : variant = ShadButtonVariant.primary;
 
   const ShadButton.raw({
@@ -90,6 +105,20 @@ class ShadButton extends StatefulWidget {
     this.statesController,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.hoverStrategies,
+    this.onHoverChange,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onLongPressStart,
+    this.onLongPressCancel,
+    this.onLongPressUp,
+    this.onLongPressDown,
+    this.onLongPressEnd,
+    this.onDoubleTap,
+    this.onDoubleTapDown,
+    this.onDoubleTapCancel,
+    this.longPressDuration,
   });
 
   const ShadButton.destructive({
@@ -123,6 +152,20 @@ class ShadButton extends StatefulWidget {
     this.statesController,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.hoverStrategies,
+    this.onHoverChange,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onLongPressStart,
+    this.onLongPressCancel,
+    this.onLongPressUp,
+    this.onLongPressDown,
+    this.onLongPressEnd,
+    this.onDoubleTap,
+    this.onDoubleTapDown,
+    this.onDoubleTapCancel,
+    this.longPressDuration,
   }) : variant = ShadButtonVariant.destructive;
 
   const ShadButton.outline({
@@ -156,6 +199,20 @@ class ShadButton extends StatefulWidget {
     this.statesController,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.hoverStrategies,
+    this.onHoverChange,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onLongPressStart,
+    this.onLongPressCancel,
+    this.onLongPressUp,
+    this.onLongPressDown,
+    this.onLongPressEnd,
+    this.onDoubleTap,
+    this.onDoubleTapDown,
+    this.onDoubleTapCancel,
+    this.longPressDuration,
   }) : variant = ShadButtonVariant.outline;
 
   const ShadButton.secondary({
@@ -189,6 +246,20 @@ class ShadButton extends StatefulWidget {
     this.statesController,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.hoverStrategies,
+    this.onHoverChange,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onLongPressStart,
+    this.onLongPressCancel,
+    this.onLongPressUp,
+    this.onLongPressDown,
+    this.onLongPressEnd,
+    this.onDoubleTap,
+    this.onDoubleTapDown,
+    this.onDoubleTapCancel,
+    this.longPressDuration,
   }) : variant = ShadButtonVariant.secondary;
 
   const ShadButton.ghost({
@@ -222,6 +293,20 @@ class ShadButton extends StatefulWidget {
     this.statesController,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.hoverStrategies,
+    this.onHoverChange,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onLongPressStart,
+    this.onLongPressCancel,
+    this.onLongPressUp,
+    this.onLongPressDown,
+    this.onLongPressEnd,
+    this.onDoubleTap,
+    this.onDoubleTapDown,
+    this.onDoubleTapCancel,
+    this.longPressDuration,
   }) : variant = ShadButtonVariant.ghost;
 
   const ShadButton.link({
@@ -254,6 +339,20 @@ class ShadButton extends StatefulWidget {
     this.statesController,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.hoverStrategies,
+    this.onHoverChange,
+    this.onTapDown,
+    this.onTapUp,
+    this.onTapCancel,
+    this.onLongPressStart,
+    this.onLongPressCancel,
+    this.onLongPressUp,
+    this.onLongPressDown,
+    this.onLongPressEnd,
+    this.onDoubleTap,
+    this.onDoubleTapDown,
+    this.onDoubleTapCancel,
+    this.longPressDuration,
   })  : variant = ShadButtonVariant.link,
         icon = null;
 
@@ -299,6 +398,21 @@ class ShadButton extends StatefulWidget {
   /// Defaults to [CrossAxisAlignment.center]
   /// {@endtemplate}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  final ShadHoverStrategies? hoverStrategies;
+  final ValueChanged<bool>? onHoverChange;
+  final ValueChanged<TapDownDetails>? onTapDown;
+  final ValueChanged<TapUpDetails>? onTapUp;
+  final VoidCallback? onTapCancel;
+  final ValueChanged<LongPressStartDetails>? onLongPressStart;
+  final VoidCallback? onLongPressCancel;
+  final VoidCallback? onLongPressUp;
+  final ValueChanged<LongPressDownDetails>? onLongPressDown;
+  final ValueChanged<LongPressEndDetails>? onLongPressEnd;
+  final VoidCallback? onDoubleTap;
+  final ValueChanged<TapDownDetails>? onDoubleTapDown;
+  final VoidCallback? onDoubleTapCancel;
+  final Duration? longPressDuration;
 
   @override
   State<ShadButton> createState() => _ShadButtonState();
@@ -528,6 +642,9 @@ class _ShadButtonState extends State<ShadButton> {
         buttonTheme(theme).crossAxisAlignment ??
         CrossAxisAlignment.center;
 
+    final effectiveLongPressDuration =
+        widget.longPressDuration ?? buttonTheme(theme).longPressDuration;
+
     return ValueListenableBuilder(
       valueListenable: statesController,
       builder: (context, states, _) {
@@ -582,15 +699,27 @@ class _ShadButtonState extends State<ShadButton> {
                           }
                           widget.onPressed!();
                         },
-                  onTapDown: (_) {
+                  onTapDown: (details) {
                     statesController.update(ShadState.pressed, true);
+                    widget.onTapDown?.call(details);
                   },
-                  onTapUp: (_) {
+                  onTapUp: (details) {
                     statesController.update(ShadState.pressed, false);
+                    widget.onTapUp?.call(details);
                   },
                   onTapCancel: () {
                     statesController.update(ShadState.pressed, false);
+                    widget.onTapCancel?.call();
                   },
+                  onDoubleTap: widget.onDoubleTap,
+                  onDoubleTapDown: widget.onDoubleTapDown,
+                  onDoubleTapCancel: widget.onDoubleTapCancel,
+                  onLongPressCancel: widget.onLongPressCancel,
+                  onLongPressEnd: widget.onLongPressEnd,
+                  onLongPressUp: widget.onLongPressUp,
+                  onLongPressDown: widget.onLongPressDown,
+                  onLongPressStart: widget.onLongPressStart,
+                  longPressDuration: effectiveLongPressDuration,
                   child: Container(
                     height: height(theme),
                     width: width(theme),

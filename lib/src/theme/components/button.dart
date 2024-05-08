@@ -34,6 +34,7 @@ class ShadButtonTheme {
     this.height,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.longPressDuration,
   });
 
   final bool merge;
@@ -56,6 +57,7 @@ class ShadButtonTheme {
   final ShadDecoration? decoration;
   final double? width;
   final double? height;
+  final Duration? longPressDuration;
 
   /// {@macro ShadButton.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
@@ -99,6 +101,10 @@ class ShadButtonTheme {
       height: lerpDouble(a.height, b.height, t),
       mainAxisAlignment: b.mainAxisAlignment,
       crossAxisAlignment: b.crossAxisAlignment,
+      longPressDuration:
+          a.longPressDuration != null && b.longPressDuration != null
+              ? lerpDuration(a.longPressDuration!, b.longPressDuration!, t)
+              : b.longPressDuration,
     );
   }
 
@@ -125,6 +131,7 @@ class ShadButtonTheme {
     double? height,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
+    Duration? longPressDuration,
   }) {
     return ShadButtonTheme(
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
@@ -150,6 +157,7 @@ class ShadButtonTheme {
       height: height ?? this.height,
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
+      longPressDuration: longPressDuration ?? this.longPressDuration,
     );
   }
 
@@ -177,6 +185,7 @@ class ShadButtonTheme {
       height: other.height,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
+      longPressDuration: other.longPressDuration,
     );
   }
 
@@ -205,7 +214,8 @@ class ShadButtonTheme {
         other.width == width &&
         other.height == height &&
         other.mainAxisAlignment == mainAxisAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment;
+        other.crossAxisAlignment == crossAxisAlignment &&
+        other.longPressDuration == longPressDuration;
   }
 
   @override
@@ -230,7 +240,8 @@ class ShadButtonTheme {
         width.hashCode ^
         height.hashCode ^
         mainAxisAlignment.hashCode ^
-        crossAxisAlignment.hashCode;
+        crossAxisAlignment.hashCode ^
+        longPressDuration.hashCode;
   }
 }
 
