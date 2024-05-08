@@ -307,17 +307,19 @@ class ShadDecorator extends StatelessWidget {
             ),
           Stack(
             children: [
+              child,
               if (isEmpty && placeholder != null)
                 Positioned.fill(
-                  child: Align(
-                    alignment: effectivePlaceholderAlignment,
-                    child: DefaultTextStyle(
-                      style: effectivePlaceholderStyle,
-                      child: placeholder!,
+                  child: IgnorePointer(
+                    child: Align(
+                      alignment: effectivePlaceholderAlignment,
+                      child: DefaultTextStyle(
+                        style: effectivePlaceholderStyle,
+                        child: placeholder!,
+                      ),
                     ),
                   ),
                 ),
-              child,
             ],
           ),
           if (description != null)
