@@ -16,7 +16,6 @@ class ShadInput extends StatefulWidget {
     this.focusNode,
     this.decoration,
     this.undoController,
-    this.inputDecoration = const InputDecoration(),
     TextInputType? keyboardType,
     this.textInputAction,
     this.textCapitalization = TextCapitalization.none,
@@ -99,8 +98,6 @@ class ShadInput extends StatefulWidget {
   final TextEditingController? controller;
 
   final FocusNode? focusNode;
-
-  final InputDecoration? inputDecoration;
 
   final TextInputType keyboardType;
 
