@@ -4,14 +4,18 @@ import 'package:flutter_solidart/flutter_solidart.dart';
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
     super.key,
-    required this.title,
-  });
+    this.title,
+    this.titleWidget,
+  }) : assert((title != null) ^ (titleWidget != null),
+            'Must provide either title or titleWidget');
 
-  final String title;
+  final String? title;
+  final Widget? titleWidget;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title),
+      title: titleWidget ?? Text(title!),
       centerTitle: true,
       actions: [
         Padding(

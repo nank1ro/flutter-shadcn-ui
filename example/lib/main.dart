@@ -112,30 +112,59 @@ class App extends StatelessWidget {
   }
 }
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  final search = Signal('');
+
+  @override
+  void dispose() {
+    search.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(title: 'Shadcn UI'),
-      body: ListView.builder(
-        itemCount: routes.length,
-        itemBuilder: (BuildContext context, int index) {
-          final route = routes.keys.elementAt(index);
+      appBar: MyAppBar(
+        titleWidget: ShadInput(
+          placeholder: const Text('Search ShadcnUI component'),
+          onChanged: search.set,
+        ),
+      ),
+      body: SignalBuilder(
+        signal: search,
+        builder: (context, searchString, child) {
+          final filteredRoutes = {
+            for (final k in routes.keys.where(
+                (k) => k.toLowerCase().contains(searchString.toLowerCase())))
+              k: routes[k]!
+          };
 
-          final name = route.replaceAllMapped(
-            routeToNameRegex,
-            (match) => match.group(0)!.substring(1).toUpperCase(),
-          );
+          return ListView.builder(
+            itemCount: filteredRoutes.length,
+            itemBuilder: (BuildContext context, int index) {
+              final route = filteredRoutes.keys.elementAt(index);
 
-          return Material(
-            child: ListTile(
-              title: Text(name),
-              onTap: () {
-                Navigator.of(context).pushNamed(route);
-              },
-            ),
+              final name = route.replaceAllMapped(
+                routeToNameRegex,
+                (match) => match.group(0)!.substring(1).toUpperCase(),
+              );
+
+              return Material(
+                child: ListTile(
+                  title: Text(name),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(route);
+                  },
+                ),
+              );
+            },
           );
         },
       ),
