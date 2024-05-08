@@ -645,6 +645,10 @@ class _ShadButtonState extends State<ShadButton> {
     final effectiveLongPressDuration =
         widget.longPressDuration ?? buttonTheme(theme).longPressDuration;
 
+    final effectiveHoverStrategies = widget.hoverStrategies ??
+        buttonTheme(theme).hoverStrategies ??
+        theme.hoverStrategies;
+
     return ValueListenableBuilder(
       valueListenable: statesController,
       builder: (context, states, _) {
@@ -689,6 +693,7 @@ class _ShadButtonState extends State<ShadButton> {
                   onHoverChange: (value) {
                     statesController.update(ShadState.hovered, value);
                   },
+                  hoverStrategies: effectiveHoverStrategies,
                   cursor: cursor(theme),
                   onLongPress: widget.onLongPress,
                   onTap: widget.onPressed == null
