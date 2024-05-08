@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 /// The theme for ShadButton.
 ///
@@ -34,6 +35,8 @@ class ShadButtonTheme {
     this.height,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.longPressDuration,
+    this.hoverStrategies,
   });
 
   final bool merge;
@@ -56,6 +59,8 @@ class ShadButtonTheme {
   final ShadDecoration? decoration;
   final double? width;
   final double? height;
+  final Duration? longPressDuration;
+  final ShadHoverStrategies? hoverStrategies;
 
   /// {@macro ShadButton.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
@@ -99,6 +104,11 @@ class ShadButtonTheme {
       height: lerpDouble(a.height, b.height, t),
       mainAxisAlignment: b.mainAxisAlignment,
       crossAxisAlignment: b.crossAxisAlignment,
+      longPressDuration:
+          a.longPressDuration != null && b.longPressDuration != null
+              ? lerpDuration(a.longPressDuration!, b.longPressDuration!, t)
+              : b.longPressDuration,
+      hoverStrategies: b.hoverStrategies,
     );
   }
 
@@ -125,6 +135,8 @@ class ShadButtonTheme {
     double? height,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
+    Duration? longPressDuration,
+    ShadHoverStrategies? hoverStrategies,
   }) {
     return ShadButtonTheme(
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
@@ -150,6 +162,8 @@ class ShadButtonTheme {
       height: height ?? this.height,
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
+      longPressDuration: longPressDuration ?? this.longPressDuration,
+      hoverStrategies: hoverStrategies ?? this.hoverStrategies,
     );
   }
 
@@ -177,6 +191,8 @@ class ShadButtonTheme {
       height: other.height,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
+      longPressDuration: other.longPressDuration,
+      hoverStrategies: other.hoverStrategies,
     );
   }
 
@@ -205,7 +221,9 @@ class ShadButtonTheme {
         other.width == width &&
         other.height == height &&
         other.mainAxisAlignment == mainAxisAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment;
+        other.crossAxisAlignment == crossAxisAlignment &&
+        other.longPressDuration == longPressDuration &&
+        other.hoverStrategies == hoverStrategies;
   }
 
   @override
@@ -230,7 +248,9 @@ class ShadButtonTheme {
         width.hashCode ^
         height.hashCode ^
         mainAxisAlignment.hashCode ^
-        crossAxisAlignment.hashCode;
+        crossAxisAlignment.hashCode ^
+        longPressDuration.hashCode ^
+        hoverStrategies.hashCode;
   }
 }
 

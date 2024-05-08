@@ -16,6 +16,7 @@ class ShadTooltipTheme {
     this.decoration,
     this.anchor,
     this.hoverStrategies,
+    this.longPressDuration,
   });
 
   final bool merge;
@@ -44,6 +45,8 @@ class ShadTooltipTheme {
   /// {@macro tooltip.hoverStrategies}
   final ShadHoverStrategies? hoverStrategies;
 
+  final Duration? longPressDuration;
+
   static ShadTooltipTheme lerp(
     ShadTooltipTheme a,
     ShadTooltipTheme b,
@@ -52,6 +55,22 @@ class ShadTooltipTheme {
     if (identical(a, b)) return a;
     return ShadTooltipTheme(
       merge: b.merge,
+      waitDuration: a.waitDuration != null && b.waitDuration != null
+          ? lerpDuration(a.waitDuration!, b.waitDuration!, t)
+          : b.waitDuration,
+      showDuration: a.showDuration != null && b.showDuration != null
+          ? lerpDuration(a.showDuration!, b.showDuration!, t)
+          : b.showDuration,
+      effects: b.effects,
+      shadows: b.shadows,
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      decoration: BoxDecoration.lerp(a.decoration, b.decoration, t),
+      anchor: b.anchor,
+      hoverStrategies: b.hoverStrategies,
+      longPressDuration:
+          a.longPressDuration != null && b.longPressDuration != null
+              ? lerpDuration(a.longPressDuration!, b.longPressDuration!, t)
+              : b.longPressDuration,
     );
   }
 
@@ -65,6 +84,7 @@ class ShadTooltipTheme {
     BoxDecoration? decoration,
     ShadAnchorBase? anchor,
     ShadHoverStrategies? hoverStrategies,
+    Duration? longPressDuration,
   }) {
     return ShadTooltipTheme(
       merge: merge ?? this.merge,
@@ -76,6 +96,7 @@ class ShadTooltipTheme {
       decoration: decoration ?? this.decoration,
       anchor: anchor ?? this.anchor,
       hoverStrategies: hoverStrategies ?? this.hoverStrategies,
+      longPressDuration: longPressDuration ?? this.longPressDuration,
     );
   }
 
@@ -91,6 +112,7 @@ class ShadTooltipTheme {
       decoration: other.decoration,
       anchor: other.anchor,
       hoverStrategies: other.hoverStrategies,
+      longPressDuration: other.longPressDuration,
     );
   }
 
@@ -107,7 +129,8 @@ class ShadTooltipTheme {
         other.padding == padding &&
         other.decoration == decoration &&
         other.anchor == anchor &&
-        other.hoverStrategies == hoverStrategies;
+        other.hoverStrategies == hoverStrategies &&
+        other.longPressDuration == longPressDuration;
   }
 
   @override
@@ -120,6 +143,7 @@ class ShadTooltipTheme {
         padding.hashCode ^
         decoration.hashCode ^
         anchor.hashCode ^
-        hoverStrategies.hashCode;
+        hoverStrategies.hashCode ^
+        longPressDuration.hashCode;
   }
 }

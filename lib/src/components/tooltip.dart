@@ -24,6 +24,7 @@ class ShadTooltip extends StatefulWidget {
     this.anchor,
     this.hoverStrategies,
     this.controller,
+    this.longPressDuration,
   });
 
   /// The widget displayed as a tooltip.
@@ -88,6 +89,8 @@ class ShadTooltip extends StatefulWidget {
   /// The controller that controls the visibility of the [ShadTooltip].
   final ShadTooltipController? controller;
 
+  final Duration? longPressDuration;
+
   @override
   State<ShadTooltip> createState() => _ShadTooltipState();
 }
@@ -144,7 +147,11 @@ class _ShadTooltipState extends State<ShadTooltip> {
         theme.tooltipTheme.hoverStrategies ??
         theme.hoverStrategies;
 
+    final effectiveLongPressDuration =
+        widget.longPressDuration ?? theme.tooltipTheme.longPressDuration;
+
     return ShadGestureDetector(
+      longPressDuration: effectiveLongPressDuration,
       hoverStrategies: effectiveHoverStrategies,
       onHoverChange: (value) async {
         if (hovered == value) return;

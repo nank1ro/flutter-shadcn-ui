@@ -334,6 +334,7 @@ class ShadInputState extends State<ShadInput>
                   readOnly: widget.readOnly,
                   focusNode: focusNode,
                   style: effectiveTextStyle,
+                  strutStyle: widget.strutStyle,
                   cursorColor: widget.cursorColor ?? theme.colorScheme.primary,
                   backgroundCursorColor: Colors.grey,
                   selectionColor: focused
