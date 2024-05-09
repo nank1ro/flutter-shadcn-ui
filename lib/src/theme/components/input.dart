@@ -10,6 +10,7 @@ class ShadInputTheme {
     this.border,
     this.radius,
     this.backgroundColor,
+    this.style,
   });
 
   final bool merge;
@@ -18,6 +19,7 @@ class ShadInputTheme {
   final Border? border;
   final BorderRadius? radius;
   final Color? backgroundColor;
+  final TextStyle? style;
 
   static ShadInputTheme lerp(
     ShadInputTheme a,
@@ -32,6 +34,7 @@ class ShadInputTheme {
       border: Border.lerp(a.border, b.border, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      style: TextStyle.lerp(a.style, b.style, t),
     );
   }
 
@@ -42,6 +45,7 @@ class ShadInputTheme {
     Border? border,
     BorderRadius? radius,
     Color? backgroundColor,
+    TextStyle? style,
   }) {
     return ShadInputTheme(
       merge: merge ?? this.merge,
@@ -50,6 +54,7 @@ class ShadInputTheme {
       border: border ?? this.border,
       radius: radius ?? this.radius,
       backgroundColor: backgroundColor ?? this.backgroundColor,
+      style: style ?? this.style,
     );
   }
 
@@ -62,6 +67,7 @@ class ShadInputTheme {
       border: other.border,
       radius: other.radius,
       backgroundColor: other.backgroundColor,
+      style: other.style,
     );
   }
 
@@ -75,7 +81,8 @@ class ShadInputTheme {
         other.padding == padding &&
         other.border == border &&
         other.radius == radius &&
-        other.backgroundColor == backgroundColor;
+        other.backgroundColor == backgroundColor &&
+        other.style == style;
   }
 
   @override
@@ -85,6 +92,7 @@ class ShadInputTheme {
         padding.hashCode ^
         border.hashCode ^
         radius.hashCode ^
-        backgroundColor.hashCode;
+        backgroundColor.hashCode ^
+        style.hashCode;
   }
 }
