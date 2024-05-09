@@ -9,6 +9,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 48,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -17,6 +18,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: -0.4,
       fontFamily: family,
       color: colorScheme.foreground,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
@@ -25,6 +28,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 36,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -33,6 +37,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: -0.4,
       fontFamily: family,
       color: colorScheme.foreground,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
@@ -41,6 +47,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 30,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -49,6 +56,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: -0.4,
       fontFamily: family,
       color: colorScheme.foreground,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
@@ -57,6 +66,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 24,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -65,6 +75,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: -0.4,
       fontFamily: family,
       color: colorScheme.foreground,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
@@ -73,6 +85,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 20,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -81,6 +94,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: -0.4,
       fontFamily: family,
       color: colorScheme.foreground,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
@@ -89,6 +104,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 16,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -97,6 +113,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       fontFamily: family,
       color: colorScheme.foreground,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
@@ -105,6 +123,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 16,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.italic,
@@ -113,6 +132,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       fontFamily: family,
       color: colorScheme.foreground,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
@@ -121,6 +142,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 16,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -129,6 +151,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       fontFamily: family,
       color: colorScheme.foreground,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
@@ -137,6 +161,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 16,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -145,6 +170,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       fontFamily: family,
       color: colorScheme.foreground,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
@@ -153,6 +180,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 20,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -161,6 +189,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       color: colorScheme.mutedForeground,
       fontFamily: family,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
@@ -169,6 +199,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 18,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -177,6 +208,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       fontFamily: family,
       color: colorScheme.foreground,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
@@ -185,6 +218,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 14,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -193,6 +227,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       fontFamily: family,
       color: colorScheme.foreground,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
@@ -201,6 +237,7 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
+      inherit: false,
       fontSize: 14,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -209,6 +246,8 @@ abstract class ShadTextDefaultTheme {
       letterSpacing: 0,
       color: colorScheme.mutedForeground,
       fontFamily: family,
+      textBaseline: TextBaseline.alphabetic,
+      leadingDistribution: TextLeadingDistribution.even,
     );
   }
 }
