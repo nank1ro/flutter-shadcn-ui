@@ -1,3 +1,17 @@
+## 0.4.4
+
+- Add `horizontalScrollPhysics` and `verticalScrollPhysics` to `ShadTable`
+- Add `mainAxisAlignment` and `crossAxisAlignment` to `ShadButton`
+- Fix `ShadDialog` content adding default text style
+- Remove popover asserts and ignore operation if already opened/closed.
+- Add `longPressDuration` to `ShadGestureDetector`
+- Add `hoverStrategies` to ShadButtonTheme's
+- Fix use `strutStyle` in `ShadInput`
+- Add `backgroundColor` to `ShadInput` and `ShadInputFormField` (thanks to @Dredayduncan)
+- Remove `inputDecoration` from `ShadInput`
+- Put `placeholder` on top of `ShadInput`
+- Fix text style alignment
+
 ## 0.4.3
 
 - Fix `ShadResizable` divider position
