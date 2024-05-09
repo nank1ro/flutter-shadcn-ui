@@ -96,7 +96,13 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/input',
-      builder: (context, state) => const InputPage(),
+      builder: (context, state) {
+        final style =
+            state.uri.queryParameters['style'] ?? InputStyle.email.name;
+        return InputPage(
+          style: InputStyle.values.byName(style),
+        );
+      },
     ),
     GoRoute(
       path: '/popover',
