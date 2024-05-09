@@ -83,10 +83,8 @@ class ShadDecoration {
     this.errorStyle,
     this.descriptionStyle,
     this.labelPadding,
-    this.placeholderStyle,
     this.descriptionPadding,
     this.errorPadding,
-    this.placeholderAlignment,
   });
 
   static const ShadDecoration none = ShadDecoration(merge: false);
@@ -97,12 +95,10 @@ class ShadDecoration {
   final ShadBorder? border;
   final ShadBorder? focusedBorder;
   final TextStyle? errorStyle;
-  final TextStyle? placeholderStyle;
   final TextStyle? descriptionStyle;
   final EdgeInsets? labelPadding;
   final EdgeInsets? descriptionPadding;
   final EdgeInsets? errorPadding;
-  final AlignmentGeometry? placeholderAlignment;
 
   static ShadDecoration? lerp(
     ShadDecoration? a,
@@ -123,13 +119,6 @@ class ShadDecoration {
       descriptionPadding:
           EdgeInsets.lerp(a?.descriptionPadding, b?.descriptionPadding, t),
       errorPadding: EdgeInsets.lerp(a?.errorPadding, b?.errorPadding, t),
-      placeholderStyle:
-          TextStyle.lerp(a?.placeholderStyle, b?.placeholderStyle, t),
-      placeholderAlignment: AlignmentGeometry.lerp(
-        a?.placeholderAlignment,
-        b?.placeholderAlignment,
-        t,
-      ),
     );
   }
 
@@ -146,8 +135,6 @@ class ShadDecoration {
       labelPadding: other.labelPadding ?? labelPadding,
       descriptionPadding: other.descriptionPadding ?? descriptionPadding,
       errorPadding: other.errorPadding ?? errorPadding,
-      placeholderStyle: other.placeholderStyle ?? placeholderStyle,
-      placeholderAlignment: other.placeholderAlignment ?? placeholderAlignment,
     );
   }
 
@@ -161,8 +148,6 @@ class ShadDecoration {
     EdgeInsets? labelPadding,
     EdgeInsets? descriptionPadding,
     EdgeInsets? errorPadding,
-    TextStyle? placeholderStyle,
-    AlignmentGeometry? placeholderAlignment,
   }) {
     return ShadDecoration(
       border: border ?? this.border,
@@ -174,8 +159,6 @@ class ShadDecoration {
       labelPadding: labelPadding ?? this.labelPadding,
       descriptionPadding: descriptionPadding ?? this.descriptionPadding,
       errorPadding: errorPadding ?? this.errorPadding,
-      placeholderStyle: placeholderStyle ?? this.placeholderStyle,
-      placeholderAlignment: placeholderAlignment ?? this.placeholderAlignment,
     );
   }
 
@@ -192,9 +175,7 @@ class ShadDecoration {
         other.descriptionStyle == descriptionStyle &&
         other.labelPadding == labelPadding &&
         other.descriptionPadding == descriptionPadding &&
-        other.errorPadding == errorPadding &&
-        other.placeholderStyle == placeholderStyle &&
-        other.placeholderAlignment == placeholderAlignment;
+        other.errorPadding == errorPadding;
   }
 
   @override
@@ -207,9 +188,7 @@ class ShadDecoration {
       descriptionStyle.hashCode ^
       labelPadding.hashCode ^
       descriptionPadding.hashCode ^
-      errorPadding.hashCode ^
-      placeholderStyle.hashCode ^
-      placeholderAlignment.hashCode;
+      errorPadding.hashCode;
 }
 
 class ShadDecorator extends StatelessWidget {
@@ -219,11 +198,9 @@ class ShadDecorator extends StatelessWidget {
     this.decoration,
     this.hasError = false,
     this.focused = false,
-    this.isEmpty = false,
     this.label,
     this.error,
     this.description,
-    this.placeholder,
   });
 
   /// The child to decorate.
@@ -235,15 +212,12 @@ class ShadDecorator extends StatelessWidget {
   /// Whether the child has focus, defaults to false.
   final bool focused;
 
-  final bool isEmpty;
-
   final bool hasError;
 
   final Widget? label;
 
   final Widget? error;
   final Widget? description;
-  final Widget? placeholder;
 
   @override
   Widget build(BuildContext context) {
@@ -275,12 +249,6 @@ class ShadDecorator extends StatelessWidget {
           );
     }
 
-    final effectivePlaceholderStyle =
-        effectiveDecoration.placeholderStyle ?? theme.textTheme.muted;
-
-    final effectivePlaceholderAlignment =
-        effectiveDecoration.placeholderAlignment ?? Alignment.topLeft;
-
     return Container(
       decoration: BoxDecoration(
         border: border?.width == null && border?.color == null
@@ -305,23 +273,7 @@ class ShadDecorator extends StatelessWidget {
                 child: label!,
               ),
             ),
-          Stack(
-            children: [
-              child,
-              if (isEmpty && placeholder != null)
-                Positioned.fill(
-                  child: IgnorePointer(
-                    child: Align(
-                      alignment: effectivePlaceholderAlignment,
-                      child: DefaultTextStyle(
-                        style: effectivePlaceholderStyle,
-                        child: placeholder!,
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
+          child,
           if (description != null)
             Padding(
               padding: effectiveDecoration.descriptionPadding ??
