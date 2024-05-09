@@ -273,6 +273,7 @@ class ShadInputState extends State<ShadInput>
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final effectiveTextStyle = widget.style ??
+        theme.inputTheme.style ??
         theme.textTheme.muted.copyWith(
           color: theme.colorScheme.foreground,
         );
@@ -305,7 +306,10 @@ class ShadInputState extends State<ShadInput>
                 isEmpty: textEditingValue.text.isEmpty,
                 placeholder: Padding(
                   padding: EdgeInsets.only(
-                    top: effectivePadding.top + effectiveBorder.top.width,
+                    // This +1 is to fix the position of the placeholder to
+                    // align with the text, I don't know from where it comes
+                    // from. If you figure out why, please let me know on GitHub
+                    top: effectivePadding.top + effectiveBorder.top.width + 1,
                     left: effectivePadding.left + effectiveBorder.left.width,
                     right: effectivePadding.right + effectiveBorder.right.width,
                     bottom:
