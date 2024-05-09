@@ -1,3 +1,8 @@
+## 0.4.5
+
+- Remove `placeholderStyle` and `placeholderAlignment` from `ShadDecoration` and move to `ShadInput` and `ShadInputFormField`
+- Add `suffix` and `prefix` to `ShadInput` and `ShadInputFormField`
+
 ## 0.4.4
 
 - Add `horizontalScrollPhysics` and `verticalScrollPhysics` to `ShadTable`
