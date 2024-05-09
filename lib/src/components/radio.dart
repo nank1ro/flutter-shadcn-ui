@@ -258,7 +258,6 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
         child: Row(
           textDirection: widget.direction,
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             radio,
             if (widget.label != null)
