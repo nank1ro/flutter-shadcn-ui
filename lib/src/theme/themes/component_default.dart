@@ -420,6 +420,7 @@ abstract class ShadComponentDefaultTheme {
     required ShadTextTheme textTheme,
   }) {
     return ShadInputTheme(
+      style: textTheme.muted.copyWith(color: colorScheme.foreground),
       decoration: ShadDecoration(
         placeholderStyle: textTheme.muted,
         placeholderAlignment: Alignment.topLeft,
