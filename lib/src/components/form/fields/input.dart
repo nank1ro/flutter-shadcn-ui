@@ -84,6 +84,13 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     EdgeInsets? padding,
     Border? border,
     BorderRadius? radius,
+    Widget? prefix,
+    Widget? suffix,
+    MainAxisAlignment? mainAxisAlignment,
+    CrossAxisAlignment? crossAxisAlignment,
+    TextStyle? placeholderStyle,
+    Alignment? placeholderAlignment,
+    EdgeInsets? inputPadding,
   }) : super(
           initialValue: controller != null ? controller.text : initialValue,
           validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -155,6 +162,13 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
               padding: padding,
               border: border,
               radius: radius,
+              prefix: prefix,
+              suffix: suffix,
+              mainAxisAlignment: mainAxisAlignment,
+              crossAxisAlignment: crossAxisAlignment,
+              placeholderStyle: placeholderStyle,
+              placeholderAlignment: placeholderAlignment,
+              inputPadding: inputPadding,
             );
           },
         );

@@ -421,9 +421,10 @@ abstract class ShadComponentDefaultTheme {
   }) {
     return ShadInputTheme(
       style: textTheme.muted.copyWith(color: colorScheme.foreground),
+      placeholderStyle: textTheme.muted,
+      placeholderAlignment: Alignment.topLeft,
+      inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
-        placeholderStyle: textTheme.muted,
-        placeholderAlignment: Alignment.topLeft,
         border: ShadBorder(
           width: 2,
           color: Colors.transparent,

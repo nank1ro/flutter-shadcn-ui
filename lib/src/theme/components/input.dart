@@ -11,6 +11,11 @@ class ShadInputTheme {
     this.radius,
     this.backgroundColor,
     this.style,
+    this.placeholderStyle,
+    this.placeholderAlignment,
+    this.inputPadding,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   });
 
   final bool merge;
@@ -20,6 +25,11 @@ class ShadInputTheme {
   final BorderRadius? radius;
   final Color? backgroundColor;
   final TextStyle? style;
+  final TextStyle? placeholderStyle;
+  final Alignment? placeholderAlignment;
+  final EdgeInsets? inputPadding;
+  final MainAxisAlignment? mainAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
 
   static ShadInputTheme lerp(
     ShadInputTheme a,
@@ -35,6 +45,11 @@ class ShadInputTheme {
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       style: TextStyle.lerp(a.style, b.style, t),
+      placeholderStyle:
+          TextStyle.lerp(a.placeholderStyle, b.placeholderStyle, t),
+      inputPadding: EdgeInsets.lerp(a.inputPadding, b.inputPadding, t),
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
     );
   }
 
@@ -46,6 +61,10 @@ class ShadInputTheme {
     BorderRadius? radius,
     Color? backgroundColor,
     TextStyle? style,
+    TextStyle? placeholderStyle,
+    EdgeInsets? inputPadding,
+    MainAxisAlignment? mainAxisAlignment,
+    CrossAxisAlignment? crossAxisAlignment,
   }) {
     return ShadInputTheme(
       merge: merge ?? this.merge,
@@ -55,6 +74,10 @@ class ShadInputTheme {
       radius: radius ?? this.radius,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       style: style ?? this.style,
+      placeholderStyle: placeholderStyle ?? this.placeholderStyle,
+      inputPadding: inputPadding ?? this.inputPadding,
+      mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
     );
   }
 
@@ -68,6 +91,10 @@ class ShadInputTheme {
       radius: other.radius,
       backgroundColor: other.backgroundColor,
       style: other.style,
+      placeholderStyle: other.placeholderStyle,
+      inputPadding: other.inputPadding,
+      mainAxisAlignment: other.mainAxisAlignment,
+      crossAxisAlignment: other.crossAxisAlignment,
     );
   }
 
@@ -82,7 +109,11 @@ class ShadInputTheme {
         other.border == border &&
         other.radius == radius &&
         other.backgroundColor == backgroundColor &&
-        other.style == style;
+        other.style == style &&
+        other.placeholderStyle == placeholderStyle &&
+        other.inputPadding == inputPadding &&
+        other.mainAxisAlignment == mainAxisAlignment &&
+        other.crossAxisAlignment == crossAxisAlignment;
   }
 
   @override
@@ -93,6 +124,10 @@ class ShadInputTheme {
         border.hashCode ^
         radius.hashCode ^
         backgroundColor.hashCode ^
-        style.hashCode;
+        style.hashCode ^
+        placeholderStyle.hashCode ^
+        inputPadding.hashCode ^
+        mainAxisAlignment.hashCode ^
+        crossAxisAlignment.hashCode;
   }
 }
