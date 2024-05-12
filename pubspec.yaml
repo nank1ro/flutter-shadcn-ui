@@ -19,8 +19,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.10+1
-  lucide_icons_flutter: ^1.0.8
-  rive: ^0.13.1
+  lucide_icons_flutter: ^1.0.9
+  rive: ^0.13.4
   # used by Table
   two_dimensional_scrollables: ^0.2.1
   vector_graphics: ^1.1.11+1
