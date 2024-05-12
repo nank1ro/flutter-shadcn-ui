@@ -92,7 +92,5 @@ export 'src/utils/gesture_detector.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart';
-export 'package:boxy/boxy.dart';
-export 'package:boxy/flex.dart';
 export 'package:lucide_icons_flutter/lucide_icons.dart';
 export 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';

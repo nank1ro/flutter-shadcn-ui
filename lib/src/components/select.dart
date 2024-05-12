@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:boxy/flex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -442,7 +441,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                           padding: effectiveOptionsPadding,
                           controller: scrollController,
                           child: IntrinsicWidth(
-                            child: BoxyColumn(
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: widget.options.toList(),
