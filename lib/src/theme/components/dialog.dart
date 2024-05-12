@@ -33,6 +33,8 @@ class ShadDialogTheme {
     this.titleTextAlign,
     this.descriptionTextAlign,
     this.alignment,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   });
 
   final bool merge;
@@ -58,6 +60,8 @@ class ShadDialogTheme {
   final TextAlign? titleTextAlign;
   final TextAlign? descriptionTextAlign;
   final Alignment? alignment;
+  final MainAxisAlignment? mainAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
 
   static ShadDialogTheme lerp(
     ShadDialogTheme a,
@@ -91,6 +95,8 @@ class ShadDialogTheme {
       titleTextAlign: b.titleTextAlign,
       descriptionTextAlign: b.descriptionTextAlign,
       alignment: Alignment.lerp(a.alignment, b.alignment, t),
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
     );
   }
 
@@ -118,6 +124,8 @@ class ShadDialogTheme {
     TextAlign? titleTextAlign,
     TextAlign? descriptionTextAlign,
     Alignment? alignment,
+    MainAxisAlignment? mainAxisAlignment,
+    CrossAxisAlignment? crossAxisAlignment,
   }) {
     return ShadDialogTheme(
       merge: merge ?? this.merge,
@@ -143,6 +151,8 @@ class ShadDialogTheme {
       titleTextAlign: titleTextAlign,
       descriptionTextAlign: descriptionTextAlign,
       alignment: alignment,
+      mainAxisAlignment: mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment,
     );
   }
 
@@ -172,6 +182,8 @@ class ShadDialogTheme {
       titleTextAlign: other.titleTextAlign,
       descriptionTextAlign: other.descriptionTextAlign,
       alignment: other.alignment,
+      mainAxisAlignment: other.mainAxisAlignment,
+      crossAxisAlignment: other.crossAxisAlignment,
     );
   }
 
@@ -202,7 +214,9 @@ class ShadDialogTheme {
         other.descriptionStyle == descriptionStyle &&
         other.titleTextAlign == titleTextAlign &&
         other.descriptionTextAlign == descriptionTextAlign &&
-        other.alignment == alignment;
+        other.alignment == alignment &&
+        other.mainAxisAlignment == mainAxisAlignment &&
+        other.crossAxisAlignment == crossAxisAlignment;
   }
 
   @override
@@ -229,6 +243,8 @@ class ShadDialogTheme {
         descriptionStyle.hashCode ^
         titleTextAlign.hashCode ^
         descriptionTextAlign.hashCode ^
-        alignment.hashCode;
+        alignment.hashCode ^
+        mainAxisAlignment.hashCode ^
+        crossAxisAlignment.hashCode;
   }
 }

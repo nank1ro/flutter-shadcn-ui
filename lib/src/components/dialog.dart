@@ -3,7 +3,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/image.dart';
-import 'package:shadcn_ui/src/raw_components/same_width_column.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
@@ -105,6 +104,8 @@ class ShadDialog extends StatelessWidget {
     this.titleTextAlign,
     this.descriptionTextAlign,
     this.alignment,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   }) : variant = ShadDialogVariant.primary;
 
   const ShadDialog.alert({
@@ -134,6 +135,8 @@ class ShadDialog extends StatelessWidget {
     this.titleTextAlign,
     this.descriptionTextAlign,
     this.alignment,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   }) : variant = ShadDialogVariant.alert;
 
   final Widget? title;
@@ -162,6 +165,8 @@ class ShadDialog extends StatelessWidget {
   final TextAlign? titleTextAlign;
   final TextAlign? descriptionTextAlign;
   final Alignment? alignment;
+  final MainAxisAlignment? mainAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -235,6 +240,14 @@ class ShadDialog extends StatelessWidget {
     final effectiveAlignment =
         alignment ?? effectiveDialogTheme.alignment ?? Alignment.center;
 
+    final effectiveMainAxisAlignment = mainAxisAlignment ??
+        effectiveDialogTheme.mainAxisAlignment ??
+        MainAxisAlignment.start;
+
+    final effectiveCrossAxisAlignment = crossAxisAlignment ??
+        effectiveDialogTheme.crossAxisAlignment ??
+        CrossAxisAlignment.stretch;
+
     return Align(
       alignment: effectiveAlignment,
       child: ConstrainedBox(
@@ -249,7 +262,7 @@ class ShadDialog extends StatelessWidget {
 
             final effectiveActionsMainAxisSize = actionsMainAxisSize ??
                 effectiveDialogTheme.actionsMainAxisSize ??
-                (sm ? MainAxisSize.min : MainAxisSize.max);
+                MainAxisSize.max;
 
             final effectiveActionsMainAxisAlignment =
                 actionsMainAxisAlignment ??
@@ -307,7 +320,10 @@ class ShadDialog extends StatelessWidget {
                 children: [
                   Padding(
                     padding: effectivePadding,
-                    child: ShadSameWidthColumn(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: effectiveMainAxisAlignment,
+                      crossAxisAlignment: effectiveCrossAxisAlignment,
                       children: [
                         if (title != null)
                           DefaultTextStyle(

@@ -604,6 +604,8 @@ abstract class ShadComponentDefaultTheme {
       titleStyle: textTheme.large,
       descriptionStyle: textTheme.muted,
       alignment: Alignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
     );
   }
 
@@ -633,6 +635,8 @@ abstract class ShadComponentDefaultTheme {
       titleStyle: textTheme.large,
       descriptionStyle: textTheme.muted,
       alignment: Alignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
     );
   }
 

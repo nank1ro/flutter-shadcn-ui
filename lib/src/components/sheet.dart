@@ -149,6 +149,8 @@ class ShadSheet extends StatelessWidget {
     this.descriptionStyle,
     this.titleTextAlign,
     this.descriptionTextAlign,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   });
 
   final Widget? title;
@@ -176,6 +178,8 @@ class ShadSheet extends StatelessWidget {
   final TextStyle? descriptionStyle;
   final TextAlign? titleTextAlign;
   final TextAlign? descriptionTextAlign;
+  final MainAxisAlignment? mainAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -204,6 +208,24 @@ class ShadSheet extends StatelessWidget {
       ShadSheetSide.right =>
         BoxConstraints(minHeight: mSize.height)
     };
+
+    final defaultCrossAxisAlignment = switch (side) {
+      ShadSheetSide.top || ShadSheetSide.bottom => CrossAxisAlignment.stretch,
+      ShadSheetSide.left || ShadSheetSide.right => CrossAxisAlignment.start,
+    };
+
+    final defaultMainAxisAlignment = switch (side) {
+      ShadSheetSide.top || ShadSheetSide.bottom => MainAxisAlignment.start,
+      ShadSheetSide.left || ShadSheetSide.right => MainAxisAlignment.end,
+    };
+
+    final effectiveMainAxisAlignment = mainAxisAlignment ??
+        theme.sheetTheme.mainAxisAlignment ??
+        defaultMainAxisAlignment;
+
+    final effectiveCrossAxisAlignment = crossAxisAlignment ??
+        theme.sheetTheme.crossAxisAlignment ??
+        defaultCrossAxisAlignment;
 
     final effectiveConstraints = constraints ??
         theme.sheetTheme.constraints ??
@@ -274,6 +296,8 @@ class ShadSheet extends StatelessWidget {
       descriptionStyle: effectiveDescriptionStyle,
       titleTextAlign: effectiveTitleTextAlign,
       descriptionTextAlign: effectiveDescriptionTextAlign,
+      crossAxisAlignment: effectiveCrossAxisAlignment,
+      mainAxisAlignment: effectiveMainAxisAlignment,
     );
   }
 }

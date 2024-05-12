@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:boxy/flex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -10,7 +11,6 @@ import 'package:shadcn_ui/src/components/focused.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
-import 'package:shadcn_ui/src/raw_components/same_width_column.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -441,7 +441,13 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                         child: SingleChildScrollView(
                           padding: effectiveOptionsPadding,
                           controller: scrollController,
-                          child: ShadSameWidthColumn(children: widget.options),
+                          child: IntrinsicWidth(
+                            child: BoxyColumn(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: widget.options.toList(),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -564,7 +570,6 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
             );
           },
           child: Row(
-            mainAxisSize: MainAxisSize.min,
             children: [
               widget.selectedIcon ??
                   Visibility.maintain(

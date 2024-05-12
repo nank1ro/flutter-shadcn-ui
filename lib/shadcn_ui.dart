@@ -35,7 +35,6 @@ export 'src/components/resizable.dart';
 
 // Raw Components
 export 'src/raw_components/portal.dart';
-export 'src/raw_components/same_width_column.dart';
 
 // App Themes & Color Schemes
 export 'src/theme/color_scheme/base.dart';
