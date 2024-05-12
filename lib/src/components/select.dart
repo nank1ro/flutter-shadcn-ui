@@ -307,6 +307,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         const SingleActivator(LogicalKeyboardKey.escape): controller.hide,
       },
       child: FocusTraversalGroup(
+        policy: WidgetOrderTraversalPolicy(),
         child: LayoutBuilder(
           builder: (context, constraints) {
             final calculatedMinWidth =
