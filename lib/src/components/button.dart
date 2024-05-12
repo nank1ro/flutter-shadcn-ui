@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:shadcn_ui/src/components/focused.dart';
+import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
@@ -680,7 +680,7 @@ class _ShadButtonState extends State<ShadButton> {
             opacity: enabled ? 1 : .5,
             child: AbsorbPointer(
               absorbing: !enabled,
-              child: ShadFocused(
+              child: ShadFocusable(
                 canRequestFocus: enabled,
                 autofocus: widget.autofocus,
                 focusNode: focusNode,

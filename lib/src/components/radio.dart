@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
-import 'package:shadcn_ui/src/components/focused.dart';
+import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
@@ -199,7 +199,7 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
       child: ShadDisabled(
         showForbiddenCursor: true,
         disabled: !enabled,
-        child: ShadFocused(
+        child: ShadFocusable(
           focusNode: focusNode,
           builder: (context, focused, child) {
             return ShadDecorator(

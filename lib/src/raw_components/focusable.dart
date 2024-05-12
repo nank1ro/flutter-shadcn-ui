@@ -6,8 +6,8 @@ typedef FocusWidgetBuilder = Widget Function(
   Widget? child,
 );
 
-class ShadFocused extends StatefulWidget {
-  const ShadFocused({
+class ShadFocusable extends StatefulWidget {
+  const ShadFocusable({
     super.key,
     required this.builder,
     this.focusNode,
@@ -23,10 +23,10 @@ class ShadFocused extends StatefulWidget {
   final Widget? child;
 
   @override
-  State<ShadFocused> createState() => _ShadFocusedState();
+  State<ShadFocusable> createState() => _ShadFocusableState();
 }
 
-class _ShadFocusedState extends State<ShadFocused> {
+class _ShadFocusableState extends State<ShadFocusable> {
   FocusNode? _internal;
 
   final isFocused = ValueNotifier(false);

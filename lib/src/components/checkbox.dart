@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
-import 'package:shadcn_ui/src/components/focused.dart';
 import 'package:shadcn_ui/src/components/image.dart';
+import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
@@ -128,7 +128,7 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
       child: ShadDisabled(
         showForbiddenCursor: true,
         disabled: !widget.enabled,
-        child: ShadFocused(
+        child: ShadFocusable(
           focusNode: focusNode,
           builder: (context, focused, child) {
             return ShadDecorator(

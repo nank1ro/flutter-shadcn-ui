@@ -5,10 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
-import 'package:shadcn_ui/src/components/focused.dart';
-
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
+import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
@@ -123,14 +122,25 @@ class ShadSelect<T> extends StatefulWidget {
   /// `ShadAnchorAutoPosition(verticalOffset: 24, preferBelow: true)`.
   final ShadAnchorBase? anchor;
 
-  static ShadSelectState<T> of<T>(BuildContext context) {
-    return maybeOf<T>(context)!;
+  static ShadSelectState<T> of<T>(BuildContext context, {bool listen = true}) {
+    return maybeOf<T>(context, listen: listen)!;
   }
 
-  static ShadSelectState<T>? maybeOf<T>(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<ShadInheritedSelectContainer<T>>()
-        ?.data;
+  static ShadSelectState<T>? maybeOf<T>(
+    BuildContext context, {
+    bool listen = true,
+  }) {
+    if (listen) {
+      return context
+          .dependOnInheritedWidgetOfExactType<ShadInheritedSelectContainer<T>>()
+          ?.data;
+    }
+    final provider = context
+        .getElementForInheritedWidgetOfExactType<
+            ShadInheritedSelectContainer<T>>()
+        ?.widget;
+
+    return (provider as ShadInheritedSelectContainer<T>?)?.data;
   }
 
   @override
@@ -160,22 +170,6 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
       _scrollController = ScrollController();
     }
     if (widget.focusNode == null) internalFocusNode = FocusNode();
-
-    // Toggle the popover when the user presses enter
-    focusNode.onKeyEvent = (node, event) {
-      if (event.logicalKey == LogicalKeyboardKey.enter &&
-          event is KeyDownEvent) {
-        if (controller.isOpen) {
-          controller.hide();
-          focusNode.requestFocus();
-        } else {
-          FocusScope.of(context).unfocus();
-          controller.show();
-        }
-        return KeyEventResult.handled;
-      }
-      return KeyEventResult.ignored;
-    };
 
     // react to the scroll position
     scrollController.addListener(() {
@@ -307,158 +301,165 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         theme.selectTheme.optionsPadding ??
         const EdgeInsets.all(4);
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final calculatedMinWidth =
-            max(effectiveMinWidth, constraints.minWidth) -
-                decorationHorizontalPadding;
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.enter): controller.toggle,
+        const SingleActivator(LogicalKeyboardKey.escape): controller.hide,
+      },
+      child: FocusTraversalGroup(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final calculatedMinWidth =
+                max(effectiveMinWidth, constraints.minWidth) -
+                    decorationHorizontalPadding;
 
-        final Widget select = ShadDisabled(
-          disabled: !widget.enabled,
-          child: ShadFocused(
-            canRequestFocus: widget.enabled,
-            focusNode: focusNode,
-            builder: (context, focused, child) {
-              return ShadDecorator(
-                focused: focused,
-                decoration: effectiveDecoration,
-                child: child!,
-              );
-            },
-            child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                controller.toggle();
-              },
-              child: Container(
-                padding: effectivePadding,
-                constraints: BoxConstraints(minWidth: calculatedMinWidth),
-                decoration: BoxDecoration(
-                  color: effectiveBackgroundColor,
-                  borderRadius: effectiveRadius,
-                  border: effectiveBorder,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(child: effectiveText),
-                    effectiveTrailing,
-                  ],
+            final Widget select = ShadDisabled(
+              disabled: !widget.enabled,
+              child: ShadFocusable(
+                canRequestFocus: widget.enabled,
+                focusNode: focusNode,
+                builder: (context, focused, child) {
+                  return ShadDecorator(
+                    focused: focused,
+                    decoration: effectiveDecoration,
+                    child: child!,
+                  );
+                },
+                child: GestureDetector(
+                  onTap: controller.toggle,
+                  child: Container(
+                    padding: effectivePadding,
+                    constraints: BoxConstraints(minWidth: calculatedMinWidth),
+                    decoration: BoxDecoration(
+                      color: effectiveBackgroundColor,
+                      borderRadius: effectiveRadius,
+                      border: effectiveBorder,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(child: effectiveText),
+                        effectiveTrailing,
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        );
+            );
 
-        final scrollToTopChild = effectiveShowScrollToTopChevron
-            ? ValueListenableBuilder(
-                valueListenable: showScrollToTop,
-                builder: (context, show, child) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: show
-                        ? MouseRegion(
-                            onEnter: (_) {
-                              shouldAnimateToTop = true;
-                              animateToTop();
-                            },
-                            onExit: (_) => shouldAnimateToTop = false,
-                            child: Container(
-                              width: calculatedMinWidth,
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: ShadImage.square(
-                                LucideIcons.chevronUp,
-                                size: 16,
-                                color: theme.colorScheme.popoverForeground,
+            final scrollToTopChild = effectiveShowScrollToTopChevron
+                ? ValueListenableBuilder(
+                    valueListenable: showScrollToTop,
+                    builder: (context, show, child) {
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        child: show
+                            ? MouseRegion(
+                                onEnter: (_) {
+                                  shouldAnimateToTop = true;
+                                  animateToTop();
+                                },
+                                onExit: (_) => shouldAnimateToTop = false,
+                                child: Container(
+                                  width: calculatedMinWidth,
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
+                                  child: ShadImage.square(
+                                    LucideIcons.chevronUp,
+                                    size: 16,
+                                    color: theme.colorScheme.popoverForeground,
+                                  ),
+                                ),
+                              )
+                            : const SizedBox(),
+                      );
+                    },
+                  )
+                : null;
+
+            final scrollToBottomChild = effectiveShowScrollToBottomChevron
+                ? ValueListenableBuilder(
+                    valueListenable: showScrollToBottom,
+                    builder: (context, show, child) {
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        child: show
+                            ? MouseRegion(
+                                onEnter: (_) {
+                                  shouldAnimateToBottom = true;
+                                  animateToBottom();
+                                },
+                                onExit: (_) => shouldAnimateToBottom = false,
+                                child: Container(
+                                  width: calculatedMinWidth,
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 4),
+                                  child: ShadImage.square(
+                                    LucideIcons.chevronDown,
+                                    size: 16,
+                                    color: theme.colorScheme.popoverForeground,
+                                  ),
+                                ),
+                              )
+                            : const SizedBox(),
+                      );
+                    },
+                  )
+                : null;
+
+            return ShadInheritedSelectContainer(
+              data: this,
+              child: ShadPopover(
+                padding: EdgeInsets.zero,
+                controller: controller,
+                anchor: effectiveAnchor,
+                closeOnTapOutside: widget.closeOnTapOutside,
+                popover: (_) {
+                  // set the initial value for showScrollToBottom and
+                  // showScrollToTop, after the popover is rendered
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                    if (scrollController.hasClients) {
+                      showScrollToBottom.value = scrollController.offset <
+                          scrollController.position.maxScrollExtent;
+                      showScrollToTop.value = scrollController.offset > 0;
+                    }
+                  });
+
+                  return ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: effectiveMaxHeight),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (scrollToTopChild != null) scrollToTopChild,
+                        Flexible(
+                          child: ConstrainedBox(
+                            constraints:
+                                BoxConstraints(minWidth: calculatedMinWidth),
+                            child: SingleChildScrollView(
+                              padding: effectiveOptionsPadding,
+                              controller: scrollController,
+                              child: IntrinsicWidth(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: widget.options.toList(),
+                                ),
                               ),
-                            ),
-                          )
-                        : const SizedBox(),
-                  );
-                },
-              )
-            : null;
-
-        final scrollToBottomChild = effectiveShowScrollToBottomChevron
-            ? ValueListenableBuilder(
-                valueListenable: showScrollToBottom,
-                builder: (context, show, child) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: show
-                        ? MouseRegion(
-                            onEnter: (_) {
-                              shouldAnimateToBottom = true;
-                              animateToBottom();
-                            },
-                            onExit: (_) => shouldAnimateToBottom = false,
-                            child: Container(
-                              width: calculatedMinWidth,
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: ShadImage.square(
-                                LucideIcons.chevronDown,
-                                size: 16,
-                                color: theme.colorScheme.popoverForeground,
-                              ),
-                            ),
-                          )
-                        : const SizedBox(),
-                  );
-                },
-              )
-            : null;
-
-        return ShadInheritedSelectContainer(
-          data: this,
-          child: ShadPopover(
-            padding: EdgeInsets.zero,
-            controller: controller,
-            anchor: effectiveAnchor,
-            closeOnTapOutside: widget.closeOnTapOutside,
-            popover: (_) {
-              // set the initial value for showScrollToBottom and
-              // showScrollToTop, after the popover is rendered
-              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                if (scrollController.hasClients) {
-                  showScrollToBottom.value = scrollController.offset <
-                      scrollController.position.maxScrollExtent;
-                  showScrollToTop.value = scrollController.offset > 0;
-                }
-              });
-
-              return ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: effectiveMaxHeight),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (scrollToTopChild != null) scrollToTopChild,
-                    Flexible(
-                      child: ConstrainedBox(
-                        constraints:
-                            BoxConstraints(minWidth: calculatedMinWidth),
-                        child: SingleChildScrollView(
-                          padding: effectiveOptionsPadding,
-                          controller: scrollController,
-                          child: IntrinsicWidth(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: widget.options.toList(),
                             ),
                           ),
                         ),
-                      ),
+                        if (scrollToBottomChild != null) scrollToBottomChild,
+                      ],
                     ),
-                    if (scrollToBottomChild != null) scrollToBottomChild,
-                  ],
-                ),
-              );
-            },
-            child: select,
-          ),
-        );
-      },
+                  );
+                },
+                child: select,
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
@@ -516,10 +517,28 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
   final focusNode = FocusNode();
 
   @override
+  void initState() {
+    super.initState();
+    focusNode.addListener(onFocusChange);
+
+    final inherited = ShadSelect.of<T>(context, listen: false);
+    final selected = inherited.selected == widget.value;
+    if (selected) {
+      focusNode.requestFocus();
+    }
+  }
+
+  @override
   void dispose() {
-    focusNode.dispose();
+    focusNode
+      ..removeListener(onFocusChange)
+      ..dispose();
     hovered.dispose();
     super.dispose();
+  }
+
+  void onFocusChange() {
+    hovered.value = focusNode.hasFocus;
   }
 
   @override
@@ -550,45 +569,54 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final effectiveRadius =
         widget.radius ?? theme.optionTheme.radius ?? theme.radius;
 
-    return Focus(
-      focusNode: focusNode,
-      canRequestFocus: true,
-      child: ShadGestureDetector(
-        onHoverChange: (value) => hovered.value = value,
-        onTap: () => inheritedSelect.select(widget.value),
-        child: ValueListenableBuilder(
-          valueListenable: hovered,
-          builder: (context, hovered, child) {
-            return Container(
-              padding: effectivePadding,
-              decoration: BoxDecoration(
-                color: hovered ? effectiveHoveredBackgroundColor : null,
-                borderRadius: effectiveRadius,
-              ),
-              child: child,
-            );
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.enter): () {
+          inheritedSelect.select(widget.value);
+        },
+      },
+      child: Focus(
+        focusNode: focusNode,
+        child: ShadGestureDetector(
+          onHoverChange: (value) {
+            hovered.value = value;
+            if (value) focusNode.requestFocus();
           },
-          child: Row(
-            children: [
-              widget.selectedIcon ??
-                  Visibility.maintain(
-                    visible: selected,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: ShadImage.square(
-                        LucideIcons.check,
-                        size: 16,
-                        color: theme.colorScheme.popoverForeground,
+          onTap: () => inheritedSelect.select(widget.value),
+          child: ValueListenableBuilder(
+            valueListenable: hovered,
+            builder: (context, hovered, child) {
+              return Container(
+                padding: effectivePadding,
+                decoration: BoxDecoration(
+                  color: hovered ? effectiveHoveredBackgroundColor : null,
+                  borderRadius: effectiveRadius,
+                ),
+                child: child,
+              );
+            },
+            child: Row(
+              children: [
+                widget.selectedIcon ??
+                    Visibility.maintain(
+                      visible: selected,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: ShadImage.square(
+                          LucideIcons.check,
+                          size: 16,
+                          color: theme.colorScheme.popoverForeground,
+                        ),
                       ),
                     ),
+                DefaultTextStyle(
+                  style: theme.textTheme.muted.copyWith(
+                    color: theme.colorScheme.popoverForeground,
                   ),
-              DefaultTextStyle(
-                style: theme.textTheme.muted.copyWith(
-                  color: theme.colorScheme.popoverForeground,
+                  child: widget.child,
                 ),
-                child: widget.child,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
