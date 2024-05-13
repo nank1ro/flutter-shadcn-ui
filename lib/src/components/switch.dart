@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
@@ -114,6 +115,13 @@ class _ShadSwitchState extends State<ShadSwitch>
     super.dispose();
   }
 
+  void onTap() {
+    widget.onChanged!(!widget.value);
+    if (!focusNode.hasFocus) {
+      FocusScope.of(context).unfocus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
@@ -148,47 +156,55 @@ class _ShadSwitchState extends State<ShadSwitch>
       child: ShadDisabled(
         showForbiddenCursor: true,
         disabled: !widget.enabled,
-        child: ShadFocusable(
-          focusNode: focusNode,
-          builder: (context, focused, child) {
-            return ShadDecorator(
-              focused: focused,
-              decoration: effectiveDecoration,
-              child: child!,
-            );
+        child: CallbackShortcuts(
+          bindings: {
+            const SingleActivator(LogicalKeyboardKey.enter): () {
+              if (!widget.enabled) return;
+              onTap();
+            },
           },
-          child: MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: Container(
-              width: effectiveWidth,
-              height: effectiveHeight,
-              decoration: BoxDecoration(
-                color: widget.value
-                    ? effectiveCheckedTrackColor
-                    : effectiveUncheckedTrackColor,
-                border: Border.all(
-                  width: effectiveMargin,
-                  color: Colors.transparent,
-                ),
-                borderRadius: effectiveRadius,
-              ),
-              alignment: Alignment.centerLeft,
-              child: Animate(
-                controller: controller,
-                autoPlay: false,
-                effects: [
-                  MoveEffect(
-                    begin: Offset.zero,
-                    end: Offset(transitionStep, 0),
-                    duration: effectiveDuration,
+          child: ShadFocusable(
+            focusNode: focusNode,
+            builder: (context, focused, child) {
+              return ShadDecorator(
+                focused: focused,
+                decoration: effectiveDecoration,
+                child: child!,
+              );
+            },
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: Container(
+                width: effectiveWidth,
+                height: effectiveHeight,
+                decoration: BoxDecoration(
+                  color: widget.value
+                      ? effectiveCheckedTrackColor
+                      : effectiveUncheckedTrackColor,
+                  border: Border.all(
+                    width: effectiveMargin,
+                    color: Colors.transparent,
                   ),
-                ],
-                child: Container(
-                  width: effectiveThumbSize,
-                  height: effectiveThumbSize,
-                  decoration: BoxDecoration(
-                    color: effectiveThumbColor,
-                    shape: BoxShape.circle,
+                  borderRadius: effectiveRadius,
+                ),
+                alignment: Alignment.centerLeft,
+                child: Animate(
+                  controller: controller,
+                  autoPlay: false,
+                  effects: [
+                    MoveEffect(
+                      begin: Offset.zero,
+                      end: Offset(transitionStep, 0),
+                      duration: effectiveDuration,
+                    ),
+                  ],
+                  child: Container(
+                    width: effectiveThumbSize,
+                    height: effectiveThumbSize,
+                    decoration: BoxDecoration(
+                      color: effectiveThumbColor,
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
               ),
@@ -203,14 +219,7 @@ class _ShadSwitchState extends State<ShadSwitch>
       disabled: !widget.enabled,
       disabledOpacity: 1,
       child: GestureDetector(
-        onTap: widget.onChanged == null
-            ? null
-            : () {
-                widget.onChanged!(!widget.value);
-                if (!focusNode.hasFocus) {
-                  FocusScope.of(context).unfocus();
-                }
-              },
+        onTap: widget.onChanged == null ? null : onTap,
         child: Row(
           textDirection: widget.direction,
           mainAxisSize: MainAxisSize.min,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -176,6 +177,14 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
     );
     final theme = ShadTheme.of(context);
     final inheritedRadioGroup = ShadRadioGroup.of<T>(context);
+
+    void onTap() {
+      inheritedRadioGroup.select(widget.value);
+      if (!focusNode.hasFocus) {
+        FocusScope.of(context).unfocus();
+      }
+    }
+
     final selected = inheritedRadioGroup.selected == widget.value;
     final enabled = widget.enabled && inheritedRadioGroup.widget.enabled;
 
@@ -199,42 +208,50 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
       child: ShadDisabled(
         showForbiddenCursor: true,
         disabled: !enabled,
-        child: ShadFocusable(
-          focusNode: focusNode,
-          builder: (context, focused, child) {
-            return ShadDecorator(
-              focused: focused,
-              decoration: effectiveDecoration,
-              child: child!,
-            );
+        child: CallbackShortcuts(
+          bindings: {
+            const SingleActivator(LogicalKeyboardKey.enter): () {
+              if (!enabled) return;
+              onTap();
+            },
           },
-          child: MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: SizedBox.square(
-              dimension: effectiveSize,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: effectiveBorderWidth,
-                    color: effectiveColor,
+          child: ShadFocusable(
+            focusNode: focusNode,
+            builder: (context, focused, child) {
+              return ShadDecorator(
+                focused: focused,
+                decoration: effectiveDecoration,
+                child: child!,
+              );
+            },
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: SizedBox.square(
+                dimension: effectiveSize,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: effectiveBorderWidth,
+                      color: effectiveColor,
+                    ),
+                    shape: BoxShape.circle,
                   ),
-                  shape: BoxShape.circle,
-                ),
-                child: AnimatedSwitcher(
-                  duration: effectiveDuration,
-                  child: selected
-                      ? Align(
-                          child: SizedBox.square(
-                            dimension: effectiveCircleSize,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: effectiveColor,
+                  child: AnimatedSwitcher(
+                    duration: effectiveDuration,
+                    child: selected
+                        ? Align(
+                            child: SizedBox.square(
+                              dimension: effectiveCircleSize,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: effectiveColor,
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                      : const SizedBox(),
+                          )
+                        : const SizedBox(),
+                  ),
                 ),
               ),
             ),
@@ -247,14 +264,7 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
       disabled: !enabled,
       disabledOpacity: 1,
       child: GestureDetector(
-        onTap: enabled
-            ? () {
-                inheritedRadioGroup.select(widget.value);
-                if (!focusNode.hasFocus) {
-                  FocusScope.of(context).unfocus();
-                }
-              }
-            : null,
+        onTap: enabled ? onTap : null,
         child: Row(
           textDirection: widget.direction,
           mainAxisSize: MainAxisSize.min,

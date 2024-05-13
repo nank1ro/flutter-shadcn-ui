@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -97,6 +98,15 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
     super.dispose();
   }
 
+  void onTap() {
+    if (widget.onChanged == null) return;
+
+    widget.onChanged!(!widget.value);
+    if (!focusNode.hasFocus) {
+      FocusScope.of(context).unfocus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
@@ -128,32 +138,40 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
       child: ShadDisabled(
         showForbiddenCursor: true,
         disabled: !widget.enabled,
-        child: ShadFocusable(
-          focusNode: focusNode,
-          builder: (context, focused, child) {
-            return ShadDecorator(
-              focused: focused,
-              decoration: effectiveDecoration,
-              child: child!,
-            );
+        child: CallbackShortcuts(
+          bindings: {
+            const SingleActivator(LogicalKeyboardKey.enter): () {
+              if (!widget.enabled) return;
+              onTap();
+            },
           },
-          child: MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: Container(
-              width: effectiveSize,
-              height: effectiveSize,
-              decoration: BoxDecoration(
-                color: widget.value ? effectiveColor : null,
-                border: Border.all(
-                  width: effectiveBorderWidth,
-                  color: effectiveColor,
+          child: ShadFocusable(
+            focusNode: focusNode,
+            builder: (context, focused, child) {
+              return ShadDecorator(
+                focused: focused,
+                decoration: effectiveDecoration,
+                child: child!,
+              );
+            },
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: Container(
+                width: effectiveSize,
+                height: effectiveSize,
+                decoration: BoxDecoration(
+                  color: widget.value ? effectiveColor : null,
+                  border: Border.all(
+                    width: effectiveBorderWidth,
+                    color: effectiveColor,
+                  ),
+                  borderRadius: effectiveRadius,
                 ),
-                borderRadius: effectiveRadius,
-              ),
-              alignment: Alignment.center,
-              child: AnimatedSwitcher(
-                duration: effectiveDuration,
-                child: widget.value ? effectiveIcon : const SizedBox(),
+                alignment: Alignment.center,
+                child: AnimatedSwitcher(
+                  duration: effectiveDuration,
+                  child: widget.value ? effectiveIcon : const SizedBox(),
+                ),
               ),
             ),
           ),
@@ -166,14 +184,7 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
       disabled: !widget.enabled,
       disabledOpacity: 1,
       child: GestureDetector(
-        onTap: widget.onChanged == null
-            ? null
-            : () {
-                widget.onChanged!(!widget.value);
-                if (!focusNode.hasFocus) {
-                  FocusScope.of(context).unfocus();
-                }
-              },
+        onTap: widget.onChanged == null ? null : onTap,
         child: Row(
           textDirection: widget.direction,
           mainAxisSize: MainAxisSize.min,

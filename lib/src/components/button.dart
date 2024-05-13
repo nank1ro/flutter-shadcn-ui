@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -444,6 +445,11 @@ class _ShadButtonState extends State<ShadButton> {
     if (oldWidget.enabled != widget.enabled) {
       statesController.update(ShadState.disabled, !widget.enabled);
     }
+    if (oldWidget.focusNode != null && widget.focusNode == null) {
+      oldWidget.focusNode!.removeListener(onFocusChange);
+      _focusNode?.dispose();
+      _focusNode = FocusNode();
+    }
   }
 
   @override
@@ -616,6 +622,12 @@ class _ShadButtonState extends State<ShadButton> {
     return widget.shadows ?? buttonTheme(theme).shadows;
   }
 
+  void onTap() {
+    if (widget.onPressed == null) return;
+    if (!focusNode.hasFocus) FocusScope.of(context).unfocus();
+    widget.onPressed!();
+  }
+
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
@@ -649,130 +661,128 @@ class _ShadButtonState extends State<ShadButton> {
         buttonTheme(theme).hoverStrategies ??
         theme.hoverStrategies;
 
-    return ValueListenableBuilder(
-      valueListenable: statesController,
-      builder: (context, states, _) {
-        final pressed = states.contains(ShadState.pressed);
-        final hovered = states.contains(ShadState.hovered);
-        final enabled = !states.contains(ShadState.disabled);
+    return CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.enter): onTap,
+      },
+      child: ValueListenableBuilder(
+        valueListenable: statesController,
+        builder: (context, states, _) {
+          final pressed = states.contains(ShadState.pressed);
+          final hovered = states.contains(ShadState.hovered);
+          final enabled = !states.contains(ShadState.disabled);
 
-        // Applies the foreground color filter to the icon if provided
-        var icon = widget.icon;
-        if (icon != null && applyIconColorFilter) {
-          icon = ColorFiltered(
-            colorFilter: ColorFilter.mode(
-              hasPressedForegroundColor && pressed
-                  ? pressedForegroundColor(theme)
-                  : hovered
-                      ? hoverForeground(theme)
-                      : foreground(theme),
-              BlendMode.srcIn,
-            ),
-            child: icon,
-          );
-        }
-        return Semantics(
-          container: true,
-          button: true,
-          focusable: enabled,
-          enabled: enabled,
-          child: Opacity(
-            opacity: enabled ? 1 : .5,
-            child: AbsorbPointer(
-              absorbing: !enabled,
-              child: ShadFocusable(
-                canRequestFocus: enabled,
-                autofocus: widget.autofocus,
-                focusNode: focusNode,
-                builder: (context, focused, child) => ShadDecorator(
-                  decoration: effectiveDecoration,
-                  focused: focused,
-                  child: child!,
-                ),
-                child: ShadGestureDetector(
-                  onHoverChange: (value) {
-                    statesController.update(ShadState.hovered, value);
-                  },
-                  hoverStrategies: effectiveHoverStrategies,
-                  cursor: cursor(theme),
-                  onLongPress: widget.onLongPress,
-                  onTap: widget.onPressed == null
-                      ? null
-                      : () {
-                          if (!focusNode.hasFocus) {
-                            FocusScope.of(context).unfocus();
-                          }
-                          widget.onPressed!();
-                        },
-                  onTapDown: (details) {
-                    statesController.update(ShadState.pressed, true);
-                    widget.onTapDown?.call(details);
-                  },
-                  onTapUp: (details) {
-                    statesController.update(ShadState.pressed, false);
-                    widget.onTapUp?.call(details);
-                  },
-                  onTapCancel: () {
-                    statesController.update(ShadState.pressed, false);
-                    widget.onTapCancel?.call();
-                  },
-                  onDoubleTap: widget.onDoubleTap,
-                  onDoubleTapDown: widget.onDoubleTapDown,
-                  onDoubleTapCancel: widget.onDoubleTapCancel,
-                  onLongPressCancel: widget.onLongPressCancel,
-                  onLongPressEnd: widget.onLongPressEnd,
-                  onLongPressUp: widget.onLongPressUp,
-                  onLongPressDown: widget.onLongPressDown,
-                  onLongPressStart: widget.onLongPressStart,
-                  longPressDuration: effectiveLongPressDuration,
-                  child: Container(
-                    height: height(theme),
-                    width: width(theme),
-                    decoration: BoxDecoration(
-                      color: hasPressedBackgroundColor && pressed
-                          ? pressedBackgroundColor(theme)
-                          : hovered
-                              ? hoverBackground(theme)
-                              : background(theme),
-                      borderRadius: borderRadius(theme),
-                      border: border(theme),
-                      gradient: gradient(theme),
-                      boxShadow: shadows(theme),
-                    ),
-                    padding: padding(theme),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: effectiveCrossAxisAlignment,
-                      mainAxisAlignment: effectiveMainAxisAlignment,
-                      children: [
-                        if (icon != null) icon,
-                        if (widget.text != null)
-                          DefaultTextStyle(
-                            style: theme.textTheme.small.copyWith(
-                              color: hasPressedForegroundColor && pressed
-                                  ? pressedForegroundColor(theme)
-                                  : hovered
-                                      ? hoverForeground(theme)
-                                      : foreground(theme),
-                              decoration: textDecoration(
-                                theme,
-                                hovered: hovered,
+          // Applies the foreground color filter to the icon if provided
+          var icon = widget.icon;
+          if (icon != null && applyIconColorFilter) {
+            icon = ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                hasPressedForegroundColor && pressed
+                    ? pressedForegroundColor(theme)
+                    : hovered
+                        ? hoverForeground(theme)
+                        : foreground(theme),
+                BlendMode.srcIn,
+              ),
+              child: icon,
+            );
+          }
+          return Semantics(
+            container: true,
+            button: true,
+            focusable: enabled,
+            enabled: enabled,
+            child: Opacity(
+              opacity: enabled ? 1 : .5,
+              child: AbsorbPointer(
+                absorbing: !enabled,
+                child: ShadFocusable(
+                  canRequestFocus: enabled,
+                  autofocus: widget.autofocus,
+                  focusNode: focusNode,
+                  builder: (context, focused, child) => ShadDecorator(
+                    decoration: effectiveDecoration,
+                    focused: focused,
+                    child: child!,
+                  ),
+                  child: ShadGestureDetector(
+                    onHoverChange: (value) {
+                      statesController.update(ShadState.hovered, value);
+                    },
+                    hoverStrategies: effectiveHoverStrategies,
+                    cursor: cursor(theme),
+                    onLongPress: widget.onLongPress,
+                    onTap: widget.onPressed == null ? null : onTap,
+                    onTapDown: (details) {
+                      statesController.update(ShadState.pressed, true);
+                      widget.onTapDown?.call(details);
+                    },
+                    onTapUp: (details) {
+                      statesController.update(ShadState.pressed, false);
+                      widget.onTapUp?.call(details);
+                    },
+                    onTapCancel: () {
+                      statesController.update(ShadState.pressed, false);
+                      widget.onTapCancel?.call();
+                    },
+                    onDoubleTap: widget.onDoubleTap,
+                    onDoubleTapDown: widget.onDoubleTapDown,
+                    onDoubleTapCancel: widget.onDoubleTapCancel,
+                    onLongPressCancel: widget.onLongPressCancel,
+                    onLongPressEnd: widget.onLongPressEnd,
+                    onLongPressUp: widget.onLongPressUp,
+                    onLongPressDown: widget.onLongPressDown,
+                    onLongPressStart: widget.onLongPressStart,
+                    longPressDuration: effectiveLongPressDuration,
+                    child: Container(
+                      height: height(theme),
+                      width: width(theme),
+                      decoration: BoxDecoration(
+                        color: hasPressedBackgroundColor && pressed
+                            ? pressedBackgroundColor(theme)
+                            : hovered
+                                ? hoverBackground(theme)
+                                : background(theme),
+                        borderRadius: borderRadius(theme),
+                        border: border(theme),
+                        gradient: gradient(theme),
+                        boxShadow: shadows(theme),
+                      ),
+                      padding: padding(theme),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: effectiveCrossAxisAlignment,
+                        mainAxisAlignment: effectiveMainAxisAlignment,
+                        children: [
+                          if (icon != null) icon,
+                          if (widget.text != null)
+                            DefaultTextStyle(
+                              style: theme.textTheme.small.copyWith(
+                                color: hasPressedForegroundColor && pressed
+                                    ? pressedForegroundColor(theme)
+                                    : hovered
+                                        ? hoverForeground(theme)
+                                        : foreground(theme),
+                                decoration: textDecoration(
+                                  theme,
+                                  hovered: hovered,
+                                ),
+                                decorationColor: foreground(theme),
+                                decorationStyle: TextDecorationStyle.solid,
                               ),
-                              decorationColor: foreground(theme),
-                              decorationStyle: TextDecorationStyle.solid,
+                              textAlign: TextAlign.center,
+                              child: widget.text!,
                             ),
-                            textAlign: TextAlign.center,
-                            child: widget.text!,
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

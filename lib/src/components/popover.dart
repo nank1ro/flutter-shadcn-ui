@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -202,11 +203,18 @@ class _ShadPopoverState extends State<ShadPopover> {
       child: ListenableBuilder(
         listenable: controller,
         builder: (context, _) {
-          return ShadPortal(
-            portalBuilder: (_) => popover,
-            visible: controller.isOpen,
-            anchor: effectiveAnchor,
-            child: widget.child,
+          return CallbackShortcuts(
+            bindings: {
+              const SingleActivator(LogicalKeyboardKey.escape): () {
+                controller.hide();
+              },
+            },
+            child: ShadPortal(
+              portalBuilder: (_) => popover,
+              visible: controller.isOpen,
+              anchor: effectiveAnchor,
+              child: widget.child,
+            ),
           );
         },
       ),
