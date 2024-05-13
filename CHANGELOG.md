@@ -1,3 +1,10 @@
+## 0.4.6
+
+- Update depencencies versions
+- Remove `ShadSameWidthColumn` component
+- Remove boxy dependency
+- Make components keyboard accessible
+
 ## 0.4.5
 
 - Remove `placeholderStyle` and `placeholderAlignment` from `ShadDecoration` and move to `ShadInput` and `ShadInputFormField`
