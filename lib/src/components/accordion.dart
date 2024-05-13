@@ -7,7 +7,6 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/animation_builder.dart';
 import 'package:shadcn_ui/src/utils/effects.dart';
-import 'package:shadcn_ui/src/utils/extensions.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 enum ShadAccordionType {
@@ -237,9 +236,9 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
         theme.accordionTheme.effects ??
         [
           PaddingEffect(
-            padding: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 8),
             curve: effectiveCurve,
-            duration: effectiveDuration.divide(2),
+            duration: effectiveDuration,
           ),
           SlideEffect(
             curve: effectiveCurve,
@@ -252,6 +251,7 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
             duration: effectiveDuration,
           ),
         ];
+
     return ShadAnimationBuilder(
       duration: effectiveDuration,
       builder: (context, controller) {

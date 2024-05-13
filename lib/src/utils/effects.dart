@@ -56,10 +56,8 @@ class PaddingEffect extends Effect<double> {
     EffectEntry entry,
   ) {
     final animation = buildAnimation(controller, entry);
-    return AnimatedPadding(
+    return Padding(
       padding: padding * animation.value,
-      duration: duration ?? Animate.defaultDuration,
-      curve: curve ?? Animate.defaultCurve,
       child: child,
     );
   }
