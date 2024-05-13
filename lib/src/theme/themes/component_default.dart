@@ -29,7 +29,6 @@ import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
-import 'package:shadcn_ui/src/utils/extensions.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -703,23 +702,6 @@ abstract class ShadComponentDefaultTheme {
         ),
       ],
       curve: bezierCurve,
-      transitionBuilder: (animation, child) {
-        return AnimatedPadding(
-          padding: EdgeInsets.only(bottom: animation.value * 16),
-          curve: Curves.fastEaseInToSlowEaseOut,
-          duration: duration.divide(2),
-          child: SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 1),
-              end: Offset.zero,
-            ).animate(animation),
-            child: SizeTransition(
-              sizeFactor: animation,
-              child: child,
-            ),
-          ),
-        );
-      },
       titleStyle: textTheme.list.copyWith(
         fontWeight: FontWeight.w500,
       ),

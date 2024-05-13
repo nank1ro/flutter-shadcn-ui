@@ -6,6 +6,7 @@ import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/animation_builder.dart';
+import 'package:shadcn_ui/src/utils/effects.dart';
 import 'package:shadcn_ui/src/utils/extensions.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
@@ -117,13 +118,13 @@ class ShadAccordionItem<T> extends StatefulWidget {
     this.icon,
     this.iconSrc,
     this.iconEffects,
-    this.transitionBuilder,
     this.padding,
     this.underlineTitleOnHover,
     this.titleStyle,
     this.curve,
     this.duration,
     this.focusNode,
+    this.effects,
   });
 
   final T value;
@@ -133,14 +134,13 @@ class ShadAccordionItem<T> extends StatefulWidget {
   final Widget? icon;
   final ShadImageSrc? iconSrc;
   final List<Effect<dynamic>>? iconEffects;
-  final Widget Function(Animation<double> animation, Widget child)?
-      transitionBuilder;
   final EdgeInsets? padding;
   final bool? underlineTitleOnHover;
   final TextStyle? titleStyle;
   final Curve? curve;
   final Duration? duration;
   final FocusNode? focusNode;
+  final List<Effect<dynamic>>? effects;
 
   @override
   State<ShadAccordionItem<T>> createState() => _ShadAccordionItemState<T>();
@@ -232,26 +232,26 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
     final effectivePadding = widget.padding ??
         theme.accordionTheme.padding ??
         const EdgeInsets.symmetric(vertical: 16);
-    final effectiveTransitionBuilder = widget.transitionBuilder ??
-        theme.accordionTheme.transitionBuilder ??
-        (animation, child) {
-          return AnimatedPadding(
-            padding: EdgeInsets.only(bottom: animation.value * 16),
-            curve: Curves.fastEaseInToSlowEaseOut,
-            duration: effectiveDuration.divide(2),
-            child: SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, 1),
-                end: Offset.zero,
-              ).animate(animation),
-              child: SizeTransition(
-                sizeFactor: animation,
-                child: child,
-              ),
-            ),
-          );
-        };
 
+    final effectiveEffects = widget.effects ??
+        theme.accordionTheme.effects ??
+        [
+          PaddingEffect(
+            padding: const EdgeInsets.only(bottom: 16),
+            curve: effectiveCurve,
+            duration: effectiveDuration.divide(2),
+          ),
+          SlideEffect(
+            curve: effectiveCurve,
+            begin: const Offset(0, -1),
+            end: Offset.zero,
+            duration: effectiveDuration,
+          ),
+          SizeEffect(
+            curve: effectiveCurve,
+            duration: effectiveDuration,
+          ),
+        ];
     return ShadAnimationBuilder(
       duration: effectiveDuration,
       builder: (context, controller) {
@@ -262,10 +262,6 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
           // animates the closed item, to hide it
           controller.reverse();
         }
-        final animation = CurvedAnimation(
-          parent: controller.view,
-          curve: effectiveCurve,
-        );
 
         final closed = !expanded && controller.isDismissed;
         final shouldRemoveChild = closed && !inherited.maintainState;
@@ -322,7 +318,11 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
               ),
             ),
             if (!shouldRemoveChild)
-              effectiveTransitionBuilder(animation, widget.content),
+              Animate(
+                controller: controller,
+                effects: effectiveEffects,
+                child: widget.content,
+              ),
             effectiveSeparator,
           ],
         );
