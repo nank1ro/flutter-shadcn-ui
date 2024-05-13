@@ -1,6 +1,7 @@
 ## 0.4.7
 
 - Add `maintainState` to `ShadAccordion` to keep the child in the tree even if the item is closed, defaults to `false`.
+- Update `ShadAccordion` to use `effects` instead of `transitionBuilder`.
 
 ## 0.4.6
 

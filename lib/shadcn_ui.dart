@@ -89,8 +89,9 @@ export 'src/utils/animation_builder.dart';
 export 'src/utils/extensions.dart';
 export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
 export 'src/utils/gesture_detector.dart';
+export 'src/utils/effects.dart';
 
 // External libraries
-export 'package:flutter_animate/flutter_animate.dart';
+export 'package:flutter_animate/flutter_animate.dart' hide Effect;
 export 'package:lucide_icons_flutter/lucide_icons.dart';
 export 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
