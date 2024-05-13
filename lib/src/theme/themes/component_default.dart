@@ -693,6 +693,7 @@ abstract class ShadComponentDefaultTheme {
       padding: const EdgeInsets.symmetric(vertical: 16),
       underlineTitleOnHover: true,
       duration: duration,
+      maintainState: false,
       iconEffects: const [
         RotateEffect(
           begin: 0,

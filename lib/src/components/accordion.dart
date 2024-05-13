@@ -16,6 +16,7 @@ class ShadAccordion<T> extends StatefulWidget {
     super.key,
     required this.children,
     T? initialValue,
+    this.maintainState,
   })  : type = ShadAccordionType.single,
         initialValue = initialValue == null ? <T>[] : <T>[initialValue];
 
@@ -23,11 +24,13 @@ class ShadAccordion<T> extends StatefulWidget {
     super.key,
     required this.children,
     this.initialValue,
+    this.maintainState,
   }) : type = ShadAccordionType.multiple;
 
   final ShadAccordionType type;
   final Iterable<Widget> children;
   final List<T>? initialValue;
+  final bool? maintainState;
 
   @override
   State<ShadAccordion<T>> createState() => ShadAccordionState<T>();
@@ -35,6 +38,12 @@ class ShadAccordion<T> extends StatefulWidget {
 
 class ShadAccordionState<T> extends State<ShadAccordion<T>> {
   late List<T> values = widget.initialValue?.toList() ?? <T>[];
+
+  bool get maintainState {
+    return widget.maintainState ??
+        ShadTheme.of(context, listen: false).accordionTheme.maintainState ??
+        false;
+  }
 
   void toggle(T value) {
     setState(() {
@@ -189,7 +198,6 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
     final effectivePadding = widget.padding ??
         theme.accordionTheme.padding ??
         const EdgeInsets.symmetric(vertical: 16);
-
     final effectiveTransitionBuilder = widget.transitionBuilder ??
         theme.accordionTheme.transitionBuilder ??
         (animation, child) {
@@ -224,6 +232,9 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
           parent: controller.view,
           curve: effectiveCurve,
         );
+
+        final closed = !expanded && controller.isDismissed;
+        final shouldRemoveChild = closed && !inherited.maintainState;
 
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -269,7 +280,8 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
                 ),
               ),
             ),
-            effectiveTransitionBuilder(animation, widget.content),
+            if (!shouldRemoveChild)
+              effectiveTransitionBuilder(animation, widget.content),
             effectiveSeparator,
           ],
         );

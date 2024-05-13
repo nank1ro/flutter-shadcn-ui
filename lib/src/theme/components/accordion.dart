@@ -15,6 +15,7 @@ class ShadAccordionTheme {
     this.titleStyle,
     this.curve,
     this.duration,
+    this.maintainState,
   });
 
   final bool merge;
@@ -27,6 +28,7 @@ class ShadAccordionTheme {
   final TextStyle? titleStyle;
   final Curve? curve;
   final Duration? duration;
+  final bool? maintainState;
 
   static ShadAccordionTheme lerp(
     ShadAccordionTheme a,
@@ -35,15 +37,17 @@ class ShadAccordionTheme {
   ) {
     if (identical(a, b)) return a;
     return ShadAccordionTheme(
-      merge: b.merge,
-      iconSrc: b.iconSrc,
-      iconEffects: b.iconEffects,
-      transitionBuilder: b.transitionBuilder,
+      merge: t < 0.5 ? a.merge : b.merge,
+      iconSrc: t < 0.5 ? a.iconSrc : b.iconSrc,
+      iconEffects: t < 0.5 ? a.iconEffects : b.iconEffects,
+      transitionBuilder: t < 0.5 ? a.transitionBuilder : b.transitionBuilder,
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
-      underlineTitleOnHover: b.underlineTitleOnHover,
+      underlineTitleOnHover:
+          t < 0.5 ? a.underlineTitleOnHover : b.underlineTitleOnHover,
       titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
-      curve: b.curve,
-      duration: b.duration,
+      curve: t < 0.5 ? a.curve : b.curve,
+      duration: t < 0.5 ? a.duration : b.duration,
+      maintainState: t < 0.5 ? a.maintainState : b.maintainState,
     );
   }
 
@@ -58,6 +62,7 @@ class ShadAccordionTheme {
       titleStyle: other.titleStyle,
       curve: other.curve,
       duration: other.duration,
+      maintainState: other.maintainState,
     );
   }
 
@@ -73,7 +78,8 @@ class ShadAccordionTheme {
         other.underlineTitleOnHover == underlineTitleOnHover &&
         other.titleStyle == titleStyle &&
         other.curve == curve &&
-        other.duration == duration;
+        other.duration == duration &&
+        other.maintainState == maintainState;
   }
 
   @override
@@ -85,7 +91,8 @@ class ShadAccordionTheme {
         underlineTitleOnHover.hashCode ^
         titleStyle.hashCode ^
         curve.hashCode ^
-        duration.hashCode;
+        duration.hashCode ^
+        maintainState.hashCode;
   }
 
   ShadAccordionTheme copyWith({
@@ -97,6 +104,7 @@ class ShadAccordionTheme {
     TextStyle? titleStyle,
     Curve? curve,
     Duration? duration,
+    bool? maintainState,
   }) {
     return ShadAccordionTheme(
       merge: merge ?? this.merge,
@@ -108,6 +116,7 @@ class ShadAccordionTheme {
       titleStyle: titleStyle ?? this.titleStyle,
       curve: curve ?? this.curve,
       duration: duration ?? this.duration,
+      maintainState: maintainState ?? this.maintainState,
     );
   }
 }

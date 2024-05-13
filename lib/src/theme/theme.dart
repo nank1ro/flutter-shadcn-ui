@@ -11,10 +11,25 @@ class ShadTheme extends StatelessWidget {
   final ShadThemeData data;
   final Widget child;
 
-  static ShadThemeData of(BuildContext context) {
-    final inheritedTheme =
-        context.dependOnInheritedWidgetOfExactType<ShadInheritedTheme>();
-    return inheritedTheme!.theme.data;
+  static ShadThemeData of(BuildContext context, {bool listen = true}) {
+    return maybeOf(context, listen: listen)!;
+  }
+
+  static ShadThemeData? maybeOf(
+    BuildContext context, {
+    bool listen = true,
+  }) {
+    if (listen) {
+      return context
+          .dependOnInheritedWidgetOfExactType<ShadInheritedTheme>()
+          ?.theme
+          .data;
+    }
+    final provider = context
+        .getElementForInheritedWidgetOfExactType<ShadInheritedTheme>()
+        ?.widget;
+
+    return (provider as ShadInheritedTheme?)?.theme.data;
   }
 
   @override
