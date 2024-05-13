@@ -449,6 +449,7 @@ class _ShadButtonState extends State<ShadButton> {
       oldWidget.focusNode!.removeListener(onFocusChange);
       _focusNode?.dispose();
       _focusNode = FocusNode();
+      focusNode.addListener(onFocusChange);
     }
   }
 
