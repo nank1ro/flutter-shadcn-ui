@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rive/rive.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
 typedef ShadImageSrc = Object;
@@ -13,7 +12,7 @@ typedef ShadImageSrc = Object;
 /// Handles the correct widget to use depending on the [src].
 ///
 /// It can display the following image's extensions:
-/// [.png, .jpg, .jpeg, .svg, .svg.vec, .riv] and some more.
+/// [.png, .jpg, .jpeg, .svg, .svg.vec] and some more.
 ///
 /// It takes a [width] and [height].
 ///
@@ -33,14 +32,8 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
     this.fit = BoxFit.contain,
     this.alignment = Alignment.center,
     this.placeholder,
-    this.artboard,
-    this.stateMachines = const [],
-    this.animations = const [],
     this.antialiasing = true,
     this.semanticLabel,
-    this.useArtboardSize = false,
-    this.controllers = const [],
-    this.onInit,
     this.svgTheme,
   }) : assert(
           src is String || src is IconData,
@@ -57,14 +50,8 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
     this.fit = BoxFit.contain,
     this.alignment = Alignment.center,
     this.placeholder,
-    this.artboard,
-    this.stateMachines = const [],
-    this.animations = const [],
     this.antialiasing = true,
     this.semanticLabel,
-    this.useArtboardSize = false,
-    this.controllers = const [],
-    this.onInit,
     this.svgTheme,
   })  : width = size,
         height = size,
@@ -78,7 +65,6 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
   /// Can be a remote image url or a local asset (svg is supported)
   ///
   /// Accepted data:
-  /// - assets/animation.riv
   /// - assets/doc.jpg
   /// - assets/email.svg
   /// - assets/email.svg.vec
@@ -103,15 +89,6 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
   /// An optional placeholder that will be displayed while the image is loading.
   final Widget? placeholder;
 
-  /// The artboard of the rive animation
-  final String? artboard;
-
-  /// The animations of the rive animation
-  final List<String> animations;
-
-  /// The state machines of the rive animation
-  final List<String> stateMachines;
-
   /// The alignment of the image
   final Alignment alignment;
 
@@ -121,15 +98,6 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
   /// The semantic label
   final String? semanticLabel;
 
-  /// The size of the artboard of the rive animation
-  final bool useArtboardSize;
-
-  /// The controllers of the rive animation
-  final List<RiveAnimationController<dynamic>> controllers;
-
-  /// The on init callback of the rive animation
-  final void Function(Artboard)? onInit;
-
   /// The theme of the svg
   final SvgTheme? svgTheme;
 
@@ -138,9 +106,6 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
 
   /// Returns `true` if the image is an svg.
   bool get isSvg => (src as String).contains('.svg');
-
-  /// Returns `true` if the image is a rive asset.
-  bool get isRive => (src as String).contains('.riv');
 
   /// Returns `true` if the image is a vector asset.
   bool get isSvgVector => (src as String).contains('.svg.vec');
@@ -182,24 +147,6 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
             placeholderBuilder:
                 placeholder != null ? (_) => placeholder! : null,
             semanticsLabel: semanticLabel,
-          );
-        } else if (isRive) {
-          image = SizedBox(
-            width: width,
-            height: height,
-            child: RiveAnimation.network(
-              sourceString,
-              fit: fit,
-              animations: animations,
-              artboard: artboard,
-              stateMachines: stateMachines,
-              placeHolder: placeholder,
-              alignment: alignment,
-              antialiasing: antialiasing,
-              useArtboardSize: useArtboardSize,
-              controllers: controllers,
-              onInit: onInit,
-            ),
           );
         } else if (isSvg) {
           image = SvgPicture.network(
@@ -255,23 +202,6 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
           alignment: alignment,
           placeholderBuilder: placeholder != null ? (_) => placeholder! : null,
           semanticsLabel: semanticLabel,
-        );
-      } else if (isRive) {
-        image = SizedBox(
-          width: width,
-          height: height,
-          child: RiveAnimation.asset(
-            sourceString,
-            fit: fit,
-            artboard: artboard,
-            stateMachines: stateMachines,
-            placeHolder: placeholder,
-            alignment: alignment,
-            antialiasing: antialiasing,
-            useArtboardSize: useArtboardSize,
-            controllers: controllers,
-            onInit: onInit,
-          ),
         );
       } else {
         image = Image.asset(
