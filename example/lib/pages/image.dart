@@ -17,10 +17,6 @@ class ImagePage extends StatelessWidget {
           size: 50,
         ),
         ShadImage.square(
-          Assets.offRoadCar,
-          size: 200,
-        ),
-        ShadImage.square(
           Assets.flutter,
           size: 50,
         ),

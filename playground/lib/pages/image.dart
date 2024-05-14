@@ -5,7 +5,6 @@ enum ImageStyle {
   local,
   remote,
   svg,
-  riv,
 }
 
 class ImagePage extends StatelessWidget {
@@ -34,10 +33,6 @@ class ImagePage extends StatelessWidget {
             ImageStyle.svg => const ShadImage.square(
                 'assets/flutter.svg',
                 size: 50,
-              ),
-            ImageStyle.riv => const ShadImage.square(
-                'assets/off_road_car.riv',
-                size: 200,
               ),
           };
         }(),
