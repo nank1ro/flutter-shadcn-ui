@@ -86,24 +86,15 @@ class App extends StatelessWidget {
             brightness: Brightness.light,
             colorScheme: const ShadZincColorScheme.light(),
             // Example with google fonts
-            // textTheme: ShadTextTheme.fromGoogleFont(
-            //   GoogleFonts.poppins,
-            //   colorScheme: const ShadZincColorScheme.light(),
-            // ),
+            // textTheme: ShadTextTheme.fromGoogleFont(GoogleFonts.poppins),
             // Example of custom font family
-            // textTheme: ShadTextTheme(
-            //   colorScheme: const ShadZincColorScheme.light(),
-            //   family: 'UbuntuMono',
-            // ),
+            // textTheme: ShadTextTheme(family: 'UbuntuMono'),
           ),
           darkTheme: ShadThemeData(
             brightness: Brightness.dark,
             colorScheme: const ShadZincColorScheme.dark(),
             // Example of custom font family
-            // textTheme: ShadTextTheme(
-            //   colorScheme: const ShadZincColorScheme.dark(),
-            //   family: 'UbuntuMono',
-            // ),
+            // textTheme: ShadTextTheme(family: 'UbuntuMono'),
           ),
           home: const MainPage(),
         );

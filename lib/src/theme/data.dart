@@ -79,9 +79,50 @@ class ShadThemeData extends ShadBaseTheme {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
 
-    final effectiveTextTheme =
-        ShadComponentDefaultTheme.textTheme(colorScheme: colorScheme)
-            .mergeWith(textTheme);
+    var effectiveTextTheme =
+        ShadComponentDefaultTheme.textTheme().mergeWith(textTheme);
+
+    effectiveTextTheme = effectiveTextTheme.copyWith(
+      h1Large: effectiveTextTheme.h1Large.copyWith(
+        color: effectiveTextTheme.h1Large.color ?? colorScheme.foreground,
+      ),
+      h1: effectiveTextTheme.h1.copyWith(
+        color: effectiveTextTheme.h1.color ?? colorScheme.foreground,
+      ),
+      h2: effectiveTextTheme.h2.copyWith(
+        color: effectiveTextTheme.h2.color ?? colorScheme.foreground,
+      ),
+      h3: effectiveTextTheme.h3.copyWith(
+        color: effectiveTextTheme.h3.color ?? colorScheme.foreground,
+      ),
+      h4: effectiveTextTheme.h4.copyWith(
+        color: effectiveTextTheme.h4.color ?? colorScheme.foreground,
+      ),
+      p: effectiveTextTheme.p.copyWith(
+        color: effectiveTextTheme.p.color ?? colorScheme.foreground,
+      ),
+      blockquote: effectiveTextTheme.blockquote.copyWith(
+        color: effectiveTextTheme.blockquote.color ?? colorScheme.foreground,
+      ),
+      table: effectiveTextTheme.table.copyWith(
+        color: effectiveTextTheme.table.color ?? colorScheme.foreground,
+      ),
+      list: effectiveTextTheme.list.copyWith(
+        color: effectiveTextTheme.list.color ?? colorScheme.foreground,
+      ),
+      lead: effectiveTextTheme.lead.copyWith(
+        color: effectiveTextTheme.lead.color ?? colorScheme.mutedForeground,
+      ),
+      large: effectiveTextTheme.large.copyWith(
+        color: effectiveTextTheme.large.color ?? colorScheme.foreground,
+      ),
+      small: effectiveTextTheme.small.copyWith(
+        color: effectiveTextTheme.small.color ?? colorScheme.foreground,
+      ),
+      muted: effectiveTextTheme.muted.copyWith(
+        color: effectiveTextTheme.muted.color ?? colorScheme.mutedForeground,
+      ),
+    );
 
     return ShadThemeData._internal(
       colorScheme: colorScheme,

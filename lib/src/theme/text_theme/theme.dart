@@ -1,6 +1,5 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/themes/component_default.dart';
 
@@ -164,7 +163,6 @@ class GoogleFontTextStyle extends TextStyle {
 @immutable
 class ShadTextTheme {
   factory ShadTextTheme({
-    required ShadColorScheme colorScheme,
     TextStyle? h1Large,
     TextStyle? h1,
     TextStyle? h2,
@@ -186,71 +184,20 @@ class ShadTextTheme {
       effectiveFamily = 'packages/$package/$effectiveFamily';
     }
     return ShadTextTheme.custom(
-      h1Large: h1Large ??
-          ShadTextDefaultTheme.h1Large(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
-      h1: h1 ??
-          ShadTextDefaultTheme.h1(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
-      h2: h2 ??
-          ShadTextDefaultTheme.h2(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
-      h3: h3 ??
-          ShadTextDefaultTheme.h3(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
-      h4: h4 ??
-          ShadTextDefaultTheme.h4(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
-      p: p ??
-          ShadTextDefaultTheme.p(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
+      h1Large: h1Large ?? ShadTextDefaultTheme.h1Large(family: effectiveFamily),
+      h1: h1 ?? ShadTextDefaultTheme.h1(family: effectiveFamily),
+      h2: h2 ?? ShadTextDefaultTheme.h2(family: effectiveFamily),
+      h3: h3 ?? ShadTextDefaultTheme.h3(family: effectiveFamily),
+      h4: h4 ?? ShadTextDefaultTheme.h4(family: effectiveFamily),
+      p: p ?? ShadTextDefaultTheme.p(family: effectiveFamily),
       blockquote: blockquote ??
-          ShadTextDefaultTheme.blockquote(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
-      table: table ??
-          ShadTextDefaultTheme.table(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
-      list: list ??
-          ShadTextDefaultTheme.list(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
-      lead: lead ??
-          ShadTextDefaultTheme.lead(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
-      large: large ??
-          ShadTextDefaultTheme.large(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
-      small: small ??
-          ShadTextDefaultTheme.small(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
-      muted: muted ??
-          ShadTextDefaultTheme.muted(
-            colorScheme: colorScheme,
-            family: effectiveFamily,
-          ),
+          ShadTextDefaultTheme.blockquote(family: effectiveFamily),
+      table: table ?? ShadTextDefaultTheme.table(family: effectiveFamily),
+      list: list ?? ShadTextDefaultTheme.list(family: effectiveFamily),
+      lead: lead ?? ShadTextDefaultTheme.lead(family: effectiveFamily),
+      large: large ?? ShadTextDefaultTheme.large(family: effectiveFamily),
+      small: small ?? ShadTextDefaultTheme.small(family: effectiveFamily),
+      muted: muted ?? ShadTextDefaultTheme.muted(family: effectiveFamily),
       family: effectiveFamily,
     );
   }
@@ -275,11 +222,10 @@ class ShadTextTheme {
 
   factory ShadTextTheme.fromGoogleFont(
     GoogleFontBuilder fontBuilder, {
-    required ShadColorScheme colorScheme,
     ShadTextTheme? textTheme,
   }) {
-    final effectiveTextTheme = textTheme ??
-        ShadComponentDefaultTheme.textTheme(colorScheme: colorScheme);
+    final effectiveTextTheme =
+        textTheme ?? ShadComponentDefaultTheme.textTheme();
 
     final p = GoogleFontTextStyle(
       effectiveTextTheme.p.omitFamilyAndPackage,
@@ -287,7 +233,6 @@ class ShadTextTheme {
     );
 
     return ShadTextTheme(
-      colorScheme: colorScheme,
       h1Large: GoogleFontTextStyle(
         effectiveTextTheme.h1Large.omitFamilyAndPackage,
         builder: fontBuilder,

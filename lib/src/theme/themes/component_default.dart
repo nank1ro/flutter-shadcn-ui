@@ -258,63 +258,22 @@ abstract class ShadComponentDefaultTheme {
     );
   }
 
-  static ShadTextTheme textTheme({
-    required ShadColorScheme colorScheme,
-  }) {
+  static ShadTextTheme textTheme() {
     const defaultFontFamily = 'packages/shadcn_ui/$kDefaultFontFamily';
     return ShadTextTheme.custom(
-      h1Large: ShadTextDefaultTheme.h1Large(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
-      h1: ShadTextDefaultTheme.h1(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
-      h2: ShadTextDefaultTheme.h2(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
-      h3: ShadTextDefaultTheme.h3(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
-      h4: ShadTextDefaultTheme.h4(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
-      p: ShadTextDefaultTheme.p(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
-      blockquote: ShadTextDefaultTheme.blockquote(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
-      table: ShadTextDefaultTheme.table(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
-      list: ShadTextDefaultTheme.list(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
-      lead: ShadTextDefaultTheme.lead(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
-      large: ShadTextDefaultTheme.large(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
-      small: ShadTextDefaultTheme.small(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
-      muted: ShadTextDefaultTheme.muted(
-        colorScheme: colorScheme,
-        family: defaultFontFamily,
-      ),
+      h1Large: ShadTextDefaultTheme.h1Large(family: defaultFontFamily),
+      h1: ShadTextDefaultTheme.h1(family: defaultFontFamily),
+      h2: ShadTextDefaultTheme.h2(family: defaultFontFamily),
+      h3: ShadTextDefaultTheme.h3(family: defaultFontFamily),
+      h4: ShadTextDefaultTheme.h4(family: defaultFontFamily),
+      p: ShadTextDefaultTheme.p(family: defaultFontFamily),
+      blockquote: ShadTextDefaultTheme.blockquote(family: defaultFontFamily),
+      table: ShadTextDefaultTheme.table(family: defaultFontFamily),
+      list: ShadTextDefaultTheme.list(family: defaultFontFamily),
+      lead: ShadTextDefaultTheme.lead(family: defaultFontFamily),
+      large: ShadTextDefaultTheme.large(family: defaultFontFamily),
+      small: ShadTextDefaultTheme.small(family: defaultFontFamily),
+      muted: ShadTextDefaultTheme.muted(family: defaultFontFamily),
       family: defaultFontFamily,
     );
   }

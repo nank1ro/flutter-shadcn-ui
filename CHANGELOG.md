@@ -3,6 +3,7 @@
 - Add `maintainState` to `ShadAccordion` to keep the child in the tree even if the item is closed, defaults to `false`.
 - Update `ShadAccordion` to use `effects` instead of `transitionBuilder`.
 - Remove `rive` dependency and Rive support in `ShadImage` due to many issues with the package.
+- Remove `colorScheme` from `ShadTextTheme`. Now the colors will be automatically derived, unless specified.
 
 ## 0.4.6
 

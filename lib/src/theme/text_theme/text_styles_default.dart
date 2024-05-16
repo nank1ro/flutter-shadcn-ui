@@ -1,11 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 
 const kDefaultFontFamily = 'Geist';
 
 abstract class ShadTextDefaultTheme {
   static TextStyle h1Large({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -17,14 +15,12 @@ abstract class ShadTextDefaultTheme {
       height: 48 / 48,
       letterSpacing: -0.4,
       fontFamily: family,
-      color: colorScheme.foreground,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
   static TextStyle h1({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -36,14 +32,12 @@ abstract class ShadTextDefaultTheme {
       height: 40 / 36,
       letterSpacing: -0.4,
       fontFamily: family,
-      color: colorScheme.foreground,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
   static TextStyle h2({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -55,14 +49,12 @@ abstract class ShadTextDefaultTheme {
       height: 36 / 30,
       letterSpacing: -0.4,
       fontFamily: family,
-      color: colorScheme.foreground,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
   static TextStyle h3({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -74,14 +66,12 @@ abstract class ShadTextDefaultTheme {
       height: 32 / 24,
       letterSpacing: -0.4,
       fontFamily: family,
-      color: colorScheme.foreground,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
   static TextStyle h4({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -93,14 +83,12 @@ abstract class ShadTextDefaultTheme {
       height: 28 / 20,
       letterSpacing: -0.4,
       fontFamily: family,
-      color: colorScheme.foreground,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
   static TextStyle p({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -112,14 +100,12 @@ abstract class ShadTextDefaultTheme {
       height: 28 / 16,
       letterSpacing: 0,
       fontFamily: family,
-      color: colorScheme.foreground,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
   static TextStyle blockquote({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -131,14 +117,12 @@ abstract class ShadTextDefaultTheme {
       height: 24 / 16,
       letterSpacing: 0,
       fontFamily: family,
-      color: colorScheme.foreground,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
   static TextStyle table({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -150,14 +134,12 @@ abstract class ShadTextDefaultTheme {
       height: 24 / 16,
       letterSpacing: 0,
       fontFamily: family,
-      color: colorScheme.foreground,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
   static TextStyle list({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -169,14 +151,12 @@ abstract class ShadTextDefaultTheme {
       height: 24 / 16,
       letterSpacing: 0,
       fontFamily: family,
-      color: colorScheme.foreground,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
   static TextStyle lead({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -187,7 +167,6 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w400,
       height: 28 / 20,
       letterSpacing: 0,
-      color: colorScheme.mutedForeground,
       fontFamily: family,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
@@ -195,7 +174,6 @@ abstract class ShadTextDefaultTheme {
   }
 
   static TextStyle large({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -207,14 +185,12 @@ abstract class ShadTextDefaultTheme {
       height: 28 / 18,
       letterSpacing: 0,
       fontFamily: family,
-      color: colorScheme.foreground,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
   static TextStyle small({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -226,14 +202,12 @@ abstract class ShadTextDefaultTheme {
       height: 14 / 14,
       letterSpacing: 0,
       fontFamily: family,
-      color: colorScheme.foreground,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
     );
   }
 
   static TextStyle muted({
-    required ShadColorScheme colorScheme,
     required String family,
   }) {
     return TextStyle(
@@ -244,7 +218,6 @@ abstract class ShadTextDefaultTheme {
       fontWeight: FontWeight.w400,
       height: 20 / 14,
       letterSpacing: 0,
-      color: colorScheme.mutedForeground,
       fontFamily: family,
       textBaseline: TextBaseline.alphabetic,
       leadingDistribution: TextLeadingDistribution.even,
