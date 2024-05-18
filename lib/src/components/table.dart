@@ -214,8 +214,8 @@ class _ShadTableState extends State<ShadTable> {
 
   int get effectiveRowCount =>
       widget.rowCount +
-      (widget.headerBuilder != null ? 1 : 0) +
-      (widget.footerBuilder != null ? 1 : 0);
+      (widget.header != null || widget.headerBuilder != null ? 1 : 0) +
+      (widget.footer != null || widget.footerBuilder != null ? 1 : 0);
 
   @override
   void initState() {
