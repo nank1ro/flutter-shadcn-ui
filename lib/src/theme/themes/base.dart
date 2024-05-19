@@ -71,6 +71,7 @@ abstract class ShadBaseTheme {
     required this.tableTheme,
     required this.resizableTheme,
     required this.hoverStrategies,
+    required this.disableSecondaryBorder,
   });
 
   final ShadColorScheme colorScheme;
@@ -115,4 +116,5 @@ abstract class ShadBaseTheme {
   final ShadTableTheme tableTheme;
   final ShadResizableTheme resizableTheme;
   final ShadHoverStrategies hoverStrategies;
+  final bool disableSecondaryBorder;
 }

@@ -1,3 +1,4 @@
+import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -8,10 +9,10 @@ class RadioGroupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: ShadRadioGroup<String>(
-          items: [
+          items: const [
             ShadRadio(
               label: Text('Default'),
               value: 'default',
@@ -24,7 +25,7 @@ class RadioGroupPage extends StatelessWidget {
               label: Text('Nothing'),
               value: 'nothing',
             ),
-          ],
+          ].separatedBy(const SizedBox(height: 4)),
         ),
       ),
     );

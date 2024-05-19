@@ -22,8 +22,6 @@ class ShadButtonTheme {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.hoverForegroundColor,
-    this.border,
-    this.radius,
     this.pressedBackgroundColor,
     this.pressedForegroundColor,
     this.shadows,
@@ -48,8 +46,6 @@ class ShadButtonTheme {
   final Color? hoverBackgroundColor;
   final Color? foregroundColor;
   final Color? hoverForegroundColor;
-  final BoxBorder? border;
-  final BorderRadius? radius;
   final Color? pressedBackgroundColor;
   final Color? pressedForegroundColor;
   final List<BoxShadow>? shadows;
@@ -87,8 +83,6 @@ class ShadButtonTheme {
       foregroundColor: Color.lerp(a.foregroundColor, b.foregroundColor, t),
       hoverForegroundColor:
           Color.lerp(a.hoverForegroundColor, b.hoverForegroundColor, t),
-      border: b.border,
-      radius: BorderRadius.lerp(a.radius, b.radius, t),
       pressedBackgroundColor:
           Color.lerp(a.pressedBackgroundColor, b.pressedBackgroundColor, t),
       pressedForegroundColor:
@@ -122,8 +116,6 @@ class ShadButtonTheme {
     Color? hoverBackgroundColor,
     Color? foregroundColor,
     Color? hoverForegroundColor,
-    BoxBorder? border,
-    BorderRadius? radius,
     Color? pressedBackgroundColor,
     Color? pressedForegroundColor,
     List<BoxShadow>? shadows,
@@ -147,8 +139,6 @@ class ShadButtonTheme {
       hoverBackgroundColor: hoverBackgroundColor ?? this.hoverBackgroundColor,
       foregroundColor: foregroundColor ?? this.foregroundColor,
       hoverForegroundColor: hoverForegroundColor ?? this.hoverForegroundColor,
-      border: border ?? this.border,
-      radius: radius ?? this.radius,
       pressedBackgroundColor:
           pressedBackgroundColor ?? this.pressedBackgroundColor,
       pressedForegroundColor:
@@ -178,15 +168,13 @@ class ShadButtonTheme {
       hoverBackgroundColor: other.hoverBackgroundColor,
       foregroundColor: other.foregroundColor,
       hoverForegroundColor: other.hoverForegroundColor,
-      border: other.border,
-      radius: other.radius,
       pressedBackgroundColor: other.pressedBackgroundColor,
       pressedForegroundColor: other.pressedForegroundColor,
       shadows: other.shadows,
       gradient: other.gradient,
       textDecoration: other.textDecoration,
       hoverTextDecoration: other.hoverTextDecoration,
-      decoration: other.decoration,
+      decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       width: other.width,
       height: other.height,
       mainAxisAlignment: other.mainAxisAlignment,
@@ -209,8 +197,6 @@ class ShadButtonTheme {
         other.hoverBackgroundColor == hoverBackgroundColor &&
         other.foregroundColor == foregroundColor &&
         other.hoverForegroundColor == hoverForegroundColor &&
-        other.border == border &&
-        other.radius == radius &&
         other.pressedBackgroundColor == pressedBackgroundColor &&
         other.pressedForegroundColor == pressedForegroundColor &&
         listEquals(other.shadows, shadows) &&
@@ -236,8 +222,6 @@ class ShadButtonTheme {
         hoverBackgroundColor.hashCode ^
         foregroundColor.hashCode ^
         hoverForegroundColor.hashCode ^
-        border.hashCode ^
-        radius.hashCode ^
         pressedBackgroundColor.hashCode ^
         pressedForegroundColor.hashCode ^
         shadows.hashCode ^

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'package:shadcn_ui/src/components/image.dart';
 
@@ -34,7 +35,7 @@ class ShadResizableTheme {
   final ShadImageSrc? handleIconSrc;
   final double? dividerSize;
   final bool? resetOnDoubleTap;
-  final BoxDecoration? handleDecoration;
+  final ShadDecoration? handleDecoration;
   final EdgeInsets? handlePadding;
   final Size? handleSize;
   final double? dividerThickness;
@@ -58,7 +59,7 @@ class ShadResizableTheme {
       dividerSize: lerpDouble(a.dividerSize, b.dividerSize, t),
       resetOnDoubleTap: b.resetOnDoubleTap,
       handleDecoration:
-          BoxDecoration.lerp(a.handleDecoration, b.handleDecoration, t),
+          ShadDecoration.lerp(a.handleDecoration, b.handleDecoration, t),
       handlePadding: EdgeInsets.lerp(a.handlePadding, b.handlePadding, t),
       handleSize: Size.lerp(a.handleSize, b.handleSize, t),
       dividerColor: Color.lerp(a.dividerColor, b.dividerColor, t),
@@ -98,7 +99,7 @@ class ShadResizableTheme {
     ShadImageSrc? handleIconSrc,
     double? dividerSize,
     bool? resetOnDoubleTap,
-    BoxDecoration? handleDecoration,
+    ShadDecoration? handleDecoration,
     EdgeInsets? handlePadding,
     Size? handleSize,
     Color? dividerColor,

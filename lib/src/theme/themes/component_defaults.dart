@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -32,58 +33,69 @@ import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 
-abstract class ShadComponentDefaultTheme {
+abstract class ShadDefaultComponentThemes {
   static ShadButtonTheme primaryButtonTheme({
     required ShadColorScheme colorScheme,
+    required BorderRadius radius,
   }) {
     return ShadButtonTheme(
       backgroundColor: colorScheme.primary,
       hoverBackgroundColor: colorScheme.primary.withOpacity(.9),
       foregroundColor: colorScheme.primaryForeground,
       hoverForegroundColor: colorScheme.primaryForeground,
+      decoration: ShadDecoration(border: ShadBorder(radius: radius)),
     );
   }
 
   static ShadButtonTheme secondaryButtonTheme({
     required ShadColorScheme colorScheme,
+    required BorderRadius radius,
   }) {
     return ShadButtonTheme(
       backgroundColor: colorScheme.secondary,
       hoverBackgroundColor: colorScheme.secondary.withOpacity(.8),
       foregroundColor: colorScheme.secondaryForeground,
       hoverForegroundColor: colorScheme.secondaryForeground,
+      decoration: ShadDecoration(border: ShadBorder(radius: radius)),
     );
   }
 
   static ShadButtonTheme destructiveButtonTheme({
     required ShadColorScheme colorScheme,
+    required BorderRadius radius,
   }) {
     return ShadButtonTheme(
       backgroundColor: colorScheme.destructive,
       hoverBackgroundColor: colorScheme.destructive.withOpacity(.9),
       foregroundColor: colorScheme.destructiveForeground,
       hoverForegroundColor: colorScheme.destructiveForeground,
+      decoration: ShadDecoration(border: ShadBorder(radius: radius)),
     );
   }
 
   static ShadButtonTheme outlineButtonTheme({
     required ShadColorScheme colorScheme,
+    required BorderRadius radius,
   }) {
     return ShadButtonTheme(
       hoverBackgroundColor: colorScheme.accent,
       foregroundColor: colorScheme.primary,
       hoverForegroundColor: colorScheme.accentForeground,
-      border: Border.all(color: colorScheme.input),
+      decoration: ShadDecoration(
+        border: ShadBorder(radius: radius, color: colorScheme.input),
+      ),
     );
   }
 
   static ShadButtonTheme ghostButtonTheme({
     required ShadColorScheme colorScheme,
+    required BorderRadius radius,
   }) {
     return ShadButtonTheme(
       hoverBackgroundColor: colorScheme.accent,
       foregroundColor: colorScheme.primary,
       hoverForegroundColor: colorScheme.accentForeground,
+      decoration: ShadDecoration(border: ShadBorder(radius: radius)),
     );
   }
 
@@ -185,15 +197,11 @@ abstract class ShadComponentDefaultTheme {
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
         MoveEffect(begin: Offset(0, 2), end: Offset.zero),
       ],
-      shadows: ShadShadows.md,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        borderRadius: radius,
-        border: Border.all(
-          color: colorScheme.border,
-        ),
+      decoration: ShadDecoration(
+        border: ShadBorder(radius: radius, color: colorScheme.border),
         color: colorScheme.popover,
-        boxShadow: ShadShadows.md,
+        shadows: ShadShadows.md,
       ),
       anchor: const ShadAnchorAuto(
         preferBelow: false,
@@ -214,25 +222,31 @@ abstract class ShadComponentDefaultTheme {
       ],
       shadows: ShadShadows.md,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        borderRadius: radius,
-        border: Border.all(
+      decoration: ShadDecoration(
+        color: colorScheme.popover,
+        shadows: ShadShadows.md,
+        border: ShadBorder(
+          radius: radius,
           color: colorScheme.border,
         ),
-        color: colorScheme.popover,
-        boxShadow: ShadShadows.md,
       ),
       anchor: const ShadAnchorAuto(preferBelow: true, verticalOffset: 24),
     );
   }
 
-  static ShadDecoration decoration({
+  static ShadDecoration decorationTheme({
     required ShadColorScheme colorScheme,
     required BorderRadius radius,
     required ShadTextTheme textTheme,
   }) {
     return ShadDecoration(
-      border: const ShadBorder(padding: EdgeInsets.all(4)),
+      secondaryBorder: const ShadBorder(padding: EdgeInsets.all(4)),
+      secondaryFocusedBorder: ShadBorder(
+        width: 2,
+        color: colorScheme.ring,
+        radius: radius.add(radius / 2),
+        padding: const EdgeInsets.all(2),
+      ),
       labelStyle: textTheme.muted.copyWith(
         fontWeight: FontWeight.w500,
         color: colorScheme.foreground,
@@ -248,12 +262,6 @@ abstract class ShadComponentDefaultTheme {
       errorLabelStyle: textTheme.muted.copyWith(
         fontWeight: FontWeight.w500,
         color: colorScheme.destructive,
-      ),
-      focusedBorder: ShadBorder(
-        width: 2,
-        color: colorScheme.ring,
-        radius: radius.add(radius / 2),
-        padding: const EdgeInsets.all(2),
       ),
     );
   }
@@ -280,17 +288,23 @@ abstract class ShadComponentDefaultTheme {
 
   static ShadSelectTheme selectTheme({
     required ShadColorScheme colorScheme,
+    required BorderRadius radius,
   }) {
     return ShadSelectTheme(
       minWidth: kDefaultSelectMinWidth,
       maxHeight: kDefaultSelectMaxHeight,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      backgroundColor: colorScheme.background,
-      border: Border.all(color: colorScheme.input),
+      decoration: ShadDecoration(
+        border: ShadBorder(radius: radius, color: colorScheme.input),
+      ),
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
-      anchor: const ShadAnchorAuto(preferBelow: true, verticalOffset: 24),
+      anchor: const ShadAnchor(
+        childAlignment: Alignment.bottomLeft,
+        overlayAlignment: Alignment.topLeft,
+        offset: Offset(4, 0),
+      ),
     );
   }
 
@@ -324,49 +338,39 @@ abstract class ShadComponentDefaultTheme {
   static ShadSwitchTheme switchTheme({
     required ShadColorScheme colorScheme,
   }) {
+    const width = 44.0;
+    const height = 24.0;
+    const radius = BorderRadius.all(Radius.circular(height / 2));
     return ShadSwitchTheme(
-      radius: const BorderRadius.all(Radius.circular(24)),
-      width: 44,
+      width: width,
+      height: height,
       margin: 2,
       duration: 100.milliseconds,
       thumbColor: colorScheme.background,
       uncheckedTrackColor: colorScheme.input,
       checkedTrackColor: colorScheme.primary,
+      padding: const EdgeInsets.only(left: 8),
       decoration: ShadDecoration(
-        border: const ShadBorder(width: 4, color: Colors.transparent),
-        focusedBorder: ShadBorder(
-          width: 2,
-          color: colorScheme.ring,
-          // the outer radius is calculated as
-          // outerRadius = innerRadius + innerRadius / 2
-          // outerRadius = 24 + 24 / 2 = 36
-          radius: const BorderRadius.all(Radius.circular(36)),
-          padding: const EdgeInsets.all(2),
-        ),
+        border: ShadBorder(radius: radius.add(radius / 2)),
+        secondaryFocusedBorder: ShadBorder(radius: radius.add(radius / 2)),
       ),
     );
   }
 
   static ShadCheckboxTheme checkboxTheme({
     required ShadColorScheme colorScheme,
+    required BorderRadius radius,
   }) {
     return ShadCheckboxTheme(
       size: 16,
       duration: 100.milliseconds,
-      radius: const BorderRadius.all(Radius.circular(4)),
       color: colorScheme.primary,
-      borderWidth: 1,
       padding: const EdgeInsets.only(left: 8),
       decoration: ShadDecoration(
-        border: const ShadBorder(width: 4, color: Colors.transparent),
-        focusedBorder: ShadBorder(
-          width: 2,
-          color: colorScheme.ring,
-          // the outer radius is calculated as
-          // outerRadius = innerRadius + innerRadius / 2
-          // outerRadius = 4 + 4 / 2 = 6
-          radius: const BorderRadius.all(Radius.circular(6)),
-          padding: const EdgeInsets.all(2),
+        border: ShadBorder(
+          width: 1,
+          color: colorScheme.primary,
+          radius: radius,
         ),
       ),
     );
@@ -385,46 +389,32 @@ abstract class ShadComponentDefaultTheme {
       decoration: ShadDecoration(
         border: ShadBorder(
           width: 2,
-          color: Colors.transparent,
-          padding: const EdgeInsets.all(2),
+          color: colorScheme.border,
           radius: radius,
-        ),
-        focusedBorder: ShadBorder(
-          width: 2,
-          color: colorScheme.ring,
-          // the outer radius is calculated as
-          // outerRadius = innerRadius + innerRadius / 2
-          radius: radius.add(radius / 2),
-          padding: const EdgeInsets.all(2),
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      border: Border.all(
-        color: colorScheme.border,
-        width: 2,
-      ),
-      radius: radius,
     );
   }
 
   static ShadRadioTheme radioTheme({
     required ShadColorScheme colorScheme,
   }) {
+    const circleSize = 10.0;
+    const radius = BorderRadius.all(Radius.circular(circleSize));
     return ShadRadioTheme(
       size: 16,
-      circleSize: 10,
+      circleSize: circleSize,
       duration: 100.milliseconds,
       color: colorScheme.primary,
-      borderWidth: 1,
       padding: const EdgeInsets.only(left: 8),
       decoration: ShadDecoration(
-        border: const ShadBorder(width: 4, color: Colors.transparent),
-        focusedBorder: ShadBorder(
-          width: 2,
-          color: colorScheme.ring,
-          radius: const BorderRadius.all(Radius.circular(16)),
-          padding: const EdgeInsets.all(2),
+        shape: BoxShape.circle,
+        border: ShadBorder(
+          width: 1,
+          color: colorScheme.primary,
         ),
+        secondaryFocusedBorder: ShadBorder(radius: radius.add(radius / 2)),
       ),
     );
   }
@@ -694,11 +684,10 @@ abstract class ShadComponentDefaultTheme {
       dividerSize: 8,
       dividerColor: colorScheme.border,
       resetOnDoubleTap: true,
-      handleDecoration: BoxDecoration(
+      handleDecoration: ShadDecoration(
+        merge: false,
         color: colorScheme.border,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(4),
-        ),
+        border: const ShadBorder(radius: BorderRadius.all(Radius.circular(4))),
       ),
       handleSize: const Size.square(10),
       mainAxisAlignment: MainAxisAlignment.start,

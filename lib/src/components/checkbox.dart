@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -19,10 +18,8 @@ class ShadCheckbox extends StatefulWidget {
     this.focusNode,
     this.decoration,
     this.size,
-    this.radius,
     this.duration,
     this.icon,
-    this.borderWidth,
     this.color,
     this.label,
     this.sublabel,
@@ -45,9 +42,6 @@ class ShadCheckbox extends StatefulWidget {
   /// The decoration of the checkbox.
   final ShadDecoration? decoration;
 
-  /// The radius of the checkbox.
-  final BorderRadius? radius;
-
   /// The size of the checkbox, defaults to 16.
   final double? size;
 
@@ -59,9 +53,6 @@ class ShadCheckbox extends StatefulWidget {
 
   /// The color of the checkbox.
   final Color? color;
-
-  /// The border width of the checkbox, defaults to 1.
-  final double? borderWidth;
 
   /// An optional label for the checkbox, displayed on the right side if
   /// the [direction] is `TextDirection.ltr`.
@@ -112,21 +103,24 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
     assert(debugCheckHasShadTheme(context));
     final theme = ShadTheme.of(context);
 
-    final effectiveDecoration =
-        widget.decoration ?? theme.checkboxTheme.decoration ?? theme.decoration;
+    final effectiveColor =
+        widget.color ?? theme.checkboxTheme.color ?? theme.colorScheme.primary;
+
+    print(theme.checkboxTheme.decoration?.border?.radius);
+    final effectiveDecoration = (theme.checkboxTheme.decoration ??
+            const ShadDecoration())
+        .mergeWith(widget.decoration)
+        .copyWith(color: widget.value ? effectiveColor : Colors.transparent);
+
     final effectiveSize = widget.size ?? theme.checkboxTheme.size ?? 16;
-    final effectiveRadius =
-        widget.radius ?? theme.checkboxTheme.radius ?? theme.radius;
+
     final effectiveIcon = widget.icon ??
         ShadImage.square(
           LucideIcons.check,
           color: theme.colorScheme.primaryForeground,
           size: effectiveSize,
         );
-    final effectiveColor =
-        widget.color ?? theme.checkboxTheme.color ?? theme.colorScheme.primary;
-    final effectiveBorderWidth =
-        widget.borderWidth ?? theme.checkboxTheme.borderWidth ?? 1;
+
     final effectiveDuration =
         widget.duration ?? theme.checkboxTheme.duration ?? 100.milliseconds;
     final effectivePadding = widget.padding ??
@@ -151,26 +145,19 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
               return ShadDecorator(
                 focused: focused,
                 decoration: effectiveDecoration,
-                child: child!,
+                child: child,
               );
             },
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
-              child: Container(
+              child: SizedBox(
                 width: effectiveSize,
                 height: effectiveSize,
-                decoration: BoxDecoration(
-                  color: widget.value ? effectiveColor : null,
-                  border: Border.all(
-                    width: effectiveBorderWidth,
-                    color: effectiveColor,
+                child: Center(
+                  child: AnimatedSwitcher(
+                    duration: effectiveDuration,
+                    child: widget.value ? effectiveIcon : const SizedBox(),
                   ),
-                  borderRadius: effectiveRadius,
-                ),
-                alignment: Alignment.center,
-                child: AnimatedSwitcher(
-                  duration: effectiveDuration,
-                  child: widget.value ? effectiveIcon : const SizedBox(),
                 ),
               ),
             ),

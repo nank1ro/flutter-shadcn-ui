@@ -48,7 +48,10 @@ class _InputPageState extends State<InputPage> {
             width: 24,
             height: 24,
             padding: EdgeInsets.zero,
-            decoration: ShadDecoration.none,
+            decoration: const ShadDecoration(
+              secondaryBorder: ShadBorder.none,
+              secondaryFocusedBorder: ShadBorder.none,
+            ),
             icon: ShadImage.square(
               size: 16,
               obscure ? LucideIcons.eyeOff : LucideIcons.eye,

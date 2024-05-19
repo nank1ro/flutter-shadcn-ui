@@ -1,3 +1,4 @@
+import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:flutter/material.dart';
@@ -48,12 +49,14 @@ class _RadioPageState extends State<RadioPage> {
           onChanged: (v) {
             print('onChange $v');
           },
-          items: NotifyAbout.values.map(
-            (e) => ShadRadio<NotifyAbout>(
-              value: e,
-              label: Text(e.message),
-            ),
-          ),
+          items: NotifyAbout.values
+              .map(
+                (e) => ShadRadio<NotifyAbout>(
+                  value: e,
+                  label: Text(e.message),
+                ),
+              )
+              .separatedBy(const SizedBox(height: 4)),
         ),
       ],
     );

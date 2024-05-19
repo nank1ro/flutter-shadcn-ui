@@ -50,8 +50,10 @@ class ToastPage extends StatelessWidget {
                           const Text('There was a problem with your request'),
                       action: ShadButton.destructive(
                         text: const Text('Try again'),
-                        border: Border.all(
-                          color: theme.colorScheme.destructiveForeground,
+                        decoration: ShadDecoration(
+                          border: ShadBorder(
+                            color: theme.colorScheme.destructiveForeground,
+                          ),
                         ),
                         onPressed: () => ShadToaster.of(context).hide(),
                       ),

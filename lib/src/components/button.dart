@@ -42,8 +42,6 @@ class ShadButton extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.hoverForegroundColor,
-    this.border,
-    this.borderRadius,
     this.autofocus = false,
     this.focusNode,
     this.pressedBackgroundColor,
@@ -90,8 +88,6 @@ class ShadButton extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.hoverForegroundColor,
-    this.border,
-    this.borderRadius,
     this.autofocus = false,
     this.focusNode,
     this.pressedBackgroundColor,
@@ -137,8 +133,6 @@ class ShadButton extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.hoverForegroundColor,
-    this.border,
-    this.borderRadius,
     this.autofocus = false,
     this.focusNode,
     this.pressedBackgroundColor,
@@ -184,8 +178,6 @@ class ShadButton extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.hoverForegroundColor,
-    this.border,
-    this.borderRadius,
     this.autofocus = false,
     this.focusNode,
     this.pressedBackgroundColor,
@@ -231,8 +223,6 @@ class ShadButton extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.hoverForegroundColor,
-    this.border,
-    this.borderRadius,
     this.autofocus = false,
     this.focusNode,
     this.pressedBackgroundColor,
@@ -278,8 +268,6 @@ class ShadButton extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.hoverForegroundColor,
-    this.border,
-    this.borderRadius,
     this.autofocus = false,
     this.focusNode,
     this.pressedBackgroundColor,
@@ -324,8 +312,6 @@ class ShadButton extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.hoverForegroundColor,
-    this.border,
-    this.borderRadius,
     this.autofocus = false,
     this.focusNode,
     this.pressedBackgroundColor,
@@ -372,8 +358,6 @@ class ShadButton extends StatefulWidget {
   final Color? hoverBackgroundColor;
   final Color? foregroundColor;
   final Color? hoverForegroundColor;
-  final BoxBorder? border;
-  final BorderRadius? borderRadius;
   final bool autofocus;
   final FocusNode? focusNode;
   final Color? pressedBackgroundColor;
@@ -600,14 +584,6 @@ class _ShadButtonState extends State<ShadButton> {
     return widget.textDecoration ?? buttonTheme(theme).textDecoration;
   }
 
-  BoxBorder? border(ShadThemeData theme) {
-    return widget.border ?? buttonTheme(theme).border;
-  }
-
-  BorderRadius borderRadius(ShadThemeData theme) {
-    return widget.borderRadius ?? buttonTheme(theme).radius ?? theme.radius;
-  }
-
   MouseCursor cursor(ShadThemeData theme) {
     if (widget.cursor != null) return widget.cursor!;
     return (widget.enabled
@@ -645,7 +621,8 @@ class _ShadButtonState extends State<ShadButton> {
         theme.primaryButtonTheme.applyIconColorFilter;
 
     final effectiveDecoration =
-        widget.decoration ?? buttonTheme(theme).decoration ?? theme.decoration;
+        (buttonTheme(theme).decoration ?? const ShadDecoration())
+            .mergeWith(widget.decoration);
 
     final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
         buttonTheme(theme).mainAxisAlignment ??
@@ -672,6 +649,16 @@ class _ShadButtonState extends State<ShadButton> {
           final pressed = states.contains(ShadState.pressed);
           final hovered = states.contains(ShadState.hovered);
           final enabled = !states.contains(ShadState.disabled);
+
+          final updatedDecoration = effectiveDecoration.copyWith(
+            color: hasPressedBackgroundColor && pressed
+                ? pressedBackgroundColor(theme)
+                : hovered
+                    ? hoverBackground(theme)
+                    : background(theme),
+            gradient: gradient(theme),
+            shadows: shadows(theme),
+          );
 
           // Applies the foreground color filter to the icon if provided
           var icon = widget.icon;
@@ -702,11 +689,12 @@ class _ShadButtonState extends State<ShadButton> {
                   autofocus: widget.autofocus,
                   focusNode: focusNode,
                   builder: (context, focused, child) => ShadDecorator(
-                    decoration: effectiveDecoration,
+                    decoration: updatedDecoration,
                     focused: focused,
-                    child: child!,
+                    child: child,
                   ),
                   child: ShadGestureDetector(
+                    behavior: HitTestBehavior.opaque,
                     onHoverChange: (value) {
                       statesController.update(ShadState.hovered, value);
                     },
@@ -735,46 +723,37 @@ class _ShadButtonState extends State<ShadButton> {
                     onLongPressDown: widget.onLongPressDown,
                     onLongPressStart: widget.onLongPressStart,
                     longPressDuration: effectiveLongPressDuration,
-                    child: Container(
+                    child: SizedBox(
                       height: height(theme),
                       width: width(theme),
-                      decoration: BoxDecoration(
-                        color: hasPressedBackgroundColor && pressed
-                            ? pressedBackgroundColor(theme)
-                            : hovered
-                                ? hoverBackground(theme)
-                                : background(theme),
-                        borderRadius: borderRadius(theme),
-                        border: border(theme),
-                        gradient: gradient(theme),
-                        boxShadow: shadows(theme),
-                      ),
-                      padding: padding(theme),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: effectiveCrossAxisAlignment,
-                        mainAxisAlignment: effectiveMainAxisAlignment,
-                        children: [
-                          if (icon != null) icon,
-                          if (widget.text != null)
-                            DefaultTextStyle(
-                              style: theme.textTheme.small.copyWith(
-                                color: hasPressedForegroundColor && pressed
-                                    ? pressedForegroundColor(theme)
-                                    : hovered
-                                        ? hoverForeground(theme)
-                                        : foreground(theme),
-                                decoration: textDecoration(
-                                  theme,
-                                  hovered: hovered,
+                      child: Padding(
+                        padding: padding(theme),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: effectiveCrossAxisAlignment,
+                          mainAxisAlignment: effectiveMainAxisAlignment,
+                          children: [
+                            if (icon != null) icon,
+                            if (widget.text != null)
+                              DefaultTextStyle(
+                                style: theme.textTheme.small.copyWith(
+                                  color: hasPressedForegroundColor && pressed
+                                      ? pressedForegroundColor(theme)
+                                      : hovered
+                                          ? hoverForeground(theme)
+                                          : foreground(theme),
+                                  decoration: textDecoration(
+                                    theme,
+                                    hovered: hovered,
+                                  ),
+                                  decorationColor: foreground(theme),
+                                  decorationStyle: TextDecorationStyle.solid,
                                 ),
-                                decorationColor: foreground(theme),
-                                decorationStyle: TextDecorationStyle.solid,
+                                textAlign: TextAlign.center,
+                                child: widget.text!,
                               ),
-                              textAlign: TextAlign.center,
-                              child: widget.text!,
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

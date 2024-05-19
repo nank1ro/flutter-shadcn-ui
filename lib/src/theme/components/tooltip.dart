@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
@@ -11,7 +12,6 @@ class ShadTooltipTheme {
     this.waitDuration,
     this.showDuration,
     this.effects,
-    this.shadows,
     this.padding,
     this.decoration,
     this.anchor,
@@ -30,9 +30,6 @@ class ShadTooltipTheme {
   /// {@macro tooltip.effects}
   final List<Effect<dynamic>>? effects;
 
-  /// {@macro tooltip.shadows}
-  final List<BoxShadow>? shadows;
-
   /// {@macro tooltip.anchor}
   final ShadAnchorBase? anchor;
 
@@ -40,7 +37,7 @@ class ShadTooltipTheme {
   final EdgeInsetsGeometry? padding;
 
   /// {@macro tooltip.decoration}
-  final BoxDecoration? decoration;
+  final ShadDecoration? decoration;
 
   /// {@macro tooltip.hoverStrategies}
   final ShadHoverStrategies? hoverStrategies;
@@ -62,9 +59,8 @@ class ShadTooltipTheme {
           ? lerpDuration(a.showDuration!, b.showDuration!, t)
           : b.showDuration,
       effects: b.effects,
-      shadows: b.shadows,
       padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
-      decoration: BoxDecoration.lerp(a.decoration, b.decoration, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       anchor: b.anchor,
       hoverStrategies: b.hoverStrategies,
       longPressDuration:
@@ -79,9 +75,8 @@ class ShadTooltipTheme {
     Duration? waitDuration,
     Duration? showDuration,
     List<Effect<dynamic>>? effects,
-    List<BoxShadow>? shadows,
     EdgeInsetsGeometry? padding,
-    BoxDecoration? decoration,
+    ShadDecoration? decoration,
     ShadAnchorBase? anchor,
     ShadHoverStrategies? hoverStrategies,
     Duration? longPressDuration,
@@ -91,7 +86,6 @@ class ShadTooltipTheme {
       waitDuration: waitDuration ?? this.waitDuration,
       showDuration: showDuration ?? this.showDuration,
       effects: effects ?? this.effects,
-      shadows: shadows ?? this.shadows,
       padding: padding ?? this.padding,
       decoration: decoration ?? this.decoration,
       anchor: anchor ?? this.anchor,
@@ -107,7 +101,6 @@ class ShadTooltipTheme {
       waitDuration: other.waitDuration,
       showDuration: other.showDuration,
       effects: other.effects,
-      shadows: other.shadows,
       padding: other.padding,
       decoration: other.decoration,
       anchor: other.anchor,
@@ -125,7 +118,6 @@ class ShadTooltipTheme {
         other.waitDuration == waitDuration &&
         other.showDuration == showDuration &&
         listEquals(other.effects, effects) &&
-        listEquals(other.shadows, shadows) &&
         other.padding == padding &&
         other.decoration == decoration &&
         other.anchor == anchor &&
@@ -139,7 +131,6 @@ class ShadTooltipTheme {
         waitDuration.hashCode ^
         showDuration.hashCode ^
         effects.hashCode ^
-        shadows.hashCode ^
         padding.hashCode ^
         decoration.hashCode ^
         anchor.hashCode ^

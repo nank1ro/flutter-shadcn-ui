@@ -10,10 +10,8 @@ class ShadCheckboxTheme {
     this.merge = true,
     this.color,
     this.duration,
-    this.radius,
     this.decoration,
     this.size,
-    this.borderWidth,
     this.padding,
   });
 
@@ -25,11 +23,8 @@ class ShadCheckboxTheme {
 
   final Duration? duration;
 
-  final BorderRadius? radius;
-
   final ShadDecoration? decoration;
 
-  final double? borderWidth;
   final EdgeInsets? padding;
 
   static ShadCheckboxTheme lerp(
@@ -42,10 +37,8 @@ class ShadCheckboxTheme {
       merge: b.merge,
       color: Color.lerp(a.color, b.color, t),
       duration: b.duration,
-      radius: BorderRadius.lerp(a.radius, b.radius, t),
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       size: lerpDouble(a.size, b.size, t),
-      borderWidth: lerpDouble(a.borderWidth, b.borderWidth, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
     );
   }
@@ -55,18 +48,14 @@ class ShadCheckboxTheme {
     Color? color,
     double? size,
     Duration? duration,
-    BorderRadius? radius,
     ShadDecoration? decoration,
-    double? borderWidth,
     EdgeInsets? padding,
   }) {
     return ShadCheckboxTheme(
       merge: merge ?? this.merge,
       duration: duration ?? this.duration,
-      radius: radius ?? this.radius,
       decoration: decoration ?? this.decoration,
       size: size ?? this.size,
-      borderWidth: borderWidth ?? this.borderWidth,
       color: color ?? this.color,
       padding: padding ?? this.padding,
     );
@@ -78,10 +67,8 @@ class ShadCheckboxTheme {
     return copyWith(
       color: other.color,
       duration: other.duration,
-      radius: other.radius,
-      decoration: other.decoration,
+      decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       size: other.size,
-      borderWidth: other.borderWidth,
       padding: other.padding,
     );
   }
@@ -95,9 +82,7 @@ class ShadCheckboxTheme {
         other.color == color &&
         other.size == size &&
         other.duration == duration &&
-        other.radius == radius &&
         other.decoration == decoration &&
-        other.borderWidth == borderWidth &&
         other.padding == padding;
   }
 
@@ -107,9 +92,7 @@ class ShadCheckboxTheme {
         color.hashCode ^
         size.hashCode ^
         duration.hashCode ^
-        radius.hashCode ^
         decoration.hashCode ^
-        borderWidth.hashCode ^
         padding.hashCode;
   }
 }

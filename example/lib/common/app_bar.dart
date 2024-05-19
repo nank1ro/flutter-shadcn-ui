@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
@@ -20,7 +21,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 8),
-          child: IconButton(
+          child: ShadButton.ghost(
+            size: ShadButtonSize.icon,
             onPressed: () {
               context.update<ThemeMode>(
                 (value) =>

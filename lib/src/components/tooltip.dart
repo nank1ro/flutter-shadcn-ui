@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
-import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 /// Controls the visibility of a [ShadTooltip].
@@ -18,7 +18,6 @@ class ShadTooltip extends StatefulWidget {
     this.waitDuration,
     this.showDuration,
     this.effects,
-    this.shadows,
     this.padding,
     this.decoration,
     this.anchor,
@@ -59,11 +58,6 @@ class ShadTooltip extends StatefulWidget {
   /// {@endtemplate}
   final List<Effect<dynamic>>? effects;
 
-  /// {@template tooltip.shadows}
-  /// The shadows applied to the tooltip, defaults to [ShadShadows.md].
-  /// {@endtemplate}
-  final List<BoxShadow>? shadows;
-
   /// {@template tooltip.padding}
   /// The padding of the tooltip, defaults to
   /// `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
@@ -73,7 +67,7 @@ class ShadTooltip extends StatefulWidget {
   /// {@template tooltip.decoration}
   /// The decoration of the tooltip.
   /// {@endtemplate}
-  final BoxDecoration? decoration;
+  final ShadDecoration? decoration;
 
   /// {@template tooltip.anchor}
   /// The position of the [ShadTooltip], defaults to
@@ -133,7 +127,6 @@ class _ShadTooltipState extends State<ShadTooltip> {
 
     final effectiveEffects = widget.effects ?? theme.tooltipTheme.effects ?? [];
     final effectivePadding = widget.padding ?? theme.tooltipTheme.padding;
-    final effectiveShadows = widget.shadows ?? theme.tooltipTheme.shadows;
     final effectiveDecoration =
         widget.decoration ?? theme.tooltipTheme.decoration;
     final effectiveAnchor = widget.anchor ??
@@ -179,15 +172,16 @@ class _ShadTooltipState extends State<ShadTooltip> {
             visible: controller.isOpen,
             anchor: effectiveAnchor,
             portalBuilder: (context) {
-              Widget tooltip = Container(
-                padding: effectivePadding,
-                decoration:
-                    effectiveDecoration?.copyWith(boxShadow: effectiveShadows),
-                child: DefaultTextStyle(
-                  style: theme.textTheme.muted
-                      .copyWith(color: theme.colorScheme.popoverForeground),
-                  textAlign: TextAlign.center,
-                  child: widget.builder(context),
+              Widget tooltip = ShadDecorator(
+                decoration: effectiveDecoration,
+                child: Padding(
+                  padding: effectivePadding ?? EdgeInsets.zero,
+                  child: DefaultTextStyle(
+                    style: theme.textTheme.muted
+                        .copyWith(color: theme.colorScheme.popoverForeground),
+                    textAlign: TextAlign.center,
+                    child: widget.builder(context),
+                  ),
                 ),
               );
 
