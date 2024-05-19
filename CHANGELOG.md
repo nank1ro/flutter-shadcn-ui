@@ -6,6 +6,7 @@
 - Remove `colorScheme` from `ShadTextTheme`. Now the colors will be automatically derived, unless specified.
 - Fix popover position in `ShadSelect` component.
 - Refactor `ShadDecoration` to easily change the default borders and add new decoration properties to it. Some properties have been moved from the components to the `decoration` of the component.
+- Fix `ShadTable` row indexes when using an `headerBuilder` (thanks to @Kyziq).
 
 ## 0.4.6
 
