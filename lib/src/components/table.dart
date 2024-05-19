@@ -214,8 +214,8 @@ class _ShadTableState extends State<ShadTable> {
 
   int get effectiveRowCount =>
       widget.rowCount +
-      (widget.header != null ? 1 : 0) +
-      (widget.footer != null ? 1 : 0);
+      (widget.header != null || widget.headerBuilder != null ? 1 : 0) +
+      (widget.footer != null || widget.footerBuilder != null ? 1 : 0);
 
   @override
   void initState() {
@@ -350,16 +350,16 @@ class _ShadTableState extends State<ShadTable> {
             physics: widget.horizontalScrollPhysics,
           ),
           cellBuilder: (context, index) {
-            if (index.row == 0 && widget.headerBuilder != null) {
+            if (widget.headerBuilder != null && index.row == 0) {
               return widget.headerBuilder!(context, index.column);
             }
-            if (index.row == effectiveRowCount - 1 &&
-                widget.footerBuilder != null) {
+            if (widget.footerBuilder != null &&
+                index.row == effectiveRowCount - 1) {
               return widget.footerBuilder!(context, index.column);
             }
 
             final realVicinity = TableVicinity(
-              row: index.row - (widget.header != null ? 1 : 0),
+              row: widget.headerBuilder != null ? index.row - 1 : index.row,
               column: index.column,
             );
 
