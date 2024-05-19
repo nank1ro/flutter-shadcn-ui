@@ -36,9 +36,6 @@ class ShadSelect<T> extends StatefulWidget {
     this.decoration,
     this.trailing,
     this.padding,
-    this.backgroundColor,
-    this.radius,
-    this.border,
     this.optionsPadding,
     this.showScrollToBottomChevron,
     this.showScrollToTopChevron,
@@ -93,17 +90,6 @@ class ShadSelect<T> extends StatefulWidget {
   /// The padding of the [ShadSelect], defaults to
   /// `EdgeInsets.symmetric(horizontal: 12, vertical: 8)`.
   final EdgeInsets? padding;
-
-  /// The background color of the [ShadSelect], defaults to
-  /// the color scheme color.
-  final Color? backgroundColor;
-
-  /// The radius of the [ShadSelect], defaults to `ShadThemeData.radius`.
-  final BorderRadius? radius;
-
-  /// The border of the [ShadSelect], defaults to
-  /// `Border.all(color: kDefaultSelectBorderColor)`.
-  final Border? border;
 
   /// The padding of the options of the [ShadSelect], defaults to
   /// `EdgeInsets.all(4)`.
@@ -239,26 +225,23 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
-
     final theme = ShadTheme.of(context);
-    final effectiveDecoration = widget.decoration ?? theme.decoration;
+
+    final effectiveDecoration =
+        (theme.selectTheme.decoration ?? const ShadDecoration())
+            .mergeWith(widget.decoration);
+
     final decorationHorizontalPadding =
         effectiveDecoration.border?.padding?.horizontal ?? 0.0;
+
     final effectivePadding = widget.padding ??
         theme.selectTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
-    final effectiveBackgroundColor = widget.backgroundColor ??
-        theme.selectTheme.backgroundColor ??
-        theme.colorScheme.background;
-    final effectiveRadius =
-        widget.radius ?? theme.selectTheme.radius ?? theme.radius;
-    final effectiveBorder = widget.border ??
-        theme.selectTheme.border ??
-        Border.all(color: theme.colorScheme.input);
 
     final effectiveShowScrollToTopChevron = widget.showScrollToTopChevron ??
         theme.selectTheme.showScrollToTopChevron ??
         true;
+
     final effectiveShowScrollToBottomChevron =
         widget.showScrollToBottomChevron ??
             theme.selectTheme.showScrollToBottomChevron ??
@@ -266,9 +249,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
     final effectiveAnchor = widget.anchor ??
         theme.selectTheme.anchor ??
-        const ShadAnchorAuto(
-          verticalOffset: 24,
-          preferBelow: true,
+        const ShadAnchor(
+          childAlignment: Alignment.bottomLeft,
+          overlayAlignment: Alignment.topLeft,
+          offset: Offset(4, 0),
         );
 
     final Widget effectiveText;
@@ -313,7 +297,6 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             final calculatedMinWidth =
                 max(effectiveMinWidth, constraints.minWidth) -
                     decorationHorizontalPadding;
-
             final Widget select = ShadDisabled(
               disabled: !widget.enabled,
               child: ShadFocusable(
@@ -323,26 +306,25 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                   return ShadDecorator(
                     focused: focused,
                     decoration: effectiveDecoration,
-                    child: child!,
+                    child: child,
                   );
                 },
-                child: GestureDetector(
+                child: ShadGestureDetector(
+                  cursor: SystemMouseCursors.click,
+                  behavior: HitTestBehavior.opaque,
                   onTap: controller.toggle,
-                  child: Container(
-                    padding: effectivePadding,
+                  child: ConstrainedBox(
                     constraints: BoxConstraints(minWidth: calculatedMinWidth),
-                    decoration: BoxDecoration(
-                      color: effectiveBackgroundColor,
-                      borderRadius: effectiveRadius,
-                      border: effectiveBorder,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Flexible(child: effectiveText),
-                        effectiveTrailing,
-                      ],
+                    child: Padding(
+                      padding: effectivePadding,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(child: effectiveText),
+                          effectiveTrailing,
+                        ],
+                      ),
                     ),
                   ),
                 ),

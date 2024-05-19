@@ -63,7 +63,7 @@ class ShadAlertTheme {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
-      decoration: other.decoration,
+      decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       iconPadding: other.iconPadding,
       iconColor: other.iconColor,
       iconSize: other.iconSize,

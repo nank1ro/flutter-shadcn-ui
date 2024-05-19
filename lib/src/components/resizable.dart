@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/image.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/mouse_cursor_provider.dart';
 
@@ -154,7 +155,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
   final VoidCallback? onDividerDoubleTap;
   final bool? resetOnDoubleTap;
   final Color? dividerColor;
-  final BoxDecoration? handleDecoration;
+  final ShadDecoration? handleDecoration;
   final EdgeInsets? handlePadding;
   final Size? handleSize;
 
@@ -261,14 +262,16 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     final effectiveDividerColor = widget.dividerColor ??
         theme.resizableTheme.dividerColor ??
         theme.colorScheme.border;
+
     final effectiveHandleDecoration = widget.handleDecoration ??
         theme.resizableTheme.handleDecoration ??
-        BoxDecoration(
+        ShadDecoration(
           color: theme.colorScheme.border,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(4),
+          border: const ShadBorder(
+            radius: BorderRadius.all(Radius.circular(4)),
           ),
         );
+
     final effectiveHandlePadding = widget.handlePadding ??
         theme.resizableTheme.handlePadding ??
         EdgeInsets.symmetric(
@@ -331,7 +334,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
     // lazy, will be initialized when the handle is needed
     late final handle = widget.handleIcon ??
-        DecoratedBox(
+        ShadDecorator(
           decoration: effectiveHandleDecoration,
           child: Padding(
             padding: effectiveHandlePadding,

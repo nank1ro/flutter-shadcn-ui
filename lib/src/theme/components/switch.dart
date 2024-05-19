@@ -12,9 +12,9 @@ class ShadSwitchTheme {
     this.uncheckedTrackColor,
     this.checkedTrackColor,
     this.width,
+    this.height,
     this.margin,
     this.duration,
-    this.radius,
     this.decoration,
     this.padding,
   });
@@ -31,11 +31,11 @@ class ShadSwitchTheme {
 
   final double? width;
 
+  final double? height;
+
   final double? margin;
 
   final Duration? duration;
-
-  final BorderRadius? radius;
 
   final ShadDecoration? decoration;
 
@@ -56,9 +56,9 @@ class ShadSwitchTheme {
       checkedTrackColor:
           Color.lerp(a.checkedTrackColor, b.checkedTrackColor, t),
       width: lerpDouble(a.width, b.width, t),
+      height: lerpDouble(a.height, b.height, t),
       margin: lerpDouble(a.margin, b.margin, t),
       duration: b.duration,
-      radius: BorderRadius.lerp(a.radius, b.radius, t),
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
     );
@@ -71,9 +71,9 @@ class ShadSwitchTheme {
     Color? uncheckedTrackColor,
     Color? checkedTrackColor,
     double? width,
+    double? height,
     double? margin,
     Duration? duration,
-    BorderRadius? radius,
     ShadDecoration? decoration,
     EdgeInsets? padding,
   }) {
@@ -84,9 +84,9 @@ class ShadSwitchTheme {
       uncheckedTrackColor: uncheckedTrackColor ?? this.uncheckedTrackColor,
       checkedTrackColor: checkedTrackColor ?? this.checkedTrackColor,
       width: width ?? this.width,
+      height: height ?? this.height,
       margin: margin ?? this.margin,
       duration: duration ?? this.duration,
-      radius: radius ?? this.radius,
       decoration: decoration ?? this.decoration,
       padding: padding ?? this.padding,
     );
@@ -101,10 +101,10 @@ class ShadSwitchTheme {
       uncheckedTrackColor: other.uncheckedTrackColor,
       checkedTrackColor: other.checkedTrackColor,
       width: other.width,
+      height: other.height,
       margin: other.margin,
       duration: other.duration,
-      radius: other.radius,
-      decoration: other.decoration,
+      decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       padding: other.padding,
     );
   }
@@ -120,9 +120,9 @@ class ShadSwitchTheme {
         other.uncheckedTrackColor == uncheckedTrackColor &&
         other.checkedTrackColor == checkedTrackColor &&
         other.width == width &&
+        other.height == height &&
         other.margin == margin &&
         other.duration == duration &&
-        other.radius == radius &&
         other.decoration == decoration &&
         other.padding == padding;
   }
@@ -135,9 +135,9 @@ class ShadSwitchTheme {
         uncheckedTrackColor.hashCode ^
         checkedTrackColor.hashCode ^
         width.hashCode ^
+        height.hashCode ^
         margin.hashCode ^
         duration.hashCode ^
-        radius.hashCode ^
         decoration.hashCode ^
         padding.hashCode;
   }

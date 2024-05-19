@@ -12,7 +12,6 @@ class ShadRadioTheme {
     this.duration,
     this.decoration,
     this.size,
-    this.borderWidth,
     this.padding,
     this.circleSize,
   });
@@ -26,8 +25,6 @@ class ShadRadioTheme {
   final Duration? duration;
 
   final ShadDecoration? decoration;
-
-  final double? borderWidth;
 
   final EdgeInsets? padding;
 
@@ -45,7 +42,6 @@ class ShadRadioTheme {
       duration: b.duration,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       size: lerpDouble(a.size, b.size, t),
-      borderWidth: lerpDouble(a.borderWidth, b.borderWidth, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       circleSize: lerpDouble(a.circleSize, b.circleSize, t),
     );
@@ -57,7 +53,6 @@ class ShadRadioTheme {
     double? size,
     Duration? duration,
     ShadDecoration? decoration,
-    double? borderWidth,
     EdgeInsets? padding,
     double? circleSize,
   }) {
@@ -66,7 +61,6 @@ class ShadRadioTheme {
       duration: duration ?? this.duration,
       decoration: decoration ?? this.decoration,
       size: size ?? this.size,
-      borderWidth: borderWidth ?? this.borderWidth,
       color: color ?? this.color,
       padding: padding ?? this.padding,
       circleSize: circleSize ?? this.circleSize,
@@ -79,9 +73,8 @@ class ShadRadioTheme {
     return copyWith(
       color: other.color,
       duration: other.duration,
-      decoration: other.decoration,
+      decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       size: other.size,
-      borderWidth: other.borderWidth,
       padding: other.padding,
       circleSize: other.circleSize,
     );
@@ -97,7 +90,6 @@ class ShadRadioTheme {
         other.size == size &&
         other.duration == duration &&
         other.decoration == decoration &&
-        other.borderWidth == borderWidth &&
         other.padding == padding &&
         other.circleSize == circleSize;
   }
@@ -109,7 +101,6 @@ class ShadRadioTheme {
         size.hashCode ^
         duration.hashCode ^
         decoration.hashCode ^
-        borderWidth.hashCode ^
         padding.hashCode ^
         circleSize.hashCode;
   }

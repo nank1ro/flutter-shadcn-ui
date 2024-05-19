@@ -20,6 +20,7 @@ class _ResizablePageState extends State<ResizablePage> {
       children: [
         ShadDecorator(
           decoration: ShadDecoration(
+            merge: false,
             border: ShadBorder(
               width: 1,
               color: theme.colorScheme.border,

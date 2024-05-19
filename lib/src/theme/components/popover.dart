@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 @immutable
 class ShadPopoverTheme {
@@ -34,7 +35,7 @@ class ShadPopoverTheme {
   final EdgeInsetsGeometry? padding;
 
   /// {@macro popover.decoration}
-  final BoxDecoration? decoration;
+  final ShadDecoration? decoration;
 
   /// {@macro popover.anchor}
   final ShadAnchorBase? anchor;
@@ -52,7 +53,7 @@ class ShadPopoverTheme {
       effects: b.effects,
       shadows: b.shadows,
       padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
-      decoration: BoxDecoration.lerp(a.decoration, b.decoration, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       anchor: b.anchor,
     );
   }
@@ -64,7 +65,7 @@ class ShadPopoverTheme {
     List<Effect<dynamic>>? effects,
     List<BoxShadow>? shadows,
     EdgeInsetsGeometry? padding,
-    BoxDecoration? decoration,
+    ShadDecoration? decoration,
     ShadAnchorBase? anchor,
   }) {
     return ShadPopoverTheme(
@@ -88,7 +89,7 @@ class ShadPopoverTheme {
       effects: other.effects,
       shadows: other.shadows,
       padding: other.padding,
-      decoration: other.decoration,
+      decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       anchor: other.anchor,
     );
   }

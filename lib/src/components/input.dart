@@ -70,10 +70,7 @@ class ShadInput extends StatefulWidget {
     this.spellCheckConfiguration,
     this.magnifierConfiguration = TextMagnifierConfiguration.disabled,
     this.selectionColor,
-    this.backgroundColor,
     this.padding,
-    this.border,
-    this.radius,
     this.prefix,
     this.suffix,
     this.mainAxisAlignment,
@@ -154,10 +151,7 @@ class ShadInput extends StatefulWidget {
   final UndoHistoryController? undoController;
   final SpellCheckConfiguration? spellCheckConfiguration;
   final Color? selectionColor;
-  final Color? backgroundColor;
   final EdgeInsets? padding;
-  final Border? border;
-  final BorderRadius? radius;
   final Widget? prefix;
   final Widget? suffix;
   final MainAxisAlignment? mainAxisAlignment;
@@ -231,22 +225,15 @@ class ShadInputState extends State<ShadInput>
           color: theme.colorScheme.foreground,
         );
     final effectiveDecoration =
-        widget.decoration ?? theme.inputTheme.decoration ?? theme.decoration;
+        (theme.inputTheme.decoration ?? const ShadDecoration())
+            .mergeWith(widget.decoration);
+
     final effectivePadding = widget.padding ??
         theme.inputTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
     final effectiveInputPadding =
         widget.inputPadding ?? theme.inputTheme.inputPadding ?? EdgeInsets.zero;
-
-    final effectiveBorder = widget.border ??
-        theme.inputTheme.border ??
-        Border.all(
-          color: theme.colorScheme.border,
-          width: 2,
-        );
-    final effectiveRadius =
-        widget.radius ?? theme.inputTheme.radius ?? theme.radius;
 
     final effectivePlaceholderStyle = widget.placeholderStyle ??
         theme.inputTheme.placeholderStyle ??
@@ -275,13 +262,8 @@ class ShadInputState extends State<ShadInput>
               return ShadDecorator(
                 decoration: effectiveDecoration,
                 focused: focused,
-                child: Container(
+                child: Padding(
                   padding: effectivePadding,
-                  decoration: BoxDecoration(
-                    border: effectiveBorder,
-                    color: widget.backgroundColor,
-                    borderRadius: effectiveRadius,
-                  ),
                   child: _selectionGestureDetectorBuilder.buildGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     child: Row(
@@ -368,7 +350,7 @@ class ShadInputState extends State<ShadInput>
                                         // Seems like the EditableText uses an
                                         // internal offset of 1. To keep the
                                         // placeholder aligned with the text,
-                                        // we need to add 1 to the top padding.
+                                        // we need to add 1 to the top padding
                                         padding: const EdgeInsets.only(top: 1),
                                         child: Align(
                                           alignment:

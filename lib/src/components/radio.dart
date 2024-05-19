@@ -99,7 +99,6 @@ class ShadRadio<T> extends StatefulWidget {
     this.size,
     this.circleSize,
     this.duration,
-    this.borderWidth,
     this.color,
     this.label,
     this.sublabel,
@@ -129,9 +128,6 @@ class ShadRadio<T> extends StatefulWidget {
 
   /// The color of the radio.
   final Color? color;
-
-  /// The border width of the radio, defaults to 1.
-  final double? borderWidth;
 
   /// An optional label for the radio, displayed on the right side if
   /// the [direction] is `TextDirection.ltr`.
@@ -189,14 +185,14 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
     final enabled = widget.enabled && inheritedRadioGroup.widget.enabled;
 
     final effectiveDecoration =
-        widget.decoration ?? theme.radioTheme.decoration ?? theme.decoration;
+        (theme.radioTheme.decoration ?? const ShadDecoration())
+            .mergeWith(widget.decoration);
+
     final effectiveSize = widget.size ?? theme.radioTheme.size ?? 16;
     final effectiveCircleSize =
         widget.circleSize ?? theme.radioTheme.circleSize ?? 10;
     final effectiveColor =
         widget.color ?? theme.radioTheme.color ?? theme.colorScheme.primary;
-    final effectiveBorderWidth =
-        widget.borderWidth ?? theme.radioTheme.borderWidth ?? 1;
     final effectiveDuration =
         widget.duration ?? theme.radioTheme.duration ?? 100.milliseconds;
     final effectivePadding = widget.padding ??
@@ -221,37 +217,28 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
               return ShadDecorator(
                 focused: focused,
                 decoration: effectiveDecoration,
-                child: child!,
+                child: child,
               );
             },
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
               child: SizedBox.square(
                 dimension: effectiveSize,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: effectiveBorderWidth,
-                      color: effectiveColor,
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                  child: AnimatedSwitcher(
-                    duration: effectiveDuration,
-                    child: selected
-                        ? Align(
-                            child: SizedBox.square(
-                              dimension: effectiveCircleSize,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: effectiveColor,
-                                ),
+                child: AnimatedSwitcher(
+                  duration: effectiveDuration,
+                  child: selected
+                      ? Align(
+                          child: SizedBox.square(
+                            dimension: effectiveCircleSize,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: effectiveColor,
                               ),
                             ),
-                          )
-                        : const SizedBox(),
-                  ),
+                          ),
+                        )
+                      : const SizedBox(),
                 ),
               ),
             ),

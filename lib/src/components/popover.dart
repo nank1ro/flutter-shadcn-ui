@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
@@ -114,7 +115,7 @@ class ShadPopover extends StatefulWidget {
   /// {@template popover.decoration}
   /// The decoration of the [popover].
   /// {@endtemplate}
-  final BoxDecoration? decoration;
+  final ShadDecoration? decoration;
 
   @override
   State<ShadPopover> createState() => _ShadPopoverState();
@@ -157,10 +158,15 @@ class _ShadPopoverState extends State<ShadPopover> {
     final theme = ShadTheme.of(context);
 
     final effectiveEffects = widget.effects ?? theme.popoverTheme.effects ?? [];
-    final effectivePadding = widget.padding ?? theme.popoverTheme.padding;
+    final effectivePadding = widget.padding ??
+        theme.popoverTheme.padding ??
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 6);
     final effectiveShadows = widget.shadows ?? theme.popoverTheme.shadows;
     final effectiveDecoration =
-        widget.decoration ?? theme.popoverTheme.decoration;
+        (theme.popoverTheme.decoration ?? const ShadDecoration())
+            .mergeWith(widget.decoration)
+            .copyWith(shadows: effectiveShadows);
+
     final effectiveAnchor = widget.anchor ??
         theme.popoverTheme.anchor ??
         const ShadAnchorAuto(
@@ -168,16 +174,18 @@ class _ShadPopoverState extends State<ShadPopover> {
           preferBelow: true,
         );
 
-    Widget popover = Container(
-      padding: effectivePadding,
-      decoration: effectiveDecoration?.copyWith(boxShadow: effectiveShadows),
-      child: DefaultTextStyle(
-        style: TextStyle(
-          color: theme.colorScheme.popoverForeground,
-        ),
-        textAlign: TextAlign.center,
-        child: Builder(
-          builder: widget.popover,
+    Widget popover = ShadDecorator(
+      decoration: effectiveDecoration,
+      child: Padding(
+        padding: effectivePadding,
+        child: DefaultTextStyle(
+          style: TextStyle(
+            color: theme.colorScheme.popoverForeground,
+          ),
+          textAlign: TextAlign.center,
+          child: Builder(
+            builder: widget.popover,
+          ),
         ),
       ),
     );

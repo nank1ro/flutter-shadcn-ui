@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
@@ -85,12 +86,14 @@ class _RadioGroupFormFieldPageState extends State<RadioGroupFormFieldPage> {
                   enabled: enabled,
                   initialValue: initialValue,
                   valueTransformer: (value) => value?.name,
-                  items: NotifyAbout.values.map(
-                    (e) => ShadRadio(
-                      value: e,
-                      label: Text(e.message),
-                    ),
-                  ),
+                  items: NotifyAbout.values
+                      .map(
+                        (e) => ShadRadio(
+                          value: e,
+                          label: Text(e.message),
+                        ),
+                      )
+                      .separatedBy(const SizedBox(height: 4)),
                   label: const Text('Notify me about'),
                   validator: (v) {
                     if (v == null) {

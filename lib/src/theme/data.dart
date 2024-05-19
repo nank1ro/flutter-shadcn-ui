@@ -26,7 +26,7 @@ import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
-import 'package:shadcn_ui/src/theme/themes/component_default.dart';
+import 'package:shadcn_ui/src/theme/themes/component_defaults.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 
@@ -75,12 +75,13 @@ class ShadThemeData extends ShadBaseTheme {
     ShadTableTheme? tableTheme,
     ShadResizableTheme? resizableTheme,
     ShadHoverStrategies? hoverStrategies,
+    bool? disableSecondaryBorder,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
 
     var effectiveTextTheme =
-        ShadComponentDefaultTheme.textTheme().mergeWith(textTheme);
+        ShadDefaultComponentThemes.textTheme().mergeWith(textTheme);
 
     effectiveTextTheme = effectiveTextTheme.copyWith(
       h1Large: effectiveTextTheme.h1Large.copyWith(
@@ -124,138 +125,148 @@ class ShadThemeData extends ShadBaseTheme {
       ),
     );
 
+    final effectiveDisableSecondaryBorder = disableSecondaryBorder ?? false;
+
     return ShadThemeData._internal(
       colorScheme: colorScheme,
       brightness: brightness,
       extensions: extensions,
-      primaryButtonTheme: ShadComponentDefaultTheme.primaryButtonTheme(
+      primaryButtonTheme: ShadDefaultComponentThemes.primaryButtonTheme(
         colorScheme: colorScheme,
+        radius: effectiveRadius,
       ).mergeWith(primaryButtonTheme),
-      secondaryButtonTheme: ShadComponentDefaultTheme.secondaryButtonTheme(
+      secondaryButtonTheme: ShadDefaultComponentThemes.secondaryButtonTheme(
         colorScheme: colorScheme,
+        radius: effectiveRadius,
       ).mergeWith(secondaryButtonTheme),
-      destructiveButtonTheme: ShadComponentDefaultTheme.destructiveButtonTheme(
+      destructiveButtonTheme: ShadDefaultComponentThemes.destructiveButtonTheme(
         colorScheme: colorScheme,
+        radius: effectiveRadius,
       ).mergeWith(destructiveButtonTheme),
-      outlineButtonTheme: ShadComponentDefaultTheme.outlineButtonTheme(
+      outlineButtonTheme: ShadDefaultComponentThemes.outlineButtonTheme(
         colorScheme: colorScheme,
+        radius: effectiveRadius,
       ).mergeWith(outlineButtonTheme),
-      ghostButtonTheme: ShadComponentDefaultTheme.ghostButtonTheme(
+      ghostButtonTheme: ShadDefaultComponentThemes.ghostButtonTheme(
         colorScheme: colorScheme,
+        radius: effectiveRadius,
       ).mergeWith(ghostButtonTheme),
-      linkButtonTheme: ShadComponentDefaultTheme.linkButtonTheme(
+      linkButtonTheme: ShadDefaultComponentThemes.linkButtonTheme(
         colorScheme: colorScheme,
       ).mergeWith(linkButtonTheme),
-      primaryBadgeTheme: ShadComponentDefaultTheme.primaryBadgeTheme(
+      primaryBadgeTheme: ShadDefaultComponentThemes.primaryBadgeTheme(
         colorScheme: colorScheme,
       ).mergeWith(primaryBadgeTheme),
-      secondaryBadgeTheme: ShadComponentDefaultTheme.secondaryBadgeTheme(
+      secondaryBadgeTheme: ShadDefaultComponentThemes.secondaryBadgeTheme(
         colorScheme: colorScheme,
       ).mergeWith(secondaryBadgeTheme),
-      destructiveBadgeTheme: ShadComponentDefaultTheme.destructiveBadgeTheme(
+      destructiveBadgeTheme: ShadDefaultComponentThemes.destructiveBadgeTheme(
         colorScheme: colorScheme,
       ).mergeWith(destructiveBadgeTheme),
-      outlineBadgeTheme: ShadComponentDefaultTheme.outlineBadgeTheme(
+      outlineBadgeTheme: ShadDefaultComponentThemes.outlineBadgeTheme(
         colorScheme: colorScheme,
       ).mergeWith(outlineBadgeTheme),
-      buttonSizesTheme: ShadComponentDefaultTheme.buttonSizesTheme()
+      buttonSizesTheme: ShadDefaultComponentThemes.buttonSizesTheme()
           .mergeWith(buttonSizesTheme),
       radius: effectiveRadius,
-      avatarTheme: ShadComponentDefaultTheme.avatarTheme(
+      avatarTheme: ShadDefaultComponentThemes.avatarTheme(
         colorScheme: colorScheme,
       ).mergeWith(avatarTheme),
-      tooltipTheme: ShadComponentDefaultTheme.tooltipTheme(
+      tooltipTheme: ShadDefaultComponentThemes.tooltipTheme(
         colorScheme: colorScheme,
         radius: effectiveRadius,
       ).mergeWith(tooltipTheme),
-      popoverTheme: ShadComponentDefaultTheme.popoverTheme(
+      popoverTheme: ShadDefaultComponentThemes.popoverTheme(
         colorScheme: colorScheme,
         radius: effectiveRadius,
       ).mergeWith(popoverTheme),
-      decoration: ShadComponentDefaultTheme.decoration(
+      decoration: ShadDefaultComponentThemes.decorationTheme(
         colorScheme: colorScheme,
         radius: effectiveRadius,
         textTheme: effectiveTextTheme,
       ).mergeWith(decoration),
       textTheme: effectiveTextTheme,
       disabledOpacity: disabledOpacity ?? .5,
-      selectTheme:
-          ShadComponentDefaultTheme.selectTheme(colorScheme: colorScheme)
-              .mergeWith(selectTheme),
-      optionTheme: ShadComponentDefaultTheme.optionTheme(
+      selectTheme: ShadDefaultComponentThemes.selectTheme(
+        colorScheme: colorScheme,
+        radius: effectiveRadius,
+      ).mergeWith(selectTheme),
+      optionTheme: ShadDefaultComponentThemes.optionTheme(
         colorScheme: colorScheme,
       ).mergeWith(optionTheme),
-      cardTheme: ShadComponentDefaultTheme.cardTheme(
+      cardTheme: ShadDefaultComponentThemes.cardTheme(
         colorScheme: colorScheme,
       ).mergeWith(cardTheme),
-      switchTheme: ShadComponentDefaultTheme.switchTheme(
+      switchTheme: ShadDefaultComponentThemes.switchTheme(
         colorScheme: colorScheme,
       ).mergeWith(switchTheme),
-      checkboxTheme: ShadComponentDefaultTheme.checkboxTheme(
+      checkboxTheme: ShadDefaultComponentThemes.checkboxTheme(
         colorScheme: colorScheme,
+        radius: effectiveRadius,
       ).mergeWith(checkboxTheme),
-      inputTheme: ShadComponentDefaultTheme.inputTheme(
+      inputTheme: ShadDefaultComponentThemes.inputTheme(
         colorScheme: colorScheme,
         radius: effectiveRadius,
         textTheme: effectiveTextTheme,
       ).mergeWith(inputTheme),
-      radioTheme: ShadComponentDefaultTheme.radioTheme(
+      radioTheme: ShadDefaultComponentThemes.radioTheme(
         colorScheme: colorScheme,
       ).mergeWith(radioTheme),
-      primaryToastTheme: ShadComponentDefaultTheme.primaryToastTheme(
+      primaryToastTheme: ShadDefaultComponentThemes.primaryToastTheme(
         colorScheme: colorScheme,
         radius: effectiveRadius,
         textTheme: effectiveTextTheme,
       ).mergeWith(primaryToastTheme),
-      destructiveToastTheme: ShadComponentDefaultTheme.destructiveToastTheme(
+      destructiveToastTheme: ShadDefaultComponentThemes.destructiveToastTheme(
         colorScheme: colorScheme,
         radius: effectiveRadius,
         textTheme: effectiveTextTheme,
       ).mergeWith(destructiveToastTheme),
       breakpoints: breakpoints ?? ShadBreakpoints(),
-      primaryAlertTheme: ShadComponentDefaultTheme.primaryAlertTheme(
+      primaryAlertTheme: ShadDefaultComponentThemes.primaryAlertTheme(
         colorScheme: colorScheme,
         textTheme: effectiveTextTheme,
         radius: effectiveRadius,
       ).mergeWith(primaryAlertTheme),
-      destructiveAlertTheme: ShadComponentDefaultTheme.destructiveAlertTheme(
+      destructiveAlertTheme: ShadDefaultComponentThemes.destructiveAlertTheme(
         colorScheme: colorScheme,
         textTheme: effectiveTextTheme,
         radius: effectiveRadius,
       ).mergeWith(destructiveAlertTheme),
-      primaryDialogTheme: ShadComponentDefaultTheme.primaryDialogTheme(
+      primaryDialogTheme: ShadDefaultComponentThemes.primaryDialogTheme(
         colorScheme: colorScheme,
         textTheme: effectiveTextTheme,
         radius: effectiveRadius,
       ).mergeWith(primaryDialogTheme),
-      alertDialogTheme: ShadComponentDefaultTheme.alertDialogTheme(
+      alertDialogTheme: ShadDefaultComponentThemes.alertDialogTheme(
         colorScheme: colorScheme,
         textTheme: effectiveTextTheme,
         radius: effectiveRadius,
       ).mergeWith(alertDialogTheme),
-      sliderTheme: ShadComponentDefaultTheme.sliderTheme(
+      sliderTheme: ShadDefaultComponentThemes.sliderTheme(
         colorScheme: colorScheme,
       ).mergeWith(sliderTheme),
-      sheetTheme: ShadComponentDefaultTheme.sheetTheme(
+      sheetTheme: ShadDefaultComponentThemes.sheetTheme(
         colorScheme: colorScheme,
         textTheme: effectiveTextTheme,
       ).mergeWith(sheetTheme),
-      progressTheme: ShadComponentDefaultTheme.progressTheme(
+      progressTheme: ShadDefaultComponentThemes.progressTheme(
         colorScheme: colorScheme,
       ).mergeWith(progressTheme),
-      accordionTheme: ShadComponentDefaultTheme.accordionTheme(
+      accordionTheme: ShadDefaultComponentThemes.accordionTheme(
         colorScheme: colorScheme,
         textTheme: effectiveTextTheme,
       ).mergeWith(accordionTheme),
-      tableTheme: ShadComponentDefaultTheme.tableTheme(
+      tableTheme: ShadDefaultComponentThemes.tableTheme(
         colorScheme: colorScheme,
         textTheme: effectiveTextTheme,
       ).mergeWith(tableTheme),
-      resizableTheme: ShadComponentDefaultTheme.resizableTheme(
+      resizableTheme: ShadDefaultComponentThemes.resizableTheme(
         colorScheme: colorScheme,
       ).mergeWith(resizableTheme),
       hoverStrategies:
-          hoverStrategies ?? ShadComponentDefaultTheme.hoverStrategies(),
+          hoverStrategies ?? ShadDefaultComponentThemes.hoverStrategies(),
+      disableSecondaryBorder: effectiveDisableSecondaryBorder,
     );
   }
 
@@ -302,6 +313,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.tableTheme,
     required super.resizableTheme,
     required super.hoverStrategies,
+    required super.disableSecondaryBorder,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -390,7 +402,9 @@ class ShadThemeData extends ShadBaseTheme {
       tableTheme: ShadTableTheme.lerp(a.tableTheme, b.tableTheme, t),
       resizableTheme:
           ShadResizableTheme.lerp(a.resizableTheme, b.resizableTheme, t),
-      hoverStrategies: b.hoverStrategies,
+      hoverStrategies: t < .5 ? a.hoverStrategies : b.hoverStrategies,
+      disableSecondaryBorder:
+          t < .5 ? a.disableSecondaryBorder : b.disableSecondaryBorder,
     );
   }
 
@@ -440,7 +454,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.accordionTheme == accordionTheme &&
         other.tableTheme == tableTheme &&
         other.resizableTheme == resizableTheme &&
-        other.hoverStrategies == hoverStrategies;
+        other.hoverStrategies == hoverStrategies &&
+        other.disableSecondaryBorder == disableSecondaryBorder;
   }
 
   @override
@@ -486,7 +501,8 @@ class ShadThemeData extends ShadBaseTheme {
         accordionTheme.hashCode ^
         tableTheme.hashCode ^
         resizableTheme.hashCode ^
-        hoverStrategies.hashCode;
+        hoverStrategies.hashCode ^
+        disableSecondaryBorder.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -532,6 +548,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadTableTheme? tableTheme,
     ShadResizableTheme? resizableTheme,
     ShadHoverStrategies? hoverStrategies,
+    bool? disableSecondaryBorder,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -580,6 +597,8 @@ class ShadThemeData extends ShadBaseTheme {
       tableTheme: tableTheme ?? this.tableTheme,
       resizableTheme: resizableTheme ?? this.resizableTheme,
       hoverStrategies: hoverStrategies ?? this.hoverStrategies,
+      disableSecondaryBorder:
+          disableSecondaryBorder ?? this.disableSecondaryBorder,
     );
   }
 }
