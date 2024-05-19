@@ -3,8 +3,6 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import 'package:shadcn_ui/src/components/image.dart';
-
 @immutable
 class ShadResizableTheme {
   const ShadResizableTheme({

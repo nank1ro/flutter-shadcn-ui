@@ -106,7 +106,6 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
     final effectiveColor =
         widget.color ?? theme.checkboxTheme.color ?? theme.colorScheme.primary;
 
-    print(theme.checkboxTheme.decoration?.border?.radius);
     final effectiveDecoration = (theme.checkboxTheme.decoration ??
             const ShadDecoration())
         .mergeWith(widget.decoration)

@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:shadcn_ui/src/raw_components/portal.dart';
-import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 @immutable
 class ShadTooltipTheme {

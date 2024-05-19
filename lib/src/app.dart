@@ -634,7 +634,10 @@ class _ShadAppState extends State<ShadApp> {
         onSecondary: themeData.colorScheme.secondaryForeground,
         error: themeData.colorScheme.destructive,
         onError: themeData.colorScheme.destructiveForeground,
+        // Keep deprecated members for backwards compatibility
+        // ignore: deprecated_member_use
         background: themeData.colorScheme.background,
+        // ignore: deprecated_member_use
         onBackground: themeData.colorScheme.foreground,
         surface: themeData.colorScheme.card,
         onSurface: themeData.colorScheme.cardForeground,
