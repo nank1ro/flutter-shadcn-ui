@@ -252,7 +252,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         const ShadAnchor(
           childAlignment: Alignment.bottomLeft,
           overlayAlignment: Alignment.topLeft,
-          offset: Offset(4, 0),
+          offset: Offset.zero,
         );
 
     final Widget effectiveText;
@@ -561,6 +561,8 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
       child: Focus(
         focusNode: focusNode,
         child: ShadGestureDetector(
+          behavior: HitTestBehavior.opaque,
+          cursor: SystemMouseCursors.click,
           onHoverChange: (value) {
             hovered.value = value;
             if (value) focusNode.requestFocus();

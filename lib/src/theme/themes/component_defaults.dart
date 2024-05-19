@@ -303,7 +303,7 @@ abstract class ShadDefaultComponentThemes {
       anchor: const ShadAnchor(
         childAlignment: Alignment.bottomLeft,
         overlayAlignment: Alignment.topLeft,
-        offset: Offset(4, 0),
+        offset: Offset.zero,
       ),
     );
   }

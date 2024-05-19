@@ -85,14 +85,13 @@
   <script>
     window.addEventListener('load', function () {
       const loader = document.querySelector('.loader');
-      _flutter.loader.load({
+      _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         }
       }).then(function (engineInitializer) {
         return engineInitializer.initializeEngine();
       }).then(function (appRunner) {
-        console.log('appRunner', appRunner);
         loader.remove();
         return appRunner.runApp();
       }).then(function (app) {
