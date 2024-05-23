@@ -213,7 +213,7 @@ class _SelectPageState extends State<SelectPage> {
               },
             )
           ],
-          selectedOptionBuilder: (context, value) => Text(value),
+          selectedOptionBuilder: (context, value) => Text(frameworks[value]!),
         ),
       ],
     );

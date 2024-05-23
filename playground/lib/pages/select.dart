@@ -191,7 +191,7 @@ class _SelectWithSearchState extends State<SelectWithSearch> {
           },
         )
       ],
-      selectedOptionBuilder: (context, value) => Text(value),
+      selectedOptionBuilder: (context, value) => Text(frameworks[value]!),
     );
   }
 }
