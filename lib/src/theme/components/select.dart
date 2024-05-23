@@ -19,6 +19,8 @@ class ShadSelectTheme {
     this.showScrollToTopChevron,
     this.showScrollToBottomChevron,
     this.anchor,
+    this.searchPadding,
+    this.clearSearchOnClose,
   });
 
   final bool merge;
@@ -30,6 +32,8 @@ class ShadSelectTheme {
   final bool? showScrollToTopChevron;
   final bool? showScrollToBottomChevron;
   final ShadAnchorBase? anchor;
+  final EdgeInsets? searchPadding;
+  final bool? clearSearchOnClose;
 
   static ShadSelectTheme lerp(
     ShadSelectTheme a,
@@ -47,6 +51,8 @@ class ShadSelectTheme {
       showScrollToTopChevron: b.showScrollToTopChevron,
       showScrollToBottomChevron: b.showScrollToBottomChevron,
       anchor: b.anchor,
+      searchPadding: EdgeInsets.lerp(a.searchPadding, b.searchPadding, t),
+      clearSearchOnClose: t < 0.5 ? a.clearSearchOnClose : b.clearSearchOnClose,
     );
   }
 
@@ -60,6 +66,8 @@ class ShadSelectTheme {
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ShadAnchorBase? anchor,
+    EdgeInsets? searchPadding,
+    bool? clearSearchOnClose,
   }) {
     return ShadSelectTheme(
       merge: merge ?? this.merge,
@@ -73,6 +81,8 @@ class ShadSelectTheme {
       showScrollToBottomChevron:
           showScrollToBottomChevron ?? this.showScrollToBottomChevron,
       anchor: anchor ?? this.anchor,
+      searchPadding: searchPadding ?? this.searchPadding,
+      clearSearchOnClose: clearSearchOnClose ?? this.clearSearchOnClose,
     );
   }
 
@@ -88,6 +98,8 @@ class ShadSelectTheme {
       showScrollToTopChevron: other.showScrollToTopChevron,
       showScrollToBottomChevron: other.showScrollToBottomChevron,
       anchor: other.anchor,
+      searchPadding: other.searchPadding,
+      clearSearchOnClose: other.clearSearchOnClose,
     );
   }
 
@@ -104,7 +116,9 @@ class ShadSelectTheme {
         other.optionsPadding == optionsPadding &&
         other.showScrollToTopChevron == showScrollToTopChevron &&
         other.showScrollToBottomChevron == showScrollToBottomChevron &&
-        other.anchor == anchor;
+        other.anchor == anchor &&
+        other.searchPadding == searchPadding &&
+        other.clearSearchOnClose == clearSearchOnClose;
   }
 
   @override
@@ -117,6 +131,8 @@ class ShadSelectTheme {
         optionsPadding.hashCode ^
         showScrollToTopChevron.hashCode ^
         showScrollToBottomChevron.hashCode ^
-        anchor.hashCode;
+        anchor.hashCode ^
+        searchPadding.hashCode ^
+        clearSearchOnClose.hashCode;
   }
 }

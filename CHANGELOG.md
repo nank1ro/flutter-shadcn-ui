@@ -1,3 +1,7 @@
+## 0.5.0
+
+- Add the `ShadSelect.withSearch` constructor to easily add a search input to the select component.
+
 ## 0.4.7
 
 - Add `maintainState` to `ShadAccordion` to keep the child in the tree even if the item is closed, defaults to `false`.

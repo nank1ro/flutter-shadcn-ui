@@ -305,6 +305,7 @@ abstract class ShadDefaultComponentThemes {
         overlayAlignment: Alignment.topLeft,
         offset: Offset.zero,
       ),
+      searchPadding: const EdgeInsets.all(12),
     );
   }
 

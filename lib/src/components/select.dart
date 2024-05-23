@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/components/image.dart';
+import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
@@ -19,6 +19,8 @@ typedef ShadSelectedOptionBuilder<T> = Widget Function(
   BuildContext context,
   T value,
 );
+
+enum ShadSelectType { primary, search }
 
 class ShadSelect<T> extends StatefulWidget {
   const ShadSelect({
@@ -41,7 +43,43 @@ class ShadSelect<T> extends StatefulWidget {
     this.showScrollToTopChevron,
     this.scrollController,
     this.anchor,
-  });
+  })  : type = ShadSelectType.primary,
+        onSearchChanged = null,
+        searchDivider = null,
+        searchPlaceholder = null,
+        searchInputPrefix = null,
+        searchPadding = null,
+        search = null,
+        clearSearchOnClose = false;
+
+  const ShadSelect.withSearch({
+    super.key,
+    required this.options,
+    required this.selectedOptionBuilder,
+    required ValueChanged<String> this.onSearchChanged,
+    this.searchDivider,
+    this.searchInputPrefix,
+    this.searchPlaceholder,
+    this.searchPadding,
+    this.search,
+    this.clearSearchOnClose,
+    this.enabled = true,
+    this.placeholder,
+    this.initialValue,
+    this.onChanged,
+    this.focusNode,
+    this.closeOnTapOutside = true,
+    this.minWidth,
+    this.maxHeight,
+    this.decoration,
+    this.trailing,
+    this.padding,
+    this.optionsPadding,
+    this.showScrollToBottomChevron,
+    this.showScrollToTopChevron,
+    this.scrollController,
+    this.anchor,
+  }) : type = ShadSelectType.search;
 
   /// The callback that is called when the value of the [ShadSelect] changes.
   final ValueChanged<T>? onChanged;
@@ -108,6 +146,31 @@ class ShadSelect<T> extends StatefulWidget {
   /// `ShadAnchorAutoPosition(verticalOffset: 24, preferBelow: true)`.
   final ShadAnchorBase? anchor;
 
+  /// The type of the [ShadSelect], defaults to `ShadSelectType.primary`.
+  final ShadSelectType type;
+
+  /// The callback that is called when the search value changes.
+  final ValueChanged<String>? onSearchChanged;
+
+  /// The widget that is displayed between the search input and the options.
+  final Widget? searchDivider;
+
+  /// The prefix of the search input.
+  final Widget? searchInputPrefix;
+
+  /// The placeholder of the search input.
+  final Widget? searchPlaceholder;
+
+  /// The padding of the search input.
+  final EdgeInsets? searchPadding;
+
+  /// A complete customizable search input.
+  final Widget? search;
+
+  /// Whether to clear the search input when the popover is closed, defaults to
+  /// `true`.
+  final bool? clearSearchOnClose;
+
   static ShadSelectState<T> of<T>(BuildContext context, {bool listen = true}) {
     return maybeOf<T>(context, listen: listen)!;
   }
@@ -164,6 +227,21 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
           scrollController.offset < scrollController.position.maxScrollExtent;
       showScrollToTop.value = scrollController.offset > 0;
     });
+
+    if (widget.type == ShadSelectType.search) {
+      controller.addListener(() {
+        if (controller.isOpen) return;
+        final effectiveClearSearchOnClose = widget.clearSearchOnClose ??
+            ShadTheme.of(context, listen: false)
+                .selectTheme
+                .clearSearchOnClose ??
+            true;
+
+        if (effectiveClearSearchOnClose) {
+          widget.onSearchChanged?.call('');
+        }
+      });
+    }
   }
 
   @override
@@ -284,6 +362,33 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     final effectiveOptionsPadding = widget.optionsPadding ??
         theme.selectTheme.optionsPadding ??
         const EdgeInsets.all(4);
+
+    final search = switch (widget.type) {
+      ShadSelectType.primary => null,
+      ShadSelectType.search => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            widget.search ??
+                ShadInput(
+                  prefix: Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Icon(
+                      LucideIcons.search,
+                      size: 16,
+                      color: theme.colorScheme.popoverForeground,
+                    ),
+                  ),
+                  padding: widget.searchPadding ??
+                      theme.selectTheme.searchPadding ??
+                      const EdgeInsets.all(12),
+                  placeholder: widget.searchPlaceholder,
+                  decoration: ShadDecoration.none,
+                  onChanged: widget.onSearchChanged,
+                ),
+            widget.searchDivider ?? const Divider(height: 1),
+          ],
+        ),
+    };
 
     return CallbackShortcuts(
       bindings: {
@@ -414,6 +519,14 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        if (search != null)
+                          Flexible(
+                            child: ConstrainedBox(
+                              constraints:
+                                  BoxConstraints(minWidth: calculatedMinWidth),
+                              child: IntrinsicWidth(child: search),
+                            ),
+                          ),
                         if (scrollToTopChild != null) scrollToTopChild,
                         Flexible(
                           child: ConstrainedBox(
@@ -424,7 +537,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                               controller: scrollController,
                               child: IntrinsicWidth(
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   mainAxisSize: MainAxisSize.min,
                                   children: widget.options.toList(),
                                 ),
@@ -506,9 +620,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
 
     final inherited = ShadSelect.of<T>(context, listen: false);
     final selected = inherited.selected == widget.value;
-    if (selected) {
-      focusNode.requestFocus();
-    }
+    if (selected) focusNode.requestFocus();
   }
 
   @override
@@ -533,6 +645,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     );
     final inheritedSelect = ShadSelect.of<T>(context);
     final selected = inheritedSelect.selected == widget.value;
+
     if (selected) {
       // scroll to the selected option
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -565,7 +678,6 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
           cursor: SystemMouseCursors.click,
           onHoverChange: (value) {
             hovered.value = value;
-            if (value) focusNode.requestFocus();
           },
           onTap: () => inheritedSelect.select(widget.value),
           child: ValueListenableBuilder(

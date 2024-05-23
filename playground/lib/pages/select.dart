@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 enum SelectVariant {
   fruits,
   timezone,
+  frameworks,
 }
 
 final fruits = {
@@ -129,11 +130,68 @@ class SelectPage extends StatelessWidget {
                       return Text(timezone!);
                     },
                   ),
-                )
+                ),
+              SelectVariant.frameworks => const SelectWithSearch(),
             };
           }(),
         ),
       ),
+    );
+  }
+}
+
+const frameworks = {
+  'nextjs': 'Next.js',
+  'svelte': 'SvelteKit',
+  'nuxtjs': 'Nuxt.js',
+  'remix': 'Remix',
+  'astro': 'Astro',
+};
+
+class SelectWithSearch extends StatefulWidget {
+  const SelectWithSearch({super.key});
+
+  @override
+  State<SelectWithSearch> createState() => _SelectWithSearchState();
+}
+
+class _SelectWithSearchState extends State<SelectWithSearch> {
+  var searchValue = '';
+
+  Map<String, String> get filteredFrameworks => {
+        for (final framework in frameworks.entries)
+          if (framework.value.toLowerCase().contains(searchValue.toLowerCase()))
+            framework.key: framework.value
+      };
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadSelect<String>.withSearch(
+      minWidth: 180,
+      placeholder: const Text('Select framework...'),
+      onSearchChanged: (value) => setState(() => searchValue = value),
+      searchPlaceholder: const Text('Search framework'),
+      options: [
+        if (filteredFrameworks.isEmpty)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: Text('No framework found'),
+          ),
+        ...frameworks.entries.map(
+          (framework) {
+            // this offstage is used to avoid the focus loss when the search results appear again
+            // because it keeps the widget in the tree.
+            return Offstage(
+              offstage: !filteredFrameworks.containsKey(framework.key),
+              child: ShadOption(
+                value: framework.key,
+                child: Text(framework.value),
+              ),
+            );
+          },
+        )
+      ],
+      selectedOptionBuilder: (context, value) => Text(frameworks[value]!),
     );
   }
 }

@@ -29,7 +29,7 @@ See the [documentation](https://mariuti.com/shadcn-ui/) to interact with the com
 - [ ] Carousel
 - [x] [Checkbox](https://mariuti.com/shadcn-ui/components/checkbox/)
 - [ ] Collapsible
-- [ ] Combobox
+- [x] [Combobox](https://mariuti.com/shadcn-ui/components/select/#with-search)
 - [ ] Command
 - [ ] Context Menu
 - [ ] Data Table
