@@ -184,7 +184,9 @@ class _ShadFormBuilderInputState
   @override
   void initState() {
     super.initState();
-    _controller = widget.controller ?? TextEditingController(text: value);
+    if (widget.controller == null) {
+      _controller = TextEditingController(text: value);
+    }
     controller.addListener(onControllerChanged);
   }
 
@@ -193,6 +195,17 @@ class _ShadFormBuilderInputState
     super.didChange(value);
     if (controller.text != value) {
       controller.text = value ?? '';
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadInputFormField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller == null && widget.controller != null) {
+      _controller?.dispose();
+    }
+    if (oldWidget.controller != null && widget.controller == null) {
+      _controller = TextEditingController(text: value);
     }
   }
 
