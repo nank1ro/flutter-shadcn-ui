@@ -101,7 +101,7 @@ final profile = [
   (title: 'Username', value: 'nank1ro'),
 ];
 
-class EditProfileSheet extends StatefulWidget {
+class EditProfileSheet extends StatelessWidget {
   const EditProfileSheet({
     super.key,
     required this.side,
@@ -110,27 +110,12 @@ class EditProfileSheet extends StatefulWidget {
   final ShadSheetSide side;
 
   @override
-  State<EditProfileSheet> createState() => _EditProfileSheetState();
-}
-
-class _EditProfileSheetState extends State<EditProfileSheet> {
-  BoxConstraints get constraints {
-    return switch (widget.side) {
-      ShadSheetSide.top ||
-      ShadSheetSide.bottom =>
-        BoxConstraints.tightFor(width: MediaQuery.sizeOf(context).width),
-      ShadSheetSide.left || ShadSheetSide.right => BoxConstraints.tightFor(
-          height: MediaQuery.sizeOf(context).height,
-          width: 512,
-        ),
-    };
-  }
-
-  @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     return ShadSheet(
-      constraints: constraints,
+      constraints: side == ShadSheetSide.left || side == ShadSheetSide.right
+          ? const BoxConstraints(maxWidth: 512)
+          : null,
       title: const Text('Edit Profile'),
       description: const Text(
           "Make changes to your profile here. Click save when you're done"),

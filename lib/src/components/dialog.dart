@@ -106,6 +106,8 @@ class ShadDialog extends StatelessWidget {
     this.alignment,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.scrollable,
+    this.scrollPadding,
   }) : variant = ShadDialogVariant.primary;
 
   const ShadDialog.alert({
@@ -137,6 +139,8 @@ class ShadDialog extends StatelessWidget {
     this.alignment,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.scrollable,
+    this.scrollPadding,
   }) : variant = ShadDialogVariant.alert;
 
   final Widget? title;
@@ -167,6 +171,8 @@ class ShadDialog extends StatelessWidget {
   final Alignment? alignment;
   final MainAxisAlignment? mainAxisAlignment;
   final CrossAxisAlignment? crossAxisAlignment;
+  final bool? scrollable;
+  final EdgeInsets? scrollPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -248,113 +254,126 @@ class ShadDialog extends StatelessWidget {
         effectiveDialogTheme.crossAxisAlignment ??
         CrossAxisAlignment.stretch;
 
+    final effectiveScrollable =
+        scrollable ?? effectiveDialogTheme.scrollable ?? true;
+
+    final effectiveScrollPadding = scrollPadding ??
+        effectiveDialogTheme.scrollPadding ??
+        MediaQuery.viewInsetsOf(context);
+
+    Widget dialog = ConstrainedBox(
+      constraints: effectiveConstraints,
+      child: ShadResponsiveBuilder(
+        builder: (context, breakpoint) {
+          final sm = breakpoint >= theme.breakpoints.small;
+
+          final effectiveActionsAxis = actionsAxis ??
+              effectiveDialogTheme.actionsAxis ??
+              (sm ? Axis.horizontal : Axis.vertical);
+
+          final effectiveActionsMainAxisSize = actionsMainAxisSize ??
+              effectiveDialogTheme.actionsMainAxisSize ??
+              MainAxisSize.max;
+
+          final effectiveActionsMainAxisAlignment = actionsMainAxisAlignment ??
+              effectiveDialogTheme.actionsMainAxisAlignment ??
+              MainAxisAlignment.end;
+
+          final effectiveActionsVerticalDirection = actionsVerticalDirection ??
+              effectiveDialogTheme.actionsVerticalDirection ??
+              (sm ? VerticalDirection.down : VerticalDirection.up);
+
+          final effectiveTitleTextAlign = titleTextAlign ??
+              effectiveDialogTheme.titleTextAlign ??
+              (sm ? TextAlign.start : TextAlign.center);
+
+          final effectiveDescriptionTextAlign = descriptionTextAlign ??
+              effectiveDialogTheme.descriptionTextAlign ??
+              (sm ? TextAlign.start : TextAlign.center);
+
+          Widget effectiveActions = Flex(
+            direction: effectiveActionsAxis,
+            mainAxisSize: effectiveActionsMainAxisSize,
+            mainAxisAlignment: effectiveActionsMainAxisAlignment,
+            verticalDirection: effectiveActionsVerticalDirection,
+            children: actions,
+          );
+
+          if (!sm && effectiveExpandActionsWhenTiny) {
+            effectiveActions = ShadTheme(
+              data: theme.copyWith(
+                primaryButtonTheme:
+                    theme.primaryButtonTheme.copyWith(width: double.infinity),
+                secondaryButtonTheme:
+                    theme.secondaryButtonTheme.copyWith(width: double.infinity),
+                outlineButtonTheme:
+                    theme.outlineButtonTheme.copyWith(width: double.infinity),
+                ghostButtonTheme:
+                    theme.ghostButtonTheme.copyWith(width: double.infinity),
+                destructiveButtonTheme: theme.destructiveButtonTheme
+                    .copyWith(width: double.infinity),
+              ),
+              child: effectiveActions,
+            );
+          }
+          return DecoratedBox(
+            decoration: BoxDecoration(
+              color: effectiveBackgroundColor,
+              borderRadius: (!sm && effectiveRemoveBorderRadiusWhenTiny)
+                  ? null
+                  : effectiveRadius,
+              border: effectiveBorder,
+              boxShadow: effectiveShadows,
+            ),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: effectivePadding,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: effectiveMainAxisAlignment,
+                    crossAxisAlignment: effectiveCrossAxisAlignment,
+                    children: [
+                      if (title != null)
+                        DefaultTextStyle(
+                          style: effectiveTitleStyle,
+                          textAlign: effectiveTitleTextAlign,
+                          child: title!,
+                        ),
+                      if (description != null)
+                        DefaultTextStyle(
+                          style: effectiveDescriptionStyle,
+                          textAlign: effectiveDescriptionTextAlign,
+                          child: description!,
+                        ),
+                      if (content != null)
+                        DefaultTextStyle(
+                          style: effectiveDescriptionStyle,
+                          child: content!,
+                        ),
+                      if (actions.isNotEmpty) effectiveActions,
+                    ].separatedBy(SizedBox(height: effectiveGap)),
+                  ),
+                ),
+                if (effectiveCloseIcon != null)
+                  effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+
+    if (effectiveScrollable) {
+      dialog = SingleChildScrollView(
+        padding: effectiveScrollPadding,
+        child: dialog,
+      );
+    }
+
     return Align(
       alignment: effectiveAlignment,
-      child: ConstrainedBox(
-        constraints: effectiveConstraints,
-        child: ShadResponsiveBuilder(
-          builder: (context, breakpoint) {
-            final sm = breakpoint >= theme.breakpoints.small;
-
-            final effectiveActionsAxis = actionsAxis ??
-                effectiveDialogTheme.actionsAxis ??
-                (sm ? Axis.horizontal : Axis.vertical);
-
-            final effectiveActionsMainAxisSize = actionsMainAxisSize ??
-                effectiveDialogTheme.actionsMainAxisSize ??
-                MainAxisSize.max;
-
-            final effectiveActionsMainAxisAlignment =
-                actionsMainAxisAlignment ??
-                    effectiveDialogTheme.actionsMainAxisAlignment ??
-                    MainAxisAlignment.end;
-
-            final effectiveActionsVerticalDirection =
-                actionsVerticalDirection ??
-                    effectiveDialogTheme.actionsVerticalDirection ??
-                    (sm ? VerticalDirection.down : VerticalDirection.up);
-
-            final effectiveTitleTextAlign = titleTextAlign ??
-                effectiveDialogTheme.titleTextAlign ??
-                (sm ? TextAlign.start : TextAlign.center);
-
-            final effectiveDescriptionTextAlign = descriptionTextAlign ??
-                effectiveDialogTheme.descriptionTextAlign ??
-                (sm ? TextAlign.start : TextAlign.center);
-
-            Widget effectiveActions = Flex(
-              direction: effectiveActionsAxis,
-              mainAxisSize: effectiveActionsMainAxisSize,
-              mainAxisAlignment: effectiveActionsMainAxisAlignment,
-              verticalDirection: effectiveActionsVerticalDirection,
-              children: actions,
-            );
-
-            if (!sm && effectiveExpandActionsWhenTiny) {
-              effectiveActions = ShadTheme(
-                data: theme.copyWith(
-                  primaryButtonTheme:
-                      theme.primaryButtonTheme.copyWith(width: double.infinity),
-                  secondaryButtonTheme: theme.secondaryButtonTheme
-                      .copyWith(width: double.infinity),
-                  outlineButtonTheme:
-                      theme.outlineButtonTheme.copyWith(width: double.infinity),
-                  ghostButtonTheme:
-                      theme.ghostButtonTheme.copyWith(width: double.infinity),
-                  destructiveButtonTheme: theme.destructiveButtonTheme
-                      .copyWith(width: double.infinity),
-                ),
-                child: effectiveActions,
-              );
-            }
-            return DecoratedBox(
-              decoration: BoxDecoration(
-                color: effectiveBackgroundColor,
-                borderRadius: (!sm && effectiveRemoveBorderRadiusWhenTiny)
-                    ? null
-                    : effectiveRadius,
-                border: effectiveBorder,
-                boxShadow: effectiveShadows,
-              ),
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: effectivePadding,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: effectiveMainAxisAlignment,
-                      crossAxisAlignment: effectiveCrossAxisAlignment,
-                      children: [
-                        if (title != null)
-                          DefaultTextStyle(
-                            style: effectiveTitleStyle,
-                            textAlign: effectiveTitleTextAlign,
-                            child: title!,
-                          ),
-                        if (description != null)
-                          DefaultTextStyle(
-                            style: effectiveDescriptionStyle,
-                            textAlign: effectiveDescriptionTextAlign,
-                            child: description!,
-                          ),
-                        if (content != null)
-                          DefaultTextStyle(
-                            style: effectiveDescriptionStyle,
-                            child: content!,
-                          ),
-                        if (actions.isNotEmpty) effectiveActions,
-                      ].separatedBy(SizedBox(height: effectiveGap)),
-                    ),
-                  ),
-                  if (effectiveCloseIcon != null)
-                    effectiveCloseIcon
-                        .positionedWith(effectiveCloseIconPosition),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
+      child: dialog,
     );
   }
 }

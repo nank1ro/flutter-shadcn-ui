@@ -18,18 +18,6 @@ class SheetPage extends StatefulWidget {
 class _SheetPageState extends State<SheetPage> {
   var side = ShadSheetSide.bottom;
 
-  BoxConstraints get constraints {
-    return switch (side) {
-      ShadSheetSide.top ||
-      ShadSheetSide.bottom =>
-        BoxConstraints.tightFor(width: MediaQuery.sizeOf(context).width),
-      ShadSheetSide.left || ShadSheetSide.right => BoxConstraints.tightFor(
-          height: MediaQuery.sizeOf(context).height,
-          width: 512,
-        ),
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -52,7 +40,10 @@ class _SheetPageState extends State<SheetPage> {
               side: side,
               builder: (context) {
                 return ShadSheet(
-                  constraints: constraints,
+                  constraints:
+                      side == ShadSheetSide.left || side == ShadSheetSide.right
+                          ? const BoxConstraints(maxWidth: 512)
+                          : null,
                   title: const Text('Edit Profile'),
                   description: const Text(
                       "Make changes to your profile here. Click save when you're done"),
@@ -87,7 +78,7 @@ class _SheetPageState extends State<SheetPage> {
               },
             );
           },
-        ),
+        )
       ],
     );
   }

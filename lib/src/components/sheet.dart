@@ -151,6 +151,8 @@ class ShadSheet extends StatelessWidget {
     this.descriptionTextAlign,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.scrollable,
+    this.scrollPadding,
   });
 
   final Widget? title;
@@ -180,6 +182,8 @@ class ShadSheet extends StatelessWidget {
   final TextAlign? descriptionTextAlign;
   final MainAxisAlignment? mainAxisAlignment;
   final CrossAxisAlignment? crossAxisAlignment;
+  final bool? scrollable;
+  final EdgeInsets? scrollPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -227,9 +231,13 @@ class ShadSheet extends StatelessWidget {
         theme.sheetTheme.crossAxisAlignment ??
         defaultCrossAxisAlignment;
 
-    final effectiveConstraints = constraints ??
+    var effectiveConstraints = constraints ??
         theme.sheetTheme.constraints ??
         (effectiveExpandCrossSide ? defaultConstraints : null);
+
+    if (effectiveExpandCrossSide) {
+      effectiveConstraints = effectiveConstraints?.enforce(defaultConstraints);
+    }
 
     final effectiveBorder = border ??
         theme.sheetTheme.border ??
@@ -270,6 +278,13 @@ class ShadSheet extends StatelessWidget {
     final effectiveDescriptionTextAlign =
         descriptionTextAlign ?? theme.sheetTheme.descriptionTextAlign;
 
+    final effectiveScrollable =
+        scrollable ?? theme.sheetTheme.scrollable ?? true;
+
+    final effectiveScrollPadding = scrollPadding ??
+        theme.sheetTheme.scrollPadding ??
+        MediaQuery.viewInsetsOf(context);
+
     return ShadDialog(
       title: title,
       description: description,
@@ -298,6 +313,8 @@ class ShadSheet extends StatelessWidget {
       descriptionTextAlign: effectiveDescriptionTextAlign,
       crossAxisAlignment: effectiveCrossAxisAlignment,
       mainAxisAlignment: effectiveMainAxisAlignment,
+      scrollable: effectiveScrollable,
+      scrollPadding: effectiveScrollPadding,
     );
   }
 }

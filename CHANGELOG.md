@@ -1,3 +1,8 @@
+## 0.5.1
+
+- Fix `ShadInputFormField` which disposed the controller being passed to it.
+- Add `scrollable` and `scrollPadding` to `ShadDialog` and `ShadSheet`. By default, the dialogs and sheets are scrollable and the viewInsets are the default scroll padding.
+
 ## 0.5.0
 
 - Add the `ShadSelect.withSearch` constructor to easily add a search input to the select component.

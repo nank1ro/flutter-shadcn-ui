@@ -35,6 +35,8 @@ class ShadDialogTheme {
     this.alignment,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.scrollable,
+    this.scrollPadding,
   });
 
   final bool merge;
@@ -62,6 +64,8 @@ class ShadDialogTheme {
   final Alignment? alignment;
   final MainAxisAlignment? mainAxisAlignment;
   final CrossAxisAlignment? crossAxisAlignment;
+  final bool? scrollable;
+  final EdgeInsets? scrollPadding;
 
   static ShadDialogTheme lerp(
     ShadDialogTheme a,
@@ -97,6 +101,8 @@ class ShadDialogTheme {
       alignment: Alignment.lerp(a.alignment, b.alignment, t),
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      scrollable: t < 0.5 ? a.scrollable : b.scrollable,
+      scrollPadding: EdgeInsets.lerp(a.scrollPadding, b.scrollPadding, t),
     );
   }
 
@@ -126,6 +132,8 @@ class ShadDialogTheme {
     Alignment? alignment,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
+    bool? scrollable,
+    EdgeInsets? scrollPadding,
   }) {
     return ShadDialogTheme(
       merge: merge ?? this.merge,
@@ -153,6 +161,8 @@ class ShadDialogTheme {
       alignment: alignment,
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,
+      scrollable: scrollable,
+      scrollPadding: scrollPadding,
     );
   }
 
@@ -184,6 +194,8 @@ class ShadDialogTheme {
       alignment: other.alignment,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
+      scrollable: other.scrollable,
+      scrollPadding: other.scrollPadding,
     );
   }
 
@@ -216,7 +228,9 @@ class ShadDialogTheme {
         other.descriptionTextAlign == descriptionTextAlign &&
         other.alignment == alignment &&
         other.mainAxisAlignment == mainAxisAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment;
+        other.crossAxisAlignment == crossAxisAlignment &&
+        other.scrollable == scrollable &&
+        other.scrollPadding == scrollPadding;
   }
 
   @override
@@ -245,6 +259,8 @@ class ShadDialogTheme {
         descriptionTextAlign.hashCode ^
         alignment.hashCode ^
         mainAxisAlignment.hashCode ^
-        crossAxisAlignment.hashCode;
+        crossAxisAlignment.hashCode ^
+        scrollable.hashCode ^
+        scrollPadding.hashCode;
   }
 }
