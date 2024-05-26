@@ -301,109 +301,110 @@ class ShadInputState extends State<ShadInput>
       disabled: !widget.enabled,
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
         behavior: HitTestBehavior.translucent,
-        child: ValueListenableBuilder(
-          valueListenable: hasFocus,
-          builder: (context, focused, _) {
-            return ValueListenableBuilder(
-              valueListenable: controller,
-              builder: (context, textEditingValue, child) {
-                return ShadDecorator(
-                  decoration: effectiveDecoration,
-                  focused: focused,
-                  child: Padding(
-                    padding: effectivePadding,
-                    child: Row(
-                      mainAxisAlignment: effectiveMainAxisAlignment,
-                      crossAxisAlignment: effectiveCrossAxisAlignment,
-                      children: [
-                        if (widget.prefix != null) widget.prefix!,
-                        Flexible(
-                          child: Padding(
-                            padding: effectiveInputPadding,
-                            child: Stack(
-                              children: [
-                                RepaintBoundary(
-                                  child: UnmanagedRestorationScope(
-                                    bucket: bucket,
-                                    child: EditableText(
-                                      key: editableTextKey,
-                                      controller: controller,
-                                      obscuringCharacter:
-                                          widget.obscuringCharacter,
-                                      readOnly: widget.readOnly,
-                                      focusNode: focusNode,
-                                      style: effectiveTextStyle,
-                                      strutStyle: widget.strutStyle,
-                                      cursorColor: widget.cursorColor ??
-                                          theme.colorScheme.primary,
-                                      backgroundCursorColor: Colors.grey,
-                                      selectionColor: focused
-                                          ? widget.selectionColor ??
-                                              theme.colorScheme.selection
-                                          : null,
-                                      keyboardType: widget.keyboardType,
-                                      textInputAction: widget.textInputAction,
-                                      textCapitalization:
-                                          widget.textCapitalization,
-                                      autofocus: widget.autofocus,
-                                      obscureText: widget.obscureText,
-                                      autocorrect: widget.autocorrect,
-                                      magnifierConfiguration:
-                                          widget.magnifierConfiguration,
-                                      smartDashesType: widget.smartDashesType,
-                                      smartQuotesType: widget.smartQuotesType,
-                                      enableSuggestions:
-                                          widget.enableSuggestions,
-                                      maxLines: widget.maxLines,
-                                      minLines: widget.minLines,
-                                      expands: widget.expands,
-                                      onChanged: widget.onChanged,
-                                      onEditingComplete:
-                                          widget.onEditingComplete,
-                                      onSubmitted: widget.onSubmitted,
-                                      onAppPrivateCommand:
-                                          widget.onAppPrivateCommand,
-                                      inputFormatters: widget.inputFormatters,
-                                      cursorWidth: widget.cursorWidth,
-                                      cursorHeight: widget.cursorHeight,
-                                      cursorRadius: widget.cursorRadius,
-                                      selectionHeightStyle:
-                                          widget.selectionHeightStyle,
-                                      selectionWidthStyle:
-                                          widget.selectionWidthStyle,
-                                      scrollPadding: widget.scrollPadding,
-                                      dragStartBehavior:
-                                          widget.dragStartBehavior,
-                                      scrollController: widget.scrollController,
-                                      scrollPhysics: widget.scrollPhysics,
-                                      autofillHints: widget.autofillHints,
-                                      clipBehavior: widget.clipBehavior,
-                                      restorationId: 'editable',
-                                      scribbleEnabled: widget.scribbleEnabled,
-                                      enableIMEPersonalizedLearning:
-                                          widget.enableIMEPersonalizedLearning,
-                                      contentInsertionConfiguration:
-                                          widget.contentInsertionConfiguration,
-                                      contextMenuBuilder:
-                                          widget.contextMenuBuilder,
-                                      selectionControls:
-                                          widget.selectionControls,
-                                      mouseCursor: widget.mouseCursor,
-                                      enableInteractiveSelection:
-                                          widget.enableInteractiveSelection,
-                                      undoController: widget.undoController,
-                                      spellCheckConfiguration:
-                                          widget.spellCheckConfiguration,
-                                      textAlign: widget.textAlign,
-                                      onTapOutside: widget.onTapOutside,
+        child: AbsorbPointer(
+          child: ValueListenableBuilder(
+            valueListenable: hasFocus,
+            builder: (context, focused, _) {
+              return ValueListenableBuilder(
+                valueListenable: controller,
+                builder: (context, textEditingValue, child) {
+                  return ShadDecorator(
+                    decoration: effectiveDecoration,
+                    focused: focused,
+                    child: Padding(
+                      padding: effectivePadding,
+                      child: Row(
+                        mainAxisAlignment: effectiveMainAxisAlignment,
+                        crossAxisAlignment: effectiveCrossAxisAlignment,
+                        children: [
+                          if (widget.prefix != null) widget.prefix!,
+                          Flexible(
+                            child: Padding(
+                              padding: effectiveInputPadding,
+                              child: Stack(
+                                children: [
+                                  RepaintBoundary(
+                                    child: UnmanagedRestorationScope(
+                                      bucket: bucket,
+                                      child: EditableText(
+                                        key: editableTextKey,
+                                        controller: controller,
+                                        obscuringCharacter:
+                                            widget.obscuringCharacter,
+                                        readOnly: widget.readOnly,
+                                        focusNode: focusNode,
+                                        style: effectiveTextStyle,
+                                        strutStyle: widget.strutStyle,
+                                        cursorColor: widget.cursorColor ??
+                                            theme.colorScheme.primary,
+                                        backgroundCursorColor: Colors.grey,
+                                        selectionColor: focused
+                                            ? widget.selectionColor ??
+                                                theme.colorScheme.selection
+                                            : null,
+                                        keyboardType: widget.keyboardType,
+                                        textInputAction: widget.textInputAction,
+                                        textCapitalization:
+                                            widget.textCapitalization,
+                                        autofocus: widget.autofocus,
+                                        obscureText: widget.obscureText,
+                                        autocorrect: widget.autocorrect,
+                                        magnifierConfiguration:
+                                            widget.magnifierConfiguration,
+                                        smartDashesType: widget.smartDashesType,
+                                        smartQuotesType: widget.smartQuotesType,
+                                        enableSuggestions:
+                                            widget.enableSuggestions,
+                                        maxLines: widget.maxLines,
+                                        minLines: widget.minLines,
+                                        expands: widget.expands,
+                                        onChanged: widget.onChanged,
+                                        onEditingComplete:
+                                            widget.onEditingComplete,
+                                        onSubmitted: widget.onSubmitted,
+                                        onAppPrivateCommand:
+                                            widget.onAppPrivateCommand,
+                                        inputFormatters: widget.inputFormatters,
+                                        cursorWidth: widget.cursorWidth,
+                                        cursorHeight: widget.cursorHeight,
+                                        cursorRadius: widget.cursorRadius,
+                                        selectionHeightStyle:
+                                            widget.selectionHeightStyle,
+                                        selectionWidthStyle:
+                                            widget.selectionWidthStyle,
+                                        scrollPadding: widget.scrollPadding,
+                                        dragStartBehavior:
+                                            widget.dragStartBehavior,
+                                        scrollController:
+                                            widget.scrollController,
+                                        scrollPhysics: widget.scrollPhysics,
+                                        autofillHints: widget.autofillHints,
+                                        clipBehavior: widget.clipBehavior,
+                                        restorationId: 'editable',
+                                        scribbleEnabled: widget.scribbleEnabled,
+                                        enableIMEPersonalizedLearning: widget
+                                            .enableIMEPersonalizedLearning,
+                                        contentInsertionConfiguration: widget
+                                            .contentInsertionConfiguration,
+                                        contextMenuBuilder:
+                                            widget.contextMenuBuilder,
+                                        selectionControls:
+                                            widget.selectionControls,
+                                        mouseCursor: widget.mouseCursor,
+                                        enableInteractiveSelection:
+                                            widget.enableInteractiveSelection,
+                                        undoController: widget.undoController,
+                                        spellCheckConfiguration:
+                                            widget.spellCheckConfiguration,
+                                        textAlign: widget.textAlign,
+                                        onTapOutside: widget.onTapOutside,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                // placeholder
-                                if (textEditingValue.text.isEmpty &&
-                                    widget.placeholder != null)
-                                  Positioned.fill(
-                                    child: AbsorbPointer(
+                                  // placeholder
+                                  if (textEditingValue.text.isEmpty &&
+                                      widget.placeholder != null)
+                                    Positioned.fill(
                                       child: Padding(
                                         // Seems like the EditableText uses an
                                         // internal offset of 1. To keep the
@@ -420,19 +421,19 @@ class ShadInputState extends State<ShadInput>
                                         ),
                                       ),
                                     ),
-                                  ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        if (widget.suffix != null) widget.suffix!,
-                      ],
+                          if (widget.suffix != null) widget.suffix!,
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            );
-          },
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );
