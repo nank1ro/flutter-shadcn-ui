@@ -296,12 +296,17 @@ class ShadInputState extends State<ShadInput>
     final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
         theme.inputTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
+    final effectiveMouseCursor =
+        widget.mouseCursor ?? WidgetStateMouseCursor.textable;
 
     return ShadDisabled(
       disabled: !widget.enabled,
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
         behavior: HitTestBehavior.translucent,
         child: AbsorbPointer(
+          // AbsorbPointer is needed when the input is readOnly
+          // so the onTap callback is fired on each part of the input
+          absorbing: widget.readOnly,
           child: ValueListenableBuilder(
             valueListenable: hasFocus,
             builder: (context, focused, _) {
@@ -323,6 +328,19 @@ class ShadInputState extends State<ShadInput>
                               padding: effectiveInputPadding,
                               child: Stack(
                                 children: [
+                                  // placeholder
+                                  if (textEditingValue.text.isEmpty &&
+                                      widget.placeholder != null)
+                                    Positioned.fill(
+                                      child: Align(
+                                        alignment:
+                                            effectivePlaceholderAlignment,
+                                        child: DefaultTextStyle(
+                                          style: effectivePlaceholderStyle,
+                                          child: widget.placeholder!,
+                                        ),
+                                      ),
+                                    ),
                                   RepaintBoundary(
                                     child: UnmanagedRestorationScope(
                                       bucket: bucket,
@@ -390,7 +408,7 @@ class ShadInputState extends State<ShadInput>
                                             widget.contextMenuBuilder,
                                         selectionControls:
                                             widget.selectionControls,
-                                        mouseCursor: widget.mouseCursor,
+                                        mouseCursor: effectiveMouseCursor,
                                         enableInteractiveSelection:
                                             widget.enableInteractiveSelection,
                                         undoController: widget.undoController,
@@ -401,26 +419,6 @@ class ShadInputState extends State<ShadInput>
                                       ),
                                     ),
                                   ),
-                                  // placeholder
-                                  if (textEditingValue.text.isEmpty &&
-                                      widget.placeholder != null)
-                                    Positioned.fill(
-                                      child: Padding(
-                                        // Seems like the EditableText uses an
-                                        // internal offset of 1. To keep the
-                                        // placeholder aligned with the text,
-                                        // we need to add 1 to the top padding
-                                        padding: const EdgeInsets.only(top: 1),
-                                        child: Align(
-                                          alignment:
-                                              effectivePlaceholderAlignment,
-                                          child: DefaultTextStyle(
-                                            style: effectivePlaceholderStyle,
-                                            child: widget.placeholder!,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
                                 ],
                               ),
                             ),
