@@ -1,3 +1,7 @@
+## 0.5.2
+
+- Fix `onTap` not working in `ShadInput` and `ShadInputFormField`
+
 ## 0.5.1
 
 - Fix `ShadInputFormField` which disposed the controller being passed to it.
