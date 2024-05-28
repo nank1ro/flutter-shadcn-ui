@@ -303,27 +303,28 @@ class ShadInputState extends State<ShadInput>
       disabled: !widget.enabled,
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
         behavior: HitTestBehavior.translucent,
-        child: AbsorbPointer(
-          // AbsorbPointer is needed when the input is readOnly
-          // so the onTap callback is fired on each part of the input
-          absorbing: widget.readOnly,
-          child: ValueListenableBuilder(
-            valueListenable: hasFocus,
-            builder: (context, focused, _) {
-              return ValueListenableBuilder(
-                valueListenable: controller,
-                builder: (context, textEditingValue, child) {
-                  return ShadDecorator(
-                    decoration: effectiveDecoration,
-                    focused: focused,
-                    child: Padding(
-                      padding: effectivePadding,
-                      child: Row(
-                        mainAxisAlignment: effectiveMainAxisAlignment,
-                        crossAxisAlignment: effectiveCrossAxisAlignment,
-                        children: [
-                          if (widget.prefix != null) widget.prefix!,
-                          Flexible(
+        child: ValueListenableBuilder(
+          valueListenable: hasFocus,
+          builder: (context, focused, _) {
+            return ValueListenableBuilder(
+              valueListenable: controller,
+              builder: (context, textEditingValue, child) {
+                return ShadDecorator(
+                  decoration: effectiveDecoration,
+                  focused: focused,
+                  child: Padding(
+                    padding: effectivePadding,
+                    child: Row(
+                      mainAxisAlignment: effectiveMainAxisAlignment,
+                      crossAxisAlignment: effectiveCrossAxisAlignment,
+                      children: [
+                        if (widget.prefix != null) widget.prefix!,
+                        Flexible(
+                          child: AbsorbPointer(
+                            // AbsorbPointer is needed when the input is
+                            // readOnly so the onTap callback is fired on each
+                            // part of the input
+                            absorbing: widget.readOnly,
                             child: Padding(
                               padding: effectiveInputPadding,
                               child: Stack(
@@ -423,15 +424,15 @@ class ShadInputState extends State<ShadInput>
                               ),
                             ),
                           ),
-                          if (widget.suffix != null) widget.suffix!,
-                        ],
-                      ),
+                        ),
+                        if (widget.suffix != null) widget.suffix!,
+                      ],
                     ),
-                  );
-                },
-              );
-            },
-          ),
+                  ),
+                );
+              },
+            );
+          },
         ),
       ),
     );
