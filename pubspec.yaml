@@ -20,7 +20,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   lucide_icons_flutter: ^1.0.9
   # used by Table
-  two_dimensional_scrollables: ^0.2.1
+  two_dimensional_scrollables: ^0.3.1
   vector_graphics: ^1.1.11+1
 
 dev_dependencies:
