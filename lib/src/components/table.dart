@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';

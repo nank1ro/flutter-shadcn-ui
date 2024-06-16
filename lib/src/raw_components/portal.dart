@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// The position of the [ShadPortal] in the global coordinate system.
 sealed class ShadAnchorBase {

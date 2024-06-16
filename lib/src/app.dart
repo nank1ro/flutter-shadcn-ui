@@ -1,7 +1,8 @@
 // ignore_for_file: lines_longer_than_80_chars
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'dart:ui';
+
+import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart'
     show
         GlobalCupertinoLocalizations,

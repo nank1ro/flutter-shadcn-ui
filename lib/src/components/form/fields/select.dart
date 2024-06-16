@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
