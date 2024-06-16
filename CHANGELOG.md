@@ -1,3 +1,8 @@
+## 0.5.3
+
+- Update dependencies
+- Removed deprecated parameters `checkerboard...` from `ShadApp`
+
 ## 0.5.2
 
 - Fix `onTap` not working in `ShadInput` and `ShadInputFormField`
@@ -94,7 +99,7 @@
 
 ## 0.2.4
 
-- Add workaround for google_fonts issue about font weights. see https://github.com/material-foundation/flutter-packages/issues/35
+- Add workaround for google_fonts issue about font weights. see <https://github.com/material-foundation/flutter-packages/issues/35>
 - Make `from` of `ShadTextTheme.fromGoogleFont` unnamed.
 
 ## 0.2.3
@@ -130,7 +135,7 @@
 - update `showShadDialog`
 - set toast default animations based on alignment
 - change toast default offset
-- add Material and Cupertino constructors in `ShadApp` 
+- add Material and Cupertino constructors in `ShadApp`
 
 ## 0.0.1-dev1
 
