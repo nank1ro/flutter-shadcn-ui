@@ -1,3 +1,7 @@
+## 0.5.4
+
+- Fix double padding on form fields.
+
 ## 0.5.3
 
 - Update dependencies
