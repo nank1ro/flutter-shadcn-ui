@@ -586,7 +586,6 @@ class _ShadAppState extends State<ShadApp> {
       late ShadThemeData result;
       if (useDarkStyle) {
         result = widget.darkTheme ??
-            widget.theme ??
             ShadThemeData(
               colorScheme: const ShadSlateColorScheme.dark(),
               brightness: Brightness.dark,

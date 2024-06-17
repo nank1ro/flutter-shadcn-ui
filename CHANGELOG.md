@@ -1,3 +1,8 @@
+## 0.5.5
+
+- Remove `inputDecoration` from form fields.
+- Fix `ShadApp` default dark theme.
+
 ## 0.5.4
 
 - Fix double padding on form fields.
