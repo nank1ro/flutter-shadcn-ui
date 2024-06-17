@@ -23,7 +23,6 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.onChanged,
     this.valueTransformer,
     this.onReset,
-    this.decoration,
   }) : super(
           builder: (field) {
             final hasError = field.hasError;
@@ -56,7 +55,6 @@ class ShadFormBuilderField<T> extends FormField<T> {
   final ValueChanged<T?>? onChanged;
   final ValueTransformer<T?>? valueTransformer;
   final VoidCallback? onReset;
-  final ShadDecoration? decoration;
 
   @override
   ShadFormBuilderFieldState<ShadFormBuilderField<T>, T> createState() =>

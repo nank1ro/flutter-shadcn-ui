@@ -18,10 +18,9 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
     super.autovalidateMode,
     super.restorationId,
     required bool initialValue,
-    super.decoration,
     super.focusNode,
+    ShadDecoration? decoration,
     String? Function(bool)? validator,
-    ShadDecoration? inputDecoration,
     double? size,
     Duration? duration,
     Widget? icon,
@@ -41,7 +40,6 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
               onChanged: state.didChange,
               enabled: state.enabled,
               focusNode: state.focusNode,
-              decoration: inputDecoration,
               size: size,
               duration: duration,
               icon: icon,
@@ -50,6 +48,7 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
               sublabel: inputSublabel,
               padding: padding,
               direction: direction,
+              decoration: decoration,
             );
           },
         );

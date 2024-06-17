@@ -17,7 +17,6 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
     super.autovalidateMode,
     super.restorationId,
     super.initialValue,
-    super.decoration,
     super.focusNode,
     super.validator,
     required Iterable<Widget> items,

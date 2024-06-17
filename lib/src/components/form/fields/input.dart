@@ -24,8 +24,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     void Function(String)? onChanged,
     super.valueTransformer,
     super.onReset,
-    super.decoration,
-    ShadDecoration? inputDecoration,
+    ShadDecoration? decoration,
     Widget? placeholder,
     TextMagnifierConfiguration magnifierConfiguration =
         TextMagnifierConfiguration.disabled,
@@ -101,7 +100,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
               restorationId: restorationId,
               enabled: state.enabled,
               focusNode: state.focusNode,
-              decoration: inputDecoration,
+              decoration: decoration,
               style: style,
               cursorColor: cursorColor,
               selectionColor: selectionColor,
