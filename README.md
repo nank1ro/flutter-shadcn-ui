@@ -11,6 +11,7 @@ ShadcnUI ported in Flutter.
 Awesome UI components for Flutter, fully customizable.
 
 ## Documentation
+
 See the [documentation](https://mariuti.com/shadcn-ui/) to interact with the components and see the code.
 
 ## Progress
@@ -67,12 +68,4 @@ See the [documentation](https://mariuti.com/shadcn-ui/) to interact with the com
 
 ## Star History
 
-<p align="center">
-    <a href="https://star-history.com/#nank1ro/flutter-shadcn-ui&Date">
-        <picture>
-            <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=nank1ro/flutter-shadcn-ui&type=Date&theme=dark" />
-            <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=nank1ro/flutter-shadcn-ui&type=Date" />
-            <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=nank1ro/flutter-shadcn-ui&type=Date" />
-        </picture>
-    </a>
-</p>
+[![Star History Chart](https://api.star-history.com/svg?repos=nank1ro/flutter-shadcn-ui&type=Date)](https://star-history.com/#nank1ro/flutter-shadcn-ui&Date)
