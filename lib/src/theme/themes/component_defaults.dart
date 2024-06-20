@@ -301,8 +301,8 @@ abstract class ShadDefaultComponentThemes {
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
       anchor: const ShadAnchor(
-        childAlignment: Alignment.bottomLeft,
-        overlayAlignment: Alignment.topLeft,
+        overlayAlignment: Alignment.bottomLeft,
+        childAlignment: Alignment.topLeft,
         offset: Offset.zero,
       ),
       searchPadding: const EdgeInsets.all(12),

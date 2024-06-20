@@ -137,8 +137,8 @@ class _ShadPortalState extends State<ShadPortal> {
     return CompositedTransformFollower(
       link: layerLink,
       offset: anchor.offset,
-      followerAnchor: anchor.overlayAlignment,
-      targetAnchor: anchor.childAlignment,
+      followerAnchor: anchor.childAlignment,
+      targetAnchor: anchor.overlayAlignment,
       child: widget.portalBuilder(context),
     );
   }

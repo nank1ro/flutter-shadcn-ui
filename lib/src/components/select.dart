@@ -328,8 +328,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     final effectiveAnchor = widget.anchor ??
         theme.selectTheme.anchor ??
         const ShadAnchor(
-          childAlignment: Alignment.bottomLeft,
-          overlayAlignment: Alignment.topLeft,
+          overlayAlignment: Alignment.bottomLeft,
+          childAlignment: Alignment.topLeft,
           offset: Offset.zero,
         );
 
