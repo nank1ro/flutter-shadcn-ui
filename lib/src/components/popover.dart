@@ -162,17 +162,20 @@ class _ShadPopoverState extends State<ShadPopover> {
         theme.popoverTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 6);
     final effectiveShadows = widget.shadows ?? theme.popoverTheme.shadows;
-    final effectiveDecoration =
+    var effectiveDecoration =
         (theme.popoverTheme.decoration ?? const ShadDecoration())
             .mergeWith(widget.decoration)
             .copyWith(shadows: effectiveShadows);
+    // remove the top padding of the popover
+    effectiveDecoration = effectiveDecoration.copyWith(
+      secondaryBorder: ShadBorder(
+        padding: theme.decoration.secondaryBorder?.padding?.copyWith(top: 0),
+      ),
+    );
 
     final effectiveAnchor = widget.anchor ??
         theme.popoverTheme.anchor ??
-        const ShadAnchorAuto(
-          verticalOffset: 24,
-          preferBelow: true,
-        );
+        const ShadAnchorAuto(verticalOffset: 24);
 
     Widget popover = ShadDecorator(
       decoration: effectiveDecoration,

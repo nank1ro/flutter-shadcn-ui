@@ -1,3 +1,9 @@
+## 0.5.6
+
+- Fix mismatch of `childAlignment` and `overlayAlignment` in `ShadPortal`
+- Remove top padding of `ShadPopover`
+- Set default values to `ShadAnchor` and `ShadAnchorAuto`
+
 ## 0.5.5
 
 - Remove `inputDecoration` from form fields.

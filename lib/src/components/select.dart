@@ -325,13 +325,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             theme.selectTheme.showScrollToBottomChevron ??
             true;
 
-    final effectiveAnchor = widget.anchor ??
-        theme.selectTheme.anchor ??
-        const ShadAnchor(
-          overlayAlignment: Alignment.bottomLeft,
-          childAlignment: Alignment.topLeft,
-          offset: Offset.zero,
-        );
+    final effectiveAnchor =
+        widget.anchor ?? theme.selectTheme.anchor ?? const ShadAnchor();
 
     final Widget effectiveText;
     if (selected is T) {
