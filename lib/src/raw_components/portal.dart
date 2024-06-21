@@ -10,21 +10,30 @@ sealed class ShadAnchorBase {
 /// [preferBelow] properties.
 class ShadAnchorAuto extends ShadAnchorBase {
   const ShadAnchorAuto({
-    required this.verticalOffset,
-    required this.preferBelow,
+    this.verticalOffset = 0,
+    this.preferBelow = true,
+    this.followTargetOnResize = true,
   });
 
+  /// The vertical offset of the overlay from the start of target widget.
   final double verticalOffset;
+
+  /// Whether the overlay is displayed below its widget by default, if there is
+  /// enough space.
   final bool preferBelow;
+
+  /// Whether the overlay is automatically adjusted to follow the target
+  /// widget when the target widget moves dues to a window resize.
+  final bool followTargetOnResize;
 }
 
 /// Manually specifies the position of the [ShadPortal] in the global
 /// coordinate system.
 class ShadAnchor extends ShadAnchorBase {
   const ShadAnchor({
-    required this.childAlignment,
-    required this.overlayAlignment,
-    required this.offset,
+    this.childAlignment = Alignment.topLeft,
+    this.overlayAlignment = Alignment.bottomLeft,
+    this.offset = Offset.zero,
   });
 
   final Alignment childAlignment;
@@ -34,7 +43,6 @@ class ShadAnchor extends ShadAnchorBase {
   static const center = ShadAnchor(
     childAlignment: Alignment.topCenter,
     overlayAlignment: Alignment.bottomCenter,
-    offset: Offset.zero,
   );
 
   ShadAnchor copyWith({
@@ -114,6 +122,9 @@ class _ShadPortalState extends State<ShadPortal> {
     BuildContext context,
     ShadAnchorAuto anchor,
   ) {
+    if (anchor.followTargetOnResize) {
+      MediaQuery.sizeOf(context);
+    }
     final overlayState = Overlay.of(context, debugRequiredFor: widget);
     final box = this.context.findRenderObject()! as RenderBox;
     final target = box.localToGlobal(

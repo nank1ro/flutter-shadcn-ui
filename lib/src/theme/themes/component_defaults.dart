@@ -230,7 +230,7 @@ abstract class ShadDefaultComponentThemes {
           color: colorScheme.border,
         ),
       ),
-      anchor: const ShadAnchorAuto(preferBelow: true, verticalOffset: 24),
+      anchor: const ShadAnchorAuto(verticalOffset: 24),
     );
   }
 
@@ -300,11 +300,7 @@ abstract class ShadDefaultComponentThemes {
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
-      anchor: const ShadAnchor(
-        overlayAlignment: Alignment.bottomLeft,
-        childAlignment: Alignment.topLeft,
-        offset: Offset.zero,
-      ),
+      anchor: const ShadAnchor(),
       searchPadding: const EdgeInsets.all(12),
     );
   }
