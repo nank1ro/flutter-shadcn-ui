@@ -40,7 +40,7 @@ extension ShadDuration on Duration {
   }
 }
 
-extension ShadBreakpoints on BuildContext {
+extension ShadBreakpointsExt on BuildContext {
   ShadBreakpoint get breakpoint {
     final width = MediaQuery.sizeOf(this).width;
     final breakpoints = ShadTheme.of(this).breakpoints;
