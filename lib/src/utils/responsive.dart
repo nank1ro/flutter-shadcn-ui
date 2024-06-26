@@ -5,31 +5,31 @@ import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadBreakpoints {
   ShadBreakpoints({
-    double tiny = 0,
-    double small = 640,
-    double medium = 768,
-    double large = 1024,
-    double xlarge = 1280,
-    double xxlarge = 1536,
-  })  : tn = ShadBreakpointTiny(tiny),
-        sm = ShadBreakpointSmall(small),
-        md = ShadBreakpointMedium(medium),
-        l = ShadBreakpointLarge(large),
-        xl = ShadBreakpointExtraLarge(xlarge),
-        xxl = ShadBreakpointExtraExtraLarge(xxlarge);
+    double tn = 0,
+    double sm = 640,
+    double md = 768,
+    double lg = 1024,
+    double xl = 1280,
+    double xxl = 1536,
+  })  : tn = ShadBreakpointTN(tn),
+        sm = ShadBreakpointSM(sm),
+        md = ShadBreakpointMD(md),
+        lg = ShadBreakpointLG(lg),
+        xl = ShadBreakpointXL(xl),
+        xxl = ShadBreakpointXXL(xxl);
 
   final ShadBreakpoint tn;
   final ShadBreakpoint sm;
   final ShadBreakpoint md;
-  final ShadBreakpoint l;
+  final ShadBreakpoint lg;
   final ShadBreakpoint xl;
   final ShadBreakpoint xxl;
 
   ShadBreakpoint fromWidth(double width) {
     if (width < sm.value) return tn;
     if (width < md.value) return sm;
-    if (width < l.value) return md;
-    if (width < xl.value) return l;
+    if (width < lg.value) return md;
+    if (width < xl.value) return lg;
     if (width < xxl.value) return xl;
     return xxl;
   }
@@ -40,12 +40,12 @@ class ShadBreakpoints {
     double t,
   ) {
     return ShadBreakpoints(
-      tiny: ShadBreakpoint.lerp(a!.tn, b!.tn, t),
-      small: ShadBreakpoint.lerp(a.sm, b.sm, t),
-      medium: ShadBreakpoint.lerp(a.md, b.md, t),
-      large: ShadBreakpoint.lerp(a.l, b.l, t),
-      xlarge: ShadBreakpoint.lerp(a.xl, b.xl, t),
-      xxlarge: ShadBreakpoint.lerp(a.xxl, b.xxl, t),
+      tn: ShadBreakpoint.lerp(a!.tn, b!.tn, t),
+      sm: ShadBreakpoint.lerp(a.sm, b.sm, t),
+      md: ShadBreakpoint.lerp(a.md, b.md, t),
+      lg: ShadBreakpoint.lerp(a.lg, b.lg, t),
+      xl: ShadBreakpoint.lerp(a.xl, b.xl, t),
+      xxl: ShadBreakpoint.lerp(a.xxl, b.xxl, t),
     );
   }
 }
@@ -76,28 +76,28 @@ sealed class ShadBreakpoint {
   }
 }
 
-class ShadBreakpointTiny extends ShadBreakpoint {
-  const ShadBreakpointTiny(super.value);
+class ShadBreakpointTN extends ShadBreakpoint {
+  const ShadBreakpointTN(super.value);
 }
 
-class ShadBreakpointSmall extends ShadBreakpoint {
-  const ShadBreakpointSmall(super.value);
+class ShadBreakpointSM extends ShadBreakpoint {
+  const ShadBreakpointSM(super.value);
 }
 
-class ShadBreakpointMedium extends ShadBreakpoint {
-  const ShadBreakpointMedium(super.value);
+class ShadBreakpointMD extends ShadBreakpoint {
+  const ShadBreakpointMD(super.value);
 }
 
-class ShadBreakpointLarge extends ShadBreakpoint {
-  const ShadBreakpointLarge(super.value);
+class ShadBreakpointLG extends ShadBreakpoint {
+  const ShadBreakpointLG(super.value);
 }
 
-class ShadBreakpointExtraLarge extends ShadBreakpoint {
-  const ShadBreakpointExtraLarge(super.value);
+class ShadBreakpointXL extends ShadBreakpoint {
+  const ShadBreakpointXL(super.value);
 }
 
-class ShadBreakpointExtraExtraLarge extends ShadBreakpoint {
-  const ShadBreakpointExtraExtraLarge(super.value);
+class ShadBreakpointXXL extends ShadBreakpoint {
+  const ShadBreakpointXXL(super.value);
 }
 
 typedef ResponsiveWidgetBuilder = Widget Function(
