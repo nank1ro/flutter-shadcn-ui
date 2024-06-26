@@ -9,29 +9,29 @@ class ShadBreakpoints {
     double small = 640,
     double medium = 768,
     double large = 1024,
-    double extraLarge = 1280,
-    double extraExtraLarge = 1536,
-  })  : tiny = ShadBreakpointTiny(tiny),
-        small = ShadBreakpointSmall(small),
-        medium = ShadBreakpointMedium(medium),
-        large = ShadBreakpointLarge(large),
-        extraLarge = ShadBreakpointExtraLarge(extraLarge),
-        extraExtraLarge = ShadBreakpointExtraExtraLarge(extraExtraLarge);
+    double xlarge = 1280,
+    double xxlarge = 1536,
+  })  : tn = ShadBreakpointTiny(tiny),
+        sm = ShadBreakpointSmall(small),
+        md = ShadBreakpointMedium(medium),
+        l = ShadBreakpointLarge(large),
+        xl = ShadBreakpointExtraLarge(xlarge),
+        xxl = ShadBreakpointExtraExtraLarge(xxlarge);
 
-  final ShadBreakpoint tiny;
-  final ShadBreakpoint small;
-  final ShadBreakpoint medium;
-  final ShadBreakpoint large;
-  final ShadBreakpoint extraLarge;
-  final ShadBreakpoint extraExtraLarge;
+  final ShadBreakpoint tn;
+  final ShadBreakpoint sm;
+  final ShadBreakpoint md;
+  final ShadBreakpoint l;
+  final ShadBreakpoint xl;
+  final ShadBreakpoint xxl;
 
   ShadBreakpoint fromWidth(double width) {
-    if (width < small.value) return tiny;
-    if (width < medium.value) return small;
-    if (width < large.value) return medium;
-    if (width < extraLarge.value) return large;
-    if (width < extraExtraLarge.value) return extraLarge;
-    return extraExtraLarge;
+    if (width < sm.value) return tn;
+    if (width < md.value) return sm;
+    if (width < l.value) return md;
+    if (width < xl.value) return l;
+    if (width < xxl.value) return xl;
+    return xxl;
   }
 
   static ShadBreakpoints lerp(
@@ -40,13 +40,12 @@ class ShadBreakpoints {
     double t,
   ) {
     return ShadBreakpoints(
-      tiny: ShadBreakpoint.lerp(a!.tiny, b!.tiny, t),
-      small: ShadBreakpoint.lerp(a.small, b.small, t),
-      medium: ShadBreakpoint.lerp(a.medium, b.medium, t),
-      large: ShadBreakpoint.lerp(a.large, b.large, t),
-      extraLarge: ShadBreakpoint.lerp(a.extraLarge, b.extraLarge, t),
-      extraExtraLarge:
-          ShadBreakpoint.lerp(a.extraExtraLarge, b.extraExtraLarge, t),
+      tiny: ShadBreakpoint.lerp(a!.tn, b!.tn, t),
+      small: ShadBreakpoint.lerp(a.sm, b.sm, t),
+      medium: ShadBreakpoint.lerp(a.md, b.md, t),
+      large: ShadBreakpoint.lerp(a.l, b.l, t),
+      xlarge: ShadBreakpoint.lerp(a.xl, b.xl, t),
+      xxlarge: ShadBreakpoint.lerp(a.xxl, b.xxl, t),
     );
   }
 }

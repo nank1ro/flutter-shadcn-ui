@@ -265,7 +265,7 @@ class ShadDialog extends StatelessWidget {
       constraints: effectiveConstraints,
       child: ShadResponsiveBuilder(
         builder: (context, breakpoint) {
-          final sm = breakpoint >= theme.breakpoints.small;
+          final sm = breakpoint >= theme.breakpoints.sm;
 
           final effectiveActionsAxis = actionsAxis ??
               effectiveDialogTheme.actionsAxis ??
