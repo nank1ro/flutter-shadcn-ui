@@ -1,3 +1,8 @@
+## 0.5.7
+
+- Renamed the breakpoints
+- Add `context.breakpoint` extension
+
 ## 0.5.6
 
 - Fix mismatch of `childAlignment` and `overlayAlignment` in `ShadPortal`

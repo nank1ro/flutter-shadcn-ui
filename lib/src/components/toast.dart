@@ -441,10 +441,9 @@ class _ShadToastState extends State<ShadToast> {
           return ConstrainedBox(
             constraints: BoxConstraints(
               minWidth:
-                  breakpoint >= theme.breakpoints.medium ? 0 : double.infinity,
-              maxWidth: breakpoint >= theme.breakpoints.medium
-                  ? 420
-                  : double.infinity,
+                  breakpoint >= theme.breakpoints.md ? 0 : double.infinity,
+              maxWidth:
+                  breakpoint >= theme.breakpoints.md ? 420 : double.infinity,
             ),
             child: DecoratedBox(
               decoration: BoxDecoration(
