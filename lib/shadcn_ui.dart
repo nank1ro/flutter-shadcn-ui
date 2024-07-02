@@ -24,14 +24,15 @@ export 'src/components/input.dart';
 export 'src/components/popover.dart';
 export 'src/components/progress.dart';
 export 'src/components/radio.dart';
+export 'src/components/resizable.dart';
 export 'src/components/select.dart';
 export 'src/components/sheet.dart';
 export 'src/components/slider.dart';
 export 'src/components/switch.dart';
+export 'src/components/tab.dart';
 export 'src/components/table.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
-export 'src/components/resizable.dart';
 
 // Raw Components
 export 'src/raw_components/portal.dart';
@@ -81,6 +82,7 @@ export 'src/theme/components/tooltip.dart';
 export 'src/theme/text_theme/text_styles_default.dart';
 export 'src/theme/text_theme/theme.dart';
 export 'src/theme/components/resizable.dart';
+export 'src/theme/components/tab.dart';
 
 // Utils
 export 'src/utils/position.dart';
