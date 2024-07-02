@@ -1,3 +1,9 @@
+## 0.6.0
+
+- Add `ShadTabs` component
+- Add `ShadColorScheme.fromName` to easily create a color scheme from a name (String)
+- Fix `decoration` of form fields
+
 ## 0.5.7
 
 - Renamed the breakpoints
