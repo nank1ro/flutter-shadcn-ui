@@ -31,9 +31,15 @@ class ShadFormBuilderField<T> extends FormField<T> {
                 hasError ? error ?? Text(field.errorText!) : null;
 
             return ShadDecorator(
-              // The decoration is set to none because the component itself has
-              // its own decoration
-              decoration: ShadDecoration.none,
+              // borders are handled by the field itself
+              decoration: const ShadDecoration(
+                border: ShadBorder.none,
+                secondaryBorder: ShadBorder.none,
+                errorBorder: ShadBorder.none,
+                focusedBorder: ShadBorder.none,
+                secondaryErrorBorder: ShadBorder.none,
+                secondaryFocusedBorder: ShadBorder.none,
+              ),
               label: label,
               hasError: hasError,
               error: effectiveError,

@@ -20,6 +20,7 @@ import 'package:playground/pages/sheet.dart';
 import 'package:playground/pages/slider.dart';
 import 'package:playground/pages/switch.dart';
 import 'package:playground/pages/table.dart';
+import 'package:playground/pages/tabs.dart';
 import 'package:playground/pages/toast.dart';
 import 'package:playground/pages/tooltip.dart';
 import 'package:playground/pages/typography.dart';
@@ -229,6 +230,10 @@ final _router = GoRouter(
           style: ShadResizableStyle.values.byName(style),
         );
       },
+    ),
+    GoRoute(
+      path: '/tabs',
+      builder: (context, state) => const TabsPage(),
     ),
   ],
 );

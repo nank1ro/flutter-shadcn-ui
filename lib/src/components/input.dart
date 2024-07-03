@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -299,6 +300,19 @@ class ShadInputState extends State<ShadInput>
     final effectiveMouseCursor =
         widget.mouseCursor ?? WidgetStateMouseCursor.textable;
 
+    final defaultSelectionControls = switch (Theme.of(context).platform) {
+      TargetPlatform.iOS => cupertinoTextSelectionHandleControls,
+      TargetPlatform.macOS => cupertinoDesktopTextSelectionHandleControls,
+      TargetPlatform.android ||
+      TargetPlatform.fuchsia =>
+        materialTextSelectionHandleControls,
+      TargetPlatform.linux ||
+      TargetPlatform.windows =>
+        desktopTextSelectionHandleControls,
+    };
+    final effectiveSelectionControls =
+        widget.selectionControls ?? defaultSelectionControls;
+
     return ShadDisabled(
       disabled: !widget.enabled,
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
@@ -408,7 +422,7 @@ class ShadInputState extends State<ShadInput>
                                         contextMenuBuilder:
                                             widget.contextMenuBuilder,
                                         selectionControls:
-                                            widget.selectionControls,
+                                            effectiveSelectionControls,
                                         mouseCursor: effectiveMouseCursor,
                                         enableInteractiveSelection:
                                             widget.enableInteractiveSelection,
@@ -417,6 +431,7 @@ class ShadInputState extends State<ShadInput>
                                             widget.spellCheckConfiguration,
                                         textAlign: widget.textAlign,
                                         onTapOutside: widget.onTapOutside,
+                                        rendererIgnoresPointer: true,
                                       ),
                                     ),
                                   ),

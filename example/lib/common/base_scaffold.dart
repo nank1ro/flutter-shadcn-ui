@@ -12,6 +12,7 @@ class BaseScaffold extends StatelessWidget {
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.wrapChildrenInScrollable = true,
     this.wrapSingleChildInColumn = true,
+    this.alignment,
   });
 
   final List<Widget> children;
@@ -20,19 +21,22 @@ class BaseScaffold extends StatelessWidget {
   final CrossAxisAlignment crossAxisAlignment;
   final bool wrapChildrenInScrollable;
   final bool wrapSingleChildInColumn;
+  final Alignment? alignment;
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
 
-    Widget left = Center(
-        child: children.length == 1 && !wrapSingleChildInColumn
-            ? children[0]
-            : Column(
-                crossAxisAlignment: crossAxisAlignment,
-                children: children.separatedBy(const SizedBox(height: 8)),
-              ));
+    Widget left = Align(
+      alignment: alignment ?? Alignment.center,
+      child: children.length == 1 && !wrapSingleChildInColumn
+          ? children[0]
+          : Column(
+              crossAxisAlignment: crossAxisAlignment,
+              children: children.separatedBy(const SizedBox(height: 8)),
+            ),
+    );
 
     if (wrapChildrenInScrollable) {
       left = SingleChildScrollView(

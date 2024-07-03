@@ -20,6 +20,7 @@ import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
+import 'package:shadcn_ui/src/theme/components/tabs.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
@@ -72,6 +73,7 @@ abstract class ShadBaseTheme {
     required this.resizableTheme,
     required this.hoverStrategies,
     required this.disableSecondaryBorder,
+    required this.tabsTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -117,4 +119,5 @@ abstract class ShadBaseTheme {
   final ShadResizableTheme resizableTheme;
   final ShadHoverStrategies hoverStrategies;
   final bool disableSecondaryBorder;
+  final ShadTabsTheme tabsTheme;
 }

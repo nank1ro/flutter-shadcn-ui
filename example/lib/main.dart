@@ -22,6 +22,7 @@ import 'package:example/pages/sheet.dart';
 import 'package:example/pages/slider.dart';
 import 'package:example/pages/switch.dart';
 import 'package:example/pages/switch_form_field.dart';
+import 'package:example/pages/tabs.dart';
 import 'package:example/pages/table.dart';
 import 'package:example/pages/toast.dart';
 import 'package:example/pages/tooltip.dart';
@@ -53,17 +54,18 @@ final routes = <String, WidgetBuilder>{
   '/progress': (_) => const ProgressPage(),
   '/radio-group': (_) => const RadioPage(),
   '/radio-group-form-field': (_) => const RadioGroupFormFieldPage(),
+  '/resizable': (_) => const ResizablePage(),
   '/select': (_) => const SelectPage(),
   '/select-form-field': (_) => const SelectFormFieldPage(),
   '/sheet': (_) => const SheetPage(),
   '/slider': (_) => const SliderPage(),
   '/switch': (_) => const SwitchPage(),
   '/switch-form-field': (_) => const SwitchFormFieldPage(),
+  '/tabs': (_) => const TabsPage(),
   '/table': (_) => const TablePage(),
   '/toast': (_) => const ToastPage(),
   '/tooltip': (_) => const TooltipPage(),
   '/typography': (_) => const TypographyPage(),
-  '/resizable': (_) => const ResizablePage(),
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-z])');
 

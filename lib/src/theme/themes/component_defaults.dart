@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -25,6 +24,7 @@ import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
+import 'package:shadcn_ui/src/theme/components/tabs.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
@@ -708,6 +708,31 @@ abstract class ShadDefaultComponentThemes {
         ShadHoverStrategy.onLongPressEnd,
         ShadHoverStrategy.onLongPressCancel,
       },
+    );
+  }
+
+  static ShadTabsTheme tabsTheme({
+    required ShadColorScheme colorScheme,
+    required BorderRadius radius,
+  }) {
+    return ShadTabsTheme(
+      dragStartBehavior: DragStartBehavior.start,
+      padding: EdgeInsets.zero,
+      decoration: ShadDecoration(
+        merge: false,
+        color: colorScheme.muted,
+        border: ShadBorder(radius: radius),
+      ),
+      gap: 8,
+      expandContent: false,
+      tabBackgroundColor: Colors.transparent,
+      tabSelectedBackgroundColor: colorScheme.background,
+      tabHoverBackgroundColor: Colors.transparent,
+      tabSelectedHoverBackgroundColor: colorScheme.background,
+      tabPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      tabForegroundColor: colorScheme.foreground,
+      tabSelectedForegroundColor: colorScheme.foreground,
+      tabSelectedShadows: ShadShadows.sm,
     );
   }
 }

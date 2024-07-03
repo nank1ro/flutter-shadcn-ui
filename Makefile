@@ -1,5 +1,5 @@
 compile:
-	cd playground && flutter build web --web-renderer canvaskit
+	cd playground && flutter build web --web-renderer canvaskit --no-tree-shake-icons
 
 deploy:
 	cd playground && firebase deploy
