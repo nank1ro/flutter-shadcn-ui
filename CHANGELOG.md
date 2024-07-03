@@ -2,6 +2,7 @@
 
 - Add `ShadTabs` component
 - Add `ShadColorScheme.fromName` to easily create a color scheme from a name (String)
+- Add `package` to `ShadImage` (thanks to @farhanfadila1717)
 - Fix `decoration` of form fields
 - Fix selection controls of `ShadInput`
 

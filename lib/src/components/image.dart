@@ -35,6 +35,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
     this.antialiasing = true,
     this.semanticLabel,
     this.svgTheme,
+    this.package,
   }) : assert(
           src is String || src is IconData,
           'src must be a String or IconData',
@@ -53,6 +54,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
     this.antialiasing = true,
     this.semanticLabel,
     this.svgTheme,
+    this.package,
   })  : width = size,
         height = size,
         assert(
@@ -101,6 +103,9 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
   /// The theme of the svg
   final SvgTheme? svgTheme;
 
+  /// The package of the image, if any.
+  final String? package;
+
   /// Returns `true` if the image is remote.
   bool get isRemote => Uri.tryParse(src as String)?.host.isNotEmpty ?? false;
 
@@ -148,15 +153,15 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
                 placeholder != null ? (_) => placeholder! : null,
             semanticsLabel: semanticLabel,
           );
-        } else if (isSvg) {
-          image = SvgPicture.network(
-            sourceString,
+        } else if (isSvgVector) {
+          image = SvgPicture(
+            NetworkBytesLoader(Uri.parse(sourceString)),
             width: width,
             height: height,
             fit: fit,
+            alignment: alignment,
             colorFilter: colorFilter,
             clipBehavior: Clip.antiAlias,
-            alignment: alignment,
             placeholderBuilder:
                 placeholder != null ? (_) => placeholder! : null,
             semanticsLabel: semanticLabel,
@@ -181,7 +186,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
         }
       } else if (isSvgVector) {
         image = SvgPicture(
-          AssetBytesLoader(sourceString),
+          AssetBytesLoader(sourceString, packageName: package),
           width: width,
           height: height,
           fit: fit,
@@ -202,6 +207,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
           alignment: alignment,
           placeholderBuilder: placeholder != null ? (_) => placeholder! : null,
           semanticsLabel: semanticLabel,
+          package: package,
         );
       } else {
         image = Image.asset(
@@ -219,6 +225,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
             return child;
           },
           semanticLabel: semanticLabel,
+          package: package,
         );
       }
     }
