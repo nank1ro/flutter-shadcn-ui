@@ -34,6 +34,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
     this.placeholder,
     this.antialiasing = true,
     this.semanticLabel,
+    this.package,
     this.svgTheme,
   }) : assert(
           src is String || src is IconData,
@@ -52,6 +53,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
     this.placeholder,
     this.antialiasing = true,
     this.semanticLabel,
+    this.package,
     this.svgTheme,
   })  : width = size,
         height = size,
@@ -97,6 +99,9 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
 
   /// The semantic label
   final String? semanticLabel;
+
+  /// The package name to load from, if any.
+  final String? package;
 
   /// The theme of the svg
   final SvgTheme? svgTheme;
@@ -181,7 +186,10 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
         }
       } else if (isSvgVector) {
         image = SvgPicture(
-          AssetBytesLoader(sourceString),
+          AssetBytesLoader(
+            sourceString,
+            packageName: package,
+          ),
           width: width,
           height: height,
           fit: fit,
@@ -219,6 +227,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
             return child;
           },
           semanticLabel: semanticLabel,
+          package: package,
         );
       }
     }
