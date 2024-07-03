@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -714,7 +713,26 @@ abstract class ShadDefaultComponentThemes {
 
   static ShadTabsTheme tabsTheme({
     required ShadColorScheme colorScheme,
+    required BorderRadius radius,
   }) {
-    return ShadTabsTheme();
+    return ShadTabsTheme(
+      dragStartBehavior: DragStartBehavior.start,
+      padding: EdgeInsets.zero,
+      decoration: ShadDecoration(
+        merge: false,
+        color: colorScheme.muted,
+        border: ShadBorder(radius: radius),
+      ),
+      gap: 8,
+      expandContent: false,
+      tabBackgroundColor: Colors.transparent,
+      tabSelectedBackgroundColor: colorScheme.background,
+      tabHoverBackgroundColor: Colors.transparent,
+      tabSelectedHoverBackgroundColor: colorScheme.background,
+      tabPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      tabForegroundColor: colorScheme.foreground,
+      tabSelectedForegroundColor: colorScheme.foreground,
+      tabSelectedShadows: ShadShadows.sm,
+    );
   }
 }

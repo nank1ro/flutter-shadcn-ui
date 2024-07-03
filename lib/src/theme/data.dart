@@ -271,6 +271,7 @@ class ShadThemeData extends ShadBaseTheme {
       disableSecondaryBorder: effectiveDisableSecondaryBorder,
       tabsTheme: ShadDefaultComponentThemes.tabsTheme(
         colorScheme: colorScheme,
+        radius: effectiveRadius,
       ).mergeWith(tabsTheme),
     );
   }
