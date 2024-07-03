@@ -59,7 +59,7 @@ See the [documentation](https://mariuti.com/shadcn-ui/) to interact with the com
 - [ ] Sonner (?)
 - [x] [Switch](https://mariuti.com/shadcn-ui/components/switch/)
 - [x] [Table](https://mariuti.com/shadcn-ui/components/table/)
-- [ ] Tabs
+- [x] [Tabs](https://mariuti.com/shadcn-ui/components/tabs/)
 - [ ] TextArea
 - [x] [Toast](https://mariuti.com/shadcn-ui/components/toast/)
 - [ ] Toggle
