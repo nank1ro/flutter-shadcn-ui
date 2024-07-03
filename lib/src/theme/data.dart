@@ -22,6 +22,7 @@ import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
+import 'package:shadcn_ui/src/theme/components/tabs.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
@@ -76,6 +77,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadResizableTheme? resizableTheme,
     ShadHoverStrategies? hoverStrategies,
     bool? disableSecondaryBorder,
+    ShadTabsTheme? tabsTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -267,6 +269,9 @@ class ShadThemeData extends ShadBaseTheme {
       hoverStrategies:
           hoverStrategies ?? ShadDefaultComponentThemes.hoverStrategies(),
       disableSecondaryBorder: effectiveDisableSecondaryBorder,
+      tabsTheme: ShadDefaultComponentThemes.tabsTheme(
+        colorScheme: colorScheme,
+      ).mergeWith(tabsTheme),
     );
   }
 
@@ -314,6 +319,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.resizableTheme,
     required super.hoverStrategies,
     required super.disableSecondaryBorder,
+    required super.tabsTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {

@@ -29,7 +29,7 @@ export 'src/components/select.dart';
 export 'src/components/sheet.dart';
 export 'src/components/slider.dart';
 export 'src/components/switch.dart';
-export 'src/components/tab.dart';
+export 'src/components/tabs.dart';
 export 'src/components/table.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
@@ -82,7 +82,7 @@ export 'src/theme/components/tooltip.dart';
 export 'src/theme/text_theme/text_styles_default.dart';
 export 'src/theme/text_theme/theme.dart';
 export 'src/theme/components/resizable.dart';
-export 'src/theme/components/tab.dart';
+export 'src/theme/components/tabs.dart';
 
 // Utils
 export 'src/utils/position.dart';

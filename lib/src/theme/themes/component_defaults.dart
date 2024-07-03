@@ -25,6 +25,7 @@ import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
+import 'package:shadcn_ui/src/theme/components/tabs.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
@@ -709,5 +710,11 @@ abstract class ShadDefaultComponentThemes {
         ShadHoverStrategy.onLongPressCancel,
       },
     );
+  }
+
+  static ShadTabsTheme tabsTheme({
+    required ShadColorScheme colorScheme,
+  }) {
+    return ShadTabsTheme();
   }
 }
