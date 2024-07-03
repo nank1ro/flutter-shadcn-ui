@@ -140,20 +140,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
       //
       // Finally, if there is a [gradient], apply a shader mask to the image.
       if (isRemote) {
-        if (isSvg) {
-          image = SvgPicture.network(
-            sourceString,
-            width: width,
-            height: height,
-            fit: fit,
-            colorFilter: colorFilter,
-            clipBehavior: Clip.antiAlias,
-            alignment: alignment,
-            placeholderBuilder:
-                placeholder != null ? (_) => placeholder! : null,
-            semanticsLabel: semanticLabel,
-          );
-        } else if (isSvgVector) {
+        if (isSvgVector) {
           image = SvgPicture(
             NetworkBytesLoader(Uri.parse(sourceString)),
             width: width,
@@ -162,6 +149,19 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
             alignment: alignment,
             colorFilter: colorFilter,
             clipBehavior: Clip.antiAlias,
+            placeholderBuilder:
+                placeholder != null ? (_) => placeholder! : null,
+            semanticsLabel: semanticLabel,
+          );
+        } else if (isSvg) {
+          image = SvgPicture.network(
+            sourceString,
+            width: width,
+            height: height,
+            fit: fit,
+            colorFilter: colorFilter,
+            clipBehavior: Clip.antiAlias,
+            alignment: alignment,
             placeholderBuilder:
                 placeholder != null ? (_) => placeholder! : null,
             semanticsLabel: semanticLabel,
