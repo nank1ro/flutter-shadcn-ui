@@ -1,3 +1,7 @@
+## 0.6.1
+
+- Remove `ShadButtonSize.icon`. Now by default, when the `icon` is provided and the `text` is not, the button will use the `icon` size.
+
 ## 0.6.0
 
 - Add `ShadTabs` component

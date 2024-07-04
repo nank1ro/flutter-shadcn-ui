@@ -23,7 +23,6 @@ enum ShadButtonSize {
   regular,
   sm,
   lg,
-  icon,
 }
 
 class ShadButton extends StatefulWidget {
@@ -471,14 +470,15 @@ class _ShadButtonState extends State<ShadButton> {
     ShadThemeData theme,
     ShadButtonSize size,
   ) {
+    if (widget.icon != null && widget.text == null) {
+      return buttonTheme(theme).sizesTheme?.icon ??
+          theme.buttonSizesTheme.icon!;
+    }
     switch (size) {
       case ShadButtonSize.sm:
         return buttonTheme(theme).sizesTheme?.sm ?? theme.buttonSizesTheme.sm!;
       case ShadButtonSize.lg:
         return buttonTheme(theme).sizesTheme?.lg ?? theme.buttonSizesTheme.lg!;
-      case ShadButtonSize.icon:
-        return buttonTheme(theme).sizesTheme?.icon ??
-            theme.buttonSizesTheme.icon!;
       case ShadButtonSize.regular:
         return buttonTheme(theme).sizesTheme?.regular ??
             theme.buttonSizesTheme.regular!;

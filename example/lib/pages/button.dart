@@ -36,95 +36,92 @@ class _ButtonPageState extends State<ButtonPage> {
           ),
         ],
         children: [
-          if (size != ShadButtonSize.icon) ...[
-            ShadButton(
-              size: size,
-              enabled: enabled,
-              text: const Text('Primary'),
-              onPressed: () => print('Primary'),
+          ShadButton(
+            size: size,
+            enabled: enabled,
+            text: const Text('Primary'),
+            onPressed: () => print('Primary'),
+          ),
+          ShadButton.secondary(
+            size: size,
+            enabled: enabled,
+            text: const Text('Secondary'),
+            onPressed: () => print('Secondary'),
+          ),
+          ShadButton.destructive(
+            size: size,
+            enabled: enabled,
+            text: const Text('Destructive'),
+          ),
+          ShadButton.outline(
+            size: size,
+            enabled: enabled,
+            text: const Text('Outline'),
+          ),
+          ShadButton.ghost(
+            size: size,
+            enabled: enabled,
+            text: const Text('Ghost'),
+          ),
+          ShadButton.link(
+            size: size,
+            enabled: enabled,
+            text: const Text('Link'),
+          ),
+          ShadButton(
+            size: size,
+            enabled: enabled,
+            text: const Text('Login with Email'),
+            icon: const Padding(
+              padding: EdgeInsets.only(right: 8),
+              child: Icon(
+                Icons.mail_outlined,
+                size: 16,
+              ),
             ),
-            ShadButton.secondary(
-              size: size,
-              enabled: enabled,
-              text: const Text('Secondary'),
-              onPressed: () => print('Secondary'),
-            ),
-            ShadButton.destructive(
-              size: size,
-              enabled: enabled,
-              text: const Text('Destructive'),
-            ),
-            ShadButton.outline(
-              size: size,
-              enabled: enabled,
-              text: const Text('Outline'),
-            ),
-            ShadButton.ghost(
-              size: size,
-              enabled: enabled,
-              text: const Text('Ghost'),
-            ),
-            ShadButton.link(
-              size: size,
-              enabled: enabled,
-              text: const Text('Link'),
-            ),
-            ShadButton(
-              size: size,
-              enabled: enabled,
-              text: const Text('Login with Email'),
-              icon: const Padding(
-                padding: EdgeInsets.only(right: 8),
-                child: Icon(
-                  Icons.mail_outlined,
-                  size: 16,
+          ),
+          ShadButton(
+            size: size,
+            enabled: enabled,
+            text: const Text('Please wait'),
+            icon: const Padding(
+              padding: EdgeInsets.only(right: 8),
+              child: SizedBox.square(
+                dimension: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
                 ),
               ),
             ),
-            ShadButton(
+          ),
+          ShadButton(
+            size: size,
+            enabled: enabled,
+            gradient: const LinearGradient(colors: [
+              Colors.cyan,
+              Colors.indigo,
+            ]),
+            shadows: [
+              BoxShadow(
+                color: Colors.blue.withOpacity(.4),
+                spreadRadius: 4,
+                blurRadius: 10,
+                offset: const Offset(0, 2),
+              ),
+            ],
+            text: const Text('Gradient with Shadow'),
+          ),
+          ComponentView(
+            label: 'Icon',
+            child: ShadButton.outline(
               size: size,
               enabled: enabled,
-              text: const Text('Please wait'),
-              icon: const Padding(
-                padding: EdgeInsets.only(right: 8),
-                child: SizedBox.square(
-                  dimension: 16,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
-                ),
+              icon: const Icon(
+                Icons.chevron_right,
+                size: 16,
               ),
             ),
-            ShadButton(
-              size: size,
-              enabled: enabled,
-              gradient: const LinearGradient(colors: [
-                Colors.cyan,
-                Colors.indigo,
-              ]),
-              shadows: [
-                BoxShadow(
-                  color: Colors.blue.withOpacity(.4),
-                  spreadRadius: 4,
-                  blurRadius: 10,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-              text: const Text('Gradient with Shadow'),
-            ),
-          ],
-          if (size == ShadButtonSize.icon)
-            ComponentView(
-              label: 'Icon',
-              child: ShadButton.outline(
-                size: size,
-                enabled: enabled,
-                icon: const Icon(
-                  Icons.chevron_right,
-                  size: 16,
-                ),
-              ),
-            ),
+          ),
         ],
       ),
     );
