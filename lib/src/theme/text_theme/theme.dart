@@ -61,6 +61,7 @@ class GoogleFontTextStyle extends TextStyle {
   GoogleFontTextStyle(
     TextStyle textStyle, {
     required this.builder,
+    this.overrideFamilyWithBuilder = false,
   }) : super(
           inherit: textStyle.inherit,
           color: textStyle.color,
@@ -84,18 +85,24 @@ class GoogleFontTextStyle extends TextStyle {
           decorationStyle: textStyle.decorationStyle,
           decorationThickness: textStyle.decorationThickness,
           debugLabel: textStyle.debugLabel,
-          fontFamily: textStyle.fontFamily ??
-              ((textStyle.fontWeight != null || textStyle.fontStyle != null)
-                  ? builder(
-                      fontWeight: textStyle.fontWeight,
-                      fontStyle: textStyle.fontStyle,
-                    ).fontFamily
-                  : null),
+          fontFamily: overrideFamilyWithBuilder
+              ? builder(
+                  fontWeight: textStyle.fontWeight,
+                  fontStyle: textStyle.fontStyle,
+                ).fontFamily
+              : textStyle.fontFamily ??
+                  ((textStyle.fontWeight != null || textStyle.fontStyle != null)
+                      ? builder(
+                          fontWeight: textStyle.fontWeight,
+                          fontStyle: textStyle.fontStyle,
+                        ).fontFamily
+                      : null),
           fontFamilyFallback: textStyle.fontFamilyFallback,
           overflow: textStyle.overflow,
         );
 
   final GoogleFontBuilder builder;
+  final bool overrideFamilyWithBuilder;
 
   @override
   TextStyle copyWith({
@@ -126,6 +133,16 @@ class GoogleFontTextStyle extends TextStyle {
     String? package,
     TextOverflow? overflow,
   }) {
+    var family = fontFamily ??
+        ((fontWeight != null || fontStyle != null)
+            ? builder(fontWeight: fontWeight, fontStyle: fontStyle).fontFamily
+            : null);
+    if (overrideFamilyWithBuilder) {
+      family = builder(
+        fontWeight: fontWeight,
+        fontStyle: fontStyle,
+      ).fontFamily;
+    }
     return super.copyWith(
       inherit: inherit,
       color: color,
@@ -149,10 +166,7 @@ class GoogleFontTextStyle extends TextStyle {
       decorationStyle: decorationStyle,
       decorationThickness: decorationThickness,
       debugLabel: debugLabel,
-      fontFamily: fontFamily ??
-          ((fontWeight != null || fontStyle != null)
-              ? builder(fontWeight: fontWeight, fontStyle: fontStyle).fontFamily
-              : null),
+      fontFamily: family,
       fontFamilyFallback: fontFamilyFallback,
       package: package,
       overflow: overflow,
@@ -178,11 +192,13 @@ class ShadTextTheme {
     TextStyle? muted,
     String? family,
     String? package,
+    GoogleFontBuilder? googleFontBuilder,
   }) {
     var effectiveFamily = family ?? kDefaultFontFamily;
     if (package != null && package != '') {
       effectiveFamily = 'packages/$package/$effectiveFamily';
     }
+
     return ShadTextTheme.custom(
       h1Large: h1Large ?? ShadTextDefaultTheme.h1Large(family: effectiveFamily),
       h1: h1 ?? ShadTextDefaultTheme.h1(family: effectiveFamily),
@@ -199,6 +215,7 @@ class ShadTextTheme {
       small: small ?? ShadTextDefaultTheme.small(family: effectiveFamily),
       muted: muted ?? ShadTextDefaultTheme.muted(family: effectiveFamily),
       family: effectiveFamily,
+      googleFontBuilder: googleFontBuilder,
     );
   }
 
@@ -218,6 +235,7 @@ class ShadTextTheme {
     required this.small,
     required this.muted,
     required this.family,
+    this.googleFontBuilder,
   });
 
   factory ShadTextTheme.fromGoogleFont(
@@ -283,6 +301,104 @@ class ShadTextTheme {
         builder: fontBuilder,
       ),
       family: p.fontFamily,
+      googleFontBuilder: fontBuilder,
+    );
+  }
+
+  TextTheme materialTextTheme({TextTheme? textTheme}) {
+    final effectiveTextTheme = textTheme ?? const TextTheme();
+    if (googleFontBuilder == null) return effectiveTextTheme;
+    return TextTheme(
+      displayLarge: GoogleFontTextStyle(
+        (effectiveTextTheme.displayLarge ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      displayMedium: GoogleFontTextStyle(
+        (effectiveTextTheme.displayMedium ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      displaySmall: GoogleFontTextStyle(
+        (effectiveTextTheme.displaySmall ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      headlineLarge: GoogleFontTextStyle(
+        (effectiveTextTheme.headlineLarge ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      headlineMedium: GoogleFontTextStyle(
+        (effectiveTextTheme.headlineMedium ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      headlineSmall: GoogleFontTextStyle(
+        (effectiveTextTheme.headlineSmall ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      titleLarge: GoogleFontTextStyle(
+        (effectiveTextTheme.titleLarge ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      titleMedium: GoogleFontTextStyle(
+        (effectiveTextTheme.titleMedium ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      titleSmall: GoogleFontTextStyle(
+        (effectiveTextTheme.titleSmall ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      bodyLarge: GoogleFontTextStyle(
+        (effectiveTextTheme.bodyLarge ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      bodyMedium: GoogleFontTextStyle(
+        (effectiveTextTheme.bodyMedium ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      bodySmall: GoogleFontTextStyle(
+        (effectiveTextTheme.bodySmall ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      labelLarge: GoogleFontTextStyle(
+        (effectiveTextTheme.labelLarge ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      labelMedium: GoogleFontTextStyle(
+        (effectiveTextTheme.labelMedium ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
+      labelSmall: GoogleFontTextStyle(
+        (effectiveTextTheme.labelSmall ?? const TextStyle())
+            .omitFamilyAndPackage,
+        builder: googleFontBuilder!,
+        overrideFamilyWithBuilder: true,
+      ),
     );
   }
 
@@ -305,6 +421,8 @@ class ShadTextTheme {
 
   final bool merge;
 
+  final GoogleFontBuilder? googleFontBuilder;
+
   ShadTextTheme copyWith({
     TextStyle? h1Large,
     TextStyle? h1,
@@ -321,6 +439,7 @@ class ShadTextTheme {
     TextStyle? muted,
     String? family,
     String? package,
+    GoogleFontBuilder? googleFontBuilder,
   }) {
     var effectiveFamily = family ?? kDefaultFontFamily;
     if (package != null && package != '') {
@@ -343,6 +462,7 @@ class ShadTextTheme {
       small: small ?? this.small,
       muted: muted ?? this.muted,
       family: effectiveFamily,
+      googleFontBuilder: googleFontBuilder ?? this.googleFontBuilder,
     );
   }
 
@@ -365,6 +485,7 @@ class ShadTextTheme {
       small: small.merge(other.small),
       muted: muted.merge(other.muted),
       family: other.family,
+      googleFontBuilder: other.googleFontBuilder,
     );
   }
 
@@ -527,6 +648,7 @@ class ShadTextTheme {
         decorationColor: decorationColor,
         decorationStyle: decorationStyle,
       ),
+      googleFontBuilder: googleFontBuilder,
     );
   }
 
@@ -552,7 +674,8 @@ class ShadTextTheme {
       large: TextStyle.lerp(a.large, b.large, t)!,
       small: TextStyle.lerp(a.small, b.small, t)!,
       muted: TextStyle.lerp(a.muted, b.muted, t)!,
-      family: b.family,
+      family: t < 0.5 ? a.family : b.family,
+      googleFontBuilder: t < 0.5 ? a.googleFontBuilder : b.googleFontBuilder,
     );
   }
 
@@ -578,7 +701,8 @@ class ShadTextTheme {
         other.large == large &&
         other.small == small &&
         other.muted == muted &&
-        other.family == family;
+        other.family == family &&
+        other.googleFontBuilder == googleFontBuilder;
   }
 
   @override
@@ -599,6 +723,7 @@ class ShadTextTheme {
       muted,
       family,
       merge,
+      googleFontBuilder,
     );
   }
 }
