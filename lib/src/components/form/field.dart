@@ -32,16 +32,16 @@ class ShadFormBuilderField<T> extends FormField<T> {
 
             return ShadDecorator(
               // borders are handled by the field itself
-              decoration: const ShadDecoration(
+              decoration: ShadDecoration(
                 border: ShadBorder.none,
                 secondaryBorder: ShadBorder.none,
                 errorBorder: ShadBorder.none,
                 focusedBorder: ShadBorder.none,
                 secondaryErrorBorder: ShadBorder.none,
                 secondaryFocusedBorder: ShadBorder.none,
+                hasError: hasError,
               ),
               label: label,
-              hasError: hasError,
               error: effectiveError,
               description: description,
               child: builder(field),

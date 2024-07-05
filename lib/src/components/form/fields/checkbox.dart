@@ -35,6 +35,8 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
           validator: validator == null ? null : (v) => validator(v ?? false),
           builder: (field) {
             final state = field as _ShadFormBuilderCheckboxState;
+            final effectiveDecoration = (decoration ?? const ShadDecoration())
+                .copyWith(hasError: state.hasError);
             return ShadCheckbox(
               value: state.value!,
               onChanged: state.didChange,
@@ -48,7 +50,7 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
               sublabel: inputSublabel,
               padding: padding,
               direction: direction,
-              decoration: decoration,
+              decoration: effectiveDecoration,
             );
           },
         );

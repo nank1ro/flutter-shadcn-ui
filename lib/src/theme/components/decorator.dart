@@ -112,6 +112,7 @@ class ShadDecoration {
     this.gradient,
     this.backgroundBlendMode,
     this.shape,
+    this.hasError,
   });
 
   static const ShadDecoration none = ShadDecoration(merge: false);
@@ -136,6 +137,7 @@ class ShadDecoration {
   final Gradient? gradient;
   final BlendMode? backgroundBlendMode;
   final BoxShape? shape;
+  final bool? hasError;
 
   /// Whether to fallback to the [border] if no [focusedBorder] or [errorBorder]
   /// is provided, defaults to true.
@@ -180,6 +182,7 @@ class ShadDecoration {
       backgroundBlendMode:
           t < 0.5 ? a?.backgroundBlendMode : b?.backgroundBlendMode,
       shape: t < 0.5 ? a?.shape : b?.shape,
+      hasError: t < 0.5 ? a?.hasError : b?.hasError,
     );
   }
 
@@ -214,6 +217,7 @@ class ShadDecoration {
       shadows: other.shadows ?? shadows,
       gradient: other.gradient ?? gradient,
       image: other.image ?? image,
+      hasError: other.hasError ?? hasError,
     );
   }
 
@@ -238,6 +242,7 @@ class ShadDecoration {
     List<BoxShadow>? shadows,
     Gradient? gradient,
     DecorationImage? image,
+    bool? hasError,
   }) {
     return ShadDecoration(
       border: border ?? this.border,
@@ -261,6 +266,7 @@ class ShadDecoration {
       shadows: shadows ?? this.shadows,
       gradient: gradient ?? this.gradient,
       image: image ?? this.image,
+      hasError: hasError ?? this.hasError,
     );
   }
 
@@ -288,7 +294,8 @@ class ShadDecoration {
         other.backgroundBlendMode == backgroundBlendMode &&
         other.shadows == shadows &&
         other.gradient == gradient &&
-        other.image == image;
+        other.image == image &&
+        other.hasError == hasError;
   }
 
   @override
@@ -312,7 +319,8 @@ class ShadDecoration {
       backgroundBlendMode.hashCode ^
       shadows.hashCode ^
       gradient.hashCode ^
-      image.hashCode;
+      image.hashCode ^
+      hasError.hashCode;
 }
 
 class ShadDecorator extends StatelessWidget {
@@ -320,7 +328,6 @@ class ShadDecorator extends StatelessWidget {
     super.key,
     this.child,
     this.decoration,
-    this.hasError = false,
     this.focused = false,
     this.label,
     this.error,
@@ -336,11 +343,10 @@ class ShadDecorator extends StatelessWidget {
   /// Whether the child has focus, defaults to false.
   final bool focused;
 
-  final bool hasError;
-
   final Widget? label;
 
   final Widget? error;
+
   final Widget? description;
 
   @override
@@ -352,6 +358,8 @@ class ShadDecorator extends StatelessWidget {
     final effectiveFallbackToBorder =
         effectiveDecoration.fallbackToBorder ?? true;
 
+    final hasError = effectiveDecoration.hasError ?? false;
+
     var border = switch (hasError) {
       true => effectiveDecoration.errorBorder,
       false => switch (focused) {
@@ -361,7 +369,9 @@ class ShadDecorator extends StatelessWidget {
     };
 
     if (effectiveFallbackToBorder) {
-      if (hasError && effectiveDecoration.errorBorder == null) {
+      if (hasError && effectiveDecoration.errorBorder != null) {
+        // do not override border
+      } else if (hasError && effectiveDecoration.errorBorder == null) {
         border = effectiveDecoration.border;
       } else if (focused && effectiveDecoration.focusedBorder == null) {
         border = effectiveDecoration.border;
@@ -377,7 +387,9 @@ class ShadDecorator extends StatelessWidget {
     };
 
     if (effectiveFallbackToBorder) {
-      if (hasError && effectiveDecoration.secondaryErrorBorder == null) {
+      if (hasError && effectiveDecoration.secondaryErrorBorder != null) {
+        // do not override border
+      } else if (hasError && effectiveDecoration.secondaryErrorBorder == null) {
         secondaryBorder = effectiveDecoration.secondaryBorder;
       } else if (focused &&
           effectiveDecoration.secondaryFocusedBorder == null) {

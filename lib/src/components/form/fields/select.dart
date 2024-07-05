@@ -38,6 +38,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderSelectState;
+            final effectiveDecoration = (decoration ?? const ShadDecoration())
+                .copyWith(hasError: state.hasError);
+
             return ShadSelect<T>(
               options: options,
               selectedOptionBuilder: selectedOptionBuilder,
@@ -50,7 +53,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               anchor: anchor,
               minWidth: minWidth,
               maxHeight: maxHeight,
-              decoration: decoration,
+              decoration: effectiveDecoration,
               trailing: trailing,
               padding: padding,
               optionsPadding: optionsPadding,

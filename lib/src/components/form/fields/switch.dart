@@ -44,12 +44,15 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
                 },
           builder: (field) {
             final state = field as _ShadFormBuilderSwitchState;
+            final effectiveDecoration = (decoration ?? const ShadDecoration())
+                .copyWith(hasError: state.hasError);
+
             return ShadSwitch(
               value: state.value!,
               onChanged: state.didChange,
               enabled: state.enabled,
               focusNode: state.focusNode,
-              decoration: decoration,
+              decoration: effectiveDecoration,
               duration: duration,
               label: inputLabel,
               sublabel: inputSublabel,

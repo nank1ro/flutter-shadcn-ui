@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadInputFormField extends ShadFormBuilderField<String> {
   ShadInputFormField({
@@ -94,13 +95,16 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
           onChanged: onChanged == null ? null : (v) => onChanged(v ?? ''),
           builder: (field) {
             final state = field as _ShadFormBuilderInputState;
+            final theme = ShadTheme.of(state.context);
+            final effectiveDecoration = (decoration ?? const ShadDecoration())
+                .copyWith(hasError: state.hasError);
             return ShadInput(
               key: state.inputKey,
               controller: state.controller,
               restorationId: restorationId,
               enabled: state.enabled,
               focusNode: state.focusNode,
-              decoration: decoration,
+              decoration: effectiveDecoration,
               style: style,
               cursorColor: cursorColor,
               selectionColor: selectionColor,
