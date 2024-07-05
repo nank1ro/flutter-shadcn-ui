@@ -2,6 +2,7 @@
 
 - Fix form field error border decoration not working
 - Add `ShadAutovalidateMode` to `ShadForm`, with the new `alwaysAfterFirstValidation` mode (the new default)
+- Fix: apply Google Font to Material text theme
 
 ## 0.6.1
 

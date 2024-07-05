@@ -604,7 +604,7 @@ class _ShadAppState extends State<ShadApp> {
 
   ThemeData materialTheme(BuildContext context) {
     final themeData = theme(context);
-    final mTheme = ThemeData(
+    var mTheme = ThemeData(
       fontFamily: themeData.textTheme.family,
       extensions: themeData.extensions,
       colorScheme: ColorScheme(
@@ -630,6 +630,11 @@ class _ShadAppState extends State<ShadApp> {
         thickness: 1,
       ),
     );
+    mTheme = mTheme.copyWith(
+      textTheme:
+          themeData.textTheme.materialTextTheme(textTheme: mTheme.textTheme),
+    );
+
     if (widget.materialThemeBuilder == null) {
       return mTheme;
     }
