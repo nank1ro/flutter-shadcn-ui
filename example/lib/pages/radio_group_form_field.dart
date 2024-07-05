@@ -33,7 +33,7 @@ class RadioGroupFormFieldPage extends StatefulWidget {
 
 class _RadioGroupFormFieldPageState extends State<RadioGroupFormFieldPage> {
   bool enabled = true;
-  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  var autovalidateMode = ShadAutovalidateMode.alwaysAfterFirstValidation;
   NotifyAbout? initialValue;
   Map<Object, dynamic> formValue = {};
   final formKey = GlobalKey<ShadFormState>();
@@ -57,7 +57,7 @@ class _RadioGroupFormFieldPageState extends State<RadioGroupFormFieldPage> {
           MyEnumProperty(
             label: 'autovalidateMode',
             value: autovalidateMode,
-            values: AutovalidateMode.values,
+            values: ShadAutovalidateMode.values,
             onChanged: (value) => setState(() => autovalidateMode = value),
           ),
           MyEnumProperty<NotifyAbout>(

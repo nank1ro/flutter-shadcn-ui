@@ -18,7 +18,7 @@ class InputFormFieldPage extends StatefulWidget {
 
 class _InputFormFieldPageState extends State<InputFormFieldPage> {
   bool enabled = true;
-  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  var autovalidateMode = ShadAutovalidateMode.alwaysAfterFirstValidation;
   String? initialValue;
   Map<Object, dynamic> formValue = {};
   final formKey = GlobalKey<ShadFormState>();
@@ -42,7 +42,7 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
           MyEnumProperty(
             label: 'autovalidateMode',
             value: autovalidateMode,
-            values: AutovalidateMode.values,
+            values: ShadAutovalidateMode.values,
             onChanged: (value) => setState(() => autovalidateMode = value),
           ),
           MyStringProperty(

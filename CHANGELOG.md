@@ -1,6 +1,7 @@
 ## 0.6.2
 
 - Fix form field error border decoration not working
+- Add `ShadAutovalidateMode` to `ShadForm`, with the new `alwaysAfterFirstValidation` mode (the new default)
 
 ## 0.6.1
 

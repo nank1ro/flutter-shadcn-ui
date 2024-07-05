@@ -17,7 +17,7 @@ class CheckboxFormFieldPage extends StatefulWidget {
 
 class _CheckboxFormFieldPageState extends State<CheckboxFormFieldPage> {
   bool enabled = true;
-  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  var autovalidateMode = ShadAutovalidateMode.alwaysAfterFirstValidation;
   bool initialValue = false;
   Map<Object, dynamic> formValue = {};
   final formKey = GlobalKey<ShadFormState>();
@@ -41,7 +41,7 @@ class _CheckboxFormFieldPageState extends State<CheckboxFormFieldPage> {
           MyEnumProperty(
             label: 'autovalidateMode',
             value: autovalidateMode,
-            values: AutovalidateMode.values,
+            values: ShadAutovalidateMode.values,
             onChanged: (value) => setState(() => autovalidateMode = value),
           ),
           MyBoolProperty(

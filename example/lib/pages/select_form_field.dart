@@ -17,7 +17,7 @@ class SelectFormFieldPage extends StatefulWidget {
 
 class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
   bool enabled = true;
-  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  var autovalidateMode = ShadAutovalidateMode.alwaysAfterFirstValidation;
   final verifiedEmails = [
     'm@example.com',
     'm@google.com',
@@ -46,7 +46,7 @@ class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
           MyEnumProperty(
             label: 'autovalidateMode',
             value: autovalidateMode,
-            values: AutovalidateMode.values,
+            values: ShadAutovalidateMode.values,
             onChanged: (value) => setState(() => autovalidateMode = value),
           ),
           ShadSelect(

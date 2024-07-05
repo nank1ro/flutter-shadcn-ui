@@ -17,7 +17,7 @@ class SwitchFormFieldPage extends StatefulWidget {
 
 class _SwitchFormFieldPageState extends State<SwitchFormFieldPage> {
   bool enabled = true;
-  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  var autovalidateMode = ShadAutovalidateMode.alwaysAfterFirstValidation;
   bool initialValue = false;
   Map<Object, dynamic> formValue = {};
   final formKey = GlobalKey<ShadFormState>();
@@ -41,7 +41,7 @@ class _SwitchFormFieldPageState extends State<SwitchFormFieldPage> {
           MyEnumProperty(
             label: 'autovalidateMode',
             value: autovalidateMode,
-            values: AutovalidateMode.values,
+            values: ShadAutovalidateMode.values,
             onChanged: (value) => setState(() => autovalidateMode = value),
           ),
           MyBoolProperty(

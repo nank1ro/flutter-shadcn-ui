@@ -1,5 +1,24 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
+
+/// Used to configure the auto validation of [FormField and [ShadForm]
+/// widgets.
+enum ShadAutovalidateMode {
+  /// No auto validation will occur.
+  disabled,
+
+  /// Used to auto-validate [ShadForm] and [FormField] even without user
+  /// interaction.
+  always,
+
+  /// Used to auto-validate [ShadForm] and [FormField] only after each user
+  /// interaction.
+  onUserInteraction,
+
+  /// Used to auto-validate [ShadForm] and [FormField] every time after the
+  /// first validation.
+  alwaysAfterFirstValidation,
+}
 
 typedef ShadFormFields = Map<Object,
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic>>;
@@ -11,7 +30,7 @@ class ShadForm extends StatefulWidget {
     this.onChanged,
     this.canPop,
     this.onPopInvoked,
-    this.autovalidateMode,
+    this.autovalidateMode = ShadAutovalidateMode.alwaysAfterFirstValidation,
     this.initialValue = const {},
     this.enabled = true,
     this.skipDisabled = false,
@@ -20,7 +39,7 @@ class ShadForm extends StatefulWidget {
   final VoidCallback? onChanged;
   final bool? canPop;
   final void Function(bool)? onPopInvoked;
-  final AutovalidateMode? autovalidateMode;
+  final ShadAutovalidateMode autovalidateMode;
   final Widget child;
   final Map<Object, dynamic> initialValue;
   final bool enabled;
@@ -48,6 +67,7 @@ class ShadFormState extends State<ShadForm> {
   final ShadFormFields _fields = {};
   final Map<Object, dynamic> _value = {};
   final Map<Object, Function> _transformers = {};
+  late final ValueNotifier<AutovalidateMode> autovalidateMode;
 
   ShadFormFields get fields => _fields;
 
@@ -62,6 +82,26 @@ class ShadFormState extends State<ShadForm> {
               MapEntry(key, _transformers[key]?.call(value) ?? value),
         ),
       );
+
+  @override
+  void initState() {
+    super.initState();
+    final mode = switch (widget.autovalidateMode) {
+      ShadAutovalidateMode.always => AutovalidateMode.always,
+      ShadAutovalidateMode.onUserInteraction =>
+        AutovalidateMode.onUserInteraction,
+      ShadAutovalidateMode.alwaysAfterFirstValidation ||
+      ShadAutovalidateMode.disabled =>
+        AutovalidateMode.disabled,
+    };
+    autovalidateMode = ValueNotifier(mode);
+  }
+
+  @override
+  void dispose() {
+    autovalidateMode.dispose();
+    super.dispose();
+  }
 
   void registerField(
     Object id,
@@ -98,6 +138,10 @@ class ShadFormState extends State<ShadForm> {
     bool focusOnInvalid = true,
     bool autoScrollWhenFocusOnInvalid = false,
   }) {
+    if (widget.autovalidateMode ==
+        ShadAutovalidateMode.alwaysAfterFirstValidation) {
+      autovalidateMode.value = AutovalidateMode.always;
+    }
     final hasError = !_formKey.currentState!.validate();
     if (hasError) {
       final wrongFields =
@@ -135,11 +179,17 @@ class ShadFormState extends State<ShadForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      autovalidateMode: widget.autovalidateMode,
-      onPopInvoked: widget.onPopInvoked,
-      canPop: widget.canPop,
+    return ValueListenableBuilder(
+      valueListenable: autovalidateMode,
+      builder: (context, mode, child) {
+        return Form(
+          key: _formKey,
+          autovalidateMode: mode,
+          onPopInvoked: widget.onPopInvoked,
+          canPop: widget.canPop,
+          child: child!,
+        );
+      },
       child: ShadFormScope(
         formState: this,
         child: FocusTraversalGroup(
