@@ -1,3 +1,7 @@
+## 0.6.2
+
+- Fix form field error border decoration not working
+
 ## 0.6.1
 
 - Remove `ShadButtonSize.icon`. Now by default, when the `icon` is provided and the `text` is not, the button will use the `icon` size.
