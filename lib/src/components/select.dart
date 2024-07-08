@@ -421,7 +421,14 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Flexible(child: effectiveText),
+                          Flexible(
+                            child: DefaultTextStyle(
+                              style: theme.textTheme.muted.copyWith(
+                                color: theme.colorScheme.foreground,
+                              ),
+                              child: effectiveText,
+                            ),
+                          ),
                           effectiveTrailing,
                         ],
                       ),

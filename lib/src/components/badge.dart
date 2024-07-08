@@ -140,7 +140,7 @@ class _ShadBadgeState extends State<ShadBadge> {
             mainAxisSize: MainAxisSize.min,
             children: [
               DefaultTextStyle(
-                style: TextStyle(
+                style: theme.textTheme.small.copyWith(
                   color: foreground(theme),
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
