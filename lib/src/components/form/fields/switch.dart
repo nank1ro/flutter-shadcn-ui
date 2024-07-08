@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadSwitchFormField extends ShadFormBuilderField<bool> {
   ShadSwitchFormField({
@@ -42,17 +43,19 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
               : (v) {
                   return validator(v ?? false);
                 },
+          decorationBuilder: (context) =>
+              (ShadTheme.of(context).switchTheme.decoration ??
+                      const ShadDecoration())
+                  .mergeWith(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSwitchState;
-            final effectiveDecoration = (decoration ?? const ShadDecoration())
-                .copyWith(hasError: state.hasError);
 
             return ShadSwitch(
               value: state.value!,
               onChanged: state.didChange,
               enabled: state.enabled,
               focusNode: state.focusNode,
-              decoration: effectiveDecoration,
+              decoration: state.decoration,
               duration: duration,
               label: inputLabel,
               sublabel: inputSublabel,

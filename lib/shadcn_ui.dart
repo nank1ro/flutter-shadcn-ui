@@ -83,6 +83,7 @@ export 'src/theme/text_theme/text_styles_default.dart';
 export 'src/theme/text_theme/theme.dart';
 export 'src/theme/components/resizable.dart';
 export 'src/theme/components/tabs.dart';
+export 'src/theme/components/input_decorator.dart';
 
 // Utils
 export 'src/utils/position.dart';

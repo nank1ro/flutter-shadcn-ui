@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/form.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/input_decorator.dart';
 
 typedef ValueTransformer<T> = dynamic Function(T value);
 
@@ -23,27 +24,21 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.onChanged,
     this.valueTransformer,
     this.onReset,
+    this.decorationBuilder,
   }) : super(
           builder: (field) {
+            final state =
+                field as ShadFormBuilderFieldState<ShadFormBuilderField<T>, T>;
             final hasError = field.hasError;
 
             final effectiveError =
                 hasError ? error ?? Text(field.errorText!) : null;
 
-            return ShadDecorator(
-              // borders are handled by the field itself
-              decoration: ShadDecoration(
-                border: ShadBorder.none,
-                secondaryBorder: ShadBorder.none,
-                errorBorder: ShadBorder.none,
-                focusedBorder: ShadBorder.none,
-                secondaryErrorBorder: ShadBorder.none,
-                secondaryFocusedBorder: ShadBorder.none,
-                hasError: hasError,
-              ),
+            return ShadInputDecorator(
               label: label,
               error: effectiveError,
               description: description,
+              decoration: state.decoration,
               child: builder(field),
             );
           },
@@ -61,6 +56,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
   final ValueChanged<T?>? onChanged;
   final ValueTransformer<T?>? valueTransformer;
   final VoidCallback? onReset;
+  final ShadDecoration? Function(BuildContext context)? decorationBuilder;
 
   @override
   ShadFormBuilderFieldState<ShadFormBuilderField<T>, T> createState() =>
@@ -73,6 +69,10 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   ShadFormState? _parentForm;
 
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
+
+  ShadDecoration get decoration =>
+      (widget.decorationBuilder?.call(context) ?? const ShadDecoration())
+          .copyWith(hasError: hasError);
 
   @override
   F get widget => super.widget as F;

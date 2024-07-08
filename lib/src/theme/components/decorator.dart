@@ -113,6 +113,7 @@ class ShadDecoration {
     this.backgroundBlendMode,
     this.shape,
     this.hasError,
+    this.fallbackToLabelStyle,
   });
 
   static const ShadDecoration none = ShadDecoration(merge: false);
@@ -144,6 +145,10 @@ class ShadDecoration {
   ///
   /// This also affects the [secondaryBorder] with the same conditions.
   final bool? fallbackToBorder;
+
+  /// Whether to fallback to the [labelStyle] if no [errorLabelStyle] is
+  /// provided, defaults to true.
+  final bool? fallbackToLabelStyle;
 
   static ShadDecoration? lerp(
     ShadDecoration? a,
@@ -183,6 +188,8 @@ class ShadDecoration {
           t < 0.5 ? a?.backgroundBlendMode : b?.backgroundBlendMode,
       shape: t < 0.5 ? a?.shape : b?.shape,
       hasError: t < 0.5 ? a?.hasError : b?.hasError,
+      fallbackToLabelStyle:
+          t < 0.5 ? a?.fallbackToLabelStyle : b?.fallbackToLabelStyle,
     );
   }
 
@@ -218,6 +225,7 @@ class ShadDecoration {
       gradient: other.gradient ?? gradient,
       image: other.image ?? image,
       hasError: other.hasError ?? hasError,
+      fallbackToLabelStyle: other.fallbackToLabelStyle ?? fallbackToLabelStyle,
     );
   }
 
@@ -243,6 +251,7 @@ class ShadDecoration {
     Gradient? gradient,
     DecorationImage? image,
     bool? hasError,
+    bool? fallbackToLabelStyle,
   }) {
     return ShadDecoration(
       border: border ?? this.border,
@@ -267,6 +276,7 @@ class ShadDecoration {
       gradient: gradient ?? this.gradient,
       image: image ?? this.image,
       hasError: hasError ?? this.hasError,
+      fallbackToLabelStyle: fallbackToLabelStyle ?? this.fallbackToLabelStyle,
     );
   }
 
@@ -295,7 +305,8 @@ class ShadDecoration {
         other.shadows == shadows &&
         other.gradient == gradient &&
         other.image == image &&
-        other.hasError == hasError;
+        other.hasError == hasError &&
+        other.fallbackToLabelStyle == fallbackToLabelStyle;
   }
 
   @override
@@ -320,7 +331,8 @@ class ShadDecoration {
       shadows.hashCode ^
       gradient.hashCode ^
       image.hashCode ^
-      hasError.hashCode;
+      hasError.hashCode ^
+      fallbackToLabelStyle.hashCode;
 }
 
 class ShadDecorator extends StatelessWidget {
@@ -329,9 +341,6 @@ class ShadDecorator extends StatelessWidget {
     this.child,
     this.decoration,
     this.focused = false,
-    this.label,
-    this.error,
-    this.description,
   });
 
   /// The child to decorate.
@@ -342,12 +351,6 @@ class ShadDecorator extends StatelessWidget {
 
   /// Whether the child has focus, defaults to false.
   final bool focused;
-
-  final Widget? label;
-
-  final Widget? error;
-
-  final Widget? description;
 
   @override
   Widget build(BuildContext context) {
@@ -360,62 +363,33 @@ class ShadDecorator extends StatelessWidget {
 
     final hasError = effectiveDecoration.hasError ?? false;
 
-    var border = switch (hasError) {
-      true => effectiveDecoration.errorBorder,
-      false => switch (focused) {
-          true => effectiveDecoration.focusedBorder,
-          false => effectiveDecoration.border,
-        }
+    final fallbackBorder = switch (focused) {
+      true => effectiveDecoration.focusedBorder,
+      false => effectiveDecoration.border,
     };
 
-    if (effectiveFallbackToBorder) {
-      if (hasError && effectiveDecoration.errorBorder != null) {
-        // do not override border
-      } else if (hasError && effectiveDecoration.errorBorder == null) {
-        border = effectiveDecoration.border;
-      } else if (focused && effectiveDecoration.focusedBorder == null) {
-        border = effectiveDecoration.border;
-      }
+    var border = switch (hasError) {
+      true => effectiveDecoration.errorBorder,
+      false => fallbackBorder,
+    };
+
+    if (effectiveFallbackToBorder && border == null) {
+      border = fallbackBorder ?? effectiveDecoration.border;
     }
+
+    final fallbackSecondaryBorder = switch (focused) {
+      true => effectiveDecoration.secondaryFocusedBorder,
+      false => effectiveDecoration.secondaryBorder,
+    };
 
     var secondaryBorder = switch (hasError) {
       true => effectiveDecoration.secondaryErrorBorder,
-      false => switch (focused) {
-          true => effectiveDecoration.secondaryFocusedBorder,
-          false => effectiveDecoration.secondaryBorder,
-        }
+      false => fallbackSecondaryBorder,
     };
 
-    if (effectiveFallbackToBorder) {
-      if (hasError && effectiveDecoration.secondaryErrorBorder != null) {
-        // do not override border
-      } else if (hasError && effectiveDecoration.secondaryErrorBorder == null) {
-        secondaryBorder = effectiveDecoration.secondaryBorder;
-      } else if (focused &&
-          effectiveDecoration.secondaryFocusedBorder == null) {
-        secondaryBorder = effectiveDecoration.secondaryBorder;
-      }
-    }
-
-    final TextStyle effectiveLabelStyle;
-    final effectiveErrorStyle = effectiveDecoration.errorStyle ??
-        theme.textTheme.muted.copyWith(
-          fontWeight: FontWeight.w500,
-          color: theme.colorScheme.destructive,
-        );
-
-    if (!hasError) {
-      effectiveLabelStyle = effectiveDecoration.labelStyle ??
-          theme.textTheme.muted.copyWith(
-            fontWeight: FontWeight.w500,
-            color: theme.colorScheme.foreground,
-          );
-    } else {
-      effectiveLabelStyle = effectiveDecoration.errorLabelStyle ??
-          theme.textTheme.muted.copyWith(
-            fontWeight: FontWeight.w500,
-            color: theme.colorScheme.destructive,
-          );
+    if (effectiveFallbackToBorder && secondaryBorder == null) {
+      secondaryBorder =
+          fallbackSecondaryBorder ?? effectiveDecoration.secondaryBorder;
     }
 
     Widget decorated = Container(
@@ -437,41 +411,7 @@ class ShadDecorator extends StatelessWidget {
         image: effectiveDecoration.image,
       ),
       padding: border?.padding,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (label != null)
-            Padding(
-              padding: effectiveDecoration.labelPadding ??
-                  const EdgeInsets.only(bottom: 8),
-              child: DefaultTextStyle(
-                style: effectiveLabelStyle,
-                child: label!,
-              ),
-            ),
-          if (child != null) child!,
-          if (description != null)
-            Padding(
-              padding: effectiveDecoration.descriptionPadding ??
-                  const EdgeInsets.only(top: 8),
-              child: DefaultTextStyle(
-                style: effectiveDecoration.descriptionStyle ??
-                    theme.textTheme.muted,
-                child: description!,
-              ),
-            ),
-          if (error != null)
-            Padding(
-              padding: effectiveDecoration.errorPadding ??
-                  const EdgeInsets.only(top: 8),
-              child: DefaultTextStyle(
-                style: effectiveErrorStyle,
-                child: error!,
-              ),
-            ),
-        ],
-      ),
+      child: child,
     );
 
     if (secondaryBorder != null && !theme.disableSecondaryBorder) {

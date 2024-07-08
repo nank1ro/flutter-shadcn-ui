@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/components/checkbox.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
   ShadCheckboxFormField({
@@ -33,10 +34,12 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
           initialValue: initialValue,
           onChanged: onChanged == null ? null : (v) => onChanged(v ?? false),
           validator: validator == null ? null : (v) => validator(v ?? false),
+          decorationBuilder: (context) =>
+              (ShadTheme.of(context).checkboxTheme.decoration ??
+                      const ShadDecoration())
+                  .mergeWith(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderCheckboxState;
-            final effectiveDecoration = (decoration ?? const ShadDecoration())
-                .copyWith(hasError: state.hasError);
             return ShadCheckbox(
               value: state.value!,
               onChanged: state.didChange,
@@ -50,7 +53,7 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
               sublabel: inputSublabel,
               padding: padding,
               direction: direction,
-              decoration: effectiveDecoration,
+              decoration: state.decoration,
             );
           },
         );

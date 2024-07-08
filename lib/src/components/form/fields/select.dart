@@ -3,6 +3,7 @@ import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
   ShadSelectFormField({
@@ -36,10 +37,12 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     ScrollController? scrollController,
     ShadAnchorBase? anchor,
   }) : super(
+          decorationBuilder: (context) =>
+              (ShadTheme.of(context).selectTheme.decoration ??
+                      const ShadDecoration())
+                  .mergeWith(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectState;
-            final effectiveDecoration = (decoration ?? const ShadDecoration())
-                .copyWith(hasError: state.hasError);
 
             return ShadSelect<T>(
               options: options,
@@ -53,7 +56,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               anchor: anchor,
               minWidth: minWidth,
               maxHeight: maxHeight,
-              decoration: effectiveDecoration,
+              decoration: state.decoration,
               trailing: trailing,
               padding: padding,
               optionsPadding: optionsPadding,
