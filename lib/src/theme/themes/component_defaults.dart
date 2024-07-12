@@ -216,9 +216,17 @@ abstract class ShadDefaultComponentThemes {
   }) {
     return ShadPopoverTheme(
       effects: const [
-        FadeEffect(),
-        ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
-        MoveEffect(begin: Offset(0, 2), end: Offset.zero),
+        FadeEffect(duration: Duration(milliseconds: 100)),
+        ScaleEffect(
+          begin: Offset(.95, .95),
+          end: Offset(1, 1),
+          duration: Duration(milliseconds: 100),
+        ),
+        MoveEffect(
+          begin: Offset(0, 2),
+          end: Offset.zero,
+          duration: Duration(milliseconds: 100),
+        ),
       ],
       shadows: ShadShadows.md,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

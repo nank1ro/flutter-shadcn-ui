@@ -8,8 +8,6 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 class ShadPopoverTheme {
   const ShadPopoverTheme({
     this.merge = true,
-    this.waitDuration,
-    this.showDuration,
     this.effects,
     this.shadows,
     this.padding,
@@ -18,12 +16,6 @@ class ShadPopoverTheme {
   });
 
   final bool merge;
-
-  /// {@macro popover.waitDuration}
-  final Duration? waitDuration;
-
-  /// {@macro popover.showDuration}
-  final Duration? showDuration;
 
   /// {@macro popover.effects}
   final List<Effect<dynamic>>? effects;
@@ -48,8 +40,6 @@ class ShadPopoverTheme {
     if (identical(a, b)) return a;
     return ShadPopoverTheme(
       merge: b.merge,
-      waitDuration: b.waitDuration,
-      showDuration: b.showDuration,
       effects: b.effects,
       shadows: b.shadows,
       padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
@@ -70,8 +60,6 @@ class ShadPopoverTheme {
   }) {
     return ShadPopoverTheme(
       merge: merge ?? this.merge,
-      waitDuration: waitDuration ?? this.waitDuration,
-      showDuration: showDuration ?? this.showDuration,
       effects: effects ?? this.effects,
       shadows: shadows ?? this.shadows,
       padding: padding ?? this.padding,
@@ -84,8 +72,6 @@ class ShadPopoverTheme {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
-      waitDuration: other.waitDuration,
-      showDuration: other.showDuration,
       effects: other.effects,
       shadows: other.shadows,
       padding: other.padding,
@@ -100,8 +86,6 @@ class ShadPopoverTheme {
 
     return other is ShadPopoverTheme &&
         other.merge == merge &&
-        other.waitDuration == waitDuration &&
-        other.showDuration == showDuration &&
         listEquals(other.effects, effects) &&
         listEquals(other.shadows, shadows) &&
         other.padding == padding &&
@@ -112,8 +96,6 @@ class ShadPopoverTheme {
   @override
   int get hashCode {
     return merge.hashCode ^
-        waitDuration.hashCode ^
-        showDuration.hashCode ^
         effects.hashCode ^
         shadows.hashCode ^
         padding.hashCode ^

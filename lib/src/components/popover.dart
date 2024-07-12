@@ -38,8 +38,6 @@ class ShadPopover extends StatefulWidget {
     this.visible,
     this.closeOnTapOutside = true,
     this.focusNode,
-    this.waitDuration,
-    this.showDuration,
     this.anchor,
     this.effects,
     this.shadows,
@@ -68,22 +66,6 @@ class ShadPopover extends StatefulWidget {
   /// The focus node of the child, the [popover] will be shown when
   /// focused.
   final FocusNode? focusNode;
-
-  /// {@template popover.waitDuration}
-  /// The length of time that a pointer must hover over a tooltip's widget
-  /// before the tooltip will be shown.
-  ///
-  /// Defaults to null (tooltips are shown immediately upon hover).
-  /// {@endtemplate}
-  final Duration? waitDuration;
-
-  /// {@template popover.showDuration}
-  /// The length of time that the tooltip will be shown after a mouse pointer
-  /// exits the widget.
-  ///
-  /// Defaults to null.
-  /// {@endtemplate}
-  final Duration? showDuration;
 
   ///{@template popover.anchor}
   /// The position of the [popover] in the global coordinate system.

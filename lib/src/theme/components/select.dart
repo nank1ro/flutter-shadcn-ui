@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
@@ -21,6 +22,8 @@ class ShadSelectTheme {
     this.anchor,
     this.searchPadding,
     this.clearSearchOnClose,
+    this.effects,
+    this.shadows,
   });
 
   final bool merge;
@@ -34,6 +37,12 @@ class ShadSelectTheme {
   final ShadAnchorBase? anchor;
   final EdgeInsets? searchPadding;
   final bool? clearSearchOnClose;
+
+  /// {@macro popover.effects}
+  final List<Effect<dynamic>>? effects;
+
+  /// {@macro popover.shadows}
+  final List<BoxShadow>? shadows;
 
   static ShadSelectTheme lerp(
     ShadSelectTheme a,
@@ -53,6 +62,8 @@ class ShadSelectTheme {
       anchor: b.anchor,
       searchPadding: EdgeInsets.lerp(a.searchPadding, b.searchPadding, t),
       clearSearchOnClose: t < 0.5 ? a.clearSearchOnClose : b.clearSearchOnClose,
+      effects: t < 0.5 ? a.effects : b.effects,
+      shadows: t < 0.5 ? a.shadows : b.shadows,
     );
   }
 
@@ -68,6 +79,10 @@ class ShadSelectTheme {
     ShadAnchorBase? anchor,
     EdgeInsets? searchPadding,
     bool? clearSearchOnClose,
+    Duration? waitDuration,
+    Duration? showDuration,
+    List<Effect<dynamic>>? effects,
+    List<BoxShadow>? shadows,
   }) {
     return ShadSelectTheme(
       merge: merge ?? this.merge,
@@ -83,6 +98,8 @@ class ShadSelectTheme {
       anchor: anchor ?? this.anchor,
       searchPadding: searchPadding ?? this.searchPadding,
       clearSearchOnClose: clearSearchOnClose ?? this.clearSearchOnClose,
+      effects: effects ?? this.effects,
+      shadows: shadows ?? this.shadows,
     );
   }
 
@@ -100,6 +117,8 @@ class ShadSelectTheme {
       anchor: other.anchor,
       searchPadding: other.searchPadding,
       clearSearchOnClose: other.clearSearchOnClose,
+      effects: other.effects,
+      shadows: other.shadows,
     );
   }
 
@@ -118,7 +137,9 @@ class ShadSelectTheme {
         other.showScrollToBottomChevron == showScrollToBottomChevron &&
         other.anchor == anchor &&
         other.searchPadding == searchPadding &&
-        other.clearSearchOnClose == clearSearchOnClose;
+        other.clearSearchOnClose == clearSearchOnClose &&
+        other.effects == effects &&
+        other.shadows == shadows;
   }
 
   @override
@@ -133,6 +154,8 @@ class ShadSelectTheme {
         showScrollToBottomChevron.hashCode ^
         anchor.hashCode ^
         searchPadding.hashCode ^
-        clearSearchOnClose.hashCode;
+        clearSearchOnClose.hashCode ^
+        effects.hashCode ^
+        shadows.hashCode;
   }
 }

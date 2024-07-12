@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/components/image.dart';
@@ -43,6 +44,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.showScrollToTopChevron,
     this.scrollController,
     this.anchor,
+    this.effects,
+    this.shadows,
   })  : type = ShadSelectType.primary,
         onSearchChanged = null,
         searchDivider = null,
@@ -79,6 +82,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.showScrollToTopChevron,
     this.scrollController,
     this.anchor,
+    this.effects,
+    this.shadows,
   }) : type = ShadSelectType.search;
 
   /// The callback that is called when the value of the [ShadSelect] changes.
@@ -170,6 +175,12 @@ class ShadSelect<T> extends StatefulWidget {
   /// Whether to clear the search input when the popover is closed, defaults to
   /// `true`.
   final bool? clearSearchOnClose;
+
+  /// {@macro popover.effects}
+  final List<Effect<dynamic>>? effects;
+
+  /// {@macro popover.shadows}
+  final List<BoxShadow>? shadows;
 
   static ShadSelectState<T> of<T>(BuildContext context, {bool listen = true}) {
     return maybeOf<T>(context, listen: listen)!;
@@ -327,6 +338,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
     final effectiveAnchor =
         widget.anchor ?? theme.selectTheme.anchor ?? const ShadAnchor();
+
+    final effectiveEffects = widget.effects ?? theme.selectTheme.effects;
+
+    final effectiveShadows = widget.shadows ?? theme.selectTheme.shadows;
 
     final Widget effectiveText;
     if (selected is T) {
@@ -505,6 +520,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                 controller: controller,
                 anchor: effectiveAnchor,
                 closeOnTapOutside: widget.closeOnTapOutside,
+                effects: effectiveEffects,
+                shadows: effectiveShadows,
                 popover: (_) {
                   // set the initial value for showScrollToBottom and
                   // showScrollToTop, after the popover is rendered
