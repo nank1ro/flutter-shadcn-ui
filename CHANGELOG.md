@@ -1,3 +1,10 @@
+## 0.6.3
+
+- Fix `FormField`s label not getting the correct style.
+- Update the `Popover` animation duration to be faster, the same applies to the `Select` component.
+- Remove unused `waitDuration` and `showDuration` from `Popover`.
+- Add `effects` and `shadows` to `Select` and `SelectTheme`.
+
 ## 0.6.2
 
 - Fix form field error border decoration not working
