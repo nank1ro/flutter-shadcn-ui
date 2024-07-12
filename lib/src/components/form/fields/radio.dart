@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/radio.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
   ShadRadioGroupFormField({
@@ -21,6 +23,9 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
     super.validator,
     required Iterable<Widget> items,
   }) : super(
+          decorationBuilder: (context) =>
+              ShadTheme.of(context).radioTheme.decoration ??
+              const ShadDecoration(),
           builder: (field) {
             final state = field as _ShadFormBuilderRadioGroupState;
             return ShadRadioGroup(
