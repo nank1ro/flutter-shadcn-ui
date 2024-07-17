@@ -25,6 +25,7 @@ class ShadCheckbox extends StatefulWidget {
     this.sublabel,
     this.padding,
     this.direction,
+    this.crossAxisAlignment,
   });
 
   /// Whether the checkbox is on or off.
@@ -67,6 +68,13 @@ class ShadCheckbox extends StatefulWidget {
 
   /// The direction of the checkbox.
   final TextDirection? direction;
+
+  /// {@template ShadCheckbox.crossAxisAlignment}
+  /// The alignment of the checkbox and the label/sublabel.
+  /// Defaults to [CrossAxisAlignment.start] when [label] and [sublabel] are
+  /// both not null, and [CrossAxisAlignment.center] otherwise.
+  /// {@endtemplate}
+  final CrossAxisAlignment? crossAxisAlignment;
 
   @override
   State<ShadCheckbox> createState() => _ShadCheckboxState();
@@ -165,6 +173,15 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
       ),
     );
 
+    final defaultCrossAxisAlignment =
+        widget.label != null && widget.sublabel != null
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.center;
+
+    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+        theme.checkboxTheme.crossAxisAlignment ??
+        defaultCrossAxisAlignment;
+
     return ShadDisabled(
       showForbiddenCursor: true,
       disabled: !widget.enabled,
@@ -174,10 +191,10 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
         child: Row(
           textDirection: widget.direction,
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: effectiveCrossAxisAlignment,
           children: [
             checkbox,
-            if (widget.label != null)
+            if (widget.label != null || widget.sublabel != null)
               Flexible(
                 child: Padding(
                   padding: effectivePadding,
@@ -185,16 +202,17 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: DefaultTextStyle(
-                          style: theme.textTheme.muted.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: theme.colorScheme.foreground,
+                      if (widget.label != null)
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: DefaultTextStyle(
+                            style: theme.textTheme.muted.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: theme.colorScheme.foreground,
+                            ),
+                            child: widget.label!,
                           ),
-                          child: widget.label!,
                         ),
-                      ),
                       if (widget.sublabel != null)
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
