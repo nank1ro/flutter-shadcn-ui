@@ -316,12 +316,13 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     assert(debugCheckHasShadTheme(context));
     final theme = ShadTheme.of(context);
 
-    final effectiveDecoration =
-        (theme.selectTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+    final effectiveDecoration = theme.decoration
+        .mergeWith(theme.selectTheme.decoration)
+        .mergeWith(widget.decoration);
 
     final decorationHorizontalPadding =
-        effectiveDecoration.border?.padding?.horizontal ?? 0.0;
+        (effectiveDecoration.border?.padding?.horizontal ?? 0.0) +
+            (effectiveDecoration.secondaryBorder?.padding?.horizontal ?? 0.0);
 
     final effectivePadding = widget.padding ??
         theme.selectTheme.padding ??
