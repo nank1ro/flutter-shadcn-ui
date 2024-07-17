@@ -629,6 +629,11 @@ class _ShadAppState extends State<ShadApp> {
         color: themeData.colorScheme.border,
         thickness: 1,
       ),
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: themeData.colorScheme.primary,
+        selectionColor: themeData.colorScheme.selection,
+        selectionHandleColor: themeData.colorScheme.primary,
+      ),
     );
     mTheme = mTheme.copyWith(
       textTheme:
