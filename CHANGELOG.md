@@ -1,3 +1,10 @@
+## 0.6.4
+
+- Make `content` of `ShadTab` optional
+- Add `TextSelectionTheme` using shadcn colors
+- Add `crossAxisAlignment` to `ShadCheckbox`
+- Fix `ShadSelect` popover padding
+
 ## 0.6.3
 
 - Fix `FormField`s label not getting the correct style.
