@@ -331,7 +331,7 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
                     policy: WidgetOrderTraversalPolicy(),
                     child: KeyedSubtree(
                       key: _tabKeys[index],
-                      child: tab.content,
+                      child: tab.content ?? const SizedBox.shrink(),
                     ),
                   ),
                 );
@@ -362,7 +362,7 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
     super.key,
     required this.value,
     required this.text,
-    required this.content,
+    this.content,
     this.icon,
     this.enabled = true,
     this.flex = 1,
@@ -419,7 +419,7 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   final Widget text;
 
   /// The content of the tab.
-  final Widget content;
+  final Widget? content;
 
   /// The icon of the tab.
   final Widget? icon;
