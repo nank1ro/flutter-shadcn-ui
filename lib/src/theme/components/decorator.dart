@@ -86,6 +86,11 @@ class ShadBorder {
   int get hashCode {
     return width.hashCode ^ color.hashCode ^ radius.hashCode ^ padding.hashCode;
   }
+
+  @override
+  String toString() {
+    return '''ShadBorder(width: $width, color: $color, radius: $radius, padding: $padding)''';
+  }
 }
 
 @immutable
@@ -333,6 +338,11 @@ class ShadDecoration {
       image.hashCode ^
       hasError.hashCode ^
       fallbackToLabelStyle.hashCode;
+
+  @override
+  String toString() {
+    return '''ShadDecoration(border: $border, focusedBorder: $focusedBorder, errorBorder: $errorBorder, secondaryBorder: $secondaryBorder, secondaryFocusedBorder: $secondaryFocusedBorder, secondaryErrorBorder: $secondaryErrorBorder, labelStyle: $labelStyle, errorLabelStyle: $errorLabelStyle, errorStyle: $errorStyle, descriptionStyle: $descriptionStyle, labelPadding: $labelPadding, descriptionPadding: $descriptionPadding, errorPadding: $errorPadding, fallbackToBorder: $fallbackToBorder, color: $color, image: $image, shadows: $shadows, gradient: $gradient, backgroundBlendMode: $backgroundBlendMode, shape: $shape, hasError: $hasError, fallbackToLabelStyle: $fallbackToLabelStyle)''';
+  }
 }
 
 class ShadDecorator extends StatelessWidget {
