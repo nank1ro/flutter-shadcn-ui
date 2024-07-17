@@ -1,3 +1,7 @@
+## 0.6.5
+
+- Add `textDirection` to `ShadButton`
+
 ## 0.6.4
 
 - Make `content` of `ShadTab` optional

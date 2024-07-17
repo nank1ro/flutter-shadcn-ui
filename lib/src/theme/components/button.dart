@@ -35,6 +35,7 @@ class ShadButtonTheme {
     this.crossAxisAlignment,
     this.longPressDuration,
     this.hoverStrategies,
+    this.textDirection,
   });
 
   final bool merge;
@@ -63,6 +64,7 @@ class ShadButtonTheme {
 
   /// {@macro ShadButton.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+  final TextDirection? textDirection;
 
   static ShadButtonTheme lerp(
     ShadButtonTheme a,
@@ -71,7 +73,8 @@ class ShadButtonTheme {
   ) {
     if (identical(a, b)) return a;
     return ShadButtonTheme(
-      applyIconColorFilter: b.applyIconColorFilter,
+      applyIconColorFilter:
+          t < 0.5 ? a.applyIconColorFilter : b.applyIconColorFilter,
       sizesTheme: ShadButtonSizesTheme.lerp(
         a.sizesTheme,
         b.sizesTheme,
@@ -87,22 +90,24 @@ class ShadButtonTheme {
           Color.lerp(a.pressedBackgroundColor, b.pressedBackgroundColor, t),
       pressedForegroundColor:
           Color.lerp(a.pressedForegroundColor, b.pressedForegroundColor, t),
-      shadows: b.shadows,
-      gradient: b.gradient,
-      textDecoration: b.textDecoration,
-      hoverTextDecoration: b.hoverTextDecoration,
-      cursor: b.cursor,
-      size: b.size,
+      shadows: t < 0.5 ? a.shadows : b.shadows,
+      gradient: t < 0.5 ? a.gradient : b.gradient,
+      textDecoration: t < 0.5 ? a.textDecoration : b.textDecoration,
+      hoverTextDecoration:
+          t < 0.5 ? a.hoverTextDecoration : b.hoverTextDecoration,
+      cursor: t < 0.5 ? a.cursor : b.cursor,
+      size: t < 0.5 ? a.size : b.size,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       width: lerpDouble(a.width, b.width, t),
       height: lerpDouble(a.height, b.height, t),
-      mainAxisAlignment: b.mainAxisAlignment,
-      crossAxisAlignment: b.crossAxisAlignment,
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       longPressDuration:
           a.longPressDuration != null && b.longPressDuration != null
               ? lerpDuration(a.longPressDuration!, b.longPressDuration!, t)
               : b.longPressDuration,
-      hoverStrategies: b.hoverStrategies,
+      hoverStrategies: t < 0.5 ? a.hoverStrategies : b.hoverStrategies,
+      textDirection: t < 0.5 ? a.textDirection : b.textDirection,
     );
   }
 
@@ -129,6 +134,7 @@ class ShadButtonTheme {
     CrossAxisAlignment? crossAxisAlignment,
     Duration? longPressDuration,
     ShadHoverStrategies? hoverStrategies,
+    TextDirection? textDirection,
   }) {
     return ShadButtonTheme(
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
@@ -154,6 +160,7 @@ class ShadButtonTheme {
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
       longPressDuration: longPressDuration ?? this.longPressDuration,
       hoverStrategies: hoverStrategies ?? this.hoverStrategies,
+      textDirection: textDirection ?? this.textDirection,
     );
   }
 
@@ -181,6 +188,7 @@ class ShadButtonTheme {
       crossAxisAlignment: other.crossAxisAlignment,
       longPressDuration: other.longPressDuration,
       hoverStrategies: other.hoverStrategies,
+      textDirection: other.textDirection,
     );
   }
 
@@ -209,7 +217,8 @@ class ShadButtonTheme {
         other.mainAxisAlignment == mainAxisAlignment &&
         other.crossAxisAlignment == crossAxisAlignment &&
         other.longPressDuration == longPressDuration &&
-        other.hoverStrategies == hoverStrategies;
+        other.hoverStrategies == hoverStrategies &&
+        other.textDirection == textDirection;
   }
 
   @override
@@ -234,7 +243,8 @@ class ShadButtonTheme {
         mainAxisAlignment.hashCode ^
         crossAxisAlignment.hashCode ^
         longPressDuration.hashCode ^
-        hoverStrategies.hashCode;
+        hoverStrategies.hashCode ^
+        textDirection.hashCode;
   }
 }
 

@@ -69,6 +69,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
   }) : variant = ShadButtonVariant.primary;
 
   const ShadButton.raw({
@@ -115,6 +116,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
   });
 
   const ShadButton.destructive({
@@ -160,6 +162,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
   }) : variant = ShadButtonVariant.destructive;
 
   const ShadButton.outline({
@@ -205,6 +208,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
   }) : variant = ShadButtonVariant.outline;
 
   const ShadButton.secondary({
@@ -250,6 +254,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
   }) : variant = ShadButtonVariant.secondary;
 
   const ShadButton.ghost({
@@ -295,6 +300,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
   }) : variant = ShadButtonVariant.ghost;
 
   const ShadButton.link({
@@ -339,6 +345,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
   })  : variant = ShadButtonVariant.link,
         icon = null;
 
@@ -397,6 +404,7 @@ class ShadButton extends StatefulWidget {
   final ValueChanged<TapDownDetails>? onDoubleTapDown;
   final VoidCallback? onDoubleTapCancel;
   final Duration? longPressDuration;
+  final TextDirection? textDirection;
 
   @override
   State<ShadButton> createState() => _ShadButtonState();
@@ -639,6 +647,9 @@ class _ShadButtonState extends State<ShadButton> {
         buttonTheme(theme).hoverStrategies ??
         theme.hoverStrategies;
 
+    final effectiveTextDirection =
+        widget.textDirection ?? buttonTheme(theme).textDirection;
+
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.enter): onTap,
@@ -732,6 +743,7 @@ class _ShadButtonState extends State<ShadButton> {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: effectiveCrossAxisAlignment,
                           mainAxisAlignment: effectiveMainAxisAlignment,
+                          textDirection: effectiveTextDirection,
                           children: [
                             if (icon != null) icon,
                             if (widget.text != null)
