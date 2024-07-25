@@ -6,7 +6,7 @@ class ShadCard extends StatelessWidget {
     super.key,
     this.title,
     this.description,
-    this.content,
+    this.child,
     this.footer,
     this.padding,
     this.backgroundColor,
@@ -27,7 +27,7 @@ class ShadCard extends StatelessWidget {
 
   final Widget? title;
   final Widget? description;
-  final Widget? content;
+  final Widget? child;
   final Widget? footer;
 
   final EdgeInsets? padding;
@@ -117,7 +117,7 @@ class ShadCard extends StatelessWidget {
                     style: theme.textTheme.muted,
                     child: description!,
                   ),
-                if (content != null) content!,
+                if (child != null) child!,
                 if (footer != null) footer!,
               ],
             ),
