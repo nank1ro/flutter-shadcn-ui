@@ -36,6 +36,7 @@ class ShadButtonTheme {
     this.longPressDuration,
     this.hoverStrategies,
     this.textDirection,
+    this.gap,
   });
 
   final bool merge;
@@ -65,6 +66,9 @@ class ShadButtonTheme {
   /// {@macro ShadButton.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
   final TextDirection? textDirection;
+
+  /// {@macro ShadButton.gap}
+  final double? gap;
 
   static ShadButtonTheme lerp(
     ShadButtonTheme a,
@@ -108,6 +112,7 @@ class ShadButtonTheme {
               : b.longPressDuration,
       hoverStrategies: t < 0.5 ? a.hoverStrategies : b.hoverStrategies,
       textDirection: t < 0.5 ? a.textDirection : b.textDirection,
+      gap: t < 0.5 ? a.gap : b.gap,
     );
   }
 
@@ -135,6 +140,7 @@ class ShadButtonTheme {
     Duration? longPressDuration,
     ShadHoverStrategies? hoverStrategies,
     TextDirection? textDirection,
+    double? gap,
   }) {
     return ShadButtonTheme(
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
@@ -161,6 +167,7 @@ class ShadButtonTheme {
       longPressDuration: longPressDuration ?? this.longPressDuration,
       hoverStrategies: hoverStrategies ?? this.hoverStrategies,
       textDirection: textDirection ?? this.textDirection,
+      gap: gap ?? this.gap,
     );
   }
 
@@ -189,6 +196,7 @@ class ShadButtonTheme {
       longPressDuration: other.longPressDuration,
       hoverStrategies: other.hoverStrategies,
       textDirection: other.textDirection,
+      gap: other.gap,
     );
   }
 
@@ -218,7 +226,8 @@ class ShadButtonTheme {
         other.crossAxisAlignment == crossAxisAlignment &&
         other.longPressDuration == longPressDuration &&
         other.hoverStrategies == hoverStrategies &&
-        other.textDirection == textDirection;
+        other.textDirection == textDirection &&
+        other.gap == gap;
   }
 
   @override
@@ -244,7 +253,8 @@ class ShadButtonTheme {
         crossAxisAlignment.hashCode ^
         longPressDuration.hashCode ^
         hoverStrategies.hashCode ^
-        textDirection.hashCode;
+        textDirection.hashCode ^
+        gap.hashCode;
   }
 }
 
