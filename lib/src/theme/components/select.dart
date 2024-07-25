@@ -24,6 +24,7 @@ class ShadSelectTheme {
     this.clearSearchOnClose,
     this.effects,
     this.shadows,
+    this.filter,
   });
 
   final bool merge;
@@ -37,6 +38,9 @@ class ShadSelectTheme {
   final ShadAnchorBase? anchor;
   final EdgeInsets? searchPadding;
   final bool? clearSearchOnClose;
+
+  /// {@macro popover.filter}
+  final ImageFilter? filter;
 
   /// {@macro popover.effects}
   final List<Effect<dynamic>>? effects;
@@ -57,9 +61,11 @@ class ShadSelectTheme {
       maxHeight: lerpDouble(a.maxHeight, b.maxHeight, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       optionsPadding: EdgeInsets.lerp(a.optionsPadding, b.optionsPadding, t),
-      showScrollToTopChevron: b.showScrollToTopChevron,
-      showScrollToBottomChevron: b.showScrollToBottomChevron,
-      anchor: b.anchor,
+      showScrollToTopChevron:
+          t < 0.5 ? a.showScrollToTopChevron : b.showScrollToTopChevron,
+      showScrollToBottomChevron:
+          t < 0.5 ? a.showScrollToBottomChevron : b.showScrollToBottomChevron,
+      anchor: t < 0.5 ? a.anchor : b.anchor,
       searchPadding: EdgeInsets.lerp(a.searchPadding, b.searchPadding, t),
       clearSearchOnClose: t < 0.5 ? a.clearSearchOnClose : b.clearSearchOnClose,
       effects: t < 0.5 ? a.effects : b.effects,
@@ -83,6 +89,7 @@ class ShadSelectTheme {
     Duration? showDuration,
     List<Effect<dynamic>>? effects,
     List<BoxShadow>? shadows,
+    ImageFilter? filter,
   }) {
     return ShadSelectTheme(
       merge: merge ?? this.merge,
@@ -100,6 +107,7 @@ class ShadSelectTheme {
       clearSearchOnClose: clearSearchOnClose ?? this.clearSearchOnClose,
       effects: effects ?? this.effects,
       shadows: shadows ?? this.shadows,
+      filter: filter ?? this.filter,
     );
   }
 
@@ -119,6 +127,7 @@ class ShadSelectTheme {
       clearSearchOnClose: other.clearSearchOnClose,
       effects: other.effects,
       shadows: other.shadows,
+      filter: other.filter,
     );
   }
 
@@ -139,7 +148,8 @@ class ShadSelectTheme {
         other.searchPadding == searchPadding &&
         other.clearSearchOnClose == clearSearchOnClose &&
         other.effects == effects &&
-        other.shadows == shadows;
+        other.shadows == shadows &&
+        other.filter == filter;
   }
 
   @override
@@ -156,6 +166,7 @@ class ShadSelectTheme {
         searchPadding.hashCode ^
         clearSearchOnClose.hashCode ^
         effects.hashCode ^
-        shadows.hashCode;
+        shadows.hashCode ^
+        filter.hashCode;
   }
 }

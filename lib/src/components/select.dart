@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,6 +47,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.anchor,
     this.effects,
     this.shadows,
+    this.filter,
   })  : type = ShadSelectType.primary,
         onSearchChanged = null,
         searchDivider = null,
@@ -84,6 +86,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.anchor,
     this.effects,
     this.shadows,
+    this.filter,
   }) : type = ShadSelectType.search;
 
   /// The callback that is called when the value of the [ShadSelect] changes.
@@ -181,6 +184,9 @@ class ShadSelect<T> extends StatefulWidget {
 
   /// {@macro popover.shadows}
   final List<BoxShadow>? shadows;
+
+  /// {@macro popover.filter}
+  final ImageFilter? filter;
 
   static ShadSelectState<T> of<T>(BuildContext context, {bool listen = true}) {
     return maybeOf<T>(context, listen: listen)!;
@@ -343,6 +349,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     final effectiveEffects = widget.effects ?? theme.selectTheme.effects;
 
     final effectiveShadows = widget.shadows ?? theme.selectTheme.shadows;
+
+    final effectiveFilter = widget.filter ?? theme.selectTheme.filter;
 
     final Widget effectiveText;
     if (selected is T) {
@@ -523,6 +531,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                 closeOnTapOutside: widget.closeOnTapOutside,
                 effects: effectiveEffects,
                 shadows: effectiveShadows,
+                filter: effectiveFilter,
                 popover: (_) {
                   // set the initial value for showScrollToBottom and
                   // showScrollToTop, after the popover is rendered

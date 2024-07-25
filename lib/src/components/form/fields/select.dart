@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/select.dart';
@@ -36,6 +38,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     bool? showScrollToBottomChevron,
     ScrollController? scrollController,
     ShadAnchorBase? anchor,
+    ImageFilter? filter,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -63,6 +66,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               showScrollToTopChevron: showScrollToTopChevron,
               showScrollToBottomChevron: showScrollToBottomChevron,
               scrollController: scrollController,
+              filter: filter,
             );
           },
         );
