@@ -268,7 +268,7 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
         ShadDecoration(
           merge: false,
           color: theme.colorScheme.muted,
-          border: ShadBorder(radius: theme.radius),
+          border: ShadBorder.all(radius: theme.radius, width: 0),
         );
 
     final effectiveGap = widget.gap ?? tabsTheme.gap ?? 8;
