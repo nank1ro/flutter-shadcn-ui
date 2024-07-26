@@ -22,7 +22,7 @@ typedef ShadSelectedOptionBuilder<T> = Widget Function(
   T value,
 );
 
-enum ShadSelectType { primary, search }
+enum ShadSelectVariant { primary, search }
 
 class ShadSelect<T> extends StatefulWidget {
   const ShadSelect({
@@ -48,7 +48,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.effects,
     this.shadows,
     this.filter,
-  })  : type = ShadSelectType.primary,
+  })  : variant = ShadSelectVariant.primary,
         onSearchChanged = null,
         searchDivider = null,
         searchPlaceholder = null,
@@ -87,7 +87,43 @@ class ShadSelect<T> extends StatefulWidget {
     this.effects,
     this.shadows,
     this.filter,
-  }) : type = ShadSelectType.search;
+  }) : variant = ShadSelectVariant.search;
+
+  const ShadSelect.raw({
+    super.key,
+    required this.variant,
+    required this.options,
+    required this.selectedOptionBuilder,
+    this.onSearchChanged,
+    this.searchDivider,
+    this.searchInputPrefix,
+    this.searchPlaceholder,
+    this.searchPadding,
+    this.search,
+    this.clearSearchOnClose,
+    this.enabled = true,
+    this.placeholder,
+    this.initialValue,
+    this.onChanged,
+    this.focusNode,
+    this.closeOnTapOutside = true,
+    this.minWidth,
+    this.maxHeight,
+    this.decoration,
+    this.trailing,
+    this.padding,
+    this.optionsPadding,
+    this.showScrollToBottomChevron,
+    this.showScrollToTopChevron,
+    this.scrollController,
+    this.anchor,
+    this.effects,
+    this.shadows,
+    this.filter,
+  }) : assert(
+          variant == ShadSelectVariant.primary || onSearchChanged != null,
+          'onSearchChanged must be provided when variant is search',
+        );
 
   /// The callback that is called when the value of the [ShadSelect] changes.
   final ValueChanged<T>? onChanged;
@@ -155,7 +191,7 @@ class ShadSelect<T> extends StatefulWidget {
   final ShadAnchorBase? anchor;
 
   /// The type of the [ShadSelect], defaults to `ShadSelectType.primary`.
-  final ShadSelectType type;
+  final ShadSelectVariant variant;
 
   /// The callback that is called when the search value changes.
   final ValueChanged<String>? onSearchChanged;
@@ -245,7 +281,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
       showScrollToTop.value = scrollController.offset > 0;
     });
 
-    if (widget.type == ShadSelectType.search) {
+    if (widget.variant == ShadSelectVariant.search) {
       controller.addListener(() {
         if (controller.isOpen) return;
         final effectiveClearSearchOnClose = widget.clearSearchOnClose ??
@@ -382,9 +418,9 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         theme.selectTheme.optionsPadding ??
         const EdgeInsets.all(4);
 
-    final search = switch (widget.type) {
-      ShadSelectType.primary => null,
-      ShadSelectType.search => Column(
+    final search = switch (widget.variant) {
+      ShadSelectVariant.primary => null,
+      ShadSelectVariant.search => Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             widget.search ??

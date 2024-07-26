@@ -148,6 +148,89 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
           },
         );
 
+  ShadSelectFormField.raw({
+    super.id,
+    super.key,
+    super.onSaved,
+    super.label,
+    super.error,
+    super.description,
+    super.onChanged,
+    super.valueTransformer,
+    super.onReset,
+    super.enabled,
+    super.autovalidateMode,
+    super.restorationId,
+    super.initialValue,
+    super.focusNode,
+    super.validator,
+    required ShadSelectVariant variant,
+    required ShadSelectedOptionBuilder<T> selectedOptionBuilder,
+    required Iterable<Widget> options,
+    ValueChanged<String>? onSearchChanged,
+    Widget? placeholder,
+    bool closeOnTapOutside = true,
+    double? minWidth,
+    double? maxHeight,
+    ShadDecoration? decoration,
+    Widget? trailing,
+    EdgeInsets? padding,
+    EdgeInsets? optionsPadding,
+    bool? showScrollToTopChevron,
+    bool? showScrollToBottomChevron,
+    ScrollController? scrollController,
+    ShadAnchorBase? anchor,
+    ImageFilter? filter,
+    Widget? searchDivider,
+    Widget? searchInputPrefix,
+    Widget? searchPlaceholder,
+    EdgeInsets? searchPadding,
+    Widget? search,
+    bool? clearSearchOnClose,
+  })  : assert(
+          variant == ShadSelectVariant.primary || onSearchChanged != null,
+          'onSearchChanged must be provided when variant is search',
+        ),
+        super(
+          decorationBuilder: (context) =>
+              (ShadTheme.of(context).selectTheme.decoration ??
+                      const ShadDecoration())
+                  .mergeWith(decoration),
+          builder: (field) {
+            final state = field as _ShadFormBuilderSelectState;
+
+            return ShadSelect<T>.raw(
+              variant: variant,
+              options: options,
+              selectedOptionBuilder: selectedOptionBuilder,
+              focusNode: state.focusNode,
+              placeholder: placeholder,
+              initialValue: initialValue,
+              enabled: state.enabled,
+              onChanged: state.didChange,
+              closeOnTapOutside: closeOnTapOutside,
+              anchor: anchor,
+              minWidth: minWidth,
+              maxHeight: maxHeight,
+              decoration: state.decoration,
+              trailing: trailing,
+              padding: padding,
+              optionsPadding: optionsPadding,
+              showScrollToTopChevron: showScrollToTopChevron,
+              showScrollToBottomChevron: showScrollToBottomChevron,
+              scrollController: scrollController,
+              filter: filter,
+              onSearchChanged: onSearchChanged,
+              searchDivider: searchDivider,
+              searchInputPrefix: searchInputPrefix,
+              searchPlaceholder: searchPlaceholder,
+              searchPadding: searchPadding,
+              search: search,
+              clearSearchOnClose: clearSearchOnClose,
+            );
+          },
+        );
+
   @override
   ShadFormBuilderFieldState<ShadSelectFormField<T>, T> createState() =>
       _ShadFormBuilderSelectState<T>();
