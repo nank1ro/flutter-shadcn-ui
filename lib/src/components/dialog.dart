@@ -143,6 +143,40 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
   }) : variant = ShadDialogVariant.alert;
 
+  const ShadDialog.raw({
+    super.key,
+    required this.variant,
+    this.title,
+    this.description,
+    this.content,
+    this.actions = const [],
+    this.closeIcon,
+    this.closeIconSrc,
+    this.closeIconPosition,
+    this.radius,
+    this.backgroundColor,
+    this.expandActionsWhenTiny,
+    this.padding,
+    this.gap,
+    this.constraints,
+    this.border,
+    this.shadows,
+    this.removeBorderRadiusWhenTiny,
+    this.actionsAxis,
+    this.actionsMainAxisSize,
+    this.actionsMainAxisAlignment,
+    this.actionsVerticalDirection,
+    this.titleStyle,
+    this.descriptionStyle,
+    this.titleTextAlign,
+    this.descriptionTextAlign,
+    this.alignment,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
+    this.scrollable,
+    this.scrollPadding,
+  });
+
   final Widget? title;
   final Widget? description;
   final Widget? content;
