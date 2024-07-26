@@ -121,3 +121,44 @@ abstract class ShadBaseTheme {
   final bool disableSecondaryBorder;
   final ShadTabsTheme tabsTheme;
 }
+
+@immutable
+abstract class ShadThemeVariant {
+  ShadButtonTheme primaryButtonTheme();
+  ShadButtonTheme secondaryButtonTheme();
+  ShadButtonTheme destructiveButtonTheme();
+  ShadButtonTheme outlineButtonTheme();
+  ShadButtonTheme ghostButtonTheme();
+  ShadButtonTheme linkButtonTheme();
+  ShadButtonSizesTheme buttonSizesTheme();
+  ShadBadgeTheme primaryBadgeTheme();
+  ShadBadgeTheme secondaryBadgeTheme();
+  ShadBadgeTheme destructiveBadgeTheme();
+  ShadBadgeTheme outlineBadgeTheme();
+  ShadAvatarTheme avatarTheme();
+  ShadTooltipTheme tooltipTheme();
+  ShadPopoverTheme popoverTheme();
+  ShadDecoration decorationTheme();
+  ShadTextTheme textTheme();
+  ShadSelectTheme selectTheme();
+  ShadOptionTheme optionTheme();
+  ShadCardTheme cardTheme();
+  ShadSwitchTheme switchTheme();
+  ShadCheckboxTheme checkboxTheme();
+  ShadInputTheme inputTheme();
+  ShadRadioTheme radioTheme();
+  ShadToastTheme primaryToastTheme();
+  ShadToastTheme destructiveToastTheme();
+  ShadAlertTheme primaryAlertTheme();
+  ShadAlertTheme destructiveAlertTheme();
+  ShadDialogTheme primaryDialogTheme();
+  ShadDialogTheme alertDialogTheme();
+  ShadSliderTheme sliderTheme();
+  ShadSheetTheme sheetTheme();
+  ShadProgressTheme progressTheme();
+  ShadAccordionTheme accordionTheme();
+  ShadTableTheme tableTheme();
+  ShadResizableTheme resizableTheme();
+  ShadHoverStrategies hoverStrategies();
+  ShadTabsTheme tabsTheme();
+}

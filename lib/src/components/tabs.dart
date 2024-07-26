@@ -674,9 +674,19 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
         final isFirstTab = inherited.orderedValues.first == widget.value;
         final isLastTab = inherited.orderedValues.last == widget.value;
 
-        final effectiveDecoration = widget.decoration ??
-            tabsTheme.tabDecoration ??
-            ShadDecoration(
+        final defaultDecoration = switch (theme.disableSecondaryBorder) {
+          true => ShadDecoration(
+              border: ShadBorder.all(
+                radius: BorderRadius.circular(2),
+                width: 0,
+                padding: const EdgeInsets.all(2),
+              ),
+              focusedBorder: ShadBorder.all(
+                width: 2,
+                radius: BorderRadius.circular(2),
+              ),
+            ),
+          false => ShadDecoration(
               border:
                   ShadBorder.all(radius: BorderRadius.circular(2), width: 0),
               secondaryBorder: ShadBorder.all(
@@ -699,7 +709,11 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
                   2,
                 ),
               ),
-            );
+            ),
+        };
+
+        final effectiveDecoration =
+            widget.decoration ?? tabsTheme.tabDecoration ?? defaultDecoration;
 
         return ShadButton.secondary(
           icon: widget.icon,
