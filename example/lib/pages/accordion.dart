@@ -40,7 +40,7 @@ class _AccordionPageState extends State<AccordionPage> {
         return ShadAccordionItem(
           value: detail,
           title: Text(detail.title),
-          content: Text(detail.content),
+          child: Text(detail.content),
           underlineTitleOnHover: underlineTitle,
         );
       },
