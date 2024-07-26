@@ -47,6 +47,25 @@ class ShadAlert extends StatelessWidget {
           'Either icon or iconSrc must be provided',
         );
 
+  const ShadAlert.raw({
+    super.key,
+    required this.variant,
+    this.icon,
+    this.iconSrc,
+    this.title,
+    this.description,
+    this.textDirection,
+    this.decoration,
+    this.iconPadding,
+    this.iconColor,
+    this.iconSize,
+    this.titleStyle,
+    this.descriptionStyle,
+  }) : assert(
+          (icon != null) ^ (iconSrc != null),
+          'Either icon or iconSrc must be provided',
+        );
+
   final ShadAlertVariant variant;
   final Widget? icon;
   final ShadImageSrc? iconSrc;
