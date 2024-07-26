@@ -677,8 +677,10 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
         final effectiveDecoration = widget.decoration ??
             tabsTheme.tabDecoration ??
             ShadDecoration(
-              border: ShadBorder(radius: BorderRadius.circular(2)),
-              secondaryBorder: ShadBorder(
+              border:
+                  ShadBorder.all(radius: BorderRadius.circular(2), width: 0),
+              secondaryBorder: ShadBorder.all(
+                width: 0,
                 radius: BorderRadius.circular(2),
                 padding: EdgeInsets.fromLTRB(
                   isFirstTab ? 4 : 2,
@@ -687,7 +689,8 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
                   4,
                 ),
               ),
-              secondaryFocusedBorder: ShadBorder(
+              secondaryFocusedBorder: ShadBorder.all(
+                width: 2,
                 radius: theme.radius,
                 padding: EdgeInsets.fromLTRB(
                   isFirstTab ? 2 : 0,

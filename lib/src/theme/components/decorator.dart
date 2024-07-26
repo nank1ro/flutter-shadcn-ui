@@ -1,36 +1,85 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 @immutable
-class ShadBorder {
+class ShadBorder extends Border {
   const ShadBorder({
     this.merge = true,
-    this.width,
-    this.color,
-    this.radius,
     this.padding,
+    this.radius,
+    super.top,
+    super.right,
+    super.bottom,
+    super.left,
   });
+
+  /// Creates a border whose sides are all the same.
+  const ShadBorder.fromBorderSide(
+    BorderSide side, {
+    this.merge = true,
+    this.padding,
+    this.radius,
+  }) : super(top: side, right: side, bottom: side, left: side);
+
+  /// Creates a border with symmetrical vertical and horizontal sides.
+  ///
+  /// The `vertical` argument applies to the [left] and [right] sides, and the
+  /// `horizontal` argument applies to the [top] and [bottom] sides.
+  ///
+  /// All arguments default to [BorderSide.none].
+  const ShadBorder.symmetric({
+    BorderSide vertical = BorderSide.none,
+    BorderSide horizontal = BorderSide.none,
+    this.merge = true,
+    this.padding,
+    this.radius,
+  }) : super(
+          top: vertical,
+          right: horizontal,
+          bottom: vertical,
+          left: horizontal,
+        );
+
+  factory ShadBorder.all({
+    bool merge = true,
+    Color color = const Color(0xFF000000),
+    double width = 1.0,
+    BorderStyle style = BorderStyle.solid,
+    double strokeAlign = BorderSide.strokeAlignInside,
+    EdgeInsets? padding,
+    BorderRadiusGeometry? radius,
+  }) {
+    return ShadBorder.fromBorderSide(
+      BorderSide(
+        color: color,
+        width: width,
+        style: style,
+        strokeAlign: strokeAlign,
+      ),
+      padding: padding,
+      merge: merge,
+      radius: radius,
+    );
+  }
 
   static const ShadBorder none = ShadBorder(merge: false);
 
-  /// The width of the border, defaults to 1.0.
-  final double? width;
-
-  /// The color of the border, defaults to Colors.black.
-  final Color? color;
-
-  /// The radius of the border, defaults to null.
-  final BorderRadiusGeometry? radius;
+  bool get hasBorder =>
+      top.width != 0 ||
+      right.width != 0 ||
+      bottom.width != 0 ||
+      left.width != 0;
 
   /// The padding of the border, defaults to null.
   final EdgeInsets? padding;
 
   /// Whether to merge with another border, defaults to true.
   final bool merge;
+
+  /// The border radius of the border, defaults to null.
+  final BorderRadiusGeometry? radius;
 
   static ShadBorder? lerp(
     ShadBorder? a,
@@ -39,24 +88,47 @@ class ShadBorder {
   ) {
     if (a == null && b == null) return null;
     return ShadBorder(
-      width: lerpDouble(a?.width, b?.width, t),
-      color: Color.lerp(a?.color, b?.color, t),
-      radius: BorderRadiusGeometry.lerp(a?.radius, b?.radius, t),
       padding: EdgeInsets.lerp(a?.padding, b?.padding, t),
+      top: lerpBorderSide(a?.top, b?.top, t),
+      right: lerpBorderSide(a?.right, b?.right, t),
+      bottom: lerpBorderSide(a?.bottom, b?.bottom, t),
+      left: lerpBorderSide(a?.left, b?.left, t),
+      radius: BorderRadiusGeometry.lerp(a?.radius, b?.radius, t),
     );
   }
 
+  static BorderSide lerpBorderSide(
+    BorderSide? a,
+    BorderSide? b,
+    double t,
+  ) {
+    if (identical(a, b)) {
+      return a ?? BorderSide.none;
+    }
+    if (a == null) {
+      return b!.scale(t);
+    }
+    if (b == null) {
+      return a.scale(1.0 - t);
+    }
+    return BorderSide.lerp(a, b, t);
+  }
+
   ShadBorder copyWith({
-    double? width,
-    Color? color,
-    BorderRadiusGeometry? radius,
     EdgeInsets? padding,
+    BorderSide? top,
+    BorderSide? right,
+    BorderSide? bottom,
+    BorderSide? left,
+    BorderRadiusGeometry? radius,
   }) {
     return ShadBorder(
-      width: width ?? this.width,
-      color: color ?? this.color,
-      radius: radius ?? this.radius,
       padding: padding ?? this.padding,
+      top: top ?? this.top,
+      right: right ?? this.right,
+      bottom: bottom ?? this.bottom,
+      left: left ?? this.left,
+      radius: radius ?? this.radius,
     );
   }
 
@@ -64,10 +136,12 @@ class ShadBorder {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
-      width: other.width ?? width,
-      color: other.color ?? color,
-      radius: other.radius ?? radius,
-      padding: other.padding ?? padding,
+      padding: other.padding,
+      top: other.top,
+      right: other.right,
+      bottom: other.bottom,
+      left: other.left,
+      radius: other.radius,
     );
   }
 
@@ -76,20 +150,24 @@ class ShadBorder {
     if (identical(this, other)) return true;
 
     return other is ShadBorder &&
-        other.width == width &&
-        other.color == color &&
-        other.radius == radius &&
-        other.padding == padding;
+        other.merge == merge &&
+        other.padding == padding &&
+        other.top == top &&
+        other.right == right &&
+        other.bottom == bottom &&
+        other.left == left &&
+        other.radius == radius;
   }
 
   @override
   int get hashCode {
-    return width.hashCode ^ color.hashCode ^ radius.hashCode ^ padding.hashCode;
-  }
-
-  @override
-  String toString() {
-    return '''ShadBorder(width: $width, color: $color, radius: $radius, padding: $padding)''';
+    return merge.hashCode ^
+        padding.hashCode ^
+        top.hashCode ^
+        right.hashCode ^
+        bottom.hashCode ^
+        left.hashCode ^
+        radius.hashCode;
   }
 }
 
@@ -404,12 +482,7 @@ class ShadDecorator extends StatelessWidget {
 
     Widget decorated = Container(
       decoration: BoxDecoration(
-        border: border?.width == null && border?.color == null
-            ? null
-            : Border.all(
-                color: border?.color ?? Colors.black,
-                width: border?.width ?? 1.0,
-              ),
+        border: true == border?.hasBorder ? border : null,
         borderRadius: effectiveDecoration.shape == BoxShape.circle
             ? null
             : border?.radius,
@@ -427,12 +500,7 @@ class ShadDecorator extends StatelessWidget {
     if (secondaryBorder != null && !theme.disableSecondaryBorder) {
       decorated = Container(
         decoration: BoxDecoration(
-          border: secondaryBorder.width == null && secondaryBorder.color == null
-              ? null
-              : Border.all(
-                  color: secondaryBorder.color ?? Colors.black,
-                  width: secondaryBorder.width ?? 1.0,
-                ),
+          border: secondaryBorder.hasBorder ? secondaryBorder : null,
           borderRadius: secondaryBorder.radius,
         ),
         padding: secondaryBorder.padding,

@@ -75,7 +75,7 @@ class ShadAlert extends StatelessWidget {
     final effectiveDecoration = decoration ??
         effectiveAlertTheme.decoration ??
         ShadDecoration(
-          border: ShadBorder(
+          border: ShadBorder.all(
             color: theme.colorScheme.border,
             radius: theme.radius,
             padding: const EdgeInsets.all(16),
