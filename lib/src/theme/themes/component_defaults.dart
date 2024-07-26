@@ -43,12 +43,9 @@ abstract class ShadDefaultComponentThemes {
       hoverBackgroundColor: colorScheme.primary.withOpacity(.9),
       foregroundColor: colorScheme.primaryForeground,
       hoverForegroundColor: colorScheme.primaryForeground,
-      decoration: ShadDecoration(
-        border: ShadBorder.all(
-          radius: radius,
-          width: 0,
-        ),
-      ),
+      decoration:
+          ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
+      gap: 8,
     );
   }
 
@@ -63,6 +60,7 @@ abstract class ShadDefaultComponentThemes {
       hoverForegroundColor: colorScheme.secondaryForeground,
       decoration:
           ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
+      gap: 8,
     );
   }
 
@@ -77,6 +75,7 @@ abstract class ShadDefaultComponentThemes {
       hoverForegroundColor: colorScheme.destructiveForeground,
       decoration:
           ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
+      gap: 8,
     );
   }
 
@@ -91,6 +90,7 @@ abstract class ShadDefaultComponentThemes {
       decoration: ShadDecoration(
         border: ShadBorder.all(radius: radius, color: colorScheme.input),
       ),
+      gap: 8,
     );
   }
 
@@ -104,6 +104,7 @@ abstract class ShadDefaultComponentThemes {
       hoverForegroundColor: colorScheme.accentForeground,
       decoration:
           ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
+      gap: 8,
     );
   }
 
@@ -114,6 +115,7 @@ abstract class ShadDefaultComponentThemes {
       foregroundColor: colorScheme.primary,
       hoverForegroundColor: colorScheme.primary,
       hoverTextDecoration: TextDecoration.underline,
+      gap: 8,
     );
   }
 
