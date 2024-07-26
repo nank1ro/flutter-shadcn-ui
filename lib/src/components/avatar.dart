@@ -14,15 +14,13 @@ class ShadAvatar extends StatelessWidget {
     this.fit,
   });
 
-  final String src;
+  final ShadImageSrc src;
   final Widget? placeholder;
   final Size? size;
   final ShapeBorder? shape;
   final Color? backgroundColor;
   final String? package;
   final BoxFit? fit;
-
-  bool get isRemote => Uri.tryParse(src)?.host.isNotEmpty ?? false;
 
   Size effectiveSize(ShadThemeData theme) {
     return size ?? theme.avatarTheme.size ?? const Size.square(40);
@@ -66,10 +64,7 @@ class ShadAvatar extends StatelessWidget {
         shape: effectiveShape(theme),
         color: effectiveBackgroundColor(theme),
       ),
-      child: ShadImage(
-        src,
-        placeholder: placeholder,
-      ),
+      child: ShadImage(src, placeholder: placeholder),
     );
   }
 }

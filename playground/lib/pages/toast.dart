@@ -51,7 +51,7 @@ class ToastPage extends StatelessWidget {
                       action: ShadButton.destructive(
                         text: const Text('Try again'),
                         decoration: ShadDecoration(
-                          border: ShadBorder(
+                          border: ShadBorder.all(
                             color: theme.colorScheme.destructiveForeground,
                           ),
                         ),

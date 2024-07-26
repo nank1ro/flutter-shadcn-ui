@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -13,6 +15,7 @@ class ShadPopoverTheme {
     this.padding,
     this.decoration,
     this.anchor,
+    this.filter,
   });
 
   final bool merge;
@@ -32,6 +35,9 @@ class ShadPopoverTheme {
   /// {@macro popover.anchor}
   final ShadAnchorBase? anchor;
 
+  /// {@macro popover.filter}
+  final ImageFilter? filter;
+
   static ShadPopoverTheme lerp(
     ShadPopoverTheme a,
     ShadPopoverTheme b,
@@ -40,11 +46,12 @@ class ShadPopoverTheme {
     if (identical(a, b)) return a;
     return ShadPopoverTheme(
       merge: b.merge,
-      effects: b.effects,
-      shadows: b.shadows,
+      effects: t < 0.5 ? a.effects : b.effects,
+      shadows: t < 0.5 ? a.shadows : b.shadows,
       padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
-      anchor: b.anchor,
+      anchor: t < 0.5 ? a.anchor : b.anchor,
+      filter: t < 0.5 ? a.filter : b.filter,
     );
   }
 
@@ -57,6 +64,7 @@ class ShadPopoverTheme {
     EdgeInsetsGeometry? padding,
     ShadDecoration? decoration,
     ShadAnchorBase? anchor,
+    ImageFilter? filter,
   }) {
     return ShadPopoverTheme(
       merge: merge ?? this.merge,
@@ -65,6 +73,7 @@ class ShadPopoverTheme {
       padding: padding ?? this.padding,
       decoration: decoration ?? this.decoration,
       anchor: anchor ?? this.anchor,
+      filter: filter ?? this.filter,
     );
   }
 
@@ -77,6 +86,7 @@ class ShadPopoverTheme {
       padding: other.padding,
       decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       anchor: other.anchor,
+      filter: other.filter,
     );
   }
 
@@ -90,7 +100,8 @@ class ShadPopoverTheme {
         listEquals(other.shadows, shadows) &&
         other.padding == padding &&
         other.decoration == decoration &&
-        other.anchor == anchor;
+        other.anchor == anchor &&
+        other.filter == filter;
   }
 
   @override
@@ -100,6 +111,7 @@ class ShadPopoverTheme {
         shadows.hashCode ^
         padding.hashCode ^
         decoration.hashCode ^
-        anchor.hashCode;
+        anchor.hashCode ^
+        filter.hashCode;
   }
 }

@@ -55,7 +55,7 @@ export 'src/theme/data.dart';
 export 'src/theme/theme.dart';
 export 'src/theme/themes/base.dart';
 export 'src/theme/themes/shadows.dart';
-export 'src/theme/themes/component_defaults.dart';
+export 'src/theme/themes/default_theme_variant.dart';
 
 // Component Themes
 export 'src/theme/components/accordion.dart';

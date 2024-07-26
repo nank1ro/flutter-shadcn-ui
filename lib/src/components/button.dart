@@ -8,6 +8,7 @@ import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
+import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
 enum ShadButtonVariant {
@@ -70,6 +71,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapCancel,
     this.longPressDuration,
     this.textDirection,
+    this.gap,
   }) : variant = ShadButtonVariant.primary;
 
   const ShadButton.raw({
@@ -117,6 +119,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapCancel,
     this.longPressDuration,
     this.textDirection,
+    this.gap,
   });
 
   const ShadButton.destructive({
@@ -163,6 +166,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapCancel,
     this.longPressDuration,
     this.textDirection,
+    this.gap,
   }) : variant = ShadButtonVariant.destructive;
 
   const ShadButton.outline({
@@ -209,6 +213,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapCancel,
     this.longPressDuration,
     this.textDirection,
+    this.gap,
   }) : variant = ShadButtonVariant.outline;
 
   const ShadButton.secondary({
@@ -255,6 +260,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapCancel,
     this.longPressDuration,
     this.textDirection,
+    this.gap,
   }) : variant = ShadButtonVariant.secondary;
 
   const ShadButton.ghost({
@@ -301,6 +307,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapCancel,
     this.longPressDuration,
     this.textDirection,
+    this.gap,
   }) : variant = ShadButtonVariant.ghost;
 
   const ShadButton.link({
@@ -346,6 +353,7 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapCancel,
     this.longPressDuration,
     this.textDirection,
+    this.gap,
   })  : variant = ShadButtonVariant.link,
         icon = null;
 
@@ -375,6 +383,13 @@ class ShadButton extends StatefulWidget {
   final ShadDecoration? decoration;
   final bool enabled;
   final ShadStatesController? statesController;
+
+  /// {@template ShadButton.gap}
+  /// The gap between the icon and the text.
+  ///
+  /// Defaults to `8`
+  /// {@endtemplate}
+  final double? gap;
 
   /// {@template ShadButton.mainAxisAlignment}
   /// The main axis alignment of the button.
@@ -650,6 +665,8 @@ class _ShadButtonState extends State<ShadButton> {
     final effectiveTextDirection =
         widget.textDirection ?? buttonTheme(theme).textDirection;
 
+    final effectiveGap = widget.gap ?? buttonTheme(theme).gap ?? 8;
+
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.enter): onTap,
@@ -764,7 +781,7 @@ class _ShadButtonState extends State<ShadButton> {
                                 textAlign: TextAlign.center,
                                 child: widget.text!,
                               ),
-                          ],
+                          ].separatedBy(SizedBox(width: effectiveGap)),
                         ),
                       ),
                     ),

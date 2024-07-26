@@ -15,7 +15,7 @@ enum ShadBadgeVariant {
 class ShadBadge extends StatefulWidget {
   const ShadBadge({
     super.key,
-    required this.text,
+    required this.child,
     this.shape,
     this.backgroundColor,
     this.hoverBackgroundColor,
@@ -25,7 +25,7 @@ class ShadBadge extends StatefulWidget {
 
   const ShadBadge.secondary({
     super.key,
-    required this.text,
+    required this.child,
     this.shape,
     this.backgroundColor,
     this.hoverBackgroundColor,
@@ -35,7 +35,7 @@ class ShadBadge extends StatefulWidget {
 
   const ShadBadge.outline({
     super.key,
-    required this.text,
+    required this.child,
     this.shape,
     this.backgroundColor,
     this.hoverBackgroundColor,
@@ -45,7 +45,7 @@ class ShadBadge extends StatefulWidget {
 
   const ShadBadge.destructive({
     super.key,
-    required this.text,
+    required this.child,
     this.shape,
     this.backgroundColor,
     this.hoverBackgroundColor,
@@ -56,7 +56,7 @@ class ShadBadge extends StatefulWidget {
   const ShadBadge.raw({
     super.key,
     required this.variant,
-    required this.text,
+    required this.child,
     this.shape,
     this.backgroundColor,
     this.hoverBackgroundColor,
@@ -65,7 +65,7 @@ class ShadBadge extends StatefulWidget {
   });
 
   final ShadBadgeVariant variant;
-  final Widget text;
+  final Widget child;
   final ShapeBorder? shape;
   final Color? backgroundColor;
   final Color? hoverBackgroundColor;
@@ -147,7 +147,7 @@ class _ShadBadgeState extends State<ShadBadge> {
                   height: 16 / 12,
                 ),
                 textAlign: TextAlign.center,
-                child: widget.text,
+                child: widget.child,
               ),
             ],
           ),

@@ -10,10 +10,10 @@ class BadgePage extends StatelessWidget {
     return const BaseScaffold(
       appBarTitle: 'Badge',
       children: [
-        ShadBadge(text: Text('Primary')),
-        ShadBadge.secondary(text: Text('Secondary')),
-        ShadBadge.destructive(text: Text('Destructive')),
-        ShadBadge.outline(text: Text('Outline')),
+        ShadBadge(child: Text('Primary')),
+        ShadBadge.secondary(child: Text('Secondary')),
+        ShadBadge.destructive(child: Text('Destructive')),
+        ShadBadge.outline(child: Text('Outline')),
       ],
     );
   }
