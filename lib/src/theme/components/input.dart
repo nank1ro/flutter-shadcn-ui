@@ -7,7 +7,6 @@ class ShadInputTheme {
     this.merge = true,
     this.decoration,
     this.padding,
-    this.backgroundColor,
     this.style,
     this.placeholderStyle,
     this.placeholderAlignment,
@@ -19,7 +18,6 @@ class ShadInputTheme {
   final bool merge;
   final ShadDecoration? decoration;
   final EdgeInsets? padding;
-  final Color? backgroundColor;
   final TextStyle? style;
   final TextStyle? placeholderStyle;
   final Alignment? placeholderAlignment;
@@ -37,7 +35,6 @@ class ShadInputTheme {
       merge: b.merge,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
-      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       style: TextStyle.lerp(a.style, b.style, t),
       placeholderStyle:
           TextStyle.lerp(a.placeholderStyle, b.placeholderStyle, t),
@@ -51,7 +48,6 @@ class ShadInputTheme {
     bool? merge,
     ShadDecoration? decoration,
     EdgeInsets? padding,
-    Color? backgroundColor,
     TextStyle? style,
     TextStyle? placeholderStyle,
     EdgeInsets? inputPadding,
@@ -62,7 +58,6 @@ class ShadInputTheme {
       merge: merge ?? this.merge,
       decoration: decoration ?? this.decoration,
       padding: padding ?? this.padding,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
       style: style ?? this.style,
       placeholderStyle: placeholderStyle ?? this.placeholderStyle,
       inputPadding: inputPadding ?? this.inputPadding,
@@ -77,7 +72,6 @@ class ShadInputTheme {
     return copyWith(
       decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       padding: other.padding,
-      backgroundColor: other.backgroundColor,
       style: other.style,
       placeholderStyle: other.placeholderStyle,
       inputPadding: other.inputPadding,
@@ -94,7 +88,6 @@ class ShadInputTheme {
         other.merge == merge &&
         other.decoration == decoration &&
         other.padding == padding &&
-        other.backgroundColor == backgroundColor &&
         other.style == style &&
         other.placeholderStyle == placeholderStyle &&
         other.inputPadding == inputPadding &&
@@ -107,7 +100,6 @@ class ShadInputTheme {
     return merge.hashCode ^
         decoration.hashCode ^
         padding.hashCode ^
-        backgroundColor.hashCode ^
         style.hashCode ^
         placeholderStyle.hashCode ^
         inputPadding.hashCode ^
