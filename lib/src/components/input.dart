@@ -376,6 +376,9 @@ class ShadInputState extends State<ShadInput>
                                                 theme.colorScheme.selection
                                             : null,
                                         keyboardType: widget.keyboardType,
+                                        keyboardAppearance:
+                                            widget.keyboardAppearance ??
+                                                theme.brightness,
                                         textInputAction: widget.textInputAction,
                                         textCapitalization:
                                             widget.textCapitalization,
