@@ -18,7 +18,6 @@ class TabsPage extends StatelessWidget {
             tabs: [
               ShadTab(
                 value: 'account',
-                text: const Text('Account'),
                 content: ShadCard(
                   title: const Text('Account'),
                   description: const Text(
@@ -41,10 +40,10 @@ class TabsPage extends StatelessWidget {
                     ],
                   ),
                 ),
+                child: const Text('Account'),
               ),
               ShadTab(
                 value: 'password',
-                text: const Text('Password'),
                 content: ShadCard(
                   title: const Text('Password'),
                   description: const Text(
@@ -66,6 +65,7 @@ class TabsPage extends StatelessWidget {
                     ],
                   ),
                 ),
+                child: const Text('Password'),
               ),
             ],
           ),

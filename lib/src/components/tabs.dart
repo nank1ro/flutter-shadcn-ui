@@ -361,7 +361,7 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   const ShadTab({
     super.key,
     required this.value,
-    required this.text,
+    required this.child,
     this.content,
     this.icon,
     this.enabled = true,
@@ -416,7 +416,7 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   final T value;
 
   /// The text of the tab.
-  final Widget text;
+  final Widget child;
 
   /// The content of the tab.
   final Widget? content;
@@ -767,7 +767,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
           longPressDuration: widget.longPressDuration,
           child: DefaultTextStyle(
             style: theme.textTheme.small,
-            child: widget.text,
+            child: widget.child,
           ),
         );
       },
