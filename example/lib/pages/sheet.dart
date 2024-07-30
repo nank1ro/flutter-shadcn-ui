@@ -33,7 +33,7 @@ class _SheetPageState extends State<SheetPage> {
       ],
       children: [
         ShadButton.outline(
-          text: const Text('Open'),
+          child: const Text('Open'),
           onPressed: () {
             showShadSheet(
               context: context,
@@ -73,7 +73,7 @@ class _SheetPageState extends State<SheetPage> {
                           .toList(),
                     ),
                   ),
-                  actions: const [ShadButton(text: Text('Save changes'))],
+                  actions: const [ShadButton(child: Text('Save changes'))],
                 );
               },
             );

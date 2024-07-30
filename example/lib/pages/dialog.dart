@@ -17,7 +17,7 @@ class DialogPage extends StatelessWidget {
       appBarTitle: 'Dialog',
       children: [
         ShadButton.outline(
-          text: const Text('Edit Profile'),
+          child: const Text('Edit Profile'),
           onPressed: () {
             showShadDialog(
               context: context,
@@ -53,13 +53,13 @@ class DialogPage extends StatelessWidget {
                         .toList(),
                   ),
                 ),
-                actions: const [ShadButton(text: Text('Save changes'))],
+                actions: const [ShadButton(child: Text('Save changes'))],
               ),
             );
           },
         ),
         ShadButton.outline(
-          text: const Text('Show Dialog'),
+          child: const Text('Show Dialog'),
           onPressed: () {
             showShadDialog(
               context: context,
@@ -73,11 +73,11 @@ class DialogPage extends StatelessWidget {
                 ),
                 actions: [
                   ShadButton.outline(
-                    text: const Text('Cancel'),
+                    child: const Text('Cancel'),
                     onPressed: () => Navigator.of(context).pop(false),
                   ),
                   ShadButton(
-                    text: const Text('Continue'),
+                    child: const Text('Continue'),
                     onPressed: () => Navigator.of(context).pop(true),
                   ),
                 ],

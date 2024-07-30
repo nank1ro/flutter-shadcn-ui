@@ -71,8 +71,8 @@ class _PopoverPageState extends State<PopoverPage> {
               ),
             ),
             child: ShadButton.outline(
-              text: const Text('Open popover'),
               onPressed: popoverController.toggle,
+              child: const Text('Open popover'),
             ),
           ),
         ),

@@ -39,54 +39,54 @@ class _ButtonPageState extends State<ButtonPage> {
           ShadButton(
             size: size,
             enabled: enabled,
-            text: const Text('Primary'),
+            child: const Text('Primary'),
             onPressed: () => print('Primary'),
           ),
           ShadButton.secondary(
             size: size,
             enabled: enabled,
-            text: const Text('Secondary'),
+            child: const Text('Secondary'),
             onPressed: () => print('Secondary'),
           ),
           ShadButton.destructive(
             size: size,
             enabled: enabled,
-            text: const Text('Destructive'),
+            child: const Text('Destructive'),
           ),
           ShadButton.outline(
             size: size,
             enabled: enabled,
-            text: const Text('Outline'),
+            child: const Text('Outline'),
           ),
           ShadButton.ghost(
             size: size,
             enabled: enabled,
-            text: const Text('Ghost'),
+            child: const Text('Ghost'),
           ),
           ShadButton.link(
             size: size,
             enabled: enabled,
-            text: const Text('Link'),
+            child: const Text('Link'),
           ),
           ShadButton(
             size: size,
             enabled: enabled,
-            text: const Text('Login with Email'),
             icon: const Icon(
               Icons.mail_outlined,
               size: 16,
             ),
+            child: const Text('Login with Email'),
           ),
           ShadButton(
             size: size,
             enabled: enabled,
-            text: const Text('Please wait'),
             icon: const SizedBox.square(
               dimension: 16,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
               ),
             ),
+            child: const Text('Please wait'),
           ),
           ShadButton(
             size: size,
@@ -103,7 +103,7 @@ class _ButtonPageState extends State<ButtonPage> {
                 offset: const Offset(0, 2),
               ),
             ],
-            text: const Text('Gradient with Shadow'),
+            child: const Text('Gradient with Shadow'),
           ),
           ComponentView(
             label: 'Icon',

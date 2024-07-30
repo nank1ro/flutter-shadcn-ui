@@ -731,10 +731,6 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
           foregroundColor: selected
               ? effectiveSelectedForegroundColor
               : effectiveForegroundColor,
-          text: DefaultTextStyle(
-            style: theme.textTheme.small,
-            child: widget.text,
-          ),
           shadows: selected ? effectiveSelectedShadows : effectiveShadows,
           onPressed: () {
             inherited.controller.select(widget.value);
@@ -769,6 +765,10 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
           onDoubleTapDown: widget.onDoubleTapDown,
           onDoubleTapCancel: widget.onDoubleTapCancel,
           longPressDuration: widget.longPressDuration,
+          child: DefaultTextStyle(
+            style: theme.textTheme.small,
+            child: widget.text,
+          ),
         );
       },
     );
