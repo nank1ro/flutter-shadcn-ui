@@ -129,6 +129,7 @@ class _ShadBadgeState extends State<ShadBadge> {
       container: true,
       child: ShadGestureDetector(
         onHoverChange: (value) => isHovered.value = value,
+        onTap: widget.onPressed,
         child: ValueListenableBuilder(
           valueListenable: isHovered,
           builder: (context, hovered, child) {
