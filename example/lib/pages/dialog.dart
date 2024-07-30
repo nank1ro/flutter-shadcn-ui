@@ -25,7 +25,8 @@ class DialogPage extends StatelessWidget {
                 title: const Text('Edit Profile'),
                 description: const Text(
                     "Make changes to your profile here. Click save when you're done"),
-                content: Container(
+                actions: const [ShadButton(child: Text('Save changes'))],
+                child: Container(
                   width: 375,
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Column(
@@ -53,7 +54,6 @@ class DialogPage extends StatelessWidget {
                         .toList(),
                   ),
                 ),
-                actions: const [ShadButton(child: Text('Save changes'))],
               ),
             );
           },

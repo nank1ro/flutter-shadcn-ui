@@ -493,7 +493,6 @@ class _ShadSheetState extends State<ShadSheet>
             description: widget.description,
             alignment: side.toAlignment(),
             constraints: effectiveConstraints,
-            content: widget.content,
             actions: widget.actions,
             radius: effectiveRadius,
             closeIcon: widget.closeIcon,
@@ -518,6 +517,7 @@ class _ShadSheetState extends State<ShadSheet>
             mainAxisAlignment: effectiveMainAxisAlignment,
             scrollable: effectiveScrollable,
             scrollPadding: effectiveScrollPadding,
+            child: widget.content,
           ),
         );
       },

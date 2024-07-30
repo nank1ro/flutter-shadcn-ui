@@ -4,6 +4,7 @@
 - Fix keyboard appearance of `ShadInput` (thanks to @hieupm2096).
 - Add `onPressed` to `ShadBadge`.
 - Rename button `text` parameter into `child`.
+- Rename dialog `content` parameter into `child`.
 
 ## 0.7.0
 
