@@ -1,3 +1,9 @@
+## 0.7.1
+
+- Fix performance of `ShadSelect` with the new `optionsBuilder` parameter for a large number of options.
+- Fix keyboard appearance of `ShadInput` (thanks to @hieupm2096)
+- Add `onPressed` to `ShadBadge`
+
 ## 0.7.0
 
 - Rename Tabs `defaultValue` parameter into `value`.

@@ -21,6 +21,7 @@ class ShadBadge extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
+    this.onPressed,
   }) : variant = ShadBadgeVariant.primary;
 
   const ShadBadge.secondary({
@@ -31,6 +32,7 @@ class ShadBadge extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
+    this.onPressed,
   }) : variant = ShadBadgeVariant.secondary;
 
   const ShadBadge.outline({
@@ -41,6 +43,7 @@ class ShadBadge extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
+    this.onPressed,
   }) : variant = ShadBadgeVariant.outline;
 
   const ShadBadge.destructive({
@@ -51,6 +54,7 @@ class ShadBadge extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
+    this.onPressed,
   }) : variant = ShadBadgeVariant.destructive;
 
   const ShadBadge.raw({
@@ -62,6 +66,7 @@ class ShadBadge extends StatefulWidget {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
+    this.onPressed,
   });
 
   final ShadBadgeVariant variant;
@@ -71,6 +76,7 @@ class ShadBadge extends StatefulWidget {
   final Color? hoverBackgroundColor;
   final Color? foregroundColor;
   final EdgeInsets? padding;
+  final VoidCallback? onPressed;
 
   @override
   State<ShadBadge> createState() => _ShadBadgeState();
