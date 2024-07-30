@@ -27,7 +27,8 @@ enum ShadSelectVariant { primary, search }
 class ShadSelect<T> extends StatefulWidget {
   const ShadSelect({
     super.key,
-    required this.options,
+    this.options,
+    this.optionsBuilder,
     required this.selectedOptionBuilder,
     this.enabled = true,
     this.placeholder,
@@ -36,6 +37,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
+    this.maxWidth,
     this.maxHeight,
     this.decoration,
     this.trailing,
@@ -55,11 +57,16 @@ class ShadSelect<T> extends StatefulWidget {
         searchInputPrefix = null,
         searchPadding = null,
         search = null,
-        clearSearchOnClose = false;
+        clearSearchOnClose = false,
+        assert(
+          options != null || optionsBuilder != null,
+          'Either options or optionsBuilder must be provided',
+        );
 
   const ShadSelect.withSearch({
     super.key,
-    required this.options,
+    this.options,
+    this.optionsBuilder,
     required this.selectedOptionBuilder,
     required ValueChanged<String> this.onSearchChanged,
     this.searchDivider,
@@ -75,6 +82,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
+    this.maxWidth,
     this.maxHeight,
     this.decoration,
     this.trailing,
@@ -87,12 +95,17 @@ class ShadSelect<T> extends StatefulWidget {
     this.effects,
     this.shadows,
     this.filter,
-  }) : variant = ShadSelectVariant.search;
+  })  : variant = ShadSelectVariant.search,
+        assert(
+          options != null || optionsBuilder != null,
+          'Either options or optionsBuilder must be provided',
+        );
 
   const ShadSelect.raw({
     super.key,
     required this.variant,
-    required this.options,
+    this.options,
+    this.optionsBuilder,
     required this.selectedOptionBuilder,
     this.onSearchChanged,
     this.searchDivider,
@@ -108,6 +121,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
+    this.maxWidth,
     this.maxHeight,
     this.decoration,
     this.trailing,
@@ -120,9 +134,13 @@ class ShadSelect<T> extends StatefulWidget {
     this.effects,
     this.shadows,
     this.filter,
-  }) : assert(
+  })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
+        ),
+        assert(
+          options != null || optionsBuilder != null,
+          'Either options or optionsBuilder must be provided',
         );
 
   /// The callback that is called when the value of the [ShadSelect] changes.
@@ -141,7 +159,12 @@ class ShadSelect<T> extends StatefulWidget {
   final ShadSelectedOptionBuilder<T> selectedOptionBuilder;
 
   /// The options of the [ShadSelect].
-  final Iterable<Widget> options;
+  ///
+  /// Use `optionsBuilder` instead if you have a large number of options.
+  final Iterable<Widget>? options;
+
+  /// The builder for the options of the [ShadSelect].
+  final Widget? Function(BuildContext, int)? optionsBuilder;
 
   /// The focus node of the [ShadSelect].
   final FocusNode? focusNode;
@@ -157,6 +180,10 @@ class ShadSelect<T> extends StatefulWidget {
   /// minWidth is calculated from the max of this value and the min width of the
   /// view itself.
   final double? minWidth;
+
+  /// The maximum width of the [ShadSelect], defaults to
+  /// `double.infinity`.
+  final double? maxWidth;
 
   /// The maximum height of the [ShadSelect], defaults to
   /// `kDefaultSelectMaxHeight`.
@@ -411,6 +438,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
     final effectiveMinWidth =
         widget.minWidth ?? theme.selectTheme.minWidth ?? kDefaultSelectMinWidth;
+    final effectiveMaxWidth =
+        widget.maxWidth ?? theme.selectTheme.maxWidth ?? double.infinity;
     final effectiveMaxHeight = widget.maxHeight ??
         theme.selectTheme.maxHeight ??
         kDefaultSelectMaxHeight;
@@ -418,7 +447,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         theme.selectTheme.optionsPadding ??
         const EdgeInsets.all(4);
 
-    final search = switch (widget.variant) {
+    Widget? search = switch (widget.variant) {
       ShadSelectVariant.primary => null,
       ShadSelectVariant.search => Column(
           mainAxisSize: MainAxisSize.min,
@@ -445,6 +474,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         ),
     };
 
+    if (search != null && effectiveMaxWidth.isInfinite) {
+      search = IntrinsicWidth(child: search);
+    }
+
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.enter): controller.toggle,
@@ -457,6 +490,36 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             final calculatedMinWidth =
                 max(effectiveMinWidth, constraints.minWidth) -
                     decorationHorizontalPadding;
+
+            final effectiveConstraints = BoxConstraints(
+              minWidth: calculatedMinWidth,
+              maxWidth: effectiveMaxWidth,
+            );
+
+            late final Widget effectiveChild;
+
+            if (widget.options != null) {
+              effectiveChild = SingleChildScrollView(
+                padding: effectiveOptionsPadding,
+                controller: scrollController,
+                child: IntrinsicWidth(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: widget.options!.toList(),
+                  ),
+                ),
+              );
+            } else {
+              effectiveChild = ListView.builder(
+                padding: effectiveOptionsPadding,
+                controller: scrollController,
+                itemBuilder: (context, index) {
+                  return widget.optionsBuilder?.call(context, index);
+                },
+              );
+            }
+
             final Widget select = ShadDisabled(
               disabled: !widget.enabled,
               child: ShadFocusable(
@@ -474,7 +537,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                   behavior: HitTestBehavior.opaque,
                   onTap: controller.toggle,
                   child: ConstrainedBox(
-                    constraints: BoxConstraints(minWidth: calculatedMinWidth),
+                    constraints: effectiveConstraints,
                     child: Padding(
                       padding: effectivePadding,
                       child: Row(
@@ -580,35 +643,26 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                   });
 
                   return ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: effectiveMaxHeight),
+                    constraints: BoxConstraints(
+                      maxHeight: effectiveMaxHeight,
+                      minWidth: calculatedMinWidth,
+                      maxWidth: effectiveMaxWidth,
+                    ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (search != null)
                           Flexible(
                             child: ConstrainedBox(
-                              constraints:
-                                  BoxConstraints(minWidth: calculatedMinWidth),
-                              child: IntrinsicWidth(child: search),
+                              constraints: effectiveConstraints,
+                              child: search,
                             ),
                           ),
                         if (scrollToTopChild != null) scrollToTopChild,
                         Flexible(
                           child: ConstrainedBox(
-                            constraints:
-                                BoxConstraints(minWidth: calculatedMinWidth),
-                            child: SingleChildScrollView(
-                              padding: effectiveOptionsPadding,
-                              controller: scrollController,
-                              child: IntrinsicWidth(
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: widget.options.toList(),
-                                ),
-                              ),
-                            ),
+                            constraints: effectiveConstraints,
+                            child: effectiveChild,
                           ),
                         ),
                         if (scrollToBottomChild != null) scrollToBottomChild,
@@ -771,11 +825,13 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
                         ),
                       ),
                     ),
-                DefaultTextStyle(
-                  style: theme.textTheme.muted.copyWith(
-                    color: theme.colorScheme.popoverForeground,
+                Flexible(
+                  child: DefaultTextStyle(
+                    style: theme.textTheme.muted.copyWith(
+                      color: theme.colorScheme.popoverForeground,
+                    ),
+                    child: widget.child,
                   ),
-                  child: widget.child,
                 ),
               ],
             ),

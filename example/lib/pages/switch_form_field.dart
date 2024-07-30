@@ -80,7 +80,7 @@ class _SwitchFormFieldPageState extends State<SwitchFormFieldPage> {
                 ),
                 const SizedBox(height: 16),
                 ShadButton(
-                  text: const Text('Submit'),
+                  child: const Text('Submit'),
                   onPressed: () {
                     print('submitted');
                     if (formKey.currentState!.saveAndValidate()) {

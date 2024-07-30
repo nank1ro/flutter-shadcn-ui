@@ -51,11 +51,11 @@ class CardProject extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ShadButton.outline(
-            text: const Text('Cancel'),
+            child: const Text('Cancel'),
             onPressed: () {},
           ),
           ShadButton(
-            text: const Text('Deploy'),
+            child: const Text('Deploy'),
             onPressed: () {},
           ),
         ],
@@ -127,12 +127,12 @@ class _CardNotificationsState extends State<CardNotifications> {
       description: const Text('You have 3 unread messages.'),
       footer: ShadButton(
         width: double.infinity,
-        text: const Text('Mark all as read'),
         icon: const Padding(
           padding: EdgeInsets.only(right: 8),
           child: ShadImage.square(LucideIcons.check, size: 16),
         ),
         onPressed: () {},
+        child: const Text('Mark all as read'),
       ),
       child: Column(
         children: [

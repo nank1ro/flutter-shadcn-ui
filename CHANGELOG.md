@@ -1,3 +1,13 @@
+## 0.7.1
+
+- Fix performance of `ShadSelect` with the new `optionsBuilder` parameter for a large number of options.
+- Fix keyboard appearance of `ShadInput` (thanks to @hieupm2096).
+- Add `onPressed` to `ShadBadge`.
+- Rename button `text` parameter into `child`.
+- Rename dialog `content` parameter into `child`.
+- Rename sheet `content` parameter into `child`.
+- Rename tab `text` parameter into `child`.
+
 ## 0.7.0
 
 - Rename Tabs `defaultValue` parameter into `value`.

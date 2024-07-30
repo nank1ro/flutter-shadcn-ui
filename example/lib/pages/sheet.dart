@@ -33,7 +33,7 @@ class _SheetPageState extends State<SheetPage> {
       ],
       children: [
         ShadButton.outline(
-          text: const Text('Open'),
+          child: const Text('Open'),
           onPressed: () {
             showShadSheet(
               context: context,
@@ -47,7 +47,8 @@ class _SheetPageState extends State<SheetPage> {
                   title: const Text('Edit Profile'),
                   description: const Text(
                       "Make changes to your profile here. Click save when you're done"),
-                  content: Padding(
+                  actions: const [ShadButton(child: Text('Save changes'))],
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -73,7 +74,6 @@ class _SheetPageState extends State<SheetPage> {
                           .toList(),
                     ),
                   ),
-                  actions: const [ShadButton(text: Text('Save changes'))],
                 );
               },
             );

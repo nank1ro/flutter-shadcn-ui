@@ -14,6 +14,7 @@ class ShadSelectTheme {
     this.merge = true,
     this.decoration,
     this.minWidth,
+    this.maxWidth,
     this.maxHeight,
     this.padding,
     this.optionsPadding,
@@ -30,6 +31,7 @@ class ShadSelectTheme {
   final bool merge;
   final ShadDecoration? decoration;
   final double? minWidth;
+  final double? maxWidth;
   final double? maxHeight;
   final EdgeInsets? padding;
   final EdgeInsets? optionsPadding;
@@ -58,6 +60,7 @@ class ShadSelectTheme {
       merge: b.merge,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       minWidth: lerpDouble(a.minWidth, b.minWidth, t),
+      maxWidth: lerpDouble(a.maxWidth, b.maxWidth, t),
       maxHeight: lerpDouble(a.maxHeight, b.maxHeight, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       optionsPadding: EdgeInsets.lerp(a.optionsPadding, b.optionsPadding, t),
@@ -77,6 +80,7 @@ class ShadSelectTheme {
     bool? merge,
     ShadDecoration? decoration,
     double? minWidth,
+    double? maxWidth,
     double? maxHeight,
     EdgeInsets? padding,
     EdgeInsets? optionsPadding,
@@ -95,6 +99,7 @@ class ShadSelectTheme {
       merge: merge ?? this.merge,
       decoration: decoration ?? this.decoration,
       minWidth: minWidth ?? this.minWidth,
+      maxWidth: maxWidth ?? this.maxWidth,
       maxHeight: maxHeight ?? this.maxHeight,
       padding: padding ?? this.padding,
       optionsPadding: optionsPadding ?? this.optionsPadding,
@@ -117,6 +122,7 @@ class ShadSelectTheme {
     return copyWith(
       decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       minWidth: other.minWidth,
+      maxWidth: other.maxWidth,
       maxHeight: other.maxHeight,
       padding: other.padding,
       optionsPadding: other.optionsPadding,
@@ -139,6 +145,7 @@ class ShadSelectTheme {
         other.merge == merge &&
         other.decoration == decoration &&
         other.minWidth == minWidth &&
+        other.maxWidth == maxWidth &&
         other.maxHeight == maxHeight &&
         other.padding == padding &&
         other.optionsPadding == optionsPadding &&
@@ -157,6 +164,7 @@ class ShadSelectTheme {
     return merge.hashCode ^
         decoration.hashCode ^
         minWidth.hashCode ^
+        maxWidth.hashCode ^
         maxHeight.hashCode ^
         padding.hashCode ^
         optionsPadding.hashCode ^

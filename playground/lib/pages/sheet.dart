@@ -24,7 +24,7 @@ class SheetPage extends StatelessWidget {
           child: () {
             return switch (style) {
               SheetStyle.primary => ShadButton.outline(
-                  text: const Text('Open'),
+                  child: const Text('Open'),
                   onPressed: () => showShadSheet(
                     side: ShadSheetSide.right,
                     context: context,
@@ -41,7 +41,7 @@ class SheetPage extends StatelessWidget {
                       children: [
                         ShadButton.outline(
                           width: 100,
-                          text: const Text('Top'),
+                          child: const Text('Top'),
                           onPressed: () => showShadSheet(
                             side: ShadSheetSide.top,
                             context: context,
@@ -51,7 +51,7 @@ class SheetPage extends StatelessWidget {
                         ),
                         ShadButton.outline(
                           width: 100,
-                          text: const Text('Bottom'),
+                          child: const Text('Bottom'),
                           onPressed: () => showShadSheet(
                             side: ShadSheetSide.bottom,
                             context: context,
@@ -66,7 +66,7 @@ class SheetPage extends StatelessWidget {
                       children: [
                         ShadButton.outline(
                           width: 100,
-                          text: const Text('Right'),
+                          child: const Text('Right'),
                           onPressed: () => showShadSheet(
                             side: ShadSheetSide.right,
                             context: context,
@@ -76,7 +76,7 @@ class SheetPage extends StatelessWidget {
                         ),
                         ShadButton.outline(
                           width: 100,
-                          text: const Text('Left'),
+                          child: const Text('Left'),
                           onPressed: () => showShadSheet(
                             side: ShadSheetSide.left,
                             context: context,
@@ -119,7 +119,10 @@ class EditProfileSheet extends StatelessWidget {
       title: const Text('Edit Profile'),
       description: const Text(
           "Make changes to your profile here. Click save when you're done"),
-      content: Padding(
+      actions: const [
+        ShadButton(child: Text('Save changes')),
+      ],
+      child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -146,9 +149,6 @@ class EditProfileSheet extends StatelessWidget {
               .toList(),
         ),
       ),
-      actions: const [
-        ShadButton(text: Text('Save changes')),
-      ],
     );
   }
 }

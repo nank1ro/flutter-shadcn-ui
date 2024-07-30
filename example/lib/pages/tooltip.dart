@@ -28,7 +28,7 @@ class _TooltipPageState extends State<TooltipPage> {
           builder: (context) => const Text('Add to library'),
           child: ShadButton.outline(
             focusNode: focusNode,
-            text: const Text('Hover/Focus'),
+            child: const Text('Hover/Focus'),
             onPressed: () {},
           ),
         ),

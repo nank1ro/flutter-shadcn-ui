@@ -81,7 +81,7 @@ class ShadDialog extends StatelessWidget {
     super.key,
     this.title,
     this.description,
-    this.content,
+    this.child,
     this.actions = const [],
     this.closeIcon,
     this.closeIconSrc,
@@ -114,7 +114,7 @@ class ShadDialog extends StatelessWidget {
     super.key,
     this.title,
     this.description,
-    this.content,
+    this.child,
     this.actions = const [],
     this.closeIcon,
     this.closeIconSrc,
@@ -148,7 +148,7 @@ class ShadDialog extends StatelessWidget {
     required this.variant,
     this.title,
     this.description,
-    this.content,
+    this.child,
     this.actions = const [],
     this.closeIcon,
     this.closeIconSrc,
@@ -179,7 +179,7 @@ class ShadDialog extends StatelessWidget {
 
   final Widget? title;
   final Widget? description;
-  final Widget? content;
+  final Widget? child;
   final ShadDialogVariant variant;
   final List<Widget> actions;
   final Widget? closeIcon;
@@ -380,10 +380,10 @@ class ShadDialog extends StatelessWidget {
                           textAlign: effectiveDescriptionTextAlign,
                           child: description!,
                         ),
-                      if (content != null)
+                      if (child != null)
                         DefaultTextStyle(
                           style: effectiveDescriptionStyle,
-                          child: content!,
+                          child: child!,
                         ),
                       if (actions.isNotEmpty) effectiveActions,
                     ].separatedBy(SizedBox(height: effectiveGap)),

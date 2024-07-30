@@ -29,7 +29,7 @@ enum ShadButtonSize {
 class ShadButton extends StatefulWidget {
   const ShadButton({
     super.key,
-    this.text,
+    this.child,
     this.icon,
     this.onPressed,
     this.size,
@@ -78,7 +78,7 @@ class ShadButton extends StatefulWidget {
     super.key,
     required this.variant,
     this.size,
-    this.text,
+    this.child,
     this.icon,
     this.onPressed,
     this.applyIconColorFilter,
@@ -124,7 +124,7 @@ class ShadButton extends StatefulWidget {
 
   const ShadButton.destructive({
     super.key,
-    this.text,
+    this.child,
     this.icon,
     this.onPressed,
     this.size,
@@ -171,7 +171,7 @@ class ShadButton extends StatefulWidget {
 
   const ShadButton.outline({
     super.key,
-    this.text,
+    this.child,
     this.icon,
     this.onPressed,
     this.size,
@@ -218,7 +218,7 @@ class ShadButton extends StatefulWidget {
 
   const ShadButton.secondary({
     super.key,
-    this.text,
+    this.child,
     this.icon,
     this.onPressed,
     this.size,
@@ -265,7 +265,7 @@ class ShadButton extends StatefulWidget {
 
   const ShadButton.ghost({
     super.key,
-    this.text,
+    this.child,
     this.icon,
     this.onPressed,
     this.size,
@@ -312,7 +312,7 @@ class ShadButton extends StatefulWidget {
 
   const ShadButton.link({
     super.key,
-    required this.text,
+    required this.child,
     this.onPressed,
     this.size,
     this.applyIconColorFilter,
@@ -360,7 +360,7 @@ class ShadButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final VoidCallback? onLongPress;
   final Widget? icon;
-  final Widget? text;
+  final Widget? child;
   final ShadButtonVariant variant;
   final ShadButtonSize? size;
   final bool? applyIconColorFilter;
@@ -473,7 +473,7 @@ class _ShadButtonState extends State<ShadButton> {
 
   void assertCheckHasTextOrIcon() {
     assert(
-      widget.text != null || widget.icon != null,
+      widget.child != null || widget.icon != null,
       'Either text or icon must be provided',
     );
   }
@@ -493,7 +493,7 @@ class _ShadButtonState extends State<ShadButton> {
     ShadThemeData theme,
     ShadButtonSize size,
   ) {
-    if (widget.icon != null && widget.text == null) {
+    if (widget.icon != null && widget.child == null) {
       return buttonTheme(theme).sizesTheme?.icon ??
           theme.buttonSizesTheme.icon!;
     }
@@ -763,7 +763,7 @@ class _ShadButtonState extends State<ShadButton> {
                           textDirection: effectiveTextDirection,
                           children: [
                             if (icon != null) icon,
-                            if (widget.text != null)
+                            if (widget.child != null)
                               DefaultTextStyle(
                                 style: theme.textTheme.small.copyWith(
                                   color: hasPressedForegroundColor && pressed
@@ -779,7 +779,7 @@ class _ShadButtonState extends State<ShadButton> {
                                   decorationStyle: TextDecorationStyle.solid,
                                 ),
                                 textAlign: TextAlign.center,
-                                child: widget.text!,
+                                child: widget.child!,
                               ),
                           ].separatedBy(SizedBox(width: effectiveGap)),
                         ),
