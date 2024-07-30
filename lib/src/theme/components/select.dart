@@ -14,6 +14,7 @@ class ShadSelectTheme {
     this.merge = true,
     this.decoration,
     this.minWidth,
+    this.maxWidth,
     this.maxHeight,
     this.padding,
     this.optionsPadding,
@@ -24,11 +25,13 @@ class ShadSelectTheme {
     this.clearSearchOnClose,
     this.effects,
     this.shadows,
+    this.filter,
   });
 
   final bool merge;
   final ShadDecoration? decoration;
   final double? minWidth;
+  final double? maxWidth;
   final double? maxHeight;
   final EdgeInsets? padding;
   final EdgeInsets? optionsPadding;
@@ -37,6 +40,9 @@ class ShadSelectTheme {
   final ShadAnchorBase? anchor;
   final EdgeInsets? searchPadding;
   final bool? clearSearchOnClose;
+
+  /// {@macro popover.filter}
+  final ImageFilter? filter;
 
   /// {@macro popover.effects}
   final List<Effect<dynamic>>? effects;
@@ -54,12 +60,15 @@ class ShadSelectTheme {
       merge: b.merge,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       minWidth: lerpDouble(a.minWidth, b.minWidth, t),
+      maxWidth: lerpDouble(a.maxWidth, b.maxWidth, t),
       maxHeight: lerpDouble(a.maxHeight, b.maxHeight, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       optionsPadding: EdgeInsets.lerp(a.optionsPadding, b.optionsPadding, t),
-      showScrollToTopChevron: b.showScrollToTopChevron,
-      showScrollToBottomChevron: b.showScrollToBottomChevron,
-      anchor: b.anchor,
+      showScrollToTopChevron:
+          t < 0.5 ? a.showScrollToTopChevron : b.showScrollToTopChevron,
+      showScrollToBottomChevron:
+          t < 0.5 ? a.showScrollToBottomChevron : b.showScrollToBottomChevron,
+      anchor: t < 0.5 ? a.anchor : b.anchor,
       searchPadding: EdgeInsets.lerp(a.searchPadding, b.searchPadding, t),
       clearSearchOnClose: t < 0.5 ? a.clearSearchOnClose : b.clearSearchOnClose,
       effects: t < 0.5 ? a.effects : b.effects,
@@ -71,6 +80,7 @@ class ShadSelectTheme {
     bool? merge,
     ShadDecoration? decoration,
     double? minWidth,
+    double? maxWidth,
     double? maxHeight,
     EdgeInsets? padding,
     EdgeInsets? optionsPadding,
@@ -83,11 +93,13 @@ class ShadSelectTheme {
     Duration? showDuration,
     List<Effect<dynamic>>? effects,
     List<BoxShadow>? shadows,
+    ImageFilter? filter,
   }) {
     return ShadSelectTheme(
       merge: merge ?? this.merge,
       decoration: decoration ?? this.decoration,
       minWidth: minWidth ?? this.minWidth,
+      maxWidth: maxWidth ?? this.maxWidth,
       maxHeight: maxHeight ?? this.maxHeight,
       padding: padding ?? this.padding,
       optionsPadding: optionsPadding ?? this.optionsPadding,
@@ -100,6 +112,7 @@ class ShadSelectTheme {
       clearSearchOnClose: clearSearchOnClose ?? this.clearSearchOnClose,
       effects: effects ?? this.effects,
       shadows: shadows ?? this.shadows,
+      filter: filter ?? this.filter,
     );
   }
 
@@ -109,6 +122,7 @@ class ShadSelectTheme {
     return copyWith(
       decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       minWidth: other.minWidth,
+      maxWidth: other.maxWidth,
       maxHeight: other.maxHeight,
       padding: other.padding,
       optionsPadding: other.optionsPadding,
@@ -119,6 +133,7 @@ class ShadSelectTheme {
       clearSearchOnClose: other.clearSearchOnClose,
       effects: other.effects,
       shadows: other.shadows,
+      filter: other.filter,
     );
   }
 
@@ -130,6 +145,7 @@ class ShadSelectTheme {
         other.merge == merge &&
         other.decoration == decoration &&
         other.minWidth == minWidth &&
+        other.maxWidth == maxWidth &&
         other.maxHeight == maxHeight &&
         other.padding == padding &&
         other.optionsPadding == optionsPadding &&
@@ -139,7 +155,8 @@ class ShadSelectTheme {
         other.searchPadding == searchPadding &&
         other.clearSearchOnClose == clearSearchOnClose &&
         other.effects == effects &&
-        other.shadows == shadows;
+        other.shadows == shadows &&
+        other.filter == filter;
   }
 
   @override
@@ -147,6 +164,7 @@ class ShadSelectTheme {
     return merge.hashCode ^
         decoration.hashCode ^
         minWidth.hashCode ^
+        maxWidth.hashCode ^
         maxHeight.hashCode ^
         padding.hashCode ^
         optionsPadding.hashCode ^
@@ -156,6 +174,7 @@ class ShadSelectTheme {
         searchPadding.hashCode ^
         clearSearchOnClose.hashCode ^
         effects.hashCode ^
-        shadows.hashCode;
+        shadows.hashCode ^
+        filter.hashCode;
   }
 }

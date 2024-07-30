@@ -39,7 +39,7 @@ class ShadTabsInheritedWidget<T> extends InheritedWidget {
 }
 
 class ShadTabsController<T> extends ChangeNotifier {
-  ShadTabsController({required T defaultValue}) : selected = defaultValue;
+  ShadTabsController({required T value}) : selected = value;
 
   T selected;
 
@@ -53,8 +53,8 @@ class ShadTabsController<T> extends ChangeNotifier {
 class RestorableShadTabsController<T>
     extends RestorableChangeNotifier<ShadTabsController<T>> {
   /// Creates a [RestorableShadTabsController].
-  factory RestorableShadTabsController({required T defaultValue}) =>
-      RestorableShadTabsController.fromValue(defaultValue);
+  factory RestorableShadTabsController({required T value}) =>
+      RestorableShadTabsController.fromValue(value);
 
   RestorableShadTabsController.fromValue(T value) : selected = value;
 
@@ -62,12 +62,12 @@ class RestorableShadTabsController<T>
 
   @override
   ShadTabsController<T> createDefaultValue() {
-    return ShadTabsController<T>(defaultValue: selected);
+    return ShadTabsController<T>(value: selected);
   }
 
   @override
   ShadTabsController<T> fromPrimitives(Object? data) {
-    return ShadTabsController<T>(defaultValue: data! as T);
+    return ShadTabsController<T>(value: data! as T);
   }
 
   @override
@@ -79,7 +79,7 @@ class RestorableShadTabsController<T>
 class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
   const ShadTabs({
     super.key,
-    this.defaultValue,
+    this.value,
     required this.tabs,
     this.controller,
     this.gap,
@@ -93,14 +93,14 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
     this.expandContent,
     this.restorationId,
   }) : assert(
-          (defaultValue != null) ^ (controller != null),
-          'Either defaultValue or controller must be provided',
+          (value != null) ^ (controller != null),
+          'Either value or controller must be provided',
         );
 
-  /// {@template ShadTabs.defaultValue}
+  /// {@template ShadTabs.value}
   /// The currently selected tab.
   /// {@endtemplate}
-  final T? defaultValue;
+  final T? value;
 
   /// {@template ShadTabs.tabs}
   /// The tabs to display.
@@ -195,7 +195,7 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
     super.initState();
     _tabKeys = widget.tabs.map((_) => GlobalKey()).toList();
     if (widget.controller == null) {
-      _createLocalController(widget.defaultValue as T);
+      _createLocalController(widget.value as T);
     }
     orderedValues = widget.tabs.map((e) => e.value).toList();
   }
@@ -268,7 +268,7 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
         ShadDecoration(
           merge: false,
           color: theme.colorScheme.muted,
-          border: ShadBorder(radius: theme.radius),
+          border: ShadBorder.all(radius: theme.radius, width: 0),
         );
 
     final effectiveGap = widget.gap ?? tabsTheme.gap ?? 8;
@@ -331,7 +331,7 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
                     policy: WidgetOrderTraversalPolicy(),
                     child: KeyedSubtree(
                       key: _tabKeys[index],
-                      child: tab.content,
+                      child: tab.content ?? const SizedBox.shrink(),
                     ),
                   ),
                 );
@@ -361,8 +361,8 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   const ShadTab({
     super.key,
     required this.value,
-    required this.text,
-    required this.content,
+    required this.child,
+    this.content,
     this.icon,
     this.enabled = true,
     this.flex = 1,
@@ -416,10 +416,10 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   final T value;
 
   /// The text of the tab.
-  final Widget text;
+  final Widget child;
 
   /// The content of the tab.
-  final Widget content;
+  final Widget? content;
 
   /// The icon of the tab.
   final Widget? icon;
@@ -674,11 +674,23 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
         final isFirstTab = inherited.orderedValues.first == widget.value;
         final isLastTab = inherited.orderedValues.last == widget.value;
 
-        final effectiveDecoration = widget.decoration ??
-            tabsTheme.tabDecoration ??
-            ShadDecoration(
-              border: ShadBorder(radius: BorderRadius.circular(2)),
-              secondaryBorder: ShadBorder(
+        final defaultDecoration = switch (theme.disableSecondaryBorder) {
+          true => ShadDecoration(
+              border: ShadBorder.all(
+                radius: BorderRadius.circular(2),
+                width: 0,
+                padding: const EdgeInsets.all(2),
+              ),
+              focusedBorder: ShadBorder.all(
+                width: 2,
+                radius: BorderRadius.circular(2),
+              ),
+            ),
+          false => ShadDecoration(
+              border:
+                  ShadBorder.all(radius: BorderRadius.circular(2), width: 0),
+              secondaryBorder: ShadBorder.all(
+                width: 0,
                 radius: BorderRadius.circular(2),
                 padding: EdgeInsets.fromLTRB(
                   isFirstTab ? 4 : 2,
@@ -687,7 +699,8 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
                   4,
                 ),
               ),
-              secondaryFocusedBorder: ShadBorder(
+              secondaryFocusedBorder: ShadBorder.all(
+                width: 2,
                 radius: theme.radius,
                 padding: EdgeInsets.fromLTRB(
                   isFirstTab ? 2 : 0,
@@ -696,7 +709,11 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
                   2,
                 ),
               ),
-            );
+            ),
+        };
+
+        final effectiveDecoration =
+            widget.decoration ?? tabsTheme.tabDecoration ?? defaultDecoration;
 
         return ShadButton.secondary(
           icon: widget.icon,
@@ -714,10 +731,6 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
           foregroundColor: selected
               ? effectiveSelectedForegroundColor
               : effectiveForegroundColor,
-          text: DefaultTextStyle(
-            style: theme.textTheme.small,
-            child: widget.text,
-          ),
           shadows: selected ? effectiveSelectedShadows : effectiveShadows,
           onPressed: () {
             inherited.controller.select(widget.value);
@@ -752,6 +765,10 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
           onDoubleTapDown: widget.onDoubleTapDown,
           onDoubleTapCancel: widget.onDoubleTapCancel,
           longPressDuration: widget.longPressDuration,
+          child: DefaultTextStyle(
+            style: theme.textTheme.small,
+            child: widget.child,
+          ),
         );
       },
     );

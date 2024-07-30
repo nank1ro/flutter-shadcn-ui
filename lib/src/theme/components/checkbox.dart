@@ -13,6 +13,7 @@ class ShadCheckboxTheme {
     this.decoration,
     this.size,
     this.padding,
+    this.crossAxisAlignment,
   });
 
   final bool merge;
@@ -27,6 +28,9 @@ class ShadCheckboxTheme {
 
   final EdgeInsets? padding;
 
+  /// {@macro ShadCheckboxTheme.crossAxisAlignment}
+  final CrossAxisAlignment? crossAxisAlignment;
+
   static ShadCheckboxTheme lerp(
     ShadCheckboxTheme a,
     ShadCheckboxTheme b,
@@ -40,6 +44,7 @@ class ShadCheckboxTheme {
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       size: lerpDouble(a.size, b.size, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      crossAxisAlignment: t < .5 ? a.crossAxisAlignment : b.crossAxisAlignment,
     );
   }
 
@@ -50,6 +55,7 @@ class ShadCheckboxTheme {
     Duration? duration,
     ShadDecoration? decoration,
     EdgeInsets? padding,
+    CrossAxisAlignment? crossAxisAlignment,
   }) {
     return ShadCheckboxTheme(
       merge: merge ?? this.merge,
@@ -58,6 +64,7 @@ class ShadCheckboxTheme {
       size: size ?? this.size,
       color: color ?? this.color,
       padding: padding ?? this.padding,
+      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
     );
   }
 
@@ -70,6 +77,7 @@ class ShadCheckboxTheme {
       decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       size: other.size,
       padding: other.padding,
+      crossAxisAlignment: other.crossAxisAlignment,
     );
   }
 
@@ -83,7 +91,8 @@ class ShadCheckboxTheme {
         other.size == size &&
         other.duration == duration &&
         other.decoration == decoration &&
-        other.padding == padding;
+        other.padding == padding &&
+        other.crossAxisAlignment == crossAxisAlignment;
   }
 
   @override
@@ -93,6 +102,7 @@ class ShadCheckboxTheme {
         size.hashCode ^
         duration.hashCode ^
         decoration.hashCode ^
-        padding.hashCode;
+        padding.hashCode ^
+        crossAxisAlignment.hashCode;
   }
 }

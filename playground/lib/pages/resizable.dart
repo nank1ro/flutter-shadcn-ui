@@ -44,8 +44,7 @@ class BasicResizable extends StatelessWidget {
     final theme = ShadTheme.of(context);
     return ShadDecorator(
       decoration: ShadDecoration(
-        border: ShadBorder(
-          width: 1,
+        border: ShadBorder.all(
           color: theme.colorScheme.border,
           radius: theme.radius,
         ),
@@ -96,8 +95,7 @@ class VerticalResizable extends StatelessWidget {
     final theme = ShadTheme.of(context);
     return ShadDecorator(
       decoration: ShadDecoration(
-        border: ShadBorder(
-          width: 1,
+        border: ShadBorder.all(
           color: theme.colorScheme.border,
           radius: theme.radius,
         ),
@@ -136,7 +134,7 @@ class HandleResizable extends StatelessWidget {
     final theme = ShadTheme.of(context);
     return ShadDecorator(
       decoration: ShadDecoration(
-        border: ShadBorder(
+        border: ShadBorder.all(
           width: 1,
           color: theme.colorScheme.border,
           radius: theme.radius,

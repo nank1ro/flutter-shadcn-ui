@@ -15,62 +15,68 @@ enum ShadBadgeVariant {
 class ShadBadge extends StatefulWidget {
   const ShadBadge({
     super.key,
-    required this.text,
+    required this.child,
     this.shape,
     this.backgroundColor,
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
+    this.onPressed,
   }) : variant = ShadBadgeVariant.primary;
 
   const ShadBadge.secondary({
     super.key,
-    required this.text,
+    required this.child,
     this.shape,
     this.backgroundColor,
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
+    this.onPressed,
   }) : variant = ShadBadgeVariant.secondary;
 
   const ShadBadge.outline({
     super.key,
-    required this.text,
+    required this.child,
     this.shape,
     this.backgroundColor,
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
+    this.onPressed,
   }) : variant = ShadBadgeVariant.outline;
 
   const ShadBadge.destructive({
     super.key,
-    required this.text,
+    required this.child,
     this.shape,
     this.backgroundColor,
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
+    this.onPressed,
   }) : variant = ShadBadgeVariant.destructive;
 
   const ShadBadge.raw({
     super.key,
     required this.variant,
-    required this.text,
+    required this.child,
     this.shape,
     this.backgroundColor,
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
+    this.onPressed,
   });
 
   final ShadBadgeVariant variant;
-  final Widget text;
+  final Widget child;
   final ShapeBorder? shape;
   final Color? backgroundColor;
   final Color? hoverBackgroundColor;
   final Color? foregroundColor;
   final EdgeInsets? padding;
+  final VoidCallback? onPressed;
 
   @override
   State<ShadBadge> createState() => _ShadBadgeState();
@@ -123,6 +129,7 @@ class _ShadBadgeState extends State<ShadBadge> {
       container: true,
       child: ShadGestureDetector(
         onHoverChange: (value) => isHovered.value = value,
+        onTap: widget.onPressed,
         child: ValueListenableBuilder(
           valueListenable: isHovered,
           builder: (context, hovered, child) {
@@ -147,7 +154,7 @@ class _ShadBadgeState extends State<ShadBadge> {
                   height: 16 / 12,
                 ),
                 textAlign: TextAlign.center,
-                child: widget.text,
+                child: widget.child,
               ),
             ],
           ),

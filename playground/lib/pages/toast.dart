@@ -25,7 +25,7 @@ class ToastPage extends StatelessWidget {
         child: () {
           return switch (style) {
             ToastStyle.schedule => ShadButton.outline(
-                text: const Text('Add to calendar'),
+                child: const Text('Add to calendar'),
                 onPressed: () {
                   ShadToaster.of(context).show(
                     ShadToast(
@@ -33,7 +33,7 @@ class ToastPage extends StatelessWidget {
                       description:
                           const Text('Friday, February 10, 2023 at 5:57 PM'),
                       action: ShadButton.outline(
-                        text: const Text('Undo'),
+                        child: const Text('Undo'),
                         onPressed: () => ShadToaster.of(context).hide(),
                       ),
                     ),
@@ -41,7 +41,7 @@ class ToastPage extends StatelessWidget {
                 },
               ),
             ToastStyle.destructive => ShadButton.outline(
-                text: const Text('Show Toast'),
+                child: const Text('Show Toast'),
                 onPressed: () {
                   ShadToaster.of(context).show(
                     ShadToast.destructive(
@@ -49,20 +49,20 @@ class ToastPage extends StatelessWidget {
                       description:
                           const Text('There was a problem with your request'),
                       action: ShadButton.destructive(
-                        text: const Text('Try again'),
                         decoration: ShadDecoration(
-                          border: ShadBorder(
+                          border: ShadBorder.all(
                             color: theme.colorScheme.destructiveForeground,
                           ),
                         ),
                         onPressed: () => ShadToaster.of(context).hide(),
+                        child: const Text('Try again'),
                       ),
                     ),
                   );
                 },
               ),
             ToastStyle.simple => ShadButton.outline(
-                text: const Text('Show Toast'),
+                child: const Text('Show Toast'),
                 onPressed: () {
                   ShadToaster.of(context).show(
                     const ShadToast(
@@ -72,7 +72,7 @@ class ToastPage extends StatelessWidget {
                 },
               ),
             ToastStyle.withTitle => ShadButton.outline(
-                text: const Text('Show Toast'),
+                child: const Text('Show Toast'),
                 onPressed: () {
                   ShadToaster.of(context).show(
                     const ShadToast(
@@ -84,7 +84,7 @@ class ToastPage extends StatelessWidget {
                 },
               ),
             ToastStyle.withAction => ShadButton.outline(
-                text: const Text('Show Toast'),
+                child: const Text('Show Toast'),
                 onPressed: () {
                   ShadToaster.of(context).show(
                     ShadToast(
@@ -92,7 +92,7 @@ class ToastPage extends StatelessWidget {
                       description:
                           const Text('There was a problem with your request'),
                       action: ShadButton.outline(
-                        text: const Text('Try again'),
+                        child: const Text('Try again'),
                         onPressed: () => ShadToaster.of(context).hide(),
                       ),
                     ),

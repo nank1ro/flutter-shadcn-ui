@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -43,6 +45,7 @@ class ShadPopover extends StatefulWidget {
     this.shadows,
     this.padding,
     this.decoration,
+    this.filter,
   }) : assert(
           (controller != null) ^ (visible != null),
           'Either controller or visible must be provided',
@@ -98,6 +101,11 @@ class ShadPopover extends StatefulWidget {
   /// The decoration of the [popover].
   /// {@endtemplate}
   final ShadDecoration? decoration;
+
+  /// {@template popover.filter}
+  /// The filter of the [popover], defaults to `null`.
+  /// {@endtemplate}
+  final ImageFilter? filter;
 
   @override
   State<ShadPopover> createState() => _ShadPopoverState();
@@ -159,6 +167,8 @@ class _ShadPopoverState extends State<ShadPopover> {
         theme.popoverTheme.anchor ??
         const ShadAnchorAuto(verticalOffset: 24);
 
+    final effectiveFilter = widget.filter ?? theme.popoverTheme.filter;
+
     Widget popover = ShadDecorator(
       decoration: effectiveDecoration,
       child: Padding(
@@ -174,6 +184,13 @@ class _ShadPopoverState extends State<ShadPopover> {
         ),
       ),
     );
+
+    if (effectiveFilter != null) {
+      popover = BackdropFilter(
+        filter: widget.filter!,
+        child: popover,
+      );
+    }
 
     if (effectiveEffects.isNotEmpty) {
       popover = Animate(

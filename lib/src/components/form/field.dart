@@ -31,8 +31,9 @@ class ShadFormBuilderField<T> extends FormField<T> {
                 field as ShadFormBuilderFieldState<ShadFormBuilderField<T>, T>;
             final hasError = field.hasError;
 
-            final effectiveError =
-                hasError ? error ?? Text(field.errorText!) : null;
+            final effectiveError = hasError
+                ? error?.call(field.errorText!) ?? Text(field.errorText!)
+                : null;
 
             return ShadInputDecorator(
               label: label,
@@ -51,7 +52,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
   final FocusNode? focusNode;
 
   final Widget? label;
-  final Widget? error;
+  final Widget Function(String error)? error;
   final Widget? description;
   final ValueChanged<T?>? onChanged;
   final ValueTransformer<T?>? valueTransformer;

@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
-import 'package:shadcn_ui/src/theme/themes/component_defaults.dart';
+import 'package:shadcn_ui/src/theme/themes/default_theme_variant.dart';
 
 extension on TextStyle {
   TextStyle get omitFamilyAndPackage {
@@ -243,7 +243,7 @@ class ShadTextTheme {
     ShadTextTheme? textTheme,
   }) {
     final effectiveTextTheme =
-        textTheme ?? ShadDefaultComponentThemes.textTheme();
+        textTheme ?? ShadDefaultThemeVariant.defaultTextTheme;
 
     final p = GoogleFontTextStyle(
       effectiveTextTheme.p.omitFamilyAndPackage,

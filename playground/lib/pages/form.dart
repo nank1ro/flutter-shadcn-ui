@@ -145,7 +145,7 @@ class _FormPageState extends State<FormPage> {
                 }(),
                 const SizedBox(height: 16),
                 ShadButton(
-                  text: const Text('Submit'),
+                  child: const Text('Submit'),
                   onPressed: () {
                     if (formKey.currentState!.saveAndValidate()) {
                       print(

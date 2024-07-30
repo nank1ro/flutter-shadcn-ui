@@ -112,7 +112,7 @@ class ShadAccordionItem<T> extends StatefulWidget {
     super.key,
     required this.value,
     required this.title,
-    required this.content,
+    required this.child,
     this.separator,
     this.icon,
     this.iconSrc,
@@ -128,7 +128,7 @@ class ShadAccordionItem<T> extends StatefulWidget {
 
   final T value;
   final Widget title;
-  final Widget content;
+  final Widget child;
   final Widget? separator;
   final Widget? icon;
   final ShadImageSrc? iconSrc;
@@ -321,7 +321,7 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
               Animate(
                 controller: controller,
                 effects: effectiveEffects,
-                child: widget.content,
+                child: widget.child,
               ),
             effectiveSeparator,
           ],

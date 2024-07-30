@@ -8,6 +8,7 @@ import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
+import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
 enum ShadButtonVariant {
@@ -28,7 +29,7 @@ enum ShadButtonSize {
 class ShadButton extends StatefulWidget {
   const ShadButton({
     super.key,
-    this.text,
+    this.child,
     this.icon,
     this.onPressed,
     this.size,
@@ -69,13 +70,15 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
+    this.gap,
   }) : variant = ShadButtonVariant.primary;
 
   const ShadButton.raw({
     super.key,
     required this.variant,
     this.size,
-    this.text,
+    this.child,
     this.icon,
     this.onPressed,
     this.applyIconColorFilter,
@@ -115,11 +118,13 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
+    this.gap,
   });
 
   const ShadButton.destructive({
     super.key,
-    this.text,
+    this.child,
     this.icon,
     this.onPressed,
     this.size,
@@ -160,11 +165,13 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
+    this.gap,
   }) : variant = ShadButtonVariant.destructive;
 
   const ShadButton.outline({
     super.key,
-    this.text,
+    this.child,
     this.icon,
     this.onPressed,
     this.size,
@@ -205,11 +212,13 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
+    this.gap,
   }) : variant = ShadButtonVariant.outline;
 
   const ShadButton.secondary({
     super.key,
-    this.text,
+    this.child,
     this.icon,
     this.onPressed,
     this.size,
@@ -250,11 +259,13 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
+    this.gap,
   }) : variant = ShadButtonVariant.secondary;
 
   const ShadButton.ghost({
     super.key,
-    this.text,
+    this.child,
     this.icon,
     this.onPressed,
     this.size,
@@ -295,11 +306,13 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
+    this.gap,
   }) : variant = ShadButtonVariant.ghost;
 
   const ShadButton.link({
     super.key,
-    required this.text,
+    required this.child,
     this.onPressed,
     this.size,
     this.applyIconColorFilter,
@@ -339,13 +352,15 @@ class ShadButton extends StatefulWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.textDirection,
+    this.gap,
   })  : variant = ShadButtonVariant.link,
         icon = null;
 
   final VoidCallback? onPressed;
   final VoidCallback? onLongPress;
   final Widget? icon;
-  final Widget? text;
+  final Widget? child;
   final ShadButtonVariant variant;
   final ShadButtonSize? size;
   final bool? applyIconColorFilter;
@@ -368,6 +383,13 @@ class ShadButton extends StatefulWidget {
   final ShadDecoration? decoration;
   final bool enabled;
   final ShadStatesController? statesController;
+
+  /// {@template ShadButton.gap}
+  /// The gap between the icon and the text.
+  ///
+  /// Defaults to `8`
+  /// {@endtemplate}
+  final double? gap;
 
   /// {@template ShadButton.mainAxisAlignment}
   /// The main axis alignment of the button.
@@ -397,6 +419,7 @@ class ShadButton extends StatefulWidget {
   final ValueChanged<TapDownDetails>? onDoubleTapDown;
   final VoidCallback? onDoubleTapCancel;
   final Duration? longPressDuration;
+  final TextDirection? textDirection;
 
   @override
   State<ShadButton> createState() => _ShadButtonState();
@@ -450,7 +473,7 @@ class _ShadButtonState extends State<ShadButton> {
 
   void assertCheckHasTextOrIcon() {
     assert(
-      widget.text != null || widget.icon != null,
+      widget.child != null || widget.icon != null,
       'Either text or icon must be provided',
     );
   }
@@ -470,7 +493,7 @@ class _ShadButtonState extends State<ShadButton> {
     ShadThemeData theme,
     ShadButtonSize size,
   ) {
-    if (widget.icon != null && widget.text == null) {
+    if (widget.icon != null && widget.child == null) {
       return buttonTheme(theme).sizesTheme?.icon ??
           theme.buttonSizesTheme.icon!;
     }
@@ -639,6 +662,11 @@ class _ShadButtonState extends State<ShadButton> {
         buttonTheme(theme).hoverStrategies ??
         theme.hoverStrategies;
 
+    final effectiveTextDirection =
+        widget.textDirection ?? buttonTheme(theme).textDirection;
+
+    final effectiveGap = widget.gap ?? buttonTheme(theme).gap ?? 8;
+
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.enter): onTap,
@@ -732,9 +760,10 @@ class _ShadButtonState extends State<ShadButton> {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: effectiveCrossAxisAlignment,
                           mainAxisAlignment: effectiveMainAxisAlignment,
+                          textDirection: effectiveTextDirection,
                           children: [
                             if (icon != null) icon,
-                            if (widget.text != null)
+                            if (widget.child != null)
                               DefaultTextStyle(
                                 style: theme.textTheme.small.copyWith(
                                   color: hasPressedForegroundColor && pressed
@@ -750,9 +779,9 @@ class _ShadButtonState extends State<ShadButton> {
                                   decorationStyle: TextDecorationStyle.solid,
                                 ),
                                 textAlign: TextAlign.center,
-                                child: widget.text!,
+                                child: widget.child!,
                               ),
-                          ],
+                          ].separatedBy(SizedBox(width: effectiveGap)),
                         ),
                       ),
                     ),

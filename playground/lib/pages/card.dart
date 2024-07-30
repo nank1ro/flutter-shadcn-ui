@@ -47,7 +47,20 @@ class CardProject extends StatelessWidget {
       width: 350,
       title: Text('Create project', style: theme.textTheme.h4),
       description: const Text('Deploy your new project in one-click.'),
-      content: Padding(
+      footer: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ShadButton.outline(
+            child: const Text('Cancel'),
+            onPressed: () {},
+          ),
+          ShadButton(
+            child: const Text('Deploy'),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -69,19 +82,6 @@ class CardProject extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      footer: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          ShadButton.outline(
-            text: const Text('Cancel'),
-            onPressed: () {},
-          ),
-          ShadButton(
-            text: const Text('Deploy'),
-            onPressed: () {},
-          ),
-        ],
       ),
     );
   }
@@ -125,7 +125,16 @@ class _CardNotificationsState extends State<CardNotifications> {
       width: 380,
       title: const Text('Notifications'),
       description: const Text('You have 3 unread messages.'),
-      content: Column(
+      footer: ShadButton(
+        width: double.infinity,
+        icon: const Padding(
+          padding: EdgeInsets.only(right: 8),
+          child: ShadImage.square(LucideIcons.check, size: 16),
+        ),
+        onPressed: () {},
+        child: const Text('Mark all as read'),
+      ),
+      child: Column(
         children: [
           const SizedBox(height: 16),
           Container(
@@ -207,15 +216,6 @@ class _CardNotificationsState extends State<CardNotifications> {
               .separatedBy(const SizedBox(height: 16)),
           const SizedBox(height: 16),
         ],
-      ),
-      footer: ShadButton(
-        width: double.infinity,
-        text: const Text('Mark all as read'),
-        icon: const Padding(
-          padding: EdgeInsets.only(right: 8),
-          child: ShadImage.square(LucideIcons.check, size: 16),
-        ),
-        onPressed: () {},
       ),
     );
   }

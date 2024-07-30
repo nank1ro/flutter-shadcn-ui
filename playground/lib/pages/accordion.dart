@@ -44,7 +44,7 @@ class AccordionPage extends StatelessWidget {
                     (detail) => ShadAccordionItem(
                       value: detail,
                       title: Text(detail.title),
-                      content: Text(detail.content),
+                      child: Text(detail.content),
                     ),
                   ),
                 ),
@@ -54,7 +54,7 @@ class AccordionPage extends StatelessWidget {
                     (detail) => ShadAccordionItem(
                       value: detail,
                       title: Text(detail.title),
-                      content: Text(detail.content),
+                      child: Text(detail.content),
                     ),
                   ),
                 ),

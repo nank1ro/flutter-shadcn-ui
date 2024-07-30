@@ -23,7 +23,7 @@ class DialogPage extends StatelessWidget {
         child: () {
           return switch (style) {
             ShadDialogVariant.primary => ShadButton.outline(
-                text: const Text('Edit Profile'),
+                child: const Text('Edit Profile'),
                 onPressed: () {
                   showShadDialog(
                     context: context,
@@ -31,7 +31,8 @@ class DialogPage extends StatelessWidget {
                       title: const Text('Edit Profile'),
                       description: const Text(
                           "Make changes to your profile here. Click save when you're done"),
-                      content: Container(
+                      actions: const [ShadButton(child: Text('Save changes'))],
+                      child: Container(
                         width: 375,
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         child: Column(
@@ -59,13 +60,12 @@ class DialogPage extends StatelessWidget {
                               .toList(),
                         ),
                       ),
-                      actions: const [ShadButton(text: Text('Save changes'))],
                     ),
                   );
                 },
               ),
             ShadDialogVariant.alert => ShadButton.outline(
-                text: const Text('Show Dialog'),
+                child: const Text('Show Dialog'),
                 onPressed: () {
                   showShadDialog(
                     context: context,
@@ -79,11 +79,11 @@ class DialogPage extends StatelessWidget {
                       ),
                       actions: [
                         ShadButton.outline(
-                          text: const Text('Cancel'),
+                          child: const Text('Cancel'),
                           onPressed: () => Navigator.of(context).pop(false),
                         ),
                         ShadButton(
-                          text: const Text('Continue'),
+                          child: const Text('Continue'),
                           onPressed: () => Navigator.of(context).pop(true),
                         ),
                       ],

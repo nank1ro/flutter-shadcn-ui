@@ -26,27 +26,27 @@ class ButtonPage extends StatelessWidget {
         child: () {
           return switch (style) {
             PlagroundButtonStyle.primary => ShadButton(
-                text: const Text('Primary'),
+                child: const Text('Primary'),
                 onPressed: () {},
               ),
             PlagroundButtonStyle.secondary => ShadButton.secondary(
-                text: const Text('Secondary'),
+                child: const Text('Secondary'),
                 onPressed: () {},
               ),
             PlagroundButtonStyle.destructive => ShadButton.destructive(
-                text: const Text('Destructive'),
+                child: const Text('Destructive'),
                 onPressed: () {},
               ),
             PlagroundButtonStyle.outline => ShadButton.outline(
-                text: const Text('Outline'),
+                child: const Text('Outline'),
                 onPressed: () {},
               ),
             PlagroundButtonStyle.ghost => ShadButton.ghost(
-                text: const Text('Ghost'),
+                child: const Text('Ghost'),
                 onPressed: () {},
               ),
             PlagroundButtonStyle.link => ShadButton.link(
-                text: const Text('Link'),
+                child: const Text('Link'),
                 onPressed: () {},
               ),
             PlagroundButtonStyle.icon => ShadButton.outline(
@@ -58,27 +58,21 @@ class ButtonPage extends StatelessWidget {
               ),
             PlagroundButtonStyle.textIcon => ShadButton(
                 onPressed: () {},
-                text: const Text('Login with Email'),
-                icon: const Padding(
-                  padding: EdgeInsets.only(right: 8),
-                  child: Icon(
-                    Icons.mail_outlined,
-                    size: 16,
-                  ),
+                icon: const Icon(
+                  Icons.mail_outlined,
+                  size: 16,
                 ),
+                child: const Text('Login with Email'),
               ),
             PlagroundButtonStyle.loading => ShadButton(
                 onPressed: () {},
-                text: const Text('Please wait'),
-                icon: const Padding(
-                  padding: EdgeInsets.only(right: 8),
-                  child: SizedBox.square(
-                    dimension: 16,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
+                icon: const SizedBox.square(
+                  dimension: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
                   ),
                 ),
+                child: const Text('Please wait'),
               ),
             PlagroundButtonStyle.gradientShadow => ShadButton(
                 onPressed: () {},
@@ -94,7 +88,7 @@ class ButtonPage extends StatelessWidget {
                     offset: const Offset(0, 2),
                   ),
                 ],
-                text: const Text('Gradient with Shadow'),
+                child: const Text('Gradient with Shadow'),
               ),
           };
         }(),

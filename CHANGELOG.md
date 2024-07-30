@@ -1,3 +1,42 @@
+## 0.7.1
+
+- Fix performance of `ShadSelect` with the new `optionsBuilder` parameter for a large number of options.
+- Fix keyboard appearance of `ShadInput` (thanks to @hieupm2096).
+- Add `onPressed` to `ShadBadge`.
+- Rename button `text` parameter into `child`.
+- Rename dialog `content` parameter into `child`.
+- Rename sheet `content` parameter into `child`.
+- Rename tab `text` parameter into `child`.
+
+## 0.7.0
+
+- Rename Tabs `defaultValue` parameter into `value`.
+- Rename Card `content` parameter into `child`.
+- Rename Badge `text` parameter into `child`.
+- Rename Input `onTap` parameter into `onPressed`.
+- Rename AccordionItem `content` parameter into `child`.
+- Add `filter` to Select and Popover in order to blur the background when the popover is open.
+- Pass `errorText` to `error` build of Form Fields.
+- Add `gap` to Buttons, default to `8`.
+- Update type of `src` parameter of Avatar
+- Add `Alert.raw` constructor
+- Add `Dialog.raw` constructor
+- Add `Select.raw` and `SelectFormField.raw` constructors
+- Add `TableCell.raw` constructor
+- Add `draggable` to Sheet to make it draggable, it works on every side.
+- Add `ThemeVariant` to handle the default theme variant, and the one without the secondary border.
+
+## 0.6.5
+
+- Add `textDirection` to `ShadButton`
+
+## 0.6.4
+
+- Make `content` of `ShadTab` optional
+- Add `TextSelectionTheme` using shadcn colors
+- Add `crossAxisAlignment` to `ShadCheckbox`
+- Fix `ShadSelect` popover padding
+
 ## 0.6.3
 
 - Fix `FormField`s label not getting the correct style.

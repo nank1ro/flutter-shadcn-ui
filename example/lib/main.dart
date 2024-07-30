@@ -91,49 +91,12 @@ class App extends StatelessWidget {
             colorScheme: const ShadZincColorScheme.light(),
             // Example with google fonts
             // textTheme: ShadTextTheme.fromGoogleFont(GoogleFonts.poppins),
+
             // Example of custom font family
             // textTheme: ShadTextTheme(family: 'UbuntuMono'),
-            // Below an example to disable the secondary border
+
+            // Example to disable the secondary border
             // disableSecondaryBorder: true,
-            // decoration: ShadDecoration(
-            //   border: const ShadBorder(width: 2, color: Colors.transparent),
-            //   focusedBorder: ShadBorder(
-            //     color: Colors.blue,
-            //     radius: BorderRadius.circular(6),
-            //     width: 2,
-            //   ),
-            // ),
-            // switchTheme: ShadSwitchTheme(
-            //   decoration: ShadDecoration(
-            //     border: ShadBorder(
-            //       radius: BorderRadius.circular(24),
-            //       width: 2,
-            //     ),
-            //     focusedBorder: ShadBorder(
-            //       radius: BorderRadius.circular(24),
-            //       width: 2,
-            //     ),
-            //   ),
-            // ),
-            // checkboxTheme: const ShadCheckboxTheme(
-            //   decoration: ShadDecoration(
-            //     border: ShadBorder(padding: EdgeInsets.all(1)),
-            //     focusedBorder: ShadBorder(width: 2),
-            //   ),
-            // ),
-            // radioTheme: const ShadRadioTheme(
-            //   decoration: ShadDecoration(
-            //     border: ShadBorder(padding: EdgeInsets.all(1)),
-            //     focusedBorder: ShadBorder(width: 2),
-            //   ),
-            // ),
-            // selectTheme: const ShadSelectTheme(
-            //   anchor: ShadAnchor(
-            //     childAlignment: Alignment.bottomLeft,
-            //     overlayAlignment: Alignment.topLeft,
-            //     offset: Offset(1, 4),
-            //   ),
-            // ),
           ),
           darkTheme: ShadThemeData(
             brightness: Brightness.dark,

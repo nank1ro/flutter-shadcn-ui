@@ -14,18 +14,18 @@ class TabsPage extends StatelessWidget {
       alignment: Alignment.topCenter,
       children: [
         ShadTabs<String>(
-          defaultValue: 'account',
+          value: 'account',
           tabBarConstraints: const BoxConstraints(maxWidth: 400),
           contentConstraints: const BoxConstraints(maxWidth: 400),
           tabs: [
             ShadTab(
               value: 'account',
-              text: const Text('Account'),
               content: ShadCard(
                 title: const Text('Account'),
                 description: const Text(
                     "Make changes to your account here. Click save when you're done."),
-                content: Column(
+                footer: const ShadButton(child: Text('Save changes')),
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 16),
@@ -41,17 +41,17 @@ class TabsPage extends StatelessWidget {
                     const SizedBox(height: 16),
                   ],
                 ),
-                footer: const ShadButton(text: Text('Save changes')),
               ),
+              child: const Text('Account'),
             ),
             ShadTab(
               value: 'password',
-              text: const Text('Password'),
               content: ShadCard(
                 title: const Text('Password'),
                 description: const Text(
                     "Change your password here. After saving, you'll be logged out."),
-                content: Column(
+                footer: const ShadButton(child: Text('Save password')),
+                child: Column(
                   children: [
                     const SizedBox(height: 16),
                     ShadInputFormField(
@@ -66,8 +66,8 @@ class TabsPage extends StatelessWidget {
                     const SizedBox(height: 16),
                   ],
                 ),
-                footer: const ShadButton(text: Text('Save password')),
               ),
+              child: const Text('Password'),
             ),
           ],
         ),

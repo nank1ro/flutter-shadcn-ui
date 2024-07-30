@@ -56,9 +56,9 @@ class ShadInput extends StatefulWidget {
     this.dragStartBehavior = DragStartBehavior.start,
     bool? enableInteractiveSelection,
     this.selectionControls,
-    this.onTap,
-    this.onTapAlwaysCalled = false,
-    this.onTapOutside,
+    this.onPressed,
+    this.onPressedAlwaysCalled = false,
+    this.onPressedOutside,
     this.mouseCursor,
     this.scrollController,
     this.scrollPhysics,
@@ -138,8 +138,8 @@ class ShadInput extends StatefulWidget {
   final bool enableInteractiveSelection;
   final TextSelectionControls? selectionControls;
   final DragStartBehavior dragStartBehavior;
-  final GestureTapCallback? onTap;
-  final TapRegionCallback? onTapOutside;
+  final GestureTapCallback? onPressed;
+  final TapRegionCallback? onPressedOutside;
   final MouseCursor? mouseCursor;
   final ScrollPhysics? scrollPhysics;
   final ScrollController? scrollController;
@@ -161,7 +161,7 @@ class ShadInput extends StatefulWidget {
   final TextStyle? placeholderStyle;
   final Alignment? placeholderAlignment;
   final EdgeInsets? inputPadding;
-  final bool onTapAlwaysCalled;
+  final bool onPressedAlwaysCalled;
 
   static const int noMaxLength = -1;
 
@@ -376,6 +376,9 @@ class ShadInputState extends State<ShadInput>
                                                 theme.colorScheme.selection
                                             : null,
                                         keyboardType: widget.keyboardType,
+                                        keyboardAppearance:
+                                            widget.keyboardAppearance ??
+                                                theme.brightness,
                                         textInputAction: widget.textInputAction,
                                         textCapitalization:
                                             widget.textCapitalization,
@@ -430,7 +433,7 @@ class ShadInputState extends State<ShadInput>
                                         spellCheckConfiguration:
                                             widget.spellCheckConfiguration,
                                         textAlign: widget.textAlign,
-                                        onTapOutside: widget.onTapOutside,
+                                        onTapOutside: widget.onPressedOutside,
                                         rendererIgnoresPointer: true,
                                       ),
                                     ),
@@ -478,11 +481,11 @@ class _InputSelectionGestureDetectorBuilder
 
   @override
   void onUserTap() {
-    _state.widget.onTap?.call();
+    _state.widget.onPressed?.call();
   }
 
   @override
-  bool get onUserTapAlwaysCalled => _state.widget.onTapAlwaysCalled;
+  bool get onUserTapAlwaysCalled => _state.widget.onPressedAlwaysCalled;
 
   @override
   void onSingleLongTapStart(LongPressStartDetails details) {

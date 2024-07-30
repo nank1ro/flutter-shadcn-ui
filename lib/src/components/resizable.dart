@@ -267,8 +267,9 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
         theme.resizableTheme.handleDecoration ??
         ShadDecoration(
           color: theme.colorScheme.border,
-          border: const ShadBorder(
-            radius: BorderRadius.all(Radius.circular(4)),
+          border: ShadBorder.all(
+            radius: const BorderRadius.all(Radius.circular(4)),
+            width: 0,
           ),
         );
 
