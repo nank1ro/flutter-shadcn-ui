@@ -5,6 +5,7 @@
 - Add `onPressed` to `ShadBadge`.
 - Rename button `text` parameter into `child`.
 - Rename dialog `content` parameter into `child`.
+- Rename sheet `content` parameter into `child`.
 
 ## 0.7.0
 

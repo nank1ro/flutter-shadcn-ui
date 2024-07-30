@@ -119,7 +119,10 @@ class EditProfileSheet extends StatelessWidget {
       title: const Text('Edit Profile'),
       description: const Text(
           "Make changes to your profile here. Click save when you're done"),
-      content: Padding(
+      actions: const [
+        ShadButton(child: Text('Save changes')),
+      ],
+      child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -146,9 +149,6 @@ class EditProfileSheet extends StatelessWidget {
               .toList(),
         ),
       ),
-      actions: const [
-        ShadButton(child: Text('Save changes')),
-      ],
     );
   }
 }

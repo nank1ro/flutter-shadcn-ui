@@ -143,7 +143,7 @@ class ShadSheet extends StatefulWidget {
     super.key,
     this.title,
     this.description,
-    this.content,
+    this.child,
     this.actions = const [],
     this.constraints,
     this.expandCrossSide,
@@ -184,7 +184,7 @@ class ShadSheet extends StatefulWidget {
 
   final Widget? title;
   final Widget? description;
-  final Widget? content;
+  final Widget? child;
   final List<Widget> actions;
   final BoxConstraints? constraints;
   final bool? expandCrossSide;
@@ -517,7 +517,7 @@ class _ShadSheetState extends State<ShadSheet>
             mainAxisAlignment: effectiveMainAxisAlignment,
             scrollable: effectiveScrollable,
             scrollPadding: effectiveScrollPadding,
-            child: widget.content,
+            child: widget.child,
           ),
         );
       },
