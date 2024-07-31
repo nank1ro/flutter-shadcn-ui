@@ -362,7 +362,6 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
   void dispose() {
     _controller?.dispose();
     internalFocusNode?.dispose();
-    controller.dispose();
     _scrollController?.dispose();
     showScrollToBottom.dispose();
     showScrollToTop.dispose();

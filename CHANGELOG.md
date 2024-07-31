@@ -1,6 +1,7 @@
 ## 0.7.3
 
 - Add `header` and `footer` to `ShadSelect` and `ShadSelectFormField`.
+- Fix unintentional disposal of `controller` in `ShadSelect`.
 
 ## 0.7.2
 
