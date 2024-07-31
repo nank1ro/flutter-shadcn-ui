@@ -51,6 +51,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.effects,
     this.shadows,
     this.filter,
+    this.header,
+    this.footer,
   })  : variant = ShadSelectVariant.primary,
         onSearchChanged = null,
         searchDivider = null,
@@ -97,6 +99,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.effects,
     this.shadows,
     this.filter,
+    this.header,
+    this.footer,
   })  : variant = ShadSelectVariant.search,
         assert(
           options != null || optionsBuilder != null,
@@ -137,6 +141,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.effects,
     this.shadows,
     this.filter,
+    this.header,
+    this.footer,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -256,6 +262,16 @@ class ShadSelect<T> extends StatefulWidget {
 
   /// {@macro popover.controller}
   final ShadPopoverController? controller;
+
+  /// {@template select.header}
+  /// The header of the [ShadSelect].
+  /// {@endtemplate}
+  final Widget? header;
+
+  /// {@template select.footer}
+  /// The footer of the [ShadSelect].
+  /// {@endtemplate}
+  final Widget? footer;
 
   static ShadSelectState<T> of<T>(BuildContext context, {bool listen = true}) {
     return maybeOf<T>(context, listen: listen)!;
@@ -669,6 +685,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                               child: search,
                             ),
                           ),
+                        if (widget.header != null) widget.header!,
                         if (scrollToTopChild != null) scrollToTopChild,
                         Flexible(
                           child: ConstrainedBox(
@@ -677,6 +694,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                           ),
                         ),
                         if (scrollToBottomChild != null) scrollToBottomChild,
+                        if (widget.footer != null) widget.footer!,
                       ],
                     ),
                   );

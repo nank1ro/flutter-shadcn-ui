@@ -1,3 +1,7 @@
+## 0.7.3
+
+- Add `header` and `footer` to `ShadSelect` and `ShadSelectFormField`.
+
 ## 0.7.2
 
 - Add `controller` parameter to `ShadSelect` and `ShadSelectFormField`.

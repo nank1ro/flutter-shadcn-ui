@@ -44,6 +44,12 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     ShadAnchorBase? anchor,
     ImageFilter? filter,
     ShadPopoverController? controller,
+
+    /// {@macro select.header}
+    Widget? header,
+
+    /// {@macro select.footer}
+    Widget? footer,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -74,6 +80,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               scrollController: scrollController,
               filter: filter,
               controller: controller,
+              header: header,
+              footer: footer,
             );
           },
         );
@@ -120,6 +128,12 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     Widget? search,
     bool? clearSearchOnClose,
     ShadPopoverController? controller,
+
+    /// {@macro select.header}
+    Widget? header,
+
+    /// {@macro select.footer}
+    Widget? footer,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -157,6 +171,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               search: search,
               clearSearchOnClose: clearSearchOnClose,
               controller: controller,
+              header: header,
+              footer: footer,
             );
           },
         );
@@ -201,6 +217,12 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     Widget? search,
     bool? clearSearchOnClose,
     ShadPopoverController? controller,
+
+    /// {@macro select.header}
+    Widget? header,
+
+    /// {@macro select.footer}
+    Widget? footer,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -242,6 +264,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               search: search,
               clearSearchOnClose: clearSearchOnClose,
               controller: controller,
+              header: header,
+              footer: footer,
             );
           },
         );
