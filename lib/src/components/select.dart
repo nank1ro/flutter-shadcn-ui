@@ -684,7 +684,13 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                               child: search,
                             ),
                           ),
-                        if (widget.header != null) widget.header!,
+                        if (widget.header != null)
+                          Flexible(
+                            child: ConstrainedBox(
+                              constraints: effectiveConstraints,
+                              child: widget.header,
+                            ),
+                          ),
                         if (scrollToTopChild != null) scrollToTopChild,
                         Flexible(
                           child: ConstrainedBox(
@@ -693,7 +699,13 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                           ),
                         ),
                         if (scrollToBottomChild != null) scrollToBottomChild,
-                        if (widget.footer != null) widget.footer!,
+                        if (widget.footer != null)
+                          Flexible(
+                            child: ConstrainedBox(
+                              constraints: effectiveConstraints,
+                              child: widget.footer,
+                            ),
+                          ),
                       ],
                     ),
                   );
