@@ -22,11 +22,9 @@ class ShadAlert extends StatelessWidget {
     this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
-  })  : variant = ShadAlertVariant.primary,
-        assert(
-          (icon != null) ^ (iconSrc != null),
-          'Either icon or iconSrc must be provided',
-        );
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
+  }) : variant = ShadAlertVariant.primary;
 
   const ShadAlert.destructive({
     super.key,
@@ -41,11 +39,9 @@ class ShadAlert extends StatelessWidget {
     this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
-  })  : variant = ShadAlertVariant.destructive,
-        assert(
-          (icon != null) ^ (iconSrc != null),
-          'Either icon or iconSrc must be provided',
-        );
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
+  }) : variant = ShadAlertVariant.destructive;
 
   const ShadAlert.raw({
     super.key,
@@ -61,10 +57,9 @@ class ShadAlert extends StatelessWidget {
     this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
-  }) : assert(
-          (icon != null) ^ (iconSrc != null),
-          'Either icon or iconSrc must be provided',
-        );
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
+  });
 
   final ShadAlertVariant variant;
   final Widget? icon;
@@ -78,6 +73,8 @@ class ShadAlert extends StatelessWidget {
   final Size? iconSize;
   final TextStyle? titleStyle;
   final TextStyle? descriptionStyle;
+  final MainAxisAlignment? mainAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -108,16 +105,19 @@ class ShadAlert extends StatelessWidget {
     final effectiveIconSize =
         iconSize ?? effectiveAlertTheme.iconSize ?? const Size.square(16);
 
-    final effectiveIcon = Padding(
-      padding: effectiveIconPadding,
-      child: icon ??
-          ShadImage(
-            iconSrc!,
-            width: effectiveIconSize.width,
-            height: effectiveIconSize.height,
-            color: effectiveIconColor,
-          ),
-    );
+    final hasIcon = icon != null || iconSrc != null;
+    final effectiveIcon = hasIcon
+        ? Padding(
+            padding: effectiveIconPadding,
+            child: icon ??
+                ShadImage(
+                  iconSrc!,
+                  width: effectiveIconSize.width,
+                  height: effectiveIconSize.height,
+                  color: effectiveIconColor,
+                ),
+          )
+        : null;
 
     final effectiveTitleStyle = titleStyle ??
         effectiveAlertTheme.titleStyle ??
@@ -131,13 +131,22 @@ class ShadAlert extends StatelessWidget {
         effectiveAlertTheme.descriptionStyle ??
         theme.textTheme.muted.copyWith(color: theme.colorScheme.foreground);
 
+    final effectiveMainAxisAlignment = mainAxisAlignment ??
+        effectiveAlertTheme.mainAxisAlignment ??
+        MainAxisAlignment.start;
+
+    final effectiveCrossAxisAlignment = crossAxisAlignment ??
+        effectiveAlertTheme.crossAxisAlignment ??
+        CrossAxisAlignment.start;
+
     return ShadDecorator(
       decoration: effectiveDecoration,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: effectiveCrossAxisAlignment,
+        mainAxisAlignment: effectiveMainAxisAlignment,
         textDirection: textDirection,
         children: [
-          effectiveIcon,
+          if (effectiveIcon != null) effectiveIcon,
           Flexible(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
