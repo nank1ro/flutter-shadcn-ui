@@ -30,6 +30,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.options,
     this.optionsBuilder,
     required this.selectedOptionBuilder,
+    this.controller,
     this.enabled = true,
     this.placeholder,
     this.initialValue,
@@ -69,6 +70,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.optionsBuilder,
     required this.selectedOptionBuilder,
     required ValueChanged<String> this.onSearchChanged,
+    this.controller,
     this.searchDivider,
     this.searchInputPrefix,
     this.searchPlaceholder,
@@ -107,6 +109,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.options,
     this.optionsBuilder,
     required this.selectedOptionBuilder,
+    this.controller,
     this.onSearchChanged,
     this.searchDivider,
     this.searchInputPrefix,
@@ -251,6 +254,9 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@macro popover.filter}
   final ImageFilter? filter;
 
+  /// {@macro popover.controller}
+  final ShadPopoverController? controller;
+
   static ShadSelectState<T> of<T>(BuildContext context, {bool listen = true}) {
     return maybeOf<T>(context, listen: listen)!;
   }
@@ -279,7 +285,11 @@ class ShadSelect<T> extends StatefulWidget {
 class ShadSelectState<T> extends State<ShadSelect<T>> {
   FocusNode? internalFocusNode;
   late T? selected = widget.initialValue;
-  final controller = ShadPopoverController();
+  ShadPopoverController? _controller;
+
+  ShadPopoverController get controller =>
+      widget.controller ?? (_controller ??= ShadPopoverController());
+
   ScrollController? _scrollController;
 
   final showScrollToBottom = ValueNotifier(false);
@@ -334,6 +344,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
   @override
   void dispose() {
+    _controller?.dispose();
     internalFocusNode?.dispose();
     controller.dispose();
     _scrollController?.dispose();

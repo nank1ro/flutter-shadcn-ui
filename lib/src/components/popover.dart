@@ -57,7 +57,9 @@ class ShadPopover extends StatefulWidget {
   /// The child widget.
   final Widget child;
 
+  /// {@template popover.controller}
   /// The controller that controls the visibility of the [popover].
+  /// {@endtemplate}
   final ShadPopoverController? controller;
 
   /// Indicates if the popover should be visible.

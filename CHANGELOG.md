@@ -1,3 +1,7 @@
+## 0.7.2
+
+- Add `controller` parameter to `ShadSelect` and `ShadSelectFormField`.
+
 ## 0.7.1
 
 - Fix performance of `ShadSelect` with the new `optionsBuilder` parameter for a large number of options.

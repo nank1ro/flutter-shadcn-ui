@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
+import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -42,6 +43,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     ScrollController? scrollController,
     ShadAnchorBase? anchor,
     ImageFilter? filter,
+    ShadPopoverController? controller,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -71,6 +73,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               showScrollToBottomChevron: showScrollToBottomChevron,
               scrollController: scrollController,
               filter: filter,
+              controller: controller,
             );
           },
         );
@@ -116,6 +119,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     EdgeInsets? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
+    ShadPopoverController? controller,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -152,6 +156,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               searchPadding: searchPadding,
               search: search,
               clearSearchOnClose: clearSearchOnClose,
+              controller: controller,
             );
           },
         );
@@ -195,6 +200,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     EdgeInsets? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
+    ShadPopoverController? controller,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -235,6 +241,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               searchPadding: searchPadding,
               search: search,
               clearSearchOnClose: clearSearchOnClose,
+              controller: controller,
             );
           },
         );
