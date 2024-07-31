@@ -40,6 +40,12 @@ body:
       description: Please tell us what is actually happening.
     validations:
       required: true
+  - type: textarea
+    attributes:
+      label: shadcn_ui version
+      description: Please tell us which version of shadcn_ui you are using.
+    validations:
+      required: true
   - type: dropdown
     id: platform
     attributes:
