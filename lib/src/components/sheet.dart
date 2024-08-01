@@ -176,10 +176,11 @@ class ShadSheet extends StatefulWidget {
     this.onDragEnd,
     this.animationController,
     this.isScrollControlled = false,
-    this.minFlingVelocity = 700,
-    this.closeProgressThreshold = 0.5,
+    this.minFlingVelocity,
+    this.closeProgressThreshold,
     this.enterDuration = const Duration(milliseconds: 250),
     this.exitDuration = const Duration(milliseconds: 200),
+    this.disabledScrollControlMaxRatio,
   });
 
   final Widget? title;
@@ -247,25 +248,39 @@ class ShadSheet extends StatefulWidget {
   /// is not just a passive observer.
   final AnimationController? animationController;
 
+  /// {@template ShadSheet.minFlingVelocity}
   /// The minimum velocity to initiate a fling.
   ///
   /// Defaults to 700.
-  final double minFlingVelocity;
+  /// {@endtemplate}
+  final double? minFlingVelocity;
 
+  /// {@template ShadSheet.closeProgressThreshold}
   /// The threshold for determining whether the sheet is closing.
   ///
   /// Defaults to 0.5.
-  final double closeProgressThreshold;
+  /// {@endtemplate}
+  final double? closeProgressThreshold;
 
+  /// {@template ShadSheet.enterDuration}
   /// The duration of the sheet's entrance animation.
   ///
   /// Defaults to 250ms.
+  /// {@endtemplate}
   final Duration enterDuration;
 
+  /// {@template ShadSheet.exitDuration}
   /// The duration of the sheet's exit animation.
-
+  ///
   /// Defaults to 200ms.
+  /// {@endtemplate}
   final Duration exitDuration;
+
+  /// {@template ShadSheet.disabledScrollControlMaxRatio}
+  /// The maximum ratio of the sheet's height when is not scroll controlled.
+  /// Defaults to 9/16. Has no effect when [draggable] is false.
+  /// {@endtemplate}
+  final double? disabledScrollControlMaxRatio;
 
   @override
   State<ShadSheet> createState() => _ShadSheetState();
@@ -275,7 +290,7 @@ class _ShadSheetState extends State<ShadSheet>
     with SingleTickerProviderStateMixin {
   AnimationController? _animationController;
   final dragHandleMaterialState = <WidgetState>{};
-  final GlobalKey _childKey = GlobalKey(debugLabel: 'ShadSheet child');
+  final GlobalKey childKey = GlobalKey(debugLabel: 'ShadSheet child');
 
   @override
   void dispose() {
@@ -293,9 +308,8 @@ class _ShadSheetState extends State<ShadSheet>
         value: 1,
       ));
 
-  double get _childHeight {
-    final renderBox =
-        _childKey.currentContext!.findRenderObject()! as RenderBox;
+  double get childHeight {
+    final renderBox = childKey.currentContext!.findRenderObject()! as RenderBox;
     return renderBox.size.height;
   }
 
@@ -318,17 +332,22 @@ class _ShadSheetState extends State<ShadSheet>
 
     switch (side) {
       case ShadSheetSide.bottom:
-        animationController.value -= details.primaryDelta! / _childHeight;
+        animationController.value -= details.primaryDelta! / childHeight;
       case ShadSheetSide.top:
-        animationController.value += details.primaryDelta! / _childHeight;
+        animationController.value += details.primaryDelta! / childHeight;
       case ShadSheetSide.left:
-        animationController.value += details.primaryDelta! / _childHeight;
+        animationController.value += details.primaryDelta! / childHeight;
       case ShadSheetSide.right:
-        animationController.value -= details.primaryDelta! / _childHeight;
+        animationController.value -= details.primaryDelta! / childHeight;
     }
   }
 
-  void _handleDragEnd(DragEndDetails details, ShadSheetSide side) {
+  void _handleDragEnd(
+    DragEndDetails details, {
+    required ShadSheetSide side,
+    required double minFlingVelocity,
+    required double closeProgressThreshold,
+  }) {
     if (_dismissUnderway) {
       return;
     }
@@ -339,15 +358,16 @@ class _ShadSheetState extends State<ShadSheet>
     final velocity = side == ShadSheetSide.top
         ? details.velocity.pixelsPerSecond.dy
         : -details.velocity.pixelsPerSecond.dy;
-    if (velocity.abs() > widget.minFlingVelocity) {
-      final flingVelocity = velocity / _childHeight;
+
+    if (velocity.abs() > minFlingVelocity) {
+      final flingVelocity = velocity / childHeight;
       if (animationController.value > 0.0) {
         animationController.fling(velocity: flingVelocity);
       }
       if (flingVelocity < 0.0) {
         isClosing = true;
       }
-    } else if (animationController.value < widget.closeProgressThreshold) {
+    } else if (animationController.value < closeProgressThreshold) {
       if (animationController.value > 0.0) {
         animationController.fling(velocity: -1);
       }
@@ -475,60 +495,80 @@ class _ShadSheetState extends State<ShadSheet>
         theme.sheetTheme.scrollPadding ??
         MediaQuery.viewInsetsOf(context);
 
-    Widget child = AnimatedBuilder(
-      animation: animationController,
-      builder: (context, child) {
-        final animationValue = Easing.legacyDecelerate.transform(
-          animationController.view.value,
-        );
-        return ShadSheetLayoutWithSizeListener(
-          animationValue: animationValue,
-          onChildSizeChanged: (_) {},
-          scrollControlDisabledMaxRatio: 9.0 / 16.0,
-          isScrollControlled: widget.isScrollControlled,
-          side: side,
-          child: ShadDialog(
-            key: _childKey,
-            title: widget.title,
-            description: widget.description,
-            alignment: side.toAlignment(),
-            constraints: effectiveConstraints,
-            actions: widget.actions,
-            radius: effectiveRadius,
-            closeIcon: widget.closeIcon,
-            closeIconSrc: effectiveCloseIconSrc,
-            closeIconPosition: effectiveCloseIconPosition,
-            backgroundColor: effectiveBackgroundColor,
-            expandActionsWhenTiny: effectiveExpandActionsWhenTiny,
-            padding: effectivePadding,
-            gap: effectiveGap,
-            actionsAxis: effectiveActionsAxis,
-            actionsMainAxisSize: effectiveActionsMainAxisSize,
-            actionsMainAxisAlignment: effectiveActionsMainAxisAlignment,
-            actionsVerticalDirection: effectiveActionsVerticalDirection,
-            border: effectiveBorder,
-            shadows: effectiveShadows,
-            removeBorderRadiusWhenTiny: effectiveRemoveBorderRadiusWhenTiny,
-            titleStyle: effectiveTitleStyle,
-            descriptionStyle: effectiveDescriptionStyle,
-            titleTextAlign: effectiveTitleTextAlign,
-            descriptionTextAlign: effectiveDescriptionTextAlign,
-            crossAxisAlignment: effectiveCrossAxisAlignment,
-            mainAxisAlignment: effectiveMainAxisAlignment,
-            scrollable: effectiveScrollable,
-            scrollPadding: effectiveScrollPadding,
-            child: widget.child,
-          ),
-        );
-      },
+    Widget child = ShadDialog(
+      key: childKey,
+      title: widget.title,
+      description: widget.description,
+      alignment: side.toAlignment(),
+      constraints: effectiveConstraints,
+      actions: widget.actions,
+      radius: effectiveRadius,
+      closeIcon: widget.closeIcon,
+      closeIconSrc: effectiveCloseIconSrc,
+      closeIconPosition: effectiveCloseIconPosition,
+      backgroundColor: effectiveBackgroundColor,
+      expandActionsWhenTiny: effectiveExpandActionsWhenTiny,
+      padding: effectivePadding,
+      gap: effectiveGap,
+      actionsAxis: effectiveActionsAxis,
+      actionsMainAxisSize: effectiveActionsMainAxisSize,
+      actionsMainAxisAlignment: effectiveActionsMainAxisAlignment,
+      actionsVerticalDirection: effectiveActionsVerticalDirection,
+      border: effectiveBorder,
+      shadows: effectiveShadows,
+      removeBorderRadiusWhenTiny: effectiveRemoveBorderRadiusWhenTiny,
+      titleStyle: effectiveTitleStyle,
+      descriptionStyle: effectiveDescriptionStyle,
+      titleTextAlign: effectiveTitleTextAlign,
+      descriptionTextAlign: effectiveDescriptionTextAlign,
+      crossAxisAlignment: effectiveCrossAxisAlignment,
+      mainAxisAlignment: effectiveMainAxisAlignment,
+      scrollable: effectiveScrollable,
+      scrollPadding: effectiveScrollPadding,
+      child: widget.child,
     );
+
     if (effectiveDraggable) {
+      final effectiveDisabledScrollControlMaxRatio =
+          widget.disabledScrollControlMaxRatio ??
+              theme.sheetTheme.disabledScrollControlMaxRatio ??
+              9 / 16;
+
+      final effectiveMinFlingVelocity =
+          widget.minFlingVelocity ?? theme.sheetTheme.minFlingVelocity ?? 700;
+
+      final effectiveCloseProgressThreshold = widget.closeProgressThreshold ??
+          theme.sheetTheme.closeProgressThreshold ??
+          0.5;
+
       child = ShadSheetGestureDetector(
         onDragStart: _handleDragStart,
         onDragUpdate: (details) => _handleDragUpdate(details, side),
-        onDragEnd: (details) => _handleDragEnd(details, side),
+        onDragEnd: (details) => _handleDragEnd(
+          details,
+          side: side,
+          minFlingVelocity: effectiveMinFlingVelocity,
+          closeProgressThreshold: effectiveCloseProgressThreshold,
+        ),
         side: side,
-        child: child,
+        child: AnimatedBuilder(
+          animation: animationController,
+          builder: (context, child) {
+            final animationValue = Easing.legacyDecelerate.transform(
+              animationController.view.value,
+            );
+            return ShadSheetLayoutWithSizeListener(
+              animationValue: animationValue,
+              onChildSizeChanged: (_) {},
+              scrollControlDisabledMaxRatio:
+                  effectiveDisabledScrollControlMaxRatio,
+              isScrollControlled: widget.isScrollControlled,
+              side: side,
+              child: child,
+            );
+          },
+          child: child,
+        ),
       );
     }
 
