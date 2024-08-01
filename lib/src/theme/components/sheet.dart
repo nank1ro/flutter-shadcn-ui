@@ -38,6 +38,9 @@ class ShadSheetTheme {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
+    this.disabledScrollControlMaxRatio,
+    this.minFlingVelocity,
+    this.closeProgressThreshold,
   });
 
   final bool merge;
@@ -68,6 +71,13 @@ class ShadSheetTheme {
   final CrossAxisAlignment? crossAxisAlignment;
   final bool? scrollable;
   final EdgeInsets? scrollPadding;
+  final double? disabledScrollControlMaxRatio;
+
+  /// {@macro ShadSheet.minFlingVelocity}
+  final double? minFlingVelocity;
+
+  /// {@macro ShadSheet.closeProgressThreshold}
+  final double? closeProgressThreshold;
 
   static ShadSheetTheme lerp(
     ShadSheetTheme a,
@@ -105,6 +115,12 @@ class ShadSheetTheme {
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       scrollable: t < 0.5 ? a.scrollable : b.scrollable,
       scrollPadding: EdgeInsets.lerp(a.scrollPadding, b.scrollPadding, t),
+      disabledScrollControlMaxRatio: t < 0.5
+          ? a.disabledScrollControlMaxRatio
+          : b.disabledScrollControlMaxRatio,
+      minFlingVelocity: t < 0.5 ? a.minFlingVelocity : b.minFlingVelocity,
+      closeProgressThreshold:
+          t < 0.5 ? a.closeProgressThreshold : b.closeProgressThreshold,
     );
   }
 
@@ -137,6 +153,9 @@ class ShadSheetTheme {
     CrossAxisAlignment? crossAxisAlignment,
     bool? scrollable,
     EdgeInsets? scrollPadding,
+    double? disabledScrollControlMaxRatio,
+    double? minFlingVelocity,
+    double? closeProgressThreshold,
   }) {
     return ShadSheetTheme(
       merge: merge ?? this.merge,
@@ -171,6 +190,11 @@ class ShadSheetTheme {
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
       scrollable: scrollable ?? this.scrollable,
       scrollPadding: scrollPadding ?? this.scrollPadding,
+      disabledScrollControlMaxRatio:
+          disabledScrollControlMaxRatio ?? this.disabledScrollControlMaxRatio,
+      minFlingVelocity: minFlingVelocity ?? this.minFlingVelocity,
+      closeProgressThreshold:
+          closeProgressThreshold ?? this.closeProgressThreshold,
     );
   }
 
@@ -202,6 +226,9 @@ class ShadSheetTheme {
       crossAxisAlignment: other.crossAxisAlignment,
       scrollable: other.scrollable,
       scrollPadding: other.scrollPadding,
+      disabledScrollControlMaxRatio: other.disabledScrollControlMaxRatio,
+      minFlingVelocity: other.minFlingVelocity,
+      closeProgressThreshold: other.closeProgressThreshold,
     );
   }
 
@@ -237,7 +264,10 @@ class ShadSheetTheme {
         other.mainAxisAlignment == mainAxisAlignment &&
         other.crossAxisAlignment == crossAxisAlignment &&
         other.scrollable == scrollable &&
-        other.scrollPadding == scrollPadding;
+        other.scrollPadding == scrollPadding &&
+        other.disabledScrollControlMaxRatio == disabledScrollControlMaxRatio &&
+        other.minFlingVelocity == minFlingVelocity &&
+        other.closeProgressThreshold == closeProgressThreshold;
   }
 
   @override
@@ -269,6 +299,9 @@ class ShadSheetTheme {
         mainAxisAlignment.hashCode ^
         crossAxisAlignment.hashCode ^
         scrollable.hashCode ^
-        scrollPadding.hashCode;
+        scrollPadding.hashCode ^
+        disabledScrollControlMaxRatio.hashCode ^
+        minFlingVelocity.hashCode ^
+        closeProgressThreshold.hashCode;
   }
 }

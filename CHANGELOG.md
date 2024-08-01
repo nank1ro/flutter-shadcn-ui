@@ -1,9 +1,10 @@
 ## 0.7.3
 
 - Add `header` and `footer` to `ShadSelect` and `ShadSelectFormField`.
-- Fix unintentional disposal of `controller` in `ShadSelect`.
 - Add `mainAxisAlignment` and `crossAxisAlignment` to `ShadAlert`.
+- Fix unintentional disposal of `controller` in `ShadSelect`.
 - Remove assert about `icon` and `iconSrc` in `ShadAlert`, you can avoid using an icon now.
+- Fix height of Sheet.
 
 ## 0.7.2
 
