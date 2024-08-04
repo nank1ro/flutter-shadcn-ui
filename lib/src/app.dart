@@ -637,7 +637,7 @@ class _ShadAppState extends State<ShadApp> {
     );
     mTheme = mTheme.copyWith(
       textTheme:
-          themeData.textTheme.materialTextTheme(textTheme: mTheme.textTheme),
+          themeData.materialTextTheme ?? themeData.textTheme.materialTextTheme(textTheme: mTheme.textTheme),
     );
 
     if (widget.materialThemeBuilder == null) {

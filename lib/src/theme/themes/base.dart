@@ -120,6 +120,7 @@ abstract class ShadBaseTheme {
   final ShadHoverStrategies hoverStrategies;
   final bool disableSecondaryBorder;
   final ShadTabsTheme tabsTheme;
+  final TextTheme? materialTextTheme;
 }
 
 @immutable

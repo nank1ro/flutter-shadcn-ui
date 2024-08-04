@@ -80,6 +80,7 @@ class ShadThemeData extends ShadBaseTheme {
     bool? disableSecondaryBorder,
     ShadTabsTheme? tabsTheme,
     ShadThemeVariant? variant,
+    TextTheme? materialTextTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -214,6 +215,7 @@ class ShadThemeData extends ShadBaseTheme {
       hoverStrategies: hoverStrategies ?? effectiveVariant.hoverStrategies(),
       disableSecondaryBorder: effectiveDisableSecondaryBorder,
       tabsTheme: effectiveVariant.tabsTheme().mergeWith(tabsTheme),
+      materilTextTheme: materialTextTheme,
     );
   }
 
@@ -262,6 +264,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.hoverStrategies,
     required super.disableSecondaryBorder,
     required super.tabsTheme,
+    required super.materialTextTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
