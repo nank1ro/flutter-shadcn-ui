@@ -1,3 +1,7 @@
+## 0.7.4
+
+- Add `onChanged` to `ShadTabs`.
+
 ## 0.7.3
 
 - Add `header` and `footer` to `ShadSelect` and `ShadSelectFormField`.
