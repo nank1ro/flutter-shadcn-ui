@@ -1,6 +1,7 @@
 ## 0.7.4
 
 - Add `onChanged` to `ShadTabs`.
+- Add `onSecondaryTap` to `ShadGestureDetector` and `ShadButton`.
 
 ## 0.7.3
 

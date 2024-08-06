@@ -7,11 +7,33 @@ class ContextMenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const BaseScaffold(
+    return BaseScaffold(
       appBarTitle: 'ContextMenu',
       children: [
         ShadContextMenu(
-          child: Text('Right click me'),
+          child: Container(
+            width: 300,
+            height: 200,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+              ),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Text('Right click me'),
+          ),
+          children: const [
+            ShadContextMenuItem(
+              child: Text('More tools'),
+              children: [
+                ShadContextMenuItem(
+                  child: Text('Save Page As'),
+                ),
+              ],
+            ),
+          ],
+          constraints: const BoxConstraints(minWidth: 300),
         ),
       ],
     );

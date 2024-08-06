@@ -58,6 +58,13 @@ class ShadAnchor extends ShadAnchorBase {
   }
 }
 
+class ShadGlobalAnchor extends ShadAnchorBase {
+  const ShadGlobalAnchor(this.offset);
+
+  /// The global offset where the overlay is positioned.
+  final Offset offset;
+}
+
 class ShadPortal extends StatefulWidget {
   const ShadPortal({
     super.key,
@@ -154,6 +161,20 @@ class _ShadPortalState extends State<ShadPortal> {
     );
   }
 
+  Widget buildGlobalPosition(
+    BuildContext context,
+    ShadGlobalAnchor anchor,
+  ) {
+    return CustomSingleChildLayout(
+      delegate: ShadPositionDelegate(
+        target: anchor.offset,
+        verticalOffset: 0, //anchor.verticalOffset,
+        preferBelow: true, //anchor.preferBelow,
+      ),
+      child: widget.portalBuilder(context),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
@@ -170,6 +191,8 @@ class _ShadPortalState extends State<ShadPortal> {
                 final ShadAnchorAuto anchor =>
                   buildAutoPosition(context, anchor),
                 final ShadAnchor anchor => buildManualPosition(context, anchor),
+                final ShadGlobalAnchor anchor =>
+                  buildGlobalPosition(context, anchor),
               },
             ),
           );

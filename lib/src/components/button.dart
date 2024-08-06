@@ -61,6 +61,9 @@ class ShadButton extends StatefulWidget {
     this.onTapDown,
     this.onTapUp,
     this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
     this.onLongPressStart,
     this.onLongPressCancel,
     this.onLongPressUp,
@@ -109,6 +112,9 @@ class ShadButton extends StatefulWidget {
     this.onTapDown,
     this.onTapUp,
     this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
     this.onLongPressStart,
     this.onLongPressCancel,
     this.onLongPressUp,
@@ -156,6 +162,9 @@ class ShadButton extends StatefulWidget {
     this.onTapDown,
     this.onTapUp,
     this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
     this.onLongPressStart,
     this.onLongPressCancel,
     this.onLongPressUp,
@@ -203,6 +212,9 @@ class ShadButton extends StatefulWidget {
     this.onTapDown,
     this.onTapUp,
     this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
     this.onLongPressStart,
     this.onLongPressCancel,
     this.onLongPressUp,
@@ -250,6 +262,9 @@ class ShadButton extends StatefulWidget {
     this.onTapDown,
     this.onTapUp,
     this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
     this.onLongPressStart,
     this.onLongPressCancel,
     this.onLongPressUp,
@@ -297,6 +312,9 @@ class ShadButton extends StatefulWidget {
     this.onTapDown,
     this.onTapUp,
     this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
     this.onLongPressStart,
     this.onLongPressCancel,
     this.onLongPressUp,
@@ -343,6 +361,9 @@ class ShadButton extends StatefulWidget {
     this.onTapDown,
     this.onTapUp,
     this.onTapCancel,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
     this.onLongPressStart,
     this.onLongPressCancel,
     this.onLongPressUp,
@@ -410,6 +431,9 @@ class ShadButton extends StatefulWidget {
   final ValueChanged<TapDownDetails>? onTapDown;
   final ValueChanged<TapUpDetails>? onTapUp;
   final VoidCallback? onTapCancel;
+  final ValueChanged<TapDownDetails>? onSecondaryTapDown;
+  final ValueChanged<TapUpDetails>? onSecondaryTapUp;
+  final VoidCallback? onSecondaryTapCancel;
   final ValueChanged<LongPressStartDetails>? onLongPressStart;
   final VoidCallback? onLongPressCancel;
   final VoidCallback? onLongPressUp;
@@ -725,6 +749,7 @@ class _ShadButtonState extends State<ShadButton> {
                     behavior: HitTestBehavior.opaque,
                     onHoverChange: (value) {
                       statesController.update(ShadState.hovered, value);
+                      widget.onHoverChange?.call(value);
                     },
                     hoverStrategies: effectiveHoverStrategies,
                     cursor: cursor(theme),
@@ -741,6 +766,15 @@ class _ShadButtonState extends State<ShadButton> {
                     onTapCancel: () {
                       statesController.update(ShadState.pressed, false);
                       widget.onTapCancel?.call();
+                    },
+                    onSecondaryTapDown: (details) {
+                      widget.onSecondaryTapDown?.call(details);
+                    },
+                    onSecondaryTapUp: (details) {
+                      widget.onSecondaryTapUp?.call(details);
+                    },
+                    onSecondaryTapCancel: () {
+                      widget.onSecondaryTapCancel?.call();
                     },
                     onDoubleTap: widget.onDoubleTap,
                     onDoubleTapDown: widget.onDoubleTapDown,
