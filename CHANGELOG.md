@@ -2,6 +2,7 @@
 
 - Add `onChanged` to `ShadTabs`.
 - Add `onSecondaryTap` to `ShadGestureDetector` and `ShadButton`.
+- Fix `maxWidth` missing in `ShadSelectForlField`.
 
 ## 0.7.3
 
