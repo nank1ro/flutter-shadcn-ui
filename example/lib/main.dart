@@ -34,6 +34,7 @@ import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 void main() {
+  SolidartConfig.devToolsEnabled = false;
   runApp(const App());
 }
 

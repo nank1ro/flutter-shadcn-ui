@@ -43,10 +43,14 @@ class ShadTabsController<T> extends ChangeNotifier {
 
   T selected;
 
-  void select(T value) {
-    if (value == selected) return;
+  /// Selects the given [value].
+  ///
+  /// Returns true if the value was changed, false otherwise.
+  bool select(T value) {
+    if (value == selected) return false;
     selected = value;
     notifyListeners();
+    return true;
   }
 }
 
@@ -92,6 +96,7 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
     this.contentConstraints,
     this.expandContent,
     this.restorationId,
+    this.onChanged,
   }) : assert(
           (value != null) ^ (controller != null),
           'Either value or controller must be provided',
@@ -161,6 +166,11 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
   /// The restoration id, defaults to `null`.
   /// {@endtemplate}
   final String? restorationId;
+
+  /// {@template ShadTabs.onChanged}
+  /// The callback that is called when the value of the tabs changes.
+  /// {@endtemplate}
+  final ValueChanged<T>? onChanged;
 
   @override
   State<ShadTabs<T>> createState() => ShadTabsState<T>();
@@ -733,7 +743,10 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               : effectiveForegroundColor,
           shadows: selected ? effectiveSelectedShadows : effectiveShadows,
           onPressed: () {
-            inherited.controller.select(widget.value);
+            final hasChanged = inherited.controller.select(widget.value);
+            if (hasChanged) {
+              inherited.widget.onChanged?.call(widget.value);
+            }
             widget.onPressed?.call();
           },
           enabled: widget.enabled,

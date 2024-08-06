@@ -1,4 +1,5 @@
 import 'package:example/common/base_scaffold.dart';
+import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -17,6 +18,7 @@ class SheetPage extends StatefulWidget {
 
 class _SheetPageState extends State<SheetPage> {
   var side = ShadSheetSide.bottom;
+  var draggable = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,11 @@ class _SheetPageState extends State<SheetPage> {
           values: ShadSheetSide.values,
           onChanged: (value) => setState(() => side = value),
         ),
+        MyBoolProperty(
+          label: 'Draggable',
+          value: draggable,
+          onChanged: (value) => setState(() => draggable = value),
+        ),
       ],
       children: [
         ShadButton.outline(
@@ -40,6 +47,7 @@ class _SheetPageState extends State<SheetPage> {
               side: side,
               builder: (context) {
                 return ShadSheet(
+                  draggable: draggable,
                   constraints:
                       side == ShadSheetSide.left || side == ShadSheetSide.right
                           ? const BoxConstraints(maxWidth: 512)

@@ -11,6 +11,8 @@ class ShadAlertTheme {
     this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
   });
 
   final bool merge;
@@ -20,6 +22,8 @@ class ShadAlertTheme {
   final Size? iconSize;
   final TextStyle? titleStyle;
   final TextStyle? descriptionStyle;
+  final MainAxisAlignment? mainAxisAlignment;
+  final CrossAxisAlignment? crossAxisAlignment;
 
   static ShadAlertTheme lerp(
     ShadAlertTheme a,
@@ -36,6 +40,8 @@ class ShadAlertTheme {
       titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
       descriptionStyle:
           TextStyle.lerp(a.descriptionStyle, b.descriptionStyle, t),
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
     );
   }
 
@@ -47,6 +53,8 @@ class ShadAlertTheme {
     Size? iconSize,
     TextStyle? titleStyle,
     TextStyle? descriptionStyle,
+    MainAxisAlignment? mainAxisAlignment,
+    CrossAxisAlignment? crossAxisAlignment,
   }) {
     return ShadAlertTheme(
       merge: merge ?? this.merge,
@@ -56,6 +64,8 @@ class ShadAlertTheme {
       iconSize: iconSize ?? this.iconSize,
       titleStyle: titleStyle ?? this.titleStyle,
       descriptionStyle: descriptionStyle ?? this.descriptionStyle,
+      mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
     );
   }
 
@@ -69,6 +79,8 @@ class ShadAlertTheme {
       iconSize: other.iconSize,
       titleStyle: other.titleStyle,
       descriptionStyle: other.descriptionStyle,
+      mainAxisAlignment: other.mainAxisAlignment,
+      crossAxisAlignment: other.crossAxisAlignment,
     );
   }
 
@@ -83,7 +95,9 @@ class ShadAlertTheme {
         other.iconColor == iconColor &&
         other.iconSize == iconSize &&
         other.titleStyle == titleStyle &&
-        other.descriptionStyle == descriptionStyle;
+        other.descriptionStyle == descriptionStyle &&
+        other.mainAxisAlignment == mainAxisAlignment &&
+        other.crossAxisAlignment == crossAxisAlignment;
   }
 
   @override
@@ -94,6 +108,8 @@ class ShadAlertTheme {
         iconColor.hashCode ^
         iconSize.hashCode ^
         titleStyle.hashCode ^
-        descriptionStyle.hashCode;
+        descriptionStyle.hashCode ^
+        mainAxisAlignment.hashCode ^
+        crossAxisAlignment.hashCode;
   }
 }

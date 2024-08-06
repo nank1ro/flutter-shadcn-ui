@@ -1,3 +1,19 @@
+## 0.7.4
+
+- Add `onChanged` to `ShadTabs`.
+
+## 0.7.3
+
+- Add `header` and `footer` to `ShadSelect` and `ShadSelectFormField`.
+- Add `mainAxisAlignment` and `crossAxisAlignment` to `ShadAlert`.
+- Fix unintentional disposal of `controller` in `ShadSelect`.
+- Remove assert about `icon` and `iconSrc` in `ShadAlert`, you can avoid using an icon now.
+- Fix height of Sheet.
+
+## 0.7.2
+
+- Add `controller` parameter to `ShadSelect` and `ShadSelectFormField`.
+
 ## 0.7.1
 
 - Fix performance of `ShadSelect` with the new `optionsBuilder` parameter for a large number of options.

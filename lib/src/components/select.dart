@@ -30,6 +30,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.options,
     this.optionsBuilder,
     required this.selectedOptionBuilder,
+    this.controller,
     this.enabled = true,
     this.placeholder,
     this.initialValue,
@@ -50,6 +51,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.effects,
     this.shadows,
     this.filter,
+    this.header,
+    this.footer,
   })  : variant = ShadSelectVariant.primary,
         onSearchChanged = null,
         searchDivider = null,
@@ -69,6 +72,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.optionsBuilder,
     required this.selectedOptionBuilder,
     required ValueChanged<String> this.onSearchChanged,
+    this.controller,
     this.searchDivider,
     this.searchInputPrefix,
     this.searchPlaceholder,
@@ -95,6 +99,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.effects,
     this.shadows,
     this.filter,
+    this.header,
+    this.footer,
   })  : variant = ShadSelectVariant.search,
         assert(
           options != null || optionsBuilder != null,
@@ -107,6 +113,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.options,
     this.optionsBuilder,
     required this.selectedOptionBuilder,
+    this.controller,
     this.onSearchChanged,
     this.searchDivider,
     this.searchInputPrefix,
@@ -134,6 +141,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.effects,
     this.shadows,
     this.filter,
+    this.header,
+    this.footer,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -251,6 +260,19 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@macro popover.filter}
   final ImageFilter? filter;
 
+  /// {@macro popover.controller}
+  final ShadPopoverController? controller;
+
+  /// {@template select.header}
+  /// The header of the [ShadSelect].
+  /// {@endtemplate}
+  final Widget? header;
+
+  /// {@template select.footer}
+  /// The footer of the [ShadSelect].
+  /// {@endtemplate}
+  final Widget? footer;
+
   static ShadSelectState<T> of<T>(BuildContext context, {bool listen = true}) {
     return maybeOf<T>(context, listen: listen)!;
   }
@@ -279,7 +301,11 @@ class ShadSelect<T> extends StatefulWidget {
 class ShadSelectState<T> extends State<ShadSelect<T>> {
   FocusNode? internalFocusNode;
   late T? selected = widget.initialValue;
-  final controller = ShadPopoverController();
+  ShadPopoverController? _controller;
+
+  ShadPopoverController get controller =>
+      widget.controller ?? (_controller ??= ShadPopoverController());
+
   ScrollController? _scrollController;
 
   final showScrollToBottom = ValueNotifier(false);
@@ -334,8 +360,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
   @override
   void dispose() {
+    _controller?.dispose();
     internalFocusNode?.dispose();
-    controller.dispose();
     _scrollController?.dispose();
     showScrollToBottom.dispose();
     showScrollToTop.dispose();
@@ -658,6 +684,13 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                               child: search,
                             ),
                           ),
+                        if (widget.header != null)
+                          Flexible(
+                            child: ConstrainedBox(
+                              constraints: effectiveConstraints,
+                              child: widget.header,
+                            ),
+                          ),
                         if (scrollToTopChild != null) scrollToTopChild,
                         Flexible(
                           child: ConstrainedBox(
@@ -666,6 +699,13 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                           ),
                         ),
                         if (scrollToBottomChild != null) scrollToBottomChild,
+                        if (widget.footer != null)
+                          Flexible(
+                            child: ConstrainedBox(
+                              constraints: effectiveConstraints,
+                              child: widget.footer,
+                            ),
+                          ),
                       ],
                     ),
                   );
