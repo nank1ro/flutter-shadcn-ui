@@ -1,6 +1,7 @@
 ## 0.7.4
 
 - Add `onChanged` to `ShadTabs`.
+- Fix `maxWidth` missing in `ShadSelectForlField`.
 
 ## 0.7.3
 
