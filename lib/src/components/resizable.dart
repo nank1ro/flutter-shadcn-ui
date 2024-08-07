@@ -132,7 +132,6 @@ class ShadResizablePanelGroup extends StatefulWidget {
     this.mainAxisSize,
     this.textDirection,
     this.verticalDirection,
-    this.height,
     this.controller,
     this.showHandle,
     this.handleIconSrc,
@@ -145,10 +144,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
     this.handleDecoration,
     this.handlePadding,
     this.handleSize,
-  }) : assert(
-          axis == Axis.vertical || height != null,
-          'Height must be set for horizontal panels',
-        );
+  });
 
   final Axis axis;
   final List<ShadResizablePanel> children;
@@ -157,7 +153,6 @@ class ShadResizablePanelGroup extends StatefulWidget {
   final MainAxisSize? mainAxisSize;
   final TextDirection? textDirection;
   final VerticalDirection? verticalDirection;
-  final double? height;
   final ShadResizableController? controller;
   final bool? showHandle;
   final ShadImageSrc? handleIconSrc;
