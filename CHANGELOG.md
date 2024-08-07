@@ -2,6 +2,7 @@
 
 - Add `onChanged` to `ShadTabs`.
 - Fix `maxWidth` missing in `ShadSelectForlField`.
+- **BREAKING CHANGE**: Refactor `ShadResizablePanelGroup` in order to react to window resize correctly. Now the sizes provided must be between 0 and 1.
 
 ## 0.7.3
 
