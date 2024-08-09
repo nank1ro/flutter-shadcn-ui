@@ -1,5 +1,6 @@
-## 0.7.4
+## 0.8.0
 
+- **BREAKING CHANGE**: Refactor `ShadResizablePanelGroup` in order to react to window resize correctly. The sizes have been normalized. You don't need to provide anymore a pixel size, but a value between 0 and 1 which indicates the percentage of the available space.
 - Add `onChanged` to `ShadTabs`.
 - Add `onSecondaryTap` to `ShadGestureDetector` and `ShadButton`.
 - Fix `maxWidth` missing in `ShadSelectForlField`.

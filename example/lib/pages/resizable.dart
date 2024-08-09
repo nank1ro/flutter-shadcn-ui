@@ -18,52 +18,56 @@ class _ResizablePageState extends State<ResizablePage> {
     return BaseScaffold(
       appBarTitle: 'Resizable',
       children: [
-        ShadDecorator(
-          decoration: ShadDecoration(
-            merge: false,
-            border: ShadBorder.all(
-              color: theme.colorScheme.border,
-              radius: theme.radius,
+        SizedBox(
+          width: 300,
+          height: 200,
+          child: ShadDecorator(
+            decoration: ShadDecoration(
+              merge: false,
+              border: ShadBorder.all(
+                color: theme.colorScheme.border,
+                radius: theme.radius,
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: theme.radius,
+              child: ShadResizablePanelGroup(
+                mainAxisSize: MainAxisSize.min,
+                showHandle: true,
+                children: [
+                  ShadResizablePanel(
+                    defaultSize: .5,
+                    minSize: 0.1,
+                    maxSize: 0.8,
+                    child: Center(
+                      child: Text('One', style: theme.textTheme.large),
+                    ),
+                  ),
+                  ShadResizablePanel(
+                    defaultSize: 0.5,
+                    child: ShadResizablePanelGroup(
+                      axis: Axis.vertical,
+                      showHandle: true,
+                      children: [
+                        ShadResizablePanel(
+                          defaultSize: 0.4,
+                          child: Center(
+                              child: Text('Two', style: theme.textTheme.large)),
+                        ),
+                        ShadResizablePanel(
+                          defaultSize: 0.6,
+                          child: Align(
+                              child:
+                                  Text('Three', style: theme.textTheme.large)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          child: ClipRRect(
-            borderRadius: theme.radius,
-            child: ShadResizablePanelGroup(
-              mainAxisSize: MainAxisSize.min,
-              height: 200,
-              showHandle: true,
-              children: [
-                ShadResizablePanel(
-                  defaultSize: 150,
-                  minSize: 50,
-                  maxSize: 300,
-                  child: Center(
-                    child: Text('One', style: theme.textTheme.large),
-                  ),
-                ),
-                ShadResizablePanel(
-                  defaultSize: 150,
-                  child: ShadResizablePanelGroup(
-                    axis: Axis.vertical,
-                    showHandle: true,
-                    children: [
-                      ShadResizablePanel(
-                        defaultSize: 50,
-                        child: Center(
-                            child: Text('Two', style: theme.textTheme.large)),
-                      ),
-                      ShadResizablePanel(
-                        defaultSize: 150,
-                        child: Align(
-                            child: Text('Three', style: theme.textTheme.large)),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        )
       ],
     );
   }
