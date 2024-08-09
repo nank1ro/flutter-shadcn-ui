@@ -78,7 +78,7 @@ class ShadResizableController extends ChangeNotifier {
     required int leadingIndex,
     required int trailingIndex,
     required double offset,
-    required double multiplier,
+    required double totalAvailableSpace,
   }) {
     assert(
       (leadingIndex - trailingIndex).abs() == 1,
@@ -88,9 +88,11 @@ class ShadResizableController extends ChangeNotifier {
     final trailingPanelInfo = getPanelInfo(trailingIndex);
 
     final newLeadingSize =
-        (leadingPanelInfo.size * multiplier + offset) / multiplier;
+        (leadingPanelInfo.size * totalAvailableSpace + offset) /
+            totalAvailableSpace;
     final newTrailingSize =
-        (trailingPanelInfo.size * multiplier - offset) / multiplier;
+        (trailingPanelInfo.size * totalAvailableSpace - offset) /
+            totalAvailableSpace;
 
     if (newLeadingSize < leadingPanelInfo.minSize ||
         newTrailingSize > trailingPanelInfo.maxSize) {
@@ -224,7 +226,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
       leadingIndex: indexOfLeadingPanel,
       trailingIndex: indexOfTrailingPanel,
       offset: axisOffset,
-      multiplier: widget.axis == Axis.horizontal
+      totalAvailableSpace: widget.axis == Axis.horizontal
           ? currentConstraints!.maxWidth
           : currentConstraints!.maxHeight,
     );
