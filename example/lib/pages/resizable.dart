@@ -33,7 +33,6 @@ class _ResizablePageState extends State<ResizablePage> {
               borderRadius: theme.radius,
               child: ShadResizablePanelGroup(
                 mainAxisSize: MainAxisSize.min,
-                height: 200,
                 showHandle: true,
                 children: [
                   ShadResizablePanel(
