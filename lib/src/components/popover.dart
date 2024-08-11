@@ -46,6 +46,7 @@ class ShadPopover extends StatefulWidget {
     this.padding,
     this.decoration,
     this.filter,
+    this.groupId,
   }) : assert(
           (controller != null) ^ (visible != null),
           'Either controller or visible must be provided',
@@ -97,7 +98,7 @@ class ShadPopover extends StatefulWidget {
   /// The padding of the [popover], defaults to
   /// `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template popover.decoration}
   /// The decoration of the [popover].
@@ -109,6 +110,13 @@ class ShadPopover extends StatefulWidget {
   /// {@endtemplate}
   final ImageFilter? filter;
 
+  /// {@template popover.groupId}
+  /// The group id of the [popover], defaults to `UniqueKey()`.
+  ///
+  /// Used to determine it the tap is inside the [popover] or not.
+  /// {@endtemplate}
+  final Object? groupId;
+
   @override
   State<ShadPopover> createState() => _ShadPopoverState();
 }
@@ -117,7 +125,10 @@ class _ShadPopoverState extends State<ShadPopover> {
   ShadPopoverController? _controller;
   ShadPopoverController get controller => widget.controller ?? _controller!;
   bool animating = false;
-  final popoverKey = UniqueKey();
+
+  late final _popoverKey = UniqueKey();
+
+  Object get groupId => widget.groupId ?? _popoverKey;
 
   @override
   void initState() {
@@ -203,7 +214,7 @@ class _ShadPopoverState extends State<ShadPopover> {
 
     if (widget.closeOnTapOutside) {
       popover = TapRegion(
-        groupId: popoverKey,
+        groupId: groupId,
         behavior: HitTestBehavior.opaque,
         onTapOutside: (_) => controller.hide(),
         child: popover,
@@ -211,7 +222,7 @@ class _ShadPopoverState extends State<ShadPopover> {
     }
 
     return TapRegion(
-      groupId: popoverKey,
+      groupId: groupId,
       child: ListenableBuilder(
         listenable: controller,
         builder: (context, _) {

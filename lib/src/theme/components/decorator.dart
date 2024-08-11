@@ -199,7 +199,15 @@ class ShadDecoration {
     this.fallbackToLabelStyle,
   });
 
-  static const ShadDecoration none = ShadDecoration(merge: false);
+  static const ShadDecoration none = ShadDecoration(
+    merge: false,
+    border: ShadBorder.none,
+    focusedBorder: ShadBorder.none,
+    errorBorder: ShadBorder.none,
+    secondaryBorder: ShadBorder.none,
+    secondaryFocusedBorder: ShadBorder.none,
+    secondaryErrorBorder: ShadBorder.none,
+  );
 
   final bool merge;
   final TextStyle? labelStyle;

@@ -75,6 +75,7 @@ class ShadButton extends StatefulWidget {
     this.longPressDuration,
     this.textDirection,
     this.gap,
+    this.onFocusChange,
   }) : variant = ShadButtonVariant.primary;
 
   const ShadButton.raw({
@@ -126,6 +127,7 @@ class ShadButton extends StatefulWidget {
     this.longPressDuration,
     this.textDirection,
     this.gap,
+    this.onFocusChange,
   });
 
   const ShadButton.destructive({
@@ -176,6 +178,7 @@ class ShadButton extends StatefulWidget {
     this.longPressDuration,
     this.textDirection,
     this.gap,
+    this.onFocusChange,
   }) : variant = ShadButtonVariant.destructive;
 
   const ShadButton.outline({
@@ -226,6 +229,7 @@ class ShadButton extends StatefulWidget {
     this.longPressDuration,
     this.textDirection,
     this.gap,
+    this.onFocusChange,
   }) : variant = ShadButtonVariant.outline;
 
   const ShadButton.secondary({
@@ -276,6 +280,7 @@ class ShadButton extends StatefulWidget {
     this.longPressDuration,
     this.textDirection,
     this.gap,
+    this.onFocusChange,
   }) : variant = ShadButtonVariant.secondary;
 
   const ShadButton.ghost({
@@ -326,6 +331,7 @@ class ShadButton extends StatefulWidget {
     this.longPressDuration,
     this.textDirection,
     this.gap,
+    this.onFocusChange,
   }) : variant = ShadButtonVariant.ghost;
 
   const ShadButton.link({
@@ -375,6 +381,7 @@ class ShadButton extends StatefulWidget {
     this.longPressDuration,
     this.textDirection,
     this.gap,
+    this.onFocusChange,
   })  : variant = ShadButtonVariant.link,
         icon = null;
 
@@ -388,7 +395,7 @@ class ShadButton extends StatefulWidget {
   final MouseCursor? cursor;
   final double? width;
   final double? height;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
   final Color? backgroundColor;
   final Color? hoverBackgroundColor;
   final Color? foregroundColor;
@@ -444,6 +451,7 @@ class ShadButton extends StatefulWidget {
   final VoidCallback? onDoubleTapCancel;
   final Duration? longPressDuration;
   final TextDirection? textDirection;
+  final ValueChanged<bool>? onFocusChange;
 
   @override
   State<ShadButton> createState() => _ShadButtonState();
@@ -562,14 +570,14 @@ class _ShadButtonState extends State<ShadButton> {
     return defaultWidthForSize(theme, buttonTheme(theme).size);
   }
 
-  EdgeInsets defaultPaddingForSize(
+  EdgeInsetsGeometry defaultPaddingForSize(
     ShadThemeData theme,
     ShadButtonSize size,
   ) {
     return sizeTheme(theme, size).padding;
   }
 
-  EdgeInsets padding(ShadThemeData theme) {
+  EdgeInsetsGeometry padding(ShadThemeData theme) {
     if (widget.padding != null) return widget.padding!;
     if (widget.size != null) {
       return defaultPaddingForSize(theme, widget.size!);
@@ -740,6 +748,7 @@ class _ShadButtonState extends State<ShadButton> {
                   canRequestFocus: enabled,
                   autofocus: widget.autofocus,
                   focusNode: focusNode,
+                  onFocusChange: widget.onFocusChange,
                   builder: (context, focused, child) => ShadDecorator(
                     decoration: updatedDecoration,
                     focused: focused,
