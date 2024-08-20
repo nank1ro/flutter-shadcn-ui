@@ -21,75 +21,73 @@ class SheetPage extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: () {
-            return switch (style) {
-              SheetStyle.primary => ShadButton.outline(
-                  child: const Text('Open'),
-                  onPressed: () => showShadSheet(
+          child: switch (style) {
+            SheetStyle.primary => ShadButton.outline(
+                child: const Text('Open'),
+                onPressed: () => showShadSheet(
+                  side: ShadSheetSide.right,
+                  context: context,
+                  builder: (context) => const EditProfileSheet(
                     side: ShadSheetSide.right,
-                    context: context,
-                    builder: (context) => const EditProfileSheet(
-                      side: ShadSheetSide.right,
-                    ),
                   ),
                 ),
-              SheetStyle.side => Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ShadButton.outline(
-                          width: 100,
-                          child: const Text('Top'),
-                          onPressed: () => showShadSheet(
-                            side: ShadSheetSide.top,
-                            context: context,
-                            builder: (context) =>
-                                const EditProfileSheet(side: ShadSheetSide.top),
-                          ),
+              ),
+            SheetStyle.side => Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ShadButton.outline(
+                        width: 100,
+                        child: const Text('Top'),
+                        onPressed: () => showShadSheet(
+                          side: ShadSheetSide.top,
+                          context: context,
+                          builder: (context) =>
+                              const EditProfileSheet(side: ShadSheetSide.top),
                         ),
-                        ShadButton.outline(
-                          width: 100,
-                          child: const Text('Bottom'),
-                          onPressed: () => showShadSheet(
-                            side: ShadSheetSide.bottom,
-                            context: context,
-                            builder: (context) => const EditProfileSheet(
-                                side: ShadSheetSide.bottom),
-                          ),
+                      ),
+                      ShadButton.outline(
+                        width: 100,
+                        child: const Text('Bottom'),
+                        onPressed: () => showShadSheet(
+                          side: ShadSheetSide.bottom,
+                          context: context,
+                          builder: (context) => const EditProfileSheet(
+                              side: ShadSheetSide.bottom),
                         ),
-                      ],
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ShadButton.outline(
-                          width: 100,
-                          child: const Text('Right'),
-                          onPressed: () => showShadSheet(
-                            side: ShadSheetSide.right,
-                            context: context,
-                            builder: (context) => const EditProfileSheet(
-                                side: ShadSheetSide.right),
-                          ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ShadButton.outline(
+                        width: 100,
+                        child: const Text('Right'),
+                        onPressed: () => showShadSheet(
+                          side: ShadSheetSide.right,
+                          context: context,
+                          builder: (context) =>
+                              const EditProfileSheet(side: ShadSheetSide.right),
                         ),
-                        ShadButton.outline(
-                          width: 100,
-                          child: const Text('Left'),
-                          onPressed: () => showShadSheet(
-                            side: ShadSheetSide.left,
-                            context: context,
-                            builder: (context) => const EditProfileSheet(
-                                side: ShadSheetSide.left),
-                          ),
+                      ),
+                      ShadButton.outline(
+                        width: 100,
+                        child: const Text('Left'),
+                        onPressed: () => showShadSheet(
+                          side: ShadSheetSide.left,
+                          context: context,
+                          builder: (context) =>
+                              const EditProfileSheet(side: ShadSheetSide.left),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-            };
-          }(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+          },
         ),
       ),
     );
