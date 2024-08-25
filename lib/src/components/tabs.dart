@@ -231,6 +231,13 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
     if (!listEquals(widget.tabs, oldWidget.tabs)) {
       orderedValues = widget.tabs.map((e) => e.value).toList();
     }
+
+    // Update the controller if the value has changed.
+    if (widget.value is T &&
+        widget.controller == null &&
+        controller.selected != widget.value) {
+      controller.select(widget.value as T);
+    }
   }
 
   @override
