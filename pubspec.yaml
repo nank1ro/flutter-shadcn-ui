@@ -5,7 +5,10 @@ homepage: https://mariuti.com/shadcn-ui
 repository: https://github.com/nank1ro/flutter-shadcn-ui
 documentation: https://mariuti.com/shadcn-ui
 topics:
-  - ui
+  - user-interface
+  - design-system
+  - shadcn-ui
+  - material-alternative
 
 environment:
   sdk: ^3.0.0
