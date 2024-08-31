@@ -97,6 +97,7 @@ export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
 export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
 export 'src/utils/tree_depth_counter.dart';
+export 'src/utils/mouse_area.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart' hide Effect;

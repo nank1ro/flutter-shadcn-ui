@@ -1,4 +1,3 @@
-import 'package:example/common/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -8,10 +7,10 @@ class ContextMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    return BaseScaffold(
-      appBarTitle: 'ContextMenu',
-      children: [
-        ShadContextMenuRegion(
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: ShadContextMenuRegion(
           child: Container(
             width: 300,
             height: 200,
@@ -94,7 +93,7 @@ class ContextMenuPage extends StatelessWidget {
           ],
           constraints: const BoxConstraints(minWidth: 300),
         ),
-      ],
+      ),
     );
   }
 }

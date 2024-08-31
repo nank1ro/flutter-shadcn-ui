@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 
@@ -27,6 +28,11 @@ class ShadContextMenuTheme {
     this.subMenuPadding,
     this.backgroundColor,
     this.selectedBackgroundColor,
+    this.closeOnTap,
+    this.effects,
+    this.shadows,
+    this.itemDecoration,
+    this.filter,
   });
 
   final bool merge;
@@ -62,7 +68,7 @@ class ShadContextMenuTheme {
   final ShadButtonVariant? buttonVariant;
 
   /// {@macro ShadContextMenuItem.decoration}
-  final ShadDecoration? decoration;
+  final ShadDecoration? itemDecoration;
 
   /// {@macro ShadContextMenuItem.textStyle}
   final TextStyle? textStyle;
@@ -82,6 +88,21 @@ class ShadContextMenuTheme {
   /// {@macro ShadContextMenuItem.selectedBackgroundColor}
   final Color? selectedBackgroundColor;
 
+  /// {@macro ShadContextMenuItem.closeOnTap}
+  final bool? closeOnTap;
+
+  /// {@macro ShadPopover.effects}
+  final List<Effect<dynamic>>? effects;
+
+  /// {@macro ShadPopover.shadows}
+  final List<BoxShadow>? shadows;
+
+  /// {@macro ShadPopover.decoration}
+  final ShadDecoration? decoration;
+
+  /// {@macro ShadPopover.filter}
+  final ImageFilter? filter;
+
   static ShadContextMenuTheme lerp(
     ShadContextMenuTheme a,
     ShadContextMenuTheme b,
@@ -89,7 +110,7 @@ class ShadContextMenuTheme {
   ) {
     if (identical(a, b)) return a;
     return ShadContextMenuTheme(
-      merge: b.merge,
+      merge: t < .5 ? a.merge : b.merge,
       constraints: BoxConstraints.lerp(a.constraints, b.constraints, t),
       padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       leadingPadding:
@@ -99,7 +120,7 @@ class ShadContextMenuTheme {
       itemPadding: EdgeInsetsGeometry.lerp(a.itemPadding, b.itemPadding, t),
       insetPadding: EdgeInsetsGeometry.lerp(a.insetPadding, b.insetPadding, t),
       anchor: t < .5 ? a.anchor : b.anchor,
-      showDelay: b.showDelay,
+      showDelay: t < .5 ? a.showDelay : b.showDelay,
       height: lerpDouble(a.height, b.height, t),
       buttonVariant: t < .5 ? a.buttonVariant : b.buttonVariant,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
@@ -113,6 +134,12 @@ class ShadContextMenuTheme {
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       selectedBackgroundColor:
           Color.lerp(a.selectedBackgroundColor, b.selectedBackgroundColor, t),
+      closeOnTap: t < .5 ? a.closeOnTap : b.closeOnTap,
+      itemDecoration:
+          ShadDecoration.lerp(a.itemDecoration, b.itemDecoration, t),
+      effects: t < .5 ? a.effects : b.effects,
+      shadows: t < .5 ? a.shadows : b.shadows,
+      filter: t < .5 ? a.filter : b.filter,
     );
   }
 
@@ -135,6 +162,11 @@ class ShadContextMenuTheme {
     EdgeInsetsGeometry? subMenuPadding,
     Color? backgroundColor,
     Color? selectedBackgroundColor,
+    bool? closeOnTap,
+    List<Effect<dynamic>>? effects,
+    List<BoxShadow>? shadows,
+    ShadDecoration? itemDecoration,
+    ImageFilter? filter,
   }) {
     return ShadContextMenuTheme(
       merge: merge ?? this.merge,
@@ -156,6 +188,11 @@ class ShadContextMenuTheme {
       backgroundColor: backgroundColor ?? this.backgroundColor,
       selectedBackgroundColor:
           selectedBackgroundColor ?? this.selectedBackgroundColor,
+      closeOnTap: closeOnTap ?? this.closeOnTap,
+      effects: effects ?? this.effects,
+      shadows: shadows ?? this.shadows,
+      itemDecoration: itemDecoration ?? this.itemDecoration,
+      filter: filter ?? this.filter,
     );
   }
 
@@ -180,6 +217,11 @@ class ShadContextMenuTheme {
       subMenuPadding: other.subMenuPadding,
       backgroundColor: other.backgroundColor,
       selectedBackgroundColor: other.selectedBackgroundColor,
+      closeOnTap: other.closeOnTap,
+      effects: other.effects,
+      shadows: other.shadows,
+      itemDecoration: other.itemDecoration,
+      filter: other.filter,
     );
   }
 
@@ -205,7 +247,12 @@ class ShadContextMenuTheme {
         other.itemConstraints == itemConstraints &&
         other.subMenuPadding == subMenuPadding &&
         other.backgroundColor == backgroundColor &&
-        other.selectedBackgroundColor == selectedBackgroundColor;
+        other.selectedBackgroundColor == selectedBackgroundColor &&
+        other.closeOnTap == closeOnTap &&
+        other.effects == effects &&
+        other.shadows == shadows &&
+        other.itemDecoration == itemDecoration &&
+        other.filter == filter;
   }
 
   @override
@@ -227,6 +274,11 @@ class ShadContextMenuTheme {
         itemConstraints.hashCode ^
         subMenuPadding.hashCode ^
         backgroundColor.hashCode ^
-        selectedBackgroundColor.hashCode;
+        selectedBackgroundColor.hashCode ^
+        closeOnTap.hashCode ^
+        effects.hashCode ^
+        shadows.hashCode ^
+        itemDecoration.hashCode ^
+        filter.hashCode;
   }
 }

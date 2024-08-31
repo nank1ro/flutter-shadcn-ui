@@ -761,14 +761,14 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         itemPadding: const EdgeInsets.symmetric(horizontal: 4),
         leadingPadding: const EdgeInsets.only(right: 8),
         trailingPadding: const EdgeInsets.only(left: 8),
-        anchor: const ShadAnchor(
-          overlayAlignment: Alignment.topRight,
-          offset: Offset(-8, -3),
-        ),
+        // anchor: const ShadAnchor(
+        //   overlayAlignment: Alignment.topRight,
+        //   offset: Offset(-8, -3),
+        // ),
         showDelay: const Duration(milliseconds: 100),
         height: 32,
         buttonVariant: ShadButtonVariant.ghost,
-        decoration: const ShadDecoration(
+        itemDecoration: const ShadDecoration(
           secondaryBorder: ShadBorder.none,
           secondaryFocusedBorder: ShadBorder.none,
         ),

@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/mouse_area.dart';
 
 /// Controls the visibility of a [ShadPopover].
 class ShadPopoverController extends ChangeNotifier {
@@ -47,6 +48,7 @@ class ShadPopover extends StatefulWidget {
     this.decoration,
     this.filter,
     this.groupId,
+    this.areaGroupId,
   }) : assert(
           (controller != null) ^ (visible != null),
           'Either controller or visible must be provided',
@@ -58,7 +60,7 @@ class ShadPopover extends StatefulWidget {
   /// The child widget.
   final Widget child;
 
-  /// {@template popover.controller}
+  /// {@template ShadPopover.controller}
   /// The controller that controls the visibility of the [popover].
   /// {@endtemplate}
   final ShadPopoverController? controller;
@@ -73,7 +75,7 @@ class ShadPopover extends StatefulWidget {
   /// focused.
   final FocusNode? focusNode;
 
-  ///{@template popover.anchor}
+  ///{@template ShadPopover.anchor}
   /// The position of the [popover] in the global coordinate system.
   ///
   /// Defaults to
@@ -81,41 +83,44 @@ class ShadPopover extends StatefulWidget {
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
-  /// {@template popover.effects}
+  /// {@template ShadPopover.effects}
   /// The animation effects applied to the [popover]. Defaults to
   /// [FadeEffect(), ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
   /// MoveEffect(begin: Offset(0, 2), end: Offset(0, 0))].
   /// {@endtemplate}
   final List<Effect<dynamic>>? effects;
 
-  /// {@template popover.shadows}
+  /// {@template ShadPopover.shadows}
   /// The shadows applied to the [popover], defaults to
   /// [ShadShadows.md].
   /// {@endtemplate}
   final List<BoxShadow>? shadows;
 
-  /// {@template popover.padding}
+  /// {@template ShadPopover.padding}
   /// The padding of the [popover], defaults to
   /// `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
   /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
-  /// {@template popover.decoration}
+  /// {@template ShadPopover.decoration}
   /// The decoration of the [popover].
   /// {@endtemplate}
   final ShadDecoration? decoration;
 
-  /// {@template popover.filter}
+  /// {@template ShadPopover.filter}
   /// The filter of the [popover], defaults to `null`.
   /// {@endtemplate}
   final ImageFilter? filter;
 
-  /// {@template popover.groupId}
+  /// {@template ShadPopover.groupId}
   /// The group id of the [popover], defaults to `UniqueKey()`.
   ///
   /// Used to determine it the tap is inside the [popover] or not.
   /// {@endtemplate}
   final Object? groupId;
+
+  /// {@macro ShadMouseArea.groupId}
+  final Object? areaGroupId;
 
   @override
   State<ShadPopover> createState() => _ShadPopoverState();
@@ -182,17 +187,20 @@ class _ShadPopoverState extends State<ShadPopover> {
 
     final effectiveFilter = widget.filter ?? theme.popoverTheme.filter;
 
-    Widget popover = ShadDecorator(
-      decoration: effectiveDecoration,
-      child: Padding(
-        padding: effectivePadding,
-        child: DefaultTextStyle(
-          style: TextStyle(
-            color: theme.colorScheme.popoverForeground,
-          ),
-          textAlign: TextAlign.center,
-          child: Builder(
-            builder: widget.popover,
+    Widget popover = ShadMouseArea(
+      groupId: widget.areaGroupId,
+      child: ShadDecorator(
+        decoration: effectiveDecoration,
+        child: Padding(
+          padding: effectivePadding,
+          child: DefaultTextStyle(
+            style: TextStyle(
+              color: theme.colorScheme.popoverForeground,
+            ),
+            textAlign: TextAlign.center,
+            child: Builder(
+              builder: widget.popover,
+            ),
           ),
         ),
       ),

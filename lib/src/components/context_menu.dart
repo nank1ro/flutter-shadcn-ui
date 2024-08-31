@@ -1,9 +1,130 @@
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
 const kContextMenuGroupId = ValueKey('context-menu');
+
+/// {@template ShadContextMenuRegion}
+/// A widget that shows the context menu when the user right clicks the [child].
+/// {@endtemplate}
+class ShadContextMenuRegion extends StatefulWidget {
+  /// {@macro ShadContextMenuRegion}
+  const ShadContextMenuRegion({
+    super.key,
+    required this.child,
+    required this.children,
+    this.visible = false,
+    this.constraints,
+    this.onHoverArea,
+    this.padding,
+    this.groupId,
+    this.effects,
+    this.shadows,
+    this.decoration,
+    this.filter,
+  });
+
+  /// {@template ShadContextMenuRegion.child}
+  /// The child that triggers the visibility of the context menu.
+  /// {@endtemplate}
+  final Widget child;
+
+  /// {@macro ShadContextMenu.children}
+  final List<Widget> children;
+
+  /// {@macro ShadContextMenu.visible}
+  final bool visible;
+
+  /// {@macro ShadContextMenu.constraints}
+  final BoxConstraints? constraints;
+
+  /// {@macro ShadContextMenu.onHoverArea}
+  final ValueChanged<bool>? onHoverArea;
+
+  /// {@macro ShadContextMenu.padding}
+  final EdgeInsetsGeometry? padding;
+
+  /// {@macro ShadMouseArea.groupId}
+  final Object? groupId;
+
+  /// {@macro ShadPopover.effects}
+  final List<Effect<dynamic>>? effects;
+
+  /// {@macro ShadPopover.shadows}
+  final List<BoxShadow>? shadows;
+
+  /// {@macro ShadPopover.decoration}
+  final ShadDecoration? decoration;
+
+  /// {@macro ShadPopover.filter}
+  final ImageFilter? filter;
+
+  @override
+  State<ShadContextMenuRegion> createState() => _ShadContextMenuRegionState();
+}
+
+class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
+  late bool visible = widget.visible;
+  ShadAnchorBase? anchor;
+
+  @override
+  void didUpdateWidget(covariant ShadContextMenuRegion oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    visible = widget.visible;
+  }
+
+  void showAtOffset(Offset offset) {
+    setState(() {
+      anchor = ShadGlobalAnchor(offset);
+      visible = true;
+    });
+  }
+
+  void hide() {
+    if (!visible) return;
+    setState(() => visible = false);
+  }
+
+  /// A special method for web, to disable the default browser context menu.
+  Future<void> showOnWeb(TapDownDetails details) async {
+    await BrowserContextMenu.disableContextMenu();
+    showAtOffset(details.globalPosition);
+    await Future<void>.delayed(Duration.zero);
+    await BrowserContextMenu.enableContextMenu();
+  }
+
+  void show(TapDownDetails details) {
+    showAtOffset(details.globalPosition);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadContextMenu(
+      anchor: anchor,
+      visible: visible,
+      child: ShadGestureDetector(
+        onTapDown: (_) => hide(),
+        onSecondaryTapDown: kIsWeb ? showOnWeb : show,
+        child: widget.child,
+      ),
+      children: widget.children,
+      constraints: widget.constraints,
+      onHoverArea: widget.onHoverArea,
+      padding: widget.padding,
+      groupId: widget.groupId,
+      effects: widget.effects,
+      shadows: widget.shadows,
+      decoration: widget.decoration,
+      filter: widget.filter,
+    );
+  }
+}
 
 class ShadContextMenu extends StatefulWidget {
   const ShadContextMenu({
@@ -13,8 +134,13 @@ class ShadContextMenu extends StatefulWidget {
     this.anchor,
     this.visible = false,
     this.constraints,
-    this.onPopoverHoverChange,
+    this.onHoverArea,
     this.padding,
+    this.groupId,
+    this.effects,
+    this.shadows,
+    this.decoration,
+    this.filter,
   });
 
   /// {@template ShadContextMenu.child}
@@ -43,16 +169,31 @@ class ShadContextMenu extends StatefulWidget {
   /// {@endtemplate}
   final BoxConstraints? constraints;
 
-  /// {@template ShadContextMenu.onPopoverHoverChange}
-  /// The callback called when the popover hover changes.
+  /// {@template ShadContextMenu.onHoverArea}
+  /// The callback called when the hover area changes.
   /// {@endtemplate}
-  final ValueChanged<bool>? onPopoverHoverChange;
+  final ValueChanged<bool>? onHoverArea;
 
   /// {@template ShadContextMenu.padding}
   /// The padding of the context menu, defaults to
   /// `EdgeInsets.symmetric(vertical: 4)`.
   /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
+
+  /// {@macro ShadMouseArea.groupId}
+  final Object? groupId;
+
+  /// {@macro ShadPopover.effects}
+  final List<Effect<dynamic>>? effects;
+
+  /// {@macro ShadPopover.shadows}
+  final List<BoxShadow>? shadows;
+
+  /// {@macro ShadPopover.decoration}
+  final ShadDecoration? decoration;
+
+  /// {@macro ShadPopover.filter}
+  final ImageFilter? filter;
 
   @override
   State<ShadContextMenu> createState() => ShadContextMenuState();
@@ -69,34 +210,47 @@ class ShadContextMenuState extends State<ShadContextMenu> {
 
   void setVisible(bool visible) {
     if (visible == this.visible) return;
-    setState(() {
-      this.visible = visible;
-    });
+    setState(() => this.visible = visible);
   }
 
   @override
   Widget build(BuildContext context) {
-    final effectiveConstraints =
-        widget.constraints ?? const BoxConstraints(minWidth: 128);
-
+    // if the context menu has no children, just return the child
     if (widget.children.isEmpty) return widget.child;
 
-    final effectivePadding =
-        widget.padding ?? const EdgeInsets.symmetric(vertical: 4);
+    final theme = ShadTheme.of(context);
+
+    final effectiveConstraints = widget.constraints ??
+        theme.contextMenuTheme.constraints ??
+        const BoxConstraints(minWidth: 128);
+
+    final effectivePadding = widget.padding ??
+        theme.contextMenuTheme.padding ??
+        const EdgeInsets.symmetric(vertical: 4);
+
+    final effectiveDecoration =
+        widget.decoration ?? theme.contextMenuTheme.decoration;
+
+    final effectiveFilter = widget.filter ?? theme.contextMenuTheme.filter;
+
+    final effectiveEffects = widget.effects ?? theme.contextMenuTheme.effects;
+
+    final effectiveShadows = widget.shadows ?? theme.contextMenuTheme.shadows;
 
     Widget child = ShadPopover(
       visible: visible,
-      groupId: kContextMenuGroupId,
       padding: effectivePadding,
+      areaGroupId: widget.groupId,
+      groupId: kContextMenuGroupId,
       anchor: widget.anchor,
+      decoration: effectiveDecoration,
+      effects: effectiveEffects,
+      shadows: effectiveShadows,
+      filter: effectiveFilter,
       popover: (context) {
-        return MouseRegion(
-          onEnter: (_) {
-            widget.onPopoverHoverChange?.call(true);
-          },
-          onExit: (_) {
-            widget.onPopoverHoverChange?.call(false);
-          },
+        return ShadMouseArea(
+          groupId: widget.groupId,
+          key: ValueKey(widget.groupId),
           child: ConstrainedBox(
             constraints: effectiveConstraints,
             child: IntrinsicWidth(
@@ -115,7 +269,12 @@ class ShadContextMenuState extends State<ShadContextMenu> {
           ),
         );
       },
-      child: widget.child,
+      child: ShadMouseArea(
+        groupId: widget.groupId,
+        onEnter: (_) => widget.onHoverArea?.call(true),
+        onExit: (_) => widget.onHoverArea?.call(false),
+        child: widget.child,
+      ),
     );
 
     // just put one context menu inherited widget.
@@ -125,6 +284,47 @@ class ShadContextMenuState extends State<ShadContextMenu> {
     }
 
     return child;
+  }
+}
+
+class ShadContextMenuItemController extends ChangeNotifier {
+  ShadContextMenuItemController({
+    required this.itemKey,
+    bool hovered = false,
+    bool focused = false,
+  })  : _hovered = hovered,
+        _focused = focused;
+
+  bool _hovered = false;
+  bool get hovered => _hovered;
+  void setHovered(bool hovered) {
+    if (hovered == _hovered) return;
+    _hovered = hovered;
+    notifyListeners();
+  }
+
+  bool _focused = false;
+  bool get focused => _focused;
+  void setFocused(bool focused) {
+    if (focused == _focused) return;
+    _focused = focused;
+    notifyListeners();
+  }
+
+  final Key itemKey;
+
+  /// Maps the children key to the item controller
+  final Map<Key, ShadContextMenuItemController> children = {};
+
+  bool get selected =>
+      _hovered || _focused || children.values.any((e) => e.selected);
+
+  void registerSubItem(ShadContextMenuItemController controller) {
+    children[controller.itemKey] = controller;
+  }
+
+  void unregisterSubItem(ShadContextMenuItemController controller) {
+    children.remove(controller.itemKey);
   }
 }
 
@@ -224,11 +424,6 @@ class ShadContextMenuItem extends StatefulWidget {
   /// The child of the context menu item.
   /// {@endtemplate}
   final Widget child;
-
-  /// {@template ShadContextMenuItem.children}
-  /// The children of the context menu item.
-  /// {@endtemplate}
-  final List<Widget> children;
 
   /// {@template ShadContextMenuItem.enabled}
   /// Whether the context menu item is enabled, defaults to true.
@@ -343,29 +538,40 @@ class ShadContextMenuItem extends StatefulWidget {
   /// {@endtemplate}
   final bool? closeOnTap;
 
+  /// {@template ShadContextMenuItem.children}
+  /// The children of the context menu item.
+  /// {@endtemplate}
+  final List<Widget> children;
+
   @override
   State<ShadContextMenuItem> createState() => _ShadContextMenuItemState();
 }
 
 class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
-  bool hoveredItem = false;
-  bool hoveredPopover = false;
-  bool focused = false;
-  bool visible = false;
+  final itemKey = UniqueKey();
+  late final controller = ShadContextMenuItemController(itemKey: itemKey);
+  // get the parent item controller, if any, meaning this item is a submenu
+  late final parentItemController =
+      context.maybeRead<ShadContextMenuItemController>();
 
   bool get hasTrailingIcon => widget.children.isNotEmpty;
 
-  void updateVisible(Duration delay) {
-    Future.delayed(delay, () {
-      if (!mounted) return;
-      final newVisible = hoveredItem || hoveredPopover || focused;
-      if (visible == newVisible) return;
-      setState(() => visible = newVisible);
-    });
+  @override
+  void initState() {
+    super.initState();
+    // register the subitem controller if this item is a submenu
+    parentItemController?.registerSubItem(controller);
   }
 
   @override
-  Widget build(BuildContext context) {
+  void dispose() {
+    parentItemController?.unregisterSubItem(controller);
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext contex) {
     final theme = ShadTheme.of(context);
 
     final contextMenu = context.read<ShadContextMenuState>();
@@ -395,14 +601,10 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
 
     final effectiveAnchor = widget.anchor ??
         theme.contextMenuTheme.anchor ??
-        const ShadAnchor(
+        ShadAnchor(
           overlayAlignment: Alignment.topRight,
-          offset: Offset(-8, -3),
+          offset: Offset(-8, parentItemController != null ? -5 : -3),
         );
-
-    final effectiveShowDelay = widget.showDelay ??
-        theme.contextMenuTheme.showDelay ??
-        const Duration(milliseconds: 100);
 
     final effectiveHeight =
         widget.height ?? theme.contextMenuTheme.height ?? 32;
@@ -412,7 +614,7 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
         ShadButtonVariant.ghost;
 
     final effectiveDecoration = widget.decoration ??
-        theme.contextMenuTheme.decoration ??
+        theme.contextMenuTheme.itemDecoration ??
         const ShadDecoration(
           secondaryBorder: ShadBorder.none,
           secondaryFocusedBorder: ShadBorder.none,
@@ -436,69 +638,86 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
         theme.contextMenuTheme.selectedBackgroundColor ??
         theme.colorScheme.accent;
 
-    final effectiveCloseOnTap = widget.closeOnTap ?? widget.children.isEmpty;
+    final effectiveCloseOnTap = widget.closeOnTap ??
+        theme.contextMenuTheme.closeOnTap ??
+        widget.children.isEmpty;
 
-    return ShadContextMenu(
-      visible: visible,
-      anchor: effectiveAnchor,
-      constraints: widget.constraints,
-      padding: widget.subMenuPadding,
-      onPopoverHoverChange: (hovered) {
-        hoveredPopover = hovered;
-        updateVisible(effectiveShowDelay);
-      },
-      child: Padding(
-        padding: effectivePadding,
-        child: ShadButton.raw(
-          height: effectiveHeight,
-          enabled: widget.enabled,
-          variant: effectiveButtonVariant,
-          decoration: effectiveDecoration,
-          width: double.infinity,
-          padding: effectiveInsetPadding,
-          backgroundColor: visible
-              ? effectiveSelectedBackgroundColor
-              : effectiveBackgroundColor,
-          onHoverChange: (hovered) {
-            hoveredItem = hovered;
-            updateVisible(effectiveShowDelay);
-          },
-          onFocusChange: (focused) {
-            this.focused = focused;
-            updateVisible(effectiveShowDelay);
-          },
-          onPressed: () {
-            widget.onPressed?.call();
-            if (effectiveCloseOnTap) contextMenu.setVisible(false);
-          },
-          child: Expanded(
-            child: Row(
-              children: [
-                if (widget.leading != null)
-                  Padding(
-                    padding: effectiveLeadingPadding,
-                    child: widget.leading,
-                  ),
-                Expanded(
-                  child: DefaultTextStyle(
-                    style: effectiveTextStyle,
-                    child: widget.child,
-                  ),
-                ),
-                if (widget.trailing != null)
-                  Padding(
-                    padding: effectiveTrailingPadding,
-                    child: DefaultTextStyle(
-                      style: effectiveTrailingTextStyle,
-                      child: widget.trailing!,
-                    ),
-                  ),
-              ],
+    /// if the item has children, use the current item key,
+    /// otherwise use the parent item controller's item key
+    /// or the current item key if there is no parent item
+    final effectiveGroupId = widget.children.isNotEmpty
+        ? itemKey
+        : parentItemController?.itemKey ?? itemKey;
+
+    Widget child = ListenableBuilder(
+      listenable: controller,
+      builder: (context, child) {
+        return ShadContextMenu(
+          visible: controller.selected,
+          anchor: effectiveAnchor,
+          constraints: widget.constraints,
+          padding: widget.subMenuPadding,
+          groupId: effectiveGroupId,
+          onHoverArea: controller.setHovered,
+          children: widget.children,
+          child: Padding(
+            padding: effectivePadding,
+            child: ShadButton.raw(
+              height: effectiveHeight,
+              enabled: widget.enabled,
+              variant: effectiveButtonVariant,
+              decoration: effectiveDecoration,
+              width: double.infinity,
+              padding: effectiveInsetPadding,
+              backgroundColor: controller.selected
+                  ? effectiveSelectedBackgroundColor
+                  : effectiveBackgroundColor,
+              onFocusChange: controller.setFocused,
+              onPressed: () {
+                widget.onPressed?.call();
+                if (effectiveCloseOnTap) contextMenu.setVisible(false);
+              },
+              child: child,
             ),
           ),
+        );
+      },
+      child: Expanded(
+        child: Row(
+          children: [
+            if (widget.leading != null)
+              Padding(
+                padding: effectiveLeadingPadding,
+                child: widget.leading,
+              ),
+            Expanded(
+              child: DefaultTextStyle(
+                style: effectiveTextStyle,
+                child: widget.child,
+              ),
+            ),
+            if (widget.trailing != null)
+              Padding(
+                padding: effectiveTrailingPadding,
+                child: DefaultTextStyle(
+                  style: effectiveTrailingTextStyle,
+                  child: widget.trailing!,
+                ),
+              ),
+          ],
         ),
       ),
-      children: widget.children,
     );
+
+    // if the item has a submenu, wrap it in a provider to provide the
+    // controller to the children
+    if (widget.children.isNotEmpty) {
+      child = ShadProvider(
+        data: controller,
+        child: child,
+      );
+    }
+
+    return child;
   }
 }
