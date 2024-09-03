@@ -3,6 +3,7 @@
 - New `ShadContextMenu` component.
 - Add `groupId` to `ShadPopover`, to determine if the tap is inside the popover or not.
 - Add `onFocusChange` to `ShadFocusable` and `ShadButton`.
+- Add `onSecondaryTap` to `ShadButton`.
 
 ## 0.8.1
 
