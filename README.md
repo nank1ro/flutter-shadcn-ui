@@ -32,11 +32,11 @@ See the [documentation](https://mariuti.com/shadcn-ui/) to interact with the com
 - [ ] Collapsible
 - [x] [Combobox](https://mariuti.com/shadcn-ui/components/select/#with-search)
 - [ ] Command
-- [ ] Context Menu
+- [x] [Context Menu](https://mariuti.com/shadcn-ui/components/context-menu/)
 - [ ] Data Table
 - [ ] Date Picker
 - [ ] Drawer
-- [ ] Dropdown Menu
+- [x] <strike>Dropdown Menu</strike> Use Context Menu instead
 - [x] [Form](https://mariuti.com/shadcn-ui/components/form/)
 - [x] <strike>Hover Card</strike> Use Popover instead
 - [x] [Image](https://mariuti.com/shadcn-ui/components/image/)

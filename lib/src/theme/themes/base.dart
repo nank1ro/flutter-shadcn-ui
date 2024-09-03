@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
+import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
@@ -74,6 +75,7 @@ abstract class ShadBaseTheme {
     required this.hoverStrategies,
     required this.disableSecondaryBorder,
     required this.tabsTheme,
+    required this.contextMenuTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -120,6 +122,7 @@ abstract class ShadBaseTheme {
   final ShadHoverStrategies hoverStrategies;
   final bool disableSecondaryBorder;
   final ShadTabsTheme tabsTheme;
+  final ShadContextMenuTheme contextMenuTheme;
 }
 
 @immutable
@@ -161,4 +164,5 @@ abstract class ShadThemeVariant {
   ShadResizableTheme resizableTheme();
   ShadHoverStrategies hoverStrategies();
   ShadTabsTheme tabsTheme();
+  ShadContextMenuTheme contextMenuTheme();
 }

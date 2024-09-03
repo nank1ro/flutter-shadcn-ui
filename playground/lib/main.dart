@@ -7,6 +7,7 @@ import 'package:playground/pages/badge.dart';
 import 'package:playground/pages/button.dart';
 import 'package:playground/pages/card.dart';
 import 'package:playground/pages/checkbox.dart';
+import 'package:playground/pages/context_menu.dart';
 import 'package:playground/pages/dialog.dart';
 import 'package:playground/pages/form.dart';
 import 'package:playground/pages/image.dart';
@@ -234,6 +235,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/tabs',
       builder: (context, state) => const TabsPage(),
+    ),
+    GoRoute(
+      path: '/context-menu',
+      builder: (context, state) => const ContextMenuPage(),
     ),
   ],
 );

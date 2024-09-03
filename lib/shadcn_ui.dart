@@ -12,6 +12,7 @@ export 'src/components/button.dart';
 export 'src/components/calendar.dart';
 export 'src/components/card.dart';
 export 'src/components/checkbox.dart';
+export 'src/components/context_menu.dart';
 export 'src/components/dialog.dart';
 export 'src/components/form/field.dart';
 export 'src/components/form/fields/checkbox.dart';
@@ -67,6 +68,7 @@ export 'src/theme/components/button.dart';
 export 'src/theme/components/calendar.dart';
 export 'src/theme/components/card.dart';
 export 'src/theme/components/checkbox.dart';
+export 'src/theme/components/context_menu.dart';
 export 'src/theme/components/decorator.dart';
 export 'src/theme/components/dialog.dart';
 export 'src/theme/components/input.dart';
@@ -88,16 +90,17 @@ export 'src/theme/text_theme/text_styles_default.dart';
 export 'src/theme/text_theme/theme.dart';
 
 // Utils
+export 'src/utils/animation_builder.dart';
+export 'src/utils/effects.dart';
+export 'src/utils/extensions/breakpoints.dart';
+export 'src/utils/extensions/date_time.dart';
+export 'src/utils/extensions/duration.dart';
+export 'src/utils/gesture_detector.dart';
+export 'src/utils/mouse_area.dart';
 export 'src/utils/position.dart';
+export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
 export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
-export 'src/utils/animation_builder.dart';
-export 'src/utils/extensions/breakpoints.dart';
-export 'src/utils/extensions/duration.dart';
-export 'src/utils/extensions/date_time.dart';
-export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
-export 'src/utils/gesture_detector.dart';
-export 'src/utils/effects.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart' hide Effect;

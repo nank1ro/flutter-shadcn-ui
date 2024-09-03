@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 
 extension ProviderReadExt on BuildContext {
   T read<T>() => ShadProvider.of<T>(this, listen: false);
+  T? maybeRead<T>() => ShadProvider.maybeOf<T>(this, listen: false);
 }
 
 extension ProviderWatchExt on BuildContext {
   T watch<T>() => ShadProvider.of<T>(this);
+  T? maybeWatch<T>() => ShadProvider.maybeOf<T>(this);
 }
 
 class ShadProvider<T> extends InheritedWidget {
@@ -16,7 +18,10 @@ class ShadProvider<T> extends InheritedWidget {
     this.notifyUpdate,
   });
 
+  /// The data to be provided
   final T data;
+
+  /// Whether to notify the update of the provider, defaults to false
   final bool Function(ShadProvider<T> oldWidget)? notifyUpdate;
 
   static T of<T>(BuildContext context, {bool listen = true}) {

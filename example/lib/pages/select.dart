@@ -190,6 +190,7 @@ class _SelectPageState extends State<SelectPage> {
           enabled: enabled,
           focusNode: focusNodes[2],
           minWidth: 180,
+          maxWidth: 300,
           placeholder: const Text('Select framework...'),
           onSearchChanged: (value) => setState(() => searchValue = value),
           searchPlaceholder: const Text('Search framework'),

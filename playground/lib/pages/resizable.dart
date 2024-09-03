@@ -23,13 +23,11 @@ class ResizablePage extends StatelessWidget {
         child: Container(
           constraints: const BoxConstraints(maxWidth: 600),
           padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: () {
-            return switch (style) {
-              ShadResizableStyle.basic => const BasicResizable(),
-              ShadResizableStyle.vertical => const VerticalResizable(),
-              ShadResizableStyle.handle => const HandleResizable(),
-            };
-          }(),
+          child: switch (style) {
+            ShadResizableStyle.basic => const BasicResizable(),
+            ShadResizableStyle.vertical => const VerticalResizable(),
+            ShadResizableStyle.handle => const HandleResizable(),
+          },
         ),
       ),
     );

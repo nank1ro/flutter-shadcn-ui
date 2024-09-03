@@ -69,6 +69,10 @@ class ShadGestureDetector extends StatelessWidget {
     this.onTapDown,
     this.onTapUp,
     this.onTapCancel,
+    this.onSecondaryTap,
+    this.onSecondaryTapDown,
+    this.onSecondaryTapUp,
+    this.onSecondaryTapCancel,
     this.onLongPress,
     this.onLongPressStart,
     this.onLongPressCancel,
@@ -98,6 +102,10 @@ class ShadGestureDetector extends StatelessWidget {
   final ValueChanged<TapDownDetails>? onTapDown;
   final ValueChanged<TapUpDetails>? onTapUp;
   final VoidCallback? onTapCancel;
+  final VoidCallback? onSecondaryTap;
+  final ValueChanged<TapDownDetails>? onSecondaryTapDown;
+  final ValueChanged<TapUpDetails>? onSecondaryTapUp;
+  final VoidCallback? onSecondaryTapCancel;
   final VoidCallback? onLongPress;
   final ValueChanged<LongPressStartDetails>? onLongPressStart;
   final VoidCallback? onLongPressCancel;
@@ -193,6 +201,22 @@ class ShadGestureDetector extends StatelessWidget {
       onTapDown?.call(d);
     }
 
+    void effectiveOnSecondaryTapDown(TapDownDetails d) {
+      onSecondaryTapDown?.call(d);
+    }
+
+    void effectiveOnSecondaryTapUp(TapUpDetails d) {
+      onSecondaryTapUp?.call(d);
+    }
+
+    void effectiveOnSecondaryTapCancel() {
+      onSecondaryTapCancel?.call();
+    }
+
+    void effectiveOnSecondaryTap() {
+      onSecondaryTap?.call();
+    }
+
     void effectiveOnTapUp(TapUpDetails d) {
       setHover(ShadHoverStrategy.onTapUp);
       onTapUp?.call(d);
@@ -250,6 +274,10 @@ class ShadGestureDetector extends StatelessWidget {
           ..onTapUp = effectiveOnTapUp
           ..onTap = onTap
           ..onTapCancel = effectiveOnTapCancel
+          ..onSecondaryTapDown = effectiveOnSecondaryTapDown
+          ..onSecondaryTapUp = effectiveOnSecondaryTapUp
+          ..onSecondaryTap = effectiveOnSecondaryTap
+          ..onSecondaryTapCancel = effectiveOnSecondaryTapCancel
           ..gestureSettings = gestureSettings
           ..supportedDevices = supportedDevices;
       },
