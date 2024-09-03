@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
@@ -13,6 +14,7 @@ import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
+import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
@@ -723,4 +725,25 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   ShadTextTheme textTheme() {
     return effectiveTextTheme;
   }
+
+  @override
+  ShadContextMenuTheme contextMenuTheme() => ShadContextMenuTheme(
+        constraints: const BoxConstraints(minWidth: 128),
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        itemPadding: const EdgeInsets.symmetric(horizontal: 4),
+        leadingPadding: const EdgeInsets.only(right: 8),
+        trailingPadding: const EdgeInsets.only(left: 8),
+        showDelay: const Duration(milliseconds: 100),
+        height: 32,
+        buttonVariant: ShadButtonVariant.ghost,
+        itemDecoration: const ShadDecoration(
+          secondaryBorder: ShadBorder.none,
+          secondaryFocusedBorder: ShadBorder.none,
+        ),
+        textStyle:
+            effectiveTextTheme.small.copyWith(fontWeight: FontWeight.normal),
+        trailingTextStyle:
+            effectiveTextTheme.muted.copyWith(fontSize: 12, height: 1),
+        selectedBackgroundColor: colorScheme.accent,
+      );
 }

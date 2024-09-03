@@ -36,30 +36,28 @@ class AccordionPage extends StatelessWidget {
             maxWidth: 600,
           ),
           padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: () {
-            return switch (style) {
-              ShadAccordionType.single =>
-                ShadAccordion<({String content, String title})>(
-                  children: details.map(
-                    (detail) => ShadAccordionItem(
-                      value: detail,
-                      title: Text(detail.title),
-                      child: Text(detail.content),
-                    ),
+          child: switch (style) {
+            ShadAccordionType.single =>
+              ShadAccordion<({String content, String title})>(
+                children: details.map(
+                  (detail) => ShadAccordionItem(
+                    value: detail,
+                    title: Text(detail.title),
+                    child: Text(detail.content),
                   ),
                 ),
-              ShadAccordionType.multiple =>
-                ShadAccordion<({String content, String title})>.multiple(
-                  children: details.map(
-                    (detail) => ShadAccordionItem(
-                      value: detail,
-                      title: Text(detail.title),
-                      child: Text(detail.content),
-                    ),
+              ),
+            ShadAccordionType.multiple =>
+              ShadAccordion<({String content, String title})>.multiple(
+                children: details.map(
+                  (detail) => ShadAccordionItem(
+                    value: detail,
+                    title: Text(detail.title),
+                    child: Text(detail.content),
                   ),
                 ),
-            };
-          }(),
+              ),
+          },
         ),
       ),
     );

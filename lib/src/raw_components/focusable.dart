@@ -14,6 +14,7 @@ class ShadFocusable extends StatefulWidget {
     this.canRequestFocus = true,
     this.autofocus = false,
     this.child,
+    this.onFocusChange,
   });
 
   final bool canRequestFocus;
@@ -21,6 +22,7 @@ class ShadFocusable extends StatefulWidget {
   final FocusNode? focusNode;
   final FocusWidgetBuilder builder;
   final Widget? child;
+  final ValueChanged<bool>? onFocusChange;
 
   @override
   State<ShadFocusable> createState() => _ShadFocusableState();
@@ -37,14 +39,21 @@ class _ShadFocusableState extends State<ShadFocusable> {
   void initState() {
     super.initState();
     if (widget.focusNode == null) _internal = FocusNode();
-    isFocused.value = focusNode.hasFocus;
+    isFocused
+      ..value = focusNode.hasFocus
+      ..addListener(onFocusChange);
   }
 
   @override
   void dispose() {
+    isFocused.removeListener(onFocusChange);
     _internal?.dispose();
     isFocused.dispose();
     super.dispose();
+  }
+
+  void onFocusChange() {
+    widget.onFocusChange?.call(isFocused.value);
   }
 
   @override

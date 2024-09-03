@@ -13,6 +13,7 @@ class BaseScaffold extends StatelessWidget {
     this.wrapChildrenInScrollable = true,
     this.wrapSingleChildInColumn = true,
     this.alignment,
+    this.gap = 8,
   });
 
   final List<Widget> children;
@@ -22,6 +23,7 @@ class BaseScaffold extends StatelessWidget {
   final bool wrapChildrenInScrollable;
   final bool wrapSingleChildInColumn;
   final Alignment? alignment;
+  final double gap;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class BaseScaffold extends StatelessWidget {
           ? children[0]
           : Column(
               crossAxisAlignment: crossAxisAlignment,
-              children: children.separatedBy(const SizedBox(height: 8)),
+              children: children.separatedBy(SizedBox(height: gap)),
             ),
     );
 
@@ -52,7 +54,7 @@ class BaseScaffold extends StatelessWidget {
             child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: editable!.separatedBy(const SizedBox(height: 8)),
+                children: editable!.separatedBy(SizedBox(height: gap)),
               ),
             ),
           );

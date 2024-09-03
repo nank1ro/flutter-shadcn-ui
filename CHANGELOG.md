@@ -1,3 +1,10 @@
+## 0.9.0
+
+- New `ShadContextMenu` component.
+- Add `groupId` to `ShadPopover`, to determine if the tap is inside the popover or not.
+- Add `onFocusChange` to `ShadFocusable` and `ShadButton`.
+- Add `onSecondaryTap` to `ShadButton`.
+
 ## 0.8.1
 
 - Fix `ShadTabs` not updating the controller when the value changes.
@@ -6,6 +13,7 @@
 
 - **BREAKING CHANGE**: Refactor `ShadResizablePanelGroup` in order to react to window resize correctly. The sizes have been normalized. You don't need to provide anymore a pixel size, but a value between 0 and 1 which indicates the percentage of the available space.
 - Add `onChanged` to `ShadTabs`.
+- Add `onSecondaryTap` to `ShadGestureDetector` and `ShadButton`.
 - Fix `maxWidth` missing in `ShadSelectForlField`.
 
 ## 0.7.3

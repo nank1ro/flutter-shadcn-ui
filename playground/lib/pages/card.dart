@@ -19,12 +19,10 @@ class CardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: () {
-          return switch (style) {
-            CardStyle.project => const CardProject(),
-            CardStyle.notifications => const CardNotifications(),
-          };
-        }(),
+        child: switch (style) {
+          CardStyle.project => const CardProject(),
+          CardStyle.notifications => const CardNotifications(),
+        },
       ),
     );
   }

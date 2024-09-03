@@ -9,6 +9,7 @@ import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
+import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
@@ -80,6 +81,7 @@ class ShadThemeData extends ShadBaseTheme {
     bool? disableSecondaryBorder,
     ShadTabsTheme? tabsTheme,
     ShadThemeVariant? variant,
+    ShadContextMenuTheme? contextMenuTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -214,6 +216,8 @@ class ShadThemeData extends ShadBaseTheme {
       hoverStrategies: hoverStrategies ?? effectiveVariant.hoverStrategies(),
       disableSecondaryBorder: effectiveDisableSecondaryBorder,
       tabsTheme: effectiveVariant.tabsTheme().mergeWith(tabsTheme),
+      contextMenuTheme:
+          effectiveVariant.contextMenuTheme().mergeWith(contextMenuTheme),
     );
   }
 
@@ -262,6 +266,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.hoverStrategies,
     required super.disableSecondaryBorder,
     required super.tabsTheme,
+    required super.contextMenuTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -354,6 +359,8 @@ class ShadThemeData extends ShadBaseTheme {
       disableSecondaryBorder:
           t < .5 ? a.disableSecondaryBorder : b.disableSecondaryBorder,
       tabsTheme: ShadTabsTheme.lerp(a.tabsTheme, b.tabsTheme, t),
+      contextMenuTheme:
+          ShadContextMenuTheme.lerp(a.contextMenuTheme, b.contextMenuTheme, t),
     );
   }
 
@@ -405,7 +412,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.resizableTheme == resizableTheme &&
         other.hoverStrategies == hoverStrategies &&
         other.disableSecondaryBorder == disableSecondaryBorder &&
-        other.tabsTheme == tabsTheme;
+        other.tabsTheme == tabsTheme &&
+        other.contextMenuTheme == contextMenuTheme;
   }
 
   @override
@@ -453,7 +461,8 @@ class ShadThemeData extends ShadBaseTheme {
         resizableTheme.hashCode ^
         hoverStrategies.hashCode ^
         disableSecondaryBorder.hashCode ^
-        tabsTheme.hashCode;
+        tabsTheme.hashCode ^
+        contextMenuTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -501,6 +510,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadHoverStrategies? hoverStrategies,
     bool? disableSecondaryBorder,
     ShadTabsTheme? tabsTheme,
+    ShadContextMenuTheme? contextMenuTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -552,6 +562,7 @@ class ShadThemeData extends ShadBaseTheme {
       disableSecondaryBorder:
           disableSecondaryBorder ?? this.disableSecondaryBorder,
       tabsTheme: tabsTheme ?? this.tabsTheme,
+      contextMenuTheme: contextMenuTheme ?? this.contextMenuTheme,
     );
   }
 }

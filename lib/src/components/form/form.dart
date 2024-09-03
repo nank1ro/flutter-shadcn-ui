@@ -29,7 +29,8 @@ class ShadForm extends StatefulWidget {
     required this.child,
     this.onChanged,
     this.canPop,
-    this.onPopInvoked,
+    @Deprecated('Use onPopInvokedWithResult instead') this.onPopInvoked,
+    this.onPopInvokedWithResult,
     this.autovalidateMode = ShadAutovalidateMode.alwaysAfterFirstValidation,
     this.initialValue = const {},
     this.enabled = true,
@@ -38,7 +39,9 @@ class ShadForm extends StatefulWidget {
 
   final VoidCallback? onChanged;
   final bool? canPop;
+  @Deprecated('Use onPopInvokedWithResult instead')
   final void Function(bool)? onPopInvoked;
+  final PopInvokedWithResultCallback<Object?>? onPopInvokedWithResult;
   final ShadAutovalidateMode autovalidateMode;
   final Widget child;
   final Map<Object, dynamic> initialValue;
@@ -185,7 +188,9 @@ class ShadFormState extends State<ShadForm> {
         return Form(
           key: _formKey,
           autovalidateMode: mode,
+          // ignore: deprecated_member_use_from_same_package, deprecated_member_use
           onPopInvoked: widget.onPopInvoked,
+          onPopInvokedWithResult: widget.onPopInvokedWithResult,
           canPop: widget.canPop,
           child: child!,
         );

@@ -71,69 +71,67 @@ class SelectPage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 24),
         child: Align(
           alignment: Alignment.topCenter,
-          child: () {
-            return switch (variant) {
-              SelectVariant.fruits => ConstrainedBox(
-                  constraints: const BoxConstraints(minWidth: 180),
-                  child: ShadSelect<String>(
-                    placeholder: const Text('Select a fruit'),
-                    options: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-                        child: Text(
-                          'Fruits',
-                          style: theme.textTheme.muted.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.popoverForeground,
-                          ),
-                          textAlign: TextAlign.start,
+          child: switch (variant) {
+            SelectVariant.fruits => ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 180),
+                child: ShadSelect<String>(
+                  placeholder: const Text('Select a fruit'),
+                  options: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+                      child: Text(
+                        'Fruits',
+                        style: theme.textTheme.muted.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.popoverForeground,
                         ),
-                      ),
-                      ...fruits.entries.map((e) =>
-                          ShadOption(value: e.key, child: Text(e.value))),
-                    ],
-                    selectedOptionBuilder: (context, value) =>
-                        Text(fruits[value]!),
-                    onChanged: print,
-                  ),
-                ),
-              SelectVariant.timezone => ConstrainedBox(
-                  constraints: const BoxConstraints(minWidth: 280),
-                  child: ShadSelect<String>(
-                    placeholder: const Text('Select a timezone'),
-                    options: timezones.entries.map(
-                      (zone) => Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-                            child: Text(
-                              zone.key,
-                              style: theme.textTheme.muted.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: theme.colorScheme.popoverForeground,
-                              ),
-                              textAlign: TextAlign.start,
-                            ),
-                          ),
-                          ...zone.value.entries.map((e) =>
-                              ShadOption(value: e.key, child: Text(e.value)))
-                        ],
+                        textAlign: TextAlign.start,
                       ),
                     ),
-                    onChanged: print,
-                    selectedOptionBuilder: (context, value) {
-                      final timezone = timezones.entries
-                          .firstWhere(
-                              (element) => element.value.containsKey(value))
-                          .value[value];
-                      return Text(timezone!);
-                    },
-                  ),
+                    ...fruits.entries.map(
+                        (e) => ShadOption(value: e.key, child: Text(e.value))),
+                  ],
+                  selectedOptionBuilder: (context, value) =>
+                      Text(fruits[value]!),
+                  onChanged: print,
                 ),
-              SelectVariant.frameworks => const SelectWithSearch(),
-            };
-          }(),
+              ),
+            SelectVariant.timezone => ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 280),
+                child: ShadSelect<String>(
+                  placeholder: const Text('Select a timezone'),
+                  options: timezones.entries.map(
+                    (zone) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+                          child: Text(
+                            zone.key,
+                            style: theme.textTheme.muted.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: theme.colorScheme.popoverForeground,
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        ...zone.value.entries.map((e) =>
+                            ShadOption(value: e.key, child: Text(e.value)))
+                      ],
+                    ),
+                  ),
+                  onChanged: print,
+                  selectedOptionBuilder: (context, value) {
+                    final timezone = timezones.entries
+                        .firstWhere(
+                            (element) => element.value.containsKey(value))
+                        .value[value];
+                    return Text(timezone!);
+                  },
+                ),
+              ),
+            SelectVariant.frameworks => const SelectWithSearch(),
+          },
         ),
       ),
     );
