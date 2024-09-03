@@ -12,30 +12,26 @@ class ContextMenuPage extends StatelessWidget {
       appBarTitle: 'ContextMenu',
       children: [
         ShadContextMenuRegion(
+          constraints: const BoxConstraints(minWidth: 300),
           child: Container(
             width: 300,
             height: 200,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.black,
-              ),
+              border: Border.all(color: theme.colorScheme.border),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const Text('Right click here'),
           ),
           children: [
             const ShadContextMenuItem.inset(
-              trailing: Text('⌘['),
               child: Text('Back'),
             ),
             const ShadContextMenuItem.inset(
               enabled: false,
-              trailing: Text('⌘]'),
               child: Text('Forward'),
             ),
             const ShadContextMenuItem.inset(
-              trailing: Text('⌘R'),
               child: Text('Reload'),
             ),
             const ShadContextMenuItem.inset(
@@ -46,7 +42,6 @@ class ContextMenuPage extends StatelessWidget {
               ),
               children: [
                 ShadContextMenuItem(
-                  trailing: Text('⇧⌘S'),
                   child: Text('Save Page As...'),
                 ),
                 ShadContextMenuItem(
@@ -64,7 +59,6 @@ class ContextMenuPage extends StatelessWidget {
             const Divider(height: 8),
             const ShadContextMenuItem(
               leading: ShadImage.square(LucideIcons.check, size: 16),
-              trailing: Text('⌘⇧B'),
               child: Text('Show Bookmarks Bar'),
             ),
             const ShadContextMenuItem.inset(child: Text('Show Full URLs')),
@@ -92,7 +86,6 @@ class ContextMenuPage extends StatelessWidget {
             ),
             const ShadContextMenuItem.inset(child: Text('Colm Tuite')),
           ],
-          constraints: const BoxConstraints(minWidth: 300),
         ),
       ],
     );
