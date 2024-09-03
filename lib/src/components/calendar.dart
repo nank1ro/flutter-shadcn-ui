@@ -16,6 +16,7 @@ class ShadCalendar extends StatefulWidget {
     this.showOutsideDays,
     this.initialMonth,
     this.formatMonth,
+    this.formatWeekday,
   });
 
   final DateTime? selected;
@@ -30,16 +31,26 @@ class ShadCalendar extends StatefulWidget {
   /// The format to use for the month, defaults to 'LLLL y'.
   final String Function(DateTime date)? formatMonth;
 
+  /// The format to use for the weekday, defaults to 'EE'.
+  final String Function(DateTime date)? formatWeekday;
+
   @override
   State<ShadCalendar> createState() => _ShadCalendarState();
 }
 
 class _ShadCalendarState extends State<ShadCalendar> {
+  final today = DateTime.now().startOfDay;
   late DateTime currentMonth =
       widget.initialMonth ?? DateTime.now().startOfMonth;
 
   String defaultFormatMonth(DateTime date) {
     return DateFormat('LLLL y').format(date);
+  }
+
+  String defaultFormatWeekday(DateTime date) {
+    final s = DateFormat('E').format(date);
+    if (s.length < 2) return s;
+    return s.substring(0, 2);
   }
 
   @override
@@ -49,7 +60,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     final effectiveFormatMonth = widget.formatMonth ?? defaultFormatMonth;
 
-    print(currentMonth);
+    final effectiveFormatWeekday = widget.formatWeekday ?? defaultFormatWeekday;
+
     return ShadDecorator(
       decoration: ShadDecoration(
         border: ShadBorder.all(
@@ -95,25 +107,69 @@ class _ShadCalendarState extends State<ShadCalendar> {
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          Wrap(
-            children: List.generate(currentMonth.daysInMonth, (day) {
-              return ShadButton.outline(
-                width: 28,
-                height: 28,
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  setState(() {
-                    currentMonth =
-                        currentMonth.startOfDay.add(Duration(days: day));
-                  });
+          // weed days
+          Padding(
+            padding: const EdgeInsets.only(top: 16, bottom: 10),
+            child: Row(
+              children: List.generate(
+                7,
+                (index) {
+                  final date =
+                      currentMonth.startOfWeek.add(Duration(days: index + 1));
+                  return Expanded(
+                    child: Text(
+                      effectiveFormatWeekday(date),
+                      style: theme.textTheme.muted.copyWith(fontSize: 12.8),
+                      textAlign: TextAlign.center,
+                    ),
+                  );
                 },
-                child: Text(
-                  '${day + 1}',
-                  style: theme.textTheme.small,
-                ),
-              );
-            }),
+              ),
+            ),
+          ),
+          GridView.count(
+            crossAxisCount: 7,
+            shrinkWrap: true,
+            children: List.generate(
+              currentMonth.daysInMonth,
+              (day) {
+                final effectiveDay = day + 1;
+                final date = DateTime(
+                  currentMonth.year,
+                  currentMonth.month,
+                  effectiveDay,
+                );
+                final selected = widget.selected?.isSameDay(date) ?? false;
+                final isToday = date.isSameDay(today);
+                return ShadButton.raw(
+                  variant: selected
+                      ? ShadButtonVariant.primary
+                      : isToday
+                          ? ShadButtonVariant.secondary
+                          : ShadButtonVariant.ghost,
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: const ShadDecoration(
+                    secondaryBorder: ShadBorder(
+                      padding: EdgeInsets.zero,
+                    ),
+                  ),
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    widget.onChanged?.call(date);
+                  },
+                  child: Text(
+                    effectiveDay.toString(),
+                    style: theme.textTheme.small.copyWith(
+                      fontWeight: FontWeight.normal,
+                      color: selected
+                          ? theme.colorScheme.primaryForeground
+                          : theme.colorScheme.foreground,
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
