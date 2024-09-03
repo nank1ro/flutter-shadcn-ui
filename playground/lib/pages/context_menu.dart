@@ -74,8 +74,8 @@ class ContextMenuPage extends StatelessWidget {
                   child: Container(
                     width: 8,
                     height: 8,
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.foreground,
                       shape: BoxShape.circle,
                     ),
                   ),
