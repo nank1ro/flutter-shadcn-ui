@@ -168,8 +168,8 @@ class _ShadPortalState extends State<ShadPortal> {
     return CustomSingleChildLayout(
       delegate: ShadPositionDelegate(
         target: anchor.offset,
-        verticalOffset: 0, //anchor.verticalOffset,
-        preferBelow: true, //anchor.preferBelow,
+        verticalOffset: 0,
+        preferBelow: true,
       ),
       child: widget.portalBuilder(context),
     );
