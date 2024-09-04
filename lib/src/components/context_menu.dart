@@ -11,8 +11,8 @@ const kContextMenuGroupId = ValueKey('context-menu');
 
 /// {@template ShadContextMenuRegion}
 /// A widget that shows the context menu when the user right clicks the [child]
-/// or long presses it (only on android and ios), unless you provide a value to
-/// [longPressEnabled].
+/// or long presses it (only on android and ios), unless a value to
+/// [longPressEnabled] is provided.
 /// {@endtemplate}
 class ShadContextMenuRegion extends StatefulWidget {
   /// {@macro ShadContextMenuRegion}

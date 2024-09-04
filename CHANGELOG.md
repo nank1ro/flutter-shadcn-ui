@@ -2,6 +2,7 @@
 
 - Fix native context menu by disabling it on Web.
 - Add `controller` to `ShadContextMenu`.
+- Add `onLongPress` to `ShadContextMenuRegion`, defaults to `true` on mobile.
 
 ## 0.9.0
 
