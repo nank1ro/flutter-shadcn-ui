@@ -1,3 +1,8 @@
+## 0.9.1
+
+- Fix native context menu by disabling it on Web.
+- Add `controller` to `ShadContextMenu`.
+
 ## 0.9.0
 
 - New `ShadContextMenu` component.
