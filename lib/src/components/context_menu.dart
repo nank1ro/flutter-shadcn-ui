@@ -1,8 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -19,7 +17,7 @@ class ShadContextMenuRegion extends StatefulWidget {
     super.key,
     required this.child,
     required this.children,
-    this.visible = false,
+    this.visible,
     this.constraints,
     this.onHoverArea,
     this.padding,
@@ -28,6 +26,7 @@ class ShadContextMenuRegion extends StatefulWidget {
     this.shadows,
     this.decoration,
     this.filter,
+    this.controller,
   });
 
   /// {@template ShadContextMenuRegion.child}
@@ -39,7 +38,7 @@ class ShadContextMenuRegion extends StatefulWidget {
   final List<Widget> children;
 
   /// {@macro ShadContextMenu.visible}
-  final bool visible;
+  final bool? visible;
 
   /// {@macro ShadContextMenu.constraints}
   final BoxConstraints? constraints;
@@ -65,38 +64,44 @@ class ShadContextMenuRegion extends StatefulWidget {
   /// {@macro ShadPopover.filter}
   final ImageFilter? filter;
 
+  /// {@macro ShadContextMenu.controller}
+  final ShadContextMenuController? controller;
+
   @override
   State<ShadContextMenuRegion> createState() => _ShadContextMenuRegionState();
 }
 
 class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
-  late bool visible = widget.visible;
+  ShadContextMenuController? _controller;
+  ShadContextMenuController get controller =>
+      widget.controller ??
+      (_controller ??=
+          ShadContextMenuController(isOpen: widget.visible ?? false));
   ShadAnchorBase? anchor;
 
   @override
   void didUpdateWidget(covariant ShadContextMenuRegion oldWidget) {
     super.didUpdateWidget(oldWidget);
-    visible = widget.visible;
+    if (widget.visible != null) {
+      controller.setOpen(widget.visible!);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
   }
 
   void showAtOffset(Offset offset) {
     setState(() {
       anchor = ShadGlobalAnchor(offset);
-      visible = true;
     });
+    controller.show();
   }
 
   void hide() {
-    if (!visible) return;
-    setState(() => visible = false);
-  }
-
-  /// A special method for web, to disable the default browser context menu.
-  Future<void> showOnWeb(TapDownDetails details) async {
-    await BrowserContextMenu.disableContextMenu();
-    showAtOffset(details.globalPosition);
-    await Future<void>.delayed(Duration.zero);
-    await BrowserContextMenu.enableContextMenu();
+    controller.hide();
   }
 
   void show(TapDownDetails details) {
@@ -107,10 +112,10 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
   Widget build(BuildContext context) {
     return ShadContextMenu(
       anchor: anchor,
-      visible: visible,
+      controller: controller,
       child: ShadGestureDetector(
         onTapDown: (_) => hide(),
-        onSecondaryTapDown: kIsWeb ? showOnWeb : show,
+        onSecondaryTapDown: show,
         child: widget.child,
       ),
       children: widget.children,
@@ -126,13 +131,15 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
   }
 }
 
+typedef ShadContextMenuController = ShadPopoverController;
+
 class ShadContextMenu extends StatefulWidget {
   const ShadContextMenu({
     super.key,
     required this.child,
     required this.children,
     this.anchor,
-    this.visible = false,
+    this.visible,
     this.constraints,
     this.onHoverArea,
     this.padding,
@@ -141,6 +148,7 @@ class ShadContextMenu extends StatefulWidget {
     this.shadows,
     this.decoration,
     this.filter,
+    this.controller,
   });
 
   /// {@template ShadContextMenu.child}
@@ -159,9 +167,9 @@ class ShadContextMenu extends StatefulWidget {
   final ShadAnchorBase? anchor;
 
   /// {@template ShadContextMenu.visible}
-  /// Whether the context menu is visible, defaults to false.
+  /// Whether the context menu is visible, defaults to null.
   /// {@endtemplate}
-  final bool visible;
+  final bool? visible;
 
   /// {@template ShadContextMenu.constraints}
   /// The constraints of the context menu, defaults to
@@ -195,22 +203,39 @@ class ShadContextMenu extends StatefulWidget {
   /// {@macro ShadPopover.filter}
   final ImageFilter? filter;
 
+  /// {@template ShadContextMenu.controller}
+  /// The controller of the context menu, starts from isOpen set to false.
+  /// {@endtemplate}
+  final ShadContextMenuController? controller;
+
   @override
   State<ShadContextMenu> createState() => ShadContextMenuState();
 }
 
 class ShadContextMenuState extends State<ShadContextMenu> {
-  late bool visible = widget.visible;
+  ShadContextMenuController? _controller;
+  ShadContextMenuController get controller =>
+      widget.controller ??
+      (_controller ??=
+          ShadContextMenuController(isOpen: widget.visible ?? false));
 
   @override
   void didUpdateWidget(covariant ShadContextMenu oldWidget) {
     super.didUpdateWidget(oldWidget);
-    visible = widget.visible;
+    if (widget.visible != null) {
+      controller.setOpen(widget.visible!);
+    }
   }
 
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  // ignore: use_setters_to_change_properties
   void setVisible(bool visible) {
-    if (visible == this.visible) return;
-    setState(() => this.visible = visible);
+    controller.setOpen(visible);
   }
 
   @override
@@ -238,7 +263,7 @@ class ShadContextMenuState extends State<ShadContextMenu> {
     final effectiveShadows = widget.shadows ?? theme.contextMenuTheme.shadows;
 
     Widget child = ShadPopover(
-      visible: visible,
+      controller: controller,
       padding: effectivePadding,
       areaGroupId: widget.groupId,
       groupId: kContextMenuGroupId,
