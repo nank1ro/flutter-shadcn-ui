@@ -461,7 +461,7 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
 
   /// The background color of the selected tab, defaults to
-  /// [ShadThemeData.colorScheme.background].
+  /// ShadThemeData.colorScheme.background.
   final Color? selectedBackgroundColor;
 
   /// The background color of the hovered tab, defaults to
@@ -483,14 +483,14 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   final ShadDecoration? selectedDecoration;
 
   /// The foreground color of the unselected tab, defaults to
-  /// [ShadThemeData.colorScheme.foreground].
+  /// ShadThemeData.colorScheme.foreground.
   final Color? foregroundColor;
 
   /// The foreground color of the selected tab, defaults to
   /// [ShadTab.foregroundColor].
   final Color? selectedForegroundColor;
 
-  /// The text style of the tab, defaults to [ShadThemeData.textTheme.small].
+  /// The text style of the tab, defaults to ShadThemeData.textTheme.small.
   final TextStyle? textStyle;
 
   /// The shadows of the unselected tab, defaults to [ShadShadows.sm].

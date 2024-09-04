@@ -8,6 +8,7 @@ sealed class ShadAnchorBase {
 /// Automatically infers the position of the [ShadPortal] in the global
 /// coordinate system adjusting according to the [verticalOffset] and
 /// [preferBelow] properties.
+@immutable
 class ShadAnchorAuto extends ShadAnchorBase {
   const ShadAnchorAuto({
     this.verticalOffset = 0,
@@ -25,10 +26,27 @@ class ShadAnchorAuto extends ShadAnchorBase {
   /// Whether the overlay is automatically adjusted to follow the target
   /// widget when the target widget moves dues to a window resize.
   final bool followTargetOnResize;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShadAnchorAuto &&
+        other.verticalOffset == verticalOffset &&
+        other.preferBelow == preferBelow &&
+        other.followTargetOnResize == followTargetOnResize;
+  }
+
+  @override
+  int get hashCode =>
+      verticalOffset.hashCode ^
+      preferBelow.hashCode ^
+      followTargetOnResize.hashCode;
 }
 
 /// Manually specifies the position of the [ShadPortal] in the global
 /// coordinate system.
+@immutable
 class ShadAnchor extends ShadAnchorBase {
   const ShadAnchor({
     this.childAlignment = Alignment.topLeft,
@@ -56,13 +74,41 @@ class ShadAnchor extends ShadAnchorBase {
       offset: offset ?? this.offset,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShadAnchor &&
+        other.childAlignment == childAlignment &&
+        other.overlayAlignment == overlayAlignment &&
+        other.offset == offset;
+  }
+
+  @override
+  int get hashCode {
+    return childAlignment.hashCode ^
+        overlayAlignment.hashCode ^
+        offset.hashCode;
+  }
 }
 
+@immutable
 class ShadGlobalAnchor extends ShadAnchorBase {
   const ShadGlobalAnchor(this.offset);
 
   /// The global offset where the overlay is positioned.
   final Offset offset;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShadGlobalAnchor && other.offset == offset;
+  }
+
+  @override
+  int get hashCode => offset.hashCode;
 }
 
 class ShadPortal extends StatefulWidget {

@@ -1,7 +1,9 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart'
     show
         GlobalCupertinoLocalizations,
@@ -443,7 +445,7 @@ class ShadApp extends StatefulWidget {
   /// {@macro flutter.widgets.widgetsApp.shortcuts}
   /// {@tool snippet}
   /// This example shows how to add a single shortcut for
-  /// [m.LogicalKeyboardKey.select] to the default shortcuts without needing to
+  /// LogicalKeyboardKey.select to the default shortcuts without needing to
   /// add your own [Shortcuts] widget.
   ///
   /// Alternatively, you could insert a [Shortcuts] widget with just the mapping
@@ -552,6 +554,15 @@ class _ShadAppState extends State<ShadApp> {
     yield GlobalMaterialLocalizations.delegate;
     yield GlobalCupertinoLocalizations.delegate;
     yield GlobalWidgetsLocalizations.delegate;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // This could be centralized in the context menu component, see https://github.com/flutter/engine/pull/53278#issuecomment-2328309843
+    if (kIsWeb) {
+      BrowserContextMenu.disableContextMenu();
+    }
   }
 
   @override
