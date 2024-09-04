@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -9,7 +10,9 @@ import 'package:shadcn_ui/src/utils/provider.dart';
 const kContextMenuGroupId = ValueKey('context-menu');
 
 /// {@template ShadContextMenuRegion}
-/// A widget that shows the context menu when the user right clicks the [child].
+/// A widget that shows the context menu when the user right clicks the [child]
+/// or long presses it (only on android and ios), unless you provide a value to
+/// [longPressEnabled].
 /// {@endtemplate}
 class ShadContextMenuRegion extends StatefulWidget {
   /// {@macro ShadContextMenuRegion}
@@ -27,6 +30,7 @@ class ShadContextMenuRegion extends StatefulWidget {
     this.decoration,
     this.filter,
     this.controller,
+    this.longPressEnabled,
   });
 
   /// {@template ShadContextMenuRegion.child}
@@ -67,6 +71,12 @@ class ShadContextMenuRegion extends StatefulWidget {
   /// {@macro ShadContextMenu.controller}
   final ShadContextMenuController? controller;
 
+  /// {@template ShadContextMenuRegion.longPressEnabled}
+  /// Whether the context menu should be shown when the user long presses the
+  /// child, defaults to true only on Android and iOS.
+  /// {@endtemplate}
+  final bool? longPressEnabled;
+
   @override
   State<ShadContextMenuRegion> createState() => _ShadContextMenuRegionState();
 }
@@ -77,7 +87,7 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
       widget.controller ??
       (_controller ??=
           ShadContextMenuController(isOpen: widget.visible ?? false));
-  ShadAnchorBase? anchor;
+  Offset? offset;
 
   @override
   void didUpdateWidget(covariant ShadContextMenuRegion oldWidget) {
@@ -94,9 +104,7 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
   }
 
   void showAtOffset(Offset offset) {
-    setState(() {
-      anchor = ShadGlobalAnchor(offset);
-    });
+    setState(() => this.offset = offset);
     controller.show();
   }
 
@@ -108,14 +116,29 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
     showAtOffset(details.globalPosition);
   }
 
+  void onLongPress() {
+    assert(offset != null, 'offset must not be null');
+    showAtOffset(offset!);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final effectiveLongPressEnabled = widget.longPressEnabled ??
+        (defaultTargetPlatform == TargetPlatform.android ||
+            defaultTargetPlatform == TargetPlatform.iOS);
+
     return ShadContextMenu(
-      anchor: anchor,
+      anchor: offset == null ? null : ShadGlobalAnchor(offset!),
       controller: controller,
       child: ShadGestureDetector(
         onTapDown: (_) => hide(),
         onSecondaryTapDown: show,
+        onLongPressStart: effectiveLongPressEnabled
+            ? (d) {
+                offset = d.globalPosition;
+              }
+            : null,
+        onLongPress: effectiveLongPressEnabled ? onLongPress : null,
         child: widget.child,
       ),
       children: widget.children,
