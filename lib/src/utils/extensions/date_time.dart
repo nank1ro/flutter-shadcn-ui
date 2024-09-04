@@ -5,7 +5,7 @@ extension ShadDateTime on DateTime {
       value % 400 == 0 || (value % 4 == 0 && value % 100 != 0);
 
   int get daysInMonth {
-    var result = _daysInMonth[month];
+    var result = _daysInMonth[month - 1];
     if (month == 2 && isLeapYear(year)) result++;
     return result;
   }

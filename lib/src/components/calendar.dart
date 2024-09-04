@@ -13,7 +13,7 @@ class ShadCalendar extends StatefulWidget {
     super.key,
     this.selected,
     this.onChanged,
-    this.showOutsideDays,
+    this.showOutsideDays = true,
     this.initialMonth,
     this.formatMonth,
     this.formatWeekday,
@@ -23,7 +23,7 @@ class ShadCalendar extends StatefulWidget {
   final ValueChanged<DateTime>? onChanged;
 
   /// Whether to show days outside the current month, defaults to true.
-  final bool? showOutsideDays;
+  final bool showOutsideDays;
 
   /// The month to show by default, defaults to the current month.
   final DateTime? initialMonth;
@@ -42,6 +42,33 @@ class _ShadCalendarState extends State<ShadCalendar> {
   final today = DateTime.now().startOfDay;
   late DateTime currentMonth =
       widget.initialMonth ?? DateTime.now().startOfMonth;
+  List<DateTime> dates = [];
+
+  @override
+  void initState() {
+    super.initState();
+    generateDates();
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadCalendar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.showOutsideDays != oldWidget.showOutsideDays) {
+      generateDates();
+    }
+  }
+
+  void generateDates() {
+    final days = widget.showOutsideDays ? 35 : currentMonth.daysInMonth;
+    print(days);
+    if (widget.showOutsideDays) {
+    } else {
+      dates = List.generate(
+        days,
+        (day) => currentMonth.startOfMonth.add(Duration(days: day)),
+      );
+    }
+  }
 
   String defaultFormatMonth(DateTime date) {
     return DateFormat('LLLL y').format(date);
@@ -56,7 +83,6 @@ class _ShadCalendarState extends State<ShadCalendar> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveShowOutsideDays = widget.showOutsideDays ?? true;
 
     final effectiveFormatMonth = widget.formatMonth ?? defaultFormatMonth;
 
@@ -86,6 +112,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                 onPressed: () {
                   setState(() {
                     currentMonth = currentMonth.previousMonth;
+                    generateDates();
                   });
                 },
               ),
@@ -100,6 +127,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                 onPressed: () {
                   setState(() {
                     currentMonth = currentMonth.nextMonth;
+                    generateDates();
                   });
                 },
                 child:
@@ -130,46 +158,34 @@ class _ShadCalendarState extends State<ShadCalendar> {
           GridView.count(
             crossAxisCount: 7,
             shrinkWrap: true,
-            children: List.generate(
-              currentMonth.daysInMonth,
-              (day) {
-                final effectiveDay = day + 1;
-                final date = DateTime(
-                  currentMonth.year,
-                  currentMonth.month,
-                  effectiveDay,
-                );
-                final selected = widget.selected?.isSameDay(date) ?? false;
-                final isToday = date.isSameDay(today);
-                return ShadButton.raw(
-                  variant: selected
-                      ? ShadButtonVariant.primary
-                      : isToday
-                          ? ShadButtonVariant.secondary
-                          : ShadButtonVariant.ghost,
-                  width: double.infinity,
-                  height: double.infinity,
-                  decoration: const ShadDecoration(
-                    secondaryBorder: ShadBorder(
-                      padding: EdgeInsets.zero,
-                    ),
+            children: dates.map((date) {
+              final selected = widget.selected?.isSameDay(date) ?? false;
+              final isToday = date.isSameDay(today);
+              return ShadButton.raw(
+                variant: selected
+                    ? ShadButtonVariant.primary
+                    : isToday
+                        ? ShadButtonVariant.secondary
+                        : ShadButtonVariant.ghost,
+                width: double.infinity,
+                height: double.infinity,
+                decoration: const ShadDecoration(
+                  secondaryBorder: ShadBorder(
+                    padding: EdgeInsets.zero,
                   ),
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    widget.onChanged?.call(date);
-                  },
-                  child: Text(
-                    effectiveDay.toString(),
-                    style: theme.textTheme.small.copyWith(
-                      fontWeight: FontWeight.normal,
-                      color: selected
-                          ? theme.colorScheme.primaryForeground
-                          : theme.colorScheme.foreground,
-                    ),
+                ),
+                padding: EdgeInsets.zero,
+                child: Text(
+                  date.day.toString(),
+                  style: theme.textTheme.small.copyWith(
+                    fontWeight: FontWeight.normal,
+                    color: selected
+                        ? theme.colorScheme.primaryForeground
+                        : theme.colorScheme.foreground,
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            }).toList(),
           ),
         ],
       ),
