@@ -11,25 +11,35 @@ import 'package:shadcn_ui/src/utils/mouse_area.dart';
 
 /// Controls the visibility of a [ShadPopover].
 class ShadPopoverController extends ChangeNotifier {
+  ShadPopoverController({bool isOpen = false}) : _isOpen = isOpen;
+
+  bool _isOpen = false;
+
   /// Indicates if the popover is visible.
-  bool isOpen = false;
+  bool get isOpen => _isOpen;
 
   /// Displays the popover.
   void show() {
-    if (isOpen) return;
-    isOpen = true;
+    if (_isOpen) return;
+    _isOpen = true;
     notifyListeners();
   }
 
   /// Hides the popover.
   void hide() {
-    if (!isOpen) return;
-    isOpen = false;
+    if (!_isOpen) return;
+    _isOpen = false;
+    notifyListeners();
+  }
+
+  void setOpen(bool open) {
+    if (_isOpen == open) return;
+    _isOpen = open;
     notifyListeners();
   }
 
   /// Toggles the visibility of the popover.
-  void toggle() => isOpen ? hide() : show();
+  void toggle() => _isOpen ? hide() : show();
 }
 
 class ShadPopover extends StatefulWidget {
