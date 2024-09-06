@@ -199,30 +199,39 @@ class _ShadCalendarState extends State<ShadCalendar> {
                           ? theme.colorScheme.primaryForeground
                           : theme.colorScheme.foreground,
                     )
-                  : theme.textTheme.muted.copyWith(
-                      color: theme.colorScheme.mutedForeground.withOpacity(.5),
-                    );
-              return ShadButton.raw(
-                variant: selected
+                  : theme.textTheme.muted;
+
+              final variant = switch (isInMonth) {
+                true => selected
                     ? ShadButtonVariant.primary
                     : isToday
                         ? ShadButtonVariant.secondary
                         : ShadButtonVariant.ghost,
-                width: double.infinity,
-                height: double.infinity,
-                decoration: const ShadDecoration(
-                  secondaryBorder: ShadBorder(
-                    padding: EdgeInsets.zero,
+                false => selected
+                    ? ShadButtonVariant.secondary
+                    : ShadButtonVariant.ghost,
+              };
+
+              return Opacity(
+                opacity: isInMonth ? 1 : 0.5,
+                child: ShadButton.raw(
+                  variant: variant,
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: const ShadDecoration(
+                    secondaryBorder: ShadBorder(
+                      padding: EdgeInsets.zero,
+                    ),
                   ),
+                  padding: EdgeInsets.zero,
+                  child: Text(
+                    date.day.toString(),
+                    style: textStyle,
+                  ),
+                  onPressed: () {
+                    widget.onChanged?.call(date);
+                  },
                 ),
-                padding: EdgeInsets.zero,
-                child: Text(
-                  date.day.toString(),
-                  style: textStyle,
-                ),
-                onPressed: () {
-                  widget.onChanged?.call(date);
-                },
               );
             }).toList(),
           ),
