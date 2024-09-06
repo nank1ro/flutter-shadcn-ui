@@ -78,7 +78,7 @@ extension ShadDateTime on DateTime {
       return DateTime(
         nextMonth.year,
         nextMonth.month,
-        day,
+        1,
         hour,
         minute,
         second,
@@ -96,6 +96,26 @@ extension ShadDateTime on DateTime {
       millisecond,
       microsecond,
     );
+  }
+
+  /// Add days to the current date without taking into account the different
+  /// daylight
+  DateTime addDays(int days) {
+    // Create a new DateTime by directly adding days and let Dart handle month/year overflow
+    final newDate = DateTime(year, month, day + days);
+
+    // Ensure the result has a time of 00:00:00 (midnight)
+    return DateTime(newDate.year, newDate.month, newDate.day);
+  }
+
+  /// Remove days from the current date without taking into account the
+  /// different daylight
+  DateTime removeDays(int days) {
+    // Create a new DateTime by directly subtracting days and let Dart handle month/year underflow
+    final newDate = DateTime(year, month, day - days);
+
+    // Ensure the result has a time of 00:00:00 (midnight)
+    return DateTime(newDate.year, newDate.month, newDate.day);
   }
 
   DateTime get previousMonth {

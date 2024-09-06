@@ -17,6 +17,8 @@ class ShadCalendar extends StatefulWidget {
     this.initialMonth,
     this.formatMonth,
     this.formatWeekday,
+    this.showWeekNumbers = false,
+    this.weekStartsOn = 7,
   });
 
   final DateTime? selected;
@@ -34,6 +36,15 @@ class ShadCalendar extends StatefulWidget {
   /// The format to use for the weekday, defaults to 'EE'.
   final String Function(DateTime date)? formatWeekday;
 
+  /// Whether to show week numbers, defaults to false.
+  final bool showWeekNumbers;
+
+  /// Which day of the week is the first day of the week.
+  ///
+  /// In accordance with ISO 8601 a week starts with Monday, which
+  /// has the value 1, while Sunday has the value 7. Defaults to 1 (Monday).
+  final int weekStartsOn;
+
   @override
   State<ShadCalendar> createState() => _ShadCalendarState();
 }
@@ -42,7 +53,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
   final today = DateTime.now().startOfDay;
   late DateTime currentMonth =
       widget.initialMonth ?? DateTime.now().startOfMonth;
-  List<DateTime> dates = [];
+  List<DateTime?> dates = [];
+  // The first date shown in the calendar, used to render the week days
+  late DateTime firstDateShown;
 
   @override
   void initState() {
@@ -59,14 +72,30 @@ class _ShadCalendarState extends State<ShadCalendar> {
   }
 
   void generateDates() {
-    final days = widget.showOutsideDays ? 35 : currentMonth.daysInMonth;
-    print(days);
-    if (widget.showOutsideDays) {
-    } else {
-      dates = List.generate(
-        days,
-        (day) => currentMonth.startOfMonth.add(Duration(days: day)),
-      );
+    final lastDate = currentMonth.endOfMonth;
+    var firstDate = currentMonth.startOfMonth;
+    // find the first day of the week, going back if necessary
+    while (firstDate.weekday != widget.weekStartsOn) {
+      firstDate = firstDate.previousDay;
+    }
+    firstDateShown = firstDate;
+
+    var coveredWholeMonth = false;
+    dates = [];
+    while (!coveredWholeMonth || dates.length % 7 != 0) {
+      final isDayOutsideMonth = firstDate.month != currentMonth.month;
+      if (isDayOutsideMonth && !widget.showOutsideDays) {
+        dates.add(null);
+      } else {
+        dates.add(firstDate);
+      }
+
+      // Check if we've covered the whole month
+      if (firstDate.isSameDay(lastDate) && !coveredWholeMonth) {
+        coveredWholeMonth = true;
+      }
+
+      firstDate = firstDate.nextDay;
     }
   }
 
@@ -142,8 +171,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
               children: List.generate(
                 7,
                 (index) {
-                  final date =
-                      currentMonth.startOfWeek.add(Duration(days: index + 1));
+                  final date = firstDateShown.addDays(index);
                   return Expanded(
                     child: Text(
                       effectiveFormatWeekday(date),
@@ -159,8 +187,21 @@ class _ShadCalendarState extends State<ShadCalendar> {
             crossAxisCount: 7,
             shrinkWrap: true,
             children: dates.map((date) {
+              if (date == null) return const SizedBox.shrink();
+
               final selected = widget.selected?.isSameDay(date) ?? false;
               final isToday = date.isSameDay(today);
+              final isInMonth = date.month == currentMonth.month;
+              final textStyle = isInMonth
+                  ? theme.textTheme.small.copyWith(
+                      fontWeight: FontWeight.normal,
+                      color: selected
+                          ? theme.colorScheme.primaryForeground
+                          : theme.colorScheme.foreground,
+                    )
+                  : theme.textTheme.muted.copyWith(
+                      color: theme.colorScheme.mutedForeground.withOpacity(.5),
+                    );
               return ShadButton.raw(
                 variant: selected
                     ? ShadButtonVariant.primary
@@ -177,13 +218,11 @@ class _ShadCalendarState extends State<ShadCalendar> {
                 padding: EdgeInsets.zero,
                 child: Text(
                   date.day.toString(),
-                  style: theme.textTheme.small.copyWith(
-                    fontWeight: FontWeight.normal,
-                    color: selected
-                        ? theme.colorScheme.primaryForeground
-                        : theme.colorScheme.foreground,
-                  ),
+                  style: textStyle,
                 ),
+                onPressed: () {
+                  widget.onChanged?.call(date);
+                },
               );
             }).toList(),
           ),
