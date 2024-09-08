@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 class ShadInput extends StatefulWidget {
   const ShadInput({
@@ -80,6 +81,7 @@ class ShadInput extends StatefulWidget {
     this.placeholderStyle,
     this.placeholderAlignment,
     this.inputPadding,
+    this.gap,
   })  : smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ??
@@ -162,6 +164,7 @@ class ShadInput extends StatefulWidget {
   final Alignment? placeholderAlignment;
   final EdgeInsets? inputPadding;
   final bool onPressedAlwaysCalled;
+  final double? gap;
 
   static const int noMaxLength = -1;
 
@@ -299,6 +302,8 @@ class ShadInputState extends State<ShadInput>
         CrossAxisAlignment.center;
     final effectiveMouseCursor =
         widget.mouseCursor ?? WidgetStateMouseCursor.textable;
+
+    final effectiveGap = widget.gap ?? theme.inputTheme.gap ?? 8.0;
 
     final defaultSelectionControls = switch (Theme.of(context).platform) {
       TargetPlatform.iOS => cupertinoTextSelectionHandleControls,
@@ -444,7 +449,7 @@ class ShadInputState extends State<ShadInput>
                           ),
                         ),
                         if (widget.suffix != null) widget.suffix!,
-                      ],
+                      ].separatedBy(SizedBox(width: effectiveGap)),
                     ),
                   ),
                 );
