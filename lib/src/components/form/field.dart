@@ -16,6 +16,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
     super.enabled,
     super.autovalidateMode,
     super.restorationId,
+    this.readOnly = false,
     this.id,
     this.focusNode,
     this.label,
@@ -58,6 +59,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
   final ValueTransformer<T?>? valueTransformer;
   final VoidCallback? onReset;
   final ShadDecoration? Function(BuildContext context)? decorationBuilder;
+  final bool readOnly;
 
   @override
   ShadFormBuilderFieldState<ShadFormBuilderField<T>, T> createState() =>
@@ -87,7 +89,9 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   @override
   void initState() {
     super.initState();
-    _focusNode = widget.focusNode ?? FocusNode();
+    if (widget.focusNode == null) {
+      _focusNode = FocusNode(canRequestFocus: !widget.readOnly);
+    }
     // Register this field when there is a parent ShadForm
     _parentForm = ShadForm.maybeOf(context);
     if (widget.id != null) _parentForm?.registerField(widget.id!, this);
@@ -101,6 +105,14 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
         _parentForm?.unregisterField(oldWidget.id!, this);
       }
       if (widget.id != null) _parentForm?.registerField(widget.id!, this);
+    }
+
+    if (oldWidget.focusNode != null && widget.focusNode == null) {
+      _focusNode ??= FocusNode(canRequestFocus: !widget.readOnly);
+    }
+
+    if (widget.readOnly != oldWidget.readOnly) {
+      _focusNode?.canRequestFocus = widget.readOnly;
     }
   }
 

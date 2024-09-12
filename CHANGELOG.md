@@ -1,3 +1,11 @@
+## 0.9.3
+
+- Fix `ShadSelectFormField` focus when `readOnly` is true.
+
+## 0.9.2
+
+- Add `gap` to `ShadInput` and `ShadInputFormField` (tahnks to @moshOntong-IT).
+
 ## 0.9.1
 
 - Fix native context menu by disabling it on Web.

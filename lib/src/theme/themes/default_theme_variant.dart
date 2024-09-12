@@ -396,6 +396,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      gap: 8,
     );
   }
 

@@ -13,6 +13,7 @@ class ShadInputTheme {
     this.inputPadding,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.gap,
   });
 
   final bool merge;
@@ -24,6 +25,7 @@ class ShadInputTheme {
   final EdgeInsets? inputPadding;
   final MainAxisAlignment? mainAxisAlignment;
   final CrossAxisAlignment? crossAxisAlignment;
+  final double? gap;
 
   static ShadInputTheme lerp(
     ShadInputTheme a,
@@ -41,6 +43,7 @@ class ShadInputTheme {
       inputPadding: EdgeInsets.lerp(a.inputPadding, b.inputPadding, t),
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      gap: t < 0.5 ? a.gap : b.gap,
     );
   }
 
@@ -53,6 +56,7 @@ class ShadInputTheme {
     EdgeInsets? inputPadding,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
+    double? gap,
   }) {
     return ShadInputTheme(
       merge: merge ?? this.merge,
@@ -63,6 +67,7 @@ class ShadInputTheme {
       inputPadding: inputPadding ?? this.inputPadding,
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
+      gap: gap ?? this.gap,
     );
   }
 
@@ -77,6 +82,7 @@ class ShadInputTheme {
       inputPadding: other.inputPadding,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
+      gap: other.gap,
     );
   }
 
@@ -92,7 +98,8 @@ class ShadInputTheme {
         other.placeholderStyle == placeholderStyle &&
         other.inputPadding == inputPadding &&
         other.mainAxisAlignment == mainAxisAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment;
+        other.crossAxisAlignment == crossAxisAlignment &&
+        other.gap == gap;
   }
 
   @override
@@ -104,6 +111,7 @@ class ShadInputTheme {
         placeholderStyle.hashCode ^
         inputPadding.hashCode ^
         mainAxisAlignment.hashCode ^
-        crossAxisAlignment.hashCode;
+        crossAxisAlignment.hashCode ^
+        gap.hashCode;
   }
 }
