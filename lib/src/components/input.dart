@@ -188,7 +188,9 @@ class ShadInputState extends State<ShadInput>
   @override
   void initState() {
     super.initState();
-    if (widget.focusNode == null) _focusNode = FocusNode();
+    if (widget.focusNode == null) {
+      _focusNode = FocusNode(canRequestFocus: !widget.readOnly);
+    }
     focusNode.addListener(onFocusChange);
 
     if (widget.controller == null) {
@@ -209,6 +211,10 @@ class ShadInputState extends State<ShadInput>
       unregisterFromRestoration(_controller!);
       _controller!.dispose();
       _controller = null;
+    }
+
+    if (widget.readOnly != oldWidget.readOnly) {
+      _focusNode?.canRequestFocus = widget.readOnly;
     }
   }
 
