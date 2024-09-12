@@ -19,6 +19,7 @@ class ShadCalendar extends StatefulWidget {
     this.formatWeekday,
     this.showWeekNumbers = false,
     this.weekStartsOn = 1,
+    this.fixedWeeks = false,
   });
 
   final DateTime? selected;
@@ -45,6 +46,12 @@ class ShadCalendar extends StatefulWidget {
   /// has the value 1, while Sunday has the value 7. Defaults to 1 (Monday).
   final int weekStartsOn;
 
+  /// Display six weeks per months, regardless the month’s number of weeks.
+  ///
+  /// To use this [showOutsideDays] must be set to true.
+  /// Defaults to false.
+  final bool fixedWeeks;
+
   @override
   State<ShadCalendar> createState() => _ShadCalendarState();
 }
@@ -57,6 +64,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
   // The first date shown in the calendar, used to render the week days
   late DateTime firstDateShown;
 
+  final backMonthButtonHovered = ValueNotifier<bool>(false);
+  final forwardMonthButtonHovered = ValueNotifier<bool>(false);
+
   @override
   void initState() {
     super.initState();
@@ -66,9 +76,18 @@ class _ShadCalendarState extends State<ShadCalendar> {
   @override
   void didUpdateWidget(covariant ShadCalendar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.showOutsideDays != oldWidget.showOutsideDays) {
+    if (widget.showOutsideDays != oldWidget.showOutsideDays ||
+        widget.fixedWeeks != oldWidget.fixedWeeks ||
+        widget.weekStartsOn != oldWidget.weekStartsOn) {
       generateDates();
     }
+  }
+
+  @override
+  void dispose() {
+    backMonthButtonHovered.dispose();
+    forwardMonthButtonHovered.dispose();
+    super.dispose();
   }
 
   void generateDates() {
@@ -82,7 +101,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     var coveredWholeMonth = false;
     dates = [];
-    while (!coveredWholeMonth || dates.length % 7 != 0) {
+    while (!coveredWholeMonth ||
+        (!widget.fixedWeeks && dates.length % 7 != 0) ||
+        (widget.fixedWeeks && dates.length != 42)) {
       final isDayOutsideMonth = firstDate.month != currentMonth.month;
       if (isDayOutsideMonth && !widget.showOutsideDays) {
         dates.add(null);
@@ -130,37 +151,60 @@ class _ShadCalendarState extends State<ShadCalendar> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ShadButton.outline(
-                width: 28,
-                height: 28,
-                padding: EdgeInsets.zero,
-                icon: const ShadImage.square(
-                  LucideIcons.chevronLeft,
-                  size: 16,
-                ),
-                onPressed: () {
-                  setState(() {
-                    currentMonth = currentMonth.previousMonth;
-                    generateDates();
-                  });
+              ValueListenableBuilder<bool>(
+                valueListenable: backMonthButtonHovered,
+                builder: (context, isHovered, _) {
+                  return Opacity(
+                    opacity: isHovered ? 1 : .5,
+                    child: ShadButton.outline(
+                      width: 28,
+                      height: 28,
+                      padding: EdgeInsets.zero,
+                      applyIconColorFilter: false,
+                      onHoverChange: (hovered) =>
+                          backMonthButtonHovered.value = hovered,
+                      icon: const ShadImage.square(
+                        LucideIcons.chevronLeft,
+                        size: 16,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          currentMonth = currentMonth.previousMonth;
+                          generateDates();
+                        });
+                      },
+                    ),
+                  );
                 },
               ),
               Text(
                 effectiveFormatMonth(currentMonth),
                 style: theme.textTheme.small,
               ),
-              ShadButton.outline(
-                width: 28,
-                height: 28,
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  setState(() {
-                    currentMonth = currentMonth.nextMonth;
-                    generateDates();
-                  });
+              ValueListenableBuilder<bool>(
+                valueListenable: forwardMonthButtonHovered,
+                builder: (context, isHovered, _) {
+                  return Opacity(
+                    opacity: isHovered ? 1 : .5,
+                    child: ShadButton.outline(
+                      width: 28,
+                      height: 28,
+                      padding: EdgeInsets.zero,
+                      onHoverChange: (hovered) =>
+                          forwardMonthButtonHovered.value = hovered,
+                      onPressed: () {
+                        setState(() {
+                          currentMonth = currentMonth.nextMonth;
+                          generateDates();
+                        });
+                      },
+                      child: const ShadImage.square(
+                        LucideIcons.chevronRight,
+                        size: 16,
+                      ),
+                    ),
+                  );
                 },
-                child:
-                    const ShadImage.square(LucideIcons.chevronRight, size: 16),
               ),
             ],
           ),
@@ -213,7 +257,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
               };
 
               return Opacity(
-                opacity: isInMonth ? 1 : 0.5,
+                opacity: isInMonth ? 1 : .5,
                 child: ShadButton.raw(
                   variant: variant,
                   width: double.infinity,
