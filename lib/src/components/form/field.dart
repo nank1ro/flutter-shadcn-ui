@@ -89,8 +89,9 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   @override
   void initState() {
     super.initState();
-    _focusNode =
-        widget.focusNode ?? FocusNode(canRequestFocus: !widget.readOnly);
+    if (widget.focusNode == null) {
+      _focusNode = FocusNode(canRequestFocus: !widget.readOnly);
+    }
     // Register this field when there is a parent ShadForm
     _parentForm = ShadForm.maybeOf(context);
     if (widget.id != null) _parentForm?.registerField(widget.id!, this);
@@ -104,6 +105,10 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
         _parentForm?.unregisterField(oldWidget.id!, this);
       }
       if (widget.id != null) _parentForm?.registerField(widget.id!, this);
+    }
+
+    if (oldWidget.focusNode != null && widget.focusNode == null) {
+      _focusNode ??= FocusNode(canRequestFocus: !widget.readOnly);
     }
 
     if (widget.readOnly != oldWidget.readOnly) {
