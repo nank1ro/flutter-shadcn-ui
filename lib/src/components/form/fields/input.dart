@@ -89,6 +89,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     TextStyle? placeholderStyle,
     Alignment? placeholderAlignment,
     EdgeInsets? inputPadding,
+    double? gap,
   }) : super(
           initialValue: controller != null ? controller.text : initialValue,
           validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -169,6 +170,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
               placeholderStyle: placeholderStyle,
               placeholderAlignment: placeholderAlignment,
               inputPadding: inputPadding,
+              gap: gap,
             );
           },
         );
