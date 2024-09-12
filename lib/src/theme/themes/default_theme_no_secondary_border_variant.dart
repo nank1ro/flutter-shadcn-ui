@@ -427,6 +427,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           radius: radius,
         ),
       ),
+      gap: 8,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     );
   }
