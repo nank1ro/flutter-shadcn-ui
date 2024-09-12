@@ -46,7 +46,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     int? maxLines = 1,
     int? minLines,
     bool expands = false,
-    bool readOnly = false,
+    super.readOnly,
     bool? showCursor = false,
     int? maxLength,
     MaxLengthEnforcement? maxLengthEnforcement,
