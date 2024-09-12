@@ -20,6 +20,7 @@ class ShadCalendar extends StatefulWidget {
     this.showWeekNumbers = false,
     this.weekStartsOn = 1,
     this.fixedWeeks = false,
+    this.hideWeekdayNames = false,
   });
 
   final DateTime? selected;
@@ -51,6 +52,9 @@ class ShadCalendar extends StatefulWidget {
   /// To use this [showOutsideDays] must be set to true.
   /// Defaults to false.
   final bool fixedWeeks;
+
+  /// Hide the month’s head displaying the weekday names.
+  final bool hideWeekdayNames;
 
   @override
   State<ShadCalendar> createState() => _ShadCalendarState();
@@ -210,20 +214,26 @@ class _ShadCalendarState extends State<ShadCalendar> {
           ),
           // weed days
           Padding(
-            padding: const EdgeInsets.only(top: 16, bottom: 10),
-            child: Row(
-              children: List.generate(
-                7,
-                (index) {
-                  final date = firstDateShown.addDays(index);
-                  return Expanded(
-                    child: Text(
-                      effectiveFormatWeekday(date),
-                      style: theme.textTheme.muted.copyWith(fontSize: 12.8),
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                },
+            padding: const EdgeInsets.only(top: 16),
+            child: Offstage(
+              offstage: widget.hideWeekdayNames,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: List.generate(
+                    7,
+                    (index) {
+                      final date = firstDateShown.addDays(index);
+                      return Expanded(
+                        child: Text(
+                          effectiveFormatWeekday(date),
+                          style: theme.textTheme.muted.copyWith(fontSize: 12.8),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
           ),
