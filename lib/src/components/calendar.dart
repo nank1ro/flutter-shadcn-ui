@@ -18,7 +18,7 @@ class ShadCalendar extends StatefulWidget {
     this.formatMonth,
     this.formatWeekday,
     this.showWeekNumbers = false,
-    this.weekStartsOn = 7,
+    this.weekStartsOn = 1,
   });
 
   final DateTime? selected;
