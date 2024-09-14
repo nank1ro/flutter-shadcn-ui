@@ -179,10 +179,10 @@ class ShadInputState extends State<ShadInput>
     implements TextSelectionGestureDetectorBuilderDelegate {
   // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
-  FocusNode get _effectiveFocusNode => widget.focusNode ?? _focusNode!;
+  FocusNode get effectiveFocusNode => widget.focusNode ?? _focusNode!;
   final hasFocus = ValueNotifier(false);
   RestorableTextEditingController? _controller;
-  TextEditingController get _effectiveController =>
+  TextEditingController get effectiveController =>
       widget.controller ?? _controller!.value;
   bool _showSelectionHandles = false;
 
@@ -192,7 +192,7 @@ class ShadInputState extends State<ShadInput>
     if (widget.focusNode == null) {
       _focusNode = FocusNode(canRequestFocus: !widget.readOnly);
     }
-    _effectiveFocusNode.addListener(onFocusChange);
+    effectiveFocusNode.addListener(onFocusChange);
 
     if (widget.controller == null) {
       _createLocalController(TextEditingValue(text: widget.initialValue ?? ''));
@@ -204,7 +204,7 @@ class ShadInputState extends State<ShadInput>
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
       oldWidget.focusNode?.removeListener(onFocusChange);
-      _effectiveFocusNode.addListener(onFocusChange);
+      effectiveFocusNode.addListener(onFocusChange);
     }
     if (widget.controller == null && oldWidget.controller != null) {
       _createLocalController(oldWidget.controller!.value);
@@ -218,8 +218,8 @@ class ShadInputState extends State<ShadInput>
       _focusNode?.canRequestFocus = widget.readOnly;
     }
 
-    if (_effectiveFocusNode.hasFocus && widget.readOnly != oldWidget.readOnly) {
-      if (_effectiveController.selection.isCollapsed) {
+    if (effectiveFocusNode.hasFocus && widget.readOnly != oldWidget.readOnly) {
+      if (effectiveController.selection.isCollapsed) {
         _showSelectionHandles = !widget.readOnly;
       }
     }
@@ -227,9 +227,9 @@ class ShadInputState extends State<ShadInput>
 
   @override
   void dispose() {
-    _effectiveFocusNode.removeListener(onFocusChange);
+    effectiveFocusNode.removeListener(onFocusChange);
 
-    if (widget.focusNode == null) _effectiveFocusNode.dispose();
+    if (widget.focusNode == null) effectiveFocusNode.dispose();
     _controller?.dispose();
     super.dispose();
   }
@@ -250,7 +250,7 @@ class ShadInputState extends State<ShadInput>
   }
 
   void onFocusChange() {
-    hasFocus.value = _effectiveFocusNode.hasFocus;
+    hasFocus.value = effectiveFocusNode.hasFocus;
   }
 
   @override
@@ -329,7 +329,7 @@ class ShadInputState extends State<ShadInput>
       return false;
     }
 
-    if (widget.readOnly && _effectiveController.selection.isCollapsed) {
+    if (widget.readOnly && effectiveController.selection.isCollapsed) {
       return false;
     }
 
@@ -342,7 +342,7 @@ class ShadInputState extends State<ShadInput>
       return true;
     }
 
-    if (_effectiveController.text.isNotEmpty) {
+    if (effectiveController.text.isNotEmpty) {
       return true;
     }
 
@@ -416,7 +416,7 @@ class ShadInputState extends State<ShadInput>
           valueListenable: hasFocus,
           builder: (context, focused, _) {
             return ValueListenableBuilder(
-              valueListenable: _effectiveController,
+              valueListenable: effectiveController,
               builder: (context, textEditingValue, child) {
                 return ShadDecorator(
                   decoration: effectiveDecoration,
@@ -458,11 +458,11 @@ class ShadInputState extends State<ShadInput>
                                         showSelectionHandles:
                                             _showSelectionHandles,
                                         key: editableTextKey,
-                                        controller: _effectiveController,
+                                        controller: effectiveController,
                                         obscuringCharacter:
                                             widget.obscuringCharacter,
                                         readOnly: widget.readOnly,
-                                        focusNode: _effectiveFocusNode,
+                                        focusNode: effectiveFocusNode,
                                         // ! Selection handler section here
                                         onSelectionChanged:
                                             _handleSelectionChanged,
