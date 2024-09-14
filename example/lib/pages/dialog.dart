@@ -12,7 +12,7 @@ class DialogPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
+    final theme = context.shadTheme;
     return BaseScaffold(
       appBarTitle: 'Dialog',
       children: [
