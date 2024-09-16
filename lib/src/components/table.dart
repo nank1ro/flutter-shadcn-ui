@@ -1,3 +1,5 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -135,6 +137,23 @@ class ShadTable extends StatefulWidget {
     this.keyboardDismissBehavior,
     this.verticalScrollPhysics,
     this.horizontalScrollPhysics,
+    this.onRowTap,
+    this.onColumnTap,
+    this.supportedDevices,
+    this.onRowTapDown,
+    this.onRowTapUp,
+    this.onRowTapCancel,
+    this.onRowSecondaryTap,
+    this.onRowSecondaryTapDown,
+    this.onRowSecondaryTapUp,
+    this.onRowSecondaryTapCancel,
+    this.onColumnTapDown,
+    this.onColumnTapUp,
+    this.onColumnTapCancel,
+    this.onColumnSecondaryTap,
+    this.onColumnSecondaryTapDown,
+    this.onColumnSecondaryTapUp,
+    this.onColumnSecondaryTapCancel,
   })  : children = null,
         headerBuilder = header,
         footerBuilder = footer,
@@ -172,6 +191,23 @@ class ShadTable extends StatefulWidget {
     this.keyboardDismissBehavior,
     this.verticalScrollPhysics,
     this.horizontalScrollPhysics,
+    this.onRowTap,
+    this.onColumnTap,
+    this.supportedDevices,
+    this.onRowTapDown,
+    this.onRowTapUp,
+    this.onRowTapCancel,
+    this.onRowSecondaryTap,
+    this.onRowSecondaryTapDown,
+    this.onRowSecondaryTapUp,
+    this.onRowSecondaryTapCancel,
+    this.onColumnTapDown,
+    this.onColumnTapUp,
+    this.onColumnTapCancel,
+    this.onColumnSecondaryTap,
+    this.onColumnSecondaryTapDown,
+    this.onColumnSecondaryTapUp,
+    this.onColumnSecondaryTapCancel,
   })  : builder = null,
         assert(children.isNotEmpty, 'children cannot be empty'),
         headerBuilder = null,
@@ -209,6 +245,29 @@ class ShadTable extends StatefulWidget {
   final ScrollPhysics? verticalScrollPhysics;
   final ScrollPhysics? horizontalScrollPhysics;
 
+  final void Function(int row)? onRowTap;
+  final void Function(int row)? onRowTapDown;
+  final void Function(int row)? onRowTapUp;
+  final void Function(int row)? onRowTapCancel;
+  final void Function(int row)? onRowSecondaryTap;
+  final void Function(int row)? onRowSecondaryTapDown;
+  final void Function(int row)? onRowSecondaryTapUp;
+  final void Function(int row)? onRowSecondaryTapCancel;
+  final void Function(int column)? onColumnTap;
+  final void Function(int column)? onColumnTapDown;
+  final void Function(int column)? onColumnTapUp;
+  final void Function(int column)? onColumnTapCancel;
+  final void Function(int column)? onColumnSecondaryTap;
+  final void Function(int column)? onColumnSecondaryTapDown;
+  final void Function(int column)? onColumnSecondaryTapUp;
+  final void Function(int column)? onColumnSecondaryTapCancel;
+
+  /// The kind of devices that are allowed to be recognized.
+  ///
+  /// If set to null, events from all device types will be recognized. Defaults
+  /// to null.
+  final Set<PointerDeviceKind>? supportedDevices;
+
   @override
   State<ShadTable> createState() => _ShadTableState();
 }
@@ -242,6 +301,7 @@ class _ShadTableState extends State<ShadTable> {
   }
 
   TableSpan _buildColumnSpan(int index) {
+    final gestureSettings = MediaQuery.maybeGestureSettingsOf(context);
     final requestedColumnSpanExtent = widget.columnSpanExtent?.call(index);
     final effectiveColumnSpanExtent =
         requestedColumnSpanExtent ?? const FixedTableSpanExtent(100);
@@ -250,11 +310,55 @@ class _ShadTableState extends State<ShadTable> {
       extent: effectiveColumnSpanExtent,
       backgroundDecoration: widget.columnSpanBackgroundDecoration?.call(index),
       foregroundDecoration: widget.columnSpanForegroundDecoration?.call(index),
+      recognizerFactories: {
+        TapGestureRecognizer:
+            GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
+          () => TapGestureRecognizer(
+            debugOwner: this,
+            supportedDevices: widget.supportedDevices,
+          ),
+          (TapGestureRecognizer instance) {
+            if (widget.onColumnTap != null) {
+              instance.onTap = () => widget.onColumnTap!(index);
+            }
+            if (widget.onColumnTapDown != null) {
+              instance.onTapDown = (d) => widget.onColumnTapDown!(index);
+            }
+            if (widget.onColumnTapUp != null) {
+              instance.onTapUp = (d) => widget.onColumnTapUp!(index);
+            }
+            if (widget.onColumnTapCancel != null) {
+              instance.onTapCancel = () => widget.onColumnTapCancel!(index);
+            }
+            if (widget.onColumnSecondaryTap != null) {
+              instance.onSecondaryTap =
+                  () => widget.onColumnSecondaryTap!(index);
+            }
+            if (widget.onColumnSecondaryTapDown != null) {
+              instance.onSecondaryTapDown =
+                  (d) => widget.onColumnSecondaryTapDown!(index);
+            }
+            if (widget.onColumnSecondaryTapUp != null) {
+              instance.onSecondaryTapUp =
+                  (d) => widget.onColumnSecondaryTapUp!(index);
+            }
+            if (widget.onColumnSecondaryTapCancel != null) {
+              instance.onSecondaryTapCancel =
+                  () => widget.onColumnSecondaryTapCancel!(index);
+            }
+
+            instance
+              ..gestureSettings = gestureSettings
+              ..supportedDevices = widget.supportedDevices;
+          },
+        ),
+      },
     );
   }
 
   TableSpan _buildRowSpan(int index, int effectiveRowCount) {
     final colorScheme = ShadTheme.of(context).colorScheme;
+    final gestureSettings = MediaQuery.maybeGestureSettingsOf(context);
     final isLast = index == effectiveRowCount - 1;
     final isFooter =
         isLast && (widget.footer != null || widget.footerBuilder != null);
@@ -286,6 +390,48 @@ class _ShadTableState extends State<ShadTable> {
       onExit: (p) {
         if (previousPointerOffset == p.position) return;
         hoveredRowIndex.value = null;
+      },
+      recognizerFactories: {
+        TapGestureRecognizer:
+            GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
+          () => TapGestureRecognizer(
+            debugOwner: this,
+            supportedDevices: widget.supportedDevices,
+          ),
+          (TapGestureRecognizer instance) {
+            if (widget.onRowTap != null) {
+              instance.onTap = () => widget.onRowTap!(index);
+            }
+            if (widget.onRowTapDown != null) {
+              instance.onTapDown = (d) => widget.onRowTapDown!(index);
+            }
+            if (widget.onRowTapUp != null) {
+              instance.onTapUp = (d) => widget.onRowTapUp!(index);
+            }
+            if (widget.onRowTapCancel != null) {
+              instance.onTapCancel = () => widget.onRowTapCancel!(index);
+            }
+            if (widget.onRowSecondaryTap != null) {
+              instance.onSecondaryTap = () => widget.onRowSecondaryTap!(index);
+            }
+            if (widget.onRowSecondaryTapDown != null) {
+              instance.onSecondaryTapDown =
+                  (d) => widget.onRowSecondaryTapDown!(index);
+            }
+            if (widget.onRowSecondaryTapUp != null) {
+              instance.onSecondaryTapUp =
+                  (d) => widget.onRowSecondaryTapUp!(index);
+            }
+            if (widget.onRowSecondaryTapCancel != null) {
+              instance.onSecondaryTapCancel =
+                  () => widget.onRowSecondaryTapCancel!(index);
+            }
+
+            instance
+              ..gestureSettings = gestureSettings
+              ..supportedDevices = widget.supportedDevices;
+          },
+        ),
       },
     );
   }
