@@ -1,3 +1,7 @@
+## 0.9.5
+
+- Add text selection toolbar to `ShadInput` (thanks to @moshOntong-IT).
+
 ## 0.9.4
 
 - Add gestures recognizers to `ShadTable` for rows and columns.
@@ -8,7 +12,7 @@
 
 ## 0.9.2
 
-- Add `gap` to `ShadInput` and `ShadInputFormField` (tahnks to @moshOntong-IT).
+- Add `gap` to `ShadInput` and `ShadInputFormField` (thanks to @moshOntong-IT).
 
 ## 0.9.1
 
