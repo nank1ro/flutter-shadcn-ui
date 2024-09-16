@@ -179,11 +179,12 @@ class ShadInputState extends State<ShadInput>
     implements TextSelectionGestureDetectorBuilderDelegate {
   // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
-  FocusNode get focusNode => widget.focusNode ?? _focusNode!;
+  FocusNode get effectiveFocusNode => widget.focusNode ?? _focusNode!;
   final hasFocus = ValueNotifier(false);
   RestorableTextEditingController? _controller;
-  TextEditingController get controller =>
+  TextEditingController get effectiveController =>
       widget.controller ?? _controller!.value;
+  bool _showSelectionHandles = false;
 
   @override
   void initState() {
@@ -191,7 +192,7 @@ class ShadInputState extends State<ShadInput>
     if (widget.focusNode == null) {
       _focusNode = FocusNode(canRequestFocus: !widget.readOnly);
     }
-    focusNode.addListener(onFocusChange);
+    effectiveFocusNode.addListener(onFocusChange);
 
     if (widget.controller == null) {
       _createLocalController(TextEditingValue(text: widget.initialValue ?? ''));
@@ -203,7 +204,7 @@ class ShadInputState extends State<ShadInput>
     super.didUpdateWidget(oldWidget);
     if (widget.focusNode != oldWidget.focusNode) {
       oldWidget.focusNode?.removeListener(onFocusChange);
-      focusNode.addListener(onFocusChange);
+      effectiveFocusNode.addListener(onFocusChange);
     }
     if (widget.controller == null && oldWidget.controller != null) {
       _createLocalController(oldWidget.controller!.value);
@@ -216,13 +217,19 @@ class ShadInputState extends State<ShadInput>
     if (widget.readOnly != oldWidget.readOnly) {
       _focusNode?.canRequestFocus = widget.readOnly;
     }
+
+    if (effectiveFocusNode.hasFocus && widget.readOnly != oldWidget.readOnly) {
+      if (effectiveController.selection.isCollapsed) {
+        _showSelectionHandles = !widget.readOnly;
+      }
+    }
   }
 
   @override
   void dispose() {
-    focusNode.removeListener(onFocusChange);
+    effectiveFocusNode.removeListener(onFocusChange);
 
-    if (widget.focusNode == null) focusNode.dispose();
+    if (widget.focusNode == null) effectiveFocusNode.dispose();
     _controller?.dispose();
     super.dispose();
   }
@@ -243,7 +250,7 @@ class ShadInputState extends State<ShadInput>
   }
 
   void onFocusChange() {
-    hasFocus.value = focusNode.hasFocus;
+    hasFocus.value = effectiveFocusNode.hasFocus;
   }
 
   @override
@@ -267,9 +274,79 @@ class ShadInputState extends State<ShadInput>
   @override
   String? get restorationId => widget.restorationId;
 
+  EditableTextState? get _editableText => editableTextKey.currentState;
+
   @override
   void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
     if (_controller != null) _registerController();
+  }
+
+  void _handleSelectionChanged(
+    TextSelection selection,
+    SelectionChangedCause? cause,
+  ) {
+    final willShowSelectionHandles = _shouldShowSelectionHandles(cause);
+    if (willShowSelectionHandles != _showSelectionHandles) {
+      setState(() {
+        _showSelectionHandles = willShowSelectionHandles;
+      });
+    }
+
+    switch (Theme.of(context).platform) {
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.android:
+        if (cause == SelectionChangedCause.longPress) {
+          _editableText?.bringIntoView(selection.extent);
+        }
+    }
+
+    switch (Theme.of(context).platform) {
+      case TargetPlatform.iOS:
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.android:
+        break;
+      case TargetPlatform.macOS:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+        if (cause == SelectionChangedCause.drag) {
+          _editableText?.hideToolbar();
+        }
+    }
+  }
+
+  bool _shouldShowSelectionHandles(SelectionChangedCause? cause) {
+    // When the text field is activated by something that doesn't trigger the
+    // selection overlay, we shouldn't show the handles either.
+    if (!_selectionGestureDetectorBuilder.shouldShowSelectionToolbar) {
+      return false;
+    }
+
+    if (cause == SelectionChangedCause.keyboard) {
+      return false;
+    }
+
+    if (widget.readOnly && effectiveController.selection.isCollapsed) {
+      return false;
+    }
+
+    if (!widget.enabled) {
+      return false;
+    }
+
+    if (cause == SelectionChangedCause.longPress ||
+        cause == SelectionChangedCause.scribble) {
+      return true;
+    }
+
+    if (effectiveController.text.isNotEmpty) {
+      return true;
+    }
+
+    return false;
   }
 
   @override
@@ -324,6 +401,13 @@ class ShadInputState extends State<ShadInput>
     final effectiveSelectionControls =
         widget.selectionControls ?? defaultSelectionControls;
 
+    final effectiveContextMenuBuilder = widget.contextMenuBuilder ??
+        (context, editableState) {
+          return AdaptiveTextSelectionToolbar.editableText(
+            editableTextState: _editableText!,
+          );
+        };
+
     return ShadDisabled(
       disabled: !widget.enabled,
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
@@ -332,7 +416,7 @@ class ShadInputState extends State<ShadInput>
           valueListenable: hasFocus,
           builder: (context, focused, _) {
             return ValueListenableBuilder(
-              valueListenable: controller,
+              valueListenable: effectiveController,
               builder: (context, textEditingValue, child) {
                 return ShadDecorator(
                   decoration: effectiveDecoration,
@@ -371,21 +455,38 @@ class ShadInputState extends State<ShadInput>
                                     child: UnmanagedRestorationScope(
                                       bucket: bucket,
                                       child: EditableText(
+                                        showSelectionHandles:
+                                            _showSelectionHandles,
                                         key: editableTextKey,
-                                        controller: controller,
+                                        controller: effectiveController,
                                         obscuringCharacter:
                                             widget.obscuringCharacter,
                                         readOnly: widget.readOnly,
-                                        focusNode: focusNode,
+                                        focusNode: effectiveFocusNode,
+                                        // ! Selection handler section here
+                                        onSelectionChanged:
+                                            _handleSelectionChanged,
+                                        selectionColor: focused
+                                            ? widget.selectionColor ??
+                                                theme.colorScheme.selection
+                                            : null,
+                                        selectionHeightStyle:
+                                            widget.selectionHeightStyle,
+                                        selectionWidthStyle:
+                                            widget.selectionWidthStyle,
+                                        contextMenuBuilder:
+                                            effectiveContextMenuBuilder,
+                                        selectionControls:
+                                            effectiveSelectionControls,
+                                        // ! End of selection handler section
+                                        mouseCursor: effectiveMouseCursor,
+                                        enableInteractiveSelection:
+                                            widget.enableInteractiveSelection,
                                         style: effectiveTextStyle,
                                         strutStyle: widget.strutStyle,
                                         cursorColor: widget.cursorColor ??
                                             theme.colorScheme.primary,
                                         backgroundCursorColor: Colors.grey,
-                                        selectionColor: focused
-                                            ? widget.selectionColor ??
-                                                theme.colorScheme.selection
-                                            : null,
                                         keyboardType: widget.keyboardType,
                                         keyboardAppearance:
                                             widget.keyboardAppearance ??
@@ -415,10 +516,6 @@ class ShadInputState extends State<ShadInput>
                                         cursorWidth: widget.cursorWidth,
                                         cursorHeight: widget.cursorHeight,
                                         cursorRadius: widget.cursorRadius,
-                                        selectionHeightStyle:
-                                            widget.selectionHeightStyle,
-                                        selectionWidthStyle:
-                                            widget.selectionWidthStyle,
                                         scrollPadding: widget.scrollPadding,
                                         dragStartBehavior:
                                             widget.dragStartBehavior,
@@ -433,13 +530,6 @@ class ShadInputState extends State<ShadInput>
                                             .enableIMEPersonalizedLearning,
                                         contentInsertionConfiguration: widget
                                             .contentInsertionConfiguration,
-                                        contextMenuBuilder:
-                                            widget.contextMenuBuilder,
-                                        selectionControls:
-                                            effectiveSelectionControls,
-                                        mouseCursor: effectiveMouseCursor,
-                                        enableInteractiveSelection:
-                                            widget.enableInteractiveSelection,
                                         undoController: widget.undoController,
                                         spellCheckConfiguration:
                                             widget.spellCheckConfiguration,
