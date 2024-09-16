@@ -1,3 +1,7 @@
+## 0.9.4
+
+- Add gestures recognizers to `ShadTable` for rows and columns.
+
 ## 0.9.3
 
 - Fix `ShadSelectFormField` focus when `readOnly` is true.
