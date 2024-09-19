@@ -39,6 +39,7 @@ export default defineConfig({
               autogenerate: { directory: 'Theme' },
               collapsed: false,
             },
+            { label: 'Typography', link: 'typography' },
             {
               label: 'Components',
               autogenerate: { directory: 'Components' },
