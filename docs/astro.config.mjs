@@ -30,11 +30,29 @@ export default defineConfig({
           attrs: { target: '_blank' },
         },
         {
-          label: 'Shadcn UI',
-          autogenerate: { directory: 'shadcn-ui' },
+          label: 'Flutter Shadcn UI',
+          collapsed: false,
+          items: [
+            { label: 'Getting started', link: '' },
+            {
+              label: 'Theme',
+              autogenerate: { directory: 'shadcn-ui/Theme' },
+              collapsed: false,
+            },
+            {
+              label: 'Components',
+              autogenerate: { directory: 'shadcn-ui/Components' },
+              collapsed: false,
+            },
+            {
+              label: 'Utils',
+              autogenerate: { directory: 'shadcn-ui/Utils' },
+              collapsed: false,
+            },
+          ],
         },
       ],
-    },),
+    }),
   ],
   site: 'https://mariuti.com/shadcn-ui',
   output: "static",
