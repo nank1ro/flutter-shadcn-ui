@@ -1,5 +1,6 @@
 # build output
-dist/
+dist/*
+!dist/_redirects
 # generated types
 .astro/
 
