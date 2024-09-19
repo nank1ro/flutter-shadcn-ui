@@ -1,0 +1,56 @@
+---
+interface Props {
+    src: string;
+    minHeight: string;
+}
+
+const { src, minHeight = "200px" } = Astro.props;
+import { Tabs, TabItem } from "@astrojs/starlight/components";
+let uuid = crypto.randomUUID();
+---
+
+<Tabs>
+    <TabItem label="Preview">
+        <iframe
+            id={uuid}
+            class="preview"
+            style=`border: 1px solid rgba(0, 0, 0, 0.1); min-height: ${minHeight}; width: 100%;`
+            loading="lazy"></iframe>
+    </TabItem>
+    <TabItem label="Code">
+        <slot />
+    </TabItem>
+</Tabs>
+
+<script is:inline define:vars={{ uuid, src }}>
+    function updateQueryStringParameter(uri, key, value) {
+        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        var separator = uri.indexOf("?") !== -1 ? "&" : "?";
+        if (uri.match(re)) {
+            return uri.replace(re, "$1" + key + "=" + value + "$2");
+        } else {
+            return uri + separator + key + "=" + value;
+        }
+    }
+
+    function updateSrcForTheme() {
+        const isThemeDark =
+            document.documentElement.attributes["data-theme"].value == "dark";
+        const iframe = document.getElementById(uuid);
+        const iframeSrc = iframe.getAttribute("src") ?? "";
+        const withoutSrc = iframeSrc === "";
+        const iframeTheme = iframeSrc.includes("theme=dark") ? "dark" : "light";
+        if (isThemeDark && (withoutSrc || iframeTheme != "dark")) {
+            iframe.src = updateQueryStringParameter(src, "theme", "dark");
+        } else if (!isThemeDark && (withoutSrc || iframeTheme != "light")) {
+            iframe.src = updateQueryStringParameter(src, "theme", "light");
+        }
+    }
+
+    // Watch the document element
+    const observer = new MutationObserver(updateSrcForTheme);
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme"],
+    });
+</script>

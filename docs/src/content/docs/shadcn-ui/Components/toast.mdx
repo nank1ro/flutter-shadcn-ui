@@ -1,0 +1,116 @@
+---
+title: Toast
+sidebar:
+  order: 4
+---
+import Preview from '../../../../components/Preview.astro';
+
+A succinct message that is displayed temporarily.
+
+<Preview src="https://shadcn-ui-playground.web.app/toast?style=schedule" minHeight="400px">
+ ```dart
+ShadButton.outline(
+  child: const Text('Add to calendar'),
+  onPressed: () {
+    ShadToaster.of(context).show(
+      ShadToast(
+        title: const Text('Scheduled: Catch up'),
+        description:
+            const Text('Friday, February 10, 2023 at 5:57 PM'),
+        action: ShadButton.outline(
+          child: const Text('Undo'),
+          onPressed: () => ShadToaster.of(context).hide(),
+        ),
+      ),
+    );
+  },
+),
+```
+</Preview>
+
+## Simple
+
+<Preview src="https://shadcn-ui-playground.web.app/toast?style=simple" minHeight="400px">
+ ```dart
+ShadButton.outline(
+  child: const Text('Show Toast'),
+  onPressed: () {
+    ShadToaster.of(context).show(
+      const ShadToast(
+        description: Text('Your message has been sent.'),
+      ),
+    );
+  },
+),
+```
+</Preview>
+
+## With Title
+
+<Preview src="https://shadcn-ui-playground.web.app/toast?style=withTitle" minHeight="400px">
+ ```dart
+ShadButton.outline(
+  child: const Text('Show Toast'),
+  onPressed: () {
+    ShadToaster.of(context).show(
+      const ShadToast(
+        title: Text('Uh oh! Something went wrong'),
+        description:
+            Text('There was a problem with your request'),
+      ),
+    );
+  },
+),
+```
+</Preview>
+
+## With Action
+
+<Preview src="https://shadcn-ui-playground.web.app/toast?style=withAction" minHeight="400px">
+ ```dart
+ShadButton.outline(
+  child: const Text('Show Toast'),
+  onPressed: () {
+    ShadToaster.of(context).show(
+      ShadToast(
+        title: const Text('Uh oh! Something went wrong'),
+        description:
+            const Text('There was a problem with your request'),
+        action: ShadButton.outline(
+          child: const Text('Try again'),
+          onPressed: () => ShadToaster.of(context).hide(),
+        ),
+      ),
+    );
+  },
+),
+```
+</Preview>
+
+## Destructive
+
+<Preview src="https://shadcn-ui-playground.web.app/toast?style=destructive" minHeight="400px">
+```dart
+ShadButton.outline(
+  child: const Text('Show Toast'),
+  onPressed: () {
+    ShadToaster.of(context).show(
+      ShadToast.destructive(
+        title: const Text('Uh oh! Something went wrong'),
+        description:
+            const Text('There was a problem with your request'),
+        action: ShadButton.destructive(
+          child: const Text('Try again'),
+          decoration: ShadDecoration(
+            border: ShadBorder(
+              color: theme.colorScheme.destructiveForeground,
+            ),
+          ),
+          onPressed: () => ShadToaster.of(context).hide(),
+        ),
+      ),
+    );
+  },
+),
+```
+</Preview>
