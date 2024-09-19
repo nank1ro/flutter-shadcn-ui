@@ -1,25 +1,22 @@
 ---
-title: Checkbox
+title: Switch
 sidebar:
   order: 4
 ---
-import Preview from '../../../../components/Preview.astro';
+import Preview from '../../../components/Preview.astro';
 
 A control that allows the user to toggle between checked and not checked.
 
-<Preview src="https://shadcn-ui-playground.web.app/checkbox">
+<Preview src="https://shadcn-ui-playground.web.app/switch">
  ```dart
 bool value = false;
 
 @override
 Widget build(BuildContext context) {
-  return ShadCheckbox(
+  return ShadSwitch(
     value: value,
     onChanged: (v) => setState(() => value = v),
-    label: const Text('Accept terms and conditions'),
-    sublabel: const Text(
-      'You agree to our Terms of Service and Privacy Policy.',
-    ),
+    label: const Text('Airplane Mode'),
   );
 }
 ```
@@ -27,9 +24,9 @@ Widget build(BuildContext context) {
 
 ## Form
 
-<Preview src="https://shadcn-ui-playground.web.app/form?style=checkboxField" minHeight="300px">
+<Preview src="https://shadcn-ui-playground.web.app/form?style=switchField" minHeight="300px">
  ```dart
-ShadCheckboxFormField(
+ShadSwitchFormField(
   id: 'terms',
   initialValue: false,
   inputLabel:

@@ -36,17 +36,17 @@ export default defineConfig({
             { label: 'Getting started', link: '' },
             {
               label: 'Theme',
-              autogenerate: { directory: 'shadcn-ui/Theme' },
+              autogenerate: { directory: 'Theme' },
               collapsed: false,
             },
             {
               label: 'Components',
-              autogenerate: { directory: 'shadcn-ui/Components' },
+              autogenerate: { directory: 'Components' },
               collapsed: false,
             },
             {
               label: 'Utils',
-              autogenerate: { directory: 'shadcn-ui/Utils' },
+              autogenerate: { directory: 'Utils' },
               collapsed: false,
             },
           ],
