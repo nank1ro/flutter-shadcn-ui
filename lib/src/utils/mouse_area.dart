@@ -95,7 +95,6 @@ class MouseAreaSurfaceRenderBox extends RenderProxyBoxWithHitTestBehavior
         PointerExitEvent(
           viewId: event.viewId,
           timeStamp: event.timeStamp,
-          kind: event.kind,
           pointer: event.pointer,
           device: event.device,
           position: event.position,
@@ -124,7 +123,6 @@ class MouseAreaSurfaceRenderBox extends RenderProxyBoxWithHitTestBehavior
         PointerEnterEvent(
           viewId: event.viewId,
           timeStamp: event.timeStamp,
-          kind: event.kind,
           pointer: event.pointer,
           device: event.device,
           position: event.position,

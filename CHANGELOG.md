@@ -1,3 +1,7 @@
+## 0.9.7
+
+- Remove kind event from `ShadMouseArea`
+
 ## 0.9.6
 
 - Fix: the browser context menu has been enabled again, and deactivated only for the `ShadContextMenu` component.
