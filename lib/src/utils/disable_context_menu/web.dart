@@ -53,6 +53,7 @@ class _DisableWebContextMenuState extends State<DisableWebContextMenu> {
               if (id == identifier) {
                 node.setAttribute('oncontextmenu', 'return false;');
                 removeObserver();
+                break;
               }
             }
           }
