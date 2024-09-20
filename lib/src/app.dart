@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart'
     show
@@ -559,9 +560,9 @@ class _ShadAppState extends State<ShadApp> {
   @override
   void initState() {
     super.initState();
-    // This could be centralized in the context menu component, see https://github.com/flutter/engine/pull/53278#issuecomment-2328309843
     if (kIsWeb) {
-      BrowserContextMenu.disableContextMenu();
+      // needed for disabling the native context menu on web
+      SemanticsBinding.instance.ensureSemantics();
     }
   }
 

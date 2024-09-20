@@ -1,3 +1,7 @@
+## 0.9.6
+
+- Fix: the browser context menu has been enabled again, and deactivated only for the `ShadContextMenu` component.
+
 ## 0.9.5
 
 - Add text selection toolbar to `ShadInput` (thanks to @moshOntong-IT).

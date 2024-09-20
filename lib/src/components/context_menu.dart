@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/utils/disable_context_menu/disable_context_menu.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
 const kContextMenuGroupId = ValueKey('context-menu');
@@ -82,6 +83,7 @@ class ShadContextMenuRegion extends StatefulWidget {
 }
 
 class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
+  final identifier = UniqueKey();
   ShadContextMenuController? _controller;
   ShadContextMenuController get controller =>
       widget.controller ??
@@ -130,6 +132,15 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
     return ShadContextMenu(
       anchor: offset == null ? null : ShadGlobalAnchor(offset!),
       controller: controller,
+      children: widget.children,
+      constraints: widget.constraints,
+      onHoverArea: widget.onHoverArea,
+      padding: widget.padding,
+      groupId: widget.groupId,
+      effects: widget.effects,
+      shadows: widget.shadows,
+      decoration: widget.decoration,
+      filter: widget.filter,
       child: ShadGestureDetector(
         onTapDown: (_) => hide(),
         onSecondaryTapDown: show,
@@ -141,15 +152,6 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
         onLongPress: effectiveLongPressEnabled ? onLongPress : null,
         child: widget.child,
       ),
-      children: widget.children,
-      constraints: widget.constraints,
-      onHoverArea: widget.onHoverArea,
-      padding: widget.padding,
-      groupId: widget.groupId,
-      effects: widget.effects,
-      shadows: widget.shadows,
-      decoration: widget.decoration,
-      filter: widget.filter,
     );
   }
 }
@@ -317,11 +319,13 @@ class ShadContextMenuState extends State<ShadContextMenu> {
           ),
         );
       },
-      child: ShadMouseArea(
-        groupId: widget.groupId,
-        onEnter: (_) => widget.onHoverArea?.call(true),
-        onExit: (_) => widget.onHoverArea?.call(false),
-        child: widget.child,
+      child: DisableWebContextMenu(
+        child: ShadMouseArea(
+          groupId: widget.groupId,
+          onEnter: (_) => widget.onHoverArea?.call(true),
+          onExit: (_) => widget.onHoverArea?.call(false),
+          child: widget.child,
+        ),
       ),
     );
 
