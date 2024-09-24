@@ -27,7 +27,7 @@ export default defineConfig({
         }, {
           label: 'pub.dev',
           link: 'https://pub.dev/packages/shadcn_ui',
-          attrs: { target: '_blank' },
+          attrs: { target: '_blank', rel: 'noopener noreferrer' },
         },
         {
           label: 'Flutter Shadcn UI',
@@ -52,9 +52,22 @@ export default defineConfig({
             },
           ],
         },
+        {
+          label: 'Apps created with Flutter Shadcn UI',
+          collapsed: false,
+          items: [
+            {
+              label: 'Notes Calculator',
+              link: 'https://notescalculator.com',
+
+              attrs: { target: '_blank' },
+            },
+          ],
+
+        }
       ],
     }),
   ],
-  site: 'https://mariuti.com/shadcn-ui',
+  site: 'https://flutter-shadcn-ui.mariuti.com',
   output: "static",
 });
