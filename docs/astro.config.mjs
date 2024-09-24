@@ -55,6 +55,6 @@ export default defineConfig({
       ],
     }),
   ],
-  site: 'https://mariuti.com/shadcn-ui',
+  site: 'https://flutter-shadcn-ui.mariuti.com',
   output: "static",
 });
