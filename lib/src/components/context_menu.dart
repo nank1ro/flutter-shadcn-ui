@@ -100,14 +100,6 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
   final isContextMenuAlreadyDisabled = kIsWeb && !BrowserContextMenu.enabled;
 
   @override
-  void initState() {
-    super.initState();
-    print('test7');
-    print('init state context menu region');
-    print('created identifier ${identifier.toString()}');
-  }
-
-  @override
   void didUpdateWidget(covariant ShadContextMenuRegion oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.visible != null) {
