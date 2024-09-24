@@ -1,11 +1,17 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:shadcn_ui/src/utils/disable_context_menu/disable_context_menu.dart';
+import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/popover.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
+import 'package:shadcn_ui/src/utils/mouse_area.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
 const kContextMenuGroupId = ValueKey('context-menu');
@@ -92,6 +98,14 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
   Offset? offset;
 
   @override
+  void initState() {
+    super.initState();
+    print('test7');
+    print('init state context menu region');
+    print('created identifier ${identifier.toString()}');
+  }
+
+  @override
   void didUpdateWidget(covariant ShadContextMenuRegion oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.visible != null) {
@@ -106,6 +120,7 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
   }
 
   void showAtOffset(Offset offset) {
+    if (!mounted) return;
     setState(() => this.offset = offset);
     controller.show();
   }
@@ -114,8 +129,8 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
     controller.hide();
   }
 
-  void show(TapDownDetails details) {
-    showAtOffset(details.globalPosition);
+  void show(Offset offset) {
+    showAtOffset(offset);
   }
 
   void onLongPress() {
@@ -125,11 +140,14 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
 
   @override
   Widget build(BuildContext context) {
+    final platform = Theme.of(context).platform;
     final effectiveLongPressEnabled = widget.longPressEnabled ??
-        (defaultTargetPlatform == TargetPlatform.android ||
-            defaultTargetPlatform == TargetPlatform.iOS);
+        (platform == TargetPlatform.android || platform == TargetPlatform.iOS);
+
+    final isWindows = platform == TargetPlatform.windows;
 
     return ShadContextMenu(
+      identifier: identifier.toString(),
       anchor: offset == null ? null : ShadGlobalAnchor(offset!),
       controller: controller,
       children: widget.children,
@@ -143,7 +161,17 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
       filter: widget.filter,
       child: ShadGestureDetector(
         onTapDown: (_) => hide(),
-        onSecondaryTapDown: show,
+        onSecondaryTapDown: (d) async {
+          if (kIsWeb) await BrowserContextMenu.disableContextMenu();
+          if (!isWindows) show(d.globalPosition);
+        },
+        onSecondaryTapUp: (d) async {
+          if (isWindows) {
+            show(d.globalPosition);
+            await Future<void>.delayed(Duration.zero);
+          }
+          if (kIsWeb) await BrowserContextMenu.enableContextMenu();
+        },
         onLongPressStart: effectiveLongPressEnabled
             ? (d) {
                 offset = d.globalPosition;
@@ -174,6 +202,7 @@ class ShadContextMenu extends StatefulWidget {
     this.decoration,
     this.filter,
     this.controller,
+    this.identifier,
   });
 
   /// {@template ShadContextMenu.child}
@@ -232,6 +261,11 @@ class ShadContextMenu extends StatefulWidget {
   /// The controller of the context menu, starts from isOpen set to false.
   /// {@endtemplate}
   final ShadContextMenuController? controller;
+
+  /// {@template ShadContextMenu.identifier}
+  /// The identifier of the context menu, defaults to a random string.
+  /// {@endtemplate}
+  final String? identifier;
 
   @override
   State<ShadContextMenu> createState() => ShadContextMenuState();
@@ -297,6 +331,7 @@ class ShadContextMenuState extends State<ShadContextMenu> {
       effects: effectiveEffects,
       shadows: effectiveShadows,
       filter: effectiveFilter,
+      useSameGroupIdForChild: false,
       popover: (context) {
         return ShadMouseArea(
           groupId: widget.groupId,
@@ -319,13 +354,11 @@ class ShadContextMenuState extends State<ShadContextMenu> {
           ),
         );
       },
-      child: DisableWebContextMenu(
-        child: ShadMouseArea(
-          groupId: widget.groupId,
-          onEnter: (_) => widget.onHoverArea?.call(true),
-          onExit: (_) => widget.onHoverArea?.call(false),
-          child: widget.child,
-        ),
+      child: ShadMouseArea(
+        groupId: widget.groupId,
+        onEnter: (_) => widget.onHoverArea?.call(true),
+        onExit: (_) => widget.onHoverArea?.call(false),
+        child: widget.child,
       ),
     );
 

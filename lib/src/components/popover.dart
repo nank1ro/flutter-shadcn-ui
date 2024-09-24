@@ -59,6 +59,7 @@ class ShadPopover extends StatefulWidget {
     this.filter,
     this.groupId,
     this.areaGroupId,
+    this.useSameGroupIdForChild = true,
   }) : assert(
           (controller != null) ^ (visible != null),
           'Either controller or visible must be provided',
@@ -131,6 +132,13 @@ class ShadPopover extends StatefulWidget {
 
   /// {@macro ShadMouseArea.groupId}
   final Object? areaGroupId;
+
+  /// {@template ShadPopover.useSameGroupIdForChild}
+  /// Whether the [groupId] should be used for the child widget, defaults to
+  /// `true`. This teams that taps on the child widget will be handled as inside
+  /// the popover.
+  /// {@endtemplate}
+  final bool useSameGroupIdForChild;
 
   @override
   State<ShadPopover> createState() => _ShadPopoverState();
@@ -239,26 +247,30 @@ class _ShadPopoverState extends State<ShadPopover> {
       );
     }
 
-    return TapRegion(
-      groupId: groupId,
-      child: ListenableBuilder(
-        listenable: controller,
-        builder: (context, _) {
-          return CallbackShortcuts(
-            bindings: {
-              const SingleActivator(LogicalKeyboardKey.escape): () {
-                controller.hide();
-              },
+    Widget child = ListenableBuilder(
+      listenable: controller,
+      builder: (context, _) {
+        return CallbackShortcuts(
+          bindings: {
+            const SingleActivator(LogicalKeyboardKey.escape): () {
+              controller.hide();
             },
-            child: ShadPortal(
-              portalBuilder: (_) => popover,
-              visible: controller.isOpen,
-              anchor: effectiveAnchor,
-              child: widget.child,
-            ),
-          );
-        },
-      ),
+          },
+          child: ShadPortal(
+            portalBuilder: (_) => popover,
+            visible: controller.isOpen,
+            anchor: effectiveAnchor,
+            child: widget.child,
+          ),
+        );
+      },
     );
+    if (widget.useSameGroupIdForChild) {
+      child = TapRegion(
+        groupId: groupId,
+        child: child,
+      );
+    }
+    return child;
   }
 }

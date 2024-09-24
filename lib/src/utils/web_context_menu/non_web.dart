@@ -1,14 +1,16 @@
 import 'package:flutter/widgets.dart';
 
-class DisableWebContextMenu extends StatelessWidget {
-  const DisableWebContextMenu({
+class WebContextMenu extends StatelessWidget {
+  const WebContextMenu({
     super.key,
     required this.child,
     this.identifier,
+    this.onContextMenu,
   });
 
   final String? identifier;
   final Widget child;
+  final void Function(Offset offset)? onContextMenu;
 
   @override
   Widget build(BuildContext context) {
