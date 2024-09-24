@@ -22,6 +22,8 @@ body:
       value: |
         Before filling the form fields, please consider the following:
         - Ensure that you have searched the [existing issues](https://github.com/nank1ro/flutter-shadcn-ui/issues)
+
+        The website will be shown in the sidebar of the official documentation which is located at https://flutter-shadcn-ui.mariuti.com
   - type: input
     attributes:
       label: Site URL
