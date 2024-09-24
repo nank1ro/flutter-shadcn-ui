@@ -59,9 +59,14 @@ export default defineConfig({
             {
               label: 'Notes Calculator',
               link: 'https://notescalculator.com',
-
               attrs: { target: '_blank' },
             },
+            {
+              label: 'Pic Gen',
+              link: 'https://apps.apple.com/ca/app/pic-gen-generate-ai-pictures/id6670408981',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+
           ],
 
         }

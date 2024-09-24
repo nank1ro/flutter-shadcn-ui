@@ -1,11 +1,11 @@
-name: "Docs: Add site made with Flutter ShadcnUI"
-title: "[Docs] Add site made with Flutter ShadcnUI"
+name: "Docs: Add app made with Flutter ShadcnUI"
+title: "[Docs] Add app made with Flutter ShadcnUI"
 assignees:
   - nank1ro
 labels:
   - documentation
 description: |
-  Use this template to add a site made with Flutter ShadcnUI to the documentation.
+  Use this template to add an app/site made with Flutter ShadcnUI to the documentation.
 body:
   - type: markdown
     attributes:
