@@ -89,7 +89,6 @@ class ShadContextMenuRegion extends StatefulWidget {
 }
 
 class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
-  final identifier = UniqueKey();
   ShadContextMenuController? _controller;
   ShadContextMenuController get controller =>
       widget.controller ??
@@ -141,7 +140,6 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
     final isWindows = platform == TargetPlatform.windows;
 
     return ShadContextMenu(
-      identifier: identifier.toString(),
       anchor: offset == null ? null : ShadGlobalAnchor(offset!),
       controller: controller,
       children: widget.children,
@@ -200,7 +198,6 @@ class ShadContextMenu extends StatefulWidget {
     this.decoration,
     this.filter,
     this.controller,
-    this.identifier,
   });
 
   /// {@template ShadContextMenu.child}
@@ -259,11 +256,6 @@ class ShadContextMenu extends StatefulWidget {
   /// The controller of the context menu, starts from isOpen set to false.
   /// {@endtemplate}
   final ShadContextMenuController? controller;
-
-  /// {@template ShadContextMenu.identifier}
-  /// The identifier of the context menu, defaults to a random string.
-  /// {@endtemplate}
-  final String? identifier;
 
   @override
   State<ShadContextMenu> createState() => ShadContextMenuState();
