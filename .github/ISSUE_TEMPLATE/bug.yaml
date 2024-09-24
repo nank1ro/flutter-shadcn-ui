@@ -2,6 +2,8 @@ name: Report a bug
 description: |
   You found a bug in Flutter ShadcnUI causing your application to crash or
   throw an exception, a widget is buggy, or something looks wrong.
+labels:
+  - bug
 body:
   - type: markdown
     attributes:
@@ -11,13 +13,15 @@ body:
         If you are looking for support, please check out our documentation
         or consider asking a question on Discord:
 
-          - https://mariuti.com/shadcn-ui
+          - https://flutter-shadcn-ui.mariuti.com
           - https://discord.gg/ZhRMAPNh5Y
   - type: markdown
     attributes:
       value: |
         Before filling the form fields, please consider the following:
         - Ensure that you have searched the [existing issues](https://github.com/nank1ro/flutter-shadcn-ui/issues)
+
+        The website will be shown in the sidebar of the official documentation which is located at https://flutter-shadcn-ui.mariuti.com
   - type: textarea
     attributes:
       label: Steps to reproduce
