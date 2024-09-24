@@ -97,6 +97,8 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
           ShadContextMenuController(isOpen: widget.visible ?? false));
   Offset? offset;
 
+  final isContextMenuAlreadyDisabled = kIsWeb && !BrowserContextMenu.enabled;
+
   @override
   void initState() {
     super.initState();
@@ -162,7 +164,9 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
       child: ShadGestureDetector(
         onTapDown: (_) => hide(),
         onSecondaryTapDown: (d) async {
-          if (kIsWeb) await BrowserContextMenu.disableContextMenu();
+          if (kIsWeb && !isContextMenuAlreadyDisabled) {
+            await BrowserContextMenu.disableContextMenu();
+          }
           if (!isWindows) show(d.globalPosition);
         },
         onSecondaryTapUp: (d) async {
@@ -170,7 +174,9 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
             show(d.globalPosition);
             await Future<void>.delayed(Duration.zero);
           }
-          if (kIsWeb) await BrowserContextMenu.enableContextMenu();
+          if (kIsWeb && !isContextMenuAlreadyDisabled) {
+            await BrowserContextMenu.enableContextMenu();
+          }
         },
         onLongPressStart: effectiveLongPressEnabled
             ? (d) {
