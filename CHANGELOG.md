@@ -1,3 +1,7 @@
+## 0.9.8
+
+- Improve the `ShadContextMenu` right click behavior on Web.
+
 ## 0.9.7
 
 - Remove kind event from `ShadMouseArea`
