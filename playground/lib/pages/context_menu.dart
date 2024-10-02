@@ -22,7 +22,7 @@ class ContextMenuPage extends StatelessWidget {
             ),
             child: const Text('Right click here'),
           ),
-          children: [
+          items: [
             const ShadContextMenuItem.inset(
               child: Text('Back'),
             ),
@@ -39,7 +39,7 @@ class ContextMenuPage extends StatelessWidget {
                 LucideIcons.chevronRight,
                 size: 16,
               ),
-              children: [
+              items: [
                 ShadContextMenuItem(
                   child: Text('Save Page As...'),
                 ),

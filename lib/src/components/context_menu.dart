@@ -26,7 +26,7 @@ class ShadContextMenuRegion extends StatefulWidget {
   const ShadContextMenuRegion({
     super.key,
     required this.child,
-    required this.children,
+    required this.items,
     this.visible,
     this.constraints,
     this.onHoverArea,
@@ -45,8 +45,8 @@ class ShadContextMenuRegion extends StatefulWidget {
   /// {@endtemplate}
   final Widget child;
 
-  /// {@macro ShadContextMenu.children}
-  final List<Widget> children;
+  /// {@macro ShadContextMenu.items}
+  final List<Widget> items;
 
   /// {@macro ShadContextMenu.visible}
   final bool? visible;
@@ -142,7 +142,7 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
     return ShadContextMenu(
       anchor: offset == null ? null : ShadGlobalAnchor(offset!),
       controller: controller,
-      children: widget.children,
+      items: widget.items,
       constraints: widget.constraints,
       onHoverArea: widget.onHoverArea,
       padding: widget.padding,
@@ -186,7 +186,7 @@ class ShadContextMenu extends StatefulWidget {
   const ShadContextMenu({
     super.key,
     required this.child,
-    required this.children,
+    required this.items,
     this.anchor,
     this.visible,
     this.constraints,
@@ -205,10 +205,10 @@ class ShadContextMenu extends StatefulWidget {
   /// {@endtemplate}
   final Widget child;
 
-  /// {@template ShadContextMenu.children}
-  /// The children of the context menu.
+  /// {@template ShadContextMenu.items}
+  /// The items of the context menu.
   /// {@endtemplate}
-  final List<Widget> children;
+  final List<Widget> items;
 
   /// {@template ShadContextMenu.anchor}
   /// The anchor of the context menu.
@@ -289,8 +289,8 @@ class ShadContextMenuState extends State<ShadContextMenu> {
 
   @override
   Widget build(BuildContext context) {
-    // if the context menu has no children, just return the child
-    if (widget.children.isEmpty) return widget.child;
+    // if the context menu has no items, just return the child
+    if (widget.items.isEmpty) return widget.child;
 
     final theme = ShadTheme.of(context);
 
@@ -336,7 +336,7 @@ class ShadContextMenuState extends State<ShadContextMenu> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
-                    children: widget.children,
+                    children: widget.items,
                   ),
                 ),
               ),
@@ -413,7 +413,7 @@ class ShadContextMenuItem extends StatefulWidget {
   const ShadContextMenuItem({
     super.key,
     required this.child,
-    this.children = const [],
+    this.items = const [],
     this.enabled = true,
     this.leading,
     this.trailing,
@@ -440,7 +440,7 @@ class ShadContextMenuItem extends StatefulWidget {
     super.key,
     required this.variant,
     required this.child,
-    this.children = const [],
+    this.items = const [],
     this.enabled = true,
     this.leading,
     this.trailing,
@@ -466,7 +466,7 @@ class ShadContextMenuItem extends StatefulWidget {
   const ShadContextMenuItem.inset({
     super.key,
     required this.child,
-    this.children = const [],
+    this.items = const [],
     this.enabled = true,
     this.leading,
     this.trailing,
@@ -609,14 +609,14 @@ class ShadContextMenuItem extends StatefulWidget {
 
   /// {@template ShadContextMenuItem.closeOnTap}
   /// Whether the context menu should be closed when the item is tapped,
-  /// defaults to `true` when [children] is empty, otherwise `false`.
+  /// defaults to `true` when [items] is empty, otherwise `false`.
   /// {@endtemplate}
   final bool? closeOnTap;
 
-  /// {@template ShadContextMenuItem.children}
-  /// The children of the context menu item.
+  /// {@template ShadContextMenuItem.items}
+  /// The submenu items of the context menu item.
   /// {@endtemplate}
-  final List<Widget> children;
+  final List<Widget> items;
 
   @override
   State<ShadContextMenuItem> createState() => _ShadContextMenuItemState();
@@ -629,7 +629,7 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
   late final parentItemController =
       context.maybeRead<ShadContextMenuItemController>();
 
-  bool get hasTrailingIcon => widget.children.isNotEmpty;
+  bool get hasTrailingIcon => widget.items.isNotEmpty;
 
   @override
   void initState() {
@@ -715,12 +715,12 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
 
     final effectiveCloseOnTap = widget.closeOnTap ??
         theme.contextMenuTheme.closeOnTap ??
-        widget.children.isEmpty;
+        widget.items.isEmpty;
 
-    /// if the item has children, use the current item key,
+    /// if the item has submenu items, use the current item key,
     /// otherwise use the parent item controller's item key
     /// or the current item key if there is no parent item
-    final effectiveGroupId = widget.children.isNotEmpty
+    final effectiveGroupId = widget.items.isNotEmpty
         ? itemKey
         : parentItemController?.itemKey ?? itemKey;
 
@@ -734,7 +734,7 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
           padding: widget.subMenuPadding,
           groupId: effectiveGroupId,
           onHoverArea: controller.setHovered,
-          children: widget.children,
+          items: widget.items,
           child: Padding(
             padding: effectivePadding,
             child: ShadButton.raw(
@@ -784,9 +784,9 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
       ),
     );
 
-    // if the item has a submenu, wrap it in a provider to provide the
-    // controller to the children
-    if (widget.children.isNotEmpty) {
+    // if the item has at least one submenu item, wrap it in a provider to 
+    //provide the controller to the submenu items
+    if (widget.items.isNotEmpty) {
       child = ShadProvider(
         data: controller,
         child: child,
