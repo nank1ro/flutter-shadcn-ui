@@ -71,7 +71,7 @@ class SelectPage extends StatefulWidget {
 
 class _SelectPageState extends State<SelectPage> {
   bool enabled = true;
-  final focusNodes = [FocusNode(), FocusNode(), FocusNode()];
+  final focusNodes = [FocusNode(), FocusNode(), FocusNode(), FocusNode()];
   var searchValue = '';
   bool allowDeselection = false;
 
@@ -225,6 +225,33 @@ class _SelectPageState extends State<SelectPage> {
           selectedOptionBuilder: (context, value) => Text(frameworks[value]!),
           onChanged: allowDeselection ? null : print,
           onChangedNullable: allowDeselection ? print : null,
+        ),
+        ShadSelect<String>.multiple(
+          minWidth: 340,
+          onChanged: print,
+          enabled: enabled,
+          focusNode: focusNodes[3],
+          allowDeselection: allowDeselection,
+          placeholder: const Text('Select multiple fruits'),
+          closeOnSelect: false,
+          options: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+              child: Text(
+                'Fruits',
+                style: theme.textTheme.large,
+                textAlign: TextAlign.start,
+              ),
+            ),
+            ...fruits.entries.map(
+              (e) => ShadOption(
+                value: e.key,
+                child: Text(e.value),
+              ),
+            ),
+          ],
+          selectedOptionsBuilder: (context, values) =>
+              Text(values.map((v) => v.capitalize()).join(', ')),
         ),
       ],
     );
