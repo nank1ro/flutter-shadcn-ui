@@ -242,3 +242,52 @@ class _SelectWithSearchState extends State<SelectWithSearch> {
 :::tip
 If you want to be able to deselect an option, you can use the `onChangedNullable` callback instead of `onChanged`.
 :::
+
+## Multiple
+
+This example shows how to select multiple options.
+
+In addition, the `allowDeselection` property is set to `true` to allow the user to deselect an option and the `closeOnSelect` property is set to `false` to keep the popover open after selecting an option.
+If you tap outside the popover, it will close.
+
+> The `allowDeselection` property is present only in the `ShadSelect.multiple` constructor, to use it in a normal select use `onChangedNullable` instead of `onChanged`.
+
+<Preview src="https://shadcn-ui-playground.web.app/select?style=multiple" minHeight="400px">
+
+```dart
+class SelectMultiple extends StatelessWidget {
+  const SelectMultiple({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    return ShadSelect<String>.multiple(
+      minWidth: 340,
+      onChanged: print,
+      allowDeselection: true,
+      closeOnSelect: false,
+      placeholder: const Text('Select multiple fruits'),
+      options: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+          child: Text(
+            'Fruits',
+            style: theme.textTheme.large,
+            textAlign: TextAlign.start,
+          ),
+        ),
+        ...fruits.entries.map(
+          (e) => ShadOption(
+            value: e.key,
+            child: Text(e.value),
+          ),
+        ),
+      ],
+      selectedOptionsBuilder: (context, values) =>
+          Text(values.map((v) => v.capitalize()).join(', ')),
+    );
+  }
+}
+```
+
+</Preview>

@@ -1,3 +1,4 @@
+import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -5,6 +6,7 @@ enum SelectVariant {
   fruits,
   timezone,
   frameworks,
+  multiple,
 }
 
 final fruits = {
@@ -131,6 +133,7 @@ class SelectPage extends StatelessWidget {
                 ),
               ),
             SelectVariant.frameworks => const SelectWithSearch(),
+            SelectVariant.multiple => const SelectMultiple(),
           },
         ),
       ),
@@ -190,6 +193,40 @@ class _SelectWithSearchState extends State<SelectWithSearch> {
         )
       ],
       selectedOptionBuilder: (context, value) => Text(frameworks[value]!),
+    );
+  }
+}
+
+class SelectMultiple extends StatelessWidget {
+  const SelectMultiple({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    return ShadSelect<String>.multiple(
+      minWidth: 340,
+      onChanged: print,
+      allowDeselection: true,
+      closeOnSelect: false,
+      placeholder: const Text('Select multiple fruits'),
+      options: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+          child: Text(
+            'Fruits',
+            style: theme.textTheme.large,
+            textAlign: TextAlign.start,
+          ),
+        ),
+        ...fruits.entries.map(
+          (e) => ShadOption(
+            value: e.key,
+            child: Text(e.value),
+          ),
+        ),
+      ],
+      selectedOptionsBuilder: (context, values) =>
+          Text(values.map((v) => v.capitalize()).join(', ')),
     );
   }
 }
