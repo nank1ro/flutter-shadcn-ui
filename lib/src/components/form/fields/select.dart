@@ -17,6 +17,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.error,
     super.description,
     super.onChanged,
+    ValueChanged<T?>? onChangedNullable,
     super.valueTransformer,
     super.onReset,
     super.enabled,
@@ -67,7 +68,13 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               placeholder: placeholder,
               initialValue: initialValue,
               enabled: state.enabled,
-              onChanged: state.didChange,
+              onChanged: onChangedNullable != null ? state.didChange : null,
+              onChangedNullable: onChangedNullable != null
+                  ? (v) {
+                      state.didChange(v);
+                      onChangedNullable(v);
+                    }
+                  : null,
               closeOnTapOutside: closeOnTapOutside,
               anchor: anchor,
               minWidth: minWidth,
@@ -96,6 +103,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.error,
     super.description,
     super.onChanged,
+    ValueChanged<T?>? onChangedNullable,
     super.valueTransformer,
     super.onReset,
     super.enabled,
@@ -153,7 +161,13 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               placeholder: placeholder,
               initialValue: initialValue,
               enabled: state.enabled,
-              onChanged: state.didChange,
+              onChanged: onChangedNullable != null ? state.didChange : null,
+              onChangedNullable: onChangedNullable != null
+                  ? (v) {
+                      state.didChange(v);
+                      onChangedNullable(v);
+                    }
+                  : null,
               closeOnTapOutside: closeOnTapOutside,
               anchor: anchor,
               minWidth: minWidth,
@@ -189,6 +203,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.error,
     super.description,
     super.onChanged,
+    ValueChanged<T?>? onChangedNullable,
     super.valueTransformer,
     super.onReset,
     super.enabled,
@@ -247,7 +262,13 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               placeholder: placeholder,
               initialValue: initialValue,
               enabled: state.enabled,
-              onChanged: state.didChange,
+              onChanged: onChangedNullable != null ? state.didChange : null,
+              onChangedNullable: onChangedNullable != null
+                  ? (v) {
+                      state.didChange(v);
+                      onChangedNullable(v);
+                    }
+                  : null,
               closeOnTapOutside: closeOnTapOutside,
               anchor: anchor,
               minWidth: minWidth,

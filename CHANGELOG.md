@@ -1,3 +1,9 @@
+## 0.10.1
+
+- **FEAT**: Add `onChangedNullable` to `ShadSelect` and `ShadSelectFormField`, to allow the deselection of an option.
+- Improve the `ShadSelect` focus behavior.
+- Improve size of `ShadSelect` options to fit the available space.
+
 ## 0.10.0
 
 - __BREAKING CHANGE__: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.

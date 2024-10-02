@@ -3,12 +3,14 @@ title: Select
 sidebar:
   order: 4
 ---
-import Preview from '../../../components/Preview.astro';
+
+import Preview from "../../../components/Preview.astro";
 
 Displays a list of options for the user to pick from—triggered by a button.
 
 <Preview src="https://shadcn-ui-playground.web.app/select" minHeight="300px">
- ```dart
+
+```dart
 final fruits = {
   'apple': 'Apple',
   'banana': 'Banana',
@@ -19,39 +21,40 @@ final fruits = {
 
 @override
 Widget build(BuildContext context) {
-  return ConstrainedBox(
-    constraints: const BoxConstraints(minWidth: 180),
-    child: ShadSelect<String>(
-      placeholder: const Text('Select a fruit'),
-      options: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-          child: Text(
-            'Fruits',
-            style: theme.textTheme.muted.copyWith(
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.popoverForeground,
-            ),
-            textAlign: TextAlign.start,
+return ConstrainedBox(
+  constraints: const BoxConstraints(minWidth: 180),
+  child: ShadSelect<String>(
+    placeholder: const Text('Select a fruit'),
+    options: [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+        child: Text(
+          'Fruits',
+          style: theme.textTheme.muted.copyWith(
+            fontWeight: FontWeight.w600,
+            color: theme.colorScheme.popoverForeground,
           ),
+          textAlign: TextAlign.start,
         ),
-        ...fruits.entries
-            .map((e) =>
-                ShadOption(value: e.key, child: Text(e.value)))
-            .toList(),
-      ],
-      selectedOptionBuilder: (context, value) =>
-          Text(fruits[value]!),
-    ),
-  );
+      ),
+      ...fruits.entries.map(
+          (e) => ShadOption(value: e.key, child: Text(e.value))),
+    ],
+    selectedOptionBuilder: (context, value) =>
+        Text(fruits[value]!),
+    onChanged: print,
+  ),
+);
 }
 ```
+
 </Preview>
 
 ## Scrollable
 
 <Preview src="https://shadcn-ui-playground.web.app/select?style=timezone" minHeight="550px">
- ```dart
+
+```dart
 final timezones = {
   'North America': {
     'est': 'Eastern Standard Time (EST)',
@@ -132,33 +135,32 @@ Widget build(BuildContext context) {
   );
 }
 ```
+
 </Preview>
 
 ## Form
 
 <Preview src="https://shadcn-ui-playground.web.app/form?style=selectField" minHeight="400px">
- ```dart
+
+```dart
 final verifiedEmails = [
   'm@example.com',
   'm@google.com',
   'm@support.com',
 ];
 
-ShadSelectFormField<String>(
+ShadSelectFormField(
   id: 'email',
   minWidth: 350,
   initialValue: null,
-  onChanged: (v) {},
   options: verifiedEmails
       .map((email) =>
           ShadOption(value: email, child: Text(email)))
       .toList(),
-  selectedOptionBuilder: (context, value) => value ==
-          'none'
+  selectedOptionBuilder: (context, value) => value == 'none'
       ? const Text('Select a verified email to display')
       : Text(value),
-  placeholder:
-      const Text('Select a verified email to display'),
+  placeholder: const Text('Select a verified email to display'),
   validator: (v) {
     if (v == null) {
       return 'Please select an email to display';
@@ -167,18 +169,20 @@ ShadSelectFormField<String>(
   },
 ),
 ```
+
 </Preview>
 
 ## With Search
 
 <Preview src="https://shadcn-ui-playground.web.app/select?style=frameworks" minHeight="400px">
- ```dart
- const frameworks = {
-  'nextjs': 'Next.js',
-  'svelte': 'SvelteKit',
-  'nuxtjs': 'Nuxt.js',
-  'remix': 'Remix',
-  'astro': 'Astro',
+
+```dart
+const frameworks = {
+'nextjs': 'Next.js',
+'svelte': 'SvelteKit',
+'nuxtjs': 'Nuxt.js',
+'remix': 'Remix',
+'astro': 'Astro',
 };
 
 class SelectWithSearch extends StatefulWidget {
@@ -192,15 +196,18 @@ class _SelectWithSearchState extends State<SelectWithSearch> {
   var searchValue = '';
 
   Map<String, String> get filteredFrameworks => {
-        for (final framework in frameworks.entries)
-          if (framework.value.toLowerCase().contains(searchValue.toLowerCase()))
-            framework.key: framework.value
-      };
+  for (final framework in frameworks.entries)
+  if (framework.value.toLowerCase().contains(searchValue.toLowerCase()))
+  framework.key: framework.value
+  };
 
   @override
   Widget build(BuildContext context) {
     return ShadSelect<String>.withSearch(
+      enabled: enabled,
+      focusNode: focusNodes[2],
       minWidth: 180,
+      maxWidth: 300,
       placeholder: const Text('Select framework...'),
       onSearchChanged: (value) => setState(() => searchValue = value),
       searchPlaceholder: const Text('Search framework'),
@@ -229,4 +236,9 @@ class _SelectWithSearchState extends State<SelectWithSearch> {
   }
 }
 ```
+
 </Preview>
+
+:::tip
+If you want to be able to deselect an option, you can use the `onChangedNullable` callback instead of `onChanged`.
+:::
