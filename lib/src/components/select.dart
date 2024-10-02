@@ -35,6 +35,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.placeholder,
     this.initialValue,
     this.onChanged,
+    this.onChangedNullable,
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
@@ -83,6 +84,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.placeholder,
     this.initialValue,
     this.onChanged,
+    this.onChangedNullable,
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
@@ -125,6 +127,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.placeholder,
     this.initialValue,
     this.onChanged,
+    this.onChangedNullable,
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
@@ -154,6 +157,15 @@ class ShadSelect<T> extends StatefulWidget {
 
   /// The callback that is called when the value of the [ShadSelect] changes.
   final ValueChanged<T>? onChanged;
+
+  /// {@template ShadSelect.onChangedNullable}
+  /// The callback that is called when the value of the [ShadSelect] changes.
+  ///
+  /// The difference between [onChanged] and [onChangedNullable] is that
+  /// [onChangedNullable] will be called with `null` when the same value is
+  /// selected, meaning that the selected value is deselected.
+  /// {@endtemplate}
+  final ValueChanged<T?>? onChangedNullable;
 
   /// Whether the [ShadSelect] is enabled, defaults to true.
   final bool enabled;
@@ -397,13 +409,21 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
   }
 
   void select(T value, {bool hideOptions = true}) {
+    final allowDeselection = widget.onChangedNullable != null;
+
     final changed = value != selected;
     setState(() {
       if (hideOptions) controller.hide();
-      selected = value;
+      if (allowDeselection && !changed) {
+        selected = null;
+      } else {
+        selected = value;
+      }
     });
+
     focusNode.requestFocus();
     if (changed) widget.onChanged?.call(value);
+    if (allowDeselection && !changed) widget.onChangedNullable?.call(null);
   }
 
   @override
@@ -501,7 +521,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     };
 
     if (search != null && effectiveMaxWidth.isInfinite) {
-      search = IntrinsicWidth(child: search);
+      search = search;
     }
 
     return CallbackShortcuts(
@@ -528,12 +548,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
               effectiveChild = SingleChildScrollView(
                 padding: effectiveOptionsPadding,
                 controller: scrollController,
-                child: IntrinsicWidth(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: widget.options!.toList(),
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: widget.options!.toList(),
                 ),
               );
             } else {
@@ -561,7 +579,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                 child: ShadGestureDetector(
                   cursor: SystemMouseCursors.click,
                   behavior: HitTestBehavior.opaque,
-                  onTap: controller.toggle,
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    controller.toggle();
+                  },
                   child: ConstrainedBox(
                     constraints: effectiveConstraints,
                     child: Padding(
@@ -674,39 +695,41 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                       minWidth: calculatedMinWidth,
                       maxWidth: effectiveMaxWidth,
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (search != null)
+                    child: IntrinsicWidth(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (search != null)
+                            Flexible(
+                              child: ConstrainedBox(
+                                constraints: effectiveConstraints,
+                                child: search,
+                              ),
+                            ),
+                          if (widget.header != null)
+                            Flexible(
+                              child: ConstrainedBox(
+                                constraints: effectiveConstraints,
+                                child: widget.header,
+                              ),
+                            ),
+                          if (scrollToTopChild != null) scrollToTopChild,
                           Flexible(
                             child: ConstrainedBox(
                               constraints: effectiveConstraints,
-                              child: search,
+                              child: effectiveChild,
                             ),
                           ),
-                        if (widget.header != null)
-                          Flexible(
-                            child: ConstrainedBox(
-                              constraints: effectiveConstraints,
-                              child: widget.header,
+                          if (scrollToBottomChild != null) scrollToBottomChild,
+                          if (widget.footer != null)
+                            Flexible(
+                              child: ConstrainedBox(
+                                constraints: effectiveConstraints,
+                                child: widget.footer,
+                              ),
                             ),
-                          ),
-                        if (scrollToTopChild != null) scrollToTopChild,
-                        Flexible(
-                          child: ConstrainedBox(
-                            constraints: effectiveConstraints,
-                            child: effectiveChild,
-                          ),
-                        ),
-                        if (scrollToBottomChild != null) scrollToBottomChild,
-                        if (widget.footer != null)
-                          Flexible(
-                            child: ConstrainedBox(
-                              constraints: effectiveConstraints,
-                              child: widget.footer,
-                            ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },
