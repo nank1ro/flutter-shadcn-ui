@@ -388,18 +388,18 @@ class ShadContextMenuItemController extends ChangeNotifier {
 
   final Key itemKey;
 
-  /// Maps the children key to the item controller
-  final Map<Key, ShadContextMenuItemController> children = {};
+  /// Maps the item key to the item controller
+  final Map<Key, ShadContextMenuItemController> items = {};
 
   bool get selected =>
-      _hovered || _focused || children.values.any((e) => e.selected);
+      _hovered || _focused || items.values.any((e) => e.selected);
 
   void registerSubItem(ShadContextMenuItemController controller) {
-    children[controller.itemKey] = controller;
+    items[controller.itemKey] = controller;
   }
 
   void unregisterSubItem(ShadContextMenuItemController controller) {
-    children.remove(controller.itemKey);
+    items.remove(controller.itemKey);
   }
 }
 
@@ -784,7 +784,7 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
       ),
     );
 
-    // if the item has at least one submenu item, wrap it in a provider to 
+    // if the item has at least one submenu item, wrap it in a provider to
     //provide the controller to the submenu items
     if (widget.items.isNotEmpty) {
       child = ShadProvider(

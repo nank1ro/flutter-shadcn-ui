@@ -1,3 +1,7 @@
+## 0.10.0
+
+- __BREAKING CHANGE__: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.
+
 ## 0.9.8
 
 - Improve the `ShadContextMenu` right click behavior on Web.
