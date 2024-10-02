@@ -3,7 +3,8 @@ title: Select
 sidebar:
   order: 4
 ---
-import Preview from '../../../components/Preview.astro';
+
+import Preview from "../../../components/Preview.astro";
 
 Displays a list of options for the user to pick from—triggered by a button.
 
@@ -19,33 +20,34 @@ final fruits = {
 
 @override
 Widget build(BuildContext context) {
-  return ConstrainedBox(
-    constraints: const BoxConstraints(minWidth: 180),
-    child: ShadSelect<String>(
-      placeholder: const Text('Select a fruit'),
-      options: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-          child: Text(
-            'Fruits',
-            style: theme.textTheme.muted.copyWith(
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.popoverForeground,
-            ),
-            textAlign: TextAlign.start,
-          ),
-        ),
-        ...fruits.entries
-            .map((e) =>
-                ShadOption(value: e.key, child: Text(e.value)))
-            .toList(),
-      ],
-      selectedOptionBuilder: (context, value) =>
-          Text(fruits[value]!),
-    ),
-  );
+return ConstrainedBox(
+constraints: const BoxConstraints(minWidth: 180),
+child: ShadSelect<String>(
+placeholder: const Text('Select a fruit'),
+options: [
+Padding(
+padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+child: Text(
+'Fruits',
+style: theme.textTheme.muted.copyWith(
+fontWeight: FontWeight.w600,
+color: theme.colorScheme.popoverForeground,
+),
+textAlign: TextAlign.start,
+),
+),
+...fruits.entries
+.map((e) =>
+ShadOption(value: e.key, child: Text(e.value)))
+.toList(),
+],
+selectedOptionBuilder: (context, value) =>
+Text(fruits[value]!),
+),
+);
 }
-```
+
+````
 </Preview>
 
 ## Scrollable
@@ -131,7 +133,8 @@ Widget build(BuildContext context) {
     ),
   );
 }
-```
+````
+
 </Preview>
 
 ## Form
@@ -145,28 +148,29 @@ final verifiedEmails = [
 ];
 
 ShadSelectFormField<String>(
-  id: 'email',
-  minWidth: 350,
-  initialValue: null,
-  onChanged: (v) {},
-  options: verifiedEmails
-      .map((email) =>
-          ShadOption(value: email, child: Text(email)))
-      .toList(),
-  selectedOptionBuilder: (context, value) => value ==
-          'none'
-      ? const Text('Select a verified email to display')
-      : Text(value),
-  placeholder:
-      const Text('Select a verified email to display'),
-  validator: (v) {
-    if (v == null) {
-      return 'Please select an email to display';
-    }
-    return null;
-  },
+id: 'email',
+minWidth: 350,
+initialValue: null,
+onChanged: (v) {},
+options: verifiedEmails
+.map((email) =>
+ShadOption(value: email, child: Text(email)))
+.toList(),
+selectedOptionBuilder: (context, value) => value ==
+'none'
+? const Text('Select a verified email to display')
+: Text(value),
+placeholder:
+const Text('Select a verified email to display'),
+validator: (v) {
+if (v == null) {
+return 'Please select an email to display';
+}
+return null;
+},
 ),
-```
+
+````
 </Preview>
 
 ## With Search
@@ -228,5 +232,10 @@ class _SelectWithSearchState extends State<SelectWithSearch> {
     );
   }
 }
-```
+````
+
 </Preview>
+
+:::tip
+If you want to be able to deselect an option, you can use the `onChangedNullable` callback instead of `onChanged`.
+:::
