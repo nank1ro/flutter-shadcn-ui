@@ -1,5 +1,6 @@
-## 0.10.1
+## 0.11.0
 
+- **FEAT**: Add `ShadSelect.multiple`, `ShadSelect.multipleWithSearch`, `ShadSelectMultipleFormField` and `ShadSelectMultipleFormField.withSearch` constructors.
 - **FEAT**: Add `onChangedNullable` to `ShadSelect` and `ShadSelectFormField`, to allow the deselection of an option.
 - Improve the `ShadSelect` focus behavior.
 - Improve size of `ShadSelect` options to fit the available space.
