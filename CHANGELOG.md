@@ -1,3 +1,7 @@
+## 0.11.1
+
+- **FEAT**: Add `headers` to `ShadImage` to allow custom headers in the network requests.
+
 ## 0.11.0
 
 - **FEAT**: Add `ShadSelect.multiple`, `ShadSelect.multipleWithSearch`, `ShadSelectMultipleFormField` and `ShadSelectMultipleFormField.withSearch` constructors.
@@ -7,7 +11,7 @@
 
 ## 0.10.0
 
-- __BREAKING CHANGE__: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.
+- **BREAKING CHANGE**: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.
 
 ## 0.9.8
 
