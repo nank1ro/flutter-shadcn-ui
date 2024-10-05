@@ -11,7 +11,7 @@
 
 ## 0.10.0
 
-- **BREAKING CHANGE**: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.
+- __BREAKING CHANGE__: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.
 
 ## 0.9.8
 
