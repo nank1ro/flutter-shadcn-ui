@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +9,31 @@ import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/extensions/date_time.dart';
+
+@immutable
+class ShadCalendarModel {
+  const ShadCalendarModel({
+    required this.month,
+    required this.dates,
+    required this.firstDateShown,
+  });
+
+  final DateTime month;
+  final List<DateTime?> dates;
+  final DateTime firstDateShown;
+
+  @override
+  int get hashCode => Object.hashAll([month, dates, firstDateShown]);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ShadCalendarModel &&
+        other.month == month &&
+        listEquals(other.dates, dates) &&
+        other.firstDateShown == firstDateShown;
+  }
+}
 
 class ShadCalendar extends StatefulWidget {
   const ShadCalendar({
@@ -21,6 +48,7 @@ class ShadCalendar extends StatefulWidget {
     this.weekStartsOn = 1,
     this.fixedWeeks = false,
     this.hideWeekdayNames = false,
+    this.numberOfMonths = 1,
   });
 
   final DateTime? selected;
@@ -56,6 +84,9 @@ class ShadCalendar extends StatefulWidget {
   /// Hide the month’s head displaying the weekday names.
   final bool hideWeekdayNames;
 
+  /// The number of displayed months, defaults to 1.
+  final int numberOfMonths;
+
   @override
   State<ShadCalendar> createState() => _ShadCalendarState();
 }
@@ -64,7 +95,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
   final today = DateTime.now().startOfDay;
   late DateTime currentMonth =
       widget.initialMonth ?? DateTime.now().startOfMonth;
-  List<DateTime?> dates = [];
+  List<ShadCalendarModel> datesModels = [];
   // The first date shown in the calendar, used to render the week days
   late DateTime firstDateShown;
 
@@ -82,7 +113,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
     super.didUpdateWidget(oldWidget);
     if (widget.showOutsideDays != oldWidget.showOutsideDays ||
         widget.fixedWeeks != oldWidget.fixedWeeks ||
-        widget.weekStartsOn != oldWidget.weekStartsOn) {
+        widget.weekStartsOn != oldWidget.weekStartsOn ||
+        widget.numberOfMonths != oldWidget.numberOfMonths) {
       generateDates();
     }
   }
@@ -95,16 +127,25 @@ class _ShadCalendarState extends State<ShadCalendar> {
   }
 
   void generateDates() {
-    final lastDate = currentMonth.endOfMonth;
-    var firstDate = currentMonth.startOfMonth;
+    datesModels = [];
+    var month = currentMonth.previousMonth;
+    for (var i = 0; i < widget.numberOfMonths; i++) {
+      generateDatesForMonth(month.nextMonth);
+      month = month.nextMonth;
+    }
+  }
+
+  void generateDatesForMonth(DateTime month) {
+    var firstDate = month.startOfMonth;
+    final lastDate = month.endOfMonth;
     // find the first day of the week, going back if necessary
     while (firstDate.weekday != widget.weekStartsOn) {
       firstDate = firstDate.previousDay;
     }
     firstDateShown = firstDate;
 
+    final dates = <DateTime?>[];
     var coveredWholeMonth = false;
-    dates = [];
     while (!coveredWholeMonth ||
         (!widget.fixedWeeks && dates.length % 7 != 0) ||
         (widget.fixedWeeks && dates.length != 42)) {
@@ -122,6 +163,14 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
       firstDate = firstDate.nextDay;
     }
+
+    datesModels.add(
+      ShadCalendarModel(
+        month: month,
+        dates: dates,
+        firstDateShown: firstDateShown,
+      ),
+    );
   }
 
   String defaultFormatMonth(DateTime date) {
@@ -150,146 +199,171 @@ class _ShadCalendarState extends State<ShadCalendar> {
           color: theme.colorScheme.border,
         ),
       ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ValueListenableBuilder<bool>(
-                valueListenable: backMonthButtonHovered,
-                builder: (context, isHovered, _) {
-                  return Opacity(
-                    opacity: isHovered ? 1 : .5,
-                    child: ShadButton.outline(
-                      width: 28,
-                      height: 28,
-                      padding: EdgeInsets.zero,
-                      applyIconColorFilter: false,
-                      onHoverChange: (hovered) =>
-                          backMonthButtonHovered.value = hovered,
-                      icon: const ShadImage.square(
-                        LucideIcons.chevronLeft,
-                        size: 16,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          currentMonth = currentMonth.previousMonth;
-                          generateDates();
-                        });
-                      },
-                    ),
-                  );
-                },
-              ),
-              Text(
-                effectiveFormatMonth(currentMonth),
-                style: theme.textTheme.small,
-              ),
-              ValueListenableBuilder<bool>(
-                valueListenable: forwardMonthButtonHovered,
-                builder: (context, isHovered, _) {
-                  return Opacity(
-                    opacity: isHovered ? 1 : .5,
-                    child: ShadButton.outline(
-                      width: 28,
-                      height: 28,
-                      padding: EdgeInsets.zero,
-                      onHoverChange: (hovered) =>
-                          forwardMonthButtonHovered.value = hovered,
-                      onPressed: () {
-                        setState(() {
-                          currentMonth = currentMonth.nextMonth;
-                          generateDates();
-                        });
-                      },
-                      child: const ShadImage.square(
-                        LucideIcons.chevronRight,
-                        size: 16,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-          // weed days
-          Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: Offstage(
-              offstage: widget.hideWeekdayNames,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Row(
-                  children: List.generate(
-                    7,
-                    (index) {
-                      final date = firstDateShown.addDays(index);
-                      return Expanded(
-                        child: Text(
-                          effectiveFormatWeekday(date),
-                          style: theme.textTheme.muted.copyWith(fontSize: 12.8),
-                          textAlign: TextAlign.center,
+      child: Wrap(
+        spacing: 16,
+        runSpacing: 16,
+        children: datesModels.mapIndexed((index, dateModel) {
+          final isFirstMonth = index == 0;
+          final isLastMonth = index == datesModels.length - 1;
+
+          return ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 280),
+            child: Column(
+              children: [
+                // month header and back/forward buttons
+                SizedBox(
+                  height: 40,
+                  child: Stack(
+                    children: [
+                      if (isFirstMonth)
+                        ValueListenableBuilder<bool>(
+                          valueListenable: backMonthButtonHovered,
+                          builder: (context, isHovered, _) {
+                            return Opacity(
+                              opacity: isHovered ? 1 : .5,
+                              child: ShadButton.outline(
+                                width: 28,
+                                height: 28,
+                                padding: EdgeInsets.zero,
+                                applyIconColorFilter: false,
+                                onHoverChange: (hovered) =>
+                                    backMonthButtonHovered.value = hovered,
+                                icon: const ShadImage.square(
+                                  LucideIcons.chevronLeft,
+                                  size: 16,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    currentMonth = currentMonth.previousMonth;
+                                    generateDates();
+                                  });
+                                },
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      Center(
+                        child: Text(
+                          effectiveFormatMonth(dateModel.month),
+                          style: theme.textTheme.small,
+                        ),
+                      ),
+                      if (isLastMonth)
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: ValueListenableBuilder<bool>(
+                            valueListenable: forwardMonthButtonHovered,
+                            builder: (context, isHovered, _) {
+                              return Opacity(
+                                opacity: isHovered ? 1 : .5,
+                                child: ShadButton.outline(
+                                  width: 28,
+                                  height: 28,
+                                  padding: EdgeInsets.zero,
+                                  onHoverChange: (hovered) =>
+                                      forwardMonthButtonHovered.value = hovered,
+                                  onPressed: () {
+                                    setState(() {
+                                      currentMonth = currentMonth.nextMonth;
+                                      generateDates();
+                                    });
+                                  },
+                                  child: const ShadImage.square(
+                                    LucideIcons.chevronRight,
+                                    size: 16,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                    ],
                   ),
                 ),
-              ),
-            ),
-          ),
-          GridView.count(
-            crossAxisCount: 7,
-            shrinkWrap: true,
-            children: dates.map((date) {
-              if (date == null) return const SizedBox.shrink();
-
-              final selected = widget.selected?.isSameDay(date) ?? false;
-              final isToday = date.isSameDay(today);
-              final isInMonth = date.month == currentMonth.month;
-              final textStyle = isInMonth
-                  ? theme.textTheme.small.copyWith(
-                      fontWeight: FontWeight.normal,
-                      color: selected
-                          ? theme.colorScheme.primaryForeground
-                          : theme.colorScheme.foreground,
-                    )
-                  : theme.textTheme.muted;
-
-              final variant = switch (isInMonth) {
-                true => selected
-                    ? ShadButtonVariant.primary
-                    : isToday
-                        ? ShadButtonVariant.secondary
-                        : ShadButtonVariant.ghost,
-                false => selected
-                    ? ShadButtonVariant.secondary
-                    : ShadButtonVariant.ghost,
-              };
-
-              return Opacity(
-                opacity: isInMonth ? 1 : .5,
-                child: ShadButton.raw(
-                  variant: variant,
-                  width: double.infinity,
-                  height: double.infinity,
-                  decoration: const ShadDecoration(
-                    secondaryBorder: ShadBorder(
-                      padding: EdgeInsets.zero,
+                // weed days
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Offstage(
+                    offstage: widget.hideWeekdayNames,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: List.generate(
+                          7,
+                          (index) {
+                            final date =
+                                dateModel.firstDateShown.addDays(index);
+                            return Expanded(
+                              child: Text(
+                                effectiveFormatWeekday(date),
+                                style: theme.textTheme.muted
+                                    .copyWith(fontSize: 12.8),
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   ),
-                  padding: EdgeInsets.zero,
-                  child: Text(
-                    date.day.toString(),
-                    style: textStyle,
-                  ),
-                  onPressed: () {
-                    widget.onChanged?.call(date);
-                  },
                 ),
-              );
-            }).toList(),
-          ),
-        ],
+                GridView.count(
+                  crossAxisCount: 7,
+                  shrinkWrap: true,
+                  children: dateModel.dates.map((date) {
+                    if (date == null) return const SizedBox.shrink();
+                    final selected = widget.selected?.isSameDay(date) ?? false;
+                    final isToday = date.isSameDay(today);
+                    final isInMonth = date.month == dateModel.month.month;
+                    final textStyle = isInMonth
+                        ? theme.textTheme.small.copyWith(
+                            fontWeight: FontWeight.normal,
+                            color: selected
+                                ? theme.colorScheme.primaryForeground
+                                : theme.colorScheme.foreground,
+                          )
+                        : theme.textTheme.muted;
+
+                    final variant = switch (isInMonth) {
+                      true => selected
+                          ? ShadButtonVariant.primary
+                          : isToday
+                              ? ShadButtonVariant.secondary
+                              : ShadButtonVariant.ghost,
+                      false => selected
+                          ? ShadButtonVariant.secondary
+                          : ShadButtonVariant.ghost,
+                    };
+
+                    return Opacity(
+                      opacity: isInMonth ? 1 : .5,
+                      child: ShadButton.raw(
+                        variant: variant,
+                        width: double.infinity,
+                        height: double.infinity,
+                        decoration: const ShadDecoration(
+                          secondaryBorder: ShadBorder(
+                            padding: EdgeInsets.zero,
+                          ),
+                        ),
+                        padding: EdgeInsets.zero,
+                        child: Text(
+                          date.day.toString(),
+                          style: textStyle,
+                        ),
+                        onPressed: () {
+                          widget.onChanged?.call(date);
+                        },
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
       ),
     );
   }

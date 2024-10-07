@@ -18,16 +18,14 @@ class _CalendarPageState extends State<CalendarPage> {
     return BaseScaffold(
       appBarTitle: 'Calendar',
       children: [
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 280),
-          child: ShadCalendar(
-            selected: selected,
-            onChanged: (date) {
-              setState(() {
-                selected = date;
-              });
-            },
-          ),
+        ShadCalendar(
+          selected: selected,
+          numberOfMonths: 2,
+          onChanged: (date) {
+            setState(() {
+              selected = date;
+            });
+          },
         ),
       ],
     );
