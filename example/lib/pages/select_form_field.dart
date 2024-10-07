@@ -26,6 +26,7 @@ class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
   String? initialValue;
   Map<Object, dynamic> formValue = {};
   final formKey = GlobalKey<ShadFormState>();
+  bool allowDeselection = false;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +67,11 @@ class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
               value.toString(),
             ),
           ),
+          MyBoolProperty(
+            label: 'Allow deselection',
+            value: allowDeselection,
+            onChanged: (value) => setState(() => allowDeselection = value),
+          ),
         ],
         children: [
           ConstrainedBox(
@@ -77,7 +83,8 @@ class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
                   id: 'email',
                   minWidth: 350,
                   initialValue: initialValue,
-                  onChanged: print,
+                  onChanged: allowDeselection ? null : print,
+                  onChangedNullable: allowDeselection ? print : null,
                   options: verifiedEmails
                       .map((email) =>
                           ShadOption(value: email, child: Text(email)))

@@ -1,0 +1,42 @@
+---
+title: Image
+sidebar:
+  order: 4
+---
+import Preview from '../../../components/Preview.astro';
+
+Displays an image, many formats supported (_.png_, _.jpg_, _.jpeg_, _.svg_, _.svg.vec_) and more.
+
+## Local
+
+<Preview src="https://shadcn-ui-playground.web.app/image?style=local">
+ ```dart
+const ShadImage(
+  'assets/banner.png',
+  height: 100,
+  fit: BoxFit.fitHeight,
+)
+```
+</Preview>
+
+## Remote
+
+<Preview src="https://shadcn-ui-playground.web.app/image?style=remote">
+ ```dart
+const ShadImage.square(
+  'https://avatars.githubusercontent.com/u/124599?v=4',
+  size: 50,
+)
+```
+</Preview>
+
+## Svg
+
+<Preview src="https://shadcn-ui-playground.web.app/image?style=svg">
+ ```dart
+const ShadImage.square(
+  'assets/flutter.svg',
+  size: 50,
+)
+```
+</Preview>

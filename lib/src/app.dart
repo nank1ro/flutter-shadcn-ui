@@ -1,9 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart'
     show
         GlobalCupertinoLocalizations,
@@ -554,15 +552,6 @@ class _ShadAppState extends State<ShadApp> {
     yield GlobalMaterialLocalizations.delegate;
     yield GlobalCupertinoLocalizations.delegate;
     yield GlobalWidgetsLocalizations.delegate;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // This could be centralized in the context menu component, see https://github.com/flutter/engine/pull/53278#issuecomment-2328309843
-    if (kIsWeb) {
-      BrowserContextMenu.disableContextMenu();
-    }
   }
 
   @override

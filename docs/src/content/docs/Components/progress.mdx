@@ -1,0 +1,34 @@
+---
+title: Progress
+sidebar:
+  order: 4
+---
+import Preview from '../../../components/Preview.astro';
+
+Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.
+
+## Determinate
+
+<Preview src="https://shadcn-ui-playground.web.app/progress">
+ ```dart
+ConstrainedBox(
+  constraints: BoxConstraints(
+    maxWidth: MediaQuery.sizeOf(context).width * 0.6,
+  ),
+  child: const ShadProgress(value: 0.5),
+),
+```
+</Preview>
+
+
+## Indeterminate
+<Preview src="https://shadcn-ui-playground.web.app/progress?style=indeterminate">
+ ```dart
+ConstrainedBox(
+  constraints: BoxConstraints(
+    maxWidth: MediaQuery.sizeOf(context).width * 0.6,
+  ),
+  child: const ShadProgress(),
+),
+```
+</Preview>

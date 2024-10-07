@@ -1,0 +1,81 @@
+---
+title: Accordion
+sidebar:
+  order: 4
+---
+import Preview from '../../../components/Preview.astro';
+
+A vertically stacked set of interactive headings that each reveal a section of content.
+
+<Preview src="https://shadcn-ui-playground.web.app/accordion?style=single" minHeight="500px">
+
+```dart
+final details = [
+  (
+    title: 'Is it acceptable?',
+    content: 'Yes. It adheres to the WAI-ARIA design pattern.',
+  ),
+  (
+    title: 'Is it styled?',
+    content:
+        "Yes. It comes with default styles that matches the other components' aesthetic.",
+  ),
+  (
+    title: 'Is it animated?',
+    content:
+        "Yes. It's animated by default, but you can disable it if you prefer.",
+  ),
+];
+
+@override
+Widget build(BuildContext context) {
+  return ShadAccordion<({String content, String title})>(
+    children: details.map(
+      (detail) => ShadAccordionItem(
+        value: detail,
+        title: Text(detail.title),
+        child: Text(detail.content),
+      ),
+    ),
+  );
+}
+```
+
+</Preview>
+
+## Multiple
+
+<Preview src="https://shadcn-ui-playground.web.app/accordion?style=multiple" minHeight="500px">
+
+```dart
+final details = [
+  (
+    title: 'Is it acceptable?',
+    content: 'Yes. It adheres to the WAI-ARIA design pattern.',
+  ),
+  (
+    title: 'Is it styled?',
+    content:
+        "Yes. It comes with default styles that matches the other components' aesthetic.",
+  ),
+  (
+    title: 'Is it animated?',
+    content:
+        "Yes. It's animated by default, but you can disable it if you prefer.",
+  ),
+];
+
+@override
+Widget build(BuildContext context) {
+  return ShadAccordion<({String content, String title})>.multiple(
+    children: details.map(
+      (detail) => ShadAccordionItem(
+        value: detail,
+        title: Text(detail.title),
+        child: Text(detail.content),
+      ),
+    ),
+  );
+}
+```
+</Preview>

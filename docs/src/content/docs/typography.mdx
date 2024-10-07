@@ -1,0 +1,212 @@
+---
+title: Typography
+sidebar:
+  order: 3
+---
+
+import Preview from '../../components/Preview.astro';
+
+Styles for headings, paragraphs, lists...etc
+
+## h1Large
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=h1Large">
+ ```dart
+Text(
+  'Taxing Laughter: The Joke Tax Chronicles',
+  style: ShadTheme.of(context).textTheme.h1Large,
+)
+```
+</Preview>
+
+## h1
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=h1">
+ ```dart
+Text(
+  'Taxing Laughter: The Joke Tax Chronicles',
+  style: ShadTheme.of(context).textTheme.h1,
+)
+```
+</Preview>
+
+## h2
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=h2">
+ ```dart
+Text(
+  'The People of the Kingdom',
+  style: ShadTheme.of(context).textTheme.h2,
+)
+```
+</Preview>
+
+## h3
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=h3">
+ ```dart
+Text(
+  'The Joke Tax',
+  style: ShadTheme.of(context).textTheme.h3,
+)
+```
+</Preview>
+
+## h4
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=h4">
+ ```dart
+Text(
+  'The king, seeing how much happier his subjects were, realized the error of his ways and repealed the joke tax.',
+  style: ShadTheme.of(context).textTheme.h4,
+)
+```
+</Preview>
+
+## p
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=p">
+ ```dart
+Text(
+  'The king, seeing how much happier his subjects were, realized the error of his ways and repealed the joke tax.',
+  style: ShadTheme.of(context).textTheme.p,
+)
+```
+</Preview>
+
+## Blockquote
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=blockquote">
+ ```dart
+Text(
+  '"After all," he said, "everyone enjoys a good joke, so it\'s only fair that they should pay for the privilege."',
+  style: ShadTheme.of(context).textTheme.blockquote,
+)
+```
+</Preview>
+
+## Table
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=table">
+ ```dart
+Text(
+  "King's Treasury",
+  style: ShadTheme.of(context).textTheme.table,
+)
+```
+</Preview>
+
+## List
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=list">
+ ```dart
+Text(
+  '1st level of puns: 5 gold coins',
+  style: ShadTheme.of(context).textTheme.list,
+)
+```
+</Preview>
+
+## Lead
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=lead">
+ ```dart
+Text(
+  'A modal dialog that interrupts the user with important content and expects a response.',
+  style: ShadTheme.of(context).textTheme.lead,
+)
+```
+</Preview>
+
+## Large
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=large">
+ ```dart
+Text(
+  'Are you absolutely sure?',
+  style: ShadTheme.of(context).textTheme.large,
+)
+```
+</Preview>
+
+## Small
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=small">
+ ```dart
+Text(
+  'Email address',
+  style: ShadTheme.of(context).textTheme.small,
+)
+```
+</Preview>
+
+## Muted
+
+<Preview src="https://shadcn-ui-playground.web.app/typography?style=muted">
+ ```dart
+Text(
+  'Enter your email address.',
+  style: ShadTheme.of(context).textTheme.muted,
+)
+```
+</Preview>
+
+## Custom font family
+
+By default Shadcn UI uses [Geist](https://vercel.com/font) as default font family.
+To change it, add the local font to your project, for example in the `/fonts` directory.
+Then update your `pubspec.yaml` with something like this:
+
+```diff lang="yaml"
+flutter:
++  fonts:
++    - family: UbuntuMono
++      fonts:
++        - asset: fonts/UbuntuMono-Regular.ttf
++        - asset: fonts/UbuntuMono-Italic.ttf
++          style: italic
++        - asset: fonts/UbuntuMono-Bold.ttf
++          weight: 700
++        - asset: fonts/UbuntuMono-BoldItalic.ttf
++          weight: 700
++          style: italic
+```
+
+Then in your `ShadApp` update the `ShadTextTheme`:
+```diff lang="dart"
+return ShadApp(
+  debugShowCheckedModeBanner: false,
+  themeMode: themeMode,
+  routes: routes,
+  theme: ShadThemeData(
+    brightness: Brightness.light,
+    colorScheme: const ShadZincColorScheme.light(),
++    textTheme: ShadTextTheme(
++      colorScheme: const ShadZincColorScheme.light(),
++      family: 'UbuntuMono',
++    ),
+  ),
+  ...
+);
+```
+
+## Google font
+
+Install the [google_fonts](https://pub.dev/packages/google_fonts) package.
+Then add the google font to your `ShadApp`:
+```diff lang="dart"
+return ShadApp(
+  debugShowCheckedModeBanner: false,
+  themeMode: themeMode,
+  routes: routes,
+  theme: ShadThemeData(
+    brightness: Brightness.light,
+    colorScheme: const ShadZincColorScheme.light(),
++    textTheme: ShadTextTheme.fromGoogleFont(
++       GoogleFonts.poppins,
++       colorScheme: const ShadZincColorScheme.light(),
++     ),
+  ),
+  ...
+);
+```

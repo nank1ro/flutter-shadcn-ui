@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -22,19 +23,22 @@ typedef ShadSelectedOptionBuilder<T> = Widget Function(
   T value,
 );
 
-enum ShadSelectVariant { primary, search }
+enum ShadSelectVariant { primary, search, multiple, multipleWithSearch }
 
 class ShadSelect<T> extends StatefulWidget {
   const ShadSelect({
     super.key,
     this.options,
     this.optionsBuilder,
-    required this.selectedOptionBuilder,
+    this.selectedOptionBuilder,
+    this.selectedOptionsBuilder,
     this.controller,
     this.enabled = true,
     this.placeholder,
     this.initialValue,
+    this.initialValues = const [],
     this.onChanged,
+    this.onChangedNullable,
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
@@ -53,25 +57,34 @@ class ShadSelect<T> extends StatefulWidget {
     this.filter,
     this.header,
     this.footer,
+    this.closeOnSelect = true,
   })  : variant = ShadSelectVariant.primary,
         onSearchChanged = null,
         searchDivider = null,
         searchPlaceholder = null,
         searchInputPrefix = null,
+        onMultipleChanged = null,
         searchPadding = null,
         search = null,
         clearSearchOnClose = false,
+        allowDeselection = onChangedNullable != null,
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
+        ),
+        assert(
+          (selectedOptionBuilder != null) ^ (selectedOptionsBuilder != null),
+          '''Either selectedOptionBuilder or selectedOptionsBuilder must be provided''',
         );
 
   const ShadSelect.withSearch({
     super.key,
     this.options,
     this.optionsBuilder,
-    required this.selectedOptionBuilder,
+    this.selectedOptionBuilder,
     required ValueChanged<String> this.onSearchChanged,
+    this.onChanged,
+    this.onChangedNullable,
     this.controller,
     this.searchDivider,
     this.searchInputPrefix,
@@ -82,7 +95,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.enabled = true,
     this.placeholder,
     this.initialValue,
-    this.onChanged,
+    this.initialValues = const [],
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
@@ -101,7 +114,107 @@ class ShadSelect<T> extends StatefulWidget {
     this.filter,
     this.header,
     this.footer,
+    this.closeOnSelect = true,
   })  : variant = ShadSelectVariant.search,
+        selectedOptionsBuilder = null,
+        onMultipleChanged = null,
+        allowDeselection = onChangedNullable != null,
+        assert(
+          options != null || optionsBuilder != null,
+          'Either options or optionsBuilder must be provided',
+        );
+
+  const ShadSelect.multiple({
+    super.key,
+    this.options,
+    this.optionsBuilder,
+    required this.selectedOptionsBuilder,
+    this.controller,
+    this.enabled = true,
+    this.placeholder,
+    this.initialValues = const [],
+    ValueChanged<List<T>>? onChanged,
+    this.focusNode,
+    this.closeOnTapOutside = true,
+    this.minWidth,
+    this.maxWidth,
+    this.maxHeight,
+    this.decoration,
+    this.trailing,
+    this.padding,
+    this.optionsPadding,
+    this.showScrollToBottomChevron,
+    this.showScrollToTopChevron,
+    this.scrollController,
+    this.anchor,
+    this.effects,
+    this.shadows,
+    this.filter,
+    this.header,
+    this.footer,
+    this.allowDeselection = false,
+    this.closeOnSelect = true,
+  })  : variant = ShadSelectVariant.multiple,
+        onSearchChanged = null,
+        initialValue = null,
+        selectedOptionBuilder = null,
+        searchDivider = null,
+        searchPlaceholder = null,
+        searchInputPrefix = null,
+        searchPadding = null,
+        search = null,
+        clearSearchOnClose = false,
+        onChanged = null,
+        onChangedNullable = null,
+        onMultipleChanged = onChanged,
+        assert(
+          options != null || optionsBuilder != null,
+          'Either options or optionsBuilder must be provided',
+        );
+
+  const ShadSelect.multipleWithSearch({
+    super.key,
+    this.options,
+    this.optionsBuilder,
+    required ValueChanged<String> this.onSearchChanged,
+    required this.selectedOptionsBuilder,
+    ValueChanged<List<T>>? onChanged,
+    this.controller,
+    this.searchDivider,
+    this.searchInputPrefix,
+    this.searchPlaceholder,
+    this.searchPadding,
+    this.search,
+    this.clearSearchOnClose,
+    this.enabled = true,
+    this.placeholder,
+    this.initialValues = const [],
+    this.focusNode,
+    this.closeOnTapOutside = true,
+    this.minWidth,
+    this.maxWidth,
+    this.maxHeight,
+    this.decoration,
+    this.trailing,
+    this.padding,
+    this.optionsPadding,
+    this.showScrollToBottomChevron,
+    this.showScrollToTopChevron,
+    this.scrollController,
+    this.anchor,
+    this.effects,
+    this.shadows,
+    this.filter,
+    this.header,
+    this.footer,
+    this.allowDeselection = false,
+    this.closeOnSelect = true,
+  })  : variant = ShadSelectVariant.multipleWithSearch,
+        selectedOptionBuilder = null,
+        onChanged = null,
+        onChangedNullable = null,
+        onMultipleChanged = onChanged,
+        initialValue = null,
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
@@ -112,7 +225,8 @@ class ShadSelect<T> extends StatefulWidget {
     required this.variant,
     this.options,
     this.optionsBuilder,
-    required this.selectedOptionBuilder,
+    this.selectedOptionBuilder,
+    this.selectedOptionsBuilder,
     this.controller,
     this.onSearchChanged,
     this.searchDivider,
@@ -124,7 +238,10 @@ class ShadSelect<T> extends StatefulWidget {
     this.enabled = true,
     this.placeholder,
     this.initialValue,
+    this.initialValues = const [],
     this.onChanged,
+    this.onChangedNullable,
+    this.onMultipleChanged,
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
@@ -143,6 +260,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.filter,
     this.header,
     this.footer,
+    bool? allowDeselection,
+    this.closeOnSelect = true,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -150,10 +269,36 @@ class ShadSelect<T> extends StatefulWidget {
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
-        );
+        ),
+        assert(
+          (selectedOptionBuilder != null) ^ (selectedOptionsBuilder != null),
+          '''Either selectedOptionBuilder or selectedOptionsBuilder must be provided''',
+        ),
+        allowDeselection = allowDeselection ?? onChangedNullable != null;
 
   /// The callback that is called when the value of the [ShadSelect] changes.
   final ValueChanged<T>? onChanged;
+
+  /// {@template ShadSelect.onChangedNullable}
+  /// The callback that is called when the value of the [ShadSelect] changes.
+  ///
+  /// The difference between [onChanged] and [onChangedNullable] is that
+  /// [onChangedNullable] will be called with `null` when the same value is
+  /// selected, meaning that the selected value is deselected.
+  /// {@endtemplate}
+  final ValueChanged<T?>? onChangedNullable;
+
+  /// {@template ShadSelect.onMultipleChanged}
+  /// The callback that is called when the values of the [ShadSelect] changes.
+  /// Called only the variant is [ShadSelect.multiple].
+  /// {@endtemplate}
+  final ValueChanged<List<T>>? onMultipleChanged;
+
+  /// {@template ShadSelect.allowDeselection}
+  /// Whether the [ShadSelect] allows deselection, defaults to
+  /// `onChangedNullable != null`.
+  /// {@endtemplate}
+  final bool allowDeselection;
 
   /// Whether the [ShadSelect] is enabled, defaults to true.
   final bool enabled;
@@ -161,11 +306,19 @@ class ShadSelect<T> extends StatefulWidget {
   /// The initial value of the [ShadSelect], defaults to `null`.
   final T? initialValue;
 
+  /// {@template ShadSelect.initialValues}
+  /// The initial values of the [ShadSelect], defaults to `[]`.
+  /// {@endtemplate}
+  final List<T> initialValues;
+
   /// The placeholder of the [ShadSelect], displayed when the value is null.
   final Widget? placeholder;
 
   /// The builder for the selected option of the [ShadSelect].
-  final ShadSelectedOptionBuilder<T> selectedOptionBuilder;
+  final ShadSelectedOptionBuilder<T>? selectedOptionBuilder;
+
+  /// The builder for the selected options of the [ShadSelect].
+  final ShadSelectedOptionBuilder<List<T>>? selectedOptionsBuilder;
 
   /// The options of the [ShadSelect].
   ///
@@ -251,27 +404,34 @@ class ShadSelect<T> extends StatefulWidget {
   /// `true`.
   final bool? clearSearchOnClose;
 
-  /// {@macro popover.effects}
+  /// {@macro ShadPopover.effects}
   final List<Effect<dynamic>>? effects;
 
-  /// {@macro popover.shadows}
+  /// {@macro ShadPopover.shadows}
   final List<BoxShadow>? shadows;
 
-  /// {@macro popover.filter}
+  /// {@macro ShadPopover.filter}
   final ImageFilter? filter;
 
-  /// {@macro popover.controller}
+  /// {@macro ShadPopover.controller}
   final ShadPopoverController? controller;
 
-  /// {@template select.header}
+  /// {@template ShadSelect.header}
   /// The header of the [ShadSelect].
   /// {@endtemplate}
   final Widget? header;
 
-  /// {@template select.footer}
+  /// {@template ShadSelect.footer}
   /// The footer of the [ShadSelect].
   /// {@endtemplate}
   final Widget? footer;
+
+  /// {@template ShadSelect.closeOnSelect}
+  /// Whether to close the [ShadSelect] when a value is selected.
+  ///
+  /// Defaults to `true`.
+  /// {@endtemplate}
+  final bool closeOnSelect;
 
   static ShadSelectState<T> of<T>(BuildContext context, {bool listen = true}) {
     return maybeOf<T>(context, listen: listen)!;
@@ -300,7 +460,10 @@ class ShadSelect<T> extends StatefulWidget {
 
 class ShadSelectState<T> extends State<ShadSelect<T>> {
   FocusNode? internalFocusNode;
-  late T? selected = widget.initialValue;
+  late final selectedValues = <T>{
+    if (widget.initialValue is T) widget.initialValue as T,
+  };
+
   ShadPopoverController? _controller;
 
   ShadPopoverController get controller =>
@@ -354,7 +517,16 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
   void didUpdateWidget(covariant ShadSelect<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initialValue != oldWidget.initialValue) {
-      selected = widget.initialValue;
+      if (widget.initialValue is T) {
+        selectedValues
+          ..clear()
+          ..add(widget.initialValue as T);
+      }
+    }
+    if (widget.initialValues != oldWidget.initialValues) {
+      selectedValues
+        ..clear()
+        ..addAll(widget.initialValues);
     }
   }
 
@@ -396,14 +568,41 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     }
   }
 
-  void select(T value, {bool hideOptions = true}) {
-    final changed = value != selected;
+  void select(T value) {
+    final isMultiSelection = widget.variant == ShadSelectVariant.multiple ||
+        widget.variant == ShadSelectVariant.multipleWithSearch;
+
+    final prevList = selectedValues.toList(growable: false);
+    if (widget.closeOnSelect) controller.hide();
     setState(() {
-      if (hideOptions) controller.hide();
-      selected = value;
+      if (!isMultiSelection) selectedValues.clear();
+      if (widget.allowDeselection && prevList.contains(value)) {
+        selectedValues.remove(value);
+      } else {
+        selectedValues.add(value);
+      }
     });
-    focusNode.requestFocus();
-    if (changed) widget.onChanged?.call(value);
+
+    final newList = selectedValues.toList(growable: false);
+    final changed = !ListEquality<T>().equals(prevList, newList);
+
+    if (widget.closeOnSelect) {
+      focusNode.requestFocus();
+    }
+
+    if (changed) {
+      if (isMultiSelection) {
+        widget.onMultipleChanged?.call(selectedValues.toList());
+      } else {
+        if (widget.allowDeselection) {
+          widget.onChangedNullable?.call(
+            selectedValues.isEmpty ? null : selectedValues.first,
+          );
+        } else {
+          widget.onChanged?.call(value);
+        }
+      }
+    }
   }
 
   @override
@@ -441,12 +640,20 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
     final effectiveFilter = widget.filter ?? theme.selectTheme.filter;
 
+    final isMultiSelect = widget.selectedOptionsBuilder != null;
+
     final Widget effectiveText;
-    if (selected is T) {
-      effectiveText = widget.selectedOptionBuilder(
-        context,
-        selected as T,
-      );
+    if (selectedValues.isNotEmpty) {
+      switch (isMultiSelect) {
+        case true:
+          effectiveText =
+              widget.selectedOptionsBuilder!(context, selectedValues.toList());
+        case false:
+          effectiveText = widget.selectedOptionBuilder!(
+            context,
+            selectedValues.first,
+          );
+      }
     } else {
       assert(
         widget.placeholder != null,
@@ -474,8 +681,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         const EdgeInsets.all(4);
 
     Widget? search = switch (widget.variant) {
-      ShadSelectVariant.primary => null,
-      ShadSelectVariant.search => Column(
+      ShadSelectVariant.primary || ShadSelectVariant.multiple => null,
+      ShadSelectVariant.search ||
+      ShadSelectVariant.multipleWithSearch =>
+        Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             widget.search ??
@@ -501,7 +710,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     };
 
     if (search != null && effectiveMaxWidth.isInfinite) {
-      search = IntrinsicWidth(child: search);
+      search = search;
     }
 
     return CallbackShortcuts(
@@ -528,12 +737,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
               effectiveChild = SingleChildScrollView(
                 padding: effectiveOptionsPadding,
                 controller: scrollController,
-                child: IntrinsicWidth(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: widget.options!.toList(),
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: widget.options!.toList(),
                 ),
               );
             } else {
@@ -561,7 +768,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                 child: ShadGestureDetector(
                   cursor: SystemMouseCursors.click,
                   behavior: HitTestBehavior.opaque,
-                  onTap: controller.toggle,
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    controller.toggle();
+                  },
                   child: ConstrainedBox(
                     constraints: effectiveConstraints,
                     child: Padding(
@@ -674,39 +884,41 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                       minWidth: calculatedMinWidth,
                       maxWidth: effectiveMaxWidth,
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (search != null)
+                    child: IntrinsicWidth(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (search != null)
+                            Flexible(
+                              child: ConstrainedBox(
+                                constraints: effectiveConstraints,
+                                child: search,
+                              ),
+                            ),
+                          if (widget.header != null)
+                            Flexible(
+                              child: ConstrainedBox(
+                                constraints: effectiveConstraints,
+                                child: widget.header,
+                              ),
+                            ),
+                          if (scrollToTopChild != null) scrollToTopChild,
                           Flexible(
                             child: ConstrainedBox(
                               constraints: effectiveConstraints,
-                              child: search,
+                              child: effectiveChild,
                             ),
                           ),
-                        if (widget.header != null)
-                          Flexible(
-                            child: ConstrainedBox(
-                              constraints: effectiveConstraints,
-                              child: widget.header,
+                          if (scrollToBottomChild != null) scrollToBottomChild,
+                          if (widget.footer != null)
+                            Flexible(
+                              child: ConstrainedBox(
+                                constraints: effectiveConstraints,
+                                child: widget.footer,
+                              ),
                             ),
-                          ),
-                        if (scrollToTopChild != null) scrollToTopChild,
-                        Flexible(
-                          child: ConstrainedBox(
-                            constraints: effectiveConstraints,
-                            child: effectiveChild,
-                          ),
-                        ),
-                        if (scrollToBottomChild != null) scrollToBottomChild,
-                        if (widget.footer != null)
-                          Flexible(
-                            child: ConstrainedBox(
-                              constraints: effectiveConstraints,
-                              child: widget.footer,
-                            ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -778,7 +990,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     focusNode.addListener(onFocusChange);
 
     final inherited = ShadSelect.of<T>(context, listen: false);
-    final selected = inherited.selected == widget.value;
+    final selected = inherited.selectedValues.contains(widget.value);
     if (selected) focusNode.requestFocus();
   }
 
@@ -803,7 +1015,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
       'Cannot find ShadSelect InheritedWidget',
     );
     final inheritedSelect = ShadSelect.of<T>(context);
-    final selected = inheritedSelect.selected == widget.value;
+    final selected = inheritedSelect.selectedValues.contains(widget.value);
 
     if (selected) {
       // scroll to the selected option

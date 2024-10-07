@@ -1,0 +1,86 @@
+---
+title: Input
+sidebar:
+  order: 4
+---
+
+import Preview from '../../../components/Preview.astro';
+
+Displays a form input field or a component that looks like an input field.
+
+<Preview src="https://shadcn-ui-playground.web.app/input?style=email">
+ ```dart
+ConstrainedBox(
+  constraints: const BoxConstraints(maxWidth: 320),
+  child: const ShadInput(
+    placeholder: 'Email',
+    keyboardType: TextInputType.emailAddress,
+  ),
+),
+```
+</Preview>
+
+## With prefix and suffix
+
+<Preview src="https://shadcn-ui-playground.web.app/input?style=password">
+ ```dart
+class PasswordInput extends StatefulWidget {
+  const PasswordInput({super.key});
+
+  @override
+  State<PasswordInput> createState() => _PasswordInputState();
+}
+
+class _PasswordInputState extends State<PasswordInput> {
+  bool obscure = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadInput(
+      placeholder: const Text('Password'),
+      obscureText: obscure,
+      prefix: const Padding(
+        padding: EdgeInsets.all(4.0),
+        child: ShadImage.square(size: 16, LucideIcons.lock),
+      ),
+      suffix: ShadButton(
+        width: 24,
+        height: 24,
+        padding: EdgeInsets.zero,
+        decoration: const ShadDecoration(
+          secondaryBorder: ShadBorder.none,
+          secondaryFocusedBorder: ShadBorder.none,
+        ),
+        icon: ShadImage.square(
+          size: 16,
+          obscure ? LucideIcons.eyeOff : LucideIcons.eye,
+        ),
+        onPressed: () {
+          setState(() => obscure = !obscure);
+        },
+      ),
+    );
+  }
+}
+```
+</Preview>
+
+## Form
+
+<Preview src="https://shadcn-ui-playground.web.app/form?style=inputField" minHeight="300px">
+ ```dart
+ShadInputFormField(
+  id: 'username',
+  label: const Text('Username'),
+  placeholder: const Text('Enter your username'),
+  description:
+      const Text('This is your public display name.'),
+  validator: (v) {
+    if (v.length < 2) {
+      return 'Username must be at least 2 characters.';
+    }
+    return null;
+  },
+),
+```
+</Preview>

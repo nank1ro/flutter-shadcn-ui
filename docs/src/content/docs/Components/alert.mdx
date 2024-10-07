@@ -1,0 +1,32 @@
+---
+title: Alert
+sidebar:
+  order: 4
+---
+import Preview from '../../../components/Preview.astro';
+
+Displays a callout for user attention.
+
+<Preview src="https://shadcn-ui-playground.web.app/alert?style=primary">
+ ```dart
+ShadAlert(
+  iconSrc: LucideIcons.terminal,
+  title: Text('Heads up!'),
+  description:
+      Text('You can add components to your app using the cli.'),
+),
+```
+</Preview>
+
+## Destructive
+
+<Preview src="https://shadcn-ui-playground.web.app/alert?style=destructive">
+ ```dart
+ShadAlert.destructive(
+  iconSrc: LucideIcons.circleAlert,
+  title: Text('Error'),
+  description:
+      Text('Your session has expired. Please log in again.'),
+)
+```
+</Preview>

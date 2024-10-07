@@ -71,8 +71,9 @@ class SelectPage extends StatefulWidget {
 
 class _SelectPageState extends State<SelectPage> {
   bool enabled = true;
-  final focusNodes = [FocusNode(), FocusNode(), FocusNode()];
+  final focusNodes = [FocusNode(), FocusNode(), FocusNode(), FocusNode()];
   var searchValue = '';
+  bool allowDeselection = false;
 
   Map<String, String> get filteredFrameworks => {
         for (final framework in frameworks.entries)
@@ -123,11 +124,17 @@ class _SelectPageState extends State<SelectPage> {
                 value ? focusNodes[2].requestFocus() : focusNodes[2].unfocus(),
           ),
         ),
+        MyBoolProperty(
+          label: 'Allow deselection',
+          value: allowDeselection,
+          onChanged: (value) => setState(() => allowDeselection = value),
+        ),
       ],
       children: [
         ShadSelect<String>(
           minWidth: 180,
-          onChanged: print,
+          onChanged: allowDeselection ? null : print,
+          onChangedNullable: allowDeselection ? print : null,
           enabled: enabled,
           focusNode: focusNodes[0],
           placeholder: const Text('Select a fruit'),
@@ -152,7 +159,8 @@ class _SelectPageState extends State<SelectPage> {
         ShadSelect<String>(
           minWidth: 280,
           focusNode: focusNodes[1],
-          onChanged: print,
+          onChanged: allowDeselection ? null : print,
+          onChangedNullable: allowDeselection ? print : null,
           enabled: enabled,
           placeholder: const Text('Select a timezone'),
           options: timezones.entries.map(
@@ -215,6 +223,35 @@ class _SelectPageState extends State<SelectPage> {
             )
           ],
           selectedOptionBuilder: (context, value) => Text(frameworks[value]!),
+          onChanged: allowDeselection ? null : print,
+          onChangedNullable: allowDeselection ? print : null,
+        ),
+        ShadSelect<String>.multiple(
+          minWidth: 340,
+          onChanged: print,
+          enabled: enabled,
+          focusNode: focusNodes[3],
+          allowDeselection: allowDeselection,
+          placeholder: const Text('Select multiple fruits'),
+          closeOnSelect: false,
+          options: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+              child: Text(
+                'Fruits',
+                style: theme.textTheme.large,
+                textAlign: TextAlign.start,
+              ),
+            ),
+            ...fruits.entries.map(
+              (e) => ShadOption(
+                value: e.key,
+                child: Text(e.value),
+              ),
+            ),
+          ],
+          selectedOptionsBuilder: (context, values) =>
+              Text(values.map((v) => v.capitalize()).join(', ')),
         ),
       ],
     );

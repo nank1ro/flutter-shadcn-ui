@@ -1,10 +1,17 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/popover.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
+import 'package:shadcn_ui/src/utils/mouse_area.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
 const kContextMenuGroupId = ValueKey('context-menu');
@@ -19,7 +26,7 @@ class ShadContextMenuRegion extends StatefulWidget {
   const ShadContextMenuRegion({
     super.key,
     required this.child,
-    required this.children,
+    required this.items,
     this.visible,
     this.constraints,
     this.onHoverArea,
@@ -38,8 +45,8 @@ class ShadContextMenuRegion extends StatefulWidget {
   /// {@endtemplate}
   final Widget child;
 
-  /// {@macro ShadContextMenu.children}
-  final List<Widget> children;
+  /// {@macro ShadContextMenu.items}
+  final List<Widget> items;
 
   /// {@macro ShadContextMenu.visible}
   final bool? visible;
@@ -89,6 +96,8 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
           ShadContextMenuController(isOpen: widget.visible ?? false));
   Offset? offset;
 
+  final isContextMenuAlreadyDisabled = kIsWeb && !BrowserContextMenu.enabled;
+
   @override
   void didUpdateWidget(covariant ShadContextMenuRegion oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -104,6 +113,7 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
   }
 
   void showAtOffset(Offset offset) {
+    if (!mounted) return;
     setState(() => this.offset = offset);
     controller.show();
   }
@@ -112,8 +122,8 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
     controller.hide();
   }
 
-  void show(TapDownDetails details) {
-    showAtOffset(details.globalPosition);
+  void show(Offset offset) {
+    showAtOffset(offset);
   }
 
   void onLongPress() {
@@ -123,25 +133,16 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
 
   @override
   Widget build(BuildContext context) {
+    final platform = Theme.of(context).platform;
     final effectiveLongPressEnabled = widget.longPressEnabled ??
-        (defaultTargetPlatform == TargetPlatform.android ||
-            defaultTargetPlatform == TargetPlatform.iOS);
+        (platform == TargetPlatform.android || platform == TargetPlatform.iOS);
+
+    final isWindows = platform == TargetPlatform.windows;
 
     return ShadContextMenu(
       anchor: offset == null ? null : ShadGlobalAnchor(offset!),
       controller: controller,
-      child: ShadGestureDetector(
-        onTapDown: (_) => hide(),
-        onSecondaryTapDown: show,
-        onLongPressStart: effectiveLongPressEnabled
-            ? (d) {
-                offset = d.globalPosition;
-              }
-            : null,
-        onLongPress: effectiveLongPressEnabled ? onLongPress : null,
-        child: widget.child,
-      ),
-      children: widget.children,
+      items: widget.items,
       constraints: widget.constraints,
       onHoverArea: widget.onHoverArea,
       padding: widget.padding,
@@ -150,6 +151,31 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
       shadows: widget.shadows,
       decoration: widget.decoration,
       filter: widget.filter,
+      child: ShadGestureDetector(
+        onTapDown: (_) => hide(),
+        onSecondaryTapDown: (d) async {
+          if (kIsWeb && !isContextMenuAlreadyDisabled) {
+            await BrowserContextMenu.disableContextMenu();
+          }
+          if (!isWindows) show(d.globalPosition);
+        },
+        onSecondaryTapUp: (d) async {
+          if (isWindows) {
+            show(d.globalPosition);
+            await Future<void>.delayed(Duration.zero);
+          }
+          if (kIsWeb && !isContextMenuAlreadyDisabled) {
+            await BrowserContextMenu.enableContextMenu();
+          }
+        },
+        onLongPressStart: effectiveLongPressEnabled
+            ? (d) {
+                offset = d.globalPosition;
+              }
+            : null,
+        onLongPress: effectiveLongPressEnabled ? onLongPress : null,
+        child: widget.child,
+      ),
     );
   }
 }
@@ -160,7 +186,7 @@ class ShadContextMenu extends StatefulWidget {
   const ShadContextMenu({
     super.key,
     required this.child,
-    required this.children,
+    required this.items,
     this.anchor,
     this.visible,
     this.constraints,
@@ -179,10 +205,10 @@ class ShadContextMenu extends StatefulWidget {
   /// {@endtemplate}
   final Widget child;
 
-  /// {@template ShadContextMenu.children}
-  /// The children of the context menu.
+  /// {@template ShadContextMenu.items}
+  /// The items of the context menu.
   /// {@endtemplate}
-  final List<Widget> children;
+  final List<Widget> items;
 
   /// {@template ShadContextMenu.anchor}
   /// The anchor of the context menu.
@@ -263,8 +289,8 @@ class ShadContextMenuState extends State<ShadContextMenu> {
 
   @override
   Widget build(BuildContext context) {
-    // if the context menu has no children, just return the child
-    if (widget.children.isEmpty) return widget.child;
+    // if the context menu has no items, just return the child
+    if (widget.items.isEmpty) return widget.child;
 
     final theme = ShadTheme.of(context);
 
@@ -295,6 +321,7 @@ class ShadContextMenuState extends State<ShadContextMenu> {
       effects: effectiveEffects,
       shadows: effectiveShadows,
       filter: effectiveFilter,
+      useSameGroupIdForChild: false,
       popover: (context) {
         return ShadMouseArea(
           groupId: widget.groupId,
@@ -309,7 +336,7 @@ class ShadContextMenuState extends State<ShadContextMenu> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
-                    children: widget.children,
+                    children: widget.items,
                   ),
                 ),
               ),
@@ -361,18 +388,18 @@ class ShadContextMenuItemController extends ChangeNotifier {
 
   final Key itemKey;
 
-  /// Maps the children key to the item controller
-  final Map<Key, ShadContextMenuItemController> children = {};
+  /// Maps the item key to the item controller
+  final Map<Key, ShadContextMenuItemController> items = {};
 
   bool get selected =>
-      _hovered || _focused || children.values.any((e) => e.selected);
+      _hovered || _focused || items.values.any((e) => e.selected);
 
   void registerSubItem(ShadContextMenuItemController controller) {
-    children[controller.itemKey] = controller;
+    items[controller.itemKey] = controller;
   }
 
   void unregisterSubItem(ShadContextMenuItemController controller) {
-    children.remove(controller.itemKey);
+    items.remove(controller.itemKey);
   }
 }
 
@@ -386,7 +413,7 @@ class ShadContextMenuItem extends StatefulWidget {
   const ShadContextMenuItem({
     super.key,
     required this.child,
-    this.children = const [],
+    this.items = const [],
     this.enabled = true,
     this.leading,
     this.trailing,
@@ -413,7 +440,7 @@ class ShadContextMenuItem extends StatefulWidget {
     super.key,
     required this.variant,
     required this.child,
-    this.children = const [],
+    this.items = const [],
     this.enabled = true,
     this.leading,
     this.trailing,
@@ -439,7 +466,7 @@ class ShadContextMenuItem extends StatefulWidget {
   const ShadContextMenuItem.inset({
     super.key,
     required this.child,
-    this.children = const [],
+    this.items = const [],
     this.enabled = true,
     this.leading,
     this.trailing,
@@ -582,14 +609,14 @@ class ShadContextMenuItem extends StatefulWidget {
 
   /// {@template ShadContextMenuItem.closeOnTap}
   /// Whether the context menu should be closed when the item is tapped,
-  /// defaults to `true` when [children] is empty, otherwise `false`.
+  /// defaults to `true` when [items] is empty, otherwise `false`.
   /// {@endtemplate}
   final bool? closeOnTap;
 
-  /// {@template ShadContextMenuItem.children}
-  /// The children of the context menu item.
+  /// {@template ShadContextMenuItem.items}
+  /// The submenu items of the context menu item.
   /// {@endtemplate}
-  final List<Widget> children;
+  final List<Widget> items;
 
   @override
   State<ShadContextMenuItem> createState() => _ShadContextMenuItemState();
@@ -602,7 +629,7 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
   late final parentItemController =
       context.maybeRead<ShadContextMenuItemController>();
 
-  bool get hasTrailingIcon => widget.children.isNotEmpty;
+  bool get hasTrailingIcon => widget.items.isNotEmpty;
 
   @override
   void initState() {
@@ -688,12 +715,12 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
 
     final effectiveCloseOnTap = widget.closeOnTap ??
         theme.contextMenuTheme.closeOnTap ??
-        widget.children.isEmpty;
+        widget.items.isEmpty;
 
-    /// if the item has children, use the current item key,
+    /// if the item has submenu items, use the current item key,
     /// otherwise use the parent item controller's item key
     /// or the current item key if there is no parent item
-    final effectiveGroupId = widget.children.isNotEmpty
+    final effectiveGroupId = widget.items.isNotEmpty
         ? itemKey
         : parentItemController?.itemKey ?? itemKey;
 
@@ -707,7 +734,7 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
           padding: widget.subMenuPadding,
           groupId: effectiveGroupId,
           onHoverArea: controller.setHovered,
-          children: widget.children,
+          items: widget.items,
           child: Padding(
             padding: effectivePadding,
             child: ShadButton.raw(
@@ -757,9 +784,9 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
       ),
     );
 
-    // if the item has a submenu, wrap it in a provider to provide the
-    // controller to the children
-    if (widget.children.isNotEmpty) {
+    // if the item has at least one submenu item, wrap it in a provider to
+    //provide the controller to the submenu items
+    if (widget.items.isNotEmpty) {
       child = ShadProvider(
         data: controller,
         child: child,

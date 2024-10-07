@@ -1,0 +1,40 @@
+name: "Docs: Add app made with Flutter ShadcnUI"
+title: "[Docs] Add app made with Flutter ShadcnUI"
+assignees:
+  - nank1ro
+labels:
+  - documentation
+description: |
+  Use this template to add an app/site made with Flutter ShadcnUI to the documentation.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for using Flutter ShadcnUI!
+
+        If you are looking for support, please check out our documentation
+        or consider asking a question on Discord:
+
+          - https://flutter-shadcn-ui.mariuti.com
+          - https://discord.gg/ZhRMAPNh5Y
+  - type: markdown
+    attributes:
+      value: |
+        Before filling the form fields, please consider the following:
+        - Ensure that you have searched the [existing issues](https://github.com/nank1ro/flutter-shadcn-ui/issues)
+
+        The website will be shown in the sidebar of the official documentation which is located at https://flutter-shadcn-ui.mariuti.com
+  - type: input
+    attributes:
+      label: Site URL
+      description: Please provide the URL of the site you are adding.
+      placeholder: https://notescalculator.com
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Site Name
+      description: Please provide the name of the site you are adding.
+      placeholder: Notes Calculator
+    validations:
+      required: true

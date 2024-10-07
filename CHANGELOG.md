@@ -1,3 +1,34 @@
+## 0.11.1
+
+- **FEAT**: Add `headers` to `ShadImage` to allow custom headers in the network requests.
+
+## 0.11.0
+
+- **FEAT**: Add `ShadSelect.multiple`, `ShadSelect.multipleWithSearch`, `ShadSelectMultipleFormField` and `ShadSelectMultipleFormField.withSearch` constructors.
+- **FEAT**: Add `onChangedNullable` to `ShadSelect` and `ShadSelectFormField`, to allow the deselection of an option.
+- Improve the `ShadSelect` focus behavior.
+- Improve size of `ShadSelect` options to fit the available space.
+
+## 0.10.0
+
+- __BREAKING CHANGE__: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.
+
+## 0.9.8
+
+- Improve the `ShadContextMenu` right click behavior on Web.
+
+## 0.9.7
+
+- Remove kind event from `ShadMouseArea`
+
+## 0.9.6
+
+- Fix: the browser context menu has been enabled again, and deactivated only for the `ShadContextMenu` component.
+
+## 0.9.5
+
+- Add text selection toolbar to `ShadInput` (thanks to @moshOntong-IT).
+
 ## 0.9.4
 
 - Add gestures recognizers to `ShadTable` for rows and columns.
@@ -8,7 +39,7 @@
 
 ## 0.9.2
 
-- Add `gap` to `ShadInput` and `ShadInputFormField` (tahnks to @moshOntong-IT).
+- Add `gap` to `ShadInput` and `ShadInputFormField` (thanks to @moshOntong-IT).
 
 ## 0.9.1
 

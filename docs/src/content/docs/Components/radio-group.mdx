@@ -1,0 +1,65 @@
+---
+title: RadioGroup
+sidebar:
+  order: 4
+---
+import Preview from '../../../components/Preview.astro';
+
+A set of checkable buttons—known as radio buttons—where no more than one of the buttons can be checked at a time.
+
+<Preview src="https://shadcn-ui-playground.web.app/radio-group">
+ ```dart
+ShadRadioGroup<String>(
+  items: [
+    ShadRadio(
+      label: Text('Default'),
+      value: 'default',
+    ),
+    ShadRadio(
+      label: Text('Comfortable'),
+      value: 'comfortable',
+    ),
+    ShadRadio(
+      label: Text('Nothing'),
+      value: 'nothing',
+    ),
+  ],
+),
+```
+</Preview>
+
+## Form
+
+<Preview src="https://shadcn-ui-playground.web.app/form?style=radioField" minHeight="300px">
+ ```dart
+enum NotifyAbout {
+  all,
+  mentions,
+  nothing;
+
+  String get message {
+    return switch (this) {
+      all => 'All new messages',
+      mentions => 'Direct messages and mentions',
+      nothing => 'Nothing',
+    };
+  }
+}
+
+ShadRadioGroupFormField<NotifyAbout>(
+  label: const Text('Notify me about'),
+  items: NotifyAbout.values.map(
+    (e) => ShadRadio(
+      value: e,
+      label: Text(e.message),
+    ),
+  ),
+  validator: (v) {
+    if (v == null) {
+      return 'You need to select a notification type.';
+    }
+    return null;
+  },
+),
+```
+</Preview>

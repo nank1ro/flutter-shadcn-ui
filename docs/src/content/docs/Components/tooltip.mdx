@@ -1,0 +1,20 @@
+---
+title: Tooltip
+sidebar:
+  order: 4
+---
+import Preview from '../../../components/Preview.astro';
+
+A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
+
+<Preview src="https://shadcn-ui-playground.web.app/tooltip">
+ ```dart
+ShadTooltip(
+  builder: (context) => const Text('Add to library'),
+  child: ShadButton.outline(
+    child: const Text('Hover/Focus'),
+    onPressed: () {},
+  ),
+),
+```
+</Preview>

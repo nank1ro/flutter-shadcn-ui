@@ -1,0 +1,71 @@
+---
+title: Tabs
+sidebar:
+  order: 4
+---
+import Preview from '../../../components/Preview.astro';
+
+A set of layered sections of content—known as tab panels—that are displayed one at a time.
+
+<Preview src="https://shadcn-ui-playground.web.app/tabs" minHeight="500px">
+```dart
+ShadTabs<String>(
+  value: 'account',
+  tabBarConstraints: const BoxConstraints(maxWidth: 400),
+  contentConstraints: const BoxConstraints(maxWidth: 400),
+  tabs: [
+    ShadTab(
+      value: 'account',
+      child: const Text('Account'),
+      content: ShadCard(
+        title: const Text('Account'),
+        description: const Text(
+            "Make changes to your account here. Click save when you're done."),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 16),
+            ShadInputFormField(
+              label: const Text('Name'),
+              initialValue: 'Ale',
+            ),
+            const SizedBox(height: 8),
+            ShadInputFormField(
+              label: const Text('Username'),
+              initialValue: 'nank1ro',
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+        footer: const ShadButton(child: Text('Save changes')),
+      ),
+    ),
+    ShadTab(
+      value: 'password',
+      child: const Text('Password'),
+      content: ShadCard(
+        title: const Text('Password'),
+        description: const Text(
+            "Change your password here. After saving, you'll be logged out."),
+        content: Column(
+          children: [
+            const SizedBox(height: 16),
+            ShadInputFormField(
+              label: const Text('Current password'),
+              obscureText: true,
+            ),
+            const SizedBox(height: 8),
+            ShadInputFormField(
+              label: const Text('New password'),
+              obscureText: true,
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+        footer: const ShadButton(child: Text('Save password')),
+      ),
+    ),
+  ],
+),
+```
+</Preview>

@@ -1,0 +1,293 @@
+---
+title: Select
+sidebar:
+  order: 4
+---
+
+import Preview from "../../../components/Preview.astro";
+
+Displays a list of options for the user to pick from—triggered by a button.
+
+<Preview src="https://shadcn-ui-playground.web.app/select" minHeight="300px">
+
+```dart
+final fruits = {
+  'apple': 'Apple',
+  'banana': 'Banana',
+  'blueberry': 'Blueberry',
+  'grapes': 'Grapes',
+  'pineapple': 'Pineapple',
+};
+
+@override
+Widget build(BuildContext context) {
+return ConstrainedBox(
+  constraints: const BoxConstraints(minWidth: 180),
+  child: ShadSelect<String>(
+    placeholder: const Text('Select a fruit'),
+    options: [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+        child: Text(
+          'Fruits',
+          style: theme.textTheme.muted.copyWith(
+            fontWeight: FontWeight.w600,
+            color: theme.colorScheme.popoverForeground,
+          ),
+          textAlign: TextAlign.start,
+        ),
+      ),
+      ...fruits.entries.map(
+          (e) => ShadOption(value: e.key, child: Text(e.value))),
+    ],
+    selectedOptionBuilder: (context, value) =>
+        Text(fruits[value]!),
+    onChanged: print,
+  ),
+);
+}
+```
+
+</Preview>
+
+## Scrollable
+
+<Preview src="https://shadcn-ui-playground.web.app/select?style=timezone" minHeight="550px">
+
+```dart
+final timezones = {
+  'North America': {
+    'est': 'Eastern Standard Time (EST)',
+    'cst': 'Central Standard Time (CST)',
+    'mst': 'Mountain Standard Time (MST)',
+    'pst': 'Pacific Standard Time (PST)',
+    'akst': 'Alaska Standard Time (AKST)',
+    'hst': 'Hawaii Standard Time (HST)',
+  },
+  'Europe & Africa': {
+    'gmt': 'Greenwich Mean Time (GMT)',
+    'cet': 'Central European Time (CET)',
+    'eet': 'Eastern European Time (EET)',
+    'west': 'Western European Summer Time (WEST)',
+    'cat': 'Central Africa Time (CAT)',
+    'eat': 'Eastern Africa Time (EAT)',
+  },
+  'Asia': {
+    'msk': 'Moscow Time (MSK)',
+    'ist': 'India Standard Time (IST)',
+    'cst_china': 'China Standard Time (CST)',
+    'jst': 'Japan Standard Time (JST)',
+    'kst': 'Korea Standard Time (KST)',
+    'ist_indonasia': 'Indonesia Standard Time (IST)',
+  },
+  'Australia & Pacific': {
+    'awst': 'Australian Western Standard Time (AWST)',
+    'acst': 'Australian Central Standard Time (ACST)',
+    'aest': 'Australian Eastern Standard Time (AEST)',
+    'nzst': 'New Zealand Standard Time (NZST)',
+    'fjt': 'Fiji Time (FJT)',
+  },
+  'South America': {
+    'art': 'Argentina Time (ART)',
+    'bot': 'Bolivia Time (BOT)',
+    'brt': 'Brasilia Time (BRT)',
+    'clt': 'Chile Standard Time (CLT)',
+  },
+};
+
+List<Widget> getTimezonesWidgets(ShadThemeData theme) {
+  final widgets = <Widget>[];
+  for (final zone in timezones.entries) {
+    widgets.add(
+      Padding(
+        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+        child: Text(
+          zone.key,
+          style: theme.textTheme.muted.copyWith(
+            fontWeight: FontWeight.w600,
+            color: theme.colorScheme.popoverForeground,
+          ),
+          textAlign: TextAlign.start,
+        ),
+      ),
+    );
+    widgets.addAll(zone.value.entries
+        .map((e) => ShadOption(value: e.key, child: Text(e.value))));
+  }
+  return widgets;
+}
+
+@override
+Widget build(BuildContext context) {
+  return ConstrainedBox(
+    constraints: const BoxConstraints(minWidth: 280),
+    child: ShadSelect<String>(
+      placeholder: const Text('Select a timezone'),
+      options: getTimezonesWidgets(theme),
+      selectedOptionBuilder: (context, value) {
+        final timezone = timezones.entries
+            .firstWhere(
+                (element) => element.value.containsKey(value))
+            .value[value];
+        return Text(timezone!);
+      },
+    ),
+  );
+}
+```
+
+</Preview>
+
+## Form
+
+<Preview src="https://shadcn-ui-playground.web.app/form?style=selectField" minHeight="400px">
+
+```dart
+final verifiedEmails = [
+  'm@example.com',
+  'm@google.com',
+  'm@support.com',
+];
+
+ShadSelectFormField(
+  id: 'email',
+  minWidth: 350,
+  initialValue: null,
+  options: verifiedEmails
+      .map((email) =>
+          ShadOption(value: email, child: Text(email)))
+      .toList(),
+  selectedOptionBuilder: (context, value) => value == 'none'
+      ? const Text('Select a verified email to display')
+      : Text(value),
+  placeholder: const Text('Select a verified email to display'),
+  validator: (v) {
+    if (v == null) {
+      return 'Please select an email to display';
+    }
+    return null;
+  },
+),
+```
+
+</Preview>
+
+## With Search
+
+<Preview src="https://shadcn-ui-playground.web.app/select?style=frameworks" minHeight="400px">
+
+```dart
+const frameworks = {
+'nextjs': 'Next.js',
+'svelte': 'SvelteKit',
+'nuxtjs': 'Nuxt.js',
+'remix': 'Remix',
+'astro': 'Astro',
+};
+
+class SelectWithSearch extends StatefulWidget {
+  const SelectWithSearch({super.key});
+
+  @override
+  State<SelectWithSearch> createState() => _SelectWithSearchState();
+}
+
+class _SelectWithSearchState extends State<SelectWithSearch> {
+  var searchValue = '';
+
+  Map<String, String> get filteredFrameworks => {
+  for (final framework in frameworks.entries)
+  if (framework.value.toLowerCase().contains(searchValue.toLowerCase()))
+  framework.key: framework.value
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadSelect<String>.withSearch(
+      enabled: enabled,
+      focusNode: focusNodes[2],
+      minWidth: 180,
+      maxWidth: 300,
+      placeholder: const Text('Select framework...'),
+      onSearchChanged: (value) => setState(() => searchValue = value),
+      searchPlaceholder: const Text('Search framework'),
+      options: [
+        if (filteredFrameworks.isEmpty)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: Text('No framework found'),
+          ),
+        ...frameworks.entries.map(
+          (framework) {
+            // this offstage is used to avoid the focus loss when the search results appear again
+            // because it keeps the widget in the tree.
+            return Offstage(
+              offstage: !filteredFrameworks.containsKey(framework.key),
+              child: ShadOption(
+                value: framework.key,
+                child: Text(framework.value),
+              ),
+            );
+          },
+        )
+      ],
+      selectedOptionBuilder: (context, value) => Text(frameworks[value]!),
+    );
+  }
+}
+```
+
+</Preview>
+
+:::tip
+If you want to be able to deselect an option, you can use the `onChangedNullable` callback instead of `onChanged`.
+:::
+
+## Multiple
+
+This example shows how to select multiple options.
+
+In addition, the `allowDeselection` property is set to `true` to allow the user to deselect an option and the `closeOnSelect` property is set to `false` to keep the popover open after selecting an option.
+If you tap outside the popover, it will close.
+
+> The `allowDeselection` property is present only in the `ShadSelect.multiple` constructor, to use it in a normal select use `onChangedNullable` instead of `onChanged`.
+
+<Preview src="https://shadcn-ui-playground.web.app/select?style=multiple" minHeight="400px">
+
+```dart
+class SelectMultiple extends StatelessWidget {
+  const SelectMultiple({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    return ShadSelect<String>.multiple(
+      minWidth: 340,
+      onChanged: print,
+      allowDeselection: true,
+      closeOnSelect: false,
+      placeholder: const Text('Select multiple fruits'),
+      options: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+          child: Text(
+            'Fruits',
+            style: theme.textTheme.large,
+            textAlign: TextAlign.start,
+          ),
+        ),
+        ...fruits.entries.map(
+          (e) => ShadOption(
+            value: e.key,
+            child: Text(e.value),
+          ),
+        ),
+      ],
+      selectedOptionsBuilder: (context, values) =>
+          Text(values.map((v) => v.capitalize()).join(', ')),
+    );
+  }
+}
+```
+
+</Preview>

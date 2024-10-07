@@ -12,17 +12,7 @@ class ContextMenuPage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: ShadContextMenuRegion(
           constraints: const BoxConstraints(minWidth: 300),
-          child: Container(
-            width: 300,
-            height: 200,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border.all(color: theme.colorScheme.border),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Text('Right click here'),
-          ),
-          children: [
+          items: [
             const ShadContextMenuItem.inset(
               child: Text('Back'),
             ),
@@ -34,12 +24,11 @@ class ContextMenuPage extends StatelessWidget {
               child: Text('Reload'),
             ),
             const ShadContextMenuItem.inset(
-              child: Text('More Tools'),
               trailing: ShadImage.square(
                 LucideIcons.chevronRight,
                 size: 16,
               ),
-              children: [
+              items: [
                 ShadContextMenuItem(
                   child: Text('Save Page As...'),
                 ),
@@ -54,6 +43,7 @@ class ContextMenuPage extends StatelessWidget {
                   child: Text('Developer Tools'),
                 ),
               ],
+              child: Text('More Tools'),
             ),
             const Divider(height: 8),
             const ShadContextMenuItem(
@@ -85,6 +75,16 @@ class ContextMenuPage extends StatelessWidget {
             ),
             const ShadContextMenuItem.inset(child: Text('Colm Tuite')),
           ],
+          child: Container(
+            width: 300,
+            height: 200,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border.all(color: theme.colorScheme.border),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Text('Right click here'),
+          ),
         ),
       ),
     );
