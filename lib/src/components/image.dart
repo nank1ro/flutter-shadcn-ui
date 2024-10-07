@@ -36,6 +36,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
     this.semanticLabel,
     this.svgTheme,
     this.package,
+    this.headers,
   }) : assert(
           src is String || src is IconData,
           'src must be a String or IconData',
@@ -55,6 +56,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
     this.semanticLabel,
     this.svgTheme,
     this.package,
+    this.headers,
   })  : width = size,
         height = size,
         assert(
@@ -105,6 +107,10 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
 
   /// The package of the image, if any.
   final String? package;
+
+  /// If the image is remote,
+  /// the optional HTTP headers to send as part of the request.
+  final Map<String, String>? headers;
 
   /// Returns `true` if the image is remote.
   bool get isRemote => Uri.tryParse(src as String)?.host.isNotEmpty ?? false;
@@ -162,6 +168,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
             colorFilter: colorFilter,
             clipBehavior: Clip.antiAlias,
             alignment: alignment,
+            headers: headers,
             placeholderBuilder:
                 placeholder != null ? (_) => placeholder! : null,
             semanticsLabel: semanticLabel,
@@ -176,6 +183,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
             color: imageColor,
             alignment: alignment,
             isAntiAlias: antialiasing,
+            headers: headers,
             frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
               if (frame == null) {
                 return placeholder ?? const SizedBox.shrink();

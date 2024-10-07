@@ -1,3 +1,7 @@
+## 0.11.1
+
+- **FEAT**: Add `headers` to `ShadImage` to allow custom headers in the network requests.
+
 ## 0.11.0
 
 - **FEAT**: Add `ShadSelect.multiple`, `ShadSelect.multipleWithSearch`, `ShadSelectMultipleFormField` and `ShadSelectMultipleFormField.withSearch` constructors.
