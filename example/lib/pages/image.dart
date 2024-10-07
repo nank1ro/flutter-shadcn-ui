@@ -17,6 +17,13 @@ class ImagePage extends StatelessWidget {
           size: 50,
         ),
         ShadImage.square(
+          'https://avatars.githubusercontent.com/u/124599?v=4',
+          size: 50,
+          headers: {
+            'User-Agent': 'Mozilla/5.0',
+          },
+        ),
+        ShadImage.square(
           Assets.flutter,
           size: 50,
         ),
