@@ -1,4 +1,5 @@
 import 'package:example/common/base_scaffold.dart';
+import 'package:example/common/properties/bool_property.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -12,16 +13,28 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
   DateTime? selected = DateTime.now();
-  bool usePredicate = false;
+  bool reverseMonths = false;
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
     return BaseScaffold(
       appBarTitle: 'Calendar',
+      editable: [
+        MyBoolProperty(
+          label: 'Reverse months',
+          value: reverseMonths,
+          onChanged: (value) {
+            setState(() {
+              reverseMonths = value;
+            });
+          },
+        )
+      ],
       children: [
+        Text('Single', style: theme.textTheme.h4),
         ShadCalendar(
           selected: selected,
-          numberOfMonths: 2,
           fromMonth: DateTime(2024),
           toMonth: DateTime(2024, 12),
           // selectableDayPredicate: (date) {
@@ -35,8 +48,9 @@ class _CalendarPageState extends State<CalendarPage> {
           onMonthChanged: (date) {
             print('month changed to ${date.month}');
           },
-          reverseMonths: true,
         ),
+        const Divider(),
+        Text('Multiple', style: theme.textTheme.h4),
         ShadCalendar.multiple(
           selected: [if (selected != null) selected!],
           numberOfMonths: 2,
@@ -45,11 +59,11 @@ class _CalendarPageState extends State<CalendarPage> {
           onChanged: (dates) {},
           min: 5,
           max: 10,
-          onMonthChanged: (date) {
-            print('month changed to ${date.month}');
-          },
-          reverseMonths: true,
+          reverseMonths: reverseMonths,
         ),
+        const Divider(),
+        Text('Range', style: theme.textTheme.h4),
+        const ShadCalendar.range(onChanged: print),
       ],
     );
   }
