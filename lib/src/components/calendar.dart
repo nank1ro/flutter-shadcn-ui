@@ -98,7 +98,9 @@ class ShadCalendar extends StatefulWidget {
     this.onChanged,
     this.showOutsideDays = true,
     this.initialMonth,
+    this.formatMonthYear,
     this.formatMonth,
+    this.formatYear,
     this.formatWeekday,
     this.showWeekNumbers = false,
     this.weekStartsOn = 1,
@@ -111,6 +113,7 @@ class ShadCalendar extends StatefulWidget {
     this.reverseMonths = false,
     this.selectableDayPredicate,
     this.captionLayout,
+    this.hideNavigation,
   })  : variant = ShadCalendarVariant.single,
         multipleSelected = null,
         onMultipleChanged = null,
@@ -125,7 +128,9 @@ class ShadCalendar extends StatefulWidget {
     ValueChanged<List<DateTime>>? onChanged,
     this.showOutsideDays = true,
     this.initialMonth,
+    this.formatMonthYear,
     this.formatMonth,
+    this.formatYear,
     this.formatWeekday,
     this.showWeekNumbers = false,
     this.weekStartsOn = 1,
@@ -140,6 +145,7 @@ class ShadCalendar extends StatefulWidget {
     this.max,
     this.selectableDayPredicate,
     this.captionLayout,
+    this.hideNavigation,
   })  : variant = ShadCalendarVariant.multiple,
         multipleSelected = selected,
         selected = null,
@@ -154,7 +160,9 @@ class ShadCalendar extends StatefulWidget {
     ValueChanged<ShadDateTimeRange?>? onChanged,
     this.showOutsideDays = true,
     this.initialMonth,
+    this.formatMonthYear,
     this.formatMonth,
+    this.formatYear,
     this.formatWeekday,
     this.showWeekNumbers = false,
     this.weekStartsOn = 1,
@@ -169,6 +177,7 @@ class ShadCalendar extends StatefulWidget {
     this.max,
     this.selectableDayPredicate,
     this.captionLayout,
+    this.hideNavigation,
   })  : variant = ShadCalendarVariant.range,
         multipleSelected = null,
         selected = null,
@@ -186,7 +195,9 @@ class ShadCalendar extends StatefulWidget {
     this.onMultipleChanged,
     this.showOutsideDays = true,
     this.initialMonth,
+    this.formatMonthYear,
     this.formatMonth,
+    this.formatYear,
     this.formatWeekday,
     this.showWeekNumbers = false,
     this.weekStartsOn = 1,
@@ -203,6 +214,7 @@ class ShadCalendar extends StatefulWidget {
     this.onRangeChanged,
     this.selectedRange,
     this.captionLayout,
+    this.hideNavigation,
   });
 
   /// {@template ShadCalendar.variant}
@@ -240,10 +252,20 @@ class ShadCalendar extends StatefulWidget {
   /// {@endtemplate}
   final DateTime? initialMonth;
 
-  /// {@template ShadCalendar.formatMonth}
+  /// {@template ShadCalendar.formatMonthYear}
   /// The format to use for the month, defaults to 'LLLL y'.
   /// {@endtemplate}
+  final String Function(DateTime date)? formatMonthYear;
+
+  /// {@template ShadCalendar.formatMonth}
+  /// The format to use for the month, defaults to 'LLLL'.
+  /// {@endtemplate}
   final String Function(DateTime date)? formatMonth;
+
+  /// {@template ShadCalendar.formatYear}
+  /// The format to use for the year, defaults to 'y'.
+  /// {@endtemplate}
+  final String Function(DateTime date)? formatYear;
 
   /// {@template ShadCalendar.formatWeekday}
   /// The format to use for the weekday, defaults to 'EE'.
@@ -334,6 +356,11 @@ class ShadCalendar extends StatefulWidget {
   /// {@endtemplate}
   final ShadCalendarCaptionLayout? captionLayout;
 
+  /// {@template ShadCalendar.hideNavigation}
+  /// Whether to hide the navigation buttons, defaults to false.
+  /// {@endtemplate}
+  final bool? hideNavigation;
+
   @override
   State<ShadCalendar> createState() => _ShadCalendarState();
 }
@@ -357,6 +384,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
   final backMonthButtonHovered = ValueNotifier<bool>(false);
   final forwardMonthButtonHovered = ValueNotifier<bool>(false);
+
+  // The list of available years in the selector
+  final availableYears = <int>[];
 
   bool enabled(DateTime date) {
     // disable if the predicate returns false for the date
@@ -401,6 +431,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
   void initState() {
     super.initState();
     generateDates();
+    generateAvailableYears();
   }
 
   @override
@@ -416,6 +447,10 @@ class _ShadCalendarState extends State<ShadCalendar> {
         widget.min != oldWidget.min ||
         widget.max != oldWidget.max) {
       generateDates();
+    }
+    if (widget.fromMonth != oldWidget.fromMonth ||
+        widget.toMonth != oldWidget.toMonth) {
+      generateAvailableYears();
     }
   }
 
@@ -480,14 +515,40 @@ class _ShadCalendarState extends State<ShadCalendar> {
     );
   }
 
-  String defaultFormatMonth(DateTime date) {
+  void generateAvailableYears() {
+    availableYears.clear();
+    final minYear = widget.fromMonth?.year ?? currentMonth.year - 100;
+    final maxYear = widget.toMonth?.year ?? currentMonth.year + 100;
+
+    for (var i = minYear; i <= maxYear; i++) {
+      availableYears.add(i);
+    }
+  }
+
+  String defaultFormatMonthYear(DateTime date) {
     return DateFormat('LLLL y').format(date);
+  }
+
+  String defaultFormatYear(DateTime date) {
+    return DateFormat('y').format(date);
+  }
+
+  String defaultFormatMonth(DateTime date) {
+    return DateFormat('LLLL').format(date);
   }
 
   String defaultFormatWeekday(DateTime date) {
     final s = DateFormat('E').format(date);
     if (s.length < 2) return s;
     return s.substring(0, 2);
+  }
+
+  void goToMonth(DateTime date) {
+    setState(() {
+      currentMonth = date;
+      generateDates();
+    });
+    widget.onMonthChanged?.call(currentMonth);
   }
 
   @override
@@ -499,10 +560,115 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     final effectiveFormatMonth = widget.formatMonth ?? defaultFormatMonth;
 
+    final effectiveFormatYear = widget.formatYear ?? defaultFormatYear;
+
+    final effectiveFormatMonthYear =
+        widget.formatMonthYear ?? defaultFormatMonthYear;
+
     final effectiveFormatWeekday = widget.formatWeekday ?? defaultFormatWeekday;
 
     final models =
         widget.reverseMonths ? datesModels.reversed.toList() : datesModels;
+
+    final effectiveHideNavigation = widget.hideNavigation ?? false;
+
+    final yearSelector = ShadSelect<int>(
+      initialValue: currentMonth.year,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 4,
+      ),
+      minWidth: 100,
+      selectedOptionBuilder: (context, value) {
+        return Text(
+          effectiveFormatYear(
+            DateTime(value, currentMonth.month),
+          ),
+        );
+      },
+      options: availableYears.map(
+        (year) => ShadOption(
+          value: year,
+          child: Text(effectiveFormatYear(DateTime(year))),
+        ),
+      ),
+      onChanged: (year) {
+        goToMonth(DateTime(year, currentMonth.month));
+      },
+    );
+
+    final monthSelector = ShadSelect<int>(
+      initialValue: currentMonth.month,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 4,
+      ),
+      minWidth: 130,
+      selectedOptionBuilder: (context, value) {
+        return Text(
+          effectiveFormatMonth(
+            DateTime(currentMonth.year, value),
+          ),
+        );
+      },
+      options: List.generate(
+        12,
+        (index) {
+          final d = DateTime(currentMonth.year, index + 1);
+          return ShadOption(
+            value: index + 1,
+            child: Text(effectiveFormatMonth(d)),
+          );
+        },
+      ),
+      onChanged: (month) {
+        goToMonth(DateTime(currentMonth.year, month));
+      },
+    );
+
+    final backButton = ValueListenableBuilder<bool>(
+      valueListenable: backMonthButtonHovered,
+      builder: (context, isHovered, _) {
+        return Opacity(
+          opacity: isHovered ? 1 : .5,
+          child: ShadButton.outline(
+            width: 28,
+            height: 28,
+            padding: EdgeInsets.zero,
+            applyIconColorFilter: false,
+            enabled: !isFirstMonthDisplayed,
+            onHoverChange: (hovered) => backMonthButtonHovered.value = hovered,
+            icon: const ShadImage.square(
+              LucideIcons.chevronLeft,
+              size: 16,
+            ),
+            onPressed: () => goToMonth(currentMonth.previousMonth),
+          ),
+        );
+      },
+    );
+
+    final forwardButton = ValueListenableBuilder<bool>(
+      valueListenable: forwardMonthButtonHovered,
+      builder: (context, isHovered, _) {
+        return Opacity(
+          opacity: isHovered ? 1 : .5,
+          child: ShadButton.outline(
+            width: 28,
+            height: 28,
+            padding: EdgeInsets.zero,
+            enabled: !isLastMonthDisplayed,
+            onHoverChange: (hovered) =>
+                forwardMonthButtonHovered.value = hovered,
+            onPressed: () => goToMonth(currentMonth.nextMonth),
+            child: const ShadImage.square(
+              LucideIcons.chevronRight,
+              size: 16,
+            ),
+          ),
+        );
+      },
+    );
 
     return ShadDecorator(
       decoration: ShadDecoration(
@@ -520,113 +686,79 @@ class _ShadCalendarState extends State<ShadCalendar> {
           final isLastMonth = index == models.length - 1;
 
           return ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 252),
+            constraints: BoxConstraints(
+              maxWidth: 252 +
+                  (!effectiveHideNavigation &&
+                          widget.captionLayout !=
+                              ShadCalendarCaptionLayout.label
+                      ? 58
+                      : 0),
+            ),
             child: Column(
               children: [
                 // month header and back/forward buttons
                 SizedBox(
                   height: 40,
-                  child: Stack(
-                    children: [
-                      if (isFirstMonth)
-                        ValueListenableBuilder<bool>(
-                          valueListenable: backMonthButtonHovered,
-                          builder: (context, isHovered, _) {
-                            return Opacity(
-                              opacity: isHovered ? 1 : .5,
-                              child: ShadButton.outline(
-                                width: 28,
-                                height: 28,
-                                padding: EdgeInsets.zero,
-                                applyIconColorFilter: false,
-                                enabled: !isFirstMonthDisplayed,
-                                onHoverChange: (hovered) =>
-                                    backMonthButtonHovered.value = hovered,
-                                icon: const ShadImage.square(
-                                  LucideIcons.chevronLeft,
-                                  size: 16,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    currentMonth = currentMonth.previousMonth;
-                                    generateDates();
-                                  });
-                                  widget.onMonthChanged?.call(currentMonth);
-                                },
+                  child: switch (effectiveCaptionLayout) {
+                    ShadCalendarCaptionLayout.label => Row(
+                        children: [
+                          if (isFirstMonth && !effectiveHideNavigation)
+                            backButton,
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                effectiveFormatMonthYear(dateModel.month),
+                                style: theme.textTheme.small,
                               ),
-                            );
-                          },
-                        ),
-                      Center(
-                        child: switch (effectiveCaptionLayout) {
-                          ShadCalendarCaptionLayout.label => Text(
+                            ),
+                          ),
+                          if (isLastMonth && !effectiveHideNavigation)
+                            forwardButton,
+                        ],
+                      ),
+                    ShadCalendarCaptionLayout.dropdown => Row(
+                        children: [
+                          monthSelector,
+                          yearSelector,
+                          if (!effectiveHideNavigation) ...[
+                            backButton,
+                            forwardButton,
+                          ],
+                        ],
+                      ),
+                    ShadCalendarCaptionLayout.dropdownMonths => Row(
+                        children: [
+                          monthSelector,
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              effectiveFormatYear(dateModel.month),
+                              style: theme.textTheme.small,
+                            ),
+                          ),
+                          if (!effectiveHideNavigation) ...[
+                            backButton,
+                            forwardButton,
+                          ],
+                        ],
+                      ),
+                    ShadCalendarCaptionLayout.dropdownYears => Row(
+                        children: [
+                          yearSelector,
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
                               effectiveFormatMonth(dateModel.month),
                               style: theme.textTheme.small,
                             ),
-                          ShadCalendarCaptionLayout.dropdown =>
-                            ShadSelect<DateTime>(
-                              initialValue: currentMonth,
-                              selectedOptionBuilder: (context, value) {
-                                return Text(
-                                  effectiveFormatMonth(dateModel.month),
-                                );
-                              },
-                              options: List.generate(
-                                12,
-                                (index) => ShadOption(
-                                  value: DateTime(2024, index),
-                                  child: Text(
-                                    DateFormat('MMMM')
-                                        .format(DateTime(2024, index)),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ShadCalendarCaptionLayout.dropdownMonths => Text(
-                              'dropdownMonths',
-                              style: theme.textTheme.small,
-                            ),
-                          ShadCalendarCaptionLayout.dropdownYears => Text(
-                              'dropdownYears',
-                              style: theme.textTheme.small,
-                            ),
-                        },
-                      ),
-                      if (isLastMonth)
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          child: ValueListenableBuilder<bool>(
-                            valueListenable: forwardMonthButtonHovered,
-                            builder: (context, isHovered, _) {
-                              return Opacity(
-                                opacity: isHovered ? 1 : .5,
-                                child: ShadButton.outline(
-                                  width: 28,
-                                  height: 28,
-                                  padding: EdgeInsets.zero,
-                                  enabled: !isLastMonthDisplayed,
-                                  onHoverChange: (hovered) =>
-                                      forwardMonthButtonHovered.value = hovered,
-                                  onPressed: () {
-                                    setState(() {
-                                      currentMonth = currentMonth.nextMonth;
-                                      generateDates();
-                                    });
-
-                                    widget.onMonthChanged?.call(currentMonth);
-                                  },
-                                  child: const ShadImage.square(
-                                    LucideIcons.chevronRight,
-                                    size: 16,
-                                  ),
-                                ),
-                              );
-                            },
                           ),
-                        ),
-                    ],
-                  ),
+                          if (!effectiveHideNavigation) ...[
+                            backButton,
+                            forwardButton,
+                          ],
+                        ],
+                      ),
+                  },
                 ),
                 const SizedBox(height: 16),
                 // week days

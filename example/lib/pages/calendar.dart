@@ -2,7 +2,6 @@ import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -16,6 +15,7 @@ class _CalendarPageState extends State<CalendarPage> {
   DateTime? selected = DateTime.now();
   bool reverseMonths = false;
   ShadCalendarCaptionLayout captionLayout = ShadCalendarCaptionLayout.label;
+  bool hideNavigation = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +42,23 @@ class _CalendarPageState extends State<CalendarPage> {
             });
           },
         ),
+        MyBoolProperty(
+          label: 'Hide navigation',
+          value: hideNavigation,
+          onChanged: (value) {
+            setState(() {
+              hideNavigation = value;
+            });
+          },
+        ),
       ],
       children: [
         Text('Single', style: theme.textTheme.h4),
         ShadCalendar(
           selected: selected,
-          fromMonth: DateTime(2024),
+          fromMonth: DateTime(2023),
           toMonth: DateTime(2024, 12),
+          hideNavigation: hideNavigation,
           captionLayout: captionLayout,
           // selectableDayPredicate: (date) {
           //   return date.day % 2 == 0;
@@ -73,10 +83,16 @@ class _CalendarPageState extends State<CalendarPage> {
           min: 5,
           max: 10,
           reverseMonths: reverseMonths,
+          hideNavigation: hideNavigation,
         ),
         const Divider(),
         Text('Range', style: theme.textTheme.h4),
-        const ShadCalendar.range(onChanged: print, min: 2, max: 4),
+        ShadCalendar.range(
+          onChanged: print,
+          min: 2,
+          max: 4,
+          hideNavigation: hideNavigation,
+        ),
       ],
     );
   }
