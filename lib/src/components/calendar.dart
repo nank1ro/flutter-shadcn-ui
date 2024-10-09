@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/image.dart';
+import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/extensions/date_time.dart';
@@ -76,6 +77,20 @@ class ShadCalendarModel {
 
 enum ShadCalendarVariant { single, multiple, range }
 
+enum ShadCalendarCaptionLayout {
+  /// Displays the month and year as a label. Default value.
+  label,
+
+  /// Displays a dropdown with both months and years.
+  dropdown,
+
+  /// Displays a dropdown with the months only.
+  dropdownMonths,
+
+  /// Displays a dropdown with the years only.
+  dropdownYears,
+}
+
 class ShadCalendar extends StatefulWidget {
   const ShadCalendar({
     super.key,
@@ -95,6 +110,7 @@ class ShadCalendar extends StatefulWidget {
     this.onMonthChanged,
     this.reverseMonths = false,
     this.selectableDayPredicate,
+    this.captionLayout,
   })  : variant = ShadCalendarVariant.single,
         multipleSelected = null,
         onMultipleChanged = null,
@@ -123,6 +139,7 @@ class ShadCalendar extends StatefulWidget {
     this.min,
     this.max,
     this.selectableDayPredicate,
+    this.captionLayout,
   })  : variant = ShadCalendarVariant.multiple,
         multipleSelected = selected,
         selected = null,
@@ -151,6 +168,7 @@ class ShadCalendar extends StatefulWidget {
     this.min,
     this.max,
     this.selectableDayPredicate,
+    this.captionLayout,
   })  : variant = ShadCalendarVariant.range,
         multipleSelected = null,
         selected = null,
@@ -184,6 +202,7 @@ class ShadCalendar extends StatefulWidget {
     this.selectableDayPredicate,
     this.onRangeChanged,
     this.selectedRange,
+    this.captionLayout,
   });
 
   /// {@template ShadCalendar.variant}
@@ -310,6 +329,11 @@ class ShadCalendar extends StatefulWidget {
   /// {@endtemplate}
   final ValueChanged<ShadDateTimeRange?>? onRangeChanged;
 
+  /// {@template ShadCalendar.captionLayout}
+  /// The layout of the caption, defaults to [ShadCalendarCaptionLayout.label].
+  /// {@endtemplate}
+  final ShadCalendarCaptionLayout? captionLayout;
+
   @override
   State<ShadCalendar> createState() => _ShadCalendarState();
 }
@@ -333,6 +357,45 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
   final backMonthButtonHovered = ValueNotifier<bool>(false);
   final forwardMonthButtonHovered = ValueNotifier<bool>(false);
+
+  bool enabled(DateTime date) {
+    // disable if the predicate returns false for the date
+    if (widget.selectableDayPredicate != null &&
+        !widget.selectableDayPredicate!(date)) {
+      return false;
+    }
+
+    // disable other days when max is reached
+    if (widget.max != null && selectedDays.length >= widget.max!) {
+      // only selected days are enabled
+      return selectedDays.any((selectedDay) => selectedDay.isSameDay(date));
+    }
+
+    if (widget.variant == ShadCalendarVariant.range) {
+      bool satifiesMin() {
+        if (widget.min != null && startRange != null) {
+          // only the dates after min are enabled
+          final minDate = startRange!.addDays(widget.min!);
+          return date.isSameDayOrGreatier(minDate) ||
+              date.isSameDay(startRange!);
+        }
+        return true;
+      }
+
+      bool satifiesMax() {
+        if (widget.max != null && startRange != null) {
+          // only the dates before max are enabled
+          final maxDate = startRange!.addDays(widget.max!);
+          return date.isSameDayOrLower(maxDate) || date.isSameDay(startRange!);
+        }
+        return true;
+      }
+
+      return satifiesMin() && satifiesMax();
+    }
+
+    return true;
+  }
 
   @override
   void initState() {
@@ -431,6 +494,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
+    final effectiveCaptionLayout =
+        widget.captionLayout ?? ShadCalendarCaptionLayout.label;
+
     final effectiveFormatMonth = widget.formatMonth ?? defaultFormatMonth;
 
     final effectiveFormatWeekday = widget.formatWeekday ?? defaultFormatWeekday;
@@ -492,10 +558,39 @@ class _ShadCalendarState extends State<ShadCalendar> {
                           },
                         ),
                       Center(
-                        child: Text(
-                          effectiveFormatMonth(dateModel.month),
-                          style: theme.textTheme.small,
-                        ),
+                        child: switch (effectiveCaptionLayout) {
+                          ShadCalendarCaptionLayout.label => Text(
+                              effectiveFormatMonth(dateModel.month),
+                              style: theme.textTheme.small,
+                            ),
+                          ShadCalendarCaptionLayout.dropdown =>
+                            ShadSelect<DateTime>(
+                              initialValue: currentMonth,
+                              selectedOptionBuilder: (context, value) {
+                                return Text(
+                                  effectiveFormatMonth(dateModel.month),
+                                );
+                              },
+                              options: List.generate(
+                                12,
+                                (index) => ShadOption(
+                                  value: DateTime(2024, index),
+                                  child: Text(
+                                    DateFormat('MMMM')
+                                        .format(DateTime(2024, index)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ShadCalendarCaptionLayout.dropdownMonths => Text(
+                              'dropdownMonths',
+                              style: theme.textTheme.small,
+                            ),
+                          ShadCalendarCaptionLayout.dropdownYears => Text(
+                              'dropdownYears',
+                              style: theme.textTheme.small,
+                            ),
+                        },
                       ),
                       if (isLastMonth)
                         Positioned(
@@ -676,14 +771,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                                           )
                                 : null,
                           ),
-                          enabled: (widget.max == null ||
-                                  selectedDays.length < widget.max! ||
-                                  selectedDays.any(
-                                    (selectedDate) =>
-                                        selectedDate.isSameDay(date),
-                                  )) &&
-                              (widget.selectableDayPredicate == null ||
-                                  !widget.selectableDayPredicate!(date)),
+                          enabled: enabled(date),
                           padding: EdgeInsets.zero,
                           child: Text(
                             date.day.toString(),

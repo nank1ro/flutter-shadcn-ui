@@ -1,5 +1,6 @@
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
+import 'package:example/common/properties/enum_property.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -14,6 +15,7 @@ class CalendarPage extends StatefulWidget {
 class _CalendarPageState extends State<CalendarPage> {
   DateTime? selected = DateTime.now();
   bool reverseMonths = false;
+  ShadCalendarCaptionLayout captionLayout = ShadCalendarCaptionLayout.label;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,17 @@ class _CalendarPageState extends State<CalendarPage> {
               reverseMonths = value;
             });
           },
-        )
+        ),
+        MyEnumProperty(
+          label: 'Caption layout',
+          value: captionLayout,
+          values: ShadCalendarCaptionLayout.values,
+          onChanged: (value) {
+            setState(() {
+              captionLayout = value;
+            });
+          },
+        ),
       ],
       children: [
         Text('Single', style: theme.textTheme.h4),
@@ -37,6 +49,7 @@ class _CalendarPageState extends State<CalendarPage> {
           selected: selected,
           fromMonth: DateTime(2024),
           toMonth: DateTime(2024, 12),
+          captionLayout: captionLayout,
           // selectableDayPredicate: (date) {
           //   return date.day % 2 == 0;
           // },
@@ -63,7 +76,7 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
         const Divider(),
         Text('Range', style: theme.textTheme.h4),
-        const ShadCalendar.range(onChanged: print),
+        const ShadCalendar.range(onChanged: print, min: 2, max: 4),
       ],
     );
   }
