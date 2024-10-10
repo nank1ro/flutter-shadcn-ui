@@ -18,6 +18,8 @@ class _CalendarPageState extends State<CalendarPage> {
   bool hideNavigation = false;
   bool showWeekNumbers = false;
   bool showOutsideDays = true;
+  bool fixedWeeks = false;
+  bool hideWeekdayNames = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +67,29 @@ class _CalendarPageState extends State<CalendarPage> {
         MyBoolProperty(
           label: 'Show outside days',
           value: showOutsideDays,
+          enabled: !fixedWeeks,
           onChanged: (value) {
             setState(() {
               showOutsideDays = value;
+            });
+          },
+        ),
+        MyBoolProperty(
+          label: 'Fixed weeks',
+          value: fixedWeeks,
+          enabled: showOutsideDays,
+          onChanged: (value) {
+            setState(() {
+              fixedWeeks = value;
+            });
+          },
+        ),
+        MyBoolProperty(
+          label: 'Hide weekday names',
+          value: hideWeekdayNames,
+          onChanged: (value) {
+            setState(() {
+              hideWeekdayNames = value;
             });
           },
         ),
@@ -93,6 +115,8 @@ class _CalendarPageState extends State<CalendarPage> {
           },
           showWeekNumbers: showWeekNumbers,
           showOutsideDays: showOutsideDays,
+          fixedWeeks: fixedWeeks,
+          hideWeekdayNames: hideWeekdayNames,
         ),
         const Divider(),
         Text('Multiple', style: theme.textTheme.h4),
@@ -109,6 +133,8 @@ class _CalendarPageState extends State<CalendarPage> {
           captionLayout: captionLayout,
           showWeekNumbers: showWeekNumbers,
           showOutsideDays: showOutsideDays,
+          fixedWeeks: fixedWeeks,
+          hideWeekdayNames: hideWeekdayNames,
         ),
         const Divider(),
         Text('Range', style: theme.textTheme.h4),
@@ -120,6 +146,8 @@ class _CalendarPageState extends State<CalendarPage> {
           captionLayout: captionLayout,
           showWeekNumbers: showWeekNumbers,
           showOutsideDays: showOutsideDays,
+          fixedWeeks: fixedWeeks,
+          hideWeekdayNames: hideWeekdayNames,
         ),
       ],
     );

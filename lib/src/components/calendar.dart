@@ -120,7 +120,11 @@ class ShadCalendar extends StatefulWidget {
         min = null,
         max = null,
         onRangeChanged = null,
-        selectedRange = null;
+        selectedRange = null,
+        assert(
+          !fixedWeeks || showOutsideDays,
+          'When fixedWeeks is true, showOutsideDays must be true',
+        );
 
   const ShadCalendar.multiple({
     super.key,
@@ -152,7 +156,11 @@ class ShadCalendar extends StatefulWidget {
         onMultipleChanged = onChanged,
         onChanged = null,
         onRangeChanged = null,
-        selectedRange = null;
+        selectedRange = null,
+        assert(
+          !fixedWeeks || showOutsideDays,
+          'When fixedWeeks is true, showOutsideDays must be true',
+        );
 
   const ShadCalendar.range({
     super.key,
@@ -184,7 +192,11 @@ class ShadCalendar extends StatefulWidget {
         onMultipleChanged = null,
         onChanged = null,
         selectedRange = selected,
-        onRangeChanged = onChanged;
+        onRangeChanged = onChanged,
+        assert(
+          !fixedWeeks || showOutsideDays,
+          'When fixedWeeks is true, showOutsideDays must be true',
+        );
 
   const ShadCalendar.raw({
     super.key,
@@ -215,7 +227,10 @@ class ShadCalendar extends StatefulWidget {
     this.selectedRange,
     this.captionLayout,
     this.hideNavigation,
-  });
+  }) : assert(
+          !fixedWeeks || showOutsideDays,
+          'When fixedWeeks is true, showOutsideDays must be true',
+        );
 
   /// {@template ShadCalendar.variant}
   /// The variant of the calendar to use.
