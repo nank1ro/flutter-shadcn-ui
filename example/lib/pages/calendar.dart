@@ -16,6 +16,8 @@ class _CalendarPageState extends State<CalendarPage> {
   bool reverseMonths = false;
   ShadCalendarCaptionLayout captionLayout = ShadCalendarCaptionLayout.label;
   bool hideNavigation = false;
+  bool showWeekNumbers = false;
+  bool showOutsideDays = true;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,24 @@ class _CalendarPageState extends State<CalendarPage> {
             });
           },
         ),
+        MyBoolProperty(
+          label: 'Show week numbers',
+          value: showWeekNumbers,
+          onChanged: (value) {
+            setState(() {
+              showWeekNumbers = value;
+            });
+          },
+        ),
+        MyBoolProperty(
+          label: 'Show outside days',
+          value: showOutsideDays,
+          onChanged: (value) {
+            setState(() {
+              showOutsideDays = value;
+            });
+          },
+        ),
       ],
       children: [
         Text('Single', style: theme.textTheme.h4),
@@ -71,6 +91,8 @@ class _CalendarPageState extends State<CalendarPage> {
           onMonthChanged: (date) {
             print('month changed to ${date.month}');
           },
+          showWeekNumbers: showWeekNumbers,
+          showOutsideDays: showOutsideDays,
         ),
         const Divider(),
         Text('Multiple', style: theme.textTheme.h4),
@@ -84,6 +106,9 @@ class _CalendarPageState extends State<CalendarPage> {
           max: 10,
           reverseMonths: reverseMonths,
           hideNavigation: hideNavigation,
+          captionLayout: captionLayout,
+          showWeekNumbers: showWeekNumbers,
+          showOutsideDays: showOutsideDays,
         ),
         const Divider(),
         Text('Range', style: theme.textTheme.h4),
@@ -92,6 +117,9 @@ class _CalendarPageState extends State<CalendarPage> {
           min: 2,
           max: 4,
           hideNavigation: hideNavigation,
+          captionLayout: captionLayout,
+          showWeekNumbers: showWeekNumbers,
+          showOutsideDays: showOutsideDays,
         ),
       ],
     );

@@ -445,7 +445,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
         widget.toMonth != oldWidget.toMonth ||
         widget.reverseMonths != oldWidget.reverseMonths ||
         widget.min != oldWidget.min ||
-        widget.max != oldWidget.max) {
+        widget.max != oldWidget.max ||
+        widget.showWeekNumbers != oldWidget.showWeekNumbers) {
       generateDates();
     }
     if (widget.fromMonth != oldWidget.fromMonth ||
@@ -491,7 +492,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
     while (!coveredWholeMonth ||
         (!widget.fixedWeeks && dates.length % 7 != 0) ||
         (widget.fixedWeeks && dates.length != 42)) {
-      final isDayOutsideMonth = firstDate.month != currentMonth.month;
+      final isDayOutsideMonth = firstDate.month != month.month;
       if (isDayOutsideMonth && !widget.showOutsideDays) {
         dates.add(null);
       } else {
@@ -504,6 +505,16 @@ class _ShadCalendarState extends State<ShadCalendar> {
       }
 
       firstDate = firstDate.nextDay;
+    }
+
+    // If showWeekNumbers is enabled, duplicate the first available dates of
+    // each week
+    if (widget.showWeekNumbers) {
+      for (var i = 0; i < dates.length; i += 8) {
+        final sublist = dates.sublist(i);
+        final firstDateOfWeek = sublist.firstWhere((d) => d != null);
+        dates.insert(i, firstDateOfWeek);
+      }
     }
 
     datesModels.add(
@@ -670,6 +681,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
       },
     );
 
+    final columnsCount = widget.showWeekNumbers ? 8 : 7;
+
     return ShadDecorator(
       decoration: ShadDecoration(
         border: ShadBorder.all(
@@ -685,6 +698,20 @@ class _ShadCalendarState extends State<ShadCalendar> {
           final isFirstMonth = index == 0;
           final isLastMonth = index == models.length - 1;
 
+          final labelNavigation = Stack(
+            children: [
+              if (isFirstMonth && !effectiveHideNavigation) backButton,
+              Center(
+                child: Text(
+                  effectiveFormatMonthYear(dateModel.month),
+                  style: theme.textTheme.small,
+                ),
+              ),
+              if (isLastMonth && !effectiveHideNavigation)
+                Align(alignment: Alignment.topRight, child: forwardButton),
+            ],
+          );
+
           return ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: 252 +
@@ -698,67 +725,61 @@ class _ShadCalendarState extends State<ShadCalendar> {
               children: [
                 // month header and back/forward buttons
                 SizedBox(
-                  height: 40,
-                  child: switch (effectiveCaptionLayout) {
-                    ShadCalendarCaptionLayout.label => Row(
-                        children: [
-                          if (isFirstMonth && !effectiveHideNavigation)
-                            backButton,
-                          Expanded(
-                            child: Center(
-                              child: Text(
-                                effectiveFormatMonthYear(dateModel.month),
-                                style: theme.textTheme.small,
-                              ),
-                            ),
+                  height: 38,
+                  child: !isFirstMonth &&
+                          effectiveCaptionLayout !=
+                              ShadCalendarCaptionLayout.label
+                      ? Center(
+                          child: Text(
+                            effectiveFormatMonthYear(dateModel.month),
+                            style: theme.textTheme.small,
                           ),
-                          if (isLastMonth && !effectiveHideNavigation)
-                            forwardButton,
-                        ],
-                      ),
-                    ShadCalendarCaptionLayout.dropdown => Row(
-                        children: [
-                          monthSelector,
-                          yearSelector,
-                          if (!effectiveHideNavigation) ...[
-                            backButton,
-                            forwardButton,
-                          ],
-                        ],
-                      ),
-                    ShadCalendarCaptionLayout.dropdownMonths => Row(
-                        children: [
-                          monthSelector,
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              effectiveFormatYear(dateModel.month),
-                              style: theme.textTheme.small,
+                        )
+                      : switch (effectiveCaptionLayout) {
+                          ShadCalendarCaptionLayout.label => labelNavigation,
+                          ShadCalendarCaptionLayout.dropdown => Row(
+                              children: [
+                                monthSelector,
+                                yearSelector,
+                                if (!effectiveHideNavigation) ...[
+                                  backButton,
+                                  forwardButton,
+                                ],
+                              ],
                             ),
-                          ),
-                          if (!effectiveHideNavigation) ...[
-                            backButton,
-                            forwardButton,
-                          ],
-                        ],
-                      ),
-                    ShadCalendarCaptionLayout.dropdownYears => Row(
-                        children: [
-                          yearSelector,
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              effectiveFormatMonth(dateModel.month),
-                              style: theme.textTheme.small,
+                          ShadCalendarCaptionLayout.dropdownMonths => Row(
+                              children: [
+                                monthSelector,
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    effectiveFormatYear(dateModel.month),
+                                    style: theme.textTheme.small,
+                                  ),
+                                ),
+                                if (!effectiveHideNavigation) ...[
+                                  backButton,
+                                  forwardButton,
+                                ],
+                              ],
                             ),
-                          ),
-                          if (!effectiveHideNavigation) ...[
-                            backButton,
-                            forwardButton,
-                          ],
-                        ],
-                      ),
-                  },
+                          ShadCalendarCaptionLayout.dropdownYears => Row(
+                              children: [
+                                yearSelector,
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    effectiveFormatMonth(dateModel.month),
+                                    style: theme.textTheme.small,
+                                  ),
+                                ),
+                                if (!effectiveHideNavigation) ...[
+                                  backButton,
+                                  forwardButton,
+                                ],
+                              ],
+                            ),
+                        },
                 ),
                 const SizedBox(height: 16),
                 // week days
@@ -769,9 +790,21 @@ class _ShadCalendarState extends State<ShadCalendar> {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: List.generate(
-                        7,
+                        columnsCount,
                         (index) {
-                          final date = dateModel.firstDateShown.addDays(index);
+                          if (widget.showWeekNumbers && index == 0) {
+                            return Expanded(
+                              child: Text(
+                                '#',
+                                style: theme.textTheme.muted
+                                    .copyWith(fontSize: 12.8),
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          }
+                          final date = dateModel.firstDateShown.addDays(
+                            index - (widget.showWeekNumbers ? 1 : 0),
+                          );
                           return Expanded(
                             child: Text(
                               effectiveFormatWeekday(date),
@@ -788,7 +821,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                 GridView.count(
                   mainAxisSpacing: 8,
                   crossAxisSpacing: 0,
-                  crossAxisCount: 7,
+                  crossAxisCount: columnsCount,
                   shrinkWrap: true,
                   children: dateModel.dates.mapIndexed((index, date) {
                     if (date == null) return const SizedBox.shrink();
@@ -867,8 +900,20 @@ class _ShadCalendarState extends State<ShadCalendar> {
                               : ShadButtonVariant.ghost,
                         },
                     };
-                    final isFirstOfRow = index % 7 == 0;
-                    final isLastOfRow = index % 7 == 6;
+
+                    if (widget.showWeekNumbers && index % 8 == 0) {
+                      return Center(
+                        child: Text(
+                          date.weekNumber.toString(),
+                          style: theme.textTheme.muted.copyWith(fontSize: 12.8),
+                        ),
+                      );
+                    }
+
+                    final isFirstOfRow =
+                        (index - (widget.showWeekNumbers ? 1 : 0)) % 7 == 0;
+                    final isLastOfRow =
+                        (index - (widget.showWeekNumbers ? 1 : 0)) % 7 == 6;
 
                     return Center(
                       child: Opacity(
