@@ -15,7 +15,7 @@ export default defineConfig({
         tag: 'meta',
         attrs: {
           property: 'og:image',
-          content: 'https://mariuti.com/shadcn-ui/assets/shadcn-banner.png',
+          content: 'https://flutter-shadcn-ui.mariuti.com/shadcn-banner.png',
         }
       }],
       sidebar: [
