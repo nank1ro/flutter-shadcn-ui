@@ -938,6 +938,24 @@ class _ShadCalendarState extends State<ShadCalendar> {
         widget.toMonth != oldWidget.toMonth) {
       generateAvailableYears();
     }
+
+    if (widget.selected != null) {
+      selectedDays
+        ..clear()
+        ..add(widget.selected!);
+    }
+
+    if (widget.multipleSelected != null &&
+        !listEquals([...widget.multipleSelected!], selectedDays.toList())) {
+      selectedDays
+        ..clear()
+        ..addAll(widget.multipleSelected!);
+    }
+
+    if (widget.selectedRange != null) {
+      startRange = widget.selectedRange!.start;
+      endRange = widget.selectedRange!.end;
+    }
   }
 
   @override

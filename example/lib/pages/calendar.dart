@@ -102,11 +102,6 @@ class _CalendarPageState extends State<CalendarPage> {
           toMonth: DateTime(2024, 12),
           hideNavigation: hideNavigation,
           captionLayout: captionLayout,
-          onChanged: (date) {
-            setState(() {
-              selected = date;
-            });
-          },
           onMonthChanged: (date) {
             print('month changed to ${date.month}');
           },
@@ -118,7 +113,6 @@ class _CalendarPageState extends State<CalendarPage> {
         const Divider(),
         Text('Multiple', style: theme.textTheme.h4),
         ShadCalendar.multiple(
-          selected: [if (selected != null) selected!],
           numberOfMonths: 2,
           fromMonth: DateTime(2024),
           toMonth: DateTime(2024, 12),
