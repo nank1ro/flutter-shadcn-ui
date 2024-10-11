@@ -12,6 +12,7 @@ import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
@@ -746,5 +747,35 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         trailingTextStyle:
             effectiveTextTheme.muted.copyWith(fontSize: 12, height: 1),
         selectedBackgroundColor: colorScheme.accent,
+      );
+
+  @override
+  ShadCalendarTheme calendarTheme() => ShadCalendarTheme(
+        hideNavigation: false,
+        yearSelectorMinWidth: 100,
+        monthSelectorMinWidth: 130,
+        yearSelectorPadding:
+            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        monthSelectorPadding:
+            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        navigationButtonSize: 28,
+        navigationButtonIconSize: 16,
+        backNavigationButtonSrc: LucideIcons.chevronLeft,
+        forwardNavigationButtonSrc: LucideIcons.chevronRight,
+        navigationButtonPadding: EdgeInsets.zero,
+        navigationButtonDisabledOpacity: .5,
+        decoration: ShadDecoration(
+          border: ShadBorder.all(
+            radius: radius,
+            padding: const EdgeInsets.all(12),
+            color: colorScheme.border,
+          ),
+        ),
+        spacingBetweenMonths: 16,
+        runSpacingBetweenMonths: 16,
+        headerHeight: 38,
+        headerPadding: const EdgeInsets.only(bottom: 16),
+        captionLayoutGap: 8,
+        headerTextStyle: effectiveTextTheme.small,
       );
 }

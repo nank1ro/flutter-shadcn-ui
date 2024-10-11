@@ -101,6 +101,7 @@ export 'src/utils/position.dart';
 export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
 export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
+export 'src/utils/utils.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart' hide Effect;

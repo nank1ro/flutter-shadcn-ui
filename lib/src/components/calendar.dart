@@ -596,21 +596,15 @@ class _ShadCalendarState extends State<ShadCalendar> {
     final models =
         widget.reverseMonths ? datesModels.reversed.toList() : datesModels;
 
-    final effectiveHideNavigation = widget.hideNavigation ?? false;
+    final effectiveHideNavigation =
+        widget.hideNavigation ?? theme.calendarTheme.hideNavigation ?? false;
 
     final yearSelector = ShadSelect<int>(
       initialValue: currentMonth.year,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 4,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       minWidth: 100,
       selectedOptionBuilder: (context, value) {
-        return Text(
-          effectiveFormatYear(
-            DateTime(value, currentMonth.month),
-          ),
-        );
+        return Text(effectiveFormatYear(DateTime(value, currentMonth.month)));
       },
       options: availableYears.map(
         (year) => ShadOption(
@@ -625,17 +619,10 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     final monthSelector = ShadSelect<int>(
       initialValue: currentMonth.month,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 4,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       minWidth: 130,
       selectedOptionBuilder: (context, value) {
-        return Text(
-          effectiveFormatMonth(
-            DateTime(currentMonth.year, value),
-          ),
-        );
+        return Text(effectiveFormatMonth(DateTime(currentMonth.year, value)));
       },
       options: List.generate(
         12,
@@ -739,64 +726,66 @@ class _ShadCalendarState extends State<ShadCalendar> {
             child: Column(
               children: [
                 // month header and back/forward buttons
-                SizedBox(
-                  height: 38,
-                  child: !isFirstMonth &&
-                          effectiveCaptionLayout !=
-                              ShadCalendarCaptionLayout.label
-                      ? Center(
-                          child: Text(
-                            effectiveFormatMonthYear(dateModel.month),
-                            style: theme.textTheme.small,
-                          ),
-                        )
-                      : switch (effectiveCaptionLayout) {
-                          ShadCalendarCaptionLayout.label => labelNavigation,
-                          ShadCalendarCaptionLayout.dropdown => Row(
-                              children: [
-                                monthSelector,
-                                yearSelector,
-                                if (!effectiveHideNavigation) ...[
-                                  backButton,
-                                  forwardButton,
-                                ],
-                              ],
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: SizedBox(
+                    height: 38,
+                    child: !isFirstMonth &&
+                            effectiveCaptionLayout !=
+                                ShadCalendarCaptionLayout.label
+                        ? Center(
+                            child: Text(
+                              effectiveFormatMonthYear(dateModel.month),
+                              style: theme.textTheme.small,
                             ),
-                          ShadCalendarCaptionLayout.dropdownMonths => Row(
-                              children: [
-                                monthSelector,
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    effectiveFormatYear(dateModel.month),
-                                    style: theme.textTheme.small,
+                          )
+                        : switch (effectiveCaptionLayout) {
+                            ShadCalendarCaptionLayout.label => labelNavigation,
+                            ShadCalendarCaptionLayout.dropdown => Row(
+                                children: [
+                                  monthSelector,
+                                  yearSelector,
+                                  if (!effectiveHideNavigation) ...[
+                                    backButton,
+                                    forwardButton,
+                                  ],
+                                ],
+                              ),
+                            ShadCalendarCaptionLayout.dropdownMonths => Row(
+                                children: [
+                                  monthSelector,
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      effectiveFormatYear(dateModel.month),
+                                      style: theme.textTheme.small,
+                                    ),
                                   ),
-                                ),
-                                if (!effectiveHideNavigation) ...[
-                                  backButton,
-                                  forwardButton,
+                                  if (!effectiveHideNavigation) ...[
+                                    backButton,
+                                    forwardButton,
+                                  ],
                                 ],
-                              ],
-                            ),
-                          ShadCalendarCaptionLayout.dropdownYears => Row(
-                              children: [
-                                yearSelector,
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    effectiveFormatMonth(dateModel.month),
-                                    style: theme.textTheme.small,
+                              ),
+                            ShadCalendarCaptionLayout.dropdownYears => Row(
+                                children: [
+                                  yearSelector,
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      effectiveFormatMonth(dateModel.month),
+                                      style: theme.textTheme.small,
+                                    ),
                                   ),
-                                ),
-                                if (!effectiveHideNavigation) ...[
-                                  backButton,
-                                  forwardButton,
+                                  if (!effectiveHideNavigation) ...[
+                                    backButton,
+                                    forwardButton,
+                                  ],
                                 ],
-                              ],
-                            ),
-                        },
+                              ),
+                          },
+                  ),
                 ),
-                const SizedBox(height: 16),
                 // week days
                 Offstage(
                   offstage: widget.hideWeekdayNames,

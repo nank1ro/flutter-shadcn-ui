@@ -12,6 +12,7 @@ import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
@@ -773,5 +774,10 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         trailingTextStyle:
             effectiveTextTheme.muted.copyWith(fontSize: 12, height: 1),
         selectedBackgroundColor: colorScheme.accent,
+      );
+
+  @override
+  ShadCalendarTheme calendarTheme() => const ShadCalendarTheme(
+        hideNavigation: false,
       );
 }

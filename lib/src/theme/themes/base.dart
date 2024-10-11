@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
@@ -76,6 +77,7 @@ abstract class ShadBaseTheme {
     required this.disableSecondaryBorder,
     required this.tabsTheme,
     required this.contextMenuTheme,
+    required this.calendarTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -123,6 +125,7 @@ abstract class ShadBaseTheme {
   final bool disableSecondaryBorder;
   final ShadTabsTheme tabsTheme;
   final ShadContextMenuTheme contextMenuTheme;
+  final ShadCalendarTheme calendarTheme;
 }
 
 @immutable
@@ -165,4 +168,5 @@ abstract class ShadThemeVariant {
   ShadHoverStrategies hoverStrategies();
   ShadTabsTheme tabsTheme();
   ShadContextMenuTheme contextMenuTheme();
+  ShadCalendarTheme calendarTheme();
 }
