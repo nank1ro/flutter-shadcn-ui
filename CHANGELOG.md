@@ -1,3 +1,7 @@
+## 0.12.0
+
+- **FEAT**: Add `axis`, `spacing`, `runSpacing`, `alignment`, `runAlignment`, `crossAxisAlignment` and `crossAxisAlignment` to `ShadRadioGroup` and `ShadRadioGroupFormField`.
+
 ## 0.11.1
 
 - **FEAT**: Add `headers` to `ShadImage` to allow custom headers in the network requests.

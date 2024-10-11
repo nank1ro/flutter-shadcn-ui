@@ -422,6 +422,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           padding: const EdgeInsets.all(2),
         ),
       ),
+      spacing: 4,
+      alignment: WrapAlignment.start,
+      runAlignment: WrapAlignment.start,
+      crossAxisAlignment: WrapCrossAlignment.start,
+      axis: Axis.vertical,
     );
   }
 

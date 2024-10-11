@@ -15,19 +15,66 @@ class ShadRadioGroup<T> extends StatefulWidget {
     this.initialValue,
     this.onChanged,
     this.enabled = true,
+    this.axis,
+    this.alignment,
+    this.runAlignment,
+    this.crossAxisAlignment,
+    this.spacing,
+    this.runSpacing,
   });
 
+  /// {@template ShadRadioGroup.initialValue}
   /// The initial value of the radio group.
+  /// {@endtemplate}
   final T? initialValue;
 
+  /// {@template ShadRadioGroup.items}
   /// The items of the radio group, any Widget can be used.
+  /// {@endtemplate}
   final Iterable<Widget> items;
 
+  /// {@template ShadRadioGroup.onChanged}
   /// Called when the user toggles a radio on.
+  /// {@endtemplate}
   final ValueChanged<T?>? onChanged;
 
+  /// {@template ShadRadioGroup.enabled}
   /// Whether the radio [items] are enabled, defaults to true.
+  /// {@endtemplate}
   final bool enabled;
+
+  /// {@template ShadRadioGroup.axis}
+  /// The axis of the radio group, defaults to [Axis.vertical].
+  /// {@endtemplate}
+  final Axis? axis;
+
+  /// {@template ShadRadioGroup.spacing}
+  /// The main axis spacing of the radio group items, defaults to 4
+  /// {@endtemplate}
+  final double? spacing;
+
+  /// {@template ShadRadioGroup.runSpacing}
+  /// The cross axis spacing of the radio group items, defaults to 0
+  /// {@endtemplate}
+  final double? runSpacing;
+
+  /// {@template ShadRadioGroup.alignment}
+  /// The main axis alignment of the radio group items, defaults to
+  /// [WrapAlignment.start]
+  /// {@endtemplate}
+  final WrapAlignment? alignment;
+
+  /// {@template ShadRadioGroup.runAlignment}
+  /// The cross axis alignment of the radio group items, defaults to
+  /// [WrapAlignment.start]
+  /// {@endtemplate}
+  final WrapAlignment? runAlignment;
+
+  /// {@template ShadRadioGroup.crossAxisAlignment}
+  /// The cross axis alignment of the radio group items, defaults to
+  /// [WrapCrossAlignment.start]
+  /// {@endtemplate}
+  final WrapCrossAlignment? crossAxisAlignment;
 
   @override
   State<ShadRadioGroup<T>> createState() => ShadRadioGroupState<T>();
@@ -64,11 +111,30 @@ class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
+    final effectiveAxis = widget.axis ?? theme.radioTheme.axis ?? Axis.vertical;
+    final effectiveSpacing = widget.spacing ?? theme.radioTheme.spacing ?? 4;
+    final effectiveRunSpacing =
+        widget.runSpacing ?? theme.radioTheme.runSpacing ?? 0;
+    final effectiveAlignment =
+        widget.alignment ?? theme.radioTheme.alignment ?? WrapAlignment.start;
+    final effectiveRunAlignment = widget.runAlignment ??
+        theme.radioTheme.runAlignment ??
+        WrapAlignment.start;
+    final effectiveWrapCrossAlignment = widget.crossAxisAlignment ??
+        theme.radioTheme.crossAxisAlignment ??
+        WrapCrossAlignment.start;
+
     return ShadInheritedRadioGroupContainer(
       data: this,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Wrap(
+        direction: effectiveAxis,
+        spacing: effectiveSpacing,
+        runSpacing: effectiveRunSpacing,
+        alignment: effectiveAlignment,
+        runAlignment: effectiveRunAlignment,
+        crossAxisAlignment: effectiveWrapCrossAlignment,
         children: widget.items.toList(),
       ),
     );
