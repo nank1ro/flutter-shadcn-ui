@@ -450,6 +450,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
         focusedBorder: ShadBorder.all(radius: radius.add(radius / 2), width: 2),
       ),
+      spacing: 4,
+      alignment: WrapAlignment.start,
+      runAlignment: WrapAlignment.start,
+      crossAxisAlignment: WrapCrossAlignment.start,
+      axis: Axis.vertical,
     );
   }
 

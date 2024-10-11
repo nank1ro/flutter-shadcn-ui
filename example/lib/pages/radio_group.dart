@@ -1,6 +1,6 @@
-import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
+import 'package:example/common/properties/enum_property.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -29,6 +29,7 @@ class RadioPage extends StatefulWidget {
 class _RadioPageState extends State<RadioPage> {
   NotifyAbout? value;
   bool enabled = true;
+  Axis axis = Axis.vertical;
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +42,27 @@ class _RadioPageState extends State<RadioPage> {
           value: enabled,
           onChanged: (value) => setState(() => enabled = value),
         ),
+        MyEnumProperty(
+          label: 'Axis',
+          value: axis,
+          onChanged: (value) => setState(() => axis = value),
+          values: Axis.values,
+        ),
       ],
       children: [
-        ShadRadioGroup(
+        ShadRadioGroup<NotifyAbout>(
           enabled: enabled,
           initialValue: value,
           onChanged: (v) {
             print('onChange $v');
           },
-          items: NotifyAbout.values
-              .map(
-                (e) => ShadRadio<NotifyAbout>(
-                  value: e,
-                  label: Text(e.message),
-                ),
-              )
-              .separatedBy(const SizedBox(height: 4)),
+          axis: axis,
+          items: NotifyAbout.values.map(
+            (e) => ShadRadio(
+              value: e,
+              label: Text(e.message),
+            ),
+          ),
         ),
       ],
     );

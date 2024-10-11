@@ -14,6 +14,12 @@ class ShadRadioTheme {
     this.size,
     this.padding,
     this.circleSize,
+    this.axis,
+    this.spacing,
+    this.runSpacing,
+    this.alignment,
+    this.runAlignment,
+    this.crossAxisAlignment,
   });
 
   final bool merge;
@@ -30,6 +36,24 @@ class ShadRadioTheme {
 
   final double? circleSize;
 
+  /// {@macro ShadRadioGroup.axis}
+  final Axis? axis;
+
+  /// {@macro ShadRadioGroup.spacing}
+  final double? spacing;
+
+  /// {@macro ShadRadioGroup.runSpacing}
+  final double? runSpacing;
+
+  /// {@macro ShadRadioGroup.alignment}
+  final WrapAlignment? alignment;
+
+  /// {@macro ShadRadioGroup.runAlignment}
+  final WrapAlignment? runAlignment;
+
+  /// {@macro ShadRadioGroup.crossAxisAlignment}
+  final WrapCrossAlignment? crossAxisAlignment;
+
   static ShadRadioTheme lerp(
     ShadRadioTheme a,
     ShadRadioTheme b,
@@ -44,6 +68,12 @@ class ShadRadioTheme {
       size: lerpDouble(a.size, b.size, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       circleSize: lerpDouble(a.circleSize, b.circleSize, t),
+      axis: t < 0.5 ? a.axis : b.axis,
+      spacing: lerpDouble(a.spacing, b.spacing, t),
+      runSpacing: lerpDouble(a.runSpacing, b.runSpacing, t),
+      alignment: t < 0.5 ? a.alignment : b.alignment,
+      runAlignment: t < 0.5 ? a.runAlignment : b.runAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
     );
   }
 
@@ -55,6 +85,12 @@ class ShadRadioTheme {
     ShadDecoration? decoration,
     EdgeInsets? padding,
     double? circleSize,
+    Axis? axis,
+    double? spacing,
+    double? runSpacing,
+    WrapAlignment? alignment,
+    WrapAlignment? runAlignment,
+    WrapCrossAlignment? crossAxisAlignment,
   }) {
     return ShadRadioTheme(
       merge: merge ?? this.merge,
@@ -64,6 +100,12 @@ class ShadRadioTheme {
       color: color ?? this.color,
       padding: padding ?? this.padding,
       circleSize: circleSize ?? this.circleSize,
+      axis: axis ?? this.axis,
+      spacing: spacing ?? this.spacing,
+      runSpacing: runSpacing ?? this.runSpacing,
+      alignment: alignment ?? this.alignment,
+      runAlignment: runAlignment ?? this.runAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
     );
   }
 
@@ -77,6 +119,12 @@ class ShadRadioTheme {
       size: other.size,
       padding: other.padding,
       circleSize: other.circleSize,
+      axis: other.axis,
+      spacing: other.spacing,
+      runSpacing: other.runSpacing,
+      alignment: other.alignment,
+      runAlignment: other.runAlignment,
+      crossAxisAlignment: other.crossAxisAlignment,
     );
   }
 
@@ -91,7 +139,13 @@ class ShadRadioTheme {
         other.duration == duration &&
         other.decoration == decoration &&
         other.padding == padding &&
-        other.circleSize == circleSize;
+        other.circleSize == circleSize &&
+        other.axis == axis &&
+        other.spacing == spacing &&
+        other.runSpacing == runSpacing &&
+        other.alignment == alignment &&
+        other.runAlignment == runAlignment &&
+        other.crossAxisAlignment == crossAxisAlignment;
   }
 
   @override
@@ -102,6 +156,12 @@ class ShadRadioTheme {
         duration.hashCode ^
         decoration.hashCode ^
         padding.hashCode ^
-        circleSize.hashCode;
+        circleSize.hashCode ^
+        axis.hashCode ^
+        spacing.hashCode ^
+        runSpacing.hashCode ^
+        alignment.hashCode ^
+        runAlignment.hashCode ^
+        crossAxisAlignment.hashCode;
   }
 }
