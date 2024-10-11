@@ -22,6 +22,24 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
     super.focusNode,
     super.validator,
     required Iterable<Widget> items,
+
+    /// {@macro ShadRadioGroup.axis}
+    Axis? axis,
+
+    /// {@macro ShadRadioGroup.spacing}
+    double? spacing,
+
+    /// {@macro ShadRadioGroup.runSpacing}
+    double? runSpacing,
+
+    /// {@macro ShadRadioGroup.alignment}
+    WrapAlignment? alignment,
+
+    /// {@macro ShadRadioGroup.runAlignment}
+    WrapAlignment? runAlignment,
+
+    /// {@macro ShadRadioGroup.crossAxisAlignment}
+    WrapCrossAlignment? crossAxisAlignment,
   }) : super(
           decorationBuilder: (context) =>
               ShadTheme.of(context).radioTheme.decoration ??
@@ -31,8 +49,14 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
             return ShadRadioGroup(
               items: items,
               onChanged: state.didChange,
-              enabled: enabled,
+              enabled: state.enabled,
               initialValue: initialValue,
+              axis: axis,
+              spacing: spacing,
+              runSpacing: runSpacing,
+              alignment: alignment,
+              runAlignment: runAlignment,
+              crossAxisAlignment: crossAxisAlignment,
             );
           },
         );
