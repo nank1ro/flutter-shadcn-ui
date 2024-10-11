@@ -1,3 +1,7 @@
+## 0.13.0
+
+- **FEAT**: New `ShadCalendar` component with the `single`, `multiple` and `range` variants.
+
 ## 0.12.0
 
 - **FEAT**: Add `axis`, `spacing`, `runSpacing`, `alignment`, `runAlignment`, `crossAxisAlignment` and `crossAxisAlignment` to `ShadRadioGroup` and `ShadRadioGroupFormField`.
