@@ -96,16 +96,16 @@ class ShadCalendar extends StatefulWidget {
     super.key,
     this.selected,
     this.onChanged,
-    this.showOutsideDays = true,
+    this.showOutsideDays,
     this.initialMonth,
     this.formatMonthYear,
     this.formatMonth,
     this.formatYear,
     this.formatWeekday,
-    this.showWeekNumbers = false,
-    this.weekStartsOn = 1,
-    this.fixedWeeks = false,
-    this.hideWeekdayNames = false,
+    this.showWeekNumbers,
+    this.weekStartsOn,
+    this.fixedWeeks,
+    this.hideWeekdayNames,
     this.numberOfMonths = 1,
     this.fromMonth,
     this.toMonth,
@@ -161,26 +161,22 @@ class ShadCalendar extends StatefulWidget {
         min = null,
         max = null,
         onRangeChanged = null,
-        selectedRange = null,
-        assert(
-          !fixedWeeks || showOutsideDays,
-          'When fixedWeeks is true, showOutsideDays must be true',
-        );
+        selectedRange = null;
 
   const ShadCalendar.multiple({
     super.key,
     List<DateTime>? selected,
     ValueChanged<List<DateTime>>? onChanged,
-    this.showOutsideDays = true,
+    this.showOutsideDays,
     this.initialMonth,
     this.formatMonthYear,
     this.formatMonth,
     this.formatYear,
     this.formatWeekday,
-    this.showWeekNumbers = false,
-    this.weekStartsOn = 1,
-    this.fixedWeeks = false,
-    this.hideWeekdayNames = false,
+    this.showWeekNumbers,
+    this.weekStartsOn,
+    this.fixedWeeks,
+    this.hideWeekdayNames,
     this.numberOfMonths = 1,
     this.fromMonth,
     this.toMonth,
@@ -238,26 +234,22 @@ class ShadCalendar extends StatefulWidget {
         onMultipleChanged = onChanged,
         onChanged = null,
         onRangeChanged = null,
-        selectedRange = null,
-        assert(
-          !fixedWeeks || showOutsideDays,
-          'When fixedWeeks is true, showOutsideDays must be true',
-        );
+        selectedRange = null;
 
   const ShadCalendar.range({
     super.key,
     ShadDateTimeRange? selected,
     ValueChanged<ShadDateTimeRange?>? onChanged,
-    this.showOutsideDays = true,
+    this.showOutsideDays,
     this.initialMonth,
     this.formatMonthYear,
     this.formatMonth,
     this.formatYear,
     this.formatWeekday,
     this.showWeekNumbers = false,
-    this.weekStartsOn = 1,
-    this.fixedWeeks = false,
-    this.hideWeekdayNames = false,
+    this.weekStartsOn,
+    this.fixedWeeks,
+    this.hideWeekdayNames,
     this.numberOfMonths = 1,
     this.fromMonth,
     this.toMonth,
@@ -315,11 +307,7 @@ class ShadCalendar extends StatefulWidget {
         onMultipleChanged = null,
         onChanged = null,
         selectedRange = selected,
-        onRangeChanged = onChanged,
-        assert(
-          !fixedWeeks || showOutsideDays,
-          'When fixedWeeks is true, showOutsideDays must be true',
-        );
+        onRangeChanged = onChanged;
 
   const ShadCalendar.raw({
     super.key,
@@ -328,16 +316,16 @@ class ShadCalendar extends StatefulWidget {
     this.multipleSelected,
     this.onChanged,
     this.onMultipleChanged,
-    this.showOutsideDays = true,
+    this.showOutsideDays,
     this.initialMonth,
     this.formatMonthYear,
     this.formatMonth,
     this.formatYear,
     this.formatWeekday,
-    this.showWeekNumbers = false,
-    this.weekStartsOn = 1,
-    this.fixedWeeks = false,
-    this.hideWeekdayNames = false,
+    this.showWeekNumbers,
+    this.weekStartsOn,
+    this.fixedWeeks,
+    this.hideWeekdayNames,
     this.numberOfMonths = 1,
     this.fromMonth,
     this.toMonth,
@@ -391,10 +379,7 @@ class ShadCalendar extends StatefulWidget {
     this.dayButtonOutsideMonthTextStyle,
     this.dayButtonOutsideMonthVariant,
     this.selectedDayButtonOusideMonthVariant,
-  }) : assert(
-          !fixedWeeks || showOutsideDays,
-          'When fixedWeeks is true, showOutsideDays must be true',
-        );
+  });
 
   /// {@template ShadCalendar.variant}
   /// The variant of the calendar to use.
@@ -424,7 +409,7 @@ class ShadCalendar extends StatefulWidget {
   /// {@template ShadCalendar.showOutsideDays}
   /// Whether to show days outside the current month, defaults to true.
   /// {@endtemplate}
-  final bool showOutsideDays;
+  final bool? showOutsideDays;
 
   /// {@template ShadCalendar.initialMonth}
   /// The month to show by default, defaults to the current month.
@@ -454,7 +439,7 @@ class ShadCalendar extends StatefulWidget {
   /// {@template ShadCalendar.showWeekNumbers}
   /// Whether to show week numbers, defaults to false.
   /// {@endtemplate}
-  final bool showWeekNumbers;
+  final bool? showWeekNumbers;
 
   /// {@template ShadCalendar.weekStartsOn}
   /// Which day of the week is the first day of the week.
@@ -462,7 +447,7 @@ class ShadCalendar extends StatefulWidget {
   /// In accordance with ISO 8601 a week starts with Monday, which
   /// has the value 1, while Sunday has the value 7. Defaults to 1 (Monday).
   /// {@endtemplate}
-  final int weekStartsOn;
+  final int? weekStartsOn;
 
   /// {@template ShadCalendar.fixedWeeks}
   /// Display six weeks per months, regardless the month’s number of weeks.
@@ -470,12 +455,12 @@ class ShadCalendar extends StatefulWidget {
   /// To use this [showOutsideDays] must be set to true.
   /// Defaults to false.
   /// {@endtemplate}
-  final bool fixedWeeks;
+  final bool? fixedWeeks;
 
   /// {@template ShadCalendar.hideWeekdayNames}
-  /// Hide the month’s head displaying the weekday names.
+  /// Hide the month’s head displaying the weekday names, defaults to false.
   /// {@endtemplate}
-  final bool hideWeekdayNames;
+  final bool? hideWeekdayNames;
 
   /// {@template ShadCalendar.numberOfMonths}
   /// The number of displayed months, defaults to 1.
@@ -838,6 +823,51 @@ class _ShadCalendarState extends State<ShadCalendar> {
   // The list of available years in the selector
   final availableYears = <int>[];
 
+  bool get effectiveShowOutsideDays =>
+      widget.showOutsideDays ??
+      ShadTheme.of(context, listen: false).calendarTheme.showOutsideDays ??
+      true;
+
+  bool get effectiveHideWeekdayNames =>
+      widget.hideWeekdayNames ??
+      ShadTheme.of(context, listen: false).calendarTheme.hideWeekdayNames ??
+      false;
+
+  String Function(DateTime date)? get effectiveFormatMonth =>
+      widget.formatMonth ??
+      ShadTheme.of(context, listen: false).calendarTheme.formatMonth ??
+      defaultFormatMonth;
+
+  String Function(DateTime date)? get effectiveFormatMonthYear =>
+      widget.formatMonthYear ??
+      ShadTheme.of(context, listen: false).calendarTheme.formatMonthYear ??
+      defaultFormatMonthYear;
+
+  String Function(DateTime date)? get effectiveFormatYear =>
+      widget.formatYear ??
+      ShadTheme.of(context, listen: false).calendarTheme.formatYear ??
+      defaultFormatYear;
+
+  String Function(DateTime date)? get effectiveFormatWeekday =>
+      widget.formatWeekday ??
+      ShadTheme.of(context, listen: false).calendarTheme.formatWeekday ??
+      defaultFormatWeekday;
+
+  bool get effectiveShowWeekNumbers =>
+      widget.showWeekNumbers ??
+      ShadTheme.of(context, listen: false).calendarTheme.showWeekNumbers ??
+      false;
+
+  int get effectiveWeekStartsOn =>
+      widget.weekStartsOn ??
+      ShadTheme.of(context, listen: false).calendarTheme.weekStartsOn ??
+      1;
+
+  bool get effectiveFixedWeeks =>
+      widget.fixedWeeks ??
+      ShadTheme.of(context, listen: false).calendarTheme.fixedWeeks ??
+      false;
+
   bool enabled(DateTime date) {
     // disable if the predicate returns false for the date
     if (widget.selectableDayPredicate != null &&
@@ -871,7 +901,12 @@ class _ShadCalendarState extends State<ShadCalendar> {
         return true;
       }
 
-      return satifiesMin() && satifiesMax();
+      bool isInRange() {
+        return (startRange != null && date.isSameDayOrGreatier(startRange!)) &&
+            (endRange != null && date.isSameDayOrLower(endRange!));
+      }
+
+      return (satifiesMin() && satifiesMax()) || isInRange();
     }
 
     return true;
@@ -932,7 +967,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     final lastDate = month.endOfMonth;
     // find the first day of the week, going back if necessary
-    while (firstDate.weekday != widget.weekStartsOn) {
+    while (firstDate.weekday != effectiveWeekStartsOn) {
       firstDate = firstDate.previousDay;
     }
     firstDateShown = firstDate;
@@ -940,10 +975,10 @@ class _ShadCalendarState extends State<ShadCalendar> {
     final dates = <DateTime?>[];
     var coveredWholeMonth = false;
     while (!coveredWholeMonth ||
-        (!widget.fixedWeeks && dates.length % 7 != 0) ||
-        (widget.fixedWeeks && dates.length != 42)) {
+        (!effectiveFixedWeeks && dates.length % 7 != 0) ||
+        (effectiveFixedWeeks && dates.length != 42)) {
       final isDayOutsideMonth = firstDate.month != month.month;
-      if (isDayOutsideMonth && !widget.showOutsideDays) {
+      if (isDayOutsideMonth && !effectiveShowOutsideDays) {
         dates.add(null);
       } else {
         dates.add(firstDate);
@@ -959,7 +994,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     // If showWeekNumbers is enabled, duplicate the first available dates of
     // each week
-    if (widget.showWeekNumbers) {
+    if (effectiveShowWeekNumbers) {
       for (var i = 0; i < dates.length; i += 8) {
         final sublist = dates.sublist(i);
         final firstDateOfWeek = sublist.firstWhere((d) => d != null);
@@ -999,7 +1034,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
   }
 
   String defaultFormatWeekday(DateTime date) {
-    final s = DateFormat('E').format(date);
+    final s = DateFormat('EE').format(date);
     if (s.length < 2) return s;
     return s.substring(0, 2);
   }
@@ -1014,6 +1049,11 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
   @override
   Widget build(BuildContext context) {
+    assert(
+      !effectiveFixedWeeks || effectiveShowOutsideDays,
+      'When fixedWeeks is true, showOutsideDays must be true',
+    );
+
     final theme = ShadTheme.of(context);
 
     final effectiveCaptionLayout =
@@ -1093,7 +1133,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
         BoxConstraints(
           maxWidth: 252 +
               (!effectiveHideNavigation &&
-                      widget.captionLayout != ShadCalendarCaptionLayout.label
+                      effectiveCaptionLayout != ShadCalendarCaptionLayout.label
                   ? 58
                   : 0),
         );
@@ -1295,7 +1335,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
       },
     );
 
-    final columnsCount = widget.showWeekNumbers ? 8 : 7;
+    final columnsCount = effectiveShowWeekNumbers ? 8 : 7;
 
     return ShadDecorator(
       decoration: effectiveDecoration,
@@ -1387,7 +1427,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                 ),
                 // week days
                 Offstage(
-                  offstage: widget.hideWeekdayNames,
+                  offstage: effectiveHideWeekdayNames,
                   child: Padding(
                     padding: effectiveWeekdaysPadding,
                     child: Row(
@@ -1395,7 +1435,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                       children: List.generate(
                         columnsCount,
                         (index) {
-                          if (widget.showWeekNumbers && index == 0) {
+                          if (effectiveShowWeekNumbers && index == 0) {
                             return Expanded(
                               child: Text(
                                 effectiveWeekNumbersHeaderText,
@@ -1405,7 +1445,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                             );
                           }
                           final date = dateModel.firstDateShown.addDays(
-                            index - (widget.showWeekNumbers ? 1 : 0),
+                            index - (effectiveShowWeekNumbers ? 1 : 0),
                           );
                           return Expanded(
                             child: Text(
@@ -1498,7 +1538,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                         },
                     };
 
-                    if (widget.showWeekNumbers && index % 8 == 0) {
+                    if (effectiveShowWeekNumbers && index % 8 == 0) {
                       return Center(
                         child: Text(
                           date.weekNumber.toString(),
@@ -1508,9 +1548,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
                     }
 
                     final isFirstOfRow =
-                        (index - (widget.showWeekNumbers ? 1 : 0)) % 7 == 0;
+                        (index - (effectiveShowWeekNumbers ? 1 : 0)) % 7 == 0;
                     final isLastOfRow =
-                        (index - (widget.showWeekNumbers ? 1 : 0)) % 7 == 6;
+                        (index - (effectiveShowWeekNumbers ? 1 : 0)) % 7 == 6;
 
                     final effectiveDayButtonDecoration = ShadDecoration(
                       secondaryBorder:

@@ -97,27 +97,27 @@ class _CalendarPageState extends State<CalendarPage> {
       children: [
         Text('Single', style: theme.textTheme.h4),
         ShadCalendar(
-          selected: selected,
-          fromMonth: DateTime(2023),
-          toMonth: DateTime(2024, 12),
-          hideNavigation: hideNavigation,
-          captionLayout: captionLayout,
-          // selectableDayPredicate: (date) {
-          //   return date.day % 2 == 0;
-          // },
-          onChanged: (date) {
-            setState(() {
-              selected = date;
-            });
-          },
-          onMonthChanged: (date) {
-            print('month changed to ${date.month}');
-          },
-          showWeekNumbers: showWeekNumbers,
-          showOutsideDays: showOutsideDays,
-          fixedWeeks: fixedWeeks,
-          hideWeekdayNames: hideWeekdayNames,
-        ),
+            // selected: selected,
+            // fromMonth: DateTime(2023),
+            // toMonth: DateTime(2024, 12),
+            // hideNavigation: hideNavigation,
+            // captionLayout: captionLayout,
+            // // selectableDayPredicate: (date) {
+            // //   return date.day % 2 == 0;
+            // // },
+            // onChanged: (date) {
+            //   setState(() {
+            //     selected = date;
+            //   });
+            // },
+            // onMonthChanged: (date) {
+            //   print('month changed to ${date.month}');
+            // },
+            // showWeekNumbers: showWeekNumbers,
+            // showOutsideDays: showOutsideDays,
+            // fixedWeeks: fixedWeeks,
+            // hideWeekdayNames: hideWeekdayNames,
+            ),
         const Divider(),
         Text('Multiple', style: theme.textTheme.h4),
         ShadCalendar.multiple(

@@ -51,6 +51,15 @@ class ShadCalendarTheme {
     this.gridCrossAxisSpacing,
     this.selectedDayButtonOusideMonthVariant,
     this.captionLayout,
+    this.hideWeekdayNames,
+    this.showOutsideDays,
+    this.formatMonthYear,
+    this.formatMonth,
+    this.formatYear,
+    this.formatWeekday,
+    this.showWeekNumbers,
+    this.weekStartsOn,
+    this.fixedWeeks,
   });
 
   final bool merge;
@@ -183,6 +192,33 @@ class ShadCalendarTheme {
 
   /// {@macro ShadCalendar.captionLayout}
   final ShadCalendarCaptionLayout? captionLayout;
+
+  /// {@macro ShadCalendar.hideWeekdayNames}
+  final bool? hideWeekdayNames;
+
+  /// {@macro ShadCalendar.showOutsideDays}
+  final bool? showOutsideDays;
+
+  /// {@macro ShadCalendar.formatMonthYear}
+  final String Function(DateTime date)? formatMonthYear;
+
+  /// {@macro ShadCalendar.formatMonth}
+  final String Function(DateTime date)? formatMonth;
+
+  /// {@macro ShadCalendar.formatYear}
+  final String Function(DateTime date)? formatYear;
+
+  /// {@macro ShadCalendar.formatWeekday}
+  final String Function(DateTime date)? formatWeekday;
+
+  /// {@macro ShadCalendar.showWeekNumbers}
+  final bool? showWeekNumbers;
+
+  /// {@macro ShadCalendar.weekStartsOn}
+  final int? weekStartsOn;
+
+  /// {@macro ShadCalendar.fixedWeeks}
+  final bool? fixedWeeks;
 
   static ShadCalendarTheme lerp(
     ShadCalendarTheme a,
@@ -332,6 +368,15 @@ class ShadCalendarTheme {
           ? a.selectedDayButtonOusideMonthVariant
           : b.selectedDayButtonOusideMonthVariant,
       captionLayout: t < .5 ? a.captionLayout : b.captionLayout,
+      hideWeekdayNames: t < .5 ? a.hideWeekdayNames : b.hideWeekdayNames,
+      showOutsideDays: t < .5 ? a.showOutsideDays : b.showOutsideDays,
+      formatMonthYear: t < .5 ? a.formatMonthYear : b.formatMonthYear,
+      formatMonth: t < .5 ? a.formatMonth : b.formatMonth,
+      formatYear: t < .5 ? a.formatYear : b.formatYear,
+      formatWeekday: t < .5 ? a.formatWeekday : b.formatWeekday,
+      showWeekNumbers: t < .5 ? a.showWeekNumbers : b.showWeekNumbers,
+      weekStartsOn: t < .5 ? a.weekStartsOn : b.weekStartsOn,
+      fixedWeeks: t < .5 ? a.fixedWeeks : b.fixedWeeks,
     );
   }
 
@@ -400,6 +445,15 @@ class ShadCalendarTheme {
           other.selectedDayButtonOusideMonthVariant ??
               selectedDayButtonOusideMonthVariant,
       captionLayout: other.captionLayout ?? captionLayout,
+      hideWeekdayNames: other.hideWeekdayNames ?? hideWeekdayNames,
+      showOutsideDays: other.showOutsideDays ?? showOutsideDays,
+      formatMonthYear: other.formatMonthYear ?? formatMonthYear,
+      formatMonth: other.formatMonth ?? formatMonth,
+      formatYear: other.formatYear ?? formatYear,
+      formatWeekday: other.formatWeekday ?? formatWeekday,
+      showWeekNumbers: other.showWeekNumbers ?? showWeekNumbers,
+      weekStartsOn: other.weekStartsOn ?? weekStartsOn,
+      fixedWeeks: other.fixedWeeks ?? fixedWeeks,
     );
   }
 
@@ -454,7 +508,16 @@ class ShadCalendarTheme {
         other.dayButtonOutsideMonthVariant == dayButtonOutsideMonthVariant &&
         other.selectedDayButtonOusideMonthVariant ==
             selectedDayButtonOusideMonthVariant &&
-        other.captionLayout == captionLayout;
+        other.captionLayout == captionLayout &&
+        other.hideWeekdayNames == hideWeekdayNames &&
+        other.showOutsideDays == showOutsideDays &&
+        other.formatMonthYear == formatMonthYear &&
+        other.formatMonth == formatMonth &&
+        other.formatYear == formatYear &&
+        other.formatWeekday == formatWeekday &&
+        other.showWeekNumbers == showWeekNumbers &&
+        other.weekStartsOn == weekStartsOn &&
+        other.fixedWeeks == fixedWeeks;
   }
 
   @override
@@ -502,7 +565,16 @@ class ShadCalendarTheme {
         dayButtonOutsideMonthTextStyle.hashCode ^
         dayButtonOutsideMonthVariant.hashCode ^
         selectedDayButtonOusideMonthVariant.hashCode ^
-        captionLayout.hashCode;
+        captionLayout.hashCode ^
+        hideWeekdayNames.hashCode ^
+        showOutsideDays.hashCode ^
+        formatMonthYear.hashCode ^
+        formatMonth.hashCode ^
+        formatYear.hashCode ^
+        formatWeekday.hashCode ^
+        showWeekNumbers.hashCode ^
+        weekStartsOn.hashCode ^
+        fixedWeeks.hashCode;
   }
 
   ShadCalendarTheme copyWith({
@@ -550,6 +622,15 @@ class ShadCalendarTheme {
     ShadButtonVariant? dayButtonOutsideMonthVariant,
     ShadButtonVariant? selectedDayButtonOusideMonthVariant,
     ShadCalendarCaptionLayout? captionLayout,
+    bool? hideWeekdayNames,
+    bool? showOutsideDays,
+    String Function(DateTime date)? formatMonthYear,
+    String Function(DateTime date)? formatMonth,
+    String Function(DateTime date)? formatYear,
+    String Function(DateTime date)? formatWeekday,
+    bool? showWeekNumbers,
+    int? weekStartsOn,
+    bool? fixedWeeks,
   }) {
     return ShadCalendarTheme(
       merge: merge ?? this.merge,
@@ -614,6 +695,15 @@ class ShadCalendarTheme {
           selectedDayButtonOusideMonthVariant ??
               this.selectedDayButtonOusideMonthVariant,
       captionLayout: captionLayout ?? this.captionLayout,
+      hideWeekdayNames: hideWeekdayNames ?? this.hideWeekdayNames,
+      showOutsideDays: showOutsideDays ?? this.showOutsideDays,
+      formatMonthYear: formatMonthYear ?? this.formatMonthYear,
+      formatMonth: formatMonth ?? this.formatMonth,
+      formatYear: formatYear ?? this.formatYear,
+      formatWeekday: formatWeekday ?? this.formatWeekday,
+      showWeekNumbers: showWeekNumbers ?? this.showWeekNumbers,
+      weekStartsOn: weekStartsOn ?? this.weekStartsOn,
+      fixedWeeks: fixedWeeks ?? this.fixedWeeks,
     );
   }
 }
