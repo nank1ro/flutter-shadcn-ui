@@ -9,6 +9,7 @@ export 'src/components/alert.dart';
 export 'src/components/avatar.dart';
 export 'src/components/badge.dart';
 export 'src/components/button.dart';
+export 'src/components/calendar.dart';
 export 'src/components/card.dart';
 export 'src/components/checkbox.dart';
 export 'src/components/context_menu.dart';
@@ -64,6 +65,7 @@ export 'src/theme/components/alert.dart';
 export 'src/theme/components/avatar.dart';
 export 'src/theme/components/badge.dart';
 export 'src/theme/components/button.dart';
+export 'src/theme/components/calendar.dart';
 export 'src/theme/components/card.dart';
 export 'src/theme/components/checkbox.dart';
 export 'src/theme/components/context_menu.dart';
@@ -90,15 +92,18 @@ export 'src/theme/text_theme/theme.dart';
 // Utils
 export 'src/utils/animation_builder.dart';
 export 'src/utils/effects.dart';
-export 'src/utils/extensions.dart';
+export 'src/utils/extensions/breakpoints.dart';
+export 'src/utils/extensions/date_time.dart';
+export 'src/utils/extensions/duration.dart';
 export 'src/utils/gesture_detector.dart';
+export 'src/utils/mouse_area.dart';
 export 'src/utils/position.dart';
 export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
 export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
-export 'src/utils/mouse_area.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart' hide Effect;
 export 'package:lucide_icons_flutter/lucide_icons.dart';
 export 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
+export 'package:intl/intl.dart';

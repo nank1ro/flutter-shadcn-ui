@@ -9,7 +9,7 @@ sidebar:
 Welcome to Shadcn UI for Flutter.
 This is the official documentation for Shadcn UI for Flutter.
 
-![Shadcn UI](../../assets/shadcn-banner.png)
+![Shadcn UI](/shadcn-banner.png)
 
 > The work is still in progress.
 

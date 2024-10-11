@@ -4,6 +4,7 @@ import 'package:example/pages/alert.dart';
 import 'package:example/pages/avatar.dart';
 import 'package:example/pages/badge.dart';
 import 'package:example/pages/button.dart';
+import 'package:example/pages/calendar.dart';
 import 'package:example/pages/card.dart';
 import 'package:example/pages/checkbox.dart';
 import 'package:example/pages/checkbox_form_field.dart';
@@ -45,6 +46,7 @@ final routes = <String, WidgetBuilder>{
   '/avatar': (_) => const AvatarPage(),
   '/badge': (_) => const BadgePage(),
   '/button': (_) => const ButtonPage(),
+  '/calendar': (_) => const CalendarPage(),
   '/card': (_) => const CardPage(),
   '/checkbox': (_) => const CheckboxPage(),
   '/checkbox-form-field': (_) => const CheckboxFormFieldPage(),

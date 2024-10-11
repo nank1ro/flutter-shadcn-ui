@@ -7,11 +7,13 @@ class MyBoolProperty extends StatelessWidget {
     required this.label,
     required this.value,
     required this.onChanged,
+    this.enabled = true,
   });
 
   final String label;
   final bool value;
   final ValueChanged<bool>? onChanged;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class MyBoolProperty extends StatelessWidget {
           style: const TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 8),
-        ShadSwitch(value: value, onChanged: onChanged)
+        ShadSwitch(value: value, onChanged: onChanged, enabled: enabled)
       ],
     );
   }

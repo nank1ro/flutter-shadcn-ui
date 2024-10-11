@@ -5,6 +5,7 @@ import 'package:playground/pages/alert.dart';
 import 'package:playground/pages/avatar.dart';
 import 'package:playground/pages/badge.dart';
 import 'package:playground/pages/button.dart';
+import 'package:playground/pages/calendar.dart';
 import 'package:playground/pages/card.dart';
 import 'package:playground/pages/checkbox.dart';
 import 'package:playground/pages/context_menu.dart';
@@ -27,6 +28,18 @@ import 'package:playground/pages/tooltip.dart';
 import 'package:playground/pages/typography.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+
+extension on GoRouterState {
+  bool? getBoolFromArg(String name) {
+    if (uri.queryParameters.containsKey(name)) {
+      final arg = uri.queryParameters[name];
+      if (arg == 'false' || arg == '0') return false;
+      // Return true because the argument is present
+      return true;
+    }
+    return null;
+  }
+}
 
 void main() {
   usePathUrlStrategy();
@@ -239,6 +252,33 @@ final _router = GoRouter(
     GoRoute(
       path: '/context-menu',
       builder: (context, state) => const ContextMenuPage(),
+    ),
+    GoRoute(
+      path: '/calendar',
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ??
+            ShadCalendarVariant.single.name;
+        final hideNavigation = state.getBoolFromArg('hideNavigation');
+        final showWeekNumbers = state.getBoolFromArg('showWeekNumbers');
+        final showOutsideDays = state.getBoolFromArg('showOutsideDays');
+        final fixedWeeks = state.getBoolFromArg('fixedWeeks');
+        final hideWeekdayNames = state.getBoolFromArg('hideWeekdayNames');
+        final reverseMonths = state.getBoolFromArg('reverseMonths');
+
+        final captionLayout = state.uri.queryParameters['captionLayout'] ??
+            ShadCalendarCaptionLayout.label.name;
+
+        return CalendarPage(
+          style: ShadCalendarVariant.values.byName(style),
+          captionLayout: ShadCalendarCaptionLayout.values.byName(captionLayout),
+          hideNavigation: hideNavigation,
+          showWeekNumbers: showWeekNumbers,
+          showOutsideDays: showOutsideDays,
+          fixedWeeks: fixedWeeks,
+          hideWeekdayNames: hideWeekdayNames,
+          reverseMonths: reverseMonths,
+        );
+      },
     ),
   ],
 );

@@ -3,6 +3,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
@@ -12,6 +13,7 @@ import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
@@ -751,5 +753,77 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         trailingTextStyle:
             effectiveTextTheme.muted.copyWith(fontSize: 12, height: 1),
         selectedBackgroundColor: colorScheme.accent,
+      );
+
+  @override
+  ShadCalendarTheme calendarTheme() => ShadCalendarTheme(
+        hideNavigation: false,
+        yearSelectorMinWidth: 100,
+        monthSelectorMinWidth: 130,
+        yearSelectorPadding:
+            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        monthSelectorPadding:
+            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        navigationButtonSize: 28,
+        navigationButtonIconSize: 16,
+        backNavigationButtonSrc: LucideIcons.chevronLeft,
+        forwardNavigationButtonSrc: LucideIcons.chevronRight,
+        navigationButtonPadding: EdgeInsets.zero,
+        navigationButtonDisabledOpacity: .5,
+        decoration: ShadDecoration(
+          border: ShadBorder.all(
+            radius: radius,
+            padding: const EdgeInsets.all(12),
+            color: colorScheme.border,
+          ),
+        ),
+        spacingBetweenMonths: 16,
+        runSpacingBetweenMonths: 16,
+        headerHeight: 38,
+        headerPadding: const EdgeInsets.only(bottom: 16),
+        captionLayoutGap: 8,
+        headerTextStyle: effectiveTextTheme.small,
+        weekdaysPadding: const EdgeInsets.only(bottom: 8),
+        weekNumbersHeaderText: '#',
+        weekNumbersHeaderTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+        weekNumbersTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+        dayButtonSize: 36,
+        dayButtonOutsideMonthOpacity: .5,
+        dayButtonPadding: EdgeInsets.zero,
+        selectedDayButtonTextStyle: textTheme().small.copyWith(
+              fontWeight: FontWeight.normal,
+              color: colorScheme.primaryForeground,
+            ),
+        insideRangeDayButtonTextStyle: textTheme().small.copyWith(
+              color: colorScheme.foreground,
+            ),
+        dayButtonTextStyle: textTheme().small.copyWith(
+              fontWeight: FontWeight.normal,
+              color: colorScheme.foreground,
+            ),
+        dayButtonOutsideMonthVariant: ShadButtonVariant.ghost,
+        dayButtonOutsideMonthTextStyle: textTheme().muted,
+        dayButtonVariant: ShadButtonVariant.ghost,
+        todayButtonVariant: ShadButtonVariant.secondary,
+        selectedDayButtonVariant: ShadButtonVariant.primary,
+        selectedDayButtonOusideMonthVariant: ShadButtonVariant.secondary,
+        insideRangeDayButtonVariant: ShadButtonVariant.secondary,
+        weekdaysTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+        weekdaysTextAlign: TextAlign.center,
+        gridMainAxisSpacing: 8,
+        gridCrossAxisSpacing: 0,
+        hideWeekdayNames: false,
+        showOutsideDays: true,
+        formatMonthYear: (date) => DateFormat('LLLL y').format(date),
+        formatMonth: (date) => DateFormat('LLLL').format(date),
+        formatYear: (date) => DateFormat('y').format(date),
+        formatWeekday: (DateTime date) {
+          final s = DateFormat('EE').format(date);
+          if (s.length < 2) return s;
+          return s.substring(0, 2);
+        },
+        showWeekNumbers: false,
+        weekStartsOn: 1,
+        fixedWeeks: false,
       );
 }
