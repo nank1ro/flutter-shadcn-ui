@@ -777,7 +777,61 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       );
 
   @override
-  ShadCalendarTheme calendarTheme() => const ShadCalendarTheme(
+  ShadCalendarTheme calendarTheme() => ShadCalendarTheme(
         hideNavigation: false,
+        yearSelectorMinWidth: 100,
+        monthSelectorMinWidth: 130,
+        yearSelectorPadding:
+            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        monthSelectorPadding:
+            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        navigationButtonSize: 28,
+        navigationButtonIconSize: 16,
+        backNavigationButtonSrc: LucideIcons.chevronLeft,
+        forwardNavigationButtonSrc: LucideIcons.chevronRight,
+        navigationButtonPadding: EdgeInsets.zero,
+        navigationButtonDisabledOpacity: .5,
+        decoration: ShadDecoration(
+          border: ShadBorder.all(
+            radius: radius,
+            padding: const EdgeInsets.all(12),
+            color: colorScheme.border,
+          ),
+        ),
+        spacingBetweenMonths: 16,
+        runSpacingBetweenMonths: 16,
+        headerHeight: 38,
+        headerPadding: const EdgeInsets.only(bottom: 16),
+        captionLayoutGap: 8,
+        headerTextStyle: effectiveTextTheme.small,
+        weekdaysPadding: const EdgeInsets.only(bottom: 8),
+        weekNumbersHeaderText: '#',
+        weekNumbersHeaderTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+        weekNumbersTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+        dayButtonSize: 36,
+        dayButtonOutsideMonthOpacity: .5,
+        dayButtonPadding: EdgeInsets.zero,
+        selectedDayButtonTextStyle: textTheme().small.copyWith(
+              fontWeight: FontWeight.normal,
+              color: colorScheme.primaryForeground,
+            ),
+        insideRangeDayButtonTextStyle: textTheme().small.copyWith(
+              color: colorScheme.primaryForeground,
+            ),
+        dayButtonTextStyle: textTheme().small.copyWith(
+              fontWeight: FontWeight.normal,
+              color: colorScheme.foreground,
+            ),
+        dayButtonOutsideMonthVariant: ShadButtonVariant.ghost,
+        dayButtonOutsideMonthTextStyle: textTheme().muted,
+        dayButtonVariant: ShadButtonVariant.ghost,
+        todayButtonVariant: ShadButtonVariant.secondary,
+        selectedDayButtonVariant: ShadButtonVariant.primary,
+        selectedDayButtonOusideMonthVariant: ShadButtonVariant.secondary,
+        insideRangeDayButtonVariant: ShadButtonVariant.secondary,
+        weekdaysTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+        weekdaysTextAlign: TextAlign.center,
+        gridMainAxisSpacing: 8,
+        gridCrossAxisSpacing: 0,
       );
 }

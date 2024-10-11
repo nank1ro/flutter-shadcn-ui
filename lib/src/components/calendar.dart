@@ -114,6 +114,47 @@ class ShadCalendar extends StatefulWidget {
     this.selectableDayPredicate,
     this.captionLayout,
     this.hideNavigation,
+    this.yearSelectorMinWidth,
+    this.monthSelectorMinWidth,
+    this.yearSelectorPadding,
+    this.monthSelectorPadding,
+    this.navigationButtonSize,
+    this.navigationButtonIconSize,
+    this.backNavigationButtonSrc,
+    this.forwardNavigationButtonSrc,
+    this.navigationButtonPadding,
+    this.navigationButtonDisabledOpacity,
+    this.decoration,
+    this.spacingBetweenMonths,
+    this.runSpacingBetweenMonths,
+    this.monthConstraints,
+    this.headerHeight,
+    this.headerPadding,
+    this.captionLayoutGap,
+    this.headerTextStyle,
+    this.weekdaysPadding,
+    this.weekdaysTextStyle,
+    this.weekdaysTextAlign,
+    this.weekNumbersHeaderText,
+    this.weekNumbersHeaderTextStyle,
+    this.weekNumbersTextStyle,
+    this.weekNumbersTextAlign,
+    this.dayButtonSize,
+    this.dayButtonOutsideMonthOpacity,
+    this.dayButtonPadding,
+    this.dayButtonDecoration,
+    this.selectedDayButtonTextStyle,
+    this.insideRangeDayButtonTextStyle,
+    this.dayButtonTextStyle,
+    this.dayButtonVariant,
+    this.selectedDayButtonVariant,
+    this.insideRangeDayButtonVariant,
+    this.todayButtonVariant,
+    this.gridMainAxisSpacing,
+    this.gridCrossAxisSpacing,
+    this.dayButtonOutsideMonthTextStyle,
+    this.dayButtonOutsideMonthVariant,
+    this.selectedDayButtonOusideMonthVariant,
   })  : variant = ShadCalendarVariant.single,
         multipleSelected = null,
         onMultipleChanged = null,
@@ -150,6 +191,47 @@ class ShadCalendar extends StatefulWidget {
     this.selectableDayPredicate,
     this.captionLayout,
     this.hideNavigation,
+    this.yearSelectorMinWidth,
+    this.monthSelectorMinWidth,
+    this.yearSelectorPadding,
+    this.monthSelectorPadding,
+    this.navigationButtonSize,
+    this.navigationButtonIconSize,
+    this.backNavigationButtonSrc,
+    this.forwardNavigationButtonSrc,
+    this.navigationButtonPadding,
+    this.navigationButtonDisabledOpacity,
+    this.decoration,
+    this.spacingBetweenMonths,
+    this.runSpacingBetweenMonths,
+    this.monthConstraints,
+    this.headerHeight,
+    this.headerPadding,
+    this.captionLayoutGap,
+    this.headerTextStyle,
+    this.weekdaysPadding,
+    this.weekdaysTextStyle,
+    this.weekdaysTextAlign,
+    this.weekNumbersHeaderText,
+    this.weekNumbersHeaderTextStyle,
+    this.weekNumbersTextStyle,
+    this.weekNumbersTextAlign,
+    this.dayButtonSize,
+    this.dayButtonOutsideMonthOpacity,
+    this.dayButtonPadding,
+    this.dayButtonDecoration,
+    this.selectedDayButtonTextStyle,
+    this.insideRangeDayButtonTextStyle,
+    this.dayButtonTextStyle,
+    this.dayButtonVariant,
+    this.selectedDayButtonVariant,
+    this.insideRangeDayButtonVariant,
+    this.todayButtonVariant,
+    this.gridMainAxisSpacing,
+    this.gridCrossAxisSpacing,
+    this.dayButtonOutsideMonthTextStyle,
+    this.dayButtonOutsideMonthVariant,
+    this.selectedDayButtonOusideMonthVariant,
   })  : variant = ShadCalendarVariant.multiple,
         multipleSelected = selected,
         selected = null,
@@ -186,6 +268,47 @@ class ShadCalendar extends StatefulWidget {
     this.selectableDayPredicate,
     this.captionLayout,
     this.hideNavigation,
+    this.yearSelectorMinWidth,
+    this.monthSelectorMinWidth,
+    this.yearSelectorPadding,
+    this.monthSelectorPadding,
+    this.navigationButtonSize,
+    this.navigationButtonIconSize,
+    this.backNavigationButtonSrc,
+    this.forwardNavigationButtonSrc,
+    this.navigationButtonPadding,
+    this.navigationButtonDisabledOpacity,
+    this.decoration,
+    this.spacingBetweenMonths,
+    this.runSpacingBetweenMonths,
+    this.monthConstraints,
+    this.headerHeight,
+    this.headerPadding,
+    this.captionLayoutGap,
+    this.headerTextStyle,
+    this.weekdaysPadding,
+    this.weekdaysTextStyle,
+    this.weekdaysTextAlign,
+    this.weekNumbersHeaderText,
+    this.weekNumbersHeaderTextStyle,
+    this.weekNumbersTextStyle,
+    this.weekNumbersTextAlign,
+    this.dayButtonSize,
+    this.dayButtonOutsideMonthOpacity,
+    this.dayButtonPadding,
+    this.dayButtonDecoration,
+    this.selectedDayButtonTextStyle,
+    this.insideRangeDayButtonTextStyle,
+    this.dayButtonTextStyle,
+    this.dayButtonVariant,
+    this.selectedDayButtonVariant,
+    this.insideRangeDayButtonVariant,
+    this.todayButtonVariant,
+    this.gridMainAxisSpacing,
+    this.gridCrossAxisSpacing,
+    this.dayButtonOutsideMonthTextStyle,
+    this.dayButtonOutsideMonthVariant,
+    this.selectedDayButtonOusideMonthVariant,
   })  : variant = ShadCalendarVariant.range,
         multipleSelected = null,
         selected = null,
@@ -227,6 +350,47 @@ class ShadCalendar extends StatefulWidget {
     this.selectedRange,
     this.captionLayout,
     this.hideNavigation,
+    this.yearSelectorMinWidth,
+    this.monthSelectorMinWidth,
+    this.yearSelectorPadding,
+    this.monthSelectorPadding,
+    this.navigationButtonSize,
+    this.navigationButtonIconSize,
+    this.backNavigationButtonSrc,
+    this.forwardNavigationButtonSrc,
+    this.navigationButtonPadding,
+    this.navigationButtonDisabledOpacity,
+    this.decoration,
+    this.spacingBetweenMonths,
+    this.runSpacingBetweenMonths,
+    this.monthConstraints,
+    this.headerHeight,
+    this.headerPadding,
+    this.captionLayoutGap,
+    this.headerTextStyle,
+    this.weekdaysPadding,
+    this.weekdaysTextStyle,
+    this.weekdaysTextAlign,
+    this.weekNumbersHeaderText,
+    this.weekNumbersHeaderTextStyle,
+    this.weekNumbersTextStyle,
+    this.weekNumbersTextAlign,
+    this.dayButtonSize,
+    this.dayButtonOutsideMonthOpacity,
+    this.dayButtonPadding,
+    this.dayButtonDecoration,
+    this.selectedDayButtonTextStyle,
+    this.insideRangeDayButtonTextStyle,
+    this.dayButtonTextStyle,
+    this.dayButtonVariant,
+    this.selectedDayButtonVariant,
+    this.insideRangeDayButtonVariant,
+    this.todayButtonVariant,
+    this.gridMainAxisSpacing,
+    this.gridCrossAxisSpacing,
+    this.dayButtonOutsideMonthTextStyle,
+    this.dayButtonOutsideMonthVariant,
+    this.selectedDayButtonOusideMonthVariant,
   }) : assert(
           !fixedWeeks || showOutsideDays,
           'When fixedWeeks is true, showOutsideDays must be true',
@@ -375,6 +539,277 @@ class ShadCalendar extends StatefulWidget {
   /// Whether to hide the navigation buttons, defaults to false.
   /// {@endtemplate}
   final bool? hideNavigation;
+
+  /// {@template ShadCalendar.yearSelectorMinWidth}
+  /// The minimum width of the year selector, defaults to 100
+  /// {@endtemplate}
+  final double? yearSelectorMinWidth;
+
+  /// {@template ShadCalendar.monthSelectorMinWidth}
+  /// The minimum width of the month selector, defaults to 130
+  /// {@endtemplate}
+  final double? monthSelectorMinWidth;
+
+  /// {@template ShadCalendar.yearSelectorPadding}
+  /// The padding of the year selector, defaults to
+  /// `EdgeInsets.symmetric(horizontal: 8, vertical: 4)`
+  /// {@endtemplate}
+  final EdgeInsets? yearSelectorPadding;
+
+  /// {@template ShadCalendar.monthSelectorPadding}
+  /// The padding of the month selector, defaults to
+  /// `EdgeInsets.symmetric(horizontal: 8, vertical: 4)`
+  /// {@endtemplate}
+  final EdgeInsets? monthSelectorPadding;
+
+  /// {@template ShadCalendar.navigationButtonSize}
+  /// The navigation button size, defaults to 28
+  /// {@endtemplate}
+  final double? navigationButtonSize;
+
+  /// {@template ShadCalendar.navigationButtonIconSize}
+  /// The navigation button icon size, defaults to 16
+  /// {@endtemplate}
+  final double? navigationButtonIconSize;
+
+  /// {@template ShadCalendar.backNavigationButtonSrc}
+  /// The back navigation button src, defaults to [LucideIcons.chevronLeft]
+  /// {@endtemplate}
+  final ShadImageSrc? backNavigationButtonSrc;
+
+  /// {@template ShadCalendar.forwardNavigationButtonSrc}
+  /// The forward navigation button src, defaults to [LucideIcons.chevronRight]
+  /// {@endtemplate}
+  final ShadImageSrc? forwardNavigationButtonSrc;
+
+  /// {@template ShadCalendar.navigationButtonPadding}
+  /// The padding of the navigation button, defaults to [EdgeInsets.zero]
+  /// {@endtemplate}
+  final EdgeInsets? navigationButtonPadding;
+
+  /// {@template ShadCalendar.navigationButtonDisabledOpacity}
+  /// The opacity of the navigation button when disabled, defaults to .5
+  /// {@endtemplate}
+  final double? navigationButtonDisabledOpacity;
+
+  /// {@template ShadCalendar.decoration}
+  /// The decoration of the calendar, defaults to
+  /// ```dart
+  /// ShadDecoration(
+  ///   border: ShadBorder.all(
+  ///     radius: radius,
+  ///     padding: const EdgeInsets.all(12),
+  ///     color: colorScheme.border
+  ///   ),
+  /// )
+  /// ```
+  /// {@endtemplate}
+  final ShadDecoration? decoration;
+
+  /// {@template ShadCalendar.spacingBetweenMonths}
+  /// The spacing between months, defaults to 16
+  /// {@endtemplate}
+  final double? spacingBetweenMonths;
+
+  /// {@template ShadCalendar.runSpacingBetweenMonths}
+  /// The run spacing between months, defaults to 16
+  /// {@endtemplate}
+  final double? runSpacingBetweenMonths;
+
+  /// {@template ShadCalendar.monthConstraints}
+  /// The month constraints, defaults to `BoxConstraints(maxWidth: 252)`
+  /// or `BoxConstraints(maxWidth: 310)` depending on the [hideNavigation] and
+  /// [captionLayout] values.
+  /// {@endtemplate}
+  final BoxConstraints? monthConstraints;
+
+  /// {@template ShadCalendar.headerHeight}
+  /// The height of the header, defaults to 38
+  /// {@endtemplate}
+  final double? headerHeight;
+
+  /// {@template ShadCalendar.headerPadding}
+  /// The padding of the header, defaults to `EdgeInsets.only(bottom: 16)`
+  /// {@endtemplate}
+  final EdgeInsets? headerPadding;
+
+  /// {@template ShadCalendar.captionLayoutGap}
+  /// The gap between the caption layout elements, defaults to 8
+  /// {@endtemplate}
+  final double? captionLayoutGap;
+
+  /// {@template ShadCalendar.headerTextStyle}
+  /// The text style of the header, defaults to `effectiveTextTheme.small`
+  /// {@endtemplate}
+  final TextStyle? headerTextStyle;
+
+  /// {@template ShadCalendar.weekdaysPadding}
+  /// The padding of the weekdays, defaults to `EdgeInsets.only(bottom: 8)`
+  /// {@endtemplate}
+  final EdgeInsets? weekdaysPadding;
+
+  /// {@template ShadCalendar.weekdaysTextStyle}
+  /// The text style of the weekdays, defaults to
+  /// `textTheme.muted.copyWith(fontSize: 12.8)`
+  /// {@endtemplate}
+  final TextStyle? weekdaysTextStyle;
+
+  /// {@template ShadCalendar.weekdaysTextAlign}
+  /// The text align of the weekdays, defaults to [TextAlign.center]
+  /// {@endtemplate}
+  final TextAlign? weekdaysTextAlign;
+
+  /// {@template ShadCalendar.weekNumbersHeaderText}
+  /// The header text of the week numbers, defaults to `#`
+  /// {@endtemplate}
+  final String? weekNumbersHeaderText;
+
+  /// {@template ShadCalendar.weekNumbersHeaderTextStyle}
+  /// The header text style of the week numbers, defaults to
+  /// `textTheme.muted.copyWith(fontSize: 12.8)`
+  /// {@endtemplate}
+  final TextStyle? weekNumbersHeaderTextStyle;
+
+  /// {@template ShadCalendar.weekNumbersTextStyle}
+  /// The text style of the week numbers, defaults to
+  /// `textTheme.muted.copyWith(fontSize: 12.8)`
+  /// {@endtemplate}
+  final TextStyle? weekNumbersTextStyle;
+
+  /// {@template ShadCalendar.weekNumbersTextAlign}
+  /// The text align of the week numbers, defaults to [TextAlign.center]
+  /// {@endtemplate}
+  final TextAlign? weekNumbersTextAlign;
+
+  /// {@template ShadCalendar.dayButtonSize}
+  /// The size of the day buttons, defaults to 36
+  /// {@endtemplate}
+  final double? dayButtonSize;
+
+  /// {@template ShadCalendar.dayButtonOutsideMonthOpacity}
+  /// The opacity of the day buttons outside the month, defaults to .5
+  /// {@endtemplate}
+  final double? dayButtonOutsideMonthOpacity;
+
+  /// {@template ShadCalendar.dayButtonPadding}
+  /// The padding of the day buttons, defaults to [EdgeInsets.zero]
+  /// {@endtemplate}
+  final EdgeInsets? dayButtonPadding;
+
+  /// {@template ShadCalendar.dayButtonDecoration}
+  /// The decoration of the day buttons, defaults to
+  /// ```dart
+  /// ShadDecoration(
+  ///   secondaryBorder:
+  ///       const ShadBorder(padding: EdgeInsets.zero),
+  ///   border: isInRange &&
+  ///           !isFirstDateInRange &&
+  ///           !isLastDateInRange
+  ///       ? isFirstOfRow
+  ///           ? ShadBorder(
+  ///               radius: BorderRadius.only(
+  ///                 topLeft: theme.radius.topLeft,
+  ///                 bottomLeft: theme.radius.bottomLeft,
+  ///               ),
+  ///             )
+  ///           : isLastOfRow
+  ///               ? ShadBorder(
+  ///                   radius: BorderRadius.only(
+  ///                     topRight: theme.radius.topRight,
+  ///                     bottomRight:
+  ///                         theme.radius.bottomRight,
+  ///                   ),
+  ///                 )
+  ///               : const ShadBorder(
+  ///                   radius: BorderRadius.zero,
+  ///                 )
+  ///       : null,
+  ///   ),
+  /// ```
+  /// {@endtemplate}
+  final ShadDecoration? dayButtonDecoration;
+
+  /// {@template ShadCalendar.selectedDayButtonTextStyle}
+  /// The text style of the selected day button, defaults to
+  /// ```dart
+  /// textTheme.small.copyWith(
+  ///   fontWeight: FontWeight.normal,
+  ///   color: colorScheme.primaryForeground,
+  /// )
+  /// ```
+  /// {@endtemplate}
+  final TextStyle? selectedDayButtonTextStyle;
+
+  /// {@template ShadCalendar.insideRangeDayButtonTextStyle}
+  /// The text style of the inside range day button, defaults to
+  /// ```dart
+  /// textTheme.small.copyWith(
+  ///   color: colorScheme.foreground,
+  /// )
+  /// ```
+  /// {@endtemplate}
+  final TextStyle? insideRangeDayButtonTextStyle;
+
+  /// {@template ShadCalendar.dayButtonTextStyle}
+  /// The text style of the day button, defaults to
+  /// ```dart
+  /// textTheme.small.copyWith(
+  ///   fontWeight: FontWeight.normal,
+  ///   color: colorScheme.foreground,
+  /// )
+  /// ```
+  /// {@endtemplate}
+  final TextStyle? dayButtonTextStyle;
+
+  /// {@template ShadCalendar.dayButtonVariant}
+  /// The variant of the day button, defaults to [ShadButtonVariant.ghost]
+  /// {@endtemplate}
+  final ShadButtonVariant? dayButtonVariant;
+
+  /// {@template ShadCalendar.selectedDayButtonVariant}
+  /// The variant of the selected day button, defaults to
+  /// [ShadButtonVariant.primary]
+  /// {@endtemplate}
+  final ShadButtonVariant? selectedDayButtonVariant;
+
+  /// {@template ShadCalendar.insideRangeDayButtonVariant}
+  /// The variant of the inside range day button, defaults to
+  /// [ShadButtonVariant.secondary]
+  /// {@endtemplate}
+  final ShadButtonVariant? insideRangeDayButtonVariant;
+
+  /// {@template ShadCalendar.todayButtonVariant}
+  /// The variant of the today button, defaults to [ShadButtonVariant.secondary]
+  /// {@endtemplate}
+  final ShadButtonVariant? todayButtonVariant;
+
+  /// {@template ShadCalendar.gridMainAxisSpacing}
+  /// The main axis spacing of the grid, defaults to 8
+  /// {@endtemplate}
+  final double? gridMainAxisSpacing;
+
+  /// {@template ShadCalendar.gridCrossAxisSpacing}
+  /// The cross axis spacing of the grid, defaults to 0
+  /// {@endtemplate}
+  final double? gridCrossAxisSpacing;
+
+  /// {@template ShadCalendar.dayButtonOutsideMonthTextStyle}
+  /// The text style of the day buttons outside the month, defaults to
+  /// `textTheme.muted`
+  /// {@endtemplate}
+  final TextStyle? dayButtonOutsideMonthTextStyle;
+
+  /// {@template ShadCalendar.dayButtonOutsideMonthVariant}
+  /// The variant of the day buttons outside the month, defaults to
+  /// [ShadButtonVariant.ghost]
+  /// {@endtemplate}
+  final ShadButtonVariant? dayButtonOutsideMonthVariant;
+
+  /// {@template ShadCalendar.selectedDayButtonOusideMonthVariant}
+  /// The variant of the selected day buttons outside the month, defaults to
+  /// [ShadButtonVariant.secondary]
+  /// {@endtemplate}
+  final ShadButtonVariant? selectedDayButtonOusideMonthVariant;
 
   @override
   State<ShadCalendar> createState() => _ShadCalendarState();
@@ -599,10 +1034,187 @@ class _ShadCalendarState extends State<ShadCalendar> {
     final effectiveHideNavigation =
         widget.hideNavigation ?? theme.calendarTheme.hideNavigation ?? false;
 
+    final effectiveYearSelectorMinWidth = widget.yearSelectorMinWidth ??
+        theme.calendarTheme.yearSelectorMinWidth ??
+        100;
+
+    final effectiveMonthSelectorMinWidth = widget.monthSelectorMinWidth ??
+        theme.calendarTheme.monthSelectorMinWidth ??
+        130;
+
+    final effectiveYearSelectorPadding = widget.yearSelectorPadding ??
+        theme.calendarTheme.yearSelectorPadding ??
+        const EdgeInsets.symmetric(horizontal: 8, vertical: 4);
+
+    final effectiveMonthSelectorPadding = widget.monthSelectorPadding ??
+        theme.calendarTheme.monthSelectorPadding ??
+        const EdgeInsets.symmetric(horizontal: 8, vertical: 4);
+
+    final effectiveNavigationButtonSize = widget.navigationButtonSize ??
+        theme.calendarTheme.navigationButtonSize ??
+        28;
+
+    final effectiveNavigationButtonIconSize = widget.navigationButtonIconSize ??
+        theme.calendarTheme.navigationButtonIconSize ??
+        16;
+
+    final effectiveBackNavigationButtonSrc = widget.backNavigationButtonSrc ??
+        theme.calendarTheme.backNavigationButtonSrc ??
+        LucideIcons.chevronLeft;
+
+    final effectiveForwardNavigationButtonSrc =
+        widget.forwardNavigationButtonSrc ??
+            theme.calendarTheme.forwardNavigationButtonSrc ??
+            LucideIcons.chevronRight;
+
+    final effectiveNavigationButtonPadding = widget.navigationButtonPadding ??
+        theme.calendarTheme.navigationButtonPadding ??
+        EdgeInsets.zero;
+
+    final effectiveNavigationButtonDisabledOpacity =
+        widget.navigationButtonDisabledOpacity ??
+            theme.calendarTheme.navigationButtonDisabledOpacity ??
+            .5;
+
+    final effectiveDecoration =
+        theme.calendarTheme.decoration?.mergeWith(widget.decoration) ??
+            widget.decoration;
+
+    final effectiveSpacingBetweenMonths = widget.spacingBetweenMonths ??
+        theme.calendarTheme.spacingBetweenMonths ??
+        16;
+
+    final effectiveRunSpacingBetweenMonths = widget.runSpacingBetweenMonths ??
+        theme.calendarTheme.runSpacingBetweenMonths ??
+        16;
+
+    final effectiveMonthConstraints = widget.monthConstraints ??
+        theme.calendarTheme.monthConstraints ??
+        BoxConstraints(
+          maxWidth: 252 +
+              (!effectiveHideNavigation &&
+                      widget.captionLayout != ShadCalendarCaptionLayout.label
+                  ? 58
+                  : 0),
+        );
+
+    final effectiveHeaderHeight =
+        widget.headerHeight ?? theme.calendarTheme.headerHeight ?? 38;
+
+    final effectiveHeaderPadding = widget.headerPadding ??
+        theme.calendarTheme.headerPadding ??
+        const EdgeInsets.only(bottom: 16);
+
+    final effectiveCaptionLayoutGap =
+        widget.captionLayoutGap ?? theme.calendarTheme.captionLayoutGap ?? 8;
+
+    final effectiveHeaderTextStyle = widget.headerTextStyle ??
+        theme.calendarTheme.headerTextStyle ??
+        theme.textTheme.small;
+
+    final effectiveWeekdaysPadding = widget.weekdaysPadding ??
+        theme.calendarTheme.weekdaysPadding ??
+        const EdgeInsets.only(bottom: 8);
+
+    final effectiveWeekdaysTextStyle = widget.weekdaysTextStyle ??
+        theme.calendarTheme.weekdaysTextStyle ??
+        theme.textTheme.muted.copyWith(fontSize: 12.8);
+
+    final effectiveWeekdaysTextAlign = widget.weekdaysTextAlign ??
+        theme.calendarTheme.weekdaysTextAlign ??
+        TextAlign.center;
+
+    final effectiveWeekNumbersHeaderText = widget.weekNumbersHeaderText ??
+        theme.calendarTheme.weekNumbersHeaderText ??
+        '#';
+
+    final effectiveWeekNumbersHeaderTextStyle =
+        widget.weekNumbersHeaderTextStyle ??
+            theme.calendarTheme.weekNumbersHeaderTextStyle ??
+            theme.textTheme.muted.copyWith(fontSize: 12.8);
+
+    final effectiveGridMainAxisSpacing = widget.gridMainAxisSpacing ??
+        theme.calendarTheme.gridMainAxisSpacing ??
+        8;
+
+    final effectiveGridCrossAxisSpacing = widget.gridCrossAxisSpacing ??
+        theme.calendarTheme.gridCrossAxisSpacing ??
+        0;
+
+    final effectiveInsideRangeDayButtonTextStyle =
+        widget.insideRangeDayButtonTextStyle ??
+            theme.calendarTheme.insideRangeDayButtonTextStyle ??
+            theme.textTheme.small.copyWith(
+              color: theme.colorScheme.foreground,
+            );
+
+    final effectiveSelectedDayButtonTextStyle =
+        widget.selectedDayButtonTextStyle ??
+            theme.calendarTheme.selectedDayButtonTextStyle ??
+            theme.textTheme.small.copyWith(
+              fontWeight: FontWeight.normal,
+              color: theme.colorScheme.primaryForeground,
+            );
+
+    final effectiveDayButtonTextStyle = widget.dayButtonTextStyle ??
+        theme.calendarTheme.dayButtonTextStyle ??
+        theme.textTheme.small.copyWith(
+          fontWeight: FontWeight.normal,
+          color: theme.colorScheme.foreground,
+        );
+
+    final effectiveDayButtonOutsideMonthTextStyle =
+        widget.dayButtonOutsideMonthTextStyle ??
+            theme.calendarTheme.dayButtonOutsideMonthTextStyle ??
+            theme.textTheme.muted;
+
+    final effectiveWeekNumbersTextStyle = widget.weekNumbersTextStyle ??
+        theme.calendarTheme.weekNumbersTextStyle ??
+        theme.textTheme.muted.copyWith(fontSize: 12.8);
+
+    final effectiveDayButtonSize =
+        widget.dayButtonSize ?? theme.calendarTheme.dayButtonSize ?? 36;
+
+    final effectiveDayButtonOutsideMonthOpacity =
+        widget.dayButtonOutsideMonthOpacity ??
+            theme.calendarTheme.dayButtonOutsideMonthOpacity ??
+            .5;
+
+    final effectiveDayButtonPadding = widget.dayButtonPadding ??
+        theme.calendarTheme.dayButtonPadding ??
+        EdgeInsets.zero;
+
+    final effectiveDayButtonVariant = widget.dayButtonVariant ??
+        theme.calendarTheme.dayButtonVariant ??
+        ShadButtonVariant.ghost;
+
+    final effectiveSelectedDayButtonVariant = widget.selectedDayButtonVariant ??
+        theme.calendarTheme.selectedDayButtonVariant ??
+        ShadButtonVariant.primary;
+
+    final effectiveInsideRangeDayButtonVariant =
+        widget.insideRangeDayButtonVariant ??
+            theme.calendarTheme.insideRangeDayButtonVariant ??
+            ShadButtonVariant.secondary;
+
+    final effectiveDayButtonOutsideMonthVariant =
+        widget.dayButtonOutsideMonthVariant ??
+            theme.calendarTheme.dayButtonOutsideMonthVariant ??
+            ShadButtonVariant.ghost;
+
+    final effectiveSelectedDayButtonOusideMonthVariant =
+        widget.selectedDayButtonOusideMonthVariant ??
+            theme.calendarTheme.selectedDayButtonOusideMonthVariant ??
+            ShadButtonVariant.secondary;
+
+    final effectiveTodayButtonVariant = widget.todayButtonVariant ??
+        theme.calendarTheme.todayButtonVariant ??
+        ShadButtonVariant.secondary;
+
     final yearSelector = ShadSelect<int>(
       initialValue: currentMonth.year,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      minWidth: 100,
+      padding: effectiveYearSelectorPadding,
+      minWidth: effectiveYearSelectorMinWidth,
       selectedOptionBuilder: (context, value) {
         return Text(effectiveFormatYear(DateTime(value, currentMonth.month)));
       },
@@ -619,8 +1231,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     final monthSelector = ShadSelect<int>(
       initialValue: currentMonth.month,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      minWidth: 130,
+      padding: effectiveMonthSelectorPadding,
+      minWidth: effectiveMonthSelectorMinWidth,
       selectedOptionBuilder: (context, value) {
         return Text(effectiveFormatMonth(DateTime(currentMonth.year, value)));
       },
@@ -643,17 +1255,17 @@ class _ShadCalendarState extends State<ShadCalendar> {
       valueListenable: backMonthButtonHovered,
       builder: (context, isHovered, _) {
         return Opacity(
-          opacity: isHovered ? 1 : .5,
+          opacity: isHovered ? 1 : effectiveNavigationButtonDisabledOpacity,
           child: ShadButton.outline(
-            width: 28,
-            height: 28,
-            padding: EdgeInsets.zero,
+            width: effectiveNavigationButtonSize,
+            height: effectiveNavigationButtonSize,
+            padding: effectiveNavigationButtonPadding,
             applyIconColorFilter: false,
             enabled: !isFirstMonthDisplayed,
             onHoverChange: (hovered) => backMonthButtonHovered.value = hovered,
-            icon: const ShadImage.square(
-              LucideIcons.chevronLeft,
-              size: 16,
+            icon: ShadImage.square(
+              effectiveBackNavigationButtonSrc,
+              size: effectiveNavigationButtonIconSize,
             ),
             onPressed: () => goToMonth(currentMonth.previousMonth),
           ),
@@ -665,18 +1277,18 @@ class _ShadCalendarState extends State<ShadCalendar> {
       valueListenable: forwardMonthButtonHovered,
       builder: (context, isHovered, _) {
         return Opacity(
-          opacity: isHovered ? 1 : .5,
+          opacity: isHovered ? 1 : effectiveNavigationButtonDisabledOpacity,
           child: ShadButton.outline(
-            width: 28,
-            height: 28,
-            padding: EdgeInsets.zero,
+            width: effectiveNavigationButtonSize,
+            height: effectiveNavigationButtonSize,
+            padding: effectiveNavigationButtonPadding,
             enabled: !isLastMonthDisplayed,
             onHoverChange: (hovered) =>
                 forwardMonthButtonHovered.value = hovered,
             onPressed: () => goToMonth(currentMonth.nextMonth),
-            child: const ShadImage.square(
-              LucideIcons.chevronRight,
-              size: 16,
+            child: ShadImage.square(
+              effectiveForwardNavigationButtonSrc,
+              size: effectiveNavigationButtonIconSize,
             ),
           ),
         );
@@ -686,16 +1298,10 @@ class _ShadCalendarState extends State<ShadCalendar> {
     final columnsCount = widget.showWeekNumbers ? 8 : 7;
 
     return ShadDecorator(
-      decoration: ShadDecoration(
-        border: ShadBorder.all(
-          radius: theme.radius,
-          padding: const EdgeInsets.all(12),
-          color: theme.colorScheme.border,
-        ),
-      ),
+      decoration: effectiveDecoration,
       child: Wrap(
-        spacing: 16,
-        runSpacing: 16,
+        spacing: effectiveSpacingBetweenMonths,
+        runSpacing: effectiveRunSpacingBetweenMonths,
         children: models.mapIndexed((index, dateModel) {
           final isFirstMonth = index == 0;
           final isLastMonth = index == models.length - 1;
@@ -706,7 +1312,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
               Center(
                 child: Text(
                   effectiveFormatMonthYear(dateModel.month),
-                  style: theme.textTheme.small,
+                  style: effectiveHeaderTextStyle,
                 ),
               ),
               if (isLastMonth && !effectiveHideNavigation)
@@ -715,28 +1321,21 @@ class _ShadCalendarState extends State<ShadCalendar> {
           );
 
           return ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 252 +
-                  (!effectiveHideNavigation &&
-                          widget.captionLayout !=
-                              ShadCalendarCaptionLayout.label
-                      ? 58
-                      : 0),
-            ),
+            constraints: effectiveMonthConstraints,
             child: Column(
               children: [
                 // month header and back/forward buttons
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
+                  padding: effectiveHeaderPadding,
                   child: SizedBox(
-                    height: 38,
+                    height: effectiveHeaderHeight,
                     child: !isFirstMonth &&
                             effectiveCaptionLayout !=
                                 ShadCalendarCaptionLayout.label
                         ? Center(
                             child: Text(
                               effectiveFormatMonthYear(dateModel.month),
-                              style: theme.textTheme.small,
+                              style: effectiveHeaderTextStyle,
                             ),
                           )
                         : switch (effectiveCaptionLayout) {
@@ -754,11 +1353,11 @@ class _ShadCalendarState extends State<ShadCalendar> {
                             ShadCalendarCaptionLayout.dropdownMonths => Row(
                                 children: [
                                   monthSelector,
-                                  const SizedBox(width: 8),
+                                  SizedBox(width: effectiveCaptionLayoutGap),
                                   Expanded(
                                     child: Text(
                                       effectiveFormatYear(dateModel.month),
-                                      style: theme.textTheme.small,
+                                      style: effectiveHeaderTextStyle,
                                     ),
                                   ),
                                   if (!effectiveHideNavigation) ...[
@@ -770,11 +1369,11 @@ class _ShadCalendarState extends State<ShadCalendar> {
                             ShadCalendarCaptionLayout.dropdownYears => Row(
                                 children: [
                                   yearSelector,
-                                  const SizedBox(width: 8),
+                                  SizedBox(width: effectiveCaptionLayoutGap),
                                   Expanded(
                                     child: Text(
                                       effectiveFormatMonth(dateModel.month),
-                                      style: theme.textTheme.small,
+                                      style: effectiveHeaderTextStyle,
                                     ),
                                   ),
                                   if (!effectiveHideNavigation) ...[
@@ -790,7 +1389,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                 Offstage(
                   offstage: widget.hideWeekdayNames,
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
+                    padding: effectiveWeekdaysPadding,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: List.generate(
@@ -799,10 +1398,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
                           if (widget.showWeekNumbers && index == 0) {
                             return Expanded(
                               child: Text(
-                                '#',
-                                style: theme.textTheme.muted
-                                    .copyWith(fontSize: 12.8),
-                                textAlign: TextAlign.center,
+                                effectiveWeekNumbersHeaderText,
+                                style: effectiveWeekNumbersHeaderTextStyle,
+                                textAlign: effectiveWeekdaysTextAlign,
                               ),
                             );
                           }
@@ -812,9 +1410,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
                           return Expanded(
                             child: Text(
                               effectiveFormatWeekday(date),
-                              style: theme.textTheme.muted
-                                  .copyWith(fontSize: 12.8),
-                              textAlign: TextAlign.center,
+                              style: effectiveWeekdaysTextStyle,
+                              textAlign: effectiveWeekdaysTextAlign,
                             ),
                           );
                         },
@@ -823,8 +1420,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
                   ),
                 ),
                 GridView.count(
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 0,
+                  mainAxisSpacing: effectiveGridMainAxisSpacing,
+                  crossAxisSpacing: effectiveGridCrossAxisSpacing,
                   crossAxisCount: columnsCount,
                   shrinkWrap: true,
                   children: dateModel.dates.mapIndexed((index, date) {
@@ -858,50 +1455,46 @@ class _ShadCalendarState extends State<ShadCalendar> {
                     final textStyle = switch (widget.variant) {
                       ShadCalendarVariant.range => () {
                           if (isFirstDateInRange || isLastDateInRange) {
-                            return theme.textTheme.small.copyWith(
-                              color: theme.colorScheme.primaryForeground,
-                            );
+                            return effectiveSelectedDayButtonTextStyle;
                           }
 
                           if (isInRange) {
-                            return theme.textTheme.small
-                                .copyWith(color: theme.colorScheme.foreground);
+                            return effectiveInsideRangeDayButtonTextStyle;
                           }
 
-                          return theme.textTheme.muted;
+                          return effectiveDayButtonTextStyle;
                         }(),
                       ShadCalendarVariant.single ||
                       ShadCalendarVariant.multiple =>
                         isInMonth
-                            ? theme.textTheme.small.copyWith(
-                                fontWeight: FontWeight.normal,
-                                color: selected
-                                    ? theme.colorScheme.primaryForeground
-                                    : theme.colorScheme.foreground,
-                              )
-                            : theme.textTheme.muted,
+                            ? selected
+                                ? effectiveSelectedDayButtonTextStyle
+                                : effectiveDayButtonTextStyle
+                            : effectiveDayButtonOutsideMonthTextStyle
                     };
 
                     final variant = switch (widget.variant) {
                       ShadCalendarVariant.range => () {
                           if (isFirstDateInRange || isLastDateInRange) {
-                            return ShadButtonVariant.primary;
+                            return effectiveSelectedDayButtonVariant;
                           }
-                          if (isInRange) return ShadButtonVariant.secondary;
-                          if (isToday) return ShadButtonVariant.secondary;
-                          return ShadButtonVariant.ghost;
+                          if (isInRange) {
+                            return effectiveInsideRangeDayButtonVariant;
+                          }
+                          if (isToday) return effectiveTodayButtonVariant;
+                          return effectiveDayButtonVariant;
                         }(),
                       ShadCalendarVariant.single ||
                       ShadCalendarVariant.multiple =>
                         switch (isInMonth) {
                           true => selected
-                              ? ShadButtonVariant.primary
+                              ? effectiveSelectedDayButtonVariant
                               : isToday
-                                  ? ShadButtonVariant.secondary
-                                  : ShadButtonVariant.ghost,
+                                  ? effectiveTodayButtonVariant
+                                  : effectiveDayButtonVariant,
                           false => selected
-                              ? ShadButtonVariant.secondary
-                              : ShadButtonVariant.ghost,
+                              ? effectiveSelectedDayButtonOusideMonthVariant
+                              : effectiveDayButtonOutsideMonthVariant,
                         },
                     };
 
@@ -909,7 +1502,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                       return Center(
                         child: Text(
                           date.weekNumber.toString(),
-                          style: theme.textTheme.muted.copyWith(fontSize: 12.8),
+                          style: effectiveWeekNumbersTextStyle,
                         ),
                       );
                     }
@@ -919,41 +1512,46 @@ class _ShadCalendarState extends State<ShadCalendar> {
                     final isLastOfRow =
                         (index - (widget.showWeekNumbers ? 1 : 0)) % 7 == 6;
 
+                    final effectiveDayButtonDecoration = ShadDecoration(
+                      secondaryBorder:
+                          const ShadBorder(padding: EdgeInsets.zero),
+                      border: isInRange &&
+                              !isFirstDateInRange &&
+                              !isLastDateInRange
+                          ? isFirstOfRow
+                              ? ShadBorder(
+                                  radius: BorderRadius.only(
+                                    topLeft: theme.radius.topLeft,
+                                    bottomLeft: theme.radius.bottomLeft,
+                                  ),
+                                )
+                              : isLastOfRow
+                                  ? ShadBorder(
+                                      radius: BorderRadius.only(
+                                        topRight: theme.radius.topRight,
+                                        bottomRight: theme.radius.bottomRight,
+                                      ),
+                                    )
+                                  : const ShadBorder(
+                                      radius: BorderRadius.zero,
+                                    )
+                          : null,
+                    )
+                        .mergeWith(theme.calendarTheme.dayButtonDecoration)
+                        .mergeWith(widget.dayButtonDecoration);
+
                     return Center(
                       child: Opacity(
-                        opacity: isInMonth ? 1 : .5,
+                        opacity: isInMonth
+                            ? 1
+                            : effectiveDayButtonOutsideMonthOpacity,
                         child: ShadButton.raw(
                           variant: variant,
-                          width: 36,
-                          height: 36,
-                          decoration: ShadDecoration(
-                            secondaryBorder:
-                                const ShadBorder(padding: EdgeInsets.zero),
-                            border: isInRange &&
-                                    !isFirstDateInRange &&
-                                    !isLastDateInRange
-                                ? isFirstOfRow
-                                    ? ShadBorder(
-                                        radius: BorderRadius.only(
-                                          topLeft: theme.radius.topLeft,
-                                          bottomLeft: theme.radius.bottomLeft,
-                                        ),
-                                      )
-                                    : isLastOfRow
-                                        ? ShadBorder(
-                                            radius: BorderRadius.only(
-                                              topRight: theme.radius.topRight,
-                                              bottomRight:
-                                                  theme.radius.bottomRight,
-                                            ),
-                                          )
-                                        : const ShadBorder(
-                                            radius: BorderRadius.zero,
-                                          )
-                                : null,
-                          ),
+                          width: effectiveDayButtonSize,
+                          height: effectiveDayButtonSize,
+                          decoration: effectiveDayButtonDecoration,
                           enabled: enabled(date),
-                          padding: EdgeInsets.zero,
+                          padding: effectiveDayButtonPadding,
                           child: Text(
                             date.day.toString(),
                             style: textStyle,
