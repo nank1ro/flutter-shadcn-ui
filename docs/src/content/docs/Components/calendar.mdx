@@ -1,0 +1,145 @@
+---
+title: Calendar
+sidebar:
+  order: 4
+---
+
+import Preview from "../../../components/Preview.astro";
+
+A date field component that allows users to enter and edit date.
+
+<Preview src="https://shadcn-ui-playground.web.app/calendar?style=single" minHeight="450px">
+
+```dart
+class SingleCalendar extends StatefulWidget {
+  const SingleCalendar({super.key});
+
+  @override
+  State<SingleCalendar> createState() => _SingleCalendarState();
+}
+
+class _SingleCalendarState extends State<SingleCalendar> {
+  final today = DateTime.now();
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadCalendar(
+      selected: today,
+      fromMonth: DateTime(today.year - 1),
+      toMonth: DateTime(today.year, 12),
+    );
+  }
+}
+```
+
+</Preview>
+
+## Multiple
+
+<Preview src="https://shadcn-ui-playground.web.app/calendar?style=multiple" minHeight="450px">
+
+```dart
+class MultipleCalendar extends StatefulWidget {
+ const MultipleCalendar({super.key});
+
+ @override
+ State<MultipleCalendar> createState() => _MultipleCalendarState();
+}
+
+class _MultipleCalendarState extends State<MultipleCalendar> {
+ final today = DateTime.now();
+
+ @override
+ Widget build(BuildContext context) {
+   return ShadCalendar.multiple(
+     numberOfMonths: 2,
+     fromMonth: DateTime(today.year),
+     toMonth: DateTime(today.year + 1, 12),
+     min: 5,
+     max: 10,
+   );
+ }
+}
+```
+
+</Preview>
+
+## Range
+
+<Preview src="https://shadcn-ui-playground.web.app/calendar?style=range" minHeight="450px">
+
+```dart
+class RangeCalendar extends StatelessWidget {
+ const RangeCalendar({super.key});
+
+ @override
+ Widget build(BuildContext context) {
+   return const ShadCalendar.range(
+     min: 2,
+     max: 5,
+   );
+ }
+}
+```
+
+</Preview>
+
+## Customizations
+
+### Caption Layout
+
+#### Dropdown
+
+<Preview
+  src="https://shadcn-ui-playground.web.app/calendar?captionLayout=dropdown"
+  minHeight="500px"
+/>
+
+#### DropdownMonths
+
+<Preview
+  src="https://shadcn-ui-playground.web.app/calendar?captionLayout=dropdownMonths"
+  minHeight="500px"
+/>
+
+#### DropdownYears
+
+<Preview
+  src="https://shadcn-ui-playground.web.app/calendar?captionLayout=dropdownYears"
+  minHeight="450px"
+/>
+
+### Hide Navigation
+
+<Preview
+  src="https://shadcn-ui-playground.web.app/calendar?hideNavigation"
+  minHeight="450px"
+/>
+
+### Show Week Numbers
+
+<Preview
+  src="https://shadcn-ui-playground.web.app/calendar?showWeekNumbers"
+  minHeight="450px"
+/>
+
+### Show Outside Days (false)
+
+<Preview
+  src="https://shadcn-ui-playground.web.app/calendar?showOutsideDays=0"
+  minHeight="450px"
+/>
+
+### Fixed Weeks
+
+<Preview
+  src="https://shadcn-ui-playground.web.app/calendar?fixedWeeks"
+  minHeight="450px"
+/>
+
+### Hide Weekday Names
+
+<Preview
+  src="https://shadcn-ui-playground.web.app/calendar?hideWeekdayNames"
+  minHeight="450px"
+/>

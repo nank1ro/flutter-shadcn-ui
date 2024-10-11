@@ -29,9 +29,10 @@ class CalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Align(
+        alignment: Alignment.topCenter,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.fromLTRB(40, 40, 40, 0),
           child: switch (style) {
             ShadCalendarVariant.single => SingleCalendar(
                 captionLayout: captionLayout,
@@ -91,9 +92,6 @@ class _SingleCalendarState extends State<SingleCalendar> {
       toMonth: DateTime(today.year, 12),
       hideNavigation: widget.hideNavigation,
       captionLayout: widget.captionLayout,
-      onChanged: (date) {
-        print('month changed to ${date.month}');
-      },
       showWeekNumbers: widget.showWeekNumbers,
       showOutsideDays: widget.showOutsideDays,
       fixedWeeks: widget.fixedWeeks,
@@ -135,7 +133,6 @@ class _MultipleCalendarState extends State<MultipleCalendar> {
       numberOfMonths: 2,
       fromMonth: DateTime(today.year),
       toMonth: DateTime(today.year + 1, 12),
-      onChanged: (dates) {},
       min: 5,
       max: 10,
       reverseMonths: widget.reverseMonths,
