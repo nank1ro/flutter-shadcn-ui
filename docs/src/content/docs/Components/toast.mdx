@@ -3,7 +3,8 @@ title: Toast
 sidebar:
   order: 4
 ---
-import Preview from '../../../components/Preview.astro';
+
+import Preview from "../../../components/Preview.astro";
 
 A succinct message that is displayed temporarily.
 
@@ -102,7 +103,7 @@ ShadButton.outline(
         action: ShadButton.destructive(
           child: const Text('Try again'),
           decoration: ShadDecoration(
-            border: ShadBorder(
+            border: ShadBorder.all(
               color: theme.colorScheme.destructiveForeground,
             ),
           ),
