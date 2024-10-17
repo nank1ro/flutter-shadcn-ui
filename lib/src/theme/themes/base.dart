@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
