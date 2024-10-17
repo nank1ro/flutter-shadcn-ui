@@ -1,3 +1,7 @@
+## 0.13.2
+
+- **CHORE**: Use forked `flutter_svg` and `vector_graphics` packages.
+
 ## 0.13.1
 
 - **CHORE**: Update `ShadImage` import due to WASM.
