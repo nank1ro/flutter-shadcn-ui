@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:vector_graphics/vector_graphics.dart';
+import 'package:vector_graphics/vector_graphics.dart'
+    show AssetBytesLoader, NetworkBytesLoader;
 
 typedef ShadImageSrc = Object;
 
