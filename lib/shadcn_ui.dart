@@ -35,6 +35,7 @@ export 'src/components/table.dart';
 export 'src/components/tabs.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
+export 'src/components/date_picker.dart';
 
 // Raw Components
 export 'src/raw_components/portal.dart';
