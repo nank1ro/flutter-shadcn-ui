@@ -18,6 +18,7 @@ dependencies:
   multi_split_view: ^2.4.0
   google_fonts: 6.1.0
   collection: ^1.18.0
+  get: ^4.6.6
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,15 @@
+## 0.13.4+1
+
+- **CHORE**: Update svg dependencies
+
+## 0.13.4
+
+- **CHORE**: Update svg dependencies
+
+## 0.13.3
+
+- **FEAT**: Add `ShadApp.custom` for custom _WidgetsApp_ implementation.
+
 ## 0.13.2
 
 - **CHORE**: Use forked `flutter_svg` and `vector_graphics` packages.

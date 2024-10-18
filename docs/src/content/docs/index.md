@@ -159,3 +159,32 @@ class MyApp extends StatelessWidget {
     );
   }
 ```
+
+## Shadcn + Custom App
+
+If you want to integrate Shadcn with a custom WidgetsApp integration, like GetX (GetMaterialApp) you can use `ShadApp.custom`
+
+```diff lang="dart"
+import 'package:shadcn_ui/shadcn_ui.dart';
++ import 'package:get/get.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+-    return ShadApp();
++    return ShadApp.custom(
++      appBuilder: (context, theme) => GetMaterialApp(
++        theme: theme,
++        builder: (context, child) {
++          return ShadToaster(child: child!);
++        },
++      ),
++    );
+  }
+```
