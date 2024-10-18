@@ -85,6 +85,19 @@ class App extends StatelessWidget {
       ],
       builder: (context) {
         final themeMode = context.observe<ThemeMode>();
+        // Custom App example
+        // return ShadApp.custom(
+        //   themeMode: themeMode,
+        //   appBuilder: (context, theme) => GetMaterialApp(
+        //     routes: routes,
+        //     themeMode: themeMode,
+        //     theme: theme,
+        //     home: const MainPage(),
+        //     builder: (context, child) {
+        //       return ShadToaster(child: child!);
+        //     },
+        //   ),
+        // );
         return ShadApp(
           debugShowCheckedModeBanner: false,
           themeMode: themeMode,
