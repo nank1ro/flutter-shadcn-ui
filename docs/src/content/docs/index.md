@@ -166,7 +166,7 @@ If you want to integrate Shadcn with a custom WidgetsApp integration, like GetX 
 
 ```diff lang="dart"
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:get/get.dart';
++ import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
