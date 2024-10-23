@@ -1,3 +1,7 @@
+## 0.13.5
+
+- **FIX**: Fix `ShadSelect` initial values on widget creation.
+
 ## 0.13.4+1
 
 - **CHORE**: Update svg dependencies

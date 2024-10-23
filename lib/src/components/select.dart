@@ -462,6 +462,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
   FocusNode? internalFocusNode;
   late final selectedValues = <T>{
     if (widget.initialValue is T) widget.initialValue as T,
+    ...widget.initialValues,
   };
 
   ShadPopoverController? _controller;
