@@ -39,6 +39,13 @@ class _DatePickerPageState extends State<DatePickerPage> {
             allowDeselection: allowDeselection,
           ),
         ),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600),
+          child: ShadDatePicker.range(
+            closeOnSelection: closeOnSelection,
+            allowDeselection: allowDeselection,
+          ),
+        ),
       ],
     );
   }
