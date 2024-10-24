@@ -60,6 +60,7 @@ class ShadCalendarTheme {
     this.showWeekNumbers,
     this.weekStartsOn,
     this.fixedWeeks,
+    this.allowDeselection,
   });
 
   final bool merge;
@@ -220,6 +221,9 @@ class ShadCalendarTheme {
   /// {@macro ShadCalendar.fixedWeeks}
   final bool? fixedWeeks;
 
+  /// {@macro ShadCalendar.allowDeselection}
+  final bool? allowDeselection;
+
   static ShadCalendarTheme lerp(
     ShadCalendarTheme a,
     ShadCalendarTheme b,
@@ -377,6 +381,7 @@ class ShadCalendarTheme {
       showWeekNumbers: t < .5 ? a.showWeekNumbers : b.showWeekNumbers,
       weekStartsOn: t < .5 ? a.weekStartsOn : b.weekStartsOn,
       fixedWeeks: t < .5 ? a.fixedWeeks : b.fixedWeeks,
+      allowDeselection: t < .5 ? a.allowDeselection : b.allowDeselection,
     );
   }
 
@@ -454,6 +459,7 @@ class ShadCalendarTheme {
       showWeekNumbers: other.showWeekNumbers ?? showWeekNumbers,
       weekStartsOn: other.weekStartsOn ?? weekStartsOn,
       fixedWeeks: other.fixedWeeks ?? fixedWeeks,
+      allowDeselection: other.allowDeselection ?? allowDeselection,
     );
   }
 
@@ -517,7 +523,8 @@ class ShadCalendarTheme {
         other.formatWeekday == formatWeekday &&
         other.showWeekNumbers == showWeekNumbers &&
         other.weekStartsOn == weekStartsOn &&
-        other.fixedWeeks == fixedWeeks;
+        other.fixedWeeks == fixedWeeks &&
+        other.allowDeselection == allowDeselection;
   }
 
   @override
@@ -574,7 +581,8 @@ class ShadCalendarTheme {
         formatWeekday.hashCode ^
         showWeekNumbers.hashCode ^
         weekStartsOn.hashCode ^
-        fixedWeeks.hashCode;
+        fixedWeeks.hashCode ^
+        allowDeselection.hashCode;
   }
 
   ShadCalendarTheme copyWith({
@@ -631,6 +639,7 @@ class ShadCalendarTheme {
     bool? showWeekNumbers,
     int? weekStartsOn,
     bool? fixedWeeks,
+    bool? allowDeselection,
   }) {
     return ShadCalendarTheme(
       merge: merge ?? this.merge,
@@ -704,6 +713,7 @@ class ShadCalendarTheme {
       showWeekNumbers: showWeekNumbers ?? this.showWeekNumbers,
       weekStartsOn: weekStartsOn ?? this.weekStartsOn,
       fixedWeeks: fixedWeeks ?? this.fixedWeeks,
+      allowDeselection: allowDeselection ?? this.allowDeselection,
     );
   }
 }
