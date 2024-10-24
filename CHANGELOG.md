@@ -1,3 +1,8 @@
+## 0.14.0
+
+- **FEAT**: New `ShadDatePicker` component.
+- **FEAT**: Add `allowDeselection` property to `ShadCalendar`.
+
 ## 0.13.5
 
 - **FIX**: Fix `ShadSelect` initial values on widget creation.

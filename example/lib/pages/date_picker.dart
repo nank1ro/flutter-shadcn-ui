@@ -13,6 +13,7 @@ class DatePickerPage extends StatefulWidget {
 
 class _DatePickerPageState extends State<DatePickerPage> {
   bool closeOnSelection = false;
+  bool allowDeselection = true;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +25,18 @@ class _DatePickerPageState extends State<DatePickerPage> {
           value: closeOnSelection,
           onChanged: (value) => setState(() => closeOnSelection = value),
         ),
+        MyBoolProperty(
+          label: 'allowDeselection',
+          value: allowDeselection,
+          onChanged: (value) => setState(() => allowDeselection = value),
+        ),
       ],
       children: [
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
           child: ShadDatePicker(
             closeOnSelection: closeOnSelection,
+            allowDeselection: allowDeselection,
           ),
         ),
       ],
