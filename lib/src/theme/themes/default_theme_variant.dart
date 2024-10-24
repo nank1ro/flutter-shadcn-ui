@@ -825,5 +825,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         showWeekNumbers: false,
         weekStartsOn: 1,
         fixedWeeks: false,
+        allowDeselection: false,
       );
 }
