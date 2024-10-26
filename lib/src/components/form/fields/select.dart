@@ -17,9 +17,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.error,
     super.description,
     super.onChanged,
-
-    /// {@macro ShadSelect.onChangedNullable}
-    ValueChanged<T?>? onChangedNullable,
     super.valueTransformer,
     super.onReset,
     super.enabled,
@@ -54,6 +51,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro select.footer}
     Widget? footer,
+    bool allowDeselection = false,
     bool closeOnSelect = true,
   }) : super(
           decorationBuilder: (context) =>
@@ -65,19 +63,20 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
             return ShadSelect<T>(
               options: options,
+              allowDeselection: allowDeselection,
               optionsBuilder: optionsBuilder,
               selectedOptionBuilder: selectedOptionBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
               initialValue: initialValue,
               enabled: state.enabled,
-              onChanged: onChangedNullable != null ? state.didChange : null,
-              onChangedNullable: onChangedNullable != null
-                  ? (v) {
-                      state.didChange(v);
-                      onChangedNullable(v);
-                    }
-                  : null,
+              onChanged: onChanged != null ? state.didChange : null,
+              // onChangedNullable: onChangedNullable != null
+              //     ? (v) {
+              //         state.didChange(v);
+              //         onChangedNullable(v);
+              //       }
+              // : null,
               closeOnTapOutside: closeOnTapOutside,
               anchor: anchor,
               minWidth: minWidth,
@@ -108,8 +107,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.description,
     super.onChanged,
 
-    /// {@macro ShadSelect.onChangedNullable}
-    ValueChanged<T?>? onChangedNullable,
+    // /// {@macro ShadSelect.onChangedNullable}
+    // ValueChanged<T?>? onChangedNullable,
     super.valueTransformer,
     super.onReset,
     super.enabled,
@@ -151,6 +150,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro select.footer}
     Widget? footer,
+    bool allowDeselection = false,
     bool closeOnSelect = true,
   }) : super(
           decorationBuilder: (context) =>
@@ -162,19 +162,20 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
             return ShadSelect<T>.withSearch(
               options: options,
+              allowDeselection: allowDeselection,
               optionsBuilder: optionsBuilder,
               selectedOptionBuilder: selectedOptionBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
               initialValue: initialValue,
               enabled: state.enabled,
-              onChanged: onChangedNullable != null ? state.didChange : null,
-              onChangedNullable: onChangedNullable != null
-                  ? (v) {
-                      state.didChange(v);
-                      onChangedNullable(v);
-                    }
-                  : null,
+              onChanged: onChanged != null ? state.didChange : null,
+              // onChangedNullable: onChangedNullable != null
+              //     ? (v) {
+              //         state.didChange(v);
+              //         onChangedNullable(v);
+              //       }
+              //     : null,
               closeOnTapOutside: closeOnTapOutside,
               anchor: anchor,
               minWidth: minWidth,
@@ -212,8 +213,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.description,
     super.onChanged,
 
-    /// {@macro ShadSelect.onChangedNullable}
-    ValueChanged<T?>? onChangedNullable,
+    // /// {@macro ShadSelect.onChangedNullable}
+    // ValueChanged<T?>? onChangedNullable,
     super.valueTransformer,
     super.onReset,
     super.enabled,
@@ -252,7 +253,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro select.footer}
     Widget? footer,
-    bool? allowDeselection,
+    bool allowDeselection = false,
     bool closeOnSelect = true,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
@@ -279,13 +280,13 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               placeholder: placeholder,
               initialValue: initialValue,
               enabled: state.enabled,
-              onChanged: onChangedNullable != null ? state.didChange : null,
-              onChangedNullable: onChangedNullable != null
-                  ? (v) {
-                      state.didChange(v);
-                      onChangedNullable(v);
-                    }
-                  : null,
+              onChanged: onChanged != null ? state.didChange : null,
+              // onChangedNullable: onChangedNullable != null
+              //     ? (v) {
+              //         state.didChange(v);
+              //         onChangedNullable(v);
+              //       }
+              //     : null,
               closeOnTapOutside: closeOnTapOutside,
               anchor: anchor,
               minWidth: minWidth,
@@ -553,7 +554,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
 
     /// {@macro select.footer}
     Widget? footer,
-    bool? allowDeselection,
+    bool allowDeselection = false,
     bool closeOnSelect = true,
   })  : assert(
           variant == ShadSelectVariant.multiple ||
