@@ -353,6 +353,9 @@ class _ShadTableState extends State<ShadTable> {
           },
         ),
       },
+      cursor: widget.onColumnTap != null
+          ? SystemMouseCursors.click
+          : MouseCursor.defer,
     );
   }
 
@@ -433,6 +436,9 @@ class _ShadTableState extends State<ShadTable> {
           },
         ),
       },
+      cursor: widget.onRowTap != null
+          ? SystemMouseCursors.click
+          : MouseCursor.defer,
     );
   }
 
