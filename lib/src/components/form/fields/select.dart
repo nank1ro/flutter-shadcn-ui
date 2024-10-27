@@ -70,7 +70,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               placeholder: placeholder,
               initialValue: initialValue,
               enabled: state.enabled,
-              onChanged: onChanged != null ? state.didChange : null,
+              onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
               anchor: anchor,
               minWidth: minWidth,

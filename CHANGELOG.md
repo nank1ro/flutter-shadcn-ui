@@ -1,3 +1,8 @@
+## 0.14.0
+
+- **BREAKING CHANGE**: Remove `onChangedNullable` from `ShadSelect` and `ShadSelectFormField`. Now the `onChanged` callback will be called with `null` when the user deselects an option if `allowDeselection` is set to `true`. (thanks to @moshOntong-IT)
+- **FEAT**: Add click mouse cursor to `ShadTable` when `onRowTap` or `onColumnTap` is provided.
+
 ## 0.13.5
 
 - **FIX**: Fix `ShadSelect` initial values on widget creation.

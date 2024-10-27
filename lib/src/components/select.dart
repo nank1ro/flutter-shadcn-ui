@@ -580,9 +580,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
       if (isMultiSelection) {
         widget.onMultipleChanged?.call(selectedValues.toList());
       } else {
-        widget.onChanged?.call(
-          selectedValues.isEmpty ? null : selectedValues.first,
-        );
+        widget.onChanged?.call(selectedValues.firstOrNull);
       }
     }
   }

@@ -240,7 +240,7 @@ class _SelectWithSearchState extends State<SelectWithSearch> {
 </Preview>
 
 :::tip
-If you want to be able to deselect an option, you can use the `onChangedNullable` callback instead of `onChanged`.
+If you want to be able to deselect an option, you can use the `allowDeselection` property.
 :::
 
 ## Multiple
@@ -249,8 +249,6 @@ This example shows how to select multiple options.
 
 In addition, the `allowDeselection` property is set to `true` to allow the user to deselect an option and the `closeOnSelect` property is set to `false` to keep the popover open after selecting an option.
 If you tap outside the popover, it will close.
-
-> The `allowDeselection` property is present only in the `ShadSelect.multiple` constructor, to use it in a normal select use `onChangedNullable` instead of `onChanged`.
 
 <Preview src="https://shadcn-ui-playground.web.app/select?style=multiple" minHeight="400px">
 
