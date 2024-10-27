@@ -88,13 +88,7 @@ class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
                   allowDeselection: allowDeselection,
                   minWidth: 350,
                   initialValue: initialValue,
-                  // onChanged: allowDeselection ? null : print,
-                  // onChangedNullable: allowDeselection ? print : null,
                   onChanged: print,
-                  // onChangedNullable: (v) {
-                  //   print('onChangedNullable: $v');
-                  // },
-
                   options: verifiedEmails
                       .map((email) =>
                           ShadOption(value: email, child: Text(email)))

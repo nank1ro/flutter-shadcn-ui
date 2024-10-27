@@ -71,12 +71,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               initialValue: initialValue,
               enabled: state.enabled,
               onChanged: onChanged != null ? state.didChange : null,
-              // onChangedNullable: onChangedNullable != null
-              //     ? (v) {
-              //         state.didChange(v);
-              //         onChangedNullable(v);
-              //       }
-              // : null,
               closeOnTapOutside: closeOnTapOutside,
               anchor: anchor,
               minWidth: minWidth,
@@ -106,9 +100,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.error,
     super.description,
     super.onChanged,
-
-    // /// {@macro ShadSelect.onChangedNullable}
-    // ValueChanged<T?>? onChangedNullable,
     super.valueTransformer,
     super.onReset,
     super.enabled,
@@ -170,12 +161,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               initialValue: initialValue,
               enabled: state.enabled,
               onChanged: onChanged != null ? state.didChange : null,
-              // onChangedNullable: onChangedNullable != null
-              //     ? (v) {
-              //         state.didChange(v);
-              //         onChangedNullable(v);
-              //       }
-              //     : null,
               closeOnTapOutside: closeOnTapOutside,
               anchor: anchor,
               minWidth: minWidth,
@@ -212,9 +197,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.error,
     super.description,
     super.onChanged,
-
-    // /// {@macro ShadSelect.onChangedNullable}
-    // ValueChanged<T?>? onChangedNullable,
     super.valueTransformer,
     super.onReset,
     super.enabled,
@@ -281,12 +263,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               initialValue: initialValue,
               enabled: state.enabled,
               onChanged: onChanged != null ? state.didChange : null,
-              // onChangedNullable: onChangedNullable != null
-              //     ? (v) {
-              //         state.didChange(v);
-              //         onChangedNullable(v);
-              //       }
-              //     : null,
               closeOnTapOutside: closeOnTapOutside,
               anchor: anchor,
               minWidth: minWidth,
