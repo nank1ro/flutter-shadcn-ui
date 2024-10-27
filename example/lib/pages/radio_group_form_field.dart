@@ -57,7 +57,11 @@ class _RadioGroupFormFieldPageState extends State<RadioGroupFormFieldPage> {
             label: 'autovalidateMode',
             value: autovalidateMode,
             values: ShadAutovalidateMode.values,
-            onChanged: (value) => setState(() => autovalidateMode = value),
+            onChanged: (value) {
+              if (value != null) {
+                setState(() => autovalidateMode = value);
+              }
+            },
           ),
           MyEnumProperty<NotifyAbout>(
             label: 'Form Initial Value',

@@ -30,7 +30,13 @@ class _SheetPageState extends State<SheetPage> {
           label: 'Side',
           value: side,
           values: ShadSheetSide.values,
-          onChanged: (value) => setState(() => side = value),
+          onChanged: (value) {
+            if (value != null) {
+              setState(() {
+                side = value;
+              });
+            }
+          },
         ),
         MyBoolProperty(
           label: 'Draggable',

@@ -42,7 +42,11 @@ class _SwitchFormFieldPageState extends State<SwitchFormFieldPage> {
             label: 'autovalidateMode',
             value: autovalidateMode,
             values: ShadAutovalidateMode.values,
-            onChanged: (value) => setState(() => autovalidateMode = value),
+            onChanged: (value) {
+              if (value != null) {
+                setState(() => autovalidateMode = value);
+              }
+            },
           ),
           MyBoolProperty(
             label: 'Form Initial Value',

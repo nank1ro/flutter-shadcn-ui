@@ -1283,7 +1283,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
         ),
       ),
       onChanged: (year) {
-        goToMonth(DateTime(year, currentMonth.month));
+        if (year != null) {
+          goToMonth(DateTime(year, currentMonth.month));
+        }
       },
     );
 
@@ -1305,7 +1307,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
         },
       ),
       onChanged: (month) {
-        goToMonth(DateTime(currentMonth.year, month));
+        if (month != null) {
+          goToMonth(DateTime(currentMonth.year, month));
+        }
       },
     );
 

@@ -38,7 +38,6 @@ class ShadSelect<T> extends StatefulWidget {
     this.initialValue,
     this.initialValues = const [],
     this.onChanged,
-    this.onChangedNullable,
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
@@ -58,6 +57,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.header,
     this.footer,
     this.closeOnSelect = true,
+    this.allowDeselection = false,
   })  : variant = ShadSelectVariant.primary,
         onSearchChanged = null,
         searchDivider = null,
@@ -67,7 +67,6 @@ class ShadSelect<T> extends StatefulWidget {
         searchPadding = null,
         search = null,
         clearSearchOnClose = false,
-        allowDeselection = onChangedNullable != null,
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
@@ -84,7 +83,6 @@ class ShadSelect<T> extends StatefulWidget {
     this.selectedOptionBuilder,
     required ValueChanged<String> this.onSearchChanged,
     this.onChanged,
-    this.onChangedNullable,
     this.controller,
     this.searchDivider,
     this.searchInputPrefix,
@@ -115,10 +113,10 @@ class ShadSelect<T> extends StatefulWidget {
     this.header,
     this.footer,
     this.closeOnSelect = true,
+    this.allowDeselection = false,
   })  : variant = ShadSelectVariant.search,
         selectedOptionsBuilder = null,
         onMultipleChanged = null,
-        allowDeselection = onChangedNullable != null,
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
@@ -152,7 +150,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.filter,
     this.header,
     this.footer,
-    this.allowDeselection = false,
+    this.allowDeselection = true,
     this.closeOnSelect = true,
   })  : variant = ShadSelectVariant.multiple,
         onSearchChanged = null,
@@ -165,7 +163,6 @@ class ShadSelect<T> extends StatefulWidget {
         search = null,
         clearSearchOnClose = false,
         onChanged = null,
-        onChangedNullable = null,
         onMultipleChanged = onChanged,
         assert(
           options != null || optionsBuilder != null,
@@ -207,12 +204,11 @@ class ShadSelect<T> extends StatefulWidget {
     this.filter,
     this.header,
     this.footer,
-    this.allowDeselection = false,
+    this.allowDeselection = true,
     this.closeOnSelect = true,
   })  : variant = ShadSelectVariant.multipleWithSearch,
         selectedOptionBuilder = null,
         onChanged = null,
-        onChangedNullable = null,
         onMultipleChanged = onChanged,
         initialValue = null,
         assert(
@@ -240,7 +236,6 @@ class ShadSelect<T> extends StatefulWidget {
     this.initialValue,
     this.initialValues = const [],
     this.onChanged,
-    this.onChangedNullable,
     this.onMultipleChanged,
     this.focusNode,
     this.closeOnTapOutside = true,
@@ -260,7 +255,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.filter,
     this.header,
     this.footer,
-    bool? allowDeselection,
+    this.allowDeselection = false,
     this.closeOnSelect = true,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
@@ -273,20 +268,10 @@ class ShadSelect<T> extends StatefulWidget {
         assert(
           (selectedOptionBuilder != null) ^ (selectedOptionsBuilder != null),
           '''Either selectedOptionBuilder or selectedOptionsBuilder must be provided''',
-        ),
-        allowDeselection = allowDeselection ?? onChangedNullable != null;
+        );
 
   /// The callback that is called when the value of the [ShadSelect] changes.
-  final ValueChanged<T>? onChanged;
-
-  /// {@template ShadSelect.onChangedNullable}
-  /// The callback that is called when the value of the [ShadSelect] changes.
-  ///
-  /// The difference between [onChanged] and [onChangedNullable] is that
-  /// [onChangedNullable] will be called with `null` when the same value is
-  /// selected, meaning that the selected value is deselected.
-  /// {@endtemplate}
-  final ValueChanged<T?>? onChangedNullable;
+  final ValueChanged<T?>? onChanged;
 
   /// {@template ShadSelect.onMultipleChanged}
   /// The callback that is called when the values of the [ShadSelect] changes.
@@ -296,7 +281,7 @@ class ShadSelect<T> extends StatefulWidget {
 
   /// {@template ShadSelect.allowDeselection}
   /// Whether the [ShadSelect] allows deselection, defaults to
-  /// `onChangedNullable != null`.
+  /// `false`.
   /// {@endtemplate}
   final bool allowDeselection;
 
@@ -595,13 +580,9 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
       if (isMultiSelection) {
         widget.onMultipleChanged?.call(selectedValues.toList());
       } else {
-        if (widget.allowDeselection) {
-          widget.onChangedNullable?.call(
-            selectedValues.isEmpty ? null : selectedValues.first,
-          );
-        } else {
-          widget.onChanged?.call(value);
-        }
+        widget.onChanged?.call(
+          selectedValues.isEmpty ? null : selectedValues.first,
+        );
       }
     }
   }

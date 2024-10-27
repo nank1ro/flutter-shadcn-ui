@@ -52,7 +52,11 @@ class _AccordionPageState extends State<AccordionPage> {
           label: 'Type',
           value: type,
           values: ShadAccordionType.values,
-          onChanged: (value) => setState(() => type = value),
+          onChanged: (value) {
+            if (value != null) {
+              setState(() => type = value);
+            }
+          },
         ),
         MyBoolProperty(
           label: 'Underline title',
