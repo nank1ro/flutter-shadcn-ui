@@ -345,7 +345,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     bool closeOnSelect = true,
 
     /// {@macro ShadSelect.allowDeselection}
-    bool allowDeselection = false,
+    bool allowDeselection = true,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -437,7 +437,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     bool closeOnSelect = true,
 
     /// {@macro ShadSelect.allowDeselection}
-    bool allowDeselection = false,
+    bool allowDeselection = true,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -530,7 +530,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
 
     /// {@macro select.footer}
     Widget? footer,
-    bool allowDeselection = false,
+    bool allowDeselection = true,
     bool closeOnSelect = true,
   })  : assert(
           variant == ShadSelectVariant.multiple ||
