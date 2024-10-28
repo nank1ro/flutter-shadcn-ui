@@ -1,7 +1,16 @@
-## 0.14.0
+## 0.15.0
 
 - **FEAT**: New `ShadDatePicker` component.
 - **FEAT**: Add `allowDeselection` property to `ShadCalendar`.
+
+## 0.14.1
+
+- **FIX**: `ShadApp` scroll behavior.
+
+## 0.14.0
+
+- **BREAKING CHANGE**: Remove `onChangedNullable` from `ShadSelect` and `ShadSelectFormField`. Now the `onChanged` callback will be called with `null` when the user deselects an option if `allowDeselection` is set to `true`. (thanks to @moshOntong-IT)
+- **FEAT**: Add click mouse cursor to `ShadTable` when `onRowTap` or `onColumnTap` is provided.
 
 ## 0.13.5
 

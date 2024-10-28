@@ -133,11 +133,11 @@ class _SelectPageState extends State<SelectPage> {
       children: [
         ShadSelect<String>(
           minWidth: 180,
-          onChanged: allowDeselection ? null : print,
-          onChangedNullable: allowDeselection ? print : null,
+          onChanged: print,
           enabled: enabled,
           focusNode: focusNodes[0],
           placeholder: const Text('Select a fruit'),
+          allowDeselection: allowDeselection,
           options: [
             Padding(
               padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
@@ -159,8 +159,7 @@ class _SelectPageState extends State<SelectPage> {
         ShadSelect<String>(
           minWidth: 280,
           focusNode: focusNodes[1],
-          onChanged: allowDeselection ? null : print,
-          onChangedNullable: allowDeselection ? print : null,
+          onChanged: print,
           enabled: enabled,
           placeholder: const Text('Select a timezone'),
           options: timezones.entries.map(
@@ -187,6 +186,7 @@ class _SelectPageState extends State<SelectPage> {
               ],
             ),
           ),
+          allowDeselection: allowDeselection,
           selectedOptionBuilder: (context, value) {
             final timezone = timezones.entries
                 .firstWhere((element) => element.value.containsKey(value))
@@ -223,8 +223,8 @@ class _SelectPageState extends State<SelectPage> {
             )
           ],
           selectedOptionBuilder: (context, value) => Text(frameworks[value]!),
-          onChanged: allowDeselection ? null : print,
-          onChangedNullable: allowDeselection ? print : null,
+          onChanged: print,
+          allowDeselection: allowDeselection,
         ),
         ShadSelect<String>.multiple(
           minWidth: 340,

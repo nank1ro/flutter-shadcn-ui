@@ -45,7 +45,11 @@ class _RadioPageState extends State<RadioPage> {
         MyEnumProperty(
           label: 'Axis',
           value: axis,
-          onChanged: (value) => setState(() => axis = value),
+          onChanged: (value) {
+            if (value != null) {
+              setState(() => axis = value);
+            }
+          },
           values: Axis.values,
         ),
       ],

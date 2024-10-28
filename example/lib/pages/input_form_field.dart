@@ -43,7 +43,11 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
             label: 'autovalidateMode',
             value: autovalidateMode,
             values: ShadAutovalidateMode.values,
-            onChanged: (value) => setState(() => autovalidateMode = value),
+            onChanged: (value) {
+              if (value != null) {
+                setState(() => autovalidateMode = value);
+              }
+            },
           ),
           MyStringProperty(
             label: 'Form Initial Value',

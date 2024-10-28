@@ -13,7 +13,7 @@ class MyEnumProperty<T extends Enum> extends StatelessWidget {
   final String label;
   final T value;
   final List<T> values;
-  final ValueChanged<T> onChanged;
+  final ValueChanged<T?> onChanged;
 
   @override
   Widget build(BuildContext context) {

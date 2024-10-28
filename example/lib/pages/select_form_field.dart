@@ -48,7 +48,11 @@ class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
             label: 'autovalidateMode',
             value: autovalidateMode,
             values: ShadAutovalidateMode.values,
-            onChanged: (value) => setState(() => autovalidateMode = value),
+            onChanged: (value) {
+              if (value != null) {
+                setState(() => autovalidateMode = value);
+              }
+            },
           ),
           ShadSelect(
             options: ['none', ...verifiedEmails].map(
@@ -81,10 +85,10 @@ class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
               children: [
                 ShadSelectFormField(
                   id: 'email',
+                  allowDeselection: allowDeselection,
                   minWidth: 350,
                   initialValue: initialValue,
-                  onChanged: allowDeselection ? null : print,
-                  onChangedNullable: allowDeselection ? print : null,
+                  onChanged: print,
                   options: verifiedEmails
                       .map((email) =>
                           ShadOption(value: email, child: Text(email)))

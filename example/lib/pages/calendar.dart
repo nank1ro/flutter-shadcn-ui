@@ -41,9 +41,11 @@ class _CalendarPageState extends State<CalendarPage> {
           value: captionLayout,
           values: ShadCalendarCaptionLayout.values,
           onChanged: (value) {
-            setState(() {
-              captionLayout = value;
-            });
+            if (value != null) {
+              setState(() {
+                captionLayout = value;
+              });
+            }
           },
         ),
         MyBoolProperty(

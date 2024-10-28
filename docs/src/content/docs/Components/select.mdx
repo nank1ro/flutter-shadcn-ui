@@ -8,7 +8,7 @@ import Preview from "../../../components/Preview.astro";
 
 Displays a list of options for the user to pick from—triggered by a button.
 
-<Preview src="https://shadcn-ui-playground.web.app/select" minHeight="300px">
+<Preview src="https://shadcn-ui-playground.pages.dev/select" minHeight="300px">
 
 ```dart
 final fruits = {
@@ -52,7 +52,7 @@ return ConstrainedBox(
 
 ## Scrollable
 
-<Preview src="https://shadcn-ui-playground.web.app/select?style=timezone" minHeight="550px">
+<Preview src="https://shadcn-ui-playground.pages.dev/select?style=timezone" minHeight="550px">
 
 ```dart
 final timezones = {
@@ -140,7 +140,7 @@ Widget build(BuildContext context) {
 
 ## Form
 
-<Preview src="https://shadcn-ui-playground.web.app/form?style=selectField" minHeight="400px">
+<Preview src="https://shadcn-ui-playground.pages.dev/form?style=selectField" minHeight="400px">
 
 ```dart
 final verifiedEmails = [
@@ -174,7 +174,7 @@ ShadSelectFormField(
 
 ## With Search
 
-<Preview src="https://shadcn-ui-playground.web.app/select?style=frameworks" minHeight="400px">
+<Preview src="https://shadcn-ui-playground.pages.dev/select?style=frameworks" minHeight="400px">
 
 ```dart
 const frameworks = {
@@ -240,7 +240,7 @@ class _SelectWithSearchState extends State<SelectWithSearch> {
 </Preview>
 
 :::tip
-If you want to be able to deselect an option, you can use the `onChangedNullable` callback instead of `onChanged`.
+If you want to be able to deselect an option, you can use the `allowDeselection` property.
 :::
 
 ## Multiple
@@ -250,9 +250,7 @@ This example shows how to select multiple options.
 In addition, the `allowDeselection` property is set to `true` to allow the user to deselect an option and the `closeOnSelect` property is set to `false` to keep the popover open after selecting an option.
 If you tap outside the popover, it will close.
 
-> The `allowDeselection` property is present only in the `ShadSelect.multiple` constructor, to use it in a normal select use `onChangedNullable` instead of `onChanged`.
-
-<Preview src="https://shadcn-ui-playground.web.app/select?style=multiple" minHeight="400px">
+<Preview src="https://shadcn-ui-playground.pages.dev/select?style=multiple" minHeight="400px">
 
 ```dart
 class SelectMultiple extends StatelessWidget {

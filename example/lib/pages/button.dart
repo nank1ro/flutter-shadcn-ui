@@ -27,7 +27,11 @@ class _ButtonPageState extends State<ButtonPage> {
             label: 'Size',
             value: size,
             values: ShadButtonSize.values,
-            onChanged: (value) => setState(() => size = value),
+            onChanged: (value) {
+              if (value != null) {
+                setState(() => size = value);
+              }
+            },
           ),
           MyBoolProperty(
             label: 'Enabled',

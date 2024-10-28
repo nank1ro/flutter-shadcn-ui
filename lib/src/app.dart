@@ -832,6 +832,7 @@ class _ShadAppState extends State<ShadApp> {
             actions: widget.actions,
             restorationScopeId: widget.restorationScopeId,
             localizationsDelegates: localizationsDelegates,
+            scrollBehavior: widget.scrollBehavior,
           );
         }
         return MaterialApp(
@@ -859,6 +860,7 @@ class _ShadAppState extends State<ShadApp> {
           actions: widget.actions,
           restorationScopeId: widget.restorationScopeId,
           localizationsDelegates: localizationsDelegates,
+          scrollBehavior: widget.scrollBehavior,
         );
 
       case ShadAppType.cupertino:
@@ -887,6 +889,7 @@ class _ShadAppState extends State<ShadApp> {
               actions: widget.actions,
               restorationScopeId: widget.restorationScopeId,
               localizationsDelegates: localizationsDelegates,
+              scrollBehavior: widget.scrollBehavior,
             ),
           );
         }
@@ -917,6 +920,7 @@ class _ShadAppState extends State<ShadApp> {
             actions: widget.actions,
             restorationScopeId: widget.restorationScopeId,
             localizationsDelegates: localizationsDelegates,
+            scrollBehavior: widget.scrollBehavior,
           ),
         );
       case ShadAppType.custom:
