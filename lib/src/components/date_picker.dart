@@ -19,6 +19,11 @@ class ShadDatePicker extends StatefulWidget {
     this.closeOnSelection,
     this.formatDate,
     this.allowDeselection,
+    this.header,
+    this.footer,
+    this.groupId,
+    this.calendarDecoration,
+    this.popoverPadding,
   })  : variant = ShadDatePickerVariant.single,
         selectedRange = null;
 
@@ -29,6 +34,11 @@ class ShadDatePicker extends StatefulWidget {
     this.closeOnSelection,
     this.formatDate,
     this.allowDeselection,
+    this.header,
+    this.footer,
+    this.groupId,
+    this.calendarDecoration,
+    this.popoverPadding,
   })  : variant = ShadDatePickerVariant.range,
         selected = null,
         selectedRange = selected;
@@ -42,6 +52,11 @@ class ShadDatePicker extends StatefulWidget {
     this.formatDate,
     this.allowDeselection,
     this.selectedRange,
+    this.header,
+    this.footer,
+    this.groupId,
+    this.calendarDecoration,
+    this.popoverPadding,
   });
 
   /// {@template ShadDatePicker.popoverController}
@@ -80,6 +95,28 @@ class ShadDatePicker extends StatefulWidget {
   /// {@endtemplate}
   final ShadDatePickerVariant variant;
 
+  /// {@template ShadDatePicker.header}
+  /// The header of the date picker.
+  /// {@endtemplate}
+  final Widget? header;
+
+  /// {@template ShadDatePicker.footer}
+  /// The footer of the date picker.
+  /// {@endtemplate}
+  final Widget? footer;
+
+  /// {@macro ShadPopover.groupId}
+  final Object? groupId;
+
+  /// {@template ShadDatePicker.calendarDecoration}
+  /// The decoration of the calendar.
+  /// Defaults to `ShadDecoration.none`.
+  /// {@endtemplate}
+  final ShadDecoration? calendarDecoration;
+
+  /// {@macro ShadPopover.padding}
+  final EdgeInsets? popoverPadding;
+
   @override
   State<ShadDatePicker> createState() => _ShadDatePickerState();
 }
@@ -98,6 +135,14 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
     super.initState();
     if (widget.popoverController == null) {
       _popoverController = ShadPopoverController();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadDatePicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selected != null) {
+      selected = widget.selected;
     }
   }
 
@@ -134,33 +179,44 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
 
     final effectiveFormatDate = widget.formatDate ?? defaultDateFormat;
     final effectiveAllowDeselection = widget.allowDeselection ?? true;
+    final effectiveCalendarDecoration =
+        widget.calendarDecoration ?? ShadDecoration.none;
 
     return ShadPopover(
       controller: popoverController,
+      groupId: widget.groupId,
+      padding: widget.popoverPadding,
       popover: (context) {
-        return ShadCalendar.raw(
-          variant: switch (widget.variant) {
-            ShadDatePickerVariant.single => ShadCalendarVariant.single,
-            ShadDatePickerVariant.range => ShadCalendarVariant.range,
-          },
-          selected: selected,
-          selectedRange: selectedRange,
-          allowDeselection: effectiveAllowDeselection,
-          decoration: ShadDecoration.none,
-          onChanged: (selected) {
-            setState(() => this.selected = selected);
-            if (true == widget.closeOnSelection) {
-              popoverController.hide();
-            }
-          },
-          onRangeChanged: (range) {
-            setState(() => selectedRange = range);
-            if (true == widget.closeOnSelection &&
-                range?.start != null &&
-                range?.end != null) {
-              popoverController.hide();
-            }
-          },
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (widget.header != null) widget.header!,
+            ShadCalendar.raw(
+              variant: switch (widget.variant) {
+                ShadDatePickerVariant.single => ShadCalendarVariant.single,
+                ShadDatePickerVariant.range => ShadCalendarVariant.range,
+              },
+              selected: selected,
+              selectedRange: selectedRange,
+              allowDeselection: effectiveAllowDeselection,
+              decoration: effectiveCalendarDecoration,
+              onChanged: (selected) {
+                setState(() => this.selected = selected);
+                if (true == widget.closeOnSelection) {
+                  popoverController.hide();
+                }
+              },
+              onRangeChanged: (range) {
+                setState(() => selectedRange = range);
+                if (true == widget.closeOnSelection &&
+                    range?.start != null &&
+                    range?.end != null) {
+                  popoverController.hide();
+                }
+              },
+            ),
+            if (widget.footer != null) widget.footer!,
+          ],
         );
       },
       child: ShadButton.raw(

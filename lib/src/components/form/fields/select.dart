@@ -53,6 +53,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     Widget? footer,
     bool allowDeselection = false,
     bool closeOnSelect = true,
+
+    /// {@macro ShadPopover.groupId}
+    Object? groupId,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -88,6 +91,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               header: header,
               footer: footer,
               closeOnSelect: closeOnSelect,
+              groupId: groupId,
             );
           },
         );
@@ -143,6 +147,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     Widget? footer,
     bool allowDeselection = false,
     bool closeOnSelect = true,
+
+    /// {@macro ShadPopover.groupId}
+    Object? groupId,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -185,6 +192,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               header: header,
               footer: footer,
               closeOnSelect: closeOnSelect,
+              groupId: groupId,
             );
           },
         );
@@ -237,6 +245,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     Widget? footer,
     bool allowDeselection = false,
     bool closeOnSelect = true,
+
+    /// {@macro ShadPopover.groupId}
+    Object? groupId,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -287,6 +298,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               footer: footer,
               allowDeselection: allowDeselection,
               closeOnSelect: closeOnSelect,
+              groupId: groupId,
             );
           },
         );

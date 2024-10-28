@@ -58,6 +58,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.footer,
     this.closeOnSelect = true,
     this.allowDeselection = false,
+    this.groupId,
   })  : variant = ShadSelectVariant.primary,
         onSearchChanged = null,
         searchDivider = null,
@@ -114,6 +115,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.footer,
     this.closeOnSelect = true,
     this.allowDeselection = false,
+    this.groupId,
   })  : variant = ShadSelectVariant.search,
         selectedOptionsBuilder = null,
         onMultipleChanged = null,
@@ -152,6 +154,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.footer,
     this.allowDeselection = true,
     this.closeOnSelect = true,
+    this.groupId,
   })  : variant = ShadSelectVariant.multiple,
         onSearchChanged = null,
         initialValue = null,
@@ -206,6 +209,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.footer,
     this.allowDeselection = true,
     this.closeOnSelect = true,
+    this.groupId,
   })  : variant = ShadSelectVariant.multipleWithSearch,
         selectedOptionBuilder = null,
         onChanged = null,
@@ -257,6 +261,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.footer,
     this.allowDeselection = false,
     this.closeOnSelect = true,
+    this.groupId,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -417,6 +422,9 @@ class ShadSelect<T> extends StatefulWidget {
   /// Defaults to `true`.
   /// {@endtemplate}
   final bool closeOnSelect;
+
+  /// {@macro ShadPopover.groupId}
+  final Object? groupId;
 
   static ShadSelectState<T> of<T>(BuildContext context, {bool listen = true}) {
     return maybeOf<T>(context, listen: listen)!;
@@ -840,6 +848,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             return ShadInheritedSelectContainer(
               data: this,
               child: ShadPopover(
+                groupId: widget.groupId,
                 padding: EdgeInsets.zero,
                 controller: controller,
                 anchor: effectiveAnchor,
