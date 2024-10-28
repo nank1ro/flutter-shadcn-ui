@@ -89,7 +89,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
             allowDeselection: allowDeselection,
             selected: selected,
             calendarDecoration: theme.calendarTheme.decoration,
-            popoverPadding: const EdgeInsets.all(8),
+            popoverPadding: const EdgeInsets.all(4),
           ),
         ),
       ],

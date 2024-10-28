@@ -65,10 +65,14 @@ class ShadPopover extends StatefulWidget {
           'Either controller or visible must be provided',
         );
 
+  /// {@template ShadPopover.popover}
   /// The widget displayed as a popover.
+  /// {@endtemplate}
   final WidgetBuilder popover;
 
+  /// {@template ShadPopover.child}
   /// The child widget.
+  /// {@endtemplate}
   final Widget child;
 
   /// {@template ShadPopover.controller}
@@ -76,14 +80,20 @@ class ShadPopover extends StatefulWidget {
   /// {@endtemplate}
   final ShadPopoverController? controller;
 
+  /// {@template ShadPopover.visible}
   /// Indicates if the popover should be visible.
+  /// {@endtemplate}
   final bool? visible;
 
+  /// {@template ShadPopover.closeOnTapOutside}
   /// Closes the popover when the user taps outside, defaults to true.
+  /// {@endtemplate}
   final bool closeOnTapOutside;
 
+  /// {@template ShadPopover.focusNode}
   /// The focus node of the child, the [popover] will be shown when
   /// focused.
+  /// {@endtemplate}
   final FocusNode? focusNode;
 
   ///{@template ShadPopover.anchor}
