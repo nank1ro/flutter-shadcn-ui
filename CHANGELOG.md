@@ -1,3 +1,7 @@
+## 0.14.1
+
+- **FIX**: `ShadApp` scroll behavior.
+
 ## 0.14.0
 
 - **BREAKING CHANGE**: Remove `onChangedNullable` from `ShadSelect` and `ShadSelectFormField`. Now the `onChanged` callback will be called with `null` when the user deselects an option if `allowDeselection` is set to `true`. (thanks to @moshOntong-IT)
