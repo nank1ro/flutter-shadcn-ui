@@ -20,6 +20,7 @@ export 'src/components/form/fields/input.dart';
 export 'src/components/form/fields/radio.dart';
 export 'src/components/form/fields/select.dart';
 export 'src/components/form/fields/switch.dart';
+export 'src/components/form/fields/date_picker.dart';
 export 'src/components/form/form.dart';
 export 'src/components/image.dart';
 export 'src/components/input.dart';
