@@ -54,6 +54,7 @@ class _DatePickerFormFieldPageState extends State<DatePickerFormFieldPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text('Single', style: theme.textTheme.h4),
                 ShadDatePickerFormField(
                   id: 'date',
                   initialValue: initialValue,
@@ -65,6 +66,22 @@ class _DatePickerFormFieldPageState extends State<DatePickerFormFieldPage> {
                     if (v == null) {
                       return 'A date of birth is required.';
                     }
+                    return null;
+                  },
+                ),
+                const Divider(),
+                Text('Range', style: theme.textTheme.h4),
+                ShadDateRangePickerFormField(
+                  id: 'range-date',
+                  label: const Text('Range of dates'),
+                  onChanged: print,
+                  description: const Text(
+                      'Select the range of dates you want to search between.'),
+                  validator: (v) {
+                    if (v == null) return 'A range of dates is required.';
+                    if (v.start == null) return 'The start date is required.';
+                    if (v.end == null) return 'The end date is required.';
+
                     return null;
                   },
                 ),

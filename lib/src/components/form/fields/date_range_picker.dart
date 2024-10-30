@@ -14,8 +14,9 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
-class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
-  ShadDatePickerFormField({
+class ShadDateRangePickerFormField
+    extends ShadFormBuilderField<ShadDateTimeRange> {
+  ShadDateRangePickerFormField({
     super.id,
     super.key,
     super.onSaved,
@@ -216,6 +217,9 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     /// {@macro ShadCalendar.selectedDayButtonTextStyle}
     TextStyle? selectedDayButtonTextStyle,
 
+    /// {@macro ShadCalendar.insideRangeDayButtonTextStyle}
+    TextStyle? insideRangeDayButtonTextStyle,
+
     /// {@macro ShadCalendar.dayButtonTextStyle}
     TextStyle? dayButtonTextStyle,
 
@@ -224,6 +228,9 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
 
     /// {@macro ShadCalendar.selectedDayButtonVariant}
     ShadButtonVariant? selectedDayButtonVariant,
+
+    /// {@macro ShadCalendar.insideRangeDayButtonVariant}
+    ShadButtonVariant? insideRangeDayButtonVariant,
 
     /// {@macro ShadCalendar.todayButtonVariant}
     ShadButtonVariant? todayButtonVariant,
@@ -420,9 +427,9 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     ValueChanged<bool>? onFocusChange,
   }) : super(
           builder: (field) {
-            final state = field as _ShadFormBuilderDatePickerState;
-            return ShadDatePicker(
-              onChanged: state.didChange,
+            final state = field as _ShadFormBuilderDateRangePickerState;
+            return ShadDatePicker.range(
+              onRangeChanged: state.didChange,
               enabled: state.enabled,
               focusNode: state.focusNode,
               icon: icon,
@@ -488,9 +495,11 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
               dayButtonPadding: dayButtonPadding,
               dayButtonDecoration: dayButtonDecoration,
               selectedDayButtonTextStyle: selectedDayButtonTextStyle,
+              insideRangeDayButtonTextStyle: insideRangeDayButtonTextStyle,
               dayButtonTextStyle: dayButtonTextStyle,
               dayButtonVariant: dayButtonVariant,
               selectedDayButtonVariant: selectedDayButtonVariant,
+              insideRangeDayButtonVariant: insideRangeDayButtonVariant,
               todayButtonVariant: todayButtonVariant,
               gridMainAxisSpacing: gridMainAxisSpacing,
               gridCrossAxisSpacing: gridCrossAxisSpacing,
@@ -558,9 +567,9 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
         );
 
   @override
-  ShadFormBuilderFieldState<ShadDatePickerFormField, DateTime> createState() =>
-      _ShadFormBuilderDatePickerState();
+  ShadFormBuilderFieldState<ShadDateRangePickerFormField, ShadDateTimeRange>
+      createState() => _ShadFormBuilderDateRangePickerState();
 }
 
-class _ShadFormBuilderDatePickerState
-    extends ShadFormBuilderFieldState<ShadDatePickerFormField, DateTime> {}
+class _ShadFormBuilderDateRangePickerState extends ShadFormBuilderFieldState<
+    ShadDateRangePickerFormField, ShadDateTimeRange> {}
