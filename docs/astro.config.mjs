@@ -40,6 +40,7 @@ export default defineConfig({
               collapsed: false,
             },
             { label: 'Typography', link: 'typography' },
+            { label: 'Packages', link: 'packages' },
             {
               label: 'Components',
               autogenerate: { directory: 'Components' },
