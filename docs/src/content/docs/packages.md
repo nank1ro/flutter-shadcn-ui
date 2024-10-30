@@ -23,7 +23,7 @@ You can browse all the icons [here](https://lucide.dev/icons/).
 
 ### [two_dimensional_scrollables](https://pub.dev/packages/two_dimensional_scrollables)
 
-A nice raw table (very performant) implementation used by the [ShadTable](./components/table) component.
+A nice raw table (very performant) implementation used by the [ShadTable](../components/table) component.
 
 ### [intl](https://pub.dev/packages/intl)
 
@@ -31,4 +31,4 @@ The intl package provides internationalization and localization facilities, incl
 
 ### [flutter_svg_plus](https://pub.dev/packages/flutter_svg_plus)
 
-Draw SVG images. Used by the [ShadImage](./components/image) component.
+Draw SVG images. Used by the [ShadImage](../components/image) component.
