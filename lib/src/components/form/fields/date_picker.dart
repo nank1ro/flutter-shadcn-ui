@@ -36,6 +36,9 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     super.validator,
     super.initialValue,
 
+    /// {@macro ShadDatePicker.placeholder}
+    Widget? placeholder,
+
     /// {@macro ShadDatePicker.popoverController}
     ShadPopoverController? popoverController,
 
@@ -553,6 +556,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
               longPressDuration: longPressDuration,
               textDirection: textDirection,
               onFocusChange: onFocusChange,
+              placeholder: placeholder,
             );
           },
         );

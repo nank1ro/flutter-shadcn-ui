@@ -37,14 +37,17 @@ class ShadDateRangePickerFormField
     super.validator,
     super.initialValue,
 
+    /// {@macro ShadDatePicker.placeholder}
+    Widget? placeholder,
+
     /// {@macro ShadDatePicker.popoverController}
     ShadPopoverController? popoverController,
 
     /// {@macro ShadDatePicker.closeOnSelection}
     bool? closeOnSelection,
 
-    /// {@macro ShadDatePicker.formatDate}
-    String Function(DateTime)? formatDate,
+    /// {@macro ShadDatePicker.formatDateRange}
+    String Function(ShadDateTimeRange)? formatDateRange,
 
     /// {@macro ShadDatePicker.allowDeselection}
     bool? allowDeselection,
@@ -437,7 +440,7 @@ class ShadDateRangePickerFormField
               selected: state.value,
               popoverController: popoverController,
               closeOnSelection: closeOnSelection,
-              formatDate: formatDate,
+              formatDateRange: formatDateRange,
               allowDeselection: allowDeselection,
               header: header,
               footer: footer,
@@ -562,6 +565,7 @@ class ShadDateRangePickerFormField
               longPressDuration: longPressDuration,
               textDirection: textDirection,
               onFocusChange: onFocusChange,
+              placeholder: placeholder,
             );
           },
         );

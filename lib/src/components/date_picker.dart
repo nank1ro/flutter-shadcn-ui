@@ -21,6 +21,7 @@ enum ShadDatePickerVariant { single, range }
 class ShadDatePicker extends StatefulWidget {
   const ShadDatePicker({
     super.key,
+    this.placeholder,
     this.popoverController,
     this.selected,
     this.closeOnSelection,
@@ -155,14 +156,16 @@ class ShadDatePicker extends StatefulWidget {
     this.onFocusChange,
     this.iconSrc,
   })  : variant = ShadDatePickerVariant.single,
+        formatDateRange = null,
         selectedRange = null;
 
   const ShadDatePicker.range({
     super.key,
     this.popoverController,
+    this.placeholder,
     ShadDateTimeRange? selected,
+    this.formatDateRange,
     this.closeOnSelection,
-    this.formatDate,
     this.allowDeselection,
     this.header,
     this.footer,
@@ -294,6 +297,7 @@ class ShadDatePicker extends StatefulWidget {
     this.iconSrc,
   })  : variant = ShadDatePickerVariant.range,
         selected = null,
+        formatDate = null,
         selectedRange = selected;
 
   const ShadDatePicker.raw({
@@ -433,7 +437,14 @@ class ShadDatePicker extends StatefulWidget {
     this.textDirection,
     this.onFocusChange,
     this.iconSrc,
+    this.formatDateRange,
+    this.placeholder,
   });
+
+  /// {@template ShadDatePicker.placeholder}
+  /// The placeholder of the date picker, shown when no date is selected.
+  /// {@endtemplate}
+  final Widget? placeholder;
 
   /// {@template ShadDatePicker.popoverController}
   /// The [ShadPopoverController] to use.
@@ -460,6 +471,11 @@ class ShadDatePicker extends StatefulWidget {
   /// A function that formats the selected date.
   /// {@endtemplate}
   final String Function(DateTime)? formatDate;
+
+  /// {@template ShadDatePicker.formatDateRange}
+  /// A function that formats the selected date range.
+  /// {@endtemplate}
+  final String Function(ShadDateTimeRange)? formatDateRange;
 
   /// {@template ShadDatePicker.allowDeselection}
   /// Whether to allow deselection of the selected date.
@@ -939,21 +955,32 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
         selectedRange != null && selectedRange!.start != null,
     };
 
-    final effectiveFormatDate = widget.formatDate ?? defaultDateFormat;
-    final effectiveAllowDeselection = widget.allowDeselection ?? true;
-    final effectiveCalendarDecoration =
-        widget.calendarDecoration ?? ShadDecoration.none;
+    final effectiveFormatDate = widget.formatDate ??
+        theme.datePickerTheme.formatDate ??
+        defaultDateFormat;
+
+    final effectiveFormatDateRange = widget.formatDateRange ??
+        theme.datePickerTheme.formatDateRange ??
+        defaultDateRangeFormat;
+
+    final effectiveAllowDeselection = widget.allowDeselection ??
+        theme.datePickerTheme.allowDeselection ??
+        true;
+    final effectiveCalendarDecoration = widget.calendarDecoration ??
+        theme.datePickerTheme.calendarDecoration ??
+        ShadDecoration.none;
 
     return ShadPopover(
       controller: popoverController,
       groupId: widget.groupId,
-      padding: widget.popoverPadding,
+      padding: widget.popoverPadding ?? theme.datePickerTheme.popoverPadding,
       focusNode: widget.focusNode,
-      anchor: widget.anchor,
-      effects: widget.effects,
-      shadows: widget.shadows,
-      decoration: widget.popoverDecoration,
-      filter: widget.filter,
+      anchor: widget.anchor ?? theme.datePickerTheme.anchor,
+      effects: widget.effects ?? theme.datePickerTheme.effects,
+      shadows: widget.shadows ?? theme.datePickerTheme.shadows,
+      decoration:
+          widget.popoverDecoration ?? theme.datePickerTheme.popoverDecoration,
+      filter: widget.filter ?? theme.datePickerTheme.filter,
       areaGroupId: widget.areaGroupId,
       useSameGroupIdForChild: widget.useSameGroupIdForChild,
       popover: (context) {
@@ -969,17 +996,24 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
               selected: selected,
               selectedRange: selectedRange,
               allowDeselection: effectiveAllowDeselection,
-              showOutsideDays: widget.showOutsideDays,
+              showOutsideDays: widget.showOutsideDays ??
+                  theme.datePickerTheme.showOutsideDays,
               decoration: effectiveCalendarDecoration,
               initialMonth: widget.initialMonth,
-              formatMonthYear: widget.formatMonthYear,
-              formatMonth: widget.formatMonth,
-              formatYear: widget.formatYear,
-              formatWeekday: widget.formatWeekday,
-              showWeekNumbers: widget.showWeekNumbers,
-              weekStartsOn: widget.weekStartsOn,
-              fixedWeeks: widget.fixedWeeks,
-              hideWeekdayNames: widget.hideWeekdayNames,
+              formatMonthYear: widget.formatMonthYear ??
+                  theme.datePickerTheme.formatMonthYear,
+              formatMonth:
+                  widget.formatMonth ?? theme.datePickerTheme.formatMonth,
+              formatYear: widget.formatYear ?? theme.datePickerTheme.formatYear,
+              formatWeekday:
+                  widget.formatWeekday ?? theme.datePickerTheme.formatWeekday,
+              showWeekNumbers: widget.showWeekNumbers ??
+                  theme.datePickerTheme.showWeekNumbers,
+              weekStartsOn:
+                  widget.weekStartsOn ?? theme.datePickerTheme.weekStartsOn,
+              fixedWeeks: widget.fixedWeeks ?? theme.datePickerTheme.fixedWeeks,
+              hideWeekdayNames: widget.hideWeekdayNames ??
+                  theme.datePickerTheme.hideWeekdayNames,
               numberOfMonths: widget.numberOfMonths,
               fromMonth: widget.fromMonth,
               toMonth: widget.toMonth,
@@ -988,52 +1022,96 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
               min: widget.min,
               max: widget.max,
               selectableDayPredicate: widget.selectableDayPredicate,
-              captionLayout: widget.captionLayout,
-              hideNavigation: widget.hideNavigation,
-              yearSelectorMinWidth: widget.yearSelectorMinWidth,
-              monthSelectorMinWidth: widget.monthSelectorMinWidth,
-              yearSelectorPadding: widget.yearSelectorPadding,
-              monthSelectorPadding: widget.monthSelectorPadding,
-              navigationButtonSize: widget.navigationButtonSize,
-              navigationButtonIconSize: widget.navigationButtonIconSize,
-              backNavigationButtonSrc: widget.backNavigationButtonSrc,
-              forwardNavigationButtonSrc: widget.forwardNavigationButtonSrc,
-              navigationButtonPadding: widget.navigationButtonPadding,
+              captionLayout:
+                  widget.captionLayout ?? theme.datePickerTheme.captionLayout,
+              hideNavigation:
+                  widget.hideNavigation ?? theme.datePickerTheme.hideNavigation,
+              yearSelectorMinWidth: widget.yearSelectorMinWidth ??
+                  theme.datePickerTheme.yearSelectorMinWidth,
+              monthSelectorMinWidth: widget.monthSelectorMinWidth ??
+                  theme.datePickerTheme.monthSelectorMinWidth,
+              yearSelectorPadding: widget.yearSelectorPadding ??
+                  theme.datePickerTheme.yearSelectorPadding,
+              monthSelectorPadding: widget.monthSelectorPadding ??
+                  theme.datePickerTheme.monthSelectorPadding,
+              navigationButtonSize: widget.navigationButtonSize ??
+                  theme.datePickerTheme.navigationButtonSize,
+              navigationButtonIconSize: widget.navigationButtonIconSize ??
+                  theme.datePickerTheme.navigationButtonIconSize,
+              backNavigationButtonSrc: widget.backNavigationButtonSrc ??
+                  theme.datePickerTheme.backNavigationButtonSrc,
+              forwardNavigationButtonSrc: widget.forwardNavigationButtonSrc ??
+                  theme.datePickerTheme.forwardNavigationButtonSrc,
+              navigationButtonPadding: widget.navigationButtonPadding ??
+                  theme.datePickerTheme.navigationButtonPadding,
               navigationButtonDisabledOpacity:
-                  widget.navigationButtonDisabledOpacity,
-              spacingBetweenMonths: widget.spacingBetweenMonths,
-              runSpacingBetweenMonths: widget.runSpacingBetweenMonths,
-              monthConstraints: widget.monthConstraints,
-              headerHeight: widget.calendarHeaderHeight,
-              headerPadding: widget.calendarHeaderPadding,
-              captionLayoutGap: widget.captionLayoutGap,
-              headerTextStyle: widget.calendarHeaderTextStyle,
-              weekdaysPadding: widget.weekdaysPadding,
-              weekdaysTextStyle: widget.weekdaysTextStyle,
-              weekdaysTextAlign: widget.weekdaysTextAlign,
-              weekNumbersHeaderText: widget.weekNumbersHeaderText,
-              weekNumbersTextStyle: widget.weekNumbersTextStyle,
-              weekNumbersTextAlign: widget.weekNumbersTextAlign,
-              weekNumbersHeaderTextStyle: widget.weekNumbersHeaderTextStyle,
-              dayButtonSize: widget.dayButtonSize,
-              dayButtonOutsideMonthOpacity: widget.dayButtonOutsideMonthOpacity,
-              dayButtonPadding: widget.dayButtonPadding,
-              dayButtonDecoration: widget.dayButtonDecoration,
-              dayButtonTextStyle: widget.dayButtonTextStyle,
-              dayButtonVariant: widget.dayButtonVariant,
-              dayButtonOutsideMonthVariant: widget.dayButtonOutsideMonthVariant,
+                  widget.navigationButtonDisabledOpacity ??
+                      theme.datePickerTheme.navigationButtonDisabledOpacity,
+              spacingBetweenMonths: widget.spacingBetweenMonths ??
+                  theme.datePickerTheme.spacingBetweenMonths,
+              runSpacingBetweenMonths: widget.runSpacingBetweenMonths ??
+                  theme.datePickerTheme.runSpacingBetweenMonths,
+              monthConstraints: widget.monthConstraints ??
+                  theme.datePickerTheme.monthConstraints,
+              headerHeight: widget.calendarHeaderHeight ??
+                  theme.datePickerTheme.calendarHeaderHeight,
+              headerPadding: widget.calendarHeaderPadding ??
+                  theme.datePickerTheme.calendarHeaderPadding,
+              captionLayoutGap: widget.captionLayoutGap ??
+                  theme.datePickerTheme.captionLayoutGap,
+              headerTextStyle: widget.calendarHeaderTextStyle ??
+                  theme.datePickerTheme.calendarHeaderTextStyle,
+              weekdaysPadding: widget.weekdaysPadding ??
+                  theme.datePickerTheme.weekdaysPadding,
+              weekdaysTextStyle: widget.weekdaysTextStyle ??
+                  theme.datePickerTheme.weekdaysTextStyle,
+              weekdaysTextAlign: widget.weekdaysTextAlign ??
+                  theme.datePickerTheme.weekdaysTextAlign,
+              weekNumbersHeaderText: widget.weekNumbersHeaderText ??
+                  theme.datePickerTheme.weekNumbersHeaderText,
+              weekNumbersTextStyle: widget.weekNumbersTextStyle ??
+                  theme.datePickerTheme.weekNumbersTextStyle,
+              weekNumbersTextAlign: widget.weekNumbersTextAlign ??
+                  theme.datePickerTheme.weekNumbersTextAlign,
+              weekNumbersHeaderTextStyle: widget.weekNumbersHeaderTextStyle ??
+                  theme.datePickerTheme.weekNumbersHeaderTextStyle,
+              dayButtonSize:
+                  widget.dayButtonSize ?? theme.datePickerTheme.dayButtonSize,
+              dayButtonOutsideMonthOpacity:
+                  widget.dayButtonOutsideMonthOpacity ??
+                      theme.datePickerTheme.dayButtonOutsideMonthOpacity,
+              dayButtonPadding: widget.dayButtonPadding ??
+                  theme.datePickerTheme.dayButtonPadding,
+              dayButtonDecoration: widget.dayButtonDecoration ??
+                  theme.datePickerTheme.dayButtonDecoration,
+              dayButtonTextStyle: widget.dayButtonTextStyle ??
+                  theme.datePickerTheme.dayButtonTextStyle,
+              dayButtonVariant: widget.dayButtonVariant ??
+                  theme.datePickerTheme.dayButtonVariant,
+              dayButtonOutsideMonthVariant:
+                  widget.dayButtonOutsideMonthVariant ??
+                      theme.datePickerTheme.dayButtonOutsideMonthVariant,
               dayButtonOutsideMonthTextStyle:
-                  widget.dayButtonOutsideMonthTextStyle,
-              selectedDayButtonVariant: widget.selectedDayButtonVariant,
-              selectedDayButtonTextStyle: widget.selectedDayButtonTextStyle,
+                  widget.dayButtonOutsideMonthTextStyle ??
+                      theme.datePickerTheme.dayButtonOutsideMonthTextStyle,
+              selectedDayButtonVariant: widget.selectedDayButtonVariant ??
+                  theme.datePickerTheme.selectedDayButtonVariant,
+              selectedDayButtonTextStyle: widget.selectedDayButtonTextStyle ??
+                  theme.datePickerTheme.selectedDayButtonTextStyle,
               selectedDayButtonOusideMonthVariant:
-                  widget.selectedDayButtonOusideMonthVariant,
-              insideRangeDayButtonVariant: widget.insideRangeDayButtonVariant,
+                  widget.selectedDayButtonOusideMonthVariant ??
+                      theme.datePickerTheme.selectedDayButtonOusideMonthVariant,
+              insideRangeDayButtonVariant: widget.insideRangeDayButtonVariant ??
+                  theme.datePickerTheme.insideRangeDayButtonVariant,
               insideRangeDayButtonTextStyle:
-                  widget.insideRangeDayButtonTextStyle,
-              todayButtonVariant: widget.todayButtonVariant,
-              gridMainAxisSpacing: widget.gridMainAxisSpacing,
-              gridCrossAxisSpacing: widget.gridCrossAxisSpacing,
+                  widget.insideRangeDayButtonTextStyle ??
+                      theme.datePickerTheme.insideRangeDayButtonTextStyle,
+              todayButtonVariant: widget.todayButtonVariant ??
+                  theme.datePickerTheme.todayButtonVariant,
+              gridMainAxisSpacing: widget.gridMainAxisSpacing ??
+                  theme.datePickerTheme.gridMainAxisSpacing,
+              gridCrossAxisSpacing: widget.gridCrossAxisSpacing ??
+                  theme.datePickerTheme.gridCrossAxisSpacing,
               onChanged: (selected) {
                 setState(() => this.selected = selected);
                 if (true == widget.closeOnSelection) {
@@ -1057,13 +1135,21 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
         );
       },
       child: ShadButton.raw(
-        variant: widget.buttonVariant ?? ShadButtonVariant.outline,
-        width: widget.width ?? 276,
-        mainAxisAlignment: widget.mainAxisAlignment ?? MainAxisAlignment.start,
-        applyIconColorFilter: widget.applyIconColorFilter ?? false,
+        variant: widget.buttonVariant ??
+            theme.datePickerTheme.buttonVariant ??
+            ShadButtonVariant.outline,
+        width: widget.width ?? theme.datePickerTheme.width ?? 276,
+        mainAxisAlignment: widget.mainAxisAlignment ??
+            theme.datePickerTheme.mainAxisAlignment ??
+            MainAxisAlignment.start,
+        applyIconColorFilter: widget.applyIconColorFilter ??
+            theme.datePickerTheme.applyIconColorFilter ??
+            false,
         icon: widget.icon ??
             ShadImage.square(
-              widget.iconSrc ?? LucideIcons.calendar,
+              widget.iconSrc ??
+                  theme.datePickerTheme.iconSrc ??
+                  LucideIcons.calendar,
               size: 16,
               color: isSelected
                   ? theme.colorScheme.foreground
@@ -1090,27 +1176,38 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
         onSecondaryTapUp: widget.onSecondaryTapUp,
         onSecondaryTapCancel: widget.onSecondaryTapCancel,
         onDoubleTapCancel: widget.onDoubleTapCancel,
-        cursor: widget.cursor,
-        height: widget.height,
-        padding: widget.buttonPadding,
-        backgroundColor: widget.backgroundColor,
-        hoverBackgroundColor: widget.hoverBackgroundColor,
-        foregroundColor: widget.foregroundColor,
-        hoverForegroundColor: widget.hoverForegroundColor,
+        cursor: widget.cursor ?? theme.datePickerTheme.cursor,
+        height: widget.height ?? theme.datePickerTheme.height,
+        padding: widget.buttonPadding ?? theme.datePickerTheme.buttonPadding,
+        backgroundColor:
+            widget.backgroundColor ?? theme.datePickerTheme.backgroundColor,
+        hoverBackgroundColor: widget.hoverBackgroundColor ??
+            theme.datePickerTheme.hoverBackgroundColor,
+        foregroundColor:
+            widget.foregroundColor ?? theme.datePickerTheme.foregroundColor,
+        hoverForegroundColor: widget.hoverForegroundColor ??
+            theme.datePickerTheme.hoverForegroundColor,
         autofocus: widget.autofocus,
         focusNode: widget.buttonFocusNode,
-        pressedBackgroundColor: widget.pressedBackgroundColor,
-        pressedForegroundColor: widget.pressedForegroundColor,
-        shadows: widget.buttonShadows,
-        gradient: widget.gradient,
-        textDecoration: widget.textDecoration,
-        hoverTextDecoration: widget.hoverTextDecoration,
+        pressedBackgroundColor: widget.pressedBackgroundColor ??
+            theme.datePickerTheme.pressedBackgroundColor,
+        pressedForegroundColor: widget.pressedForegroundColor ??
+            theme.datePickerTheme.pressedForegroundColor,
+        shadows: widget.buttonShadows ?? theme.datePickerTheme.buttonShadows,
+        gradient: widget.gradient ?? theme.datePickerTheme.gradient,
+        textDecoration:
+            widget.textDecoration ?? theme.datePickerTheme.textDecoration,
+        hoverTextDecoration: widget.hoverTextDecoration ??
+            theme.datePickerTheme.hoverTextDecoration,
         enabled: widget.enabled,
-        gap: widget.gap,
-        crossAxisAlignment: widget.crossAxisAlignment,
-        longPressDuration: widget.longPressDuration,
+        gap: widget.gap ?? theme.datePickerTheme.gap,
+        crossAxisAlignment: widget.crossAxisAlignment ??
+            theme.datePickerTheme.crossAxisAlignment,
+        longPressDuration:
+            widget.longPressDuration ?? theme.datePickerTheme.longPressDuration,
         statesController: widget.statesController,
-        hoverStrategies: widget.hoverStrategies,
+        hoverStrategies:
+            widget.hoverStrategies ?? theme.datePickerTheme.hoverStrategies,
         textDirection: widget.textDirection,
         child: widget.buttonChild ??
             (isSelected
@@ -1119,10 +1216,16 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
                       ShadDatePickerVariant.single =>
                         effectiveFormatDate(selected!),
                       ShadDatePickerVariant.range =>
-                        defaultDateRangeFormat(selectedRange!),
+                        effectiveFormatDateRange(selectedRange!),
                     },
                   )
-                : Text('Pick a date', style: theme.textTheme.muted)),
+                : DefaultTextStyle(
+                    style: theme.textTheme.muted,
+                    child: widget.placeholder ??
+                        Text(
+                          MaterialLocalizations.of(context).datePickerHelpText,
+                        ),
+                  )),
       ),
     );
   }

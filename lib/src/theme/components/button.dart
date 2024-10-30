@@ -205,6 +205,7 @@ class ShadButtonTheme {
     if (identical(this, other)) return true;
 
     return other is ShadButtonTheme &&
+        other.merge == merge &&
         other.applyIconColorFilter == applyIconColorFilter &&
         other.cursor == cursor &&
         other.size == size &&
@@ -232,7 +233,8 @@ class ShadButtonTheme {
 
   @override
   int get hashCode {
-    return applyIconColorFilter.hashCode ^
+    return merge.hashCode ^
+        applyIconColorFilter.hashCode ^
         cursor.hashCode ^
         size.hashCode ^
         sizesTheme.hashCode ^

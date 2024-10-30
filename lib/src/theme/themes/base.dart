@@ -9,6 +9,7 @@ import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
+import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
@@ -78,6 +79,7 @@ abstract class ShadBaseTheme {
     required this.tabsTheme,
     required this.contextMenuTheme,
     required this.calendarTheme,
+    required this.datePickerTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -126,6 +128,7 @@ abstract class ShadBaseTheme {
   final ShadTabsTheme tabsTheme;
   final ShadContextMenuTheme contextMenuTheme;
   final ShadCalendarTheme calendarTheme;
+  final ShadDatePickerTheme datePickerTheme;
 }
 
 @immutable
@@ -169,4 +172,5 @@ abstract class ShadThemeVariant {
   ShadTabsTheme tabsTheme();
   ShadContextMenuTheme contextMenuTheme();
   ShadCalendarTheme calendarTheme();
+  ShadDatePickerTheme datePickerTheme();
 }
