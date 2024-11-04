@@ -19,16 +19,13 @@ class DatePickerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: switch (style) {
-            ShadDatePickerVariantPlayground.single => const SingleDatePicker(),
-            ShadDatePickerVariantPlayground.range => const RangeDatePicker(),
-            ShadDatePickerVariantPlayground.presets =>
-              const PresetsDatePicker(),
-          },
-        ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+        child: switch (style) {
+          ShadDatePickerVariantPlayground.single => const SingleDatePicker(),
+          ShadDatePickerVariantPlayground.range => const RangeDatePicker(),
+          ShadDatePickerVariantPlayground.presets => const PresetsDatePicker(),
+        },
       ),
     );
   }
