@@ -831,6 +831,13 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
 
   @override
   ShadDatePickerTheme datePickerTheme() {
-    return ShadDatePickerTheme();
+    return const ShadDatePickerTheme(
+      calendarDecoration: ShadDecoration.none,
+      allowDeselection: true,
+      buttonVariant: ShadButtonVariant.outline,
+      width: 276,
+      mainAxisAlignment: MainAxisAlignment.start,
+      iconSrc: LucideIcons.calendar,
+    );
   }
 }
