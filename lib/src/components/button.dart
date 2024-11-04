@@ -552,7 +552,8 @@ class _ShadButtonState extends State<ShadButton> {
     if (widget.size != null) {
       return defaultHeightForSize(theme, widget.size!);
     }
-    return defaultHeightForSize(theme, buttonTheme(theme).size);
+    return defaultHeightForSize(
+        theme, buttonTheme(theme).size ?? ShadButtonSize.regular);
   }
 
   double? defaultWidthForSize(ShadThemeData theme, ShadButtonSize size) {
@@ -567,7 +568,8 @@ class _ShadButtonState extends State<ShadButton> {
     if (widget.size != null) {
       return defaultWidthForSize(theme, widget.size!);
     }
-    return defaultWidthForSize(theme, buttonTheme(theme).size);
+    return defaultWidthForSize(
+        theme, buttonTheme(theme).size ?? ShadButtonSize.regular);
   }
 
   EdgeInsetsGeometry defaultPaddingForSize(
@@ -582,7 +584,8 @@ class _ShadButtonState extends State<ShadButton> {
     if (widget.size != null) {
       return defaultPaddingForSize(theme, widget.size!);
     }
-    return defaultPaddingForSize(theme, buttonTheme(theme).size);
+    return defaultPaddingForSize(
+        theme, buttonTheme(theme).size ?? ShadButtonSize.regular);
   }
 
   Color? background(ShadThemeData theme) {
@@ -722,7 +725,7 @@ class _ShadButtonState extends State<ShadButton> {
 
           // Applies the foreground color filter to the icon if provided
           var icon = widget.icon;
-          if (icon != null && applyIconColorFilter) {
+          if (icon != null && (applyIconColorFilter ?? true)) {
             icon = ColorFiltered(
               colorFilter: ColorFilter.mode(
                 hasPressedForegroundColor && pressed
