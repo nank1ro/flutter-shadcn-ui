@@ -1,12 +1,14 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 @immutable
-class ShadCalendarTheme {
-  const ShadCalendarTheme({
+class ShadDatePickerTheme {
+  const ShadDatePickerTheme({
     this.merge = true,
     this.hideNavigation,
     this.yearSelectorMinWidth,
@@ -19,14 +21,14 @@ class ShadCalendarTheme {
     this.forwardNavigationButtonSrc,
     this.navigationButtonPadding,
     this.navigationButtonDisabledOpacity,
-    this.decoration,
+    this.calendarDecoration,
     this.spacingBetweenMonths,
     this.runSpacingBetweenMonths,
     this.monthConstraints,
-    this.headerHeight,
-    this.headerPadding,
+    this.calendarHeaderHeight,
+    this.calendarHeaderPadding,
     this.captionLayoutGap,
-    this.headerTextStyle,
+    this.calendarHeaderTextStyle,
     this.weekdaysPadding,
     this.weekNumbersHeaderText,
     this.weekNumbersHeaderTextStyle,
@@ -61,9 +63,57 @@ class ShadCalendarTheme {
     this.weekStartsOn,
     this.fixedWeeks,
     this.allowDeselection,
+    this.effects,
+    this.shadows,
+    this.popoverPadding,
+    this.popoverDecoration,
+    this.anchor,
+    this.filter,
+    this.applyIconColorFilter,
+    this.cursor,
+    this.size,
+    this.sizesTheme,
+    this.buttonVariant,
+    this.backgroundColor,
+    this.hoverBackgroundColor,
+    this.foregroundColor,
+    this.hoverForegroundColor,
+    this.pressedBackgroundColor,
+    this.pressedForegroundColor,
+    this.disabledBackgroundColor,
+    this.buttonShadows,
+    this.gradient,
+    this.textDecoration,
+    this.hoverTextDecoration,
+    this.buttonDecoration,
+    this.width,
+    this.height,
+    this.longPressDuration,
+    this.hoverStrategies,
+    this.mainAxisAlignment,
+    this.crossAxisAlignment,
+    this.textDirection,
+    this.gap,
+    this.formatDate,
+    this.formatDateRange,
+    this.buttonPadding,
+    this.iconSrc,
   });
 
   final bool merge;
+
+  /// {@macro ShadDatePicker.formatDate}
+  final String Function(DateTime)? formatDate;
+
+  /// {@macro ShadDatePicker.formatDateRange}
+  final String Function(ShadDateTimeRange)? formatDateRange;
+
+  /// {@macro ShadDatePicker.iconSrc}
+  final ShadImageSrc? iconSrc;
+
+  // ---
+  // CALENDAR
+  // ---
 
   /// {@macro ShadCalendar.hideNavigation}
   final bool? hideNavigation;
@@ -99,7 +149,7 @@ class ShadCalendarTheme {
   final double? navigationButtonDisabledOpacity;
 
   /// {@macro ShadCalendar.decoration}
-  final ShadDecoration? decoration;
+  final ShadDecoration? calendarDecoration;
 
   /// {@macro ShadCalendar.spacingBetweenMonths}
   final double? spacingBetweenMonths;
@@ -111,16 +161,16 @@ class ShadCalendarTheme {
   final BoxConstraints? monthConstraints;
 
   /// {@macro ShadCalendar.headerHeight}
-  final double? headerHeight;
+  final double? calendarHeaderHeight;
 
   /// {@macro ShadCalendar.headerPadding}
-  final EdgeInsets? headerPadding;
+  final EdgeInsets? calendarHeaderPadding;
 
   /// {@macro ShadCalendar.captionLayoutGap}
   final double? captionLayoutGap;
 
   /// {@macro ShadCalendar.headerTextStyle}
-  final TextStyle? headerTextStyle;
+  final TextStyle? calendarHeaderTextStyle;
 
   /// {@macro ShadCalendar.weekdaysPadding}
   final EdgeInsets? weekdaysPadding;
@@ -224,13 +274,117 @@ class ShadCalendarTheme {
   /// {@macro ShadCalendar.allowDeselection}
   final bool? allowDeselection;
 
-  static ShadCalendarTheme lerp(
-    ShadCalendarTheme a,
-    ShadCalendarTheme b,
+  // ---
+  // POPOVER
+  // ---
+
+  /// {@macro popover.effects}
+  final List<Effect<dynamic>>? effects;
+
+  /// {@macro popover.shadows}
+  final List<BoxShadow>? shadows;
+
+  /// {@macro popover.padding}
+  final EdgeInsetsGeometry? popoverPadding;
+
+  /// {@macro popover.decoration}
+  final ShadDecoration? popoverDecoration;
+
+  /// {@macro popover.anchor}
+  final ShadAnchorBase? anchor;
+
+  /// {@macro popover.filter}
+  final ImageFilter? filter;
+
+  // ---
+  // BUTTON
+  // ---
+
+  /// {@macro ShadButton.applyIconColorFilter}
+  final bool? applyIconColorFilter;
+
+  /// {@macro ShadButton.cursor}
+  final MouseCursor? cursor;
+
+  /// {@macro ShadButton.size}
+  final ShadButtonSize? size;
+
+  /// {@macro ShadButton.sizesTheme}
+  final ShadButtonSizesTheme? sizesTheme;
+
+  /// {@macro ShadButton.variant}
+  final ShadButtonVariant? buttonVariant;
+
+  /// {@macro ShadButton.bakcgroundColor}
+  final Color? backgroundColor;
+
+  /// {@macro ShadButton.hoverBackgroundColor}
+  final Color? hoverBackgroundColor;
+
+  /// {@macro ShadButton.foregroundColor}
+  final Color? foregroundColor;
+
+  /// {@macro ShadButton.hoverForegroundColor}
+  final Color? hoverForegroundColor;
+
+  /// {@macro ShadButton.pressedBackgroundColor}
+  final Color? pressedBackgroundColor;
+
+  /// {@macro ShadButton.pressedForegroundColor}
+  final Color? pressedForegroundColor;
+
+  /// {@macro ShadButton.disabledBackgroundColor}
+  final Color? disabledBackgroundColor;
+
+  /// {@macro ShadButton.shadows}
+  final List<BoxShadow>? buttonShadows;
+
+  /// {@macro ShadButton.gradient}
+  final Gradient? gradient;
+
+  /// {@macro ShadButton.textDecoration}
+  final TextDecoration? textDecoration;
+
+  /// {@macro ShadButton.hoverTextDecoration}
+  final TextDecoration? hoverTextDecoration;
+
+  /// {@macro ShadButton.decoration}
+  final ShadDecoration? buttonDecoration;
+
+  /// {@macro ShadButton.width}
+  final double? width;
+
+  /// {@macro ShadowButton.height}
+  final double? height;
+
+  /// {@macro ShadButton.longPressDuration}
+  final Duration? longPressDuration;
+
+  /// {@macro ShadButton.hoverStrategies}
+  final ShadHoverStrategies? hoverStrategies;
+
+  /// {@macro ShadButton.mainAxisAlignment}
+  final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@macro ShadButton.crossAxisAlignment}
+  final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadButton.textDirection}
+  final TextDirection? textDirection;
+
+  /// {@macro ShadButton.gap}
+  final double? gap;
+
+  /// {@macro ShadButton.padding}
+  final EdgeInsetsGeometry? buttonPadding;
+
+  static ShadDatePickerTheme lerp(
+    ShadDatePickerTheme a,
+    ShadDatePickerTheme b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadCalendarTheme(
+    return ShadDatePickerTheme(
       merge: b.merge,
       hideNavigation: t < .5 ? a.hideNavigation : b.hideNavigation,
       yearSelectorMinWidth:
@@ -268,7 +422,8 @@ class ShadCalendarTheme {
         b.navigationButtonDisabledOpacity,
         t,
       ),
-      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      calendarDecoration:
+          ShadDecoration.lerp(a.calendarDecoration, b.calendarDecoration, t),
       spacingBetweenMonths:
           lerpDouble(a.spacingBetweenMonths, b.spacingBetweenMonths, t),
       runSpacingBetweenMonths: lerpDouble(
@@ -281,16 +436,17 @@ class ShadCalendarTheme {
         b.monthConstraints,
         t,
       ),
-      headerHeight: lerpDouble(a.headerHeight, b.headerHeight, t),
-      headerPadding: EdgeInsets.lerp(
-        a.headerPadding,
-        b.headerPadding,
+      calendarHeaderHeight:
+          lerpDouble(a.calendarHeaderHeight, b.calendarHeaderHeight, t),
+      calendarHeaderPadding: EdgeInsets.lerp(
+        a.calendarHeaderPadding,
+        b.calendarHeaderPadding,
         t,
       ),
       captionLayoutGap: lerpDouble(a.captionLayoutGap, b.captionLayoutGap, t),
-      headerTextStyle: TextStyle.lerp(
-        a.headerTextStyle,
-        b.headerTextStyle,
+      calendarHeaderTextStyle: TextStyle.lerp(
+        a.calendarHeaderTextStyle,
+        b.calendarHeaderTextStyle,
         t,
       ),
       weekdaysPadding: EdgeInsets.lerp(
@@ -382,10 +538,61 @@ class ShadCalendarTheme {
       weekStartsOn: t < .5 ? a.weekStartsOn : b.weekStartsOn,
       fixedWeeks: t < .5 ? a.fixedWeeks : b.fixedWeeks,
       allowDeselection: t < .5 ? a.allowDeselection : b.allowDeselection,
+      effects: t < 0.5 ? a.effects : b.effects,
+      shadows: t < 0.5 ? a.shadows : b.shadows,
+      popoverPadding:
+          EdgeInsetsGeometry.lerp(a.popoverPadding, b.popoverPadding, t),
+      popoverDecoration:
+          ShadDecoration.lerp(a.calendarDecoration, b.calendarDecoration, t),
+      anchor: t < 0.5 ? a.anchor : b.anchor,
+      filter: t < 0.5 ? a.filter : b.filter,
+      applyIconColorFilter:
+          t < 0.5 ? a.applyIconColorFilter : b.applyIconColorFilter,
+      sizesTheme: ShadButtonSizesTheme.lerp(
+        a.sizesTheme,
+        b.sizesTheme,
+        t,
+      ),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      hoverBackgroundColor:
+          Color.lerp(a.hoverBackgroundColor, b.hoverBackgroundColor, t),
+      foregroundColor: Color.lerp(a.foregroundColor, b.foregroundColor, t),
+      hoverForegroundColor:
+          Color.lerp(a.hoverForegroundColor, b.hoverForegroundColor, t),
+      pressedBackgroundColor:
+          Color.lerp(a.pressedBackgroundColor, b.pressedBackgroundColor, t),
+      pressedForegroundColor:
+          Color.lerp(a.pressedForegroundColor, b.pressedForegroundColor, t),
+      buttonShadows: t < 0.5 ? a.shadows : b.shadows,
+      gradient: t < 0.5 ? a.gradient : b.gradient,
+      textDecoration: t < 0.5 ? a.textDecoration : b.textDecoration,
+      hoverTextDecoration:
+          t < 0.5 ? a.hoverTextDecoration : b.hoverTextDecoration,
+      cursor: t < 0.5 ? a.cursor : b.cursor,
+      size: t < 0.5 ? a.size : b.size,
+      buttonDecoration:
+          ShadDecoration.lerp(a.calendarDecoration, b.calendarDecoration, t),
+      width: lerpDouble(a.width, b.width, t),
+      height: lerpDouble(a.height, b.height, t),
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      longPressDuration:
+          a.longPressDuration != null && b.longPressDuration != null
+              ? lerpDuration(a.longPressDuration!, b.longPressDuration!, t)
+              : b.longPressDuration,
+      hoverStrategies: t < 0.5 ? a.hoverStrategies : b.hoverStrategies,
+      textDirection: t < 0.5 ? a.textDirection : b.textDirection,
+      gap: t < 0.5 ? a.gap : b.gap,
+      formatDate: t < 0.5 ? a.formatDate : b.formatDate,
+      formatDateRange: t < 0.5 ? a.formatDateRange : b.formatDateRange,
+      buttonVariant: t < 0.5 ? a.buttonVariant : b.buttonVariant,
+      buttonPadding:
+          EdgeInsetsGeometry.lerp(a.buttonPadding, b.buttonPadding, t),
+      iconSrc: t < 0.5 ? a.iconSrc : b.iconSrc,
     );
   }
 
-  ShadCalendarTheme mergeWith(ShadCalendarTheme? other) {
+  ShadDatePickerTheme mergeWith(ShadDatePickerTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -406,15 +613,17 @@ class ShadCalendarTheme {
           other.navigationButtonPadding ?? navigationButtonPadding,
       navigationButtonDisabledOpacity: other.navigationButtonDisabledOpacity ??
           navigationButtonDisabledOpacity,
-      decoration: other.decoration ?? decoration,
+      calendarDecoration: other.calendarDecoration ?? calendarDecoration,
       spacingBetweenMonths: other.spacingBetweenMonths ?? spacingBetweenMonths,
       runSpacingBetweenMonths:
           other.runSpacingBetweenMonths ?? runSpacingBetweenMonths,
       monthConstraints: other.monthConstraints ?? monthConstraints,
-      headerHeight: other.headerHeight ?? headerHeight,
-      headerPadding: other.headerPadding ?? headerPadding,
+      calendarHeaderHeight: other.calendarHeaderHeight ?? calendarHeaderHeight,
+      calendarHeaderPadding:
+          other.calendarHeaderPadding ?? calendarHeaderPadding,
       captionLayoutGap: other.captionLayoutGap ?? captionLayoutGap,
-      headerTextStyle: other.headerTextStyle ?? headerTextStyle,
+      calendarHeaderTextStyle:
+          other.calendarHeaderTextStyle ?? calendarHeaderTextStyle,
       weekdaysPadding: other.weekdaysPadding ?? weekdaysPadding,
       weekNumbersHeaderText:
           other.weekNumbersHeaderText ?? weekNumbersHeaderText,
@@ -460,6 +669,42 @@ class ShadCalendarTheme {
       weekStartsOn: other.weekStartsOn ?? weekStartsOn,
       fixedWeeks: other.fixedWeeks ?? fixedWeeks,
       allowDeselection: other.allowDeselection ?? allowDeselection,
+      effects: other.effects,
+      shadows: other.shadows,
+      popoverPadding: other.popoverPadding,
+      popoverDecoration:
+          popoverDecoration?.mergeWith(other.popoverDecoration) ??
+              other.popoverDecoration,
+      anchor: other.anchor,
+      filter: other.filter,
+      applyIconColorFilter: other.applyIconColorFilter,
+      cursor: other.cursor,
+      size: other.size,
+      backgroundColor: other.backgroundColor,
+      hoverBackgroundColor: other.hoverBackgroundColor,
+      foregroundColor: other.foregroundColor,
+      hoverForegroundColor: other.hoverForegroundColor,
+      pressedBackgroundColor: other.pressedBackgroundColor,
+      pressedForegroundColor: other.pressedForegroundColor,
+      buttonShadows: other.buttonShadows,
+      gradient: other.gradient,
+      textDecoration: other.textDecoration,
+      hoverTextDecoration: other.hoverTextDecoration,
+      buttonDecoration: buttonDecoration?.mergeWith(other.buttonDecoration) ??
+          other.buttonDecoration,
+      width: other.width,
+      height: other.height,
+      mainAxisAlignment: other.mainAxisAlignment,
+      crossAxisAlignment: other.crossAxisAlignment,
+      longPressDuration: other.longPressDuration,
+      hoverStrategies: other.hoverStrategies,
+      textDirection: other.textDirection,
+      gap: other.gap,
+      formatDate: other.formatDate,
+      formatDateRange: other.formatDateRange,
+      buttonVariant: other.buttonVariant,
+      buttonPadding: other.buttonPadding,
+      iconSrc: other.iconSrc,
     );
   }
 
@@ -467,7 +712,7 @@ class ShadCalendarTheme {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is ShadCalendarTheme &&
+    return other is ShadDatePickerTheme &&
         other.merge == merge &&
         other.hideNavigation == hideNavigation &&
         other.yearSelectorMinWidth == yearSelectorMinWidth &&
@@ -481,14 +726,14 @@ class ShadCalendarTheme {
         other.navigationButtonPadding == navigationButtonPadding &&
         other.navigationButtonDisabledOpacity ==
             navigationButtonDisabledOpacity &&
-        other.decoration == decoration &&
+        other.calendarDecoration == calendarDecoration &&
         other.spacingBetweenMonths == spacingBetweenMonths &&
         other.runSpacingBetweenMonths == runSpacingBetweenMonths &&
         other.monthConstraints == monthConstraints &&
-        other.headerHeight == headerHeight &&
-        other.headerPadding == headerPadding &&
+        other.calendarHeaderHeight == calendarHeaderHeight &&
+        other.calendarHeaderPadding == calendarHeaderPadding &&
         other.captionLayoutGap == captionLayoutGap &&
-        other.headerTextStyle == headerTextStyle &&
+        other.calendarHeaderTextStyle == calendarHeaderTextStyle &&
         other.weekdaysPadding == weekdaysPadding &&
         other.weekdaysTextStyle == weekdaysTextStyle &&
         other.weekdaysTextAlign == weekdaysTextAlign &&
@@ -524,7 +769,41 @@ class ShadCalendarTheme {
         other.showWeekNumbers == showWeekNumbers &&
         other.weekStartsOn == weekStartsOn &&
         other.fixedWeeks == fixedWeeks &&
-        other.allowDeselection == allowDeselection;
+        other.allowDeselection == allowDeselection &&
+        listEquals(other.effects, effects) &&
+        listEquals(other.shadows, shadows) &&
+        other.popoverPadding == popoverPadding &&
+        other.calendarDecoration == calendarDecoration &&
+        other.anchor == anchor &&
+        other.filter == filter &&
+        other.applyIconColorFilter == applyIconColorFilter &&
+        other.cursor == cursor &&
+        other.size == size &&
+        other.sizesTheme == sizesTheme &&
+        other.backgroundColor == backgroundColor &&
+        other.hoverBackgroundColor == hoverBackgroundColor &&
+        other.foregroundColor == foregroundColor &&
+        other.hoverForegroundColor == hoverForegroundColor &&
+        other.pressedBackgroundColor == pressedBackgroundColor &&
+        other.pressedForegroundColor == pressedForegroundColor &&
+        listEquals(other.shadows, shadows) &&
+        other.gradient == gradient &&
+        other.textDecoration == textDecoration &&
+        other.hoverTextDecoration == hoverTextDecoration &&
+        other.calendarDecoration == calendarDecoration &&
+        other.width == width &&
+        other.height == height &&
+        other.mainAxisAlignment == mainAxisAlignment &&
+        other.crossAxisAlignment == crossAxisAlignment &&
+        other.longPressDuration == longPressDuration &&
+        other.hoverStrategies == hoverStrategies &&
+        other.textDirection == textDirection &&
+        other.gap == gap &&
+        other.formatDate == formatDate &&
+        other.formatDateRange == formatDateRange &&
+        other.buttonVariant == buttonVariant &&
+        other.buttonPadding == buttonPadding &&
+        other.iconSrc == iconSrc;
   }
 
   @override
@@ -541,14 +820,14 @@ class ShadCalendarTheme {
         forwardNavigationButtonSrc.hashCode ^
         navigationButtonPadding.hashCode ^
         navigationButtonDisabledOpacity.hashCode ^
-        decoration.hashCode ^
+        calendarDecoration.hashCode ^
         spacingBetweenMonths.hashCode ^
         runSpacingBetweenMonths.hashCode ^
         monthConstraints.hashCode ^
-        headerHeight.hashCode ^
-        headerPadding.hashCode ^
+        calendarHeaderHeight.hashCode ^
+        calendarHeaderPadding.hashCode ^
         captionLayoutGap.hashCode ^
-        headerTextStyle.hashCode ^
+        calendarHeaderTextStyle.hashCode ^
         weekdaysPadding.hashCode ^
         weekdaysTextStyle.hashCode ^
         weekdaysTextAlign.hashCode ^
@@ -582,10 +861,44 @@ class ShadCalendarTheme {
         showWeekNumbers.hashCode ^
         weekStartsOn.hashCode ^
         fixedWeeks.hashCode ^
-        allowDeselection.hashCode;
+        allowDeselection.hashCode ^
+        effects.hashCode ^
+        shadows.hashCode ^
+        popoverPadding.hashCode ^
+        calendarDecoration.hashCode ^
+        anchor.hashCode ^
+        filter.hashCode ^
+        applyIconColorFilter.hashCode ^
+        cursor.hashCode ^
+        size.hashCode ^
+        sizesTheme.hashCode ^
+        backgroundColor.hashCode ^
+        hoverBackgroundColor.hashCode ^
+        foregroundColor.hashCode ^
+        hoverForegroundColor.hashCode ^
+        pressedBackgroundColor.hashCode ^
+        pressedForegroundColor.hashCode ^
+        shadows.hashCode ^
+        gradient.hashCode ^
+        textDecoration.hashCode ^
+        hoverTextDecoration.hashCode ^
+        calendarDecoration.hashCode ^
+        width.hashCode ^
+        height.hashCode ^
+        mainAxisAlignment.hashCode ^
+        crossAxisAlignment.hashCode ^
+        longPressDuration.hashCode ^
+        hoverStrategies.hashCode ^
+        textDirection.hashCode ^
+        gap.hashCode ^
+        formatDate.hashCode ^
+        formatDateRange.hashCode ^
+        buttonVariant.hashCode ^
+        buttonPadding.hashCode ^
+        iconSrc.hashCode;
   }
 
-  ShadCalendarTheme copyWith({
+  ShadDatePickerTheme copyWith({
     bool? merge,
     bool? hideNavigation,
     double? yearSelectorMinWidth,
@@ -598,14 +911,14 @@ class ShadCalendarTheme {
     ShadImageSrc? forwardNavigationButtonSrc,
     EdgeInsets? navigationButtonPadding,
     double? navigationButtonDisabledOpacity,
-    ShadDecoration? decoration,
+    ShadDecoration? calendarDecoration,
     double? spacingBetweenMonths,
     double? runSpacingBetweenMonths,
     BoxConstraints? monthConstraints,
-    double? headerHeight,
-    EdgeInsets? headerPadding,
+    double? calendarHeaderHeight,
+    EdgeInsets? calendarHeaderPadding,
     double? captionLayoutGap,
-    TextStyle? headerTextStyle,
+    TextStyle? calendarHeaderTextStyle,
     EdgeInsets? weekdaysPadding,
     TextStyle? weekdaysTextStyle,
     TextAlign? weekdaysTextAlign,
@@ -640,8 +953,45 @@ class ShadCalendarTheme {
     int? weekStartsOn,
     bool? fixedWeeks,
     bool? allowDeselection,
+    Duration? waitDuration,
+    Duration? showDuration,
+    List<Effect<dynamic>>? effects,
+    List<BoxShadow>? shadows,
+    EdgeInsetsGeometry? popoverPadding,
+    ShadDecoration? popoverDecoration,
+    ShadAnchorBase? anchor,
+    ImageFilter? filter,
+    bool? applyIconColorFilter,
+    MouseCursor? cursor,
+    MouseCursor? disabledCursor,
+    ShadButtonSize? size,
+    ShadButtonSizesTheme? sizesTheme,
+    Color? backgroundColor,
+    Color? hoverBackgroundColor,
+    Color? foregroundColor,
+    Color? hoverForegroundColor,
+    Color? pressedBackgroundColor,
+    Color? pressedForegroundColor,
+    List<BoxShadow>? buttonShadows,
+    Gradient? gradient,
+    TextDecoration? textDecoration,
+    TextDecoration? hoverTextDecoration,
+    ShadDecoration? buttonDecoration,
+    double? width,
+    double? height,
+    MainAxisAlignment? mainAxisAlignment,
+    CrossAxisAlignment? crossAxisAlignment,
+    Duration? longPressDuration,
+    ShadHoverStrategies? hoverStrategies,
+    TextDirection? textDirection,
+    double? gap,
+    String Function(DateTime date)? formatDate,
+    String Function(ShadDateTimeRange range)? formatDateRange,
+    ShadButtonVariant? buttonVariant,
+    EdgeInsetsGeometry? buttonPadding,
+    ShadImageSrc? iconSrc,
   }) {
-    return ShadCalendarTheme(
+    return ShadDatePickerTheme(
       merge: merge ?? this.merge,
       hideNavigation: hideNavigation ?? this.hideNavigation,
       yearSelectorMinWidth: yearSelectorMinWidth ?? this.yearSelectorMinWidth,
@@ -660,15 +1010,17 @@ class ShadCalendarTheme {
           navigationButtonPadding ?? this.navigationButtonPadding,
       navigationButtonDisabledOpacity: navigationButtonDisabledOpacity ??
           this.navigationButtonDisabledOpacity,
-      decoration: decoration ?? this.decoration,
+      calendarDecoration: calendarDecoration ?? this.calendarDecoration,
       spacingBetweenMonths: spacingBetweenMonths ?? this.spacingBetweenMonths,
       runSpacingBetweenMonths:
           runSpacingBetweenMonths ?? this.runSpacingBetweenMonths,
       monthConstraints: monthConstraints ?? this.monthConstraints,
-      headerHeight: headerHeight ?? this.headerHeight,
-      headerPadding: headerPadding ?? this.headerPadding,
+      calendarHeaderHeight: calendarHeaderHeight ?? this.calendarHeaderHeight,
+      calendarHeaderPadding:
+          calendarHeaderPadding ?? this.calendarHeaderPadding,
       captionLayoutGap: captionLayoutGap ?? this.captionLayoutGap,
-      headerTextStyle: headerTextStyle ?? this.headerTextStyle,
+      calendarHeaderTextStyle:
+          calendarHeaderTextStyle ?? this.calendarHeaderTextStyle,
       weekdaysPadding: weekdaysPadding ?? this.weekdaysPadding,
       weekdaysTextStyle: weekdaysTextStyle ?? this.weekdaysTextStyle,
       weekdaysTextAlign: weekdaysTextAlign ?? this.weekdaysTextAlign,
@@ -714,6 +1066,42 @@ class ShadCalendarTheme {
       weekStartsOn: weekStartsOn ?? this.weekStartsOn,
       fixedWeeks: fixedWeeks ?? this.fixedWeeks,
       allowDeselection: allowDeselection ?? this.allowDeselection,
+      effects: effects ?? this.effects,
+      shadows: shadows ?? this.shadows,
+      popoverPadding: popoverPadding ?? this.popoverPadding,
+      popoverDecoration: popoverDecoration ?? this.popoverDecoration,
+      anchor: anchor ?? this.anchor,
+      filter: filter ?? this.filter,
+      applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
+      cursor: cursor ?? this.cursor,
+      size: size ?? this.size,
+      sizesTheme: sizesTheme ?? this.sizesTheme,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      hoverBackgroundColor: hoverBackgroundColor ?? this.hoverBackgroundColor,
+      foregroundColor: foregroundColor ?? this.foregroundColor,
+      hoverForegroundColor: hoverForegroundColor ?? this.hoverForegroundColor,
+      pressedBackgroundColor:
+          pressedBackgroundColor ?? this.pressedBackgroundColor,
+      pressedForegroundColor:
+          pressedForegroundColor ?? this.pressedForegroundColor,
+      buttonShadows: buttonShadows ?? this.buttonShadows,
+      gradient: gradient ?? this.gradient,
+      textDecoration: textDecoration ?? this.textDecoration,
+      hoverTextDecoration: hoverTextDecoration ?? this.hoverTextDecoration,
+      buttonDecoration: buttonDecoration ?? this.buttonDecoration,
+      width: width ?? this.width,
+      height: height ?? this.height,
+      mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
+      longPressDuration: longPressDuration ?? this.longPressDuration,
+      hoverStrategies: hoverStrategies ?? this.hoverStrategies,
+      textDirection: textDirection ?? this.textDirection,
+      gap: gap ?? this.gap,
+      formatDate: formatDate ?? this.formatDate,
+      formatDateRange: formatDateRange ?? this.formatDateRange,
+      buttonVariant: buttonVariant ?? this.buttonVariant,
+      buttonPadding: buttonPadding ?? this.buttonPadding,
+      iconSrc: iconSrc ?? this.iconSrc,
     );
   }
 }

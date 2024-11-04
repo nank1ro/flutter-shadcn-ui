@@ -58,6 +58,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.footer,
     this.closeOnSelect = true,
     this.allowDeselection = false,
+    this.groupId,
     this.itemCount,
     this.shrinkWrap,
   })  : variant = ShadSelectVariant.primary,
@@ -116,6 +117,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.footer,
     this.closeOnSelect = true,
     this.allowDeselection = false,
+    this.groupId,
     this.itemCount,
     this.shrinkWrap,
   })  : variant = ShadSelectVariant.search,
@@ -156,6 +158,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.footer,
     this.allowDeselection = true,
     this.closeOnSelect = true,
+    this.groupId,
     this.itemCount,
     this.shrinkWrap,
   })  : variant = ShadSelectVariant.multiple,
@@ -212,6 +215,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.footer,
     this.allowDeselection = true,
     this.closeOnSelect = true,
+    this.groupId,
     this.itemCount,
     this.shrinkWrap,
   })  : variant = ShadSelectVariant.multipleWithSearch,
@@ -265,6 +269,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.footer,
     this.allowDeselection = false,
     this.closeOnSelect = true,
+    this.groupId,
     this.itemCount,
     this.shrinkWrap,
   })  : assert(
@@ -428,6 +433,8 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@endtemplate}
   final bool closeOnSelect;
 
+  /// {@macro ShadPopover.groupId}
+  final Object? groupId;
   /// {@template ShadSelect.itemCount}
   /// The number of items in the options, used in combination with
   /// [optionsBuilder].
@@ -862,6 +869,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             return ShadInheritedSelectContainer(
               data: this,
               child: ShadPopover(
+                groupId: widget.groupId,
                 padding: EdgeInsets.zero,
                 controller: controller,
                 anchor: effectiveAnchor,

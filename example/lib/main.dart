@@ -9,6 +9,8 @@ import 'package:example/pages/card.dart';
 import 'package:example/pages/checkbox.dart';
 import 'package:example/pages/checkbox_form_field.dart';
 import 'package:example/pages/context_menu.dart';
+import 'package:example/pages/date_picker.dart';
+import 'package:example/pages/date_picker_form_field.dart';
 import 'package:example/pages/dialog.dart';
 import 'package:example/pages/image.dart';
 import 'package:example/pages/input.dart';
@@ -51,6 +53,8 @@ final routes = <String, WidgetBuilder>{
   '/checkbox': (_) => const CheckboxPage(),
   '/checkbox-form-field': (_) => const CheckboxFormFieldPage(),
   '/context-menu': (_) => const ContextMenuPage(),
+  '/date-picker': (_) => const DatePickerPage(),
+  '/date-picker-form-field': (_) => const DatePickerFormFieldPage(),
   '/dialog': (_) => const DialogPage(),
   '/image': (_) => const ImagePage(),
   '/input': (_) => const InputPage(),

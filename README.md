@@ -36,7 +36,7 @@ See the [documentation](https://flutter-shadcn-ui.mariuti.com/) to interact with
 - [ ] Command
 - [x] [Context Menu](https://flutter-shadcn-ui.mariuti.com/components/context-menu/)
 - [ ] Data Table
-- [ ] Date Picker
+- [x] [Date Picker](https://flutter-shadcn-ui.mariuti.com/components/date-picker/)
 - [ ] Drawer
 - [x] <strike>Dropdown Menu</strike> Use Context Menu instead
 - [x] [Form](https://flutter-shadcn-ui.mariuti.com/components/form/)

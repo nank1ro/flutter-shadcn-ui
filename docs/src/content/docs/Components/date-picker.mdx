@@ -1,0 +1,154 @@
+---
+title: Date Picker
+sidebar:
+  order: 4
+---
+
+import Preview from "../../../components/Preview.astro";
+
+A date picker component with range and presets.
+
+<Preview src="https://shadcn-ui-playground.pages.dev/date-picker?style=single" minHeight="450px">
+
+```dart
+class SingleDatePicker extends StatelessWidget {
+  const SingleDatePicker({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 600),
+      child: const ShadDatePicker(),
+    );
+  }
+}
+```
+
+</Preview>
+
+## Date Range Picker
+
+<Preview src="https://shadcn-ui-playground.pages.dev/date-picker?style=range" minHeight="450px">
+
+```dart
+class RangeDatePicker extends StatelessWidget {
+  const RangeDatePicker({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 600),
+      child: const ShadDatePicker.range(),
+    );
+  }
+}
+```
+
+</Preview>
+
+## With Presets
+
+<Preview src="https://shadcn-ui-playground.pages.dev/date-picker?style=range" minHeight="450px">
+
+```dart
+const presets = {
+  0: 'Today',
+  1: 'Tomorrow',
+  3: 'In 3 days',
+  7: 'In a week',
+};
+
+class PresetsDatePicker extends StatefulWidget {
+  const PresetsDatePicker({super.key});
+
+  @override
+  State<PresetsDatePicker> createState() => _PresetsDatePickerState();
+}
+
+class _PresetsDatePickerState extends State<PresetsDatePicker> {
+  final groupId = UniqueKey();
+  final today = DateTime.now().startOfDay;
+  DateTime? selected;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 600),
+      child: ShadDatePicker(
+        // Using the same groupId to keep the date picker popover open when the
+        // select popover is closed.
+        groupId: groupId,
+        header: ShadSelect<int>(
+          groupId: groupId,
+          minWidth: 284,
+          placeholder: const Text('Select'),
+          options: presets.entries
+              .map((e) => ShadOption(value: e.key, child: Text(e.value)))
+              .toList(),
+          selectedOptionBuilder: (context, value) {
+            return Text(presets[value]!);
+          },
+          onChanged: (value) {
+            if (value == null) return;
+            setState(() {
+              selected = today.add(Duration(days: value));
+            });
+          },
+        ),
+        selected: selected,
+        calendarDecoration: theme.calendarTheme.decoration,
+        popoverPadding: const EdgeInsets.all(4),
+      ),
+    );
+  }
+}
+```
+
+</Preview>
+
+## Form
+
+<Preview src="https://shadcn-ui-playground.pages.dev/form?style=datePickerField" minHeight="700px">
+
+```dart
+ShadDatePickerFormField(
+  label: const Text('Date of birth'),
+  onChanged: print,
+  description: const Text(
+      'Your date of birth is used to calculate your age.'),
+  validator: (v) {
+    if (v == null) {
+      return 'A date of birth is required.';
+    }
+    return null;
+  },
+),
+```
+
+</Preview>
+
+## DateRangePickerFormField
+
+<Preview src="https://shadcn-ui-playground.pages.dev/form?style=dateRangePickerField" minHeight="700px">
+
+```dart
+ShadDateRangePickerFormField(
+  label: const Text('Range of dates'),
+  onChanged: print,
+  description: const Text(
+      'Select the range of dates you want to search between.'),
+  validator: (v) {
+    if (v == null) return 'A range of dates is required.';
+    if (v.start == null) {
+      return 'The start date is required.';
+    }
+    if (v.end == null) return 'The end date is required.';
+
+    return null;
+  },
+),
+
+```
+
+</Preview>

@@ -9,6 +9,7 @@ import 'package:playground/pages/calendar.dart';
 import 'package:playground/pages/card.dart';
 import 'package:playground/pages/checkbox.dart';
 import 'package:playground/pages/context_menu.dart';
+import 'package:playground/pages/date_picker.dart';
 import 'package:playground/pages/dialog.dart';
 import 'package:playground/pages/form.dart';
 import 'package:playground/pages/image.dart';
@@ -277,6 +278,16 @@ final _router = GoRouter(
           fixedWeeks: fixedWeeks,
           hideWeekdayNames: hideWeekdayNames,
           reverseMonths: reverseMonths,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/date-picker',
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ??
+            ShadDatePickerVariantPlayground.single.name;
+        return DatePickerPage(
+          style: ShadDatePickerVariantPlayground.values.byName(style),
         );
       },
     ),

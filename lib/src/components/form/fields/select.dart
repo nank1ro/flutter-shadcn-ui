@@ -54,6 +54,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     bool allowDeselection = false,
     bool closeOnSelect = true,
 
+    /// {@macro ShadPopover.groupId}
+    Object? groupId,
     /// {@macro ShadSelect.itemCount}
     int? itemCount,
 
@@ -94,6 +96,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               header: header,
               footer: footer,
               closeOnSelect: closeOnSelect,
+              groupId: groupId,
               itemCount: itemCount,
               shrinkWrap: shrinkWrap,
             );
@@ -152,6 +155,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     bool allowDeselection = false,
     bool closeOnSelect = true,
 
+    /// {@macro ShadPopover.groupId}
+    Object? groupId,
     /// {@macro ShadSelect.itemCount}
     int? itemCount,
 
@@ -199,6 +204,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               header: header,
               footer: footer,
               closeOnSelect: closeOnSelect,
+              groupId: groupId,
               itemCount: itemCount,
               shrinkWrap: shrinkWrap,
             );
@@ -254,6 +260,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     bool allowDeselection = false,
     bool closeOnSelect = true,
 
+    /// {@macro ShadPopover.groupId}
+    Object? groupId,
     /// {@macro ShadSelect.itemCount}
     int? itemCount,
 
@@ -309,6 +317,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               footer: footer,
               allowDeselection: allowDeselection,
               closeOnSelect: closeOnSelect,
+              groupId: groupId,
               itemCount: itemCount,
               shrinkWrap: shrinkWrap,
             );

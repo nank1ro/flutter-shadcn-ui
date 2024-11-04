@@ -17,6 +17,7 @@ import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
+import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
@@ -825,5 +826,18 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         showWeekNumbers: false,
         weekStartsOn: 1,
         fixedWeeks: false,
+        allowDeselection: false,
       );
+
+  @override
+  ShadDatePickerTheme datePickerTheme() {
+    return const ShadDatePickerTheme(
+      calendarDecoration: ShadDecoration.none,
+      allowDeselection: true,
+      buttonVariant: ShadButtonVariant.outline,
+      width: 276,
+      mainAxisAlignment: MainAxisAlignment.start,
+      iconSrc: LucideIcons.calendar,
+    );
+  }
 }

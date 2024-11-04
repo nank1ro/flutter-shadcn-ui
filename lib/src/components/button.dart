@@ -553,7 +553,9 @@ class _ShadButtonState extends State<ShadButton> {
       return defaultHeightForSize(theme, widget.size!);
     }
     return defaultHeightForSize(
-        theme, buttonTheme(theme).size ?? ShadButtonSize.regular);
+      theme,
+      buttonTheme(theme).size ?? ShadButtonSize.regular,
+    );
   }
 
   double? defaultWidthForSize(ShadThemeData theme, ShadButtonSize size) {
@@ -569,7 +571,9 @@ class _ShadButtonState extends State<ShadButton> {
       return defaultWidthForSize(theme, widget.size!);
     }
     return defaultWidthForSize(
-        theme, buttonTheme(theme).size ?? ShadButtonSize.regular);
+      theme,
+      buttonTheme(theme).size ?? ShadButtonSize.regular,
+    );
   }
 
   EdgeInsetsGeometry defaultPaddingForSize(
@@ -585,7 +589,9 @@ class _ShadButtonState extends State<ShadButton> {
       return defaultPaddingForSize(theme, widget.size!);
     }
     return defaultPaddingForSize(
-        theme, buttonTheme(theme).size ?? ShadButtonSize.regular);
+      theme,
+      buttonTheme(theme).size ?? ShadButtonSize.regular,
+    );
   }
 
   Color? background(ShadThemeData theme) {

@@ -155,6 +155,7 @@ class ShadCalendar extends StatefulWidget {
     this.dayButtonOutsideMonthTextStyle,
     this.dayButtonOutsideMonthVariant,
     this.selectedDayButtonOusideMonthVariant,
+    this.allowDeselection,
   })  : variant = ShadCalendarVariant.single,
         multipleSelected = null,
         onMultipleChanged = null,
@@ -234,7 +235,8 @@ class ShadCalendar extends StatefulWidget {
         onMultipleChanged = onChanged,
         onChanged = null,
         onRangeChanged = null,
-        selectedRange = null;
+        selectedRange = null,
+        allowDeselection = null;
 
   const ShadCalendar.range({
     super.key,
@@ -307,7 +309,8 @@ class ShadCalendar extends StatefulWidget {
         onMultipleChanged = null,
         onChanged = null,
         selectedRange = selected,
-        onRangeChanged = onChanged;
+        onRangeChanged = onChanged,
+        allowDeselection = null;
 
   const ShadCalendar.raw({
     super.key,
@@ -379,6 +382,7 @@ class ShadCalendar extends StatefulWidget {
     this.dayButtonOutsideMonthTextStyle,
     this.dayButtonOutsideMonthVariant,
     this.selectedDayButtonOusideMonthVariant,
+    this.allowDeselection,
   });
 
   /// {@template ShadCalendar.variant}
@@ -399,7 +403,7 @@ class ShadCalendar extends StatefulWidget {
   /// {@template ShadCalendar.onChanged}
   /// Called when the user selects a date.
   /// {@endtemplate}
-  final ValueChanged<DateTime>? onChanged;
+  final ValueChanged<DateTime?>? onChanged;
 
   /// {@template ShadCalendar.onMultipleChanged}
   /// Called when the user selects multiple dates.
@@ -795,6 +799,11 @@ class ShadCalendar extends StatefulWidget {
   /// [ShadButtonVariant.secondary]
   /// {@endtemplate}
   final ShadButtonVariant? selectedDayButtonOusideMonthVariant;
+
+  /// {@template ShadCalendar.allowDeselection}
+  /// Whether to allow deselection of the selected date, defaults to false.
+  /// {@endtemplate}
+  final bool? allowDeselection;
 
   @override
   State<ShadCalendar> createState() => _ShadCalendarState();
@@ -1269,6 +1278,10 @@ class _ShadCalendarState extends State<ShadCalendar> {
         theme.calendarTheme.todayButtonVariant ??
         ShadButtonVariant.secondary;
 
+    final effectiveAllowDeselection = widget.allowDeselection ??
+        theme.calendarTheme.allowDeselection ??
+        false;
+
     final yearSelector = ShadSelect<int>(
       initialValue: currentMonth.year,
       padding: effectiveYearSelectorPadding,
@@ -1627,7 +1640,14 @@ class _ShadCalendarState extends State<ShadCalendar> {
                             }
 
                             if (widget.variant == ShadCalendarVariant.single) {
+                              final selectedDate = selectedDays.firstOrNull;
                               selectedDays.clear();
+                              if (effectiveAllowDeselection &&
+                                  (selectedDate?.isSameDay(date) ?? false)) {
+                                widget.onChanged?.call(null);
+
+                                return;
+                              }
                             }
 
                             setState(() {
