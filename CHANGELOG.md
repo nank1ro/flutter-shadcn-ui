@@ -1,3 +1,8 @@
+## 0.15.0
+
+- **FIX**: `ShadSelect` crash when using `optionsBuilder`.
+- **FEAT**: Add `itemCount` and `shrinkWrap` to `ShadSelect` and `ShadSelectFormField`.
+
 ## 0.14.1
 
 - **FIX**: `ShadApp` scroll behavior.
