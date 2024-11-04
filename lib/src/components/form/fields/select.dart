@@ -56,6 +56,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadPopover.groupId}
     Object? groupId,
+
     /// {@macro ShadSelect.itemCount}
     int? itemCount,
 
@@ -157,6 +158,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadPopover.groupId}
     Object? groupId,
+
     /// {@macro ShadSelect.itemCount}
     int? itemCount,
 
@@ -262,6 +264,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadPopover.groupId}
     Object? groupId,
+
     /// {@macro ShadSelect.itemCount}
     int? itemCount,
 

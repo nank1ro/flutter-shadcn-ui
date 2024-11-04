@@ -435,6 +435,7 @@ class ShadSelect<T> extends StatefulWidget {
 
   /// {@macro ShadPopover.groupId}
   final Object? groupId;
+
   /// {@template ShadSelect.itemCount}
   /// The number of items in the options, used in combination with
   /// [optionsBuilder].

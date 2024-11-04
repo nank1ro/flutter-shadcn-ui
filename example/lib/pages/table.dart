@@ -118,7 +118,6 @@ class TablePage extends StatelessWidget {
   }
 }
 
-
 /* With builder it will be
 const invoices = [
   [
