@@ -14,9 +14,9 @@ import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 class ShadButtonTheme {
   const ShadButtonTheme({
     this.merge = true,
-    this.applyIconColorFilter = true,
+    this.applyIconColorFilter,
     this.cursor,
-    this.size = ShadButtonSize.regular,
+    this.size,
     this.sizesTheme,
     this.backgroundColor,
     this.hoverBackgroundColor,
@@ -40,9 +40,9 @@ class ShadButtonTheme {
   });
 
   final bool merge;
-  final bool applyIconColorFilter;
+  final bool? applyIconColorFilter;
   final MouseCursor? cursor;
-  final ShadButtonSize size;
+  final ShadButtonSize? size;
   final ShadButtonSizesTheme? sizesTheme;
   final Color? backgroundColor;
   final Color? hoverBackgroundColor;

@@ -56,6 +56,11 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadPopover.groupId}
     Object? groupId,
+    /// {@macro ShadSelect.itemCount}
+    int? itemCount,
+
+    /// {@macro ShadSelect.shrinkWrap}
+    bool? shrinkWrap,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -92,6 +97,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               footer: footer,
               closeOnSelect: closeOnSelect,
               groupId: groupId,
+              itemCount: itemCount,
+              shrinkWrap: shrinkWrap,
             );
           },
         );
@@ -150,6 +157,11 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadPopover.groupId}
     Object? groupId,
+    /// {@macro ShadSelect.itemCount}
+    int? itemCount,
+
+    /// {@macro ShadSelect.shrinkWrap}
+    bool? shrinkWrap,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -193,6 +205,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               footer: footer,
               closeOnSelect: closeOnSelect,
               groupId: groupId,
+              itemCount: itemCount,
+              shrinkWrap: shrinkWrap,
             );
           },
         );
@@ -248,6 +262,11 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadPopover.groupId}
     Object? groupId,
+    /// {@macro ShadSelect.itemCount}
+    int? itemCount,
+
+    /// {@macro ShadSelect.shrinkWrap}
+    bool? shrinkWrap,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -299,6 +318,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               allowDeselection: allowDeselection,
               closeOnSelect: closeOnSelect,
               groupId: groupId,
+              itemCount: itemCount,
+              shrinkWrap: shrinkWrap,
             );
           },
         );

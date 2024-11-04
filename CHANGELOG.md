@@ -2,6 +2,8 @@
 
 - **FEAT**: New `ShadDatePicker` component.
 - **FEAT**: Add `allowDeselection` property to `ShadCalendar`.
+- **FIX**: `ShadSelect` crash when using `optionsBuilder`.
+- **FEAT**: Add `itemCount` and `shrinkWrap` to `ShadSelect` and `ShadSelectFormField`.
 
 ## 0.14.1
 

@@ -59,6 +59,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.closeOnSelect = true,
     this.allowDeselection = false,
     this.groupId,
+    this.itemCount,
+    this.shrinkWrap,
   })  : variant = ShadSelectVariant.primary,
         onSearchChanged = null,
         searchDivider = null,
@@ -116,6 +118,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.closeOnSelect = true,
     this.allowDeselection = false,
     this.groupId,
+    this.itemCount,
+    this.shrinkWrap,
   })  : variant = ShadSelectVariant.search,
         selectedOptionsBuilder = null,
         onMultipleChanged = null,
@@ -155,6 +159,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.allowDeselection = true,
     this.closeOnSelect = true,
     this.groupId,
+    this.itemCount,
+    this.shrinkWrap,
   })  : variant = ShadSelectVariant.multiple,
         onSearchChanged = null,
         initialValue = null,
@@ -210,6 +216,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.allowDeselection = true,
     this.closeOnSelect = true,
     this.groupId,
+    this.itemCount,
+    this.shrinkWrap,
   })  : variant = ShadSelectVariant.multipleWithSearch,
         selectedOptionBuilder = null,
         onChanged = null,
@@ -262,6 +270,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.allowDeselection = false,
     this.closeOnSelect = true,
     this.groupId,
+    this.itemCount,
+    this.shrinkWrap,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -425,6 +435,19 @@ class ShadSelect<T> extends StatefulWidget {
 
   /// {@macro ShadPopover.groupId}
   final Object? groupId;
+  /// {@template ShadSelect.itemCount}
+  /// The number of items in the options, used in combination with
+  /// [optionsBuilder].
+  /// {@endtemplate}
+  final int? itemCount;
+
+  /// {@template ShadSelect.shrinkWrap}
+  /// Whether the options returned by [optionsBuilder] should shrink wrap,
+  /// defaults to `false`.
+  /// You may set it to `true` when the [itemCount] provided is small and you
+  /// want the content to be resized.
+  /// {@endtemplate}
+  final bool? shrinkWrap;
 
   static ShadSelectState<T> of<T>(BuildContext context, {bool listen = true}) {
     return maybeOf<T>(context, listen: listen)!;
@@ -668,7 +691,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         theme.selectTheme.optionsPadding ??
         const EdgeInsets.all(4);
 
-    Widget? search = switch (widget.variant) {
+    final search = switch (widget.variant) {
       ShadSelectVariant.primary || ShadSelectVariant.multiple => null,
       ShadSelectVariant.search ||
       ShadSelectVariant.multipleWithSearch =>
@@ -696,10 +719,6 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
           ],
         ),
     };
-
-    if (search != null && effectiveMaxWidth.isInfinite) {
-      search = search;
-    }
 
     return CallbackShortcuts(
       bindings: {
@@ -735,6 +754,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
               effectiveChild = ListView.builder(
                 padding: effectiveOptionsPadding,
                 controller: scrollController,
+                itemCount: widget.itemCount,
+                shrinkWrap: widget.shrinkWrap ?? false,
                 itemBuilder: (context, index) {
                   return widget.optionsBuilder?.call(context, index);
                 },
@@ -867,48 +888,53 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                     }
                   });
 
+                  Widget effectiveColumn = Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (search != null)
+                        Flexible(
+                          child: ConstrainedBox(
+                            constraints: effectiveConstraints,
+                            child: search,
+                          ),
+                        ),
+                      if (widget.header != null)
+                        Flexible(
+                          child: ConstrainedBox(
+                            constraints: effectiveConstraints,
+                            child: widget.header,
+                          ),
+                        ),
+                      if (scrollToTopChild != null) scrollToTopChild,
+                      Flexible(
+                        child: ConstrainedBox(
+                          constraints: effectiveConstraints,
+                          child: effectiveChild,
+                        ),
+                      ),
+                      if (scrollToBottomChild != null) scrollToBottomChild,
+                      if (widget.footer != null)
+                        Flexible(
+                          child: ConstrainedBox(
+                            constraints: effectiveConstraints,
+                            child: widget.footer,
+                          ),
+                        ),
+                    ],
+                  );
+
+                  if (widget.optionsBuilder == null) {
+                    effectiveColumn = IntrinsicWidth(child: effectiveColumn);
+                  }
+
                   return ConstrainedBox(
                     constraints: BoxConstraints(
                       maxHeight: effectiveMaxHeight,
                       minWidth: calculatedMinWidth,
                       maxWidth: effectiveMaxWidth,
                     ),
-                    child: IntrinsicWidth(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (search != null)
-                            Flexible(
-                              child: ConstrainedBox(
-                                constraints: effectiveConstraints,
-                                child: search,
-                              ),
-                            ),
-                          if (widget.header != null)
-                            Flexible(
-                              child: ConstrainedBox(
-                                constraints: effectiveConstraints,
-                                child: widget.header,
-                              ),
-                            ),
-                          if (scrollToTopChild != null) scrollToTopChild,
-                          Flexible(
-                            child: ConstrainedBox(
-                              constraints: effectiveConstraints,
-                              child: effectiveChild,
-                            ),
-                          ),
-                          if (scrollToBottomChild != null) scrollToBottomChild,
-                          if (widget.footer != null)
-                            Flexible(
-                              child: ConstrainedBox(
-                                constraints: effectiveConstraints,
-                                child: widget.footer,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
+                    child: effectiveColumn,
                   );
                 },
                 child: select,
