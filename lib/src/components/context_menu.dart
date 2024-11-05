@@ -303,7 +303,8 @@ class ShadContextMenuState extends State<ShadContextMenu> {
         const EdgeInsets.symmetric(vertical: 4);
 
     final effectiveDecoration =
-        widget.decoration ?? theme.contextMenuTheme.decoration;
+        (theme.contextMenuTheme.decoration ?? const ShadDecoration())
+            .mergeWith(widget.decoration);
 
     final effectiveFilter = widget.filter ?? theme.contextMenuTheme.filter;
 
@@ -688,12 +689,12 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
         theme.contextMenuTheme.buttonVariant ??
         ShadButtonVariant.ghost;
 
-    final effectiveDecoration = widget.decoration ??
-        theme.contextMenuTheme.itemDecoration ??
-        const ShadDecoration(
-          secondaryBorder: ShadBorder.none,
-          secondaryFocusedBorder: ShadBorder.none,
-        );
+    final effectiveDecoration = const ShadDecoration(
+      secondaryBorder: ShadBorder.none,
+      secondaryFocusedBorder: ShadBorder.none,
+    )
+        .mergeWith(theme.contextMenuTheme.itemDecoration)
+        .mergeWith(widget.decoration);
 
     final effectiveTextStyle = widget.textStyle ??
         theme.contextMenuTheme.textStyle ??

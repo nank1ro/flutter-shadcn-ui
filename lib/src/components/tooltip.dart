@@ -128,7 +128,9 @@ class _ShadTooltipState extends State<ShadTooltip> {
     final effectiveEffects = widget.effects ?? theme.tooltipTheme.effects ?? [];
     final effectivePadding = widget.padding ?? theme.tooltipTheme.padding;
     final effectiveDecoration =
-        widget.decoration ?? theme.tooltipTheme.decoration;
+        (theme.tooltipTheme.decoration ?? const ShadDecoration())
+            .mergeWith(widget.decoration);
+
     final effectiveAnchor = widget.anchor ??
         theme.tooltipTheme.anchor ??
         const ShadAnchorAuto(

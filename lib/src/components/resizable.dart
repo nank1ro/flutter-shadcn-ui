@@ -277,15 +277,15 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
         theme.resizableTheme.dividerColor ??
         theme.colorScheme.border;
 
-    final effectiveHandleDecoration = widget.handleDecoration ??
-        theme.resizableTheme.handleDecoration ??
-        ShadDecoration(
-          color: theme.colorScheme.border,
-          border: ShadBorder.all(
-            radius: const BorderRadius.all(Radius.circular(4)),
-            width: 0,
-          ),
-        );
+    final effectiveHandleDecoration = ShadDecoration(
+      color: theme.colorScheme.border,
+      border: ShadBorder.all(
+        radius: const BorderRadius.all(Radius.circular(4)),
+        width: 0,
+      ),
+    )
+        .mergeWith(theme.resizableTheme.handleDecoration)
+        .mergeWith(widget.handleDecoration);
 
     final effectiveHandlePadding = widget.handlePadding ??
         theme.resizableTheme.handlePadding ??
