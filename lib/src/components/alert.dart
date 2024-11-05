@@ -88,15 +88,17 @@ class ShadAlert extends StatelessWidget {
         effectiveAlertTheme.iconPadding ??
         const EdgeInsets.only(right: 12);
 
-    final effectiveDecoration = decoration ??
-        effectiveAlertTheme.decoration ??
-        ShadDecoration(
-          border: ShadBorder.all(
-            color: theme.colorScheme.border,
-            radius: theme.radius,
-            padding: const EdgeInsets.all(16),
-          ),
-        );
+    final defaultDecoration = ShadDecoration(
+      border: ShadBorder.all(
+        color: theme.colorScheme.border,
+        radius: theme.radius,
+        padding: const EdgeInsets.all(16),
+      ),
+    );
+
+    final effectiveDecoration = defaultDecoration
+        .mergeWith(effectiveAlertTheme.decoration)
+        .mergeWith(decoration);
 
     final effectiveIconColor = iconColor ??
         effectiveAlertTheme.iconColor ??
