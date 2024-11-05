@@ -1,3 +1,7 @@
+## 0.15.1
+
+- **FIX**: Decoration merge
+
 ## 0.15.0
 
 - **FEAT**: New `ShadDatePicker` component.
