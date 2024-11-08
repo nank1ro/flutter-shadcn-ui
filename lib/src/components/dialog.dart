@@ -369,20 +369,16 @@ class ShadDialog extends StatelessWidget {
                     crossAxisAlignment: effectiveCrossAxisAlignment,
                     children: [
                       if (title != null)
-                        Flexible(
-                          child: DefaultTextStyle(
-                            style: effectiveTitleStyle,
-                            textAlign: effectiveTitleTextAlign,
-                            child: title!,
-                          ),
+                        DefaultTextStyle(
+                          style: effectiveTitleStyle,
+                          textAlign: effectiveTitleTextAlign,
+                          child: title!,
                         ),
                       if (description != null)
-                        Flexible(
-                          child: DefaultTextStyle(
-                            style: effectiveDescriptionStyle,
-                            textAlign: effectiveDescriptionTextAlign,
-                            child: description!,
-                          ),
+                        DefaultTextStyle(
+                          style: effectiveDescriptionStyle,
+                          textAlign: effectiveDescriptionTextAlign,
+                          child: description!,
                         ),
                       if (child != null)
                         Flexible(
@@ -391,7 +387,7 @@ class ShadDialog extends StatelessWidget {
                             child: child!,
                           ),
                         ),
-                      if (actions.isNotEmpty) Flexible(child: effectiveActions),
+                      if (actions.isNotEmpty) effectiveActions,
                     ].separatedBy(SizedBox(height: effectiveGap)),
                   ),
                 ),
