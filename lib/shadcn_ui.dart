@@ -108,7 +108,7 @@ export 'src/utils/states_controller.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart' hide Effect;
-export 'package:flutter_svg_plus/flutter_svg.dart';
+export 'package:flutter_svg/flutter_svg.dart';
 export 'package:intl/intl.dart';
 export 'package:lucide_icons_flutter/lucide_icons.dart';
 export 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';

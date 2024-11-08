@@ -21,12 +21,12 @@ dependencies:
   flutter_animate: ^4.5.0
   flutter_localizations:
     sdk: flutter
-  flutter_svg_plus: ^2.0.13
+  flutter_svg: ^2.0.14
   intl: ^0.19.0
   lucide_icons_flutter: ^1.1.0
   # used by Table
   two_dimensional_scrollables: ^0.3.1
-  vector_graphics_plus: ^1.1.13
+  vector_graphics: ^1.1.14
 
 dev_dependencies:
   flutter_test:
