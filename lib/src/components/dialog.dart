@@ -391,7 +391,7 @@ class ShadDialog extends StatelessWidget {
                             child: child!,
                           ),
                         ),
-                      if (actions.isNotEmpty) effectiveActions,
+                      if (actions.isNotEmpty) Flexible(child: effectiveActions),
                     ].separatedBy(SizedBox(height: effectiveGap)),
                   ),
                 ),
