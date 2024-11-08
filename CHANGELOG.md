@@ -1,3 +1,8 @@
+## 0.15.3
+
+- **FIX**: `ShadDialog` and `ShadSheet` children constraints.
+- **CHORE**: Replace `flutter_svg_plus` dependency with `flutter_svg` and `vector_graphics_plus` with `vector_graphics`.
+
 ## 0.15.2
 
 - **FIX**: `ShadDialog` and `ShadSheet` children constraints.
