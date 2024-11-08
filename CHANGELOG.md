@@ -1,3 +1,7 @@
+## 0.15.2
+
+- **FIX**: `ShadDialog` and `ShadSheet` children constraints.
+
 ## 0.15.1
 
 - **FIX**: Decoration merge
