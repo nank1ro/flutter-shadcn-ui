@@ -64,7 +64,6 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
               width: width,
               margin: margin,
               thumbColor: thumbColor,
-              trackColor: trackColor,
               uncheckedTrackColor: uncheckedTrackColor,
               checkedTrackColor: checkedTrackColor,
             );
