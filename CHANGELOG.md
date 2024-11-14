@@ -1,3 +1,7 @@
+## 0.16.0
+
+- **FEAT**: New `ShadTimePicker` and `ShadDatePickerFormField` components.
+
 ## 0.15.3
 
 - **FIX**: `ShadDialog` and `ShadSheet` children constraints.
