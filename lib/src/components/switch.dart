@@ -15,7 +15,6 @@ class ShadSwitch extends StatefulWidget {
     this.onChanged,
     this.focusNode,
     this.thumbColor,
-    this.trackColor,
     this.uncheckedTrackColor,
     this.checkedTrackColor,
     this.width,
@@ -43,9 +42,6 @@ class ShadSwitch extends StatefulWidget {
 
   /// The color of the switch thumb.
   final Color? thumbColor;
-
-  /// The color of the switch track.
-  final Color? trackColor;
 
   /// The color of the unchecked track.
   final Color? uncheckedTrackColor;
