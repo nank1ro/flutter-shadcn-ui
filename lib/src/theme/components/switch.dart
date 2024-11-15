@@ -8,7 +8,6 @@ class ShadSwitchTheme {
   const ShadSwitchTheme({
     this.merge = true,
     this.thumbColor,
-    this.trackColor,
     this.uncheckedTrackColor,
     this.checkedTrackColor,
     this.width,
@@ -22,8 +21,6 @@ class ShadSwitchTheme {
   final bool merge;
 
   final Color? thumbColor;
-
-  final Color? trackColor;
 
   final Color? uncheckedTrackColor;
 
@@ -50,7 +47,6 @@ class ShadSwitchTheme {
     return ShadSwitchTheme(
       merge: b.merge,
       thumbColor: Color.lerp(a.thumbColor, b.thumbColor, t),
-      trackColor: Color.lerp(a.trackColor, b.trackColor, t),
       uncheckedTrackColor:
           Color.lerp(a.uncheckedTrackColor, b.uncheckedTrackColor, t),
       checkedTrackColor:
@@ -67,7 +63,6 @@ class ShadSwitchTheme {
   ShadSwitchTheme copyWith({
     bool? merge,
     Color? thumbColor,
-    Color? trackColor,
     Color? uncheckedTrackColor,
     Color? checkedTrackColor,
     double? width,
@@ -80,7 +75,6 @@ class ShadSwitchTheme {
     return ShadSwitchTheme(
       merge: merge ?? this.merge,
       thumbColor: thumbColor ?? this.thumbColor,
-      trackColor: trackColor ?? this.trackColor,
       uncheckedTrackColor: uncheckedTrackColor ?? this.uncheckedTrackColor,
       checkedTrackColor: checkedTrackColor ?? this.checkedTrackColor,
       width: width ?? this.width,
@@ -97,7 +91,6 @@ class ShadSwitchTheme {
     if (!other.merge) return other;
     return copyWith(
       thumbColor: other.thumbColor,
-      trackColor: other.trackColor,
       uncheckedTrackColor: other.uncheckedTrackColor,
       checkedTrackColor: other.checkedTrackColor,
       width: other.width,
@@ -116,7 +109,6 @@ class ShadSwitchTheme {
     return other is ShadSwitchTheme &&
         other.merge == merge &&
         other.thumbColor == thumbColor &&
-        other.trackColor == trackColor &&
         other.uncheckedTrackColor == uncheckedTrackColor &&
         other.checkedTrackColor == checkedTrackColor &&
         other.width == width &&
@@ -131,7 +123,6 @@ class ShadSwitchTheme {
   int get hashCode {
     return merge.hashCode ^
         thumbColor.hashCode ^
-        trackColor.hashCode ^
         uncheckedTrackColor.hashCode ^
         checkedTrackColor.hashCode ^
         width.hashCode ^

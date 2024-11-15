@@ -23,7 +23,6 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
     super.focusNode,
     String? Function(bool)? validator,
     Color? thumbColor,
-    Color? trackColor,
     Color? uncheckedTrackColor,
     Color? checkedTrackColor,
     double? width,
