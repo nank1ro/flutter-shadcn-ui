@@ -2,6 +2,9 @@
 
 - **FEAT**: New `ShadTimePicker` and `ShadDatePickerFormField` components.
 
+- **CHORE**: Set minimum Flutter version to `3.24.0`
+- **CHORE**: Remove `trackColor` from `ShadSwitch` (thanks to @RaghavTheGreat)
+
 ## 0.15.3
 
 - **FIX**: `ShadDialog` and `ShadSheet` children constraints.
