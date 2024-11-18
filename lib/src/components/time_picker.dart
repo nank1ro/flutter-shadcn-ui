@@ -64,13 +64,22 @@ class ShadTimePicker extends StatefulWidget {
   const ShadTimePicker({
     super.key,
     this.axis,
-    this.gap,
+    this.spacing,
+    this.runSpacing,
     this.jumpToNextFieldWhenFilled,
     this.onChanged,
     this.initialValue,
     this.hourLabel,
     this.minuteLabel,
     this.secondLabel,
+    this.hourPlaceholder,
+    this.minutePlaceholder,
+    this.secondPlaceholder,
+    this.leading,
+    this.trailing,
+    this.alignment,
+    this.runAlignment,
+    this.crossAxisAlignment,
   });
 
   /// {@template ShadTimePicker.axis}
@@ -78,10 +87,15 @@ class ShadTimePicker extends StatefulWidget {
   /// {@endtemplate}
   final Axis? axis;
 
-  /// {@template ShadTimePicker.gap}
-  /// The gap between the fields in the picker. Defaults to `0`.
+  /// {@template ShadTimePicker.spacing}
+  /// The spacing between the fields in the picker. Defaults to `0`.
   /// {@endtemplate}
-  final double? gap;
+  final double? spacing;
+
+  /// {@template ShadTimePicker.runSpacing}
+  /// The run spacing between the fields in the picker. Defaults to `0`.
+  /// {@endtemplate}
+  final double? runSpacing;
 
   /// {@template ShadTimePicker.jumpToNextFieldWhenFilled}
   /// Whether the focus should jump to the next field when the current field is
@@ -113,6 +127,52 @@ class ShadTimePicker extends StatefulWidget {
   /// The widget to display as the label for the second field.
   /// {@endtemplate}
   final Widget? secondLabel;
+
+  /// {@template ShadTimePicker.hourPlaceholder}
+  /// The widget to display as the placeholder for the hour field, defaults to
+  /// `Text('00')`.
+  /// {@endtemplate}
+  final Widget? hourPlaceholder;
+
+  /// {@template ShadTimePicker.minutePlaceholder}
+  /// The widget to display as the placeholder for the minute field, defaults to
+  /// `Text('00')`.
+  /// {@endtemplate}
+  final Widget? minutePlaceholder;
+
+  /// {@template ShadTimePicker.secondPlaceholder}
+  /// The widget to display as the placeholder for the second field, defaults to
+  /// `Text('00')`.
+  /// {@endtemplate}
+  final Widget? secondPlaceholder;
+
+  /// {@template ShadTimePicker.leading}
+  /// The widget to display before the fields in the picker.
+  /// {@endtemplate}
+  final Widget? leading;
+
+  /// {@template ShadTimePicker.trailing}
+  /// The widget to display after the fields in the picker.
+  /// {@endtemplate}
+  final Widget? trailing;
+
+  /// {@template ShadTimePicker.alignment}
+  /// The alignment of the fields in the picker. Defaults to
+  /// `WrapAlignment.center`.
+  /// {@endtemplate}
+  final WrapAlignment? alignment;
+
+  /// {@template ShadTimePicker.runAlignment}
+  /// The alignment of the fields in the picker. Defaults to
+  /// `WrapAlignment.center`.
+  /// {@endtemplate}
+  final WrapAlignment? runAlignment;
+
+  /// {@template ShadTimePicker.crossAxisAlignment}
+  /// The alignment of the fields in the picker. Defaults to
+  /// `WrapCrossAlignment.center`.
+  /// {@endtemplate}
+  final WrapCrossAlignment? crossAxisAlignment;
 
   @override
   State<ShadTimePicker> createState() => _ShadTimePickerState();
@@ -175,50 +235,65 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
   @override
   Widget build(BuildContext context) {
     final effectiveAxis = widget.axis ?? Axis.horizontal;
-    final effectiveGap = widget.gap ?? 0;
+    final effectiveSpacing = widget.spacing ?? 0;
+    final effectiveRunSpacing = widget.runSpacing ?? 0;
     final effectiveJumpToNextField = widget.jumpToNextFieldWhenFilled ?? true;
     final effectiveHourLabel = widget.hourLabel ?? const Text('Hours');
     final effectiveMinuteLabel = widget.minuteLabel ?? const Text('Minutes');
     final effectiveSecondLabel = widget.secondLabel ?? const Text('Seconds');
-    return Flex(
-      mainAxisSize: MainAxisSize.min,
+
+    const defaultPlaceholder = Text('00');
+    final effectiveHourPlaceholder =
+        widget.hourPlaceholder ?? defaultPlaceholder;
+    final effectiveMinutePlaceholder =
+        widget.minutePlaceholder ?? defaultPlaceholder;
+    final effectiveSecondPlaceholder =
+        widget.secondPlaceholder ?? defaultPlaceholder;
+
+    final effectiveAlignment = widget.alignment ?? WrapAlignment.center;
+    final effectiveRunAlignment = widget.runAlignment ?? WrapAlignment.center;
+    final effectiveCrossAxisAlignment =
+        widget.crossAxisAlignment ?? WrapCrossAlignment.center;
+
+    return Wrap(
       direction: effectiveAxis,
+      spacing: effectiveSpacing,
+      runSpacing: effectiveRunSpacing,
+      alignment: effectiveAlignment,
+      runAlignment: effectiveRunAlignment,
+      crossAxisAlignment: effectiveCrossAxisAlignment,
       children: [
-        Flexible(
-          child: ShadTimePickerField(
-            focusNode: focusNodes[0],
-            label: effectiveHourLabel,
-            controller: controllers[0],
-            placeholder: const Text('00'),
-            onChanged: (v) {
-              if (effectiveJumpToNextField && v.length == 2) {
-                focusNodes[1].requestFocus();
-              }
-            },
-          ),
+        if (widget.leading != null) widget.leading!,
+        ShadTimePickerField(
+          focusNode: focusNodes[0],
+          label: effectiveHourLabel,
+          controller: controllers[0],
+          placeholder: effectiveHourPlaceholder,
+          onChanged: (v) {
+            if (effectiveJumpToNextField && v.length == 2) {
+              focusNodes[1].requestFocus();
+            }
+          },
         ),
-        Flexible(
-          child: ShadTimePickerField(
-            focusNode: focusNodes[1],
-            label: effectiveMinuteLabel,
-            controller: controllers[1],
-            placeholder: const Text('00'),
-            onChanged: (v) {
-              if (effectiveJumpToNextField && v.length == 2) {
-                focusNodes[2].requestFocus();
-              }
-            },
-          ),
+        ShadTimePickerField(
+          focusNode: focusNodes[1],
+          label: effectiveMinuteLabel,
+          controller: controllers[1],
+          placeholder: effectiveMinutePlaceholder,
+          onChanged: (v) {
+            if (effectiveJumpToNextField && v.length == 2) {
+              focusNodes[2].requestFocus();
+            }
+          },
         ),
-        Flexible(
-          child: ShadTimePickerField(
-            focusNode: focusNodes[2],
-            label: effectiveSecondLabel,
-            controller: controllers[2],
-            placeholder: const Text('00'),
-          ),
+        ShadTimePickerField(
+          focusNode: focusNodes[2],
+          label: effectiveSecondLabel,
+          controller: controllers[2],
+          placeholder: effectiveSecondPlaceholder,
         ),
-      ].separatedBy(SizedBox.square(dimension: effectiveGap)),
+        if (widget.trailing != null) widget.trailing!,
+      ],
     );
   }
 }
@@ -287,6 +362,8 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
         defaultPlaceholderStyle.merge(controller.placeholderStyle);
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.label != null)
           DefaultTextStyle(
