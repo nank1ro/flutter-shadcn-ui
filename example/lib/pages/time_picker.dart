@@ -13,7 +13,11 @@ class TimePickerPage extends StatelessWidget {
       children: [
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
-          child: const ShadTimePicker(),
+          child: ShadTimePicker(
+            onChanged: (time) {
+              print('time: $time');
+            },
+          ),
         ),
       ],
     );

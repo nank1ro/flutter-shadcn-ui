@@ -550,6 +550,7 @@ class ShadInputState extends State<ShadInput>
                                         textAlign: widget.textAlign,
                                         onTapOutside: widget.onPressedOutside,
                                         rendererIgnoresPointer: true,
+                                        showCursor: widget.showCursor,
                                       ),
                                     ),
                                   ),
