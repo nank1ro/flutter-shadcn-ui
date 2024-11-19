@@ -3,7 +3,8 @@ title: Table
 sidebar:
   order: 4
 ---
-import Preview from '../../../components/Preview.astro';
+
+import Preview from "../../../components/Preview.astro";
 
 A responsive table component.
 
@@ -13,6 +14,7 @@ Use the `ShadTable.list` widget to create a table from a two dimensional array o
 Use it just for **small** tables, because every child will be created.
 
 <Preview src="https://shadcn-ui-playground.pages.dev/table" minHeight="600px">
+
 ```dart
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -135,6 +137,7 @@ class TablePage extends StatelessWidget {
   }
 }
 ```
+
 </Preview>
 
 ## Builder
@@ -142,6 +145,7 @@ class TablePage extends StatelessWidget {
 You can also use a builder to create the table.
 This method is preferred for **large** tables because widgets are created on demand.
 Here it is the same table as above, but using a builder.
+
 ```dart
 const invoices = [
   [
@@ -195,61 +199,65 @@ final headings = [
   'Amount',
 ];
 
-@override
-Widget build(BuildContext context) {
-  return ShadTable(
-    columnCount: invoices[0].length,
-    rowCount: invoices.length,
-    header: (context, column) {
-      final isLast = column == headings.length - 1;
-      return ShadTableCell.header(
-        alignment: isLast ? Alignment.centerRight : null,
-        child: Text(headings[column]),
-      );
-    },
-    columnSpanExtent: (index) {
-      if (index == 2) return const FixedTableSpanExtent(150);
-      if (index == 3) {
-        return const MaxTableSpanExtent(
-          FixedTableSpanExtent(120),
-          RemainingTableSpanExtent(),
+class TableExample extends StatelessWidget {
+  const TableExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadTable(
+      columnCount: invoices[0].length,
+      rowCount: invoices.length,
+      header: (context, column) {
+        final isLast = column == headings.length - 1;
+        return ShadTableCell.header(
+          alignment: isLast ? Alignment.centerRight : null,
+          child: Text(headings[column]),
         );
-      }
-      return null;
-    },
-    builder: (context, index) {
-      final invoice = invoices[index.row];
-      return ShadTableCell(
-        alignment: index.column == invoice.length - 1
-            ? Alignment.centerRight
-            : Alignment.centerLeft,
-        child: Text(
-          invoice[index.column],
-          style: index.column == 0
-              ? const TextStyle(fontWeight: FontWeight.w500)
-              : null,
-        ),
-      );
-    },
-    footer: (context, column) {
-      if (column == 0) {
-        return const ShadTableCell.footer(
+      },
+      columnSpanExtent: (index) {
+        if (index == 2) return const FixedTableSpanExtent(150);
+        if (index == 3) {
+          return const MaxTableSpanExtent(
+            FixedTableSpanExtent(120),
+            RemainingTableSpanExtent(),
+          );
+        }
+        return null;
+      },
+      builder: (context, index) {
+        final invoice = invoices[index.row];
+        return ShadTableCell(
+          alignment: index.column == invoice.length - 1
+              ? Alignment.centerRight
+              : Alignment.centerLeft,
           child: Text(
-            'Total',
-            style: TextStyle(fontWeight: FontWeight.w500),
+            invoice[index.column],
+            style: index.column == 0
+                ? const TextStyle(fontWeight: FontWeight.w500)
+                : null,
           ),
         );
-      }
-      if (column == 3) {
-        return const ShadTableCell.footer(
-          alignment: Alignment.centerRight,
-          child: Text(
-            r'$2500.00',
-          ),
-        );
-      }
-      return const ShadTableCell(child: SizedBox());
-    },
-  );
+      },
+      footer: (context, column) {
+        if (column == 0) {
+          return const ShadTableCell.footer(
+            child: Text(
+              'Total',
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+          );
+        }
+        if (column == 3) {
+          return const ShadTableCell.footer(
+            alignment: Alignment.centerRight,
+            child: Text(
+              r'$2500.00',
+            ),
+          );
+        }
+        return const ShadTableCell(child: SizedBox());
+      },
+    );
+  }
 }
 ```

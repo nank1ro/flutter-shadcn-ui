@@ -4,26 +4,29 @@ sidebar:
   order: 4
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Preview from "../../../components/Preview.astro";
 
 Displays a form input field or a component that looks like an input field.
 
 <Preview src="https://shadcn-ui-playground.pages.dev/input?style=email">
- ```dart
+
+```dart
 ConstrainedBox(
   constraints: const BoxConstraints(maxWidth: 320),
   child: const ShadInput(
-    placeholder: 'Email',
+    placeholder: Text('Email'),
     keyboardType: TextInputType.emailAddress,
   ),
 ),
 ```
+
 </Preview>
 
 ## With prefix and suffix
 
 <Preview src="https://shadcn-ui-playground.pages.dev/input?style=password">
- ```dart
+
+```dart
 class PasswordInput extends StatefulWidget {
   const PasswordInput({super.key});
 
@@ -63,12 +66,14 @@ class _PasswordInputState extends State<PasswordInput> {
   }
 }
 ```
+
 </Preview>
 
 ## Form
 
 <Preview src="https://shadcn-ui-playground.pages.dev/form?style=inputField" minHeight="300px">
- ```dart
+
+```dart
 ShadInputFormField(
   id: 'username',
   label: const Text('Username'),
@@ -83,4 +88,5 @@ ShadInputFormField(
   },
 ),
 ```
+
 </Preview>

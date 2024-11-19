@@ -3,32 +3,45 @@ title: Checkbox
 sidebar:
   order: 4
 ---
-import Preview from '../../../components/Preview.astro';
+
+import Preview from "../../../components/Preview.astro";
 
 A control that allows the user to toggle between checked and not checked.
 
 <Preview src="https://shadcn-ui-playground.pages.dev/checkbox">
- ```dart
-bool value = false;
 
-@override
-Widget build(BuildContext context) {
-  return ShadCheckbox(
-    value: value,
-    onChanged: (v) => setState(() => value = v),
-    label: const Text('Accept terms and conditions'),
-    sublabel: const Text(
-      'You agree to our Terms of Service and Privacy Policy.',
-    ),
-  );
+```dart
+class CheckboxSample extends StatefulWidget {
+  const CheckboxSample({super.key});
+
+  @override
+  State<CheckboxSample> createState() => _CheckboxSampleState();
+}
+
+class _CheckboxSampleState extends State<CheckboxSample> {
+  bool value = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadCheckbox(
+      value: value,
+      onChanged: (v) => setState(() => value = v),
+      label: const Text('Accept terms and conditions'),
+      sublabel: const Text(
+        'You agree to our Terms of Service and Privacy Policy.',
+      ),
+    );
+  }
 }
 ```
+
 </Preview>
 
 ## Form
 
 <Preview src="https://shadcn-ui-playground.pages.dev/form?style=checkboxField" minHeight="300px">
- ```dart
+
+```dart
 ShadCheckboxFormField(
   id: 'terms',
   initialValue: false,
@@ -45,4 +58,5 @@ ShadCheckboxFormField(
   },
 )
 ```
+
 </Preview>

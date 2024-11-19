@@ -4,12 +4,13 @@ sidebar:
   order: 4
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Preview from "../../../components/Preview.astro";
 
 Displays rich content in a portal, triggered by a button.
 
 <Preview src="https://shadcn-ui-playground.pages.dev/popover" minHeight="400px">
- ```dart
+
+```dart
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -80,14 +81,14 @@ class _PopoverPageState extends State<PopoverPage> {
             ),
           ),
           child: ShadButton.outline(
-            child: const Text('Open popover'),
             onPressed: popoverController.toggle,
+            child: const Text('Open popover'),
           ),
         ),
       ),
     );
   }
 }
-
 ```
+
 </Preview>
