@@ -19,32 +19,36 @@ final fruits = {
   'pineapple': 'Pineapple',
 };
 
-@override
-Widget build(BuildContext context) {
-return ConstrainedBox(
-  constraints: const BoxConstraints(minWidth: 180),
-  child: ShadSelect<String>(
-    placeholder: const Text('Select a fruit'),
-    options: [
-      Padding(
-        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-        child: Text(
-          'Fruits',
-          style: theme.textTheme.muted.copyWith(
-            fontWeight: FontWeight.w600,
-            color: theme.colorScheme.popoverForeground,
+class SelectExample extends StatelessWidget {
+  const SelectExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minWidth: 180),
+      child: ShadSelect<String>(
+        placeholder: const Text('Select a fruit'),
+        options: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+            child: Text(
+              'Fruits',
+              style: theme.textTheme.muted.copyWith(
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.popoverForeground,
+              ),
+              textAlign: TextAlign.start,
+            ),
           ),
-          textAlign: TextAlign.start,
-        ),
+          ...fruits.entries
+              .map((e) => ShadOption(value: e.key, child: Text(e.value))),
+        ],
+        selectedOptionBuilder: (context, value) => Text(fruits[value]!),
+        onChanged: print,
       ),
-      ...fruits.entries.map(
-          (e) => ShadOption(value: e.key, child: Text(e.value))),
-    ],
-    selectedOptionBuilder: (context, value) =>
-        Text(fruits[value]!),
-    onChanged: print,
-  ),
-);
+    );
+  }
 }
 ```
 
@@ -117,22 +121,26 @@ List<Widget> getTimezonesWidgets(ShadThemeData theme) {
   return widgets;
 }
 
-@override
-Widget build(BuildContext context) {
-  return ConstrainedBox(
-    constraints: const BoxConstraints(minWidth: 280),
-    child: ShadSelect<String>(
-      placeholder: const Text('Select a timezone'),
-      options: getTimezonesWidgets(theme),
-      selectedOptionBuilder: (context, value) {
-        final timezone = timezones.entries
-            .firstWhere(
-                (element) => element.value.containsKey(value))
-            .value[value];
-        return Text(timezone!);
-      },
-    ),
-  );
+class SelectExample extends StatelessWidget {
+  const SelectExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minWidth: 280),
+      child: ShadSelect<String>(
+        placeholder: const Text('Select a timezone'),
+        options: getTimezonesWidgets(theme),
+        selectedOptionBuilder: (context, value) {
+          final timezone = timezones.entries
+              .firstWhere((element) => element.value.containsKey(value))
+              .value[value];
+          return Text(timezone!);
+        },
+      ),
+    );
+  }
 }
 ```
 
@@ -149,25 +157,31 @@ final verifiedEmails = [
   'm@support.com',
 ];
 
-ShadSelectFormField(
-  id: 'email',
-  minWidth: 350,
-  initialValue: null,
-  options: verifiedEmails
-      .map((email) =>
-          ShadOption(value: email, child: Text(email)))
-      .toList(),
-  selectedOptionBuilder: (context, value) => value == 'none'
-      ? const Text('Select a verified email to display')
-      : Text(value),
-  placeholder: const Text('Select a verified email to display'),
-  validator: (v) {
-    if (v == null) {
-      return 'Please select an email to display';
-    }
-    return null;
-  },
-),
+class SelectFormField extends StatelessWidget {
+  const SelectFormField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadSelectFormField<String>(
+      id: 'email',
+      minWidth: 350,
+      initialValue: null,
+      options: verifiedEmails
+          .map((email) => ShadOption(value: email, child: Text(email)))
+          .toList(),
+      selectedOptionBuilder: (context, value) => value == 'none'
+          ? const Text('Select a verified email to display')
+          : Text(value),
+      placeholder: const Text('Select a verified email to display'),
+      validator: (v) {
+        if (v == null) {
+          return 'Please select an email to display';
+        }
+        return null;
+      },
+    );
+  }
+}
 ```
 
 </Preview>
@@ -204,8 +218,6 @@ class _SelectWithSearchState extends State<SelectWithSearch> {
   @override
   Widget build(BuildContext context) {
     return ShadSelect<String>.withSearch(
-      enabled: enabled,
-      focusNode: focusNodes[2],
       minWidth: 180,
       maxWidth: 300,
       placeholder: const Text('Select framework...'),
@@ -253,6 +265,14 @@ If you tap outside the popover, it will close.
 <Preview src="https://shadcn-ui-playground.pages.dev/select?style=multiple" minHeight="400px">
 
 ```dart
+final fruits = {
+  'apple': 'Apple',
+  'banana': 'Banana',
+  'blueberry': 'Blueberry',
+  'grapes': 'Grapes',
+  'pineapple': 'Pineapple',
+};
+
 class SelectMultiple extends StatelessWidget {
   const SelectMultiple({super.key});
 

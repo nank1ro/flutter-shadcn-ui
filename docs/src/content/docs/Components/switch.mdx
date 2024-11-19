@@ -3,23 +3,35 @@ title: Switch
 sidebar:
   order: 4
 ---
-import Preview from '../../../components/Preview.astro';
+
+import Preview from "../../../components/Preview.astro";
 
 A control that allows the user to toggle between checked and not checked.
 
 <Preview src="https://shadcn-ui-playground.pages.dev/switch">
- ```dart
-bool value = false;
 
-@override
-Widget build(BuildContext context) {
-  return ShadSwitch(
-    value: value,
-    onChanged: (v) => setState(() => value = v),
-    label: const Text('Airplane Mode'),
-  );
+```dart
+class SwitchExample extends StatefulWidget {
+  const SwitchExample({super.key});
+
+  @override
+  State<SwitchExample> createState() => _SwitchExampleState();
+}
+
+class _SwitchExampleState extends State<SwitchExample> {
+  bool value = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadSwitch(
+      value: value,
+      onChanged: (v) => setState(() => value = v),
+      label: const Text('Airplane Mode'),
+    );
+  }
 }
 ```
+
 </Preview>
 
 ## Form

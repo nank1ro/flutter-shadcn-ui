@@ -12,7 +12,7 @@ Displays a button or a component that looks like a button.
 <Preview src="https://shadcn-ui-playground.pages.dev/button?style=primary">
  ```dart
 ShadButton(
-  text: const Text('Primary'),
+  child: const Text('Primary'),
   onPressed: () {},
 )
 ```
@@ -23,7 +23,7 @@ ShadButton(
 <Preview src="https://shadcn-ui-playground.pages.dev/button?style=secondary">
 ```dart
 ShadButton.secondary(
-  text: const Text('Secondary'),
+  child: const Text('Secondary'),
   onPressed: () {},
 )
 ```
@@ -34,7 +34,7 @@ ShadButton.secondary(
 <Preview src="https://shadcn-ui-playground.pages.dev/button?style=destructive">
 ```dart
 ShadButton.destructive(
-  text: const Text('Destructive'),
+  child: const Text('Destructive'),
   onPressed: () {},
 )
 ```
@@ -45,7 +45,7 @@ ShadButton.destructive(
 <Preview src="https://shadcn-ui-playground.pages.dev/button?style=outline">
 ```dart
 ShadButton.outline(
-  text: const Text('Outline'),
+  child: const Text('Outline'),
   onPressed: () {},
 )
 ```
@@ -56,7 +56,7 @@ ShadButton.outline(
 <Preview src="https://shadcn-ui-playground.pages.dev/button?style=ghost">
 ```dart
 ShadButton.ghost(
-  text: const Text('Ghost'),
+  child: const Text('Ghost'),
   onPressed: () {},
 )
 ```
@@ -67,7 +67,7 @@ ShadButton.ghost(
 <Preview src="https://shadcn-ui-playground.pages.dev/button?style=link">
 ```dart
 ShadButton.link(
-  text: const Text('Link'),
+  child: const Text('Link'),
   onPressed: () {},
 )
 ```
@@ -93,7 +93,7 @@ ShadButton.outline(
 ```dart
 ShadButton(
   onPressed: () {},
-  text: const Text('Login with Email'),
+  child: const Text('Login with Email'),
   icon: Icon(
     Icons.mail_outlined,
     size: 16,
@@ -108,7 +108,7 @@ ShadButton(
 ```dart
 ShadButton(
   onPressed: () {},
-  text: const Text('Please wait'),
+  child: const Text('Please wait'),
   icon: SizedBox.square(
     dimension: 16,
     child: CircularProgressIndicator(strokeWidth: 2),
@@ -135,7 +135,7 @@ ShadButton(
       offset: const Offset(0, 2),
     ),
   ],
-  text: const Text('Gradient with Shadow'),
+  child: const Text('Gradient with Shadow'),
 )
 ```
 </Preview>
