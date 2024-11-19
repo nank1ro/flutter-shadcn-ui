@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_ui/src/components/input.dart';
+import 'package:shadcn_ui/src/components/select.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
@@ -60,6 +62,11 @@ class ShadTimeOfDay extends TimeOfDay {
   }
 }
 
+enum ShadTimePickerVariant {
+  primary,
+  period,
+}
+
 class ShadTimePicker extends StatefulWidget {
   const ShadTimePicker({
     super.key,
@@ -80,6 +87,76 @@ class ShadTimePicker extends StatefulWidget {
     this.alignment,
     this.runAlignment,
     this.crossAxisAlignment,
+    this.maxHour = 23,
+    this.maxMinute = 59,
+    this.maxSecond = 59,
+    this.minHour = 0,
+    this.minMinute = 0,
+    this.minSecond = 0,
+  })  : variant = ShadTimePickerVariant.primary,
+        initialDayPeriod = null,
+        onDayPeriodChanged = null,
+        periodLabel = null;
+
+  const ShadTimePicker.period({
+    super.key,
+    this.axis,
+    this.spacing,
+    this.runSpacing,
+    this.jumpToNextFieldWhenFilled,
+    this.onChanged,
+    this.initialValue,
+    this.hourLabel,
+    this.minuteLabel,
+    this.secondLabel,
+    this.hourPlaceholder,
+    this.minutePlaceholder,
+    this.secondPlaceholder,
+    this.leading,
+    this.trailing,
+    this.alignment,
+    this.runAlignment,
+    this.crossAxisAlignment,
+    this.maxHour = 12,
+    this.maxMinute = 59,
+    this.maxSecond = 59,
+    this.minHour = 0,
+    this.minMinute = 0,
+    this.minSecond = 0,
+    this.initialDayPeriod,
+    this.onDayPeriodChanged,
+    this.periodLabel,
+  }) : variant = ShadTimePickerVariant.period;
+
+  const ShadTimePicker.raw({
+    super.key,
+    required this.variant,
+    this.axis,
+    this.spacing,
+    this.runSpacing,
+    this.jumpToNextFieldWhenFilled,
+    this.onChanged,
+    this.initialValue,
+    this.hourLabel,
+    this.minuteLabel,
+    this.secondLabel,
+    this.hourPlaceholder,
+    this.minutePlaceholder,
+    this.secondPlaceholder,
+    this.leading,
+    this.trailing,
+    this.alignment,
+    this.runAlignment,
+    this.crossAxisAlignment,
+    this.maxHour = 23,
+    this.maxMinute = 59,
+    this.maxSecond = 59,
+    this.minHour = 0,
+    this.minMinute = 0,
+    this.minSecond = 0,
+    this.initialDayPeriod,
+    this.onDayPeriodChanged,
+    this.periodLabel,
   });
 
   /// {@template ShadTimePicker.axis}
@@ -174,27 +251,86 @@ class ShadTimePicker extends StatefulWidget {
   /// {@endtemplate}
   final WrapCrossAlignment? crossAxisAlignment;
 
+  /// {@template ShadTimePicker.maxHour}
+  /// The maximum hour value that can be selected. Defaults to 23 if [variant]
+  /// is [ShadTimePickerVariant.primary] or 12 if [variant] is
+  /// [ShadTimePickerVariant.period].
+  /// {@endtemplate}
+  final int maxHour;
+
+  /// {@template ShadTimePicker.maxMinute}
+  /// The maximum minute value that can be selected. Defaults to 59.
+  /// {@endtemplate}
+  final int maxMinute;
+
+  /// {@template ShadTimePicker.maxSecond}
+  /// The maximum second value that can be selected. Defaults to 59.
+  /// {@endtemplate}
+  final int maxSecond;
+
+  /// {@template ShadTimePicker.minHour}
+  /// The minimum hour value that can be selected. Defaults to 0.
+  /// {@endtemplate}
+  final int minHour;
+
+  /// {@template ShadTimePicker.minMinute}
+  /// The minimum minute value that can be selected. Defaults to 0.
+  /// {@endtemplate}
+  final int minMinute;
+
+  /// {@template ShadTimePicker.minSecond}
+  /// The minimum second value that can be selected. Defaults to 0.
+  /// {@endtemplate}
+  final int minSecond;
+
+  /// {@template ShadTimePicker.variant}
+  /// The variant of the time picker.
+  /// {@endtemplate}
+  final ShadTimePickerVariant variant;
+
+  /// {@template ShadTimePicker.initialDayPeriod}
+  /// The initial day period to show in the picker, defaults to `DayPeriod.am`.
+  /// {@endtemplate}
+  final DayPeriod? initialDayPeriod;
+
+  /// {@template ShadTimePicker.onDayPeriodChanged}
+  /// The callback that is called when the selected day period changes.
+  /// {@endtemplate}
+  final ValueChanged<DayPeriod?>? onDayPeriodChanged;
+
+  /// {@template ShadTimePicker.periodLabel}
+  /// The widget to display as the label for the period field.
+  /// {@endtemplate}
+  final Widget? periodLabel;
+
   @override
   State<ShadTimePicker> createState() => _ShadTimePickerState();
 }
 
 class _ShadTimePickerState extends State<ShadTimePicker> {
   final focusNodes = [FocusNode(), FocusNode(), FocusNode()];
+  final periodFocusNode = FocusNode();
   late final List<ShadTimePickerTextEditingController> controllers;
   late final Listenable listenable;
+  late DayPeriod selectedDayPeriod = widget.initialDayPeriod ?? DayPeriod.am;
 
   @override
   void initState() {
     super.initState();
     controllers = [
       ShadTimePickerTextEditingController(
-        max: 23,
+        max: widget.maxHour,
+        min: widget.minHour,
         text: widget.initialValue?.hour.toString().padLeft(2, '0'),
       ),
       ShadTimePickerTextEditingController(
+        max: widget.maxMinute,
+        min: widget.minMinute,
         text: widget.initialValue?.minute.toString().padLeft(2, '0'),
       ),
       ShadTimePickerTextEditingController(
+        max: widget.maxSecond,
+        min: widget.minSecond,
         text: widget.initialValue?.second.toString().padLeft(2, '0'),
       ),
     ];
@@ -213,6 +349,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
       controller.dispose();
     }
     controllers.clear();
+    periodFocusNode.dispose();
     super.dispose();
   }
 
@@ -234,6 +371,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
     final effectiveAxis = widget.axis ?? Axis.horizontal;
     final effectiveSpacing = widget.spacing ?? 0;
     final effectiveRunSpacing = widget.runSpacing ?? 0;
@@ -291,7 +429,52 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           label: effectiveSecondLabel,
           controller: controllers[2],
           placeholder: effectiveSecondPlaceholder,
+          onChanged: (v) {
+            if (effectiveJumpToNextField &&
+                v.length == 2 &&
+                widget.variant == ShadTimePickerVariant.period) {
+              periodFocusNode.requestFocus();
+            }
+          },
         ),
+        if (widget.variant == ShadTimePickerVariant.period)
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DefaultTextStyle(
+                style: theme.textTheme.small.copyWith(
+                  fontSize: 12,
+                ),
+                child: const Text('Period'),
+              ),
+              const SizedBox(height: 2),
+              SizedBox(
+                height: 50,
+                child: ShadSelect(
+                  focusNode: periodFocusNode,
+                  minWidth: 65,
+                  initialValue: selectedDayPeriod,
+                  options: DayPeriod.values
+                      .map(
+                        (v) => ShadOption(
+                          value: v,
+                          child: Text(
+                            v.name.toUpperCase(),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  selectedOptionBuilder: (context, value) {
+                    return Text(value.name.toUpperCase());
+                  },
+                  onChanged: (value) {
+                    widget.onDayPeriodChanged?.call(value);
+                  },
+                ),
+              ),
+            ],
+          ),
         if (widget.trailing != null) widget.trailing!,
       ],
     );
@@ -379,6 +562,12 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
             style: effectiveStyle,
             placeholderStyle: effectivePlaceholderStyle,
             controller: controller,
+            decoration: ShadDecoration(
+              border: ShadBorder.all(
+                color: theme.colorScheme.border,
+                radius: theme.radius,
+              ),
+            ),
             placeholder: widget.placeholder,
             keyboardType: TextInputType.number,
             textInputAction: TextInputAction.next,

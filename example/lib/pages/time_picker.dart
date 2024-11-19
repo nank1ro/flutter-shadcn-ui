@@ -1,6 +1,5 @@
 import 'package:example/common/base_scaffold.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class TimePickerPage extends StatelessWidget {
@@ -15,11 +14,22 @@ class TimePickerPage extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 600),
           child: ShadTimePicker(
             trailing: const Padding(
-              padding: EdgeInsets.only(left: 8, top: 12),
+              padding: EdgeInsets.only(left: 8, top: 14),
               child: ShadImage.square(LucideIcons.clock4, size: 16),
             ),
             onChanged: (time) {
               print('time: $time');
+            },
+          ),
+        ),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600),
+          child: ShadTimePicker.period(
+            maxHour: 12,
+            crossAxisAlignment: WrapCrossAlignment.end,
+            onChanged: (time) {
+              print('time: $time');
+              print('period: ${time.period}');
             },
           ),
         ),
