@@ -29,7 +29,6 @@ class TimePickerPage extends StatelessWidget {
             crossAxisAlignment: WrapCrossAlignment.end,
             onChanged: (time) {
               print('time: $time');
-              print('period: ${time.period}');
             },
           ),
         ),

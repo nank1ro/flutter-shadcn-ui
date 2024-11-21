@@ -7,25 +7,27 @@ import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 @immutable
-class ShadTimeOfDay extends TimeOfDay {
+class ShadTimeOfDay {
   /// Creates a time of day.
   ///
   /// The [hour] argument must be between 0 and 23, inclusive. The [minute]
-  /// argument must be between 0 and 59, inclusive. The [second] argument must
-  /// be between 0 and 59, inclusive.
+  /// argument must be between 0 and 59, inclusive.
   const ShadTimeOfDay({
-    required super.hour,
-    required super.minute,
+    required this.hour,
+    required this.minute,
     required this.second,
-  });
+    DayPeriod? period,
+  }) : _period = period;
 
   /// Creates a time of day based on the given time.
   ///
   /// The [hour] is set to the time's hour and the [minute] is set to the time's
   /// minute in the timezone of the given [DateTime].
   ShadTimeOfDay.fromDateTime(DateTime time)
-      : second = time.second,
-        super(hour: time.hour, minute: time.minute);
+      : hour = time.hour,
+        minute = time.minute,
+        second = time.second,
+        _period = null;
 
   /// Creates a time of day based on the current time.
   ///
@@ -34,19 +36,34 @@ class ShadTimeOfDay extends TimeOfDay {
   /// current second.
   ShadTimeOfDay.now() : this.fromDateTime(DateTime.now());
 
+  /// The selected hour, in 24 hour time from 0..23.
+  final int hour;
+
+  /// The selected minute.
+  final int minute;
+
   /// The selected second.
   final int second;
+
+  /// The selected period of the day.
+  final DayPeriod? _period;
+
+  /// Whether this time of day is before or after noon.
+  DayPeriod get period =>
+      _period ??
+      (hour < TimeOfDay.hoursPerPeriod ? DayPeriod.am : DayPeriod.pm);
 
   @override
   bool operator ==(Object other) {
     return other is ShadTimeOfDay &&
         other.hour == hour &&
         other.minute == minute &&
-        other.second == second;
+        other.second == second &&
+        other.period == period;
   }
 
   @override
-  int get hashCode => Object.hash(hour, minute, second);
+  int get hashCode => Object.hash(hour, minute, second, period);
 
   @override
   String toString() {
@@ -58,7 +75,12 @@ class ShadTimeOfDay extends TimeOfDay {
     final minuteLabel = addLeadingZeroIfNeeded(minute);
     final secondLabel = addLeadingZeroIfNeeded(second);
 
-    return '$TimeOfDay($hourLabel:$minuteLabel:$secondLabel)';
+    var s = '$TimeOfDay($hourLabel:$minuteLabel:$secondLabel';
+
+    if (_period != null) {
+      s += ' ${_period!.name.toUpperCase()}';
+    }
+    return s += ')';
   }
 }
 
@@ -95,7 +117,6 @@ class ShadTimePicker extends StatefulWidget {
     this.minSecond = 0,
   })  : variant = ShadTimePickerVariant.primary,
         initialDayPeriod = null,
-        onDayPeriodChanged = null,
         periodLabel = null;
 
   const ShadTimePicker.period({
@@ -124,7 +145,6 @@ class ShadTimePicker extends StatefulWidget {
     this.minMinute = 0,
     this.minSecond = 0,
     this.initialDayPeriod,
-    this.onDayPeriodChanged,
     this.periodLabel,
   }) : variant = ShadTimePickerVariant.period;
 
@@ -155,7 +175,6 @@ class ShadTimePicker extends StatefulWidget {
     this.minMinute = 0,
     this.minSecond = 0,
     this.initialDayPeriod,
-    this.onDayPeriodChanged,
     this.periodLabel,
   });
 
@@ -293,11 +312,6 @@ class ShadTimePicker extends StatefulWidget {
   /// {@endtemplate}
   final DayPeriod? initialDayPeriod;
 
-  /// {@template ShadTimePicker.onDayPeriodChanged}
-  /// The callback that is called when the selected day period changes.
-  /// {@endtemplate}
-  final ValueChanged<DayPeriod?>? onDayPeriodChanged;
-
   /// {@template ShadTimePicker.periodLabel}
   /// The widget to display as the label for the period field.
   /// {@endtemplate}
@@ -312,7 +326,8 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
   final periodFocusNode = FocusNode();
   late final List<ShadTimePickerTextEditingController> controllers;
   late final Listenable listenable;
-  late DayPeriod selectedDayPeriod = widget.initialDayPeriod ?? DayPeriod.am;
+  late final selectedDayPeriod =
+      ValueNotifier<DayPeriod?>(widget.initialDayPeriod ?? DayPeriod.am);
 
   @override
   void initState() {
@@ -334,12 +349,13 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         text: widget.initialValue?.second.toString().padLeft(2, '0'),
       ),
     ];
-    listenable = Listenable.merge(controllers);
+    listenable = Listenable.merge([...controllers, selectedDayPeriod]);
     listenable.addListener(onChanged);
   }
 
   @override
   void dispose() {
+    selectedDayPeriod.dispose();
     listenable.removeListener(onChanged);
     for (final node in focusNodes) {
       node.dispose();
@@ -357,13 +373,19 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     final hour = controllers[0].text;
     final minute = controllers[1].text;
     final second = controllers[2].text;
+    final period = selectedDayPeriod.value;
 
-    if (hour.length == 2 && minute.length == 2 && second.length == 2) {
+    if (hour.length == 2 &&
+        minute.length == 2 &&
+        second.length == 2 &&
+        (widget.variant == ShadTimePickerVariant.primary || period != null)) {
       widget.onChanged?.call(
         ShadTimeOfDay(
           hour: int.parse(hour),
           minute: int.parse(minute),
           second: int.parse(second),
+          period:
+              widget.variant == ShadTimePickerVariant.period ? period : null,
         ),
       );
     }
@@ -454,7 +476,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
                 child: ShadSelect(
                   focusNode: periodFocusNode,
                   minWidth: 65,
-                  initialValue: selectedDayPeriod,
+                  initialValue: selectedDayPeriod.value,
                   options: DayPeriod.values
                       .map(
                         (v) => ShadOption(
@@ -469,7 +491,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
                     return Text(value.name.toUpperCase());
                   },
                   onChanged: (value) {
-                    widget.onDayPeriodChanged?.call(value);
+                    selectedDayPeriod.value = value;
                   },
                 ),
               ),
