@@ -824,7 +824,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
               color: colorScheme.primaryForeground,
             ),
         insideRangeDayButtonTextStyle: textTheme().small.copyWith(
-              color: colorScheme.primaryForeground,
+              color: colorScheme.foreground,
             ),
         dayButtonTextStyle: textTheme().small.copyWith(
               fontWeight: FontWeight.normal,
