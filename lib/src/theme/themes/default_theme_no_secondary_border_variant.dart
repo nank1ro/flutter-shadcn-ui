@@ -873,8 +873,8 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadTimePickerTheme timePickerTheme() {
     return ShadTimePickerTheme(
       axis: Axis.horizontal,
-      spacing: 0,
-      runSpacing: 0,
+      spacing: 4,
+      runSpacing: 4,
       jumpToNextFieldWhenFilled: true,
       alignment: WrapAlignment.center,
       runAlignment: WrapAlignment.center,
@@ -892,8 +892,28 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       labelStyle: effectiveTextTheme.small.copyWith(fontSize: 12),
       fieldWidth: 58,
       fieldPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      periodHeight: 50,
+      periodHeight: 44,
       periodMinWidth: 65,
+      fieldDecoration: ShadDecoration(
+        border: ShadBorder.all(
+          width: 2,
+          color: colorScheme.border,
+          radius: radius,
+        ),
+      ),
+      periodDecoration: ShadDecoration(
+        border: ShadBorder.all(
+          width: 2,
+          color: colorScheme.border,
+          radius: radius,
+        ),
+        focusedBorder: ShadBorder.all(
+          width: 2,
+          color: colorScheme.ring,
+          radius: radius,
+          padding: const EdgeInsets.symmetric(horizontal: 1),
+        ),
+      ),
     );
   }
 }

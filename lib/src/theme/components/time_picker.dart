@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 @immutable
 class ShadTimePickerTheme {
@@ -22,6 +23,8 @@ class ShadTimePickerTheme {
     this.labelStyle,
     this.fieldWidth,
     this.fieldPadding,
+    this.fieldDecoration,
+    this.periodDecoration,
   });
 
   final bool merge;
@@ -74,6 +77,12 @@ class ShadTimePickerTheme {
   /// {@macro ShadTimePicker.fieldPadding}
   final EdgeInsets? fieldPadding;
 
+  /// {@macro ShadTimePicker.fieldDecoration}
+  final ShadDecoration? fieldDecoration;
+
+  /// {@macro ShadTimePicker.periodDecoration}
+  final ShadDecoration? periodDecoration;
+
   static ShadTimePickerTheme lerp(
     ShadTimePickerTheme a,
     ShadTimePickerTheme b,
@@ -87,18 +96,23 @@ class ShadTimePickerTheme {
       runSpacing: lerpDouble(a.runSpacing, b.runSpacing, t),
       jumpToNextFieldWhenFilled:
           t < 0.5 ? a.jumpToNextFieldWhenFilled : b.jumpToNextFieldWhenFilled,
-      alignment: b.alignment ?? a.alignment,
-      runAlignment: b.runAlignment ?? a.runAlignment,
-      crossAxisAlignment: b.crossAxisAlignment ?? a.crossAxisAlignment,
-      initialDayPeriod: b.initialDayPeriod ?? a.initialDayPeriod,
-      periodHeight: b.periodHeight ?? a.periodHeight,
-      periodMinWidth: b.periodMinWidth ?? a.periodMinWidth,
-      gap: b.gap ?? a.gap,
-      style: b.style ?? a.style,
-      placeholderStyle: b.placeholderStyle ?? a.placeholderStyle,
-      labelStyle: b.labelStyle ?? a.labelStyle,
-      fieldWidth: b.fieldWidth ?? a.fieldWidth,
-      fieldPadding: b.fieldPadding ?? a.fieldPadding,
+      alignment: t < .5 ? a.alignment : b.alignment,
+      runAlignment: t < .5 ? a.runAlignment : b.runAlignment,
+      crossAxisAlignment: t < .5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      initialDayPeriod: t < .5 ? a.initialDayPeriod : b.initialDayPeriod,
+      periodHeight: lerpDouble(a.periodHeight, b.periodHeight, t),
+      periodMinWidth: lerpDouble(a.periodMinWidth, b.periodMinWidth, t),
+      gap: lerpDouble(a.gap, b.gap, t),
+      style: TextStyle.lerp(a.style, b.style, t),
+      placeholderStyle:
+          TextStyle.lerp(a.placeholderStyle, b.placeholderStyle, t),
+      labelStyle: TextStyle.lerp(a.labelStyle, b.labelStyle, t),
+      fieldWidth: t < .5 ? a.fieldWidth : b.fieldWidth,
+      fieldPadding: EdgeInsets.lerp(a.fieldPadding, b.fieldPadding, t),
+      fieldDecoration:
+          ShadDecoration.lerp(a.fieldDecoration, b.fieldDecoration, t),
+      periodDecoration:
+          ShadDecoration.lerp(a.periodDecoration, b.periodDecoration, t),
     );
   }
 
@@ -120,6 +134,8 @@ class ShadTimePickerTheme {
     TextStyle? labelStyle,
     double? fieldWidth,
     EdgeInsets? fieldPadding,
+    ShadDecoration? fieldDecoration,
+    ShadDecoration? periodDecoration,
   }) {
     return ShadTimePickerTheme(
       merge: merge ?? this.merge,
@@ -140,6 +156,8 @@ class ShadTimePickerTheme {
       labelStyle: labelStyle ?? this.labelStyle,
       fieldWidth: fieldWidth ?? this.fieldWidth,
       fieldPadding: fieldPadding ?? this.fieldPadding,
+      fieldDecoration: fieldDecoration ?? this.fieldDecoration,
+      periodDecoration: periodDecoration ?? this.periodDecoration,
     );
   }
 
@@ -163,6 +181,8 @@ class ShadTimePickerTheme {
       labelStyle: other.labelStyle,
       fieldWidth: other.fieldWidth,
       fieldPadding: other.fieldPadding,
+      fieldDecoration: other.fieldDecoration,
+      periodDecoration: other.periodDecoration,
     );
   }
 
@@ -187,7 +207,9 @@ class ShadTimePickerTheme {
         other.placeholderStyle == placeholderStyle &&
         other.labelStyle == labelStyle &&
         other.fieldWidth == fieldWidth &&
-        other.fieldPadding == fieldPadding;
+        other.fieldPadding == fieldPadding &&
+        other.fieldDecoration == fieldDecoration &&
+        other.periodDecoration == periodDecoration;
   }
 
   @override
@@ -208,6 +230,8 @@ class ShadTimePickerTheme {
         placeholderStyle.hashCode ^
         labelStyle.hashCode ^
         fieldWidth.hashCode ^
-        fieldPadding.hashCode;
+        fieldPadding.hashCode ^
+        fieldDecoration.hashCode ^
+        periodDecoration.hashCode;
   }
 }

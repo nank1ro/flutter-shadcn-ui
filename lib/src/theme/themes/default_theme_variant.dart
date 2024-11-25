@@ -867,6 +867,12 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       fieldPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       periodHeight: 50,
       periodMinWidth: 65,
+      fieldDecoration: ShadDecoration(
+        border: ShadBorder.all(
+          color: colorScheme.border,
+          radius: radius,
+        ),
+      ),
     );
   }
 }

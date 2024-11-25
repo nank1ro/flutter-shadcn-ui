@@ -121,11 +121,13 @@ class ShadTimePicker extends StatefulWidget {
     this.placeholderStyle,
     this.fieldWidth,
     this.fieldPadding,
+    this.fieldDecoration,
   })  : variant = ShadTimePickerVariant.primary,
         initialDayPeriod = null,
         periodLabel = null,
         periodPlaceholder = null,
         periodHeight = null,
+        periodDecoration = null,
         periodMinWidth = null;
 
   const ShadTimePicker.period({
@@ -164,6 +166,8 @@ class ShadTimePicker extends StatefulWidget {
     this.placeholderStyle,
     this.fieldWidth,
     this.fieldPadding,
+    this.fieldDecoration,
+    this.periodDecoration,
   }) : variant = ShadTimePickerVariant.period;
 
   const ShadTimePicker.raw({
@@ -203,6 +207,8 @@ class ShadTimePicker extends StatefulWidget {
     this.placeholderStyle,
     this.fieldWidth,
     this.fieldPadding,
+    this.fieldDecoration,
+    this.periodDecoration,
   });
 
   /// {@template ShadTimePicker.axis}
@@ -405,6 +411,23 @@ class ShadTimePicker extends StatefulWidget {
   /// {@endtemplate}
   final EdgeInsets? fieldPadding;
 
+  /// {@template ShadTimePicker.fieldDecoration}
+  /// The decoration of the field, defaults to
+  /// ```
+  /// ShadDecoration(border: ShadBorder.all(
+  ///   color: colorScheme.border,
+  ///   radius: radius,
+  ///   ),
+  /// ),
+  /// ```
+  /// {@endtemplate}
+  final ShadDecoration? fieldDecoration;
+
+  /// {@template ShadTimePicker.periodDecoration}
+  /// The decoration of the field, defaults to `null`.
+  /// {@endtemplate}
+  final ShadDecoration? periodDecoration;
+
   @override
   State<ShadTimePicker> createState() => _ShadTimePickerState();
 }
@@ -543,6 +566,19 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         .merge(theme.timePickerTheme.labelStyle)
         .merge(widget.labelStyle);
 
+    final effectiveFieldDecoration = ShadDecoration(
+      border: ShadBorder.all(
+        color: theme.colorScheme.border,
+        radius: theme.radius,
+      ),
+    )
+        .mergeWith(theme.timePickerTheme.fieldDecoration)
+        .mergeWith(widget.fieldDecoration);
+
+    final effectivePeriodDecoration =
+        (theme.timePickerTheme.periodDecoration ?? const ShadDecoration())
+            .mergeWith(widget.periodDecoration);
+
     return Wrap(
       direction: effectiveAxis,
       spacing: effectiveSpacing,
@@ -562,6 +598,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           labelStyle: effectiveLabelStyle,
           width: effectiveFieldWidth,
           padding: effectiveFieldPadding,
+          decoration: effectiveFieldDecoration,
           onChanged: (v) {
             if (effectiveJumpToNextField && v.length == 2) {
               focusNodes[1].requestFocus();
@@ -578,6 +615,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           labelStyle: effectiveLabelStyle,
           width: effectiveFieldWidth,
           padding: effectiveFieldPadding,
+          decoration: effectiveFieldDecoration,
           onChanged: (v) {
             if (effectiveJumpToNextField && v.length == 2) {
               focusNodes[2].requestFocus();
@@ -594,6 +632,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           labelStyle: effectiveLabelStyle,
           width: effectiveFieldWidth,
           padding: effectiveFieldPadding,
+          decoration: effectiveFieldDecoration,
           onChanged: (v) {
             if (effectiveJumpToNextField &&
                 v.length == 2 &&
@@ -619,6 +658,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
                   minWidth: effectivePeriodMinWidth,
                   placeholder: effectivePeriodPlaceholder,
                   initialValue: selectedDayPeriod.value,
+                  decoration: effectivePeriodDecoration,
                   options: DayPeriod.values
                       .map(
                         (v) => ShadOption(
@@ -656,6 +696,7 @@ class ShadTimePickerField extends StatefulWidget {
     this.focusNode,
     this.width,
     this.padding,
+    this.decoration,
   });
 
   final Widget? label;
@@ -668,6 +709,7 @@ class ShadTimePickerField extends StatefulWidget {
   final FocusNode? focusNode;
   final double? width;
   final EdgeInsets? padding;
+  final ShadDecoration? decoration;
 
   @override
   State<ShadTimePickerField> createState() => _ShadTimePickerFieldState();
@@ -720,6 +762,13 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
     final effectivePadding = widget.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
+    final effectiveDecoration = ShadDecoration(
+      border: ShadBorder.all(
+        color: theme.colorScheme.border,
+        radius: theme.radius,
+      ),
+    ).mergeWith(widget.decoration);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
@@ -736,12 +785,7 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
             style: effectiveStyle,
             placeholderStyle: effectivePlaceholderStyle,
             controller: controller,
-            decoration: ShadDecoration(
-              border: ShadBorder.all(
-                color: theme.colorScheme.border,
-                radius: theme.radius,
-              ),
-            ),
+            decoration: effectiveDecoration,
             placeholder: widget.placeholder,
             keyboardType: TextInputType.number,
             textInputAction: TextInputAction.next,
