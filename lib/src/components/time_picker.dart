@@ -115,9 +115,18 @@ class ShadTimePicker extends StatefulWidget {
     this.minHour = 0,
     this.minMinute = 0,
     this.minSecond = 0,
+    this.gap,
+    this.style,
+    this.labelStyle,
+    this.placeholderStyle,
+    this.fieldWidth,
+    this.fieldPadding,
   })  : variant = ShadTimePickerVariant.primary,
         initialDayPeriod = null,
-        periodLabel = null;
+        periodLabel = null,
+        periodPlaceholder = null,
+        periodHeight = null,
+        periodMinWidth = null;
 
   const ShadTimePicker.period({
     super.key,
@@ -146,6 +155,15 @@ class ShadTimePicker extends StatefulWidget {
     this.minSecond = 0,
     this.initialDayPeriod,
     this.periodLabel,
+    this.periodPlaceholder,
+    this.periodHeight,
+    this.periodMinWidth,
+    this.gap,
+    this.style,
+    this.labelStyle,
+    this.placeholderStyle,
+    this.fieldWidth,
+    this.fieldPadding,
   }) : variant = ShadTimePickerVariant.period;
 
   const ShadTimePicker.raw({
@@ -176,6 +194,15 @@ class ShadTimePicker extends StatefulWidget {
     this.minSecond = 0,
     this.initialDayPeriod,
     this.periodLabel,
+    this.periodPlaceholder,
+    this.periodHeight,
+    this.periodMinWidth,
+    this.gap,
+    this.style,
+    this.labelStyle,
+    this.placeholderStyle,
+    this.fieldWidth,
+    this.fieldPadding,
   });
 
   /// {@template ShadTimePicker.axis}
@@ -317,6 +344,67 @@ class ShadTimePicker extends StatefulWidget {
   /// {@endtemplate}
   final Widget? periodLabel;
 
+  /// {@template ShadTimePicker.periodPlaceholder}
+  /// The widget to display as the placeholder for the period field, defaults
+  /// to `null`.
+  /// {@endtemplate}
+  final Widget? periodPlaceholder;
+
+  /// {@template ShadTimePicker.periodHeight}
+  /// The height of the period field, defaults to `50`.
+  /// {@endtemplate}
+  final double? periodHeight;
+
+  /// {@template ShadTimePicker.periodMinWidth}
+  /// The min width of the period field, defaults to `65`.
+  /// {@endtemplate}
+  final double? periodMinWidth;
+
+  /// {@template ShadTimePicker.gap}
+  /// The gap between the label and the field in the picker. Defaults to `2`.
+  /// {@endtemplate}
+  final double? gap;
+
+  /// {@template ShadTimePicker.style}
+  /// The style of the label. Defaults to
+  /// ```
+  /// theme.textTheme.muted.copyWith(
+  ///   color: theme.colorScheme.foreground,
+  ///   fontSize: 16,
+  ///   height: 24 / 16,
+  /// ),
+  /// ```
+  /// {@endtemplate}
+  final TextStyle? style;
+
+  /// {@template ShadTimePicker.placeholderStyle}
+  /// The style of the placeholder. Defaults to
+  /// ```
+  /// theme.textTheme.muted.copyWith(
+  ///   fontSize: 16,
+  ///   height: 24 / 16,
+  /// ),
+  /// ```
+  /// {@endtemplate}
+  final TextStyle? placeholderStyle;
+
+  /// {@template ShadTimePicker.labelStyle}
+  /// The style of the label. Defaults to
+  /// `theme.textTheme.small.copyWith(fontSize: 12)`
+  /// {@endtemplate}
+  final TextStyle? labelStyle;
+
+  /// {@template ShadTimePicker.fieldWidth}
+  /// The width of the field, defaults to `58`.
+  /// {@endtemplate}
+  final double? fieldWidth;
+
+  /// {@template ShadTimePicker.fieldPadding}
+  /// The padding of the field, defaults to
+  /// `const EdgeInsets.symmetric(horizontal: 12, vertical: 8)`.
+  /// {@endtemplate}
+  final EdgeInsets? fieldPadding;
+
   @override
   State<ShadTimePicker> createState() => _ShadTimePickerState();
 }
@@ -337,16 +425,19 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         max: widget.maxHour,
         min: widget.minHour,
         text: widget.initialValue?.hour.toString().padLeft(2, '0'),
+        placeholderStyle: widget.placeholderStyle,
       ),
       ShadTimePickerTextEditingController(
         max: widget.maxMinute,
         min: widget.minMinute,
         text: widget.initialValue?.minute.toString().padLeft(2, '0'),
+        placeholderStyle: widget.placeholderStyle,
       ),
       ShadTimePickerTextEditingController(
         max: widget.maxSecond,
         min: widget.minSecond,
         text: widget.initialValue?.second.toString().padLeft(2, '0'),
+        placeholderStyle: widget.placeholderStyle,
       ),
     ];
     listenable = Listenable.merge([...controllers, selectedDayPeriod]);
@@ -401,6 +492,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     final effectiveHourLabel = widget.hourLabel ?? const Text('Hours');
     final effectiveMinuteLabel = widget.minuteLabel ?? const Text('Minutes');
     final effectiveSecondLabel = widget.secondLabel ?? const Text('Seconds');
+    final effectivePeriodLabel = widget.periodLabel ?? const Text('Period');
 
     const defaultPlaceholder = Text('00');
     final effectiveHourPlaceholder =
@@ -409,11 +501,30 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         widget.minutePlaceholder ?? defaultPlaceholder;
     final effectiveSecondPlaceholder =
         widget.secondPlaceholder ?? defaultPlaceholder;
+    final effectivePeriodPlaceholder = widget.periodPlaceholder;
 
     final effectiveAlignment = widget.alignment ?? WrapAlignment.center;
     final effectiveRunAlignment = widget.runAlignment ?? WrapAlignment.center;
     final effectiveCrossAxisAlignment =
         widget.crossAxisAlignment ?? WrapCrossAlignment.center;
+
+    final effectivePeriodHeight = widget.periodHeight ?? 50;
+    final effectivePeriodMinWidth = widget.periodMinWidth ?? 65;
+    final effectiveGap = widget.gap ?? 2;
+    final effectiveFieldWidth = widget.fieldWidth ?? 58;
+    final effectiveFieldPadding = widget.fieldPadding ??
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+
+    final effectiveStyle = theme.textTheme.muted
+        .copyWith(
+          color: theme.colorScheme.foreground,
+          fontSize: 16,
+          height: 24 / 16,
+        )
+        .merge(widget.style);
+
+    final effectiveLabelStyle =
+        theme.textTheme.small.copyWith(fontSize: 12).merge(widget.labelStyle);
 
     return Wrap(
       direction: effectiveAxis,
@@ -428,7 +539,12 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           focusNode: focusNodes[0],
           label: effectiveHourLabel,
           controller: controllers[0],
+          gap: effectiveGap,
           placeholder: effectiveHourPlaceholder,
+          style: effectiveStyle,
+          labelStyle: effectiveLabelStyle,
+          width: effectiveFieldWidth,
+          padding: effectiveFieldPadding,
           onChanged: (v) {
             if (effectiveJumpToNextField && v.length == 2) {
               focusNodes[1].requestFocus();
@@ -440,6 +556,11 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           label: effectiveMinuteLabel,
           controller: controllers[1],
           placeholder: effectiveMinutePlaceholder,
+          gap: effectiveGap,
+          style: effectiveStyle,
+          labelStyle: effectiveLabelStyle,
+          width: effectiveFieldWidth,
+          padding: effectiveFieldPadding,
           onChanged: (v) {
             if (effectiveJumpToNextField && v.length == 2) {
               focusNodes[2].requestFocus();
@@ -450,7 +571,12 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           focusNode: focusNodes[2],
           label: effectiveSecondLabel,
           controller: controllers[2],
+          gap: effectiveGap,
           placeholder: effectiveSecondPlaceholder,
+          style: effectiveStyle,
+          labelStyle: effectiveLabelStyle,
+          width: effectiveFieldWidth,
+          padding: effectiveFieldPadding,
           onChanged: (v) {
             if (effectiveJumpToNextField &&
                 v.length == 2 &&
@@ -465,25 +591,22 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
             mainAxisSize: MainAxisSize.min,
             children: [
               DefaultTextStyle(
-                style: theme.textTheme.small.copyWith(
-                  fontSize: 12,
-                ),
-                child: const Text('Period'),
+                style: effectiveLabelStyle,
+                child: effectivePeriodLabel,
               ),
-              const SizedBox(height: 2),
+              SizedBox(height: effectiveGap),
               SizedBox(
-                height: 50,
+                height: effectivePeriodHeight,
                 child: ShadSelect(
                   focusNode: periodFocusNode,
-                  minWidth: 65,
+                  minWidth: effectivePeriodMinWidth,
+                  placeholder: effectivePeriodPlaceholder,
                   initialValue: selectedDayPeriod.value,
                   options: DayPeriod.values
                       .map(
                         (v) => ShadOption(
                           value: v,
-                          child: Text(
-                            v.name.toUpperCase(),
-                          ),
+                          child: Text(v.name.toUpperCase()),
                         ),
                       )
                       .toList(),
@@ -511,8 +634,11 @@ class ShadTimePickerField extends StatefulWidget {
     this.controller,
     this.gap,
     this.style,
+    this.labelStyle,
     this.onChanged,
     this.focusNode,
+    this.width,
+    this.padding,
   });
 
   final Widget? label;
@@ -520,8 +646,11 @@ class ShadTimePickerField extends StatefulWidget {
   final ShadTimePickerTextEditingController? controller;
   final double? gap;
   final TextStyle? style;
+  final TextStyle? labelStyle;
   final ValueChanged<String>? onChanged;
   final FocusNode? focusNode;
+  final double? width;
+  final EdgeInsets? padding;
 
   @override
   State<ShadTimePickerField> createState() => _ShadTimePickerFieldState();
@@ -563,8 +692,15 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
       fontSize: 16,
       height: 24 / 16,
     );
+
     final effectivePlaceholderStyle =
         defaultPlaceholderStyle.merge(controller.placeholderStyle);
+
+    final defaultLabelStyle = theme.textTheme.small.copyWith(fontSize: 12);
+    final effectiveLabelStyle = defaultLabelStyle.merge(widget.labelStyle);
+    final effectiveWidth = widget.width ?? 58;
+    final effectivePadding = widget.padding ??
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -572,13 +708,11 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
       children: [
         if (widget.label != null)
           DefaultTextStyle(
-            style: theme.textTheme.small.copyWith(
-              fontSize: 12,
-            ),
+            style: effectiveLabelStyle,
             child: widget.label!,
           ),
         SizedBox(
-          width: 58,
+          width: effectiveWidth,
           child: ShadInput(
             focusNode: widget.focusNode,
             style: effectiveStyle,
@@ -596,7 +730,7 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
             maxLength: 2,
             showCursor: false,
             maxLengthEnforcement: MaxLengthEnforcement.none,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: effectivePadding,
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
             ],
