@@ -890,7 +890,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         height: 24 / 16,
       ),
       labelStyle: effectiveTextTheme.small.copyWith(fontSize: 12),
-      fieldWidth: 58,
+      fieldWidth: 50,
       fieldPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       periodHeight: 44,
       periodMinWidth: 65,
