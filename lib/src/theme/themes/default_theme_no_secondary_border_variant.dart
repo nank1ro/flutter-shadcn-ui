@@ -885,11 +885,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         fontSize: 16,
         height: 24 / 16,
       ),
-      placeholderStyle: defaultTextTheme.large.copyWith(
-        fontWeight: FontWeight.w500,
-        color: colorScheme.foreground,
+      placeholderStyle: effectiveTextTheme.muted.copyWith(
+        fontSize: 16,
+        height: 24 / 16,
       ),
-      labelStyle: defaultTextTheme.small.copyWith(fontSize: 12),
+      labelStyle: effectiveTextTheme.small.copyWith(fontSize: 12),
       fieldWidth: 58,
       fieldPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       periodHeight: 50,

@@ -710,8 +710,9 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
       height: 24 / 16,
     );
 
-    final effectivePlaceholderStyle =
-        defaultPlaceholderStyle.merge(controller.placeholderStyle);
+    final effectivePlaceholderStyle = defaultPlaceholderStyle
+        .merge(theme.timePickerTheme.placeholderStyle)
+        .merge(controller.placeholderStyle);
 
     final defaultLabelStyle = theme.textTheme.small.copyWith(fontSize: 12);
     final effectiveLabelStyle = defaultLabelStyle.merge(widget.labelStyle);
@@ -798,11 +799,6 @@ class ShadTimePickerTextEditingController extends TextEditingController {
     assert(
       !value.composing.isValid || !withComposing || value.isComposingRangeValid,
     );
-    // If the composing range is out of range for the current text, ignore it to
-    // preserve the tree integrity, otherwise in release mode a RangeError will
-    // be thrown and this EditableText will be built with a broken subtree.
-    final composingRegionOutOfRange =
-        !value.isComposingRangeValid || !withComposing;
 
     final theme = ShadTheme.of(context);
 
@@ -817,29 +813,12 @@ class ShadTimePickerTextEditingController extends TextEditingController {
     final intValue = int.tryParse(value.text);
     if (intValue == null) return const TextSpan();
 
-    if (composingRegionOutOfRange) {
-      return TextSpan(
-        style: style,
-        children: [
-          if (value.text.length == 1 && intValue < 10)
-            TextSpan(text: '0', style: effectivePlaceholderStyle),
-          TextSpan(text: text),
-        ],
-      );
-    }
-
-    final composingStyle =
-        style?.merge(const TextStyle(decoration: TextDecoration.underline)) ??
-            const TextStyle(decoration: TextDecoration.underline);
     return TextSpan(
       style: style,
-      children: <TextSpan>[
-        TextSpan(text: value.composing.textBefore(value.text)),
-        TextSpan(
-          style: composingStyle,
-          text: value.composing.textInside(value.text),
-        ),
-        TextSpan(text: value.composing.textAfter(value.text)),
+      children: [
+        if (value.text.length == 1 && intValue < 10)
+          TextSpan(text: '0', style: effectivePlaceholderStyle),
+        TextSpan(text: text),
       ],
     );
   }
