@@ -485,10 +485,15 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveAxis = widget.axis ?? Axis.horizontal;
-    final effectiveSpacing = widget.spacing ?? 0;
-    final effectiveRunSpacing = widget.runSpacing ?? 0;
-    final effectiveJumpToNextField = widget.jumpToNextFieldWhenFilled ?? true;
+    final effectiveAxis =
+        widget.axis ?? theme.timePickerTheme.axis ?? Axis.horizontal;
+    final effectiveSpacing =
+        widget.spacing ?? theme.timePickerTheme.spacing ?? 0;
+    final effectiveRunSpacing =
+        widget.runSpacing ?? theme.timePickerTheme.runSpacing ?? 0;
+    final effectiveJumpToNextField = widget.jumpToNextFieldWhenFilled ??
+        theme.timePickerTheme.jumpToNextFieldWhenFilled ??
+        true;
     final effectiveHourLabel = widget.hourLabel ?? const Text('Hours');
     final effectiveMinuteLabel = widget.minuteLabel ?? const Text('Minutes');
     final effectiveSecondLabel = widget.secondLabel ?? const Text('Seconds');
@@ -503,16 +508,25 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         widget.secondPlaceholder ?? defaultPlaceholder;
     final effectivePeriodPlaceholder = widget.periodPlaceholder;
 
-    final effectiveAlignment = widget.alignment ?? WrapAlignment.center;
-    final effectiveRunAlignment = widget.runAlignment ?? WrapAlignment.center;
-    final effectiveCrossAxisAlignment =
-        widget.crossAxisAlignment ?? WrapCrossAlignment.center;
+    final effectiveAlignment = widget.alignment ??
+        theme.timePickerTheme.alignment ??
+        WrapAlignment.center;
+    final effectiveRunAlignment = widget.runAlignment ??
+        theme.timePickerTheme.runAlignment ??
+        WrapAlignment.center;
+    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+        theme.timePickerTheme.crossAxisAlignment ??
+        WrapCrossAlignment.center;
 
-    final effectivePeriodHeight = widget.periodHeight ?? 50;
-    final effectivePeriodMinWidth = widget.periodMinWidth ?? 65;
-    final effectiveGap = widget.gap ?? 2;
-    final effectiveFieldWidth = widget.fieldWidth ?? 58;
+    final effectivePeriodHeight =
+        widget.periodHeight ?? theme.timePickerTheme.periodHeight ?? 50;
+    final effectivePeriodMinWidth =
+        widget.periodMinWidth ?? theme.timePickerTheme.periodMinWidth ?? 65;
+    final effectiveGap = widget.gap ?? theme.timePickerTheme.gap ?? 2;
+    final effectiveFieldWidth =
+        widget.fieldWidth ?? theme.timePickerTheme.fieldWidth ?? 58;
     final effectiveFieldPadding = widget.fieldPadding ??
+        theme.timePickerTheme.fieldPadding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
     final effectiveStyle = theme.textTheme.muted
@@ -521,10 +535,13 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           fontSize: 16,
           height: 24 / 16,
         )
+        .merge(theme.timePickerTheme.style)
         .merge(widget.style);
 
-    final effectiveLabelStyle =
-        theme.textTheme.small.copyWith(fontSize: 12).merge(widget.labelStyle);
+    final effectiveLabelStyle = theme.textTheme.small
+        .copyWith(fontSize: 12)
+        .merge(theme.timePickerTheme.labelStyle)
+        .merge(widget.labelStyle);
 
     return Wrap(
       direction: effectiveAxis,
@@ -793,8 +810,9 @@ class ShadTimePickerTextEditingController extends TextEditingController {
       fontSize: 16,
       height: 24 / 16,
     );
-    final effectivePlaceholderStyle =
-        defaultPlaceholderStyle.merge(placeholderStyle);
+    final effectivePlaceholderStyle = defaultPlaceholderStyle
+        .merge(theme.timePickerTheme.placeholderStyle)
+        .merge(placeholderStyle);
 
     final intValue = int.tryParse(value.text);
     if (intValue == null) return const TextSpan();

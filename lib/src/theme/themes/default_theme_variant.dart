@@ -32,6 +32,7 @@ import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
+import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
@@ -838,6 +839,34 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       width: 276,
       mainAxisAlignment: MainAxisAlignment.start,
       iconSrc: LucideIcons.calendar,
+    );
+  }
+
+  @override
+  ShadTimePickerTheme timePickerTheme() {
+    return ShadTimePickerTheme(
+      axis: Axis.horizontal,
+      spacing: 0,
+      runSpacing: 0,
+      jumpToNextFieldWhenFilled: true,
+      alignment: WrapAlignment.center,
+      runAlignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      gap: 2,
+      style: effectiveTextTheme.muted.copyWith(
+        color: colorScheme.foreground,
+        fontSize: 16,
+        height: 24 / 16,
+      ),
+      placeholderStyle: defaultTextTheme.large.copyWith(
+        fontWeight: FontWeight.w500,
+        color: colorScheme.foreground,
+      ),
+      labelStyle: defaultTextTheme.small.copyWith(fontSize: 12),
+      fieldWidth: 58,
+      fieldPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      periodHeight: 50,
+      periodMinWidth: 65,
     );
   }
 }
