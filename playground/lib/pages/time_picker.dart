@@ -13,10 +13,9 @@ class TimePickerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+        child: Center(
           child: switch (style) {
             ShadTimePickerVariant.primary => const PrimaryTimePicker(),
             ShadTimePickerVariant.period => const PeriodTimePicker(),
