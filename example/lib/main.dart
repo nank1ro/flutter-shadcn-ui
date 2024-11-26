@@ -29,6 +29,7 @@ import 'package:example/pages/switch_form_field.dart';
 import 'package:example/pages/tabs.dart';
 import 'package:example/pages/table.dart';
 import 'package:example/pages/time_picker.dart';
+import 'package:example/pages/time_picker_form_field.dart';
 import 'package:example/pages/toast.dart';
 import 'package:example/pages/tooltip.dart';
 import 'package:example/pages/typography.dart';
@@ -73,10 +74,11 @@ final routes = <String, WidgetBuilder>{
   '/switch-form-field': (_) => const SwitchFormFieldPage(),
   '/table': (_) => const TablePage(),
   '/tabs': (_) => const TabsPage(),
+  '/time-picker': (_) => const TimePickerPage(),
+  '/time-picker-form-field': (_) => const TimePickerFormFieldPage(),
   '/toast': (_) => const ToastPage(),
   '/tooltip': (_) => const TooltipPage(),
   '/typography': (_) => const TypographyPage(),
-  '/time-picker': (_) => const TimePickerPage(),
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-z])');
 

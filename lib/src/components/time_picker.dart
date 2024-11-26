@@ -82,6 +82,73 @@ class ShadTimeOfDay {
     }
     return s += ')';
   }
+
+  ShadTimeOfDay copyWith({
+    int? hour,
+    int? minute,
+    int? second,
+    DayPeriod? period,
+  }) {
+    return ShadTimeOfDay(
+      hour: hour ?? this.hour,
+      minute: minute ?? this.minute,
+      second: second ?? this.second,
+      period: period ?? this.period,
+    );
+  }
+}
+
+class ShadTimePickerController extends ChangeNotifier {
+  ShadTimePickerController({
+    this.hour,
+    this.minute,
+    this.second,
+    this.period,
+  });
+  ShadTimePickerController.fromTimeOfDay(ShadTimeOfDay? timeOfDay)
+      : hour = timeOfDay?.hour,
+        minute = timeOfDay?.minute,
+        second = timeOfDay?.second,
+        period = timeOfDay?.period;
+
+  int? hour;
+  int? minute;
+  int? second;
+  DayPeriod? period;
+
+  ShadTimeOfDay? get value {
+    if (hour == null || minute == null || second == null) return null;
+    return ShadTimeOfDay(
+      hour: hour!,
+      minute: minute!,
+      second: second!,
+      period: period,
+    );
+  }
+
+  void setHour(int? hour) {
+    if (this.hour == hour) return;
+    this.hour = hour;
+    notifyListeners();
+  }
+
+  void setMinute(int? minute) {
+    if (this.minute == minute) return;
+    this.minute = minute;
+    notifyListeners();
+  }
+
+  void setSecond(int? second) {
+    if (this.second == second) return;
+    this.second = second;
+    notifyListeners();
+  }
+
+  void setDayPeriod(DayPeriod? period) {
+    if (this.period == period) return;
+    this.period = period;
+    notifyListeners();
+  }
 }
 
 enum ShadTimePickerVariant {
@@ -122,6 +189,8 @@ class ShadTimePicker extends StatefulWidget {
     this.fieldWidth,
     this.fieldPadding,
     this.fieldDecoration,
+    this.controller,
+    this.enabled = true,
   })  : variant = ShadTimePickerVariant.primary,
         initialDayPeriod = null,
         periodLabel = null,
@@ -168,6 +237,8 @@ class ShadTimePicker extends StatefulWidget {
     this.fieldPadding,
     this.fieldDecoration,
     this.periodDecoration,
+    this.controller,
+    this.enabled = true,
   }) : variant = ShadTimePickerVariant.period;
 
   const ShadTimePicker.raw({
@@ -209,6 +280,8 @@ class ShadTimePicker extends StatefulWidget {
     this.fieldPadding,
     this.fieldDecoration,
     this.periodDecoration,
+    this.controller,
+    this.enabled = true,
   });
 
   /// {@template ShadTimePicker.axis}
@@ -428,81 +501,85 @@ class ShadTimePicker extends StatefulWidget {
   /// {@endtemplate}
   final ShadDecoration? periodDecoration;
 
+  /// {@template ShadTimePicker.controller}
+  /// The controller of the time picker, defaults to `null`.
+  /// {@endtemplate}
+  final ShadTimePickerController? controller;
+
+  /// {@template ShadTimePicker.enabled}
+  /// Whether the time picker is enabled, defaults to `true`.
+  /// {@endtemplate}
+  final bool enabled;
+
   @override
   State<ShadTimePicker> createState() => _ShadTimePickerState();
 }
 
 class _ShadTimePickerState extends State<ShadTimePicker> {
+  ShadTimePickerController? _controller;
+  ShadTimePickerController get controller => widget.controller ?? _controller!;
+  late final hourController = ShadTimePickerTextEditingController(
+    max: widget.maxHour,
+    min: widget.minHour,
+    text: widget.initialValue?.hour.toString().padLeft(2, '0'),
+    placeholderStyle: widget.placeholderStyle,
+  );
+  late final minuteController = ShadTimePickerTextEditingController(
+    max: widget.maxMinute,
+    min: widget.minMinute,
+    text: widget.initialValue?.minute.toString().padLeft(2, '0'),
+    placeholderStyle: widget.placeholderStyle,
+  );
+  late final secondController = ShadTimePickerTextEditingController(
+    max: widget.maxSecond,
+    min: widget.minSecond,
+    text: widget.initialValue?.second.toString().padLeft(2, '0'),
+    placeholderStyle: widget.placeholderStyle,
+  );
+
   final focusNodes = [FocusNode(), FocusNode(), FocusNode()];
   final periodFocusNode = FocusNode();
-  late final List<ShadTimePickerTextEditingController> controllers;
-  late final Listenable listenable;
-  late final selectedDayPeriod =
-      ValueNotifier<DayPeriod?>(widget.initialDayPeriod ?? DayPeriod.am);
 
   @override
   void initState() {
     super.initState();
-    controllers = [
-      ShadTimePickerTextEditingController(
-        max: widget.maxHour,
-        min: widget.minHour,
-        text: widget.initialValue?.hour.toString().padLeft(2, '0'),
-        placeholderStyle: widget.placeholderStyle,
-      ),
-      ShadTimePickerTextEditingController(
-        max: widget.maxMinute,
-        min: widget.minMinute,
-        text: widget.initialValue?.minute.toString().padLeft(2, '0'),
-        placeholderStyle: widget.placeholderStyle,
-      ),
-      ShadTimePickerTextEditingController(
-        max: widget.maxSecond,
-        min: widget.minSecond,
-        text: widget.initialValue?.second.toString().padLeft(2, '0'),
-        placeholderStyle: widget.placeholderStyle,
-      ),
-    ];
-    listenable = Listenable.merge([...controllers, selectedDayPeriod]);
-    listenable.addListener(onChanged);
+    if (widget.controller == null) {
+      _controller = ShadTimePickerController(
+        hour: widget.initialValue?.hour,
+        minute: widget.initialValue?.minute,
+        second: widget.initialValue?.second,
+        period: widget.initialDayPeriod,
+      );
+    }
+    controller.addListener(onChanged);
   }
 
   @override
   void dispose() {
-    selectedDayPeriod.dispose();
-    listenable.removeListener(onChanged);
+    _controller?.dispose();
+    controller.removeListener(onChanged);
     for (final node in focusNodes) {
       node.dispose();
     }
     focusNodes.clear();
-    for (final controller in controllers) {
-      controller.dispose();
-    }
-    controllers.clear();
     periodFocusNode.dispose();
     super.dispose();
   }
 
   void onChanged() {
-    final hour = controllers[0].text;
-    final minute = controllers[1].text;
-    final second = controllers[2].text;
-    final period = selectedDayPeriod.value;
-
-    if (hour.length == 2 &&
-        minute.length == 2 &&
-        second.length == 2 &&
-        (widget.variant == ShadTimePickerVariant.primary || period != null)) {
-      widget.onChanged?.call(
-        ShadTimeOfDay(
-          hour: int.parse(hour),
-          minute: int.parse(minute),
-          second: int.parse(second),
-          period:
-              widget.variant == ShadTimePickerVariant.period ? period : null,
-        ),
-      );
-    }
+    if (controller.hour == null ||
+        controller.minute == null ||
+        controller.second == null) return;
+    widget.onChanged?.call(
+      ShadTimeOfDay(
+        hour: controller.hour!,
+        minute: controller.minute!,
+        second: controller.second!,
+        period: widget.variant == ShadTimePickerVariant.period
+            ? controller.period
+            : null,
+      ),
+    );
   }
 
   @override
@@ -529,7 +606,8 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         widget.minutePlaceholder ?? defaultPlaceholder;
     final effectiveSecondPlaceholder =
         widget.secondPlaceholder ?? defaultPlaceholder;
-    final effectivePeriodPlaceholder = widget.periodPlaceholder;
+    final effectivePeriodPlaceholder =
+        widget.periodPlaceholder ?? Text('AM', style: theme.textTheme.muted);
 
     final effectiveAlignment = widget.alignment ??
         theme.timePickerTheme.alignment ??
@@ -591,7 +669,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         ShadTimePickerField(
           focusNode: focusNodes[0],
           label: effectiveHourLabel,
-          controller: controllers[0],
+          controller: hourController,
           gap: effectiveGap,
           placeholder: effectiveHourPlaceholder,
           style: effectiveStyle,
@@ -599,16 +677,20 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           width: effectiveFieldWidth,
           padding: effectiveFieldPadding,
           decoration: effectiveFieldDecoration,
+          enabled: widget.enabled,
           onChanged: (v) {
-            if (effectiveJumpToNextField && v.length == 2) {
-              focusNodes[1].requestFocus();
+            if (v.length == 2) {
+              controller.setHour(int.tryParse(v));
+              if (effectiveJumpToNextField) {
+                focusNodes[1].requestFocus();
+              }
             }
           },
         ),
         ShadTimePickerField(
           focusNode: focusNodes[1],
           label: effectiveMinuteLabel,
-          controller: controllers[1],
+          controller: minuteController,
           placeholder: effectiveMinutePlaceholder,
           gap: effectiveGap,
           style: effectiveStyle,
@@ -616,16 +698,20 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           width: effectiveFieldWidth,
           padding: effectiveFieldPadding,
           decoration: effectiveFieldDecoration,
+          enabled: widget.enabled,
           onChanged: (v) {
-            if (effectiveJumpToNextField && v.length == 2) {
-              focusNodes[2].requestFocus();
+            if (v.length == 2) {
+              controller.setMinute(int.tryParse(v));
+              if (effectiveJumpToNextField) {
+                focusNodes[2].requestFocus();
+              }
             }
           },
         ),
         ShadTimePickerField(
           focusNode: focusNodes[2],
           label: effectiveSecondLabel,
-          controller: controllers[2],
+          controller: secondController,
           gap: effectiveGap,
           placeholder: effectiveSecondPlaceholder,
           style: effectiveStyle,
@@ -633,11 +719,14 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           width: effectiveFieldWidth,
           padding: effectiveFieldPadding,
           decoration: effectiveFieldDecoration,
+          enabled: widget.enabled,
           onChanged: (v) {
-            if (effectiveJumpToNextField &&
-                v.length == 2 &&
-                widget.variant == ShadTimePickerVariant.period) {
-              periodFocusNode.requestFocus();
+            if (v.length == 2) {
+              controller.setSecond(int.tryParse(v));
+              if (effectiveJumpToNextField &&
+                  widget.variant == ShadTimePickerVariant.period) {
+                periodFocusNode.requestFocus();
+              }
             }
           },
         ),
@@ -657,8 +746,9 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
                   focusNode: periodFocusNode,
                   minWidth: effectivePeriodMinWidth,
                   placeholder: effectivePeriodPlaceholder,
-                  initialValue: selectedDayPeriod.value,
+                  initialValue: controller.period,
                   decoration: effectivePeriodDecoration,
+                  enabled: widget.enabled,
                   options: DayPeriod.values
                       .map(
                         (v) => ShadOption(
@@ -671,7 +761,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
                     return Text(value.name.toUpperCase());
                   },
                   onChanged: (value) {
-                    selectedDayPeriod.value = value;
+                    controller.setDayPeriod(value);
                   },
                 ),
               ),
@@ -697,6 +787,7 @@ class ShadTimePickerField extends StatefulWidget {
     this.width,
     this.padding,
     this.decoration,
+    this.enabled = true,
   });
 
   final Widget? label;
@@ -710,6 +801,7 @@ class ShadTimePickerField extends StatefulWidget {
   final double? width;
   final EdgeInsets? padding;
   final ShadDecoration? decoration;
+  final bool enabled;
 
   @override
   State<ShadTimePickerField> createState() => _ShadTimePickerFieldState();
@@ -781,6 +873,7 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
         SizedBox(
           width: effectiveWidth,
           child: ShadInput(
+            enabled: widget.enabled,
             focusNode: widget.focusNode,
             style: effectiveStyle,
             placeholderStyle: effectivePlaceholderStyle,
