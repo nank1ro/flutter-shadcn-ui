@@ -1,0 +1,59 @@
+---
+title: Time Picker
+sidebar:
+  order: 4
+---
+
+import Preview from "../../../components/Preview.astro";
+
+A time picker component.
+
+<Preview src="https://shadcn-ui-playground.pages.dev/time-picker?style=primary" minHeight="450px">
+
+```dart
+class PrimaryTimePicker extends StatelessWidget {
+  const PrimaryTimePicker({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 600),
+      child: const ShadTimePicker(),
+    );
+  }
+}
+```
+
+</Preview>
+
+## Form
+
+<Preview src="https://shadcn-ui-playground.pages.dev/form?style=timePickerField" minHeight="700px">
+
+```dart
+ShadTimePickerFormField(
+  label: const Text('Pick a time'),
+  onChanged: print,
+  description:
+      const Text('The time of the day you want to pick'),
+  validator: (v) => v == null ? 'A time is required' : null,
+)
+```
+
+</Preview>
+
+## ShadTimePickerFormField.period
+
+<Preview src="https://shadcn-ui-playground.pages.dev/form?style=periodTimePickerField" minHeight="700px">
+
+```dart
+ShadTimePickerFormField.period(
+  label: const Text('Pick a time'),
+  onChanged: print,
+  description:
+      const Text('The time of the day you want to pick'),
+  validator: (v) => v == null ? 'A time is required' : null,
+),
+```
+
+</Preview>
