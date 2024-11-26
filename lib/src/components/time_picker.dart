@@ -570,14 +570,14 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     if (controller.hour == null ||
         controller.minute == null ||
         controller.second == null) return;
+    if (widget.variant == ShadTimePickerVariant.period &&
+        controller.period == null) return;
     widget.onChanged?.call(
       ShadTimeOfDay(
         hour: controller.hour!,
         minute: controller.minute!,
         second: controller.second!,
-        period: widget.variant == ShadTimePickerVariant.period
-            ? controller.period
-            : null,
+        period: controller.period,
       ),
     );
   }
