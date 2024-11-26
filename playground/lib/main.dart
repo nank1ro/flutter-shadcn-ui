@@ -24,6 +24,7 @@ import 'package:playground/pages/slider.dart';
 import 'package:playground/pages/switch.dart';
 import 'package:playground/pages/table.dart';
 import 'package:playground/pages/tabs.dart';
+import 'package:playground/pages/time_picker.dart';
 import 'package:playground/pages/toast.dart';
 import 'package:playground/pages/tooltip.dart';
 import 'package:playground/pages/typography.dart';
@@ -288,6 +289,16 @@ final _router = GoRouter(
             ShadDatePickerVariantPlayground.single.name;
         return DatePickerPage(
           style: ShadDatePickerVariantPlayground.values.byName(style),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/time-picker',
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ??
+            ShadTimePickerVariant.primary.name;
+        return TimePickerPage(
+          style: ShadTimePickerVariant.values.byName(style),
         );
       },
     ),
