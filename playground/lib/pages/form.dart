@@ -11,6 +11,8 @@ enum FormStyle {
   radioField,
   datePickerField,
   dateRangePickerField,
+  timePickerField,
+  periodTimePickerField,
 }
 
 enum NotifyAbout {
@@ -167,6 +169,21 @@ class _FormPageState extends State<FormPage> {
 
                         return null;
                       },
+                    ),
+                  FormStyle.timePickerField => ShadTimePickerFormField(
+                      label: const Text('Pick a time'),
+                      onChanged: print,
+                      description:
+                          const Text('The time of the day you want to pick'),
+                      validator: (v) => v == null ? 'A time is required' : null,
+                    ),
+                  FormStyle.periodTimePickerField =>
+                    ShadTimePickerFormField.period(
+                      label: const Text('Pick a time'),
+                      onChanged: print,
+                      description:
+                          const Text('The time of the day you want to pick'),
+                      validator: (v) => v == null ? 'A time is required' : null,
                     ),
                 },
                 const SizedBox(height: 16),
