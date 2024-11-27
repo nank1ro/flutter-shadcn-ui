@@ -25,7 +25,6 @@ class TimePickerPage extends StatelessWidget {
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
           child: ShadTimePicker.period(
-            maxHour: 12,
             crossAxisAlignment: WrapCrossAlignment.end,
             onChanged: (time) {
               print('time: $time');
