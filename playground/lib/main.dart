@@ -1,3 +1,6 @@
+import 'dart:js_interop';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:playground/pages/accordion.dart';
@@ -30,6 +33,7 @@ import 'package:playground/pages/tooltip.dart';
 import 'package:playground/pages/typography.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'dart:html' as html;
 
 extension on GoRouterState {
   bool? getBoolFromArg(String name) {
@@ -45,6 +49,12 @@ extension on GoRouterState {
 
 void main() {
   usePathUrlStrategy();
+
+  // Workaround for https://github.com/flutter/flutter/issues/155265
+  html.window.onBlur.listen((event) {
+    html.document.activeElement?.blur();
+  });
+
   runApp(const MyApp());
 }
 
