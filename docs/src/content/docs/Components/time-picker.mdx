@@ -8,7 +8,7 @@ import Preview from "../../../components/Preview.astro";
 
 A time picker component.
 
-<Preview src="https://shadcn-ui-playground.pages.dev/time-picker?style=primary" minHeight="450px">
+<Preview src="https://shadcn-ui-playground.pages.dev/time-picker?style=primary">
 
 ```dart
 class PrimaryTimePicker extends StatelessWidget {
@@ -18,7 +18,12 @@ class PrimaryTimePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 600),
-      child: const ShadTimePicker(),
+      child: const ShadTimePicker(
+        trailing: Padding(
+          padding: EdgeInsets.only(left: 8, top: 14),
+          child: ShadImage.square(LucideIcons.clock4, size: 16),
+        ),
+      ),
     );
   }
 }
@@ -28,7 +33,7 @@ class PrimaryTimePicker extends StatelessWidget {
 
 ## Form
 
-<Preview src="https://shadcn-ui-playground.pages.dev/form?style=timePickerField" minHeight="700px">
+<Preview src="https://shadcn-ui-playground.pages.dev/form?style=timePickerField" minHeight="400px">
 
 ```dart
 ShadTimePickerFormField(
@@ -44,7 +49,7 @@ ShadTimePickerFormField(
 
 ## ShadTimePickerFormField.period
 
-<Preview src="https://shadcn-ui-playground.pages.dev/form?style=periodTimePickerField" minHeight="700px">
+<Preview src="https://shadcn-ui-playground.pages.dev/form?style=periodTimePickerField" minHeight="400px">
 
 ```dart
 ShadTimePickerFormField.period(
