@@ -1,6 +1,6 @@
 ## 0.16.0
 
-- **FEAT**: New `ShadTimePicker` and `ShadDatePickerFormField` components.
+- **FEAT**: New `ShadTimePicker` and `ShadTimePickerFormField` components.
 - **FIX**: `maxLength`, `maxLengthEnforcement` and `showCursor` not working on `ShadInput`
 - **FIX**: `ShadCalendar` range day button text style when `disableSecondaryBorder` is `true`.
 - **CHORE**: Set minimum Flutter version to `3.24.0`
