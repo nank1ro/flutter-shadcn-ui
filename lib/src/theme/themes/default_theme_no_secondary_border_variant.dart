@@ -32,6 +32,7 @@ import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
+import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
@@ -823,7 +824,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
               color: colorScheme.primaryForeground,
             ),
         insideRangeDayButtonTextStyle: textTheme().small.copyWith(
-              color: colorScheme.primaryForeground,
+              color: colorScheme.foreground,
             ),
         dayButtonTextStyle: textTheme().small.copyWith(
               fontWeight: FontWeight.normal,
@@ -865,6 +866,54 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       width: 276,
       mainAxisAlignment: MainAxisAlignment.start,
       iconSrc: LucideIcons.calendar,
+    );
+  }
+
+  @override
+  ShadTimePickerTheme timePickerTheme() {
+    return ShadTimePickerTheme(
+      axis: Axis.horizontal,
+      spacing: 4,
+      runSpacing: 4,
+      jumpToNextFieldWhenFilled: true,
+      alignment: WrapAlignment.center,
+      runAlignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      gap: 2,
+      style: effectiveTextTheme.muted.copyWith(
+        color: colorScheme.foreground,
+        fontSize: 16,
+        height: 24 / 16,
+      ),
+      placeholderStyle: effectiveTextTheme.muted.copyWith(
+        fontSize: 16,
+        height: 24 / 16,
+      ),
+      labelStyle: effectiveTextTheme.small.copyWith(fontSize: 12),
+      fieldWidth: 50,
+      fieldPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      periodHeight: 44,
+      periodMinWidth: 65,
+      fieldDecoration: ShadDecoration(
+        border: ShadBorder.all(
+          width: 2,
+          color: colorScheme.border,
+          radius: radius,
+        ),
+      ),
+      periodDecoration: ShadDecoration(
+        border: ShadBorder.all(
+          width: 2,
+          color: colorScheme.border,
+          radius: radius,
+        ),
+        focusedBorder: ShadBorder.all(
+          width: 2,
+          color: colorScheme.ring,
+          radius: radius,
+          padding: const EdgeInsets.symmetric(horizontal: 1),
+        ),
+      ),
     );
   }
 }

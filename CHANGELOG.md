@@ -1,7 +1,11 @@
-## 0.15.4
+## 0.16.0
 
+- **FEAT**: New `ShadTimePicker` and `ShadDatePickerFormField` components.
+- **FIX**: `maxLength`, `maxLengthEnforcement` and `showCursor` not working on `ShadInput`
+- **FIX**: `ShadCalendar` range day button text style when `disableSecondaryBorder` is `true`.
 - **CHORE**: Set minimum Flutter version to `3.24.0`
 - **CHORE**: Remove `trackColor` from `ShadSwitch` (thanks to @RaghavTheGreat)
+- **FIX**: `ShadSlider` `onChanged` called on every controller update (thanks to @helightdev).
 
 ## 0.15.3
 
