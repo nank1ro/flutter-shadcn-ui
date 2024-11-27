@@ -171,10 +171,12 @@ class _ShadSliderState extends State<ShadSlider> {
             mouseCursor: widget.enabled
                 ? effectiveMouseCursor
                 : effectiveDisabledMouseCursor,
-            onChanged: widget.enabled ? (v) {
-              controller.value = v;
-              widget.onChanged?.call(v);
-            } : null,
+            onChanged: widget.enabled
+                ? (v) {
+                    controller.value = v;
+                    widget.onChanged?.call(v);
+                  }
+                : null,
             autofocus: widget.autofocus,
             focusNode: widget.focusNode,
             onChangeStart: widget.onChangeStart,
