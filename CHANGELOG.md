@@ -5,6 +5,7 @@
 - **FIX**: `ShadCalendar` range day button text style when `disableSecondaryBorder` is `true`.
 - **CHORE**: Set minimum Flutter version to `3.24.0`
 - **CHORE**: Remove `trackColor` from `ShadSwitch` (thanks to @RaghavTheGreat)
+- **FIX**: `ShadSlider` `onChanged` called on every controller update (thanks to @helightdev).
 
 ## 0.15.3
 
