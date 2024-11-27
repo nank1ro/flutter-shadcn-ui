@@ -80,23 +80,12 @@ class _ShadSliderState extends State<ShadSlider> {
       );
 
   @override
-  void initState() {
-    super.initState();
-    controller.addListener(onChanged);
-  }
-
-  @override
   void dispose() {
-    controller.removeListener(onChanged);
     // dispose the internal controller
     if (widget.controller == null) {
       controller.dispose();
     }
     super.dispose();
-  }
-
-  void onChanged() {
-    widget.onChanged?.call(controller.value);
   }
 
   @override
@@ -182,7 +171,10 @@ class _ShadSliderState extends State<ShadSlider> {
             mouseCursor: widget.enabled
                 ? effectiveMouseCursor
                 : effectiveDisabledMouseCursor,
-            onChanged: widget.enabled ? (v) => controller.value = v : null,
+            onChanged: widget.enabled ? (v) {
+              controller.value = v;
+              widget.onChanged?.call(v);
+            } : null,
             autofocus: widget.autofocus,
             focusNode: widget.focusNode,
             onChangeStart: widget.onChangeStart,
