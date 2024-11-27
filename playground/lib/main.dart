@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:playground/pages/accordion.dart';
@@ -30,7 +32,7 @@ import 'package:playground/pages/tooltip.dart';
 import 'package:playground/pages/typography.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'dart:html' as html;
+import 'package:web/web.dart';
 
 extension on GoRouterState {
   bool? getBoolFromArg(String name) {
@@ -46,17 +48,33 @@ extension on GoRouterState {
 
 void main() {
   usePathUrlStrategy();
-
-  // Workaround for https://github.com/flutter/flutter/issues/155265
-  html.window.onBlur.listen((event) {
-    html.document.activeElement?.blur();
-  });
-
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  // Workaround for https://github.com/flutter/flutter/issues/155265
+  void onBlur(Event e) {
+    (document.activeElement as HTMLElement?)?.blur();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    window.addEventListener('blur', onBlur.toJS);
+  }
+
+  @override
+  void dispose() {
+    window.removeEventListener('blur', onBlur.toJS);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

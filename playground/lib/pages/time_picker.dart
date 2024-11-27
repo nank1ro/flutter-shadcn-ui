@@ -33,7 +33,12 @@ class PrimaryTimePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 600),
-      child: const ShadTimePicker(),
+      child: const ShadTimePicker(
+        trailing: Padding(
+          padding: EdgeInsets.only(left: 8, top: 14),
+          child: ShadImage.square(LucideIcons.clock4, size: 16),
+        ),
+      ),
     );
   }
 }
