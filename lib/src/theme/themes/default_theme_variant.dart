@@ -711,26 +711,26 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   @override
   ShadTabsTheme tabsTheme() {
     return ShadTabsTheme(
-        dragStartBehavior: DragStartBehavior.start,
-        padding: EdgeInsets.zero,
-        decoration: ShadDecoration(
-          merge: false,
-          color: colorScheme.muted,
-          border: ShadBorder.all(radius: radius, width: 0),
-        ),
-        gap: 8,
-        expandContent: false,
-        tabBackgroundColor: Colors.transparent,
-        tabSelectedBackgroundColor: colorScheme.background,
-        tabHoverBackgroundColor: Colors.transparent,
-        tabSelectedHoverBackgroundColor: colorScheme.background,
-        tabPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        tabForegroundColor: colorScheme.foreground,
-        tabSelectedForegroundColor: colorScheme.foreground,
-        tabSelectedShadows: ShadShadows.sm,
-        tabDecoration: ShadDecoration(
-          border: ShadBorder.all(radius: radius, width: 0),
-        ),
+      dragStartBehavior: DragStartBehavior.start,
+      padding: EdgeInsets.zero,
+      decoration: ShadDecoration(
+        merge: false,
+        color: colorScheme.muted,
+        border: ShadBorder.all(radius: radius, width: 0),
+      ),
+      gap: 8,
+      expandContent: false,
+      tabBackgroundColor: Colors.transparent,
+      tabSelectedBackgroundColor: colorScheme.background,
+      tabHoverBackgroundColor: Colors.transparent,
+      tabSelectedHoverBackgroundColor: colorScheme.background,
+      tabPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      tabForegroundColor: colorScheme.foreground,
+      tabSelectedForegroundColor: colorScheme.foreground,
+      tabSelectedShadows: ShadShadows.sm,
+      tabDecoration: ShadDecoration(
+        border: ShadBorder.all(radius: radius, width: 0),
+      ),
     );
   }
 
