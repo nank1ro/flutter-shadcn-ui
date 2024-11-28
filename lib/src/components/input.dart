@@ -408,6 +408,19 @@ class ShadInputState extends State<ShadInput>
           );
         };
 
+    final effectiveMaxLengthEnforcement = widget.maxLengthEnforcement ??
+        LengthLimitingTextInputFormatter.getDefaultMaxLengthEnforcement(
+            Theme.of(context).platform);
+
+    final effectiveInputFormatters = <TextInputFormatter>[
+      ...?widget.inputFormatters,
+      if (widget.maxLength != null)
+        LengthLimitingTextInputFormatter(
+          widget.maxLength,
+          maxLengthEnforcement: effectiveMaxLengthEnforcement,
+        ),
+    ];
+
     return ShadDisabled(
       disabled: !widget.enabled,
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
@@ -512,7 +525,8 @@ class ShadInputState extends State<ShadInput>
                                         onSubmitted: widget.onSubmitted,
                                         onAppPrivateCommand:
                                             widget.onAppPrivateCommand,
-                                        inputFormatters: widget.inputFormatters,
+                                        inputFormatters:
+                                            effectiveInputFormatters,
                                         cursorWidth: widget.cursorWidth,
                                         cursorHeight: widget.cursorHeight,
                                         cursorRadius: widget.cursorRadius,
@@ -536,6 +550,7 @@ class ShadInputState extends State<ShadInput>
                                         textAlign: widget.textAlign,
                                         onTapOutside: widget.onPressedOutside,
                                         rendererIgnoresPointer: true,
+                                        showCursor: widget.showCursor,
                                       ),
                                     ),
                                   ),

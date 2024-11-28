@@ -24,6 +24,7 @@ import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
+import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
@@ -80,6 +81,7 @@ abstract class ShadBaseTheme {
     required this.contextMenuTheme,
     required this.calendarTheme,
     required this.datePickerTheme,
+    required this.timePickerTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -129,6 +131,7 @@ abstract class ShadBaseTheme {
   final ShadContextMenuTheme contextMenuTheme;
   final ShadCalendarTheme calendarTheme;
   final ShadDatePickerTheme datePickerTheme;
+  final ShadTimePickerTheme timePickerTheme;
 }
 
 @immutable
@@ -173,4 +176,5 @@ abstract class ShadThemeVariant {
   ShadContextMenuTheme contextMenuTheme();
   ShadCalendarTheme calendarTheme();
   ShadDatePickerTheme datePickerTheme();
+  ShadTimePickerTheme timePickerTheme();
 }

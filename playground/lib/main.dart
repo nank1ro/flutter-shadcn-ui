@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:playground/pages/accordion.dart';
@@ -24,11 +26,13 @@ import 'package:playground/pages/slider.dart';
 import 'package:playground/pages/switch.dart';
 import 'package:playground/pages/table.dart';
 import 'package:playground/pages/tabs.dart';
+import 'package:playground/pages/time_picker.dart';
 import 'package:playground/pages/toast.dart';
 import 'package:playground/pages/tooltip.dart';
 import 'package:playground/pages/typography.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:web/web.dart';
 
 extension on GoRouterState {
   bool? getBoolFromArg(String name) {
@@ -47,8 +51,30 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  // Workaround for https://github.com/flutter/flutter/issues/155265
+  void onBlur(Event e) {
+    (document.activeElement as HTMLElement?)?.blur();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    window.addEventListener('blur', onBlur.toJS);
+  }
+
+  @override
+  void dispose() {
+    window.removeEventListener('blur', onBlur.toJS);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -288,6 +314,16 @@ final _router = GoRouter(
             ShadDatePickerVariantPlayground.single.name;
         return DatePickerPage(
           style: ShadDatePickerVariantPlayground.values.byName(style),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/time-picker',
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ??
+            ShadTimePickerVariant.primary.name;
+        return TimePickerPage(
+          style: ShadTimePickerVariant.values.byName(style),
         );
       },
     ),
