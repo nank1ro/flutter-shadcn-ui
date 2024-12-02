@@ -756,6 +756,9 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       tabForegroundColor: colorScheme.foreground,
       tabSelectedForegroundColor: colorScheme.foreground,
       tabSelectedShadows: ShadShadows.sm,
+      tabDecoration: ShadDecoration(
+        border: ShadBorder.all(radius: radius, width: 0),
+      ),
     );
   }
 
