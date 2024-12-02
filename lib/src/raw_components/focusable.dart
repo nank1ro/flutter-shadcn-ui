@@ -15,6 +15,12 @@ class ShadFocusable extends StatefulWidget {
     this.autofocus = false,
     this.child,
     this.onFocusChange,
+    this.onKeyEvent,
+    this.skipTraversal,
+    this.descendantsAreFocusable,
+    this.descendantsAreTraversable,
+    this.includeSemantics = true,
+    this.debugLabel,
   });
 
   final bool canRequestFocus;
@@ -23,6 +29,12 @@ class ShadFocusable extends StatefulWidget {
   final FocusWidgetBuilder builder;
   final Widget? child;
   final ValueChanged<bool>? onFocusChange;
+  final FocusOnKeyEventCallback? onKeyEvent;
+  final bool? skipTraversal;
+  final bool? descendantsAreFocusable;
+  final bool? descendantsAreTraversable;
+  final bool includeSemantics;
+  final String? debugLabel;
 
   @override
   State<ShadFocusable> createState() => _ShadFocusableState();
@@ -63,6 +75,12 @@ class _ShadFocusableState extends State<ShadFocusable> {
       canRequestFocus: widget.canRequestFocus,
       onFocusChange: (value) => isFocused.value = value,
       focusNode: focusNode,
+      onKeyEvent: widget.onKeyEvent,
+      skipTraversal: widget.skipTraversal,
+      descendantsAreFocusable: widget.descendantsAreFocusable,
+      descendantsAreTraversable: widget.descendantsAreTraversable,
+      includeSemantics: widget.includeSemantics,
+      debugLabel: widget.debugLabel,
       child: ValueListenableBuilder(
         valueListenable: isFocused,
         builder: (context, value, child) =>

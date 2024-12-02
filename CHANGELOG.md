@@ -1,3 +1,7 @@
+## 0.16.1
+
+- **FEAT**: Add parameters to `ShadFocusable`.
+
 ## 0.16.0
 
 - **FEAT**: New `ShadTimePicker` and `ShadTimePickerFormField` components.
