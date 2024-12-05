@@ -37,13 +37,15 @@ class ShadInputOTPState extends State<ShadInputOTP> {
 
   late final values = List<String>.filled(widget.maxLength, '');
 
-  // Call this method to register a slot
-  void registerSlot({
+  // Call this method to register a slot, returns the index of the slot
+  int registerSlot({
     required FocusNode focusNode,
     required TextEditingController controller,
   }) {
     registeredOTPs.add((focusNode: focusNode, controller: controller));
-    listenToSlot(registeredOTPs.length - 1);
+    final index = registeredOTPs.length - 1;
+    listenToSlot(index);
+    return index;
   }
 
   void listenToSlot(int index) {
@@ -77,6 +79,13 @@ class ShadInputOTPState extends State<ShadInputOTP> {
     );
     if (focusedSlotIndex == 0) return;
     jumpToSlot(focusedSlotIndex - 1, clear: clear);
+  }
+
+  void setValues(String values) {
+    for (var i = 0; i < values.length; i++) {
+      final slot = registeredOTPs[i];
+      slot.controller.text = values[i];
+    }
   }
 
   @override
@@ -140,6 +149,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
   TextEditingController? _controller;
   TextEditingController get controller => widget.controller ?? _controller!;
+  late final int index;
 
   @override
   void initState() {
@@ -159,7 +169,10 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       );
     }
     if (widget.controller == null) _controller = TextEditingController();
-    otpProvider.registerSlot(focusNode: focusNode, controller: controller);
+    index = otpProvider.registerSlot(
+      focusNode: focusNode,
+      controller: controller,
+    );
     controller.addListener(() {
       if (controller.text.length == 1) {
         otpProvider.jumpToNextSlot();
@@ -187,8 +200,18 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       child: ShadInput(
         focusNode: focusNode,
         controller: controller,
-        maxLength: 1,
-        maxLengthEnforcement: MaxLengthEnforcement.enforced,
+        onChanged: (v) {
+          // if the max length is entered, set the values
+          // to all the slots
+          // this callback is fired only for the first slot
+          if (v.length == otpProvider.widget.maxLength) {
+            otpProvider.setValues(v);
+          } else {
+            controller.text = v[v.length - 1];
+          }
+        },
+        maxLength: otpProvider.widget.maxLength,
+        maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
         padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
         style: defaultStyle,
       ),
