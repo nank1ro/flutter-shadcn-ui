@@ -55,3 +55,23 @@ flutter:
           weight: 800
         - asset: fonts/Geist-UltraBlack.otf
           weight: 900
+    - family: GeistMono
+      fonts:
+        - asset: fonts/GeistMono-Thin.otf
+          weight: 100
+        - asset: fonts/GeistMono-UltraLight.otf
+          weight: 200
+        - asset: fonts/GeistMono-Light.otf
+          weight: 300
+        - asset: fonts/GeistMono-Regular.otf
+          weight: 400
+        - asset: fonts/GeistMono-Medium.otf
+          weight: 500
+        - asset: fonts/GeistMono-SemiBold.otf
+          weight: 600
+        - asset: fonts/GeistMono-Bold.otf
+          weight: 700
+        - asset: fonts/GeistMono-Black.otf
+          weight: 800
+        - asset: fonts/GeistMono-UltraBlack.otf
+          weight: 900
