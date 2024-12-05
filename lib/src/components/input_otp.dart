@@ -1,0 +1,197 @@
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/components/disabled.dart';
+import 'package:shadcn_ui/src/components/input.dart';
+import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/provider.dart';
+import 'package:shadcn_ui/src/utils/separated_iterable.dart';
+
+class ShadInputOTP extends StatefulWidget {
+  const ShadInputOTP({
+    super.key,
+    required this.maxLength,
+    required this.children,
+    this.enabled = true,
+    this.gap,
+    this.jumpToNextWhenFilled = true,
+    this.onChanged,
+  });
+
+  final int maxLength;
+  final bool enabled;
+  final double? gap;
+  final List<Widget> children;
+  final bool jumpToNextWhenFilled;
+  final ValueChanged<String>? onChanged;
+
+  @override
+  State<ShadInputOTP> createState() => ShadInputOTPState();
+}
+
+class ShadInputOTPState extends State<ShadInputOTP> {
+  final registeredOTPs =
+      <({FocusNode focusNode, TextEditingController controller})>[];
+
+  late Listenable listenable;
+
+  late final values = List<String>.filled(widget.maxLength, '');
+
+  // Call this method to register a slot
+  void registerSlot({
+    required FocusNode focusNode,
+    required TextEditingController controller,
+  }) {
+    registeredOTPs.add((focusNode: focusNode, controller: controller));
+    listenToSlot(registeredOTPs.length - 1);
+  }
+
+  void listenToSlot(int index) {
+    final slot = registeredOTPs[index];
+    slot.controller.addListener(() {
+      final text = slot.controller.text;
+      values[index] = text;
+    });
+  }
+
+  void jumpToSlot(int index, {bool clear = false}) {
+    if (!widget.jumpToNextWhenFilled) return;
+    if (index < registeredOTPs.length) {
+      final nextSlot = registeredOTPs[index];
+      nextSlot.focusNode.requestFocus();
+      if (clear) nextSlot.controller.clear();
+    }
+  }
+
+  void jumpToNextSlot() {
+    final focusedSlotIndex = registeredOTPs.indexWhere(
+      (slot) => slot.focusNode.hasFocus,
+    );
+    if (focusedSlotIndex == registeredOTPs.length - 1) return;
+    jumpToSlot(focusedSlotIndex + 1);
+  }
+
+  void jumpToPreviousSlot({bool clear = false}) {
+    final focusedSlotIndex = registeredOTPs.indexWhere(
+      (slot) => slot.focusNode.hasFocus,
+    );
+    if (focusedSlotIndex == 0) return;
+    jumpToSlot(focusedSlotIndex - 1, clear: clear);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final effectiveGap = widget.gap ?? 8;
+    return ShadProvider(
+      data: this,
+      child: ShadDisabled(
+        disabled: !widget.enabled,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: widget.children.separatedBy(SizedBox(width: effectiveGap)),
+        ),
+      ),
+    );
+  }
+}
+
+class ShadInputOTPGroup extends StatelessWidget {
+  const ShadInputOTPGroup({
+    super.key,
+    required this.children,
+  });
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: children,
+      ),
+    );
+  }
+}
+
+class ShadInputOTPSlot extends StatefulWidget {
+  const ShadInputOTPSlot({
+    super.key,
+    this.focusNode,
+    this.controller,
+  });
+
+  final FocusNode? focusNode;
+  final TextEditingController? controller;
+
+  @override
+  State<ShadInputOTPSlot> createState() => _ShadInputOTPSlotState();
+}
+
+class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
+  late final otpProvider = ShadProvider.of<ShadInputOTPState>(
+    context,
+    listen: false,
+  );
+
+  // ignore: use_late_for_private_fields_and_variables
+  FocusNode? _focusNode;
+  FocusNode get focusNode => widget.focusNode ?? _focusNode!;
+  TextEditingController? _controller;
+  TextEditingController get controller => widget.controller ?? _controller!;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.focusNode == null) {
+      _focusNode = FocusNode(
+        onKeyEvent: (node, event) {
+          if (event.logicalKey == LogicalKeyboardKey.backspace &&
+              controller.text.isEmpty &&
+              // handle both the KeyDownEvent and KeyRepeatEvent
+              event is! KeyUpEvent) {
+            otpProvider.jumpToPreviousSlot(clear: true);
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
+        },
+      );
+    }
+    if (widget.controller == null) _controller = TextEditingController();
+    otpProvider.registerSlot(focusNode: focusNode, controller: controller);
+    controller.addListener(() {
+      if (controller.text.length == 1) {
+        otpProvider.jumpToNextSlot();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode?.dispose();
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final defaultStyle = theme.textTheme.muted.copyWith(
+      color: theme.colorScheme.foreground,
+      fontFamily: kDefaultFontFamilyMono,
+    );
+
+    return SizedBox.square(
+      dimension: 40,
+      child: ShadInput(
+        focusNode: focusNode,
+        controller: controller,
+        maxLength: 1,
+        maxLengthEnforcement: MaxLengthEnforcement.enforced,
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+        style: defaultStyle,
+      ),
+    );
+  }
+}
