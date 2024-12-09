@@ -698,6 +698,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               focusedBorder: ShadBorder.all(
                 width: 2,
                 radius: BorderRadius.circular(2),
+                color: theme.colorScheme.ring,
               ),
             ),
           false => ShadDecoration(
