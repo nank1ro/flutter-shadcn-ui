@@ -1,3 +1,8 @@
+## 0.16.2
+
+- **FIX**: `ShadTabs` and `ShadResizable` lerp
+- **FIX**: `ShadTabs` focused border color in dark mode
+
 ## 0.16.1
 
 - **FEAT**: Add parameters to `ShadFocusable`.
