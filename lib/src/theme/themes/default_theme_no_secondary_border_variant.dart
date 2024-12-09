@@ -703,7 +703,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       dividerColor: colorScheme.border,
       resetOnDoubleTap: true,
       handleDecoration: ShadDecoration(
-        merge: false,
         color: colorScheme.border,
         border: ShadBorder.all(
           radius: const BorderRadius.all(Radius.circular(4)),
@@ -742,7 +741,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       dragStartBehavior: DragStartBehavior.start,
       padding: const EdgeInsets.all(4),
       decoration: ShadDecoration(
-        merge: false,
         color: colorScheme.muted,
         border: ShadBorder.all(radius: radius, width: 0),
       ),
