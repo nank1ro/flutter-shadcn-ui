@@ -48,15 +48,15 @@ class ShadResizableTheme {
     if (identical(a, b)) return a;
     return ShadResizableTheme(
       merge: b.merge,
-      mainAxisAlignment: b.mainAxisAlignment,
-      crossAxisAlignment: b.crossAxisAlignment,
-      mainAxisSize: b.mainAxisSize,
-      textDirection: b.textDirection,
-      verticalDirection: b.verticalDirection,
-      showHandle: b.showHandle,
-      handleIconSrc: b.handleIconSrc,
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      mainAxisSize: t < 0.5 ? a.mainAxisSize : b.mainAxisSize,
+      textDirection: t < 0.5 ? a.textDirection : b.textDirection,
+      verticalDirection: t < 0.5 ? a.verticalDirection : b.verticalDirection,
+      showHandle: t < 0.5 ? a.showHandle : b.showHandle,
+      handleIconSrc: t < 0.5 ? a.handleIconSrc : b.handleIconSrc,
       dividerSize: lerpDouble(a.dividerSize, b.dividerSize, t),
-      resetOnDoubleTap: b.resetOnDoubleTap,
+      resetOnDoubleTap: t < 0.5 ? a.resetOnDoubleTap : b.resetOnDoubleTap,
       handleDecoration:
           ShadDecoration.lerp(a.handleDecoration, b.handleDecoration, t),
       handlePadding: EdgeInsets.lerp(a.handlePadding, b.handlePadding, t),
@@ -79,7 +79,8 @@ class ShadResizableTheme {
       handleIconSrc: other.handleIconSrc,
       dividerSize: other.dividerSize,
       resetOnDoubleTap: other.resetOnDoubleTap,
-      handleDecoration: other.handleDecoration,
+      handleDecoration: handleDecoration?.mergeWith(other.handleDecoration) ??
+          other.handleDecoration,
       handlePadding: other.handlePadding,
       handleSize: other.handleSize,
       dividerColor: other.dividerColor,
