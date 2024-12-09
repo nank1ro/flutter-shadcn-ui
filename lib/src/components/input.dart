@@ -410,7 +410,8 @@ class ShadInputState extends State<ShadInput>
 
     final effectiveMaxLengthEnforcement = widget.maxLengthEnforcement ??
         LengthLimitingTextInputFormatter.getDefaultMaxLengthEnforcement(
-            Theme.of(context).platform);
+          Theme.of(context).platform,
+        );
 
     final effectiveInputFormatters = <TextInputFormatter>[
       ...?widget.inputFormatters,
