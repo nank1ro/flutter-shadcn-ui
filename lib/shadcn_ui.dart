@@ -27,6 +27,7 @@ export 'src/components/form/fields/time_picker.dart';
 export 'src/components/form/form.dart';
 export 'src/components/image.dart';
 export 'src/components/input.dart';
+export 'src/components/input_otp.dart';
 export 'src/components/popover.dart';
 export 'src/components/progress.dart';
 export 'src/components/radio.dart';

@@ -306,22 +306,21 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   }
 
   static ShadTextTheme get defaultTextTheme {
-    const defaultFontFamily = 'packages/shadcn_ui/$kDefaultFontFamily';
     return ShadTextTheme.custom(
-      h1Large: ShadTextDefaultTheme.h1Large(family: defaultFontFamily),
-      h1: ShadTextDefaultTheme.h1(family: defaultFontFamily),
-      h2: ShadTextDefaultTheme.h2(family: defaultFontFamily),
-      h3: ShadTextDefaultTheme.h3(family: defaultFontFamily),
-      h4: ShadTextDefaultTheme.h4(family: defaultFontFamily),
-      p: ShadTextDefaultTheme.p(family: defaultFontFamily),
-      blockquote: ShadTextDefaultTheme.blockquote(family: defaultFontFamily),
-      table: ShadTextDefaultTheme.table(family: defaultFontFamily),
-      list: ShadTextDefaultTheme.list(family: defaultFontFamily),
-      lead: ShadTextDefaultTheme.lead(family: defaultFontFamily),
-      large: ShadTextDefaultTheme.large(family: defaultFontFamily),
-      small: ShadTextDefaultTheme.small(family: defaultFontFamily),
-      muted: ShadTextDefaultTheme.muted(family: defaultFontFamily),
-      family: defaultFontFamily,
+      h1Large: ShadTextDefaultTheme.h1Large(family: kDefaultFontFamily),
+      h1: ShadTextDefaultTheme.h1(family: kDefaultFontFamily),
+      h2: ShadTextDefaultTheme.h2(family: kDefaultFontFamily),
+      h3: ShadTextDefaultTheme.h3(family: kDefaultFontFamily),
+      h4: ShadTextDefaultTheme.h4(family: kDefaultFontFamily),
+      p: ShadTextDefaultTheme.p(family: kDefaultFontFamily),
+      blockquote: ShadTextDefaultTheme.blockquote(family: kDefaultFontFamily),
+      table: ShadTextDefaultTheme.table(family: kDefaultFontFamily),
+      list: ShadTextDefaultTheme.list(family: kDefaultFontFamily),
+      lead: ShadTextDefaultTheme.lead(family: kDefaultFontFamily),
+      large: ShadTextDefaultTheme.large(family: kDefaultFontFamily),
+      small: ShadTextDefaultTheme.small(family: kDefaultFontFamily),
+      muted: ShadTextDefaultTheme.muted(family: kDefaultFontFamily),
+      family: kDefaultFontFamily,
     );
   }
 
