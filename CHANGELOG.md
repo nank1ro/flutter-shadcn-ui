@@ -1,3 +1,7 @@
+## 0.16.3
+
+- **FIX**: `showCursor` default value in `ShadInputFormField`
+
 ## 0.16.2
 
 - **FIX**: `ShadTabs` and `ShadResizable` lerp
