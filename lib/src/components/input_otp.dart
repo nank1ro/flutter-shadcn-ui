@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/components/input.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
@@ -200,6 +201,18 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       child: ShadInput(
         focusNode: focusNode,
         controller: controller,
+        decoration: ShadDecoration(
+          disableSecondaryBorder: true,
+          focusedBorder: ShadBorder.all(
+            color: theme.colorScheme.ring,
+            width: 2,
+            radius: theme.radius,
+          ),
+          border: ShadBorder.all(
+            color: theme.colorScheme.border,
+            width: 2,
+          ),
+        ),
         onChanged: (v) {
           // if the max length is entered, set the values
           // to all the slots
@@ -207,7 +220,11 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
           if (v.length == otpProvider.widget.maxLength) {
             otpProvider.setValues(v);
           } else {
-            controller.text = v[v.length - 1];
+            if (v.isEmpty) {
+              controller.clear();
+            } else {
+              controller.text = v[v.length - 1];
+            }
           }
         },
         maxLength: otpProvider.widget.maxLength,
