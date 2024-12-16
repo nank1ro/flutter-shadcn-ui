@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -8,6 +7,8 @@ import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
+
+const kInvisibleCharCode = '\u200b';
 
 class ShadInputOTP extends StatefulWidget {
   const ShadInputOTP({
@@ -49,7 +50,23 @@ class ShadInputOTPState extends State<ShadInputOTP> {
 
   late final values = List<String>.filled(widget.maxLength, '');
 
+  late final result = ValueNotifier<String>('      ');
+
   int get groups => widget.children.length;
+
+  @override
+  void initState() {
+    super.initState();
+    result.addListener(() {
+      widget.onChanged?.call(result.value);
+    });
+  }
+
+  @override
+  void dispose() {
+    result.dispose();
+    super.dispose();
+  }
 
   // Call this method to register a slot, returns the index of the slot
   int registerSlot({
@@ -65,8 +82,16 @@ class ShadInputOTPState extends State<ShadInputOTP> {
   void listenToSlot(int index) {
     final slot = registeredOTPs[index];
     slot.controller.addListener(() {
-      final text = slot.controller.text;
+      final text =
+          (slot.controller.text.split('').lastOrNull ?? kInvisibleCharCode)
+              .replaceAll(kInvisibleCharCode, ' ');
       values[index] = text;
+
+      final wholeValue = values.reduce((value, element) {
+        final parsedElement = element.isEmpty ? ' ' : element;
+        return value + parsedElement;
+      });
+      result.value = wholeValue;
     });
   }
 
@@ -75,7 +100,7 @@ class ShadInputOTPState extends State<ShadInputOTP> {
     if (index < registeredOTPs.length) {
       final nextSlot = registeredOTPs[index];
       nextSlot.focusNode.requestFocus();
-      if (clear) nextSlot.controller.clear();
+      if (clear) nextSlot.controller.text = kInvisibleCharCode;
     }
   }
 
@@ -178,29 +203,20 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
   void initState() {
     super.initState();
     if (widget.focusNode == null) {
-      _focusNode = FocusNode(
-        onKeyEvent: (node, event) {
-          if (event.logicalKey == LogicalKeyboardKey.backspace &&
-              controller.text.isEmpty &&
-              // handle both the KeyDownEvent and KeyRepeatEvent
-              event is! KeyUpEvent) {
-            otpProvider.jumpToPreviousSlot(clear: true);
-            return KeyEventResult.handled;
-          }
-          return KeyEventResult.ignored;
-        },
-      );
+      _focusNode = FocusNode();
     }
     if (widget.controller == null) _controller = TextEditingController();
+
     index = otpProvider.registerSlot(
       focusNode: focusNode,
       controller: controller,
     );
-    controller.addListener(() {
-      if (controller.text.length == 1) {
-        otpProvider.jumpToNextSlot();
-      }
-    });
+    controller
+      ..text = kInvisibleCharCode
+      ..addListener(() {
+        final text = controller.text.replaceAll(kInvisibleCharCode, '');
+        if (text.length == 1) otpProvider.jumpToNextSlot();
+      });
   }
 
   @override
@@ -208,6 +224,11 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     _focusNode?.dispose();
     _controller?.dispose();
     super.dispose();
+  }
+
+  void goToPreviousAndClearIfPossible() {
+    if (controller.text != kInvisibleCharCode) return;
+    otpProvider.jumpToPreviousSlot(clear: true);
   }
 
   @override
@@ -281,7 +302,8 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
             otpProvider.setValues(v);
           } else {
             if (v.isEmpty) {
-              controller.clear();
+              controller.text = kInvisibleCharCode;
+              goToPreviousAndClearIfPossible();
             } else {
               controller.text = v[v.length - 1];
             }

@@ -44,6 +44,7 @@ class _InputOTPPageState extends State<InputOTPPage> {
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
           child: ShadInputOTP(
+            onChanged: (v) => print('OTP: $v'),
             maxLength: 6,
             enabled: enabled,
             keyboardType: digitsOnly ? TextInputType.number : null,
