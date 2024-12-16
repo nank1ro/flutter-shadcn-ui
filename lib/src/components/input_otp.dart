@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -17,6 +18,8 @@ class ShadInputOTP extends StatefulWidget {
     this.gap,
     this.jumpToNextWhenFilled = true,
     this.onChanged,
+    this.inputFormatters,
+    this.keyboardType,
   });
 
   final int maxLength;
@@ -25,6 +28,14 @@ class ShadInputOTP extends StatefulWidget {
   final List<Widget> children;
   final bool jumpToNextWhenFilled;
   final ValueChanged<String>? onChanged;
+
+  /// The input formatters for the input of each slot, unless overridden in the
+  /// slot
+  final List<TextInputFormatter>? inputFormatters;
+
+  /// The keyboard type for the input of each slot, unless overridden in the
+  /// slot
+  final TextInputType? keyboardType;
 
   @override
   State<ShadInputOTP> createState() => ShadInputOTPState();
@@ -103,6 +114,7 @@ class ShadInputOTPState extends State<ShadInputOTP> {
           children: widget.children.separatedBy(SizedBox(width: effectiveGap)),
         ),
       ),
+      notifyUpdate: (_) => true,
     );
   }
 }
@@ -132,10 +144,18 @@ class ShadInputOTPSlot extends StatefulWidget {
     super.key,
     this.focusNode,
     this.controller,
+    this.inputFormatters,
+    this.keyboardType,
   });
 
   final FocusNode? focusNode;
   final TextEditingController? controller;
+
+  /// The input formatters for the input of the slot
+  final List<TextInputFormatter>? inputFormatters;
+
+  /// The keyboard type for the input of the slot
+  final TextInputType? keyboardType;
 
   @override
   State<ShadInputOTPSlot> createState() => _ShadInputOTPSlotState();
@@ -193,6 +213,10 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+
+    // Watching the OTP provider for changes
+    final otpProvider = ShadProvider.of<ShadInputOTPState>(context);
+
     final defaultStyle = theme.textTheme.muted.copyWith(
       color: theme.colorScheme.foreground,
       fontFamily: kDefaultFontFamilyMono,
@@ -219,6 +243,12 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
         : isLastInGroup
             ? lastRadius
             : middleRadius;
+
+    final effectiveInputFormatters =
+        widget.inputFormatters ?? otpProvider.widget.inputFormatters ?? [];
+
+    final effectiveKeyboardType =
+        widget.keyboardType ?? otpProvider.widget.keyboardType;
 
     return SizedBox.square(
       dimension: 40,
@@ -261,6 +291,8 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
         maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         style: defaultStyle,
+        inputFormatters: effectiveInputFormatters,
+        keyboardType: effectiveKeyboardType,
       ),
     );
   }
