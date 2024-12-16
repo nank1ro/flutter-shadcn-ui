@@ -79,6 +79,8 @@ class _ShadSliderState extends State<ShadSlider> {
         initialValue: widget.initialValue!,
       );
 
+  bool isFocused = false;
+
   @override
   void dispose() {
     // dispose the internal controller
@@ -142,51 +144,60 @@ class _ShadSliderState extends State<ShadSlider> {
     final effectiveThumbRadius =
         widget.thumbRadius ?? theme.sliderTheme.thumbRadius ?? 10.0;
 
-    return Theme(
-      data: mTheme.copyWith(
-        sliderTheme: mTheme.sliderTheme.copyWith(
-          trackHeight: effectiveTrackHeight,
-          thumbShape: ShadSliderThumbShape(
-            radius: effectiveThumbRadius,
-            borderColor: effectiveThumbBorderColor,
-            disabledBorderColor: effectiveDisabledThumbBorderColor,
-            thumbColor: effectiveThumbColor,
+    return Focus(
+      onFocusChange: (focused) {
+        setState(() {
+          isFocused = focused;
+        });
+      },
+      skipTraversal: true,
+      child: Theme(
+        data: mTheme.copyWith(
+          sliderTheme: mTheme.sliderTheme.copyWith(
+            trackHeight: effectiveTrackHeight,
+            thumbShape: ShadSliderThumbShape(
+              radius: effectiveThumbRadius,
+              borderColor: effectiveThumbBorderColor,
+              disabledBorderColor: effectiveDisabledThumbBorderColor,
+              thumbColor: effectiveThumbColor,
+              disabledThumbColor: effectiveDisabledThumbColor,
+              focused: isFocused,
+            ),
+            overlayShape: SliderComponentShape.noOverlay,
+            activeTrackColor: effectiveActiveTrackColor,
+            disabledActiveTrackColor: effectiveDisabledActiveTrackColor,
+            inactiveTrackColor: effectiveInactiveTrackColor,
+            disabledInactiveTrackColor: effectiveDisabledInactiveTrackColor,
             disabledThumbColor: effectiveDisabledThumbColor,
           ),
-          overlayShape: SliderComponentShape.noOverlay,
-          activeTrackColor: effectiveActiveTrackColor,
-          disabledActiveTrackColor: effectiveDisabledActiveTrackColor,
-          inactiveTrackColor: effectiveInactiveTrackColor,
-          disabledInactiveTrackColor: effectiveDisabledInactiveTrackColor,
-          disabledThumbColor: effectiveDisabledThumbColor,
         ),
-      ),
-      child: ValueListenableBuilder(
-        valueListenable: controller,
-        builder: (context, value, child) {
-          return Slider(
-            value: value,
-            min: effectiveMin,
-            max: effectiveMax,
-            mouseCursor: widget.enabled
-                ? effectiveMouseCursor
-                : effectiveDisabledMouseCursor,
-            onChanged: widget.enabled
-                ? (v) {
-                    controller.value = v;
-                    widget.onChanged?.call(v);
-                  }
-                : null,
-            autofocus: widget.autofocus,
-            focusNode: widget.focusNode,
-            onChangeStart: widget.onChangeStart,
-            onChangeEnd: widget.onChangeEnd,
-            divisions: widget.divisions,
-            label: widget.label,
-            semanticFormatterCallback: widget.semanticFormatterCallback,
-            allowedInteraction: widget.allowedInteraction,
-          );
-        },
+        child: ValueListenableBuilder(
+          valueListenable: controller,
+          builder: (context, value, child) {
+            return Slider(
+              value: value,
+              min: effectiveMin,
+              max: effectiveMax,
+              mouseCursor: widget.enabled
+                  ? effectiveMouseCursor
+                  : effectiveDisabledMouseCursor,
+              onChanged: widget.enabled
+                  ? (v) {
+                      controller.value = v;
+                      widget.onChanged?.call(v);
+                    }
+                  : null,
+              autofocus: widget.autofocus,
+              focusNode: widget.focusNode,
+              onChangeStart: widget.onChangeStart,
+              onChangeEnd: widget.onChangeEnd,
+              divisions: widget.divisions,
+              label: widget.label,
+              semanticFormatterCallback: widget.semanticFormatterCallback,
+              allowedInteraction: widget.allowedInteraction,
+            );
+          },
+        ),
       ),
     );
   }
@@ -199,6 +210,7 @@ class ShadSliderThumbShape extends SliderComponentShape {
     required this.disabledBorderColor,
     required this.thumbColor,
     required this.disabledThumbColor,
+    this.focused = false,
   });
 
   final double radius;
@@ -206,6 +218,7 @@ class ShadSliderThumbShape extends SliderComponentShape {
   final Color disabledBorderColor;
   final Color thumbColor;
   final Color disabledThumbColor;
+  final bool focused;
 
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
@@ -238,7 +251,7 @@ class ShadSliderThumbShape extends SliderComponentShape {
 
     canvas.drawCircle(
       center,
-      radius,
+      focused ? radius + 4 : radius,
       Paint()..color = color,
     );
 
@@ -255,5 +268,14 @@ class ShadSliderThumbShape extends SliderComponentShape {
       ..style = PaintingStyle.stroke;
 
     canvas.drawCircle(center, radius, paintBorder);
+
+    if (focused) {
+      final paintFocus = Paint()
+        ..color = borderColor
+        ..strokeWidth = 2
+        ..style = PaintingStyle.stroke;
+
+      canvas.drawCircle(center, radius + 4, paintFocus);
+    }
   }
 }
