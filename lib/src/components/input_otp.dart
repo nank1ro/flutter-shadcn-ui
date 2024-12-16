@@ -38,6 +38,8 @@ class ShadInputOTPState extends State<ShadInputOTP> {
 
   late final values = List<String>.filled(widget.maxLength, '');
 
+  int get groups => widget.children.length;
+
   // Call this method to register a slot, returns the index of the slot
   int registerSlot({
     required FocusNode focusNode,
@@ -116,7 +118,7 @@ class ShadInputOTPGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: children,
@@ -196,6 +198,28 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       fontFamily: kDefaultFontFamilyMono,
     );
 
+    final firstRadius = BorderRadius.only(
+      topLeft: theme.radius.topLeft,
+      bottomLeft: theme.radius.bottomLeft,
+    );
+
+    final lastRadius = BorderRadius.only(
+      topRight: theme.radius.topRight,
+      bottomRight: theme.radius.bottomRight,
+    );
+
+    const middleRadius = BorderRadius.zero;
+
+    final lastIndexForGroup = otpProvider.widget.maxLength / otpProvider.groups;
+    final isLastInGroup = (index + 1) % lastIndexForGroup == 0;
+    final isFirstInGroup = index % lastIndexForGroup == 0;
+
+    final effectiveRadius = isFirstInGroup
+        ? firstRadius
+        : isLastInGroup
+            ? lastRadius
+            : middleRadius;
+
     return SizedBox.square(
       dimension: 40,
       child: ShadInput(
@@ -206,11 +230,17 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
           focusedBorder: ShadBorder.all(
             color: theme.colorScheme.ring,
             width: 2,
-            radius: theme.radius,
+            radius: effectiveRadius,
           ),
-          border: ShadBorder.all(
-            color: theme.colorScheme.border,
-            width: 2,
+          border: ShadBorder(
+            radius: effectiveRadius,
+            left: isFirstInGroup
+                ? BorderSide(color: theme.colorScheme.border)
+                : BorderSide.none,
+            top: BorderSide(color: theme.colorScheme.border),
+            bottom: BorderSide(color: theme.colorScheme.border),
+            right: BorderSide(color: theme.colorScheme.border),
+            padding: const EdgeInsets.all(1),
           ),
         ),
         onChanged: (v) {
@@ -229,7 +259,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
         },
         maxLength: otpProvider.widget.maxLength,
         maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
-        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         style: defaultStyle,
       ),
     );
