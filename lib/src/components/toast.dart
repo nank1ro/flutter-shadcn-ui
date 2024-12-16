@@ -389,7 +389,7 @@ class _ShadToastState extends State<ShadToast> {
           width: 20,
           height: 20,
           padding: EdgeInsets.zero,
-          foregroundColor: effectiveForegroundColor.withOpacity(.5),
+          foregroundColor: effectiveForegroundColor.withValues(alpha: .5),
           hoverBackgroundColor: Colors.transparent,
           hoverForegroundColor: effectiveForegroundColor,
           pressedForegroundColor: effectiveForegroundColor,
@@ -404,7 +404,7 @@ class _ShadToastState extends State<ShadToast> {
     final effectiveDescriptionStyle = widget.descriptionStyle ??
         effectiveToastTheme.descriptionStyle ??
         theme.textTheme.muted.copyWith(
-          color: effectiveForegroundColor.withOpacity(.9),
+          color: effectiveForegroundColor.withValues(alpha: .9),
         );
     final effectiveActionPadding = widget.actionPadding ??
         effectiveToastTheme.actionPadding ??

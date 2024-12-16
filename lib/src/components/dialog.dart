@@ -233,7 +233,8 @@ class ShadDialog extends StatelessWidget {
                 width: 20,
                 height: 20,
                 padding: EdgeInsets.zero,
-                foregroundColor: theme.colorScheme.foreground.withOpacity(.5),
+                foregroundColor:
+                    theme.colorScheme.foreground.withValues(alpha: .5),
                 hoverBackgroundColor: Colors.transparent,
                 hoverForegroundColor: theme.colorScheme.foreground,
                 pressedForegroundColor: theme.colorScheme.foreground,

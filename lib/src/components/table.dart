@@ -374,9 +374,9 @@ class _ShadTableState extends State<ShadTable> {
       backgroundDecoration: widget.rowSpanBackgroundDecoration?.call(index) ??
           TableSpanDecoration(
             color: hoveredRowIndex.value == index
-                ? colorScheme.muted.withOpacity(isFooter ? 1 : .5)
+                ? colorScheme.muted.withValues(alpha: isFooter ? 1 : .5)
                 : isFooter
-                    ? colorScheme.muted.withOpacity(.5)
+                    ? colorScheme.muted.withValues(alpha: .5)
                     : null,
             border: TableSpanBorder(
               trailing: isLast

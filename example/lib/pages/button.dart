@@ -101,7 +101,7 @@ class _ButtonPageState extends State<ButtonPage> {
             ]),
             shadows: [
               BoxShadow(
-                color: Colors.blue.withOpacity(.4),
+                color: Colors.blue.withValues(alpha: .4),
                 spreadRadius: 4,
                 blurRadius: 10,
                 offset: const Offset(0, 2),
