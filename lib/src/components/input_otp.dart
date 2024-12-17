@@ -205,7 +205,21 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
   void initState() {
     super.initState();
     if (widget.focusNode == null) {
-      _focusNode = FocusNode();
+      _focusNode = FocusNode(
+        onKeyEvent: (node, event) {
+          // Handle the arrow keys
+          if (event is KeyUpEvent) return KeyEventResult.ignored;
+          if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+            otpProvider.jumpToPreviousSlot();
+            return KeyEventResult.handled;
+          }
+          if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+            otpProvider.jumpToNextSlot();
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
+        },
+      );
     }
     if (widget.controller == null) {
       _controller = EnhancedTextEditingController();
@@ -228,11 +242,6 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     _focusNode?.dispose();
     _controller?.dispose();
     super.dispose();
-  }
-
-  void goToPrevious({bool clear = true}) {
-    if (controller.text != kInvisibleCharCode) return;
-    otpProvider.jumpToPreviousSlot(clear: clear);
   }
 
   @override
@@ -308,7 +317,9 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
             if (v.isEmpty) {
               final previousText = controller.previousValue?.text ?? '';
               controller.text = kInvisibleCharCode;
-              goToPrevious(clear: previousText == kInvisibleCharCode);
+              otpProvider.jumpToPreviousSlot(
+                clear: previousText == kInvisibleCharCode,
+              );
             } else {
               final parsedText = v.replaceAll(kInvisibleCharCode, '');
               final newText = parsedText[parsedText.length - 1];
