@@ -100,6 +100,9 @@ class ShadInputOTPState extends State<ShadInputOTP> {
     if (index < registeredOTPs.length) {
       final nextSlot = registeredOTPs[index];
       nextSlot.focusNode.requestFocus();
+      if (clear) {
+        print('clear ${nextSlot.controller.text}');
+      }
       if (clear) nextSlot.controller.text = kInvisibleCharCode;
     }
   }
@@ -228,6 +231,8 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
 
   void goToPreviousAndClearIfPossible() {
     if (controller.text != kInvisibleCharCode) return;
+    print('goToPreviousAndClearIfPossible true');
+    print('controller.text ${controller.text}');
     otpProvider.jumpToPreviousSlot(clear: true);
   }
 
@@ -305,7 +310,12 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
               controller.text = kInvisibleCharCode;
               goToPreviousAndClearIfPossible();
             } else {
-              controller.text = v[v.length - 1];
+              final newText = v[v.length - 1];
+              controller.value = controller.value.copyWith(
+                text: newText,
+                selection: TextSelection.collapsed(offset: newText.length),
+                composing: TextRange.empty,
+              );
             }
           }
         },
