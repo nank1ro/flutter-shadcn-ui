@@ -229,12 +229,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       focusNode: focusNode,
       controller: controller,
     );
-    controller
-      ..text = kInvisibleCharCode
-      ..addListener(() {
-        final text = controller.text.replaceAll(kInvisibleCharCode, '');
-        if (text.length == 1) otpProvider.jumpToNextSlot();
-      });
+    controller.text = kInvisibleCharCode;
   }
 
   @override
@@ -328,6 +323,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
                 selection: TextSelection.collapsed(offset: newText.length),
                 composing: TextRange.empty,
               );
+              otpProvider.jumpToNextSlot();
             }
           }
         },
