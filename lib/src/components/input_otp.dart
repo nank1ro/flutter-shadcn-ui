@@ -5,6 +5,7 @@ import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/enhanced_text_editing_controller.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
@@ -100,9 +101,6 @@ class ShadInputOTPState extends State<ShadInputOTP> {
     if (index < registeredOTPs.length) {
       final nextSlot = registeredOTPs[index];
       nextSlot.focusNode.requestFocus();
-      if (clear) {
-        print('clear ${nextSlot.controller.text}');
-      }
       if (clear) nextSlot.controller.text = kInvisibleCharCode;
     }
   }
@@ -177,7 +175,7 @@ class ShadInputOTPSlot extends StatefulWidget {
   });
 
   final FocusNode? focusNode;
-  final TextEditingController? controller;
+  final EnhancedTextEditingController? controller;
 
   /// The input formatters for the input of the slot
   final List<TextInputFormatter>? inputFormatters;
@@ -198,8 +196,9 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
   // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
-  TextEditingController? _controller;
-  TextEditingController get controller => widget.controller ?? _controller!;
+  EnhancedTextEditingController? _controller;
+  EnhancedTextEditingController get controller =>
+      widget.controller ?? _controller!;
   late final int index;
 
   @override
@@ -208,7 +207,9 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     if (widget.focusNode == null) {
       _focusNode = FocusNode();
     }
-    if (widget.controller == null) _controller = TextEditingController();
+    if (widget.controller == null) {
+      _controller = EnhancedTextEditingController();
+    }
 
     index = otpProvider.registerSlot(
       focusNode: focusNode,
@@ -229,11 +230,9 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     super.dispose();
   }
 
-  void goToPreviousAndClearIfPossible() {
+  void goToPrevious({bool clear = true}) {
     if (controller.text != kInvisibleCharCode) return;
-    print('goToPreviousAndClearIfPossible true');
-    print('controller.text ${controller.text}');
-    otpProvider.jumpToPreviousSlot(clear: true);
+    otpProvider.jumpToPreviousSlot(clear: clear);
   }
 
   @override
@@ -307,10 +306,12 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
             otpProvider.setValues(v);
           } else {
             if (v.isEmpty) {
+              final previousText = controller.previousValue?.text ?? '';
               controller.text = kInvisibleCharCode;
-              goToPreviousAndClearIfPossible();
+              goToPrevious(clear: previousText == kInvisibleCharCode);
             } else {
-              final newText = v[v.length - 1];
+              final parsedText = v.replaceAll(kInvisibleCharCode, '');
+              final newText = parsedText[parsedText.length - 1];
               controller.value = controller.value.copyWith(
                 text: newText,
                 selection: TextSelection.collapsed(offset: newText.length),
