@@ -16,6 +16,7 @@ class _InputOTPPageState extends State<InputOTPPage> {
   var enabled = true;
   var uppercase = true;
   var digitsOnly = false;
+  var jumpToNextWhenFilled = true;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,11 @@ class _InputOTPPageState extends State<InputOTPPage> {
           enabled: !uppercase,
           onChanged: (value) => setState(() => digitsOnly = value),
         ),
+        MyBoolProperty(
+          label: 'Jump to next when filled',
+          value: jumpToNextWhenFilled,
+          onChanged: (value) => setState(() => jumpToNextWhenFilled = value),
+        ),
       ],
       children: [
         ConstrainedBox(
@@ -47,6 +53,7 @@ class _InputOTPPageState extends State<InputOTPPage> {
             onChanged: (v) => print('OTP: $v'),
             maxLength: 6,
             enabled: enabled,
+            jumpToNextWhenFilled: jumpToNextWhenFilled,
             keyboardType: digitsOnly ? TextInputType.number : null,
             inputFormatters: [
               if (digitsOnly) FilteringTextInputFormatter.digitsOnly,
