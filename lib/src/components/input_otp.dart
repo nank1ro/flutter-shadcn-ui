@@ -24,19 +24,47 @@ class ShadInputOTP extends StatefulWidget {
     this.keyboardType,
   });
 
+  /// {@template ShadInputOTP.maxLength}
+  /// The maximum length of the OTP
+  /// {@endtemplate}
   final int maxLength;
+
+  /// {@template ShadInputOTP.enabled}
+  /// Whether the input is enabled, defaults to true
+  /// {@endtemplate}
   final bool enabled;
+
+  /// {@template ShadInputOTP.gap}
+  /// The gap between each slot, defaults to 8
+  /// {@endtemplate}
   final double? gap;
+
+  /// {@template ShadInputOTP.children}
+  /// The children of the input otp
+  /// {@endtemplate}
   final List<Widget> children;
+
+  /// {@template ShadInputOTP.jumpToNextWhenFilled}
+  /// Whether to jump to the next slot when the current slot is filled,
+  /// defaults to true
+  /// {@endtemplate}
   final bool jumpToNextWhenFilled;
+
+  /// {@template ShadInputOTP.onChanged}
+  /// Called when the value of the OTP changes
+  /// {@endtemplate}
   final ValueChanged<String>? onChanged;
 
+  /// {@template ShadInputOTP.inputFormatters}
   /// The input formatters for the input of each slot, unless overridden in the
   /// slot
+  /// {@endtemplate}
   final List<TextInputFormatter>? inputFormatters;
 
+  /// {@template ShadInputOTP.keyboardType}
   /// The keyboard type for the input of each slot, unless overridden in the
   /// slot
+  /// {@endtemplate}
   final TextInputType? keyboardType;
 
   @override
@@ -53,7 +81,7 @@ class ShadInputOTPState extends State<ShadInputOTP> {
 
   late final result = ValueNotifier<String>('      ');
 
-  int get groups => widget.children.length;
+  int groups = 0;
 
   @override
   void initState() {
@@ -78,6 +106,15 @@ class ShadInputOTPState extends State<ShadInputOTP> {
     final index = registeredOTPs.length - 1;
     listenToSlot(index);
     return index;
+  }
+
+  // Call this method to register a group, returns the index of the group
+  int registerGroup() {
+    groups++;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {});
+    });
+    return groups - 1;
   }
 
   void listenToSlot(int index) {
@@ -145,7 +182,7 @@ class ShadInputOTPState extends State<ShadInputOTP> {
   }
 }
 
-class ShadInputOTPGroup extends StatelessWidget {
+class ShadInputOTPGroup extends StatefulWidget {
   const ShadInputOTPGroup({
     super.key,
     required this.children,
@@ -154,13 +191,26 @@ class ShadInputOTPGroup extends StatelessWidget {
   final List<Widget> children;
 
   @override
+  State<ShadInputOTPGroup> createState() => _ShadInputOTPGroupState();
+}
+
+class _ShadInputOTPGroupState extends State<ShadInputOTPGroup> {
+  late final otpProvider = ShadProvider.of<ShadInputOTPState>(
+    context,
+    listen: false,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    otpProvider.registerGroup();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: const BoxDecoration(),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: children,
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: widget.children,
     );
   }
 }
@@ -172,16 +222,90 @@ class ShadInputOTPSlot extends StatefulWidget {
     this.controller,
     this.inputFormatters,
     this.keyboardType,
+    this.style,
+    this.width,
+    this.height,
+    this.padding,
+    this.decoration,
+    this.firstRadius,
+    this.lastRadius,
+    this.singleRadius,
+    this.middleRadius,
   });
 
+  /// {@template ShadInputOTPSlot.focusNode}
+  /// The focus node for the input of the slot
+  /// {@endtemplate}
   final FocusNode? focusNode;
+
+  /// {@template ShadInputOTPSlot.controller}
+  /// The controller for the input of the slot
+  /// {@endtemplate}
   final EnhancedTextEditingController? controller;
 
+  /// {@template ShadInputOTPSlot.inputFormatters}
   /// The input formatters for the input of the slot
+  /// {@endtemplate}
   final List<TextInputFormatter>? inputFormatters;
 
+  /// {@template ShadInputOTPSlot.keyboardType}
   /// The keyboard type for the input of the slot
+  /// {@endtemplate}
   final TextInputType? keyboardType;
+
+  /// {@template ShadInputOTPSlot.style}
+  /// The style for the input of the slot, defaults to
+  /// ```dart
+  /// textTheme.muted.copyWith(
+  ///    color: theme.colorScheme.foreground,
+  ///    fontFamily: kDefaultFontFamilyMono,
+  ///  )
+  /// ```
+  /// {@endtemplate}
+  final TextStyle? style;
+
+  /// {@template ShadInputOTPSlot.width}
+  /// The width of the slot, defaults to 40
+  /// {@endtemplate}
+  final double? width;
+
+  /// {@template ShadInputOTPSlot.height}
+  /// The height of the slot, defaults to 40
+  /// {@endtemplate}
+  final double? height;
+
+  /// {@template ShadInputOTPSlot.padding}
+  /// The padding of the slot, defaults to
+  /// `EdgeInsets.symmetric(horizontal: 12, vertical: 4)`
+  /// {@endtemplate}
+  final EdgeInsets? padding;
+
+  /// {@template ShadInputOTPSlot.decoration}
+  /// The decoration of the slot
+  /// {@endtemplate}
+  final ShadDecoration? decoration;
+
+  /// {@template ShadInputOTPSlot.firstRadius}
+  /// The radius applied to the first slot of each group
+  /// {@endtemplate}
+  final BorderRadius? firstRadius;
+
+  /// {@template ShadInputOTPSlot.lastRadius}
+  /// The radius applied to the last slot of each group
+  /// {@endtemplate}
+  final BorderRadius? lastRadius;
+
+  /// {@template ShadInputOTPSlot.singleRadius}
+  /// The radius applied to the single slot of each group.
+  /// Used only if the group has only one slot
+  /// {@endtemplate}
+  final BorderRadius? singleRadius;
+
+  /// {@template ShadInputOTPSlot.middleRadius}
+  /// The radius applied to the middle slots of each group.
+  /// If there are 4 slots in a group, the middle slots are the 2nd and 3rd
+  /// {@endtemplate}
+  final BorderRadius? middleRadius;
 
   @override
   State<ShadInputOTPSlot> createState() => _ShadInputOTPSlotState();
@@ -261,47 +385,100 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       bottomRight: theme.radius.bottomRight,
     );
 
+    final singleRadius = theme.radius;
+
     const middleRadius = BorderRadius.zero;
 
     final lastIndexForGroup = otpProvider.widget.maxLength / otpProvider.groups;
     final isLastInGroup = (index + 1) % lastIndexForGroup == 0;
     final isFirstInGroup = index % lastIndexForGroup == 0;
 
-    final effectiveRadius = isFirstInGroup
-        ? firstRadius
-        : isLastInGroup
-            ? lastRadius
-            : middleRadius;
+    final BorderRadius effectiveRadius;
 
+    if (isFirstInGroup && isLastInGroup) {
+      // Radius on all the sides
+      effectiveRadius = singleRadius;
+    } else {
+      if (isFirstInGroup) {
+        // only first side radius
+        effectiveRadius = firstRadius;
+      } else if (isLastInGroup) {
+        // only last side radius
+        effectiveRadius = lastRadius;
+      } else {
+        // middle radius
+        effectiveRadius = middleRadius;
+      }
+    }
     final effectiveInputFormatters =
         widget.inputFormatters ?? otpProvider.widget.inputFormatters ?? [];
 
     final effectiveKeyboardType =
         widget.keyboardType ?? otpProvider.widget.keyboardType;
 
-    return SizedBox.square(
-      dimension: 40,
+    final effectivePadding = widget.padding ??
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 4);
+
+    final effectiveWidth = widget.width ?? 40.0;
+    final effectiveHeight = widget.height ?? 40.0;
+
+    final defaultDecoration = ShadDecoration(
+      disableSecondaryBorder: true,
+      focusedBorder: ShadBorder.all(
+        color: theme.colorScheme.ring,
+        width: 2,
+      ),
+      border: ShadBorder(
+        // left: isFirstInGroup
+        //     ? BorderSide(color: theme.colorScheme.border)
+        //     : BorderSide.none,
+        top: BorderSide(color: theme.colorScheme.border),
+        bottom: BorderSide(color: theme.colorScheme.border),
+        right: BorderSide(color: theme.colorScheme.border),
+        padding: const EdgeInsets.all(1),
+      ),
+    );
+    final effectiveDecoration =
+        defaultDecoration.mergeWith(widget.decoration).mergeWith(
+              ShadDecoration(
+                focusedBorder: ShadBorder.all(radius: effectiveRadius),
+                border: ShadBorder(
+                  radius: effectiveRadius,
+                  left: isFirstInGroup
+                      ? BorderSide(color: theme.colorScheme.border)
+                      : BorderSide.none,
+                ),
+              ),
+            );
+
+    print(
+        'effectiveDecoration ${effectiveDecoration.focusedBorder?.top.width}');
+
+    return SizedBox(
+      width: effectiveWidth,
+      height: effectiveHeight,
       child: ShadInput(
         focusNode: focusNode,
         controller: controller,
-        decoration: ShadDecoration(
-          disableSecondaryBorder: true,
-          focusedBorder: ShadBorder.all(
-            color: theme.colorScheme.ring,
-            width: 2,
-            radius: effectiveRadius,
-          ),
-          border: ShadBorder(
-            radius: effectiveRadius,
-            left: isFirstInGroup
-                ? BorderSide(color: theme.colorScheme.border)
-                : BorderSide.none,
-            top: BorderSide(color: theme.colorScheme.border),
-            bottom: BorderSide(color: theme.colorScheme.border),
-            right: BorderSide(color: theme.colorScheme.border),
-            padding: const EdgeInsets.all(1),
-          ),
-        ),
+        decoration: effectiveDecoration,
+        // decoration: ShadDecoration(
+        //   disableSecondaryBorder: true,
+        //   focusedBorder: ShadBorder.all(
+        //     color: theme.colorScheme.ring,
+        //     width: 2,
+        //     radius: effectiveRadius,
+        //   ),
+        //   border: ShadBorder(
+        //     radius: effectiveRadius,
+        //     left: isFirstInGroup
+        //         ? BorderSide(color: theme.colorScheme.border)
+        //         : BorderSide.none,
+        //     top: BorderSide(color: theme.colorScheme.border),
+        //     bottom: BorderSide(color: theme.colorScheme.border),
+        //     right: BorderSide(color: theme.colorScheme.border),
+        //     padding: const EdgeInsets.all(1),
+        //   ),
+        // ),
         onChanged: (v) {
           // if the max length is entered, set the values
           // to all the slots
@@ -329,7 +506,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
         },
         maxLength: otpProvider.widget.maxLength,
         maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        padding: effectivePadding,
         style: defaultStyle,
         inputFormatters: effectiveInputFormatters,
         keyboardType: effectiveKeyboardType,

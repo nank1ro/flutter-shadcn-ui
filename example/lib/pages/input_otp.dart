@@ -67,6 +67,7 @@ class _InputOTPPageState extends State<InputOTPPage> {
                   ShadInputOTPSlot(),
                 ],
               ),
+              ShadImage.square(size: 24, LucideIcons.dot),
               ShadInputOTPGroup(
                 children: [
                   ShadInputOTPSlot(),
