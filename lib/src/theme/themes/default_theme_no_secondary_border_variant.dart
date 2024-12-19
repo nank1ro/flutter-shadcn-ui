@@ -57,7 +57,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadButtonTheme primaryButtonTheme() {
     return ShadButtonTheme(
       backgroundColor: colorScheme.primary,
-      hoverBackgroundColor: colorScheme.primary.withOpacity(.9),
+      hoverBackgroundColor: colorScheme.primary.withValues(alpha: .9),
       foregroundColor: colorScheme.primaryForeground,
       hoverForegroundColor: colorScheme.primaryForeground,
       decoration: ShadDecoration(
@@ -75,7 +75,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadButtonTheme secondaryButtonTheme() {
     return ShadButtonTheme(
       backgroundColor: colorScheme.secondary,
-      hoverBackgroundColor: colorScheme.secondary.withOpacity(.8),
+      hoverBackgroundColor: colorScheme.secondary.withValues(alpha: .8),
       foregroundColor: colorScheme.secondaryForeground,
       hoverForegroundColor: colorScheme.secondaryForeground,
       decoration: ShadDecoration(
@@ -93,7 +93,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadButtonTheme destructiveButtonTheme() {
     return ShadButtonTheme(
       backgroundColor: colorScheme.destructive,
-      hoverBackgroundColor: colorScheme.destructive.withOpacity(.9),
+      hoverBackgroundColor: colorScheme.destructive.withValues(alpha: .9),
       foregroundColor: colorScheme.destructiveForeground,
       hoverForegroundColor: colorScheme.destructiveForeground,
       decoration: ShadDecoration(
@@ -178,7 +178,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadBadgeTheme primaryBadgeTheme() {
     return ShadBadgeTheme(
       backgroundColor: colorScheme.primary,
-      hoverBackgroundColor: colorScheme.primary.withOpacity(.8),
+      hoverBackgroundColor: colorScheme.primary.withValues(alpha: .8),
       foregroundColor: colorScheme.primaryForeground,
       shape: const StadiumBorder(),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -189,7 +189,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadBadgeTheme secondaryBadgeTheme() {
     return ShadBadgeTheme(
       backgroundColor: colorScheme.secondary,
-      hoverBackgroundColor: colorScheme.secondary.withOpacity(.8),
+      hoverBackgroundColor: colorScheme.secondary.withValues(alpha: .8),
       foregroundColor: colorScheme.secondaryForeground,
       shape: const StadiumBorder(),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -200,7 +200,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadBadgeTheme destructiveBadgeTheme() {
     return ShadBadgeTheme(
       backgroundColor: colorScheme.destructive,
-      hoverBackgroundColor: colorScheme.destructive.withOpacity(.8),
+      hoverBackgroundColor: colorScheme.destructive.withValues(alpha: .8),
       foregroundColor: colorScheme.destructiveForeground,
       shape: const StadiumBorder(),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -306,22 +306,21 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   }
 
   static ShadTextTheme get defaultTextTheme {
-    const defaultFontFamily = 'packages/shadcn_ui/$kDefaultFontFamily';
     return ShadTextTheme.custom(
-      h1Large: ShadTextDefaultTheme.h1Large(family: defaultFontFamily),
-      h1: ShadTextDefaultTheme.h1(family: defaultFontFamily),
-      h2: ShadTextDefaultTheme.h2(family: defaultFontFamily),
-      h3: ShadTextDefaultTheme.h3(family: defaultFontFamily),
-      h4: ShadTextDefaultTheme.h4(family: defaultFontFamily),
-      p: ShadTextDefaultTheme.p(family: defaultFontFamily),
-      blockquote: ShadTextDefaultTheme.blockquote(family: defaultFontFamily),
-      table: ShadTextDefaultTheme.table(family: defaultFontFamily),
-      list: ShadTextDefaultTheme.list(family: defaultFontFamily),
-      lead: ShadTextDefaultTheme.lead(family: defaultFontFamily),
-      large: ShadTextDefaultTheme.large(family: defaultFontFamily),
-      small: ShadTextDefaultTheme.small(family: defaultFontFamily),
-      muted: ShadTextDefaultTheme.muted(family: defaultFontFamily),
-      family: defaultFontFamily,
+      h1Large: ShadTextDefaultTheme.h1Large(family: kDefaultFontFamily),
+      h1: ShadTextDefaultTheme.h1(family: kDefaultFontFamily),
+      h2: ShadTextDefaultTheme.h2(family: kDefaultFontFamily),
+      h3: ShadTextDefaultTheme.h3(family: kDefaultFontFamily),
+      h4: ShadTextDefaultTheme.h4(family: kDefaultFontFamily),
+      p: ShadTextDefaultTheme.p(family: kDefaultFontFamily),
+      blockquote: ShadTextDefaultTheme.blockquote(family: kDefaultFontFamily),
+      table: ShadTextDefaultTheme.table(family: kDefaultFontFamily),
+      list: ShadTextDefaultTheme.list(family: kDefaultFontFamily),
+      lead: ShadTextDefaultTheme.lead(family: kDefaultFontFamily),
+      large: ShadTextDefaultTheme.large(family: kDefaultFontFamily),
+      small: ShadTextDefaultTheme.small(family: kDefaultFontFamily),
+      muted: ShadTextDefaultTheme.muted(family: kDefaultFontFamily),
+      family: kDefaultFontFamily,
     );
   }
 
@@ -472,7 +471,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         color: colorScheme.foreground,
       ),
       descriptionStyle: effectiveTextTheme.muted.copyWith(
-        color: colorScheme.foreground.withOpacity(.9),
+        color: colorScheme.foreground.withValues(alpha: .9),
       ),
       actionPadding: const EdgeInsets.only(left: 16),
       border: Border.all(color: colorScheme.border),
@@ -495,7 +494,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         color: colorScheme.destructiveForeground,
       ),
       descriptionStyle: effectiveTextTheme.muted.copyWith(
-        color: colorScheme.destructiveForeground.withOpacity(.9),
+        color: colorScheme.destructiveForeground.withValues(alpha: .9),
       ),
       actionPadding: const EdgeInsets.only(left: 16),
       border: Border.all(color: colorScheme.border),
@@ -623,11 +622,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       thumbColor: colorScheme.background,
       thumbBorderColor: colorScheme.primary,
       disabledThumbColor: colorScheme.background,
-      disabledThumbBorderColor: colorScheme.primary.withOpacity(.5),
+      disabledThumbBorderColor: colorScheme.primary.withValues(alpha: .5),
       activeTrackColor: colorScheme.primary,
       inactiveTrackColor: colorScheme.secondary,
-      disabledActiveTrackColor: colorScheme.primary.withOpacity(.5),
-      disabledInactiveTrackColor: colorScheme.secondary.withOpacity(.5),
+      disabledActiveTrackColor: colorScheme.primary.withValues(alpha: .5),
+      disabledInactiveTrackColor: colorScheme.secondary.withValues(alpha: .5),
       trackHeight: 8,
       thumbRadius: 10,
     );

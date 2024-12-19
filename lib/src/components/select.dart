@@ -678,7 +678,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         ShadImage.square(
           LucideIcons.chevronDown,
           size: 16,
-          color: theme.colorScheme.popoverForeground.withOpacity(.5),
+          color: theme.colorScheme.popoverForeground.withValues(alpha: .5),
         );
 
     final effectiveMinWidth =

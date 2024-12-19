@@ -197,6 +197,7 @@ class ShadDecoration {
     this.shape,
     this.hasError,
     this.fallbackToLabelStyle,
+    this.disableSecondaryBorder,
   });
 
   static const ShadDecoration none = ShadDecoration(
@@ -230,6 +231,7 @@ class ShadDecoration {
   final BlendMode? backgroundBlendMode;
   final BoxShape? shape;
   final bool? hasError;
+  final bool? disableSecondaryBorder;
 
   /// Whether to fallback to the [border] if no [focusedBorder] or [errorBorder]
   /// is provided, defaults to true.
@@ -281,6 +283,8 @@ class ShadDecoration {
       hasError: t < 0.5 ? a?.hasError : b?.hasError,
       fallbackToLabelStyle:
           t < 0.5 ? a?.fallbackToLabelStyle : b?.fallbackToLabelStyle,
+      disableSecondaryBorder:
+          t < 0.5 ? a?.disableSecondaryBorder : b?.disableSecondaryBorder,
     );
   }
 
@@ -317,6 +321,8 @@ class ShadDecoration {
       image: other.image ?? image,
       hasError: other.hasError ?? hasError,
       fallbackToLabelStyle: other.fallbackToLabelStyle ?? fallbackToLabelStyle,
+      disableSecondaryBorder:
+          other.disableSecondaryBorder ?? disableSecondaryBorder,
     );
   }
 
@@ -343,6 +349,7 @@ class ShadDecoration {
     DecorationImage? image,
     bool? hasError,
     bool? fallbackToLabelStyle,
+    bool? disableSecondaryBorder,
   }) {
     return ShadDecoration(
       border: border ?? this.border,
@@ -368,6 +375,8 @@ class ShadDecoration {
       image: image ?? this.image,
       hasError: hasError ?? this.hasError,
       fallbackToLabelStyle: fallbackToLabelStyle ?? this.fallbackToLabelStyle,
+      disableSecondaryBorder:
+          disableSecondaryBorder ?? this.disableSecondaryBorder,
     );
   }
 
@@ -397,7 +406,8 @@ class ShadDecoration {
         other.gradient == gradient &&
         other.image == image &&
         other.hasError == hasError &&
-        other.fallbackToLabelStyle == fallbackToLabelStyle;
+        other.fallbackToLabelStyle == fallbackToLabelStyle &&
+        other.disableSecondaryBorder == disableSecondaryBorder;
   }
 
   @override
@@ -423,11 +433,12 @@ class ShadDecoration {
       gradient.hashCode ^
       image.hashCode ^
       hasError.hashCode ^
-      fallbackToLabelStyle.hashCode;
+      fallbackToLabelStyle.hashCode ^
+      disableSecondaryBorder.hashCode;
 
   @override
   String toString() {
-    return '''ShadDecoration(border: $border, focusedBorder: $focusedBorder, errorBorder: $errorBorder, secondaryBorder: $secondaryBorder, secondaryFocusedBorder: $secondaryFocusedBorder, secondaryErrorBorder: $secondaryErrorBorder, labelStyle: $labelStyle, errorLabelStyle: $errorLabelStyle, errorStyle: $errorStyle, descriptionStyle: $descriptionStyle, labelPadding: $labelPadding, descriptionPadding: $descriptionPadding, errorPadding: $errorPadding, fallbackToBorder: $fallbackToBorder, color: $color, image: $image, shadows: $shadows, gradient: $gradient, backgroundBlendMode: $backgroundBlendMode, shape: $shape, hasError: $hasError, fallbackToLabelStyle: $fallbackToLabelStyle)''';
+    return '''ShadDecoration(border: $border, focusedBorder: $focusedBorder, errorBorder: $errorBorder, secondaryBorder: $secondaryBorder, secondaryFocusedBorder: $secondaryFocusedBorder, secondaryErrorBorder: $secondaryErrorBorder, labelStyle: $labelStyle, errorLabelStyle: $errorLabelStyle, errorStyle: $errorStyle, descriptionStyle: $descriptionStyle, labelPadding: $labelPadding, descriptionPadding: $descriptionPadding, errorPadding: $errorPadding, fallbackToBorder: $fallbackToBorder, color: $color, image: $image, shadows: $shadows, gradient: $gradient, backgroundBlendMode: $backgroundBlendMode, shape: $shape, hasError: $hasError, fallbackToLabelStyle: $fallbackToLabelStyle, disableSecondaryBorder: $disableSecondaryBorder)''';
   }
 }
 
@@ -456,6 +467,10 @@ class ShadDecorator extends StatelessWidget {
 
     final effectiveFallbackToBorder =
         effectiveDecoration.fallbackToBorder ?? true;
+
+    final effectiveDisableSecondaryBorder =
+        effectiveDecoration.disableSecondaryBorder ??
+            theme.disableSecondaryBorder;
 
     final hasError = effectiveDecoration.hasError ?? false;
 
@@ -505,7 +520,7 @@ class ShadDecorator extends StatelessWidget {
       child: child,
     );
 
-    if (secondaryBorder != null && !theme.disableSecondaryBorder) {
+    if (secondaryBorder != null && !effectiveDisableSecondaryBorder) {
       decorated = Container(
         decoration: BoxDecoration(
           border: secondaryBorder.hasBorder ? secondaryBorder : null,

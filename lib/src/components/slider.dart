@@ -117,7 +117,7 @@ class _ShadSliderState extends State<ShadSlider> {
 
     final effectiveDisabledThumbBorderColor = widget.disabledThumbBorderColor ??
         theme.sliderTheme.disabledThumbBorderColor ??
-        theme.colorScheme.primary.withOpacity(.5);
+        theme.colorScheme.primary.withValues(alpha: .5);
 
     final effectiveActiveTrackColor = widget.activeTrackColor ??
         theme.sliderTheme.activeTrackColor ??
@@ -129,12 +129,12 @@ class _ShadSliderState extends State<ShadSlider> {
 
     final effectiveDisabledActiveTrackColor = widget.disabledActiveTrackColor ??
         theme.sliderTheme.disabledActiveTrackColor ??
-        theme.colorScheme.primary.withOpacity(.5);
+        theme.colorScheme.primary.withValues(alpha: .5);
 
     final effectiveDisabledInactiveTrackColor =
         widget.disabledInactiveTrackColor ??
             theme.sliderTheme.disabledInactiveTrackColor ??
-            theme.colorScheme.secondary.withOpacity(.5);
+            theme.colorScheme.secondary.withValues(alpha: .5);
 
     final effectiveTrackHeight =
         widget.trackHeight ?? theme.sliderTheme.trackHeight ?? 8;

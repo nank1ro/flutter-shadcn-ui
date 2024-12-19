@@ -81,7 +81,7 @@ class ButtonPage extends StatelessWidget {
               ]),
               shadows: [
                 BoxShadow(
-                  color: Colors.blue.withOpacity(.4),
+                  color: Colors.blue.withValues(alpha: .4),
                   spreadRadius: 4,
                   blurRadius: 10,
                   offset: const Offset(0, 2),
