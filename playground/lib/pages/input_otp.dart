@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -43,11 +44,23 @@ class InputOTPPage extends StatelessWidget {
                   ),
                 ],
               ),
-            ShadInputOTPVariant.pattern => const ShadAlert.destructive(
-                iconSrc: LucideIcons.circleAlert,
-                title: Text('Error'),
-                description:
-                    Text('Your session has expired. Please log in again.'),
+            ShadInputOTPVariant.pattern => ShadInputOTP(
+                onChanged: (v) => print('OTP: $v'),
+                maxLength: 4,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                children: const [
+                  ShadInputOTPGroup(
+                    children: [
+                      ShadInputOTPSlot(),
+                      ShadInputOTPSlot(),
+                      ShadInputOTPSlot(),
+                      ShadInputOTPSlot(),
+                    ],
+                  ),
+                ],
               ),
           },
         ),

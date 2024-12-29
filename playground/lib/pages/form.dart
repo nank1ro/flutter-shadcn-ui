@@ -13,6 +13,7 @@ enum FormStyle {
   dateRangePickerField,
   timePickerField,
   periodTimePickerField,
+  inputOTPField,
 }
 
 enum NotifyAbout {
@@ -184,6 +185,35 @@ class _FormPageState extends State<FormPage> {
                       description:
                           const Text('The time of the day you want to pick'),
                       validator: (v) => v == null ? 'A time is required' : null,
+                    ),
+                  FormStyle.inputOTPField => ShadInputOTPFormField(
+                      id: 'otp',
+                      maxLength: 6,
+                      label: const Text('OTP'),
+                      description: const Text('Enter your OTP.'),
+                      validator: (v) {
+                        if (v.contains(' ')) {
+                          return 'Fill the whole OTP code';
+                        }
+                        return null;
+                      },
+                      children: const [
+                        ShadInputOTPGroup(
+                          children: [
+                            ShadInputOTPSlot(),
+                            ShadInputOTPSlot(),
+                            ShadInputOTPSlot(),
+                          ],
+                        ),
+                        ShadImage.square(size: 24, LucideIcons.dot),
+                        ShadInputOTPGroup(
+                          children: [
+                            ShadInputOTPSlot(),
+                            ShadInputOTPSlot(),
+                            ShadInputOTPSlot(),
+                          ],
+                        ),
+                      ],
                     ),
                 },
                 const SizedBox(height: 16),

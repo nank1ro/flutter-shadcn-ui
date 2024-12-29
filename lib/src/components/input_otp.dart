@@ -504,7 +504,18 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
         controller: controller,
         decoration: effectiveDecoration,
         onChanged: (v) {
+          // sanitize the text and format it
           var sanitizedV = v.replaceAll(kInvisibleCharCode, '');
+          final result = TextEditingValue(text: sanitizedV);
+          final formattedValue =
+              effectiveInputFormatters.fold<TextEditingValue>(
+            result,
+            (TextEditingValue newValue, TextInputFormatter formatter) =>
+                formatter.formatEditUpdate(result, newValue),
+          );
+
+          final hasBeenFormatted = formattedValue.text != sanitizedV;
+          sanitizedV = formattedValue.text;
 
           // if the value is more than 1 and the slot is not the first
           // get the last character from the value
@@ -522,9 +533,12 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
             if (sanitizedV.isEmpty) {
               final previousText = controller.previousValue?.text ?? '';
               controller.text = kInvisibleCharCode;
-              otpProvider.jumpToPreviousSlot(
-                clear: previousText == kInvisibleCharCode,
-              );
+              // Jump to the previous slot only if the formatter was not applied
+              if (!hasBeenFormatted) {
+                otpProvider.jumpToPreviousSlot(
+                  clear: previousText == kInvisibleCharCode,
+                );
+              }
             } else {
               final newText = sanitizedV[sanitizedV.length - 1];
               controller.value = controller.value.copyWith(
@@ -540,7 +554,6 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
         maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
         padding: effectivePadding,
         style: defaultStyle,
-        inputFormatters: effectiveInputFormatters,
         keyboardType: effectiveKeyboardType,
       ),
     );
