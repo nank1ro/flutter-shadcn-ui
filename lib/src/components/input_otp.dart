@@ -23,6 +23,7 @@ class ShadInputOTP extends StatefulWidget {
     this.onChanged,
     this.inputFormatters,
     this.keyboardType,
+    this.initialValue,
   });
 
   /// {@template ShadInputOTP.maxLength}
@@ -68,6 +69,9 @@ class ShadInputOTP extends StatefulWidget {
   /// {@endtemplate}
   final TextInputType? keyboardType;
 
+  /// The initial value of the OTP, to skip one slot pass an empty space
+  final String? initialValue;
+
   @override
   State<ShadInputOTP> createState() => ShadInputOTPState();
 }
@@ -80,13 +84,15 @@ class ShadInputOTPState extends State<ShadInputOTP> {
 
   late final values = List<String>.filled(widget.maxLength, '');
 
-  late final result = ValueNotifier<String>('      ');
+  late final ValueNotifier<String> result;
 
   int groups = 0;
 
   @override
   void initState() {
     super.initState();
+    result =
+        ValueNotifier((widget.initialValue ?? '').padRight(widget.maxLength));
     result.addListener(() {
       widget.onChanged?.call(result.value);
     });
@@ -106,6 +112,12 @@ class ShadInputOTPState extends State<ShadInputOTP> {
     registeredOTPs.add((focusNode: focusNode, controller: controller));
 
     final index = registeredOTPs.length - 1;
+
+    // Set the initial value of the slot
+    if (controller.text == kInvisibleCharCode && result.value[index] != ' ') {
+      controller.text = result.value[index];
+    }
+
     listenToSlot(index);
     return index;
   }
@@ -122,7 +134,7 @@ class ShadInputOTPState extends State<ShadInputOTP> {
   void listenToSlot(int index) {
     final slot = registeredOTPs[index];
 
-    void onSlotChanged() {
+    slot.controller.addListener(() {
       final text =
           (slot.controller.text.split('').lastOrNull ?? kInvisibleCharCode)
               .replaceAll(kInvisibleCharCode, ' ');
@@ -133,11 +145,7 @@ class ShadInputOTPState extends State<ShadInputOTP> {
         return value + parsedElement;
       });
       result.value = wholeValue;
-    }
-
-    slot.controller.addListener(onSlotChanged);
-    // Fire immediately
-    onSlotChanged();
+    });
   }
 
   void jumpToSlot(int index, {bool clear = false}) {
@@ -358,11 +366,11 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       _controller = ShadTextEditingController();
     }
 
+    controller.text = widget.initialValue ?? kInvisibleCharCode;
     index = otpProvider.registerSlot(
       focusNode: focusNode,
       controller: controller,
     );
-    controller.text = widget.initialValue ?? kInvisibleCharCode;
   }
 
   @override

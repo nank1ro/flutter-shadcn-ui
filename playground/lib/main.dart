@@ -16,6 +16,7 @@ import 'package:playground/pages/dialog.dart';
 import 'package:playground/pages/form.dart';
 import 'package:playground/pages/image.dart';
 import 'package:playground/pages/input.dart';
+import 'package:playground/pages/input_otp.dart';
 import 'package:playground/pages/popover.dart';
 import 'package:playground/pages/progress.dart';
 import 'package:playground/pages/radio_group.dart';
@@ -324,6 +325,15 @@ final _router = GoRouter(
             ShadTimePickerVariant.primary.name;
         return TimePickerPage(
           style: ShadTimePickerVariant.values.byName(style),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/input-otp',
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ?? 'primary';
+        return InputOTPPage(
+          style: ShadInputOTPVariant.values.byName(style),
         );
       },
     ),
