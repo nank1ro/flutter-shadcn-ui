@@ -8,6 +8,7 @@ import Preview from '../../../components/Preview.astro';
 Resizable panel groups and layouts.
 
 <Preview src="https://shadcn-ui-playground.pages.dev/resizable?style=basic" minHeight="400px">
+
 ```dart
 class BasicResizable extends StatelessWidget {
   const BasicResizable({super.key});
@@ -17,11 +18,11 @@ class BasicResizable extends StatelessWidget {
     final theme = ShadTheme.of(context);
     return ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 200),
-      child: ShadDecorator(
-        decoration: ShadDecoration(
-          border: ShadBorder.all(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: theme.radius,
+          border: Border.all(
             color: theme.colorScheme.border,
-            radius: theme.radius,
           ),
         ),
         child: ClipRRect(
@@ -73,7 +74,8 @@ Try resizing a panel, then double-click on the handle to reset to the default si
 Use the `axis` property to change the direction of the resizable panels.
 
 <Preview src="https://shadcn-ui-playground.pages.dev/resizable?style=vertical" minHeight="400px">
- ```dart
+
+```dart
 class VerticalResizable extends StatelessWidget {
   const VerticalResizable({super.key});
 
@@ -82,11 +84,11 @@ class VerticalResizable extends StatelessWidget {
     final theme = ShadTheme.of(context);
     return ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 200),
-      child: ShadDecorator(
-        decoration: ShadDecoration(
-          border: ShadBorder.all(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: theme.radius,
+          border: Border.all(
             color: theme.colorScheme.border,
-            radius: theme.radius,
           ),
         ),
         child: ClipRRect(
@@ -125,6 +127,7 @@ You can show the handle by using the `showHandle` property.
 You can customize it using the `handleIcon` or `handleIconSrc` properties.
 
 <Preview src="https://shadcn-ui-playground.pages.dev/resizable?style=handle" minHeight="400px">
+
 ```dart
 class HandleResizable extends StatelessWidget {
   const HandleResizable({super.key});
@@ -134,15 +137,14 @@ class HandleResizable extends StatelessWidget {
     final theme = ShadTheme.of(context);
     return ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 200),
-      child: ShadDecorator(
-        decoration: ShadDecoration(
-          border: ShadBorder.all(
-            width: 1,
-            color: theme.colorScheme.border,
-            radius: theme.radius,
+      child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: theme.radius,
+            border: Border.all(
+              color: theme.colorScheme.border,
+            ),
           ),
-        ),
-        child: ClipRRect(
+          child: ClipRRect(
           borderRadius: theme.radius,
           child: ShadResizablePanelGroup(
             showHandle: true,

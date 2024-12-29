@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 
 enum ShadAlertVariant {
   primary,

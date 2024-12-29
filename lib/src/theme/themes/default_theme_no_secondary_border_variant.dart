@@ -21,6 +21,7 @@ import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
+import 'package:shadcn_ui/src/theme/components/input_otp.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/progress.dart';
@@ -39,6 +40,7 @@ import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -57,7 +59,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadButtonTheme primaryButtonTheme() {
     return ShadButtonTheme(
       backgroundColor: colorScheme.primary,
-      hoverBackgroundColor: colorScheme.primary.withOpacity(.9),
+      hoverBackgroundColor: colorScheme.primary.withValues(alpha: .9),
       foregroundColor: colorScheme.primaryForeground,
       hoverForegroundColor: colorScheme.primaryForeground,
       decoration: ShadDecoration(
@@ -75,7 +77,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadButtonTheme secondaryButtonTheme() {
     return ShadButtonTheme(
       backgroundColor: colorScheme.secondary,
-      hoverBackgroundColor: colorScheme.secondary.withOpacity(.8),
+      hoverBackgroundColor: colorScheme.secondary.withValues(alpha: .8),
       foregroundColor: colorScheme.secondaryForeground,
       hoverForegroundColor: colorScheme.secondaryForeground,
       decoration: ShadDecoration(
@@ -93,7 +95,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadButtonTheme destructiveButtonTheme() {
     return ShadButtonTheme(
       backgroundColor: colorScheme.destructive,
-      hoverBackgroundColor: colorScheme.destructive.withOpacity(.9),
+      hoverBackgroundColor: colorScheme.destructive.withValues(alpha: .9),
       foregroundColor: colorScheme.destructiveForeground,
       hoverForegroundColor: colorScheme.destructiveForeground,
       decoration: ShadDecoration(
@@ -118,6 +120,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           radius: radius,
           color: colorScheme.input,
           padding: const EdgeInsets.all(1),
+          width: 1,
         ),
       ),
       gap: 8,
@@ -178,7 +181,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadBadgeTheme primaryBadgeTheme() {
     return ShadBadgeTheme(
       backgroundColor: colorScheme.primary,
-      hoverBackgroundColor: colorScheme.primary.withOpacity(.8),
+      hoverBackgroundColor: colorScheme.primary.withValues(alpha: .8),
       foregroundColor: colorScheme.primaryForeground,
       shape: const StadiumBorder(),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -189,7 +192,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadBadgeTheme secondaryBadgeTheme() {
     return ShadBadgeTheme(
       backgroundColor: colorScheme.secondary,
-      hoverBackgroundColor: colorScheme.secondary.withOpacity(.8),
+      hoverBackgroundColor: colorScheme.secondary.withValues(alpha: .8),
       foregroundColor: colorScheme.secondaryForeground,
       shape: const StadiumBorder(),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -200,7 +203,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadBadgeTheme destructiveBadgeTheme() {
     return ShadBadgeTheme(
       backgroundColor: colorScheme.destructive,
-      hoverBackgroundColor: colorScheme.destructive.withOpacity(.8),
+      hoverBackgroundColor: colorScheme.destructive.withValues(alpha: .8),
       foregroundColor: colorScheme.destructiveForeground,
       shape: const StadiumBorder(),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -271,6 +274,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         border: ShadBorder.all(
           radius: radius,
           color: colorScheme.border,
+          width: 1,
         ),
       ),
       anchor: const ShadAnchorAuto(verticalOffset: 24),
@@ -306,22 +310,21 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   }
 
   static ShadTextTheme get defaultTextTheme {
-    const defaultFontFamily = 'packages/shadcn_ui/$kDefaultFontFamily';
     return ShadTextTheme.custom(
-      h1Large: ShadTextDefaultTheme.h1Large(family: defaultFontFamily),
-      h1: ShadTextDefaultTheme.h1(family: defaultFontFamily),
-      h2: ShadTextDefaultTheme.h2(family: defaultFontFamily),
-      h3: ShadTextDefaultTheme.h3(family: defaultFontFamily),
-      h4: ShadTextDefaultTheme.h4(family: defaultFontFamily),
-      p: ShadTextDefaultTheme.p(family: defaultFontFamily),
-      blockquote: ShadTextDefaultTheme.blockquote(family: defaultFontFamily),
-      table: ShadTextDefaultTheme.table(family: defaultFontFamily),
-      list: ShadTextDefaultTheme.list(family: defaultFontFamily),
-      lead: ShadTextDefaultTheme.lead(family: defaultFontFamily),
-      large: ShadTextDefaultTheme.large(family: defaultFontFamily),
-      small: ShadTextDefaultTheme.small(family: defaultFontFamily),
-      muted: ShadTextDefaultTheme.muted(family: defaultFontFamily),
-      family: defaultFontFamily,
+      h1Large: ShadTextDefaultTheme.h1Large(family: kDefaultFontFamily),
+      h1: ShadTextDefaultTheme.h1(family: kDefaultFontFamily),
+      h2: ShadTextDefaultTheme.h2(family: kDefaultFontFamily),
+      h3: ShadTextDefaultTheme.h3(family: kDefaultFontFamily),
+      h4: ShadTextDefaultTheme.h4(family: kDefaultFontFamily),
+      p: ShadTextDefaultTheme.p(family: kDefaultFontFamily),
+      blockquote: ShadTextDefaultTheme.blockquote(family: kDefaultFontFamily),
+      table: ShadTextDefaultTheme.table(family: kDefaultFontFamily),
+      list: ShadTextDefaultTheme.list(family: kDefaultFontFamily),
+      lead: ShadTextDefaultTheme.lead(family: kDefaultFontFamily),
+      large: ShadTextDefaultTheme.large(family: kDefaultFontFamily),
+      small: ShadTextDefaultTheme.small(family: kDefaultFontFamily),
+      muted: ShadTextDefaultTheme.muted(family: kDefaultFontFamily),
+      family: kDefaultFontFamily,
     );
   }
 
@@ -336,6 +339,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           radius: radius,
           color: colorScheme.input,
           padding: const EdgeInsets.all(1),
+          width: 1,
         ),
       ),
       optionsPadding: const EdgeInsets.all(4),
@@ -411,6 +415,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           color: colorScheme.primary,
           radius: radius,
           padding: const EdgeInsets.all(1),
+          width: 1,
         ),
         focusedBorder: ShadBorder.all(width: 2),
       ),
@@ -426,9 +431,10 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
         border: ShadBorder.all(
-          width: 2,
+          width: 1,
           color: colorScheme.border,
           radius: radius,
+          padding: const EdgeInsets.all(1),
         ),
       ),
       gap: 8,
@@ -451,6 +457,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         border: ShadBorder.all(
           color: colorScheme.primary,
           padding: const EdgeInsets.all(1),
+          width: 1,
         ),
         focusedBorder: ShadBorder.all(radius: radius.add(radius / 2), width: 2),
       ),
@@ -472,7 +479,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         color: colorScheme.foreground,
       ),
       descriptionStyle: effectiveTextTheme.muted.copyWith(
-        color: colorScheme.foreground.withOpacity(.9),
+        color: colorScheme.foreground.withValues(alpha: .9),
       ),
       actionPadding: const EdgeInsets.only(left: 16),
       border: Border.all(color: colorScheme.border),
@@ -495,7 +502,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         color: colorScheme.destructiveForeground,
       ),
       descriptionStyle: effectiveTextTheme.muted.copyWith(
-        color: colorScheme.destructiveForeground.withOpacity(.9),
+        color: colorScheme.destructiveForeground.withValues(alpha: .9),
       ),
       actionPadding: const EdgeInsets.only(left: 16),
       border: Border.all(color: colorScheme.border),
@@ -517,6 +524,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           color: colorScheme.border,
           radius: radius,
           padding: const EdgeInsets.all(16),
+          width: 1,
         ),
       ),
       iconSize: const Size.square(16),
@@ -541,6 +549,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           color: colorScheme.destructive,
           radius: radius,
           padding: const EdgeInsets.all(16),
+          width: 1,
         ),
       ),
       iconSize: const Size.square(16),
@@ -623,11 +632,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       thumbColor: colorScheme.background,
       thumbBorderColor: colorScheme.primary,
       disabledThumbColor: colorScheme.background,
-      disabledThumbBorderColor: colorScheme.primary.withOpacity(.5),
+      disabledThumbBorderColor: colorScheme.primary.withValues(alpha: .5),
       activeTrackColor: colorScheme.primary,
       inactiveTrackColor: colorScheme.secondary,
-      disabledActiveTrackColor: colorScheme.primary.withOpacity(.5),
-      disabledInactiveTrackColor: colorScheme.secondary.withOpacity(.5),
+      disabledActiveTrackColor: colorScheme.primary.withValues(alpha: .5),
+      disabledInactiveTrackColor: colorScheme.secondary.withValues(alpha: .5),
       trackHeight: 8,
       thumbRadius: 10,
     );
@@ -802,6 +811,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
             radius: radius,
             padding: const EdgeInsets.all(12),
             color: colorScheme.border,
+            width: 1,
           ),
         ),
         spacingBetweenMonths: 16,
@@ -894,7 +904,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       periodMinWidth: 65,
       fieldDecoration: ShadDecoration(
         border: ShadBorder.all(
-          width: 2,
+          width: 1,
           color: colorScheme.border,
           radius: radius,
         ),
@@ -910,6 +920,42 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           color: colorScheme.ring,
           radius: radius,
           padding: const EdgeInsets.symmetric(horizontal: 1),
+        ),
+      ),
+    );
+  }
+
+  @override
+  ShadInputOTPTheme inputOTPTheme() {
+    return ShadInputOTPTheme(
+      width: 40,
+      height: 40,
+      style: effectiveTextTheme.muted.copyWith(
+        color: colorScheme.foreground,
+        fontFamily: kDefaultFontFamilyMono,
+      ),
+      firstRadius: BorderRadius.only(
+        topLeft: radius.topLeft,
+        bottomLeft: radius.bottomLeft,
+      ),
+      lastRadius: BorderRadius.only(
+        topRight: radius.topRight,
+        bottomRight: radius.bottomRight,
+      ),
+      singleRadius: radius,
+      middleRadius: BorderRadius.zero,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: ShadDecoration(
+        disableSecondaryBorder: true,
+        focusedBorder: ShadBorder.all(
+          color: colorScheme.ring,
+          width: 2,
+        ),
+        border: ShadBorder(
+          top: ShadBorderSide(color: colorScheme.border, width: 1),
+          bottom: ShadBorderSide(color: colorScheme.border, width: 1),
+          right: ShadBorderSide(color: colorScheme.border, width: 1),
+          padding: const EdgeInsets.all(1),
         ),
       ),
     );

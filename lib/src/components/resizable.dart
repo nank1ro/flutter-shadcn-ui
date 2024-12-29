@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/mouse_cursor_provider.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
@@ -389,6 +390,13 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
               : leadingPosition * constraints.maxHeight;
           leadingPosition -=
               effectiveDividerSize / 2 + effectiveDividerThickness / 2;
+
+          if (effectiveShowHandle) {
+            leadingPosition -= effectiveHandlePadding.horizontal / 2;
+            if (!theme.disableSecondaryBorder) {
+              leadingPosition -= effectiveHandleSize.width / 2;
+            }
+          }
 
           dividers.add(
             Positioned(

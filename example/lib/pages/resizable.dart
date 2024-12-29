@@ -21,12 +21,11 @@ class _ResizablePageState extends State<ResizablePage> {
         SizedBox(
           width: 300,
           height: 200,
-          child: ShadDecorator(
-            decoration: ShadDecoration(
-              merge: false,
-              border: ShadBorder.all(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: theme.radius,
+              border: Border.all(
                 color: theme.colorScheme.border,
-                radius: theme.radius,
               ),
             ),
             child: ClipRRect(

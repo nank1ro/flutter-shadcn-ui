@@ -4,6 +4,7 @@ import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 @immutable
@@ -569,9 +570,13 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
   void onChanged() {
     if (controller.hour == null ||
         controller.minute == null ||
-        controller.second == null) return;
+        controller.second == null) {
+      return;
+    }
     if (widget.variant == ShadTimePickerVariant.period &&
-        controller.period == null) return;
+        controller.period == null) {
+      return;
+    }
     widget.onChanged?.call(
       ShadTimeOfDay(
         hour: controller.hour!,

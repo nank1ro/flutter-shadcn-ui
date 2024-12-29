@@ -24,9 +24,11 @@ export 'src/components/form/fields/radio.dart';
 export 'src/components/form/fields/select.dart';
 export 'src/components/form/fields/switch.dart';
 export 'src/components/form/fields/time_picker.dart';
+export 'src/components/form/fields/input_otp.dart';
 export 'src/components/form/form.dart';
 export 'src/components/image.dart';
 export 'src/components/input.dart';
+export 'src/components/input_otp.dart';
 export 'src/components/popover.dart';
 export 'src/components/progress.dart';
 export 'src/components/radio.dart';
@@ -108,6 +110,9 @@ export 'src/utils/position.dart';
 export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
 export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
+export 'src/utils/input_formatters.dart';
+export 'src/utils/text_editing_controller.dart';
+export 'src/utils/border.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart' hide Effect;
