@@ -42,11 +42,11 @@ class BasicResizable extends StatelessWidget {
     final theme = ShadTheme.of(context);
     return ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 200),
-      child: ShadDecorator(
-        decoration: ShadDecoration(
-          border: ShadBorder.all(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: theme.radius,
+          border: Border.all(
             color: theme.colorScheme.border,
-            radius: theme.radius,
           ),
         ),
         child: ClipRRect(

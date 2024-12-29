@@ -430,9 +430,10 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
         border: ShadBorder.all(
-          width: 2,
+          width: 1,
           color: colorScheme.border,
           radius: radius,
+          padding: const EdgeInsets.all(1),
         ),
       ),
       gap: 8,
@@ -902,7 +903,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       periodMinWidth: 65,
       fieldDecoration: ShadDecoration(
         border: ShadBorder.all(
-          width: 2,
+          width: 1,
           color: colorScheme.border,
           radius: radius,
         ),

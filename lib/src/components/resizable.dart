@@ -391,6 +391,13 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           leadingPosition -=
               effectiveDividerSize / 2 + effectiveDividerThickness / 2;
 
+          if (effectiveShowHandle) {
+            leadingPosition -= effectiveHandlePadding.horizontal / 2;
+            if (!theme.disableSecondaryBorder) {
+              leadingPosition -= effectiveHandleSize.width / 2;
+            }
+          }
+
           dividers.add(
             Positioned(
               top: isHorizontal ? 0 : leadingPosition,

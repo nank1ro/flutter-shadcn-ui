@@ -404,7 +404,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
         border: ShadBorder.all(
-          width: 2,
+          width: 1,
           color: colorScheme.border,
           radius: radius,
         ),
