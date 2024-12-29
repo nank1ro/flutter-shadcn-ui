@@ -5,6 +5,7 @@
 - **FIX**: `ShadTabs` border radius.
 - **FIX**: `ShadSlider` focused thumb.
 - **FIX**: `ShadResizable` resize when Directionality is RTL.
+- **FIX**: Update the `destructive` color on dark mode to be more visible.
 
 ## 0.16.3
 

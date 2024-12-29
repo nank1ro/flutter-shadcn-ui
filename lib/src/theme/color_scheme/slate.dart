@@ -65,7 +65,7 @@ class ShadSlateColorScheme extends ShadColorScheme {
     super.mutedForeground = const Color(0xff94a3b8),
     super.accent = const Color(0xff1e293b),
     super.accentForeground = const Color(0xfff8fafc),
-    super.destructive = const Color(0xff7f1d1d),
+    super.destructive = const Color(0xffef4444),
     super.destructiveForeground = const Color(0xfff8fafc),
     super.border = const Color(0xff1e293b),
     super.input = const Color(0xff1e293b),

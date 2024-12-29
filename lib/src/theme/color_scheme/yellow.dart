@@ -65,7 +65,7 @@ class ShadYellowColorScheme extends ShadColorScheme {
     super.mutedForeground = const Color(0xffa8a29e),
     super.accent = const Color(0xff292524),
     super.accentForeground = const Color(0xfffafaf9),
-    super.destructive = const Color(0xff7f1d1d),
+    super.destructive = const Color(0xffef4444),
     super.destructiveForeground = const Color(0xfffafaf9),
     super.border = const Color(0xff292524),
     super.input = const Color(0xff292524),

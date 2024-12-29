@@ -65,7 +65,7 @@ class ShadNeutralColorScheme extends ShadColorScheme {
     super.mutedForeground = const Color(0xffa3a3a3),
     super.accent = const Color(0xff262626),
     super.accentForeground = const Color(0xfffafafa),
-    super.destructive = const Color(0xff7f1d1d),
+    super.destructive = const Color(0xffef4444),
     super.destructiveForeground = const Color(0xfffafafa),
     super.border = const Color(0xff262626),
     super.input = const Color(0xff262626),
