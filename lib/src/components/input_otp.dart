@@ -6,9 +6,9 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
-import 'package:shadcn_ui/src/utils/enhanced_text_editing_controller.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
+import 'package:shadcn_ui/src/utils/text_editing_controller.dart';
 
 const kInvisibleCharCode = '\u200b';
 
@@ -104,6 +104,7 @@ class ShadInputOTPState extends State<ShadInputOTP> {
     required TextEditingController controller,
   }) {
     registeredOTPs.add((focusNode: focusNode, controller: controller));
+
     final index = registeredOTPs.length - 1;
     listenToSlot(index);
     return index;
@@ -120,7 +121,8 @@ class ShadInputOTPState extends State<ShadInputOTP> {
 
   void listenToSlot(int index) {
     final slot = registeredOTPs[index];
-    slot.controller.addListener(() {
+
+    void onSlotChanged() {
       final text =
           (slot.controller.text.split('').lastOrNull ?? kInvisibleCharCode)
               .replaceAll(kInvisibleCharCode, ' ');
@@ -131,7 +133,11 @@ class ShadInputOTPState extends State<ShadInputOTP> {
         return value + parsedElement;
       });
       result.value = wholeValue;
-    });
+    }
+
+    slot.controller.addListener(onSlotChanged);
+    // Fire immediately
+    onSlotChanged();
   }
 
   void jumpToSlot(int index, {bool clear = false}) {
@@ -232,6 +238,7 @@ class ShadInputOTPSlot extends StatefulWidget {
     this.lastRadius,
     this.singleRadius,
     this.middleRadius,
+    this.initialValue,
   });
 
   /// {@template ShadInputOTPSlot.focusNode}
@@ -242,7 +249,7 @@ class ShadInputOTPSlot extends StatefulWidget {
   /// {@template ShadInputOTPSlot.controller}
   /// The controller for the input of the slot
   /// {@endtemplate}
-  final EnhancedTextEditingController? controller;
+  final ShadTextEditingController? controller;
 
   /// {@template ShadInputOTPSlot.inputFormatters}
   /// The input formatters for the input of the slot
@@ -308,6 +315,8 @@ class ShadInputOTPSlot extends StatefulWidget {
   /// {@endtemplate}
   final BorderRadius? middleRadius;
 
+  final String? initialValue;
+
   @override
   State<ShadInputOTPSlot> createState() => _ShadInputOTPSlotState();
 }
@@ -321,9 +330,8 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
   // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
-  EnhancedTextEditingController? _controller;
-  EnhancedTextEditingController get controller =>
-      widget.controller ?? _controller!;
+  ShadTextEditingController? _controller;
+  ShadTextEditingController get controller => widget.controller ?? _controller!;
   late final int index;
 
   @override
@@ -347,14 +355,14 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       );
     }
     if (widget.controller == null) {
-      _controller = EnhancedTextEditingController();
+      _controller = ShadTextEditingController();
     }
 
     index = otpProvider.registerSlot(
       focusNode: focusNode,
       controller: controller,
     );
-    controller.text = kInvisibleCharCode;
+    controller.text = widget.initialValue ?? kInvisibleCharCode;
   }
 
   @override
@@ -371,24 +379,33 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     // Watching the OTP provider for changes
     final otpProvider = ShadProvider.of<ShadInputOTPState>(context);
 
-    final defaultStyle = theme.textTheme.muted.copyWith(
-      color: theme.colorScheme.foreground,
-      fontFamily: kDefaultFontFamilyMono,
-    );
+    final defaultStyle = widget.style ??
+        theme.inputOTPTheme.style ??
+        theme.textTheme.muted.copyWith(
+          color: theme.colorScheme.foreground,
+          fontFamily: kDefaultFontFamilyMono,
+        );
 
-    final firstRadius = BorderRadius.only(
-      topLeft: theme.radius.topLeft,
-      bottomLeft: theme.radius.bottomLeft,
-    );
+    final firstRadius = widget.firstRadius ??
+        theme.inputOTPTheme.firstRadius ??
+        BorderRadius.only(
+          topLeft: theme.radius.topLeft,
+          bottomLeft: theme.radius.bottomLeft,
+        );
 
-    final lastRadius = BorderRadius.only(
-      topRight: theme.radius.topRight,
-      bottomRight: theme.radius.bottomRight,
-    );
+    final lastRadius = widget.lastRadius ??
+        theme.inputOTPTheme.lastRadius ??
+        BorderRadius.only(
+          topRight: theme.radius.topRight,
+          bottomRight: theme.radius.bottomRight,
+        );
 
-    final singleRadius = theme.radius;
+    final singleRadius =
+        widget.singleRadius ?? theme.inputOTPTheme.singleRadius ?? theme.radius;
 
-    const middleRadius = BorderRadius.zero;
+    final middleRadius = widget.middleRadius ??
+        theme.inputOTPTheme.middleRadius ??
+        BorderRadius.zero;
 
     final lastIndexForGroup = otpProvider.widget.maxLength / otpProvider.groups;
     final isLastInGroup = (index + 1) % lastIndexForGroup == 0;
@@ -418,10 +435,11 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
         widget.keyboardType ?? otpProvider.widget.keyboardType;
 
     final effectivePadding = widget.padding ??
+        theme.inputOTPTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 4);
 
-    final effectiveWidth = widget.width ?? 40.0;
-    final effectiveHeight = widget.height ?? 40.0;
+    final effectiveWidth = widget.width ?? theme.inputOTPTheme.width ?? 40.0;
+    final effectiveHeight = widget.height ?? theme.inputOTPTheme.height ?? 40.0;
 
     final defaultDecoration = ShadDecoration(
       disableSecondaryBorder: true,
@@ -437,6 +455,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       ),
     );
     final effectiveDecoration = defaultDecoration
+        .mergeWith(theme.inputOTPTheme.decoration)
         .mergeWith(widget.decoration)
         .mergeWith(
           ShadDecoration(

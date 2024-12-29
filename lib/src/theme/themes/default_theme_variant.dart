@@ -896,7 +896,37 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
 
   @override
   ShadInputOTPTheme inputOTPTheme() {
-    // TODO: implement inputOTPTheme
-    throw UnimplementedError();
+    return ShadInputOTPTheme(
+      width: 40,
+      height: 40,
+      style: effectiveTextTheme.muted.copyWith(
+        color: colorScheme.foreground,
+        fontFamily: kDefaultFontFamilyMono,
+      ),
+      firstRadius: BorderRadius.only(
+        topLeft: radius.topLeft,
+        bottomLeft: radius.bottomLeft,
+      ),
+      lastRadius: BorderRadius.only(
+        topRight: radius.topRight,
+        bottomRight: radius.bottomRight,
+      ),
+      singleRadius: radius,
+      middleRadius: BorderRadius.zero,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: ShadDecoration(
+        disableSecondaryBorder: true,
+        focusedBorder: ShadBorder.all(
+          color: colorScheme.ring,
+          width: 2,
+        ),
+        border: ShadBorder(
+          top: ShadBorderSide(color: colorScheme.border, width: 1),
+          bottom: ShadBorderSide(color: colorScheme.border, width: 1),
+          right: ShadBorderSide(color: colorScheme.border, width: 1),
+          padding: const EdgeInsets.all(1),
+        ),
+      ),
+    );
   }
 }

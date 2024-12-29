@@ -110,7 +110,7 @@ export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
 export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
 export 'src/utils/input_formatters.dart';
-export 'src/utils/enhanced_text_editing_controller.dart';
+export 'src/utils/text_editing_controller.dart';
 export 'src/utils/border.dart';
 
 // External libraries
