@@ -1,118 +1,153 @@
-// import 'package:flutter/widgets.dart';
-// import 'package:shadcn_ui/src/theme/components/decorator.dart';
-//
-// @immutable
-// class ShadInputOTPTheme {
-//   const ShadInputOTPTheme({
-//     this.merge = true,
-//     this.gap,
-//     this.style,
-//     this.width,
-//     this.height,
-//   });
-//
-//   final bool merge;
-//
-//   /// {@macro ShadInputOTP.gap}
-//   final double? gap;
-//
-//   /// {@macro ShadInputOTPSlot.style}
-//   final TextStyle? style;
-//
-//   /// {@macro ShadInputOTPSlot.width}
-//   final double? width;
-//
-//   /// {@macro ShadInputOTPSlot.height}
-//   final double? height;
-//
-//   /// {@macro ShadInputOTPSlot.padding}
-//   final EdgeInsets? padding;
-//
-//   static ShadInputOTPTheme lerp(
-//     ShadInputOTPTheme a,
-//     ShadInputOTPTheme b,
-//     double t,
-//   ) {
-//     if (identical(a, b)) return a;
-//     return ShadInputOTPTheme(
-//       merge: b.merge,
-//       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
-//       iconPadding: EdgeInsets.lerp(a.iconPadding, b.iconPadding, t),
-//       iconColor: Color.lerp(a.iconColor, b.iconColor, t),
-//       iconSize: Size.lerp(a.iconSize, b.iconSize, t),
-//       titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
-//       descriptionStyle:
-//           TextStyle.lerp(a.descriptionStyle, b.descriptionStyle, t),
-//       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
-//       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
-//     );
-//   }
-//
-//   ShadInputOTPTheme copyWith({
-//     bool? merge,
-//     ShadDecoration? decoration,
-//     EdgeInsets? iconPadding,
-//     Color? iconColor,
-//     Size? iconSize,
-//     TextStyle? titleStyle,
-//     TextStyle? descriptionStyle,
-//     MainAxisAlignment? mainAxisAlignment,
-//     CrossAxisAlignment? crossAxisAlignment,
-//   }) {
-//     return ShadInputOTPTheme(
-//       merge: merge ?? this.merge,
-//       decoration: decoration ?? this.decoration,
-//       iconPadding: iconPadding ?? this.iconPadding,
-//       iconColor: iconColor ?? this.iconColor,
-//       iconSize: iconSize ?? this.iconSize,
-//       titleStyle: titleStyle ?? this.titleStyle,
-//       descriptionStyle: descriptionStyle ?? this.descriptionStyle,
-//       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
-//       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
-//     );
-//   }
-//
-//   ShadInputOTPTheme mergeWith(ShadInputOTPTheme? other) {
-//     if (other == null) return this;
-//     if (!other.merge) return other;
-//     return copyWith(
-//       decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
-//       iconPadding: other.iconPadding,
-//       iconColor: other.iconColor,
-//       iconSize: other.iconSize,
-//       titleStyle: other.titleStyle,
-//       descriptionStyle: other.descriptionStyle,
-//       mainAxisAlignment: other.mainAxisAlignment,
-//       crossAxisAlignment: other.crossAxisAlignment,
-//     );
-//   }
-//
-//   @override
-//   bool operator ==(Object other) {
-//     if (identical(this, other)) return true;
-//
-//     return other is ShadInputOTPTheme &&
-//         other.merge == merge &&
-//         other.decoration == decoration &&
-//         other.iconPadding == iconPadding &&
-//         other.iconColor == iconColor &&
-//         other.iconSize == iconSize &&
-//         other.titleStyle == titleStyle &&
-//         other.descriptionStyle == descriptionStyle &&
-//         other.mainAxisAlignment == mainAxisAlignment &&
-//         other.crossAxisAlignment == crossAxisAlignment;
-//   }
-//
-//   @override
-//   int get hashCode {
-//     return merge.hashCode ^
-//         decoration.hashCode ^
-//         iconPadding.hashCode ^
-//         iconColor.hashCode ^
-//         iconSize.hashCode ^
-//         titleStyle.hashCode ^
-//         descriptionStyle.hashCode ^
-//         mainAxisAlignment.hashCode ^
-//         crossAxisAlignment.hashCode;
-//   }
-// }
+import 'dart:ui';
+
+import 'package:flutter/widgets.dart';
+
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
+
+@immutable
+class ShadInputOTPTheme {
+  const ShadInputOTPTheme({
+    this.merge = true,
+    this.gap,
+    this.style,
+    this.width,
+    this.height,
+    this.padding,
+    this.decoration,
+    this.firstRadius,
+    this.lastRadius,
+    this.singleRadius,
+    this.middleRadius,
+  });
+
+  final bool merge;
+
+  /// {@macro ShadInputOTP.gap}
+  final double? gap;
+
+  /// {@macro ShadInputOTPSlot.style}
+  final TextStyle? style;
+
+  /// {@macro ShadInputOTPSlot.width}
+  final double? width;
+
+  /// {@macro ShadInputOTPSlot.height}
+  final double? height;
+
+  /// {@macro ShadInputOTPSlot.padding}
+  final EdgeInsets? padding;
+
+  /// {@macro ShadInputOTPSlot.decoration}
+  final ShadDecoration? decoration;
+
+  /// {@macro ShadInputOTPSlot.firstRadius}
+  final BorderRadius? firstRadius;
+
+  /// {@macro ShadInputOTPSlot.lastRadius}
+  final BorderRadius? lastRadius;
+
+  /// {@macro ShadInputOTPSlot.singleRadius}
+  final BorderRadius? singleRadius;
+
+  /// {@macro ShadInputOTPSlot.middleRadius}
+  final BorderRadius? middleRadius;
+
+  static ShadInputOTPTheme lerp(
+    ShadInputOTPTheme a,
+    ShadInputOTPTheme b,
+    double t,
+  ) {
+    if (identical(a, b)) return a;
+    return ShadInputOTPTheme(
+      merge: b.merge,
+      gap: lerpDouble(a.gap, b.gap, t),
+      style: TextStyle.lerp(a.style, b.style, t),
+      width: lerpDouble(a.width, b.width, t),
+      height: lerpDouble(a.height, b.height, t),
+      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      firstRadius: BorderRadius.lerp(a.firstRadius, b.firstRadius, t),
+      lastRadius: BorderRadius.lerp(a.lastRadius, b.lastRadius, t),
+      singleRadius: BorderRadius.lerp(a.singleRadius, b.singleRadius, t),
+      middleRadius: BorderRadius.lerp(a.middleRadius, b.middleRadius, t),
+    );
+  }
+
+  ShadInputOTPTheme copyWith({
+    bool? merge,
+    double? gap,
+    TextStyle? style,
+    double? width,
+    double? height,
+    EdgeInsets? padding,
+    ShadDecoration? decoration,
+    BorderRadius? firstRadius,
+    BorderRadius? lastRadius,
+    BorderRadius? singleRadius,
+    BorderRadius? middleRadius,
+  }) {
+    return ShadInputOTPTheme(
+      merge: merge ?? this.merge,
+      gap: gap ?? this.gap,
+      style: style ?? this.style,
+      width: width ?? this.width,
+      height: height ?? this.height,
+      padding: padding ?? this.padding,
+      decoration: decoration ?? this.decoration,
+      firstRadius: firstRadius ?? this.firstRadius,
+      lastRadius: lastRadius ?? this.lastRadius,
+      singleRadius: singleRadius ?? this.singleRadius,
+      middleRadius: middleRadius ?? this.middleRadius,
+    );
+  }
+
+  ShadInputOTPTheme mergeWith(ShadInputOTPTheme? other) {
+    if (other == null) return this;
+    if (!other.merge) return other;
+    return copyWith(
+      gap: other.gap,
+      style: other.style,
+      width: other.width,
+      height: other.height,
+      padding: other.padding,
+      decoration: other.decoration,
+      firstRadius: other.firstRadius,
+      lastRadius: other.lastRadius,
+      singleRadius: other.singleRadius,
+      middleRadius: other.middleRadius,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShadInputOTPTheme &&
+        other.merge == merge &&
+        other.gap == gap &&
+        other.style == style &&
+        other.width == width &&
+        other.height == height &&
+        other.padding == padding &&
+        other.decoration == decoration &&
+        other.firstRadius == firstRadius &&
+        other.lastRadius == lastRadius &&
+        other.singleRadius == singleRadius &&
+        other.middleRadius == middleRadius;
+  }
+
+  @override
+  int get hashCode {
+    return merge.hashCode ^
+        gap.hashCode ^
+        style.hashCode ^
+        width.hashCode ^
+        height.hashCode ^
+        padding.hashCode ^
+        decoration.hashCode ^
+        firstRadius.hashCode ^
+        lastRadius.hashCode ^
+        singleRadius.hashCode ^
+        middleRadius.hashCode;
+  }
+}

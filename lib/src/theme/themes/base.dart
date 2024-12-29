@@ -13,6 +13,7 @@ import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
+import 'package:shadcn_ui/src/theme/components/input_otp.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/progress.dart';
@@ -82,6 +83,7 @@ abstract class ShadBaseTheme {
     required this.calendarTheme,
     required this.datePickerTheme,
     required this.timePickerTheme,
+    required this.inputOTPTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -132,6 +134,7 @@ abstract class ShadBaseTheme {
   final ShadCalendarTheme calendarTheme;
   final ShadDatePickerTheme datePickerTheme;
   final ShadTimePickerTheme timePickerTheme;
+  final ShadInputOTPTheme inputOTPTheme;
 }
 
 @immutable
@@ -177,4 +180,5 @@ abstract class ShadThemeVariant {
   ShadCalendarTheme calendarTheme();
   ShadDatePickerTheme datePickerTheme();
   ShadTimePickerTheme timePickerTheme();
+  ShadInputOTPTheme inputOTPTheme();
 }
