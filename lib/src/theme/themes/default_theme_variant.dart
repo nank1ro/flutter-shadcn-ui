@@ -100,7 +100,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       foregroundColor: colorScheme.primary,
       hoverForegroundColor: colorScheme.accentForeground,
       decoration: ShadDecoration(
-        border: ShadBorder.all(radius: radius, color: colorScheme.input),
+        border: ShadBorder.all(
+          radius: radius,
+          color: colorScheme.input,
+          width: 1,
+        ),
       ),
       gap: 8,
     );
@@ -248,6 +252,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         border: ShadBorder.all(
           radius: radius,
           color: colorScheme.border,
+          width: 1,
         ),
       ),
       anchor: const ShadAnchorAuto(verticalOffset: 24),
@@ -312,7 +317,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       maxHeight: kDefaultSelectMaxHeight,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: ShadDecoration(
-        border: ShadBorder.all(radius: radius, color: colorScheme.input),
+        border: ShadBorder.all(
+          radius: radius,
+          color: colorScheme.input,
+          width: 1,
+        ),
       ),
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
@@ -380,6 +389,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         border: ShadBorder.all(
           color: colorScheme.primary,
           radius: radius,
+          width: 1,
         ),
       ),
     );
@@ -419,6 +429,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         border: ShadBorder.all(
           color: colorScheme.primary,
           padding: const EdgeInsets.all(2),
+          width: 1,
         ),
         secondaryFocusedBorder: ShadBorder.all(
           radius: radius.add(radius / 2),
@@ -489,6 +500,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           color: colorScheme.border,
           radius: radius,
           padding: const EdgeInsets.all(16),
+          width: 1,
         ),
       ),
       iconSize: const Size.square(16),
@@ -513,6 +525,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           color: colorScheme.destructive,
           radius: radius,
           padding: const EdgeInsets.all(16),
+          width: 1,
         ),
       ),
       iconSize: const Size.square(16),
@@ -779,6 +792,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
             radius: radius,
             padding: const EdgeInsets.all(12),
             color: colorScheme.border,
+            width: 1,
           ),
         ),
         spacingBetweenMonths: 16,
@@ -873,6 +887,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         border: ShadBorder.all(
           color: colorScheme.border,
           radius: radius,
+          width: 1,
         ),
       ),
     );
