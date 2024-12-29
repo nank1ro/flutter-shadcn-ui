@@ -11,6 +11,7 @@ import 'package:example/pages/checkbox_form_field.dart';
 import 'package:example/pages/context_menu.dart';
 import 'package:example/pages/date_picker.dart';
 import 'package:example/pages/date_picker_form_field.dart';
+import 'package:example/pages/decoration.dart';
 import 'package:example/pages/dialog.dart';
 import 'package:example/pages/image.dart';
 import 'package:example/pages/input.dart';
@@ -81,6 +82,7 @@ final routes = <String, WidgetBuilder>{
   '/toast': (_) => const ToastPage(),
   '/tooltip': (_) => const TooltipPage(),
   '/typography': (_) => const TypographyPage(),
+  '/decoration': (_) => const DecorationPage(),
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-zA-Z])');
 

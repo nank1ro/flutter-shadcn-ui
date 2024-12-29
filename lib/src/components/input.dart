@@ -357,6 +357,7 @@ class ShadInputState extends State<ShadInput>
         theme.textTheme.muted.copyWith(
           color: theme.colorScheme.foreground,
         );
+
     final effectiveDecoration =
         (theme.inputTheme.decoration ?? const ShadDecoration())
             .mergeWith(widget.decoration);

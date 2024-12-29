@@ -5,6 +5,7 @@ import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/enhanced_text_editing_controller.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
@@ -429,30 +430,25 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
         width: 2,
       ),
       border: ShadBorder(
-        // left: isFirstInGroup
-        //     ? BorderSide(color: theme.colorScheme.border)
-        //     : BorderSide.none,
-        top: BorderSide(color: theme.colorScheme.border),
-        bottom: BorderSide(color: theme.colorScheme.border),
-        right: BorderSide(color: theme.colorScheme.border),
+        top: ShadBorderSide(color: theme.colorScheme.border, width: 1),
+        bottom: ShadBorderSide(color: theme.colorScheme.border, width: 1),
+        right: ShadBorderSide(color: theme.colorScheme.border, width: 1),
         padding: const EdgeInsets.all(1),
       ),
     );
-    final effectiveDecoration =
-        defaultDecoration.mergeWith(widget.decoration).mergeWith(
-              ShadDecoration(
-                focusedBorder: ShadBorder.all(radius: effectiveRadius),
-                border: ShadBorder(
-                  radius: effectiveRadius,
-                  left: isFirstInGroup
-                      ? BorderSide(color: theme.colorScheme.border)
-                      : BorderSide.none,
-                ),
-              ),
-            );
-
-    print(
-        'effectiveDecoration ${effectiveDecoration.focusedBorder?.top.width}');
+    final effectiveDecoration = defaultDecoration
+        .mergeWith(widget.decoration)
+        .mergeWith(
+          ShadDecoration(
+            border: ShadBorder(
+              radius: effectiveRadius,
+              left: isFirstInGroup
+                  ? ShadBorderSide(color: theme.colorScheme.border, width: 1)
+                  : ShadBorderSide.none,
+            ),
+            focusedBorder: ShadBorder(radius: effectiveRadius),
+          ),
+        );
 
     return SizedBox(
       width: effectiveWidth,
@@ -461,40 +457,30 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
         focusNode: focusNode,
         controller: controller,
         decoration: effectiveDecoration,
-        // decoration: ShadDecoration(
-        //   disableSecondaryBorder: true,
-        //   focusedBorder: ShadBorder.all(
-        //     color: theme.colorScheme.ring,
-        //     width: 2,
-        //     radius: effectiveRadius,
-        //   ),
-        //   border: ShadBorder(
-        //     radius: effectiveRadius,
-        //     left: isFirstInGroup
-        //         ? BorderSide(color: theme.colorScheme.border)
-        //         : BorderSide.none,
-        //     top: BorderSide(color: theme.colorScheme.border),
-        //     bottom: BorderSide(color: theme.colorScheme.border),
-        //     right: BorderSide(color: theme.colorScheme.border),
-        //     padding: const EdgeInsets.all(1),
-        //   ),
-        // ),
         onChanged: (v) {
+          var sanitizedV = v.replaceAll(kInvisibleCharCode, '');
+
+          // if the value is more than 1 and the slot is not the first
+          // get the last character from the value
+          if (index != 0 && sanitizedV.length > 1) {
+            sanitizedV = sanitizedV[sanitizedV.length - 1];
+          }
           // if the max length is entered, set the values
           // to all the slots
-          // this callback is fired only for the first slot
-          if (v.length == otpProvider.widget.maxLength) {
-            otpProvider.setValues(v);
+          // this condition happens only for the first slot
+          if (sanitizedV.length > 1) {
+            otpProvider
+              ..setValues(sanitizedV)
+              ..jumpToSlot(sanitizedV.length - 1);
           } else {
-            if (v.isEmpty) {
+            if (sanitizedV.isEmpty) {
               final previousText = controller.previousValue?.text ?? '';
               controller.text = kInvisibleCharCode;
               otpProvider.jumpToPreviousSlot(
                 clear: previousText == kInvisibleCharCode,
               );
             } else {
-              final parsedText = v.replaceAll(kInvisibleCharCode, '');
-              final newText = parsedText[parsedText.length - 1];
+              final newText = sanitizedV[sanitizedV.length - 1];
               controller.value = controller.value.copyWith(
                 text: newText,
                 selection: TextSelection.collapsed(offset: newText.length),
@@ -504,7 +490,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
             }
           }
         },
-        maxLength: otpProvider.widget.maxLength,
+        maxLength: otpProvider.widget.maxLength + 1,
         maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
         padding: effectivePadding,
         style: defaultStyle,

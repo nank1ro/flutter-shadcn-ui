@@ -111,6 +111,7 @@ export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
 export 'src/utils/input_formatters.dart';
 export 'src/utils/enhanced_text_editing_controller.dart';
+export 'src/utils/border.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart' hide Effect;
