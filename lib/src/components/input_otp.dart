@@ -69,7 +69,9 @@ class ShadInputOTP extends StatefulWidget {
   /// {@endtemplate}
   final TextInputType? keyboardType;
 
+  /// {@template ShadInputOTP.initialValue}
   /// The initial value of the OTP, to skip one slot pass an empty space
+  /// {@endtemplate}
   final String? initialValue;
 
   @override
@@ -122,10 +124,27 @@ class ShadInputOTPState extends State<ShadInputOTP> {
     return index;
   }
 
+  @override
+  void didUpdateWidget(covariant ShadInputOTP oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialValue != widget.initialValue) {
+      final value = (widget.initialValue ?? '').padRight(widget.maxLength);
+      for (var index = 0; index < registeredOTPs.length; index++) {
+        final slot = registeredOTPs[index];
+        // Set the initial value of the slot
+        if (slot.controller.text == kInvisibleCharCode && value[index] != ' ') {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            slot.controller.text = value[index];
+          });
+        }
+      }
+    }
+  }
+
   // Call this method to register a group, returns the index of the group
   int registerGroup() {
     groups++;
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
     });
     return groups - 1;
