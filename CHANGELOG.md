@@ -4,6 +4,7 @@
 - **BREAKING CHANGE**: The `ShadBorder` no longer has default values, if you want to see the border rendered provide a color and a width greater than 0. This fixes the merge of material borders.
 - **FIX**: `ShadTabs` border radius.
 - **FIX**: `ShadSlider` focused thumb.
+- **FIX**: `ShadResizable` resize when Directionality is RTL.
 
 ## 0.16.3
 
