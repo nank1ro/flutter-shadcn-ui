@@ -317,7 +317,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
         ? panelInfos.map((e) => e.size).toList()
         : defaultSizes;
 
-    if (Directionality.of(context) == TextDirection.rtl && isHorizontal) {
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    if (rtl && isHorizontal) {
       effectivesSizes = effectivesSizes.reversed.toList();
     }
 
@@ -345,7 +346,6 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     return LayoutBuilder(
       builder: (context, constraints) {
         currentConstraints = constraints;
-        final rtl = Directionality.of(context) == TextDirection.rtl;
         Widget child = Flex(
           direction: widget.axis,
           mainAxisAlignment: effectiveMainAxisAlignment,
