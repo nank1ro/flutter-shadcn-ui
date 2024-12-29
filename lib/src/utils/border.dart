@@ -32,10 +32,11 @@ extension ShadBorderToBorder on ShadBorder {
   }
 }
 
+/// {@template ShadBorder}
+/// A wrapper around the [Border] class with a reasonable merge.
+/// {@endtemplate}
 class ShadBorder {
-  /// Creates a border.
-  ///
-  /// All the sides of the border default to [ShadBorderSide.none].
+  /// {@macro ShadBorder}
   const ShadBorder({
     this.merge = true,
     this.padding,
