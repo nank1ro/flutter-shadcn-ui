@@ -313,9 +313,14 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     final effectiveTextDirection =
         widget.textDirection ?? theme.resizableTheme.textDirection;
 
-    final effectivesSizes = panelInfos.length == widget.children.length
+    var effectivesSizes = panelInfos.length == widget.children.length
         ? panelInfos.map((e) => e.size).toList()
         : defaultSizes;
+
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    if (rtl && isHorizontal) {
+      effectivesSizes = effectivesSizes.reversed.toList();
+    }
 
     final divider = switch (widget.axis) {
       Axis.horizontal => VerticalDivider(
@@ -388,6 +393,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           leadingPosition = isHorizontal
               ? leadingPosition * constraints.maxWidth
               : leadingPosition * constraints.maxHeight;
+
           leadingPosition -=
               effectiveDividerSize / 2 + effectiveDividerThickness / 2;
 
@@ -401,7 +407,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           dividers.add(
             Positioned(
               top: isHorizontal ? 0 : leadingPosition,
-              left: isHorizontal ? leadingPosition : null,
+              left: isHorizontal && !rtl ? leadingPosition : null,
+              right: isHorizontal && rtl ? leadingPosition : null,
               bottom: isHorizontal ? 0 : null,
               child: GestureDetector(
                 onDoubleTap: widget.onDividerDoubleTap ??
