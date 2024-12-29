@@ -734,6 +734,12 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           color: colorScheme.ring,
         ),
       ),
+      tabDecoration: ShadDecoration(
+        border: ShadBorder.all(
+          radius: const BorderRadius.all(Radius.circular(4)),
+          width: 0,
+        ),
+      ),
       gap: 8,
       expandContent: false,
       tabBackgroundColor: Colors.transparent,

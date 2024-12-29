@@ -753,6 +753,15 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         color: colorScheme.muted,
         border: ShadBorder.all(radius: radius, width: 0),
       ),
+      tabDecoration: ShadDecoration(
+        border: ShadBorder.all(
+          radius: const BorderRadius.all(Radius.circular(4)),
+          width: 0,
+        ),
+        focusedBorder: ShadBorder.all(
+          radius: const BorderRadius.all(Radius.circular(4)),
+        ),
+      ),
       gap: 8,
       expandContent: false,
       tabBackgroundColor: Colors.transparent,
