@@ -1,3 +1,8 @@
+## 0.17.0
+
+- **FEAT**: Add `ShadInputOTP` and `ShadInputOTPFormField` components.
+- **BREAKING CHANGE**: The `ShadBorder` no longer has default values, if you want to see the border rendered provide a color and a width greater than 0. This fixes the merge of material borders.
+
 ## 0.16.3
 
 - **FIX**: `showCursor` default value in `ShadInputFormField`
