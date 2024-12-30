@@ -6,6 +6,7 @@
 - **FIX**: `ShadSlider` focused thumb.
 - **FIX**: `ShadResizable` resize when Directionality is RTL.
 - **FIX**: Update the `destructive` color on dark mode to be more visible.
+- **FIX**: Make inherited widget lookup untyped
 
 ## 0.16.3
 

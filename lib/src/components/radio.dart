@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/provider.dart';
 
 class ShadRadioGroup<T> extends StatefulWidget {
   const ShadRadioGroup({
@@ -78,17 +79,6 @@ class ShadRadioGroup<T> extends StatefulWidget {
 
   @override
   State<ShadRadioGroup<T>> createState() => ShadRadioGroupState<T>();
-
-  static ShadRadioGroupState<T> of<T>(BuildContext context) {
-    return maybeOf<T>(context)!;
-  }
-
-  static ShadRadioGroupState<T>? maybeOf<T>(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<
-            ShadInheritedRadioGroupContainer<T>>()
-        ?.data;
-  }
 }
 
 class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
@@ -126,8 +116,9 @@ class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
         theme.radioTheme.crossAxisAlignment ??
         WrapCrossAlignment.start;
 
-    return ShadInheritedRadioGroupContainer(
-      data: this,
+    return ShadProvider(
+      data: this as ShadRadioGroupState<dynamic>,
+      notifyUpdate: (_) => true,
       child: Wrap(
         direction: effectiveAxis,
         spacing: effectiveSpacing,
@@ -139,20 +130,6 @@ class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
       ),
     );
   }
-}
-
-class ShadInheritedRadioGroupContainer<T> extends InheritedWidget {
-  const ShadInheritedRadioGroupContainer({
-    super.key,
-    required this.data,
-    required super.child,
-  });
-
-  final ShadRadioGroupState<T> data;
-
-  @override
-  bool updateShouldNotify(ShadInheritedRadioGroupContainer<T> oldWidget) =>
-      true;
 }
 
 class ShadRadio<T> extends StatefulWidget {
@@ -233,12 +210,8 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
-    assert(
-      ShadRadioGroup.maybeOf<T>(context) != null,
-      'Cannot find ShadRadioGroup InheritedWidget',
-    );
     final theme = ShadTheme.of(context);
-    final inheritedRadioGroup = ShadRadioGroup.of<T>(context);
+    final inheritedRadioGroup = context.watch<ShadRadioGroupState<dynamic>>();
 
     void onTap() {
       inheritedRadioGroup.select(widget.value);

@@ -8,6 +8,7 @@ import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/animation_builder.dart';
 import 'package:shadcn_ui/src/utils/effects.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
+import 'package:shadcn_ui/src/utils/provider.dart';
 
 enum ShadAccordionType {
   single,
@@ -69,8 +70,9 @@ class ShadAccordionState<T> extends State<ShadAccordion<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return ShadAccordionInheritedWidget<T>(
-      data: this,
+    return ShadProvider(
+      data: this as ShadAccordionState<dynamic>,
+      notifyUpdate: (_) => true,
       child: FocusTraversalGroup(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -79,31 +81,6 @@ class ShadAccordionState<T> extends State<ShadAccordion<T>> {
         ),
       ),
     );
-  }
-}
-
-class ShadAccordionInheritedWidget<T> extends InheritedWidget {
-  const ShadAccordionInheritedWidget({
-    super.key,
-    required this.data,
-    required super.child,
-  });
-
-  final ShadAccordionState<T> data;
-
-  static ShadAccordionState<T> of<T>(BuildContext context) {
-    return maybeOf<T>(context)!;
-  }
-
-  static ShadAccordionState<T>? maybeOf<T>(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<ShadAccordionInheritedWidget<T>>()
-        ?.data;
-  }
-
-  @override
-  bool updateShouldNotify(covariant ShadAccordionInheritedWidget<T> oldWidget) {
-    return true;
   }
 }
 
@@ -184,7 +161,7 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
 
   @override
   Widget build(BuildContext context) {
-    final inherited = ShadAccordionInheritedWidget.of<T>(context);
+    final inherited = context.watch<ShadAccordionState<dynamic>>();
     final expanded = inherited.values.contains(widget.value);
     final theme = ShadTheme.of(context);
     final effectiveSeparator = widget.separator ?? const Divider();

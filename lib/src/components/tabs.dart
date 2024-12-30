@@ -8,36 +8,8 @@ import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
+import 'package:shadcn_ui/src/utils/provider.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
-
-class ShadTabsInheritedWidget<T> extends InheritedWidget {
-  const ShadTabsInheritedWidget({
-    super.key,
-    required this.data,
-    required super.child,
-  });
-
-  final ShadTabsState<T> data;
-
-  static ShadTabsState<T> of<T>(BuildContext context) {
-    final provider = maybeOf<T>(context);
-    if (provider == null) {
-      throw FlutterError('No ShadTabs widget found in context');
-    }
-    return provider;
-  }
-
-  static ShadTabsState<T>? maybeOf<T>(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<ShadTabsInheritedWidget<T>>()
-        ?.data;
-  }
-
-  @override
-  bool updateShouldNotify(covariant ShadTabsInheritedWidget<T> oldWidget) {
-    return true;
-  }
-}
 
 class ShadTabsController<T> extends ChangeNotifier {
   ShadTabsController({required T value}) : selected = value;
@@ -323,8 +295,9 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
       tabBar = Padding(padding: effectivePadding, child: tabBar);
     }
 
-    return ShadTabsInheritedWidget<T>(
-      data: this,
+    return ShadProvider(
+      data: this as ShadTabsState<dynamic>,
+      notifyUpdate: (_) => true,
       child: ListenableBuilder(
         listenable: controller,
         builder: (context, _) {
@@ -620,7 +593,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final inherited = ShadTabsInheritedWidget.of<T>(context);
+    final inherited = context.watch<ShadTabsState<dynamic>>();
 
     final tabsTheme = theme.tabsTheme;
 

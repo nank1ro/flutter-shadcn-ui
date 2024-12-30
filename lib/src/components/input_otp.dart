@@ -229,10 +229,7 @@ class ShadInputOTPGroup extends StatefulWidget {
 }
 
 class _ShadInputOTPGroupState extends State<ShadInputOTPGroup> {
-  late final otpProvider = ShadProvider.of<ShadInputOTPState>(
-    context,
-    listen: false,
-  );
+  late final otpProvider = context.read<ShadInputOTPState>();
 
   @override
   void initState() {
@@ -349,10 +346,7 @@ class ShadInputOTPSlot extends StatefulWidget {
 }
 
 class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
-  late final otpProvider = ShadProvider.of<ShadInputOTPState>(
-    context,
-    listen: false,
-  );
+  late final otpProvider = context.read<ShadInputOTPState>();
 
   // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
@@ -404,7 +398,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     final theme = ShadTheme.of(context);
 
     // Watching the OTP provider for changes
-    final otpProvider = ShadProvider.of<ShadInputOTPState>(context);
+    final otpProvider = context.watch<ShadInputOTPState>();
 
     final defaultStyle = widget.style ??
         theme.inputOTPTheme.style ??

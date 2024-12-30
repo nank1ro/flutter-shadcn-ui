@@ -17,6 +17,7 @@ import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
+import 'package:shadcn_ui/src/utils/provider.dart';
 
 typedef ShadSelectedOptionBuilder<T> = Widget Function(
   BuildContext context,
@@ -450,27 +451,6 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@endtemplate}
   final bool? shrinkWrap;
 
-  static ShadSelectState<T> of<T>(BuildContext context, {bool listen = true}) {
-    return maybeOf<T>(context, listen: listen)!;
-  }
-
-  static ShadSelectState<T>? maybeOf<T>(
-    BuildContext context, {
-    bool listen = true,
-  }) {
-    if (listen) {
-      return context
-          .dependOnInheritedWidgetOfExactType<ShadInheritedSelectContainer<T>>()
-          ?.data;
-    }
-    final provider = context
-        .getElementForInheritedWidgetOfExactType<
-            ShadInheritedSelectContainer<T>>()
-        ?.widget;
-
-    return (provider as ShadInheritedSelectContainer<T>?)?.data;
-  }
-
   @override
   ShadSelectState<T> createState() => ShadSelectState();
 }
@@ -867,8 +847,9 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                   )
                 : null;
 
-            return ShadInheritedSelectContainer(
-              data: this,
+            return ShadProvider(
+              data: this as ShadSelectState<dynamic>,
+              notifyUpdate: (_) => true,
               child: ShadPopover(
                 groupId: widget.groupId,
                 padding: EdgeInsets.zero,
@@ -948,19 +929,6 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
   }
 }
 
-class ShadInheritedSelectContainer<T> extends InheritedWidget {
-  const ShadInheritedSelectContainer({
-    super.key,
-    required this.data,
-    required super.child,
-  });
-
-  final ShadSelectState<T> data;
-
-  @override
-  bool updateShouldNotify(ShadInheritedSelectContainer<T> oldWidget) => true;
-}
-
 class ShadOption<T> extends StatefulWidget {
   const ShadOption({
     super.key,
@@ -1005,7 +973,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     super.initState();
     focusNode.addListener(onFocusChange);
 
-    final inherited = ShadSelect.of<T>(context, listen: false);
+    final inherited = context.read<ShadSelectState<dynamic>>();
     final selected = inherited.selectedValues.contains(widget.value);
     if (selected) focusNode.requestFocus();
   }
@@ -1026,11 +994,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    assert(
-      ShadSelect.maybeOf<T>(context) != null,
-      'Cannot find ShadSelect InheritedWidget',
-    );
-    final inheritedSelect = ShadSelect.of<T>(context);
+    final inheritedSelect = context.watch<ShadSelectState<dynamic>>();
     final selected = inheritedSelect.selectedValues.contains(widget.value);
 
     if (selected) {

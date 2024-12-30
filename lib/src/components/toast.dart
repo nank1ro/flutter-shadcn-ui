@@ -25,7 +25,13 @@ class ShadToaster extends StatefulWidget {
   State<ShadToaster> createState() => ShadToasterState();
 
   static ShadToasterState of(BuildContext context) {
-    return maybeOf(context)!;
+    final provider = maybeOf(context);
+    if (provider == null) {
+      throw FlutterError(
+        '''Could not find ShadToaster InheritedWidget in the ancestor widget tree.''',
+      );
+    }
+    return provider;
   }
 
   static ShadToasterState? maybeOf(BuildContext context) {
