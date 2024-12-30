@@ -43,7 +43,7 @@ See the [documentation](https://flutter-shadcn-ui.mariuti.com/) to interact with
 - [x] <strike>Hover Card</strike> Use Popover instead
 - [x] [Image](https://flutter-shadcn-ui.mariuti.com/components/image/)
 - [x] [Input](https://flutter-shadcn-ui.mariuti.com/components/input/)
-- [ ] Input OTP
+- [x] [Input OTP](https://flutter-shadcn-ui.mariuti.com/components/input-otp/)
 - [x] <strike>Label</strike> Use Text instead
 - [ ] Menubar
 - [ ] Navigation Menu
