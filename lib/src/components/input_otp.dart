@@ -263,6 +263,7 @@ class ShadInputOTPSlot extends StatefulWidget {
     this.singleRadius,
     this.middleRadius,
     this.initialValue,
+    this.textInputAction,
   });
 
   /// {@template ShadInputOTPSlot.focusNode}
@@ -339,7 +340,15 @@ class ShadInputOTPSlot extends StatefulWidget {
   /// {@endtemplate}
   final BorderRadius? middleRadius;
 
+  /// {@template ShadInputOTPSlot.initialValue}
+  /// The initial value of the slot.
+  /// {@endtemplate}
   final String? initialValue;
+
+  /// {@template ShadInputOTPSlot.textInputAction}
+  /// The text input action for the slot, defaults to null
+  /// {@endtemplate}
+  final TextInputAction? textInputAction;
 
   @override
   State<ShadInputOTPSlot> createState() => _ShadInputOTPSlotState();
@@ -457,7 +466,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
 
     final effectivePadding = widget.padding ??
         theme.inputOTPTheme.padding ??
-        const EdgeInsets.symmetric(horizontal: 12, vertical: 4);
+        const EdgeInsets.symmetric(vertical: 4);
 
     final effectiveWidth = widget.width ?? theme.inputOTPTheme.width ?? 40.0;
     final effectiveHeight = widget.height ?? theme.inputOTPTheme.height ?? 40.0;
@@ -497,6 +506,8 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
         focusNode: focusNode,
         controller: controller,
         decoration: effectiveDecoration,
+        textAlign: TextAlign.center,
+        textInputAction: widget.textInputAction,
         onChanged: (v) {
           // sanitize the text and format it
           var sanitizedV = v.replaceAll(kInvisibleCharCode, '');

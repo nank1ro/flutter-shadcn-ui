@@ -1,3 +1,8 @@
+## 0.17.1
+
+- **FIX**: `ShadInputOTP` text alignment and padding
+- **FEAT**: Add `TextInputAction` to `ShadInputOTPSlot`
+
 ## 0.17.0
 
 - **FEAT**: Add `ShadInputOTP` and `ShadInputOTPFormField` components.
