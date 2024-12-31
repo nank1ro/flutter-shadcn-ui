@@ -919,7 +919,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ),
       singleRadius: radius,
       middleRadius: BorderRadius.zero,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       decoration: ShadDecoration(
         disableSecondaryBorder: true,
         focusedBorder: ShadBorder.all(
