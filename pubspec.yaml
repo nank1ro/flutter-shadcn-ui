@@ -15,23 +15,23 @@ environment:
   flutter: ">=3.27.0"
 
 dependencies:
-  collection: ^1.18.0
+  collection: ^1.19.0
   flutter:
     sdk: flutter
-  flutter_animate: ^4.5.0
+  flutter_animate: ^4.5.2
   flutter_localizations:
     sdk: flutter
-  flutter_svg: ^2.0.14
+  flutter_svg: ^2.0.16
   intl: ^0.19.0
-  lucide_icons_flutter: ^1.1.0
+  lucide_icons_flutter: ^1.2.5
   # used by Table
-  two_dimensional_scrollables: ^0.3.1
-  vector_graphics: ^1.1.14
+  two_dimensional_scrollables: ^0.3.3
+  vector_graphics: ^1.1.15
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^5.1.0
+  very_good_analysis: ^7.0.0
 
 flutter:
   fonts:

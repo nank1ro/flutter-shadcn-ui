@@ -591,7 +591,7 @@ class _ShadAppState extends State<ShadApp> {
   /// contributed by the localizationsDelegates parameter, if any.
   ///
   /// The default value for the localizationsDelegates
-  /// ```
+  /// ```dart
   ///  DefaultMaterialLocalizations.delegate,
   ///  DefaultCupertinoLocalizations.delegate,
   ///  DefaultWidgetsLocalizations.delegate

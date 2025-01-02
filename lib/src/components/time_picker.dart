@@ -447,7 +447,7 @@ class ShadTimePicker extends StatefulWidget {
 
   /// {@template ShadTimePicker.style}
   /// The style of the label. Defaults to
-  /// ```
+  /// ```dart
   /// theme.textTheme.muted.copyWith(
   ///   color: theme.colorScheme.foreground,
   ///   fontSize: 16,
@@ -459,7 +459,7 @@ class ShadTimePicker extends StatefulWidget {
 
   /// {@template ShadTimePicker.placeholderStyle}
   /// The style of the placeholder. Defaults to
-  /// ```
+  /// ```dart
   /// theme.textTheme.muted.copyWith(
   ///   fontSize: 16,
   ///   height: 24 / 16,
@@ -487,7 +487,7 @@ class ShadTimePicker extends StatefulWidget {
 
   /// {@template ShadTimePicker.fieldDecoration}
   /// The decoration of the field, defaults to
-  /// ```
+  /// ```dart
   /// ShadDecoration(border: ShadBorder.all(
   ///   color: colorScheme.border,
   ///   radius: radius,
