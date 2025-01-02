@@ -1,3 +1,7 @@
+## 0.17.2
+
+- **FIX**: Add `allowDeselection` to `ShadCalendar.range`
+
 ## 0.17.1
 
 - **FIX**: `ShadInputOTP` text alignment and padding

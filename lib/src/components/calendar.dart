@@ -304,14 +304,14 @@ class ShadCalendar extends StatefulWidget {
     this.dayButtonOutsideMonthTextStyle,
     this.dayButtonOutsideMonthVariant,
     this.selectedDayButtonOusideMonthVariant,
+    this.allowDeselection,
   })  : variant = ShadCalendarVariant.range,
         multipleSelected = null,
         selected = null,
         onMultipleChanged = null,
         onChanged = null,
         selectedRange = selected,
-        onRangeChanged = onChanged,
-        allowDeselection = null;
+        onRangeChanged = onChanged;
 
   const ShadCalendar.raw({
     super.key,
@@ -1650,12 +1650,28 @@ class _ShadCalendarState extends State<ShadCalendar> {
                                 return;
                               }
                             }
+                            final startRangeEquals =
+                                startRange?.isSameDay(date) ?? false;
+                            final endDateEquals =
+                                endRange?.isSameDay(date) ?? false;
+
+                            final singleDateSelectedInRange =
+                                (startRangeEquals && endRange == null) ||
+                                    (endDateEquals && startRange == null);
+
+                            // Skip the operation on the range if a single date
+                            // is selected and allowDeselection is false
+                            if (widget.variant == ShadCalendarVariant.range) {
+                              if (singleDateSelectedInRange &&
+                                  !effectiveAllowDeselection) {
+                                return;
+                              }
+                            }
 
                             setState(() {
                               if (widget.variant == ShadCalendarVariant.range) {
                                 // deselect the range
-                                if ((startRange == date && endRange == null) ||
-                                    (endRange == date && startRange == null)) {
+                                if (singleDateSelectedInRange) {
                                   startRange = null;
                                 } else {
                                   // select the start range

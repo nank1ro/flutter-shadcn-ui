@@ -20,6 +20,7 @@ class _CalendarPageState extends State<CalendarPage> {
   bool showOutsideDays = true;
   bool fixedWeeks = false;
   bool hideWeekdayNames = false;
+  bool allowDeselection = true;
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +96,15 @@ class _CalendarPageState extends State<CalendarPage> {
             });
           },
         ),
+        MyBoolProperty(
+          label: 'Allow deselection',
+          value: allowDeselection,
+          onChanged: (value) {
+            setState(() {
+              allowDeselection = value;
+            });
+          },
+        ),
       ],
       children: [
         Text('Single', style: theme.textTheme.h4),
@@ -111,6 +121,7 @@ class _CalendarPageState extends State<CalendarPage> {
           showOutsideDays: showOutsideDays,
           fixedWeeks: fixedWeeks,
           hideWeekdayNames: hideWeekdayNames,
+          allowDeselection: allowDeselection,
         ),
         const Divider(),
         Text('Multiple', style: theme.textTheme.h4),
@@ -141,6 +152,7 @@ class _CalendarPageState extends State<CalendarPage> {
           showOutsideDays: showOutsideDays,
           fixedWeeks: fixedWeeks,
           hideWeekdayNames: hideWeekdayNames,
+          allowDeselection: allowDeselection,
         ),
       ],
     );
