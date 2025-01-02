@@ -20,7 +20,7 @@ class _CalendarPageState extends State<CalendarPage> {
   bool showOutsideDays = true;
   bool fixedWeeks = false;
   bool hideWeekdayNames = false;
-  bool allowDeselection = false;
+  bool allowDeselection = true;
 
   @override
   Widget build(BuildContext context) {
