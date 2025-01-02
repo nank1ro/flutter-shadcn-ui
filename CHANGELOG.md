@@ -1,6 +1,7 @@
 ## 0.17.2
 
 - **FIX**: Add `allowDeselection` to `ShadCalendar.range`
+- **CHORE**: Update dependencies
 
 ## 0.17.1
 
