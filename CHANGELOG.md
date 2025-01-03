@@ -1,3 +1,7 @@
+## 0.17.3
+
+- **FIX**: `ShadTable` protect `onExit` from setting value after dispose (thanks to @jezell)
+
 ## 0.17.2
 
 - **FIX**: Add `allowDeselection` to `ShadCalendar.range`
