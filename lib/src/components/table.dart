@@ -391,6 +391,7 @@ class _ShadTableState extends State<ShadTable> {
         hoveredRowIndex.value = index;
       },
       onExit: (p) {
+        if(!mounted) return;
         if (previousPointerOffset == p.position) return;
         hoveredRowIndex.value = null;
       },
