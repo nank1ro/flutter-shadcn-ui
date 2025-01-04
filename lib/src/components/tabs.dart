@@ -593,7 +593,8 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final inherited = context.watch<ShadTabsState<dynamic>>();
+    final inherited =
+        context.watch<ShadTabsState<dynamic>>() as ShadTabsState<T>;
 
     final tabsTheme = theme.tabsTheme;
 
