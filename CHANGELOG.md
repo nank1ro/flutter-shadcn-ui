@@ -1,3 +1,7 @@
+## 0.17.4
+
+- **FIX** `ShadTabs` onChanged runtime exception due to misleading type
+
 ## 0.17.3
 
 - **FIX**: `ShadTable` protect `onExit` from setting value after dispose (thanks to @jezell)
