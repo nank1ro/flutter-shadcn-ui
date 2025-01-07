@@ -938,6 +938,7 @@ class ShadOption<T> extends StatefulWidget {
     this.padding,
     this.selectedIcon,
     this.radius,
+    this.placeSelectedIconFirst,
   });
 
   /// The value of the [ShadOption], it must be unique above the options.
@@ -959,6 +960,11 @@ class ShadOption<T> extends StatefulWidget {
 
   /// The radius of the [ShadOption], defaults to `ShadThemeData.radius`.
   final BorderRadius? radius;
+
+  /// {@template ShadOption.placeSelectedIconFirst}
+  /// Whether to place the icon first, defaults to true.
+  /// {@endtemplate}
+  final bool? placeSelectedIconFirst;
 
   @override
   State<ShadOption<T>> createState() => _ShadOptionState<T>();
@@ -1016,6 +1022,23 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final effectiveRadius =
         widget.radius ?? theme.optionTheme.radius ?? theme.radius;
 
+    final effectivePlaceIconFirst = widget.placeSelectedIconFirst ??
+        theme.selectTheme.optionsPlaceSelectedIconFirst ??
+        true;
+
+    final effectiveSelectedIcon = widget.selectedIcon ??
+        Visibility.maintain(
+          visible: selected,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: ShadImage.square(
+              LucideIcons.check,
+              size: 16,
+              color: theme.colorScheme.popoverForeground,
+            ),
+          ),
+        );
+
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.enter): () {
@@ -1045,19 +1068,8 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
             },
             child: Row(
               children: [
-                widget.selectedIcon ??
-                    Visibility.maintain(
-                      visible: selected,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: ShadImage.square(
-                          LucideIcons.check,
-                          size: 16,
-                          color: theme.colorScheme.popoverForeground,
-                        ),
-                      ),
-                    ),
-                Flexible(
+                if (effectivePlaceIconFirst) effectiveSelectedIcon,
+                Expanded(
                   child: DefaultTextStyle(
                     style: theme.textTheme.muted.copyWith(
                       color: theme.colorScheme.popoverForeground,
@@ -1065,6 +1077,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
                     child: widget.child,
                   ),
                 ),
+                if (!effectivePlaceIconFirst) effectiveSelectedIcon,
               ],
             ),
           ),
