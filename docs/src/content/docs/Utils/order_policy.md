@@ -11,10 +11,7 @@ For example to place the child of a button before the icon you can write:
 
 ```diff lang=dart
 ShadButton(
-  icon: const Icon(
-    Icons.mail_outlined,
-    size: 16,
-  ),
+  icon: const ShadImage(LucideIcons.mail),
 +  orderPolicy: const WidgetOrderPolicy.reverse(),
   child: const Text('Login with Email'),
 )

@@ -1,3 +1,7 @@
+## 0.17.6
+
+- **FIX**: Fix the iconSize of `ShadButton`, add `iconSize` to `ShadButton`.
+
 ## 0.17.5
 
 - **FEAT**: New `OrderPolicy`, `LinearOrderPolicy`, `ReverseOrderPolicy` and `CustomOrderPolicy` to update the order policy of the items in a list, this can be very useful to arrange the order of the parts of the shadcn components.
