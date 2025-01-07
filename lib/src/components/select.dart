@@ -963,8 +963,8 @@ class ShadOption<T> extends StatefulWidget {
   final BorderRadius? radius;
 
   /// {@template ShadOption.orderPolicy}
-  /// The order policy of the selectedIcon and the child, defaults to
-  /// `LinearOrderPolicy`.
+  /// The order policy of the items that compose the option, defaults to
+  /// [WidgetOrderPolicy.linear()].
   /// {@endtemplate}
   final WidgetOrderPolicy? orderPolicy;
 
