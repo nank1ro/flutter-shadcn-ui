@@ -1022,7 +1022,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final effectiveRadius =
         widget.radius ?? theme.optionTheme.radius ?? theme.radius;
 
-    final effectivePlaceIconFirst = widget.placeSelectedIconFirst ??
+    final effectivePlaceSelectedIconFirst = widget.placeSelectedIconFirst ??
         theme.selectTheme.optionsPlaceSelectedIconFirst ??
         true;
 
@@ -1068,7 +1068,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
             },
             child: Row(
               children: [
-                if (effectivePlaceIconFirst) effectiveSelectedIcon,
+                if (effectivePlaceSelectedIconFirst) effectiveSelectedIcon,
                 Expanded(
                   child: DefaultTextStyle(
                     style: theme.textTheme.muted.copyWith(
@@ -1077,7 +1077,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
                     child: widget.child,
                   ),
                 ),
-                if (!effectivePlaceIconFirst) effectiveSelectedIcon,
+                if (!effectivePlaceSelectedIconFirst) effectiveSelectedIcon,
               ],
             ),
           ),
