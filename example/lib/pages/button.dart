@@ -106,10 +106,7 @@ class _ButtonPageState extends State<ButtonPage> {
             child: ShadButton.outline(
               size: size,
               enabled: enabled,
-              icon: const Icon(
-                Icons.chevron_right,
-                size: 16,
-              ),
+              icon: const ShadImage(LucideIcons.chevronRight),
             ),
           ),
         ],
