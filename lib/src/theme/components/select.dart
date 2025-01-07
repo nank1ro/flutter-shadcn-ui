@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 const kDefaultSelectMinWidth = 128.0;
 const kDefaultSelectMaxHeight = 384.0;
@@ -26,7 +27,7 @@ class ShadSelectTheme {
     this.effects,
     this.shadows,
     this.filter,
-    this.optionsPlaceSelectedIconFirst,
+    this.optionsOrderPolicy,
   });
 
   final bool merge;
@@ -51,8 +52,8 @@ class ShadSelectTheme {
   /// {@macro popover.shadows}
   final List<BoxShadow>? shadows;
 
-  /// {@macro ShadOption.placeSelectedIconFirst}
-  final bool? optionsPlaceSelectedIconFirst;
+  /// {@macro ShadOption.orderPolicy}
+  final WidgetOrderPolicy? optionsOrderPolicy;
 
   static ShadSelectTheme lerp(
     ShadSelectTheme a,
@@ -77,9 +78,7 @@ class ShadSelectTheme {
       clearSearchOnClose: t < 0.5 ? a.clearSearchOnClose : b.clearSearchOnClose,
       effects: t < 0.5 ? a.effects : b.effects,
       shadows: t < 0.5 ? a.shadows : b.shadows,
-      optionsPlaceSelectedIconFirst: t < .5
-          ? a.optionsPlaceSelectedIconFirst
-          : b.optionsPlaceSelectedIconFirst,
+      optionsOrderPolicy: t < .5 ? a.optionsOrderPolicy : b.optionsOrderPolicy,
     );
   }
 
@@ -101,7 +100,7 @@ class ShadSelectTheme {
     List<Effect<dynamic>>? effects,
     List<BoxShadow>? shadows,
     ImageFilter? filter,
-    bool? optionsPlaceSelectedIconFirst,
+    WidgetOrderPolicy? optionsOrderPolicy,
   }) {
     return ShadSelectTheme(
       merge: merge ?? this.merge,
@@ -121,8 +120,7 @@ class ShadSelectTheme {
       effects: effects ?? this.effects,
       shadows: shadows ?? this.shadows,
       filter: filter ?? this.filter,
-      optionsPlaceSelectedIconFirst:
-          optionsPlaceSelectedIconFirst ?? this.optionsPlaceSelectedIconFirst,
+      optionsOrderPolicy: optionsOrderPolicy ?? this.optionsOrderPolicy,
     );
   }
 
@@ -144,7 +142,7 @@ class ShadSelectTheme {
       effects: other.effects,
       shadows: other.shadows,
       filter: other.filter,
-      optionsPlaceSelectedIconFirst: other.optionsPlaceSelectedIconFirst,
+      optionsOrderPolicy: other.optionsOrderPolicy,
     );
   }
 
@@ -168,7 +166,7 @@ class ShadSelectTheme {
         other.effects == effects &&
         other.shadows == shadows &&
         other.filter == filter &&
-        other.optionsPlaceSelectedIconFirst == optionsPlaceSelectedIconFirst;
+        other.optionsOrderPolicy == optionsOrderPolicy;
   }
 
   @override
@@ -188,6 +186,6 @@ class ShadSelectTheme {
         effects.hashCode ^
         shadows.hashCode ^
         filter.hashCode ^
-        optionsPlaceSelectedIconFirst.hashCode;
+        optionsOrderPolicy.hashCode;
   }
 }
