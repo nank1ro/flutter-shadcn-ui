@@ -154,7 +154,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
         ? ColorFilter.mode(imageColor, BlendMode.srcIn)
         : null;
 
-    final inheritedSize = ShadProvider.maybeOf<ShadImageSize>(context);
+    final inheritedSize = context.maybeRead<ShadImageSize>();
     final effectiveWidth = width ?? inheritedSize?.width;
     final effectiveHeight = height ?? inheritedSize?.height;
 
