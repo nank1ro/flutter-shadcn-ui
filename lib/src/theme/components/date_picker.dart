@@ -3,8 +3,14 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/calendar.dart';
+import 'package:shadcn_ui/src/components/image.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
+import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 @immutable
 class ShadDatePickerTheme {
@@ -98,6 +104,8 @@ class ShadDatePickerTheme {
     this.formatDateRange,
     this.buttonPadding,
     this.iconSrc,
+    this.orderPolicy,
+    this.expands,
   });
 
   final bool merge;
@@ -378,6 +386,12 @@ class ShadDatePickerTheme {
   /// {@macro ShadButton.padding}
   final EdgeInsetsGeometry? buttonPadding;
 
+  /// {@macro ShadButton.orderPolicy}
+  final WidgetOrderPolicy? orderPolicy;
+
+  /// {@macro ShadButton.expands}
+  final bool? expands;
+
   static ShadDatePickerTheme lerp(
     ShadDatePickerTheme a,
     ShadDatePickerTheme b,
@@ -589,6 +603,8 @@ class ShadDatePickerTheme {
       buttonPadding:
           EdgeInsetsGeometry.lerp(a.buttonPadding, b.buttonPadding, t),
       iconSrc: t < 0.5 ? a.iconSrc : b.iconSrc,
+      orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
+      expands: t < .5 ? a.expands : b.expands,
     );
   }
 
@@ -705,6 +721,8 @@ class ShadDatePickerTheme {
       buttonVariant: other.buttonVariant,
       buttonPadding: other.buttonPadding,
       iconSrc: other.iconSrc,
+      orderPolicy: other.orderPolicy,
+      expands: other.expands,
     );
   }
 
@@ -803,7 +821,9 @@ class ShadDatePickerTheme {
         other.formatDateRange == formatDateRange &&
         other.buttonVariant == buttonVariant &&
         other.buttonPadding == buttonPadding &&
-        other.iconSrc == iconSrc;
+        other.iconSrc == iconSrc &&
+        other.orderPolicy == orderPolicy &&
+        other.expands == expands;
   }
 
   @override
@@ -895,7 +915,9 @@ class ShadDatePickerTheme {
         formatDateRange.hashCode ^
         buttonVariant.hashCode ^
         buttonPadding.hashCode ^
-        iconSrc.hashCode;
+        iconSrc.hashCode ^
+        orderPolicy.hashCode ^
+        expands.hashCode;
   }
 
   ShadDatePickerTheme copyWith({
@@ -990,6 +1012,8 @@ class ShadDatePickerTheme {
     ShadButtonVariant? buttonVariant,
     EdgeInsetsGeometry? buttonPadding,
     ShadImageSrc? iconSrc,
+    WidgetOrderPolicy? orderPolicy,
+    bool? expands,
   }) {
     return ShadDatePickerTheme(
       merge: merge ?? this.merge,
@@ -1102,6 +1126,8 @@ class ShadDatePickerTheme {
       buttonVariant: buttonVariant ?? this.buttonVariant,
       buttonPadding: buttonPadding ?? this.buttonPadding,
       iconSrc: iconSrc ?? this.iconSrc,
+      orderPolicy: orderPolicy ?? this.orderPolicy,
+      expands: expands ?? this.expands,
     );
   }
 }

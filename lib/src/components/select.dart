@@ -16,6 +16,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
@@ -938,6 +939,7 @@ class ShadOption<T> extends StatefulWidget {
     this.padding,
     this.selectedIcon,
     this.radius,
+    this.orderPolicy,
   });
 
   /// The value of the [ShadOption], it must be unique above the options.
@@ -960,6 +962,12 @@ class ShadOption<T> extends StatefulWidget {
   /// The radius of the [ShadOption], defaults to `ShadThemeData.radius`.
   final BorderRadius? radius;
 
+  /// {@template ShadOption.orderPolicy}
+  /// The order policy of the items that compose the option, defaults to
+  /// [WidgetOrderPolicy.linear()].
+  /// {@endtemplate}
+  final WidgetOrderPolicy? orderPolicy;
+
   @override
   State<ShadOption<T>> createState() => _ShadOptionState<T>();
 }
@@ -973,7 +981,8 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     super.initState();
     focusNode.addListener(onFocusChange);
 
-    final inherited = context.read<ShadSelectState<dynamic>>();
+    final inherited =
+        context.read<ShadSelectState<dynamic>>() as ShadSelectState<T>;
     final selected = inherited.selectedValues.contains(widget.value);
     if (selected) focusNode.requestFocus();
   }
@@ -994,7 +1003,8 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final inheritedSelect = context.watch<ShadSelectState<dynamic>>();
+    final inheritedSelect =
+        context.watch<ShadSelectState<dynamic>>() as ShadSelectState<T>;
     final selected = inheritedSelect.selectedValues.contains(widget.value);
 
     if (selected) {
@@ -1015,6 +1025,23 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
         const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
     final effectiveRadius =
         widget.radius ?? theme.optionTheme.radius ?? theme.radius;
+
+    final effectiveOrderPolicy = widget.orderPolicy ??
+        theme.selectTheme.optionsOrderPolicy ??
+        const WidgetOrderPolicy.linear();
+
+    final effectiveSelectedIcon = widget.selectedIcon ??
+        Visibility.maintain(
+          visible: selected,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: ShadImage.square(
+              LucideIcons.check,
+              size: 16,
+              color: theme.colorScheme.popoverForeground,
+            ),
+          ),
+        );
 
     return CallbackShortcuts(
       bindings: {
@@ -1045,19 +1072,8 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
             },
             child: Row(
               children: [
-                widget.selectedIcon ??
-                    Visibility.maintain(
-                      visible: selected,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: ShadImage.square(
-                          LucideIcons.check,
-                          size: 16,
-                          color: theme.colorScheme.popoverForeground,
-                        ),
-                      ),
-                    ),
-                Flexible(
+                effectiveSelectedIcon,
+                Expanded(
                   child: DefaultTextStyle(
                     style: theme.textTheme.muted.copyWith(
                       color: theme.colorScheme.popoverForeground,
@@ -1065,7 +1081,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
                     child: widget.child,
                   ),
                 ),
-              ],
+              ].order(effectiveOrderPolicy),
             ),
           ),
         ),

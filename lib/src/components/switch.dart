@@ -6,6 +6,7 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 class ShadSwitch extends StatefulWidget {
   const ShadSwitch({
@@ -26,6 +27,7 @@ class ShadSwitch extends StatefulWidget {
     this.label,
     this.sublabel,
     this.padding,
+    this.orderPolicy,
   });
 
   /// Whether the switch is on or off.
@@ -77,6 +79,12 @@ class ShadSwitch extends StatefulWidget {
 
   /// The direction of the switch.
   final TextDirection? direction;
+
+  /// {@template ShadSwitch.orderPolicy}
+  /// The order policy of the items that compose the switch, defaults to
+  /// [WidgetOrderPolicy.linear()].
+  /// {@endtemplate}
+  final WidgetOrderPolicy? orderPolicy;
 
   @override
   State<ShadSwitch> createState() => _ShadSwitchState();
@@ -151,6 +159,10 @@ class _ShadSwitchState extends State<ShadSwitch>
     final effectivePadding = widget.padding ??
         theme.switchTheme.padding ??
         const EdgeInsets.only(left: 8);
+
+    final effectiveOrderPolicy = widget.orderPolicy ??
+        theme.switchTheme.orderPolicy ??
+        const WidgetOrderPolicy.linear();
 
     final switchWidget = Semantics(
       toggled: widget.value,
@@ -255,7 +267,7 @@ class _ShadSwitchState extends State<ShadSwitch>
                   ),
                 ),
               ),
-          ],
+          ].order(effectiveOrderPolicy),
         ),
       ),
     );

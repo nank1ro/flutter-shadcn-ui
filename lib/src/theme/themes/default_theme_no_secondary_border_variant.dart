@@ -70,6 +70,8 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
+      iconSize: const Size.square(16),
+      expands: false,
     );
   }
 
@@ -88,6 +90,8 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
+      iconSize: const Size.square(16),
+      expands: false,
     );
   }
 
@@ -106,6 +110,8 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
+      iconSize: const Size.square(16),
+      expands: false,
     );
   }
 
@@ -124,6 +130,8 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
+      iconSize: const Size.square(16),
+      expands: false,
     );
   }
 
@@ -141,6 +149,8 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
+      iconSize: const Size.square(16),
+      expands: false,
     );
   }
 
@@ -151,6 +161,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       hoverForegroundColor: colorScheme.primary,
       hoverTextDecoration: TextDecoration.underline,
       gap: 8,
+      expands: false,
     );
   }
 

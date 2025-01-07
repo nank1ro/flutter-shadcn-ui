@@ -65,6 +65,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       decoration:
           ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
       gap: 8,
+      iconSize: const Size.square(16),
+      expands: false,
     );
   }
 
@@ -78,6 +80,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       decoration:
           ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
       gap: 8,
+      iconSize: const Size.square(16),
+      expands: false,
     );
   }
 
@@ -91,6 +95,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       decoration:
           ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
       gap: 8,
+      iconSize: const Size.square(16),
+      expands: false,
     );
   }
 
@@ -108,6 +114,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
+      iconSize: const Size.square(16),
+      expands: false,
     );
   }
 
@@ -120,6 +128,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       decoration:
           ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
       gap: 8,
+      iconSize: const Size.square(16),
+      expands: false,
     );
   }
 
@@ -130,6 +140,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       hoverForegroundColor: colorScheme.primary,
       hoverTextDecoration: TextDecoration.underline,
       gap: 8,
+      expands: false,
     );
   }
 

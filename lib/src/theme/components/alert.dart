@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 @immutable
 class ShadAlertTheme {
@@ -13,6 +14,7 @@ class ShadAlertTheme {
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.orderPolicy,
   });
 
   final bool merge;
@@ -24,6 +26,9 @@ class ShadAlertTheme {
   final TextStyle? descriptionStyle;
   final MainAxisAlignment? mainAxisAlignment;
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadAlert.orderPolicy}
+  final WidgetOrderPolicy? orderPolicy;
 
   static ShadAlertTheme lerp(
     ShadAlertTheme a,
@@ -42,6 +47,7 @@ class ShadAlertTheme {
           TextStyle.lerp(a.descriptionStyle, b.descriptionStyle, t),
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
     );
   }
 
@@ -55,6 +61,7 @@ class ShadAlertTheme {
     TextStyle? descriptionStyle,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
+    WidgetOrderPolicy? orderPolicy,
   }) {
     return ShadAlertTheme(
       merge: merge ?? this.merge,
@@ -66,6 +73,7 @@ class ShadAlertTheme {
       descriptionStyle: descriptionStyle ?? this.descriptionStyle,
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
+      orderPolicy: orderPolicy ?? this.orderPolicy,
     );
   }
 
@@ -81,6 +89,7 @@ class ShadAlertTheme {
       descriptionStyle: other.descriptionStyle,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
+      orderPolicy: other.orderPolicy,
     );
   }
 
@@ -97,7 +106,8 @@ class ShadAlertTheme {
         other.titleStyle == titleStyle &&
         other.descriptionStyle == descriptionStyle &&
         other.mainAxisAlignment == mainAxisAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment;
+        other.crossAxisAlignment == crossAxisAlignment &&
+        other.orderPolicy == orderPolicy;
   }
 
   @override
@@ -110,6 +120,7 @@ class ShadAlertTheme {
         titleStyle.hashCode ^
         descriptionStyle.hashCode ^
         mainAxisAlignment.hashCode ^
-        crossAxisAlignment.hashCode;
+        crossAxisAlignment.hashCode ^
+        orderPolicy.hashCode;
   }
 }

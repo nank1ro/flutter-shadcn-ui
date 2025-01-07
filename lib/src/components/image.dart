@@ -1,9 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shadcn_ui/src/utils/provider.dart';
 import 'package:vector_graphics/vector_graphics.dart'
     show AssetBytesLoader, NetworkBytesLoader;
 
 typedef ShadImageSrc = Object;
+
+class ShadImageSize extends Size {
+  const ShadImageSize(super.width, super.height);
+  ShadImageSize.copy(Size size) : super(size.width, size.height);
+  ShadImageSize.square(double size) : super(size, size);
+
+  /// Creates a [Size] with the given [width] and an infinite [height].
+  const ShadImageSize.fromWidth(double width) : super(width, double.infinity);
+
+  /// Creates a [Size] with the given [height] and an infinite [width].
+  const ShadImageSize.fromHeight(double height)
+      : super(double.infinity, height);
+
+  /// Creates a square [Size] whose [width] and [height] are twice the given
+  /// dimension.
+  ///
+  /// This is a square that contains a circle with the given radius.
+  ///
+  /// See also:
+  ///
+  ///  * [Size.square], which creates a square with the given dimension.
+  const ShadImageSize.fromRadius(double radius)
+      : super(radius * 2.0, radius * 2.0);
+}
 
 /// {@template image}
 /// Unifies the display of an image.
@@ -129,13 +154,17 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
         ? ColorFilter.mode(imageColor, BlendMode.srcIn)
         : null;
 
+    final inheritedSize = context.maybeRead<ShadImageSize>();
+    final effectiveWidth = width ?? inheritedSize?.width;
+    final effectiveHeight = height ?? inheritedSize?.height;
+
     final Widget image;
 
     // If the image is an IconData, use it as an icon
     if (src is IconData) {
       image = Icon(
         src as IconData,
-        size: width,
+        size: effectiveWidth,
         color: imageColor,
         semanticLabel: semanticLabel,
       );
@@ -150,8 +179,8 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
         if (isSvgVector) {
           image = SvgPicture(
             NetworkBytesLoader(Uri.parse(sourceString)),
-            width: width,
-            height: height,
+            width: effectiveWidth,
+            height: effectiveHeight,
             fit: fit,
             alignment: alignment,
             colorFilter: colorFilter,
@@ -163,8 +192,8 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
         } else if (isSvg) {
           image = SvgPicture.network(
             sourceString,
-            width: width,
-            height: height,
+            width: effectiveWidth,
+            height: effectiveHeight,
             fit: fit,
             colorFilter: colorFilter,
             clipBehavior: Clip.antiAlias,
@@ -177,8 +206,8 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
         } else {
           image = Image.network(
             sourceString,
-            width: width,
-            height: height,
+            width: effectiveWidth,
+            height: effectiveHeight,
             fit: fit,
             semanticLabel: semanticLabel,
             color: imageColor,
@@ -196,8 +225,8 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
       } else if (isSvgVector) {
         image = SvgPicture(
           AssetBytesLoader(sourceString, packageName: package),
-          width: width,
-          height: height,
+          width: effectiveWidth,
+          height: effectiveHeight,
           fit: fit,
           alignment: alignment,
           colorFilter: colorFilter,
@@ -208,8 +237,8 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
       } else if (isSvg) {
         image = SvgPicture.asset(
           sourceString,
-          width: width,
-          height: height,
+          width: effectiveWidth,
+          height: effectiveHeight,
           fit: fit,
           colorFilter: colorFilter,
           clipBehavior: Clip.antiAlias,
@@ -221,8 +250,8 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
       } else {
         image = Image.asset(
           sourceString,
-          width: width,
-          height: height,
+          width: effectiveWidth,
+          height: effectiveHeight,
           fit: fit,
           color: imageColor,
           isAntiAlias: antialiasing,

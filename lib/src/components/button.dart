@@ -1,13 +1,16 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
+import 'package:shadcn_ui/src/utils/provider.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
@@ -76,6 +79,9 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
+    this.orderPolicy,
+    this.expands,
+    this.iconSize,
   }) : variant = ShadButtonVariant.primary;
 
   const ShadButton.raw({
@@ -128,6 +134,9 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
+    this.orderPolicy,
+    this.expands,
+    this.iconSize,
   });
 
   const ShadButton.destructive({
@@ -179,6 +188,9 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
+    this.orderPolicy,
+    this.expands,
+    this.iconSize,
   }) : variant = ShadButtonVariant.destructive;
 
   const ShadButton.outline({
@@ -230,6 +242,9 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
+    this.orderPolicy,
+    this.expands,
+    this.iconSize,
   }) : variant = ShadButtonVariant.outline;
 
   const ShadButton.secondary({
@@ -281,6 +296,9 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
+    this.orderPolicy,
+    this.expands,
+    this.iconSize,
   }) : variant = ShadButtonVariant.secondary;
 
   const ShadButton.ghost({
@@ -332,6 +350,9 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
+    this.orderPolicy,
+    this.expands,
+    this.iconSize,
   }) : variant = ShadButtonVariant.ghost;
 
   const ShadButton.link({
@@ -382,8 +403,11 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
+    this.orderPolicy,
+    this.expands,
   })  : variant = ShadButtonVariant.link,
-        icon = null;
+        icon = null,
+        iconSize = null;
 
   final VoidCallback? onPressed;
   final VoidCallback? onLongPress;
@@ -411,6 +435,12 @@ class ShadButton extends StatefulWidget {
   final ShadDecoration? decoration;
   final bool enabled;
   final ShadStatesController? statesController;
+
+  /// {@template ShadButton.orderPolicy}
+  /// The order policy of the items that compose the button, defaults to
+  /// [WidgetOrderPolicy.linear()].
+  /// {@endtemplate}
+  final WidgetOrderPolicy? orderPolicy;
 
   /// {@template ShadButton.gap}
   /// The gap between the icon and the text.
@@ -452,6 +482,16 @@ class ShadButton extends StatefulWidget {
   final Duration? longPressDuration;
   final TextDirection? textDirection;
   final ValueChanged<bool>? onFocusChange;
+
+  /// {@template ShadButton.expands}
+  /// Whether the child expands to fill the available space, defaults to false.
+  /// {@endtemplate}
+  final bool? expands;
+
+  /// {@template ShadButton.iconSize}
+  /// The size of the icon, defaults to `Size.square(16)`
+  /// {@endtemplate}
+  final Size? iconSize;
 
   @override
   State<ShadButton> createState() => _ShadButtonState();
@@ -708,6 +748,16 @@ class _ShadButtonState extends State<ShadButton> {
 
     final effectiveGap = widget.gap ?? buttonTheme(theme).gap ?? 8;
 
+    final effectiveOrderPolicy = widget.orderPolicy ??
+        buttonTheme(theme).orderPolicy ??
+        const WidgetOrderPolicy.linear();
+
+    final effectiveExpands =
+        widget.expands ?? buttonTheme(theme).expands ?? false;
+
+    final effectiveIconSize =
+        widget.iconSize ?? buttonTheme(theme).iconSize ?? const Size.square(16);
+
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.enter): onTap,
@@ -729,8 +779,9 @@ class _ShadButtonState extends State<ShadButton> {
             shadows: shadows(theme),
           );
 
-          // Applies the foreground color filter to the icon if provided
           var icon = widget.icon;
+
+          // Applies the foreground color filter to the icon if provided
           if (icon != null && (applyIconColorFilter ?? true)) {
             icon = ColorFiltered(
               colorFilter: ColorFilter.mode(
@@ -741,9 +792,41 @@ class _ShadButtonState extends State<ShadButton> {
                         : foreground(theme),
                 BlendMode.srcIn,
               ),
-              child: icon,
+              child: SizedBox.fromSize(
+                size: effectiveIconSize,
+                child: ShadProvider<ShadImageSize>(
+                  data: ShadImageSize.copy(effectiveIconSize),
+                  notifyUpdate: (state) => effectiveIconSize != state.data,
+                  child: icon,
+                ),
+              ),
             );
           }
+
+          Widget? child = widget.child == null
+              ? null
+              : DefaultTextStyle(
+                  style: theme.textTheme.small.copyWith(
+                    color: hasPressedForegroundColor && pressed
+                        ? pressedForegroundColor(theme)
+                        : hovered
+                            ? hoverForeground(theme)
+                            : foreground(theme),
+                    decoration: textDecoration(
+                      theme,
+                      hovered: hovered,
+                    ),
+                    decorationColor: foreground(theme),
+                    decorationStyle: TextDecorationStyle.solid,
+                  ),
+                  textAlign: TextAlign.center,
+                  child: widget.child!,
+                );
+
+          if (child != null && effectiveExpands) {
+            child = Expanded(child: child);
+          }
+
           return Semantics(
             container: true,
             button: true,
@@ -815,25 +898,10 @@ class _ShadButtonState extends State<ShadButton> {
                           textDirection: effectiveTextDirection,
                           children: [
                             if (icon != null) icon,
-                            if (widget.child != null)
-                              DefaultTextStyle(
-                                style: theme.textTheme.small.copyWith(
-                                  color: hasPressedForegroundColor && pressed
-                                      ? pressedForegroundColor(theme)
-                                      : hovered
-                                          ? hoverForeground(theme)
-                                          : foreground(theme),
-                                  decoration: textDecoration(
-                                    theme,
-                                    hovered: hovered,
-                                  ),
-                                  decorationColor: foreground(theme),
-                                  decorationStyle: TextDecorationStyle.solid,
-                                ),
-                                textAlign: TextAlign.center,
-                                child: widget.child!,
-                              ),
-                          ].separatedBy(SizedBox(width: effectiveGap)),
+                            if (child != null) child,
+                          ]
+                              .order(effectiveOrderPolicy)
+                              .separatedBy(SizedBox(width: effectiveGap)),
                         ),
                       ),
                     ),
