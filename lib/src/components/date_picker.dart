@@ -13,6 +13,7 @@ import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/extensions/date_time.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
@@ -155,6 +156,8 @@ class ShadDatePicker extends StatefulWidget {
     this.textDirection,
     this.onFocusChange,
     this.iconSrc,
+    this.orderPolicy,
+    this.expands,
   })  : variant = ShadDatePickerVariant.single,
         formatDateRange = null,
         selectedRange = null;
@@ -295,6 +298,8 @@ class ShadDatePicker extends StatefulWidget {
     this.textDirection,
     this.onFocusChange,
     this.iconSrc,
+    this.orderPolicy,
+    this.expands,
   })  : variant = ShadDatePickerVariant.range,
         selected = null,
         formatDate = null,
@@ -439,6 +444,8 @@ class ShadDatePicker extends StatefulWidget {
     this.iconSrc,
     this.formatDateRange,
     this.placeholder,
+    this.orderPolicy,
+    this.expands,
   });
 
   /// {@template ShadDatePicker.placeholder}
@@ -888,6 +895,12 @@ class ShadDatePicker extends StatefulWidget {
   /// {@macro ShadButton.onFocusChange}
   final ValueChanged<bool>? onFocusChange;
 
+  /// {@macro ShadButton.orderPolicy}
+  final WidgetOrderPolicy? orderPolicy;
+
+  /// {@macro ShadButton.expands}
+  final bool? expands;
+
   @override
   State<ShadDatePicker> createState() => _ShadDatePickerState();
 }
@@ -969,6 +982,13 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
     final effectiveCalendarDecoration = widget.calendarDecoration ??
         theme.datePickerTheme.calendarDecoration ??
         ShadDecoration.none;
+
+    final effectiveOrderPolicy = widget.orderPolicy ??
+        theme.datePickerTheme.orderPolicy ??
+        const WidgetOrderPolicy.linear();
+
+    final effectiveExpands =
+        widget.expands ?? theme.datePickerTheme.expands ?? false;
 
     return ShadPopover(
       controller: popoverController,
@@ -1209,6 +1229,8 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
         hoverStrategies:
             widget.hoverStrategies ?? theme.datePickerTheme.hoverStrategies,
         textDirection: widget.textDirection,
+        orderPolicy: effectiveOrderPolicy,
+        expands: effectiveExpands,
         child: widget.buttonChild ??
             (isSelected
                 ? Text(

@@ -16,6 +16,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
@@ -938,7 +939,7 @@ class ShadOption<T> extends StatefulWidget {
     this.padding,
     this.selectedIcon,
     this.radius,
-    this.placeSelectedIconFirst,
+    this.orderPolicy,
   });
 
   /// The value of the [ShadOption], it must be unique above the options.
@@ -961,10 +962,11 @@ class ShadOption<T> extends StatefulWidget {
   /// The radius of the [ShadOption], defaults to `ShadThemeData.radius`.
   final BorderRadius? radius;
 
-  /// {@template ShadOption.placeSelectedIconFirst}
-  /// Whether to place the icon first, defaults to true.
+  /// {@template ShadOption.orderPolicy}
+  /// The order policy of the items that compose the option, defaults to
+  /// [WidgetOrderPolicy.linear()].
   /// {@endtemplate}
-  final bool? placeSelectedIconFirst;
+  final WidgetOrderPolicy? orderPolicy;
 
   @override
   State<ShadOption<T>> createState() => _ShadOptionState<T>();
@@ -1024,9 +1026,9 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final effectiveRadius =
         widget.radius ?? theme.optionTheme.radius ?? theme.radius;
 
-    final effectivePlaceSelectedIconFirst = widget.placeSelectedIconFirst ??
-        theme.selectTheme.optionsPlaceSelectedIconFirst ??
-        true;
+    final effectiveOrderPolicy = widget.orderPolicy ??
+        theme.selectTheme.optionsOrderPolicy ??
+        const WidgetOrderPolicy.linear();
 
     final effectiveSelectedIcon = widget.selectedIcon ??
         Visibility.maintain(
@@ -1070,7 +1072,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
             },
             child: Row(
               children: [
-                if (effectivePlaceSelectedIconFirst) effectiveSelectedIcon,
+                effectiveSelectedIcon,
                 Expanded(
                   child: DefaultTextStyle(
                     style: theme.textTheme.muted.copyWith(
@@ -1079,8 +1081,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
                     child: widget.child,
                   ),
                 ),
-                if (!effectivePlaceSelectedIconFirst) effectiveSelectedIcon,
-              ],
+              ].order(effectiveOrderPolicy),
             ),
           ),
         ),

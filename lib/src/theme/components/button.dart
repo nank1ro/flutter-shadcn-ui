@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 /// The theme for ShadButton.
@@ -37,6 +38,8 @@ class ShadButtonTheme {
     this.hoverStrategies,
     this.textDirection,
     this.gap,
+    this.orderPolicy,
+    this.expands,
   });
 
   final bool merge;
@@ -69,6 +72,12 @@ class ShadButtonTheme {
 
   /// {@macro ShadButton.gap}
   final double? gap;
+
+  /// {@macro ShadButton.orderPolicy}
+  final WidgetOrderPolicy? orderPolicy;
+
+  /// {@macro ShadButton.expands}
+  final bool? expands;
 
   static ShadButtonTheme lerp(
     ShadButtonTheme a,
@@ -113,6 +122,8 @@ class ShadButtonTheme {
       hoverStrategies: t < 0.5 ? a.hoverStrategies : b.hoverStrategies,
       textDirection: t < 0.5 ? a.textDirection : b.textDirection,
       gap: t < 0.5 ? a.gap : b.gap,
+      orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
+      expands: t < .5 ? a.expands : b.expands,
     );
   }
 
@@ -141,6 +152,8 @@ class ShadButtonTheme {
     ShadHoverStrategies? hoverStrategies,
     TextDirection? textDirection,
     double? gap,
+    WidgetOrderPolicy? orderPolicy,
+    bool? expands,
   }) {
     return ShadButtonTheme(
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
@@ -168,6 +181,8 @@ class ShadButtonTheme {
       hoverStrategies: hoverStrategies ?? this.hoverStrategies,
       textDirection: textDirection ?? this.textDirection,
       gap: gap ?? this.gap,
+      orderPolicy: orderPolicy ?? this.orderPolicy,
+      expands: expands ?? this.expands,
     );
   }
 
@@ -197,6 +212,8 @@ class ShadButtonTheme {
       hoverStrategies: other.hoverStrategies,
       textDirection: other.textDirection,
       gap: other.gap,
+      orderPolicy: other.orderPolicy,
+      expands: other.expands,
     );
   }
 
@@ -228,7 +245,9 @@ class ShadButtonTheme {
         other.longPressDuration == longPressDuration &&
         other.hoverStrategies == hoverStrategies &&
         other.textDirection == textDirection &&
-        other.gap == gap;
+        other.gap == gap &&
+        other.orderPolicy == orderPolicy &&
+        other.expands == expands;
   }
 
   @override
@@ -256,7 +275,9 @@ class ShadButtonTheme {
         longPressDuration.hashCode ^
         hoverStrategies.hashCode ^
         textDirection.hashCode ^
-        gap.hashCode;
+        gap.hashCode ^
+        orderPolicy.hashCode ^
+        expands.hashCode;
   }
 }
 

@@ -104,6 +104,7 @@ export 'src/utils/effects.dart';
 export 'src/utils/extensions/breakpoints.dart';
 export 'src/utils/extensions/date_time.dart';
 export 'src/utils/extensions/duration.dart';
+export 'src/utils/extensions/order_policy.dart';
 export 'src/utils/gesture_detector.dart';
 export 'src/utils/mouse_area.dart';
 export 'src/utils/position.dart';
