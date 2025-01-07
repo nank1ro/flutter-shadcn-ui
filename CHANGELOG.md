@@ -1,7 +1,7 @@
 ## 0.17.5
 
 - **FEAT**: New `OrderPolicy`, `LinearOrderPolicy`, `ReverseOrderPolicy` and `CustomOrderPolicy` to update the order policy of the items in a list, this can be very useful to arrange the order of the parts of the shadcn components.
--**FEAT**: Add `orderPolicy` to `ShadOption`, `ShadAlert`, `ShadButton`, `ShadCheckbox`, `ShadCheckboxFormField`, `ShadDatePicker`, `ShadDatePickerFormField`, `ShadDateRangePickerFormField`, `ShadRadio`, `ShadSwitch`, `ShadSwitchFormField`, `ShadToast`.
+- **FEAT**: Add `orderPolicy` to `ShadOption`, `ShadAlert`, `ShadButton`, `ShadCheckbox`, `ShadCheckboxFormField`, `ShadDatePicker`, `ShadDatePickerFormField`, `ShadDateRangePickerFormField`, `ShadRadio`, `ShadSwitch`, `ShadSwitchFormField`, `ShadToast`.
 - **FEAT**: Add `expands` to `ShadButton`, defaults to false. Use it if you want the button's child to expand to fill the available space.
 
 ## 0.17.4
