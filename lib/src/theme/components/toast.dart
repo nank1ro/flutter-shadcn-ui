@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/image.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -28,6 +29,7 @@ class ShadToastTheme {
     this.padding,
     this.closeIconPosition,
     this.constraints,
+    this.orderPolicy,
   });
 
   final bool merge;
@@ -50,6 +52,7 @@ class ShadToastTheme {
   final EdgeInsets? padding;
   final ShadPosition? closeIconPosition;
   final BoxConstraints? constraints;
+  final WidgetOrderPolicy? orderPolicy;
 
   static ShadToastTheme lerp(
     ShadToastTheme a,
@@ -60,26 +63,29 @@ class ShadToastTheme {
     return ShadToastTheme(
       merge: b.merge,
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
-      closeIconSrc: b.closeIconSrc,
+      closeIconSrc: t < .5 ? a.closeIconSrc : b.closeIconSrc,
       alignment: Alignment.lerp(a.alignment, b.alignment, t),
       offset: Offset.lerp(a.offset, b.offset, t),
-      duration: b.duration,
-      animateIn: b.animateIn,
-      animateOut: b.animateOut,
-      textDirection: b.textDirection,
-      crossAxisAlignment: b.crossAxisAlignment,
-      showCloseIconOnlyWhenHovered: b.showCloseIconOnlyWhenHovered,
+      duration: t < .5 ? a.duration : b.duration,
+      animateIn: t < .5 ? a.animateIn : b.animateIn,
+      animateOut: t < .5 ? a.animateOut : b.animateOut,
+      textDirection: t < .5 ? a.textDirection : b.textDirection,
+      crossAxisAlignment: t < .5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      showCloseIconOnlyWhenHovered: t < .5
+          ? a.showCloseIconOnlyWhenHovered
+          : b.showCloseIconOnlyWhenHovered,
       titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
       descriptionStyle:
           TextStyle.lerp(a.descriptionStyle, b.descriptionStyle, t),
       actionPadding: EdgeInsets.lerp(a.actionPadding, b.actionPadding, t),
       border: Border.lerp(a.border, b.border, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
-      shadows: b.shadows,
+      shadows: t < .5 ? a.shadows : b.shadows,
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       closeIconPosition:
           ShadPosition.lerp(a.closeIconPosition, b.closeIconPosition, t),
-      constraints: b.constraints,
+      constraints: t < .5 ? a.constraints : b.constraints,
+      orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
     );
   }
 
@@ -104,6 +110,7 @@ class ShadToastTheme {
     EdgeInsets? padding,
     ShadPosition? closeIconPosition,
     BoxConstraints? constraints,
+    WidgetOrderPolicy? orderPolicy,
   }) {
     return ShadToastTheme(
       merge: merge ?? this.merge,
@@ -127,6 +134,7 @@ class ShadToastTheme {
       padding: padding ?? this.padding,
       closeIconPosition: closeIconPosition ?? this.closeIconPosition,
       constraints: constraints ?? this.constraints,
+      orderPolicy: orderPolicy ?? this.orderPolicy,
     );
   }
 
@@ -153,6 +161,7 @@ class ShadToastTheme {
       padding: other.padding,
       closeIconPosition: other.closeIconPosition,
       constraints: other.constraints,
+      orderPolicy: other.orderPolicy,
     );
   }
 
@@ -180,7 +189,8 @@ class ShadToastTheme {
         listEquals(other.shadows, shadows) &&
         other.padding == padding &&
         other.closeIconPosition == closeIconPosition &&
-        other.constraints == constraints;
+        other.constraints == constraints &&
+        other.orderPolicy == orderPolicy;
   }
 
   @override
@@ -204,6 +214,7 @@ class ShadToastTheme {
         shadows.hashCode ^
         padding.hashCode ^
         closeIconPosition.hashCode ^
-        constraints.hashCode;
+        constraints.hashCode ^
+        orderPolicy.hashCode;
   }
 }

@@ -8,6 +8,7 @@ import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 
@@ -276,6 +277,7 @@ class ShadToast extends StatefulWidget {
     this.padding,
     this.closeIconPosition,
     this.constraints,
+    this.orderPolicy,
   }) : variant = ShadToastVariant.primary;
 
   const ShadToast.destructive({
@@ -303,6 +305,7 @@ class ShadToast extends StatefulWidget {
     this.padding,
     this.closeIconPosition,
     this.constraints,
+    this.orderPolicy,
   }) : variant = ShadToastVariant.destructive;
 
   const ShadToast.raw({
@@ -331,6 +334,7 @@ class ShadToast extends StatefulWidget {
     this.padding,
     this.closeIconPosition,
     this.constraints,
+    this.orderPolicy,
   });
 
   final Widget? title;
@@ -357,6 +361,12 @@ class ShadToast extends StatefulWidget {
   final ShadPosition? closeIconPosition;
   final ShadToastVariant variant;
   final BoxConstraints? constraints;
+
+  /// {@template ShadToast.orderPolicy}
+  /// The order policy of the items that compose the toast, defaults to
+  /// [WidgetOrderPolicy.linear()].
+  /// {@endtemplate}
+  final WidgetOrderPolicy? orderPolicy;
 
   @override
   State<ShadToast> createState() => _ShadToastState();
@@ -439,6 +449,10 @@ class _ShadToastState extends State<ShadToast> {
             effectiveToastTheme.showCloseIconOnlyWhenHovered ??
             true;
 
+    final effectiveOrderPolicy = widget.orderPolicy ??
+        effectiveToastTheme.orderPolicy ??
+        const WidgetOrderPolicy.linear();
+
     return MouseRegion(
       onEnter: (_) => hovered.value = true,
       onExit: (_) => hovered.value = false,
@@ -490,7 +504,7 @@ class _ShadToastState extends State<ShadToast> {
                             padding: effectiveActionPadding,
                             child: widget.action,
                           ),
-                      ],
+                      ].order(effectiveOrderPolicy),
                     ),
                   ),
                   ValueListenableBuilder(

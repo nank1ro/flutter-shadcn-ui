@@ -65,6 +65,7 @@ class _RadioPageState extends State<RadioPage> {
             (e) => ShadRadio(
               value: e,
               label: Text(e.message),
+              orderPolicy: WidgetOrderPolicy.reverse(),
             ),
           ),
         ),
