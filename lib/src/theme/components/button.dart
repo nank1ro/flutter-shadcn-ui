@@ -40,6 +40,7 @@ class ShadButtonTheme {
     this.gap,
     this.orderPolicy,
     this.expands,
+    this.iconSize,
   });
 
   final bool merge;
@@ -78,6 +79,9 @@ class ShadButtonTheme {
 
   /// {@macro ShadButton.expands}
   final bool? expands;
+
+  /// {@macro ShadButton.iconSize}
+  final Size? iconSize;
 
   static ShadButtonTheme lerp(
     ShadButtonTheme a,
@@ -124,6 +128,7 @@ class ShadButtonTheme {
       gap: t < 0.5 ? a.gap : b.gap,
       orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
       expands: t < .5 ? a.expands : b.expands,
+      iconSize: Size.lerp(a.iconSize, b.iconSize, t),
     );
   }
 
@@ -154,6 +159,7 @@ class ShadButtonTheme {
     double? gap,
     WidgetOrderPolicy? orderPolicy,
     bool? expands,
+    Size? iconSize,
   }) {
     return ShadButtonTheme(
       applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
@@ -183,6 +189,7 @@ class ShadButtonTheme {
       gap: gap ?? this.gap,
       orderPolicy: orderPolicy ?? this.orderPolicy,
       expands: expands ?? this.expands,
+      iconSize: iconSize ?? this.iconSize,
     );
   }
 
@@ -214,6 +221,7 @@ class ShadButtonTheme {
       gap: other.gap,
       orderPolicy: other.orderPolicy,
       expands: other.expands,
+      iconSize: other.iconSize,
     );
   }
 
@@ -247,7 +255,8 @@ class ShadButtonTheme {
         other.textDirection == textDirection &&
         other.gap == gap &&
         other.orderPolicy == orderPolicy &&
-        other.expands == expands;
+        other.expands == expands &&
+        other.iconSize == iconSize;
   }
 
   @override
@@ -277,7 +286,8 @@ class ShadButtonTheme {
         textDirection.hashCode ^
         gap.hashCode ^
         orderPolicy.hashCode ^
-        expands.hashCode;
+        expands.hashCode ^
+        iconSize.hashCode;
   }
 }
 

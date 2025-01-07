@@ -75,21 +75,13 @@ class _ButtonPageState extends State<ButtonPage> {
           ShadButton(
             size: size,
             enabled: enabled,
-            icon: const Icon(
-              Icons.mail_outlined,
-              size: 16,
-            ),
+            icon: const ShadImage(LucideIcons.mail),
             child: const Text('Login with Email'),
           ),
           ShadButton(
             size: size,
             enabled: enabled,
-            icon: const SizedBox.square(
-              dimension: 16,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-              ),
-            ),
+            icon: const CircularProgressIndicator(strokeWidth: 2),
             child: const Text('Please wait'),
           ),
           ShadButton(
