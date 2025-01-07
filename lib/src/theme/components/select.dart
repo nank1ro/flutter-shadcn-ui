@@ -26,6 +26,7 @@ class ShadSelectTheme {
     this.effects,
     this.shadows,
     this.filter,
+    this.optionsPlaceSelectedIconFirst,
   });
 
   final bool merge;
@@ -50,6 +51,9 @@ class ShadSelectTheme {
   /// {@macro popover.shadows}
   final List<BoxShadow>? shadows;
 
+  /// {@macro ShadOption.placeSelectedIconFirst}
+  final bool? optionsPlaceSelectedIconFirst;
+
   static ShadSelectTheme lerp(
     ShadSelectTheme a,
     ShadSelectTheme b,
@@ -73,6 +77,9 @@ class ShadSelectTheme {
       clearSearchOnClose: t < 0.5 ? a.clearSearchOnClose : b.clearSearchOnClose,
       effects: t < 0.5 ? a.effects : b.effects,
       shadows: t < 0.5 ? a.shadows : b.shadows,
+      optionsPlaceSelectedIconFirst: t < .5
+          ? a.optionsPlaceSelectedIconFirst
+          : b.optionsPlaceSelectedIconFirst,
     );
   }
 
@@ -94,6 +101,7 @@ class ShadSelectTheme {
     List<Effect<dynamic>>? effects,
     List<BoxShadow>? shadows,
     ImageFilter? filter,
+    bool? optionsPlaceSelectedIconFirst,
   }) {
     return ShadSelectTheme(
       merge: merge ?? this.merge,
@@ -113,6 +121,8 @@ class ShadSelectTheme {
       effects: effects ?? this.effects,
       shadows: shadows ?? this.shadows,
       filter: filter ?? this.filter,
+      optionsPlaceSelectedIconFirst:
+          optionsPlaceSelectedIconFirst ?? this.optionsPlaceSelectedIconFirst,
     );
   }
 
@@ -134,6 +144,7 @@ class ShadSelectTheme {
       effects: other.effects,
       shadows: other.shadows,
       filter: other.filter,
+      optionsPlaceSelectedIconFirst: other.optionsPlaceSelectedIconFirst,
     );
   }
 
@@ -156,7 +167,8 @@ class ShadSelectTheme {
         other.clearSearchOnClose == clearSearchOnClose &&
         other.effects == effects &&
         other.shadows == shadows &&
-        other.filter == filter;
+        other.filter == filter &&
+        other.optionsPlaceSelectedIconFirst == optionsPlaceSelectedIconFirst;
   }
 
   @override
@@ -175,6 +187,7 @@ class ShadSelectTheme {
         clearSearchOnClose.hashCode ^
         effects.hashCode ^
         shadows.hashCode ^
-        filter.hashCode;
+        filter.hashCode ^
+        optionsPlaceSelectedIconFirst.hashCode;
   }
 }
