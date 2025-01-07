@@ -211,7 +211,8 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
     final theme = ShadTheme.of(context);
-    final inheritedRadioGroup = context.watch<ShadRadioGroupState<dynamic>>();
+    final inheritedRadioGroup =
+        context.watch<ShadRadioGroupState<dynamic>>() as ShadRadioGroupState<T>;
 
     void onTap() {
       inheritedRadioGroup.select(widget.value);

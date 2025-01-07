@@ -161,7 +161,8 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
 
   @override
   Widget build(BuildContext context) {
-    final inherited = context.watch<ShadAccordionState<dynamic>>();
+    final inherited =
+        context.watch<ShadAccordionState<dynamic>>() as ShadAccordionState<T>;
     final expanded = inherited.values.contains(widget.value);
     final theme = ShadTheme.of(context);
     final effectiveSeparator = widget.separator ?? const Divider();
