@@ -1,6 +1,7 @@
 ## 0.17.5
 
--**FEAT**: Add `placeSelectedIconFirst` to `ShadOption`, defaults to `true`.
+- **FEAT**: New `OrderPolicy`, `LinearOrderPolicy`, `ReverseOrderPolicy` and `CustomOrderPolicy` to update the order policy of the items in a list.
+-**FEAT**: Add `orderPolicy` to `ShadOption`.
 
 ## 0.17.4
 
