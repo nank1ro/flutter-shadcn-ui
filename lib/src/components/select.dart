@@ -979,7 +979,8 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     super.initState();
     focusNode.addListener(onFocusChange);
 
-    final inherited = context.read<ShadSelectState<dynamic>>();
+    final inherited =
+        context.read<ShadSelectState<dynamic>>() as ShadSelectState<T>;
     final selected = inherited.selectedValues.contains(widget.value);
     if (selected) focusNode.requestFocus();
   }
@@ -1000,7 +1001,8 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final inheritedSelect = context.watch<ShadSelectState<dynamic>>();
+    final inheritedSelect =
+        context.watch<ShadSelectState<dynamic>>() as ShadSelectState<T>;
     final selected = inheritedSelect.selectedValues.contains(widget.value);
 
     if (selected) {
