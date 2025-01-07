@@ -1,3 +1,7 @@
+## 0.17.5
+
+-**FEAT**: Add `placeSelectedIconFirst` to `ShadOption`, defaults to `true`.
+
 ## 0.17.4
 
 - **FIX** `ShadTabs` onChanged runtime exception due to misleading type
