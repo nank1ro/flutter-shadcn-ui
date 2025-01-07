@@ -162,7 +162,6 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
 
     // If the image is an IconData, use it as an icon
     if (src is IconData) {
-      print('src is IconData');
       image = Icon(
         src as IconData,
         size: effectiveWidth,
