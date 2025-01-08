@@ -81,7 +81,10 @@ class _ButtonPageState extends State<ButtonPage> {
           ShadButton(
             size: size,
             enabled: enabled,
-            icon: const CircularProgressIndicator(strokeWidth: 2),
+            icon: const SizedBox.square(
+              dimension: 16,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
             child: const Text('Please wait'),
           ),
           ShadButton(

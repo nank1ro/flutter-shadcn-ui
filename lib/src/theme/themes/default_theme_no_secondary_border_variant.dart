@@ -70,7 +70,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
-      iconSize: const Size.square(16),
       expands: false,
     );
   }
@@ -90,7 +89,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
-      iconSize: const Size.square(16),
       expands: false,
     );
   }
@@ -110,7 +108,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
-      iconSize: const Size.square(16),
       expands: false,
     );
   }
@@ -130,7 +127,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
-      iconSize: const Size.square(16),
       expands: false,
     );
   }
@@ -149,7 +145,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
-      iconSize: const Size.square(16),
       expands: false,
     );
   }
@@ -171,18 +166,22 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       regular: ShadButtonSizeTheme(
         height: 40,
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        iconSize: Size.square(16),
       ),
       sm: ShadButtonSizeTheme(
         height: 36,
         padding: EdgeInsets.symmetric(horizontal: 12),
+        iconSize: Size.square(16),
       ),
       lg: ShadButtonSizeTheme(
         height: 44,
         padding: EdgeInsets.symmetric(horizontal: 32, vertical: 8),
+        iconSize: Size.square(16),
       ),
       icon: ShadButtonSizeTheme(
         height: 40,
         width: 40,
+        iconSize: Size.square(16),
         padding: EdgeInsets.zero,
       ),
     );

@@ -121,7 +121,10 @@ ShadButton(
 ShadButton(
   onPressed: () {},
   child: const Text('Please wait'),
-  icon: const CircularProgressIndicator(strokeWidth: 2),
+  icon: const SizedBox.square(
+    dimension: 16,
+    child: CircularProgressIndicator(strokeWidth: 2),
+  ),
 )
 ```
 

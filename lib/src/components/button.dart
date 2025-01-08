@@ -415,6 +415,12 @@ class ShadButton extends StatefulWidget {
   final Widget? child;
   final ShadButtonVariant variant;
   final ShadButtonSize? size;
+
+  /// {@template ShadButton.applyIconColorFilter}
+  /// Whether to override the icon color with the foreground used for the text.
+  /// Defaults to true if you don't provide an `Icon` or `ShadImage` widget with
+  /// an overriden color.
+  /// {@endtemplate}
   final bool? applyIconColorFilter;
   final MouseCursor? cursor;
   final double? width;
@@ -489,7 +495,10 @@ class ShadButton extends StatefulWidget {
   final bool? expands;
 
   /// {@template ShadButton.iconSize}
-  /// The size of the icon, defaults to `Size.square(16)`
+  /// The size of the icon, defaults to `Size.square(16)`.
+  ///
+  /// __Please note__: the size is applied only if you use a [ShadImage] as
+  /// [icon]. If you use something else, wrap it with a SizedBox.
   /// {@endtemplate}
   final Size? iconSize;
 
@@ -721,9 +730,6 @@ class _ShadButtonState extends State<ShadButton> {
     final hasPressedForegroundColor = widget.pressedForegroundColor != null ||
         buttonTheme(theme).pressedForegroundColor != null;
 
-    final applyIconColorFilter = widget.applyIconColorFilter ??
-        theme.primaryButtonTheme.applyIconColorFilter;
-
     final effectiveDecoration =
         (buttonTheme(theme).decoration ?? const ShadDecoration())
             .mergeWith(widget.decoration);
@@ -755,8 +761,23 @@ class _ShadButtonState extends State<ShadButton> {
     final effectiveExpands =
         widget.expands ?? buttonTheme(theme).expands ?? false;
 
-    final effectiveIconSize =
-        widget.iconSize ?? buttonTheme(theme).iconSize ?? const Size.square(16);
+    final effectiveIconSize = widget.iconSize ??
+        sizeTheme(
+          theme,
+          buttonTheme(theme).size ?? ShadButtonSize.regular,
+        ).iconSize ??
+        const Size.square(16);
+
+    // Check if the icon is an Icon or ShadImage widget with an overriden color
+    final hasIconWithColor = switch (widget.icon) {
+      final Icon icon => icon.color != null,
+      final ShadImage image => image.color != null,
+      _ => false,
+    };
+
+    final effectiveApplyIconColorFilter = widget.applyIconColorFilter ??
+        buttonTheme(theme).applyIconColorFilter ??
+        !hasIconWithColor;
 
     return CallbackShortcuts(
       bindings: {
@@ -769,49 +790,54 @@ class _ShadButtonState extends State<ShadButton> {
           final hovered = states.contains(ShadState.hovered);
           final enabled = !states.contains(ShadState.disabled);
 
+          final effectiveBackgroundColor = hasPressedBackgroundColor && pressed
+              ? pressedBackgroundColor(theme)
+              : hovered
+                  ? hoverBackground(theme)
+                  : background(theme);
+
+          final effectiveForegroundColor = hasPressedForegroundColor && pressed
+              ? pressedForegroundColor(theme)
+              : hovered
+                  ? hoverForeground(theme)
+                  : foreground(theme);
+
           final updatedDecoration = effectiveDecoration.copyWith(
-            color: hasPressedBackgroundColor && pressed
-                ? pressedBackgroundColor(theme)
-                : hovered
-                    ? hoverBackground(theme)
-                    : background(theme),
+            color: effectiveBackgroundColor,
             gradient: gradient(theme),
             shadows: shadows(theme),
           );
 
           var icon = widget.icon;
 
-          // Applies the foreground color filter to the icon if provided
-          if (icon != null && (applyIconColorFilter ?? true)) {
-            icon = ColorFiltered(
-              colorFilter: ColorFilter.mode(
-                hasPressedForegroundColor && pressed
-                    ? pressedForegroundColor(theme)
-                    : hovered
-                        ? hoverForeground(theme)
-                        : foreground(theme),
-                BlendMode.srcIn,
-              ),
-              child: SizedBox.fromSize(
-                size: effectiveIconSize,
-                child: ShadProvider<ShadImageSize>(
-                  data: ShadImageSize.copy(effectiveIconSize),
-                  notifyUpdate: (state) => effectiveIconSize != state.data,
-                  child: icon,
-                ),
-              ),
+          if (icon != null) {
+            final imageData = ShadImageData(
+              size: effectiveIconSize,
+              color: effectiveForegroundColor,
             );
+            icon = ShadProvider(
+              data: imageData,
+              notifyUpdate: (state) => imageData != state.data,
+              child: icon,
+            );
+
+            // Applies the foreground color filter to the icon
+            if (effectiveApplyIconColorFilter) {
+              icon = ColorFiltered(
+                colorFilter: ColorFilter.mode(
+                  effectiveForegroundColor,
+                  BlendMode.srcIn,
+                ),
+                child: icon,
+              );
+            }
           }
 
           Widget? child = widget.child == null
               ? null
               : DefaultTextStyle(
                   style: theme.textTheme.small.copyWith(
-                    color: hasPressedForegroundColor && pressed
-                        ? pressedForegroundColor(theme)
-                        : hovered
-                            ? hoverForeground(theme)
-                            : foreground(theme),
+                    color: effectiveForegroundColor,
                     decoration: textDecoration(
                       theme,
                       hovered: hovered,

@@ -6,28 +6,31 @@ import 'package:vector_graphics/vector_graphics.dart'
 
 typedef ShadImageSrc = Object;
 
-class ShadImageSize extends Size {
-  const ShadImageSize(super.width, super.height);
-  ShadImageSize.copy(Size size) : super(size.width, size.height);
-  ShadImageSize.square(double size) : super(size, size);
+/// The data image provided to the [ShadImage] with a Provider.
+///
+/// This value is used only if the properties are not overriden in the
+/// [ShadImage].
+@immutable
+class ShadImageData {
+  const ShadImageData({this.size, this.color});
 
-  /// Creates a [Size] with the given [width] and an infinite [height].
-  const ShadImageSize.fromWidth(double width) : super(width, double.infinity);
+  /// The size of the image.
+  final Size? size;
 
-  /// Creates a [Size] with the given [height] and an infinite [width].
-  const ShadImageSize.fromHeight(double height)
-      : super(double.infinity, height);
+  /// The color of the image.
+  final Color? color;
 
-  /// Creates a square [Size] whose [width] and [height] are twice the given
-  /// dimension.
-  ///
-  /// This is a square that contains a circle with the given radius.
-  ///
-  /// See also:
-  ///
-  ///  * [Size.square], which creates a square with the given dimension.
-  const ShadImageSize.fromRadius(double radius)
-      : super(radius * 2.0, radius * 2.0);
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShadImageData && other.size == size && other.color == color;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hashAll([size, color]);
+  }
 }
 
 /// {@template image}
@@ -149,14 +152,19 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final imageColor = gradient != null ? Colors.white : color;
-    final colorFilter = imageColor != null
-        ? ColorFilter.mode(imageColor, BlendMode.srcIn)
+    final inherited = context.maybeRead<ShadImageData>();
+
+    var effectiveColor = color ?? inherited?.color;
+    if (gradient != null && effectiveColor == null) {
+      effectiveColor = Colors.white;
+    }
+
+    final colorFilter = effectiveColor != null
+        ? ColorFilter.mode(effectiveColor, BlendMode.srcIn)
         : null;
 
-    final inheritedSize = context.maybeRead<ShadImageSize>();
-    final effectiveWidth = width ?? inheritedSize?.width;
-    final effectiveHeight = height ?? inheritedSize?.height;
+    final effectiveWidth = width ?? inherited?.size?.width;
+    final effectiveHeight = height ?? inherited?.size?.height;
 
     final Widget image;
 
@@ -165,7 +173,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
       image = Icon(
         src as IconData,
         size: effectiveWidth,
-        color: imageColor,
+        color: effectiveColor,
         semanticLabel: semanticLabel,
       );
     } else {
@@ -210,7 +218,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
             height: effectiveHeight,
             fit: fit,
             semanticLabel: semanticLabel,
-            color: imageColor,
+            color: effectiveColor,
             alignment: alignment,
             isAntiAlias: antialiasing,
             headers: headers,
@@ -253,7 +261,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
           width: effectiveWidth,
           height: effectiveHeight,
           fit: fit,
-          color: imageColor,
+          color: effectiveColor,
           isAntiAlias: antialiasing,
           alignment: alignment,
           frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
