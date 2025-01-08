@@ -59,9 +59,12 @@ class ButtonPage extends StatelessWidget {
             ),
           PlagroundButtonStyle.loading => ShadButton(
               onPressed: () {},
-              icon: const SizedBox.square(
+              icon: SizedBox.square(
                 dimension: 16,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: ShadTheme.of(context).colorScheme.primaryForeground,
+                ),
               ),
               child: const Text('Please wait'),
             ),

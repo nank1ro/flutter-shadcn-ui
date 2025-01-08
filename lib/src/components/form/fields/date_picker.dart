@@ -300,9 +300,6 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     /// {@macro ShadButton.size}
     ShadButtonSize? size,
 
-    /// {@macro ShadButton.applyIconColorFilter}
-    bool? applyIconColorFilter,
-
     /// {@macro ShadButton.cursor}
     MouseCursor? cursor,
 
@@ -522,7 +519,6 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
               buttonChild: buttonChild,
               buttonVariant: buttonVariant,
               size: size,
-              applyIconColorFilter: applyIconColorFilter,
               cursor: cursor,
               width: width,
               height: height,

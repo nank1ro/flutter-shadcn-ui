@@ -307,9 +307,6 @@ class ShadDateRangePickerFormField
     /// {@macro ShadButton.size}
     ShadButtonSize? size,
 
-    /// {@macro ShadButton.applyIconColorFilter}
-    bool? applyIconColorFilter,
-
     /// {@macro ShadButton.cursor}
     MouseCursor? cursor,
 
@@ -531,7 +528,6 @@ class ShadDateRangePickerFormField
               buttonChild: buttonChild,
               buttonVariant: buttonVariant,
               size: size,
-              applyIconColorFilter: applyIconColorFilter,
               cursor: cursor,
               width: width,
               height: height,

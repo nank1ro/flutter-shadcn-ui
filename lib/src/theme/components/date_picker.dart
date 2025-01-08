@@ -75,7 +75,6 @@ class ShadDatePickerTheme {
     this.popoverDecoration,
     this.anchor,
     this.filter,
-    this.applyIconColorFilter,
     this.cursor,
     this.size,
     this.sizesTheme,
@@ -307,9 +306,6 @@ class ShadDatePickerTheme {
   // ---
   // BUTTON
   // ---
-
-  /// {@macro ShadButton.applyIconColorFilter}
-  final bool? applyIconColorFilter;
 
   /// {@macro ShadButton.cursor}
   final MouseCursor? cursor;
@@ -560,8 +556,6 @@ class ShadDatePickerTheme {
           ShadDecoration.lerp(a.calendarDecoration, b.calendarDecoration, t),
       anchor: t < 0.5 ? a.anchor : b.anchor,
       filter: t < 0.5 ? a.filter : b.filter,
-      applyIconColorFilter:
-          t < 0.5 ? a.applyIconColorFilter : b.applyIconColorFilter,
       sizesTheme: ShadButtonSizesTheme.lerp(
         a.sizesTheme,
         b.sizesTheme,
@@ -693,7 +687,6 @@ class ShadDatePickerTheme {
               other.popoverDecoration,
       anchor: other.anchor,
       filter: other.filter,
-      applyIconColorFilter: other.applyIconColorFilter,
       cursor: other.cursor,
       size: other.size,
       backgroundColor: other.backgroundColor,
@@ -794,7 +787,6 @@ class ShadDatePickerTheme {
         other.calendarDecoration == calendarDecoration &&
         other.anchor == anchor &&
         other.filter == filter &&
-        other.applyIconColorFilter == applyIconColorFilter &&
         other.cursor == cursor &&
         other.size == size &&
         other.sizesTheme == sizesTheme &&
@@ -888,7 +880,6 @@ class ShadDatePickerTheme {
         calendarDecoration.hashCode ^
         anchor.hashCode ^
         filter.hashCode ^
-        applyIconColorFilter.hashCode ^
         cursor.hashCode ^
         size.hashCode ^
         sizesTheme.hashCode ^
@@ -983,7 +974,6 @@ class ShadDatePickerTheme {
     ShadDecoration? popoverDecoration,
     ShadAnchorBase? anchor,
     ImageFilter? filter,
-    bool? applyIconColorFilter,
     MouseCursor? cursor,
     MouseCursor? disabledCursor,
     ShadButtonSize? size,
@@ -1096,7 +1086,6 @@ class ShadDatePickerTheme {
       popoverDecoration: popoverDecoration ?? this.popoverDecoration,
       anchor: anchor ?? this.anchor,
       filter: filter ?? this.filter,
-      applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
       cursor: cursor ?? this.cursor,
       size: size ?? this.size,
       sizesTheme: sizesTheme ?? this.sizesTheme,

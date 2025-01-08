@@ -1,6 +1,6 @@
 ## 0.17.7
 
-- **FIX**: Update the default value of `applyIconColorFilter` of `ShadButton` taking into account an overriden color.
+- **FIX**: Remove `applyIconColorFilter` from `ShadButton`.
 - **FIX** The `iconSize` of a `ShadButton` is now applied only if you use a `ShadImage`.
 - **FIX**: Move `iconSize` from `ShadButtonTheme` to `ShadButtonSizesTheme`.
 

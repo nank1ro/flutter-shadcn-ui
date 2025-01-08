@@ -18,6 +18,7 @@ class _ButtonPageState extends State<ButtonPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
     return FocusTraversalGroup(
       policy: WidgetOrderTraversalPolicy(),
       child: BaseScaffold(
@@ -81,9 +82,12 @@ class _ButtonPageState extends State<ButtonPage> {
           ShadButton(
             size: size,
             enabled: enabled,
-            icon: const SizedBox.square(
+            icon: SizedBox.square(
               dimension: 16,
-              child: CircularProgressIndicator(strokeWidth: 2),
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: theme.colorScheme.primaryForeground,
+              ),
             ),
             child: const Text('Please wait'),
           ),

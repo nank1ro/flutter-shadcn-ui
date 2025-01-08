@@ -1336,7 +1336,6 @@ class _ShadCalendarState extends State<ShadCalendar> {
             width: effectiveNavigationButtonSize,
             height: effectiveNavigationButtonSize,
             padding: effectiveNavigationButtonPadding,
-            applyIconColorFilter: false,
             enabled: !isFirstMonthDisplayed,
             onHoverChange: (hovered) => backMonthButtonHovered.value = hovered,
             icon: ShadImage.square(

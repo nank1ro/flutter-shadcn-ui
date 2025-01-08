@@ -113,7 +113,6 @@ class ShadDatePicker extends StatefulWidget {
     this.buttonChild,
     this.buttonVariant,
     this.size,
-    this.applyIconColorFilter,
     this.cursor,
     this.width,
     this.height,
@@ -255,7 +254,6 @@ class ShadDatePicker extends StatefulWidget {
     this.buttonChild,
     this.buttonVariant,
     this.size,
-    this.applyIconColorFilter,
     this.cursor,
     this.width,
     this.height,
@@ -399,7 +397,6 @@ class ShadDatePicker extends StatefulWidget {
     this.buttonChild,
     this.buttonVariant,
     this.size,
-    this.applyIconColorFilter,
     this.cursor,
     this.width,
     this.height,
@@ -768,9 +765,6 @@ class ShadDatePicker extends StatefulWidget {
 
   /// {@macro ShadButton.size}
   final ShadButtonSize? size;
-
-  /// {@macro ShadButton.applyIconColorFilter}
-  final bool? applyIconColorFilter;
 
   /// {@macro ShadButton.cursor}
   final MouseCursor? cursor;
@@ -1162,9 +1156,6 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
         mainAxisAlignment: widget.mainAxisAlignment ??
             theme.datePickerTheme.mainAxisAlignment ??
             MainAxisAlignment.start,
-        applyIconColorFilter: widget.applyIconColorFilter ??
-            theme.datePickerTheme.applyIconColorFilter ??
-            false,
         icon: widget.icon ??
             ShadImage.square(
               widget.iconSrc ??

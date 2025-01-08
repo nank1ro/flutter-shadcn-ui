@@ -36,7 +36,6 @@ class ShadButton extends StatefulWidget {
     this.icon,
     this.onPressed,
     this.size,
-    this.applyIconColorFilter,
     this.cursor,
     this.width,
     this.height,
@@ -91,7 +90,6 @@ class ShadButton extends StatefulWidget {
     this.child,
     this.icon,
     this.onPressed,
-    this.applyIconColorFilter,
     this.cursor,
     this.width,
     this.height,
@@ -145,7 +143,6 @@ class ShadButton extends StatefulWidget {
     this.icon,
     this.onPressed,
     this.size,
-    this.applyIconColorFilter,
     this.cursor,
     this.width,
     this.height,
@@ -199,7 +196,6 @@ class ShadButton extends StatefulWidget {
     this.icon,
     this.onPressed,
     this.size,
-    this.applyIconColorFilter,
     this.cursor,
     this.width,
     this.height,
@@ -253,7 +249,6 @@ class ShadButton extends StatefulWidget {
     this.icon,
     this.onPressed,
     this.size,
-    this.applyIconColorFilter,
     this.cursor,
     this.width,
     this.height,
@@ -307,7 +302,6 @@ class ShadButton extends StatefulWidget {
     this.icon,
     this.onPressed,
     this.size,
-    this.applyIconColorFilter,
     this.cursor,
     this.width,
     this.height,
@@ -360,7 +354,6 @@ class ShadButton extends StatefulWidget {
     required this.child,
     this.onPressed,
     this.size,
-    this.applyIconColorFilter,
     this.cursor,
     this.width,
     this.height,
@@ -416,12 +409,6 @@ class ShadButton extends StatefulWidget {
   final ShadButtonVariant variant;
   final ShadButtonSize? size;
 
-  /// {@template ShadButton.applyIconColorFilter}
-  /// Whether to override the icon color with the foreground used for the text.
-  /// Defaults to true if you don't provide an `Icon` or `ShadImage` widget with
-  /// an overriden color.
-  /// {@endtemplate}
-  final bool? applyIconColorFilter;
   final MouseCursor? cursor;
   final double? width;
   final double? height;
@@ -768,17 +755,6 @@ class _ShadButtonState extends State<ShadButton> {
         ).iconSize ??
         const Size.square(16);
 
-    // Check if the icon is an Icon or ShadImage widget with an overriden color
-    final hasIconWithColor = switch (widget.icon) {
-      final Icon icon => icon.color != null,
-      final ShadImage image => image.color != null,
-      _ => false,
-    };
-
-    final effectiveApplyIconColorFilter = widget.applyIconColorFilter ??
-        buttonTheme(theme).applyIconColorFilter ??
-        !hasIconWithColor;
-
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.enter): onTap,
@@ -817,20 +793,11 @@ class _ShadButtonState extends State<ShadButton> {
             );
             icon = ShadProvider(
               data: imageData,
-              notifyUpdate: (state) => imageData != state.data,
+              notifyUpdate: (state) {
+                return imageData != state.data;
+              },
               child: icon,
             );
-
-            // Applies the foreground color filter to the icon
-            if (effectiveApplyIconColorFilter) {
-              icon = ColorFiltered(
-                colorFilter: ColorFilter.mode(
-                  effectiveForegroundColor,
-                  BlendMode.srcIn,
-                ),
-                child: icon,
-              );
-            }
           }
 
           Widget? child = widget.child == null

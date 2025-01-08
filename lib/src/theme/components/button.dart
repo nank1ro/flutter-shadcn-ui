@@ -15,7 +15,6 @@ import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 class ShadButtonTheme {
   const ShadButtonTheme({
     this.merge = true,
-    this.applyIconColorFilter,
     this.cursor,
     this.size,
     this.sizesTheme,
@@ -44,8 +43,6 @@ class ShadButtonTheme {
 
   final bool merge;
 
-  /// {@macro ShadButton.applyIconColorFilter}
-  final bool? applyIconColorFilter;
   final MouseCursor? cursor;
   final ShadButtonSize? size;
   final ShadButtonSizesTheme? sizesTheme;
@@ -88,8 +85,6 @@ class ShadButtonTheme {
   ) {
     if (identical(a, b)) return a;
     return ShadButtonTheme(
-      applyIconColorFilter:
-          t < 0.5 ? a.applyIconColorFilter : b.applyIconColorFilter,
       sizesTheme: ShadButtonSizesTheme.lerp(
         a.sizesTheme,
         b.sizesTheme,
@@ -130,7 +125,6 @@ class ShadButtonTheme {
   }
 
   ShadButtonTheme copyWith({
-    bool? applyIconColorFilter,
     MouseCursor? cursor,
     MouseCursor? disabledCursor,
     ShadButtonSize? size,
@@ -158,7 +152,6 @@ class ShadButtonTheme {
     bool? expands,
   }) {
     return ShadButtonTheme(
-      applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
       cursor: cursor ?? this.cursor,
       size: size ?? this.size,
       sizesTheme: sizesTheme ?? this.sizesTheme,
@@ -192,7 +185,6 @@ class ShadButtonTheme {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
-      applyIconColorFilter: other.applyIconColorFilter,
       cursor: other.cursor,
       size: other.size,
       backgroundColor: other.backgroundColor,
@@ -225,7 +217,6 @@ class ShadButtonTheme {
 
     return other is ShadButtonTheme &&
         other.merge == merge &&
-        other.applyIconColorFilter == applyIconColorFilter &&
         other.cursor == cursor &&
         other.size == size &&
         other.sizesTheme == sizesTheme &&
@@ -255,7 +246,6 @@ class ShadButtonTheme {
   @override
   int get hashCode {
     return merge.hashCode ^
-        applyIconColorFilter.hashCode ^
         cursor.hashCode ^
         size.hashCode ^
         sizesTheme.hashCode ^

@@ -152,7 +152,7 @@ class ShadImage<T extends ShadImageSrc> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final inherited = context.maybeRead<ShadImageData>();
+    final inherited = context.maybeWatch<ShadImageData>();
 
     var effectiveColor = color ?? inherited?.color;
     if (gradient != null && effectiveColor == null) {
