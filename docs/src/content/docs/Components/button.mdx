@@ -154,3 +154,21 @@ ShadButton(
 ```
 
 </Preview>
+
+## Troubleshoot
+
+### iconSize
+
+The size of the icon, defaults to `Size.square(16)`.
+
+:::caution
+The icon size is applied only if you use a `ShadImage` as `icon`. If you use something else, wrap it with a `SizedBox`.
+:::
+
+### applyIconColorFilter
+
+By default a color filter is applied to the icon to keep it in sync with the text color.
+
+:::caution
+If you are overriding the icon color and it doesn't work, set `applyIconColorFilter` to false
+:::
