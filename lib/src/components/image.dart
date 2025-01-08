@@ -6,12 +6,15 @@ import 'package:vector_graphics/vector_graphics.dart'
 
 typedef ShadImageSrc = Object;
 
+/// {@template ShadImageData}
 /// The data image provided to the [ShadImage] with a Provider.
 ///
 /// This value is used only if the properties are not overriden in the
 /// [ShadImage].
+/// {@endtemplate}
 @immutable
 class ShadImageData {
+  /// {@macro ShadImageData}
   const ShadImageData({this.size, this.color});
 
   /// The size of the image.

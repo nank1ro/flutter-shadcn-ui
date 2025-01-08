@@ -31,6 +31,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mocktail: ^1.0.4
   very_good_analysis: ^7.0.0
 
 flutter:
@@ -75,3 +76,5 @@ flutter:
           weight: 800
         - asset: fonts/GeistMono-UltraBlack.otf
           weight: 900
+  assets:
+    - test/assets/
