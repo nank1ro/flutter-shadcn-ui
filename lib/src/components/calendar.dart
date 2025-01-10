@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -121,8 +120,8 @@ class ShadCalendar extends StatefulWidget {
     this.monthSelectorPadding,
     this.navigationButtonSize,
     this.navigationButtonIconSize,
-    this.backNavigationButtonSrc,
-    this.forwardNavigationButtonSrc,
+    this.backNavigationButtonIconData,
+    this.forwardNavigationButtonIconData,
     this.navigationButtonPadding,
     this.navigationButtonDisabledOpacity,
     this.decoration,
@@ -195,8 +194,8 @@ class ShadCalendar extends StatefulWidget {
     this.monthSelectorPadding,
     this.navigationButtonSize,
     this.navigationButtonIconSize,
-    this.backNavigationButtonSrc,
-    this.forwardNavigationButtonSrc,
+    this.backNavigationButtonIconData,
+    this.forwardNavigationButtonIconData,
     this.navigationButtonPadding,
     this.navigationButtonDisabledOpacity,
     this.decoration,
@@ -269,8 +268,8 @@ class ShadCalendar extends StatefulWidget {
     this.monthSelectorPadding,
     this.navigationButtonSize,
     this.navigationButtonIconSize,
-    this.backNavigationButtonSrc,
-    this.forwardNavigationButtonSrc,
+    this.backNavigationButtonIconData,
+    this.forwardNavigationButtonIconData,
     this.navigationButtonPadding,
     this.navigationButtonDisabledOpacity,
     this.decoration,
@@ -348,8 +347,8 @@ class ShadCalendar extends StatefulWidget {
     this.monthSelectorPadding,
     this.navigationButtonSize,
     this.navigationButtonIconSize,
-    this.backNavigationButtonSrc,
-    this.forwardNavigationButtonSrc,
+    this.backNavigationButtonIconData,
+    this.forwardNavigationButtonIconData,
     this.navigationButtonPadding,
     this.navigationButtonDisabledOpacity,
     this.decoration,
@@ -562,15 +561,15 @@ class ShadCalendar extends StatefulWidget {
   /// {@endtemplate}
   final double? navigationButtonIconSize;
 
-  /// {@template ShadCalendar.backNavigationButtonSrc}
+  /// {@template ShadCalendar.backNavigationButtonIconData}
   /// The back navigation button src, defaults to [LucideIcons.chevronLeft]
   /// {@endtemplate}
-  final ShadImageSrc? backNavigationButtonSrc;
+  final IconData? backNavigationButtonIconData;
 
-  /// {@template ShadCalendar.forwardNavigationButtonSrc}
+  /// {@template ShadCalendar.forwardNavigationButtonIconData}
   /// The forward navigation button src, defaults to [LucideIcons.chevronRight]
   /// {@endtemplate}
-  final ShadImageSrc? forwardNavigationButtonSrc;
+  final IconData? forwardNavigationButtonIconData;
 
   /// {@template ShadCalendar.navigationButtonPadding}
   /// The padding of the navigation button, defaults to [EdgeInsets.zero]
@@ -1126,13 +1125,14 @@ class _ShadCalendarState extends State<ShadCalendar> {
         theme.calendarTheme.navigationButtonIconSize ??
         16;
 
-    final effectiveBackNavigationButtonSrc = widget.backNavigationButtonSrc ??
-        theme.calendarTheme.backNavigationButtonSrc ??
-        LucideIcons.chevronLeft;
+    final effectiveBackNavigationButtonSrc =
+        widget.backNavigationButtonIconData ??
+            theme.calendarTheme.backNavigationButtonIconData ??
+            LucideIcons.chevronLeft;
 
     final effectiveForwardNavigationButtonSrc =
-        widget.forwardNavigationButtonSrc ??
-            theme.calendarTheme.forwardNavigationButtonSrc ??
+        widget.forwardNavigationButtonIconData ??
+            theme.calendarTheme.forwardNavigationButtonIconData ??
             LucideIcons.chevronRight;
 
     final effectiveNavigationButtonPadding = widget.navigationButtonPadding ??
@@ -1338,7 +1338,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
             padding: effectiveNavigationButtonPadding,
             enabled: !isFirstMonthDisplayed,
             onHoverChange: (hovered) => backMonthButtonHovered.value = hovered,
-            icon: ShadImage.square(
+            icon: Icon(
               effectiveBackNavigationButtonSrc,
               size: effectiveNavigationButtonIconSize,
             ),
@@ -1361,7 +1361,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
             onHoverChange: (hovered) =>
                 forwardMonthButtonHovered.value = hovered,
             onPressed: () => goToMonth(currentMonth.nextMonth),
-            child: ShadImage.square(
+            child: Icon(
               effectiveForwardNavigationButtonSrc,
               size: effectiveNavigationButtonIconSize,
             ),

@@ -281,27 +281,21 @@ class ShadButtonSizeTheme {
     required this.height,
     required this.padding,
     this.width,
-    this.iconSize,
   });
   final bool merge;
   final double height;
   final EdgeInsets padding;
   final double? width;
 
-  /// {@macro ShadButton.iconSize}
-  final Size? iconSize;
-
   ShadButtonSizeTheme copyWith({
     double? height,
     EdgeInsets? padding,
     double? width,
-    Size? iconSize,
   }) {
     return ShadButtonSizeTheme(
       height: height ?? this.height,
       padding: padding ?? this.padding,
       width: width ?? this.width,
-      iconSize: iconSize ?? this.iconSize,
     );
   }
 
@@ -315,7 +309,6 @@ class ShadButtonSizeTheme {
       height: lerpDouble(a?.height, b?.height, t)!,
       padding: EdgeInsets.lerp(a?.padding, b?.padding, t)!,
       width: lerpDouble(a?.width, b?.width, t),
-      iconSize: Size.lerp(a?.iconSize, b?.iconSize, t),
     );
   }
 
@@ -326,7 +319,6 @@ class ShadButtonSizeTheme {
       height: other.height,
       padding: other.padding,
       width: other.width,
-      iconSize: other.iconSize,
     );
   }
 
@@ -337,13 +329,11 @@ class ShadButtonSizeTheme {
     return other is ShadButtonSizeTheme &&
         other.height == height &&
         other.padding == padding &&
-        other.width == width &&
-        other.iconSize == iconSize;
+        other.width == width;
   }
 
   @override
-  int get hashCode =>
-      height.hashCode ^ padding.hashCode ^ width.hashCode ^ iconSize.hashCode;
+  int get hashCode => height.hashCode ^ padding.hashCode ^ width.hashCode;
 }
 
 // The theme for the predefined sizes of ShadButton.

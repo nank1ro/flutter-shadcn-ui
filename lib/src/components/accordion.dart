@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/animation_builder.dart';
@@ -92,7 +91,7 @@ class ShadAccordionItem<T> extends StatefulWidget {
     required this.child,
     this.separator,
     this.icon,
-    this.iconSrc,
+    this.iconData,
     this.iconEffects,
     this.padding,
     this.underlineTitleOnHover,
@@ -108,7 +107,7 @@ class ShadAccordionItem<T> extends StatefulWidget {
   final Widget child;
   final Widget? separator;
   final Widget? icon;
-  final ShadImageSrc? iconSrc;
+  final IconData? iconData;
   final List<Effect<dynamic>>? iconEffects;
   final EdgeInsets? padding;
   final bool? underlineTitleOnHover;
@@ -195,13 +194,13 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
           ),
         ];
 
-    final effectiveIconSrc = widget.iconSrc ??
-        theme.accordionTheme.iconSrc ??
+    final effectiveIconData = widget.iconData ??
+        theme.accordionTheme.iconData ??
         LucideIcons.chevronDown;
 
     final effectiveIcon = widget.icon ??
-        ShadImage.square(
-          effectiveIconSrc,
+        Icon(
+          effectiveIconData,
           color: theme.colorScheme.foreground,
           size: 16,
         );

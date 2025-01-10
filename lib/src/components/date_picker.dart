@@ -7,7 +7,6 @@ import 'package:intl/intl.dart' as intl;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/calendar.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -63,8 +62,8 @@ class ShadDatePicker extends StatefulWidget {
     this.monthSelectorPadding,
     this.navigationButtonSize,
     this.navigationButtonIconSize,
-    this.backNavigationButtonSrc,
-    this.forwardNavigationButtonSrc,
+    this.backNavigationButtonIconData,
+    this.forwardNavigationButtonIconData,
     this.navigationButtonPadding,
     this.navigationButtonDisabledOpacity,
     this.decoration,
@@ -154,7 +153,7 @@ class ShadDatePicker extends StatefulWidget {
     this.longPressDuration,
     this.textDirection,
     this.onFocusChange,
-    this.iconSrc,
+    this.iconData,
     this.orderPolicy,
     this.expands,
   })  : variant = ShadDatePickerVariant.single,
@@ -204,8 +203,8 @@ class ShadDatePicker extends StatefulWidget {
     this.monthSelectorPadding,
     this.navigationButtonSize,
     this.navigationButtonIconSize,
-    this.backNavigationButtonSrc,
-    this.forwardNavigationButtonSrc,
+    this.backNavigationButtonIconData,
+    this.forwardNavigationButtonIconData,
     this.navigationButtonPadding,
     this.navigationButtonDisabledOpacity,
     this.decoration,
@@ -295,7 +294,7 @@ class ShadDatePicker extends StatefulWidget {
     this.longPressDuration,
     this.textDirection,
     this.onFocusChange,
-    this.iconSrc,
+    this.iconData,
     this.orderPolicy,
     this.expands,
   })  : variant = ShadDatePickerVariant.range,
@@ -347,8 +346,8 @@ class ShadDatePicker extends StatefulWidget {
     this.monthSelectorPadding,
     this.navigationButtonSize,
     this.navigationButtonIconSize,
-    this.backNavigationButtonSrc,
-    this.forwardNavigationButtonSrc,
+    this.backNavigationButtonIconData,
+    this.forwardNavigationButtonIconData,
     this.navigationButtonPadding,
     this.navigationButtonDisabledOpacity,
     this.decoration,
@@ -438,7 +437,7 @@ class ShadDatePicker extends StatefulWidget {
     this.longPressDuration,
     this.textDirection,
     this.onFocusChange,
-    this.iconSrc,
+    this.iconData,
     this.formatDateRange,
     this.placeholder,
     this.orderPolicy,
@@ -603,11 +602,11 @@ class ShadDatePicker extends StatefulWidget {
   /// {@macro ShadCalendar.navigationButtonIconSize}
   final double? navigationButtonIconSize;
 
-  /// {@macro ShadCalendar.backNavigationButtonSrc}
-  final ShadImageSrc? backNavigationButtonSrc;
+  /// {@macro ShadCalendar.backNavigationButtonIconData}
+  final IconData? backNavigationButtonIconData;
 
-  /// {@macro ShadCalendar.forwardNavigationButtonSrc}
-  final ShadImageSrc? forwardNavigationButtonSrc;
+  /// {@macro ShadCalendar.forwardNavigationButtonIconData}
+  final IconData? forwardNavigationButtonIconData;
 
   /// {@macro ShadCalendar.navigationButtonPadding}
   final EdgeInsets? navigationButtonPadding;
@@ -752,10 +751,10 @@ class ShadDatePicker extends StatefulWidget {
   /// {@macro ShadButton.icon}
   final Widget? icon;
 
-  /// {@template ShadDatePicker.iconSrc}
+  /// {@template ShadDatePicker.iconData}
   /// The icon of the date picker button, defaults to [LucideIcons.calendar].
   /// {@endtemplate}
-  final ShadImageSrc? iconSrc;
+  final IconData? iconData;
 
   /// {@macro ShadButton.child}
   final Widget? buttonChild;
@@ -1052,10 +1051,12 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
                   theme.datePickerTheme.navigationButtonSize,
               navigationButtonIconSize: widget.navigationButtonIconSize ??
                   theme.datePickerTheme.navigationButtonIconSize,
-              backNavigationButtonSrc: widget.backNavigationButtonSrc ??
-                  theme.datePickerTheme.backNavigationButtonSrc,
-              forwardNavigationButtonSrc: widget.forwardNavigationButtonSrc ??
-                  theme.datePickerTheme.forwardNavigationButtonSrc,
+              backNavigationButtonIconData:
+                  widget.backNavigationButtonIconData ??
+                      theme.datePickerTheme.backNavigationButtonIconData,
+              forwardNavigationButtonIconData:
+                  widget.forwardNavigationButtonIconData ??
+                      theme.datePickerTheme.forwardNavigationButtonIconData,
               navigationButtonPadding: widget.navigationButtonPadding ??
                   theme.datePickerTheme.navigationButtonPadding,
               navigationButtonDisabledOpacity:
@@ -1157,9 +1158,9 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
             theme.datePickerTheme.mainAxisAlignment ??
             MainAxisAlignment.start,
         icon: widget.icon ??
-            ShadImage.square(
-              widget.iconSrc ??
-                  theme.datePickerTheme.iconSrc ??
+            Icon(
+              widget.iconData ??
+                  theme.datePickerTheme.iconData ??
                   LucideIcons.calendar,
               size: 16,
               color: isSelected

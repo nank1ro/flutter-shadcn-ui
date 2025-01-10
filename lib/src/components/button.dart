@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -10,7 +9,6 @@ import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
-import 'package:shadcn_ui/src/utils/provider.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
@@ -80,7 +78,6 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.orderPolicy,
     this.expands,
-    this.iconSize,
   }) : variant = ShadButtonVariant.primary;
 
   const ShadButton.raw({
@@ -134,7 +131,6 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.orderPolicy,
     this.expands,
-    this.iconSize,
   });
 
   const ShadButton.destructive({
@@ -187,7 +183,6 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.orderPolicy,
     this.expands,
-    this.iconSize,
   }) : variant = ShadButtonVariant.destructive;
 
   const ShadButton.outline({
@@ -240,7 +235,6 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.orderPolicy,
     this.expands,
-    this.iconSize,
   }) : variant = ShadButtonVariant.outline;
 
   const ShadButton.secondary({
@@ -293,7 +287,6 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.orderPolicy,
     this.expands,
-    this.iconSize,
   }) : variant = ShadButtonVariant.secondary;
 
   const ShadButton.ghost({
@@ -346,7 +339,6 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.orderPolicy,
     this.expands,
-    this.iconSize,
   }) : variant = ShadButtonVariant.ghost;
 
   const ShadButton.link({
@@ -399,8 +391,7 @@ class ShadButton extends StatefulWidget {
     this.orderPolicy,
     this.expands,
   })  : variant = ShadButtonVariant.link,
-        icon = null,
-        iconSize = null;
+        icon = null;
 
   final VoidCallback? onPressed;
   final VoidCallback? onLongPress;
@@ -480,14 +471,6 @@ class ShadButton extends StatefulWidget {
   /// Whether the child expands to fill the available space, defaults to false.
   /// {@endtemplate}
   final bool? expands;
-
-  /// {@template ShadButton.iconSize}
-  /// The size of the icon, defaults to `Size.square(16)`.
-  ///
-  /// __Please note__: the size is applied only if you use a [ShadImage] as
-  /// [icon]. If you use something else, wrap it with a SizedBox.
-  /// {@endtemplate}
-  final Size? iconSize;
 
   @override
   State<ShadButton> createState() => _ShadButtonState();
@@ -711,6 +694,7 @@ class _ShadButtonState extends State<ShadButton> {
     assertCheckHasTextOrIcon();
 
     final theme = ShadTheme.of(context);
+    final materialTheme = Theme.of(context);
 
     final hasPressedBackgroundColor = widget.pressedBackgroundColor != null ||
         buttonTheme(theme).pressedBackgroundColor != null;
@@ -748,13 +732,6 @@ class _ShadButtonState extends State<ShadButton> {
     final effectiveExpands =
         widget.expands ?? buttonTheme(theme).expands ?? false;
 
-    final effectiveIconSize = widget.iconSize ??
-        sizeTheme(
-          theme,
-          buttonTheme(theme).size ?? ShadButtonSize.regular,
-        ).iconSize ??
-        const Size.square(16);
-
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.enter): onTap,
@@ -783,22 +760,6 @@ class _ShadButtonState extends State<ShadButton> {
             gradient: gradient(theme),
             shadows: shadows(theme),
           );
-
-          var icon = widget.icon;
-
-          if (icon != null) {
-            final imageData = ShadImageData(
-              size: effectiveIconSize,
-              color: effectiveForegroundColor,
-            );
-            icon = ShadProvider(
-              data: imageData,
-              notifyUpdate: (state) {
-                return imageData != state.data;
-              },
-              child: icon,
-            );
-          }
 
           Widget? child = widget.child == null
               ? null
@@ -890,7 +851,15 @@ class _ShadButtonState extends State<ShadButton> {
                           mainAxisAlignment: effectiveMainAxisAlignment,
                           textDirection: effectiveTextDirection,
                           children: [
-                            if (icon != null) icon,
+                            if (widget.icon != null)
+                              Theme(
+                                data: materialTheme.copyWith(
+                                  iconTheme: materialTheme.iconTheme.copyWith(
+                                    color: effectiveForegroundColor,
+                                  ),
+                                ),
+                                child: widget.icon!,
+                              ),
                             if (child != null) child,
                           ]
                               .order(effectiveOrderPolicy)

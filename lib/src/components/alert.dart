@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
@@ -14,14 +13,13 @@ class ShadAlert extends StatelessWidget {
   const ShadAlert({
     super.key,
     this.icon,
-    this.iconSrc,
+    this.iconData,
     this.title,
     this.description,
     this.textDirection,
     this.decoration,
     this.iconPadding,
     this.iconColor,
-    this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
     this.mainAxisAlignment,
@@ -32,14 +30,13 @@ class ShadAlert extends StatelessWidget {
   const ShadAlert.destructive({
     super.key,
     this.icon,
-    this.iconSrc,
+    this.iconData,
     this.title,
     this.description,
     this.textDirection,
     this.decoration,
     this.iconPadding,
     this.iconColor,
-    this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
     this.mainAxisAlignment,
@@ -51,14 +48,13 @@ class ShadAlert extends StatelessWidget {
     super.key,
     required this.variant,
     this.icon,
-    this.iconSrc,
+    this.iconData,
     this.title,
     this.description,
     this.textDirection,
     this.decoration,
     this.iconPadding,
     this.iconColor,
-    this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
     this.mainAxisAlignment,
@@ -68,14 +64,13 @@ class ShadAlert extends StatelessWidget {
 
   final ShadAlertVariant variant;
   final Widget? icon;
-  final ShadImageSrc? iconSrc;
+  final IconData? iconData;
   final Widget? title;
   final Widget? description;
   final TextDirection? textDirection;
   final ShadDecoration? decoration;
   final EdgeInsets? iconPadding;
   final Color? iconColor;
-  final Size? iconSize;
   final TextStyle? titleStyle;
   final TextStyle? descriptionStyle;
   final MainAxisAlignment? mainAxisAlignment;
@@ -115,18 +110,13 @@ class ShadAlert extends StatelessWidget {
         effectiveAlertTheme.iconColor ??
         theme.colorScheme.foreground;
 
-    final effectiveIconSize =
-        iconSize ?? effectiveAlertTheme.iconSize ?? const Size.square(16);
-
-    final hasIcon = icon != null || iconSrc != null;
+    final hasIcon = icon != null || iconData != null;
     final effectiveIcon = hasIcon
         ? Padding(
             padding: effectiveIconPadding,
             child: icon ??
-                ShadImage(
-                  iconSrc!,
-                  width: effectiveIconSize.width,
-                  height: effectiveIconSize.height,
+                Icon(
+                  iconData,
                   color: effectiveIconColor,
                 ),
           )

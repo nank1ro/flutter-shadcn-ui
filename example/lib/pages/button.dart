@@ -76,7 +76,7 @@ class _ButtonPageState extends State<ButtonPage> {
           ShadButton(
             size: size,
             enabled: enabled,
-            icon: const ShadImage(LucideIcons.mail),
+            icon: const Icon(LucideIcons.mail),
             child: const Text('Login with Email'),
           ),
           ShadButton(
@@ -113,7 +113,7 @@ class _ButtonPageState extends State<ButtonPage> {
             child: ShadButton.outline(
               size: size,
               enabled: enabled,
-              icon: const ShadImage(LucideIcons.chevronRight),
+              icon: const Icon(LucideIcons.chevronRight),
             ),
           ),
         ],
