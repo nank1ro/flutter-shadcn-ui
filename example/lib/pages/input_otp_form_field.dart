@@ -90,7 +90,7 @@ class _InputOTPFormFieldPageState extends State<InputOTPFormFieldPage> {
                         ShadInputOTPSlot(),
                       ],
                     ),
-                    ShadImage.square(size: 24, LucideIcons.dot),
+                    Icon(LucideIcons.dot),
                     ShadInputOTPGroup(
                       children: [
                         ShadInputOTPSlot(),

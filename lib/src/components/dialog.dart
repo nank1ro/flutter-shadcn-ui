@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
@@ -84,7 +83,7 @@ class ShadDialog extends StatelessWidget {
     this.child,
     this.actions = const [],
     this.closeIcon,
-    this.closeIconSrc,
+    this.closeIconData,
     this.closeIconPosition,
     this.radius,
     this.backgroundColor,
@@ -117,7 +116,7 @@ class ShadDialog extends StatelessWidget {
     this.child,
     this.actions = const [],
     this.closeIcon,
-    this.closeIconSrc,
+    this.closeIconData,
     this.closeIconPosition,
     this.radius,
     this.backgroundColor,
@@ -151,7 +150,7 @@ class ShadDialog extends StatelessWidget {
     this.child,
     this.actions = const [],
     this.closeIcon,
-    this.closeIconSrc,
+    this.closeIconData,
     this.closeIconPosition,
     this.radius,
     this.backgroundColor,
@@ -183,7 +182,7 @@ class ShadDialog extends StatelessWidget {
   final ShadDialogVariant variant;
   final List<Widget> actions;
   final Widget? closeIcon;
-  final ShadImageSrc? closeIconSrc;
+  final IconData? closeIconData;
   final ShadPosition? closeIconPosition;
   final BorderRadius? radius;
   final Color? backgroundColor;
@@ -221,13 +220,13 @@ class ShadDialog extends StatelessWidget {
         theme.colorScheme.background;
 
     final effectiveCloseIcon = closeIcon ??
-        (closeIconSrc == null && effectiveDialogTheme.closeIconSrc == null
+        (closeIconData == null && effectiveDialogTheme.closeIconData == null
             ? null
             : ShadButton.ghost(
-                icon: ShadImage.square(
+                icon: Icon(
                   size: 16,
-                  closeIconSrc ??
-                      effectiveDialogTheme.closeIconSrc ??
+                  closeIconData ??
+                      effectiveDialogTheme.closeIconData ??
                       LucideIcons.x,
                 ),
                 width: 20,

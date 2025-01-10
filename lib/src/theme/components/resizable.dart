@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 @immutable
@@ -14,7 +13,7 @@ class ShadResizableTheme {
     this.textDirection,
     this.verticalDirection,
     this.showHandle,
-    this.handleIconSrc,
+    this.handleIconData,
     this.dividerSize,
     this.resetOnDoubleTap,
     this.handleDecoration,
@@ -31,12 +30,12 @@ class ShadResizableTheme {
   final TextDirection? textDirection;
   final VerticalDirection? verticalDirection;
   final bool? showHandle;
-  final ShadImageSrc? handleIconSrc;
+  final IconData? handleIconData;
   final double? dividerSize;
   final bool? resetOnDoubleTap;
   final ShadDecoration? handleDecoration;
   final EdgeInsets? handlePadding;
-  final Size? handleSize;
+  final double? handleSize;
   final double? dividerThickness;
   final Color? dividerColor;
 
@@ -54,13 +53,13 @@ class ShadResizableTheme {
       textDirection: t < 0.5 ? a.textDirection : b.textDirection,
       verticalDirection: t < 0.5 ? a.verticalDirection : b.verticalDirection,
       showHandle: t < 0.5 ? a.showHandle : b.showHandle,
-      handleIconSrc: t < 0.5 ? a.handleIconSrc : b.handleIconSrc,
+      handleIconData: t < 0.5 ? a.handleIconData : b.handleIconData,
       dividerSize: lerpDouble(a.dividerSize, b.dividerSize, t),
       resetOnDoubleTap: t < 0.5 ? a.resetOnDoubleTap : b.resetOnDoubleTap,
       handleDecoration:
           ShadDecoration.lerp(a.handleDecoration, b.handleDecoration, t),
       handlePadding: EdgeInsets.lerp(a.handlePadding, b.handlePadding, t),
-      handleSize: Size.lerp(a.handleSize, b.handleSize, t),
+      handleSize: lerpDouble(a.handleSize, b.handleSize, t),
       dividerColor: Color.lerp(a.dividerColor, b.dividerColor, t),
       dividerThickness: lerpDouble(a.dividerThickness, b.dividerThickness, t),
     );
@@ -76,7 +75,7 @@ class ShadResizableTheme {
       textDirection: other.textDirection,
       verticalDirection: other.verticalDirection,
       showHandle: other.showHandle,
-      handleIconSrc: other.handleIconSrc,
+      handleIconData: other.handleIconData,
       dividerSize: other.dividerSize,
       resetOnDoubleTap: other.resetOnDoubleTap,
       handleDecoration: handleDecoration?.mergeWith(other.handleDecoration) ??
@@ -96,12 +95,12 @@ class ShadResizableTheme {
     TextDirection? textDirection,
     VerticalDirection? verticalDirection,
     bool? showHandle,
-    ShadImageSrc? handleIconSrc,
+    IconData? handleIconData,
     double? dividerSize,
     bool? resetOnDoubleTap,
     ShadDecoration? handleDecoration,
     EdgeInsets? handlePadding,
-    Size? handleSize,
+    double? handleSize,
     Color? dividerColor,
     double? dividerThickness,
   }) {
@@ -113,7 +112,7 @@ class ShadResizableTheme {
       textDirection: textDirection ?? this.textDirection,
       verticalDirection: verticalDirection ?? this.verticalDirection,
       showHandle: showHandle ?? this.showHandle,
-      handleIconSrc: handleIconSrc ?? this.handleIconSrc,
+      handleIconData: handleIconData ?? this.handleIconData,
       dividerSize: dividerSize ?? this.dividerSize,
       resetOnDoubleTap: resetOnDoubleTap ?? this.resetOnDoubleTap,
       handleDecoration: handleDecoration ?? this.handleDecoration,
@@ -136,7 +135,7 @@ class ShadResizableTheme {
         other.textDirection == textDirection &&
         other.verticalDirection == verticalDirection &&
         other.showHandle == showHandle &&
-        other.handleIconSrc == handleIconSrc &&
+        other.handleIconData == handleIconData &&
         other.dividerSize == dividerSize &&
         other.resetOnDoubleTap == resetOnDoubleTap &&
         other.handleDecoration == handleDecoration &&
@@ -155,7 +154,7 @@ class ShadResizableTheme {
         textDirection.hashCode ^
         verticalDirection.hashCode ^
         showHandle.hashCode ^
-        handleIconSrc.hashCode ^
+        handleIconData.hashCode ^
         dividerSize.hashCode ^
         resetOnDoubleTap.hashCode ^
         handleDecoration.hashCode ^

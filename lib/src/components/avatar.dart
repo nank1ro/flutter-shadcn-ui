@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:universal_image/universal_image.dart';
 
 class ShadAvatar extends StatelessWidget {
   const ShadAvatar(
@@ -14,7 +15,7 @@ class ShadAvatar extends StatelessWidget {
     this.fit,
   });
 
-  final ShadImageSrc src;
+  final dynamic src;
   final Widget? placeholder;
   final Size? size;
   final ShapeBorder? shape;
@@ -64,7 +65,7 @@ class ShadAvatar extends StatelessWidget {
         shape: effectiveShape(theme),
         color: effectiveBackgroundColor(theme),
       ),
-      child: ShadImage(src, placeholder: placeholder),
+      child: UniversalImage(src, placeholder: placeholder),
     );
   }
 }

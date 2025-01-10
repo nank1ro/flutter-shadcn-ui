@@ -15,7 +15,6 @@ import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 class ShadButtonTheme {
   const ShadButtonTheme({
     this.merge = true,
-    this.applyIconColorFilter,
     this.cursor,
     this.size,
     this.sizesTheme,
@@ -40,11 +39,10 @@ class ShadButtonTheme {
     this.gap,
     this.orderPolicy,
     this.expands,
-    this.iconSize,
   });
 
   final bool merge;
-  final bool? applyIconColorFilter;
+
   final MouseCursor? cursor;
   final ShadButtonSize? size;
   final ShadButtonSizesTheme? sizesTheme;
@@ -80,9 +78,6 @@ class ShadButtonTheme {
   /// {@macro ShadButton.expands}
   final bool? expands;
 
-  /// {@macro ShadButton.iconSize}
-  final Size? iconSize;
-
   static ShadButtonTheme lerp(
     ShadButtonTheme a,
     ShadButtonTheme b,
@@ -90,8 +85,6 @@ class ShadButtonTheme {
   ) {
     if (identical(a, b)) return a;
     return ShadButtonTheme(
-      applyIconColorFilter:
-          t < 0.5 ? a.applyIconColorFilter : b.applyIconColorFilter,
       sizesTheme: ShadButtonSizesTheme.lerp(
         a.sizesTheme,
         b.sizesTheme,
@@ -128,12 +121,10 @@ class ShadButtonTheme {
       gap: t < 0.5 ? a.gap : b.gap,
       orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
       expands: t < .5 ? a.expands : b.expands,
-      iconSize: Size.lerp(a.iconSize, b.iconSize, t),
     );
   }
 
   ShadButtonTheme copyWith({
-    bool? applyIconColorFilter,
     MouseCursor? cursor,
     MouseCursor? disabledCursor,
     ShadButtonSize? size,
@@ -159,10 +150,8 @@ class ShadButtonTheme {
     double? gap,
     WidgetOrderPolicy? orderPolicy,
     bool? expands,
-    Size? iconSize,
   }) {
     return ShadButtonTheme(
-      applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
       cursor: cursor ?? this.cursor,
       size: size ?? this.size,
       sizesTheme: sizesTheme ?? this.sizesTheme,
@@ -189,7 +178,6 @@ class ShadButtonTheme {
       gap: gap ?? this.gap,
       orderPolicy: orderPolicy ?? this.orderPolicy,
       expands: expands ?? this.expands,
-      iconSize: iconSize ?? this.iconSize,
     );
   }
 
@@ -197,7 +185,6 @@ class ShadButtonTheme {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
-      applyIconColorFilter: other.applyIconColorFilter,
       cursor: other.cursor,
       size: other.size,
       backgroundColor: other.backgroundColor,
@@ -221,7 +208,6 @@ class ShadButtonTheme {
       gap: other.gap,
       orderPolicy: other.orderPolicy,
       expands: other.expands,
-      iconSize: other.iconSize,
     );
   }
 
@@ -231,7 +217,6 @@ class ShadButtonTheme {
 
     return other is ShadButtonTheme &&
         other.merge == merge &&
-        other.applyIconColorFilter == applyIconColorFilter &&
         other.cursor == cursor &&
         other.size == size &&
         other.sizesTheme == sizesTheme &&
@@ -255,14 +240,12 @@ class ShadButtonTheme {
         other.textDirection == textDirection &&
         other.gap == gap &&
         other.orderPolicy == orderPolicy &&
-        other.expands == expands &&
-        other.iconSize == iconSize;
+        other.expands == expands;
   }
 
   @override
   int get hashCode {
     return merge.hashCode ^
-        applyIconColorFilter.hashCode ^
         cursor.hashCode ^
         size.hashCode ^
         sizesTheme.hashCode ^
@@ -286,8 +269,7 @@ class ShadButtonTheme {
         textDirection.hashCode ^
         gap.hashCode ^
         orderPolicy.hashCode ^
-        expands.hashCode ^
-        iconSize.hashCode;
+        expands.hashCode;
   }
 }
 

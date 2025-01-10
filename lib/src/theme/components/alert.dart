@@ -9,7 +9,6 @@ class ShadAlertTheme {
     this.decoration,
     this.iconPadding,
     this.iconColor,
-    this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
     this.mainAxisAlignment,
@@ -21,7 +20,6 @@ class ShadAlertTheme {
   final ShadDecoration? decoration;
   final EdgeInsets? iconPadding;
   final Color? iconColor;
-  final Size? iconSize;
   final TextStyle? titleStyle;
   final TextStyle? descriptionStyle;
   final MainAxisAlignment? mainAxisAlignment;
@@ -41,7 +39,6 @@ class ShadAlertTheme {
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       iconPadding: EdgeInsets.lerp(a.iconPadding, b.iconPadding, t),
       iconColor: Color.lerp(a.iconColor, b.iconColor, t),
-      iconSize: Size.lerp(a.iconSize, b.iconSize, t),
       titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
       descriptionStyle:
           TextStyle.lerp(a.descriptionStyle, b.descriptionStyle, t),
@@ -56,7 +53,6 @@ class ShadAlertTheme {
     ShadDecoration? decoration,
     EdgeInsets? iconPadding,
     Color? iconColor,
-    Size? iconSize,
     TextStyle? titleStyle,
     TextStyle? descriptionStyle,
     MainAxisAlignment? mainAxisAlignment,
@@ -68,7 +64,6 @@ class ShadAlertTheme {
       decoration: decoration ?? this.decoration,
       iconPadding: iconPadding ?? this.iconPadding,
       iconColor: iconColor ?? this.iconColor,
-      iconSize: iconSize ?? this.iconSize,
       titleStyle: titleStyle ?? this.titleStyle,
       descriptionStyle: descriptionStyle ?? this.descriptionStyle,
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
@@ -84,7 +79,6 @@ class ShadAlertTheme {
       decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       iconPadding: other.iconPadding,
       iconColor: other.iconColor,
-      iconSize: other.iconSize,
       titleStyle: other.titleStyle,
       descriptionStyle: other.descriptionStyle,
       mainAxisAlignment: other.mainAxisAlignment,
@@ -102,7 +96,6 @@ class ShadAlertTheme {
         other.decoration == decoration &&
         other.iconPadding == iconPadding &&
         other.iconColor == iconColor &&
-        other.iconSize == iconSize &&
         other.titleStyle == titleStyle &&
         other.descriptionStyle == descriptionStyle &&
         other.mainAxisAlignment == mainAxisAlignment &&
@@ -116,7 +109,6 @@ class ShadAlertTheme {
         decoration.hashCode ^
         iconPadding.hashCode ^
         iconColor.hashCode ^
-        iconSize.hashCode ^
         titleStyle.hashCode ^
         descriptionStyle.hashCode ^
         mainAxisAlignment.hashCode ^

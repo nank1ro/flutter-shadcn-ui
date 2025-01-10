@@ -372,7 +372,6 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
     this.onPressed,
     this.onLongPress,
     this.size,
-    this.applyIconColorFilter,
     this.cursor,
     this.hoverForegroundColor,
     this.autofocus = false,
@@ -481,9 +480,6 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
 
   /// The size of the button.
   final ShadButtonSize? size;
-
-  /// Whether to apply the icon color filter to the button.
-  final bool? applyIconColorFilter;
 
   /// The cursor for the button.
   final MouseCursor? cursor;
@@ -649,8 +645,6 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
     final effectiveHoverForegroundColor =
         widget.hoverForegroundColor ?? tabsTheme.tabHoverForegroundColor;
     final effectiveCursor = widget.cursor ?? tabsTheme.tabCursor;
-    final effectiveApplyIconColorFilter =
-        widget.applyIconColorFilter ?? tabsTheme.tabApplyIconColorFilter;
     final effectivePressedBackgroundColor =
         widget.pressedBackgroundColor ?? tabsTheme.tabPressedBackgroundColor;
     final effectivePressedForegroundColor =
@@ -734,7 +728,6 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
           enabled: widget.enabled,
           onLongPress: widget.onLongPress,
           size: effectiveSize,
-          applyIconColorFilter: effectiveApplyIconColorFilter,
           cursor: effectiveCursor,
           hoverForegroundColor: effectiveHoverForegroundColor,
           autofocus: widget.autofocus,

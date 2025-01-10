@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -14,7 +13,7 @@ class ShadSheetTheme {
     this.constraints,
     this.expandCrossSide,
     this.closeIcon,
-    this.closeIconSrc,
+    this.closeIconData,
     this.closeIconPosition,
     this.radius,
     this.backgroundColor,
@@ -47,7 +46,7 @@ class ShadSheetTheme {
   final BoxConstraints? constraints;
   final bool? expandCrossSide;
   final Widget? closeIcon;
-  final ShadImageSrc? closeIconSrc;
+  final IconData? closeIconData;
   final ShadPosition? closeIconPosition;
   final BorderRadius? radius;
   final Color? backgroundColor;
@@ -87,7 +86,7 @@ class ShadSheetTheme {
     if (identical(a, b)) return a;
     return ShadSheetTheme(
       merge: b.merge,
-      closeIconSrc: b.closeIconSrc,
+      closeIconData: b.closeIconData,
       closeIconPosition:
           ShadPosition.lerp(a.closeIconPosition, b.closeIconPosition, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
@@ -129,7 +128,7 @@ class ShadSheetTheme {
     BoxConstraints? constraints,
     bool? expandCrossSide,
     Widget? closeIcon,
-    ShadImageSrc? closeIconSrc,
+    IconData? closeIconData,
     ShadPosition? closeIconPosition,
     BorderRadius? radius,
     Color? backgroundColor,
@@ -162,7 +161,7 @@ class ShadSheetTheme {
       constraints: constraints ?? this.constraints,
       expandCrossSide: expandCrossSide ?? this.expandCrossSide,
       closeIcon: closeIcon ?? this.closeIcon,
-      closeIconSrc: closeIconSrc ?? this.closeIconSrc,
+      closeIconData: closeIconData ?? this.closeIconData,
       closeIconPosition: closeIconPosition ?? this.closeIconPosition,
       radius: radius ?? this.radius,
       backgroundColor: backgroundColor ?? this.backgroundColor,
@@ -202,7 +201,7 @@ class ShadSheetTheme {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
-      closeIconSrc: other.closeIconSrc,
+      closeIconData: other.closeIconData,
       closeIconPosition: other.closeIconPosition,
       radius: other.radius,
       backgroundColor: other.backgroundColor,
@@ -241,7 +240,7 @@ class ShadSheetTheme {
         other.constraints == constraints &&
         other.expandCrossSide == expandCrossSide &&
         other.closeIcon == closeIcon &&
-        other.closeIconSrc == closeIconSrc &&
+        other.closeIconData == closeIconData &&
         other.closeIconPosition == closeIconPosition &&
         other.radius == radius &&
         other.backgroundColor == backgroundColor &&
@@ -276,7 +275,7 @@ class ShadSheetTheme {
         constraints.hashCode ^
         expandCrossSide.hashCode ^
         closeIcon.hashCode ^
-        closeIconSrc.hashCode ^
+        closeIconData.hashCode ^
         closeIconPosition.hashCode ^
         radius.hashCode ^
         backgroundColor.hashCode ^

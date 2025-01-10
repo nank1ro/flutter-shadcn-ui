@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 import 'package:shadcn_ui/src/utils/position.dart';
@@ -11,7 +10,7 @@ class ShadToastTheme {
   const ShadToastTheme({
     this.merge = true,
     this.backgroundColor,
-    this.closeIconSrc,
+    this.closeIconData,
     this.alignment,
     this.offset,
     this.duration,
@@ -34,7 +33,7 @@ class ShadToastTheme {
 
   final bool merge;
   final Color? backgroundColor;
-  final ShadImageSrc? closeIconSrc;
+  final IconData? closeIconData;
   final Alignment? alignment;
   final Offset? offset;
   final Duration? duration;
@@ -63,7 +62,7 @@ class ShadToastTheme {
     return ShadToastTheme(
       merge: b.merge,
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
-      closeIconSrc: t < .5 ? a.closeIconSrc : b.closeIconSrc,
+      closeIconData: t < .5 ? a.closeIconData : b.closeIconData,
       alignment: Alignment.lerp(a.alignment, b.alignment, t),
       offset: Offset.lerp(a.offset, b.offset, t),
       duration: t < .5 ? a.duration : b.duration,
@@ -92,7 +91,7 @@ class ShadToastTheme {
   ShadToastTheme copyWith({
     bool? merge,
     Color? backgroundColor,
-    ShadImageSrc? closeIconSrc,
+    IconData? closeIconData,
     Alignment? alignment,
     Offset? offset,
     Duration? duration,
@@ -115,7 +114,7 @@ class ShadToastTheme {
     return ShadToastTheme(
       merge: merge ?? this.merge,
       backgroundColor: backgroundColor ?? this.backgroundColor,
-      closeIconSrc: closeIconSrc ?? this.closeIconSrc,
+      closeIconData: closeIconData ?? this.closeIconData,
       alignment: alignment ?? this.alignment,
       offset: offset ?? this.offset,
       duration: duration ?? this.duration,
@@ -143,7 +142,7 @@ class ShadToastTheme {
     if (!other.merge) return other;
     return copyWith(
       backgroundColor: other.backgroundColor,
-      closeIconSrc: other.closeIconSrc,
+      closeIconData: other.closeIconData,
       alignment: other.alignment,
       offset: other.offset,
       duration: other.duration,
@@ -172,7 +171,7 @@ class ShadToastTheme {
     return other is ShadToastTheme &&
         other.merge == merge &&
         other.backgroundColor == backgroundColor &&
-        other.closeIconSrc == closeIconSrc &&
+        other.closeIconData == closeIconData &&
         other.alignment == alignment &&
         other.offset == offset &&
         other.duration == duration &&
@@ -197,7 +196,7 @@ class ShadToastTheme {
   int get hashCode {
     return merge.hashCode ^
         backgroundColor.hashCode ^
-        closeIconSrc.hashCode ^
+        closeIconData.hashCode ^
         alignment.hashCode ^
         offset.hashCode ^
         duration.hashCode ^

@@ -12,7 +12,6 @@ import 'package:example/pages/context_menu.dart';
 import 'package:example/pages/date_picker.dart';
 import 'package:example/pages/date_picker_form_field.dart';
 import 'package:example/pages/dialog.dart';
-import 'package:example/pages/image.dart';
 import 'package:example/pages/input.dart';
 import 'package:example/pages/input_form_field.dart';
 import 'package:example/pages/input_otp.dart';
@@ -60,7 +59,6 @@ final routes = <String, WidgetBuilder>{
   '/date-picker': (_) => const DatePickerPage(),
   '/date-picker-form-field': (_) => const DatePickerFormFieldPage(),
   '/dialog': (_) => const DialogPage(),
-  '/image': (_) => const ImagePage(),
   '/input': (_) => const InputPage(),
   '/input-form-field': (_) => const InputFormFieldPage(),
   '/input-OTP': (_) => const InputOTPPage(),

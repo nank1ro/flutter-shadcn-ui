@@ -689,6 +689,7 @@ class _ShadAppState extends State<ShadApp> {
         selectionColor: themeData.colorScheme.selection,
         selectionHandleColor: themeData.colorScheme.primary,
       ),
+      iconTheme: const IconThemeData(size: 16),
     );
     mTheme = mTheme.copyWith(
       textTheme:

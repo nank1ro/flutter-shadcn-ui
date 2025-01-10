@@ -15,7 +15,7 @@ class TimePickerPage extends StatelessWidget {
           child: ShadTimePicker(
             trailing: const Padding(
               padding: EdgeInsets.only(left: 8, top: 14),
-              child: ShadImage.square(LucideIcons.clock4, size: 16),
+              child: Icon(LucideIcons.clock4),
             ),
             onChanged: (time) {
               print('time: $time');

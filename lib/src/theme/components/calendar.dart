@@ -15,8 +15,8 @@ class ShadCalendarTheme {
     this.monthSelectorPadding,
     this.navigationButtonSize,
     this.navigationButtonIconSize,
-    this.backNavigationButtonSrc,
-    this.forwardNavigationButtonSrc,
+    this.backNavigationButtonIconData,
+    this.forwardNavigationButtonIconData,
     this.navigationButtonPadding,
     this.navigationButtonDisabledOpacity,
     this.decoration,
@@ -86,11 +86,11 @@ class ShadCalendarTheme {
   /// {@macro ShadCalendar.navigationButtonIconSize}
   final double? navigationButtonIconSize;
 
-  /// {@macro ShadCalendar.backNavigationButtonSrc}
-  final ShadImageSrc? backNavigationButtonSrc;
+  /// {@macro ShadCalendar.backNavigationButtonIconData}
+  final IconData? backNavigationButtonIconData;
 
-  /// {@macro ShadCalendar.forwardNavigationButtonSrc}
-  final ShadImageSrc? forwardNavigationButtonSrc;
+  /// {@macro ShadCalendar.forwardNavigationButtonIconData}
+  final IconData? forwardNavigationButtonIconData;
 
   /// {@macro ShadCalendar.navigationButtonPadding}
   final EdgeInsets? navigationButtonPadding;
@@ -254,10 +254,12 @@ class ShadCalendarTheme {
         b.navigationButtonIconSize,
         t,
       ),
-      backNavigationButtonSrc:
-          t < .5 ? a.backNavigationButtonSrc : b.backNavigationButtonSrc,
-      forwardNavigationButtonSrc:
-          t < .5 ? a.forwardNavigationButtonSrc : b.forwardNavigationButtonSrc,
+      backNavigationButtonIconData: t < .5
+          ? a.backNavigationButtonIconData
+          : b.backNavigationButtonIconData,
+      forwardNavigationButtonIconData: t < .5
+          ? a.forwardNavigationButtonIconData
+          : b.forwardNavigationButtonIconData,
       navigationButtonPadding: EdgeInsets.lerp(
         a.navigationButtonPadding,
         b.navigationButtonPadding,
@@ -398,10 +400,10 @@ class ShadCalendarTheme {
       navigationButtonSize: other.navigationButtonSize ?? navigationButtonSize,
       navigationButtonIconSize:
           other.navigationButtonIconSize ?? navigationButtonIconSize,
-      backNavigationButtonSrc:
-          other.backNavigationButtonSrc ?? backNavigationButtonSrc,
-      forwardNavigationButtonSrc:
-          other.forwardNavigationButtonSrc ?? forwardNavigationButtonSrc,
+      backNavigationButtonIconData:
+          other.backNavigationButtonIconData ?? backNavigationButtonIconData,
+      forwardNavigationButtonIconData: other.forwardNavigationButtonIconData ??
+          forwardNavigationButtonIconData,
       navigationButtonPadding:
           other.navigationButtonPadding ?? navigationButtonPadding,
       navigationButtonDisabledOpacity: other.navigationButtonDisabledOpacity ??
@@ -476,8 +478,9 @@ class ShadCalendarTheme {
         other.monthSelectorPadding == monthSelectorPadding &&
         other.navigationButtonSize == navigationButtonSize &&
         other.navigationButtonIconSize == navigationButtonIconSize &&
-        other.backNavigationButtonSrc == backNavigationButtonSrc &&
-        other.forwardNavigationButtonSrc == forwardNavigationButtonSrc &&
+        other.backNavigationButtonIconData == backNavigationButtonIconData &&
+        other.forwardNavigationButtonIconData ==
+            forwardNavigationButtonIconData &&
         other.navigationButtonPadding == navigationButtonPadding &&
         other.navigationButtonDisabledOpacity ==
             navigationButtonDisabledOpacity &&
@@ -537,8 +540,8 @@ class ShadCalendarTheme {
         monthSelectorPadding.hashCode ^
         navigationButtonSize.hashCode ^
         navigationButtonIconSize.hashCode ^
-        backNavigationButtonSrc.hashCode ^
-        forwardNavigationButtonSrc.hashCode ^
+        backNavigationButtonIconData.hashCode ^
+        forwardNavigationButtonIconData.hashCode ^
         navigationButtonPadding.hashCode ^
         navigationButtonDisabledOpacity.hashCode ^
         decoration.hashCode ^
@@ -594,8 +597,8 @@ class ShadCalendarTheme {
     EdgeInsets? monthSelectorPadding,
     double? navigationButtonSize,
     double? navigationButtonIconSize,
-    ShadImageSrc? backNavigationButtonSrc,
-    ShadImageSrc? forwardNavigationButtonSrc,
+    IconData? backNavigationButtonIconData,
+    IconData? forwardNavigationButtonIconData,
     EdgeInsets? navigationButtonPadding,
     double? navigationButtonDisabledOpacity,
     ShadDecoration? decoration,
@@ -652,10 +655,10 @@ class ShadCalendarTheme {
       navigationButtonSize: navigationButtonSize ?? this.navigationButtonSize,
       navigationButtonIconSize:
           navigationButtonIconSize ?? this.navigationButtonIconSize,
-      backNavigationButtonSrc:
-          backNavigationButtonSrc ?? this.backNavigationButtonSrc,
-      forwardNavigationButtonSrc:
-          forwardNavigationButtonSrc ?? this.forwardNavigationButtonSrc,
+      backNavigationButtonIconData:
+          backNavigationButtonIconData ?? this.backNavigationButtonIconData,
+      forwardNavigationButtonIconData: forwardNavigationButtonIconData ??
+          this.forwardNavigationButtonIconData,
       navigationButtonPadding:
           navigationButtonPadding ?? this.navigationButtonPadding,
       navigationButtonDisabledOpacity: navigationButtonDisabledOpacity ??

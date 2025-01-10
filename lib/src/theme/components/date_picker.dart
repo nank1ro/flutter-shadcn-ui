@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/calendar.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -23,8 +22,8 @@ class ShadDatePickerTheme {
     this.monthSelectorPadding,
     this.navigationButtonSize,
     this.navigationButtonIconSize,
-    this.backNavigationButtonSrc,
-    this.forwardNavigationButtonSrc,
+    this.backNavigationButtonIconData,
+    this.forwardNavigationButtonIconData,
     this.navigationButtonPadding,
     this.navigationButtonDisabledOpacity,
     this.calendarDecoration,
@@ -75,7 +74,6 @@ class ShadDatePickerTheme {
     this.popoverDecoration,
     this.anchor,
     this.filter,
-    this.applyIconColorFilter,
     this.cursor,
     this.size,
     this.sizesTheme,
@@ -103,7 +101,7 @@ class ShadDatePickerTheme {
     this.formatDate,
     this.formatDateRange,
     this.buttonPadding,
-    this.iconSrc,
+    this.iconData,
     this.orderPolicy,
     this.expands,
   });
@@ -116,8 +114,8 @@ class ShadDatePickerTheme {
   /// {@macro ShadDatePicker.formatDateRange}
   final String Function(ShadDateTimeRange)? formatDateRange;
 
-  /// {@macro ShadDatePicker.iconSrc}
-  final ShadImageSrc? iconSrc;
+  /// {@macro ShadDatePicker.iconData}
+  final IconData? iconData;
 
   // ---
   // CALENDAR
@@ -144,11 +142,11 @@ class ShadDatePickerTheme {
   /// {@macro ShadCalendar.navigationButtonIconSize}
   final double? navigationButtonIconSize;
 
-  /// {@macro ShadCalendar.backNavigationButtonSrc}
-  final ShadImageSrc? backNavigationButtonSrc;
+  /// {@macro ShadCalendar.backNavigationButtonIconData}
+  final IconData? backNavigationButtonIconData;
 
-  /// {@macro ShadCalendar.forwardNavigationButtonSrc}
-  final ShadImageSrc? forwardNavigationButtonSrc;
+  /// {@macro ShadCalendar.forwardNavigationButtonIconData}
+  final IconData? forwardNavigationButtonIconData;
 
   /// {@macro ShadCalendar.navigationButtonPadding}
   final EdgeInsets? navigationButtonPadding;
@@ -308,9 +306,6 @@ class ShadDatePickerTheme {
   // BUTTON
   // ---
 
-  /// {@macro ShadButton.applyIconColorFilter}
-  final bool? applyIconColorFilter;
-
   /// {@macro ShadButton.cursor}
   final MouseCursor? cursor;
 
@@ -422,10 +417,12 @@ class ShadDatePickerTheme {
         b.navigationButtonIconSize,
         t,
       ),
-      backNavigationButtonSrc:
-          t < .5 ? a.backNavigationButtonSrc : b.backNavigationButtonSrc,
-      forwardNavigationButtonSrc:
-          t < .5 ? a.forwardNavigationButtonSrc : b.forwardNavigationButtonSrc,
+      backNavigationButtonIconData: t < .5
+          ? a.backNavigationButtonIconData
+          : b.backNavigationButtonIconData,
+      forwardNavigationButtonIconData: t < .5
+          ? a.forwardNavigationButtonIconData
+          : b.forwardNavigationButtonIconData,
       navigationButtonPadding: EdgeInsets.lerp(
         a.navigationButtonPadding,
         b.navigationButtonPadding,
@@ -560,8 +557,6 @@ class ShadDatePickerTheme {
           ShadDecoration.lerp(a.calendarDecoration, b.calendarDecoration, t),
       anchor: t < 0.5 ? a.anchor : b.anchor,
       filter: t < 0.5 ? a.filter : b.filter,
-      applyIconColorFilter:
-          t < 0.5 ? a.applyIconColorFilter : b.applyIconColorFilter,
       sizesTheme: ShadButtonSizesTheme.lerp(
         a.sizesTheme,
         b.sizesTheme,
@@ -602,7 +597,7 @@ class ShadDatePickerTheme {
       buttonVariant: t < 0.5 ? a.buttonVariant : b.buttonVariant,
       buttonPadding:
           EdgeInsetsGeometry.lerp(a.buttonPadding, b.buttonPadding, t),
-      iconSrc: t < 0.5 ? a.iconSrc : b.iconSrc,
+      iconData: t < 0.5 ? a.iconData : b.iconData,
       orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
       expands: t < .5 ? a.expands : b.expands,
     );
@@ -621,10 +616,10 @@ class ShadDatePickerTheme {
       navigationButtonSize: other.navigationButtonSize ?? navigationButtonSize,
       navigationButtonIconSize:
           other.navigationButtonIconSize ?? navigationButtonIconSize,
-      backNavigationButtonSrc:
-          other.backNavigationButtonSrc ?? backNavigationButtonSrc,
-      forwardNavigationButtonSrc:
-          other.forwardNavigationButtonSrc ?? forwardNavigationButtonSrc,
+      backNavigationButtonIconData:
+          other.backNavigationButtonIconData ?? backNavigationButtonIconData,
+      forwardNavigationButtonIconData: other.forwardNavigationButtonIconData ??
+          forwardNavigationButtonIconData,
       navigationButtonPadding:
           other.navigationButtonPadding ?? navigationButtonPadding,
       navigationButtonDisabledOpacity: other.navigationButtonDisabledOpacity ??
@@ -693,7 +688,6 @@ class ShadDatePickerTheme {
               other.popoverDecoration,
       anchor: other.anchor,
       filter: other.filter,
-      applyIconColorFilter: other.applyIconColorFilter,
       cursor: other.cursor,
       size: other.size,
       backgroundColor: other.backgroundColor,
@@ -720,7 +714,7 @@ class ShadDatePickerTheme {
       formatDateRange: other.formatDateRange,
       buttonVariant: other.buttonVariant,
       buttonPadding: other.buttonPadding,
-      iconSrc: other.iconSrc,
+      iconData: other.iconData,
       orderPolicy: other.orderPolicy,
       expands: other.expands,
     );
@@ -739,8 +733,9 @@ class ShadDatePickerTheme {
         other.monthSelectorPadding == monthSelectorPadding &&
         other.navigationButtonSize == navigationButtonSize &&
         other.navigationButtonIconSize == navigationButtonIconSize &&
-        other.backNavigationButtonSrc == backNavigationButtonSrc &&
-        other.forwardNavigationButtonSrc == forwardNavigationButtonSrc &&
+        other.backNavigationButtonIconData == backNavigationButtonIconData &&
+        other.forwardNavigationButtonIconData ==
+            forwardNavigationButtonIconData &&
         other.navigationButtonPadding == navigationButtonPadding &&
         other.navigationButtonDisabledOpacity ==
             navigationButtonDisabledOpacity &&
@@ -794,7 +789,6 @@ class ShadDatePickerTheme {
         other.calendarDecoration == calendarDecoration &&
         other.anchor == anchor &&
         other.filter == filter &&
-        other.applyIconColorFilter == applyIconColorFilter &&
         other.cursor == cursor &&
         other.size == size &&
         other.sizesTheme == sizesTheme &&
@@ -821,7 +815,7 @@ class ShadDatePickerTheme {
         other.formatDateRange == formatDateRange &&
         other.buttonVariant == buttonVariant &&
         other.buttonPadding == buttonPadding &&
-        other.iconSrc == iconSrc &&
+        other.iconData == iconData &&
         other.orderPolicy == orderPolicy &&
         other.expands == expands;
   }
@@ -836,8 +830,8 @@ class ShadDatePickerTheme {
         monthSelectorPadding.hashCode ^
         navigationButtonSize.hashCode ^
         navigationButtonIconSize.hashCode ^
-        backNavigationButtonSrc.hashCode ^
-        forwardNavigationButtonSrc.hashCode ^
+        backNavigationButtonIconData.hashCode ^
+        forwardNavigationButtonIconData.hashCode ^
         navigationButtonPadding.hashCode ^
         navigationButtonDisabledOpacity.hashCode ^
         calendarDecoration.hashCode ^
@@ -888,7 +882,6 @@ class ShadDatePickerTheme {
         calendarDecoration.hashCode ^
         anchor.hashCode ^
         filter.hashCode ^
-        applyIconColorFilter.hashCode ^
         cursor.hashCode ^
         size.hashCode ^
         sizesTheme.hashCode ^
@@ -915,7 +908,7 @@ class ShadDatePickerTheme {
         formatDateRange.hashCode ^
         buttonVariant.hashCode ^
         buttonPadding.hashCode ^
-        iconSrc.hashCode ^
+        iconData.hashCode ^
         orderPolicy.hashCode ^
         expands.hashCode;
   }
@@ -929,8 +922,8 @@ class ShadDatePickerTheme {
     EdgeInsets? monthSelectorPadding,
     double? navigationButtonSize,
     double? navigationButtonIconSize,
-    ShadImageSrc? backNavigationButtonSrc,
-    ShadImageSrc? forwardNavigationButtonSrc,
+    IconData? backNavigationButtonIconData,
+    IconData? forwardNavigationButtonIconData,
     EdgeInsets? navigationButtonPadding,
     double? navigationButtonDisabledOpacity,
     ShadDecoration? calendarDecoration,
@@ -983,7 +976,6 @@ class ShadDatePickerTheme {
     ShadDecoration? popoverDecoration,
     ShadAnchorBase? anchor,
     ImageFilter? filter,
-    bool? applyIconColorFilter,
     MouseCursor? cursor,
     MouseCursor? disabledCursor,
     ShadButtonSize? size,
@@ -1011,7 +1003,7 @@ class ShadDatePickerTheme {
     String Function(ShadDateTimeRange range)? formatDateRange,
     ShadButtonVariant? buttonVariant,
     EdgeInsetsGeometry? buttonPadding,
-    ShadImageSrc? iconSrc,
+    IconData? iconData,
     WidgetOrderPolicy? orderPolicy,
     bool? expands,
   }) {
@@ -1026,10 +1018,10 @@ class ShadDatePickerTheme {
       navigationButtonSize: navigationButtonSize ?? this.navigationButtonSize,
       navigationButtonIconSize:
           navigationButtonIconSize ?? this.navigationButtonIconSize,
-      backNavigationButtonSrc:
-          backNavigationButtonSrc ?? this.backNavigationButtonSrc,
-      forwardNavigationButtonSrc:
-          forwardNavigationButtonSrc ?? this.forwardNavigationButtonSrc,
+      backNavigationButtonIconData:
+          backNavigationButtonIconData ?? this.backNavigationButtonIconData,
+      forwardNavigationButtonIconData: forwardNavigationButtonIconData ??
+          this.forwardNavigationButtonIconData,
       navigationButtonPadding:
           navigationButtonPadding ?? this.navigationButtonPadding,
       navigationButtonDisabledOpacity: navigationButtonDisabledOpacity ??
@@ -1096,7 +1088,6 @@ class ShadDatePickerTheme {
       popoverDecoration: popoverDecoration ?? this.popoverDecoration,
       anchor: anchor ?? this.anchor,
       filter: filter ?? this.filter,
-      applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
       cursor: cursor ?? this.cursor,
       size: size ?? this.size,
       sizesTheme: sizesTheme ?? this.sizesTheme,
@@ -1125,7 +1116,7 @@ class ShadDatePickerTheme {
       formatDateRange: formatDateRange ?? this.formatDateRange,
       buttonVariant: buttonVariant ?? this.buttonVariant,
       buttonPadding: buttonPadding ?? this.buttonPadding,
-      iconSrc: iconSrc ?? this.iconSrc,
+      iconData: iconData ?? this.iconData,
       orderPolicy: orderPolicy ?? this.orderPolicy,
       expands: expands ?? this.expands,
     );

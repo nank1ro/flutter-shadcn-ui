@@ -121,7 +121,13 @@ ShadButton(
 ShadButton(
   onPressed: () {},
   child: const Text('Please wait'),
-  icon: const CircularProgressIndicator(strokeWidth: 2),
+  icon: const SizedBox.square(
+    dimension: 16,
+    child: CircularProgressIndicator(
+      strokeWidth: 2,
+      color: ShadTheme.of(context).colorScheme.primaryForeground,
+    ),
+  ),
 )
 ```
 
@@ -151,3 +157,13 @@ ShadButton(
 ```
 
 </Preview>
+
+## Troubleshoot
+
+### iconSize
+
+The size of the icon, defaults to `Size.square(16)`.
+
+:::caution
+The icon size is applied only if you use a `ShadImage` as `icon`. If you use something else, wrap it with a `SizedBox`.
+:::

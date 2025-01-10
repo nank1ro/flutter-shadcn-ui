@@ -7,7 +7,6 @@ import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/calendar.dart';
 import 'package:shadcn_ui/src/components/date_picker.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -152,11 +151,11 @@ class ShadDateRangePickerFormField
     /// {@macro ShadCalendar.navigationButtonIconSize}
     double? navigationButtonIconSize,
 
-    /// {@macro ShadCalendar.backNavigationButtonSrc}
-    ShadImageSrc? backNavigationButtonSrc,
+    /// {@macro ShadCalendar.backNavigationButtonIconData}
+    IconData? backNavigationButtonIconData,
 
-    /// {@macro ShadCalendar.forwardNavigationButtonSrc}
-    ShadImageSrc? forwardNavigationButtonSrc,
+    /// {@macro ShadCalendar.forwardNavigationButtonIconData}
+    IconData? forwardNavigationButtonIconData,
 
     /// {@macro ShadCalendar.navigationButtonPadding}
     EdgeInsets? navigationButtonPadding,
@@ -295,8 +294,8 @@ class ShadDateRangePickerFormField
     /// {@macro ShadButton.icon}
     Widget? icon,
 
-    /// {@macro ShadDatePicker.iconSrc}
-    ShadImageSrc? iconSrc,
+    /// {@macro ShadDatePicker.iconData}
+    IconData? iconData,
 
     /// {@macro ShadButton.child}
     Widget? buttonChild,
@@ -306,9 +305,6 @@ class ShadDateRangePickerFormField
 
     /// {@macro ShadButton.size}
     ShadButtonSize? size,
-
-    /// {@macro ShadButton.applyIconColorFilter}
-    bool? applyIconColorFilter,
 
     /// {@macro ShadButton.cursor}
     MouseCursor? cursor,
@@ -482,8 +478,8 @@ class ShadDateRangePickerFormField
               monthSelectorPadding: monthSelectorPadding,
               navigationButtonSize: navigationButtonSize,
               navigationButtonIconSize: navigationButtonIconSize,
-              backNavigationButtonSrc: backNavigationButtonSrc,
-              forwardNavigationButtonSrc: forwardNavigationButtonSrc,
+              backNavigationButtonIconData: backNavigationButtonIconData,
+              forwardNavigationButtonIconData: forwardNavigationButtonIconData,
               navigationButtonPadding: navigationButtonPadding,
               navigationButtonDisabledOpacity: navigationButtonDisabledOpacity,
               spacingBetweenMonths: spacingBetweenMonths,
@@ -527,11 +523,10 @@ class ShadDateRangePickerFormField
               useSameGroupIdForChild: useSameGroupIdForChild,
               onPressed: onPressed,
               onLongPress: onLongPress,
-              iconSrc: iconSrc,
+              iconData: iconData,
               buttonChild: buttonChild,
               buttonVariant: buttonVariant,
               size: size,
-              applyIconColorFilter: applyIconColorFilter,
               cursor: cursor,
               width: width,
               height: height,

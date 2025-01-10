@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -11,7 +10,7 @@ import 'package:shadcn_ui/src/utils/position.dart';
 class ShadDialogTheme {
   const ShadDialogTheme({
     this.merge = true,
-    this.closeIconSrc,
+    this.closeIconData,
     this.closeIconPosition,
     this.radius,
     this.backgroundColor,
@@ -40,7 +39,7 @@ class ShadDialogTheme {
   });
 
   final bool merge;
-  final ShadImageSrc? closeIconSrc;
+  final IconData? closeIconData;
   final ShadPosition? closeIconPosition;
   final BorderRadius? radius;
   final Color? backgroundColor;
@@ -75,7 +74,7 @@ class ShadDialogTheme {
     if (identical(a, b)) return a;
     return ShadDialogTheme(
       merge: b.merge,
-      closeIconSrc: b.closeIconSrc,
+      closeIconData: b.closeIconData,
       closeIconPosition:
           ShadPosition.lerp(a.closeIconPosition, b.closeIconPosition, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
@@ -108,7 +107,7 @@ class ShadDialogTheme {
 
   ShadDialogTheme copyWith({
     bool? merge,
-    ShadImageSrc? closeIconSrc,
+    IconData? closeIconData,
     ShadPosition? closeIconPosition,
     BorderRadius? radius,
     Color? backgroundColor,
@@ -137,7 +136,7 @@ class ShadDialogTheme {
   }) {
     return ShadDialogTheme(
       merge: merge ?? this.merge,
-      closeIconSrc: closeIconSrc,
+      closeIconData: closeIconData,
       closeIconPosition: closeIconPosition,
       radius: radius,
       backgroundColor: backgroundColor,
@@ -170,7 +169,7 @@ class ShadDialogTheme {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
-      closeIconSrc: other.closeIconSrc,
+      closeIconData: other.closeIconData,
       closeIconPosition: other.closeIconPosition,
       radius: other.radius,
       backgroundColor: other.backgroundColor,
@@ -205,7 +204,7 @@ class ShadDialogTheme {
 
     return other is ShadDialogTheme &&
         other.merge == merge &&
-        other.closeIconSrc == closeIconSrc &&
+        other.closeIconData == closeIconData &&
         other.closeIconPosition == closeIconPosition &&
         other.radius == radius &&
         other.backgroundColor == backgroundColor &&
@@ -236,7 +235,7 @@ class ShadDialogTheme {
   @override
   int get hashCode {
     return merge.hashCode ^
-        closeIconSrc.hashCode ^
+        closeIconData.hashCode ^
         closeIconPosition.hashCode ^
         radius.hashCode ^
         backgroundColor.hashCode ^

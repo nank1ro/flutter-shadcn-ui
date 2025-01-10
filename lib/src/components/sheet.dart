@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/dialog.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -148,7 +147,7 @@ class ShadSheet extends StatefulWidget {
     this.constraints,
     this.expandCrossSide,
     this.closeIcon,
-    this.closeIconSrc,
+    this.closeIconData,
     this.closeIconPosition,
     this.radius,
     this.backgroundColor,
@@ -190,7 +189,7 @@ class ShadSheet extends StatefulWidget {
   final BoxConstraints? constraints;
   final bool? expandCrossSide;
   final Widget? closeIcon;
-  final ShadImageSrc? closeIconSrc;
+  final IconData? closeIconData;
   final ShadPosition? closeIconPosition;
   final BorderRadius? radius;
   final Color? backgroundColor;
@@ -464,8 +463,8 @@ class _ShadSheetState extends State<ShadSheet>
     final effectiveDescriptionStyle =
         widget.descriptionStyle ?? theme.sheetTheme.descriptionStyle;
 
-    final effectiveCloseIconSrc =
-        widget.closeIconSrc ?? theme.sheetTheme.closeIconSrc;
+    final effectiveCloseIconData =
+        widget.closeIconData ?? theme.sheetTheme.closeIconData;
 
     final effectiveCloseIconPosition =
         widget.closeIconPosition ?? theme.sheetTheme.closeIconPosition;
@@ -504,7 +503,7 @@ class _ShadSheetState extends State<ShadSheet>
       actions: widget.actions,
       radius: effectiveRadius,
       closeIcon: widget.closeIcon,
-      closeIconSrc: effectiveCloseIconSrc,
+      closeIconData: effectiveCloseIconData,
       closeIconPosition: effectiveCloseIconPosition,
       backgroundColor: effectiveBackgroundColor,
       expandActionsWhenTiny: effectiveExpandActionsWhenTiny,
