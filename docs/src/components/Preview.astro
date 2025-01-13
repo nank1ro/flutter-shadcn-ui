@@ -7,9 +7,14 @@ interface Props {
 const { src, minHeight = "200px" } = Astro.props;
 import { Tabs, TabItem } from "@astrojs/starlight/components";
 let uuid = crypto.randomUUID();
-// const defaultPrefix = "http://localhost:12345/"; // Default prefix for flutter playground site on localmachine
+// Default prefix for flutter playground site on localmachine
+// const defaultPrefix = "http://localhost:12345/"; 
 
-const defaultPrefix = "https://shadcn-ui-playground.pages.dev/"; // Default prefix for flutter playground site hosted.
+// Default prefix for flutter playground site hosted by the author.
+// const defaultPrefix = "https://shadcn-ui-playground.pages.dev/"; 
+
+// Default prefix for flutter playground site hosted by the contributor (Harkirat Singh).
+const defaultPrefix = "https://flutter-shadcn-playground.web.app/" 
 ---
 
 <Tabs>
