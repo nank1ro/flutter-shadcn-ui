@@ -7,6 +7,10 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Flutter Shadcn UI docs',
+      components: {
+        LanguageSelect: './src/components/SelectColor.astro',
+
+      },
       social: {
         github: 'https://github.com/nank1ro',
         twitter: 'https://twitter.com/nank1ro'
@@ -19,6 +23,7 @@ export default defineConfig({
         }
       }],
       sidebar: [
+       
         {
           label: 'mariuti.com',
           link: 'https://mariuti.com',
@@ -75,7 +80,7 @@ export default defineConfig({
           ],
 
         }
-      ],
+      ], 
     }),
   ],
   site: 'https://flutter-shadcn-ui.mariuti.com',

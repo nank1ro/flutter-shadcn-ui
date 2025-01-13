@@ -1,0 +1,57 @@
+---
+---
+
+<select id="selectColor" class="theme-color-select" >
+    <option value="blue">Blue</option>
+    <option value="gray">Gray</option>
+    <option value="green">Green</option>
+    <option value="neutral">Neutral</option>
+    <option value="orange">Orange</option>
+    <option value="red">Red</option>
+    <option value="rose">Rose</option>
+    <option value="slate">Slate</option>
+    <option value="stone">Stone</option>
+    <option value="violet">Violet</option>
+    <option value="yellow">Yellow</option>
+    <option value="zinc">Zinc</option>
+</select>
+
+<script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+        const selectColorElement = document.getElementById("selectColor");
+        const localStorageKey = "selectedThemeColor";
+
+        // Save the selected color to localStorage and update the document attribute
+        const saveColorToLocalStorage = (color) => {
+            document.documentElement.setAttribute("data-theme-color", color);
+            localStorage.setItem(localStorageKey, color);
+        };
+
+        // Initialize the dropdown with the saved color
+        const initializeColorPicker = () => {
+            const savedColor = localStorage.getItem(localStorageKey);
+            if (savedColor) {
+                selectColorElement.value = savedColor;
+                document.documentElement.setAttribute("data-theme-color", savedColor);
+            }
+        };
+
+        // Save color when user selects a new option
+        selectColorElement.addEventListener("change", (event) => {
+            const selectedColor = event.target.value;
+            saveColorToLocalStorage(selectedColor);
+        });
+
+        initializeColorPicker();
+    });
+</script>
+
+
+<style>
+    .theme-color-select {
+      padding: 0.5rem;
+      
+      font-size: 1rem;
+      margin: 1rem 0;
+    }
+</style>
