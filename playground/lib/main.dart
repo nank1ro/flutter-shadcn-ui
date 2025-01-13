@@ -1,5 +1,4 @@
 import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:playground/pages/accordion.dart';
@@ -79,6 +78,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final theme = Uri.base.queryParameters['theme'] ?? 'light';
+    final themeColor = Uri.base.queryParameters['themeColor'] ?? 'zinc'; // default theme color is zinc
 
     return ShadApp.router(
       title: 'shadcn-ui Flutter Playground',
@@ -86,11 +86,11 @@ class _MyAppState extends State<MyApp> {
       themeMode: theme == 'dark' ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
       theme: ShadThemeData(
-        colorScheme: const ShadZincColorScheme.light(),
+        colorScheme: getShadColorScheme(themeColor, false),
         brightness: Brightness.light,
       ),
       darkTheme: ShadThemeData(
-        colorScheme: const ShadZincColorScheme.dark(),
+        colorScheme: getShadColorScheme(themeColor, true),
         brightness: Brightness.dark,
       ),
     );
@@ -329,3 +329,35 @@ final _router = GoRouter(
     ),
   ],
 );
+
+
+ShadColorScheme getShadColorScheme(String themeColor, bool isDarkMode) {
+  switch (themeColor.toLowerCase()) {
+    case 'blue':
+      return isDarkMode ? const ShadBlueColorScheme.dark() : const ShadBlueColorScheme.light();
+    case 'gray':
+      return isDarkMode ? const ShadGrayColorScheme.dark() : const ShadGrayColorScheme.light();
+    case 'green':
+      return isDarkMode ? const ShadGreenColorScheme.dark() : const ShadGreenColorScheme.light();
+    case 'neutral':
+      return isDarkMode ? const ShadNeutralColorScheme.dark() : const ShadNeutralColorScheme.light();
+    case 'orange':
+      return isDarkMode ? const ShadOrangeColorScheme.dark() : const ShadOrangeColorScheme.light();
+    case 'red':
+      return isDarkMode ? const ShadRedColorScheme.dark() : const ShadRedColorScheme.light();
+    case 'rose':
+      return isDarkMode ? const ShadRoseColorScheme.dark() : const ShadRoseColorScheme.light();
+    case 'slate':
+      return isDarkMode ? const ShadSlateColorScheme.dark() : const ShadSlateColorScheme.light();
+    case 'stone':
+      return isDarkMode ? const ShadStoneColorScheme.dark() : const ShadStoneColorScheme.light();
+    case 'violet':
+      return isDarkMode ? const ShadVioletColorScheme.dark() : const ShadVioletColorScheme.light();
+    case 'yellow':
+      return isDarkMode ? const ShadYellowColorScheme.dark() : const ShadYellowColorScheme.light();
+    case 'zinc':
+      return isDarkMode ? const ShadZincColorScheme.dark() : const ShadZincColorScheme.light();
+    default:
+      return isDarkMode ? const ShadZincColorScheme.dark() : const ShadZincColorScheme.light();
+  }
+}
