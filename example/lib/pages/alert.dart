@@ -14,7 +14,7 @@ class AlertPage extends StatelessWidget {
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
           child: const ShadAlert(
-            iconSrc: LucideIcons.terminal,
+            iconData: LucideIcons.terminal,
             title: Text('Heads up!'),
             description:
                 Text('You can add components to your app using the cli.'),
@@ -23,7 +23,7 @@ class AlertPage extends StatelessWidget {
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
           child: const ShadAlert.destructive(
-            iconSrc: LucideIcons.circleAlert,
+            iconData: LucideIcons.circleAlert,
             title: Text('Error'),
             description: Text('Your session has expired. Please log in again.'),
           ),

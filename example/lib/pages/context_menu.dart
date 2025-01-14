@@ -25,10 +25,7 @@ class ContextMenuPage extends StatelessWidget {
               child: Text('Reload'),
             ),
             const ShadContextMenuItem.inset(
-              trailing: ShadImage.square(
-                LucideIcons.chevronRight,
-                size: 16,
-              ),
+              trailing: Icon(LucideIcons.chevronRight),
               items: [
                 ShadContextMenuItem(
                   child: Text('Save Page As...'),
@@ -48,7 +45,7 @@ class ContextMenuPage extends StatelessWidget {
             ),
             const Divider(height: 8),
             const ShadContextMenuItem(
-              leading: ShadImage.square(LucideIcons.check, size: 16),
+              leading: Icon(LucideIcons.check),
               child: Text('Show Bookmarks Bar'),
             ),
             const ShadContextMenuItem.inset(child: Text('Show Full URLs')),

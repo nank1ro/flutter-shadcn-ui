@@ -70,7 +70,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
-      iconSize: const Size.square(16),
       expands: false,
     );
   }
@@ -90,7 +89,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
-      iconSize: const Size.square(16),
       expands: false,
     );
   }
@@ -110,7 +108,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
-      iconSize: const Size.square(16),
       expands: false,
     );
   }
@@ -130,7 +127,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
-      iconSize: const Size.square(16),
       expands: false,
     );
   }
@@ -149,7 +145,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
-      iconSize: const Size.square(16),
       expands: false,
     );
   }
@@ -484,7 +479,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadToastTheme primaryToastTheme() {
     return ShadToastTheme(
       alignment: Alignment.bottomRight,
-      closeIconSrc: LucideIcons.x,
+      closeIconData: LucideIcons.x,
       titleStyle: effectiveTextTheme.muted.copyWith(
         fontWeight: FontWeight.w500,
         color: colorScheme.foreground,
@@ -507,7 +502,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadToastTheme destructiveToastTheme() {
     return ShadToastTheme(
       alignment: Alignment.bottomRight,
-      closeIconSrc: LucideIcons.x,
+      closeIconData: LucideIcons.x,
       titleStyle: effectiveTextTheme.muted.copyWith(
         fontWeight: FontWeight.w500,
         color: colorScheme.destructiveForeground,
@@ -538,7 +533,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           width: 1,
         ),
       ),
-      iconSize: const Size.square(16),
       iconColor: colorScheme.foreground,
       titleStyle: effectiveTextTheme.p.copyWith(
         color: colorScheme.foreground,
@@ -563,7 +557,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           width: 1,
         ),
       ),
-      iconSize: const Size.square(16),
       iconColor: colorScheme.destructive,
       titleStyle: effectiveTextTheme.p.copyWith(
         color: colorScheme.destructive,
@@ -579,7 +572,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   @override
   ShadDialogTheme primaryDialogTheme() {
     return ShadDialogTheme(
-      closeIconSrc: LucideIcons.x,
+      closeIconData: LucideIcons.x,
       radius: const BorderRadius.all(Radius.circular(8)),
       backgroundColor: colorScheme.background,
       removeBorderRadiusWhenTiny: true,
@@ -676,7 +669,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
     const bezierCurve = Cubic(0.87, 0, 0.13, 1);
     const duration = Duration(milliseconds: 300);
     return ShadAccordionTheme(
-      iconSrc: LucideIcons.chevronDown,
+      iconData: LucideIcons.chevronDown,
       padding: const EdgeInsets.symmetric(vertical: 16),
       underlineTitleOnHover: true,
       duration: duration,
@@ -729,7 +722,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           width: 0,
         ),
       ),
-      handleSize: const Size.square(10),
+      handleSize: 10,
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
@@ -822,8 +815,8 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
             const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         navigationButtonSize: 28,
         navigationButtonIconSize: 16,
-        backNavigationButtonSrc: LucideIcons.chevronLeft,
-        forwardNavigationButtonSrc: LucideIcons.chevronRight,
+        backNavigationButtonIconData: LucideIcons.chevronLeft,
+        forwardNavigationButtonIconData: LucideIcons.chevronRight,
         navigationButtonPadding: EdgeInsets.zero,
         navigationButtonDisabledOpacity: .5,
         decoration: ShadDecoration(
@@ -893,7 +886,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       buttonVariant: ShadButtonVariant.outline,
       width: 276,
       mainAxisAlignment: MainAxisAlignment.start,
-      iconSrc: LucideIcons.calendar,
+      iconData: LucideIcons.calendar,
     );
   }
 

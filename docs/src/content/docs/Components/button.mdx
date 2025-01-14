@@ -92,7 +92,7 @@ ShadButton.link(
 
 ```dart
 ShadButton.outline(
-  icon: const ShadImage(LucideIcons.chevronRight),
+  icon: const Icon(LucideIcons.chevronRight),
   onPressed: () {},
 ),
 ```
@@ -107,7 +107,7 @@ ShadButton.outline(
 ShadButton(
   onPressed: () {},
   child: const Text('Login with Email'),
-  icon: const ShadImage(LucideIcons.mail),
+  icon: const Icon(LucideIcons.mail),
 )
 ```
 
@@ -121,7 +121,13 @@ ShadButton(
 ShadButton(
   onPressed: () {},
   child: const Text('Please wait'),
-  icon: const CircularProgressIndicator(strokeWidth: 2),
+  icon: const SizedBox.square(
+    dimension: 16,
+    child: CircularProgressIndicator(
+      strokeWidth: 2,
+      color: ShadTheme.of(context).colorScheme.primaryForeground,
+    ),
+  ),
 )
 ```
 

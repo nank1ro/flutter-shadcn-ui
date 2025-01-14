@@ -5,7 +5,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:shadcn_ui/src/components/button.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
@@ -258,7 +257,7 @@ class ShadToast extends StatefulWidget {
     this.description,
     this.action,
     this.closeIcon,
-    this.closeIconSrc,
+    this.closeIconData,
     this.alignment,
     this.offset,
     this.duration,
@@ -286,7 +285,7 @@ class ShadToast extends StatefulWidget {
     this.description,
     this.action,
     this.closeIcon,
-    this.closeIconSrc,
+    this.closeIconData,
     this.alignment,
     this.offset,
     this.duration,
@@ -315,7 +314,7 @@ class ShadToast extends StatefulWidget {
     this.description,
     this.action,
     this.closeIcon,
-    this.closeIconSrc,
+    this.closeIconData,
     this.alignment,
     this.offset,
     this.duration,
@@ -341,7 +340,7 @@ class ShadToast extends StatefulWidget {
   final Widget? description;
   final Widget? action;
   final Widget? closeIcon;
-  final ShadImageSrc? closeIconSrc;
+  final IconData? closeIconData;
   final Alignment? alignment;
   final Offset? offset;
   final Duration? duration;
@@ -396,10 +395,10 @@ class _ShadToastState extends State<ShadToast> {
 
     final effectiveCloseIcon = widget.closeIcon ??
         ShadButton.ghost(
-          icon: ShadImage.square(
+          icon: Icon(
             size: 16,
-            widget.closeIconSrc ??
-                effectiveToastTheme.closeIconSrc ??
+            widget.closeIconData ??
+                effectiveToastTheme.closeIconData ??
                 LucideIcons.x,
           ),
           width: 20,

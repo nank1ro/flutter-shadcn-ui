@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
@@ -137,7 +136,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
     this.verticalDirection,
     this.controller,
     this.showHandle,
-    this.handleIconSrc,
+    this.handleIconData,
     this.handleIcon,
     this.dividerSize,
     this.dividerThickness,
@@ -158,7 +157,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
   final VerticalDirection? verticalDirection;
   final ShadResizableController? controller;
   final bool? showHandle;
-  final ShadImageSrc? handleIconSrc;
+  final IconData? handleIconData;
   final Widget? handleIcon;
   final double? dividerSize;
   final double? dividerThickness;
@@ -167,7 +166,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
   final Color? dividerColor;
   final ShadDecoration? handleDecoration;
   final EdgeInsets? handlePadding;
-  final Size? handleSize;
+  final double? handleSize;
 
   @override
   ShadResizablePanelGroupState createState() => ShadResizablePanelGroupState();
@@ -294,9 +293,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           horizontal: widget.axis == Axis.vertical ? 3 : 1,
           vertical: widget.axis == Axis.vertical ? 1 : 3,
         );
-    final effectiveHandleSize = widget.handleSize ??
-        theme.resizableTheme.handleSize ??
-        const Size.square(10);
+    final effectiveHandleSize =
+        widget.handleSize ?? theme.resizableTheme.handleSize ?? 10;
 
     final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
         theme.resizableTheme.mainAxisAlignment ??
@@ -373,13 +371,12 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
               decoration: effectiveHandleDecoration,
               child: Padding(
                 padding: effectiveHandlePadding,
-                child: ShadImage(
-                  widget.handleIconSrc ??
+                child: Icon(
+                  widget.handleIconData ??
                       (isHorizontal
                           ? LucideIcons.gripVertical
                           : LucideIcons.gripHorizontal),
-                  width: effectiveHandleSize.width,
-                  height: effectiveHandleSize.height,
+                  size: effectiveHandleSize,
                 ),
               ),
             );
@@ -400,7 +397,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           if (effectiveShowHandle) {
             leadingPosition -= effectiveHandlePadding.horizontal / 2;
             if (!theme.disableSecondaryBorder) {
-              leadingPosition -= effectiveHandleSize.width / 2;
+              leadingPosition -= effectiveHandleSize / 2;
             }
           }
 

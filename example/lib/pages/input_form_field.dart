@@ -72,10 +72,7 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
               children: [
                 ShadInputFormField(
                   id: 'username',
-                  prefix: const ShadImage.square(
-                    size: 16,
-                    LucideIcons.user,
-                  ),
+                  prefix: const Icon(LucideIcons.user),
                   label: const Text('Username'),
                   placeholder: const Text('Enter your username'),
                   description: const Text('This is your public display name.'),

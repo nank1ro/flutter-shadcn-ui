@@ -18,6 +18,7 @@ class _ButtonPageState extends State<ButtonPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
     return FocusTraversalGroup(
       policy: WidgetOrderTraversalPolicy(),
       child: BaseScaffold(
@@ -75,13 +76,19 @@ class _ButtonPageState extends State<ButtonPage> {
           ShadButton(
             size: size,
             enabled: enabled,
-            icon: const ShadImage(LucideIcons.mail),
+            icon: const Icon(LucideIcons.mail),
             child: const Text('Login with Email'),
           ),
           ShadButton(
             size: size,
             enabled: enabled,
-            icon: const CircularProgressIndicator(strokeWidth: 2),
+            icon: SizedBox.square(
+              dimension: 16,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: theme.colorScheme.primaryForeground,
+              ),
+            ),
             child: const Text('Please wait'),
           ),
           ShadButton(
@@ -106,7 +113,7 @@ class _ButtonPageState extends State<ButtonPage> {
             child: ShadButton.outline(
               size: size,
               enabled: enabled,
-              icon: const ShadImage(LucideIcons.chevronRight),
+              icon: const Icon(LucideIcons.chevronRight),
             ),
           ),
         ],

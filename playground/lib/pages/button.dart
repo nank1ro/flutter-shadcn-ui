@@ -49,17 +49,23 @@ class ButtonPage extends StatelessWidget {
               onPressed: () {},
             ),
           PlagroundButtonStyle.icon => ShadButton.outline(
-              icon: const ShadImage(LucideIcons.chevronRight),
+              icon: const Icon(LucideIcons.chevronRight),
               onPressed: () {},
             ),
           PlagroundButtonStyle.textIcon => ShadButton(
               onPressed: () {},
-              icon: const ShadImage(LucideIcons.mail),
+              icon: const Icon(LucideIcons.mail),
               child: const Text('Login with Email'),
             ),
           PlagroundButtonStyle.loading => ShadButton(
               onPressed: () {},
-              icon: const CircularProgressIndicator(strokeWidth: 2),
+              icon: SizedBox.square(
+                dimension: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: ShadTheme.of(context).colorScheme.primaryForeground,
+                ),
+              ),
               child: const Text('Please wait'),
             ),
           PlagroundButtonStyle.gradientShadow => ShadButton(
