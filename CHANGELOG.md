@@ -1,9 +1,8 @@
 ## 0.18.0
 
 - **BREAKING CHANGE**: Remove `applyIconColorFilter` from `ShadButton`.
-- **BREAKING CHANGE**: Remove `ShadImage` component. Prefer using the `Icon` widget for `IconData`, the `Image` widget for normal images, and `SvgPicture` (from the [flutter_svg package](https://pub.dev/packages/flutter_svg) for SVG images.
-- **FIX** The `iconSize` of a `ShadButton` is now applied only if you use an `Icon` widget, wrap with a `SizedBox` to set the size otherwise.
-- **FIX**: Move `iconSize` from `ShadButtonTheme` to `ShadButtonSizesTheme`.
+- **BREAKING CHANGE**: Remove `ShadImage` component. Prefer using the `Icon` widget for `IconData`, the `Image` widget for normal images, and `SvgPicture` (from the [flutter_svg package](https://pub.dev/packages/flutter_svg) for SVG images. If you want a fallback, use `UniversalImage`.
+- **BREAKING CHANGE**: Rename `iconSrc` in `iconData` around components.
 
 ## 0.17.6
 
