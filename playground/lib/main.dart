@@ -14,7 +14,6 @@ import 'package:playground/pages/context_menu.dart';
 import 'package:playground/pages/date_picker.dart';
 import 'package:playground/pages/dialog.dart';
 import 'package:playground/pages/form.dart';
-import 'package:playground/pages/image.dart';
 import 'package:playground/pages/input.dart';
 import 'package:playground/pages/input_otp.dart';
 import 'package:playground/pages/popover.dart';
@@ -123,15 +122,6 @@ final _router = GoRouter(
     GoRoute(
       path: '/avatar',
       builder: (context, state) => const AvatarPage(),
-    ),
-    GoRoute(
-      path: '/image',
-      builder: (context, state) {
-        final style = state.uri.queryParameters['style'] ?? 'local';
-        return ImagePage(
-          style: ImageStyle.values.byName(style),
-        );
-      },
     ),
     GoRoute(
       path: '/tooltip',

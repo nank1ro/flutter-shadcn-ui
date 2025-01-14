@@ -49,12 +49,12 @@ class ButtonPage extends StatelessWidget {
               onPressed: () {},
             ),
           PlagroundButtonStyle.icon => ShadButton.outline(
-              icon: const ShadImage(LucideIcons.chevronRight),
+              icon: const Icon(LucideIcons.chevronRight),
               onPressed: () {},
             ),
           PlagroundButtonStyle.textIcon => ShadButton(
               onPressed: () {},
-              icon: const ShadImage(LucideIcons.mail),
+              icon: const Icon(LucideIcons.mail),
               child: const Text('Login with Email'),
             ),
           PlagroundButtonStyle.loading => ShadButton(

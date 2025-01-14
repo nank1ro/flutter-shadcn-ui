@@ -205,7 +205,7 @@ class _FormPageState extends State<FormPage> {
                             ShadInputOTPSlot(),
                           ],
                         ),
-                        ShadImage.square(size: 24, LucideIcons.dot),
+                        Icon(size: 24, LucideIcons.dot),
                         ShadInputOTPGroup(
                           children: [
                             ShadInputOTPSlot(),

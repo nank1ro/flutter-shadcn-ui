@@ -77,5 +77,3 @@ flutter:
           weight: 800
         - asset: fonts/GeistMono-UltraBlack.otf
           weight: 900
-  assets:
-    - test/assets/

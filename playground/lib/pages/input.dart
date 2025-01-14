@@ -59,7 +59,7 @@ class _PasswordInputState extends State<PasswordInput> {
       obscureText: obscure,
       prefix: const Padding(
         padding: EdgeInsets.all(4.0),
-        child: ShadImage.square(size: 16, LucideIcons.lock),
+        child: Icon(LucideIcons.lock),
       ),
       suffix: ShadButton(
         width: 24,
@@ -69,10 +69,7 @@ class _PasswordInputState extends State<PasswordInput> {
           secondaryBorder: ShadBorder.none,
           secondaryFocusedBorder: ShadBorder.none,
         ),
-        icon: ShadImage.square(
-          size: 16,
-          obscure ? LucideIcons.eyeOff : LucideIcons.eye,
-        ),
+        icon: Icon(obscure ? LucideIcons.eyeOff : LucideIcons.eye),
         onPressed: () {
           setState(() => obscure = !obscure);
         },
