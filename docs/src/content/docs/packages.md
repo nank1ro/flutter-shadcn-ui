@@ -29,6 +29,6 @@ A nice raw table (very performant) implementation used by the [ShadTable](../com
 
 The intl package provides internationalization and localization facilities, including message translation.
 
-### [flutter_svg](https://pub.dev/packages/flutter_svg)
+### [universal_image](https://pub.dev/packages/universal_image)
 
-Draw SVG images. Used by the [ShadImage](../components/image) component.
+Support multiple image formats. Used by the [ShadAvatar](../components/avatar) component.

@@ -120,3 +120,4 @@ export 'package:flutter_svg/flutter_svg.dart';
 export 'package:intl/intl.dart' hide TextDirection;
 export 'package:lucide_icons_flutter/lucide_icons.dart';
 export 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
+export 'package:universal_image/universal_image.dart';
