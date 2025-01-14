@@ -1,3 +1,7 @@
+## 0.18.1
+
+- **FIX**: `InputOTP` component with RTL directionality.
+
 ## 0.18.0
 
 - **BREAKING CHANGE**: Remove `applyIconColorFilter` from `ShadButton`.

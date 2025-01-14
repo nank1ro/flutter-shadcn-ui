@@ -438,8 +438,16 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
         BorderRadius.zero;
 
     final lastIndexForGroup = otpProvider.widget.maxLength / otpProvider.groups;
-    final isLastInGroup = (index + 1) % lastIndexForGroup == 0;
-    final isFirstInGroup = index % lastIndexForGroup == 0;
+    var isLastInGroup = (index + 1) % lastIndexForGroup == 0;
+
+    var isFirstInGroup = index % lastIndexForGroup == 0;
+
+    // Invert the values if the text direction is RTL
+    if (Directionality.of(context) == TextDirection.rtl) {
+      final temp = isFirstInGroup;
+      isFirstInGroup = isLastInGroup;
+      isLastInGroup = temp;
+    }
 
     final BorderRadius effectiveRadius;
 
