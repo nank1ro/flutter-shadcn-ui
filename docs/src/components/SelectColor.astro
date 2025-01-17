@@ -1,10 +1,11 @@
 ---
+
 ---
 
 <!-- add svg  -->
 
 <div class="select-div">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-palette">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-palette theme-icon">
         <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
         <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
         <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
@@ -75,17 +76,21 @@
       display: flex;
       align-items: center;
       border-radius: 4px;
-      padding: 0.25rem;
-     
+      padding: 0.5rem;
+      cursor: pointer;
     }
   
-    /* SVG styling to align it with the select */
+    /* Hover effect for the entire div */
+    .select-div:hover {
+      color: var(--sl-color-text) !important; /* Apply hover color to all children */
+    }
+  
+    /* Ensure hover applies to SVG and uses the parent's color */
     .select-div svg {
-      margin-right: 5px;
-      cursor: pointer; /* Make it feel interactive */
+      stroke: currentColor; /* Inherit color from the parent */
     }
   
-    /* Select element styling */
+    /* Ensure the select element inherits hover color */
     .theme-color-select {
       border: none;
       outline: none;
@@ -93,14 +98,26 @@
       background-color: transparent;
       cursor: pointer;
       flex: 1; /* Ensures the select expands */
+      color: inherit; /* Inherit color from parent */
+      
     }
   
-    /* Apply outline based on data-theme attribute and focus-within */
-  :root[data-theme='dark'] .select-div:focus-within {
-    outline: rgb(153, 200, 255) auto 1px; /* Dark mode outline */
-  }
-
-  :root[data-theme='light'] .select-div:focus-within {
-    outline: rgb(0, 95, 204) auto 1px; /* Light mode outline */
-  }
+    /* Dark mode styling */
+    :root[data-theme='dark'] .select-div {
+      color: #EEDEF3; /* Dark mode text and SVG color */
+    }
+  
+    /* Light mode styling */
+    :root[data-theme='light'] .select-div {
+      color: #23262F; /* Light mode text and SVG color */
+    }
+  
+    /* Focus outline */
+    :root[data-theme='dark'] .select-div:focus-within {
+      outline: rgb(153, 200, 255) auto 1px; /* Dark mode outline */
+    }
+  
+    :root[data-theme='light'] .select-div:focus-within {
+      outline: rgb(0, 95, 204) auto 1px; /* Light mode outline */
+    }
   </style>
