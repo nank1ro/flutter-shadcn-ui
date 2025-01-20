@@ -20,6 +20,7 @@ class ShadCardTheme {
     this.columnCrossAxisAlignment,
     this.rowMainAxisSize,
     this.columnMainAxisSize,
+    this.clipBehavior,
   });
 
   final bool merge;
@@ -36,6 +37,7 @@ class ShadCardTheme {
   final CrossAxisAlignment? columnCrossAxisAlignment;
   final MainAxisSize? rowMainAxisSize;
   final MainAxisSize? columnMainAxisSize;
+  final Clip? clipBehavior;
 
   static ShadCardTheme lerp(
     ShadCardTheme a,
@@ -49,15 +51,19 @@ class ShadCardTheme {
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       border: Border.lerp(a.border, b.border, t),
-      shadows: b.shadows,
+      shadows: t < .5 ? a.shadows : b.shadows,
       width: lerpDouble(a.width, b.width, t),
       height: lerpDouble(a.height, b.height, t),
-      rowMainAxisAlignment: b.rowMainAxisAlignment,
-      rowCrossAxisAlignment: b.rowCrossAxisAlignment,
-      columnMainAxisAlignment: b.columnMainAxisAlignment,
-      columnCrossAxisAlignment: b.columnCrossAxisAlignment,
-      rowMainAxisSize: b.rowMainAxisSize,
-      columnMainAxisSize: b.columnMainAxisSize,
+      rowMainAxisAlignment:
+          t < .5 ? a.rowMainAxisAlignment : b.rowMainAxisAlignment,
+      rowCrossAxisAlignment:
+          t < .5 ? a.rowCrossAxisAlignment : b.rowCrossAxisAlignment,
+      columnMainAxisAlignment:
+          t < .5 ? a.columnMainAxisAlignment : b.columnMainAxisAlignment,
+      columnCrossAxisAlignment:
+          t < .5 ? a.columnCrossAxisAlignment : b.columnCrossAxisAlignment,
+      rowMainAxisSize: t < .5 ? a.rowMainAxisSize : b.rowMainAxisSize,
+      columnMainAxisSize: t < .5 ? a.columnMainAxisSize : b.columnMainAxisSize,
     );
   }
 
@@ -76,6 +82,7 @@ class ShadCardTheme {
     CrossAxisAlignment? columnCrossAxisAlignment,
     MainAxisSize? rowMainAxisSize,
     MainAxisSize? columnMainAxisSize,
+    Clip? clipBehavior,
   }) {
     return ShadCardTheme(
       merge: merge ?? this.merge,
@@ -95,6 +102,7 @@ class ShadCardTheme {
           columnCrossAxisAlignment ?? this.columnCrossAxisAlignment,
       rowMainAxisSize: rowMainAxisSize ?? this.rowMainAxisSize,
       columnMainAxisSize: columnMainAxisSize ?? this.columnMainAxisSize,
+      clipBehavior: clipBehavior ?? this.clipBehavior,
     );
   }
 
@@ -115,6 +123,7 @@ class ShadCardTheme {
       columnCrossAxisAlignment: other.columnCrossAxisAlignment,
       rowMainAxisSize: other.rowMainAxisSize,
       columnMainAxisSize: other.columnMainAxisSize,
+      clipBehavior: other.clipBehavior,
     );
   }
 
@@ -136,7 +145,8 @@ class ShadCardTheme {
         other.columnMainAxisAlignment == columnMainAxisAlignment &&
         other.columnCrossAxisAlignment == columnCrossAxisAlignment &&
         other.rowMainAxisSize == rowMainAxisSize &&
-        other.columnMainAxisSize == columnMainAxisSize;
+        other.columnMainAxisSize == columnMainAxisSize &&
+        other.clipBehavior == clipBehavior;
   }
 
   @override
@@ -154,6 +164,7 @@ class ShadCardTheme {
         columnMainAxisAlignment.hashCode ^
         columnCrossAxisAlignment.hashCode ^
         rowMainAxisSize.hashCode ^
-        columnMainAxisSize.hashCode;
+        columnMainAxisSize.hashCode ^
+        clipBehavior.hashCode;
   }
 }

@@ -1,3 +1,7 @@
+## 0.18.1
+
+- **FIX**: Set `ShadCard` clipBehavior to `Clip.antialias`, add `clipBehavior` to `ShadCard` and `ShadCardTheme`.
+
 ## 0.18.0
 
 - **BREAKING CHANGE**: Remove `applyIconColorFilter` from `ShadButton`.
