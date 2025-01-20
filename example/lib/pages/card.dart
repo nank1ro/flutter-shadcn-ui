@@ -1,5 +1,4 @@
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
-import 'package:example/common/assets.dart';
 import 'package:example/common/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -48,10 +47,6 @@ class _CardPageState extends State<CardPage> {
     return BaseScaffold(
       appBarTitle: 'Card',
       children: [
-        ShadCard(
-          padding: EdgeInsets.zero,
-          child: UniversalImage(Assets.banner),
-        ),
         ShadCard(
           width: 350,
           title: const Text('Create project'),
