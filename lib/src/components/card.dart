@@ -23,6 +23,7 @@ class ShadCard extends StatelessWidget {
     this.columnCrossAxisAlignment,
     this.rowMainAxisSize,
     this.columnMainAxisSize,
+    this.clipBehavior,
   });
 
   final Widget? title;
@@ -45,6 +46,11 @@ class ShadCard extends StatelessWidget {
   final CrossAxisAlignment? columnCrossAxisAlignment;
   final MainAxisSize? rowMainAxisSize;
   final MainAxisSize? columnMainAxisSize;
+
+  /// {@template ShadCard.clipBehavior}
+  /// The clipBehavior of the card, defaults to [Clip.antiAlias].
+  /// {@endtemplate}
+  final Clip? clipBehavior;
 
   @override
   Widget build(BuildContext context) {
@@ -84,10 +90,14 @@ class ShadCard extends StatelessWidget {
         theme.cardTheme.columnCrossAxisAlignment ??
         CrossAxisAlignment.start;
 
+    final effectiveClipBehavior =
+        clipBehavior ?? theme.cardTheme.clipBehavior ?? Clip.antiAlias;
+
     return Container(
       width: width,
       height: height,
       padding: effectivePadding,
+      clipBehavior: effectiveClipBehavior,
       decoration: BoxDecoration(
         color: effectiveBackgroundColor,
         borderRadius: effectiveRadius,
