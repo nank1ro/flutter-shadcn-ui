@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -713,7 +714,9 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               ? effectiveSelectedHoverBackgroundColor
               : effectiveHoverBackgroundColor,
           padding: effectivePadding,
-          decoration: effectiveDecoration,
+          decoration: selected
+              ? effectiveDecoration.mergeWith(widget.selectedDecoration)
+              : effectiveDecoration,
           foregroundColor: selected
               ? effectiveSelectedForegroundColor
               : effectiveForegroundColor,
