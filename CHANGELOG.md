@@ -1,6 +1,8 @@
 ## 0.18.1
 
 - **FIX**: Set `ShadCard` clipBehavior to `Clip.antialias`, add `clipBehavior` to `ShadCard` and `ShadCardTheme`.
+- **FIX**: Use `selectedDecoration` in `ShadTabs` (thanks to @thisisamank)
+- **FEAT**: Add colorSelector to the ShadcnUI docs (thanks to @0xharkirat)
 
 ## 0.18.0
 
