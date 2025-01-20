@@ -7,6 +7,14 @@ interface Props {
 const { src, minHeight = "200px" } = Astro.props;
 import { Tabs, TabItem } from "@astrojs/starlight/components";
 let uuid = crypto.randomUUID();
+// Default prefix for flutter playground site on localmachine
+// const defaultPrefix = "http://localhost:12345/"; 
+
+// Default prefix for flutter playground site hosted by the author.
+const defaultPrefix = "https://shadcn-ui-playground.pages.dev/"; 
+
+// Default prefix for flutter playground site hosted by the contributor (Harkirat Singh).
+// const defaultPrefix = "https://flutter-shadcn-playground.web.app/" 
 ---
 
 <Tabs>
@@ -14,43 +22,77 @@ let uuid = crypto.randomUUID();
         <iframe
             id={uuid}
             class="preview"
-            style=`border: 1px solid rgba(0, 0, 0, 0.1); min-height: ${minHeight}; width: 100%;`
-            loading="lazy"></iframe>
+            style={`border: 1px solid rgba(0, 0, 0, 0.1); min-height: ${minHeight}; width: 100%;`}
+            loading="lazy"
+        ></iframe>
     </TabItem>
     <TabItem label="Code">
         <slot />
     </TabItem>
 </Tabs>
 
-<script is:inline define:vars={{ uuid, src }}>
+<script is:inline define:vars={{defaultPrefix, uuid, src }}>
+    const fullSrc = `${defaultPrefix}${src}`; // Combine prefix and prop src
+    // Utility function to update query string parameters
     function updateQueryStringParameter(uri, key, value) {
-        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-        var separator = uri.indexOf("?") !== -1 ? "&" : "?";
+        const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        const separator = uri.includes("?") ? "&" : "?";
         if (uri.match(re)) {
-            return uri.replace(re, "$1" + key + "=" + value + "$2");
+            return uri.replace(re, `$1${key}=${value}$2`);
         } else {
-            return uri + separator + key + "=" + value;
+            return `${uri}${separator}${key}=${value}`;
         }
     }
 
-    function updateSrcForTheme() {
-        const isThemeDark =
-            document.documentElement.attributes["data-theme"].value == "dark";
+    // Function to update iframe src for both theme and theme color
+    function updateIframeSrc() {
         const iframe = document.getElementById(uuid);
-        const iframeSrc = iframe.getAttribute("src") ?? "";
-        const withoutSrc = iframeSrc === "";
-        const iframeTheme = iframeSrc.includes("theme=dark") ? "dark" : "light";
-        if (isThemeDark && (withoutSrc || iframeTheme != "dark")) {
-            iframe.src = updateQueryStringParameter(src, "theme", "dark");
-        } else if (!isThemeDark && (withoutSrc || iframeTheme != "light")) {
-            iframe.src = updateQueryStringParameter(src, "theme", "light");
+        if (!iframe) return;
+
+        const themeMode = document.documentElement.getAttribute("data-theme");
+        const themeColor = document.documentElement.getAttribute("data-theme-color");
+        let iframeSrc = iframe.getAttribute("src") || fullSrc;
+
+        if (themeMode) {
+            iframeSrc = updateQueryStringParameter(iframeSrc, "theme", themeMode);
         }
+
+        if (themeColor) {
+            iframeSrc = updateQueryStringParameter(iframeSrc, "themeColor", themeColor);
+        }
+
+        iframe.src = iframeSrc;
+        // console.log(`Updated iframe src: ${iframe.src}`);
     }
 
-    // Watch the document element
-    const observer = new MutationObserver(updateSrcForTheme);
+    // Observer callback for theme mode changes
+    function updateSrcForTheme() {
+        updateIframeSrc();
+    }
+
+    // Observer callback for theme color changes
+    function updateSrcForThemeColor() {
+        updateIframeSrc();
+    }
+
+    // Initialize iframe on page load
+    document.addEventListener("DOMContentLoaded", () => {
+        updateIframeSrc();
+    });
+
+    // Observe changes to the `data-theme` and `data-theme-color` attributes
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === "data-theme") {
+                updateSrcForTheme();
+            } else if (mutation.attributeName === "data-theme-color") {
+                updateSrcForThemeColor();
+            }
+        });
+    });
+
     observer.observe(document.documentElement, {
         attributes: true,
-        attributeFilter: ["data-theme"],
+        attributeFilter: ["data-theme", "data-theme-color"],
     });
 </script>

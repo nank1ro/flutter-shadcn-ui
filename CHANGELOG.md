@@ -1,6 +1,10 @@
 ## 0.18.1
 
 - **FIX**: `InputOTP` component with RTL directionality.
+- **FIX**: Set `ShadCard` clipBehavior to `Clip.antialias`, add `clipBehavior` to `ShadCard` and `ShadCardTheme`.
+- **FIX**: Use `selectedDecoration` in `ShadTabs` (thanks to @thisisamank)
+- **FEAT**: Add colorSelector to the ShadcnUI docs (thanks to @0xharkirat)
+- **FEAT**: Add `hourLabel`, `minuteLabel`, `secondLabel`, `periodLabel`, `hourPlaceholder`, `minutePlaceholder`, `secondPlaceholder` and `periodPlaceholder` to `ShadTimePickerTheme`.
 
 ## 0.18.0
 
