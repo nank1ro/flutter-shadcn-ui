@@ -1,0 +1,123 @@
+---
+
+---
+
+<!-- add svg  -->
+
+<div class="select-div">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-palette theme-icon">
+        <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+        <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+        <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+        <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+      </svg>
+      <select id="selectColor" class="theme-color-select" >
+    
+        <option disabled selected>Theme Color</option>
+        <option value="blue">Blue</option>
+        <option value="gray">Gray</option>
+        <option value="green">Green</option>
+        <option value="neutral">Neutral</option>
+        <option value="orange">Orange</option>
+        <option value="red">Red</option>
+        <option value="rose">Rose</option>
+        <option value="slate">Slate</option>
+        <option value="stone">Stone</option>
+        <option value="violet">Violet</option>
+        <option value="yellow">Yellow</option>
+        <option value="zinc">Zinc</option>
+    </select>
+</div>
+
+
+<script is:inline>
+
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const selectColorElement = document.getElementById("selectColor");
+        const localStorageKey = "selectedThemeColor";
+
+        
+
+        // Save the selected color to localStorage and update the document attribute
+        const saveColorToLocalStorage = (color) => {
+            document.documentElement.setAttribute("data-theme-color", color);
+            localStorage.setItem(localStorageKey, color);
+        };
+
+        // Initialize the dropdown with the saved color
+        const initializeColorPicker = () => {
+            const savedColor = localStorage.getItem(localStorageKey);
+            if (savedColor) {
+                selectColorElement.value = savedColor;
+                document.documentElement.setAttribute("data-theme-color", savedColor);
+            }
+        };
+
+        // Save color when user selects a new option
+        selectColorElement.addEventListener("change", (event) => {
+            // Log the computed style of the select element from astro theme to give the outline color of the select same as the astro theme color
+//             const selectStyle = window.getComputedStyle(selectColorElement);
+//   console.log('Computed border color of select:', selectStyle.outline);
+            const selectedColor = event.target.value;
+            saveColorToLocalStorage(selectedColor);
+        });
+
+        initializeColorPicker();
+    });
+</script>
+
+
+<style>
+    /* Container styling to unify SVG and select */
+    .select-div {
+      display: flex;
+      align-items: center;
+      border-radius: 4px;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+  
+    /* Hover effect for the entire div */
+    .select-div:hover {
+      color: var(--sl-color-text) !important; /* Apply hover color to all children */
+    }
+  
+    /* Ensure hover applies to SVG and uses the parent's color */
+    .select-div svg {
+      stroke: currentColor; /* Inherit color from the parent */
+    }
+  
+    /* Ensure the select element inherits hover color */
+    .theme-color-select {
+      border: none;
+      outline: none;
+      font-size: 0.875rem;
+      background-color: transparent;
+      cursor: pointer;
+      flex: 1; /* Ensures the select expands */
+      color: inherit; /* Inherit color from parent */
+      
+    }
+  
+    /* Dark mode styling */
+    :root[data-theme='dark'] .select-div {
+      color: #EDEEF3; /* Dark mode text and SVG color */
+    }
+  
+    /* Light mode styling */
+    :root[data-theme='light'] .select-div {
+      color: #23262F; /* Light mode text and SVG color */
+    }
+  
+    /* Focus outline */
+    :root[data-theme='dark'] .select-div:focus-within {
+      outline: rgb(153, 200, 255) auto 1px; /* Dark mode outline */
+    }
+  
+    :root[data-theme='light'] .select-div:focus-within {
+      outline: rgb(0, 95, 204) auto 1px; /* Light mode outline */
+    }
+  </style>
