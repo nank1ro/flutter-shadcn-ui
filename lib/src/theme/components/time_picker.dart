@@ -25,6 +25,14 @@ class ShadTimePickerTheme {
     this.fieldPadding,
     this.fieldDecoration,
     this.periodDecoration,
+    this.hourLabel,
+    this.minuteLabel,
+    this.secondLabel,
+    this.hourPlaceholder,
+    this.minutePlaceholder,
+    this.secondPlaceholder,
+    this.periodLabel,
+    this.periodPlaceholder,
   });
 
   final bool merge;
@@ -83,6 +91,30 @@ class ShadTimePickerTheme {
   /// {@macro ShadTimePicker.periodDecoration}
   final ShadDecoration? periodDecoration;
 
+  /// {@macro ShadTimePicker.hourLabel}
+  final Widget? hourLabel;
+
+  /// {@macro ShadTimePicker.minuteLabel}
+  final Widget? minuteLabel;
+
+  /// {@macro ShadTimePicker.secondLabel}
+  final Widget? secondLabel;
+
+  /// {@macro ShadTimePicker.periodLabel}
+  final Widget? periodLabel;
+
+  /// {@macro ShadTimePicker.hourPlaceholder}
+  final Widget? hourPlaceholder;
+
+  /// {@macro ShadTimePicker.minutePlaceholder}
+  final Widget? minutePlaceholder;
+
+  /// {@macro ShadTimePicker.secondPlaceholder}
+  final Widget? secondPlaceholder;
+
+  /// {@macro ShadTimePicker.periodPlaceholder}
+  final Widget? periodPlaceholder;
+
   static ShadTimePickerTheme lerp(
     ShadTimePickerTheme a,
     ShadTimePickerTheme b,
@@ -113,6 +145,14 @@ class ShadTimePickerTheme {
           ShadDecoration.lerp(a.fieldDecoration, b.fieldDecoration, t),
       periodDecoration:
           ShadDecoration.lerp(a.periodDecoration, b.periodDecoration, t),
+      hourLabel: t < .5 ? a.hourLabel : b.hourLabel,
+      minuteLabel: t < .5 ? a.minuteLabel : b.minuteLabel,
+      secondLabel: t < .5 ? a.secondLabel : b.secondLabel,
+      periodLabel: t < .5 ? a.periodLabel : b.periodLabel,
+      hourPlaceholder: t < .5 ? a.hourPlaceholder : b.hourPlaceholder,
+      minutePlaceholder: t < .5 ? a.minutePlaceholder : b.minutePlaceholder,
+      secondPlaceholder: t < .5 ? a.secondPlaceholder : b.secondPlaceholder,
+      periodPlaceholder: t < .5 ? a.periodPlaceholder : b.periodPlaceholder,
     );
   }
 
@@ -136,6 +176,14 @@ class ShadTimePickerTheme {
     EdgeInsets? fieldPadding,
     ShadDecoration? fieldDecoration,
     ShadDecoration? periodDecoration,
+    Widget? hourLabel,
+    Widget? minuteLabel,
+    Widget? secondLabel,
+    Widget? periodLabel,
+    Widget? hourPlaceholder,
+    Widget? minutePlaceholder,
+    Widget? secondPlaceholder,
+    Widget? periodPlaceholder,
   }) {
     return ShadTimePickerTheme(
       merge: merge ?? this.merge,
@@ -158,6 +206,14 @@ class ShadTimePickerTheme {
       fieldPadding: fieldPadding ?? this.fieldPadding,
       fieldDecoration: fieldDecoration ?? this.fieldDecoration,
       periodDecoration: periodDecoration ?? this.periodDecoration,
+      hourLabel: hourLabel ?? this.hourLabel,
+      minuteLabel: minuteLabel ?? this.minuteLabel,
+      secondLabel: secondLabel ?? this.secondLabel,
+      periodLabel: periodLabel ?? this.periodLabel,
+      hourPlaceholder: hourPlaceholder ?? this.hourPlaceholder,
+      minutePlaceholder: minutePlaceholder ?? this.minutePlaceholder,
+      secondPlaceholder: secondPlaceholder ?? this.secondPlaceholder,
+      periodPlaceholder: periodPlaceholder ?? this.periodPlaceholder,
     );
   }
 
@@ -183,6 +239,14 @@ class ShadTimePickerTheme {
       fieldPadding: other.fieldPadding,
       fieldDecoration: other.fieldDecoration,
       periodDecoration: other.periodDecoration,
+      hourLabel: other.hourLabel,
+      minuteLabel: other.minuteLabel,
+      secondLabel: other.secondLabel,
+      periodLabel: other.periodLabel,
+      hourPlaceholder: other.hourPlaceholder,
+      minutePlaceholder: other.minutePlaceholder,
+      secondPlaceholder: other.secondPlaceholder,
+      periodPlaceholder: other.periodPlaceholder,
     );
   }
 
@@ -209,7 +273,15 @@ class ShadTimePickerTheme {
         other.fieldWidth == fieldWidth &&
         other.fieldPadding == fieldPadding &&
         other.fieldDecoration == fieldDecoration &&
-        other.periodDecoration == periodDecoration;
+        other.periodDecoration == periodDecoration &&
+        other.hourLabel == hourLabel &&
+        other.minuteLabel == minuteLabel &&
+        other.secondLabel == secondLabel &&
+        other.periodLabel == periodLabel &&
+        other.hourPlaceholder == hourPlaceholder &&
+        other.minutePlaceholder == minutePlaceholder &&
+        other.secondPlaceholder == secondPlaceholder &&
+        other.periodPlaceholder == periodPlaceholder;
   }
 
   @override
@@ -232,6 +304,14 @@ class ShadTimePickerTheme {
         fieldWidth.hashCode ^
         fieldPadding.hashCode ^
         fieldDecoration.hashCode ^
-        periodDecoration.hashCode;
+        periodDecoration.hashCode ^
+        hourLabel.hashCode ^
+        minuteLabel.hashCode ^
+        secondLabel.hashCode ^
+        periodLabel.hashCode ^
+        hourPlaceholder.hashCode ^
+        minutePlaceholder.hashCode ^
+        secondPlaceholder.hashCode ^
+        periodPlaceholder.hashCode;
   }
 }

@@ -599,20 +599,32 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     final effectiveJumpToNextField = widget.jumpToNextFieldWhenFilled ??
         theme.timePickerTheme.jumpToNextFieldWhenFilled ??
         true;
-    final effectiveHourLabel = widget.hourLabel ?? const Text('Hours');
-    final effectiveMinuteLabel = widget.minuteLabel ?? const Text('Minutes');
-    final effectiveSecondLabel = widget.secondLabel ?? const Text('Seconds');
-    final effectivePeriodLabel = widget.periodLabel ?? const Text('Period');
+    final effectiveHourLabel = widget.hourLabel ??
+        theme.timePickerTheme.hourLabel ??
+        const Text('Hours');
+    final effectiveMinuteLabel = widget.minuteLabel ??
+        theme.timePickerTheme.minuteLabel ??
+        const Text('Minutes');
+    final effectiveSecondLabel = widget.secondLabel ??
+        theme.timePickerTheme.secondLabel ??
+        const Text('Seconds');
+    final effectivePeriodLabel = widget.periodLabel ??
+        theme.timePickerTheme.periodLabel ??
+        const Text('Period');
 
     const defaultPlaceholder = Text('00');
-    final effectiveHourPlaceholder =
-        widget.hourPlaceholder ?? defaultPlaceholder;
-    final effectiveMinutePlaceholder =
-        widget.minutePlaceholder ?? defaultPlaceholder;
-    final effectiveSecondPlaceholder =
-        widget.secondPlaceholder ?? defaultPlaceholder;
-    final effectivePeriodPlaceholder =
-        widget.periodPlaceholder ?? Text('AM', style: theme.textTheme.muted);
+    final effectiveHourPlaceholder = widget.hourPlaceholder ??
+        theme.timePickerTheme.hourPlaceholder ??
+        defaultPlaceholder;
+    final effectiveMinutePlaceholder = widget.minutePlaceholder ??
+        theme.timePickerTheme.minutePlaceholder ??
+        defaultPlaceholder;
+    final effectiveSecondPlaceholder = widget.secondPlaceholder ??
+        theme.timePickerTheme.secondPlaceholder ??
+        defaultPlaceholder;
+    final effectivePeriodPlaceholder = widget.periodPlaceholder ??
+        theme.timePickerTheme.periodPlaceholder ??
+        Text('AM', style: theme.textTheme.muted);
 
     final effectiveAlignment = widget.alignment ??
         theme.timePickerTheme.alignment ??
