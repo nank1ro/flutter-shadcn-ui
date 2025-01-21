@@ -1,3 +1,7 @@
+## 0.18.2
+
+- **FIX**: `InputOTP` component with RTL directionality.
+
 ## 0.18.1
 
 - **FIX**: Set `ShadCard` clipBehavior to `Clip.antialias`, add `clipBehavior` to `ShadCard` and `ShadCardTheme`.
