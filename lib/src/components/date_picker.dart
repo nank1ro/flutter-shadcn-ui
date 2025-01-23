@@ -930,7 +930,7 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
   }
 
   String defaultDateFormat(DateTime date, Locale locale) {
-    final ordinalDay = date.getDayWithSuffix();
+    final ordinalDay = date.getOrdinalDay();
     final month =
         intl.DateFormat('MMMM', locale.toLanguageTag()).format(date); // October
     final year =

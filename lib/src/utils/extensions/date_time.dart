@@ -210,7 +210,7 @@ extension ShadDateTime on DateTime {
     return offsets[month - 1] + day + (isLeapYear(year) && month > 2 ? 1 : 0);
   }
 
-  String getDayWithSuffix() {
+  String getOrdinalDay() {
     if (day >= 11 && day <= 13) {
       return '${day}th';
     }
