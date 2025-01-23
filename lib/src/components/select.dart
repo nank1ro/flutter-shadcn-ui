@@ -1026,7 +1026,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
         widget.radius ?? theme.optionTheme.radius ?? theme.radius;
 
     final effectiveOrderPolicy = widget.orderPolicy ??
-        theme.selectTheme.optionsOrderPolicy ??
+        theme.optionTheme.orderPolicy ??
         const WidgetOrderPolicy.linear();
 
     final effectiveSelectedIcon = widget.selectedIcon ??
