@@ -3,7 +3,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
@@ -843,14 +842,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         gridCrossAxisSpacing: 0,
         hideWeekdayNames: false,
         showOutsideDays: true,
-        formatMonthYear: (date) => DateFormat('LLLL y').format(date),
-        formatMonth: (date) => DateFormat('LLLL').format(date),
-        formatYear: (date) => DateFormat('y').format(date),
-        formatWeekday: (DateTime date) {
-          final s = DateFormat('EE').format(date);
-          if (s.length < 2) return s;
-          return s.substring(0, 2);
-        },
         showWeekNumbers: false,
         weekStartsOn: 1,
         fixedWeeks: false,

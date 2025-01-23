@@ -1,3 +1,8 @@
+## 0.18.3
+
+- **FIX**: Improve `ShadAvatar` (thanks to @mickey35vn).
+- **FIX**: Locale not handled in `ShadCalendar` and `ShadDatePicker`.
+
 ## 0.18.2
 
 - **FIX**: `InputOTP` component with RTL directionality.

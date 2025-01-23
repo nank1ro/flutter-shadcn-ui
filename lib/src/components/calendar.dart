@@ -842,26 +842,6 @@ class _ShadCalendarState extends State<ShadCalendar> {
       ShadTheme.of(context, listen: false).calendarTheme.hideWeekdayNames ??
       false;
 
-  String Function(DateTime date)? get effectiveFormatMonth =>
-      widget.formatMonth ??
-      ShadTheme.of(context, listen: false).calendarTheme.formatMonth ??
-      defaultFormatMonth;
-
-  String Function(DateTime date)? get effectiveFormatMonthYear =>
-      widget.formatMonthYear ??
-      ShadTheme.of(context, listen: false).calendarTheme.formatMonthYear ??
-      defaultFormatMonthYear;
-
-  String Function(DateTime date)? get effectiveFormatYear =>
-      widget.formatYear ??
-      ShadTheme.of(context, listen: false).calendarTheme.formatYear ??
-      defaultFormatYear;
-
-  String Function(DateTime date)? get effectiveFormatWeekday =>
-      widget.formatWeekday ??
-      ShadTheme.of(context, listen: false).calendarTheme.formatWeekday ??
-      defaultFormatWeekday;
-
   bool get effectiveShowWeekNumbers =>
       widget.showWeekNumbers ??
       ShadTheme.of(context, listen: false).calendarTheme.showWeekNumbers ??
@@ -1048,20 +1028,20 @@ class _ShadCalendarState extends State<ShadCalendar> {
     }
   }
 
-  String defaultFormatMonthYear(DateTime date) {
-    return DateFormat('LLLL y').format(date);
+  String defaultFormatMonthYear(DateTime date, Locale locale) {
+    return DateFormat('LLLL y', locale.toLanguageTag()).format(date);
   }
 
-  String defaultFormatYear(DateTime date) {
-    return DateFormat('y').format(date);
+  String defaultFormatYear(DateTime date, Locale locale) {
+    return DateFormat('y', locale.toLanguageTag()).format(date);
   }
 
-  String defaultFormatMonth(DateTime date) {
-    return DateFormat('LLLL').format(date);
+  String defaultFormatMonth(DateTime date, Locale locale) {
+    return DateFormat('LLLL', locale.toLanguageTag()).format(date);
   }
 
-  String defaultFormatWeekday(DateTime date) {
-    final s = DateFormat('EE').format(date);
+  String defaultFormatWeekday(DateTime date, Locale locale) {
+    final s = DateFormat('EE', locale.toLanguageTag()).format(date);
     if (s.length < 2) return s;
     return s.substring(0, 2);
   }
@@ -1086,14 +1066,19 @@ class _ShadCalendarState extends State<ShadCalendar> {
     final effectiveCaptionLayout =
         widget.captionLayout ?? ShadCalendarCaptionLayout.label;
 
-    final effectiveFormatMonth = widget.formatMonth ?? defaultFormatMonth;
+    final locale = Localizations.localeOf(context);
 
-    final effectiveFormatYear = widget.formatYear ?? defaultFormatYear;
+    final effectiveFormatMonth =
+        widget.formatMonth ?? (date) => defaultFormatMonth(date, locale);
 
-    final effectiveFormatMonthYear =
-        widget.formatMonthYear ?? defaultFormatMonthYear;
+    final effectiveFormatYear =
+        widget.formatYear ?? (date) => defaultFormatYear(date, locale);
 
-    final effectiveFormatWeekday = widget.formatWeekday ?? defaultFormatWeekday;
+    final effectiveFormatMonthYear = widget.formatMonthYear ??
+        (date) => defaultFormatMonthYear(date, locale);
+
+    final effectiveFormatWeekday =
+        widget.formatWeekday ?? (date) => defaultFormatWeekday(date, locale);
 
     final models =
         widget.reverseMonths ? datesModels.reversed.toList() : datesModels;
