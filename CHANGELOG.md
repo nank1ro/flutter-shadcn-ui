@@ -2,6 +2,7 @@
 
 - **FIX**: Improve `ShadAvatar` (thanks to @mickey35vn).
 - **FIX**: Locale not handled in `ShadCalendar` and `ShadDatePicker`.
+- **REFACTOR**: Remove `optionsOrderPolicy` from `ShadSelectTheme` and move it to `ShadOptionTheme` with the name `orderPolicy`.
 
 ## 0.18.2
 
