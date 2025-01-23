@@ -929,22 +929,24 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
     super.dispose();
   }
 
-  String defaultDateFormat(DateTime date) {
-    final dayWithSuffix = date.getDayWithSuffix();
-    final month = intl.DateFormat('MMMM').format(date); // October
-    final year = intl.DateFormat('y').format(date); // 2024
-    return '$month $dayWithSuffix, $year'; // October 1st, 2024
+  String defaultDateFormat(DateTime date, Locale locale) {
+    final ordinalDay = date.getDayWithSuffix();
+    final month =
+        intl.DateFormat('MMMM', locale.toLanguageTag()).format(date); // October
+    final year =
+        intl.DateFormat('y', locale.toLanguageTag()).format(date); // 2024
+    return '$month $ordinalDay, $year'; // October 1st, 2024
   }
 
-  String defaultDateRangeFormat(ShadDateTimeRange range) {
+  String defaultDateRangeFormat(ShadDateTimeRange range, Locale locale) {
     if (range.start == null) return '';
     final buffer = StringBuffer();
 
-    final start = intl.DateFormat.yMMMd().format(range.start!);
+    final start = intl.DateFormat.yMMMd(locale).format(range.start!);
     buffer.write(start);
 
     if (range.end != null) {
-      final end = intl.DateFormat.yMMMd().format(range.end!);
+      final end = intl.DateFormat.yMMMd(locale).format(range.end!);
       buffer.write(' - $end');
     }
 
@@ -961,13 +963,15 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
         selectedRange != null && selectedRange!.start != null,
     };
 
+    final locale = Localizations.localeOf(context);
+
     final effectiveFormatDate = widget.formatDate ??
         theme.datePickerTheme.formatDate ??
-        defaultDateFormat;
+        (date) => defaultDateFormat(date, locale);
 
     final effectiveFormatDateRange = widget.formatDateRange ??
         theme.datePickerTheme.formatDateRange ??
-        defaultDateRangeFormat;
+        (range) => defaultDateRangeFormat(range, locale);
 
     final effectiveAllowDeselection = widget.allowDeselection ??
         theme.datePickerTheme.allowDeselection ??
