@@ -839,8 +839,6 @@ class _ShadCalendarState extends State<ShadCalendar> {
   // The list of available years in the selector
   final availableYears = <int>[];
 
-  final _groupId = UniqueKey();
-
   bool get effectiveShowOutsideDays =>
       widget.showOutsideDays ??
       ShadTheme.of(context, listen: false).calendarTheme.showOutsideDays ??
@@ -1277,11 +1275,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
         theme.calendarTheme.allowDeselection ??
         false;
 
-    final effectiveGroupId = widget.groupId ?? _groupId;
-
     final yearSelector = ShadSelect<int>(
       initialValue: currentMonth.year,
-      groupId: effectiveGroupId,
+      groupId: widget.groupId,
       padding: effectiveYearSelectorPadding,
       minWidth: effectiveYearSelectorMinWidth,
       selectedOptionBuilder: (context, value) {
@@ -1302,7 +1298,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     final monthSelector = ShadSelect<int>(
       initialValue: currentMonth.month,
-      groupId: effectiveGroupId,
+      groupId: widget.groupId,
       padding: effectiveMonthSelectorPadding,
       minWidth: effectiveMonthSelectorMinWidth,
       selectedOptionBuilder: (context, value) {
