@@ -29,6 +29,7 @@ class ShadApp extends StatefulWidget {
     this.onGenerateRoute,
     this.onGenerateInitialRoutes,
     this.onUnknownRoute,
+    this.onNavigationNotification,
     this.navigatorObservers = const <NavigatorObserver>[],
     this.initialRoute,
     this.home,
@@ -78,6 +79,7 @@ class ShadApp extends StatefulWidget {
     this.builder,
     this.title = '',
     this.onGenerateTitle,
+    this.onNavigationNotification,
     this.color,
     this.locale,
     this.localizationsDelegates,
@@ -113,6 +115,7 @@ class ShadApp extends StatefulWidget {
     this.onGenerateRoute,
     this.onGenerateInitialRoutes,
     this.onUnknownRoute,
+    this.onNavigationNotification,
     this.navigatorObservers = const <NavigatorObserver>[],
     this.initialRoute,
     this.home,
@@ -162,6 +165,7 @@ class ShadApp extends StatefulWidget {
     this.builder,
     this.title = '',
     this.onGenerateTitle,
+    this.onNavigationNotification,
     this.color,
     this.locale,
     this.localizationsDelegates,
@@ -197,6 +201,7 @@ class ShadApp extends StatefulWidget {
     this.onGenerateRoute,
     this.onGenerateInitialRoutes,
     this.onUnknownRoute,
+    this.onNavigationNotification,
     this.navigatorObservers = const <NavigatorObserver>[],
     this.initialRoute,
     this.home,
@@ -246,6 +251,7 @@ class ShadApp extends StatefulWidget {
     this.builder,
     this.title = '',
     this.onGenerateTitle,
+    this.onNavigationNotification,
     this.color,
     this.locale,
     this.localizationsDelegates,
@@ -283,6 +289,7 @@ class ShadApp extends StatefulWidget {
     this.themeMode,
   })  : actions = null,
         backButtonDispatcher = null,
+        onNavigationNotification = null,
         builder = null,
         color = null,
         cupertinoThemeBuilder = null,
@@ -396,6 +403,9 @@ class ShadApp extends StatefulWidget {
 
   /// {@macro flutter.widgets.widgetsApp.onUnknownRoute}
   final RouteFactory? onUnknownRoute;
+
+  /// {@macro flutter.widgets.widgetsApp.onNavigationNotification}
+  final NotificationListenerCallback<NavigationNotification>? onNavigationNotification;
 
   /// {@macro flutter.widgets.widgetsApp.navigatorObservers}
   final List<NavigatorObserver>? navigatorObservers;
@@ -754,6 +764,7 @@ class _ShadAppState extends State<ShadApp> {
               routerDelegate: widget.routerDelegate,
               routerConfig: widget.routerConfig,
               backButtonDispatcher: widget.backButtonDispatcher,
+              onNavigationNotification: widget.onNavigationNotification,
               builder: _builder,
               title: widget.title,
               onGenerateTitle: widget.onGenerateTitle,
@@ -785,6 +796,7 @@ class _ShadAppState extends State<ShadApp> {
             onGenerateRoute: widget.onGenerateRoute,
             onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
             onUnknownRoute: widget.onUnknownRoute,
+            onNavigationNotification: widget.onNavigationNotification,
             builder: _builder,
             title: widget.title,
             onGenerateTitle: widget.onGenerateTitle,
@@ -817,6 +829,7 @@ class _ShadAppState extends State<ShadApp> {
             routerDelegate: widget.routerDelegate,
             routerConfig: widget.routerConfig,
             backButtonDispatcher: widget.backButtonDispatcher,
+            onNavigationNotification: widget.onNavigationNotification,
             builder: _builder,
             theme: materialTheme(context),
             title: widget.title,
@@ -845,6 +858,7 @@ class _ShadAppState extends State<ShadApp> {
           onGenerateRoute: widget.onGenerateRoute,
           onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
           onUnknownRoute: widget.onUnknownRoute,
+          onNavigationNotification: widget.onNavigationNotification,
           builder: _builder,
           theme: materialTheme(context),
           title: widget.title,
@@ -874,6 +888,7 @@ class _ShadAppState extends State<ShadApp> {
               routerDelegate: widget.routerDelegate,
               routerConfig: widget.routerConfig,
               backButtonDispatcher: widget.backButtonDispatcher,
+              onNavigationNotification: widget.onNavigationNotification,
               builder: _builder,
               theme: cupertinoTheme(context),
               title: widget.title,
@@ -905,6 +920,7 @@ class _ShadAppState extends State<ShadApp> {
             onGenerateRoute: widget.onGenerateRoute,
             onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
             onUnknownRoute: widget.onUnknownRoute,
+            onNavigationNotification: widget.onNavigationNotification,
             builder: _builder,
             theme: cupertinoTheme(context),
             title: widget.title,
