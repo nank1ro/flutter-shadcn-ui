@@ -943,11 +943,13 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
     if (range.start == null) return '';
     final buffer = StringBuffer();
 
-    final start = intl.DateFormat.yMMMd(locale).format(range.start!);
+    final start =
+        intl.DateFormat.yMMMd(locale.toLanguageTag()).format(range.start!);
     buffer.write(start);
 
     if (range.end != null) {
-      final end = intl.DateFormat.yMMMd(locale).format(range.end!);
+      final end =
+          intl.DateFormat.yMMMd(locale.toLanguageTag()).format(range.end!);
       buffer.write(' - $end');
     }
 

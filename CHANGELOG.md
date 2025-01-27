@@ -2,6 +2,7 @@
 
 - **FIX**: `ShadDatePicker` popover closes on caption selection.
 - **CHORE**: Add `onNavigationNotification` to `ShadApp` (thanks to @mllrr96)
+- **FIX**: `ShadDatePicker` crash when caption layout is different from label, due to misleading `Locale` type passed to `DateFormat`, thanks `dynamic` for these amazing errors.
 
 ## 0.18.3
 
