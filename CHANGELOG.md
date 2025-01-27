@@ -1,3 +1,8 @@
+## 0.18.4
+
+- **FIX**: `ShadDatePicker` popover closes on caption selection.
+- **CHORE**: Add `onNavigationNotification` to `ShadApp` (thanks to @mllrr96)
+
 ## 0.18.3
 
 - **FIX**: Improve `ShadAvatar` (thanks to @mickey35vn).

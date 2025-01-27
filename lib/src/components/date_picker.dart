@@ -901,6 +901,7 @@ class ShadDatePicker extends StatefulWidget {
 class _ShadDatePickerState extends State<ShadDatePicker> {
   late DateTime? selected = widget.selected;
   late ShadDateTimeRange? selectedRange = widget.selectedRange;
+  final _groupId = UniqueKey();
 
   ShadPopoverController? _popoverController;
 
@@ -987,9 +988,11 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
     final effectiveExpands =
         widget.expands ?? theme.datePickerTheme.expands ?? false;
 
+    final effectiveGroupId = widget.groupId ?? _groupId;
+
     return ShadPopover(
       controller: popoverController,
-      groupId: widget.groupId,
+      groupId: effectiveGroupId,
       padding: widget.popoverPadding ?? theme.datePickerTheme.popoverPadding,
       focusNode: widget.focusNode,
       anchor: widget.anchor ?? theme.datePickerTheme.anchor,
@@ -1011,6 +1014,7 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
                 ShadDatePickerVariant.range => ShadCalendarVariant.range,
               },
               selected: selected,
+              groupId: effectiveGroupId,
               selectedRange: selectedRange,
               allowDeselection: effectiveAllowDeselection,
               showOutsideDays: widget.showOutsideDays ??

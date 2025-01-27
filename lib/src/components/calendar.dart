@@ -156,6 +156,7 @@ class ShadCalendar extends StatefulWidget {
     this.dayButtonOutsideMonthVariant,
     this.selectedDayButtonOusideMonthVariant,
     this.allowDeselection,
+    this.groupId,
   })  : variant = ShadCalendarVariant.single,
         multipleSelected = null,
         onMultipleChanged = null,
@@ -229,6 +230,7 @@ class ShadCalendar extends StatefulWidget {
     this.dayButtonOutsideMonthTextStyle,
     this.dayButtonOutsideMonthVariant,
     this.selectedDayButtonOusideMonthVariant,
+    this.groupId,
   })  : variant = ShadCalendarVariant.multiple,
         multipleSelected = selected,
         selected = null,
@@ -304,6 +306,7 @@ class ShadCalendar extends StatefulWidget {
     this.dayButtonOutsideMonthVariant,
     this.selectedDayButtonOusideMonthVariant,
     this.allowDeselection,
+    this.groupId,
   })  : variant = ShadCalendarVariant.range,
         multipleSelected = null,
         selected = null,
@@ -383,6 +386,7 @@ class ShadCalendar extends StatefulWidget {
     this.dayButtonOutsideMonthVariant,
     this.selectedDayButtonOusideMonthVariant,
     this.allowDeselection,
+    this.groupId,
   });
 
   /// {@template ShadCalendar.variant}
@@ -804,6 +808,9 @@ class ShadCalendar extends StatefulWidget {
   /// Whether to allow deselection of the selected date, defaults to false.
   /// {@endtemplate}
   final bool? allowDeselection;
+
+  /// {@macro ShadPopover.groupId}
+  final Object? groupId;
 
   @override
   State<ShadCalendar> createState() => _ShadCalendarState();
@@ -1270,6 +1277,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     final yearSelector = ShadSelect<int>(
       initialValue: currentMonth.year,
+      groupId: widget.groupId,
       padding: effectiveYearSelectorPadding,
       minWidth: effectiveYearSelectorMinWidth,
       selectedOptionBuilder: (context, value) {
@@ -1290,6 +1298,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     final monthSelector = ShadSelect<int>(
       initialValue: currentMonth.month,
+      groupId: widget.groupId,
       padding: effectiveMonthSelectorPadding,
       minWidth: effectiveMonthSelectorMinWidth,
       selectedOptionBuilder: (context, value) {
