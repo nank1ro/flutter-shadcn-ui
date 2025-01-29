@@ -42,7 +42,11 @@ class ShadCarousel<T> extends StatefulWidget {
         );
 
   final List<Widget> children;
+
+  /// The orientation of the carousel
   final ShadOrientation orientation;
+
+  /// Whether the carousel should loop infinitely
   final bool loop;
 
   /// The spacing between the children
@@ -63,6 +67,10 @@ class ShadCarousel<T> extends StatefulWidget {
   /// The width of the carousel
   final double? carouselWidth;
 
+  ///An integer that represents the fraction of the viewport that each page should
+  /// occupy.
+  ///1.0 means the page takes up the entire viewport, 0.5 means the page takes up
+  /// half the viewport, and so on.
   final double? viewportFraction;
   @override
   State<ShadCarousel<T>> createState() => _ShadCarouselState<T>();
@@ -128,18 +136,23 @@ class _ShadCarouselState<T> extends State<ShadCarousel<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context).carouselTheme;
+
     ///Chckinng the orientation of the carousel
     final horizontalOrientation =
         widget.orientation == ShadOrientation.horizontal;
 
-    final effectiveHeight =
-        widget.carouselHeight ?? MediaQuery.sizeOf(context).height;
+    final effectiveHeight = widget.carouselHeight ??
+        theme.carouselHeight ??
+        MediaQuery.sizeOf(context).height;
 
-    final effectiveWidth =
-        widget.carouselWidth ?? MediaQuery.sizeOf(context).width;
+    final effectiveWidth = widget.carouselWidth ??
+        theme.carouselWidth ??
+        MediaQuery.sizeOf(context).width;
 
     /// A variable for effective carousel padding
-    final effectivePadding = widget.padding ?? const EdgeInsets.all(4);
+    final effectivePadding =
+        widget.padding ?? theme.padding ?? const EdgeInsets.all(4);
 
     return SizedBox(
       height: effectiveHeight,
@@ -194,4 +207,25 @@ Widget _buildCarouselButton(
     onTap: onPressed,
     child: child,
   );
+}
+
+@immutable
+class ShadCarouselTheme {
+  const ShadCarouselTheme({
+    required this.padding,
+    required this.carouselHeight,
+    required this.carouselWidth,
+    required this.viewportFraction,
+    required this.spacing,
+    required this.startWidget,
+    required this.endWidget,
+  });
+
+  final EdgeInsetsGeometry? padding;
+  final double? carouselHeight;
+  final double? carouselWidth;
+  final double viewportFraction;
+  final double? spacing;
+  final Widget? startWidget;
+  final Widget? endWidget;
 }
