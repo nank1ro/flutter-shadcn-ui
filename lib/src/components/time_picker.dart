@@ -106,6 +106,7 @@ class ShadTimePickerController extends ChangeNotifier {
     this.second,
     this.period,
   });
+
   ShadTimePickerController.fromTimeOfDay(ShadTimeOfDay? timeOfDay)
       : hour = timeOfDay?.hour,
         minute = timeOfDay?.minute,
@@ -522,19 +523,25 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
   late final hourController = ShadTimePickerTextEditingController(
     max: widget.maxHour,
     min: widget.minHour,
-    text: widget.initialValue?.hour.toString().padLeft(2, '0'),
+    text: (widget.initialValue?.hour ?? widget.controller?.hour)
+        .toString()
+        .padLeft(2, '0'),
     placeholderStyle: widget.placeholderStyle,
   );
   late final minuteController = ShadTimePickerTextEditingController(
     max: widget.maxMinute,
     min: widget.minMinute,
-    text: widget.initialValue?.minute.toString().padLeft(2, '0'),
+    text: (widget.initialValue?.minute ?? widget.controller?.minute)
+        .toString()
+        .padLeft(2, '0'),
     placeholderStyle: widget.placeholderStyle,
   );
   late final secondController = ShadTimePickerTextEditingController(
     max: widget.maxSecond,
     min: widget.minSecond,
-    text: widget.initialValue?.second.toString().padLeft(2, '0'),
+    text: (widget.initialValue?.second ?? widget.controller?.second)
+        .toString()
+        .padLeft(2, '0'),
     placeholderStyle: widget.placeholderStyle,
   );
 
