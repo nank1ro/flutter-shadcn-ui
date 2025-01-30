@@ -711,9 +711,9 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           decoration: effectiveFieldDecoration,
           enabled: widget.enabled,
           onChanged: (v) {
-            if (v.length == 2) {
+            if (v.isNotEmpty) {
               controller.setHour(int.tryParse(v));
-              if (effectiveJumpToNextField) {
+              if (v.length == 2 && effectiveJumpToNextField) {
                 focusNodes[1].requestFocus();
               }
             }
@@ -732,9 +732,9 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           decoration: effectiveFieldDecoration,
           enabled: widget.enabled,
           onChanged: (v) {
-            if (v.length == 2) {
+            if (v.isNotEmpty) {
               controller.setMinute(int.tryParse(v));
-              if (effectiveJumpToNextField) {
+              if (v.length == 2 && effectiveJumpToNextField) {
                 focusNodes[2].requestFocus();
               }
             }
@@ -753,9 +753,10 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           decoration: effectiveFieldDecoration,
           enabled: widget.enabled,
           onChanged: (v) {
-            if (v.length == 2) {
+            if (v.isNotEmpty) {
               controller.setSecond(int.tryParse(v));
-              if (effectiveJumpToNextField &&
+              if (v.length == 2 &&
+                  effectiveJumpToNextField &&
                   widget.variant == ShadTimePickerVariant.period) {
                 periodFocusNode.requestFocus();
               }
