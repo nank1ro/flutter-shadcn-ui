@@ -1,3 +1,7 @@
+## 0.18.5
+
+- **FIX**: `ShadCalendar` forward button icon color.
+
 ## 0.18.4
 
 - **FIX**: `ShadDatePicker` popover closes on caption selection.
