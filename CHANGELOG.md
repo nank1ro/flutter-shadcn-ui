@@ -1,6 +1,7 @@
 ## 0.18.5
 
 - **FIX**: `ShadCalendar` forward button icon color.
+- **CHORE**: Bump the version of `universal_image` (thanks to @brunosemfio).
 
 ## 0.18.4
 
