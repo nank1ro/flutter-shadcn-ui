@@ -1355,7 +1355,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
             onHoverChange: (hovered) =>
                 forwardMonthButtonHovered.value = hovered,
             onPressed: () => goToMonth(currentMonth.nextMonth),
-            child: Icon(
+            icon: Icon(
               effectiveForwardNavigationButtonSrc,
               size: effectiveNavigationButtonIconSize,
             ),
