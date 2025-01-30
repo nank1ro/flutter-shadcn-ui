@@ -969,24 +969,13 @@ class ShadTimePickerTextEditingController extends TextEditingController {
       !value.composing.isValid || !withComposing || value.isComposingRangeValid,
     );
 
-    final theme = ShadTheme.of(context);
-
-    final defaultPlaceholderStyle = theme.textTheme.muted.copyWith(
-      fontSize: 16,
-      height: 24 / 16,
-    );
-    final effectivePlaceholderStyle = defaultPlaceholderStyle
-        .merge(theme.timePickerTheme.placeholderStyle)
-        .merge(placeholderStyle);
-
     final intValue = int.tryParse(value.text);
     if (intValue == null) return const TextSpan();
 
     return TextSpan(
       style: style,
       children: [
-        if (value.text.length == 1 && intValue < 10)
-          TextSpan(text: '0', style: effectivePlaceholderStyle),
+        if (value.text.length == 1 && intValue < 10) const TextSpan(text: '0'),
         TextSpan(text: text),
       ],
     );
