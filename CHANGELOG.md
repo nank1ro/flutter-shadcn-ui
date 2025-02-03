@@ -1,3 +1,7 @@
+## 0.18.6
+
+- **FIX**: `ShadTimePicker` controller not being used correctly when the component is initialized. Now each field allows a single digit instead of two.
+
 ## 0.18.5
 
 - **FIX**: `ShadCalendar` forward button icon color.
