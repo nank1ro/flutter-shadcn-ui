@@ -1,3 +1,7 @@
+## 0.18.7
+
+- **FIX**: `ShadApp` dark theme behavior now is the same as Material. The dark theme is applied only if you provide a `darkTheme` and the user theme mode is dark
+
 ## 0.18.6
 
 - **FIX**: `ShadTimePicker` controller not being used correctly when the component is initialized. Now each field allows a single digit instead of two.
