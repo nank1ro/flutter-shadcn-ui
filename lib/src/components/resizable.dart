@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
+import 'package:shadcn_ui/src/utils/extensions/double.dart';
 import 'package:shadcn_ui/src/utils/mouse_cursor_provider.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
@@ -67,7 +68,7 @@ class ShadResizableController extends ChangeNotifier {
     return panelsInfo[index];
   }
 
-  /// Resize the leading and trailing panels of [offset] pixels.
+  /// Sets the [size] of the panel at the given [index].
   ///
   /// Returns the result of the resize operation:
   /// - If the resize operation is successful, the panel info will be updated
@@ -75,24 +76,18 @@ class ShadResizableController extends ChangeNotifier {
   /// updated and the result will be [ShadResizeResult.failedLeading or
   /// [ShadResizeResult.failedTrailing] depending on the resize direction
   ShadResizeResult resize({
-    required int leadingIndex,
-    required int trailingIndex,
-    required double offset,
-    required double totalAvailableSpace,
+    required int index,
+    required double size,
   }) {
-    assert(
-      (leadingIndex - trailingIndex).abs() == 1,
-      'The indexes resized must be adjacent',
-    );
-    final leadingPanelInfo = getPanelInfo(leadingIndex);
-    final trailingPanelInfo = getPanelInfo(trailingIndex);
-
-    final newLeadingSize =
-        (leadingPanelInfo.size * totalAvailableSpace + offset) /
-            totalAvailableSpace;
+    final leadingPanelInfo = getPanelInfo(index);
+    final trailingPanelInfo = getPanelInfo(index + 1);
+    final newLeadingSize = size;
+    final offset =
+        (-((leadingPanelInfo.size - newLeadingSize) * totalAvailableWidth))
+            .asFixed(6);
     final newTrailingSize =
-        (trailingPanelInfo.size * totalAvailableSpace - offset) /
-            totalAvailableSpace;
+        (trailingPanelInfo.size * totalAvailableWidth - offset) /
+            totalAvailableWidth;
 
     if (newLeadingSize < leadingPanelInfo.minSize ||
         newTrailingSize > trailingPanelInfo.maxSize) {
@@ -122,6 +117,8 @@ class ShadResizableController extends ChangeNotifier {
     trailingPanelInfo.size = defaultSizes[trailingIndex];
     notifyListeners();
   }
+
+  double totalAvailableWidth = 0;
 }
 
 class ShadResizablePanelGroup extends StatefulWidget {
@@ -194,8 +191,6 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     return _internalController ??= ShadResizableController();
   }
 
-  List<ShadPanelInfo> get panelInfos => controller.panelsInfo;
-
   @override
   void initState() {
     super.initState();
@@ -217,18 +212,19 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
   ShadPanelInfo getPanelInfo(int index) => controller.getPanelInfo(index);
 
   void onHandleDrag({
-    required int indexOfLeadingPanel,
-    required int indexOfTrailingPanel,
+    required int index,
     required Offset offset,
   }) {
-    final axisOffset = widget.axis == Axis.horizontal ? offset.dx : offset.dy;
+    final axisOffset =
+        (widget.axis == Axis.horizontal ? offset.dx : offset.dy).asFixed(6);
+    final leadingPanelInfo = getPanelInfo(index);
+    final newLeadingSize =
+        (leadingPanelInfo.size * controller.totalAvailableWidth + axisOffset) /
+            controller.totalAvailableWidth;
+
     final result = controller.resize(
-      leadingIndex: indexOfLeadingPanel,
-      trailingIndex: indexOfTrailingPanel,
-      offset: axisOffset,
-      totalAvailableSpace: widget.axis == Axis.horizontal
-          ? currentConstraints!.maxWidth
-          : currentConstraints!.maxHeight,
+      index: index,
+      size: newLeadingSize,
     );
     switch (result) {
       case ShadResizeResult.success:
@@ -237,7 +233,6 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           Axis.vertical => SystemMouseCursors.resizeUpDown,
         };
         mouseCursorController.cursor = cursor;
-        setState(() {});
       case ShadResizeResult.failedLeading:
         final cursor = switch (widget.axis) {
           Axis.horizontal => SystemMouseCursors.resizeRight,
@@ -256,7 +251,6 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
   void resetDefaultSizes(int leadingIndex, int trailingIndex) {
     assert((leadingIndex - trailingIndex).abs() == 1);
     controller.resetDefaultSizes(leadingIndex, trailingIndex);
-    setState(() {});
   }
 
   @override
@@ -311,175 +305,184 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     final effectiveTextDirection =
         widget.textDirection ?? theme.resizableTheme.textDirection;
 
-    var effectivesSizes = panelInfos.length == widget.children.length
-        ? panelInfos.map((e) => e.size).toList()
-        : defaultSizes;
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, child) {
+        var effectivesSizes =
+            controller.panelsInfo.length == widget.children.length
+                ? controller.panelsInfo.map((e) => e.size).toList()
+                : defaultSizes;
 
-    final rtl = Directionality.of(context) == TextDirection.rtl;
-    if (rtl && isHorizontal) {
-      effectivesSizes = effectivesSizes.reversed.toList();
-    }
-
-    final divider = switch (widget.axis) {
-      Axis.horizontal => VerticalDivider(
-          indent: 0,
-          endIndent: 0,
-          thickness: effectiveDividerThickness,
-          width: effectiveDividerSize,
-          color: effectiveDividerColor,
-        ),
-      Axis.vertical => SizedBox(
-          // double.infinity doesn't work, just providing a big number
-          width: 50000,
-          child: Divider(
-            indent: 0,
-            endIndent: 0,
-            height: effectiveDividerSize,
-            thickness: effectiveDividerThickness,
-            color: effectiveDividerColor,
-          ),
-        ),
-    };
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        currentConstraints = constraints;
-        Widget child = Flex(
-          direction: widget.axis,
-          mainAxisAlignment: effectiveMainAxisAlignment,
-          crossAxisAlignment: effectiveCrossAxisAlignment,
-          mainAxisSize: effectiveMainAxisSize,
-          textDirection: effectiveTextDirection,
-          verticalDirection: effectiveVerticalDirection,
-          children: widget.children.mapIndexed(
-            (i, e) {
-              final flex = (effectivesSizes[i] * 1000).toInt();
-              return Expanded(
-                flex: flex,
-                child: Offstage(
-                  offstage: flex == 0,
-                  child: e,
-                ),
-              );
-            },
-          ).toList(),
-        );
-
-        // lazy, will be initialized when the handle is needed
-        late final handle = widget.handleIcon ??
-            ShadDecorator(
-              decoration: effectiveHandleDecoration,
-              child: Padding(
-                padding: effectiveHandlePadding,
-                child: Icon(
-                  widget.handleIconData ??
-                      (isHorizontal
-                          ? LucideIcons.gripVertical
-                          : LucideIcons.gripHorizontal),
-                  size: effectiveHandleSize,
-                ),
-              ),
-            );
-
-        final dividers = <Widget>[];
-        for (var i = 0; i < dividersCount; i++) {
-          var leadingPosition = effectivesSizes.sublist(0, i + 1).fold<double>(
-                0,
-                (previousValue, element) => previousValue + element,
-              );
-          leadingPosition = isHorizontal
-              ? leadingPosition * constraints.maxWidth
-              : leadingPosition * constraints.maxHeight;
-
-          leadingPosition -=
-              effectiveDividerSize / 2 + effectiveDividerThickness / 2;
-
-          if (effectiveShowHandle) {
-            leadingPosition -= effectiveHandlePadding.horizontal / 2;
-            if (!theme.disableSecondaryBorder) {
-              leadingPosition -= effectiveHandleSize / 2;
-            }
-          }
-
-          dividers.add(
-            Positioned(
-              top: isHorizontal ? 0 : leadingPosition,
-              left: isHorizontal && !rtl ? leadingPosition : null,
-              right: isHorizontal && rtl ? leadingPosition : null,
-              bottom: isHorizontal ? 0 : null,
-              child: GestureDetector(
-                onDoubleTap: widget.onDividerDoubleTap ??
-                    () {
-                      if (!effectiveResetOnDoubleTap) return;
-                      resetDefaultSizes(i, i + 1);
-                    },
-                onHorizontalDragStart:
-                    isHorizontal ? (_) => dragging.value = true : null,
-                onHorizontalDragEnd: (_) =>
-                    isHorizontal ? dragging.value = false : null,
-                onHorizontalDragCancel: () =>
-                    isHorizontal ? dragging.value = false : null,
-                onHorizontalDragUpdate: (details) => isHorizontal
-                    ? onHandleDrag(
-                        offset: details.delta,
-                        indexOfLeadingPanel: i,
-                        indexOfTrailingPanel: i + 1,
-                      )
-                    : null,
-                onVerticalDragStart:
-                    isVertical ? (_) => dragging.value = true : null,
-                onVerticalDragEnd: (_) =>
-                    isVertical ? dragging.value = false : null,
-                onVerticalDragCancel: () =>
-                    isVertical ? dragging.value = false : null,
-                onVerticalDragUpdate: (details) => isVertical
-                    ? onHandleDrag(
-                        offset: details.delta,
-                        indexOfLeadingPanel: i,
-                        indexOfTrailingPanel: i + 1,
-                      )
-                    : null,
-                child: MouseRegion(
-                  onEnter: (_) {
-                    final cursor = switch (widget.axis) {
-                      Axis.horizontal => SystemMouseCursors.resizeLeftRight,
-                      Axis.vertical => SystemMouseCursors.resizeUpDown,
-                    };
-
-                    mouseCursorController.cursor = cursor;
-                  },
-                  onExit: (details) async {
-                    if (dragging.value) return;
-                    mouseCursorController.cursor = MouseCursor.defer;
-                  },
-                  child: effectiveShowHandle
-                      ? Stack(
-                          alignment: AlignmentDirectional.center,
-                          children: [
-                            divider,
-                            handle,
-                          ],
-                        )
-                      : divider,
-                ),
-              ),
-            ),
-          );
+        final rtl = Directionality.of(context) == TextDirection.rtl;
+        if (rtl && isHorizontal) {
+          effectivesSizes = effectivesSizes.reversed.toList();
         }
 
-        child = Stack(
-          fit: StackFit.expand,
-          alignment: AlignmentDirectional.center,
-          children: [
-            child,
-            ...dividers,
-          ],
-        );
+        final divider = switch (widget.axis) {
+          Axis.horizontal => VerticalDivider(
+              indent: 0,
+              endIndent: 0,
+              thickness: effectiveDividerThickness,
+              width: effectiveDividerSize,
+              color: effectiveDividerColor,
+            ),
+          Axis.vertical => SizedBox(
+              // double.infinity doesn't work, just providing a big number
+              width: 50000,
+              child: Divider(
+                indent: 0,
+                endIndent: 0,
+                height: effectiveDividerSize,
+                thickness: effectiveDividerThickness,
+                color: effectiveDividerColor,
+              ),
+            ),
+        };
 
-        return ShadProvider(
-          data: this,
-          notifyUpdate: (_) => true,
-          child: child,
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            currentConstraints = constraints;
+
+            controller.totalAvailableWidth = widget.axis == Axis.horizontal
+                ? currentConstraints!.maxWidth
+                : currentConstraints!.maxHeight;
+            Widget child = Flex(
+              direction: widget.axis,
+              mainAxisAlignment: effectiveMainAxisAlignment,
+              crossAxisAlignment: effectiveCrossAxisAlignment,
+              mainAxisSize: effectiveMainAxisSize,
+              textDirection: effectiveTextDirection,
+              verticalDirection: effectiveVerticalDirection,
+              children: widget.children.mapIndexed(
+                (i, e) {
+                  final flex = (effectivesSizes[i] * 1000).toInt();
+                  return Expanded(
+                    flex: flex,
+                    child: Offstage(
+                      offstage: flex <= 0.015,
+                      child: ColoredBox(color: Colors.primaries[i], child: e),
+                    ),
+                  );
+                },
+              ).toList(),
+            );
+
+            // lazy, will be initialized when the handle is needed
+            late final handle = widget.handleIcon ??
+                ShadDecorator(
+                  decoration: effectiveHandleDecoration,
+                  child: Padding(
+                    padding: effectiveHandlePadding,
+                    child: Icon(
+                      widget.handleIconData ??
+                          (isHorizontal
+                              ? LucideIcons.gripVertical
+                              : LucideIcons.gripHorizontal),
+                      size: effectiveHandleSize,
+                    ),
+                  ),
+                );
+
+            final dividers = <Widget>[];
+            for (var i = 0; i < dividersCount; i++) {
+              var leadingPosition =
+                  effectivesSizes.sublist(0, i + 1).fold<double>(
+                        0,
+                        (previousValue, element) => previousValue + element,
+                      );
+              leadingPosition = isHorizontal
+                  ? leadingPosition * constraints.maxWidth
+                  : leadingPosition * constraints.maxHeight;
+
+              leadingPosition -=
+                  effectiveDividerSize / 2 + effectiveDividerThickness / 2;
+
+              if (effectiveShowHandle) {
+                leadingPosition -= effectiveHandlePadding.horizontal / 2;
+                if (!theme.disableSecondaryBorder) {
+                  leadingPosition -= effectiveHandleSize / 2;
+                }
+              }
+
+              dividers.add(
+                Positioned(
+                  top: isHorizontal ? 0 : leadingPosition,
+                  left: isHorizontal && !rtl ? leadingPosition : null,
+                  right: isHorizontal && rtl ? leadingPosition : null,
+                  bottom: isHorizontal ? 0 : null,
+                  child: GestureDetector(
+                    onDoubleTap: widget.onDividerDoubleTap ??
+                        () {
+                          if (!effectiveResetOnDoubleTap) return;
+                          resetDefaultSizes(i, i + 1);
+                        },
+                    onHorizontalDragStart:
+                        isHorizontal ? (_) => dragging.value = true : null,
+                    onHorizontalDragEnd: (_) =>
+                        isHorizontal ? dragging.value = false : null,
+                    onHorizontalDragCancel: () =>
+                        isHorizontal ? dragging.value = false : null,
+                    onHorizontalDragUpdate: (details) => isHorizontal
+                        ? onHandleDrag(
+                            offset: details.delta,
+                            index: i,
+                          )
+                        : null,
+                    onVerticalDragStart:
+                        isVertical ? (_) => dragging.value = true : null,
+                    onVerticalDragEnd: (_) =>
+                        isVertical ? dragging.value = false : null,
+                    onVerticalDragCancel: () =>
+                        isVertical ? dragging.value = false : null,
+                    onVerticalDragUpdate: (details) => isVertical
+                        ? onHandleDrag(
+                            offset: details.delta,
+                            index: i,
+                          )
+                        : null,
+                    child: MouseRegion(
+                      onEnter: (_) {
+                        final cursor = switch (widget.axis) {
+                          Axis.horizontal => SystemMouseCursors.resizeLeftRight,
+                          Axis.vertical => SystemMouseCursors.resizeUpDown,
+                        };
+
+                        mouseCursorController.cursor = cursor;
+                      },
+                      onExit: (details) async {
+                        if (dragging.value) return;
+                        mouseCursorController.cursor = MouseCursor.defer;
+                      },
+                      child: effectiveShowHandle
+                          ? Stack(
+                              alignment: AlignmentDirectional.center,
+                              children: [
+                                divider,
+                                handle,
+                              ],
+                            )
+                          : divider,
+                    ),
+                  ),
+                ),
+              );
+            }
+
+            child = Stack(
+              fit: StackFit.expand,
+              alignment: AlignmentDirectional.center,
+              children: [
+                child,
+                ...dividers,
+              ],
+            );
+
+            return ShadProvider(
+              data: this,
+              notifyUpdate: (_) => true,
+              child: child,
+            );
+          },
         );
       },
     );

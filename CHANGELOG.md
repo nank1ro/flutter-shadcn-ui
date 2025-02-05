@@ -1,3 +1,7 @@
+## 0.18.8
+
+- **FIX**: Improve the `ShadResizable` controller handling and simplify the logic to resize the panels.
+
 ## 0.18.7
 
 - **FIX**: `ShadApp` dark theme behavior now is the same as Material. The dark theme is applied only if you provide a `darkTheme` and the user theme mode is dark
