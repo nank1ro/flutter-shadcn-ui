@@ -1,6 +1,6 @@
 name: shadcn_ui
 description: shadcn-ui ported in Flutter. Awesome UI components for Flutter, fully customizable.
-version: 0.18.4
+version: 0.18.7
 homepage: https://flutter-shadcn-ui.mariuti.com
 repository: https://github.com/nank1ro/flutter-shadcn-ui
 documentation: https://flutter-shadcn-ui.mariuti.com
@@ -26,7 +26,7 @@ dependencies:
   lucide_icons_flutter: ^1.2.5
   # used by Table
   two_dimensional_scrollables: ^0.3.3
-  universal_image: ^1.0.7
+  universal_image: ^1.0.8
   vector_graphics: ^1.1.15
 
 dev_dependencies:

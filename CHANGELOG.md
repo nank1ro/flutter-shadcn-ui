@@ -1,3 +1,16 @@
+## 0.18.7
+
+- **FIX**: `ShadApp` dark theme behavior now is the same as Material. The dark theme is applied only if you provide a `darkTheme` and the user theme mode is dark
+
+## 0.18.6
+
+- **FIX**: `ShadTimePicker` controller not being used correctly when the component is initialized. Now each field allows a single digit instead of two.
+
+## 0.18.5
+
+- **FIX**: `ShadCalendar` forward button icon color.
+- **CHORE**: Bump the version of `universal_image` (thanks to @brunosemfio).
+
 ## 0.18.4
 
 - **FIX**: `ShadDatePicker` popover closes on caption selection.

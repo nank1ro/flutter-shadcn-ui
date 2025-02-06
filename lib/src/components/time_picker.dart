@@ -106,6 +106,7 @@ class ShadTimePickerController extends ChangeNotifier {
     this.second,
     this.period,
   });
+
   ShadTimePickerController.fromTimeOfDay(ShadTimeOfDay? timeOfDay)
       : hour = timeOfDay?.hour,
         minute = timeOfDay?.minute,
@@ -522,19 +523,33 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
   late final hourController = ShadTimePickerTextEditingController(
     max: widget.maxHour,
     min: widget.minHour,
-    text: widget.initialValue?.hour.toString().padLeft(2, '0'),
+    text: widget.initialValue?.hour == null && widget.controller?.hour == null
+        ? null
+        : (widget.initialValue?.hour ?? widget.controller?.hour)
+            .toString()
+            .padLeft(2, '0'),
     placeholderStyle: widget.placeholderStyle,
   );
   late final minuteController = ShadTimePickerTextEditingController(
     max: widget.maxMinute,
     min: widget.minMinute,
-    text: widget.initialValue?.minute.toString().padLeft(2, '0'),
+    text:
+        widget.initialValue?.minute == null && widget.controller?.minute == null
+            ? null
+            : (widget.initialValue?.minute ?? widget.controller?.minute)
+                .toString()
+                .padLeft(2, '0'),
     placeholderStyle: widget.placeholderStyle,
   );
   late final secondController = ShadTimePickerTextEditingController(
     max: widget.maxSecond,
     min: widget.minSecond,
-    text: widget.initialValue?.second.toString().padLeft(2, '0'),
+    text:
+        widget.initialValue?.second == null && widget.controller?.second == null
+            ? null
+            : (widget.initialValue?.second ?? widget.controller?.second)
+                .toString()
+                .padLeft(2, '0'),
     placeholderStyle: widget.placeholderStyle,
   );
 
@@ -696,9 +711,9 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           decoration: effectiveFieldDecoration,
           enabled: widget.enabled,
           onChanged: (v) {
-            if (v.length == 2) {
+            if (v.isNotEmpty) {
               controller.setHour(int.tryParse(v));
-              if (effectiveJumpToNextField) {
+              if (v.length == 2 && effectiveJumpToNextField) {
                 focusNodes[1].requestFocus();
               }
             }
@@ -717,9 +732,9 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           decoration: effectiveFieldDecoration,
           enabled: widget.enabled,
           onChanged: (v) {
-            if (v.length == 2) {
+            if (v.isNotEmpty) {
               controller.setMinute(int.tryParse(v));
-              if (effectiveJumpToNextField) {
+              if (v.length == 2 && effectiveJumpToNextField) {
                 focusNodes[2].requestFocus();
               }
             }
@@ -738,9 +753,10 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           decoration: effectiveFieldDecoration,
           enabled: widget.enabled,
           onChanged: (v) {
-            if (v.length == 2) {
+            if (v.isNotEmpty) {
               controller.setSecond(int.tryParse(v));
-              if (effectiveJumpToNextField &&
+              if (v.length == 2 &&
+                  effectiveJumpToNextField &&
                   widget.variant == ShadTimePickerVariant.period) {
                 periodFocusNode.requestFocus();
               }
@@ -954,24 +970,13 @@ class ShadTimePickerTextEditingController extends TextEditingController {
       !value.composing.isValid || !withComposing || value.isComposingRangeValid,
     );
 
-    final theme = ShadTheme.of(context);
-
-    final defaultPlaceholderStyle = theme.textTheme.muted.copyWith(
-      fontSize: 16,
-      height: 24 / 16,
-    );
-    final effectivePlaceholderStyle = defaultPlaceholderStyle
-        .merge(theme.timePickerTheme.placeholderStyle)
-        .merge(placeholderStyle);
-
     final intValue = int.tryParse(value.text);
     if (intValue == null) return const TextSpan();
 
     return TextSpan(
       style: style,
       children: [
-        if (value.text.length == 1 && intValue < 10)
-          TextSpan(text: '0', style: effectivePlaceholderStyle),
+        if (value.text.length == 1 && intValue < 10) const TextSpan(text: '0'),
         TextSpan(text: text),
       ],
     );

@@ -141,10 +141,10 @@ The directory of the playground is `playground`.
 
 You can add a new component in the `lib/pages` directory.
 
-To create the new component route, add a code like this in the `lib/main.dart` file:
+To create the new component route, add a code like this in the `lib/router.dart` file:
 
 ```dart
-final _router = GoRouter(
+final router = GoRouter(
   routes: [
     ... // other routes
     GoRoute(
