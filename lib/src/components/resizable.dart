@@ -19,17 +19,15 @@ enum ShadResizeResult {
 class ShadPanelInfo {
   ShadPanelInfo({
     required this.defaultSize,
-    double? minSize,
-    double? maxSize,
+    this.minSize = 0,
+    this.maxSize = 0,
   })  : _size = defaultSize,
-        minSize = minSize ?? 0,
-        maxSize = maxSize ?? 1.0,
         assert(
-          minSize == null || minSize >= 0 && minSize <= 1.0,
+          minSize >= 0 && minSize <= 1.0,
           'minSize must be between 0 and 1',
         ),
         assert(
-          maxSize == null || maxSize >= 0 && maxSize <= 1.0,
+          maxSize >= 0 && maxSize <= 1.0,
           'maxSize must be between 0 and 1',
         ),
         assert(defaultSize >= 0 && defaultSize <= 1);
@@ -494,31 +492,30 @@ class ShadResizablePanel extends StatefulWidget {
     super.key,
     required this.child,
     required this.defaultSize,
-    this.minSize,
-    this.maxSize,
+    this.minSize = 0.0,
+    this.maxSize = 1.0,
   })  : assert(
-          minSize == null || minSize >= 0,
+          minSize >= 0,
           'minSize must be greater than or equal to 0',
         ),
         assert(
-          maxSize == null || maxSize >= 0,
+          maxSize >= 0,
           'maxSize must be greater than or equal to 0',
         ),
         assert(
-          minSize == null || maxSize == null || minSize <= maxSize,
+          minSize <= maxSize,
           'minSize must be less than or equal to maxSize',
         ),
         assert(
-          defaultSize >= (minSize ?? 0) &&
-              defaultSize <= (maxSize ?? double.infinity),
+          defaultSize >= minSize && defaultSize <= maxSize,
           'defaultSize must be greater than or equal to minSize and less than'
           ' or equal to maxSize',
         );
 
   final Widget child;
   final double defaultSize;
-  final double? minSize;
-  final double? maxSize;
+  final double minSize;
+  final double maxSize;
 
   @override
   State<ShadResizablePanel> createState() => _ShadResizablePanelState();
