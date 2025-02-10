@@ -24,6 +24,10 @@ typedef ShadSelectedOptionBuilder<T> = Widget Function(
   T value,
 );
 
+class ShadSelectController<T> extends ValueNotifier<List<T>> {
+  ShadSelectController({List<T>? initialValue}) : super(initialValue ?? []);
+}
+
 enum ShadSelectVariant { primary, search, multiple, multipleWithSearch }
 
 class ShadSelect<T> extends StatefulWidget {
@@ -62,6 +66,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.groupId,
     this.itemCount,
     this.shrinkWrap,
+    this.controller,
   })  : variant = ShadSelectVariant.primary,
         onSearchChanged = null,
         searchDivider = null,
@@ -121,6 +126,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.groupId,
     this.itemCount,
     this.shrinkWrap,
+    this.controller,
   })  : variant = ShadSelectVariant.search,
         selectedOptionsBuilder = null,
         onMultipleChanged = null,
@@ -162,6 +168,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.groupId,
     this.itemCount,
     this.shrinkWrap,
+    this.controller,
   })  : variant = ShadSelectVariant.multiple,
         onSearchChanged = null,
         initialValue = null,
@@ -219,6 +226,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.groupId,
     this.itemCount,
     this.shrinkWrap,
+    this.controller,
   })  : variant = ShadSelectVariant.multipleWithSearch,
         selectedOptionBuilder = null,
         onChanged = null,
@@ -273,6 +281,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.groupId,
     this.itemCount,
     this.shrinkWrap,
+    this.controller,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -285,6 +294,11 @@ class ShadSelect<T> extends StatefulWidget {
           (selectedOptionBuilder != null) ^ (selectedOptionsBuilder != null),
           '''Either selectedOptionBuilder or selectedOptionsBuilder must be provided''',
         );
+
+  /// {@template ShadSelect.controller}
+  /// The controller of the [ShadSelect].
+  /// {@endtemplate}
+  final ShadSelectController<T>? controller;
 
   /// The callback that is called when the value of the [ShadSelect] changes.
   final ValueChanged<T?>? onChanged;
@@ -457,10 +471,10 @@ class ShadSelect<T> extends StatefulWidget {
 
 class ShadSelectState<T> extends State<ShadSelect<T>> {
   FocusNode? internalFocusNode;
-  late final selectedValues = <T>{
-    if (widget.initialValue is T) widget.initialValue as T,
-    ...widget.initialValues,
-  };
+  // ignore: use_late_for_private_fields_and_variables
+  ShadSelectController<T>? _controller;
+
+  ShadSelectController<T> get controller => widget.controller ?? _controller!;
 
   ShadPopoverController? _popoverController;
 
@@ -483,6 +497,15 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
   @override
   void initState() {
     super.initState();
+    if (widget.controller == null) {
+      _controller = ShadSelectController<T>(
+        initialValue: [
+          if (widget.initialValue is T) widget.initialValue as T,
+          ...widget.initialValues,
+        ],
+      );
+    }
+
     if (widget.scrollController == null) {
       _scrollController = ScrollController();
     }
@@ -517,13 +540,13 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     super.didUpdateWidget(oldWidget);
     if (widget.initialValue != oldWidget.initialValue) {
       if (widget.initialValue is T) {
-        selectedValues
+        controller.value
           ..clear()
           ..add(widget.initialValue as T);
       }
     }
     if (widget.initialValues != oldWidget.initialValues) {
-      selectedValues
+      controller.value
         ..clear()
         ..addAll(widget.initialValues);
     }
@@ -571,18 +594,18 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     final isMultiSelection = widget.variant == ShadSelectVariant.multiple ||
         widget.variant == ShadSelectVariant.multipleWithSearch;
 
-    final prevList = selectedValues.toList(growable: false);
+    final prevList = controller.value.toList(growable: false);
     if (widget.closeOnSelect) popoverController.hide();
     setState(() {
-      if (!isMultiSelection) selectedValues.clear();
+      if (!isMultiSelection) controller.value.clear();
       if (widget.allowDeselection && prevList.contains(value)) {
-        selectedValues.remove(value);
+        controller.value.remove(value);
       } else {
-        selectedValues.add(value);
+        controller.value.add(value);
       }
     });
 
-    final newList = selectedValues.toList(growable: false);
+    final newList = controller.value.toList(growable: false);
     final changed = !ListEquality<T>().equals(prevList, newList);
 
     if (widget.closeOnSelect) {
@@ -591,9 +614,9 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
     if (changed) {
       if (isMultiSelection) {
-        widget.onMultipleChanged?.call(selectedValues.toList());
+        widget.onMultipleChanged?.call(controller.value.toList());
       } else {
-        widget.onChanged?.call(selectedValues.firstOrNull);
+        widget.onChanged?.call(controller.value.firstOrNull);
       }
     }
   }
@@ -636,15 +659,17 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     final isMultiSelect = widget.selectedOptionsBuilder != null;
 
     final Widget effectiveText;
-    if (selectedValues.isNotEmpty) {
+    if (controller.value.isNotEmpty) {
       switch (isMultiSelect) {
         case true:
-          effectiveText =
-              widget.selectedOptionsBuilder!(context, selectedValues.toList());
+          effectiveText = widget.selectedOptionsBuilder!(
+            context,
+            controller.value.toList(),
+          );
         case false:
           effectiveText = widget.selectedOptionBuilder!(
             context,
-            selectedValues.first,
+            controller.value.first,
           );
       }
     } else {
@@ -985,7 +1010,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
 
     final inherited =
         context.read<ShadSelectState<dynamic>>() as ShadSelectState<T>;
-    final selected = inherited.selectedValues.contains(widget.value);
+    final selected = inherited.controller.value.contains(widget.value);
     if (selected) focusNode.requestFocus();
   }
 
@@ -1007,7 +1032,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final theme = ShadTheme.of(context);
     final inheritedSelect =
         context.watch<ShadSelectState<dynamic>>() as ShadSelectState<T>;
-    final selected = inheritedSelect.selectedValues.contains(widget.value);
+    final selected = inheritedSelect.controller.value.contains(widget.value);
 
     if (selected) {
       // scroll to the selected option
