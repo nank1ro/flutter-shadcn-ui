@@ -33,7 +33,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.optionsBuilder,
     this.selectedOptionBuilder,
     this.selectedOptionsBuilder,
-    this.controller,
+    this.popoverController,
     this.enabled = true,
     this.placeholder,
     this.initialValue,
@@ -87,7 +87,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.selectedOptionBuilder,
     required ValueChanged<String> this.onSearchChanged,
     this.onChanged,
-    this.controller,
+    this.popoverController,
     this.searchDivider,
     this.searchInputPrefix,
     this.searchPlaceholder,
@@ -134,7 +134,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.options,
     this.optionsBuilder,
     required this.selectedOptionsBuilder,
-    this.controller,
+    this.popoverController,
     this.enabled = true,
     this.placeholder,
     this.initialValues = const [],
@@ -186,7 +186,7 @@ class ShadSelect<T> extends StatefulWidget {
     required ValueChanged<String> this.onSearchChanged,
     required this.selectedOptionsBuilder,
     ValueChanged<List<T>>? onChanged,
-    this.controller,
+    this.popoverController,
     this.searchDivider,
     this.searchInputPrefix,
     this.searchPlaceholder,
@@ -236,7 +236,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.optionsBuilder,
     this.selectedOptionBuilder,
     this.selectedOptionsBuilder,
-    this.controller,
+    this.popoverController,
     this.onSearchChanged,
     this.searchDivider,
     this.searchInputPrefix,
@@ -415,7 +415,7 @@ class ShadSelect<T> extends StatefulWidget {
   final ImageFilter? filter;
 
   /// {@macro ShadPopover.controller}
-  final ShadPopoverController? controller;
+  final ShadPopoverController? popoverController;
 
   /// {@template ShadSelect.header}
   /// The header of the [ShadSelect].
@@ -462,10 +462,11 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     ...widget.initialValues,
   };
 
-  ShadPopoverController? _controller;
+  ShadPopoverController? _popoverController;
 
-  ShadPopoverController get controller =>
-      widget.controller ?? (_controller ??= ShadPopoverController());
+  ShadPopoverController get popoverController =>
+      widget.popoverController ??
+      (_popoverController ??= ShadPopoverController());
 
   ScrollController? _scrollController;
 
@@ -496,8 +497,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     });
 
     if (widget.variant == ShadSelectVariant.search) {
-      controller.addListener(() {
-        if (controller.isOpen) return;
+      popoverController.addListener(() {
+        if (popoverController.isOpen) return;
         final effectiveClearSearchOnClose = widget.clearSearchOnClose ??
             ShadTheme.of(context, listen: false)
                 .selectTheme
@@ -530,7 +531,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _popoverController?.dispose();
     internalFocusNode?.dispose();
     _scrollController?.dispose();
     showScrollToBottom.dispose();
@@ -571,7 +572,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         widget.variant == ShadSelectVariant.multipleWithSearch;
 
     final prevList = selectedValues.toList(growable: false);
-    if (widget.closeOnSelect) controller.hide();
+    if (widget.closeOnSelect) popoverController.hide();
     setState(() {
       if (!isMultiSelection) selectedValues.clear();
       if (widget.allowDeselection && prevList.contains(value)) {
@@ -703,8 +704,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
     return CallbackShortcuts(
       bindings: {
-        const SingleActivator(LogicalKeyboardKey.enter): controller.toggle,
-        const SingleActivator(LogicalKeyboardKey.escape): controller.hide,
+        const SingleActivator(LogicalKeyboardKey.enter):
+            popoverController.toggle,
+        const SingleActivator(LogicalKeyboardKey.escape):
+            popoverController.hide,
       },
       child: FocusTraversalGroup(
         policy: WidgetOrderTraversalPolicy(),
@@ -760,7 +763,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
                     FocusScope.of(context).unfocus();
-                    controller.toggle();
+                    popoverController.toggle();
                   },
                   child: ConstrainedBox(
                     constraints: effectiveConstraints,
@@ -853,7 +856,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
               child: ShadPopover(
                 groupId: widget.groupId,
                 padding: EdgeInsets.zero,
-                controller: controller,
+                controller: popoverController,
                 anchor: effectiveAnchor,
                 closeOnTapOutside: widget.closeOnTapOutside,
                 effects: effectiveEffects,

@@ -44,7 +44,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     ScrollController? scrollController,
     ShadAnchorBase? anchor,
     ImageFilter? filter,
-    ShadPopoverController? controller,
+    ShadPopoverController? popoverController,
 
     /// {@macro select.header}
     Widget? header,
@@ -93,7 +93,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               showScrollToBottomChevron: showScrollToBottomChevron,
               scrollController: scrollController,
               filter: filter,
-              controller: controller,
+              popoverController: popoverController,
               header: header,
               footer: footer,
               closeOnSelect: closeOnSelect,
@@ -146,7 +146,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     EdgeInsets? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
-    ShadPopoverController? controller,
+    ShadPopoverController? popoverController,
 
     /// {@macro select.header}
     Widget? header,
@@ -202,7 +202,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               searchPadding: searchPadding,
               search: search,
               clearSearchOnClose: clearSearchOnClose,
-              controller: controller,
+              popoverController: popoverController,
               header: header,
               footer: footer,
               closeOnSelect: closeOnSelect,
@@ -252,7 +252,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     EdgeInsets? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
-    ShadPopoverController? controller,
+    ShadPopoverController? popoverController,
 
     /// {@macro select.header}
     Widget? header,
@@ -315,7 +315,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               searchPadding: searchPadding,
               search: search,
               clearSearchOnClose: clearSearchOnClose,
-              controller: controller,
+              popoverController: popoverController,
               header: header,
               footer: footer,
               allowDeselection: allowDeselection,
@@ -371,7 +371,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     ScrollController? scrollController,
     ShadAnchorBase? anchor,
     ImageFilter? filter,
-    ShadPopoverController? controller,
+    ShadPopoverController? popoverController,
 
     /// {@macro ShadSelect.header}
     Widget? header,
@@ -412,7 +412,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               showScrollToBottomChevron: showScrollToBottomChevron,
               scrollController: scrollController,
               filter: filter,
-              controller: controller,
+              popoverController: popoverController,
               header: header,
               footer: footer,
               closeOnSelect: closeOnSelect,
@@ -463,7 +463,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     EdgeInsets? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
-    ShadPopoverController? controller,
+    ShadPopoverController? popoverController,
 
     /// {@macro select.header}
     Widget? header,
@@ -511,7 +511,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               searchPadding: searchPadding,
               search: search,
               clearSearchOnClose: clearSearchOnClose,
-              controller: controller,
+              popoverController: popoverController,
               header: header,
               footer: footer,
               closeOnSelect: closeOnSelect,
@@ -559,7 +559,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     EdgeInsets? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
-    ShadPopoverController? controller,
+    ShadPopoverController? popoverController,
 
     /// {@macro select.header}
     Widget? header,
@@ -609,7 +609,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               searchPadding: searchPadding,
               search: search,
               clearSearchOnClose: clearSearchOnClose,
-              controller: controller,
+              popoverController: popoverController,
               header: header,
               footer: footer,
               allowDeselection: allowDeselection,
