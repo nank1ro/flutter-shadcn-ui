@@ -4,6 +4,7 @@
 - **BREAKING CHANGE**: Rename `ShadSelect` and form fields `controller` to `popoverController`.
 - **FEAT**: Add `controller` to `ShadSelect` and form fields, to control the selected values.
 - **FIX**: Improve the `ShadResizable` controller handling and simplify the logic to resize the panels.
+- **FIX**: `ShadResizable` handle position with `Axis.vertical`
 
 ## 0.18.7
 
