@@ -1,6 +1,6 @@
 ## 0.19.0
 
-- **FIX**: `ShadInput`'s `readOnly` not updating.
+- **FIX**: `ShadInput` `readOnly` not updating.
 
 ## 0.18.7
 
