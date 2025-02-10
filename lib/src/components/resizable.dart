@@ -18,6 +18,7 @@ enum ShadResizeResult {
 /// The size information of a panel
 class ShadPanelInfo {
   ShadPanelInfo({
+    required this.id,
     required this.defaultSize,
     this.minSize = 0,
     this.maxSize = 0,
@@ -43,7 +44,13 @@ class ShadPanelInfo {
   final double defaultSize;
   final double minSize;
   final double maxSize;
+  final Object id;
   double _size;
+
+  @override
+  String toString() {
+    return '''ShadPanelInfo(size: $size, minSize: $minSize, maxSize: $maxSize, defaultSize: $defaultSize)''';
+  }
 }
 
 class ShadResizableController extends ChangeNotifier {
@@ -59,11 +66,40 @@ class ShadResizableController extends ChangeNotifier {
     return panelsInfo.length - 1;
   }
 
+  void insertPanel(int index, ShadPanelInfo info) {
+    panelsInfo.insert(index, info);
+    defaultSizes.insert(index, info.defaultSize);
+    notifyListeners();
+  }
+
+  void unregisterPanel(Object id) {
+    final index = panelsInfo.indexWhere((e) => e.id == id);
+    if (index == -1) return;
+    panelsInfo.removeAt(index);
+    defaultSizes.removeAt(index);
+    notifyListeners();
+  }
+
   /// Get the panel info at the given index
   ShadPanelInfo getPanelInfo(int index) {
     final contains = panelsInfo.length > index;
     if (!contains) throw Exception('Panel info not found for index: $index');
     return panelsInfo[index];
+  }
+
+  /// Update the panel info with the given [panels]
+  void update(List<ShadPanelInfo> panels) {
+    clear();
+    for (final panel in panels) {
+      registerPanel(panel);
+    }
+    notifyListeners();
+  }
+
+  /// Clear all the panel info and default sizes
+  void clear() {
+    panelsInfo.clear();
+    defaultSizes.clear();
   }
 
   /// Sets the [size] of the panel at the given [index].
@@ -80,12 +116,13 @@ class ShadResizableController extends ChangeNotifier {
     final leadingPanelInfo = getPanelInfo(index);
     final trailingPanelInfo = getPanelInfo(index + 1);
     final newLeadingSize = size;
-    final offset =
-        (-((leadingPanelInfo.size - newLeadingSize) * totalAvailableWidth))
-            .asFixed(6);
+    final offset = (-((leadingPanelInfo.size - newLeadingSize) *
+            (totalAvailableWidth * base)))
+        .asFixed(6);
     final newTrailingSize =
         (trailingPanelInfo.size * totalAvailableWidth - offset) /
-            totalAvailableWidth;
+            totalAvailableWidth /
+            base;
 
     if (newLeadingSize < leadingPanelInfo.minSize ||
         newTrailingSize > trailingPanelInfo.maxSize) {
@@ -117,6 +154,10 @@ class ShadResizableController extends ChangeNotifier {
   }
 
   double totalAvailableWidth = 0;
+  double get base => panelsInfo.fold<double>(
+        0,
+        (previousValue, element) => previousValue + element.size,
+      );
 }
 
 class ShadResizablePanelGroup extends StatefulWidget {
@@ -196,6 +237,42 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     dragging.addListener(() {
       if (!dragging.value) mouseCursorController.cursor = MouseCursor.defer;
     });
+    registerPanels();
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadResizablePanelGroup oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Added and removing panels
+    if (oldWidget.children.length != widget.children.length) {
+      final removedIds = oldWidget.children
+          .map((e) => e.id)
+          .where((e) => !widget.children.map((e) => e.id).contains(e))
+          .toList();
+      for (final id in removedIds) {
+        controller.unregisterPanel(id);
+      }
+      final addedIds = widget.children
+          .map((e) => e.id)
+          .where((e) => !oldWidget.children.map((e) => e.id).contains(e))
+          .toList();
+
+      for (final id in addedIds) {
+        final index = widget.children.indexWhere((e) => e.id == id);
+        final info = widget.children[index];
+        controller.insertPanel(
+          index,
+          ShadPanelInfo(
+            id: info.id,
+            defaultSize: info.defaultSize,
+            minSize: info.minSize,
+            maxSize: info.maxSize,
+          ),
+        );
+      }
+    }
+
+    if (widget.children.length < oldWidget.children.length) {}
   }
 
   @override
@@ -203,6 +280,19 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     dragging.dispose();
     _internalController?.dispose();
     super.dispose();
+  }
+
+  void registerPanels() {
+    for (final c in widget.children) {
+      controller.registerPanel(
+        ShadPanelInfo(
+          id: c.id,
+          defaultSize: c.defaultSize,
+          minSize: c.minSize,
+          maxSize: c.maxSize,
+        ),
+      );
+    }
   }
 
   int registerPanel(ShadPanelInfo info) => controller.registerPanel(info);
@@ -320,8 +410,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           Axis.horizontal => VerticalDivider(
               indent: 0,
               endIndent: 0,
-              thickness: effectiveDividerThickness,
               width: effectiveDividerSize,
+              thickness: effectiveDividerThickness,
               color: effectiveDividerColor,
             ),
           Axis.vertical => SizedBox(
@@ -341,7 +431,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           builder: (context, constraints) {
             currentConstraints = constraints;
 
-            controller.totalAvailableWidth = widget.axis == Axis.horizontal
+            controller.totalAvailableWidth = isHorizontal
                 ? currentConstraints!.maxWidth
                 : currentConstraints!.maxHeight;
             Widget child = Flex(
@@ -353,12 +443,17 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
               verticalDirection: effectiveVerticalDirection,
               children: widget.children.mapIndexed(
                 (i, e) {
-                  final flex = (effectivesSizes[i] * 1000).toInt();
-                  return Expanded(
-                    flex: flex,
-                    child: Offstage(
-                      offstage: flex <= 0.015,
-                      child: ColoredBox(color: Colors.primaries[i], child: e),
+                  final flex =
+                      ((effectivesSizes.elementAtOrNull(i) ?? 1) * 1000)
+                          .toInt();
+                  return KeyedSubtree(
+                    key: ValueKey(e.id),
+                    child: Expanded(
+                      flex: flex,
+                      child: Offstage(
+                        offstage: flex <= 0.015,
+                        child: e,
+                      ),
                     ),
                   );
                 },
@@ -389,8 +484,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
                         (previousValue, element) => previousValue + element,
                       );
               leadingPosition = isHorizontal
-                  ? leadingPosition * constraints.maxWidth
-                  : leadingPosition * constraints.maxHeight;
+                  ? leadingPosition * constraints.maxWidth / controller.base
+                  : leadingPosition * constraints.maxHeight / controller.base;
 
               leadingPosition -=
                   effectiveDividerSize / 2 + effectiveDividerThickness / 2;
@@ -487,9 +582,10 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
   }
 }
 
-class ShadResizablePanel extends StatefulWidget {
+class ShadResizablePanel extends StatelessWidget {
   const ShadResizablePanel({
     super.key,
+    required this.id,
     required this.child,
     required this.defaultSize,
     this.minSize = 0.0,
@@ -512,35 +608,18 @@ class ShadResizablePanel extends StatefulWidget {
           ' or equal to maxSize',
         );
 
+  /// The id of the panel, must be unique among all the panels in the group
+  final Object id;
   final Widget child;
   final double defaultSize;
   final double minSize;
   final double maxSize;
 
   @override
-  State<ShadResizablePanel> createState() => _ShadResizablePanelState();
-}
-
-class _ShadResizablePanelState extends State<ShadResizablePanel> {
-  late final int index;
-
-  @override
-  void initState() {
-    super.initState();
-    index = context.read<ShadResizablePanelGroupState>().registerPanel(
-          ShadPanelInfo(
-            defaultSize: widget.defaultSize,
-            minSize: widget.minSize,
-            maxSize: widget.maxSize,
-          ),
-        );
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
-      child: widget.child,
+      child: child,
     );
   }
 }
