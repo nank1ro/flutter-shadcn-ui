@@ -1,6 +1,8 @@
 ## 0.19.0
 
 - **FIX**: `ShadInput` `readOnly` not updating.
+- **BREAKING CHANGE**: Rename `ShadSelect` and form fields `controller` to `popoverController`.
+- **FEAT**: Add `controller` to `ShadSelect` and form fields, to control the selected values.
 
 ## 0.18.7
 
