@@ -215,11 +215,9 @@ class ShadInputState extends State<ShadInput>
     }
 
     if (widget.readOnly != oldWidget.readOnly) {
-      _focusNode?.canRequestFocus = widget.readOnly;
-    }
-
-    if (effectiveFocusNode.hasFocus && widget.readOnly != oldWidget.readOnly) {
-      if (effectiveController.selection.isCollapsed) {
+      effectiveFocusNode.canRequestFocus = !widget.readOnly;
+      if (effectiveFocusNode.hasFocus &&
+          effectiveController.selection.isCollapsed) {
         _showSelectionHandles = !widget.readOnly;
       }
     }
