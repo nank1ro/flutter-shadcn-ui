@@ -1,3 +1,7 @@
+## 0.19.2
+
+- **FIX**: Add constraints to `ShadCard` child.
+
 ## 0.19.1
 
 - **REFACTOR**: Rename `materialTextTheme` into `applyGoogleFontToTextTheme`.
