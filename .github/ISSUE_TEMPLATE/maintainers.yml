@@ -4,3 +4,5 @@ assignees:
   - nank1ro
 body:
  - type: markdown
+   attributes:
+        value: <!--- Write anything -->
