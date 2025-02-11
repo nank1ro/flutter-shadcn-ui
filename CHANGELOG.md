@@ -1,3 +1,7 @@
+## 0.19.1
+
+- **REFACTOR**: Rename `materialTextTheme` into `applyGoogleFontToTextTheme`.
+
 ## 0.19.0
 
 - **FIX**: `ShadInput` `readOnly` not updating.

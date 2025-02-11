@@ -305,7 +305,7 @@ class ShadTextTheme {
     );
   }
 
-  TextTheme materialTextTheme({TextTheme? textTheme}) {
+  TextTheme applyGoogleFontToTextTheme({TextTheme? textTheme}) {
     final effectiveTextTheme = textTheme ?? const TextTheme();
     if (googleFontBuilder == null) return effectiveTextTheme;
     return TextTheme(

@@ -695,8 +695,8 @@ class _ShadAppState extends State<ShadApp> {
       iconTheme: const IconThemeData(size: 16),
     );
     mTheme = mTheme.copyWith(
-      textTheme:
-          themeData.textTheme.materialTextTheme(textTheme: mTheme.textTheme),
+      textTheme: themeData.textTheme
+          .applyGoogleFontToTextTheme(textTheme: mTheme.textTheme),
     );
 
     if (widget.materialThemeBuilder == null) {
