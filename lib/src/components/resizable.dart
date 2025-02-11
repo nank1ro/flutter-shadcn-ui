@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
+import 'package:shadcn_ui/src/utils/extensions/double.dart';
 import 'package:shadcn_ui/src/utils/mouse_cursor_provider.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
@@ -17,18 +18,17 @@ enum ShadResizeResult {
 /// The size information of a panel
 class ShadPanelInfo {
   ShadPanelInfo({
+    required this.id,
     required this.defaultSize,
-    double? minSize,
-    double? maxSize,
+    this.minSize = 0,
+    this.maxSize = 0,
   })  : _size = defaultSize,
-        minSize = minSize ?? 0,
-        maxSize = maxSize ?? 1.0,
         assert(
-          minSize == null || minSize >= 0 && minSize <= 1.0,
+          minSize >= 0 && minSize <= 1.0,
           'minSize must be between 0 and 1',
         ),
         assert(
-          maxSize == null || maxSize >= 0 && maxSize <= 1.0,
+          maxSize >= 0 && maxSize <= 1.0,
           'maxSize must be between 0 and 1',
         ),
         assert(defaultSize >= 0 && defaultSize <= 1);
@@ -44,7 +44,13 @@ class ShadPanelInfo {
   final double defaultSize;
   final double minSize;
   final double maxSize;
+  final Object id;
   double _size;
+
+  @override
+  String toString() {
+    return '''ShadPanelInfo(size: $size, minSize: $minSize, maxSize: $maxSize, defaultSize: $defaultSize)''';
+  }
 }
 
 class ShadResizableController extends ChangeNotifier {
@@ -60,6 +66,20 @@ class ShadResizableController extends ChangeNotifier {
     return panelsInfo.length - 1;
   }
 
+  void insertPanel(int index, ShadPanelInfo info) {
+    panelsInfo.insert(index, info);
+    defaultSizes.insert(index, info.defaultSize);
+    notifyListeners();
+  }
+
+  void unregisterPanel(Object id) {
+    final index = panelsInfo.indexWhere((e) => e.id == id);
+    if (index == -1) return;
+    panelsInfo.removeAt(index);
+    defaultSizes.removeAt(index);
+    notifyListeners();
+  }
+
   /// Get the panel info at the given index
   ShadPanelInfo getPanelInfo(int index) {
     final contains = panelsInfo.length > index;
@@ -67,7 +87,22 @@ class ShadResizableController extends ChangeNotifier {
     return panelsInfo[index];
   }
 
-  /// Resize the leading and trailing panels of [offset] pixels.
+  /// Update the panel info with the given [panels]
+  void update(List<ShadPanelInfo> panels) {
+    clear();
+    for (final panel in panels) {
+      registerPanel(panel);
+    }
+    notifyListeners();
+  }
+
+  /// Clear all the panel info and default sizes
+  void clear() {
+    panelsInfo.clear();
+    defaultSizes.clear();
+  }
+
+  /// Sets the [size] of the panel at the given [index].
   ///
   /// Returns the result of the resize operation:
   /// - If the resize operation is successful, the panel info will be updated
@@ -75,24 +110,19 @@ class ShadResizableController extends ChangeNotifier {
   /// updated and the result will be [ShadResizeResult.failedLeading or
   /// [ShadResizeResult.failedTrailing] depending on the resize direction
   ShadResizeResult resize({
-    required int leadingIndex,
-    required int trailingIndex,
-    required double offset,
-    required double totalAvailableSpace,
+    required int index,
+    required double size,
   }) {
-    assert(
-      (leadingIndex - trailingIndex).abs() == 1,
-      'The indexes resized must be adjacent',
-    );
-    final leadingPanelInfo = getPanelInfo(leadingIndex);
-    final trailingPanelInfo = getPanelInfo(trailingIndex);
-
-    final newLeadingSize =
-        (leadingPanelInfo.size * totalAvailableSpace + offset) /
-            totalAvailableSpace;
+    final leadingPanelInfo = getPanelInfo(index);
+    final trailingPanelInfo = getPanelInfo(index + 1);
+    final newLeadingSize = size;
+    final offset = (-((leadingPanelInfo.size - newLeadingSize) *
+            (totalAvailableWidth * base)))
+        .asFixed(6);
     final newTrailingSize =
-        (trailingPanelInfo.size * totalAvailableSpace - offset) /
-            totalAvailableSpace;
+        (trailingPanelInfo.size * totalAvailableWidth - offset) /
+            totalAvailableWidth /
+            base;
 
     if (newLeadingSize < leadingPanelInfo.minSize ||
         newTrailingSize > trailingPanelInfo.maxSize) {
@@ -122,6 +152,14 @@ class ShadResizableController extends ChangeNotifier {
     trailingPanelInfo.size = defaultSizes[trailingIndex];
     notifyListeners();
   }
+
+  double totalAvailableWidth = 0;
+  double get base => panelsInfo
+      .fold<double>(
+        0,
+        (previousValue, element) => previousValue + element.size,
+      )
+      .asFixed(6);
 }
 
 class ShadResizablePanelGroup extends StatefulWidget {
@@ -177,8 +215,6 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
   late final mouseCursorController = context.read<ShadMouseCursorController>();
 
-  late final List<double> defaultSizes;
-
   final dragging = ValueNotifier<bool>(false);
 
   BoxConstraints? currentConstraints;
@@ -194,15 +230,52 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     return _internalController ??= ShadResizableController();
   }
 
-  List<ShadPanelInfo> get panelInfos => controller.panelsInfo;
-
   @override
   void initState() {
     super.initState();
-    defaultSizes = widget.children.map((e) => e.defaultSize).toList();
     dragging.addListener(() {
       if (!dragging.value) mouseCursorController.cursor = MouseCursor.defer;
     });
+    registerPanels();
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadResizablePanelGroup oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Adding and removing panels
+    if (oldWidget.children.length != widget.children.length) {
+      final removedIds = oldWidget.children
+          .map((e) => e.id)
+          .where((e) => !widget.children.map((e) => e.id).contains(e))
+          .toList();
+      for (final id in removedIds) {
+        controller.unregisterPanel(id);
+      }
+      final addedIds = widget.children
+          .map((e) => e.id)
+          .where((e) => !oldWidget.children.map((e) => e.id).contains(e))
+          .toList();
+
+      final totalSize = controller.panelsInfo.fold<double>(
+        0,
+        (previousValue, element) => previousValue + element.size,
+      );
+      final availableSize = 1 - totalSize;
+      final availableSizePerPanel = availableSize / addedIds.length;
+      for (final id in addedIds) {
+        final index = widget.children.indexWhere((e) => e.id == id);
+        final info = widget.children[index];
+        controller.insertPanel(
+          index,
+          ShadPanelInfo(
+            id: info.id,
+            defaultSize: availableSizePerPanel,
+            minSize: info.minSize,
+            maxSize: info.maxSize,
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -212,23 +285,37 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     super.dispose();
   }
 
+  void registerPanels() {
+    for (final c in widget.children) {
+      controller.registerPanel(
+        ShadPanelInfo(
+          id: c.id,
+          defaultSize: c.defaultSize,
+          minSize: c.minSize,
+          maxSize: c.maxSize,
+        ),
+      );
+    }
+  }
+
   int registerPanel(ShadPanelInfo info) => controller.registerPanel(info);
 
   ShadPanelInfo getPanelInfo(int index) => controller.getPanelInfo(index);
 
   void onHandleDrag({
-    required int indexOfLeadingPanel,
-    required int indexOfTrailingPanel,
+    required int index,
     required Offset offset,
   }) {
-    final axisOffset = widget.axis == Axis.horizontal ? offset.dx : offset.dy;
+    final axisOffset =
+        (widget.axis == Axis.horizontal ? offset.dx : offset.dy).asFixed(6);
+    final leadingPanelInfo = getPanelInfo(index);
+    final newLeadingSize =
+        (leadingPanelInfo.size * controller.totalAvailableWidth + axisOffset) /
+            controller.totalAvailableWidth;
+
     final result = controller.resize(
-      leadingIndex: indexOfLeadingPanel,
-      trailingIndex: indexOfTrailingPanel,
-      offset: axisOffset,
-      totalAvailableSpace: widget.axis == Axis.horizontal
-          ? currentConstraints!.maxWidth
-          : currentConstraints!.maxHeight,
+      index: index,
+      size: newLeadingSize,
     );
     switch (result) {
       case ShadResizeResult.success:
@@ -237,7 +324,6 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           Axis.vertical => SystemMouseCursors.resizeUpDown,
         };
         mouseCursorController.cursor = cursor;
-        setState(() {});
       case ShadResizeResult.failedLeading:
         final cursor = switch (widget.axis) {
           Axis.horizontal => SystemMouseCursors.resizeRight,
@@ -256,7 +342,6 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
   void resetDefaultSizes(int leadingIndex, int trailingIndex) {
     assert((leadingIndex - trailingIndex).abs() == 1);
     controller.resetDefaultSizes(leadingIndex, trailingIndex);
-    setState(() {});
   }
 
   @override
@@ -311,236 +396,227 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     final effectiveTextDirection =
         widget.textDirection ?? theme.resizableTheme.textDirection;
 
-    var effectivesSizes = panelInfos.length == widget.children.length
-        ? panelInfos.map((e) => e.size).toList()
-        : defaultSizes;
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, child) {
+        var effectivesSizes = controller.panelsInfo.map((e) => e.size).toList();
 
-    final rtl = Directionality.of(context) == TextDirection.rtl;
-    if (rtl && isHorizontal) {
-      effectivesSizes = effectivesSizes.reversed.toList();
-    }
-
-    final divider = switch (widget.axis) {
-      Axis.horizontal => VerticalDivider(
-          indent: 0,
-          endIndent: 0,
-          thickness: effectiveDividerThickness,
-          width: effectiveDividerSize,
-          color: effectiveDividerColor,
-        ),
-      Axis.vertical => SizedBox(
-          // double.infinity doesn't work, just providing a big number
-          width: 50000,
-          child: Divider(
-            indent: 0,
-            endIndent: 0,
-            height: effectiveDividerSize,
-            thickness: effectiveDividerThickness,
-            color: effectiveDividerColor,
-          ),
-        ),
-    };
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        currentConstraints = constraints;
-        Widget child = Flex(
-          direction: widget.axis,
-          mainAxisAlignment: effectiveMainAxisAlignment,
-          crossAxisAlignment: effectiveCrossAxisAlignment,
-          mainAxisSize: effectiveMainAxisSize,
-          textDirection: effectiveTextDirection,
-          verticalDirection: effectiveVerticalDirection,
-          children: widget.children.mapIndexed(
-            (i, e) {
-              final flex = (effectivesSizes[i] * 1000).toInt();
-              return Expanded(
-                flex: flex,
-                child: Offstage(
-                  offstage: flex == 0,
-                  child: e,
-                ),
-              );
-            },
-          ).toList(),
-        );
-
-        // lazy, will be initialized when the handle is needed
-        late final handle = widget.handleIcon ??
-            ShadDecorator(
-              decoration: effectiveHandleDecoration,
-              child: Padding(
-                padding: effectiveHandlePadding,
-                child: Icon(
-                  widget.handleIconData ??
-                      (isHorizontal
-                          ? LucideIcons.gripVertical
-                          : LucideIcons.gripHorizontal),
-                  size: effectiveHandleSize,
-                ),
-              ),
-            );
-
-        final dividers = <Widget>[];
-        for (var i = 0; i < dividersCount; i++) {
-          var leadingPosition = effectivesSizes.sublist(0, i + 1).fold<double>(
-                0,
-                (previousValue, element) => previousValue + element,
-              );
-          leadingPosition = isHorizontal
-              ? leadingPosition * constraints.maxWidth
-              : leadingPosition * constraints.maxHeight;
-
-          leadingPosition -=
-              effectiveDividerSize / 2 + effectiveDividerThickness / 2;
-
-          if (effectiveShowHandle) {
-            leadingPosition -= effectiveHandlePadding.horizontal / 2;
-            if (!theme.disableSecondaryBorder) {
-              leadingPosition -= effectiveHandleSize / 2;
-            }
-          }
-
-          dividers.add(
-            Positioned(
-              top: isHorizontal ? 0 : leadingPosition,
-              left: isHorizontal && !rtl ? leadingPosition : null,
-              right: isHorizontal && rtl ? leadingPosition : null,
-              bottom: isHorizontal ? 0 : null,
-              child: GestureDetector(
-                onDoubleTap: widget.onDividerDoubleTap ??
-                    () {
-                      if (!effectiveResetOnDoubleTap) return;
-                      resetDefaultSizes(i, i + 1);
-                    },
-                onHorizontalDragStart:
-                    isHorizontal ? (_) => dragging.value = true : null,
-                onHorizontalDragEnd: (_) =>
-                    isHorizontal ? dragging.value = false : null,
-                onHorizontalDragCancel: () =>
-                    isHorizontal ? dragging.value = false : null,
-                onHorizontalDragUpdate: (details) => isHorizontal
-                    ? onHandleDrag(
-                        offset: details.delta,
-                        indexOfLeadingPanel: i,
-                        indexOfTrailingPanel: i + 1,
-                      )
-                    : null,
-                onVerticalDragStart:
-                    isVertical ? (_) => dragging.value = true : null,
-                onVerticalDragEnd: (_) =>
-                    isVertical ? dragging.value = false : null,
-                onVerticalDragCancel: () =>
-                    isVertical ? dragging.value = false : null,
-                onVerticalDragUpdate: (details) => isVertical
-                    ? onHandleDrag(
-                        offset: details.delta,
-                        indexOfLeadingPanel: i,
-                        indexOfTrailingPanel: i + 1,
-                      )
-                    : null,
-                child: MouseRegion(
-                  onEnter: (_) {
-                    final cursor = switch (widget.axis) {
-                      Axis.horizontal => SystemMouseCursors.resizeLeftRight,
-                      Axis.vertical => SystemMouseCursors.resizeUpDown,
-                    };
-
-                    mouseCursorController.cursor = cursor;
-                  },
-                  onExit: (details) async {
-                    if (dragging.value) return;
-                    mouseCursorController.cursor = MouseCursor.defer;
-                  },
-                  child: effectiveShowHandle
-                      ? Stack(
-                          alignment: AlignmentDirectional.center,
-                          children: [
-                            divider,
-                            handle,
-                          ],
-                        )
-                      : divider,
-                ),
-              ),
-            ),
-          );
+        final rtl = Directionality.of(context) == TextDirection.rtl;
+        if (rtl && isHorizontal) {
+          effectivesSizes = effectivesSizes.reversed.toList();
         }
 
-        child = Stack(
-          fit: StackFit.expand,
-          alignment: AlignmentDirectional.center,
-          children: [
-            child,
-            ...dividers,
-          ],
-        );
+        final divider = switch (widget.axis) {
+          Axis.horizontal => VerticalDivider(
+              indent: 0,
+              endIndent: 0,
+              width: effectiveDividerSize,
+              thickness: effectiveDividerThickness,
+              color: effectiveDividerColor,
+            ),
+          Axis.vertical => SizedBox(
+              // double.infinity doesn't work, just providing a big number
+              width: 50000,
+              child: Divider(
+                indent: 0,
+                endIndent: 0,
+                height: effectiveDividerSize,
+                thickness: effectiveDividerThickness,
+                color: effectiveDividerColor,
+              ),
+            ),
+        };
 
-        return ShadProvider(
-          data: this,
-          notifyUpdate: (_) => true,
-          child: child,
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            currentConstraints = constraints;
+
+            controller.totalAvailableWidth = isHorizontal
+                ? currentConstraints!.maxWidth
+                : currentConstraints!.maxHeight;
+            final child = Flex(
+              direction: widget.axis,
+              mainAxisAlignment: effectiveMainAxisAlignment,
+              crossAxisAlignment: effectiveCrossAxisAlignment,
+              mainAxisSize: effectiveMainAxisSize,
+              textDirection: effectiveTextDirection,
+              verticalDirection: effectiveVerticalDirection,
+              children: widget.children.mapIndexed(
+                (i, e) {
+                  final flex =
+                      ((effectivesSizes.elementAtOrNull(i) ?? 1) * 1000)
+                          .toInt();
+                  return KeyedSubtree(
+                    key: ValueKey(e.id),
+                    child: Expanded(
+                      flex: flex,
+                      child: Offstage(
+                        offstage: flex <= 0.015,
+                        child: e,
+                      ),
+                    ),
+                  );
+                },
+              ).toList(),
+            );
+
+            // lazy, will be initialized when the handle is needed
+            late final handle = widget.handleIcon ??
+                ShadDecorator(
+                  decoration: effectiveHandleDecoration,
+                  child: Padding(
+                    padding: effectiveHandlePadding,
+                    child: Icon(
+                      widget.handleIconData ??
+                          (isHorizontal
+                              ? LucideIcons.gripVertical
+                              : LucideIcons.gripHorizontal),
+                      size: effectiveHandleSize,
+                    ),
+                  ),
+                );
+
+            final dividers = <Widget>[];
+            for (var i = 0; i < dividersCount; i++) {
+              var leadingPosition =
+                  effectivesSizes.sublist(0, i + 1).fold<double>(
+                        0,
+                        (previousValue, element) => previousValue + element,
+                      );
+              leadingPosition = isHorizontal
+                  ? leadingPosition * constraints.maxWidth / controller.base
+                  : leadingPosition * constraints.maxHeight / controller.base;
+
+              leadingPosition -=
+                  effectiveDividerSize / 2 + effectiveDividerThickness / 2;
+
+              if (effectiveShowHandle) {
+                leadingPosition -= (isHorizontal
+                        ? effectiveHandlePadding.horizontal
+                        : effectiveHandlePadding.vertical) /
+                    2;
+                if (!theme.disableSecondaryBorder) {
+                  leadingPosition -= effectiveHandleSize / 2;
+                }
+              }
+
+              dividers.add(
+                Positioned(
+                  top: isHorizontal ? 0 : leadingPosition,
+                  left: isHorizontal && !rtl ? leadingPosition : null,
+                  right: isHorizontal && rtl ? leadingPosition : null,
+                  bottom: isHorizontal ? 0 : null,
+                  child: GestureDetector(
+                    onDoubleTap: widget.onDividerDoubleTap ??
+                        () {
+                          if (!effectiveResetOnDoubleTap) return;
+                          resetDefaultSizes(i, i + 1);
+                        },
+                    onHorizontalDragStart:
+                        isHorizontal ? (_) => dragging.value = true : null,
+                    onHorizontalDragEnd: (_) =>
+                        isHorizontal ? dragging.value = false : null,
+                    onHorizontalDragCancel: () =>
+                        isHorizontal ? dragging.value = false : null,
+                    onHorizontalDragUpdate: (details) => isHorizontal
+                        ? onHandleDrag(
+                            offset: details.delta,
+                            index: i,
+                          )
+                        : null,
+                    onVerticalDragStart:
+                        isVertical ? (_) => dragging.value = true : null,
+                    onVerticalDragEnd: (_) =>
+                        isVertical ? dragging.value = false : null,
+                    onVerticalDragCancel: () =>
+                        isVertical ? dragging.value = false : null,
+                    onVerticalDragUpdate: (details) => isVertical
+                        ? onHandleDrag(
+                            offset: details.delta,
+                            index: i,
+                          )
+                        : null,
+                    child: MouseRegion(
+                      onEnter: (_) {
+                        final cursor = switch (widget.axis) {
+                          Axis.horizontal => SystemMouseCursors.resizeLeftRight,
+                          Axis.vertical => SystemMouseCursors.resizeUpDown,
+                        };
+
+                        mouseCursorController.cursor = cursor;
+                      },
+                      onExit: (details) async {
+                        if (dragging.value) return;
+                        mouseCursorController.cursor = MouseCursor.defer;
+                      },
+                      child: effectiveShowHandle
+                          ? Stack(
+                              alignment: AlignmentDirectional.center,
+                              children: [
+                                divider,
+                                handle,
+                              ],
+                            )
+                          : divider,
+                    ),
+                  ),
+                ),
+              );
+            }
+
+            return Stack(
+              fit: StackFit.expand,
+              alignment: AlignmentDirectional.center,
+              children: [
+                child,
+                ...dividers,
+              ],
+            );
+          },
         );
       },
     );
   }
 }
 
-class ShadResizablePanel extends StatefulWidget {
+class ShadResizablePanel extends StatelessWidget {
   const ShadResizablePanel({
     super.key,
+    required this.id,
     required this.child,
     required this.defaultSize,
-    this.minSize,
-    this.maxSize,
+    this.minSize = 0.0,
+    this.maxSize = 1.0,
   })  : assert(
-          minSize == null || minSize >= 0,
+          minSize >= 0,
           'minSize must be greater than or equal to 0',
         ),
         assert(
-          maxSize == null || maxSize >= 0,
+          maxSize >= 0,
           'maxSize must be greater than or equal to 0',
         ),
         assert(
-          minSize == null || maxSize == null || minSize <= maxSize,
+          minSize <= maxSize,
           'minSize must be less than or equal to maxSize',
         ),
         assert(
-          defaultSize >= (minSize ?? 0) &&
-              defaultSize <= (maxSize ?? double.infinity),
+          defaultSize >= minSize && defaultSize <= maxSize,
           'defaultSize must be greater than or equal to minSize and less than'
           ' or equal to maxSize',
         );
 
+  /// The id of the panel, must be unique among all the panels in the group
+  final Object id;
   final Widget child;
   final double defaultSize;
-  final double? minSize;
-  final double? maxSize;
-
-  @override
-  State<ShadResizablePanel> createState() => _ShadResizablePanelState();
-}
-
-class _ShadResizablePanelState extends State<ShadResizablePanel> {
-  late final int index;
-
-  @override
-  void initState() {
-    super.initState();
-    index = context.read<ShadResizablePanelGroupState>().registerPanel(
-          ShadPanelInfo(
-            defaultSize: widget.defaultSize,
-            minSize: widget.minSize,
-            maxSize: widget.maxSize,
-          ),
-        );
-  }
+  final double minSize;
+  final double maxSize;
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
-      child: widget.child,
+      child: child,
     );
   }
 }
