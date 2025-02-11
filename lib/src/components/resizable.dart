@@ -154,10 +154,12 @@ class ShadResizableController extends ChangeNotifier {
   }
 
   double totalAvailableWidth = 0;
-  double get base => panelsInfo.fold<double>(
+  double get base => panelsInfo
+      .fold<double>(
         0,
         (previousValue, element) => previousValue + element.size,
-      );
+      )
+      .asFixed(6);
 }
 
 class ShadResizablePanelGroup extends StatefulWidget {
@@ -257,6 +259,12 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           .where((e) => !oldWidget.children.map((e) => e.id).contains(e))
           .toList();
 
+      final totalSize = controller.panelsInfo.fold<double>(
+        0,
+        (previousValue, element) => previousValue + element.size,
+      );
+      final availableSize = 1 - totalSize;
+      final availableSizePerPanel = availableSize / addedIds.length;
       for (final id in addedIds) {
         final index = widget.children.indexWhere((e) => e.id == id);
         final info = widget.children[index];
@@ -264,15 +272,13 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
           index,
           ShadPanelInfo(
             id: info.id,
-            defaultSize: info.defaultSize,
+            defaultSize: availableSizePerPanel,
             minSize: info.minSize,
             maxSize: info.maxSize,
           ),
         );
       }
     }
-
-    if (widget.children.length < oldWidget.children.length) {}
   }
 
   @override
