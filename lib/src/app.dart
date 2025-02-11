@@ -745,11 +745,12 @@ class _ShadAppState extends State<ShadApp> {
   }
 
   Widget _buildApp(BuildContext context) {
+    final mTheme = materialTheme(context);
     switch (widget.type) {
       case ShadAppType.shadcn:
         if (usesRouter) {
           return AnimatedTheme(
-            data: materialTheme(context),
+            data: mTheme,
             child: WidgetsApp.router(
               key: GlobalObjectKey(this),
               routeInformationProvider: widget.routeInformationProvider,
@@ -778,7 +779,7 @@ class _ShadAppState extends State<ShadApp> {
         }
 
         return AnimatedTheme(
-          data: materialTheme(context),
+          data: mTheme,
           child: WidgetsApp(
             key: GlobalObjectKey(this),
             navigatorKey: widget.navigatorKey,
@@ -824,7 +825,8 @@ class _ShadAppState extends State<ShadApp> {
             backButtonDispatcher: widget.backButtonDispatcher,
             onNavigationNotification: widget.onNavigationNotification,
             builder: _builder,
-            theme: materialTheme(context),
+            theme: mTheme.brightness == Brightness.light ? mTheme : null,
+            darkTheme: mTheme.brightness == Brightness.dark ? mTheme : null,
             title: widget.title,
             onGenerateTitle: widget.onGenerateTitle,
             color: widget.color ?? Colors.blue,
@@ -853,7 +855,8 @@ class _ShadAppState extends State<ShadApp> {
           onUnknownRoute: widget.onUnknownRoute,
           onNavigationNotification: widget.onNavigationNotification,
           builder: _builder,
-          theme: materialTheme(context),
+          theme: mTheme.brightness == Brightness.light ? mTheme : null,
+          darkTheme: mTheme.brightness == Brightness.dark ? mTheme : null,
           title: widget.title,
           onGenerateTitle: widget.onGenerateTitle,
           color: widget.color ?? Colors.blue,
@@ -935,7 +938,7 @@ class _ShadAppState extends State<ShadApp> {
         );
       case ShadAppType.custom:
         return AnimatedTheme(
-          data: materialTheme(context),
+          data: mTheme,
           child: Builder(
             builder: (BuildContext context) {
               // Why are we surrounding a builder with a builder?

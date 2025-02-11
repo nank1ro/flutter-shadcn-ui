@@ -4,8 +4,9 @@
 - **BREAKING CHANGE**: Rename `ShadSelect` and form fields `controller` to `popoverController`.
 - **FEAT**: Add `controller` to `ShadSelect` and form fields, to control the selected values.
 - **FIX**: Improve the `ShadResizable` controller handling and simplify the logic to resize the panels.
-- **FIX**: `ShadResizable` handle position with `Axis.vertical`
+- **FIX**: `ShadResizable` handle position with `Axis.vertical`.
 - **BREAKING CHANGE**: Now `ShadResizable` requires an `id`, to be able to handle when a panel is removed/added from the widget tree correctly.
+- **CHORE**: Correctly set the `theme` or `darkTheme` to the internal `MaterialApp`.
 
 ## 0.18.7
 
