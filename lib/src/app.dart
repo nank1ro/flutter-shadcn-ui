@@ -634,7 +634,9 @@ class _ShadAppState extends State<ShadApp> {
           curve: widget.themeCurve,
           child: ShadMouseAreaSurface(
             child: ShadMouseCursorProvider(
-              child: _buildApp(context),
+              child: Builder(
+                builder: _buildApp,
+              ),
             ),
           ),
         ),

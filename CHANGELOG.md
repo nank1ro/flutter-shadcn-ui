@@ -1,6 +1,7 @@
 ## 0.19.1
 
 - **REFACTOR**: Rename `materialTextTheme` into `applyGoogleFontToTextTheme`.
+- **FEAT**: Allow accessing the `ShadTheme` with the context, in the `materialThemeBuilder` and `appBuilder`.
 
 ## 0.19.0
 
