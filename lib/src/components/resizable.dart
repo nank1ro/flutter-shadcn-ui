@@ -434,7 +434,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
             controller.totalAvailableWidth = isHorizontal
                 ? currentConstraints!.maxWidth
                 : currentConstraints!.maxHeight;
-            Widget child = Flex(
+            final child = Flex(
               direction: widget.axis,
               mainAxisAlignment: effectiveMainAxisAlignment,
               crossAxisAlignment: effectiveCrossAxisAlignment,
@@ -564,19 +564,13 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
               );
             }
 
-            child = Stack(
+            return Stack(
               fit: StackFit.expand,
               alignment: AlignmentDirectional.center,
               children: [
                 child,
                 ...dividers,
               ],
-            );
-
-            return ShadProvider(
-              data: this,
-              notifyUpdate: (_) => true,
-              child: child,
             );
           },
         );
