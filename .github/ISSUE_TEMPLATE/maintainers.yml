@@ -3,16 +3,16 @@ description: Only Maintainers can use this blank template
 assignees:
   - nank1ro
 body:
- - type: markdown
-   attributes:
-        value: Write anything
- - type: textarea
-   attributes:
-        label: Steps to reproduce
-        description: Please tell us exactly how to reproduce the problem you are running into.
-        placeholder: |
-          1. ...
-          2. ...
-          3. ...
-      validations:
-        required: false
+  - type: markdown
+    attributes:
+      value: Write anything
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: Please tell us exactly how to reproduce the problem you are running into.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: false
