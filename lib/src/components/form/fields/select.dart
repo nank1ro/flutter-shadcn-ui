@@ -239,7 +239,10 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.validator,
     required ShadSelectVariant variant,
     required ShadSelectedOptionBuilder<T> selectedOptionBuilder,
-    required Iterable<Widget> options,
+    Iterable<Widget>? options,
+
+    /// The builder for the options of the [ShadSelect].
+    Widget? Function(BuildContext, int)? optionsBuilder,
     ValueChanged<String>? onSearchChanged,
     Widget? placeholder,
     bool closeOnTapOutside = true,
@@ -301,6 +304,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
             return ShadSelect<T>.raw(
               variant: variant,
               options: options,
+              optionsBuilder: optionsBuilder,
               selectedOptionBuilder: selectedOptionBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
@@ -558,7 +562,10 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     super.validator,
     required ShadSelectVariant variant,
     required ShadSelectedOptionBuilder<List<T>> selectedOptionsBuilder,
-    required Iterable<Widget> options,
+    Iterable<Widget>? options,
+
+    /// The builder for the options of the [ShadSelect].
+    Widget? Function(BuildContext, int)? optionsBuilder,
     ValueChanged<String>? onSearchChanged,
     Widget? placeholder,
     bool closeOnTapOutside = true,
@@ -607,6 +614,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
             return ShadSelect<T>.raw(
               variant: variant,
               options: options,
+              optionsBuilder: optionsBuilder,
               selectedOptionsBuilder: selectedOptionsBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,

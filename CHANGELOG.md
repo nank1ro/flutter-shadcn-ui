@@ -1,3 +1,8 @@
+## 0.19.3
+
+- **FIX**: Make `selectedOptionBuilder` required in `ShadSelect` (thanks to @muradab).
+- **FIX**: Add `optionsBuilder` to `ShadSelect` and its form fields where it was missing.
+
 ## 0.19.2
 
 - **FIX**: Add constraints to `ShadCard` child.

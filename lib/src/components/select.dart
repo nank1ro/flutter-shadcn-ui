@@ -33,10 +33,9 @@ enum ShadSelectVariant { primary, search, multiple, multipleWithSearch }
 class ShadSelect<T> extends StatefulWidget {
   const ShadSelect({
     super.key,
+    required this.selectedOptionBuilder,
     this.options,
     this.optionsBuilder,
-    this.selectedOptionBuilder,
-    this.selectedOptionsBuilder,
     this.popoverController,
     this.enabled = true,
     this.placeholder,
@@ -74,15 +73,12 @@ class ShadSelect<T> extends StatefulWidget {
         searchInputPrefix = null,
         onMultipleChanged = null,
         searchPadding = null,
+        selectedOptionsBuilder = null,
         search = null,
         clearSearchOnClose = false,
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
-        ),
-        assert(
-          (selectedOptionBuilder != null) ^ (selectedOptionsBuilder != null),
-          '''Either selectedOptionBuilder or selectedOptionsBuilder must be provided''',
         );
 
   const ShadSelect.withSearch({
