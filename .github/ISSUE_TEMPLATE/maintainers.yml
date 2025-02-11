@@ -2,3 +2,5 @@ name: "[MAINTAINERS ONLY] Blank template"
 description: Only Maintainers can use this blank template
 assignees:
   - nank1ro
+body:
+ - type: markdown
