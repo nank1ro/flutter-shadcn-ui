@@ -89,7 +89,7 @@ class ShadSelect<T> extends StatefulWidget {
     super.key,
     this.options,
     this.optionsBuilder,
-    this.selectedOptionBuilder,
+    required this.selectedOptionBuilder,
     required ValueChanged<String> this.onSearchChanged,
     this.onChanged,
     this.popoverController,
