@@ -54,6 +54,7 @@ class BasicResizable extends StatelessWidget {
           child: ShadResizablePanelGroup(
             children: [
               ShadResizablePanel(
+                id: 0,
                 defaultSize: .5,
                 minSize: .2,
                 maxSize: .8,
@@ -62,16 +63,19 @@ class BasicResizable extends StatelessWidget {
                 ),
               ),
               ShadResizablePanel(
+                id: 1,
                 defaultSize: .5,
                 child: ShadResizablePanelGroup(
                   axis: Axis.vertical,
                   children: [
                     ShadResizablePanel(
+                      id: 0,
                       defaultSize: .3,
                       child: Center(
                           child: Text('Two', style: theme.textTheme.large)),
                     ),
                     ShadResizablePanel(
+                      id: 1,
                       defaultSize: .7,
                       child: Align(
                           child: Text('Three', style: theme.textTheme.large)),
@@ -108,6 +112,7 @@ class VerticalResizable extends StatelessWidget {
             axis: Axis.vertical,
             children: [
               ShadResizablePanel(
+                id: 0,
                 defaultSize: 0.3,
                 minSize: 0.1,
                 child: Center(
@@ -115,6 +120,7 @@ class VerticalResizable extends StatelessWidget {
                 ),
               ),
               ShadResizablePanel(
+                id: 1,
                 defaultSize: 0.7,
                 minSize: 0.1,
                 child: Center(
@@ -150,6 +156,7 @@ class HandleResizable extends StatelessWidget {
             showHandle: true,
             children: [
               ShadResizablePanel(
+                id: 0,
                 defaultSize: .5,
                 minSize: .2,
                 child: Center(
@@ -157,6 +164,7 @@ class HandleResizable extends StatelessWidget {
                 ),
               ),
               ShadResizablePanel(
+                id: 1,
                 defaultSize: .5,
                 minSize: .2,
                 child: Center(
