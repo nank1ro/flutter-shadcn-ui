@@ -215,8 +215,6 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
   late final mouseCursorController = context.read<ShadMouseCursorController>();
 
-  late final List<double> defaultSizes;
-
   final dragging = ValueNotifier<bool>(false);
 
   BoxConstraints? currentConstraints;
@@ -235,7 +233,6 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
   @override
   void initState() {
     super.initState();
-    defaultSizes = widget.children.map((e) => e.defaultSize).toList();
     dragging.addListener(() {
       if (!dragging.value) mouseCursorController.cursor = MouseCursor.defer;
     });
@@ -245,7 +242,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
   @override
   void didUpdateWidget(covariant ShadResizablePanelGroup oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Added and removing panels
+    // Adding and removing panels
     if (oldWidget.children.length != widget.children.length) {
       final removedIds = oldWidget.children
           .map((e) => e.id)
@@ -402,10 +399,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     return ListenableBuilder(
       listenable: controller,
       builder: (context, child) {
-        var effectivesSizes =
-            controller.panelsInfo.length == widget.children.length
-                ? controller.panelsInfo.map((e) => e.size).toList()
-                : defaultSizes;
+        var effectivesSizes = controller.panelsInfo.map((e) => e.size).toList();
 
         final rtl = Directionality.of(context) == TextDirection.rtl;
         if (rtl && isHorizontal) {
