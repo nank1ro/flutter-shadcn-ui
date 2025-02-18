@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,7 +33,12 @@ class ShadButton extends StatefulWidget {
   const ShadButton({
     super.key,
     this.child,
+    @Deprecated(
+      '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
+    )
     this.icon,
+    this.leading,
+    this.trailing,
     this.onPressed,
     this.size,
     this.cursor,
@@ -85,7 +92,12 @@ class ShadButton extends StatefulWidget {
     required this.variant,
     this.size,
     this.child,
+    @Deprecated(
+      '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
+    )
     this.icon,
+    this.leading,
+    this.trailing,
     this.onPressed,
     this.cursor,
     this.width,
@@ -136,7 +148,12 @@ class ShadButton extends StatefulWidget {
   const ShadButton.destructive({
     super.key,
     this.child,
+    @Deprecated(
+      '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
+    )
     this.icon,
+    this.leading,
+    this.trailing,
     this.onPressed,
     this.size,
     this.cursor,
@@ -188,7 +205,12 @@ class ShadButton extends StatefulWidget {
   const ShadButton.outline({
     super.key,
     this.child,
+    @Deprecated(
+      '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
+    )
     this.icon,
+    this.leading,
+    this.trailing,
     this.onPressed,
     this.size,
     this.cursor,
@@ -240,7 +262,12 @@ class ShadButton extends StatefulWidget {
   const ShadButton.secondary({
     super.key,
     this.child,
+    @Deprecated(
+      '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
+    )
     this.icon,
+    this.leading,
+    this.trailing,
     this.onPressed,
     this.size,
     this.cursor,
@@ -292,7 +319,12 @@ class ShadButton extends StatefulWidget {
   const ShadButton.ghost({
     super.key,
     this.child,
+    @Deprecated(
+      '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
+    )
     this.icon,
+    this.leading,
+    this.trailing,
     this.onPressed,
     this.size,
     this.cursor,
@@ -390,13 +422,24 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.orderPolicy,
     this.expands,
+    this.leading,
+    this.trailing,
   })  : variant = ShadButtonVariant.link,
         icon = null;
 
   final VoidCallback? onPressed;
   final VoidCallback? onLongPress;
+  @Deprecated(
+    '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
+  )
   final Widget? icon;
+
+  /// The widget that will be displayed as the leading item of the button.
+  final Widget? leading;
   final Widget? child;
+
+  /// The widget that will be displayed as the trailing item of the button.
+  final Widget? trailing;
   final ShadButtonVariant variant;
   final ShadButtonSize? size;
 
@@ -522,13 +565,6 @@ class _ShadButtonState extends State<ShadButton> {
     statesController.update(ShadState.focused, focusNode.hasFocus);
   }
 
-  void assertCheckHasTextOrIcon() {
-    assert(
-      widget.child != null || widget.icon != null,
-      'Either text or icon must be provided',
-    );
-  }
-
   ShadButtonTheme buttonTheme(ShadThemeData theme) {
     return switch (widget.variant) {
       ShadButtonVariant.primary => theme.primaryButtonTheme,
@@ -544,6 +580,7 @@ class _ShadButtonState extends State<ShadButton> {
     ShadThemeData theme,
     ShadButtonSize size,
   ) {
+    // TODO(nank1ro): will be removed because icon is deprecated
     if (widget.icon != null && widget.child == null) {
       return buttonTheme(theme).sizesTheme?.icon ??
           theme.buttonSizesTheme.icon!;
@@ -691,8 +728,6 @@ class _ShadButtonState extends State<ShadButton> {
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
-    assertCheckHasTextOrIcon();
-
     final theme = ShadTheme.of(context);
     final materialTheme = Theme.of(context);
 
@@ -761,109 +796,108 @@ class _ShadButtonState extends State<ShadButton> {
             shadows: shadows(theme),
           );
 
-          Widget? child = widget.child == null
-              ? null
-              : DefaultTextStyle(
-                  style: theme.textTheme.small.copyWith(
-                    color: effectiveForegroundColor,
-                    decoration: textDecoration(
-                      theme,
-                      hovered: hovered,
-                    ),
-                    decorationColor: foreground(theme),
-                    decorationStyle: TextDecorationStyle.solid,
-                  ),
-                  textAlign: TextAlign.center,
-                  child: widget.child!,
-                );
+          var child = widget.child;
 
-          if (child != null && effectiveExpands) {
-            child = Expanded(child: child);
+          if (widget.child != null && effectiveExpands) {
+            child = Expanded(child: widget.child!);
           }
 
-          return Semantics(
-            container: true,
-            button: true,
-            focusable: enabled,
-            enabled: enabled,
-            child: Opacity(
-              opacity: enabled ? 1 : .5,
-              child: AbsorbPointer(
-                absorbing: !enabled,
-                child: ShadFocusable(
-                  canRequestFocus: enabled,
-                  autofocus: widget.autofocus,
-                  focusNode: focusNode,
-                  onFocusChange: widget.onFocusChange,
-                  builder: (context, focused, child) => ShadDecorator(
-                    decoration: updatedDecoration,
-                    focused: focused,
-                    child: child,
-                  ),
-                  child: ShadGestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onHoverChange: (value) {
-                      statesController.update(ShadState.hovered, value);
-                      widget.onHoverChange?.call(value);
-                    },
-                    hoverStrategies: effectiveHoverStrategies,
-                    cursor: cursor(theme),
-                    onLongPress: widget.onLongPress,
-                    onTap: widget.onPressed == null ? null : onTap,
-                    onTapDown: (details) {
-                      statesController.update(ShadState.pressed, true);
-                      widget.onTapDown?.call(details);
-                    },
-                    onTapUp: (details) {
-                      statesController.update(ShadState.pressed, false);
-                      widget.onTapUp?.call(details);
-                    },
-                    onTapCancel: () {
-                      statesController.update(ShadState.pressed, false);
-                      widget.onTapCancel?.call();
-                    },
-                    onSecondaryTapDown: (details) {
-                      widget.onSecondaryTapDown?.call(details);
-                    },
-                    onSecondaryTapUp: (details) {
-                      widget.onSecondaryTapUp?.call(details);
-                    },
-                    onSecondaryTapCancel: () {
-                      widget.onSecondaryTapCancel?.call();
-                    },
-                    onDoubleTap: widget.onDoubleTap,
-                    onDoubleTapDown: widget.onDoubleTapDown,
-                    onDoubleTapCancel: widget.onDoubleTapCancel,
-                    onLongPressCancel: widget.onLongPressCancel,
-                    onLongPressEnd: widget.onLongPressEnd,
-                    onLongPressUp: widget.onLongPressUp,
-                    onLongPressDown: widget.onLongPressDown,
-                    onLongPressStart: widget.onLongPressStart,
-                    longPressDuration: effectiveLongPressDuration,
-                    child: SizedBox(
-                      height: height(theme),
-                      width: width(theme),
-                      child: Padding(
-                        padding: padding(theme),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: effectiveCrossAxisAlignment,
-                          mainAxisAlignment: effectiveMainAxisAlignment,
-                          textDirection: effectiveTextDirection,
-                          children: [
-                            if (widget.icon != null)
-                              Theme(
-                                data: materialTheme.copyWith(
-                                  iconTheme: materialTheme.iconTheme.copyWith(
-                                    color: effectiveForegroundColor,
-                                  ),
-                                ),
-                                child: widget.icon!,
-                              ),
-                            if (child != null) child,
-                          ]
-                              .order(effectiveOrderPolicy)
-                              .separatedBy(SizedBox(width: effectiveGap)),
+          return Theme(
+            data: materialTheme.copyWith(
+              iconTheme: materialTheme.iconTheme.copyWith(
+                color: effectiveForegroundColor,
+              ),
+            ),
+            child: DefaultTextStyle(
+              style: theme.textTheme.small.copyWith(
+                color: effectiveForegroundColor,
+                decoration: textDecoration(
+                  theme,
+                  hovered: hovered,
+                ),
+                decorationColor: foreground(theme),
+                decorationStyle: TextDecorationStyle.solid,
+              ),
+              textAlign: TextAlign.center,
+              child: Semantics(
+                container: true,
+                button: true,
+                focusable: enabled,
+                enabled: enabled,
+                child: Opacity(
+                  opacity: enabled ? 1 : .5,
+                  child: AbsorbPointer(
+                    absorbing: !enabled,
+                    child: ShadFocusable(
+                      canRequestFocus: enabled,
+                      autofocus: widget.autofocus,
+                      focusNode: focusNode,
+                      onFocusChange: widget.onFocusChange,
+                      builder: (context, focused, child) => ShadDecorator(
+                        decoration: updatedDecoration,
+                        focused: focused,
+                        child: child,
+                      ),
+                      child: ShadGestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onHoverChange: (value) {
+                          statesController.update(ShadState.hovered, value);
+                          widget.onHoverChange?.call(value);
+                        },
+                        hoverStrategies: effectiveHoverStrategies,
+                        cursor: cursor(theme),
+                        onLongPress: widget.onLongPress,
+                        onTap: widget.onPressed == null ? null : onTap,
+                        onTapDown: (details) {
+                          statesController.update(ShadState.pressed, true);
+                          widget.onTapDown?.call(details);
+                        },
+                        onTapUp: (details) {
+                          statesController.update(ShadState.pressed, false);
+                          widget.onTapUp?.call(details);
+                        },
+                        onTapCancel: () {
+                          statesController.update(ShadState.pressed, false);
+                          widget.onTapCancel?.call();
+                        },
+                        onSecondaryTapDown: (details) {
+                          widget.onSecondaryTapDown?.call(details);
+                        },
+                        onSecondaryTapUp: (details) {
+                          widget.onSecondaryTapUp?.call(details);
+                        },
+                        onSecondaryTapCancel: () {
+                          widget.onSecondaryTapCancel?.call();
+                        },
+                        onDoubleTap: widget.onDoubleTap,
+                        onDoubleTapDown: widget.onDoubleTapDown,
+                        onDoubleTapCancel: widget.onDoubleTapCancel,
+                        onLongPressCancel: widget.onLongPressCancel,
+                        onLongPressEnd: widget.onLongPressEnd,
+                        onLongPressUp: widget.onLongPressUp,
+                        onLongPressDown: widget.onLongPressDown,
+                        onLongPressStart: widget.onLongPressStart,
+                        longPressDuration: effectiveLongPressDuration,
+                        child: SizedBox(
+                          height: height(theme),
+                          width: width(theme),
+                          child: Padding(
+                            padding: padding(theme),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: effectiveCrossAxisAlignment,
+                              mainAxisAlignment: effectiveMainAxisAlignment,
+                              textDirection: effectiveTextDirection,
+                              children: [
+                                if (widget.leading != null) widget.leading!,
+                                if (widget.icon != null) widget.icon!,
+                                if (child != null) child,
+                                if (widget.trailing != null) widget.trailing!,
+                              ]
+                                  .order(effectiveOrderPolicy)
+                                  .separatedBy(SizedBox(width: effectiveGap)),
+                            ),
+                          ),
                         ),
                       ),
                     ),
