@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 enum ShadAlertVariant {
   primary,
@@ -24,7 +23,6 @@ class ShadAlert extends StatelessWidget {
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
-    this.orderPolicy,
   }) : variant = ShadAlertVariant.primary;
 
   const ShadAlert.destructive({
@@ -41,7 +39,6 @@ class ShadAlert extends StatelessWidget {
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
-    this.orderPolicy,
   }) : variant = ShadAlertVariant.destructive;
 
   const ShadAlert.raw({
@@ -59,7 +56,6 @@ class ShadAlert extends StatelessWidget {
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
-    this.orderPolicy,
   });
 
   final ShadAlertVariant variant;
@@ -75,12 +71,6 @@ class ShadAlert extends StatelessWidget {
   final TextStyle? descriptionStyle;
   final MainAxisAlignment? mainAxisAlignment;
   final CrossAxisAlignment? crossAxisAlignment;
-
-  /// {@template ShadAlert.orderPolicy}
-  /// The order policy of the items that compose the alert, defaults to
-  /// [WidgetOrderPolicy.linear()].
-  /// {@endtemplate}
-  final WidgetOrderPolicy? orderPolicy;
 
   @override
   Widget build(BuildContext context) {
@@ -142,10 +132,6 @@ class ShadAlert extends StatelessWidget {
         effectiveAlertTheme.crossAxisAlignment ??
         CrossAxisAlignment.start;
 
-    final effectiveOrderPolicy = orderPolicy ??
-        effectiveAlertTheme.orderPolicy ??
-        const WidgetOrderPolicy.linear();
-
     return ShadDecorator(
       decoration: effectiveDecoration,
       child: Row(
@@ -172,7 +158,7 @@ class ShadAlert extends StatelessWidget {
               ],
             ),
           ),
-        ].order(effectiveOrderPolicy),
+        ],
       ),
     );
   }

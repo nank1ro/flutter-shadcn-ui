@@ -26,6 +26,7 @@ export 'src/components/form/fields/switch.dart';
 export 'src/components/form/fields/time_picker.dart';
 export 'src/components/form/fields/input_otp.dart';
 export 'src/components/form/form.dart';
+export 'src/components/icon_button.dart';
 export 'src/components/input.dart';
 export 'src/components/input_otp.dart';
 export 'src/components/popover.dart';

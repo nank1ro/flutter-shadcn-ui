@@ -11,6 +11,7 @@ import 'package:playground/pages/context_menu.dart';
 import 'package:playground/pages/date_picker.dart';
 import 'package:playground/pages/dialog.dart';
 import 'package:playground/pages/form.dart';
+import 'package:playground/pages/icon_button.dart';
 import 'package:playground/pages/input.dart';
 import 'package:playground/pages/input_otp.dart';
 import 'package:playground/pages/popover.dart';
@@ -50,6 +51,15 @@ final router = GoRouter(
         final style = state.uri.queryParameters['style'] ?? 'primary';
         return ButtonPage(
           style: PlagroundButtonStyle.values.byName(style),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/icon-button',
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ?? 'primary';
+        return IconButtonPage(
+          style: PlagroundIconButtonStyle.values.byName(style),
         );
       },
     ),

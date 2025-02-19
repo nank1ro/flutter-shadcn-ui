@@ -23,12 +23,12 @@ class _ProgressPageState extends State<ProgressPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ShadButton.ghost(
+            ShadIconButton.ghost(
               enabled: value != 0,
               onPressed: () => setState(() => value -= 10),
               icon: const Icon(Icons.remove),
             ),
-            ShadButton.ghost(
+            ShadIconButton.ghost(
               enabled: value != 100,
               onPressed: () => setState(() => value += 10),
               icon: const Icon(Icons.add),

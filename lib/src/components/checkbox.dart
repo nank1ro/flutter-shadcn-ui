@@ -26,7 +26,7 @@ class ShadCheckbox extends StatefulWidget {
     this.padding,
     this.direction,
     this.crossAxisAlignment,
-    this.orderPolicy,
+    @Deprecated('Use leading and trailing instead') this.orderPolicy,
   });
 
   /// Whether the checkbox is on or off.
@@ -81,6 +81,7 @@ class ShadCheckbox extends StatefulWidget {
   /// The order policy of the items that compose the checkbox, defaults to
   /// [WidgetOrderPolicy.linear()].
   /// {@endtemplate}
+  @Deprecated('Use leading and trailing instead')
   final WidgetOrderPolicy? orderPolicy;
 
   @override

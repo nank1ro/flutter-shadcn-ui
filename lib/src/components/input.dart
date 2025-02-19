@@ -74,8 +74,10 @@ class ShadInput extends StatefulWidget {
     this.magnifierConfiguration = TextMagnifierConfiguration.disabled,
     this.selectionColor,
     this.padding,
-    this.prefix,
-    this.suffix,
+    @Deprecated('Use leading instead') this.prefix,
+    @Deprecated('Use trailing instead') this.suffix,
+    this.leading,
+    this.trailing,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
     this.placeholderStyle,
@@ -158,6 +160,8 @@ class ShadInput extends StatefulWidget {
   final EdgeInsets? padding;
   final Widget? prefix;
   final Widget? suffix;
+  final Widget? leading;
+  final Widget? trailing;
   final MainAxisAlignment? mainAxisAlignment;
   final CrossAxisAlignment? crossAxisAlignment;
   final TextStyle? placeholderStyle;
@@ -440,6 +444,7 @@ class ShadInputState extends State<ShadInput>
                       mainAxisAlignment: effectiveMainAxisAlignment,
                       crossAxisAlignment: effectiveCrossAxisAlignment,
                       children: [
+                        if (widget.leading != null) widget.leading!,
                         if (widget.prefix != null) widget.prefix!,
                         Flexible(
                           child: AbsorbPointer(
@@ -560,6 +565,7 @@ class ShadInputState extends State<ShadInput>
                           ),
                         ),
                         if (widget.suffix != null) widget.suffix!,
+                        if (widget.trailing != null) widget.trailing!,
                       ].separatedBy(SizedBox(width: effectiveGap)),
                     ),
                   ),

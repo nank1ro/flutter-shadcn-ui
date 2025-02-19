@@ -1,3 +1,11 @@
+## 0.20.0
+
+- **FEAT**: Add `ShadIconButton` component.
+- **REFACTOR**: Deprecated `ShadButton.icon`, use `ShadIconButton` for a button with just an icon and `ShadButton.leading` for a button with an icon and a text.
+- **REFACTOR**: Deprecate `orderPolicy`, use `leading` and `trailing` in the component.
+- **REFACTOR**: Deprecate `prefix` and `suffix` in `ShadInput`, use `leading` and `trailing` instead.
+- **REFACTOR** Deprecate `searchInputPrefix` in `ShadSelect`, use `searchInputLeading` instead.
+
 ## 0.19.3
 
 - **FIX**: Make `selectedOptionBuilder` required in `ShadSelect` (thanks to @muradab).
