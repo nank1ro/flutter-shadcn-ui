@@ -1,0 +1,116 @@
+---
+title: Button
+sidebar:
+  order: 4
+---
+
+import Preview from "../../../components/Preview.astro";
+
+Displays an icon button or a component that looks like a button with an icon.
+
+## Primary
+
+<Preview src="icon-button?style=primary">
+
+```dart
+ShadIconButton(
+  onPressed: () => print('Primary'),
+  icon: const Icon(LucideIcons.rocket),
+)
+```
+
+</Preview>
+
+## Secondary
+
+<Preview src="icon-button?style=secondary">
+
+```dart
+ShadIconButton.secondary(
+  icon: const Icon(LucideIcons.rocket),
+  onPressed: () => print('Secondary'),
+)
+```
+
+</Preview>
+
+## Destructive
+
+<Preview src="icon-button?style=destructive">
+
+```dart
+ShadIconButton.destructive(
+  icon: const Icon(LucideIcons.rocket),
+  onPressed: () => print('Destructive'),
+)
+```
+
+</Preview>
+
+## Outline
+
+<Preview src="icon-button?style=outline">
+
+```dart
+ShadIconButton.outline(
+  icon: const Icon(LucideIcons.rocket),
+  onPressed: () => print('Outline'),
+)
+```
+
+</Preview>
+
+## Ghost
+
+<Preview src="icon-button?style=ghost">
+
+```dart
+ShadIconButton.ghost(
+  icon: const Icon(LucideIcons.rocket),
+  onPressed: () => print('Ghost'),
+)
+```
+
+</Preview>
+
+## Loading
+
+<Preview src="icon-button?style=loading">
+
+```dart
+ShadIconButton(
+  icon: SizedBox.square(
+    dimension: 16,
+    child: CircularProgressIndicator(
+      strokeWidth: 2,
+      color: ShadTheme.of(context).colorScheme.primaryForeground,
+    ),
+  ),
+)
+```
+
+</Preview>
+
+## Gradient and Shadow
+
+<Preview src="icon-button?style=gradientShadow">
+
+```dart
+ShadIconButton(
+  gradient: const LinearGradient(colors: [
+    Colors.cyan,
+    Colors.indigo,
+  ]),
+  shadows: [
+    BoxShadow(
+      color: Colors.blue.withValues(alpha: .4),
+      spreadRadius: 4,
+      blurRadius: 10,
+      offset: const Offset(0, 2),
+    ),
+  ],
+  icon: const Icon(LucideIcons.rocket),
+)
+```
+
+</Preview>

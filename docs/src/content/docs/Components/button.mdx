@@ -6,9 +6,7 @@ sidebar:
 
 import Preview from "../../../components/Preview.astro";
 
-
 Displays a button or a component that looks like a button.
-
 
 ## Primary
 
@@ -108,8 +106,8 @@ ShadButton.outline(
 ```dart
 ShadButton(
   onPressed: () {},
+  leading: const Icon(LucideIcons.mail),
   child: const Text('Login with Email'),
-  icon: const Icon(LucideIcons.mail),
 )
 ```
 
@@ -122,14 +120,14 @@ ShadButton(
 ```dart
 ShadButton(
   onPressed: () {},
-  child: const Text('Please wait'),
-  icon: const SizedBox.square(
+  leading: const SizedBox.square(
     dimension: 16,
     child: CircularProgressIndicator(
       strokeWidth: 2,
       color: ShadTheme.of(context).colorScheme.primaryForeground,
     ),
   ),
+  child: const Text('Please wait'),
 )
 ```
 
