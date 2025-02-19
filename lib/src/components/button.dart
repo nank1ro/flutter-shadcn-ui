@@ -802,11 +802,9 @@ class _ShadButtonState extends State<ShadButton> {
             child = Expanded(child: widget.child!);
           }
 
-          return Theme(
-            data: materialTheme.copyWith(
-              iconTheme: materialTheme.iconTheme.copyWith(
-                color: effectiveForegroundColor,
-              ),
+          return IconTheme(
+            data: materialTheme.iconTheme.copyWith(
+              color: effectiveForegroundColor,
             ),
             child: DefaultTextStyle(
               style: theme.textTheme.small.copyWith(
