@@ -963,6 +963,7 @@ class ShadOption<T> extends StatefulWidget {
     this.selectedIcon,
     this.radius,
     this.orderPolicy,
+    this.direction,
   });
 
   /// The value of the [ShadOption], it must be unique above the options.
@@ -990,6 +991,11 @@ class ShadOption<T> extends StatefulWidget {
   /// [WidgetOrderPolicy.linear()].
   /// {@endtemplate}
   final WidgetOrderPolicy? orderPolicy;
+
+  /// {@template ShadOption.direction}
+  /// The direction of the ambient.
+  /// {@endtemplate}
+  final TextDirection? direction;
 
   @override
   State<ShadOption<T>> createState() => _ShadOptionState<T>();
@@ -1094,6 +1100,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
               );
             },
             child: Row(
+              textDirection: widget.direction,
               children: [
                 effectiveSelectedIcon,
                 Expanded(

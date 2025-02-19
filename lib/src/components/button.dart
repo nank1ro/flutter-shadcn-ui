@@ -83,7 +83,7 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    this.orderPolicy,
+    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
   }) : variant = ShadButtonVariant.primary;
 
@@ -141,7 +141,7 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    this.orderPolicy,
+    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
   });
 
@@ -198,7 +198,7 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    this.orderPolicy,
+    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
   }) : variant = ShadButtonVariant.destructive;
 
@@ -255,7 +255,7 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    this.orderPolicy,
+    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
   }) : variant = ShadButtonVariant.outline;
 
@@ -312,7 +312,7 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    this.orderPolicy,
+    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
   }) : variant = ShadButtonVariant.secondary;
 
@@ -369,7 +369,7 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    this.orderPolicy,
+    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
   }) : variant = ShadButtonVariant.ghost;
 
@@ -420,7 +420,7 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    this.orderPolicy,
+    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
     this.leading,
     this.trailing,
@@ -467,6 +467,7 @@ class ShadButton extends StatefulWidget {
   /// The order policy of the items that compose the button, defaults to
   /// [WidgetOrderPolicy.linear()].
   /// {@endtemplate}
+  @Deprecated('Use leading and trailing instead')
   final WidgetOrderPolicy? orderPolicy;
 
   /// {@template ShadButton.gap}

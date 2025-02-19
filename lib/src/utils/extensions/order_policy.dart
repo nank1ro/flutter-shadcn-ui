@@ -11,12 +11,15 @@ abstract class OrderPolicy<T> {
   const OrderPolicy();
 
   /// {@macro LinearOrderPolicy}
+  @Deprecated('Use leading and trailing instead')
   const factory OrderPolicy.linear() = LinearOrderPolicy<T>;
 
   /// {@macro ReverseOrderPolicy}
+  @Deprecated('Use leading and trailing instead')
   const factory OrderPolicy.reverse() = ReverseOrderPolicy<T>;
 
   /// {@macro CustomOrderPolicy}
+  @Deprecated('Use leading and trailing instead')
   const factory OrderPolicy.custom({required List<int> indexes}) =
       CustomOrderPolicy<T>;
 
