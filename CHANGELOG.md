@@ -1,3 +1,7 @@
+## 0.20.1
+
+- **REFACTOR**: Set `debugShowCheckedModeBanner` to `false` by default in `ShadApp`.
+
 ## 0.20.0
 
 - **FEAT**: Add `ShadIconButton` component.
