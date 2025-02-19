@@ -40,11 +40,11 @@ class _InputPageState extends State<InputPage> {
           placeholder: const Text('Password'),
           enabled: enabled,
           obscureText: obscure,
-          prefix: const Padding(
+          leading: const Padding(
             padding: EdgeInsets.all(4.0),
             child: Icon(LucideIcons.lock),
           ),
-          suffix: ShadButton(
+          trailing: ShadIconButton(
             width: 24,
             height: 24,
             padding: EdgeInsets.zero,

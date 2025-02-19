@@ -71,6 +71,7 @@ class ShadSelect<T> extends StatefulWidget {
         searchDivider = null,
         searchPlaceholder = null,
         searchInputPrefix = null,
+        searchInputLeading = null,
         onMultipleChanged = null,
         searchPadding = null,
         selectedOptionsBuilder = null,
@@ -90,7 +91,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.onChanged,
     this.popoverController,
     this.searchDivider,
-    this.searchInputPrefix,
+    @Deprecated('Use searchInputLeading instead') this.searchInputPrefix,
+    this.searchInputLeading,
     this.searchPlaceholder,
     this.searchPadding,
     this.search,
@@ -172,6 +174,7 @@ class ShadSelect<T> extends StatefulWidget {
         searchDivider = null,
         searchPlaceholder = null,
         searchInputPrefix = null,
+        searchInputLeading = null,
         searchPadding = null,
         search = null,
         clearSearchOnClose = false,
@@ -191,7 +194,8 @@ class ShadSelect<T> extends StatefulWidget {
     ValueChanged<List<T>>? onChanged,
     this.popoverController,
     this.searchDivider,
-    this.searchInputPrefix,
+    @Deprecated('Use searchInputLeading instead') this.searchInputPrefix,
+    this.searchInputLeading,
     this.searchPlaceholder,
     this.searchPadding,
     this.search,
@@ -243,7 +247,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.popoverController,
     this.onSearchChanged,
     this.searchDivider,
-    this.searchInputPrefix,
+    @Deprecated('Use searchInputLeading instead') this.searchInputPrefix,
+    this.searchInputLeading,
     this.searchPlaceholder,
     this.searchPadding,
     this.search,
@@ -400,7 +405,11 @@ class ShadSelect<T> extends StatefulWidget {
   final Widget? searchDivider;
 
   /// The prefix of the search input.
+  @Deprecated('Use searchInputLeading instead')
   final Widget? searchInputPrefix;
+
+  /// The leading of the search input.
+  final Widget? searchInputLeading;
 
   /// The placeholder of the search input.
   final Widget? searchPlaceholder;
@@ -703,7 +712,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
           children: [
             widget.search ??
                 ShadInput(
-                  prefix: Padding(
+                  leading: Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: Icon(
                       LucideIcons.search,

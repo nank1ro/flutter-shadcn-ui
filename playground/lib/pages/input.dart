@@ -57,11 +57,11 @@ class _PasswordInputState extends State<PasswordInput> {
     return ShadInput(
       placeholder: const Text('Password'),
       obscureText: obscure,
-      prefix: const Padding(
+      leading: const Padding(
         padding: EdgeInsets.all(4.0),
         child: Icon(LucideIcons.lock),
       ),
-      suffix: ShadButton(
+      trailing: ShadIconButton(
         width: 24,
         height: 24,
         padding: EdgeInsets.zero,

@@ -96,7 +96,7 @@ class _CardPageState extends State<CardPage> {
           description: const Text('You have 3 unread messages.'),
           footer: ShadButton(
             width: double.infinity,
-            icon: const Padding(
+            leading: const Padding(
               padding: EdgeInsets.only(right: 8),
               child: Icon(LucideIcons.check),
             ),
