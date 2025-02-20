@@ -1,6 +1,7 @@
 ## 0.20.1
 
 - **REFACTOR**: Set `debugShowCheckedModeBanner` to `false` by default in `ShadApp`.
+- **FIX** Expose `ShadInputOTPTheme`.
 
 ## 0.20.0
 
