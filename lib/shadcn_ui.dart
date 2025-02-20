@@ -80,6 +80,7 @@ export 'src/theme/components/date_picker.dart';
 export 'src/theme/components/decorator.dart';
 export 'src/theme/components/dialog.dart';
 export 'src/theme/components/input.dart';
+export 'src/theme/components/input_otp.dart';
 export 'src/theme/components/input_decorator.dart';
 export 'src/theme/components/option.dart';
 export 'src/theme/components/popover.dart';
