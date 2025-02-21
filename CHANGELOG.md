@@ -1,3 +1,8 @@
+## 0.20.2
+
+- **REFACTOR**: Deprecate `ShadTab.icon`, use `ShadTab.leading` instead. Add `trailing`.
+- **FIX**: Disable scroll inside `ShadCalendar`
+
 ## 0.20.1
 
 - **REFACTOR**: Set `debugShowCheckedModeBanner` to `false` by default in `ShadApp`.

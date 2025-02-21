@@ -1167,7 +1167,7 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
         mainAxisAlignment: widget.mainAxisAlignment ??
             theme.datePickerTheme.mainAxisAlignment ??
             MainAxisAlignment.start,
-        icon: widget.icon ??
+        leading: widget.icon ??
             Icon(
               widget.iconData ??
                   theme.datePickerTheme.iconData ??

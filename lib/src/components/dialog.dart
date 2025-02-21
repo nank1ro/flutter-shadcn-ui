@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
@@ -222,7 +222,7 @@ class ShadDialog extends StatelessWidget {
     final effectiveCloseIcon = closeIcon ??
         (closeIconData == null && effectiveDialogTheme.closeIconData == null
             ? null
-            : ShadButton.ghost(
+            : ShadIconButton.ghost(
                 icon: Icon(
                   size: 16,
                   closeIconData ??

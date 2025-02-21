@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -1326,7 +1327,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
       builder: (context, isHovered, _) {
         return Opacity(
           opacity: isHovered ? 1 : effectiveNavigationButtonDisabledOpacity,
-          child: ShadButton.outline(
+          child: ShadIconButton.outline(
             width: effectiveNavigationButtonSize,
             height: effectiveNavigationButtonSize,
             padding: effectiveNavigationButtonPadding,
@@ -1347,7 +1348,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
       builder: (context, isHovered, _) {
         return Opacity(
           opacity: isHovered ? 1 : effectiveNavigationButtonDisabledOpacity,
-          child: ShadButton.outline(
+          child: ShadIconButton.outline(
             width: effectiveNavigationButtonSize,
             height: effectiveNavigationButtonSize,
             padding: effectiveNavigationButtonPadding,
@@ -1493,6 +1494,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                   crossAxisSpacing: effectiveGridCrossAxisSpacing,
                   crossAxisCount: columnsCount,
                   shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   children: dateModel.dates.mapIndexed((index, date) {
                     if (date == null) return const SizedBox.shrink();
                     final selected = switch (widget.variant) {
