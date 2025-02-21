@@ -352,7 +352,9 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
     required this.value,
     required this.child,
     this.content,
-    this.icon,
+    @Deprecated('Use leading instead') this.icon,
+    this.leading,
+    this.trailing,
     this.enabled = true,
     this.flex = 1,
     this.height,
@@ -410,7 +412,14 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   final Widget? content;
 
   /// The icon of the tab.
+  @Deprecated('Use leading instead')
   final Widget? icon;
+
+  /// The leading widget of the tab.
+  final Widget? leading;
+
+  /// The trailing widget of the tab.
+  final Widget? trailing;
 
   /// Whether the tab is enabled, defaults to true.
   final bool enabled;
@@ -704,6 +713,8 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
 
         return ShadButton.secondary(
           icon: widget.icon,
+          leading: widget.leading,
+          trailing: widget.trailing,
           focusNode: focusNode,
           height: widget.preferredSize.height,
           width: effectiveWidth,

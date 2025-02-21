@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
@@ -394,7 +394,7 @@ class _ShadToastState extends State<ShadToast> {
     };
 
     final effectiveCloseIcon = widget.closeIcon ??
-        ShadButton.ghost(
+        ShadIconButton.ghost(
           icon: Icon(
             size: 16,
             widget.closeIconData ??
