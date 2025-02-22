@@ -169,7 +169,14 @@ class ShadFormState extends State<ShadForm> {
   }
 
   void reset() {
-    autovalidateMode.value = widget.autovalidateMode;
+    final mode = switch (widget.autovalidateMode) {
+      ShadAutovalidateMode.always => AutovalidateMode.always,
+      ShadAutovalidateMode.onUserInteraction => AutovalidateMode.onUserInteraction,
+      ShadAutovalidateMode.alwaysAfterFirstValidation ||
+      ShadAutovalidateMode.disabled =>
+        AutovalidateMode.disabled,
+    };
+    autovalidateMode.value = mode;
     _formKey.currentState?.reset();
   }
 
