@@ -17,6 +17,7 @@ import 'package:example/pages/input.dart';
 import 'package:example/pages/input_form_field.dart';
 import 'package:example/pages/input_otp.dart';
 import 'package:example/pages/input_otp_form_field.dart';
+import 'package:example/pages/menubar.dart';
 import 'package:example/pages/popover.dart';
 import 'package:example/pages/progress.dart';
 import 'package:example/pages/radio_group.dart';
@@ -62,9 +63,10 @@ final routes = <String, WidgetBuilder>{
   '/dialog': (_) => const DialogPage(),
   '/icon-button': (_) => const IconButtonPage(),
   '/input': (_) => const InputPage(),
-  '/input-form-field': (_) => const InputFormFieldPage(),
   '/input-OTP': (_) => const InputOTPPage(),
   '/input-OTP-form-field': (_) => const InputOTPFormFieldPage(),
+  '/input-form-field': (_) => const InputFormFieldPage(),
+  '/menubar': (_) => const MenubarPage(),
   '/popover': (_) => const PopoverPage(),
   '/progress': (_) => const ProgressPage(),
   '/radio-group': (_) => const RadioPage(),

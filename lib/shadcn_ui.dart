@@ -42,6 +42,7 @@ export 'src/components/tabs.dart';
 export 'src/components/time_picker.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
+export 'src/components/menubar.dart';
 
 // Raw Components
 export 'src/raw_components/portal.dart';
@@ -96,6 +97,7 @@ export 'src/theme/components/tabs.dart';
 export 'src/theme/components/time_picker.dart';
 export 'src/theme/components/toast.dart';
 export 'src/theme/components/tooltip.dart';
+export 'src/theme/components/menubar.dart';
 export 'src/theme/text_theme/text_styles_default.dart';
 export 'src/theme/text_theme/theme.dart';
 
