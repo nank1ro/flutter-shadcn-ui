@@ -14,6 +14,7 @@ import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
+import 'package:shadcn_ui/src/theme/components/divider.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
@@ -90,6 +91,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadDatePickerTheme? datePickerTheme,
     ShadTimePickerTheme? timePickerTheme,
     ShadInputOTPTheme? inputOTPTheme,
+    ShadDividerTheme? dividerTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -232,6 +234,7 @@ class ShadThemeData extends ShadBaseTheme {
       timePickerTheme:
           effectiveVariant.timePickerTheme().mergeWith(timePickerTheme),
       inputOTPTheme: effectiveVariant.inputOTPTheme().mergeWith(inputOTPTheme),
+      dividerTheme: effectiveVariant.dividerTheme().mergeWith(dividerTheme),
     );
   }
 
@@ -285,6 +288,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.datePickerTheme,
     required super.timePickerTheme,
     required super.inputOTPTheme,
+    required super.dividerTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -387,6 +391,7 @@ class ShadThemeData extends ShadBaseTheme {
           ShadTimePickerTheme.lerp(a.timePickerTheme, b.timePickerTheme, t),
       inputOTPTheme:
           ShadInputOTPTheme.lerp(a.inputOTPTheme, b.inputOTPTheme, t),
+      dividerTheme: ShadDividerTheme.lerp(a.dividerTheme, b.dividerTheme, t),
     );
   }
 
