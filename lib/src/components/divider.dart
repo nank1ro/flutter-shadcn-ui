@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
@@ -39,10 +40,11 @@ class ShadDivider extends StatelessWidget {
         switch (_type) {
           _ShadDividerType.vertical => dividerTheme.verticalDividerMargin,
           _ShadDividerType.horizontal => dividerTheme.horizontalDividerMargin,
-        };
+        } ??
+        EdgeInsets.zero;
 
     return Padding(
-      padding: margin ?? EdgeInsets.zero,
+      padding: margin,
       child: switch (_type) {
         _ShadDividerType.vertical => Container(
             width: thickness,
