@@ -1,3 +1,7 @@
+## 0.20.3
+
+- **FIX**: Validation mode on form field reset (thanks to @Mayb3Nots)
+
 ## 0.20.2
 
 - **REFACTOR**: Deprecate `ShadTab.icon`, use `ShadTab.leading` instead. Add `trailing`.

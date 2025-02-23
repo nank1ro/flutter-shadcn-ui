@@ -20,8 +20,8 @@ enum ShadAutovalidateMode {
   alwaysAfterFirstValidation,
 }
 
-typedef ShadFormFields
-    = Map<Object, ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic>>;
+typedef ShadFormFields = Map<Object,
+    ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic>>;
 
 class ShadForm extends StatefulWidget {
   const ShadForm({
@@ -58,8 +58,9 @@ class ShadForm extends StatefulWidget {
   }
 
   static ShadFormState? maybeOf(BuildContext context) {
-    return (context.getElementForInheritedWidgetOfExactType<ShadFormScope>()?.widget
-            as ShadFormScope?)
+    return (context
+            .getElementForInheritedWidgetOfExactType<ShadFormScope>()
+            ?.widget as ShadFormScope?)
         ?._formState;
   }
 }
@@ -90,7 +91,8 @@ class ShadFormState extends State<ShadForm> {
     super.initState();
     final mode = switch (widget.autovalidateMode) {
       ShadAutovalidateMode.always => AutovalidateMode.always,
-      ShadAutovalidateMode.onUserInteraction => AutovalidateMode.onUserInteraction,
+      ShadAutovalidateMode.onUserInteraction =>
+        AutovalidateMode.onUserInteraction,
       ShadAutovalidateMode.alwaysAfterFirstValidation ||
       ShadAutovalidateMode.disabled =>
         AutovalidateMode.disabled,
@@ -139,12 +141,14 @@ class ShadFormState extends State<ShadForm> {
     bool focusOnInvalid = true,
     bool autoScrollWhenFocusOnInvalid = false,
   }) {
-    if (widget.autovalidateMode == ShadAutovalidateMode.alwaysAfterFirstValidation) {
+    if (widget.autovalidateMode ==
+        ShadAutovalidateMode.alwaysAfterFirstValidation) {
       autovalidateMode.value = AutovalidateMode.always;
     }
     final hasError = !_formKey.currentState!.validate();
     if (hasError) {
-      final wrongFields = _fields.values.where((element) => element.hasError).toList();
+      final wrongFields =
+          _fields.values.where((element) => element.hasError).toList();
       if (wrongFields.isNotEmpty) {
         if (focusOnInvalid) {
           wrongFields.first.focus();
@@ -169,14 +173,14 @@ class ShadFormState extends State<ShadForm> {
   }
 
   void reset() {
-    final mode = switch (widget.autovalidateMode) {
+    autovalidateMode.value = switch (widget.autovalidateMode) {
       ShadAutovalidateMode.always => AutovalidateMode.always,
-      ShadAutovalidateMode.onUserInteraction => AutovalidateMode.onUserInteraction,
+      ShadAutovalidateMode.onUserInteraction =>
+        AutovalidateMode.onUserInteraction,
       ShadAutovalidateMode.alwaysAfterFirstValidation ||
       ShadAutovalidateMode.disabled =>
         AutovalidateMode.disabled,
     };
-    autovalidateMode.value = mode;
     _formKey.currentState?.reset();
   }
 
@@ -222,5 +226,6 @@ class ShadFormScope extends InheritedWidget {
   ShadForm get form => _formState.widget;
 
   @override
-  bool updateShouldNotify(ShadFormScope oldWidget) => oldWidget._formState != _formState;
+  bool updateShouldNotify(ShadFormScope oldWidget) =>
+      oldWidget._formState != _formState;
 }
