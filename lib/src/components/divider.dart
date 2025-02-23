@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-enum _ShadDividerType { vertical, horizontal }
+enum ShadDividerVariant { vertical, horizontal }
 
 class ShadDivider extends StatelessWidget {
   const ShadDivider.vertical({
@@ -10,19 +10,27 @@ class ShadDivider extends StatelessWidget {
     this.thickness,
     this.color,
     super.key,
-  }) : _type = _ShadDividerType.vertical;
+  }) : variant = ShadDividerVariant.vertical;
 
   const ShadDivider.horizontal({
     this.margin,
     this.thickness,
     this.color,
     super.key,
-  }) : _type = _ShadDividerType.horizontal;
+  }) : variant = ShadDividerVariant.horizontal;
+
+  const ShadDivider.raw({
+    this.margin,
+    this.thickness,
+    this.color,
+    required this.variant,
+    super.key,
+  });
 
   final EdgeInsets? margin;
   final double? thickness;
   final Color? color;
-  final _ShadDividerType _type;
+  final ShadDividerVariant variant;
 
   @override
   Widget build(BuildContext context) {
@@ -37,20 +45,20 @@ class ShadDivider extends StatelessWidget {
     );
 
     final margin = this.margin ??
-        switch (_type) {
-          _ShadDividerType.vertical => dividerTheme.verticalDividerMargin,
-          _ShadDividerType.horizontal => dividerTheme.horizontalDividerMargin,
+        switch (variant) {
+          ShadDividerVariant.vertical => dividerTheme.verticalDividerMargin,
+          ShadDividerVariant.horizontal => dividerTheme.horizontalDividerMargin,
         } ??
         EdgeInsets.zero;
 
     return Padding(
       padding: margin,
-      child: switch (_type) {
-        _ShadDividerType.vertical => Container(
+      child: switch (variant) {
+        ShadDividerVariant.vertical => Container(
             width: thickness,
             decoration: BoxDecoration(border: Border(left: borderSide)),
           ),
-        _ShadDividerType.horizontal => Container(
+        ShadDividerVariant.horizontal => Container(
             height: thickness,
             decoration: BoxDecoration(border: Border(bottom: borderSide)),
           ),
