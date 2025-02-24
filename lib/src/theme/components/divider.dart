@@ -40,8 +40,8 @@ class ShadDividerTheme {
     return ShadDividerTheme(
       merge: merge ?? this.merge,
       color: color ?? this.color,
-      verticalMargin: verticalMargin ?? verticalMargin,
-      horizontalMargin: horizontalMargin ?? horizontalMargin,
+      verticalMargin: verticalMargin ?? this.verticalMargin,
+      horizontalMargin: horizontalMargin ?? this.horizontalMargin,
       thickness: thickness ?? this.thickness,
     );
   }
