@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 
+@immutable
 class ShadDividerTheme {
   const ShadDividerTheme({
     this.merge = true,
@@ -65,6 +66,28 @@ class ShadDividerTheme {
       ),
       thickness: lerpDouble(a.thickness, b.thickness, t),
       color: Color.lerp(a.color, b.color, t),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ShadDividerTheme &&
+        other.merge == merge &&
+        other.color == color &&
+        other.thickness == thickness &&
+        other.verticalMargin == verticalMargin &&
+        other.horizontalMargin == horizontalMargin;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      merge,
+      color,
+      thickness,
+      verticalMargin,
+      horizontalMargin,
     );
   }
 }
