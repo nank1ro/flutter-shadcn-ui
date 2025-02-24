@@ -9,7 +9,14 @@ import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 /// Controls the visibility of a [ShadTooltip].
 typedef ShadTooltipController = ShadPopoverController;
 
+/// {@template ShadTooltip}
+/// A widget that displays a tooltip on hover or focus, styled to match the
+/// Shadcn UI design system.
+///
+/// Provides customizable delay, duration, animation effects, and styling.
+/// {@endtemplate}
 class ShadTooltip extends StatefulWidget {
+  /// {@macro ShadTooltip}
   const ShadTooltip({
     super.key,
     required this.child,
@@ -26,16 +33,28 @@ class ShadTooltip extends StatefulWidget {
     this.longPressDuration,
   });
 
-  /// The widget displayed as a tooltip.
+  /// {@template ShadTooltip.builder}
+  /// The builder function that creates the tooltip content widget.
+  ///
+  /// Called with the [BuildContext] to build the tooltip's content.
+  /// {@endtemplate}
   final WidgetBuilder builder;
 
-  /// The child widget that will show the tooltip when hovered or focused.
+  /// {@template ShadTooltip.child}
+  /// The child widget that triggers the tooltip when hovered or focused.
+  ///
+  /// This is the widget that the tooltip is attached to.
+  /// {@endtemplate}
   final Widget child;
 
-  /// The focus node of the child, the tooltip will be shown when focused.
+  /// {@template ShadTooltip.focusNode}
+  /// The focus node of the child widget.
+  ///
+  /// When the child gains focus, the tooltip will be shown.
+  /// {@endtemplate}
   final FocusNode? focusNode;
 
-  /// {@template tooltip.waitDuration}
+  /// {@template ShadTooltip.waitDuration}
   /// The length of time that a pointer must hover over a tooltip's widget
   /// before the tooltip will be shown.
   ///
@@ -43,7 +62,7 @@ class ShadTooltip extends StatefulWidget {
   /// {@endtemplate}
   final Duration? waitDuration;
 
-  /// {@template tooltip.showDuration}
+  /// {@template ShadTooltip.showDuration}
   /// The length of time that the tooltip will be shown after a mouse pointer
   /// exits the widget.
   ///
@@ -51,38 +70,60 @@ class ShadTooltip extends StatefulWidget {
   /// {@endtemplate}
   final Duration? showDuration;
 
-  /// {@template tooltip.effects}
-  /// The animation effects applied to the tooltip. Defaults to
-  /// [FadeEffect(), ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
+  /// {@template ShadTooltip.effects}
+  /// The animation effects applied to the tooltip.
+  ///
+  /// Defaults to [FadeEffect(), ScaleEffect(begin: Offset(.95, .95), end:
+  /// Offset(1, 1)),
   /// MoveEffect(begin: Offset(0, 2), end: Offset(0, 0))].
   /// {@endtemplate}
   final List<Effect<dynamic>>? effects;
 
-  /// {@template tooltip.padding}
-  /// The padding of the tooltip, defaults to
-  /// `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
+  /// {@template ShadTooltip.padding}
+  /// The padding of the tooltip content.
+  ///
+  /// Defaults to `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
   /// {@endtemplate}
   final EdgeInsets? padding;
 
-  /// {@template tooltip.decoration}
+  /// {@template ShadTooltip.decoration}
   /// The decoration of the tooltip.
+  ///
+  /// Defines the visual appearance of the tooltip's container.
   /// {@endtemplate}
   final ShadDecoration? decoration;
 
-  /// {@template tooltip.anchor}
-  /// The position of the [ShadTooltip], defaults to
-  /// `ShadAnchorAutoPosition(preferBelow: false, verticalOffset: 24)`.
+  /// {@template ShadTooltip.anchor}
+  /// The anchor position of the tooltip relative to its child.
+  ///
+  /// Defaults to `ShadAnchorAutoPosition(preferBelow: false, verticalOffset:
+  /// 24)`.
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
-  /// {@template tooltip.hoverStrategies}
+  /// {@template ShadTooltip.hoverStrategies}
   /// The hover strategies to use for the tooltip on devices with touchscreens.
+  ///
+  /// Configures how hover interactions are interpreted, especially on touch
+  /// devices.
   /// {@endtemplate}
   final ShadHoverStrategies? hoverStrategies;
 
-  /// The controller that controls the visibility of the [ShadTooltip].
+  /// {@template ShadTooltip.controller}
+  /// The controller that manages the visibility of the [ShadTooltip].
+  ///
+  /// Allows programmatic control over showing and hiding the tooltip. If null,
+  /// a default [ShadTooltipController] is created internally.
+  /// {@endtemplate}
   final ShadTooltipController? controller;
 
+  /// {@template ShadTooltip.longPressDuration}
+  /// The duration for a long press to be recognized, triggering the tooltip on
+  /// touch devices.
+  ///
+  /// Specifies how long a press must be to trigger the tooltip on touch-based
+  /// interactions.
+  /// {@endtemplate}
   final Duration? longPressDuration;
 
   @override
