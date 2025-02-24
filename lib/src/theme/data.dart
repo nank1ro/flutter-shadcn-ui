@@ -448,7 +448,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.calendarTheme == calendarTheme &&
         other.datePickerTheme == datePickerTheme &&
         other.timePickerTheme == timePickerTheme &&
-        other.inputOTPTheme == inputOTPTheme;
+        other.inputOTPTheme == inputOTPTheme &&
+        other.dividerTheme == dividerTheme;
   }
 
   @override
@@ -501,7 +502,8 @@ class ShadThemeData extends ShadBaseTheme {
         calendarTheme.hashCode ^
         datePickerTheme.hashCode ^
         timePickerTheme.hashCode ^
-        inputOTPTheme.hashCode;
+        inputOTPTheme.hashCode ^
+        dividerTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -554,6 +556,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadDatePickerTheme? datePickerTheme,
     ShadTimePickerTheme? timePickerTheme,
     ShadInputOTPTheme? inputOTPTheme,
+    ShadDividerTheme? dividerTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -610,6 +613,7 @@ class ShadThemeData extends ShadBaseTheme {
       datePickerTheme: datePickerTheme ?? this.datePickerTheme,
       timePickerTheme: timePickerTheme ?? this.timePickerTheme,
       inputOTPTheme: inputOTPTheme ?? this.inputOTPTheme,
+      dividerTheme: dividerTheme ?? this.dividerTheme,
     );
   }
 }
