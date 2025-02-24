@@ -26,16 +26,22 @@ class ShadRadioTheme {
 
   final bool merge;
 
+  /// {@macro ShadRadio.color}
   final Color? color;
 
+  /// {@macro ShadRadio.size}
   final double? size;
 
+  /// {@macro ShadRadio.duration}
   final Duration? duration;
 
+  /// {@macro ShadRadio.decoration}
   final ShadDecoration? decoration;
 
+  /// {@macro ShadRadio.padding}
   final EdgeInsets? padding;
 
+  /// {@macro ShadRadio.circleSize}
   final double? circleSize;
 
   /// {@macro ShadRadioGroup.axis}
