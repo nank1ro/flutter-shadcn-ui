@@ -971,8 +971,8 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
     return ShadDividerTheme(
       thickness: 1,
       color: colorScheme.border,
-      verticalDividerMargin: const EdgeInsets.symmetric(horizontal: 16),
-      horizontalDividerMargin: const EdgeInsets.symmetric(vertical: 16),
+      verticalMargin: const EdgeInsets.symmetric(horizontal: 16),
+      horizontalMargin: const EdgeInsets.symmetric(vertical: 16),
     );
   }
 }

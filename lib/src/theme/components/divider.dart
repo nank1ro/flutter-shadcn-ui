@@ -5,8 +5,8 @@ import 'package:flutter/widgets.dart';
 class ShadDividerTheme {
   const ShadDividerTheme({
     this.merge = true,
-    this.verticalDividerMargin,
-    this.horizontalDividerMargin,
+    this.verticalMargin,
+    this.horizontalMargin,
     this.thickness,
     this.color,
   });
@@ -14,16 +14,16 @@ class ShadDividerTheme {
   final bool merge;
   final Color? color;
   final double? thickness;
-  final EdgeInsetsGeometry? verticalDividerMargin;
-  final EdgeInsetsGeometry? horizontalDividerMargin;
+  final EdgeInsetsGeometry? verticalMargin;
+  final EdgeInsetsGeometry? horizontalMargin;
 
   ShadDividerTheme mergeWith(ShadDividerTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
       merge: other.merge,
-      verticalDividerMargin: other.verticalDividerMargin,
-      horizontalDividerMargin: other.horizontalDividerMargin,
+      verticalDividerMargin: other.verticalMargin,
+      horizontalDividerMargin: other.horizontalMargin,
       color: other.color,
       thickness: other.thickness,
     );
@@ -39,10 +39,8 @@ class ShadDividerTheme {
     return ShadDividerTheme(
       merge: merge ?? this.merge,
       color: color ?? this.color,
-      verticalDividerMargin:
-          verticalDividerMargin ?? this.verticalDividerMargin,
-      horizontalDividerMargin:
-          horizontalDividerMargin ?? this.horizontalDividerMargin,
+      verticalMargin: verticalDividerMargin ?? verticalMargin,
+      horizontalMargin: horizontalDividerMargin ?? horizontalMargin,
       thickness: thickness ?? this.thickness,
     );
   }
@@ -55,14 +53,14 @@ class ShadDividerTheme {
     if (identical(a, b)) return a;
     return ShadDividerTheme(
       merge: b.merge,
-      verticalDividerMargin: EdgeInsetsGeometry.lerp(
-        a.verticalDividerMargin,
-        b.verticalDividerMargin,
+      verticalMargin: EdgeInsetsGeometry.lerp(
+        a.verticalMargin,
+        b.verticalMargin,
         t,
       ),
-      horizontalDividerMargin: EdgeInsetsGeometry.lerp(
-        a.horizontalDividerMargin,
-        b.horizontalDividerMargin,
+      horizontalMargin: EdgeInsetsGeometry.lerp(
+        a.horizontalMargin,
+        b.horizontalMargin,
         t,
       ),
       thickness: lerpDouble(a.thickness, b.thickness, t),

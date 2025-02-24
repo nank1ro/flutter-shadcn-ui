@@ -46,8 +46,8 @@ class ShadDivider extends StatelessWidget {
 
     final margin = this.margin ??
         switch (variant) {
-          ShadDividerVariant.vertical => dividerTheme.verticalDividerMargin,
-          ShadDividerVariant.horizontal => dividerTheme.horizontalDividerMargin,
+          ShadDividerVariant.vertical => dividerTheme.verticalMargin,
+          ShadDividerVariant.horizontal => dividerTheme.horizontalMargin,
         } ??
         EdgeInsets.zero;
 
