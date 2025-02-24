@@ -409,7 +409,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
         final divider = switch (widget.axis) {
           Axis.horizontal => ShadDivider.vertical(
-              margin: EdgeInsets.symmetric(horizontal: effectiveDividerSize),
+              margin:
+                  EdgeInsets.symmetric(horizontal: effectiveDividerSize / 2),
               thickness: effectiveDividerThickness,
               color: effectiveDividerColor,
             ),
@@ -417,7 +418,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
               // double.infinity doesn't work, just providing a big number
               width: 50000,
               child: ShadDivider.horizontal(
-                margin: EdgeInsets.symmetric(vertical: effectiveDividerSize),
+                margin:
+                    EdgeInsets.symmetric(vertical: effectiveDividerSize / 2),
                 thickness: effectiveDividerThickness,
                 color: effectiveDividerColor,
               ),
