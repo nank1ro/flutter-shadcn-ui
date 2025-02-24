@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:shadcn_ui/src/components/divider.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
@@ -407,20 +408,18 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
         }
 
         final divider = switch (widget.axis) {
-          Axis.horizontal => VerticalDivider(
-              indent: 0,
-              endIndent: 0,
-              width: effectiveDividerSize,
+          Axis.horizontal => ShadDivider.vertical(
+              margin:
+                  EdgeInsets.symmetric(horizontal: effectiveDividerSize / 2),
               thickness: effectiveDividerThickness,
               color: effectiveDividerColor,
             ),
           Axis.vertical => SizedBox(
               // double.infinity doesn't work, just providing a big number
               width: 50000,
-              child: Divider(
-                indent: 0,
-                endIndent: 0,
-                height: effectiveDividerSize,
+              child: ShadDivider.horizontal(
+                margin:
+                    EdgeInsets.symmetric(vertical: effectiveDividerSize / 2),
                 thickness: effectiveDividerThickness,
                 color: effectiveDividerColor,
               ),
