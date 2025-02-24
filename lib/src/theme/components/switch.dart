@@ -22,22 +22,31 @@ class ShadSwitchTheme {
 
   final bool merge;
 
+  /// {@macro ShadSwitch.thumbColor}
   final Color? thumbColor;
 
+  /// {@macro ShadSwitch.uncheckedTrackColor}
   final Color? uncheckedTrackColor;
 
+  /// {@macro ShadSwitch.checkedTrackColor}
   final Color? checkedTrackColor;
 
+  /// {@macro ShadSwitch.width}
   final double? width;
 
+  /// {@macro ShadSwitch.height}
   final double? height;
 
+  /// {@macro ShadSwitch.margin}
   final double? margin;
 
+  /// {@macro ShadSwitch.duration}
   final Duration? duration;
 
+  /// {@macro ShadSwitch.decoration}
   final ShadDecoration? decoration;
 
+  /// {@macro ShadSwitch.padding}
   final EdgeInsets? padding;
 
   /// {@macro ShadSwitch.orderPolicy}

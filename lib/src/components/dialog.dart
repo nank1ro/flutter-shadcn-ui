@@ -8,17 +8,49 @@ import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
+/// Displays a [ShadDialog] as a modal dialog with animation.
+///
+/// Shows a dialog with customizable barrier and animation properties, returning
+/// a [Future] with the result when the dialog is dismissed.
 Future<T?> showShadDialog<T>({
+  /// The build context in which to show the dialog.
   required BuildContext context,
+
+  /// The builder function to create the dialog content.
   required WidgetBuilder builder,
+
+  /// Whether the dialog can be dismissed by tapping outside the barrier.
+  /// Defaults to true.
   bool barrierDismissible = true,
+
+  /// The color of the barrier behind the dialog.
+  /// Defaults to a semi-transparent black (0xcc000000).
   Color barrierColor = const Color(0xcc000000),
+
+  /// The accessibility label for the barrier.
+  /// Defaults to an empty string.
   String barrierLabel = '',
+
+  /// Whether to use the root navigator for routing.
+  /// Defaults to true.
   bool useRootNavigator = true,
+
+  /// Optional route settings for navigation.
   RouteSettings? routeSettings,
+
+  /// The anchor point for positioning the dialog.
   Offset? anchorPoint,
+
+  /// The animation effects when the dialog appears.
+  /// Defaults to fade and scale-in if not specified.
   List<Effect<dynamic>>? animateIn,
+
+  /// The animation effects when the dialog disappears.
+  /// Defaults to fade and scale-out if not specified.
   List<Effect<dynamic>>? animateOut,
+
+  /// The variant of the dialog to display.
+  /// Defaults to [ShadDialogVariant.primary].
   ShadDialogVariant variant = ShadDialogVariant.primary,
 }) {
   final theme = ShadTheme.of(context);
@@ -70,12 +102,21 @@ Future<T?> showShadDialog<T>({
   );
 }
 
+/// Variants available for the [ShadDialog] widget.
 enum ShadDialogVariant {
   primary,
   alert,
 }
 
+/// A customizable dialog widget for displaying content and actions.
+///
+/// The [ShadDialog] widget provides a styled container for presenting a title,
+/// description, custom content, and actions in a modal format. It supports
+/// variants (primary and alert) and integrates with [ShadTheme] for styling.
+/// Use named constructors like [ShadDialog.alert] for alert-specific styling or
+/// [ShadDialog.raw] for full control.
 class ShadDialog extends StatelessWidget {
+  /// Creates a primary variant dialog widget.
   const ShadDialog({
     super.key,
     this.title,
@@ -109,6 +150,8 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
   }) : variant = ShadDialogVariant.primary;
 
+  /// Creates an alert variant dialog widget, typically for warnings or
+  /// critical messages.
   const ShadDialog.alert({
     super.key,
     this.title,
@@ -142,6 +185,8 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
   }) : variant = ShadDialogVariant.alert;
 
+  /// Creates a dialog widget with a specified [variant], offering full
+  /// customization.
   const ShadDialog.raw({
     super.key,
     required this.variant,
@@ -176,35 +221,187 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
   });
 
+  /// {@template ShadDialog.title}
+  /// The title widget displayed at the top of the dialog.
+  /// Typically a [Text] widget, styled with the theme’s large text style.
+  /// {@endtemplate}
   final Widget? title;
+
+  /// {@template ShadDialog.description}
+  /// The description widget displayed below the title.
+  /// Typically a [Text] widget, styled with the theme’s muted style.
+  /// {@endtemplate}
   final Widget? description;
+
+  /// {@template ShadDialog.child}
+  /// The main content widget of the dialog, displayed below the description.
+  /// Expands to fill available space if scrollable.
+  /// {@endtemplate}
   final Widget? child;
+
+  /// {@template ShadDialog.variant}
+  /// The variant of the dialog, either [ShadDialogVariant.primary] or
+  /// [ShadDialogVariant.alert]. Determines the visual style applied through the
+  /// [ShadTheme].
+  /// {@endtemplate}
   final ShadDialogVariant variant;
+
+  /// {@template ShadDialog.actions}
+  /// The list of action widgets displayed at the bottom of the dialog.
+  /// Typically buttons, arranged based on [actionsAxis].
+  /// Defaults to an empty list if not specified.
+  /// {@endtemplate}
   final List<Widget> actions;
+
+  /// {@template ShadDialog.closeIcon}
+  /// The custom widget for the close button.
+  /// Overrides [closeIconData] if provided; defaults to a ghost button with an
+  /// 'X' icon.
+  /// {@endtemplate}
   final Widget? closeIcon;
+
+  /// {@template ShadDialog.closeIconData}
+  /// The icon data for the close button.
+  /// Used if [closeIcon] is null; defaults to [LucideIcons.x] if not specified.
+  /// {@endtemplate}
   final IconData? closeIconData;
+
+  /// {@template ShadDialog.closeIconPosition}
+  /// The position of the close icon within the dialog.
+  /// Defaults to top-right (8, 8) if not specified.
+  /// {@endtemplate}
   final ShadPosition? closeIconPosition;
+
+  /// {@template ShadDialog.radius}
+  /// The border radius of the dialog’s corners.
+  /// Defaults to the theme’s radius if not specified.
+  /// {@endtemplate}
   final BorderRadius? radius;
+
+  /// {@template ShadDialog.backgroundColor}
+  /// The background color of the dialog.
+  /// Defaults to the theme’s background color if not specified.
+  /// {@endtemplate}
   final Color? backgroundColor;
+
+  /// {@template ShadDialog.expandActionsWhenTiny}
+  /// Whether actions expand to full width on small screens.
+  /// Defaults to true if not specified.
+  /// {@endtemplate}
   final bool? expandActionsWhenTiny;
+
+  /// {@template ShadDialog.padding}
+  /// The padding inside the dialog, surrounding all content.
+  /// Defaults to EdgeInsets.all(24) if not specified.
+  /// {@endtemplate}
   final EdgeInsets? padding;
+
+  /// {@template ShadDialog.gap}
+  /// The gap between content elements (title, description, child, actions).
+  /// Defaults to 8 if not specified.
+  /// {@endtemplate}
   final double? gap;
+
+  /// {@template ShadDialog.constraints}
+  /// Constraints applied to the dialog’s layout.
+  /// Defaults to a max width of 512 if not specified.
+  /// {@endtemplate}
   final BoxConstraints? constraints;
-  final Axis? actionsAxis;
-  final MainAxisSize? actionsMainAxisSize;
-  final MainAxisAlignment? actionsMainAxisAlignment;
-  final VerticalDirection? actionsVerticalDirection;
+
+  /// {@template ShadDialog.border}
+  /// The border surrounding the dialog.
+  /// Defaults to a border with the theme’s border color if not specified.
+  /// {@endtemplate}
   final BoxBorder? border;
+
+  /// {@template ShadDialog.shadows}
+  /// The list of box shadows applied to the dialog for elevation.
+  /// Defaults to large shadows if not specified.
+  /// {@endtemplate}
   final List<BoxShadow>? shadows;
+
+  /// {@template ShadDialog.removeBorderRadiusWhenTiny}
+  /// Whether to remove the border radius on small screens.
+  /// Defaults to true if not specified.
+  /// {@endtemplate}
   final bool? removeBorderRadiusWhenTiny;
+
+  /// {@template ShadDialog.actionsAxis}
+  /// The axis along which actions are arranged (horizontal or vertical).
+  /// Responsive to screen size if not specified.
+  /// {@endtemplate}
+  final Axis? actionsAxis;
+
+  /// {@template ShadDialog.actionsMainAxisSize}
+  /// The main axis size of the actions layout.
+  /// Defaults to [MainAxisSize.max] if not specified.
+  /// {@endtemplate}
+  final MainAxisSize? actionsMainAxisSize;
+
+  /// {@template ShadDialog.actionsMainAxisAlignment}
+  /// The main axis alignment of the actions.
+  /// Defaults to [MainAxisAlignment.end] if not specified.
+  /// {@endtemplate}
+  final MainAxisAlignment? actionsMainAxisAlignment;
+
+  /// {@template ShadDialog.actionsVerticalDirection}
+  /// The vertical direction of the actions layout when vertical.
+  /// Responsive to screen size if not specified.
+  /// {@endtemplate}
+  final VerticalDirection? actionsVerticalDirection;
+
+  /// {@template ShadDialog.titleStyle}
+  /// The text style for the title.
+  /// Defaults to the theme’s large text style if not specified.
+  /// {@endtemplate}
   final TextStyle? titleStyle;
+
+  /// {@template ShadDialog.descriptionStyle}
+  /// The text style for the description.
+  /// Defaults to the theme’s muted text style if not specified.
+  /// {@endtemplate}
   final TextStyle? descriptionStyle;
+
+  /// {@template ShadDialog.titleTextAlign}
+  /// The text alignment for the title.
+  /// Responsive to screen size if not specified.
+  /// {@endtemplate}
   final TextAlign? titleTextAlign;
+
+  /// {@template ShadDialog.descriptionTextAlign}
+  /// The text alignment for the description.
+  /// Responsive to screen size if not specified.
+  /// {@endtemplate}
   final TextAlign? descriptionTextAlign;
+
+  /// {@template ShadDialog.alignment}
+  /// The alignment of the dialog within its parent container.
+  /// Defaults to [Alignment.center] if not specified.
+  /// {@endtemplate}
   final Alignment? alignment;
+
+  /// {@template ShadDialog.mainAxisAlignment}
+  /// The main axis alignment of the dialog’s column content.
+  /// Defaults to [MainAxisAlignment.start] if not specified.
+  /// {@endtemplate}
   final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@template ShadDialog.crossAxisAlignment}
+  /// The cross axis alignment of the dialog’s column content.
+  /// Defaults to [CrossAxisAlignment.stretch] if not specified.
+  /// {@endtemplate}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@template ShadDialog.scrollable}
+  /// Whether the dialog content is scrollable.
+  /// Defaults to true if not specified.
+  /// {@endtemplate}
   final bool? scrollable;
+
+  /// {@template ShadDialog.scrollPadding}
+  /// The padding applied when the dialog content is scrollable.
+  /// Defaults to the keyboard’s view insets if not specified.
+  /// {@endtemplate}
   final EdgeInsets? scrollPadding;
 
   @override

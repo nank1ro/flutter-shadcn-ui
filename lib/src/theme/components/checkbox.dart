@@ -20,14 +20,19 @@ class ShadCheckboxTheme {
 
   final bool merge;
 
+  /// {@macro ShadCheckbox.color}
   final Color? color;
 
+  /// {@macro ShadCheckbox.size}
   final double? size;
 
+  /// {@macro ShadCheckbox.duration}
   final Duration? duration;
 
+  /// {@macro ShadCheckbox.decoration}
   final ShadDecoration? decoration;
 
+  /// {@macro ShadCheckbox.padding}
   final EdgeInsets? padding;
 
   /// {@macro ShadCheckbox.crossAxisAlignment}

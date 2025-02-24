@@ -12,10 +12,20 @@ class ShadBadgeTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadBadge.shape}
   final ShapeBorder? shape;
+
+  /// {@macro ShadBadge.backgroundColor}
   final Color? backgroundColor;
+
+  /// {@macro ShadBadge.hoverBackgroundColor}
   final Color? hoverBackgroundColor;
+
+  /// {@macro ShadBadge.foregroundColor}
   final Color? foregroundColor;
+
+  /// {@macro ShadBadge.padding}
   final EdgeInsets? padding;
 
   static ShadBadgeTheme lerp(

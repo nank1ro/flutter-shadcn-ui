@@ -19,27 +19,28 @@ class ShadTooltipTheme {
 
   final bool merge;
 
-  /// {@macro tooltip.waitDuration}
+  /// {@macro ShadTooltip.waitDuration}
   final Duration? waitDuration;
 
-  /// {@macro tooltip.showDuration}
+  /// {@macro ShadTooltip.showDuration}
   final Duration? showDuration;
 
-  /// {@macro tooltip.effects}
+  /// {@macro ShadTooltip.effects}
   final List<Effect<dynamic>>? effects;
 
-  /// {@macro tooltip.anchor}
+  /// {@macro ShadTooltip.anchor}
   final ShadAnchorBase? anchor;
 
-  /// {@macro tooltip.padding}
+  /// {@macro ShadTooltip.padding}
   final EdgeInsetsGeometry? padding;
 
-  /// {@macro tooltip.decoration}
+  /// {@macro ShadTooltip.decoration}
   final ShadDecoration? decoration;
 
-  /// {@macro tooltip.hoverStrategies}
+  /// {@macro ShadTooltip.hoverStrategies}
   final ShadHoverStrategies? hoverStrategies;
 
+  /// {@macro ShadTooltip.longPressDuration}
   final Duration? longPressDuration;
 
   static ShadTooltipTheme lerp(

@@ -30,25 +30,47 @@ class ShadSelectTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadSelect.decoration}
   final ShadDecoration? decoration;
+
+  /// {@macro ShadSelect.minWidth}
   final double? minWidth;
+
+  /// {@macro ShadSelect.maxWidth}
   final double? maxWidth;
+
+  /// {@macro ShadSelect.maxHeight}
   final double? maxHeight;
+
+  /// {@macro ShadSelect.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadSelect.optionsPadding}
   final EdgeInsets? optionsPadding;
+
+  /// {@macro ShadSelect.showScrollToTopChevron}
   final bool? showScrollToTopChevron;
+
+  /// {@macro ShadSelect.showScrollToBottomChevron}
   final bool? showScrollToBottomChevron;
+
+  /// {@macro ShadSelect.anchor}
   final ShadAnchorBase? anchor;
+
+  /// {@macro ShadSelect.searchPadding}
   final EdgeInsets? searchPadding;
+
+  /// {@macro ShadSelect.clearSearchOnClose}
   final bool? clearSearchOnClose;
 
-  /// {@macro popover.filter}
+  /// {@macro ShadPopover.filter}
   final ImageFilter? filter;
 
-  /// {@macro popover.effects}
+  /// {@macro ShadPopover.effects}
   final List<Effect<dynamic>>? effects;
 
-  /// {@macro popover.shadows}
+  /// {@macro ShadPopover.shadows}
   final List<BoxShadow>? shadows;
 
   static ShadSelectTheme lerp(

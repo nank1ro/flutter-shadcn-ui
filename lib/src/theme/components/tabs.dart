@@ -34,7 +34,6 @@ class ShadTabsTheme {
     this.tabShadows,
     this.tabSelectedShadows,
     this.tabSize,
-    this.tabApplyIconColorFilter,
     this.tabCursor,
     this.tabHoverForegroundColor,
     this.tabPressedBackgroundColor,
@@ -50,7 +49,7 @@ class ShadTabsTheme {
 
   final bool merge;
 
-  /// {@macro ShadTabsTheme.gap}
+  /// {@macro ShadTabs.gap}
   final double? gap;
 
   /// {@macro ShadTabs.dragStartBehavior}
@@ -74,79 +73,76 @@ class ShadTabsTheme {
   /// {@macro ShadTabs.expandContent}
   final bool? expandContent;
 
-  /// {@macro ShadTabs.tabWidth}
+  /// {@macro ShadTab.width}
   final double? tabWidth;
 
-  /// {@macro ShadTabs.tabBackgroundColor}
+  /// {@macro ShadTab.backgroundColor}
   final Color? tabBackgroundColor;
 
-  /// {@macro ShadTabs.tabSelectedBackgroundColor}
+  /// {@macro ShadTab.selectedBackgroundColor}
   final Color? tabSelectedBackgroundColor;
 
-  /// {@macro ShadTabs.tabHoverBackgroundColor}
+  /// {@macro ShadTab.hoverBackgroundColor}
   final Color? tabHoverBackgroundColor;
 
-  /// {@macro ShadTabs.tabSelectedHoverBackgroundColor}
+  /// {@macro ShadTab.selectedHoverBackgroundColor}
   final Color? tabSelectedHoverBackgroundColor;
 
-  /// {@macro ShadTabs.tabPadding}
+  /// {@macro ShadTab.padding}
   final EdgeInsets? tabPadding;
 
-  /// {@macro ShadTabs.tabDecoration}
+  /// {@macro ShadTab.decoration}
   final ShadDecoration? tabDecoration;
 
-  /// {@macro ShadTabs.tabSelectedDecoration}
+  /// {@macro ShadTab.selectedDecoration}
   final ShadDecoration? tabSelectedDecoration;
 
-  /// {@macro ShadTabs.tabForegroundColor}
+  /// {@macro ShadTab.foregroundColor}
   final Color? tabForegroundColor;
 
-  /// {@macro ShadTabs.tabSelectedForegroundColor}
+  /// {@macro ShadTab.selectedForegroundColor}
   final Color? tabSelectedForegroundColor;
 
-  /// {@macro ShadTabs.tabTextStyle}
+  /// {@macro ShadTab.textStyle}
   final TextStyle? tabTextStyle;
 
-  /// {@macro ShadTabs.tabShadows}
+  /// {@macro ShadTab.shadows}
   final List<BoxShadow>? tabShadows;
 
-  /// {@macro ShadTabs.tabSelectedShadows}
+  /// {@macro ShadTab.selectedShadows}
   final List<BoxShadow>? tabSelectedShadows;
 
-  /// {@macro ShadTabs.tabSize}
+  /// {@macro ShadTab.size}
   final ShadButtonSize? tabSize;
 
-  /// {@macro ShadTabs.tabApplyIconColorFilter}
-  final bool? tabApplyIconColorFilter;
-
-  /// {@macro ShadTabs.tabCursor}
+  /// {@macro ShadTab.cursor}
   final MouseCursor? tabCursor;
 
-  /// {@macro ShadTabs.tabHoverForegroundColor}
+  /// {@macro ShadTab.hoverForegroundColor}
   final Color? tabHoverForegroundColor;
 
-  /// {@macro ShadTabs.tabPressedBackgroundColor}
+  /// {@macro ShadTab.pressedBackgroundColor}
   final Color? tabPressedBackgroundColor;
 
-  /// {@macro ShadTabs.tabPressedForegroundColor}
+  /// {@macro ShadTab.pressedForegroundColor}
   final Color? tabPressedForegroundColor;
 
-  /// {@macro ShadTabs.tabGradient}
+  /// {@macro ShadTab.gradient}
   final Gradient? tabGradient;
 
-  /// {@macro ShadTabs.tabTextDecoration}
+  /// {@macro ShadTab.textDecoration}
   final TextDecoration? tabTextDecoration;
 
-  /// {@macro ShadTabs.tabHoverTextDecoration}
+  /// {@macro ShadTab.hoverTextDecoration}
   final TextDecoration? tabHoverTextDecoration;
 
-  /// {@macro ShadButton.tabMainAxisAlignment}
+  /// {@macro ShadButton.mainAxisAlignment}
   final MainAxisAlignment? tabMainAxisAlignment;
 
   /// {@macro ShadButton.crossAxisAlignment}
   final CrossAxisAlignment? tabCrossAxisAlignment;
 
-  /// {@macro ShadButton.tabHoverStrategies}
+  /// {@macro ShadButton.hoverStrategies}
   final ShadHoverStrategies? tabHoverStrategies;
 
   /// {@macro ShadButton.longPressDuration}
@@ -207,8 +203,6 @@ class ShadTabsTheme {
       tabSelectedShadows:
           BoxShadow.lerpList(a.tabSelectedShadows, b.tabSelectedShadows, t),
       tabSize: t < 0.5 ? a.tabSize : b.tabSize,
-      tabApplyIconColorFilter:
-          t < 0.5 ? a.tabApplyIconColorFilter : b.tabApplyIconColorFilter,
       tabCursor: t < 0.5 ? a.tabCursor : b.tabCursor,
       tabHoverForegroundColor: Color.lerp(
         a.tabHoverForegroundColor,
@@ -264,7 +258,6 @@ class ShadTabsTheme {
       tabShadows: other.tabShadows,
       tabSelectedShadows: other.tabSelectedShadows,
       tabSize: other.tabSize,
-      tabApplyIconColorFilter: other.tabApplyIconColorFilter,
       tabCursor: other.tabCursor,
       tabHoverForegroundColor: other.tabHoverForegroundColor,
       tabPressedBackgroundColor: other.tabPressedBackgroundColor,
@@ -308,7 +301,6 @@ class ShadTabsTheme {
         listEquals(other.tabShadows, tabShadows) &&
         listEquals(other.tabSelectedShadows, tabSelectedShadows) &&
         other.tabSize == tabSize &&
-        other.tabApplyIconColorFilter == tabApplyIconColorFilter &&
         other.tabCursor == tabCursor &&
         other.tabHoverForegroundColor == tabHoverForegroundColor &&
         other.tabPressedBackgroundColor == tabPressedBackgroundColor &&
@@ -347,7 +339,6 @@ class ShadTabsTheme {
         tabShadows.hashCode ^
         tabSelectedShadows.hashCode ^
         tabSize.hashCode ^
-        tabApplyIconColorFilter.hashCode ^
         tabCursor.hashCode ^
         tabHoverForegroundColor.hashCode ^
         tabPressedBackgroundColor.hashCode ^
@@ -385,7 +376,6 @@ class ShadTabsTheme {
     List<BoxShadow>? tabShadows,
     List<BoxShadow>? tabSelectedShadows,
     ShadButtonSize? tabSize,
-    bool? tabApplyIconColorFilter,
     MouseCursor? tabCursor,
     Color? tabHoverForegroundColor,
     Color? tabPressedBackgroundColor,
@@ -427,8 +417,6 @@ class ShadTabsTheme {
       tabShadows: tabShadows ?? this.tabShadows,
       tabSelectedShadows: tabSelectedShadows ?? this.tabSelectedShadows,
       tabSize: tabSize ?? this.tabSize,
-      tabApplyIconColorFilter:
-          tabApplyIconColorFilter ?? this.tabApplyIconColorFilter,
       tabCursor: tabCursor ?? this.tabCursor,
       tabHoverForegroundColor:
           tabHoverForegroundColor ?? this.tabHoverForegroundColor,

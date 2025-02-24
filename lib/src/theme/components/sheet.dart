@@ -43,33 +43,89 @@ class ShadSheetTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadSheet.constraints}
   final BoxConstraints? constraints;
+
+  /// {@macro ShadSheet.expandCrossSide}
   final bool? expandCrossSide;
+
+  /// {@macro ShadSheet.closeIcon}
   final Widget? closeIcon;
+
+  /// {@macro ShadSheet.closeIconData}
   final IconData? closeIconData;
+
+  /// {@macro ShadSheet.closeIconPosition}
   final ShadPosition? closeIconPosition;
+
+  /// {@macro ShadSheet.radius}
   final BorderRadius? radius;
+
+  /// {@macro ShadSheet.backgroundColor}
   final Color? backgroundColor;
+
+  /// {@macro ShadSheet.expandActionsWhenTiny}
   final bool? expandActionsWhenTiny;
+
+  /// {@macro ShadSheet.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadSheet.gap}
   final double? gap;
+
+  /// {@macro ShadSheet.actionsAxis}
   final Axis? actionsAxis;
+
+  /// {@macro ShadSheet.actionsMainAxisSize}
   final MainAxisSize? actionsMainAxisSize;
+
+  /// {@macro ShadSheet.actionsMainAxisAlignment}
   final MainAxisAlignment? actionsMainAxisAlignment;
+
+  /// {@macro ShadSheet.actionsVerticalDirection}
   final VerticalDirection? actionsVerticalDirection;
+
+  /// {@macro ShadSheet.border}
   final BoxBorder? border;
+
+  /// {@macro ShadSheet.shadows}
   final List<BoxShadow>? shadows;
+
+  /// {@macro ShadSheet.removeBorderRadiusWhenTiny}
   final bool? removeBorderRadiusWhenTiny;
+
+  /// {@macro ShadSheet.titleStyle}
   final TextStyle? titleStyle;
+
+  /// {@macro ShadSheet.descriptionStyle}
   final TextStyle? descriptionStyle;
+
+  /// {@macro ShadSheet.titleTextAlign}
   final TextAlign? titleTextAlign;
+
+  /// {@macro ShadSheet.descriptionTextAlign}
   final TextAlign? descriptionTextAlign;
+
+  /// {@macro ShadSheet.animateIn}
   final List<Effect<dynamic>>? animateIn;
+
+  /// {@macro ShadSheet.animateOut}
   final List<Effect<dynamic>>? animateOut;
+
+  /// {@macro ShadSheet.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@macro ShadSheet.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadSheet.scrollable}
   final bool? scrollable;
+
+  /// {@macro ShadSheet.scrollPadding}
   final EdgeInsets? scrollPadding;
+
+  /// {@macro ShadSheet.disabledScrollControlMaxRatio}
   final double? disabledScrollControlMaxRatio;
 
   /// {@macro ShadSheet.minFlingVelocity}

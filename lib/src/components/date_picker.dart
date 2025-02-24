@@ -16,9 +16,19 @@ import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
+/// Variants available for the [ShadDatePicker] widget.
 enum ShadDatePickerVariant { single, range }
 
+/// A customizable date picker widget with a button and popover calendar.
+///
+/// The [ShadDatePicker] widget combines a button with a popover calendar,
+/// allowing users to select a single date or a date range. It supports
+/// extensive customization for both the button and calendar, integrating with
+/// [ShadTheme] for consistent styling. Use named constructors like
+/// [ShadDatePicker.range] for range selection or [ShadDatePicker.raw] for full
+/// control.
 class ShadDatePicker extends StatefulWidget {
+  /// Creates a single-date picker widget with a button and popover calendar.
   const ShadDatePicker({
     super.key,
     this.placeholder,
@@ -160,6 +170,7 @@ class ShadDatePicker extends StatefulWidget {
         formatDateRange = null,
         selectedRange = null;
 
+  /// Creates a date range picker widget with a button and popover calendar.
   const ShadDatePicker.range({
     super.key,
     this.popoverController,
@@ -302,6 +313,8 @@ class ShadDatePicker extends StatefulWidget {
         formatDate = null,
         selectedRange = selected;
 
+  /// Creates a date picker widget with a specified [variant], offering full
+  /// customization.
   const ShadDatePicker.raw({
     super.key,
     required this.variant,

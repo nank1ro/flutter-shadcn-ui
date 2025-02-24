@@ -195,10 +195,10 @@ final router = GoRouter(
     GoRoute(
       path: '/accordion',
       builder: (context, state) {
-        final style =
-            state.uri.queryParameters['style'] ?? ShadAccordionType.single.name;
+        final style = state.uri.queryParameters['style'] ??
+            ShadAccordionVariant.single.name;
         return AccordionPage(
-          style: ShadAccordionType.values.byName(style),
+          style: ShadAccordionVariant.values.byName(style),
         );
       },
     ),

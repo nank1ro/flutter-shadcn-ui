@@ -12,7 +12,12 @@ import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
+/// A controller for [ShadTabs] to manage tab selection.
+///
+/// Extends [ChangeNotifier] to provide reactive updates when the selected tab
+/// changes.
 class ShadTabsController<T> extends ChangeNotifier {
+  /// Creates a [ShadTabsController] with an initial selected value.
   ShadTabsController({required T value}) : selected = value;
 
   T selected;
@@ -28,12 +33,17 @@ class ShadTabsController<T> extends ChangeNotifier {
   }
 }
 
+/// A restorable version of [ShadTabsController] for state persistence.
+///
+/// Useful for maintaining tab selection across widget rebuilds and state
+/// restoration.
 class RestorableShadTabsController<T>
     extends RestorableChangeNotifier<ShadTabsController<T>> {
   /// Creates a [RestorableShadTabsController].
   factory RestorableShadTabsController({required T value}) =>
       RestorableShadTabsController.fromValue(value);
 
+  /// Creates a [RestorableShadTabsController] from a given value.
   RestorableShadTabsController.fromValue(T value) : selected = value;
 
   T selected;
@@ -54,7 +64,14 @@ class RestorableShadTabsController<T>
   }
 }
 
+/// {@template ShadTabs}
+/// A widget that displays a horizontal series of tabs with associated content.
+///
+/// Supports scrollable and non-scrollable layouts, custom styling, and state
+/// management.
+/// {@endtemplate}
 class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
+  /// {@macro ShadTabs}
   const ShadTabs({
     super.key,
     this.value,
@@ -346,7 +363,13 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
   }
 }
 
+/// {@template ShadTab}
+/// Represents a single tab item within a [ShadTabs] widget.
+///
+/// Includes properties for styling, content, and interaction handling.
+/// {@endtemplate}
 class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
+  /// {@macro ShadTab}
   const ShadTab({
     super.key,
     required this.value,
@@ -402,150 +425,271 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
     this.longPressDuration,
   });
 
-  /// The value of the tab.
+  /// {@template ShadTab.value}
+  /// The value associated with this tab, used for selection and identification.
+  /// {@endtemplate}
   final T value;
 
-  /// The text of the tab.
+  /// {@template ShadTab.child}
+  /// The widget to display as the tab's label, typically a [Text] widget.
+  /// {@endtemplate}
   final Widget child;
 
-  /// The content of the tab.
+  /// {@template ShadTab.content}
+  /// The widget to display as the content associated with this tab.
+  ///
+  /// Displayed when the tab is selected.
+  /// {@endtemplate}
   final Widget? content;
 
-  /// The icon of the tab.
+  /// {@template ShadTab.icon}
+  /// Deprecated, use [leading] instead.
+  ///
+  /// An icon to display in the tab. Consider using [leading] for semantic
+  /// correctness.
+  /// {@endtemplate}
   @Deprecated('Use leading instead')
   final Widget? icon;
 
-  /// The leading widget of the tab.
+  /// {@template ShadTab.leading}
+  /// A widget to display at the start of the tab, often an [Icon].
+  /// {@endtemplate}
   final Widget? leading;
 
-  /// The trailing widget of the tab.
+  /// {@template ShadTab.trailing}
+  /// A widget to display at the end of the tab.
+  /// {@endtemplate}
   final Widget? trailing;
 
-  /// Whether the tab is enabled, defaults to true.
+  /// {@template ShadTab.enabled}
+  /// Whether the tab is enabled and can be selected.
+  ///
+  /// Defaults to true.
+  /// {@endtemplate}
   final bool enabled;
 
-  /// The flex of the tab, defaults to 1.
+  /// {@template ShadTab.flex}
+  /// Flex factor for the tab when it's part of a [Row] in a non-scrollable
+  /// [ShadTabs].
   ///
-  /// If the tab is scrollable, the flex is ignored.
+  /// Ignored when [ShadTabs] is scrollable. Defaults to 1.
+  /// {@endtemplate}
   final int flex;
 
-  /// The height of the tab, defaults to 32.
+  /// {@template ShadTab.height}
+  /// Height of the tab.
+  ///
+  /// Defaults to 32.
+  /// {@endtemplate}
   final double? height;
 
-  /// The width of the tab, defaults to null when [ShadTabs.scrollable] is true,
-  /// otherwise `double.infinity`.
+  /// {@template ShadTab.width}
+  /// Width of the tab.
+  ///
+  /// In non-scrollable [ShadTabs], defaults to `double.infinity`. In scrollable
+  /// [ShadTabs], defaults to null, allowing the tab to size to its content.
+  /// {@endtemplate}
   final double? width;
 
-  /// The background color of the unselected tab, defaults to
-  /// `Colors.transparent`.
+  /// {@template ShadTab.backgroundColor}
+  /// Background color of the tab when unselected.
+  ///
+  /// Defaults to `Colors.transparent`.
+  /// {@endtemplate}
   final Color? backgroundColor;
 
-  /// The background color of the selected tab, defaults to
-  /// ShadThemeData.colorScheme.background.
+  /// {@template ShadTab.selectedBackgroundColor}
+  /// Background color of the tab when selected.
+  ///
+  /// Defaults to theme's background color.
+  /// {@endtemplate}
   final Color? selectedBackgroundColor;
 
-  /// The background color of the hovered tab, defaults to
-  /// [ShadTab.backgroundColor].
+  /// {@template ShadTab.hoverBackgroundColor}
+  /// Background color when hovered.
+  ///
+  /// Defaults to [backgroundColor].
+  /// {@endtemplate}
   final Color? hoverBackgroundColor;
 
-  /// The background color of the selected tab, defaults to
-  /// [ShadTab.selectedBackgroundColor].
+  /// {@template ShadTab.selectedHoverBackgroundColor}
+  /// Background color when selected and hovered.
+  ///
+  /// Defaults to [selectedBackgroundColor].
+  /// {@endtemplate}
   final Color? selectedHoverBackgroundColor;
 
-  /// The padding of the tab, defaults to
-  /// `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
+  /// {@template ShadTab.padding}
+  /// Padding within the tab.
+  ///
+  /// Defaults to `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
+  /// {@endtemplate}
   final EdgeInsets? padding;
 
-  /// The decoration of the tab.
+  /// {@template ShadTab.decoration}
+  /// Decoration for the tab when unselected.
+  ///
+  /// Uses [ShadDecoration].
+  /// {@endtemplate}
   final ShadDecoration? decoration;
 
-  /// The decoration of the selected tab, defaults to [ShadTab.decoration].
+  /// {@template ShadTab.selectedDecoration}
+  /// Decoration for the tab when selected.
+  ///
+  /// Defaults to [decoration]. Uses [ShadDecoration].
+  /// {@endtemplate}
   final ShadDecoration? selectedDecoration;
 
-  /// The foreground color of the unselected tab, defaults to
-  /// ShadThemeData.colorScheme.foreground.
+  /// {@template ShadTab.foregroundColor}
+  /// Foreground color (text/icon color) when unselected.
+  ///
+  /// Defaults to theme's foreground color.
+  /// {@endtemplate}
   final Color? foregroundColor;
 
-  /// The foreground color of the selected tab, defaults to
-  /// [ShadTab.foregroundColor].
+  /// {@template ShadTab.selectedForegroundColor}
+  /// Foreground color when selected.
+  ///
+  /// Defaults to [foregroundColor].
+  /// {@endtemplate}
   final Color? selectedForegroundColor;
 
-  /// The text style of the tab, defaults to ShadThemeData.textTheme.small.
+  /// {@template ShadTab.textStyle}
+  /// Text style for the tab label.
+  ///
+  /// Defaults to theme's small text style.
+  /// {@endtemplate}
   final TextStyle? textStyle;
 
-  /// The shadows of the unselected tab, defaults to [ShadShadows.sm].
+  /// {@template ShadTab.shadows}
+  /// Shadows for the tab when unselected.
+  ///
+  /// Defaults to small shadows ([ShadShadows.sm]).
+  /// {@endtemplate}
   final List<BoxShadow>? shadows;
 
-  /// The shadows of the selected tab, defaults to `null`.
+  /// {@template ShadTab.selectedShadows}
+  /// Shadows for the tab when selected.
+  ///
+  /// Defaults to small shadows ([ShadShadows.sm]).
+  /// {@endtemplate}
   final List<BoxShadow>? selectedShadows;
 
-  /// The focus node of the tab.
+  /// {@template ShadTab.focusNode}
+  /// Focus node to control the focus state of the tab.
+  ///
+  /// If null, an internal [FocusNode] is created.
+  /// {@endtemplate}
   final FocusNode? focusNode;
 
-  /// The callback that is called when the button is tapped.
+  /// {@template ShadTab.onPressed}
+  /// Callback for tap events on the tab.
+  /// {@endtemplate}
   final VoidCallback? onPressed;
 
-  /// The callback that is called when the button is long-pressed.
+  /// {@template ShadTab.onLongPress}
+  /// Callback for long-press events on the tab.
+  /// {@endtemplate}
   final VoidCallback? onLongPress;
 
-  /// The size of the button.
+  /// {@template ShadTab.size}
+  /// Size configuration for the tab, uses [ShadButtonSize].
+  /// {@endtemplate}
   final ShadButtonSize? size;
 
-  /// The cursor for the button.
+  /// {@template ShadTab.cursor}
+  /// Mouse cursor when hovering over the tab.
+  /// {@endtemplate}
   final MouseCursor? cursor;
 
-  /// The foreground color of the button when the mouse is hovering over it.
+  /// {@template ShadTab.hoverForegroundColor}
+  /// Foreground color when hovered.
+  /// {@endtemplate}
   final Color? hoverForegroundColor;
 
-  /// Whether the button should automatically focus itself.
+  /// {@template ShadTab.autofocus}
+  /// Whether the tab should automatically focus on build.
+  ///
+  /// Defaults to false.
+  /// {@endtemplate}
   final bool autofocus;
 
-  /// The background color of the button when it is pressed.
+  /// {@template ShadTab.pressedBackgroundColor}
+  /// Background color when pressed.
+  /// {@endtemplate}
   final Color? pressedBackgroundColor;
 
-  /// The foreground color of the button when it is pressed.
+  /// {@template ShadTab.pressedForegroundColor}
+  /// Foreground color when pressed.
+  /// {@endtemplate}
   final Color? pressedForegroundColor;
 
-  /// The gradient to use for the button's background.
+  /// {@template ShadTab.gradient}
+  /// Background gradient for the tab.
+  /// {@endtemplate}
   final Gradient? gradient;
 
-  /// The text decoration to use for the button's text.
+  /// {@template ShadTab.textDecoration}
+  /// Text decoration for the tab label.
+  /// {@endtemplate}
   final TextDecoration? textDecoration;
 
-  /// The text decoration to use for the button's text when the mouse is
-  /// hovering over it.
+  /// {@template ShadTab.hoverTextDecoration}
+  /// Text decoration when hovered.
+  /// {@endtemplate}
   final TextDecoration? hoverTextDecoration;
 
-  /// The states controller of the button.
+  /// {@template ShadTab.statesController}
+  /// Custom states controller for managing tab states.
+  /// {@endtemplate}
   final ShadStatesController? statesController;
 
-  /// {@template ShadButton.mainAxisAlignment}
-  /// The main axis alignment of the button.
-  ///
-  /// Defaults to [MainAxisAlignment.center]
-  /// {@endtemplate}
+  /// {@macro ShadButton.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
 
-  /// {@template ShadButton.crossAxisAlignment}
-  /// The cross axis alignment of the button.
-  ///
-  /// Defaults to [CrossAxisAlignment.center]
-  /// {@endtemplate}
+  /// {@macro ShadButton.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
 
+  /// {@macro ShadButton.hoverStrategies}
   final ShadHoverStrategies? hoverStrategies;
+
+  /// {@macro ShadButton.onHoverChange}
   final ValueChanged<bool>? onHoverChange;
+
+  /// {@macro ShadButton.onTapDown}
   final ValueChanged<TapDownDetails>? onTapDown;
+
+  /// {@macro ShadButton.onTapUp}
   final ValueChanged<TapUpDetails>? onTapUp;
+
+  /// {@macro ShadButton.onTapCancel}
   final VoidCallback? onTapCancel;
+
+  /// {@macro ShadButton.onLongPressStart}
   final ValueChanged<LongPressStartDetails>? onLongPressStart;
+
+  /// {@macro ShadButton.onLongPressCancel}
   final VoidCallback? onLongPressCancel;
+
+  /// {@macro ShadButton.onLongPressUp}
   final VoidCallback? onLongPressUp;
+
+  /// {@macro ShadButton.onLongPressDown}
   final ValueChanged<LongPressDownDetails>? onLongPressDown;
+
+  /// {@macro ShadButton.onLongPressEnd}
   final ValueChanged<LongPressEndDetails>? onLongPressEnd;
+
+  /// {@macro ShadButton.onDoubleTap}
   final VoidCallback? onDoubleTap;
+
+  /// {@macro ShadButton.onDoubleTapDown}
   final ValueChanged<TapDownDetails>? onDoubleTapDown;
+
+  /// {@macro ShadButton.onDoubleTapCancel}
   final VoidCallback? onDoubleTapCancel;
+
+  /// {@macro ShadButton.longPressDuration}
   final Duration? longPressDuration;
 
   @override

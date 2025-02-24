@@ -10,7 +10,20 @@ import 'package:shadcn_ui/src/utils/debug_check.dart';
 import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
+/// A customizable radio group widget that allows selection of one item from
+/// a list of options.
+///
+/// The [ShadRadioGroup] widget is designed to manage a group of radio buttons
+/// and handle their state. It supports various configurations such as
+/// alignment, spacing, and initial value selection.
 class ShadRadioGroup<T> extends StatefulWidget {
+  /// Creates a [ShadRadioGroup] with the given [items] and optional
+  /// parameters.
+  ///
+  /// The [items] parameter is required and should contain the list of radio
+  /// options. The [initialValue] can be used to set the initially selected
+  /// item. The [onChanged] callback is triggered when the selected value
+  /// changes.
   const ShadRadioGroup({
     super.key,
     required this.items,
@@ -133,7 +146,18 @@ class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
   }
 }
 
+/// A customizable radio button widget that represents a single option in a
+/// radio group.
+///
+/// The [ShadRadio] widget can be used to create individual radio buttons
+/// with various customization options such as size, color, and labels.
 class ShadRadio<T> extends StatefulWidget {
+  /// Creates a [ShadRadio] with the specified [value] and optional parameters.
+  ///
+  /// The [value] parameter is required and represents the value of the radio
+  /// button. The [enabled] parameter determines if the radio button is
+  /// interactive. Other parameters allow for customization of appearance and
+  /// behavior.
   const ShadRadio({
     super.key,
     required this.value,
@@ -151,41 +175,66 @@ class ShadRadio<T> extends StatefulWidget {
     this.orderPolicy,
   });
 
+  /// {@template ShadRadio.value}
   /// The value of the radio.
+  /// {@endtemplate}
   final T value;
 
+  /// {@template ShadRadio.enabled}
+  /// Whether the radio is enabled, defaults to true.
+  /// {@endtemplate}
   final bool enabled;
 
+  /// {@template ShadRadio.focusNode}
   /// The focus node of the radio.
+  /// {@endtemplate}
   final FocusNode? focusNode;
 
+  /// {@template ShadRadio.decoration}
   /// The decoration of the radio.
+  /// {@endtemplate}
   final ShadDecoration? decoration;
 
+  /// {@template ShadRadio.size}
   /// The size of the radio, defaults to 16.
+  /// {@endtemplate}
   final double? size;
 
+  /// {@template ShadRadio.circleSize}
   /// The circle size of the radio, defaults to 10.
+  /// {@endtemplate}
   final double? circleSize;
 
+  /// {@template ShadRadio.duration}
   /// The duration of the radio animation, defaults to 100ms.
+  /// {@endtemplate}
   final Duration? duration;
 
+  /// {@template ShadRadio.color}
   /// The color of the radio.
+  /// {@endtemplate}
   final Color? color;
 
+  /// {@template ShadRadio.label}
   /// An optional label for the radio, displayed on the right side if
   /// the [direction] is `TextDirection.ltr`.
+  /// {@endtemplate}
   final Widget? label;
 
+  /// {@template ShadRadio.sublabel}
   /// An optional sublabel for the radio, displayed below the label.
+  /// {@endtemplate}
   final Widget? sublabel;
 
+  /// {@template ShadRadio.padding}
   /// The padding between the radio and the label, defaults to
   /// `EdgeInsets.only(left: 8)`.
+  /// {@endtemplate}
   final EdgeInsets? padding;
 
+  /// {@template ShadRadio.direction}
   /// The direction of the radio.
+  /// {@endtemplate}
   final TextDirection? direction;
 
   /// {@template ShadRadio.orderPolicy}

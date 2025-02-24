@@ -43,23 +43,58 @@ class ShadButtonTheme {
 
   final bool merge;
 
+  /// {@macro ShadButton.cursor}
   final MouseCursor? cursor;
+
+  /// {@macro ShadButton.size}
   final ShadButtonSize? size;
+
+  /// {@macro ShadButtonSizesTheme}
   final ShadButtonSizesTheme? sizesTheme;
+
+  /// {@macro ShadButton.backgroundColor}
   final Color? backgroundColor;
+
+  /// {@macro ShadButton.hoverBackgroundColor}
   final Color? hoverBackgroundColor;
+
+  /// {@macro ShadButton.foregroundColor}
   final Color? foregroundColor;
+
+  /// {@macro ShadButton.hoverForegroundColor}
   final Color? hoverForegroundColor;
+
+  /// {@macro ShadButton.pressedBackgroundColor}
   final Color? pressedBackgroundColor;
+
+  /// {@macro ShadButton.pressedForegroundColor}
   final Color? pressedForegroundColor;
+
+  /// {@macro ShadButton.shadows}
   final List<BoxShadow>? shadows;
+
+  /// {@macro ShadButton.gradient}
   final Gradient? gradient;
+
+  /// {@macro ShadButton.textDecoration}
   final TextDecoration? textDecoration;
+
+  /// {@macro ShadButton.hoverTextDecoration}
   final TextDecoration? hoverTextDecoration;
+
+  /// {@macro ShadButton.decoration}
   final ShadDecoration? decoration;
+
+  /// {@macro ShadButton.width}
   final double? width;
+
+  /// {@macro ShadButton.height}
   final double? height;
+
+  /// {@macro ShadButton.longPressDuration}
   final Duration? longPressDuration;
+
+  /// {@macro ShadButton.hoverStrategies}
   final ShadHoverStrategies? hoverStrategies;
 
   /// {@macro ShadButton.mainAxisAlignment}
@@ -67,6 +102,8 @@ class ShadButtonTheme {
 
   /// {@macro ShadButton.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadButton.textDirection}
   final TextDirection? textDirection;
 
   /// {@macro ShadButton.gap}
@@ -336,7 +373,9 @@ class ShadButtonSizeTheme {
   int get hashCode => height.hashCode ^ padding.hashCode ^ width.hashCode;
 }
 
-// The theme for the predefined sizes of ShadButton.
+/// {@template ShadButtonSizesTheme}
+/// The theme for the predefined sizes of ShadButton.
+/// {@endtemplate}
 @immutable
 class ShadButtonSizesTheme {
   const ShadButtonSizesTheme({
