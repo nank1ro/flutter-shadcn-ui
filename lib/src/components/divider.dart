@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
@@ -54,13 +53,13 @@ class ShadDivider extends StatelessWidget {
     return Padding(
       padding: margin,
       child: switch (variant) {
-        ShadDividerVariant.vertical => Container(
-            width: thickness,
+        ShadDividerVariant.vertical => DecoratedBox(
             decoration: BoxDecoration(border: Border(left: borderSide)),
+            child: SizedBox(width: thickness, height: double.infinity),
           ),
-        ShadDividerVariant.horizontal => Container(
-            height: thickness,
+        ShadDividerVariant.horizontal => DecoratedBox(
             decoration: BoxDecoration(border: Border(bottom: borderSide)),
+            child: SizedBox(height: thickness, width: double.infinity),
           ),
       },
     );
