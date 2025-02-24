@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
+/// Represents a time of day, including hour, minute, and second, and optionally period (AM/PM).
 @immutable
 class ShadTimeOfDay {
   /// Creates a time of day.
@@ -99,7 +100,16 @@ class ShadTimeOfDay {
   }
 }
 
+/// {@template ShadTimePickerController}
+/// A controller for [ShadTimePicker] to manage the selected time.
+///
+/// Extends [ChangeNotifier] to provide reactive updates when the selected time
+/// changes.
+/// {@endtemplate}
 class ShadTimePickerController extends ChangeNotifier {
+  /// Creates a [ShadTimePickerController].
+  ///
+  /// Allows specifying initial hour, minute, second, and period.
   ShadTimePickerController({
     this.hour,
     this.minute,
@@ -107,17 +117,37 @@ class ShadTimePickerController extends ChangeNotifier {
     this.period,
   });
 
+  /// Creates a [ShadTimePickerController] initialized with a [ShadTimeOfDay]
+  /// object.
   ShadTimePickerController.fromTimeOfDay(ShadTimeOfDay? timeOfDay)
       : hour = timeOfDay?.hour,
         minute = timeOfDay?.minute,
         second = timeOfDay?.second,
         period = timeOfDay?.period;
 
+  /// {@template ShadTimePickerController.hour}
+  /// The selected hour.
+  /// {@endtemplate}
   int? hour;
+
+  /// {@template ShadTimePickerController.minute}
+  /// The selected minute.
+  /// {@endtemplate}
   int? minute;
+
+  /// {@template ShadTimePickerController.second}
+  /// The selected second.
+  /// {@endtemplate}
   int? second;
+
+  /// {@template ShadTimePickerController.period}
+  /// The selected day period (AM/PM).
+  /// {@endtemplate}
   DayPeriod? period;
 
+  /// Returns the current [ShadTimeOfDay] value from the controller.
+  ///
+  /// Returns `null` if any of hour, minute, or second are null.
   ShadTimeOfDay? get value {
     if (hour == null || minute == null || second == null) return null;
     return ShadTimeOfDay(
@@ -128,24 +158,28 @@ class ShadTimePickerController extends ChangeNotifier {
     );
   }
 
+  /// Sets the hour and notifies listeners.
   void setHour(int? hour) {
     if (this.hour == hour) return;
     this.hour = hour;
     notifyListeners();
   }
 
+  /// Sets the minute and notifies listeners.
   void setMinute(int? minute) {
     if (this.minute == minute) return;
     this.minute = minute;
     notifyListeners();
   }
 
+  /// Sets the second and notifies listeners.
   void setSecond(int? second) {
     if (this.second == second) return;
     this.second = second;
     notifyListeners();
   }
 
+  /// Sets the day period (AM/PM) and notifies listeners.
   void setDayPeriod(DayPeriod? period) {
     if (this.period == period) return;
     this.period = period;
@@ -153,12 +187,22 @@ class ShadTimePickerController extends ChangeNotifier {
   }
 }
 
+/// Enum representing different variants of [ShadTimePicker].
 enum ShadTimePickerVariant {
+  /// Primary variant with 24-hour format.
   primary,
+
+  /// Variant with AM/PM period selection and 12-hour format.
   period,
 }
 
+/// {@template ShadTimePicker}
+/// A customizable time picker component with hour, minute, and second inputs.
+///
+/// Supports different variants, layouts, and extensive styling options.
+/// {@endtemplate}
 class ShadTimePicker extends StatefulWidget {
+  /// Creates a [ShadTimePicker] with the primary variant (24-hour format).
   const ShadTimePicker({
     super.key,
     this.axis,
@@ -201,6 +245,7 @@ class ShadTimePicker extends StatefulWidget {
         periodDecoration = null,
         periodMinWidth = null;
 
+  /// Creates a [ShadTimePicker] with the period variant (12-hour format with AM/PM).
   const ShadTimePicker.period({
     super.key,
     this.axis,
@@ -243,6 +288,8 @@ class ShadTimePicker extends StatefulWidget {
     this.enabled = true,
   }) : variant = ShadTimePickerVariant.period;
 
+  /// Creates a [ShadTimePicker] with a raw variant, allowing explicit variant
+  /// specification.
   const ShadTimePicker.raw({
     super.key,
     required this.variant,
@@ -806,7 +853,12 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
   }
 }
 
+/// {@template ShadTimePickerField}
+/// A single input field for [ShadTimePicker], used for hour, minute, or second
+/// input.
+/// {@endtemplate}
 class ShadTimePickerField extends StatefulWidget {
+  /// {@macro ShadTimePickerField}
   const ShadTimePickerField({
     super.key,
     this.label,
@@ -823,19 +875,91 @@ class ShadTimePickerField extends StatefulWidget {
     this.enabled = true,
   });
 
+  /// {@template ShadTimePickerField.label}
+  /// The label widget to display above the input field.
+  ///
+  /// Typically a [Text] widget describing the field.
+  /// {@endtemplate}
   final Widget? label;
-  final Widget? placeholder;
-  final ShadTimePickerTextEditingController? controller;
-  final double? gap;
-  final TextStyle? style;
-  final TextStyle? labelStyle;
-  final ValueChanged<String>? onChanged;
-  final FocusNode? focusNode;
-  final double? width;
-  final EdgeInsets? padding;
-  final ShadDecoration? decoration;
-  final bool enabled;
 
+  /// {@template ShadTimePickerField.placeholder}
+  /// The placeholder widget to display when the input field is empty.
+  ///
+  /// Typically a [Text] widget providing a hint of the expected input.
+  /// {@endtemplate}
+  final Widget? placeholder;
+
+  /// {@template ShadTimePickerField.controller}
+  /// The text editing controller for the input field.
+  ///
+  /// Manages the text input and selection for the time picker field. Uses
+  /// [ShadTimePickerTextEditingController].
+  /// {@endtemplate}
+  final ShadTimePickerTextEditingController? controller;
+
+  /// {@template ShadTimePickerField.gap}
+  /// The vertical gap between the label and the input field.
+  ///
+  /// Defaults to `2`.
+  /// {@endtemplate}
+  final double? gap;
+
+  /// {@template ShadTimePickerField.style}
+  /// The text style for the input field's text.
+  ///
+  /// Defines the appearance of the entered time value.
+  /// {@endtemplate}
+  final TextStyle? style;
+
+  /// {@template ShadTimePickerField.labelStyle}
+  /// The text style for the label widget.
+  ///
+  /// Defines the appearance of the field's label.
+  /// {@endtemplate}
+  final TextStyle? labelStyle;
+
+  /// {@template ShadTimePickerField.onChanged}
+  /// Callback function invoked when the text in the input field changes.
+  ///
+  /// Provides the current text value as an argument.
+  /// {@endtemplate}
+  final ValueChanged<String>? onChanged;
+
+  /// {@template ShadTimePickerField.focusNode}
+  /// Focus node to control the focus state of the input field.
+  ///
+  /// If null, a default [FocusNode] will be created internally.
+  /// {@endtemplate}
+  final FocusNode? focusNode;
+
+  /// {@template ShadTimePickerField.width}
+  /// The width of the input field.
+  ///
+  /// Defaults to `58`.
+  /// {@endtemplate}
+  final double? width;
+
+  /// {@template ShadTimePickerField.padding}
+  /// Padding around the input field's content area.
+  ///
+  /// Defaults to `EdgeInsets.symmetric(horizontal: 12, vertical: 8)`.
+  /// {@endtemplate}
+  final EdgeInsets? padding;
+
+  /// {@template ShadTimePickerField.decoration}
+  /// The visual decoration of the input field.
+  ///
+  /// Uses [ShadDecoration] to define borders, colors, and more.
+  /// {@endtemplate}
+  final ShadDecoration? decoration;
+
+  /// {@template ShadTimePickerField.enabled}
+  /// Whether the input field is enabled.
+  ///
+  /// When disabled, the field cannot be interacted with and visually appears
+  /// disabled. Defaults to `true`.
+  /// {@endtemplate}
+  final bool enabled;
   @override
   State<ShadTimePickerField> createState() => _ShadTimePickerFieldState();
 }
@@ -932,7 +1056,12 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
   }
 }
 
+/// {@template ShadTimePickerTextEditingController}
+/// Custom [TextEditingController] for [ShadTimePickerField] to handle time
+/// input formatting and validation.
+/// {@endtemplate}
 class ShadTimePickerTextEditingController extends TextEditingController {
+  /// Creates a [ShadTimePickerTextEditingController].
   ShadTimePickerTextEditingController({
     super.text,
     this.placeholderStyle,
@@ -940,6 +1069,7 @@ class ShadTimePickerTextEditingController extends TextEditingController {
     this.max = 59,
   });
 
+  /// Creates a [ShadTimePickerTextEditingController] from a [TextEditingValue].
   ShadTimePickerTextEditingController.fromValue(
     TextEditingValue? value, {
     this.placeholderStyle,
@@ -956,8 +1086,19 @@ class ShadTimePickerTextEditingController extends TextEditingController {
         ),
         super.fromValue(value ?? TextEditingValue.empty);
 
+  /// {@template ShadTimePickerTextEditingController.placeholderStyle}
+  /// The style of the placeholder text.
+  /// {@endtemplate}
   final TextStyle? placeholderStyle;
+
+  /// {@template ShadTimePickerTextEditingController.min}
+  /// Minimum allowed value for the input field.
+  /// {@endtemplate}
   final int min;
+
+  /// {@template ShadTimePickerTextEditingController.max}
+  /// Maximum allowed value for the input field.
+  /// {@endtemplate}
   final int max;
 
   @override
