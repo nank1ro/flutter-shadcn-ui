@@ -39,31 +39,83 @@ class ShadDialogTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadDialog.closeIconData}
   final IconData? closeIconData;
+
+  /// {@macro ShadDialog.closeIconPosition}
   final ShadPosition? closeIconPosition;
+
+  /// {@macro ShadDialog.radius}
   final BorderRadius? radius;
+
+  /// {@macro ShadDialog.backgroundColor}
   final Color? backgroundColor;
+
+  /// {@macro ShadDialog.expandActionsWhenTiny}
   final bool? expandActionsWhenTiny;
+
+  /// {@macro ShadDialog.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadDialog.gap}
   final double? gap;
+
+  /// {@macro ShadDialog.animateIn}
   final List<Effect<dynamic>>? animateIn;
+
+  /// {@macro ShadDialog.animateOut}
   final List<Effect<dynamic>>? animateOut;
+
+  /// {@macro ShadDialog.constraints}
   final BoxConstraints? constraints;
+
+  /// {@macro ShadDialog.actionsAxis}
   final Axis? actionsAxis;
+
+  /// {@macro ShadDialog.actionsMainAxisSize}
   final MainAxisSize? actionsMainAxisSize;
+
+  /// {@macro ShadDialog.actionsMainAxisAlignment}
   final MainAxisAlignment? actionsMainAxisAlignment;
+
+  /// {@macro ShadDialog.actionsVerticalDirection}
   final VerticalDirection? actionsVerticalDirection;
+
+  /// {@macro ShadDialog.border}
   final BoxBorder? border;
+
+  /// {@macro ShadDialog.shadows}
   final List<BoxShadow>? shadows;
+
+  /// {@macro ShadDialog.removeBorderRadiusWhenTiny}
   final bool? removeBorderRadiusWhenTiny;
+
+  /// {@macro ShadDialog.titleStyle}
   final TextStyle? titleStyle;
+
+  /// {@macro ShadDialog.descriptionStyle}
   final TextStyle? descriptionStyle;
+
+  /// {@macro ShadDialog.titleTextAlign}
   final TextAlign? titleTextAlign;
+
+  /// {@macro ShadDialog.descriptionTextAlign}
   final TextAlign? descriptionTextAlign;
+
+  /// {@macro ShadDialog.alignment}
   final Alignment? alignment;
+
+  /// {@macro ShadDialog.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@macro ShadDialog.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadDialog.scrollable}
   final bool? scrollable;
+
+  /// {@macro ShadDialog.scrollPadding}
   final EdgeInsets? scrollPadding;
 
   static ShadDialogTheme lerp(
