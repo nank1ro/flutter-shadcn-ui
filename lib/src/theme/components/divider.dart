@@ -22,8 +22,8 @@ class ShadDividerTheme {
     if (!other.merge) return other;
     return copyWith(
       merge: other.merge,
-      verticalDividerMargin: other.verticalMargin,
-      horizontalDividerMargin: other.horizontalMargin,
+      verticalMargin: other.verticalMargin,
+      horizontalMargin: other.horizontalMargin,
       color: other.color,
       thickness: other.thickness,
     );
@@ -33,14 +33,14 @@ class ShadDividerTheme {
     bool? merge,
     Color? color,
     double? thickness,
-    EdgeInsetsGeometry? verticalDividerMargin,
-    EdgeInsetsGeometry? horizontalDividerMargin,
+    EdgeInsetsGeometry? verticalMargin,
+    EdgeInsetsGeometry? horizontalMargin,
   }) {
     return ShadDividerTheme(
       merge: merge ?? this.merge,
       color: color ?? this.color,
-      verticalMargin: verticalDividerMargin ?? verticalMargin,
-      horizontalMargin: horizontalDividerMargin ?? horizontalMargin,
+      verticalMargin: verticalMargin ?? verticalMargin,
+      horizontalMargin: horizontalMargin ?? horizontalMargin,
       thickness: thickness ?? this.thickness,
     );
   }
