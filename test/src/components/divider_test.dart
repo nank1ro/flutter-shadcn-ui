@@ -6,7 +6,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 void main() {
   group('ShadDivider', () {
     group('.horizontal', () {
-      testWidgets('corectly reads theme data', (tester) async {
+      testWidgets('correctly reads theme data', (tester) async {
         const shadDividerTheme = ShadDividerTheme(
           thickness: 12,
           horizontalMargin: EdgeInsets.symmetric(vertical: 100), // really wide
@@ -54,7 +54,7 @@ void main() {
         );
       });
 
-      testWidgets('corectly uses parameters', (tester) async {
+      testWidgets('correctly uses parameters', (tester) async {
         const widget = ShadApp(
           home: Column(
             children: [
@@ -100,7 +100,7 @@ void main() {
     });
 
     group('.vertical', () {
-      testWidgets('corectly reads theme data', (tester) async {
+      testWidgets('correctly reads theme data', (tester) async {
         const shadDividerTheme = ShadDividerTheme(
           thickness: 12,
           verticalMargin: EdgeInsets.symmetric(horizontal: 100), // really tall
@@ -150,7 +150,7 @@ void main() {
         );
       });
 
-      testWidgets('corectly uses parameters', (tester) async {
+      testWidgets('correctly uses parameters', (tester) async {
         const widget = ShadApp(
           home: Row(
             children: [
