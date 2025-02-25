@@ -1,9 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/shadcn_ui.dart' show ShadDivider;
+import 'package:shadcn_ui/src/components/divider.dart' show ShadDivider;
 
 @immutable
+
+/// {@template ShadDividerTheme}
+/// Theme for the [ShadDivider] widget.
+/// {@endtemplate}
 class ShadDividerTheme {
+  /// {@macro ShadDividerTheme}
   const ShadDividerTheme({
     this.merge = true,
     this.verticalMargin,
@@ -13,9 +20,17 @@ class ShadDividerTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadDivider.color}
   final Color? color;
+
+  /// {@macro ShadDivider.thickness}
   final double? thickness;
+
+  /// The margin (or space) around the vertical divider.
   final EdgeInsetsGeometry? verticalMargin;
+
+  /// The margin (or space) around the horizontal divider.
   final EdgeInsetsGeometry? horizontalMargin;
 
   ShadDividerTheme mergeWith(ShadDividerTheme? other) {
