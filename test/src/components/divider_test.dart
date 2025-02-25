@@ -97,6 +97,25 @@ void main() {
           findsOne,
         );
       });
+
+      testWidgets('matches goldens', (tester) async {
+        const widget = ShadApp(
+          home: Column(
+            children: [
+              SizedBox(width: 40),
+              ShadDivider.horizontal(),
+            ],
+          ),
+        );
+
+        await tester.pumpWidget(widget);
+        await tester.pumpAndSettle();
+
+        expect(
+          find.byType(ShadDivider),
+          matchesGoldenFile('horizontal_divider.png'),
+        );
+      });
     });
 
     group('.vertical', () {
@@ -195,25 +214,25 @@ void main() {
           findsOne,
         );
       });
+
+      testWidgets('matches goldens', (tester) async {
+        const widget = ShadApp(
+          home: Row(
+            children: [
+              SizedBox(height: 40),
+              ShadDivider.vertical(),
+            ],
+          ),
+        );
+
+        await tester.pumpWidget(widget);
+        await tester.pumpAndSettle();
+
+        expect(
+          find.byType(ShadDivider),
+          matchesGoldenFile('vertical_divider.png'),
+        );
+      });
     });
-  });
-
-  testWidgets('matches goldens', (tester) async {
-    const widget = ShadApp(
-      home: Column(
-        children: [
-          SizedBox(width: 40),
-          ShadDivider.horizontal(),
-        ],
-      ),
-    );
-
-    await tester.pumpWidget(widget);
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byType(ShadDivider),
-      matchesGoldenFile('divider.png'),
-    );
   });
 }
