@@ -8,6 +8,8 @@ class ShadInputOTPFormField extends ShadFormBuilderField<String> {
     super.id,
     super.key,
     super.onSaved,
+
+    /// {@macro ShadFormBuilderField.validator}
     String? Function(String)? validator,
 
     /// {@macro ShadInputOTP.initialValue}

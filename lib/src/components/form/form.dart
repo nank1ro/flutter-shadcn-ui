@@ -20,9 +20,11 @@ enum ShadAutovalidateMode {
   alwaysAfterFirstValidation,
 }
 
+/// A typedef representing a map of form field states with dynamic values.
 typedef ShadFormFields = Map<Object,
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic>>;
 
+/// A stateful widget that manages a form with validation and field management.
 class ShadForm extends StatefulWidget {
   const ShadForm({
     super.key,
@@ -37,26 +39,45 @@ class ShadForm extends StatefulWidget {
     this.skipDisabled = false,
   });
 
+  /// Callback when form value changes
   final VoidCallback? onChanged;
+
+  /// Whether the form can be popped from navigation
   final bool? canPop;
   @Deprecated('Use onPopInvokedWithResult instead')
   final void Function(bool)? onPopInvoked;
+
+  /// Callback when form is popped with a result
   final PopInvokedWithResultCallback<Object?>? onPopInvokedWithResult;
+
+  /// The auto validation mode for the form
   final ShadAutovalidateMode autovalidateMode;
+
+  /// The widget tree contained within the form
   final Widget child;
+
+  /// Initial values for form fields
   final Map<Object, dynamic> initialValue;
+
+  /// Whether the form fields are enabled
   final bool enabled;
+
+  /// Whether to skip disabled fields during validation
   final bool skipDisabled;
 
   @override
   State<ShadForm> createState() => ShadFormState();
 
+  /// Returns the nearest [ShadFormState] from the widget tree
+  /// Throws assertion error if not found
   static ShadFormState of(BuildContext context) {
     final state = maybeOf(context);
     assert(state != null, 'No ShadFormState found in context');
     return state!;
   }
 
+  /// Returns the nearest [ShadFormState] from the widget tree or null if not
+  /// found
   static ShadFormState? maybeOf(BuildContext context) {
     return (context
             .getElementForInheritedWidgetOfExactType<ShadFormScope>()
@@ -65,6 +86,7 @@ class ShadForm extends StatefulWidget {
   }
 }
 
+/// The state class for [ShadForm] managing form fields and validation
 class ShadFormState extends State<ShadForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ShadFormFields _fields = {};
@@ -72,12 +94,17 @@ class ShadFormState extends State<ShadForm> {
   final Map<Object, Function> _transformers = {};
   late final ValueNotifier<AutovalidateMode> autovalidateMode;
 
+  /// Returns the registered form fields
   ShadFormFields get fields => _fields;
 
+  /// Returns the initial form values
   Map<Object, dynamic> get initialValue => widget.initialValue;
 
+  /// Whether the form is enabled
   bool get enabled => widget.enabled;
 
+  /// Returns an unmodifiable view of the current form values with
+  /// transformations applied
   Map<Object, dynamic> get value => Map<Object, dynamic>.unmodifiable(
         _value.map(
           (key, value) =>
@@ -106,6 +133,7 @@ class ShadFormState extends State<ShadForm> {
     super.dispose();
   }
 
+  /// Registers a form field with the specified id
   void registerField(
     Object id,
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
@@ -124,10 +152,12 @@ class ShadFormState extends State<ShadForm> {
     widget.onChanged?.call();
   }
 
+  /// Removes internal field value
   void removeInternalFieldValue(Object id) {
     _value.remove(id);
   }
 
+  /// Unregisters a form field
   void unregisterField(
     Object id,
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
@@ -137,6 +167,7 @@ class ShadFormState extends State<ShadForm> {
     _transformers.remove(id);
   }
 
+  /// Validates the form with optional focus and scroll behavior
   bool validate({
     bool focusOnInvalid = true,
     bool autoScrollWhenFocusOnInvalid = false,
@@ -161,6 +192,7 @@ class ShadFormState extends State<ShadForm> {
     return !hasError;
   }
 
+  /// Saves and validates the form with optional focus and scroll behavior
   bool saveAndValidate({
     bool focusOnInvalid = true,
     bool autoScrollWhenFocusOnInvalid = false,
@@ -172,6 +204,7 @@ class ShadFormState extends State<ShadForm> {
     );
   }
 
+  /// Resets the form to its initial state
   void reset() {
     autovalidateMode.value = switch (widget.autovalidateMode) {
       ShadAutovalidateMode.always => AutovalidateMode.always,
@@ -184,6 +217,7 @@ class ShadFormState extends State<ShadForm> {
     _formKey.currentState?.reset();
   }
 
+  /// Saves the current form state
   void save() {
     _formKey.currentState!.save();
   }
@@ -214,6 +248,7 @@ class ShadFormState extends State<ShadForm> {
   }
 }
 
+/// An inherited widget that provides access to the [ShadFormState]
 class ShadFormScope extends InheritedWidget {
   const ShadFormScope({
     super.key,
@@ -223,6 +258,7 @@ class ShadFormScope extends InheritedWidget {
 
   final ShadFormState _formState;
 
+  /// The ShadForm widget associated with this scope
   ShadForm get form => _formState.widget;
 
   @override

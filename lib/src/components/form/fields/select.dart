@@ -25,33 +25,71 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.initialValue,
     super.focusNode,
     super.validator,
+
+    /// {@macro ShadSelect.selectedOptionBuilder}
     required ShadSelectedOptionBuilder<T> selectedOptionBuilder,
+
+    /// {@macro ShadSelect.options}
     Iterable<Widget>? options,
 
-    /// The builder for the options of the [ShadSelect].
+    /// {@macro ShadSelect.optionsBuilder}
     Widget? Function(BuildContext, int)? optionsBuilder,
+
+    /// {@macro ShadSelect.placeholder}
     Widget? placeholder,
+
+    /// {@macro ShadSelect.closeOnTapOutside}
     bool closeOnTapOutside = true,
+
+    /// {@macro ShadSelect.minWidth}
     double? minWidth,
+
+    /// {@macro ShadSelect.maxWidth}
     double? maxWidth,
+
+    /// {@macro ShadSelect.maxHeight}
     double? maxHeight,
+
+    /// {@macro ShadSelect.decoration}
     ShadDecoration? decoration,
+
+    /// {@macro ShadSelect.trailing}
     Widget? trailing,
+
+    /// {@macro ShadSelect.padding}
     EdgeInsets? padding,
+
+    /// {@macro ShadSelect.optionsPadding}
     EdgeInsets? optionsPadding,
+
+    /// {@macro ShadSelect.showScrollToTopChevron}
     bool? showScrollToTopChevron,
+
+    /// {@macro ShadSelect.showScrollToBottomChevron}
     bool? showScrollToBottomChevron,
+
+    /// {@macro ShadSelect.scrollController}
     ScrollController? scrollController,
+
+    /// {@macro ShadSelect.anchor}
     ShadAnchorBase? anchor,
+
+    /// {@macro ShadSelect.filter}
     ImageFilter? filter,
+
+    /// {@macro ShadSelect.popoverController}
     ShadPopoverController? popoverController,
 
-    /// {@macro select.header}
+    /// {@macro ShadSelect.header}
     Widget? header,
 
-    /// {@macro select.footer}
+    /// {@macro ShadSelect.footer}
     Widget? footer,
+
+    /// {@macro ShadSelect.allowDeselection}
     bool allowDeselection = false,
+
+    /// {@macro ShadSelect.closeOnSelect}
     bool closeOnSelect = true,
 
     /// {@macro ShadPopover.groupId}

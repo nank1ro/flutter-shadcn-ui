@@ -2,6 +2,7 @@
 
 - **FEAT**: Add `ShadDivider` component (thanks to @Luckey-Elijah)
 - **FIX**: Pass `buttonDecoration` to `ShadButton` inside `ShadDatePicker` (thanks to @plusema86)
+- **CHORE**: Add comments to all components + test many of them
 
 ## 0.20.3
 
