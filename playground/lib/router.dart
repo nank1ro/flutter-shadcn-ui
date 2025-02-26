@@ -10,6 +10,7 @@ import 'package:playground/pages/checkbox.dart';
 import 'package:playground/pages/context_menu.dart';
 import 'package:playground/pages/date_picker.dart';
 import 'package:playground/pages/dialog.dart';
+import 'package:playground/pages/divider.dart';
 import 'package:playground/pages/form.dart';
 import 'package:playground/pages/icon_button.dart';
 import 'package:playground/pages/input.dart';
@@ -277,6 +278,15 @@ final router = GoRouter(
         final style = state.uri.queryParameters['style'] ?? 'primary';
         return InputOTPPage(
           style: ShadInputOTPVariant.values.byName(style),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/divider',
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ?? 'horizontal';
+        return DividerPage(
+          style: ShadDividerVariant.values.byName(style),
         );
       },
     ),
