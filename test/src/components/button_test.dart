@@ -343,5 +343,107 @@ void main() {
       // Verify onPressed was called
       expect(pressed, true);
     });
+
+    testWidgets('ShadButton matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadButton(
+            leading: Icon(Icons.star),
+            trailing: Icon(Icons.arrow_forward),
+            child: Text('Button'),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadButton),
+        matchesGoldenFile('goldens/button.png'),
+      );
+    });
+
+    testWidgets('ShadButton.destructive matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadButton.destructive(
+            leading: Icon(Icons.star),
+            trailing: Icon(Icons.arrow_forward),
+            child: Text('Button'),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadButton),
+        matchesGoldenFile('goldens/button_destructive.png'),
+      );
+    });
+
+    testWidgets('ShadButton.outline matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadButton.outline(
+            leading: Icon(Icons.star),
+            trailing: Icon(Icons.arrow_forward),
+            child: Text('Button'),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadButton),
+        matchesGoldenFile('goldens/button_outline.png'),
+      );
+    });
+
+    testWidgets('ShadButton.secondary matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadButton.secondary(
+            leading: Icon(Icons.star),
+            trailing: Icon(Icons.arrow_forward),
+            child: Text('Button'),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadButton),
+        matchesGoldenFile('goldens/button_secondary.png'),
+      );
+    });
+
+    testWidgets('ShadButton.ghost matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadButton.ghost(
+            leading: Icon(Icons.star),
+            trailing: Icon(Icons.arrow_forward),
+            child: Text('Button'),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadButton),
+        matchesGoldenFile('goldens/button_ghost.png'),
+      );
+    });
+
+    testWidgets('ShadButton.link matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadButton.link(
+            leading: Icon(Icons.star),
+            trailing: Icon(Icons.arrow_forward),
+            child: Text('Button'),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadButton),
+        matchesGoldenFile('goldens/button_link.png'),
+      );
+    });
   });
 }

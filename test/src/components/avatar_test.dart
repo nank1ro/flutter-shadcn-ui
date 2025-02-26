@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/avatar.dart'; // Adjust import path based on your project structure
 import 'package:universal_image/universal_image.dart';
@@ -142,6 +143,19 @@ void main() {
       final container = tester.widget<Container>(containerFinder);
       final decoration = container.decoration as ShapeDecoration?;
       expect(decoration?.shape, isA<CircleBorder>());
+    });
+
+    testWidgets('ShadAvatar matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadAvatar(LucideIcons.mail),
+        ),
+      );
+
+      expect(
+        find.byType(ShadAvatar),
+        matchesGoldenFile('goldens/avatar.png'),
+      );
     });
   });
 }

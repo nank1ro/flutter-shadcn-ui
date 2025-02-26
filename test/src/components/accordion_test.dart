@@ -233,5 +233,26 @@ void main() {
         reason: 'Underline should disappear after hover',
       );
     });
+
+    testWidgets('ShadAccordion matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          ShadAccordion<String>(
+            children: List.generate(2, (index) {
+              return ShadAccordionItem(
+                value: 'item$index',
+                title: Text('Item $index'),
+                child: Text('Content $index'),
+              );
+            }),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadAccordion<String>),
+        matchesGoldenFile('goldens/accordion.png'),
+      );
+    });
   });
 }

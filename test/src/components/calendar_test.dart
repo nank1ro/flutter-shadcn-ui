@@ -307,5 +307,137 @@ void main() {
         8,
       );
     });
+
+    testWidgets('ShadCalendar matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          ShadCalendar(
+            fromMonth: DateTime(2023),
+            toMonth: DateTime(2024, 12),
+            hideNavigation: true,
+            captionLayout: ShadCalendarCaptionLayout.label,
+            showWeekNumbers: false,
+            showOutsideDays: false,
+            fixedWeeks: false,
+            hideWeekdayNames: false,
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadCalendar),
+        matchesGoldenFile('goldens/calendar.png'),
+      );
+    });
+
+    testWidgets('ShadCalendar hideNavigation false matches goldens',
+        (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          ShadCalendar(
+            fromMonth: DateTime(2023),
+            toMonth: DateTime(2024, 12),
+            hideNavigation: false,
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadCalendar),
+        matchesGoldenFile('goldens/calendar_no_hide_navigation.png'),
+      );
+    });
+
+    testWidgets('ShadCalendar showWeekNumbers matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          ShadCalendar(
+            fromMonth: DateTime(2023),
+            toMonth: DateTime(2024, 12),
+            showWeekNumbers: true,
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadCalendar),
+        matchesGoldenFile('goldens/calendar_show_week_numbers.png'),
+      );
+    });
+
+    testWidgets('ShadCalendar fixedWeeks matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          ShadCalendar(
+            fromMonth: DateTime(2023),
+            toMonth: DateTime(2024, 12),
+            captionLayout: ShadCalendarCaptionLayout.label,
+            fixedWeeks: true,
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadCalendar),
+        matchesGoldenFile('goldens/calendar_fixed_weeks.png'),
+      );
+    });
+
+    testWidgets('ShadCalendar hideWeekdayNames matches goldens',
+        (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          ShadCalendar(
+            fromMonth: DateTime(2023),
+            toMonth: DateTime(2024, 12),
+            captionLayout: ShadCalendarCaptionLayout.label,
+            hideWeekdayNames: true,
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadCalendar),
+        matchesGoldenFile('goldens/calendar_hide_weekday_names.png'),
+      );
+    });
+
+    testWidgets('ShadCalendar.multiple matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          ShadCalendar.multiple(
+            numberOfMonths: 2,
+            fromMonth: DateTime(2024),
+            toMonth: DateTime(2024, 12),
+            min: 5,
+            max: 10,
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadCalendar),
+        matchesGoldenFile('goldens/calendar_multiple.png'),
+      );
+    });
+
+    testWidgets('ShadCalendar.range matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          ShadCalendar.range(
+            numberOfMonths: 2,
+            fromMonth: DateTime(2024),
+            toMonth: DateTime(2024, 12),
+            min: 5,
+            max: 10,
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadCalendar),
+        matchesGoldenFile('goldens/calendar_range.png'),
+      );
+    });
   });
 }
