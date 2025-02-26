@@ -105,6 +105,38 @@ class MyApp extends StatelessWidget {
   }
 ```
 
+The default Material `ThemeData` created by `ShadApp` is:
+
+```dart
+ThemeData(
+  fontFamily: themeData.textTheme.family,
+  extensions: themeData.extensions,
+  colorScheme: ColorScheme(
+    brightness: themeData.brightness,
+    primary: themeData.colorScheme.primary,
+    onPrimary: themeData.colorScheme.primaryForeground,
+    secondary: themeData.colorScheme.secondary,
+    onSecondary: themeData.colorScheme.secondaryForeground,
+    error: themeData.colorScheme.destructive,
+    onError: themeData.colorScheme.destructiveForeground,
+    surface: themeData.colorScheme.background,
+    onSurface: themeData.colorScheme.foreground,
+  ),
+  scaffoldBackgroundColor: themeData.colorScheme.background,
+  brightness: themeData.brightness,
+  dividerTheme: DividerThemeData(
+    color: themeData.colorScheme.border,
+    thickness: 1,
+  ),
+  textSelectionTheme: TextSelectionThemeData(
+    cursorColor: themeData.colorScheme.primary,
+    selectionColor: themeData.colorScheme.selection,
+    selectionHandleColor: themeData.colorScheme.primary,
+  ),
+  iconTheme: const IconThemeData(size: 16),
+),
+```
+
 ## Shadcn + Cupertino
 
 If you need to use shadcn components with Cupertino components, use `ShadApp.cupertino`.
@@ -158,6 +190,18 @@ class MyApp extends StatelessWidget {
 +      },
     );
   }
+```
+
+The default `CupertinoThemeData` created by `ShadApp` is:
+
+```dart
+CupertinoThemeData(
+  primaryColor: themeData.colorScheme.primary,
+  primaryContrastingColor: themeData.colorScheme.primaryForeground,
+  scaffoldBackgroundColor: themeData.colorScheme.background,
+  barBackgroundColor: themeData.colorScheme.primary,
+  brightness: themeData.brightness,
+),
 ```
 
 ## Shadcn + Custom App

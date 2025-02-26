@@ -2,7 +2,16 @@
 title: OrderPolicy
 sidebar:
   order: 5
+  badge:
+    text: Deprecated
+    variant: danger
 ---
+
+import { Aside } from "@astrojs/starlight/components";
+
+<Aside type="danger">
+  Deprecated, please use `leading` and `trailing` in each component
+</Aside>
 
 The **OrderPolicy** class handles the order of the items in a list.
 It can be very useful to update the order of how items of a shadcn component are rendered.

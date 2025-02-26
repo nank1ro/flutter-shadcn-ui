@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -50,16 +51,26 @@ class ShadDateTimeRange {
   String toString() => 'ShadDateTimeRange(start: $start, end $end)';
 }
 
+/// Represents the data model for a single month in the calendar.
+///
+/// Contains the month date, a list of dates to display, and the first date
+/// shown.
 @immutable
 class ShadCalendarModel {
+  /// Creates a calendar model for a specific month.
   const ShadCalendarModel({
     required this.month,
     required this.dates,
     required this.firstDateShown,
   });
 
+  /// The month this model represents.
   final DateTime month;
+
+  /// The list of dates to display, including nulls for hidden outside days.
   final List<DateTime?> dates;
+
+  /// The first date shown in the grid, used for weekday alignment.
   final DateTime firstDateShown;
 
   @override
@@ -75,8 +86,10 @@ class ShadCalendarModel {
   }
 }
 
+/// Variants available for the [ShadCalendar] widget.
 enum ShadCalendarVariant { single, multiple, range }
 
+/// Caption layout options for the [ShadCalendar] widget.
 enum ShadCalendarCaptionLayout {
   /// Displays the month and year as a label. Default value.
   label,
@@ -91,7 +104,16 @@ enum ShadCalendarCaptionLayout {
   dropdownYears,
 }
 
+/// A customizable calendar widget for selecting dates or date ranges.
+///
+/// The [ShadCalendar] widget supports single date selection, multiple date
+/// selection, or date range selection through its variants. It offers extensive
+/// customization for appearance, navigation, and behavior, integrating with
+/// [ShadTheme] for styling. Use named constructors like [ShadCalendar.multiple]
+/// or [ShadCalendar.range] for specific selection modes, or [ShadCalendar.raw]
+/// for full control.
 class ShadCalendar extends StatefulWidget {
+  /// Creates a single-date selection calendar widget.
   const ShadCalendar({
     super.key,
     this.selected,
@@ -165,6 +187,7 @@ class ShadCalendar extends StatefulWidget {
         onRangeChanged = null,
         selectedRange = null;
 
+  /// Creates a multiple-date selection calendar widget.
   const ShadCalendar.multiple({
     super.key,
     List<DateTime>? selected,
@@ -240,6 +263,7 @@ class ShadCalendar extends StatefulWidget {
         selectedRange = null,
         allowDeselection = null;
 
+  /// Creates a date range selection calendar widget.
   const ShadCalendar.range({
     super.key,
     ShadDateTimeRange? selected,
@@ -315,6 +339,8 @@ class ShadCalendar extends StatefulWidget {
         selectedRange = selected,
         onRangeChanged = onChanged;
 
+  /// Creates a calendar widget with a specified [variant], allowing full
+  /// customization.
   const ShadCalendar.raw({
     super.key,
     required this.variant,
@@ -1326,7 +1352,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
       builder: (context, isHovered, _) {
         return Opacity(
           opacity: isHovered ? 1 : effectiveNavigationButtonDisabledOpacity,
-          child: ShadButton.outline(
+          child: ShadIconButton.outline(
             width: effectiveNavigationButtonSize,
             height: effectiveNavigationButtonSize,
             padding: effectiveNavigationButtonPadding,
@@ -1347,7 +1373,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
       builder: (context, isHovered, _) {
         return Opacity(
           opacity: isHovered ? 1 : effectiveNavigationButtonDisabledOpacity,
-          child: ShadButton.outline(
+          child: ShadIconButton.outline(
             width: effectiveNavigationButtonSize,
             height: effectiveNavigationButtonSize,
             padding: effectiveNavigationButtonPadding,
@@ -1355,7 +1381,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
             onHoverChange: (hovered) =>
                 forwardMonthButtonHovered.value = hovered,
             onPressed: () => goToMonth(currentMonth.nextMonth),
-            child: Icon(
+            icon: Icon(
               effectiveForwardNavigationButtonSrc,
               size: effectiveNavigationButtonIconSize,
             ),
@@ -1493,6 +1519,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                   crossAxisSpacing: effectiveGridCrossAxisSpacing,
                   crossAxisCount: columnsCount,
                   shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   children: dateModel.dates.mapIndexed((index, date) {
                     if (date == null) return const SizedBox.shrink();
                     final selected = switch (widget.variant) {

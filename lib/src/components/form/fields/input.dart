@@ -25,70 +25,204 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     void Function(String)? onChanged,
     super.valueTransformer,
     super.onReset,
+
+    /// {@macro ShadInput.decoration}
     ShadDecoration? decoration,
+
+    /// {@macro ShadInput.placeholder}
     Widget? placeholder,
+
+    /// {@macro ShadInput.magnifierConfiguration}
     TextMagnifierConfiguration magnifierConfiguration =
         TextMagnifierConfiguration.disabled,
+
+    /// {@macro ShadInput.keyboardType}
     TextInputType? keyboardType,
+
+    /// {@macro ShadInput.textInputAction}
     TextInputAction? textInputAction,
+
+    /// {@macro ShadInput.textCapitalization}
     TextCapitalization textCapitalization = TextCapitalization.none,
+
+    /// {@macro ShadInput.style}
     TextStyle? style,
+
+    /// {@macro ShadInput.strutStyle}
     StrutStyle? strutStyle,
+
+    /// {@macro ShadInput.textAlign}
     TextAlign textAlign = TextAlign.start,
+
+    /// {@macro ShadInput.textDirection}
     TextDirection? textDirection,
+
+    /// {@macro ShadInput.autofocus}
     bool autofocus = false,
+
+    /// {@macro ShadInput.obscuringCharacter}
     String obscuringCharacter = '•',
+
+    /// {@macro ShadInput.obscureText}
     bool obscureText = false,
+
+    /// {@macro ShadInput.autocorrect}
     bool autocorrect = true,
+
+    /// {@macro ShadInput.smartDashesType}
     SmartDashesType? smartDashesType,
+
+    /// {@macro ShadInput.smartQuotesType}
     SmartQuotesType? smartQuotesType,
+
+    /// {@macro ShadInput.enableSuggestions}
     bool enableSuggestions = true,
+
+    /// {@macro ShadInput.maxLines}
     int? maxLines = 1,
+
+    /// {@macro ShadInput.minLines}
     int? minLines,
+
+    /// {@macro ShadInput.expands}
     bool expands = false,
+
+    /// {@macro ShadFormBuilderField.readOnly}
     super.readOnly,
+
+    /// {@macro ShadInput.showCursor}
     bool? showCursor,
+
+    /// {@macro ShadInput.maxLength}
     int? maxLength,
+
+    /// {@macro ShadInput.maxLengthEnforcement}
     MaxLengthEnforcement? maxLengthEnforcement,
+
+    /// {@macro ShadInput.onEditingComplete}
     VoidCallback? onEditingComplete,
+
+    /// {@macro ShadInput.onSubmitted}
     ValueChanged<String>? onSubmitted,
+
+    /// {@macro ShadInput.onAppPrivateCommand}
     AppPrivateCommandCallback? onAppPrivateCommand,
+
+    /// {@macro ShadInput.inputFormatters}
     List<TextInputFormatter>? inputFormatters,
+
+    /// {@macro ShadInput.cursorWidth}
     double cursorWidth = 2.0,
+
+    /// {@macro ShadInput.cursorHeight}
     double? cursorHeight,
+
+    /// {@macro ShadInput.cursorRadius}
     Radius? cursorRadius,
+
+    /// {@macro ShadInput.cursorOpacityAnimates}
     bool? cursorOpacityAnimates,
+
+    /// {@macro ShadInput.cursorColor}
     Color? cursorColor,
+
+    /// {@macro ShadInput.selectionHeightStyle}
     ui.BoxHeightStyle selectionHeightStyle = ui.BoxHeightStyle.tight,
+
+    /// {@macro ShadInput.selectionWidthStyle}
     ui.BoxWidthStyle selectionWidthStyle = ui.BoxWidthStyle.tight,
+
+    /// {@macro ShadInput.keyboardAppearance}
     Brightness? keyboardAppearance,
+
+    /// {@macro ShadInput.scrollPadding}
     EdgeInsets scrollPadding = const EdgeInsets.all(20),
+
+    /// {@macro ShadInput.enableInteractiveSelection}
     bool? enableInteractiveSelection,
+
+    /// {@macro ShadInput.selectionControls}
     TextSelectionControls? selectionControls,
+
+    /// {@macro ShadInput.dragStartBehavior}
     DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+
+    /// {@macro ShadInput.onPressed}
     GestureTapCallback? onPressed,
+
+    /// {@macro ShadInput.onPressedAlwaysCalled}
     bool onPressedAlwaysCalled = false,
+
+    /// {@macro ShadInput.onPressedOutside}
     TapRegionCallback? onPressedOutside,
+
+    /// {@macro ShadInput.mouseCursor}
     MouseCursor? mouseCursor,
+
+    /// {@macro ShadInput.scrollPhysics}
     ScrollPhysics? scrollPhysics,
+
+    /// {@macro ShadInput.scrollController}
     ScrollController? scrollController,
+
+    /// {@macro ShadInput.autofillHints}
     Iterable<String>? autofillHints,
+
+    /// {@macro ShadInput.clipBehavior}
     Clip clipBehavior = Clip.hardEdge,
+
+    /// {@macro ShadInput.scribbleEnabled}
     bool scribbleEnabled = true,
+
+    /// {@macro ShadInput.enableIMEPersonalizedLearning}
     bool enableIMEPersonalizedLearning = true,
+
+    /// {@macro ShadInput.contentInsertionConfiguration}
     ContentInsertionConfiguration? contentInsertionConfiguration,
+
+    /// {@macro ShadInput.contextMenuBuilder}
     EditableTextContextMenuBuilder? contextMenuBuilder,
+
+    /// {@macro ShadInput.undoController}
     UndoHistoryController? undoController,
+
+    /// {@macro ShadInput.spellCheckConfiguration}
     SpellCheckConfiguration? spellCheckConfiguration,
+
+    /// {@macro ShadInput.selectionColor}
     Color? selectionColor,
+
+    /// {@macro ShadInput.padding}
     EdgeInsets? padding,
-    Widget? prefix,
-    Widget? suffix,
+
+    /// {@macro ShadInput.prefix}
+    @Deprecated('Use leading instead') Widget? prefix,
+
+    /// {@macro ShadInput.suffix}
+    @Deprecated('Use trailing instead') Widget? suffix,
+
+    /// {@macro ShadInput.leading}
+    Widget? leading,
+
+    /// {@macro ShadInput.trailing}
+    Widget? trailing,
+
+    /// {@macro ShadInput.mainAxisAlignment}
     MainAxisAlignment? mainAxisAlignment,
+
+    /// {@macro ShadInput.crossAxisAlignment}
     CrossAxisAlignment? crossAxisAlignment,
+
+    /// {@macro ShadInput.placeholderStyle}
     TextStyle? placeholderStyle,
+
+    /// {@macro ShadInput.placeholderAlignment}
     Alignment? placeholderAlignment,
+
+    /// {@macro ShadInput.inputPadding}
     EdgeInsets? inputPadding,
+
+    /// {@macro ShadInput.gap}
     double? gap,
   }) : super(
           initialValue: controller != null ? controller.text : initialValue,
@@ -165,6 +299,8 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
               padding: padding,
               prefix: prefix,
               suffix: suffix,
+              leading: leading,
+              trailing: trailing,
               mainAxisAlignment: mainAxisAlignment,
               crossAxisAlignment: crossAxisAlignment,
               placeholderStyle: placeholderStyle,

@@ -30,7 +30,7 @@ class AccordionPage extends StatefulWidget {
 }
 
 class _AccordionPageState extends State<AccordionPage> {
-  var type = ShadAccordionType.multiple;
+  var type = ShadAccordionVariant.multiple;
   var underlineTitle = true;
 
   @override
@@ -51,7 +51,7 @@ class _AccordionPageState extends State<AccordionPage> {
         MyEnumProperty(
           label: 'Type',
           value: type,
-          values: ShadAccordionType.values,
+          values: ShadAccordionVariant.values,
           onChanged: (value) {
             if (value != null) {
               setState(() => type = value);
@@ -67,7 +67,7 @@ class _AccordionPageState extends State<AccordionPage> {
       children: [
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
-          child: type == ShadAccordionType.single
+          child: type == ShadAccordionVariant.single
               ? ShadAccordion<({String content, String title})>(
                   children: children,
                 )

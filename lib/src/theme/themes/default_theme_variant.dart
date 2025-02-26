@@ -19,6 +19,7 @@ import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
+import 'package:shadcn_ui/src/theme/components/divider.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
 import 'package:shadcn_ui/src/theme/components/menubar.dart';
@@ -931,9 +932,19 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ),
     );
   }
-
+  
   @override
   ShadMenubarTheme menubarTheme() {
     return const ShadMenubarTheme();
+  }
+  
+  @override
+  ShadDividerTheme dividerTheme() {
+    return ShadDividerTheme(
+      thickness: 1,
+      color: colorScheme.border,
+      verticalMargin: const EdgeInsets.symmetric(horizontal: 16),
+      horizontalMargin: const EdgeInsets.symmetric(vertical: 16),
+    );
   }
 }

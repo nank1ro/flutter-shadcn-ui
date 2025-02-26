@@ -1,3 +1,68 @@
+## 0.21.0
+
+- **FEAT**: Add `ShadDivider` component (thanks to @Luckey-Elijah)
+- **FIX**: Pass `buttonDecoration` to `ShadButton` inside `ShadDatePicker` (thanks to @plusema86)
+- **CHORE**: Add comments to all components + test many of them
+
+## 0.20.3
+
+- **FIX**: Validation mode on form field reset (thanks to @Mayb3Nots)
+
+## 0.20.2
+
+- **REFACTOR**: Deprecate `ShadTab.icon`, use `ShadTab.leading` instead. Add `trailing`.
+- **FIX**: Disable scroll inside `ShadCalendar`
+
+## 0.20.1
+
+- **REFACTOR**: Set `debugShowCheckedModeBanner` to `false` by default in `ShadApp`.
+- **FIX** Expose `ShadInputOTPTheme`.
+
+## 0.20.0
+
+- **FEAT**: Add `ShadIconButton` component.
+- **REFACTOR**: Deprecated `ShadButton.icon`, use `ShadIconButton` for a button with just an icon and `ShadButton.leading` for a button with an icon and a text.
+- **REFACTOR**: Deprecate `orderPolicy`, use `leading` and `trailing` in the component.
+- **REFACTOR**: Deprecate `prefix` and `suffix` in `ShadInput`, use `leading` and `trailing` instead.
+- **REFACTOR** Deprecate `searchInputPrefix` in `ShadSelect`, use `searchInputLeading` instead.
+
+## 0.19.3
+
+- **FIX**: Make `selectedOptionBuilder` required in `ShadSelect` (thanks to @muradab).
+- **FIX**: Add `optionsBuilder` to `ShadSelect` and its form fields where it was missing.
+
+## 0.19.2
+
+- **FIX**: Add constraints to `ShadCard` child.
+
+## 0.19.1
+
+- **REFACTOR**: Rename `materialTextTheme` into `applyGoogleFontToTextTheme`.
+- **FEAT**: Allow accessing the `ShadTheme` with the context, in the `materialThemeBuilder` and `appBuilder`.
+
+## 0.19.0
+
+- **FIX**: `ShadInput` `readOnly` not updating.
+- **BREAKING CHANGE**: Rename `ShadSelect` and form fields `controller` to `popoverController`.
+- **FEAT**: Add `controller` to `ShadSelect` and form fields, to control the selected values.
+- **FIX**: Improve the `ShadResizable` controller handling and simplify the logic to resize the panels.
+- **FIX**: `ShadResizable` handle position with `Axis.vertical`.
+- **BREAKING CHANGE**: Now `ShadResizable` requires an `id`, to be able to handle when a panel is removed/added from the widget tree correctly.
+- **CHORE**: Correctly set the `theme` or `darkTheme` to the internal `MaterialApp`.
+
+## 0.18.7
+
+- **FIX**: `ShadApp` dark theme behavior now is the same as Material. The dark theme is applied only if you provide a `darkTheme` and the user theme mode is dark
+
+## 0.18.6
+
+- **FIX**: `ShadTimePicker` controller not being used correctly when the component is initialized. Now each field allows a single digit instead of two.
+
+## 0.18.5
+
+- **FIX**: `ShadCalendar` forward button icon color.
+- **CHORE**: Bump the version of `universal_image` (thanks to @brunosemfio).
+
 ## 0.18.4
 
 - **FIX**: `ShadDatePicker` popover closes on caption selection.

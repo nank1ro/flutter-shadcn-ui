@@ -27,6 +27,7 @@ See the [documentation](https://flutter-shadcn-ui.mariuti.com/) to interact with
 - [x] [Avatar](https://flutter-shadcn-ui.mariuti.com/components/avatar/)
 - [x] [Badge](https://flutter-shadcn-ui.mariuti.com/components/badge/)
 - [x] [Button](https://flutter-shadcn-ui.mariuti.com/components/button/)
+- [x] [IconButton](https://flutter-shadcn-ui.mariuti.com/components/icon-button/)
 - [x] [Calendar](https://flutter-shadcn-ui.mariuti.com/components/calendar/)
 - [x] [Card](https://flutter-shadcn-ui.mariuti.com/components/card/)
 - [ ] Carousel

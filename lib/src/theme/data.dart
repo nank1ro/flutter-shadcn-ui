@@ -14,6 +14,7 @@ import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
+import 'package:shadcn_ui/src/theme/components/divider.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
 import 'package:shadcn_ui/src/theme/components/menubar.dart';
@@ -92,6 +93,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadTimePickerTheme? timePickerTheme,
     ShadInputOTPTheme? inputOTPTheme,
     ShadMenubarTheme? menubarTheme,
+    ShadDividerTheme? dividerTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -235,6 +237,7 @@ class ShadThemeData extends ShadBaseTheme {
           effectiveVariant.timePickerTheme().mergeWith(timePickerTheme),
       inputOTPTheme: effectiveVariant.inputOTPTheme().mergeWith(inputOTPTheme),
       menubarTheme: effectiveVariant.menubarTheme().mergeWith(menubarTheme),
+      dividerTheme: effectiveVariant.dividerTheme().mergeWith(dividerTheme),
     );
   }
 
@@ -289,6 +292,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.timePickerTheme,
     required super.inputOTPTheme,
     required super.menubarTheme,
+    required super.dividerTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -392,6 +396,7 @@ class ShadThemeData extends ShadBaseTheme {
       inputOTPTheme:
           ShadInputOTPTheme.lerp(a.inputOTPTheme, b.inputOTPTheme, t),
       menubarTheme: ShadMenubarTheme.lerp(a.menubarTheme, b.menubarTheme, t),
+      dividerTheme: ShadDividerTheme.lerp(a.dividerTheme, b.dividerTheme, t),
     );
   }
 
@@ -450,6 +455,7 @@ class ShadThemeData extends ShadBaseTheme {
         other.timePickerTheme == timePickerTheme &&
         other.inputOTPTheme == inputOTPTheme &&
         other.menubarTheme == menubarTheme;
+        other.dividerTheme == dividerTheme;
   }
 
   @override
@@ -504,6 +510,7 @@ class ShadThemeData extends ShadBaseTheme {
         timePickerTheme.hashCode ^
         inputOTPTheme.hashCode ^
         menubarTheme.hashCode;
+        dividerTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -557,6 +564,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadTimePickerTheme? timePickerTheme,
     ShadInputOTPTheme? inputOTPTheme,
     ShadMenubarTheme? menubarTheme,
+    ShadDividerTheme? dividerTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -614,6 +622,7 @@ class ShadThemeData extends ShadBaseTheme {
       timePickerTheme: timePickerTheme ?? this.timePickerTheme,
       inputOTPTheme: inputOTPTheme ?? this.inputOTPTheme,
       menubarTheme: menubarTheme ?? this.menubarTheme,
+      dividerTheme: dividerTheme ?? this.dividerTheme,
     );
   }
 }

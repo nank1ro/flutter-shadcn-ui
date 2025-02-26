@@ -14,10 +14,20 @@ class ShadProgressTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadProgress.backgroundColor}
   final Color? backgroundColor;
+
+  /// {@macro ShadProgress.color}
   final Color? color;
+
+  /// {@macro ShadProgress.borderRadius}
   final BorderRadius? borderRadius;
+
+  /// {@macro ShadProgress.innerBorderRadius}
   final BorderRadius? innerBorderRadius;
+
+  /// {@macro ShadProgress.minHeight}
   final double? minHeight;
 
   static ShadProgressTheme lerp(

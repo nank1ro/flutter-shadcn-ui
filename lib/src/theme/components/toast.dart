@@ -32,25 +32,65 @@ class ShadToastTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadToast.backgroundColor}
   final Color? backgroundColor;
+
+  /// {@macro ShadToast.closeIconData}
   final IconData? closeIconData;
+
+  /// {@macro ShadToast.alignment}
   final Alignment? alignment;
+
+  /// {@macro ShadToast.offset}
   final Offset? offset;
+
+  /// {@macro ShadToast.duration}
   final Duration? duration;
+
+  /// {@macro ShadToast.animateIn}
   final List<Effect<dynamic>>? animateIn;
+
+  /// {@macro ShadToast.animateOut}
   final List<Effect<dynamic>>? animateOut;
+
+  /// {@macro ShadToast.textDirection}
   final TextDirection? textDirection;
+
+  /// {@macro ShadToast.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadToast.showCloseIconOnlyWhenHovered}
   final bool? showCloseIconOnlyWhenHovered;
+
+  /// {@macro ShadToast.titleStyle}
   final TextStyle? titleStyle;
+
+  /// {@macro ShadToast.descriptionStyle}
   final TextStyle? descriptionStyle;
+
+  /// {@macro ShadToast.actionPadding}
   final EdgeInsets? actionPadding;
+
+  /// {@macro ShadToast.border}
   final Border? border;
+
+  /// {@macro ShadToast.radius}
   final BorderRadius? radius;
+
+  /// {@macro ShadToast.shadows}
   final List<BoxShadow>? shadows;
+
+  /// {@macro ShadToast.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadToast.closeIconPosition}
   final ShadPosition? closeIconPosition;
+
+  /// {@macro ShadToast.constraints}
   final BoxConstraints? constraints;
+
+  /// {@macro ShadToast.orderPolicy}
   final WidgetOrderPolicy? orderPolicy;
 
   static ShadToastTheme lerp(

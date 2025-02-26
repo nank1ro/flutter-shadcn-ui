@@ -25,7 +25,7 @@ class AccordionPage extends StatelessWidget {
     required this.style,
   });
 
-  final ShadAccordionType style;
+  final ShadAccordionVariant style;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class AccordionPage extends StatelessWidget {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: switch (style) {
-            ShadAccordionType.single =>
+            ShadAccordionVariant.single =>
               ShadAccordion<({String content, String title})>(
                 children: details.map(
                   (detail) => ShadAccordionItem(
@@ -47,7 +47,7 @@ class AccordionPage extends StatelessWidget {
                   ),
                 ),
               ),
-            ShadAccordionType.multiple =>
+            ShadAccordionVariant.multiple =>
               ShadAccordion<({String content, String title})>.multiple(
                 children: details.map(
                   (detail) => ShadAccordionItem(

@@ -2,14 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
+/// Variants available for the [ShadAlert] widget.
 enum ShadAlertVariant {
   primary,
   destructive,
 }
 
+/// A customizable alert widget that displays a message with optional icon and
+/// styling.
+///
+/// The [ShadAlert] widget can be used to show informational or warning messages
+/// to users. It supports two variants: primary (default) and destructive, which
+/// can be styled through the [ShadTheme].
+/// Use the named constructors [ShadAlert.destructive] or [ShadAlert.raw] for
+/// specific configurations.
 class ShadAlert extends StatelessWidget {
+  /// Creates a primary variant alert widget.
   const ShadAlert({
     super.key,
     this.icon,
@@ -24,9 +33,10 @@ class ShadAlert extends StatelessWidget {
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
-    this.orderPolicy,
   }) : variant = ShadAlertVariant.primary;
 
+  /// Creates a destructive variant alert widget, typically used for error or
+  /// warning messages.
   const ShadAlert.destructive({
     super.key,
     this.icon,
@@ -41,9 +51,10 @@ class ShadAlert extends StatelessWidget {
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
-    this.orderPolicy,
   }) : variant = ShadAlertVariant.destructive;
 
+  /// Creates a raw alert widget with a specified [variant], allowing full
+  /// control over configuration.
   const ShadAlert.raw({
     super.key,
     required this.variant,
@@ -59,28 +70,93 @@ class ShadAlert extends StatelessWidget {
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
-    this.orderPolicy,
   });
 
-  final ShadAlertVariant variant;
-  final Widget? icon;
-  final IconData? iconData;
-  final Widget? title;
-  final Widget? description;
-  final TextDirection? textDirection;
-  final ShadDecoration? decoration;
-  final EdgeInsets? iconPadding;
-  final Color? iconColor;
-  final TextStyle? titleStyle;
-  final TextStyle? descriptionStyle;
-  final MainAxisAlignment? mainAxisAlignment;
-  final CrossAxisAlignment? crossAxisAlignment;
-
-  /// {@template ShadAlert.orderPolicy}
-  /// The order policy of the items that compose the alert, defaults to
-  /// [WidgetOrderPolicy.linear()].
+  /// {@template ShadAlert.variant}
+  /// The variant of the alert, either [ShadAlertVariant.primary] or
+  /// [ShadAlertVariant.destructive].
+  /// Determines the visual style applied through the [ShadTheme].
   /// {@endtemplate}
-  final WidgetOrderPolicy? orderPolicy;
+  final ShadAlertVariant variant;
+
+  /// {@template ShadAlert.icon}
+  /// A custom widget to use as the alert's icon, takes precedence over
+  /// [iconData]. If provided, this widget will be displayed instead of an icon
+  /// generated from [iconData].
+  /// {@endtemplate}
+  final Widget? icon;
+
+  /// {@template ShadAlert.iconData}
+  /// The icon data to display if [icon] is not provided.
+  /// Used to create a default [Icon] widget with the specified [iconColor].
+  /// {@endtemplate}
+  final IconData? iconData;
+
+  /// {@template ShadAlert.title}
+  /// The title widget of the alert, typically a [Text] widget.
+  /// Displayed with the style defined by [titleStyle] or theme defaults.
+  /// {@endtemplate}
+  final Widget? title;
+
+  /// {@template ShadAlert.description}
+  /// The description widget of the alert, typically a [Text] widget providing
+  /// additional details.
+  /// Displayed with the style defined by [descriptionStyle] or theme defaults.
+  /// {@endtemplate}
+  final Widget? description;
+
+  /// {@template ShadAlert.textDirection}
+  /// The text direction for the alert's content, overrides the default
+  /// direction if specified. Can be set to [TextDirection.ltr] or
+  /// [TextDirection.rtl].
+  /// {@endtemplate}
+  final TextDirection? textDirection;
+
+  /// {@template ShadAlert.decoration}
+  /// Custom decoration for the alert, merged with theme defaults if provided.
+  /// Allows customization of border, padding, and other visual properties.
+  /// {@endtemplate}
+  final ShadDecoration? decoration;
+
+  /// {@template ShadAlert.iconPadding}
+  /// Padding around the icon, defaults to right padding of 12 if not specified.
+  /// Controls the spacing between the icon and adjacent content.
+  /// {@endtemplate}
+  final EdgeInsets? iconPadding;
+
+  /// {@template ShadAlert.iconColor}
+  /// Color of the icon, overrides theme default if provided.
+  /// Applied to the [Icon] created from [iconData] if [icon] is null.
+  /// {@endtemplate}
+  final Color? iconColor;
+
+  /// {@template ShadAlert.titleStyle}
+  /// Style for the title text, overrides theme default if provided.
+  /// Controls font size, weight, color, and other text properties of the
+  /// [title].
+  /// {@endtemplate}
+  final TextStyle? titleStyle;
+
+  /// {@template ShadAlert.descriptionStyle}
+  /// Style for the description text, overrides theme default if provided.
+  /// Controls font size, weight, color, and other text properties of the
+  /// [description].
+  /// {@endtemplate}
+  final TextStyle? descriptionStyle;
+
+  /// {@template ShadAlert.mainAxisAlignment}
+  /// Main axis alignment for the alert's content, defaults to start if not
+  /// specified. Controls horizontal arrangement of icon and text content within
+  /// the [Row].
+  /// {@endtemplate}
+  final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@template ShadAlert.crossAxisAlignment}
+  /// Cross axis alignment for the alert's content, defaults to start if not
+  /// specified. Controls vertical alignment of icon and text content within the
+  /// [Row].
+  /// {@endtemplate}
+  final CrossAxisAlignment? crossAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -122,13 +198,14 @@ class ShadAlert extends StatelessWidget {
           )
         : null;
 
-    final effectiveTitleStyle = titleStyle ??
-        effectiveAlertTheme.titleStyle ??
-        theme.textTheme.p.copyWith(
+    final effectiveTitleStyle = theme.textTheme.p
+        .copyWith(
           color: theme.colorScheme.foreground,
           fontWeight: FontWeight.w500,
           height: 1,
-        );
+        )
+        .merge(effectiveAlertTheme.titleStyle)
+        .merge(titleStyle);
 
     final effectiveDescriptionStyle = descriptionStyle ??
         effectiveAlertTheme.descriptionStyle ??
@@ -141,10 +218,6 @@ class ShadAlert extends StatelessWidget {
     final effectiveCrossAxisAlignment = crossAxisAlignment ??
         effectiveAlertTheme.crossAxisAlignment ??
         CrossAxisAlignment.start;
-
-    final effectiveOrderPolicy = orderPolicy ??
-        effectiveAlertTheme.orderPolicy ??
-        const WidgetOrderPolicy.linear();
 
     return ShadDecorator(
       decoration: effectiveDecoration,
@@ -172,7 +245,7 @@ class ShadAlert extends StatelessWidget {
               ],
             ),
           ),
-        ].order(effectiveOrderPolicy),
+        ],
       ),
     );
   }

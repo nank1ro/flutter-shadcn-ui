@@ -12,6 +12,8 @@ import 'package:example/pages/context_menu.dart';
 import 'package:example/pages/date_picker.dart';
 import 'package:example/pages/date_picker_form_field.dart';
 import 'package:example/pages/dialog.dart';
+import 'package:example/pages/divider.dart';
+import 'package:example/pages/icon_button.dart';
 import 'package:example/pages/input.dart';
 import 'package:example/pages/input_form_field.dart';
 import 'package:example/pages/input_otp.dart';
@@ -28,8 +30,8 @@ import 'package:example/pages/sheet.dart';
 import 'package:example/pages/slider.dart';
 import 'package:example/pages/switch.dart';
 import 'package:example/pages/switch_form_field.dart';
-import 'package:example/pages/tabs.dart';
 import 'package:example/pages/table.dart';
+import 'package:example/pages/tabs.dart';
 import 'package:example/pages/time_picker.dart';
 import 'package:example/pages/time_picker_form_field.dart';
 import 'package:example/pages/toast.dart';
@@ -37,7 +39,6 @@ import 'package:example/pages/tooltip.dart';
 import 'package:example/pages/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
-
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 void main() {
@@ -60,6 +61,8 @@ final routes = <String, WidgetBuilder>{
   '/date-picker': (_) => const DatePickerPage(),
   '/date-picker-form-field': (_) => const DatePickerFormFieldPage(),
   '/dialog': (_) => const DialogPage(),
+  '/divider': (_) => const DividerPage(),
+  '/icon-button': (_) => const IconButtonPage(),
   '/input': (_) => const InputPage(),
   '/input-OTP': (_) => const InputOTPPage(),
   '/input-OTP-form-field': (_) => const InputOTPFormFieldPage(),

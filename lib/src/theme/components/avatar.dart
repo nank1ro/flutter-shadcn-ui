@@ -11,9 +11,17 @@ class ShadAvatarTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadAvatar.size}
   final Size? size;
+
+  /// {@macro ShadAvatar.shape}
   final ShapeBorder? shape;
+
+  /// {@macro ShadAvatar.backgroundColor}
   final Color? backgroundColor;
+
+  /// {@macro ShadAvatar.fit}
   final BoxFit? fit;
 
   static ShadAvatarTheme lerp(

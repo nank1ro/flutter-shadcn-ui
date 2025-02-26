@@ -25,33 +25,71 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.initialValue,
     super.focusNode,
     super.validator,
+
+    /// {@macro ShadSelect.selectedOptionBuilder}
     required ShadSelectedOptionBuilder<T> selectedOptionBuilder,
+
+    /// {@macro ShadSelect.options}
     Iterable<Widget>? options,
 
-    /// The builder for the options of the [ShadSelect].
+    /// {@macro ShadSelect.optionsBuilder}
     Widget? Function(BuildContext, int)? optionsBuilder,
-    Widget? placeholder,
-    bool closeOnTapOutside = true,
-    double? minWidth,
-    double? maxWidth,
-    double? maxHeight,
-    ShadDecoration? decoration,
-    Widget? trailing,
-    EdgeInsets? padding,
-    EdgeInsets? optionsPadding,
-    bool? showScrollToTopChevron,
-    bool? showScrollToBottomChevron,
-    ScrollController? scrollController,
-    ShadAnchorBase? anchor,
-    ImageFilter? filter,
-    ShadPopoverController? controller,
 
-    /// {@macro select.header}
+    /// {@macro ShadSelect.placeholder}
+    Widget? placeholder,
+
+    /// {@macro ShadSelect.closeOnTapOutside}
+    bool closeOnTapOutside = true,
+
+    /// {@macro ShadSelect.minWidth}
+    double? minWidth,
+
+    /// {@macro ShadSelect.maxWidth}
+    double? maxWidth,
+
+    /// {@macro ShadSelect.maxHeight}
+    double? maxHeight,
+
+    /// {@macro ShadSelect.decoration}
+    ShadDecoration? decoration,
+
+    /// {@macro ShadSelect.trailing}
+    Widget? trailing,
+
+    /// {@macro ShadSelect.padding}
+    EdgeInsets? padding,
+
+    /// {@macro ShadSelect.optionsPadding}
+    EdgeInsets? optionsPadding,
+
+    /// {@macro ShadSelect.showScrollToTopChevron}
+    bool? showScrollToTopChevron,
+
+    /// {@macro ShadSelect.showScrollToBottomChevron}
+    bool? showScrollToBottomChevron,
+
+    /// {@macro ShadSelect.scrollController}
+    ScrollController? scrollController,
+
+    /// {@macro ShadSelect.anchor}
+    ShadAnchorBase? anchor,
+
+    /// {@macro ShadSelect.filter}
+    ImageFilter? filter,
+
+    /// {@macro ShadSelect.popoverController}
+    ShadPopoverController? popoverController,
+
+    /// {@macro ShadSelect.header}
     Widget? header,
 
-    /// {@macro select.footer}
+    /// {@macro ShadSelect.footer}
     Widget? footer,
+
+    /// {@macro ShadSelect.allowDeselection}
     bool allowDeselection = false,
+
+    /// {@macro ShadSelect.closeOnSelect}
     bool closeOnSelect = true,
 
     /// {@macro ShadPopover.groupId}
@@ -62,6 +100,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.shrinkWrap}
     bool? shrinkWrap,
+
+    /// {@macro ShadSelect.controller}
+    ShadSelectController<T>? controller,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -93,13 +134,14 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               showScrollToBottomChevron: showScrollToBottomChevron,
               scrollController: scrollController,
               filter: filter,
-              controller: controller,
+              popoverController: popoverController,
               header: header,
               footer: footer,
               closeOnSelect: closeOnSelect,
               groupId: groupId,
               itemCount: itemCount,
               shrinkWrap: shrinkWrap,
+              controller: controller,
             );
           },
         );
@@ -141,12 +183,13 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     ShadAnchorBase? anchor,
     ImageFilter? filter,
     Widget? searchDivider,
-    Widget? searchInputPrefix,
+    @Deprecated('Use searchInputLeading instead') Widget? searchInputPrefix,
+    Widget? searchInputLeading,
     Widget? searchPlaceholder,
     EdgeInsets? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
-    ShadPopoverController? controller,
+    ShadPopoverController? popoverController,
 
     /// {@macro select.header}
     Widget? header,
@@ -164,6 +207,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.shrinkWrap}
     bool? shrinkWrap,
+
+    /// {@macro ShadSelect.controller}
+    ShadSelectController<T>? controller,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -198,17 +244,19 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               onSearchChanged: onSearchChanged,
               searchDivider: searchDivider,
               searchInputPrefix: searchInputPrefix,
+              searchInputLeading: searchInputLeading,
               searchPlaceholder: searchPlaceholder,
               searchPadding: searchPadding,
               search: search,
               clearSearchOnClose: clearSearchOnClose,
-              controller: controller,
+              popoverController: popoverController,
               header: header,
               footer: footer,
               closeOnSelect: closeOnSelect,
               groupId: groupId,
               itemCount: itemCount,
               shrinkWrap: shrinkWrap,
+              controller: controller,
             );
           },
         );
@@ -231,7 +279,10 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.validator,
     required ShadSelectVariant variant,
     required ShadSelectedOptionBuilder<T> selectedOptionBuilder,
-    required Iterable<Widget> options,
+    Iterable<Widget>? options,
+
+    /// The builder for the options of the [ShadSelect].
+    Widget? Function(BuildContext, int)? optionsBuilder,
     ValueChanged<String>? onSearchChanged,
     Widget? placeholder,
     bool closeOnTapOutside = true,
@@ -247,12 +298,13 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     ShadAnchorBase? anchor,
     ImageFilter? filter,
     Widget? searchDivider,
-    Widget? searchInputPrefix,
+    @Deprecated('Use searchInputLeading instead') Widget? searchInputPrefix,
+    Widget? searchInputLeading,
     Widget? searchPlaceholder,
     EdgeInsets? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
-    ShadPopoverController? controller,
+    ShadPopoverController? popoverController,
 
     /// {@macro select.header}
     Widget? header,
@@ -270,6 +322,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.shrinkWrap}
     bool? shrinkWrap,
+
+    /// {@macro ShadSelect.controller}
+    ShadSelectController<T>? controller,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -290,6 +345,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
             return ShadSelect<T>.raw(
               variant: variant,
               options: options,
+              optionsBuilder: optionsBuilder,
               selectedOptionBuilder: selectedOptionBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
@@ -311,11 +367,12 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               onSearchChanged: onSearchChanged,
               searchDivider: searchDivider,
               searchInputPrefix: searchInputPrefix,
+              searchInputLeading: searchInputLeading,
               searchPlaceholder: searchPlaceholder,
               searchPadding: searchPadding,
               search: search,
               clearSearchOnClose: clearSearchOnClose,
-              controller: controller,
+              popoverController: popoverController,
               header: header,
               footer: footer,
               allowDeselection: allowDeselection,
@@ -323,6 +380,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               groupId: groupId,
               itemCount: itemCount,
               shrinkWrap: shrinkWrap,
+              controller: controller,
             );
           },
         );
@@ -371,7 +429,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     ScrollController? scrollController,
     ShadAnchorBase? anchor,
     ImageFilter? filter,
-    ShadPopoverController? controller,
+    ShadPopoverController? popoverController,
 
     /// {@macro ShadSelect.header}
     Widget? header,
@@ -382,6 +440,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
 
     /// {@macro ShadSelect.allowDeselection}
     bool allowDeselection = true,
+
+    /// {@macro ShadSelect.controller}
+    ShadSelectController<T>? controller,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -396,7 +457,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               selectedOptionsBuilder: selectedOptionsBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
-              initialValues: initialValue ?? const [],
+              initialValues: initialValue ?? [],
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
@@ -412,11 +473,12 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               showScrollToBottomChevron: showScrollToBottomChevron,
               scrollController: scrollController,
               filter: filter,
-              controller: controller,
+              popoverController: popoverController,
               header: header,
               footer: footer,
               closeOnSelect: closeOnSelect,
               allowDeselection: allowDeselection,
+              controller: controller,
             );
           },
         );
@@ -458,12 +520,13 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     ShadAnchorBase? anchor,
     ImageFilter? filter,
     Widget? searchDivider,
-    Widget? searchInputPrefix,
+    @Deprecated('Use searchInputLeading instead') Widget? searchInputPrefix,
+    Widget? searchInputLeading,
     Widget? searchPlaceholder,
     EdgeInsets? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
-    ShadPopoverController? controller,
+    ShadPopoverController? popoverController,
 
     /// {@macro select.header}
     Widget? header,
@@ -474,6 +537,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
 
     /// {@macro ShadSelect.allowDeselection}
     bool allowDeselection = true,
+
+    /// {@macro ShadSelect.controller}
+    ShadSelectController<T>? controller,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -488,7 +554,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               selectedOptionsBuilder: selectedOptionsBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
-              initialValues: initialValue ?? const [],
+              initialValues: initialValue ?? [],
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
@@ -507,15 +573,17 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               onSearchChanged: onSearchChanged,
               searchDivider: searchDivider,
               searchInputPrefix: searchInputPrefix,
+              searchInputLeading: searchInputLeading,
               searchPlaceholder: searchPlaceholder,
               searchPadding: searchPadding,
               search: search,
               clearSearchOnClose: clearSearchOnClose,
-              controller: controller,
+              popoverController: popoverController,
               header: header,
               footer: footer,
               closeOnSelect: closeOnSelect,
               allowDeselection: allowDeselection,
+              controller: controller,
             );
           },
         );
@@ -538,7 +606,10 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     super.validator,
     required ShadSelectVariant variant,
     required ShadSelectedOptionBuilder<List<T>> selectedOptionsBuilder,
-    required Iterable<Widget> options,
+    Iterable<Widget>? options,
+
+    /// The builder for the options of the [ShadSelect].
+    Widget? Function(BuildContext, int)? optionsBuilder,
     ValueChanged<String>? onSearchChanged,
     Widget? placeholder,
     bool closeOnTapOutside = true,
@@ -554,12 +625,13 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     ShadAnchorBase? anchor,
     ImageFilter? filter,
     Widget? searchDivider,
-    Widget? searchInputPrefix,
+    @Deprecated('Use searchInputLeading instead') Widget? searchInputPrefix,
+    Widget? searchInputLeading,
     Widget? searchPlaceholder,
     EdgeInsets? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
-    ShadPopoverController? controller,
+    ShadPopoverController? popoverController,
 
     /// {@macro select.header}
     Widget? header,
@@ -568,6 +640,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     Widget? footer,
     bool allowDeselection = true,
     bool closeOnSelect = true,
+
+    /// {@macro ShadSelect.controller}
+    ShadSelectController<T>? controller,
   })  : assert(
           variant == ShadSelectVariant.multiple ||
               variant == ShadSelectVariant.multipleWithSearch,
@@ -584,10 +659,11 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
             return ShadSelect<T>.raw(
               variant: variant,
               options: options,
+              optionsBuilder: optionsBuilder,
               selectedOptionsBuilder: selectedOptionsBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
-              initialValues: initialValue ?? const [],
+              initialValues: initialValue ?? [],
               enabled: state.enabled,
               onMultipleChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
@@ -605,15 +681,17 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               onSearchChanged: onSearchChanged,
               searchDivider: searchDivider,
               searchInputPrefix: searchInputPrefix,
+              searchInputLeading: searchInputLeading,
               searchPlaceholder: searchPlaceholder,
               searchPadding: searchPadding,
               search: search,
               clearSearchOnClose: clearSearchOnClose,
-              controller: controller,
+              popoverController: popoverController,
               header: header,
               footer: footer,
               allowDeselection: allowDeselection,
               closeOnSelect: closeOnSelect,
+              controller: controller,
             );
           },
         );
