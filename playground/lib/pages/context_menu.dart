@@ -7,6 +7,9 @@ class ContextMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    const divider = ShadDivider.horizontal(
+      margin: EdgeInsets.symmetric(vertical: 4),
+    );
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -35,25 +38,25 @@ class ContextMenuPage extends StatelessWidget {
                 ShadContextMenuItem(
                   child: Text('Name Window...'),
                 ),
-                Divider(height: 8),
+                divider,
                 ShadContextMenuItem(
                   child: Text('Developer Tools'),
                 ),
               ],
               child: Text('More Tools'),
             ),
-            const Divider(height: 8),
+            divider,
             const ShadContextMenuItem(
               leading: Icon(LucideIcons.check),
               child: Text('Show Bookmarks Bar'),
             ),
             const ShadContextMenuItem.inset(child: Text('Show Full URLs')),
-            const Divider(height: 8),
+            divider,
             Padding(
               padding: const EdgeInsets.fromLTRB(36, 8, 8, 8),
               child: Text('People', style: theme.textTheme.small),
             ),
-            const Divider(height: 8),
+            divider,
             ShadContextMenuItem(
               leading: SizedBox.square(
                 dimension: 16,

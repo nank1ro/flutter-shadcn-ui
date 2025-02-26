@@ -69,7 +69,7 @@ class _DatePickerFormFieldPageState extends State<DatePickerFormFieldPage> {
                     return null;
                   },
                 ),
-                const Divider(),
+                const ShadDivider.horizontal(),
                 Text('Range', style: theme.textTheme.h4),
                 ShadDateRangePickerFormField(
                   id: 'range-date',
