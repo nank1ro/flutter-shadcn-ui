@@ -12,6 +12,7 @@ import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
+import 'package:shadcn_ui/src/theme/components/divider.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
@@ -84,6 +85,7 @@ abstract class ShadBaseTheme {
     required this.datePickerTheme,
     required this.timePickerTheme,
     required this.inputOTPTheme,
+    required this.dividerTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -135,6 +137,7 @@ abstract class ShadBaseTheme {
   final ShadDatePickerTheme datePickerTheme;
   final ShadTimePickerTheme timePickerTheme;
   final ShadInputOTPTheme inputOTPTheme;
+  final ShadDividerTheme dividerTheme;
 }
 
 @immutable
@@ -181,4 +184,5 @@ abstract class ShadThemeVariant {
   ShadDatePickerTheme datePickerTheme();
   ShadTimePickerTheme timePickerTheme();
   ShadInputOTPTheme inputOTPTheme();
+  ShadDividerTheme dividerTheme();
 }

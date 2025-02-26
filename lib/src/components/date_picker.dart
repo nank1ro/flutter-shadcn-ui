@@ -1173,6 +1173,7 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
         );
       },
       child: ShadButton.raw(
+        decoration: widget.buttonDecoration,
         variant: widget.buttonVariant ??
             theme.datePickerTheme.buttonVariant ??
             ShadButtonVariant.outline,

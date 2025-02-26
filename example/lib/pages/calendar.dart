@@ -123,7 +123,7 @@ class _CalendarPageState extends State<CalendarPage> {
           hideWeekdayNames: hideWeekdayNames,
           allowDeselection: allowDeselection,
         ),
-        const Divider(),
+        const ShadDivider.horizontal(),
         Text('Multiple', style: theme.textTheme.h4),
         ShadCalendar.multiple(
           numberOfMonths: 2,
@@ -140,7 +140,7 @@ class _CalendarPageState extends State<CalendarPage> {
           fixedWeeks: fixedWeeks,
           hideWeekdayNames: hideWeekdayNames,
         ),
-        const Divider(),
+        const ShadDivider.horizontal(),
         Text('Range', style: theme.textTheme.h4),
         ShadCalendar.range(
           onChanged: print,

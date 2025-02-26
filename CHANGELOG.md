@@ -1,3 +1,8 @@
+## 0.21.0
+
+- **FEAT**: Add `ShadDivider` component (thanks to @Luckey-Elijah)
+- **FIX**: Pass `buttonDecoration` to `ShadButton` inside `ShadDatePicker` (thanks to @plusema86)
+
 ## 0.20.3
 
 - **FIX**: Validation mode on form field reset (thanks to @Mayb3Nots)
