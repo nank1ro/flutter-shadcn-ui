@@ -1,0 +1,35 @@
+---
+title: Divider
+sidebar:
+  order: 4
+---
+
+import Preview from "../../../components/Preview.astro";
+
+Displays a divider using an horizontal or vertical line.
+
+<Preview src="divider?style=horizontal">
+
+```dart
+const ShadDivider.horizontal(
+  thickness: 4,
+  margin: EdgeInsets.symmetric(horizontal: 20),
+  radius: BorderRadius.all(Radius.circular(4)),
+)
+```
+
+</Preview>
+
+## Destructive
+
+<Preview src="divider?style=vertical">
+
+```dart
+const ShadDivider.vertical(
+  thickness: 4,
+  margin: EdgeInsets.symmetric(vertical: 20),
+  radius: BorderRadius.all(Radius.circular(4)),
+)
+```
+
+</Preview>
