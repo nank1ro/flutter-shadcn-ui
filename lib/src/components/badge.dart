@@ -60,8 +60,8 @@ class ShadBadge extends StatefulWidget {
     this.onPressed,
   }) : variant = ShadBadgeVariant.outline;
 
-  /// Creates a badge widget with a specified [variant], allowing full control
-  /// over configuration.
+  /// Creates a destructive variant badge widget, typically for error or warning
+  /// states.
   const ShadBadge.destructive({
     super.key,
     required this.child,
@@ -73,6 +73,8 @@ class ShadBadge extends StatefulWidget {
     this.onPressed,
   }) : variant = ShadBadgeVariant.destructive;
 
+  /// Creates a badge widget with a specified [variant], allowing full control
+  /// over configuration.
   const ShadBadge.raw({
     super.key,
     required this.variant,

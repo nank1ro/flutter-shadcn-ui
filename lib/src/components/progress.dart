@@ -36,7 +36,7 @@ class ShadProgress extends StatelessWidget {
 
   /// {@template ShadProgress.color}
   /// The color of the progress indicator itself.
-  /// Defaults to the theme’s orimary color if not specified; overridden by
+  /// Defaults to the theme’s primary color if not specified; overridden by
   /// [valueColor] if set.
   /// {@endtemplate}
   final Color? color;

@@ -50,6 +50,7 @@ class ShadSwitchTheme {
   final EdgeInsets? padding;
 
   /// {@macro ShadSwitch.orderPolicy}
+  @Deprecated('Use textDirection instead.')
   final WidgetOrderPolicy? orderPolicy;
 
   static ShadSwitchTheme lerp(

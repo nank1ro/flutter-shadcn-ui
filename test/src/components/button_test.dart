@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/button.dart'; // Adjust import path based on your project structure
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 import '../../extra/pump_async_widget.dart'; // Assuming this is available in your project
 
@@ -319,12 +320,8 @@ void main() {
       );
       expect(sizedBoxFinder, findsOneWidget);
       final sizedBox = tester.widget<SizedBox>(sizedBoxFinder);
-      expect(
-        sizedBox.height,
-        greaterThan(
-          36.0,
-        ),
-      ); // Assuming lg height > regular (adjust based on theme)
+      final theme = ShadTheme.of(tester.element(find.byType(ShadButton)));
+      expect(sizedBox.height, theme.buttonSizesTheme.lg?.height);
     });
 
     testWidgets('executes onPressed callback on tap',
