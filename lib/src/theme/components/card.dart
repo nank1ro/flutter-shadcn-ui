@@ -24,19 +24,47 @@ class ShadCardTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadCard.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadCard.backgroundColor}
   final Color? backgroundColor;
+
+  /// {@macro ShadCard.radius}
   final BorderRadius? radius;
+
+  /// {@macro ShadCard.border}
   final Border? border;
+
+  /// {@macro ShadCard.shadows}
   final List<BoxShadow>? shadows;
+
+  /// {@macro ShadCard.width}
   final double? width;
+
+  /// {@macro ShadCard.height}
   final double? height;
+
+  /// {@macro ShadCard.rowMainAxisAlignment}
   final MainAxisAlignment? rowMainAxisAlignment;
+
+  /// {@macro ShadCard.rowCrossAxisAlignment}
   final CrossAxisAlignment? rowCrossAxisAlignment;
+
+  /// {@macro ShadCard.columnMainAxisAlignment}
   final MainAxisAlignment? columnMainAxisAlignment;
+
+  /// {@macro ShadCard.columnCrossAxisAlignment}
   final CrossAxisAlignment? columnCrossAxisAlignment;
+
+  /// {@macro ShadCard.rowMainAxisSize}
   final MainAxisSize? rowMainAxisSize;
+
+  /// {@macro ShadCard.columnMainAxisSize}
   final MainAxisSize? columnMainAxisSize;
+
+  /// {@macro ShadCard.clipBehavior}
   final Clip? clipBehavior;
 
   static ShadCardTheme lerp(

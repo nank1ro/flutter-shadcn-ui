@@ -18,14 +18,32 @@ class ShadAccordionTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadAccordionItem.iconData}
   final IconData? iconData;
+
+  /// {@macro ShadAccordionItem.iconEffects}
   final List<Effect<dynamic>>? iconEffects;
+
+  /// {@macro ShadAccordionItem.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadAccordionItem.underlineTitleOnHover}
   final bool? underlineTitleOnHover;
+
+  /// {@macro ShadAccordionItem.titleStyle}
   final TextStyle? titleStyle;
+
+  /// {@macro ShadAccordionItem.curve}
   final Curve? curve;
+
+  /// {@macro ShadAccordionItem.duration}
   final Duration? duration;
+
+  /// {@macro ShadAccordion.maintainState}
   final bool? maintainState;
+
+  /// {@macro ShadAccordionItem.effects}
   final List<Effect<dynamic>>? effects;
 
   static ShadAccordionTheme lerp(

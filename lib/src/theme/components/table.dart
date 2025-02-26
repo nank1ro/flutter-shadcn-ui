@@ -20,16 +20,38 @@ class ShadTableTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadTable.diagonalDragBehavior}
   final DiagonalDragBehavior? diagonalDragBehavior;
+
+  /// {@macro ShadTable.dragStartBehavior}
   final DragStartBehavior? dragStartBehavior;
+
+  /// {@macro ShadTable.keyboardDismissBehavior}
   final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
+
+  /// {@macro ShadTable.columnBuilder}
   final TableSpanBuilder? columnBuilder;
+
+  /// {@macro ShadTable.rowBuilder}
   final TableSpanBuilder? rowBuilder;
+
+  /// {@macro ShadTable.cellAlignment}
   final Alignment? cellAlignment;
+
+  /// {@macro ShadTable.cellHeight}
   final double? cellHeight;
+
+  /// {@macro ShadTable.cellPadding}
   final EdgeInsets? cellPadding;
+
+  /// {@macro ShadTable.cellHeaderStyle}
   final TextStyle? cellHeaderStyle;
+
+  /// {@macro ShadTable.cellStyle}
   final TextStyle? cellStyle;
+
+  /// {@macro ShadTable.cellFooterStyle}
   final TextStyle? cellFooterStyle;
 
   static ShadTableTheme lerp(

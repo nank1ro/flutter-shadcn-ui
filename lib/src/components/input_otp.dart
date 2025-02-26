@@ -12,7 +12,15 @@ import 'package:shadcn_ui/src/utils/text_editing_controller.dart';
 
 const kInvisibleCharCode = '\u200b';
 
+/// A customizable one-time password (OTP) input widget with multiple fields.
+///
+/// The [ShadInputOTP] widget provides a series of input fields for entering an
+/// OTP, managing focus and input across multiple single-character inputs. It
+/// integrates with [ShadTheme] for consistent styling and supports custom
+/// formatting and behavior.
 class ShadInputOTP extends StatefulWidget {
+  /// Creates an OTP input widget with the specified number of fields and
+  /// children.
   const ShadInputOTP({
     super.key,
     required this.maxLength,

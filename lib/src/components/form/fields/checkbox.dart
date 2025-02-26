@@ -21,15 +21,35 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
     super.restorationId,
     required bool initialValue,
     super.focusNode,
+
+    /// {@macro ShadCheckbox.decoration}
     ShadDecoration? decoration,
+
+    /// {@macro ShadFormBuilderField.validator}
     String? Function(bool)? validator,
+
+    /// {@macro ShadCheckbox.size}
     double? size,
+
+    /// {@macro ShadCheckbox.duration}
     Duration? duration,
+
+    /// {@macro ShadCheckbox.icon}
     Widget? icon,
+
+    /// {@macro ShadCheckbox.color}
     Color? color,
+
+    /// {@macro ShadCheckbox.inputLabel}
     Widget? inputLabel,
+
+    /// {@macro ShadCheckbox.inputSublabel}
     Widget? inputSublabel,
+
+    /// {@macro ShadCheckbox.padding}
     EdgeInsets? padding,
+
+    /// {@macro ShadCheckbox.direction}
     TextDirection? direction,
 
     /// {@macro ShadCheckbox.crossAxisAlignment}

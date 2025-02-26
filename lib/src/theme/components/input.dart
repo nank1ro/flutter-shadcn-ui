@@ -17,14 +17,32 @@ class ShadInputTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadInput.decoration}
   final ShadDecoration? decoration;
+
+  /// {@macro ShadInput.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadInput.style}
   final TextStyle? style;
+
+  /// {@macro ShadInput.placeholderStyle}
   final TextStyle? placeholderStyle;
+
+  /// {@macro ShadInput.placeholderAlignment}
   final Alignment? placeholderAlignment;
+
+  /// {@macro ShadInput.inputPadding}
   final EdgeInsets? inputPadding;
+
+  /// {@macro ShadInput.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@macro ShadInput.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadInput.gap}
   final double? gap;
 
   static ShadInputTheme lerp(
