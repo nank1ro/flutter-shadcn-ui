@@ -14,6 +14,7 @@ class DividerPage extends StatefulWidget {
 class _DividerPageState extends State<DividerPage> {
   int margin = 4;
   int thickness = 1;
+  int radius = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +40,22 @@ class _DividerPageState extends State<DividerPage> {
             if (maybe != null) setState(() => thickness = maybe);
           },
         ),
+        MyStringProperty(
+          label: 'radius',
+          initialValue: '$radius',
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          onChanged: (value) {
+            var maybe = int.tryParse(value);
+            if (maybe != null) setState(() => radius = maybe);
+          },
+        ),
       ],
       children: [
         Text('Horizontal', style: theme.textTheme.h4),
         ShadDivider.horizontal(
           thickness: thickness.toDouble(),
           margin: EdgeInsets.all(margin.toDouble()),
+          radius: BorderRadius.all(Radius.circular(radius.toDouble())),
         ),
         IntrinsicHeight(
           child: Row(
@@ -55,6 +66,7 @@ class _DividerPageState extends State<DividerPage> {
               ShadDivider.vertical(
                 thickness: thickness.toDouble(),
                 margin: EdgeInsets.all(margin.toDouble()),
+                radius: BorderRadius.all(Radius.circular(radius.toDouble())),
               ),
               Text('divider', style: theme.textTheme.h4),
             ],

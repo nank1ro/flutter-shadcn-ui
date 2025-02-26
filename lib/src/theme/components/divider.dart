@@ -17,6 +17,7 @@ class ShadDividerTheme {
     this.horizontalMargin,
     this.thickness,
     this.color,
+    this.radius,
   });
 
   final bool merge;
@@ -33,6 +34,9 @@ class ShadDividerTheme {
   /// The margin (or space) around the horizontal divider.
   final EdgeInsetsGeometry? horizontalMargin;
 
+  /// {@macro ShadDivider.radius}
+  final BorderRadiusGeometry? radius;
+
   ShadDividerTheme mergeWith(ShadDividerTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
@@ -42,6 +46,7 @@ class ShadDividerTheme {
       horizontalMargin: other.horizontalMargin,
       color: other.color,
       thickness: other.thickness,
+      radius: other.radius,
     );
   }
 
@@ -51,6 +56,7 @@ class ShadDividerTheme {
     double? thickness,
     EdgeInsetsGeometry? verticalMargin,
     EdgeInsetsGeometry? horizontalMargin,
+    BorderRadiusGeometry? radius,
   }) {
     return ShadDividerTheme(
       merge: merge ?? this.merge,
@@ -58,6 +64,7 @@ class ShadDividerTheme {
       verticalMargin: verticalMargin ?? this.verticalMargin,
       horizontalMargin: horizontalMargin ?? this.horizontalMargin,
       thickness: thickness ?? this.thickness,
+      radius: radius ?? this.radius,
     );
   }
 
@@ -69,18 +76,13 @@ class ShadDividerTheme {
     if (identical(a, b)) return a;
     return ShadDividerTheme(
       merge: b.merge,
-      verticalMargin: EdgeInsetsGeometry.lerp(
-        a.verticalMargin,
-        b.verticalMargin,
-        t,
-      ),
-      horizontalMargin: EdgeInsetsGeometry.lerp(
-        a.horizontalMargin,
-        b.horizontalMargin,
-        t,
-      ),
+      verticalMargin:
+          EdgeInsetsGeometry.lerp(a.verticalMargin, b.verticalMargin, t),
+      horizontalMargin:
+          EdgeInsetsGeometry.lerp(a.horizontalMargin, b.horizontalMargin, t),
       thickness: lerpDouble(a.thickness, b.thickness, t),
       color: Color.lerp(a.color, b.color, t),
+      radius: BorderRadiusGeometry.lerp(a.radius, b.radius, t),
     );
   }
 
@@ -92,17 +94,19 @@ class ShadDividerTheme {
         other.color == color &&
         other.thickness == thickness &&
         other.verticalMargin == verticalMargin &&
-        other.horizontalMargin == horizontalMargin;
+        other.horizontalMargin == horizontalMargin &&
+        other.radius == radius;
   }
 
   @override
   int get hashCode {
-    return Object.hash(
+    return Object.hashAll([
       merge,
       color,
       thickness,
       verticalMargin,
       horizontalMargin,
-    );
+      radius,
+    ]);
   }
 }

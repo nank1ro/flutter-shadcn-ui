@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
+import 'package:shadcn_ui/src/components/divider.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
@@ -727,7 +728,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                   decoration: ShadDecoration.none,
                   onChanged: widget.onSearchChanged,
                 ),
-            widget.searchDivider ?? const Divider(height: 1),
+            widget.searchDivider ??
+                const ShadDivider.horizontal(margin: EdgeInsets.zero),
           ],
         ),
     };

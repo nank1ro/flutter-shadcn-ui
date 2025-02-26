@@ -19,6 +19,7 @@ class ShadDivider extends StatelessWidget {
     this.margin,
     this.thickness,
     this.color,
+    this.radius,
     super.key,
   }) : variant = ShadDividerVariant.vertical;
 
@@ -27,6 +28,7 @@ class ShadDivider extends StatelessWidget {
     this.margin,
     this.thickness,
     this.color,
+    this.radius,
     super.key,
   }) : variant = ShadDividerVariant.horizontal;
 
@@ -36,6 +38,7 @@ class ShadDivider extends StatelessWidget {
     this.thickness,
     this.color,
     required this.variant,
+    this.radius,
     super.key,
   });
 
@@ -67,6 +70,13 @@ class ShadDivider extends StatelessWidget {
   /// This can be explicitly passed using the [ShadDivider.raw] constructor.
   final ShadDividerVariant variant;
 
+  /// {@template ShadDivider.radius}
+  /// The amount of radius for the border of the divider.
+  ///
+  /// If this is null, then the default radius of [BoxDecoration] will be used.
+  /// {@endtemplate}
+  final BorderRadiusGeometry? radius;
+
   @override
   Widget build(BuildContext context) {
     final shadTheme = ShadTheme.of(context);
@@ -90,11 +100,17 @@ class ShadDivider extends StatelessWidget {
       padding: margin,
       child: switch (variant) {
         ShadDividerVariant.vertical => DecoratedBox(
-            decoration: BoxDecoration(border: Border(left: borderSide)),
+            decoration: BoxDecoration(
+              border: Border(left: borderSide),
+              borderRadius: radius,
+            ),
             child: SizedBox(width: thickness, height: double.infinity),
           ),
         ShadDividerVariant.horizontal => DecoratedBox(
-            decoration: BoxDecoration(border: Border(bottom: borderSide)),
+            decoration: BoxDecoration(
+              border: Border(bottom: borderSide),
+              borderRadius: radius,
+            ),
             child: SizedBox(height: thickness, width: double.infinity),
           ),
       },
