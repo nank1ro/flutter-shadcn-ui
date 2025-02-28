@@ -454,7 +454,7 @@ class ShadThemeData extends ShadBaseTheme {
         other.datePickerTheme == datePickerTheme &&
         other.timePickerTheme == timePickerTheme &&
         other.inputOTPTheme == inputOTPTheme &&
-        other.menubarTheme == menubarTheme;
+        other.menubarTheme == menubarTheme &&
         other.dividerTheme == dividerTheme;
   }
 
@@ -509,7 +509,7 @@ class ShadThemeData extends ShadBaseTheme {
         datePickerTheme.hashCode ^
         timePickerTheme.hashCode ^
         inputOTPTheme.hashCode ^
-        menubarTheme.hashCode;
+        menubarTheme.hashCode ^
         dividerTheme.hashCode;
   }
 
