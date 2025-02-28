@@ -318,5 +318,41 @@ void main() {
       expect(find.byType(Column), findsNothing); // No Column for label/sublabel
       expect(find.text('Label'), findsNothing);
     });
+
+    testWidgets('ShadCheckbox on matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadCheckbox(
+            value: true,
+            icon: Icon(Icons.air_rounded),
+            label: Text('Label'),
+            sublabel: Text('Sublabel'),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadCheckbox),
+        matchesGoldenFile('goldens/checkbox_on.png'),
+      );
+    });
+
+    testWidgets('ShadCheckbox off matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadCheckbox(
+            value: false,
+            icon: Icon(Icons.air_rounded),
+            label: Text('Label'),
+            sublabel: Text('Sublabel'),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadCheckbox),
+        matchesGoldenFile('goldens/checkbox_off.png'),
+      );
+    });
   });
 }

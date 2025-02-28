@@ -113,7 +113,7 @@ void main() {
 
         expect(
           find.byType(ShadDivider),
-          matchesGoldenFile('horizontal_divider.png'),
+          matchesGoldenFile('goldens/horizontal_divider.png'),
         );
       });
     });
@@ -230,7 +230,7 @@ void main() {
 
         expect(
           find.byType(ShadDivider),
-          matchesGoldenFile('vertical_divider.png'),
+          matchesGoldenFile('goldens/vertical_divider.png'),
         );
       });
     });

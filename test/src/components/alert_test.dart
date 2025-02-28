@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/alert.dart';
 
@@ -156,6 +157,40 @@ void main() {
 
       // Check no text widgets are present
       expect(find.byType(Text), findsNothing);
+    });
+
+    testWidgets('ShardAlert matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadAlert(
+            iconData: LucideIcons.mail,
+            title: Text('Title'),
+            description: Text('Description'),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadAlert),
+        matchesGoldenFile('goldens/alert.png'),
+      );
+    });
+
+    testWidgets('ShardAlert.destructive matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadAlert.destructive(
+            iconData: LucideIcons.mail,
+            title: Text('Title'),
+            description: Text('Description'),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadAlert),
+        matchesGoldenFile('goldens/alert_destructive.png'),
+      );
     });
   });
 }

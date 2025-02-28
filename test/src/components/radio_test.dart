@@ -400,5 +400,27 @@ void main() {
       );
       expect(decoratedBoxFinder, findsOneWidget);
     });
+
+    testWidgets('ShadRadio matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          ShadRadioGroup<bool>(
+            items: List.generate(
+              3,
+              (index) => ShadRadio<bool>(
+                value: index.isEven,
+                label: Text('Label $index'),
+                sublabel: Text('Sublabel $index'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadRadioGroup<bool>),
+        matchesGoldenFile('goldens/radio.png'),
+      );
+    });
   });
 }

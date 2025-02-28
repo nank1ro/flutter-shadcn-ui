@@ -234,5 +234,57 @@ void main() {
       final decoration = container.decoration as ShapeDecoration?;
       expect(decoration?.shape, isA<StadiumBorder>());
     });
+
+    testWidgets('ShadBadge matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadBadge(child: Text('Badge')),
+        ),
+      );
+
+      expect(
+        find.byType(ShadBadge),
+        matchesGoldenFile('goldens/badge.png'),
+      );
+    });
+
+    testWidgets('ShadBadge.secondary matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadBadge.secondary(child: Text('Badge')),
+        ),
+      );
+
+      expect(
+        find.byType(ShadBadge),
+        matchesGoldenFile('goldens/badge_secondary.png'),
+      );
+    });
+
+    testWidgets('ShadBadge.outline matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadBadge.outline(child: Text('Badge')),
+        ),
+      );
+
+      expect(
+        find.byType(ShadBadge),
+        matchesGoldenFile('goldens/badge_outline.png'),
+      );
+    });
+
+    testWidgets('ShadBadge.destructive matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadBadge.destructive(child: Text('Badge')),
+        ),
+      );
+
+      expect(
+        find.byType(ShadBadge),
+        matchesGoldenFile('goldens/badge_destructive.png'),
+      );
+    });
   });
 }

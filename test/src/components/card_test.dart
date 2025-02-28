@@ -227,5 +227,25 @@ void main() {
       );
       expect(decoration?.border, isNotNull);
     });
+
+    testWidgets('ShadCard matches goldens', (tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadCard(
+            title: Text('title'),
+            description: Text('description'),
+            footer: Text('footer'),
+            leading: Text('leading'),
+            trailing: Text('trailing'),
+            child: Text('content'),
+          ),
+        ),
+      );
+
+      expect(
+        find.byType(ShadCard),
+        matchesGoldenFile('goldens/card.png'),
+      );
+    });
   });
 }
