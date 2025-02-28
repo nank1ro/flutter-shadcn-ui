@@ -84,62 +84,86 @@ class RangeCalendar extends StatelessWidget {
 
 </Preview>
 
-## Customizations
-
-### Caption Layout
-
-#### Dropdown
-
-<Preview
-  src="calendar?captionLayout=dropdown"
-  minHeight="500px"
-/>
-
 #### DropdownMonths
 
-<Preview
-  src="calendar?captionLayout=dropdownMonths"
-  minHeight="500px"
-/>
+<Preview src="calendar?captionLayout=dropdownMonths" minHeight="500px">
+
+```dart
+ShadCalendar(
+  captionLayout: ShadCalendarCaptionLayout.dropdownMonths,
+);
+```
+
+</Preview>
 
 #### DropdownYears
 
-<Preview
-  src="calendar?captionLayout=dropdownYears"
-  minHeight="450px"
-/>
+<Preview src="calendar?captionLayout=dropdownYears" minHeight="450px">
+
+```dart
+ShadCalendar(
+  captionLayout: ShadCalendarCaptionLayout.dropdownYears,
+);
+```
+
+</Preview>
 
 ### Hide Navigation
 
-<Preview
-  src="calendar?hideNavigation"
-  minHeight="450px"
-/>
+<Preview src="calendar?hideNavigation" minHeight="450px">
+
+```dart
+ShadCalendar(
+  hideNavigation: true,
+);
+```
+
+</Preview>
 
 ### Show Week Numbers
 
-<Preview
-  src="calendar?showWeekNumbers"
-  minHeight="450px"
-/>
+<Preview src="calendar?showWeekNumbers" minHeight="450px">
+
+```dart
+ShadCalendar(
+  showWeekNumbers: true,
+);
+```
+
+</Preview>
 
 ### Show Outside Days (false)
 
-<Preview
-  src="calendar?showOutsideDays=0"
-  minHeight="450px"
-/>
+<Preview src="calendar?showOutsideDays=0" minHeight="450px">
+
+```dart
+ShadCalendar(
+  showOutsideDays: false,
+);
+```
+
+</Preview>
 
 ### Fixed Weeks
 
-<Preview
-  src="calendar?fixedWeeks"
-  minHeight="450px"
-/>
+<Preview src="calendar?fixedWeeks" minHeight="450px">
+
+```dart
+ShadCalendar(
+  fixedWeeks: true,
+);
+```
+
+</Preview>
 
 ### Hide Weekday Names
 
-<Preview
-  src="calendar?hideWeekdayNames"
-  minHeight="450px"
-/>
+<Preview src="calendar?hideWeekdayNames" minHeight="450px">
+
+```dart
+ShadCalendar(
+  hideWeekdayNames: true,
+);
+```
+
+</Preview>
