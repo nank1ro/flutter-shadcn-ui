@@ -10,7 +10,10 @@ class MenubarPage extends StatelessWidget {
     return const Scaffold(
       body: Padding(
         padding: EdgeInsets.all(40),
-        child: MenubarExample(),
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: MenubarExample(),
+        ),
       ),
     );
   }
