@@ -199,6 +199,10 @@ class ShadContextMenu extends StatefulWidget {
     this.decoration,
     this.filter,
     this.controller,
+    this.onTapOutside,
+    this.onTapInside,
+    this.onTapUpInside,
+    this.onTapUpOutside,
   });
 
   /// {@template ShadContextMenu.child}
@@ -257,6 +261,66 @@ class ShadContextMenu extends StatefulWidget {
   /// The controller of the context menu, starts from isOpen set to false.
   /// {@endtemplate}
   final ShadContextMenuController? controller;
+
+  /// {@template ShadContextMenu.onTapOutside}
+  /// A callback to be invoked when a tap down is detected outside of this
+  /// [TapRegion] and any other region with the same [groupId], if any.
+  ///
+  /// The [PointerDownEvent] passed to the function is the event that caused the
+  /// notification. If this region is part of a group (i.e. [groupId] is set),
+  /// then it's possible that the event may be outside of this immediate region,
+  /// although it will be within the region of one of the group members.
+  ///
+  /// See also:
+  /// * [onTapUpOutside], which is called when a tap up is detected outside
+  ///   of this region.
+  /// {@endtemplate}
+  final TapRegionCallback? onTapOutside;
+
+  /// {@template ShadContextMenu.onTapInside}
+  /// A callback to be invoked when a tap down is detected inside of this
+  /// [TapRegion], or any other tap region with the same [groupId], if any.
+  ///
+  /// The [PointerDownEvent] passed to the function is the event that caused the
+  /// notification. If this region is part of a group (i.e. [groupId] is set),
+  /// then it's possible that the event may be outside of this immediate region,
+  /// although it will be within the region of one of the group members.
+  ///
+  /// See also:
+  /// * [onTapUpInside], which is called when a tap up is detected inside
+  ///   of this region.
+  /// {@endtemplate}
+  final TapRegionCallback? onTapInside;
+
+  /// {@template ShadContextMenu.onTapUpInside}
+  /// A callback to be invoked when a tap up is detected inside of this
+  /// [TapRegion], or any other tap region with the same [groupId], if any.
+  ///
+  /// The [PointerUpEvent] passed to the function is the event that caused the
+  /// notification. If this region is part of a group (i.e. [groupId] is set),
+  /// then it's possible that the event may be outside of this immediate region,
+  /// although it will be within the region of one of the group members.
+  ///
+  /// See also:
+  /// * [onTapInside], which is called when a tap down is detected inside
+  ///   of this region.
+  /// {@endtemplate}
+  final TapRegionUpCallback? onTapUpInside;
+
+  /// {@template ShadContextMenu.onTapUpOutside}
+  /// A callback to be invoked when a tap up is detected outside of this
+  /// [TapRegion] and any other region with the same [groupId], if any.
+  ///
+  /// The [PointerUpEvent] passed to the function is the event that caused the
+  /// notification. If this region is part of a group (i.e. [groupId] is set),
+  /// then it's possible that the event may be outside of this immediate region,
+  /// although it will be within the region of one of the group members.
+  ///
+  /// See also:
+  /// * [onTapOutside], which is called when a tap down is detected outside
+  ///   of this region.
+  /// {@endtemplate}
+  final TapRegionUpCallback? onTapUpOutside;
 
   @override
   State<ShadContextMenu> createState() => ShadContextMenuState();
@@ -332,6 +396,10 @@ class ShadContextMenuState extends State<ShadContextMenu> {
             constraints: effectiveConstraints,
             child: IntrinsicWidth(
               child: TapRegion(
+                onTapInside: widget.onTapInside,
+                onTapOutside: widget.onTapOutside,
+                onTapUpInside: widget.onTapUpInside,
+                onTapUpOutside: widget.onTapUpOutside,
                 groupId: kContextMenuGroupId,
                 child: FocusTraversalGroup(
                   policy: OrderedTraversalPolicy(),
