@@ -2,6 +2,7 @@
 
 - **FEAT**:: Add `ShadMenubar` component.
 - **REFACTOR**: Deprecate `ShadDivider` and `ShadDividerTheme`, use `ShadSeparator` and `ShadSeparatorTheme` instead.
+- **FEAT**:: Add `onTapInside`, `onTapOutside`, `onTapUpInside` and `onTapUpOutside` to `ShadContextMenu`.
 
 ## 0.21.0
 
