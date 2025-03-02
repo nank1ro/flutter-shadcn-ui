@@ -10,6 +10,7 @@ import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 import 'package:shadcn_ui/src/utils/provider_index.dart';
 
@@ -52,11 +53,39 @@ class ShadMenubar extends StatefulWidget {
     required this.items,
     this.radius,
     this.controller,
+    this.padding,
+    this.backgroundColor,
+    this.border,
   });
 
+  /// {@template ShadMenubar.items}
+  /// The items of the menubar
+  /// {@endtemplate}
   final Iterable<Widget> items;
+
+  /// {@template ShadMenubar.radius}
+  /// The radius of the menubar, default to `theme.radius`
+  /// {@endtemplate}
   final BorderRadiusGeometry? radius;
+
+  /// {@macro ShadMenubarController}
   final ShadMenubarController? controller;
+
+  /// {@template ShadMenubar.padding}
+  /// The padding of the menubar, default to `EdgeInsets.all(4)`
+  /// {@endtemplate}
+  final EdgeInsetsGeometry? padding;
+
+  /// {@template ShadMenubar.backgroundColor}
+  /// The background color of the menubar, default to `null`
+  /// {@endtemplate}
+  final Color? backgroundColor;
+
+  /// {@template ShadMenubar.border}
+  /// The border of the menubar, default to
+  /// `ShadBorder.all(color: theme.colorScheme.border, width: 1)`
+  /// {@endtemplate}
+  final ShadBorder? border;
 
   @override
   State<ShadMenubar> createState() => _ShadMenubarState();
@@ -65,7 +94,6 @@ class ShadMenubar extends StatefulWidget {
 class _ShadMenubarState extends State<ShadMenubar> {
   int? focusedIndex;
   ShadMenubarController? _controller;
-
   ShadMenubarController get controller => widget.controller ?? _controller!;
 
   @override
@@ -86,6 +114,12 @@ class _ShadMenubarState extends State<ShadMenubar> {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final effectiveRadius = widget.radius ?? theme.radius;
+    final effectivePadding = widget.padding ?? const EdgeInsets.all(4);
+    final effectiveBackgroundColor = widget.backgroundColor;
+    final effectiveBorder =
+        ShadBorder.all(color: theme.colorScheme.border, width: 1)
+            .mergeWith(widget.border);
+
     return ShadProvider(
       data: controller,
       notifyUpdate: (oldState) {
@@ -93,13 +127,12 @@ class _ShadMenubarState extends State<ShadMenubar> {
       },
       child: DecoratedBox(
         decoration: BoxDecoration(
-          border: Border.all(
-            color: theme.colorScheme.border,
-          ),
+          color: effectiveBackgroundColor,
+          border: effectiveBorder.toBorder(),
           borderRadius: effectiveRadius,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(4),
+          padding: effectivePadding,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: widget.items
@@ -128,6 +161,7 @@ class ShadMenubarItem extends StatefulWidget {
     this.decoration,
     this.filter,
     this.controller,
+    this.anchor,
   });
 
   final Widget child;
@@ -162,6 +196,12 @@ class ShadMenubarItem extends StatefulWidget {
   /// {@macro ShadPopover.controller}
   final ShadPopoverController? controller;
 
+  /// {@template ShadMenubarItem.anchor}
+  /// The anchor of the menubar item, default to
+  /// `ShadAnchor(offset: Offset(-8, 8))`
+  /// {@endtemplate}
+  final ShadAnchor? anchor;
+
   @override
   State<ShadMenubarItem> createState() => _ShadMenubarItemState();
 }
@@ -189,6 +229,10 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+
+    final effectiveAnchor =
+        widget.anchor ?? const ShadAnchor(offset: Offset(-8, 8));
+
     final controller = context.watch<ShadMenubarController>();
     final index = context.watch<ShadProviderIndex>().index;
     final focusNode = controller.getFocusNodeForIndex(index);
@@ -199,7 +243,7 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
         final selected = controller.selectedIndex == index;
         popoverController.setOpen(selected);
         return ShadContextMenu(
-          anchor: const ShadAnchor(offset: Offset(-8, 8)),
+          anchor: effectiveAnchor,
           controller: popoverController,
           items: widget.items,
           constraints: widget.constraints,
@@ -214,13 +258,20 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
             FocusScope.of(context).unfocus();
             controller.selectedIndex = null;
           },
-          child: ShadButton.ghost(
+          onTapOutside: (_) {
+            FocusScope.of(context).unfocus();
+            controller.selectedIndex = null;
+          },
+          child: ShadButton.raw(
+            variant: ShadButtonVariant.ghost,
             height: 32,
             backgroundColor: selected ? theme.colorScheme.accent : null,
             focusNode: focusNode,
             onFocusChange: (focused) {
-              if (!focused) return;
-              controller.selectedIndex = index;
+              // Set the selected index
+              if (focused) {
+                controller.selectedIndex = index;
+              }
             },
             onHoverChange: (hovered) {
               if (!hovered) return;
