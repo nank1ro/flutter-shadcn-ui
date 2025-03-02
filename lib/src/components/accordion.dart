@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:shadcn_ui/src/components/divider.dart';
+import 'package:shadcn_ui/src/components/separator.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/animation_builder.dart';
@@ -280,7 +280,7 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
     final expanded = inherited.values.contains(widget.value);
     final theme = ShadTheme.of(context);
     final effectiveSeparator =
-        widget.separator ?? const ShadDivider.horizontal();
+        widget.separator ?? const ShadSeparator.horizontal();
 
     final effectiveDuration =
         widget.duration ?? theme.accordionTheme.duration ?? 300.milliseconds;

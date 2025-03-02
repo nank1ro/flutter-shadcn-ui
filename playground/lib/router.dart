@@ -282,11 +282,11 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/divider',
+      path: '/separator',
       builder: (context, state) {
         final style = state.uri.queryParameters['style'] ?? 'horizontal';
-        return DividerPage(
-          style: ShadDividerVariant.values.byName(style),
+        return SeparatorPage(
+          style: ShadSeparatorVariant.values.byName(style),
         );
       },
     ),

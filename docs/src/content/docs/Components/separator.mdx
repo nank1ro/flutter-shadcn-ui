@@ -1,17 +1,17 @@
 ---
-title: Divider
+title: Separator
 sidebar:
   order: 4
 ---
 
 import Preview from "../../../components/Preview.astro";
 
-Displays a divider using an horizontal or vertical line.
+Visually or semantically separates content.
 
-<Preview src="divider?style=horizontal">
+<Preview src="separator?style=horizontal">
 
 ```dart
-const ShadDivider.horizontal(
+const ShadSeparator.horizontal(
   thickness: 4,
   margin: EdgeInsets.symmetric(horizontal: 20),
   radius: BorderRadius.all(Radius.circular(4)),
@@ -22,10 +22,10 @@ const ShadDivider.horizontal(
 
 ## Destructive
 
-<Preview src="divider?style=vertical">
+<Preview src="separator?style=vertical">
 
 ```dart
-const ShadDivider.vertical(
+const ShadSeparator.vertical(
   thickness: 4,
   margin: EdgeInsets.symmetric(vertical: 20),
   radius: BorderRadius.all(Radius.circular(4)),

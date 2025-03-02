@@ -12,7 +12,6 @@ import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
-import 'package:shadcn_ui/src/theme/components/divider.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
 import 'package:shadcn_ui/src/theme/components/menubar.dart';
@@ -22,6 +21,7 @@ import 'package:shadcn_ui/src/theme/components/progress.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
+import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -87,7 +87,7 @@ abstract class ShadBaseTheme {
     required this.timePickerTheme,
     required this.inputOTPTheme,
     required this.menubarTheme,
-    required this.dividerTheme,
+    required this.separatorTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -140,7 +140,7 @@ abstract class ShadBaseTheme {
   final ShadTimePickerTheme timePickerTheme;
   final ShadInputOTPTheme inputOTPTheme;
   final ShadMenubarTheme menubarTheme;
-  final ShadDividerTheme dividerTheme;
+  final ShadSeparatorTheme separatorTheme;
 }
 
 @immutable
@@ -188,5 +188,5 @@ abstract class ShadThemeVariant {
   ShadTimePickerTheme timePickerTheme();
   ShadInputOTPTheme inputOTPTheme();
   ShadMenubarTheme menubarTheme();
-  ShadDividerTheme dividerTheme();
+  ShadSeparatorTheme separatorTheme();
 }

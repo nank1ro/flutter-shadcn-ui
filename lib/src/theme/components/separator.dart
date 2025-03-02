@@ -1,17 +1,17 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/shadcn_ui.dart' show ShadDivider;
-import 'package:shadcn_ui/src/components/divider.dart' show ShadDivider;
 
-@immutable
+@Deprecated('Use ShadSeparatorTheme instead.')
+typedef ShadDividerTheme = ShadSeparatorTheme;
 
 /// {@template ShadDividerTheme}
-/// Theme for the [ShadDivider] widget.
+/// Theme for the `ShadSeparator` widget.
 /// {@endtemplate}
-class ShadDividerTheme {
+@immutable
+class ShadSeparatorTheme {
   /// {@macro ShadDividerTheme}
-  const ShadDividerTheme({
+  const ShadSeparatorTheme({
     this.merge = true,
     this.verticalMargin,
     this.horizontalMargin,
@@ -37,7 +37,7 @@ class ShadDividerTheme {
   /// {@macro ShadDivider.radius}
   final BorderRadiusGeometry? radius;
 
-  ShadDividerTheme mergeWith(ShadDividerTheme? other) {
+  ShadSeparatorTheme mergeWith(ShadSeparatorTheme? other) {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
@@ -50,7 +50,7 @@ class ShadDividerTheme {
     );
   }
 
-  ShadDividerTheme copyWith({
+  ShadSeparatorTheme copyWith({
     bool? merge,
     Color? color,
     double? thickness,
@@ -58,7 +58,7 @@ class ShadDividerTheme {
     EdgeInsetsGeometry? horizontalMargin,
     BorderRadiusGeometry? radius,
   }) {
-    return ShadDividerTheme(
+    return ShadSeparatorTheme(
       merge: merge ?? this.merge,
       color: color ?? this.color,
       verticalMargin: verticalMargin ?? this.verticalMargin,
@@ -68,13 +68,13 @@ class ShadDividerTheme {
     );
   }
 
-  static ShadDividerTheme lerp(
-    ShadDividerTheme a,
-    ShadDividerTheme b,
+  static ShadSeparatorTheme lerp(
+    ShadSeparatorTheme a,
+    ShadSeparatorTheme b,
     double t,
   ) {
     if (identical(a, b)) return a;
-    return ShadDividerTheme(
+    return ShadSeparatorTheme(
       merge: b.merge,
       verticalMargin:
           EdgeInsetsGeometry.lerp(a.verticalMargin, b.verticalMargin, t),
@@ -89,7 +89,7 @@ class ShadDividerTheme {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is ShadDividerTheme &&
+    return other is ShadSeparatorTheme &&
         other.merge == merge &&
         other.color == color &&
         other.thickness == thickness &&

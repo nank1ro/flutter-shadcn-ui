@@ -686,8 +686,8 @@ class _ShadAppState extends State<ShadApp> {
       scaffoldBackgroundColor: themeData.colorScheme.background,
       brightness: themeData.brightness,
       dividerTheme: DividerThemeData(
-        color: themeData.dividerTheme.color ?? themeData.colorScheme.border,
-        thickness: themeData.dividerTheme.thickness ?? 1,
+        color: themeData.separatorTheme.color ?? themeData.colorScheme.border,
+        thickness: themeData.separatorTheme.thickness ?? 1,
       ),
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: themeData.colorScheme.primary,

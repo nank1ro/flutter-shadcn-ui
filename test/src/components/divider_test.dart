@@ -7,7 +7,7 @@ void main() {
   group('ShadDivider', () {
     group('.horizontal', () {
       testWidgets('correctly reads theme data', (tester) async {
-        const shadDividerTheme = ShadDividerTheme(
+        const shadDividerTheme = ShadSeparatorTheme(
           thickness: 12,
           horizontalMargin: EdgeInsets.symmetric(vertical: 100), // really wide
           color: Color(0xFFF44336), // red
@@ -17,10 +17,10 @@ void main() {
           theme: ShadThemeData(
             colorScheme: const ShadBlueColorScheme.dark(),
             brightness: Brightness.light,
-            dividerTheme: shadDividerTheme,
+            separatorTheme: shadDividerTheme,
           ),
           home: const Column(
-            children: [SizedBox(width: 40), ShadDivider.horizontal()],
+            children: [SizedBox(width: 40), ShadSeparator.horizontal()],
           ),
         );
 
@@ -59,7 +59,7 @@ void main() {
           home: Column(
             children: [
               SizedBox(width: 40),
-              ShadDivider.horizontal(
+              ShadSeparator.horizontal(
                 thickness: 12,
                 margin: EdgeInsets.symmetric(vertical: 100),
                 color: Color(0xFFF44336),
@@ -103,7 +103,7 @@ void main() {
           home: Column(
             children: [
               SizedBox(width: 40),
-              ShadDivider.horizontal(),
+              ShadSeparator.horizontal(),
             ],
           ),
         );
@@ -112,7 +112,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(
-          find.byType(ShadDivider),
+          find.byType(ShadSeparator),
           matchesGoldenFile('goldens/horizontal_divider.png'),
         );
       });
@@ -120,7 +120,7 @@ void main() {
 
     group('.vertical', () {
       testWidgets('correctly reads theme data', (tester) async {
-        const shadDividerTheme = ShadDividerTheme(
+        const shadDividerTheme = ShadSeparatorTheme(
           thickness: 12,
           verticalMargin: EdgeInsets.symmetric(horizontal: 100), // really tall
           color: Color(0xFFF44336), // red
@@ -130,10 +130,10 @@ void main() {
           theme: ShadThemeData(
             colorScheme: const ShadBlueColorScheme.dark(),
             brightness: Brightness.light,
-            dividerTheme: shadDividerTheme,
+            separatorTheme: shadDividerTheme,
           ),
           home: const Row(
-            children: [SizedBox(height: 40), ShadDivider.vertical()],
+            children: [SizedBox(height: 40), ShadSeparator.vertical()],
           ),
         );
 
@@ -174,7 +174,7 @@ void main() {
           home: Row(
             children: [
               SizedBox(height: 40),
-              ShadDivider.vertical(
+              ShadSeparator.vertical(
                 thickness: 12,
                 margin: EdgeInsets.symmetric(horizontal: 100),
                 color: Color(0xFFF44336),
@@ -220,7 +220,7 @@ void main() {
           home: Row(
             children: [
               SizedBox(height: 40),
-              ShadDivider.vertical(),
+              ShadSeparator.vertical(),
             ],
           ),
         );
@@ -229,7 +229,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(
-          find.byType(ShadDivider),
+          find.byType(ShadSeparator),
           matchesGoldenFile('goldens/vertical_divider.png'),
         );
       });

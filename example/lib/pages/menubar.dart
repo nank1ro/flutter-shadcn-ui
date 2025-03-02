@@ -23,7 +23,7 @@ class MenubarPage extends StatelessWidget {
         ),
       ),
     );
-    final divider = ShadDivider.horizontal(
+    final divider = ShadSeparator.horizontal(
       margin: const EdgeInsets.symmetric(vertical: 4),
       color: theme.colorScheme.muted,
     );

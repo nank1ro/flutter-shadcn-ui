@@ -7,9 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
-import 'package:shadcn_ui/src/components/divider.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
+import 'package:shadcn_ui/src/components/separator.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -885,7 +885,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                   onChanged: widget.onSearchChanged,
                 ),
             widget.searchDivider ??
-                const ShadDivider.horizontal(margin: EdgeInsets.zero),
+                const ShadSeparator.horizontal(margin: EdgeInsets.zero),
           ],
         ),
     };

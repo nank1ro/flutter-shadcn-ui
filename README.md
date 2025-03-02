@@ -54,7 +54,7 @@ See the [documentation](https://flutter-shadcn-ui.mariuti.com/) to interact with
 - [x] [Resizable](https://flutter-shadcn-ui.mariuti.com/components/resizable/)
 - [x] <strike>Scroll Area</strike> Use SingleScrollView, ListView etc. instead
 - [x] [Select](https://flutter-shadcn-ui.mariuti.com/components/select/)
-- [x] [Divider](https://flutter-shadcn-ui.mariuti.com/components/divider/)
+- [x] [Separator](https://flutter-shadcn-ui.mariuti.com/components/separator/)
 - [x] [Sheet](https://flutter-shadcn-ui.mariuti.com/components/sheet/)
 - [ ] Skeleton
 - [x] [Slider](https://flutter-shadcn-ui.mariuti.com/components/slider/)

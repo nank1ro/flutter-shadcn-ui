@@ -103,7 +103,7 @@ class TypographyPage extends StatelessWidget {
             style: ShadTheme.of(context).textTheme.muted,
           ),
         ),
-      ].separatedBy(const ShadDivider.horizontal()),
+      ].separatedBy(const ShadSeparator.horizontal()),
     );
   }
 }

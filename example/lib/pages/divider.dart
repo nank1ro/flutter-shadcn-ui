@@ -52,7 +52,7 @@ class _DividerPageState extends State<DividerPage> {
       ],
       children: [
         Text('Horizontal', style: theme.textTheme.h4),
-        ShadDivider.horizontal(
+        ShadSeparator.horizontal(
           thickness: thickness.toDouble(),
           margin: EdgeInsets.all(margin.toDouble()),
           radius: BorderRadius.all(Radius.circular(radius.toDouble())),
@@ -63,7 +63,7 @@ class _DividerPageState extends State<DividerPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Vertical', style: theme.textTheme.h4),
-              ShadDivider.vertical(
+              ShadSeparator.vertical(
                 thickness: thickness.toDouble(),
                 margin: EdgeInsets.all(margin.toDouble()),
                 radius: BorderRadius.all(Radius.circular(radius.toDouble())),
