@@ -35,12 +35,8 @@ class MenubarPage extends StatelessWidget {
           items: [
             ShadMenubarItem(
               items: [
-                const ShadContextMenuItem(
-                  child: Text('New Tab'),
-                ),
-                const ShadContextMenuItem(
-                  child: Text('New Window'),
-                ),
+                const ShadContextMenuItem(child: Text('New Tab')),
+                const ShadContextMenuItem(child: Text('New Window')),
                 const ShadContextMenuItem(
                   enabled: false,
                   child: Text('New Incognito Window'),
@@ -49,63 +45,37 @@ class MenubarPage extends StatelessWidget {
                 const ShadContextMenuItem(
                   trailing: Icon(LucideIcons.chevronRight),
                   items: [
-                    ShadContextMenuItem(
-                      child: Text('Email Link'),
-                    ),
-                    ShadContextMenuItem(
-                      child: Text('Messages'),
-                    ),
-                    ShadContextMenuItem(
-                      child: Text('Notes'),
-                    ),
+                    ShadContextMenuItem(child: Text('Email Link')),
+                    ShadContextMenuItem(child: Text('Messages')),
+                    ShadContextMenuItem(child: Text('Notes')),
                   ],
                   child: Text('Share'),
                 ),
                 divider,
-                const ShadContextMenuItem(
-                  child: Text('Print...'),
-                ),
+                const ShadContextMenuItem(child: Text('Print...')),
               ],
               child: const Text('File'),
             ),
             ShadMenubarItem(
               items: [
-                const ShadContextMenuItem(
-                  child: Text('Undo'),
-                ),
-                const ShadContextMenuItem(
-                  child: Text('Redo'),
-                ),
+                const ShadContextMenuItem(child: Text('Undo')),
+                const ShadContextMenuItem(child: Text('Redo')),
                 divider,
                 ShadContextMenuItem(
                   trailing: const Icon(LucideIcons.chevronRight),
                   items: [
-                    const ShadContextMenuItem(
-                      child: Text('Search the web'),
-                    ),
+                    const ShadContextMenuItem(child: Text('Search the web')),
                     divider,
-                    const ShadContextMenuItem(
-                      child: Text('Find...'),
-                    ),
-                    const ShadContextMenuItem(
-                      child: Text('Find Next'),
-                    ),
-                    const ShadContextMenuItem(
-                      child: Text('Find Previous'),
-                    ),
+                    const ShadContextMenuItem(child: Text('Find...')),
+                    const ShadContextMenuItem(child: Text('Find Next')),
+                    const ShadContextMenuItem(child: Text('Find Previous')),
                   ],
                   child: const Text('Find'),
                 ),
                 divider,
-                const ShadContextMenuItem(
-                  child: Text('Cut'),
-                ),
-                const ShadContextMenuItem(
-                  child: Text('Copy'),
-                ),
-                const ShadContextMenuItem(
-                  child: Text('Paste'),
-                ),
+                const ShadContextMenuItem(child: Text('Cut')),
+                const ShadContextMenuItem(child: Text('Copy')),
+                const ShadContextMenuItem(child: Text('Paste')),
               ],
               child: const Text('Edit'),
             ),
@@ -121,35 +91,24 @@ class MenubarPage extends StatelessWidget {
                 divider,
                 const ShadContextMenuItem.inset(child: Text('Reload')),
                 const ShadContextMenuItem.inset(
-                  enabled: false,
-                  child: Text('Force Reload'),
-                ),
+                    enabled: false, child: Text('Force Reload')),
                 divider,
                 const ShadContextMenuItem.inset(
                   child: Text('Toggle Full Screen'),
                 ),
                 divider,
-                const ShadContextMenuItem.inset(
-                  child: Text('Hide Sidebar'),
-                ),
+                const ShadContextMenuItem.inset(child: Text('Hide Sidebar')),
               ],
               child: const Text('View'),
             ),
             ShadMenubarItem(items: [
               const ShadContextMenuItem.inset(child: Text('Andy')),
-              ShadContextMenuItem(
-                leading: square,
-                child: const Text('Benoit'),
-              ),
+              ShadContextMenuItem(leading: square, child: const Text('Benoit')),
               const ShadContextMenuItem.inset(child: Text('Luis')),
               divider,
-              const ShadContextMenuItem.inset(
-                child: Text('Edit...'),
-              ),
+              const ShadContextMenuItem.inset(child: Text('Edit...')),
               divider,
-              const ShadContextMenuItem.inset(
-                child: Text('Add Profile...'),
-              ),
+              const ShadContextMenuItem.inset(child: Text('Add Profile...')),
             ], child: const Text('Profiles')),
           ],
         ),

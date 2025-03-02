@@ -210,6 +210,10 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
           shadows: widget.shadows,
           decoration: widget.decoration,
           filter: widget.filter,
+          onTapUpInside: (_) {
+            FocusScope.of(context).unfocus();
+            controller.selectedIndex = null;
+          },
           child: ShadButton.ghost(
             height: 32,
             backgroundColor: selected ? theme.colorScheme.accent : null,
@@ -220,7 +224,7 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
             },
             onHoverChange: (hovered) {
               if (!hovered) return;
-              controller.selectedIndex = index;
+              focusNode.requestFocus();
             },
             decoration: const ShadDecoration(
               disableSecondaryBorder: true,
