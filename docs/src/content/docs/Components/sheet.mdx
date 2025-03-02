@@ -3,12 +3,14 @@ title: Sheet
 sidebar:
   order: 4
 ---
-import Preview from '../../../components/Preview.astro';
+
+import Preview from "../../../components/Preview.astro";
 
 Extends the Dialog component to display content that complements the main content of the screen.
 
 <Preview src="sheet?style=primary" minHeight="600px">
- ```dart
+
+```dart
 ShadButton.outline(
   child: const Text('Open'),
   onPressed: () => showShadSheet(
@@ -72,6 +74,7 @@ class EditProfileSheet extends StatelessWidget {
   }
 }
 ```
+
 </Preview>
 
 ## Side
@@ -79,7 +82,8 @@ class EditProfileSheet extends StatelessWidget {
 Use the `side` property to `showShadSheet` to indicate the edge of the screen where the component will appear. The values can be `top`, `right`, `bottom` or `left`.
 
 <Preview src="sheet?style=side" minHeight="600px">
- ```dart
+
+```dart
 Row(
   mainAxisSize: MainAxisSize.min,
   children: [
@@ -138,4 +142,5 @@ Row(
 
 // See EditProfileSheet code in the previous code example
 ```
+
 </Preview>
