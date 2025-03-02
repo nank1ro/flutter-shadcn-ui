@@ -68,6 +68,7 @@ class ShadMenubar extends StatefulWidget {
     this.padding,
     this.backgroundColor,
     this.border,
+    this.selectOnHover,
   });
 
   /// {@template ShadMenubar.items}
@@ -98,6 +99,11 @@ class ShadMenubar extends StatefulWidget {
   /// `ShadBorder.all(color: theme.colorScheme.border, width: 1)`
   /// {@endtemplate}
   final ShadBorder? border;
+
+  /// {@template ShadMenubar.selectOnHover}
+  /// Whether to select the item when hovered, defaults to `true`
+  /// {@endtemplate}
+  final bool? selectOnHover;
 
   @override
   State<ShadMenubar> createState() => _ShadMenubarState();
@@ -137,9 +143,9 @@ class _ShadMenubarState extends State<ShadMenubar> {
             .mergeWith(widget.border);
 
     return ShadProvider(
-      data: controller,
+      data: this,
       notifyUpdate: (oldState) {
-        return oldState.data != controller;
+        return oldState.data != this;
       },
       child: DecoratedBox(
         decoration: BoxDecoration(
@@ -449,7 +455,8 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<ShadMenubarController>();
+    final inherited = context.watch<_ShadMenubarState>();
+    final controller = inherited.controller;
     final index = context.watch<ShadProviderIndex>().index;
     final focusNode = controller.getFocusNodeForIndex(index);
 
@@ -470,6 +477,9 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
     )
         .mergeWith(theme.menubarTheme.buttonDecoration)
         .mergeWith(widget.buttonDecoration);
+    final effectiveSelectOnHover = inherited.widget.selectOnHover ??
+        theme.menubarTheme.selectOnHover ??
+        true;
 
     return ListenableBuilder(
       listenable: controller,
@@ -514,6 +524,7 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
             onHoverChange: (hovered) {
               widget.onHoverChange?.call(hovered);
               if (!hovered) return;
+              if (!effectiveSelectOnHover) return;
               focusNode.requestFocus();
             },
             onPressed: () {

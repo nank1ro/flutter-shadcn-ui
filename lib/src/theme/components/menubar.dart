@@ -50,6 +50,7 @@ class ShadMenubarTheme {
     this.buttonLongPressDuration,
     this.buttonTextDirection,
     this.buttonExpands,
+    this.selectOnHover,
   });
 
   final bool merge;
@@ -162,6 +163,9 @@ class ShadMenubarTheme {
   /// {@macro ShadButton.expands}
   final bool? buttonExpands;
 
+  /// {@macro ShadMenubar.selectOnHover}
+  final bool? selectOnHover;
+
   static ShadMenubarTheme lerp(
     ShadMenubarTheme a,
     ShadMenubarTheme b,
@@ -247,6 +251,7 @@ class ShadMenubarTheme {
       buttonTextDirection:
           t < 0.5 ? a.buttonTextDirection : b.buttonTextDirection,
       buttonExpands: t < 0.5 ? a.buttonExpands : b.buttonExpands,
+      selectOnHover: t < 0.5 ? a.selectOnHover : b.selectOnHover,
     );
   }
 
@@ -288,6 +293,7 @@ class ShadMenubarTheme {
     Duration? buttonLongPressDuration,
     TextDirection? buttonTextDirection,
     bool? buttonExpands,
+    bool? selectOnHover,
   }) {
     return ShadMenubarTheme(
       merge: merge ?? this.merge,
@@ -339,6 +345,7 @@ class ShadMenubarTheme {
           buttonLongPressDuration ?? this.buttonLongPressDuration,
       buttonTextDirection: buttonTextDirection ?? this.buttonTextDirection,
       buttonExpands: buttonExpands ?? this.buttonExpands,
+      selectOnHover: selectOnHover ?? this.selectOnHover,
     );
   }
 
@@ -382,6 +389,7 @@ class ShadMenubarTheme {
       buttonLongPressDuration: other.buttonLongPressDuration,
       buttonTextDirection: other.buttonTextDirection,
       buttonExpands: other.buttonExpands,
+      selectOnHover: other.selectOnHover,
     );
   }
 
@@ -426,7 +434,8 @@ class ShadMenubarTheme {
         other.buttonHoverStrategies == buttonHoverStrategies &&
         other.buttonLongPressDuration == buttonLongPressDuration &&
         other.buttonTextDirection == buttonTextDirection &&
-        other.buttonExpands == buttonExpands;
+        other.buttonExpands == buttonExpands &&
+        other.selectOnHover == selectOnHover;
   }
 
   @override
@@ -467,6 +476,7 @@ class ShadMenubarTheme {
         buttonHoverStrategies.hashCode ^
         buttonLongPressDuration.hashCode ^
         buttonTextDirection.hashCode ^
-        buttonExpands.hashCode;
+        buttonExpands.hashCode ^
+        selectOnHover.hashCode;
   }
 }

@@ -1,10 +1,18 @@
 import 'package:example/common/base_scaffold.dart';
+import 'package:example/common/properties/bool_property.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-class MenubarPage extends StatelessWidget {
+class MenubarPage extends StatefulWidget {
   const MenubarPage({super.key});
+
+  @override
+  State<MenubarPage> createState() => _MenubarPageState();
+}
+
+class _MenubarPageState extends State<MenubarPage> {
+  var selectOnHover = true;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +38,16 @@ class MenubarPage extends StatelessWidget {
 
     return BaseScaffold(
       appBarTitle: 'Menubar',
+      editable: [
+        MyBoolProperty(
+          label: 'Select on hover',
+          value: selectOnHover,
+          onChanged: (value) => setState(() => selectOnHover = value),
+        ),
+      ],
       children: [
         ShadMenubar(
+          selectOnHover: selectOnHover,
           items: [
             ShadMenubarItem(
               items: [
