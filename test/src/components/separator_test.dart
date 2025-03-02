@@ -4,10 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 void main() {
-  group('ShadDivider', () {
+  group('ShadSeparator', () {
     group('.horizontal', () {
       testWidgets('correctly reads theme data', (tester) async {
-        const shadDividerTheme = ShadSeparatorTheme(
+        const shaSeparatorTheme = ShadSeparatorTheme(
           thickness: 12,
           horizontalMargin: EdgeInsets.symmetric(vertical: 100), // really wide
           color: Color(0xFFF44336), // red
@@ -17,7 +17,7 @@ void main() {
           theme: ShadThemeData(
             colorScheme: const ShadBlueColorScheme.dark(),
             brightness: Brightness.light,
-            separatorTheme: shadDividerTheme,
+            separatorTheme: shaSeparatorTheme,
           ),
           home: const Column(
             children: [SizedBox(width: 40), ShadSeparator.horizontal()],
@@ -113,14 +113,14 @@ void main() {
 
         expect(
           find.byType(ShadSeparator),
-          matchesGoldenFile('goldens/horizontal_divider.png'),
+          matchesGoldenFile('goldens/horizontal_separator.png'),
         );
       });
     });
 
     group('.vertical', () {
       testWidgets('correctly reads theme data', (tester) async {
-        const shadDividerTheme = ShadSeparatorTheme(
+        const shadSeparatorTheme = ShadSeparatorTheme(
           thickness: 12,
           verticalMargin: EdgeInsets.symmetric(horizontal: 100), // really tall
           color: Color(0xFFF44336), // red
@@ -130,7 +130,7 @@ void main() {
           theme: ShadThemeData(
             colorScheme: const ShadBlueColorScheme.dark(),
             brightness: Brightness.light,
-            separatorTheme: shadDividerTheme,
+            separatorTheme: shadSeparatorTheme,
           ),
           home: const Row(
             children: [SizedBox(height: 40), ShadSeparator.vertical()],
@@ -230,7 +230,7 @@ void main() {
 
         expect(
           find.byType(ShadSeparator),
-          matchesGoldenFile('goldens/vertical_divider.png'),
+          matchesGoldenFile('goldens/vertical_separator.png'),
         );
       });
     });
