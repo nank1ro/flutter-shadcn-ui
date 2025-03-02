@@ -79,39 +79,41 @@ class ShadDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shadTheme = ShadTheme.of(context);
-    final dividerTheme = shadTheme.dividerTheme;
+    final theme = ShadTheme.of(context);
+    final dividerTheme = theme.dividerTheme;
 
-    final thickness = this.thickness ?? dividerTheme.thickness;
-    final color = this.color ?? dividerTheme.color;
+    final effectiveThickness = thickness ?? dividerTheme.thickness ?? 1;
+    final effectiveColor =
+        color ?? dividerTheme.color ?? theme.colorScheme.border;
+
     final borderSide = BorderSide(
-      color: color ?? shadTheme.colorScheme.border,
-      width: thickness ?? 1,
+      color: effectiveColor,
+      width: effectiveThickness,
     );
 
-    final margin = this.margin ??
-        switch (variant) {
-          ShadDividerVariant.vertical => dividerTheme.verticalMargin,
-          ShadDividerVariant.horizontal => dividerTheme.horizontalMargin,
-        } ??
-        EdgeInsets.zero;
+    final defaultMargin = switch (variant) {
+      ShadDividerVariant.vertical => dividerTheme.verticalMargin,
+      ShadDividerVariant.horizontal => dividerTheme.horizontalMargin,
+    };
+
+    final effectiveMargin = margin ?? defaultMargin ?? EdgeInsets.zero;
 
     return Padding(
-      padding: margin,
+      padding: effectiveMargin,
       child: switch (variant) {
         ShadDividerVariant.vertical => DecoratedBox(
             decoration: BoxDecoration(
               border: Border(left: borderSide),
               borderRadius: radius,
             ),
-            child: SizedBox(width: thickness, height: double.infinity),
+            child: SizedBox(width: effectiveThickness, height: double.infinity),
           ),
         ShadDividerVariant.horizontal => DecoratedBox(
             decoration: BoxDecoration(
               border: Border(bottom: borderSide),
               borderRadius: radius,
             ),
-            child: SizedBox(height: thickness, width: double.infinity),
+            child: SizedBox(height: effectiveThickness, width: double.infinity),
           ),
       },
     );
