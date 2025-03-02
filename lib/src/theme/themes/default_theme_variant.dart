@@ -932,12 +932,21 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ),
     );
   }
-  
+
   @override
   ShadMenubarTheme menubarTheme() {
-    return const ShadMenubarTheme();
+    return ShadMenubarTheme(
+      radius: radius,
+      padding: const EdgeInsets.all(4),
+      border: ShadBorder.all(color: colorScheme.border, width: 1),
+      anchor: const ShadAnchor(offset: Offset(-8, 8)),
+      buttonHeight: 32,
+      buttonVariant: ShadButtonVariant.ghost,
+      buttonSelectedBackgroundColor: colorScheme.accent,
+      buttonDecoration: const ShadDecoration(disableSecondaryBorder: true),
+    );
   }
-  
+
   @override
   ShadDividerTheme dividerTheme() {
     return ShadDividerTheme(
