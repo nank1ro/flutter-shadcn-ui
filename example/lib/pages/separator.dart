@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-class DividerPage extends StatefulWidget {
-  const DividerPage({super.key});
+class SeparatorPage extends StatefulWidget {
+  const SeparatorPage({super.key});
 
   @override
-  State<DividerPage> createState() => _DividerPageState();
+  State<SeparatorPage> createState() => _SeparatorPageState();
 }
 
-class _DividerPageState extends State<DividerPage> {
+class _SeparatorPageState extends State<SeparatorPage> {
   int margin = 4;
   int thickness = 1;
   int radius = 0;
@@ -20,7 +20,7 @@ class _DividerPageState extends State<DividerPage> {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     return BaseScaffold(
-      appBarTitle: 'Divider',
+      appBarTitle: 'Separator',
       editable: [
         MyStringProperty(
           label: 'margin',
@@ -52,7 +52,7 @@ class _DividerPageState extends State<DividerPage> {
       ],
       children: [
         Text('Horizontal', style: theme.textTheme.h4),
-        ShadDivider.horizontal(
+        ShadSeparator.horizontal(
           thickness: thickness.toDouble(),
           margin: EdgeInsets.all(margin.toDouble()),
           radius: BorderRadius.all(Radius.circular(radius.toDouble())),
@@ -63,7 +63,7 @@ class _DividerPageState extends State<DividerPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Vertical', style: theme.textTheme.h4),
-              ShadDivider.vertical(
+              ShadSeparator.vertical(
                 thickness: thickness.toDouble(),
                 margin: EdgeInsets.all(margin.toDouble()),
                 radius: BorderRadius.all(Radius.circular(radius.toDouble())),

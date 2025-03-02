@@ -12,12 +12,13 @@ import 'package:example/pages/context_menu.dart';
 import 'package:example/pages/date_picker.dart';
 import 'package:example/pages/date_picker_form_field.dart';
 import 'package:example/pages/dialog.dart';
-import 'package:example/pages/divider.dart';
+import 'package:example/pages/separator.dart';
 import 'package:example/pages/icon_button.dart';
 import 'package:example/pages/input.dart';
 import 'package:example/pages/input_form_field.dart';
 import 'package:example/pages/input_otp.dart';
 import 'package:example/pages/input_otp_form_field.dart';
+import 'package:example/pages/menubar.dart';
 import 'package:example/pages/popover.dart';
 import 'package:example/pages/progress.dart';
 import 'package:example/pages/radio_group.dart';
@@ -60,12 +61,13 @@ final routes = <String, WidgetBuilder>{
   '/date-picker': (_) => const DatePickerPage(),
   '/date-picker-form-field': (_) => const DatePickerFormFieldPage(),
   '/dialog': (_) => const DialogPage(),
-  '/divider': (_) => const DividerPage(),
+  '/divider': (_) => const SeparatorPage(),
   '/icon-button': (_) => const IconButtonPage(),
   '/input': (_) => const InputPage(),
-  '/input-form-field': (_) => const InputFormFieldPage(),
   '/input-OTP': (_) => const InputOTPPage(),
   '/input-OTP-form-field': (_) => const InputOTPFormFieldPage(),
+  '/input-form-field': (_) => const InputFormFieldPage(),
+  '/menubar': (_) => const MenubarPage(),
   '/popover': (_) => const PopoverPage(),
   '/progress': (_) => const ProgressPage(),
   '/radio-group': (_) => const RadioPage(),

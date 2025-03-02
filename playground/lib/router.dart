@@ -15,6 +15,7 @@ import 'package:playground/pages/form.dart';
 import 'package:playground/pages/icon_button.dart';
 import 'package:playground/pages/input.dart';
 import 'package:playground/pages/input_otp.dart';
+import 'package:playground/pages/menubar.dart';
 import 'package:playground/pages/popover.dart';
 import 'package:playground/pages/progress.dart';
 import 'package:playground/pages/radio_group.dart';
@@ -282,12 +283,18 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/divider',
+      path: '/separator',
       builder: (context, state) {
         final style = state.uri.queryParameters['style'] ?? 'horizontal';
-        return DividerPage(
-          style: ShadDividerVariant.values.byName(style),
+        return SeparatorPage(
+          style: ShadSeparatorVariant.values.byName(style),
         );
+      },
+    ),
+    GoRoute(
+      path: '/menubar',
+      builder: (context, state) {
+        return const MenubarPage();
       },
     ),
   ],

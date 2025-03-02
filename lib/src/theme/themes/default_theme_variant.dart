@@ -19,15 +19,16 @@ import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
-import 'package:shadcn_ui/src/theme/components/divider.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
+import 'package:shadcn_ui/src/theme/components/menubar.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/progress.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
+import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -933,8 +934,22 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   }
 
   @override
-  ShadDividerTheme dividerTheme() {
-    return ShadDividerTheme(
+  ShadMenubarTheme menubarTheme() {
+    return ShadMenubarTheme(
+      radius: radius,
+      padding: const EdgeInsets.all(4),
+      border: ShadBorder.all(color: colorScheme.border, width: 1),
+      anchor: const ShadAnchor(offset: Offset(-8, 8)),
+      buttonHeight: 32,
+      buttonVariant: ShadButtonVariant.ghost,
+      buttonSelectedBackgroundColor: colorScheme.accent,
+      buttonDecoration: const ShadDecoration(disableSecondaryBorder: true),
+    );
+  }
+
+  @override
+  ShadSeparatorTheme separatorTheme() {
+    return ShadSeparatorTheme(
       thickness: 1,
       color: colorScheme.border,
       verticalMargin: const EdgeInsets.symmetric(horizontal: 16),

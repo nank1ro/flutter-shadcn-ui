@@ -51,7 +51,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
             allowDeselection: allowDeselection,
           ),
         ),
-        const ShadDivider.horizontal(),
+        const ShadSeparator.horizontal(),
         Text('Range', style: theme.textTheme.h4),
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),
@@ -60,7 +60,7 @@ class _DatePickerPageState extends State<DatePickerPage> {
             allowDeselection: allowDeselection,
           ),
         ),
-        const ShadDivider.horizontal(),
+        const ShadSeparator.horizontal(),
         Text('With Presets', style: theme.textTheme.h4),
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 600),

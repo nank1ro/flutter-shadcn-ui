@@ -7,7 +7,7 @@ class ContextMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    const divider = ShadDivider.horizontal(
+    const divider = ShadSeparator.horizontal(
       margin: EdgeInsets.symmetric(vertical: 4),
     );
     return Scaffold(

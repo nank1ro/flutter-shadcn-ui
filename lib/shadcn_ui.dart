@@ -15,7 +15,6 @@ export 'src/components/checkbox.dart';
 export 'src/components/context_menu.dart';
 export 'src/components/date_picker.dart';
 export 'src/components/dialog.dart';
-export 'src/components/divider.dart';
 export 'src/components/form/field.dart';
 export 'src/components/form/fields/checkbox.dart';
 export 'src/components/form/fields/date_picker.dart';
@@ -30,11 +29,13 @@ export 'src/components/form/form.dart';
 export 'src/components/icon_button.dart';
 export 'src/components/input.dart';
 export 'src/components/input_otp.dart';
+export 'src/components/menubar.dart';
 export 'src/components/popover.dart';
 export 'src/components/progress.dart';
 export 'src/components/radio.dart';
 export 'src/components/resizable.dart';
 export 'src/components/select.dart';
+export 'src/components/separator.dart';
 export 'src/components/sheet.dart';
 export 'src/components/slider.dart';
 export 'src/components/switch.dart';
@@ -45,6 +46,7 @@ export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
 
 // Raw Components
+export 'src/raw_components/focusable.dart';
 export 'src/raw_components/portal.dart';
 
 // App Themes & Color Schemes
@@ -80,16 +82,17 @@ export 'src/theme/components/context_menu.dart';
 export 'src/theme/components/date_picker.dart';
 export 'src/theme/components/decorator.dart';
 export 'src/theme/components/dialog.dart';
-export 'src/theme/components/divider.dart';
 export 'src/theme/components/input.dart';
 export 'src/theme/components/input_decorator.dart';
 export 'src/theme/components/input_otp.dart';
+export 'src/theme/components/menubar.dart';
 export 'src/theme/components/option.dart';
 export 'src/theme/components/popover.dart';
 export 'src/theme/components/progress.dart';
 export 'src/theme/components/radio.dart';
 export 'src/theme/components/resizable.dart';
 export 'src/theme/components/select.dart';
+export 'src/theme/components/separator.dart';
 export 'src/theme/components/sheet.dart';
 export 'src/theme/components/slider.dart';
 export 'src/theme/components/switch.dart';
@@ -103,21 +106,22 @@ export 'src/theme/text_theme/theme.dart';
 
 // Utils
 export 'src/utils/animation_builder.dart';
+export 'src/utils/border.dart';
 export 'src/utils/effects.dart';
 export 'src/utils/extensions/breakpoints.dart';
 export 'src/utils/extensions/date_time.dart';
+export 'src/utils/extensions/double.dart';
 export 'src/utils/extensions/duration.dart';
 export 'src/utils/extensions/order_policy.dart';
-export 'src/utils/extensions/double.dart';
 export 'src/utils/gesture_detector.dart';
+export 'src/utils/input_formatters.dart';
 export 'src/utils/mouse_area.dart';
 export 'src/utils/position.dart';
 export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
+export 'src/utils/provider_index.dart';
 export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
-export 'src/utils/input_formatters.dart';
 export 'src/utils/text_editing_controller.dart';
-export 'src/utils/border.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart' hide Effect;
