@@ -45,7 +45,7 @@ See the [documentation](https://flutter-shadcn-ui.mariuti.com/) to interact with
 - [x] [Input](https://flutter-shadcn-ui.mariuti.com/components/input/)
 - [x] [Input OTP](https://flutter-shadcn-ui.mariuti.com/components/input-otp/)
 - [x] <strike>Label</strike> Use Text instead
-- [ ] Menubar
+- [x] [Menubar](https://flutter-shadcn-ui.mariuti.com/components/menubar/)
 - [ ] Navigation Menu
 - [ ] Pagination
 - [x] [Popover](https://flutter-shadcn-ui.mariuti.com/components/popover/)
