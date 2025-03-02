@@ -7,7 +7,7 @@ void main() {
   group('ShadSeparator', () {
     group('.horizontal', () {
       testWidgets('correctly reads theme data', (tester) async {
-        const shaSeparatorTheme = ShadSeparatorTheme(
+        const shadSeparatorTheme = ShadSeparatorTheme(
           thickness: 12,
           horizontalMargin: EdgeInsets.symmetric(vertical: 100), // really wide
           color: Color(0xFFF44336), // red
@@ -17,7 +17,7 @@ void main() {
           theme: ShadThemeData(
             colorScheme: const ShadBlueColorScheme.dark(),
             brightness: Brightness.light,
-            separatorTheme: shaSeparatorTheme,
+            separatorTheme: shadSeparatorTheme,
           ),
           home: const Column(
             children: [SizedBox(width: 40), ShadSeparator.horizontal()],
