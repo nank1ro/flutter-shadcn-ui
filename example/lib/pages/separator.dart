@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-class DividerPage extends StatefulWidget {
-  const DividerPage({super.key});
+class SeparatorPage extends StatefulWidget {
+  const SeparatorPage({super.key});
 
   @override
-  State<DividerPage> createState() => _DividerPageState();
+  State<SeparatorPage> createState() => _SeparatorPageState();
 }
 
-class _DividerPageState extends State<DividerPage> {
+class _SeparatorPageState extends State<SeparatorPage> {
   int margin = 4;
   int thickness = 1;
   int radius = 0;
@@ -20,7 +20,7 @@ class _DividerPageState extends State<DividerPage> {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     return BaseScaffold(
-      appBarTitle: 'Divider',
+      appBarTitle: 'Separator',
       editable: [
         MyStringProperty(
           label: 'margin',
