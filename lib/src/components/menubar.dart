@@ -125,11 +125,15 @@ class _ShadMenubarState extends State<ShadMenubar> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveRadius = widget.radius ?? theme.radius;
-    final effectivePadding = widget.padding ?? const EdgeInsets.all(4);
-    final effectiveBackgroundColor = widget.backgroundColor;
+    final effectiveRadius =
+        widget.radius ?? theme.menubarTheme.radius ?? theme.radius;
+    final effectivePadding =
+        widget.padding ?? theme.menubarTheme.padding ?? const EdgeInsets.all(4);
+    final effectiveBackgroundColor =
+        widget.backgroundColor ?? theme.menubarTheme.backgroundColor;
     final effectiveBorder =
         ShadBorder.all(color: theme.colorScheme.border, width: 1)
+            .mergeWith(theme.menubarTheme.border)
             .mergeWith(widget.border);
 
     return ShadProvider(
@@ -289,9 +293,11 @@ class ShadMenubarItem extends StatefulWidget {
   /// {@macro ShadButton.width}
   final double? width;
 
+  /// {@template ShadMenubarItem.height}
   /// {@macro ShadButton.height}
   ///
   /// Defaults to `32`.
+  /// {@endtemplate}
   final double? height;
 
   /// {@macro ShadButton.padding}
@@ -448,15 +454,22 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
     final focusNode = controller.getFocusNodeForIndex(index);
 
     final theme = ShadTheme.of(context);
-    final effectiveAnchor =
-        widget.anchor ?? const ShadAnchor(offset: Offset(-8, 8));
-    final effectiveHeight = widget.height ?? 32;
-    final effectiveVariant = widget.variant ?? ShadButtonVariant.ghost;
-    final effectiveSelectedBackgroundColor =
-        widget.selectedBackgroundColor ?? theme.colorScheme.accent;
+    final effectiveAnchor = widget.anchor ??
+        theme.menubarTheme.anchor ??
+        const ShadAnchor(offset: Offset(-8, 8));
+    final effectiveHeight =
+        widget.height ?? theme.menubarTheme.buttonHeight ?? 32;
+    final effectiveVariant = widget.variant ??
+        theme.menubarTheme.buttonVariant ??
+        ShadButtonVariant.ghost;
+    final effectiveSelectedBackgroundColor = widget.selectedBackgroundColor ??
+        theme.menubarTheme.buttonSelectedBackgroundColor ??
+        theme.colorScheme.accent;
     final effectiveButtonDecoration = const ShadDecoration(
       disableSecondaryBorder: true,
-    ).mergeWith(widget.buttonDecoration);
+    )
+        .mergeWith(theme.menubarTheme.buttonDecoration)
+        .mergeWith(widget.buttonDecoration);
 
     return ListenableBuilder(
       listenable: controller,
@@ -467,14 +480,14 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
           anchor: effectiveAnchor,
           controller: popoverController,
           items: widget.items,
-          constraints: widget.constraints,
+          constraints: widget.constraints ?? theme.menubarTheme.constraints,
           onHoverArea: widget.onHoverArea,
-          padding: widget.padding,
+          padding: widget.padding ?? theme.menubarTheme.padding,
           groupId: widget.groupId,
-          effects: widget.effects,
-          shadows: widget.shadows,
-          decoration: widget.decoration,
-          filter: widget.filter,
+          effects: widget.effects ?? theme.menubarTheme.effects,
+          shadows: widget.shadows ?? theme.menubarTheme.shadows,
+          decoration: widget.decoration ?? theme.menubarTheme.decoration,
+          filter: widget.filter ?? theme.menubarTheme.filter,
           onTapUpInside: (_) {
             FocusScope.of(context).unfocus();
             controller.selectedIndex = null;
@@ -488,7 +501,8 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
             height: effectiveHeight,
             backgroundColor: selected
                 ? effectiveSelectedBackgroundColor
-                : widget.backgroundColor,
+                : widget.backgroundColor ??
+                    theme.menubarTheme.buttonBackgroundColor,
             focusNode: focusNode,
             onFocusChange: (focused) {
               widget.onFocusChange?.call(focused);
@@ -512,27 +526,37 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
             onLongPress: widget.onLongPress,
             leading: widget.leading,
             trailing: widget.trailing,
-            size: widget.size,
-            cursor: widget.cursor,
-            width: widget.width,
-            padding: widget.buttonPadding,
-            hoverBackgroundColor: widget.hoverBackgroundColor,
-            foregroundColor: widget.foregroundColor,
-            hoverForegroundColor: widget.hoverForegroundColor,
+            size: widget.size ?? theme.menubarTheme.buttonSize,
+            cursor: widget.cursor ?? theme.menubarTheme.buttonCursor,
+            width: widget.width ?? theme.menubarTheme.buttonWidth,
+            padding: widget.buttonPadding ?? theme.menubarTheme.buttonPadding,
+            hoverBackgroundColor: widget.hoverBackgroundColor ??
+                theme.menubarTheme.buttonHoverBackgroundColor,
+            foregroundColor: widget.foregroundColor ??
+                theme.menubarTheme.buttonForegroundColor,
+            hoverForegroundColor: widget.hoverForegroundColor ??
+                theme.menubarTheme.buttonHoverForegroundColor,
             autofocus: widget.autofocus,
-            pressedBackgroundColor: widget.pressedBackgroundColor,
-            pressedForegroundColor: widget.pressedForegroundColor,
-            shadows: widget.buttonShadows,
-            gradient: widget.gradient,
-            textDecoration: widget.textDecoration,
-            hoverTextDecoration: widget.hoverTextDecoration,
+            pressedBackgroundColor: widget.pressedBackgroundColor ??
+                theme.menubarTheme.buttonPressedBackgroundColor,
+            pressedForegroundColor: widget.pressedForegroundColor ??
+                theme.menubarTheme.buttonPressedForegroundColor,
+            shadows: widget.buttonShadows ?? theme.menubarTheme.buttonShadows,
+            gradient: widget.gradient ?? theme.menubarTheme.buttonGradient,
+            textDecoration: widget.textDecoration ??
+                theme.menubarTheme.buttonTextDecoration,
+            hoverTextDecoration: widget.hoverTextDecoration ??
+                theme.menubarTheme.buttonHoverTextDecoration,
             decoration: effectiveButtonDecoration,
             enabled: widget.enabled,
             statesController: widget.statesController,
-            gap: widget.gap,
-            mainAxisAlignment: widget.mainAxisAlignment,
-            crossAxisAlignment: widget.crossAxisAlignment,
-            hoverStrategies: widget.hoverStrategies,
+            gap: widget.gap ?? theme.menubarTheme.buttonGap,
+            mainAxisAlignment: widget.mainAxisAlignment ??
+                theme.menubarTheme.buttonMainAxisAlignment,
+            crossAxisAlignment: widget.crossAxisAlignment ??
+                theme.menubarTheme.buttonCrossAxisAlignment,
+            hoverStrategies: widget.hoverStrategies ??
+                theme.menubarTheme.buttonHoverStrategies,
             onTapDown: widget.onTapDown,
             onTapUp: widget.onTapUp,
             onTapCancel: widget.onTapCancel,
@@ -548,8 +572,9 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
             onDoubleTapDown: widget.onDoubleTapDown,
             onDoubleTapCancel: widget.onDoubleTapCancel,
             longPressDuration: widget.longPressDuration,
-            textDirection: widget.textDirection,
-            expands: widget.expands,
+            textDirection:
+                widget.textDirection ?? theme.menubarTheme.buttonTextDirection,
+            expands: widget.expands ?? theme.menubarTheme.buttonExpands,
             child: child,
           ),
         );
