@@ -8,11 +8,9 @@ class MenubarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: MenubarExample(),
-        ),
+      body: Padding(
+        padding: EdgeInsets.all(40),
+        child: MenubarExample(),
       ),
     );
   }
