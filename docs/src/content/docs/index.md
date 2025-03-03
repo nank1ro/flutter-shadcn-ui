@@ -133,7 +133,10 @@ ThemeData(
     selectionColor: themeData.colorScheme.selection,
     selectionHandleColor: themeData.colorScheme.primary,
   ),
-  iconTheme: const IconThemeData(size: 16),
+  iconTheme: IconThemeData(
+    size: 16,
+    color: themeData.colorScheme.foreground,
+  ),
 ),
 ```
 
