@@ -492,7 +492,7 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
           items: widget.items,
           constraints: widget.constraints ?? theme.menubarTheme.constraints,
           onHoverArea: widget.onHoverArea,
-          padding: widget.padding ?? theme.menubarTheme.padding,
+          padding: widget.padding ?? theme.menubarTheme.contextMenuPadding,
           groupId: widget.groupId,
           effects: widget.effects ?? theme.menubarTheme.effects,
           shadows: widget.shadows ?? theme.menubarTheme.shadows,
