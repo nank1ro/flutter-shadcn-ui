@@ -254,6 +254,8 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         preferBelow: false,
         verticalOffset: 24,
       ),
+      duration: Animate.defaultDuration,
+      reverseDuration: Duration.zero,
     );
   }
 
