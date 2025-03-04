@@ -1,3 +1,8 @@
+## 0.22.2
+
+- **FIX**: Add `constraints` to `ShadInput` and `ShadInputFormField`, by default the min height is calculated based on the `style` and `placeholderStyle`.
+- **CHORE**: Set min flutter version to `3.29.0` (thanks to @qk7b)
+
 ## 0.22.1
 
 - **FIX**: `ShadInput` icon color.

@@ -224,6 +224,9 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadInput.gap}
     double? gap,
+
+    /// {@macro ShadInput.constraints}
+    BoxConstraints? constraints,
   }) : super(
           initialValue: controller != null ? controller.text : initialValue,
           validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -307,6 +310,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
               placeholderAlignment: placeholderAlignment,
               inputPadding: inputPadding,
               gap: gap,
+              constraints: constraints,
             );
           },
         );

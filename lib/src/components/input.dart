@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
@@ -91,6 +92,7 @@ class ShadInput extends StatefulWidget {
     this.placeholderAlignment,
     this.inputPadding,
     this.gap,
+    this.constraints,
   })  : smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ??
@@ -539,6 +541,14 @@ class ShadInput extends StatefulWidget {
   /// {@endtemplate}
   final double? gap;
 
+  /// {@template ShadInput.constraints}
+  /// The constraints of the input field.
+  ///
+  /// By default only minHeight is set, based on the [style] and
+  /// [placeholderStyle].
+  /// {@endtemplate}
+  final BoxConstraints? constraints;
+
   /// A constant representing no maximum length for the input.
   static const int noMaxLength = -1;
 
@@ -725,11 +735,12 @@ class ShadInputState extends State<ShadInput>
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveTextStyle = widget.style ??
-        theme.inputTheme.style ??
-        theme.textTheme.muted.copyWith(
+    final effectiveTextStyle = theme.textTheme.muted
+        .copyWith(
           color: theme.colorScheme.foreground,
-        );
+        )
+        .merge(theme.inputTheme.style)
+        .merge(widget.style);
 
     final effectiveDecoration =
         (theme.inputTheme.decoration ?? const ShadDecoration())
@@ -742,9 +753,9 @@ class ShadInputState extends State<ShadInput>
     final effectiveInputPadding =
         widget.inputPadding ?? theme.inputTheme.inputPadding ?? EdgeInsets.zero;
 
-    final effectivePlaceholderStyle = widget.placeholderStyle ??
-        theme.inputTheme.placeholderStyle ??
-        theme.textTheme.muted;
+    final effectivePlaceholderStyle = theme.textTheme.muted
+        .merge(theme.inputTheme.placeholderStyle)
+        .merge(widget.placeholderStyle);
 
     final effectivePlaceholderAlignment = widget.placeholderAlignment ??
         theme.inputTheme.placeholderAlignment ??
@@ -796,6 +807,20 @@ class ShadInputState extends State<ShadInput>
         ),
     ];
 
+    final textScaler = MediaQuery.textScalerOf(context);
+
+    final maxFontSize = max(
+      (effectivePlaceholderStyle.fontSize ?? 0) *
+          (effectivePlaceholderStyle.height ?? 0),
+      (effectiveTextStyle.fontSize ?? 0) * (effectiveTextStyle.height ?? 0),
+    );
+    final maxFontSizeScaled = textScaler.scale(maxFontSize);
+
+    final effectiveConstraints = widget.constraints ??
+        BoxConstraints(
+          minHeight: maxFontSizeScaled,
+        );
+
     return ShadDisabled(
       disabled: !widget.enabled,
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
@@ -818,119 +843,126 @@ class ShadInputState extends State<ShadInput>
                         if (widget.leading != null) widget.leading!,
                         if (widget.prefix != null) widget.prefix!,
                         Flexible(
-                          child: AbsorbPointer(
-                            // AbsorbPointer is needed when the input is
-                            // readOnly so the onTap callback is fired on each
-                            // part of the input
-                            absorbing: widget.readOnly,
-                            child: Padding(
-                              padding: effectiveInputPadding,
-                              child: Stack(
-                                children: [
-                                  // placeholder
-                                  if (textEditingValue.text.isEmpty &&
-                                      widget.placeholder != null)
-                                    Positioned.fill(
-                                      child: Align(
-                                        alignment:
-                                            effectivePlaceholderAlignment,
-                                        child: DefaultTextStyle(
-                                          style: effectivePlaceholderStyle,
-                                          child: widget.placeholder!,
+                          child: ConstrainedBox(
+                            constraints: effectiveConstraints,
+                            child: AbsorbPointer(
+                              // AbsorbPointer is needed when the input is
+                              // readOnly so the onTap callback is fired on each
+                              // part of the input
+                              absorbing: widget.readOnly,
+                              child: Padding(
+                                padding: effectiveInputPadding,
+                                child: Stack(
+                                  children: [
+                                    // placeholder
+                                    if (textEditingValue.text.isEmpty &&
+                                        widget.placeholder != null)
+                                      Positioned.fill(
+                                        child: Align(
+                                          alignment:
+                                              effectivePlaceholderAlignment,
+                                          child: DefaultTextStyle(
+                                            style: effectivePlaceholderStyle,
+                                            child: widget.placeholder!,
+                                          ),
+                                        ),
+                                      ),
+                                    RepaintBoundary(
+                                      child: UnmanagedRestorationScope(
+                                        bucket: bucket,
+                                        child: EditableText(
+                                          showSelectionHandles:
+                                              _showSelectionHandles,
+                                          key: editableTextKey,
+                                          controller: effectiveController,
+                                          obscuringCharacter:
+                                              widget.obscuringCharacter,
+                                          readOnly: widget.readOnly,
+                                          focusNode: effectiveFocusNode,
+                                          // ! Selection handler section here
+                                          onSelectionChanged:
+                                              _handleSelectionChanged,
+                                          selectionColor: focused
+                                              ? widget.selectionColor ??
+                                                  theme.colorScheme.selection
+                                              : null,
+                                          selectionHeightStyle:
+                                              widget.selectionHeightStyle,
+                                          selectionWidthStyle:
+                                              widget.selectionWidthStyle,
+                                          contextMenuBuilder:
+                                              effectiveContextMenuBuilder,
+                                          selectionControls:
+                                              effectiveSelectionControls,
+                                          // ! End of selection handler section
+                                          mouseCursor: effectiveMouseCursor,
+                                          enableInteractiveSelection:
+                                              widget.enableInteractiveSelection,
+                                          style: effectiveTextStyle,
+                                          strutStyle: widget.strutStyle,
+                                          cursorColor: widget.cursorColor ??
+                                              theme.colorScheme.primary,
+                                          backgroundCursorColor: Colors.grey,
+                                          keyboardType: widget.keyboardType,
+                                          keyboardAppearance:
+                                              widget.keyboardAppearance ??
+                                                  theme.brightness,
+                                          textInputAction:
+                                              widget.textInputAction,
+                                          textCapitalization:
+                                              widget.textCapitalization,
+                                          autofocus: widget.autofocus,
+                                          obscureText: widget.obscureText,
+                                          autocorrect: widget.autocorrect,
+                                          magnifierConfiguration:
+                                              widget.magnifierConfiguration,
+                                          smartDashesType:
+                                              widget.smartDashesType,
+                                          smartQuotesType:
+                                              widget.smartQuotesType,
+                                          enableSuggestions:
+                                              widget.enableSuggestions,
+                                          maxLines: widget.maxLines,
+                                          minLines: widget.minLines,
+                                          expands: widget.expands,
+                                          onChanged: widget.onChanged,
+                                          onEditingComplete:
+                                              widget.onEditingComplete,
+                                          onSubmitted: widget.onSubmitted,
+                                          onAppPrivateCommand:
+                                              widget.onAppPrivateCommand,
+                                          inputFormatters:
+                                              effectiveInputFormatters,
+                                          cursorWidth: widget.cursorWidth,
+                                          cursorHeight: widget.cursorHeight,
+                                          cursorRadius: widget.cursorRadius,
+                                          scrollPadding: widget.scrollPadding,
+                                          dragStartBehavior:
+                                              widget.dragStartBehavior,
+                                          scrollController:
+                                              widget.scrollController,
+                                          scrollPhysics: widget.scrollPhysics,
+                                          autofillHints: widget.autofillHints,
+                                          clipBehavior: widget.clipBehavior,
+                                          restorationId: 'editable',
+                                          scribbleEnabled:
+                                              widget.scribbleEnabled,
+                                          enableIMEPersonalizedLearning: widget
+                                              .enableIMEPersonalizedLearning,
+                                          contentInsertionConfiguration: widget
+                                              .contentInsertionConfiguration,
+                                          undoController: widget.undoController,
+                                          spellCheckConfiguration:
+                                              widget.spellCheckConfiguration,
+                                          textAlign: widget.textAlign,
+                                          onTapOutside: widget.onPressedOutside,
+                                          rendererIgnoresPointer: true,
+                                          showCursor: widget.showCursor,
                                         ),
                                       ),
                                     ),
-                                  RepaintBoundary(
-                                    child: UnmanagedRestorationScope(
-                                      bucket: bucket,
-                                      child: EditableText(
-                                        showSelectionHandles:
-                                            _showSelectionHandles,
-                                        key: editableTextKey,
-                                        controller: effectiveController,
-                                        obscuringCharacter:
-                                            widget.obscuringCharacter,
-                                        readOnly: widget.readOnly,
-                                        focusNode: effectiveFocusNode,
-                                        // ! Selection handler section here
-                                        onSelectionChanged:
-                                            _handleSelectionChanged,
-                                        selectionColor: focused
-                                            ? widget.selectionColor ??
-                                                theme.colorScheme.selection
-                                            : null,
-                                        selectionHeightStyle:
-                                            widget.selectionHeightStyle,
-                                        selectionWidthStyle:
-                                            widget.selectionWidthStyle,
-                                        contextMenuBuilder:
-                                            effectiveContextMenuBuilder,
-                                        selectionControls:
-                                            effectiveSelectionControls,
-                                        // ! End of selection handler section
-                                        mouseCursor: effectiveMouseCursor,
-                                        enableInteractiveSelection:
-                                            widget.enableInteractiveSelection,
-                                        style: effectiveTextStyle,
-                                        strutStyle: widget.strutStyle,
-                                        cursorColor: widget.cursorColor ??
-                                            theme.colorScheme.primary,
-                                        backgroundCursorColor: Colors.grey,
-                                        keyboardType: widget.keyboardType,
-                                        keyboardAppearance:
-                                            widget.keyboardAppearance ??
-                                                theme.brightness,
-                                        textInputAction: widget.textInputAction,
-                                        textCapitalization:
-                                            widget.textCapitalization,
-                                        autofocus: widget.autofocus,
-                                        obscureText: widget.obscureText,
-                                        autocorrect: widget.autocorrect,
-                                        magnifierConfiguration:
-                                            widget.magnifierConfiguration,
-                                        smartDashesType: widget.smartDashesType,
-                                        smartQuotesType: widget.smartQuotesType,
-                                        enableSuggestions:
-                                            widget.enableSuggestions,
-                                        maxLines: widget.maxLines,
-                                        minLines: widget.minLines,
-                                        expands: widget.expands,
-                                        onChanged: widget.onChanged,
-                                        onEditingComplete:
-                                            widget.onEditingComplete,
-                                        onSubmitted: widget.onSubmitted,
-                                        onAppPrivateCommand:
-                                            widget.onAppPrivateCommand,
-                                        inputFormatters:
-                                            effectiveInputFormatters,
-                                        cursorWidth: widget.cursorWidth,
-                                        cursorHeight: widget.cursorHeight,
-                                        cursorRadius: widget.cursorRadius,
-                                        scrollPadding: widget.scrollPadding,
-                                        dragStartBehavior:
-                                            widget.dragStartBehavior,
-                                        scrollController:
-                                            widget.scrollController,
-                                        scrollPhysics: widget.scrollPhysics,
-                                        autofillHints: widget.autofillHints,
-                                        clipBehavior: widget.clipBehavior,
-                                        restorationId: 'editable',
-                                        scribbleEnabled: widget.scribbleEnabled,
-                                        enableIMEPersonalizedLearning: widget
-                                            .enableIMEPersonalizedLearning,
-                                        contentInsertionConfiguration: widget
-                                            .contentInsertionConfiguration,
-                                        undoController: widget.undoController,
-                                        spellCheckConfiguration:
-                                            widget.spellCheckConfiguration,
-                                        textAlign: widget.textAlign,
-                                        onTapOutside: widget.onPressedOutside,
-                                        rendererIgnoresPointer: true,
-                                        showCursor: widget.showCursor,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
