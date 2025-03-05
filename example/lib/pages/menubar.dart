@@ -104,15 +104,11 @@ class _MenubarPageState extends State<MenubarPage> {
                       divider,
                       const ShadContextMenuItem(child: Text('Cut')),
                       ShadContextMenuItem(
-                        enabled: controller.selection.start !=
-                            controller.selection.end,
+                        enabled: !controller.selection.isCollapsed,
                         onPressed: () {
                           final selectedText =
                               controller.selection.textInside(controller.text);
                           Clipboard.setData(ClipboardData(text: selectedText));
-                          // Clear the selection after copying
-                          controller.selection = TextSelection.collapsed(
-                              offset: controller.selection.start);
                           ShadToaster.of(context).show(
                               ShadToast(title: Text('Copied "$selectedText"')));
                         },
@@ -162,6 +158,9 @@ class _MenubarPageState extends State<MenubarPage> {
         ShadInput(
           controller: controller,
           maxLines: 5,
+          onPressedOutside: (_) {
+            // this will not unfocus the input
+          },
         ),
       ],
     );
