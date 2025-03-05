@@ -1,3 +1,7 @@
+## 0.22.3
+
+- **FIX**: `ShadMenubar` no longer steals the focus.
+
 ## 0.22.2
 
 - **FIX**: Add `constraints` to `ShadInput` and `ShadInputFormField`, by default the min height is calculated based on the `style` and `placeholderStyle`.
