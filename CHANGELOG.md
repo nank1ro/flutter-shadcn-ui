@@ -1,6 +1,7 @@
 ## 0.22.3
 
 - **FIX**: `ShadMenubar` no longer steals the focus.
+- **FIX**: `ShadButton` stealing focus on pressed.
 
 ## 0.22.2
 
