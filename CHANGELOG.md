@@ -1,3 +1,9 @@
+## 0.22.3
+
+- **FIX**: `ShadMenubar` no longer steals the focus.
+- **FIX**: `ShadButton` stealing focus when pressed.
+- **FEAT**: Add `stylusHandwritingEnabled` to `ShadInput`.
+
 ## 0.22.2
 
 - **FIX**: Add `constraints` to `ShadInput` and `ShadInputFormField`, by default the min height is calculated based on the `style` and `placeholderStyle`.
