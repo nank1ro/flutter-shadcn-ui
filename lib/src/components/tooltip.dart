@@ -31,6 +31,8 @@ class ShadTooltip extends StatefulWidget {
     this.hoverStrategies,
     this.controller,
     this.longPressDuration,
+    this.duration,
+    this.reverseDuration,
   });
 
   /// {@template ShadTooltip.builder}
@@ -126,11 +128,27 @@ class ShadTooltip extends StatefulWidget {
   /// {@endtemplate}
   final Duration? longPressDuration;
 
+  /// {@template ShadTooltip.duration}
+  /// The duration of the tooltip's entrance animation.
+  ///
+  /// Defaults to [Animate.defaultDuration].
+  /// {@endtemplate}
+  final Duration? duration;
+
+  /// {@template ShadTooltip.reverseDuration}
+  /// The duration of the tooltip's exit animation.
+  ///
+  /// Defaults to [Duration.zero].
+  /// {@endtemplate}
+  final Duration? reverseDuration;
+
   @override
   State<ShadTooltip> createState() => _ShadTooltipState();
 }
 
-class _ShadTooltipState extends State<ShadTooltip> {
+class _ShadTooltipState extends State<ShadTooltip>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController animationController;
   ShadTooltipController? _controller;
   bool hovered = false;
   bool get hasFocus => widget.focusNode?.hasFocus ?? false;
@@ -140,12 +158,18 @@ class _ShadTooltipState extends State<ShadTooltip> {
   @override
   void initState() {
     super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration: Animate.defaultDuration,
+      reverseDuration: Duration.zero,
+    );
     if (widget.controller == null) _controller = ShadTooltipController();
     widget.focusNode?.addListener(onFocusChange);
   }
 
   @override
   void dispose() {
+    animationController.dispose();
     widget.focusNode?.removeListener(onFocusChange);
     _controller?.dispose();
     super.dispose();
@@ -186,6 +210,14 @@ class _ShadTooltipState extends State<ShadTooltip> {
     final effectiveLongPressDuration =
         widget.longPressDuration ?? theme.tooltipTheme.longPressDuration;
 
+    final effectiveDuration = widget.duration ?? theme.tooltipTheme.duration;
+    final effectiveReverseDuration =
+        widget.reverseDuration ?? theme.tooltipTheme.reverseDuration;
+
+    // Update the animation controller with the new durations.
+    animationController.duration = effectiveDuration;
+    animationController.reverseDuration = effectiveReverseDuration;
+
     return ShadGestureDetector(
       longPressDuration: effectiveLongPressDuration,
       hoverStrategies: effectiveHoverStrategies,
@@ -204,6 +236,7 @@ class _ShadTooltipState extends State<ShadTooltip> {
             await Future<void>.delayed(widget.showDuration!);
           }
           if (!hovered && !hasFocus) {
+            await animationController.reverse();
             controller.hide();
           }
         }
@@ -230,6 +263,7 @@ class _ShadTooltipState extends State<ShadTooltip> {
 
               if (effectiveEffects.isNotEmpty) {
                 tooltip = Animate(
+                  controller: animationController,
                   effects: effectiveEffects,
                   child: tooltip,
                 );
