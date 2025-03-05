@@ -32,28 +32,6 @@ class ShadMenubarController extends ChangeNotifier {
     _selectedIndex = value;
     notifyListeners();
   }
-
-  final _focusNodes = <FocusNode>[];
-
-  /// Returns the focus node for the given index
-  FocusNode getFocusNodeForIndex(int index) {
-    if (index >= _focusNodes.length) {
-      for (var i = _focusNodes.length; i <= index; i++) {
-        _focusNodes.add(FocusNode());
-      }
-    }
-    return _focusNodes[index];
-  }
-
-  @override
-  void dispose() {
-    for (final node in _focusNodes) {
-      node.dispose();
-    }
-    _focusNodes.clear();
-
-    super.dispose();
-  }
 }
 
 /// A menubar that contains a list of items, typically a list of
@@ -458,7 +436,6 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
     final inherited = context.watch<_ShadMenubarState>();
     final controller = inherited.controller;
     final index = context.watch<ShadProviderIndex>().index;
-    final focusNode = controller.getFocusNodeForIndex(index);
 
     final theme = ShadTheme.of(context);
     final effectiveAnchor = widget.anchor ??
@@ -499,11 +476,9 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
           decoration: widget.decoration ?? theme.menubarTheme.decoration,
           filter: widget.filter ?? theme.menubarTheme.filter,
           onTapUpInside: (_) {
-            FocusScope.of(context).unfocus();
             controller.selectedIndex = null;
           },
           onTapOutside: (_) {
-            FocusScope.of(context).unfocus();
             controller.selectedIndex = null;
           },
           child: ShadButton.raw(
@@ -513,7 +488,7 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
                 ? effectiveSelectedBackgroundColor
                 : widget.backgroundColor ??
                     theme.menubarTheme.buttonBackgroundColor,
-            focusNode: focusNode,
+            focusNode: widget.focusNode,
             onFocusChange: (focused) {
               widget.onFocusChange?.call(focused);
               // Set the selected index
@@ -525,7 +500,7 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
               widget.onHoverChange?.call(hovered);
               if (!hovered) return;
               if (!effectiveSelectOnHover) return;
-              focusNode.requestFocus();
+              controller.selectedIndex = index;
             },
             onPressed: () {
               if (!popoverController.isOpen && selected) {

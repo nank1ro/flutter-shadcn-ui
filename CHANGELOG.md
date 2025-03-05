@@ -1,6 +1,9 @@
 ## 0.22.3
 
 - **FIX**: `ShadTooltip` exit animation, add `duration` and `reverseDuration` to it.
+- **FIX**: `ShadMenubar` no longer steals the focus.
+- **FIX**: `ShadButton` stealing focus when pressed.
+- **FEAT**: Add `stylusHandwritingEnabled` to `ShadInput`.
 
 ## 0.22.2
 

@@ -93,6 +93,8 @@ class ShadInput extends StatefulWidget {
     this.inputPadding,
     this.gap,
     this.constraints,
+    this.stylusHandwritingEnabled =
+        EditableText.defaultStylusHandwritingEnabled,
   })  : smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ??
@@ -444,6 +446,9 @@ class ShadInput extends StatefulWidget {
   /// Defaults to true.
   /// {@endtemplate}
   final bool scribbleEnabled;
+
+  /// {@macro flutter.widgets.editableText.stylusHandwritingEnabled}
+  final bool stylusHandwritingEnabled;
 
   /// {@template ShadInput.enableIMEPersonalizedLearning}
   /// Whether the IME can use personalized learning data.
@@ -947,6 +952,8 @@ class ShadInputState extends State<ShadInput>
                                           restorationId: 'editable',
                                           scribbleEnabled:
                                               widget.scribbleEnabled,
+                                          stylusHandwritingEnabled:
+                                              widget.stylusHandwritingEnabled,
                                           enableIMEPersonalizedLearning: widget
                                               .enableIMEPersonalizedLearning,
                                           contentInsertionConfiguration: widget
