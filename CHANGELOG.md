@@ -2,6 +2,7 @@
 
 - **FIX**: `ShadMenubar` no longer steals the focus.
 - **FIX**: `ShadButton` stealing focus on pressed.
+- **FEAT**: Add `stylusHandwritingEnabled` to `ShadInput`.
 
 ## 0.22.2
 
