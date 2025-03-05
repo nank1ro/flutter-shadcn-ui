@@ -488,7 +488,7 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
                 ? effectiveSelectedBackgroundColor
                 : widget.backgroundColor ??
                     theme.menubarTheme.buttonBackgroundColor,
-            // focusNode: focusNode,
+            focusNode: widget.focusNode,
             onFocusChange: (focused) {
               widget.onFocusChange?.call(focused);
               // Set the selected index
