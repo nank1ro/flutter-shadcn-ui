@@ -25,6 +25,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     void Function(String)? onChanged,
     super.valueTransformer,
     super.onReset,
+    super.focusNode,
 
     /// {@macro ShadInput.decoration}
     ShadDecoration? decoration,

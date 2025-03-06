@@ -1,3 +1,8 @@
+## 0.22.4
+
+- **FIX**: Pass `themeMode` to `MaterialApp` (thanks to @mubareksd).
+- **FIX**: Add `focusNode` to `ShadInputFormField`.
+
 ## 0.22.3
 
 - **FIX**: `ShadTooltip` exit animation, add `duration` and `reverseDuration` to it.
