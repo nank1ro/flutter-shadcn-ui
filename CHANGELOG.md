@@ -1,3 +1,7 @@
+## 0.22.5
+
+- **FIX**: `ShadGestureDetector` global coordinates when using multiple `Navigator`s.
+
 ## 0.22.4
 
 - **FIX**: Pass `themeMode` to `MaterialApp` (thanks to @mubareksd).
