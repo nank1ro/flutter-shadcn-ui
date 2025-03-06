@@ -171,13 +171,13 @@ class ShadGestureDetector extends StatelessWidget {
   // See https://github.com/nank1ro/flutter-shadcn-ui/issues/319
   Offset correctGlobalPosition(BuildContext context, Offset globalPosition) {
     // Get the root navigator's overlay (screen coordinates)
-    final rootNavigator = Navigator.of(context, rootNavigator: true);
-    final rootOverlay = rootNavigator.overlay;
+    final rootNavigator = Navigator.maybeOf(context, rootNavigator: true);
+    final rootOverlay = rootNavigator?.overlay;
     if (rootOverlay == null) return globalPosition;
 
     // Get the shell navigator's overlay (nearest Navigator)
-    final shellNavigator = Navigator.of(context);
-    final shellOverlay = shellNavigator.overlay;
+    final shellNavigator = Navigator.maybeOf(context);
+    final shellOverlay = shellNavigator?.overlay;
     if (shellOverlay == null || shellOverlay == rootOverlay) {
       return globalPosition;
     }
