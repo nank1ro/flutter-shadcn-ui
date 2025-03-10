@@ -442,7 +442,7 @@ class ShadDialog extends StatelessWidget {
         const ShadPosition(top: 8, right: 8);
 
     final effectiveRadius =
-        radius ?? effectiveDialogTheme.radius ?? theme.radius;
+        radius ?? radius ?? theme.radius;
 
     final effectiveExpandActionsWhenTiny = expandActionsWhenTiny ??
         effectiveDialogTheme.expandActionsWhenTiny ??
