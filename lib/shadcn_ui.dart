@@ -123,6 +123,7 @@ export 'src/utils/provider_index.dart';
 export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
 export 'src/utils/text_editing_controller.dart';
+export 'src/utils/mouse_cursor_provider.dart';
 
 // External libraries
 export 'package:flutter_animate/flutter_animate.dart' hide Effect;

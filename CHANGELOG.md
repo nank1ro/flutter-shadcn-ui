@@ -1,3 +1,7 @@
+## 0.22.6
+
+- **FIX**: Expose `ShadMouseCursorProvider`.
+
 ## 0.22.5
 
 - **FIX**: `ShadGestureDetector` global coordinates when using multiple `Navigator`s.
