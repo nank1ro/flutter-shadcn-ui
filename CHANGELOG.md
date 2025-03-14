@@ -1,6 +1,7 @@
 ## 0.22.6
 
 - **FIX**: Expose `ShadMouseCursorProvider`.
+- **FIX**: `ShadMenubar` anchor.
 
 ## 0.22.5
 

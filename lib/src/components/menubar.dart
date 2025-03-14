@@ -249,10 +249,10 @@ class ShadMenubarItem extends StatefulWidget {
   final ShadPopoverController? controller;
 
   /// {@template ShadMenubarItem.anchor}
-  /// The anchor of the menubar item, default to
+  /// The anchor of the context menu shown by the item, defaults to
   /// `ShadAnchor(offset: Offset(-8, 8))`
   /// {@endtemplate}
-  final ShadAnchor? anchor;
+  final ShadAnchorBase? anchor;
 
   /// {@macro ShadButton.onLongPress}
   final VoidCallback? onLongPress;
