@@ -198,10 +198,7 @@ class _ShadTooltipState extends State<ShadTooltip>
 
     final effectiveAnchor = widget.anchor ??
         theme.tooltipTheme.anchor ??
-        const ShadAnchorAuto(
-          preferBelow: false,
-          verticalOffset: 24,
-        );
+        const ShadAnchorAuto(preferBelow: false);
 
     final effectiveHoverStrategies = widget.hoverStrategies ??
         theme.tooltipTheme.hoverStrategies ??

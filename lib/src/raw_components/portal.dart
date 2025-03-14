@@ -14,6 +14,7 @@ class ShadAnchorAuto extends ShadAnchorBase {
     this.verticalOffset = 0,
     this.preferBelow = true,
     this.followTargetOnResize = true,
+    this.alignment = Alignment.center,
   });
 
   /// The vertical offset of the overlay from the start of target widget.
@@ -26,6 +27,13 @@ class ShadAnchorAuto extends ShadAnchorBase {
   /// Whether the overlay is automatically adjusted to follow the target
   /// widget when the target widget moves dues to a window resize.
   final bool followTargetOnResize;
+
+  /// The position from where the overlay should be aligned.
+  /// Using this property, the coordinates of target are adjusted.
+  ///
+  /// Defaults to [Alignment.center], meaning the overlay is aligned to the
+  /// center of the target widget.
+  final Alignment alignment;
 
   @override
   bool operator ==(Object other) {
@@ -132,6 +140,7 @@ class ShadPortal extends StatefulWidget {
 class _ShadPortalState extends State<ShadPortal> {
   final layerLink = LayerLink();
   final overlayPortalController = OverlayPortalController();
+  final overlayKey = GlobalKey();
 
   @override
   void initState() {
@@ -180,9 +189,36 @@ class _ShadPortalState extends State<ShadPortal> {
     }
     final overlayState = Overlay.of(context, debugRequiredFor: widget);
     final box = this.context.findRenderObject()! as RenderBox;
+    final overlayAncestor =
+        overlayState.context.findRenderObject()! as RenderBox;
+
+    final overlay = overlayKey.currentContext?.findRenderObject() as RenderBox?;
+    final overlaySize = overlay?.size ?? Size.zero;
+    print('box.size: ${box.size}');
+    print('overlay.size: ${overlay?.size}');
+    final boxFromAlignment = switch (anchor.alignment) {
+      Alignment.topLeft =>
+        box.size.topLeft(Offset(-box.size.width / 2, -overlaySize.height)),
+      Alignment.topCenter => box.size.topCenter(Offset(0, -box.size.height)),
+      Alignment.topRight =>
+        box.size.topRight(Offset(box.size.width / 2, -box.size.height)),
+      Alignment.centerLeft =>
+        box.size.centerLeft(Offset(-box.size.width / 2, -box.size.height / 2)),
+      Alignment.center => box.size.center(Offset(0, -box.size.height / 2)),
+      Alignment.centerRight =>
+        box.size.centerRight(Offset(box.size.width / 2, -box.size.height / 2)),
+      Alignment.bottomLeft =>
+        box.size.bottomLeft(Offset(-box.size.width / 2, 0)),
+      Alignment.bottomCenter => box.size.bottomCenter(Offset.zero),
+      Alignment.bottomRight =>
+        box.size.bottomRight(Offset(box.size.width / 2, 0)),
+      final alignment => throw Exception(
+          """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
+        ),
+    };
     final target = box.localToGlobal(
-      box.size.center(Offset.zero),
-      ancestor: overlayState.context.findRenderObject(),
+      boxFromAlignment,
+      ancestor: overlayAncestor,
     );
     return CustomSingleChildLayout(
       delegate: ShadPositionDelegate(
@@ -190,7 +226,10 @@ class _ShadPortalState extends State<ShadPortal> {
         verticalOffset: anchor.verticalOffset,
         preferBelow: anchor.preferBelow,
       ),
-      child: widget.portalBuilder(context),
+      child: KeyedSubtree(
+        key: overlayKey,
+        child: widget.portalBuilder(context),
+      ),
     );
   }
 
@@ -285,6 +324,7 @@ class ShadPositionDelegate extends SingleChildLayoutDelegate {
       target: target,
       verticalOffset: verticalOffset,
       preferBelow: preferBelow,
+      margin: 0,
     );
   }
 

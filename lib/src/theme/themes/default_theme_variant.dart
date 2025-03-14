@@ -229,10 +229,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         color: colorScheme.popover,
         shadows: ShadShadows.md,
       ),
-      anchor: const ShadAnchorAuto(
-        preferBelow: false,
-        verticalOffset: 24,
-      ),
+      anchor: const ShadAnchorAuto(preferBelow: false),
       duration: Animate.defaultDuration,
       reverseDuration: Duration.zero,
     );
