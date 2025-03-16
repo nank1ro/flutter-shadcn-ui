@@ -2,6 +2,7 @@
 
 - **FIX**: Expose `ShadMouseCursorProvider`.
 - **FIX**: `ShadMenubar` anchor.
+- **FIX**: `ShadBadge` should not enter the gesture arena if the `onPressed` callback is not provided.
 
 ## 0.22.5
 

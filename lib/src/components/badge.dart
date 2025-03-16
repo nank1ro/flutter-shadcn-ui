@@ -190,11 +190,16 @@ class _ShadBadgeState extends State<ShadBadge> {
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
     final theme = ShadTheme.of(context);
-    return Semantics(
+
+    Widget badge = Semantics(
       container: true,
-      child: ShadGestureDetector(
-        onHoverChange: (value) => isHovered.value = value,
-        onTap: widget.onPressed,
+      child: MouseRegion(
+        onEnter: (_) {
+          isHovered.value = true;
+        },
+        onExit: (_) {
+          isHovered.value = false;
+        },
         child: ValueListenableBuilder(
           valueListenable: isHovered,
           builder: (context, hovered, child) {
@@ -226,5 +231,13 @@ class _ShadBadgeState extends State<ShadBadge> {
         ),
       ),
     );
+
+    if (widget.onPressed != null) {
+      badge = ShadGestureDetector(
+        onTap: widget.onPressed,
+        child: badge,
+      );
+    }
+    return badge;
   }
 }
