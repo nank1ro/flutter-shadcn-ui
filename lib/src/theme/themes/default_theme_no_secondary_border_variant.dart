@@ -354,7 +354,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
-      anchor: const ShadAnchor(offset: Offset(1, 4)),
+      anchor: const ShadAnchorAuto(offset: Offset(1, 4)),
       searchPadding: const EdgeInsets.all(12),
     );
   }

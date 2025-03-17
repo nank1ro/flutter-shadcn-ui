@@ -617,8 +617,13 @@ class ShadContextMenuItem extends StatefulWidget {
 
   /// {@template ShadContextMenuItem.anchor}
   /// The anchor of the context menu item, defaults to
-  /// `ShadAnchor(overlayAlignment:
-  /// Alignment.topRight, offset: Offset(-8, -3))`.
+  /// ```dart
+  /// ShadAnchorAuto(
+  ///   offset: Offset(-8, parentItemController != null ? -5 : -3),
+  ///   targetAnchor: Alignment.topRight,
+  ///   followerAnchor: Alignment.bottomRight,
+  /// )
+  /// ```
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
@@ -746,9 +751,10 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
 
     final effectiveAnchor = widget.anchor ??
         theme.contextMenuTheme.anchor ??
-        ShadAnchor(
-          overlayAlignment: Alignment.topRight,
+        ShadAnchorAuto(
           offset: Offset(-8, parentItemController != null ? -5 : -3),
+          targetAnchor: Alignment.topRight,
+          followerAnchor: Alignment.bottomRight,
         );
 
     final effectiveHeight =

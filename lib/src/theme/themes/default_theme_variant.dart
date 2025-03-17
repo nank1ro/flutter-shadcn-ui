@@ -336,7 +336,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
-      anchor: const ShadAnchor(),
+      anchor: const ShadAnchorAuto(),
       searchPadding: const EdgeInsets.all(12),
     );
   }
