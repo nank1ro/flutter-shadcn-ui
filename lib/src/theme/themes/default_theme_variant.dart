@@ -230,8 +230,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         shadows: ShadShadows.md,
       ),
       anchor: const ShadAnchorAuto(
-        preferBelow: false,
-        verticalOffset: 24,
+        followerAnchor: Alignment.topCenter,
+        targetAnchor: Alignment.topCenter,
       ),
       duration: Animate.defaultDuration,
       reverseDuration: Duration.zero,
@@ -265,7 +265,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           width: 1,
         ),
       ),
-      anchor: const ShadAnchorAuto(verticalOffset: 24),
+      anchor: const ShadAnchorAuto(),
     );
   }
 
@@ -336,7 +336,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
-      anchor: const ShadAnchor(),
+      anchor: const ShadAnchorAuto(),
       searchPadding: const EdgeInsets.all(12),
     );
   }
@@ -941,7 +941,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       radius: radius,
       padding: const EdgeInsets.all(4),
       border: ShadBorder.all(color: colorScheme.border, width: 1),
-      anchor: const ShadAnchor(offset: Offset(-8, 8)),
+      anchor: const ShadAnchorAuto(
+        offset: Offset(-8, 8),
+        followerAnchor: Alignment.bottomRight,
+        targetAnchor: Alignment.bottomLeft,
+      ),
       buttonHeight: 32,
       buttonVariant: ShadButtonVariant.ghost,
       buttonSelectedBackgroundColor: colorScheme.accent,

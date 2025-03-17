@@ -1,9 +1,10 @@
-## 0.22.6
+## 0.23.0
 
 - **FIX**: Expose `ShadMouseCursorProvider`.
 - **FIX**: `ShadMenubar` anchor.
 - **FIX**: `ShadBadge` should not enter the gesture arena if the `onPressed` callback is not provided.
 - **FEAT**: Add `cursor` to `ShadBadge`, defaults to `SystemMouseCursors.click` if `onPressed` is provided.
+- **BREAKING CHANGE**: Refactor `ShadAnchorAuto` to make it more powerful, removed `verticalOffset` and `preferBelow` in favor of `offset`, `followerAnchor` and `targetAnchor`. Now every component uses it by default.
 
 ## 0.22.5
 

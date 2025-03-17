@@ -100,8 +100,7 @@ class ShadPopover extends StatefulWidget {
   ///{@template ShadPopover.anchor}
   /// The position of the [popover] in the global coordinate system.
   ///
-  /// Defaults to
-  /// `ShadAnchorAutoPosition(verticalOffset: 24, preferBelow: true)`.
+  /// Defaults to `ShadAnchorAuto()`.
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
@@ -210,9 +209,8 @@ class _ShadPopoverState extends State<ShadPopover> {
       ),
     );
 
-    final effectiveAnchor = widget.anchor ??
-        theme.popoverTheme.anchor ??
-        const ShadAnchorAuto(verticalOffset: 24);
+    final effectiveAnchor =
+        widget.anchor ?? theme.popoverTheme.anchor ?? const ShadAnchorAuto();
 
     final effectiveFilter = widget.filter ?? theme.popoverTheme.filter;
 

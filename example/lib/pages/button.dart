@@ -1,5 +1,4 @@
 import 'package:example/common/base_scaffold.dart';
-import 'package:example/common/component_view.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
 import 'package:flutter/material.dart';
@@ -107,14 +106,6 @@ class _ButtonPageState extends State<ButtonPage> {
               ),
             ],
             child: const Text('Gradient with Shadow'),
-          ),
-          ComponentView(
-            label: 'Icon',
-            child: ShadButton.outline(
-              size: size,
-              enabled: enabled,
-              leading: const Icon(LucideIcons.chevronRight),
-            ),
           ),
         ],
       ),

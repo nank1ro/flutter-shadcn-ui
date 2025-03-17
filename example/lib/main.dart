@@ -32,6 +32,7 @@ import 'package:example/pages/switch.dart';
 import 'package:example/pages/switch_form_field.dart';
 import 'package:example/pages/table.dart';
 import 'package:example/pages/tabs.dart';
+import 'package:example/pages/portal.dart';
 import 'package:example/pages/time_picker.dart';
 import 'package:example/pages/time_picker_form_field.dart';
 import 'package:example/pages/toast.dart';
@@ -69,6 +70,7 @@ final routes = <String, WidgetBuilder>{
   '/input-form-field': (_) => const InputFormFieldPage(),
   '/menubar': (_) => const MenubarPage(),
   '/popover': (_) => const PopoverPage(),
+  '/portal': (_) => const ShadPortalPage(),
   '/progress': (_) => const ProgressPage(),
   '/radio-group': (_) => const RadioPage(),
   '/radio-group-form-field': (_) => const RadioGroupFormFieldPage(),
