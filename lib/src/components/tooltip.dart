@@ -5,6 +5,7 @@ import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
+import 'package:shadcn_ui/src/utils/mouse_area.dart';
 
 /// Controls the visibility of a [ShadTooltip].
 typedef ShadTooltipController = ShadPopoverController;
@@ -98,8 +99,13 @@ class ShadTooltip extends StatefulWidget {
   /// {@template ShadTooltip.anchor}
   /// The anchor position of the tooltip relative to its child.
   ///
-  /// Defaults to `ShadAnchorAutoPosition(preferBelow: false, verticalOffset:
-  /// 24)`.
+  /// Defaults to
+  /// ```dart
+  /// const ShadAnchorAuto(
+  ///   followerAnchor: Alignment.topCenter,
+  ///   targetAnchor: Alignment.topCenter,
+  /// );
+  /// ```
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
@@ -184,7 +190,9 @@ class _ShadTooltipState extends State<ShadTooltip>
     }
   }
 
-  void onFocusChange() => hasFocus ? controller.show() : controller.hide();
+  void onFocusChange() {
+    hasFocus ? controller.show() : controller.hide();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +206,10 @@ class _ShadTooltipState extends State<ShadTooltip>
 
     final effectiveAnchor = widget.anchor ??
         theme.tooltipTheme.anchor ??
-        const ShadAnchorAuto(preferBelow: false);
+        const ShadAnchorAuto(
+          followerAnchor: Alignment.topCenter,
+          targetAnchor: Alignment.topCenter,
+        );
 
     final effectiveHoverStrategies = widget.hoverStrategies ??
         theme.tooltipTheme.hoverStrategies ??
@@ -265,9 +276,12 @@ class _ShadTooltipState extends State<ShadTooltip>
                   child: tooltip,
                 );
               }
-              return tooltip;
+              return ShadMouseArea(groupId: 'tooltip', child: tooltip);
             },
-            child: widget.child,
+            child: ShadMouseArea(
+              groupId: 'tooltip',
+              child: widget.child,
+            ),
           );
         },
       ),

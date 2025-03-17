@@ -86,7 +86,7 @@ class ShadMenubarTheme {
   final ImageFilter? filter;
 
   /// {@macro ShadMenubarItem.anchor}
-  final ShadAnchor? anchor;
+  final ShadAnchorBase? anchor;
 
   /// {@macro ShadButton.variant}
   final ShadButtonVariant? buttonVariant;
@@ -267,7 +267,7 @@ class ShadMenubarTheme {
     List<BoxShadow>? shadows,
     ShadDecoration? decoration,
     ImageFilter? filter,
-    ShadAnchor? anchor,
+    ShadAnchorBase? anchor,
     ShadButtonVariant? buttonVariant,
     ShadButtonSize? buttonSize,
     MouseCursor? buttonCursor,

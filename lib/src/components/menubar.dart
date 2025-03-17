@@ -440,7 +440,12 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
     final theme = ShadTheme.of(context);
     final effectiveAnchor = widget.anchor ??
         theme.menubarTheme.anchor ??
-        const ShadAnchor(offset: Offset(-8, 8));
+        const ShadAnchorAuto(
+          offset: Offset(-8, 8),
+          followerAnchor: Alignment.bottomRight,
+          targetAnchor: Alignment.bottomLeft,
+        );
+
     final effectiveHeight =
         widget.height ?? theme.menubarTheme.buttonHeight ?? 32;
     final effectiveVariant = widget.variant ??

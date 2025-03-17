@@ -12,6 +12,7 @@ class ShadPortalPage extends StatefulWidget {
 
 class _ShadPortalPageState extends State<ShadPortalPage> {
   var visible = false;
+  late final Timer timer;
   var alignmentIndex = 0;
   final alignments = [
     Alignment.topLeft,
@@ -28,11 +29,17 @@ class _ShadPortalPageState extends State<ShadPortalPage> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(const Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         alignmentIndex = (alignmentIndex + 1) % alignments.length;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -50,7 +57,7 @@ class _ShadPortalPageState extends State<ShadPortalPage> {
           ),
           Align(
             child: ShadPortal(
-              anchor: ShadAnchorAuto(alignment: alignment),
+              anchor: ShadAnchorAuto(followerAnchor: alignment),
               visible: visible,
               portalBuilder: (context) {
                 return ShadMouseArea(

@@ -250,7 +250,10 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         color: colorScheme.popover,
         shadows: ShadShadows.md,
       ),
-      anchor: const ShadAnchorAuto(preferBelow: false),
+      anchor: const ShadAnchorAuto(
+        followerAnchor: Alignment.topCenter,
+        targetAnchor: Alignment.topCenter,
+      ),
       duration: Animate.defaultDuration,
       reverseDuration: Duration.zero,
     );
@@ -283,7 +286,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           width: 1,
         ),
       ),
-      anchor: const ShadAnchorAuto(verticalOffset: 24),
+      anchor: const ShadAnchorAuto(),
     );
   }
 
@@ -972,7 +975,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       radius: radius,
       padding: const EdgeInsets.all(4),
       border: ShadBorder.all(color: colorScheme.border, width: 1),
-      anchor: const ShadAnchor(offset: Offset(-8, 8)),
+      anchor: const ShadAnchorAuto(
+        offset: Offset(-8, 8),
+        followerAnchor: Alignment.bottomRight,
+        targetAnchor: Alignment.bottomLeft,
+      ),
       buttonHeight: 32,
       buttonVariant: ShadButtonVariant.ghost,
       buttonSelectedBackgroundColor: colorScheme.accent,

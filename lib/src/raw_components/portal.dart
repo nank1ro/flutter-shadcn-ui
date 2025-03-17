@@ -6,50 +6,48 @@ sealed class ShadAnchorBase {
 }
 
 /// Automatically infers the position of the [ShadPortal] in the global
-/// coordinate system adjusting according to the [verticalOffset] and
-/// [preferBelow] properties.
+/// coordinate system adjusting according to the [offset],
+/// [followerAnchor] and [targetAnchor] properties.
 @immutable
 class ShadAnchorAuto extends ShadAnchorBase {
   const ShadAnchorAuto({
-    this.verticalOffset = 0,
-    this.preferBelow = true,
+    this.offset = Offset.zero,
     this.followTargetOnResize = true,
-    this.alignment = Alignment.center,
+    this.followerAnchor = Alignment.bottomCenter,
+    this.targetAnchor = Alignment.bottomCenter,
   });
 
-  /// The vertical offset of the overlay from the start of target widget.
-  final double verticalOffset;
-
-  /// Whether the overlay is displayed below its widget by default, if there is
-  /// enough space.
-  final bool preferBelow;
+  /// The offset of the overlay from the target widget.
+  final Offset offset;
 
   /// Whether the overlay is automatically adjusted to follow the target
   /// widget when the target widget moves dues to a window resize.
   final bool followTargetOnResize;
 
-  /// The position from where the overlay should be aligned.
-  /// Using this property, the coordinates of target are adjusted.
-  ///
-  /// Defaults to [Alignment.center], meaning the overlay is aligned to the
-  /// center of the target widget.
-  final Alignment alignment;
+  /// The coordinates of the overlay from which the overlay starts, which
+  /// is calculated from the initial [targetAnchor].
+  final Alignment followerAnchor;
+
+  /// The coordinates of the target from which the overlay starts.
+  final Alignment targetAnchor;
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is ShadAnchorAuto &&
-        other.verticalOffset == verticalOffset &&
-        other.preferBelow == preferBelow &&
-        other.followTargetOnResize == followTargetOnResize;
+        other.offset == offset &&
+        other.followTargetOnResize == followTargetOnResize &&
+        other.followerAnchor == followerAnchor &&
+        other.targetAnchor == targetAnchor;
   }
 
   @override
   int get hashCode =>
-      verticalOffset.hashCode ^
-      preferBelow.hashCode ^
-      followTargetOnResize.hashCode;
+      offset.hashCode ^
+      followTargetOnResize.hashCode ^
+      followerAnchor.hashCode ^
+      targetAnchor.hashCode;
 }
 
 /// Manually specifies the position of the [ShadPortal] in the global
@@ -194,35 +192,56 @@ class _ShadPortalState extends State<ShadPortal> {
 
     final overlay = overlayKey.currentContext?.findRenderObject() as RenderBox?;
     final overlaySize = overlay?.size ?? Size.zero;
-    final boxFromAlignment = switch (anchor.alignment) {
-      Alignment.topLeft =>
-        box.size.topLeft(Offset(-overlaySize.width / 2, -overlaySize.height)),
-      Alignment.topCenter => box.size.topCenter(Offset(0, -overlaySize.height)),
-      Alignment.topRight =>
-        box.size.topRight(Offset(overlaySize.width / 2, -overlaySize.height)),
-      Alignment.centerLeft => box.size
-          .centerLeft(Offset(-overlaySize.width / 2, -overlaySize.height / 2)),
-      Alignment.center => box.size.center(Offset(0, -overlaySize.height / 2)),
-      Alignment.centerRight => box.size
-          .centerRight(Offset(overlaySize.width / 2, -overlaySize.height / 2)),
-      Alignment.bottomLeft =>
-        box.size.bottomLeft(Offset(-overlaySize.width / 2, 0)),
+
+    final targetOffset = switch (anchor.targetAnchor) {
+      Alignment.topLeft => box.size.topLeft(Offset.zero),
+      Alignment.topCenter => box.size.topCenter(Offset.zero),
+      Alignment.topRight => box.size.topRight(Offset.zero),
+      Alignment.centerLeft => box.size.centerLeft(Offset.zero),
+      Alignment.center => box.size.center(Offset.zero),
+      Alignment.centerRight => box.size.centerRight(Offset.zero),
+      Alignment.bottomLeft => box.size.bottomLeft(Offset.zero),
       Alignment.bottomCenter => box.size.bottomCenter(Offset.zero),
-      Alignment.bottomRight =>
-        box.size.bottomRight(Offset(overlaySize.width / 2, 0)),
+      Alignment.bottomRight => box.size.bottomRight(Offset.zero),
       final alignment => throw Exception(
           """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
         ),
     };
+
+    var followerOffset = switch (anchor.followerAnchor) {
+      Alignment.topLeft => Offset(-overlaySize.width / 2, -overlaySize.height),
+      Alignment.topCenter => Offset(0, -overlaySize.height),
+      Alignment.topRight => Offset(overlaySize.width / 2, -overlaySize.height),
+      Alignment.centerLeft =>
+        Offset(-overlaySize.width / 2, -overlaySize.height / 2),
+      Alignment.center => Offset(0, -overlaySize.height / 2),
+      Alignment.centerRight =>
+        Offset(overlaySize.width / 2, -overlaySize.height / 2),
+      Alignment.bottomLeft => Offset(-overlaySize.width / 2, 0),
+      Alignment.bottomCenter => Offset.zero,
+      Alignment.bottomRight => Offset(overlaySize.width / 2, 0),
+      final alignment => throw Exception(
+          """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
+        ),
+    };
+
+    followerOffset += targetOffset + anchor.offset;
+
     final target = box.localToGlobal(
-      boxFromAlignment,
+      followerOffset,
       ancestor: overlayAncestor,
     );
+
+    if (overlay == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {});
+      });
+    }
     return CustomSingleChildLayout(
       delegate: ShadPositionDelegate(
         target: target,
-        verticalOffset: anchor.verticalOffset,
-        preferBelow: anchor.preferBelow,
+        verticalOffset: 0,
+        preferBelow: true,
       ),
       child: KeyedSubtree(
         key: overlayKey,
@@ -230,7 +249,10 @@ class _ShadPortalState extends State<ShadPortal> {
           // The overlay layout details are available only after the view is
           // rendered, in this way we can avoid the flickering effect.
           visible: overlay != null,
-          child: widget.portalBuilder(context),
+          child: IgnorePointer(
+            ignoring: overlay == null,
+            child: widget.portalBuilder(context),
+          ),
         ),
       ),
     );
