@@ -194,24 +194,22 @@ class _ShadPortalState extends State<ShadPortal> {
 
     final overlay = overlayKey.currentContext?.findRenderObject() as RenderBox?;
     final overlaySize = overlay?.size ?? Size.zero;
-    print('box.size: ${box.size}');
-    print('overlay.size: ${overlay?.size}');
     final boxFromAlignment = switch (anchor.alignment) {
       Alignment.topLeft =>
-        box.size.topLeft(Offset(-box.size.width / 2, -overlaySize.height)),
-      Alignment.topCenter => box.size.topCenter(Offset(0, -box.size.height)),
+        box.size.topLeft(Offset(-overlaySize.width / 2, -overlaySize.height)),
+      Alignment.topCenter => box.size.topCenter(Offset(0, -overlaySize.height)),
       Alignment.topRight =>
-        box.size.topRight(Offset(box.size.width / 2, -box.size.height)),
-      Alignment.centerLeft =>
-        box.size.centerLeft(Offset(-box.size.width / 2, -box.size.height / 2)),
-      Alignment.center => box.size.center(Offset(0, -box.size.height / 2)),
-      Alignment.centerRight =>
-        box.size.centerRight(Offset(box.size.width / 2, -box.size.height / 2)),
+        box.size.topRight(Offset(overlaySize.width / 2, -overlaySize.height)),
+      Alignment.centerLeft => box.size
+          .centerLeft(Offset(-overlaySize.width / 2, -overlaySize.height / 2)),
+      Alignment.center => box.size.center(Offset(0, -overlaySize.height / 2)),
+      Alignment.centerRight => box.size
+          .centerRight(Offset(overlaySize.width / 2, -overlaySize.height / 2)),
       Alignment.bottomLeft =>
-        box.size.bottomLeft(Offset(-box.size.width / 2, 0)),
+        box.size.bottomLeft(Offset(-overlaySize.width / 2, 0)),
       Alignment.bottomCenter => box.size.bottomCenter(Offset.zero),
       Alignment.bottomRight =>
-        box.size.bottomRight(Offset(box.size.width / 2, 0)),
+        box.size.bottomRight(Offset(overlaySize.width / 2, 0)),
       final alignment => throw Exception(
           """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
         ),
@@ -228,7 +226,12 @@ class _ShadPortalState extends State<ShadPortal> {
       ),
       child: KeyedSubtree(
         key: overlayKey,
-        child: widget.portalBuilder(context),
+        child: Visibility.maintain(
+          // The overlay layout details are available only after the view is
+          // rendered, in this way we can avoid the flickering effect.
+          visible: overlay != null,
+          child: widget.portalBuilder(context),
+        ),
       ),
     );
   }

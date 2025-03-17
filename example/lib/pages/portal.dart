@@ -28,11 +28,11 @@ class _ShadPortalPageState extends State<ShadPortalPage> {
   @override
   void initState() {
     super.initState();
-    // Timer.periodic(const Duration(seconds: 1), (timer) {
-    //   setState(() {
-    //     alignmentIndex = (alignmentIndex + 1) % alignments.length;
-    //   });
-    // });
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        alignmentIndex = (alignmentIndex + 1) % alignments.length;
+      });
+    });
   }
 
   @override
