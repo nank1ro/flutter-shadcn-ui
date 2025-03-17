@@ -32,6 +32,7 @@ class ShadBadge extends StatefulWidget {
     this.foregroundColor,
     this.padding,
     this.onPressed,
+    this.cursor,
   }) : variant = ShadBadgeVariant.primary;
 
   /// Creates a secondary variant badge widget, typically for less prominent
@@ -45,6 +46,7 @@ class ShadBadge extends StatefulWidget {
     this.foregroundColor,
     this.padding,
     this.onPressed,
+    this.cursor,
   }) : variant = ShadBadgeVariant.secondary;
 
   /// Creates an outline variant badge widget, typically with a bordered
@@ -58,6 +60,7 @@ class ShadBadge extends StatefulWidget {
     this.foregroundColor,
     this.padding,
     this.onPressed,
+    this.cursor,
   }) : variant = ShadBadgeVariant.outline;
 
   /// Creates a destructive variant badge widget, typically for error or warning
@@ -71,6 +74,7 @@ class ShadBadge extends StatefulWidget {
     this.foregroundColor,
     this.padding,
     this.onPressed,
+    this.cursor,
   }) : variant = ShadBadgeVariant.destructive;
 
   /// Creates a badge widget with a specified [variant], allowing full control
@@ -85,6 +89,7 @@ class ShadBadge extends StatefulWidget {
     this.foregroundColor,
     this.padding,
     this.onPressed,
+    this.cursor,
   });
 
   /// {@template ShadBadge.variant}
@@ -143,6 +148,13 @@ class ShadBadge extends StatefulWidget {
   /// {@endtemplate}
   final VoidCallback? onPressed;
 
+  /// {@template ShadBadge.cursor}
+  /// The cursor displayed when hovering over the badge, providing feedback
+  /// when the badge is interactive. Defaults to [SystemMouseCursors.click] if
+  /// [onPressed] is provided, otherwise [MouseCursor.defer].
+  /// {@endtemplate}
+  final MouseCursor? cursor;
+
   @override
   State<ShadBadge> createState() => _ShadBadgeState();
 }
@@ -186,6 +198,12 @@ class _ShadBadgeState extends State<ShadBadge> {
     return widget.padding ?? badgeTheme(theme).padding;
   }
 
+  MouseCursor cursor(ShadThemeData theme) {
+    final defaultCursor =
+        widget.onPressed != null ? SystemMouseCursors.click : MouseCursor.defer;
+    return widget.cursor ?? badgeTheme(theme).cursor ?? defaultCursor;
+  }
+
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
@@ -194,6 +212,7 @@ class _ShadBadgeState extends State<ShadBadge> {
     Widget badge = Semantics(
       container: true,
       child: MouseRegion(
+        cursor: cursor(theme),
         onEnter: (_) {
           isHovered.value = true;
         },
