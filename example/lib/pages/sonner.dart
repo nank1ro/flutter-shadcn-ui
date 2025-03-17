@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/enum_property.dart';
 import 'package:example/pages/toast.dart';
@@ -36,14 +38,20 @@ class _SonnerPageState extends State<SonnerPage> {
           child: const Text('Add to calendar'),
           onPressed: () {
             final sonner = ShadSonner.of(context);
+            final randomId = Random().nextInt(1000000);
             sonner.show(
               ShadToast(
+                id: randomId,
                 alignment: alignment.toAlignment(),
                 title: const Text('Scheduled: Catch up'),
-                description: const Text('Friday, February 10, 2023 at 5:57 PM'),
-                action: ShadButton.outline(
-                  child: const Text('Undo'),
-                  // onPressed: () => sonner.hide(),
+                description: Text(DateTime.now().toString()),
+                action: ShadButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  height: 24,
+                  child: const Text('Undo',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w400)),
+                  onPressed: () => sonner.hide(randomId),
                 ),
               ),
             );

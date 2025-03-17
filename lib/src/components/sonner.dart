@@ -1,198 +1,14 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/toast.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
-
-/// A widget that manages and displays toasts within the widget tree.
-///
-/// The [ShadSonner] widget acts as a provider for toast notifications,
-/// displaying them as overlays on top of its child widget. It uses an
-/// [InheritedWidget] to allow descendants to access its state and show toasts
-/// via [ShadSonner.of].
-class ShadSonner extends StatefulWidget {
-  /// Creates a toaster widget that wraps the provided child.
-  const ShadSonner({
-    super.key,
-    required this.child,
-  });
-
-  /// The widget below the toaster in the tree, over which toasts are displayed.
-  /// Typically the main app content.
-  final Widget child;
-
-  @override
-  State<ShadSonner> createState() => ShadSonnerState();
-
-  /// Retrieves the [ShadSonnerState] from the nearest [ShadSonner] ancestor.
-  ///
-  /// Throws a [FlutterError] if no [ShadSonner] is found in the widget tree.
-  static ShadSonnerState of(BuildContext context) {
-    final provider = maybeOf(context);
-    if (provider == null) {
-      throw FlutterError(
-        '''Could not find ShadToaster InheritedWidget in the ancestor widget tree.''',
-      );
-    }
-    return provider;
-  }
-
-  /// Attempts to retrieve the [ShadSonnerState] from the nearest [ShadSonner]
-  /// ancestor.
-  ///
-  /// Returns null if no [ShadSonner] is found, allowing optional access.
-  static ShadSonnerState? maybeOf(BuildContext context) {
-    final scope = context.dependOnInheritedWidgetOfExactType<ShadSonnerScope>();
-    return scope?.shadMessengerState;
-  }
-}
-
-class ToastInfo {
-  final ShadToast toast;
-  final AnimationController controller;
-  Timer? timer;
-
-  ToastInfo(this.toast, this.controller);
-}
-
-class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
-  final List<ToastInfo> _toasts = [];
-  final ValueNotifier<bool> _isHovered = ValueNotifier(false);
-  static const double _toastSpacing = 8.0;
-  static const Duration _animationDuration = Duration(milliseconds: 300);
-
-  @override
-  void dispose() {
-    for (var toast in _toasts) {
-      toast.timer?.cancel();
-      toast.controller.dispose();
-    }
-    _isHovered.dispose();
-    super.dispose();
-  }
-
-  void show(ShadToast toast) {
-    final controller = AnimationController(
-      vsync: this,
-      duration: _animationDuration,
-    );
-    final toastInfo = ToastInfo(toast, controller);
-    setState(() => _toasts.add(toastInfo));
-    controller.forward();
-
-    final effectiveDuration = toast.duration ?? kDefaultToastDuration;
-    toastInfo.timer = Timer(effectiveDuration, () => _removeToast(toastInfo));
-  }
-
-  Future<void> _removeToast(ToastInfo toastInfo) async {
-    if (!mounted || !_toasts.contains(toastInfo)) return;
-    toastInfo.timer?.cancel();
-    await toastInfo.controller.reverse();
-    if (mounted) {
-      setState(() => _toasts.remove(toastInfo));
-      toastInfo.controller.dispose();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-
-    return ShadSonnerScope(
-      shadMessengerState: this,
-      child: Stack(
-        children: [
-          widget.child,
-          MouseRegion(
-            opaque: false,
-            onEnter: (_) => _isHovered.value = true,
-            onExit: (_) => _isHovered.value = false,
-            child: ValueListenableBuilder<bool>(
-              valueListenable: _isHovered,
-              builder: (context, isHovered, child) {
-                return Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: AnimatedContainer(
-                      duration: _animationDuration,
-                      curve: Curves.easeInOut,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: _buildToastList(theme, isHovered),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  List<Widget> _buildToastList(ShadThemeData theme, bool isHovered) {
-    print('buildToastList');
-    return _toasts
-        .asMap()
-        .entries
-        .map((entry) {
-          final index = entry.key;
-          final toastInfo = entry.value;
-          final toast = toastInfo.toast;
-
-          final effectiveToastTheme = switch (toast.variant) {
-            ShadToastVariant.primary || null => theme.primaryToastTheme,
-            ShadToastVariant.destructive => theme.destructiveToastTheme,
-          };
-
-          final animateIn = <Effect<dynamic>>[
-            SlideEffect(
-              begin: Offset(1, 0),
-              end: Offset.zero,
-            ),
-            FadeEffect(begin: 0, end: 1),
-          ];
-
-          final animateOut = <Effect<dynamic>>[
-            SlideEffect(
-              begin: Offset.zero,
-              end: Offset(1, 0),
-            ),
-            FadeEffect(begin: 1, end: 0),
-          ];
-
-          final offsetY = isHovered
-              ? index * (64 + _toastSpacing) // Expanded height + spacing
-              : index * _toastSpacing; // Stacked minimal spacing
-
-          return Animate(
-            controller: toastInfo.controller,
-            effects: toastInfo.controller.isAnimating
-                ? (toastInfo.controller.status == AnimationStatus.forward
-                    ? animateIn
-                    : animateOut)
-                : [],
-            child: Transform.translate(
-              offset: Offset(0, -offsetY),
-              child: AnimatedPadding(
-                duration: _animationDuration,
-                curve: Curves.easeInOut,
-                padding: EdgeInsets.only(bottom: isHovered ? _toastSpacing : 0),
-                child: toast,
-              ),
-            ),
-          );
-        })
-        .toList()
-        .reversed
-        .toList();
-  }
-}
+import 'package:shadcn_ui/src/utils/mouse_area.dart';
+import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 /// An inherited widget that provides access to the [ShadSonnerState].
 ///
@@ -212,4 +28,219 @@ class ShadSonnerScope extends InheritedWidget {
   @override
   bool updateShouldNotify(ShadSonnerScope oldWidget) =>
       shadMessengerState != oldWidget.shadMessengerState;
+}
+
+/// A widget that manages and displays toasts within the widget tree.
+///
+/// The [ShadSonner] widget acts as a provider for toast notifications,
+/// displaying them as overlays on top of its child widget. It uses an
+/// [InheritedWidget] to allow descendants to access its state and show toasts
+/// via [ShadSonner.of].
+class ShadSonner extends StatefulWidget {
+  /// Creates a toaster widget that wraps the provided child.
+  const ShadSonner({
+    super.key,
+    this.visibleToastsAmount,
+    required this.child,
+  });
+
+  /// The widget below the toaster in the tree, over which toasts are displayed.
+  /// Typically the main app content.
+  final Widget child;
+
+  /// {@template ShadSonner.visible_toasts_amount}
+  /// The maximum number of toasts that can be displayed at once.
+  ///
+  /// Defaults to 3 if not provided.
+  /// {@endtemplate}
+  final int? visibleToastsAmount;
+
+  @override
+  State<ShadSonner> createState() => ShadSonnerState();
+
+  /// Retrieves the [ShadSonnerState] from the nearest [ShadSonner] ancestor.
+  ///
+  /// Throws a [FlutterError] if no [ShadSonner] is found in the widget tree.
+  static ShadSonnerState of(BuildContext context) {
+    final provider = maybeOf(context);
+    if (provider == null) {
+      throw FlutterError(
+        '''Could not find ShadSonner InheritedWidget in the ancestor widget tree.''',
+      );
+    }
+    return provider;
+  }
+
+  /// Attempts to retrieve the [ShadSonnerState] from the nearest [ShadSonner]
+  /// ancestor.
+  ///
+  /// Returns null if no [ShadSonner] is found, allowing optional access.
+  static ShadSonnerState? maybeOf(BuildContext context) {
+    final scope = context.dependOnInheritedWidgetOfExactType<ShadSonnerScope>();
+    return scope?.shadMessengerState;
+  }
+}
+
+class ToastInfo {
+  ToastInfo({
+    required this.id,
+    required this.toast,
+    required this.controller,
+  });
+
+  final Object id;
+  final ShadToast toast;
+  final AnimationController controller;
+  Timer? timer;
+}
+
+class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
+  int get visibleToastsAmount => widget.visibleToastsAmount ?? 3;
+
+  final List<ToastInfo> _toasts = [];
+  static const double _toastSpacing = 8.0;
+  static const Duration _animationDuration = Duration(milliseconds: 300);
+
+  final hovered = ValueNotifier(false);
+
+  @override
+  void dispose() {
+    for (final toast in _toasts) {
+      toast.timer?.cancel();
+      toast.controller.dispose();
+    }
+    hovered.dispose();
+    super.dispose();
+  }
+
+  /// Shows the provided [ShadToast] and returns an identifier for the toast.
+
+  /// The identifier will match the provided [ShadToast.id] if it is not null,
+  /// otherwise it will be a [UniqueKey].
+  Object? show(ShadToast toast) {
+    final controller = AnimationController(
+      vsync: this,
+      duration: _animationDuration,
+    );
+    final effectiveId = toast.id ?? UniqueKey();
+    final toastInfo = ToastInfo(
+      id: effectiveId,
+      toast: toast,
+      controller: controller,
+    );
+    setState(() {
+      _toasts.add(toastInfo);
+      if (_toasts.length > visibleToastsAmount) {
+        _toasts.removeAt(0);
+      }
+    });
+    controller.forward();
+
+    final effectiveDuration = toast.duration ?? kDefaultToastDuration;
+    toastInfo.timer = Timer(effectiveDuration, () => hide(effectiveId));
+    return effectiveId;
+  }
+
+  /// Hides the toast with the provided [id]entifier.
+  Future<void> hide(Object? id) async {
+    if (!mounted) return;
+    final containsId = _toasts.any((toast) => toast.id == id);
+    if (!containsId) return;
+    final toastInfo = _toasts.firstWhere((toast) => toast.id == id);
+    toastInfo.timer?.cancel();
+    await toastInfo.controller.reverse();
+    if (mounted) {
+      setState(() => _toasts.remove(toastInfo));
+      toastInfo.controller.dispose();
+    }
+  }
+
+  void onEnter(PointerEnterEvent event) {
+    hovered.value = true;
+  }
+
+  void onExit(PointerExitEvent event) {
+    hovered.value = false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
+    final toasts = _toasts.map((toastInfo) => toastInfo.toast).toList(
+          growable: false,
+        );
+
+    return ShadSonnerScope(
+      shadMessengerState: this,
+      child: ShadTheme(
+        data: theme.copyWith(
+          primaryToastTheme: theme.primaryToastTheme.copyWith(
+            closeIcon: const SizedBox.shrink(),
+            padding: const EdgeInsets.all(16),
+            titleStyle: theme.primaryToastTheme.titleStyle?.copyWith(
+              fontSize: 13,
+            ),
+            descriptionStyle:
+                theme.primaryToastTheme.descriptionStyle?.copyWith(
+              fontSize: 13,
+            ),
+          ),
+          destructiveToastTheme: theme.destructiveToastTheme.copyWith(
+            closeIcon: const SizedBox.shrink(),
+            padding: const EdgeInsets.all(16),
+            titleStyle: theme.destructiveToastTheme.titleStyle?.copyWith(
+              fontSize: 13,
+            ),
+            descriptionStyle:
+                theme.destructiveToastTheme.descriptionStyle?.copyWith(
+              fontSize: 13,
+            ),
+          ),
+        ),
+        child: ValueListenableBuilder(
+          valueListenable: hovered,
+          builder: (context, isHovered, child) {
+            final hoveredToasts = Padding(
+              padding: const EdgeInsets.all(16),
+              child: ShadMouseArea(
+                groupId: 'sonner',
+                onEnter: onEnter,
+                onExit: onExit,
+                child: ColoredBox(
+                  color: Colors.transparent,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: toasts
+                        .separatedBy(const SizedBox(height: _toastSpacing)),
+                  ),
+                ),
+              ),
+            );
+
+            return Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                widget.child,
+                if (isHovered)
+                  hoveredToasts
+                else
+                  for (final (i, toast) in toasts.indexed)
+                    Positioned(
+                      bottom: (toasts.length - i) * _toastSpacing + 16,
+                      right: 16,
+                      child: ShadMouseArea(
+                        groupId: 'sonner',
+                        onEnter: onEnter,
+                        onExit: onExit,
+                        child: toast,
+                      ),
+                    ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
 }

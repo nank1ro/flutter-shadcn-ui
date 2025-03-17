@@ -290,6 +290,7 @@ class ShadToast extends StatefulWidget {
   /// Creates a primary variant toast widget.
   const ShadToast({
     super.key,
+    this.id,
     this.title,
     this.description,
     this.action,
@@ -320,6 +321,7 @@ class ShadToast extends StatefulWidget {
   /// messages.
   const ShadToast.destructive({
     super.key,
+    this.id,
     this.title,
     this.description,
     this.action,
@@ -350,6 +352,7 @@ class ShadToast extends StatefulWidget {
   /// customization.
   const ShadToast.raw({
     super.key,
+    this.id,
     required this.variant,
     this.title,
     this.description,
@@ -376,6 +379,12 @@ class ShadToast extends StatefulWidget {
     this.constraints,
     this.orderPolicy,
   });
+
+  /// {@template ShadToast.id}
+  /// The unique identifier for the toast, used for tracking and managing
+  /// toasts. Defaults to `UniqueKey()` if not specified.
+  /// {@endtemplate}
+  final Object? id;
 
   /// {@template ShadToast.title}
   /// The title widget displayed at the top of the toast.
@@ -557,6 +566,7 @@ class _ShadToastState extends State<ShadToast> {
     };
 
     final effectiveCloseIcon = widget.closeIcon ??
+        effectiveToastTheme.closeIcon ??
         ShadIconButton.ghost(
           icon: Icon(
             size: 16,
