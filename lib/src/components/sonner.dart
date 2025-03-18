@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -107,6 +108,7 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
   void dispose() {
     for (final toast in _toasts) {
       toast.timer?.cancel();
+      toast.timer = null;
       toast.controller.dispose();
     }
     hovered.dispose();
@@ -129,15 +131,20 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
       controller: controller,
     );
     setState(() {
-      _toasts.add(toastInfo);
+      _toasts.insert(0, toastInfo);
       if (_toasts.length > visibleToastsAmount) {
-        _toasts.removeAt(0);
+        print('removing toast at 0');
+        hide(_toasts.last.id);
       }
     });
     controller.forward();
 
     final effectiveDuration = toast.duration ?? kDefaultToastDuration;
-    toastInfo.timer = Timer(effectiveDuration, () => hide(effectiveId));
+    toastInfo.timer = Timer(effectiveDuration, () {
+      hide(effectiveId);
+
+      print('hide after $effectiveDuration from show');
+    });
     return effectiveId;
   }
 
@@ -150,26 +157,43 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
     toastInfo.timer?.cancel();
     await toastInfo.controller.reverse();
     if (mounted) {
-      setState(() => _toasts.remove(toastInfo));
+      final index = _toasts.indexWhere((toast) => toast.id == id);
+      print('index: $index');
+      setState(() {
+        _toasts.remove(toastInfo);
+      });
       toastInfo.controller.dispose();
     }
   }
 
   void onEnter(PointerEnterEvent event) {
+    if (hovered.value) return;
     hovered.value = true;
+    for (final toast in _toasts) {
+      toast.timer?.cancel();
+      print('set timer to null');
+    }
   }
 
   void onExit(PointerExitEvent event) {
+    if (!hovered.value) return;
     hovered.value = false;
+    for (final toast in _toasts) {
+      final effectiveDuration = toast.toast.duration ?? kDefaultToastDuration;
+      toast.timer = Timer(effectiveDuration, () {
+        print('hide after $effectiveDuration from onExit');
+        hide(toast.id);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    final toasts = _toasts.map((toastInfo) => toastInfo.toast).toList(
-          growable: false,
-        );
+    const effectivePadding = EdgeInsets.all(16);
+
+    for (final (i, toastInfo) in _toasts.indexed) print(i);
 
     return ShadSonnerScope(
       shadMessengerState: this,
@@ -201,43 +225,122 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
         child: ValueListenableBuilder(
           valueListenable: hovered,
           builder: (context, isHovered, child) {
-            final hoveredToasts = Padding(
-              padding: const EdgeInsets.all(16),
-              child: ShadMouseArea(
-                groupId: 'sonner',
-                onEnter: onEnter,
-                onExit: onExit,
-                child: ColoredBox(
-                  color: Colors.transparent,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: toasts
-                        .separatedBy(const SizedBox(height: _toastSpacing)),
-                  ),
-                ),
-              ),
-            );
+            print('isHovered: $isHovered');
+            // final hoveredToasts = Padding(
+            //   padding: const EdgeInsets.all(16),
+            //   child: ShadMouseArea(
+            //     groupId: 'sonner',
+            //     onEnter: onEnter,
+            //     onExit: onExit,
+            //     child: ColoredBox(
+            //       color: Colors.transparent,
+            //       child: Column(
+            //         mainAxisSize: MainAxisSize.min,
+            //         children: toasts
+            //             .separatedBy(const SizedBox(height: _toastSpacing)),
+            //       ),
+            //     ),
+            //   ),
+            // );
+            //
 
             return Stack(
               alignment: Alignment.bottomRight,
               children: [
                 widget.child,
-                if (isHovered)
-                  hoveredToasts
-                else
-                  for (final (i, toast) in toasts.indexed)
-                    Positioned(
-                      bottom: (toasts.length - i) * _toastSpacing + 16,
-                      right: 16,
-                      child: ShadMouseArea(
-                        groupId: 'sonner',
-                        onEnter: onEnter,
-                        onExit: onExit,
-                        child: toast,
+                ValueListenableBuilder(
+                  valueListenable: hovered,
+                  builder: (context, index, hovered) {
+                    return ShadMouseArea(
+                      groupId: 'sonner',
+                      onEnter: onEnter,
+                      onExit: onExit,
+                      child: Stack(
+                        children: _toasts.reversed.mapIndexed((i, toastInfo) {
+                          final scaleBegin = const Offset(1, 1);
+                          final scaleEnd = Offset(
+                            1.0 - (0.1 * (_toasts.length - i - 1)),
+                            1.0 - (0.1 * (_toasts.length - i - 1)),
+                          );
+                          return AnimatedPositioned(
+                            duration: Animate.defaultDuration,
+                            bottom: (_toasts.length - i) * 16 +
+                                effectivePadding.bottom +
+                                (isHovered ? 50 * (_toasts.length - i) : 0),
+                            right: effectivePadding.right,
+                            child: Animate(
+                              autoPlay: true,
+                              effects: [
+                                ScaleEffect(
+                                  end: isHovered ? scaleBegin : scaleEnd,
+                                  begin: isHovered ? scaleEnd : scaleBegin,
+                                ),
+                                MoveEffect(
+                                  begin: const Offset(0, 0),
+                                  end: Offset(
+                                    0,
+                                    -(_toasts.length - 1 - i) * 16,
+                                  ),
+                                ),
+                              ],
+                              child: toastInfo.toast,
+                            ),
+                          );
+                        }).toList(),
                       ),
-                    ),
+                    );
+                  },
+                ),
+
+                // Positioned(
+                //   bottom: 0,
+                //   right: 0,
+                //   // top: 0,
+                //   // left: 0,
+                //   child: ConstrainedBox(
+                //     constraints: BoxConstraints(
+                //       maxWidth: math.min(
+                //         MediaQuery.sizeOf(context).width,
+                //         354 + effectivePadding.horizontal,
+                //       ),
+                //     ),
+                //     child: ColoredBox(
+                //       color: Colors.yellow,
+                //       child: AnimatedList.separated(
+                //         shrinkWrap: true,
+                //         key: itemsKey,
+                //         padding: _toasts.isNotEmpty
+                //             ? const EdgeInsets.all(16)
+                //             : EdgeInsets.zero,
+                //         itemBuilder: (context, index, animation) {
+                //           return Align(
+                //               alignment: Alignment.centerRight,
+                //               child: _toasts[index].toast);
+                //         },
+                //         separatorBuilder: (context, index, animation) {
+                //           return Container(
+                //               color: Colors.blue, height: _toastSpacing);
+                //         },
+                //         removedSeparatorBuilder: (context, index, animation) {
+                //           return Text('removed separator $index');
+                //           return Container(
+                //             height: _toastSpacing,
+                //             color: Colors.red,
+                //             width: 100,
+                //           );
+                //         },
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             );
+            // return Stack(
+            //   alignment: Alignment.bottomRight,
+            //   children: [
+            //     widget.child,
+            //   ],
+            // );
           },
         ),
       ),
