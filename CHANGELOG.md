@@ -1,3 +1,7 @@
+## 0.23.1
+
+- **FIX**: `ShadResizable` divider alignments when `dividerSize` is overriden.
+
 ## 0.23.0
 
 - **FIX**: Expose `ShadMouseCursorProvider`.
