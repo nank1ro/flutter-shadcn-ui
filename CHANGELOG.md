@@ -1,3 +1,7 @@
+## 0.23.2
+
+- **FEAT**: Add `copyWith` method to `ShadColorScheme` (thanks to @Luckey-Elijah).
+
 ## 0.23.1
 
 - **FIX**: `ShadResizable` divider alignments when `dividerSize` is overriden.
