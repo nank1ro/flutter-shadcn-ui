@@ -126,6 +126,8 @@ class ShadColorScheme {
     );
   }
 
+  /// Creates a copy of this [ShadColorScheme] but with the given fields replaced
+  /// with the new values.
   ShadColorScheme copyWith({
     Color? background,
     Color? foreground,
