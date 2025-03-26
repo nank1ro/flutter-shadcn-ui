@@ -1,3 +1,8 @@
+## 0.23.3
+
+- **FIX**: `ShadInput` `onPressedOutside` when tapping on another `ShadInput`.
+- **FEAT**: Add `groupId` to `ShadInput` and `ShadInputFormField`, defaults to `UniqueKey` instead of `EditableText`.
+
 ## 0.23.2
 
 - **FEAT**: Add `copyWith` method to `ShadColorScheme` (thanks to @Luckey-Elijah).
