@@ -52,24 +52,37 @@ class _SonnerPageState extends State<SonnerPage>
               },
             ),
             ListenableBuilder(
-                listenable: animationController,
-                builder: (context, _) {
-                  return CustomBoxy(
-                      delegate: MyBoxy(
-                        animation: animationController,
-                      ),
-                      children: List.generate(3, (index) {
-                        return BoxyId(
-                          id: 'toast$index',
-                          child: ShadToast(
-                            title: Text('Title$index'),
-                            description: Text('description$index'),
-                            // backgroundColor: Colors.white10,
-                          ),
-                        );
-                      }) //.separatedBy(Container(height: 8, color: Colors.blue)),
+              listenable: animationController,
+              builder: (context, _) {
+                return CustomBoxy(
+                  delegate: MyBoxy(
+                    animation: animationController,
+                  ),
+                  children: List.generate(
+                    3,
+                    (index) {
+                      final listLength = 3;
+                      // Calculate the intermediate value: 0 for last index, 0.1 for second-to-last, etc.
+                      double x = 0.05 * (listLength - 1 - index);
+                      // Final scaleX is 1.0 minus the intermediate value
+                      double scaleX = 1.0 - x;
+                      return Animate(
+                        controller: animationController,
+                        effects: [
+                          ScaleEffect(
+                              begin: Offset(scaleX, 1), end: Offset(1, 1)),
+                        ],
+                        child: ShadToast(
+                          title: Text('Title$index'),
+                          description: Text('description$index'),
+                          // backgroundColor: Colors.white10,
+                        ),
                       );
-                }),
+                    },
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
