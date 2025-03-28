@@ -1,17 +1,12 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:boxy/boxy.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/components/toast.dart';
-import 'package:shadcn_ui/src/theme/data.dart';
-import 'package:shadcn_ui/src/theme/theme.dart';
-import 'package:shadcn_ui/src/utils/mouse_area.dart';
-import 'package:shadcn_ui/src/utils/separated_iterable.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
-/// An inherited widget that provides access to the [ShadSonnerState].
 ///
 /// Allows descendants to access the toaster state via [ShadSonner.of] or
 /// [ShadSonner.maybeOf] for showing and hiding toasts.
@@ -99,13 +94,33 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
   int get visibleToastsAmount => widget.visibleToastsAmount ?? 3;
 
   final List<ToastInfo> _toasts = [];
-  static const double _toastSpacing = 8.0;
   static const Duration _animationDuration = Duration(milliseconds: 300);
+
+  late final animationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 200),
+  );
+  late final animation = Tween<double>(begin: 0, end: 1).animate(
+    CurvedAnimation(curve: Curves.ease, parent: animationController),
+  );
 
   final hovered = ValueNotifier(false);
 
   @override
+  void initState() {
+    super.initState();
+    hovered.addListener(() {
+      if (hovered.value) {
+        animationController.forward();
+      } else {
+        animationController.reverse();
+      }
+    });
+  }
+
+  @override
   void dispose() {
+    animationController.dispose();
     for (final toast in _toasts) {
       toast.timer?.cancel();
       toast.timer = null;
@@ -131,10 +146,9 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
       controller: controller,
     );
     setState(() {
-      _toasts.insert(0, toastInfo);
+      _toasts.add(toastInfo);
       if (_toasts.length > visibleToastsAmount) {
-        print('removing toast at 0');
-        hide(_toasts.last.id);
+        _toasts.removeAt(0);
       }
     });
     controller.forward();
@@ -142,8 +156,6 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
     final effectiveDuration = toast.duration ?? kDefaultToastDuration;
     toastInfo.timer = Timer(effectiveDuration, () {
       hide(effectiveId);
-
-      print('hide after $effectiveDuration from show');
     });
     return effectiveId;
   }
@@ -157,8 +169,6 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
     toastInfo.timer?.cancel();
     await toastInfo.controller.reverse();
     if (mounted) {
-      final index = _toasts.indexWhere((toast) => toast.id == id);
-      print('index: $index');
       setState(() {
         _toasts.remove(toastInfo);
       });
@@ -171,7 +181,6 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
     hovered.value = true;
     for (final toast in _toasts) {
       toast.timer?.cancel();
-      print('set timer to null');
     }
   }
 
@@ -181,7 +190,6 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
     for (final toast in _toasts) {
       final effectiveDuration = toast.toast.duration ?? kDefaultToastDuration;
       toast.timer = Timer(effectiveDuration, () {
-        print('hide after $effectiveDuration from onExit');
         hide(toast.id);
       });
     }
@@ -190,10 +198,6 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-
-    const effectivePadding = EdgeInsets.all(16);
-
-    for (final (i, toastInfo) in _toasts.indexed) print(i);
 
     return ShadSonnerScope(
       shadMessengerState: this,
@@ -225,125 +229,132 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
         child: ValueListenableBuilder(
           valueListenable: hovered,
           builder: (context, isHovered, child) {
-            print('isHovered: $isHovered');
-            // final hoveredToasts = Padding(
-            //   padding: const EdgeInsets.all(16),
-            //   child: ShadMouseArea(
-            //     groupId: 'sonner',
-            //     onEnter: onEnter,
-            //     onExit: onExit,
-            //     child: ColoredBox(
-            //       color: Colors.transparent,
-            //       child: Column(
-            //         mainAxisSize: MainAxisSize.min,
-            //         children: toasts
-            //             .separatedBy(const SizedBox(height: _toastSpacing)),
-            //       ),
-            //     ),
-            //   ),
-            // );
-            //
-
             return Stack(
               alignment: Alignment.bottomRight,
               children: [
                 widget.child,
-                ValueListenableBuilder(
-                  valueListenable: hovered,
-                  builder: (context, index, hovered) {
-                    return ShadMouseArea(
-                      groupId: 'sonner',
-                      onEnter: onEnter,
-                      onExit: onExit,
-                      child: Stack(
-                        children: _toasts.reversed.mapIndexed((i, toastInfo) {
-                          final scaleBegin = const Offset(1, 1);
-                          final scaleEnd = Offset(
-                            1.0 - (0.1 * (_toasts.length - i - 1)),
-                            1.0 - (0.1 * (_toasts.length - i - 1)),
-                          );
-                          return AnimatedPositioned(
-                            duration: Animate.defaultDuration,
-                            bottom: (_toasts.length - i) * 16 +
-                                effectivePadding.bottom +
-                                (isHovered ? 50 * (_toasts.length - i) : 0),
-                            right: effectivePadding.right,
-                            child: Animate(
-                              autoPlay: true,
-                              effects: [
-                                ScaleEffect(
-                                  end: isHovered ? scaleBegin : scaleEnd,
-                                  begin: isHovered ? scaleEnd : scaleBegin,
+                ShadResponsiveBuilder(
+                  builder: (context, breakpoint) {
+                    return ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minWidth: breakpoint >= theme.breakpoints.md
+                            ? 0
+                            : double.infinity,
+                        maxWidth: breakpoint >= theme.breakpoints.md
+                            ? 420
+                            : double.infinity,
+                      ),
+                      child: ShadMouseArea(
+                        onEnter: onEnter,
+                        onExit: onExit,
+                        // This ColoredBox keeps the hover working even for the
+                        // empty spaces
+                        child: ColoredBox(
+                          color: Colors.transparent,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Placeholder(
+                              child: CustomBoxy(
+                                delegate: SonnerBoxy(
+                                  animation: animationController,
                                 ),
-                                MoveEffect(
-                                  begin: const Offset(0, 0),
-                                  end: Offset(
-                                    0,
-                                    -(_toasts.length - 1 - i) * 16,
-                                  ),
-                                ),
-                              ],
-                              child: toastInfo.toast,
+                                children:
+                                    _toasts.mapIndexed((index, toastInfo) {
+                                  // Calculate the intermediate value: 0 for last index, 0.1 for second-to-last, etc.
+                                  final x = 0.05 * (_toasts.length - 1 - index);
+                                  // Final scaleX is 1.0 minus the intermediate value
+                                  final scaleX = 1.0 - x;
+                                  return Animate(
+                                    autoPlay: false,
+                                    controller: animationController,
+                                    effects: [
+                                      ScaleEffect(
+                                        begin: Offset(scaleX, 1),
+                                        end: const Offset(1, 1),
+                                      ),
+                                    ],
+                                    child: toastInfo.toast,
+                                  );
+                                }).toList(),
+                              ),
                             ),
-                          );
-                        }).toList(),
+                          ),
+                        ),
                       ),
                     );
                   },
                 ),
-
-                // Positioned(
-                //   bottom: 0,
-                //   right: 0,
-                //   // top: 0,
-                //   // left: 0,
-                //   child: ConstrainedBox(
-                //     constraints: BoxConstraints(
-                //       maxWidth: math.min(
-                //         MediaQuery.sizeOf(context).width,
-                //         354 + effectivePadding.horizontal,
-                //       ),
-                //     ),
-                //     child: ColoredBox(
-                //       color: Colors.yellow,
-                //       child: AnimatedList.separated(
-                //         shrinkWrap: true,
-                //         key: itemsKey,
-                //         padding: _toasts.isNotEmpty
-                //             ? const EdgeInsets.all(16)
-                //             : EdgeInsets.zero,
-                //         itemBuilder: (context, index, animation) {
-                //           return Align(
-                //               alignment: Alignment.centerRight,
-                //               child: _toasts[index].toast);
-                //         },
-                //         separatorBuilder: (context, index, animation) {
-                //           return Container(
-                //               color: Colors.blue, height: _toastSpacing);
-                //         },
-                //         removedSeparatorBuilder: (context, index, animation) {
-                //           return Text('removed separator $index');
-                //           return Container(
-                //             height: _toastSpacing,
-                //             color: Colors.red,
-                //             width: 100,
-                //           );
-                //         },
-                //       ),
-                //     ),
-                //   ),
-                // ),
               ],
             );
-            // return Stack(
-            //   alignment: Alignment.bottomRight,
-            //   children: [
-            //     widget.child,
-            //   ],
-            // );
           },
         ),
       ),
     );
+  }
+}
+
+class SonnerBoxy extends BoxyDelegate {
+  SonnerBoxy({
+    required this.animation,
+  }) : super(relayout: animation);
+
+  final Animation<double> animation;
+  static const double gap = 8; // Gap between toasts in expanded state
+  static const double collapseOffset =
+      16; // Offset between toasts in collapsed state
+
+  @override
+  Size layout() {
+    if (children.isEmpty) return Size.zero;
+
+    // Step 1: Calculate the intrinsic sizes of all children
+    final widths = <double>[];
+    final heights = <double>[];
+    for (final child in children) {
+      final width = child.render.getMaxIntrinsicWidth(double.infinity);
+      widths.add(width);
+      final height = child.render.getMaxIntrinsicHeight(width);
+      heights.add(height);
+      child.layout(constraints);
+    }
+
+    // Step 2: Determine the total size of the layout
+    final maxWidth = math.max(
+      widths.reduce(math.max),
+      constraints.maxWidth,
+    );
+
+    final totalHeightExpanded =
+        heights.fold<double>(0, (a, b) => a + b) + gap * (heights.length - 1);
+    // Calculate collapsed height (when all toasts are stacked)
+    final totalHeightCollapsed =
+        heights.last + (heights.length - 1) * collapseOffset;
+
+    // Interpolate between collapsed and expanded height based on animation
+    final currentHeight = totalHeightCollapsed +
+        (totalHeightExpanded - totalHeightCollapsed) * animation.value;
+
+    // Step 3: Position the children based on the animation value
+    final numChildren = children.length;
+
+    for (final (i, child) in children.indexed) {
+      double targetY;
+
+      if (i == numChildren - 1) {
+        targetY = currentHeight - heights.last;
+      } else {
+        final expandedY =
+            heights.sublist(0, i).fold<double>(0, (a, b) => a + b) + gap * i;
+        final collapsedY = currentHeight -
+            heights.last -
+            (numChildren - 1 - i) * collapseOffset;
+        targetY = collapsedY + (expandedY - collapsedY) * animation.value;
+      }
+      targetY = math.max(0, targetY);
+      child.position(Offset(0, targetY));
+    }
+
+    // Step 4: Return the total size of the layout
+    return Size(maxWidth, currentHeight);
   }
 }
