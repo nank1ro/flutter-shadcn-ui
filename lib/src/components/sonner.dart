@@ -5,6 +5,7 @@ import 'package:boxy/boxy.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 ///
@@ -82,11 +83,13 @@ class ToastInfo {
     required this.id,
     required this.toast,
     required this.controller,
+    required this.visible,
   });
 
   final Object id;
   final ShadToast toast;
   final AnimationController controller;
+  bool visible;
   Timer? timer;
 }
 
@@ -96,12 +99,16 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
   final List<ToastInfo> _toasts = [];
   static const Duration _animationDuration = Duration(milliseconds: 300);
 
+  final bezierCurve = const Cubic(0.215, 0.61, 0.355, 1);
   late final animationController = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 200),
   );
   late final animation = Tween<double>(begin: 0, end: 1).animate(
-    CurvedAnimation(curve: Curves.ease, parent: animationController),
+    CurvedAnimation(
+      curve: bezierCurve,
+      parent: animationController,
+    ),
   );
 
   final hovered = ValueNotifier(false);
@@ -144,13 +151,17 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
       id: effectiveId,
       toast: toast,
       controller: controller,
+      visible: true,
     );
+
+    final newToastsLength = _toasts.length + 1;
+    if (newToastsLength > visibleToastsAmount) {
+      hide(_toasts.first.id);
+    }
     setState(() {
       _toasts.add(toastInfo);
-      if (_toasts.length > visibleToastsAmount) {
-        _toasts.removeAt(0);
-      }
     });
+
     controller.forward();
 
     final effectiveDuration = toast.duration ?? kDefaultToastDuration;
@@ -166,7 +177,11 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
     final containsId = _toasts.any((toast) => toast.id == id);
     if (!containsId) return;
     final toastInfo = _toasts.firstWhere((toast) => toast.id == id);
+    setState(() {
+      toastInfo.visible = false;
+    });
     toastInfo.timer?.cancel();
+    toastInfo.timer = null;
     await toastInfo.controller.reverse();
     if (mounted) {
       setState(() {
@@ -249,34 +264,164 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                         onExit: onExit,
                         // This ColoredBox keeps the hover working even for the
                         // empty spaces
-                        child: ColoredBox(
-                          color: Colors.transparent,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Placeholder(
-                              child: CustomBoxy(
-                                delegate: SonnerBoxy(
-                                  animation: animationController,
-                                ),
-                                children:
-                                    _toasts.mapIndexed((index, toastInfo) {
-                                  // Calculate the intermediate value: 0 for last index, 0.1 for second-to-last, etc.
-                                  final x = 0.05 * (_toasts.length - 1 - index);
-                                  // Final scaleX is 1.0 minus the intermediate value
-                                  final scaleX = 1.0 - x;
-                                  return Animate(
-                                    autoPlay: false,
-                                    controller: animationController,
-                                    effects: [
-                                      ScaleEffect(
-                                        begin: Offset(scaleX, 1),
-                                        end: const Offset(1, 1),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: ColoredBox(
+                            color: Colors.transparent,
+                            child: CustomBoxy(
+                              delegate: SonnerBoxy(
+                                animation: animationController,
+                              ),
+                              children: _toasts.mapIndexed((index, toastInfo) {
+                                final x = 0.05 * (_toasts.length - 1 - index);
+                                final scaleX = 1.0 - x;
+                                final toast = toastInfo.toast;
+
+                                final effectiveToastTheme =
+                                    switch (toast.variant) {
+                                  ShadToastVariant.primary ||
+                                  null =>
+                                    theme.primaryToastTheme,
+                                  ShadToastVariant.destructive =>
+                                    theme.destructiveToastTheme,
+                                };
+                                final effectiveAlignment = toast.alignment ??
+                                    effectiveToastTheme.alignment ??
+                                    Alignment.bottomRight;
+                                // ignore: omit_local_variable_types
+                                final List<Effect<dynamic>> defaultAnimateIn =
+                                    switch (effectiveAlignment) {
+                                  Alignment.bottomRight ||
+                                  Alignment.bottomLeft ||
+                                  Alignment.bottomCenter =>
+                                    [
+                                      const SlideEffect(
+                                        begin: Offset(0, 1),
+                                        end: Offset.zero,
                                       ),
                                     ],
-                                    child: toastInfo.toast,
-                                  );
-                                }).toList(),
-                              ),
+                                  Alignment.topRight ||
+                                  Alignment.topLeft ||
+                                  Alignment.topCenter =>
+                                    [
+                                      const SlideEffect(
+                                        begin: Offset(0, -1),
+                                        end: Offset.zero,
+                                      ),
+                                    ],
+                                  Alignment.centerRight ||
+                                  Alignment.topRight ||
+                                  Alignment.bottomRight =>
+                                    [
+                                      const SlideEffect(
+                                        begin: Offset(1, 0),
+                                        end: Offset.zero,
+                                      ),
+                                    ],
+                                  Alignment.centerLeft ||
+                                  Alignment.topLeft ||
+                                  Alignment.bottomLeft =>
+                                    [
+                                      const SlideEffect(
+                                        begin: Offset(-1, 0),
+                                        end: Offset.zero,
+                                      ),
+                                    ],
+                                  Alignment.center || Alignment() => [
+                                      const FadeEffect(),
+                                      const ScaleEffect(
+                                        begin: Offset(.95, .95),
+                                        end: Offset(1, 1),
+                                      ),
+                                    ],
+                                };
+
+                                // ignore: omit_local_variable_types
+                                final List<Effect<dynamic>> defaultAnimateOut =
+                                    switch (effectiveAlignment) {
+                                  Alignment.bottomRight ||
+                                  Alignment.topRight ||
+                                  Alignment.centerRight =>
+                                    const [
+                                      SlideEffect(
+                                        begin: Offset.zero,
+                                        end: Offset(1, 0),
+                                      ),
+                                    ],
+                                  Alignment.topLeft ||
+                                  Alignment.centerLeft ||
+                                  Alignment.bottomLeft =>
+                                    const [
+                                      SlideEffect(
+                                        begin: Offset.zero,
+                                        end: Offset(-1, 0),
+                                      ),
+                                    ],
+                                  Alignment.topCenter => [
+                                      const SlideEffect(
+                                        begin: Offset.zero,
+                                        end: Offset(0, -1),
+                                      ),
+                                    ],
+                                  Alignment.bottomCenter => [
+                                      const SlideEffect(
+                                        begin: Offset.zero,
+                                        end: Offset(0, 1),
+                                      ),
+                                    ],
+                                  Alignment.center || Alignment() => [
+                                      const FadeEffect(begin: 1, end: 0),
+                                      const ScaleEffect(
+                                        begin: Offset(1, 1),
+                                        end: Offset(.95, .95),
+                                      ),
+                                    ],
+                                };
+
+                                final effectiveAnimateIn = toast.animateIn ??
+                                    effectiveToastTheme.animateIn ??
+                                    defaultAnimateIn;
+                                final effectiveAnimateOut = toast.animateOut ??
+                                    effectiveToastTheme.animateOut ??
+                                    defaultAnimateOut;
+
+                                final defaultOffset =
+                                    switch (effectiveAlignment) {
+                                  Alignment.topCenter ||
+                                  Alignment.topLeft ||
+                                  Alignment.topRight =>
+                                    Offset(16,
+                                        MediaQuery.paddingOf(context).top + 16),
+                                  Alignment.bottomCenter ||
+                                  Alignment.bottomLeft ||
+                                  Alignment.bottomRight =>
+                                    Offset(
+                                        16,
+                                        MediaQuery.paddingOf(context).bottom +
+                                            16),
+                                  _ => const Offset(16, 16),
+                                };
+
+                                final effectiveOffset = toast.offset ??
+                                    effectiveToastTheme.offset ??
+                                    defaultOffset;
+                                return Animate(
+                                  autoPlay: false,
+                                  controller: animationController,
+                                  effects: [
+                                    ScaleEffect(
+                                      begin: Offset(scaleX, 1),
+                                      end: const Offset(1, 1),
+                                      curve: bezierCurve,
+                                    ),
+                                  ],
+                                  child: Animate(
+                                    controller: toastInfo.controller,
+                                    effects: effectiveAnimateIn,
+                                    child: toast,
+                                  ),
+                                );
+                              }).toList(),
                             ),
                           ),
                         ),
