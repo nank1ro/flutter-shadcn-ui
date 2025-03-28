@@ -15,6 +15,7 @@ environment:
   flutter: ">=3.29.0"
 
 dependencies:
+  boxy: ^2.2.1
   collection: ^1.19.0
   flutter:
     sdk: flutter
