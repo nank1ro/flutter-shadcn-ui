@@ -100,9 +100,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.shrinkWrap}
     bool? shrinkWrap,
-
-    /// {@macro ShadSelect.controller}
-    ShadSelectController<T>? controller,
+    this.controller,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -209,7 +207,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     bool? shrinkWrap,
 
     /// {@macro ShadSelect.controller}
-    ShadSelectController<T>? controller,
+    this.controller,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -324,7 +322,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     bool? shrinkWrap,
 
     /// {@macro ShadSelect.controller}
-    ShadSelectController<T>? controller,
+    this.controller,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -385,13 +383,26 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
           },
         );
 
+  /// {@macro ShadSelect.controller}
+  final ShadSelectController<T>? controller;
+
   @override
   ShadFormBuilderFieldState<ShadSelectFormField<T>, T> createState() =>
       _ShadFormBuilderSelectState<T>();
 }
 
 class _ShadFormBuilderSelectState<T>
-    extends ShadFormBuilderFieldState<ShadSelectFormField<T>, T> {}
+    extends ShadFormBuilderFieldState<ShadSelectFormField<T>, T> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller != null) {
+      widget.controller!.addListener(() {
+        didChange(widget.controller!.value.firstOrNull);
+      });
+    }
+  }
+}
 
 class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
   ShadSelectMultipleFormField({
@@ -440,9 +451,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
 
     /// {@macro ShadSelect.allowDeselection}
     bool allowDeselection = true,
-
-    /// {@macro ShadSelect.controller}
-    ShadSelectController<T>? controller,
+    this.controller,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -537,9 +546,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
 
     /// {@macro ShadSelect.allowDeselection}
     bool allowDeselection = true,
-
-    /// {@macro ShadSelect.controller}
-    ShadSelectController<T>? controller,
+    this.controller,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -640,9 +647,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     Widget? footer,
     bool allowDeselection = true,
     bool closeOnSelect = true,
-
-    /// {@macro ShadSelect.controller}
-    ShadSelectController<T>? controller,
+    this.controller,
   })  : assert(
           variant == ShadSelectVariant.multiple ||
               variant == ShadSelectVariant.multipleWithSearch,
@@ -696,10 +701,23 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
           },
         );
 
+  /// {@macro ShadSelect.controller}
+  final ShadSelectController<T>? controller;
+
   @override
   ShadFormBuilderFieldState<ShadSelectMultipleFormField<T>, List<T>>
       createState() => _ShadFormBuilderSelectMultipleState<T>();
 }
 
-class _ShadFormBuilderSelectMultipleState<T> extends ShadFormBuilderFieldState<
-    ShadSelectMultipleFormField<T>, List<T>> {}
+class _ShadFormBuilderSelectMultipleState<T>
+    extends ShadFormBuilderFieldState<ShadSelectMultipleFormField<T>, List<T>> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller != null) {
+      widget.controller!.addListener(() {
+        didChange(widget.controller!.value.toList());
+      });
+    }
+  }
+}
