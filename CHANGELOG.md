@@ -1,3 +1,7 @@
+## 0.23.4
+
+- **FIX**: `ShadSelectFormField` and `ShadSelectMultipleFormField` controller not updating the parent `ShadForm`.
+
 ## 0.23.3
 
 - **FIX**: `ShadInput` `onPressedOutside` when tapping on another `ShadInput`.
