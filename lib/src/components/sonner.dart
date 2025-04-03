@@ -37,8 +37,13 @@ class ShadSonner extends StatefulWidget {
   /// Creates a toaster widget that wraps the provided child.
   const ShadSonner({
     super.key,
-    this.visibleToastsAmount,
     required this.child,
+    this.visibleToastsAmount,
+    this.alignment,
+    this.padding,
+    this.expandedGap,
+    this.collapsedGap,
+    this.scaleFactor,
   });
 
   /// The widget below the toaster in the tree, over which toasts are displayed.
@@ -51,6 +56,47 @@ class ShadSonner extends StatefulWidget {
   /// Defaults to 3 if not provided.
   /// {@endtemplate}
   final int? visibleToastsAmount;
+
+  /// {@template ShadSonner.alignment}
+  /// The alignment of the toasts within the widget.
+  ///
+  /// Defaults to [Alignment.bottomRight] if not provided.
+  /// {@endtemplate}
+  final AlignmentGeometry? alignment;
+
+  /// {@template ShadSonner.padding}
+  /// The padding around the toasts.
+  ///
+  /// Defaults to [EdgeInsets.all(16)] if not provided.
+  /// {@endtemplate}
+  final EdgeInsetsGeometry? padding;
+
+  /// {@template ShadSonner.expandedGap}
+  /// The gap between toasts in the expanded state.
+  ///
+  /// Defaults to 8.0 if not provided.
+  /// {@endtemplate}
+  final double? expandedGap;
+
+  /// {@template ShadSonner.collapsedGap}
+  /// The gap between toasts in the collapsed state.
+  ///
+  /// Defaults to 16.0 if not provided.
+  /// {@endtemplate}
+  final double? collapsedGap;
+
+  /// {@template ShadSonner.scaleFactor}
+  /// The scale factor for the toasts when they are collapsed.
+  /// The scale factor is applied to the width and height of the toasts.
+  /// The most recent toast will have no scale factor.
+  /// The second toast will be scaled to `0.95` if the `scaleFactor` is `0.05`
+  /// (1 - 0.05).
+  /// The third toast will be scaled to `0.90` if the `scaleFactor` is `0.05`
+  /// (1 - 0.05 * 2).
+  ///
+  /// Defaults to 0.05 if not provided.
+  /// {@endtemplate}
+  final double? scaleFactor;
 
   @override
   State<ShadSonner> createState() => ShadSonnerState();
@@ -83,32 +129,32 @@ class ToastInfo {
     required this.id,
     required this.toast,
     required this.controller,
-    required this.visible,
+    this.visible = true,
+    this.temporarelyHide = false,
   });
 
   final Object id;
   final ShadToast toast;
   final AnimationController controller;
   bool visible;
+  bool temporarelyHide;
   Timer? timer;
 }
 
 class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
   int get visibleToastsAmount => widget.visibleToastsAmount ?? 3;
 
-  final List<ToastInfo> _toasts = [];
+  final _temporarelyHiddenToasts = <ToastInfo>[];
+  final _toasts = <ToastInfo>[];
   static const Duration _animationDuration = Duration(milliseconds: 300);
 
   final bezierCurve = const Cubic(0.215, 0.61, 0.355, 1);
   late final animationController = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 200),
+    duration: _animationDuration,
   );
   late final animation = Tween<double>(begin: 0, end: 1).animate(
-    CurvedAnimation(
-      curve: bezierCurve,
-      parent: animationController,
-    ),
+    CurvedAnimation(curve: bezierCurve, parent: animationController),
   );
 
   final hovered = ValueNotifier(false);
@@ -141,7 +187,12 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
 
   /// The identifier will match the provided [ShadToast.id] if it is not null,
   /// otherwise it will be a [UniqueKey].
-  Object? show(ShadToast toast) {
+  Object? show(
+    ShadToast toast, {
+    // Whether to append the toast to the end of the list or insert it at the
+    // beginning.
+    bool append = true,
+  }) {
     final controller = AnimationController(
       vsync: this,
       duration: _animationDuration,
@@ -151,15 +202,14 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
       id: effectiveId,
       toast: toast,
       controller: controller,
-      visible: true,
     );
 
     final newToastsLength = _toasts.length + 1;
     if (newToastsLength > visibleToastsAmount) {
-      hide(_toasts.first.id);
+      hideTemporarely(_toasts.first.id);
     }
     setState(() {
-      _toasts.add(toastInfo);
+      append ? _toasts.add(toastInfo) : _toasts.insert(0, toastInfo);
     });
 
     controller.forward();
@@ -173,22 +223,50 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
 
   /// Hides the toast with the provided [id]entifier.
   Future<void> hide(Object? id) async {
-    if (!mounted) return;
-    final containsId = _toasts.any((toast) => toast.id == id);
-    if (!containsId) return;
-    final toastInfo = _toasts.firstWhere((toast) => toast.id == id);
+    final toastInfo = _toasts.firstWhereOrNull((toast) => toast.id == id);
+    if (toastInfo == null) return;
     setState(() {
       toastInfo.visible = false;
     });
     toastInfo.timer?.cancel();
     toastInfo.timer = null;
+
     await toastInfo.controller.reverse();
-    if (mounted) {
-      setState(() {
-        _toasts.remove(toastInfo);
-      });
-      toastInfo.controller.dispose();
-    }
+    toastInfo.controller.dispose();
+    setState(() {
+      _toasts.remove(toastInfo);
+      print(
+          'toastsLength ${_toasts.length} visibleToastsAmount $visibleToastsAmount');
+      if (_temporarelyHiddenToasts.isNotEmpty &&
+          _toasts.length < visibleToastsAmount) {
+        final hiddenToast = _temporarelyHiddenToasts.removeAt(0);
+        // hiddenToast.visible = true;
+        // hiddenToast.temporarelyHide = false;
+        show(hiddenToast.toast, append: false);
+
+        // _toasts.insert(0, hiddenToast);
+        // hiddenToast.controller.reverse().then((_) {
+        //   // setState(() {
+        //   //   hiddenToast.visible = true;
+        //   //   hiddenToast.temporarelyHide = false;
+        //   // });
+        // });
+        print('inserted toast from hidden');
+      }
+    });
+  }
+
+  Future<void> hideTemporarely(Object? id) async {
+    final toastInfo = _toasts.firstWhereOrNull((toast) => toast.id == id);
+    if (toastInfo == null) return;
+
+    toastInfo.controller.reset();
+    await toastInfo.controller.forward();
+    setState(() {
+      toastInfo.temporarelyHide = true;
+      _toasts.remove(toastInfo);
+      _temporarelyHiddenToasts.add(toastInfo);
+    });
   }
 
   void onEnter(PointerEnterEvent event) {
@@ -213,6 +291,22 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+
+    final effectiveAlignment = widget.alignment ??
+        theme.sonnerTheme.alignment ??
+        Alignment.bottomRight;
+
+    final effectivePadding =
+        widget.padding ?? theme.sonnerTheme.padding ?? const EdgeInsets.all(16);
+
+    final effectiveExpandedGap =
+        widget.expandedGap ?? theme.sonnerTheme.expandedGap ?? 8.0;
+
+    final effectiveCollapsedGap =
+        widget.collapsedGap ?? theme.sonnerTheme.collapsedGap ?? 16.0;
+
+    final effectiveScaleFactor =
+        widget.scaleFactor ?? theme.sonnerTheme.scaleFactor ?? 0.05;
 
     return ShadSonnerScope(
       shadMessengerState: this,
@@ -245,7 +339,7 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
           valueListenable: hovered,
           builder: (context, isHovered, child) {
             return Stack(
-              alignment: Alignment.bottomRight,
+              alignment: effectiveAlignment,
               children: [
                 widget.child,
                 ShadResponsiveBuilder(
@@ -262,39 +356,44 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                       child: ShadMouseArea(
                         onEnter: onEnter,
                         onExit: onExit,
-                        // This ColoredBox keeps the hover working even for the
-                        // empty spaces
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: effectivePadding,
+                          // This ColoredBox keeps the hover working even for
+                          // the empty spaces
                           child: ColoredBox(
                             color: Colors.transparent,
                             child: CustomBoxy(
                               delegate: SonnerBoxy(
-                                animation: animationController,
+                                animation: animation,
+                                collapsedGap: effectiveCollapsedGap,
+                                expandedGap: effectiveExpandedGap,
                               ),
                               children: _toasts.mapIndexed((index, toastInfo) {
-                                final x = 0.05 * (_toasts.length - 1 - index);
+                                final x = effectiveScaleFactor *
+                                    (_toasts.length - 1 - index);
                                 final scaleX = 1.0 - x;
                                 final toast = toastInfo.toast;
 
                                 final effectiveToastTheme =
                                     switch (toast.variant) {
-                                  ShadToastVariant.primary ||
-                                  null =>
+                                  ShadToastVariant.primary =>
                                     theme.primaryToastTheme,
                                   ShadToastVariant.destructive =>
                                     theme.destructiveToastTheme,
                                 };
-                                final effectiveAlignment = toast.alignment ??
-                                    effectiveToastTheme.alignment ??
-                                    Alignment.bottomRight;
+
+                                final effectiveToastAlignment =
+                                    toast.alignment ??
+                                        effectiveToastTheme.alignment ??
+                                        Alignment.bottomRight;
                                 // ignore: omit_local_variable_types
                                 final List<Effect<dynamic>> defaultAnimateIn =
-                                    switch (effectiveAlignment) {
+                                    switch (effectiveToastAlignment) {
                                   Alignment.bottomRight ||
                                   Alignment.bottomLeft ||
                                   Alignment.bottomCenter =>
                                     [
+                                      const FadeEffect(),
                                       const SlideEffect(
                                         begin: Offset(0, 1),
                                         end: Offset.zero,
@@ -304,6 +403,7 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                                   Alignment.topLeft ||
                                   Alignment.topCenter =>
                                     [
+                                      const FadeEffect(),
                                       const SlideEffect(
                                         begin: Offset(0, -1),
                                         end: Offset.zero,
@@ -313,6 +413,7 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                                   Alignment.topRight ||
                                   Alignment.bottomRight =>
                                     [
+                                      const FadeEffect(),
                                       const SlideEffect(
                                         begin: Offset(1, 0),
                                         end: Offset.zero,
@@ -322,6 +423,7 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                                   Alignment.topLeft ||
                                   Alignment.bottomLeft =>
                                     [
+                                      const FadeEffect(),
                                       const SlideEffect(
                                         begin: Offset(-1, 0),
                                         end: Offset.zero,
@@ -338,14 +440,18 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
 
                                 // ignore: omit_local_variable_types
                                 final List<Effect<dynamic>> defaultAnimateOut =
-                                    switch (effectiveAlignment) {
+                                    switch (effectiveToastAlignment) {
                                   Alignment.bottomRight ||
                                   Alignment.topRight ||
                                   Alignment.centerRight =>
                                     const [
                                       SlideEffect(
                                         begin: Offset.zero,
-                                        end: Offset(1, 0),
+                                        end: Offset(0, -0.10),
+                                      ),
+                                      FadeEffect(
+                                        begin: 1,
+                                        end: 0,
                                       ),
                                     ],
                                   Alignment.topLeft ||
@@ -385,39 +491,21 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                                     effectiveToastTheme.animateOut ??
                                     defaultAnimateOut;
 
-                                final defaultOffset =
-                                    switch (effectiveAlignment) {
-                                  Alignment.topCenter ||
-                                  Alignment.topLeft ||
-                                  Alignment.topRight =>
-                                    Offset(16,
-                                        MediaQuery.paddingOf(context).top + 16),
-                                  Alignment.bottomCenter ||
-                                  Alignment.bottomLeft ||
-                                  Alignment.bottomRight =>
-                                    Offset(
-                                        16,
-                                        MediaQuery.paddingOf(context).bottom +
-                                            16),
-                                  _ => const Offset(16, 16),
-                                };
-
-                                final effectiveOffset = toast.offset ??
-                                    effectiveToastTheme.offset ??
-                                    defaultOffset;
                                 return Animate(
                                   autoPlay: false,
                                   controller: animationController,
                                   effects: [
                                     ScaleEffect(
-                                      begin: Offset(scaleX, 1),
+                                      begin: Offset(scaleX, scaleX),
                                       end: const Offset(1, 1),
-                                      curve: bezierCurve,
                                     ),
                                   ],
                                   child: Animate(
+                                    autoPlay: false,
                                     controller: toastInfo.controller,
-                                    effects: effectiveAnimateIn,
+                                    effects: toastInfo.temporarelyHide
+                                        ? effectiveAnimateOut
+                                        : effectiveAnimateIn,
                                     child: toast,
                                   ),
                                 );
@@ -438,15 +526,23 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
   }
 }
 
+/// Renders the layout of the toasts, stacking them when animation is at 0, and
+/// arranging them like in a column when animation is at 1.
+///
+/// The [collapsedGap] is the gap between toasts when they are stacked, and the
+/// [expandedGap] is the gap between toasts when they expanded.
 class SonnerBoxy extends BoxyDelegate {
   SonnerBoxy({
     required this.animation,
+    this.collapsedGap = 16,
+    this.expandedGap = 8,
   }) : super(relayout: animation);
 
   final Animation<double> animation;
-  static const double gap = 8; // Gap between toasts in expanded state
-  static const double collapseOffset =
-      16; // Offset between toasts in collapsed state
+  // Gap between toasts in expanded state
+  final double expandedGap;
+  // Gap between toasts in collapsed state
+  final double collapsedGap;
 
   @override
   Size layout() {
@@ -463,17 +559,17 @@ class SonnerBoxy extends BoxyDelegate {
       child.layout(constraints);
     }
 
-    // Step 2: Determine the total size of the layout
+    // Step 2: Determine the max width of the layout
     final maxWidth = math.max(
       widths.reduce(math.max),
       constraints.maxWidth,
     );
 
-    final totalHeightExpanded =
-        heights.fold<double>(0, (a, b) => a + b) + gap * (heights.length - 1);
+    final totalHeightExpanded = heights.fold<double>(0, (a, b) => a + b) +
+        expandedGap * (heights.length - 1);
     // Calculate collapsed height (when all toasts are stacked)
     final totalHeightCollapsed =
-        heights.last + (heights.length - 1) * collapseOffset;
+        heights.last + (heights.length - 1) * collapsedGap;
 
     // Interpolate between collapsed and expanded height based on animation
     final currentHeight = totalHeightCollapsed +
@@ -489,10 +585,10 @@ class SonnerBoxy extends BoxyDelegate {
         targetY = currentHeight - heights.last;
       } else {
         final expandedY =
-            heights.sublist(0, i).fold<double>(0, (a, b) => a + b) + gap * i;
-        final collapsedY = currentHeight -
-            heights.last -
-            (numChildren - 1 - i) * collapseOffset;
+            heights.sublist(0, i).fold<double>(0, (a, b) => a + b) +
+                expandedGap * i;
+        final collapsedY =
+            currentHeight - heights.last - (numChildren - 1 - i) * collapsedGap;
         targetY = collapsedY + (expandedY - collapsedY) * animation.value;
       }
       targetY = math.max(0, targetY);

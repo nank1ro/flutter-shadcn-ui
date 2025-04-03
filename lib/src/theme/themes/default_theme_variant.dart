@@ -31,6 +31,7 @@ import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
+import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
@@ -960,6 +961,17 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       color: colorScheme.border,
       verticalMargin: const EdgeInsets.symmetric(horizontal: 16),
       horizontalMargin: const EdgeInsets.symmetric(vertical: 16),
+    );
+  }
+
+  @override
+  ShadSonnerTheme sonnerTheme() {
+    return const ShadSonnerTheme(
+      alignment: Alignment.bottomRight,
+      padding: EdgeInsets.all(16),
+      collapsedGap: 16,
+      expandedGap: 8,
+      scaleFactor: 0.05,
     );
   }
 }

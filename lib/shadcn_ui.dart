@@ -96,6 +96,7 @@ export 'src/theme/components/select.dart';
 export 'src/theme/components/separator.dart';
 export 'src/theme/components/sheet.dart';
 export 'src/theme/components/slider.dart';
+export 'src/theme/components/sonner.dart';
 export 'src/theme/components/switch.dart';
 export 'src/theme/components/table.dart';
 export 'src/theme/components/tabs.dart';
