@@ -1,3 +1,7 @@
+## 0.24.0
+
+- **FEAT**: Add `Sonner` component.
+
 ## 0.23.4
 
 - **FIX**: `ShadSelectFormField` and `ShadSelectMultipleFormField` controller not updating the parent `ShadForm`.
