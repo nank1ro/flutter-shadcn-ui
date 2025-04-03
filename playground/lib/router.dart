@@ -23,6 +23,7 @@ import 'package:playground/pages/resizable.dart';
 import 'package:playground/pages/select.dart';
 import 'package:playground/pages/sheet.dart';
 import 'package:playground/pages/slider.dart';
+import 'package:playground/pages/sonner.dart';
 import 'package:playground/pages/switch.dart';
 import 'package:playground/pages/table.dart';
 import 'package:playground/pages/tabs.dart';
@@ -295,6 +296,12 @@ final router = GoRouter(
       path: '/menubar',
       builder: (context, state) {
         return const MenubarPage();
+      },
+    ),
+    GoRoute(
+      path: '/sonner',
+      builder: (context, state) {
+        return const SonnerPage();
       },
     ),
   ],

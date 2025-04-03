@@ -24,6 +24,7 @@ import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
+import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
@@ -88,6 +89,7 @@ abstract class ShadBaseTheme {
     required this.inputOTPTheme,
     required this.menubarTheme,
     required this.separatorTheme,
+    required this.sonnerTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -141,6 +143,7 @@ abstract class ShadBaseTheme {
   final ShadInputOTPTheme inputOTPTheme;
   final ShadMenubarTheme menubarTheme;
   final ShadSeparatorTheme separatorTheme;
+  final ShadSonnerTheme sonnerTheme;
 }
 
 @immutable
@@ -189,4 +192,5 @@ abstract class ShadThemeVariant {
   ShadInputOTPTheme inputOTPTheme();
   ShadMenubarTheme menubarTheme();
   ShadSeparatorTheme separatorTheme();
+  ShadSonnerTheme sonnerTheme();
 }

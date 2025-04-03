@@ -19,6 +19,7 @@ dependencies:
   google_fonts: 6.1.0
   collection: ^1.18.0
   get: ^4.6.6
+  boxy: ^2.2.1
 
 dev_dependencies:
   flutter_test:

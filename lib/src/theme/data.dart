@@ -26,6 +26,7 @@ import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
+import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
@@ -94,6 +95,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadInputOTPTheme? inputOTPTheme,
     ShadMenubarTheme? menubarTheme,
     ShadSeparatorTheme? separatorTheme,
+    ShadSonnerTheme? sonnerTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -239,6 +241,7 @@ class ShadThemeData extends ShadBaseTheme {
       menubarTheme: effectiveVariant.menubarTheme().mergeWith(menubarTheme),
       separatorTheme:
           effectiveVariant.separatorTheme().mergeWith(separatorTheme),
+      sonnerTheme: effectiveVariant.sonnerTheme().mergeWith(sonnerTheme),
     );
   }
 
@@ -294,6 +297,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.inputOTPTheme,
     required super.menubarTheme,
     required super.separatorTheme,
+    required super.sonnerTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -399,6 +403,7 @@ class ShadThemeData extends ShadBaseTheme {
       menubarTheme: ShadMenubarTheme.lerp(a.menubarTheme, b.menubarTheme, t),
       separatorTheme:
           ShadSeparatorTheme.lerp(a.separatorTheme, b.separatorTheme, t),
+      sonnerTheme: ShadSonnerTheme.lerp(a.sonnerTheme, b.sonnerTheme, t),
     );
   }
 
@@ -457,7 +462,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.timePickerTheme == timePickerTheme &&
         other.inputOTPTheme == inputOTPTheme &&
         other.menubarTheme == menubarTheme &&
-        other.separatorTheme == separatorTheme;
+        other.separatorTheme == separatorTheme &&
+        other.sonnerTheme == sonnerTheme;
   }
 
   @override
@@ -512,7 +518,8 @@ class ShadThemeData extends ShadBaseTheme {
         timePickerTheme.hashCode ^
         inputOTPTheme.hashCode ^
         menubarTheme.hashCode ^
-        separatorTheme.hashCode;
+        separatorTheme.hashCode ^
+        sonnerTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -567,6 +574,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadInputOTPTheme? inputOTPTheme,
     ShadMenubarTheme? menubarTheme,
     ShadSeparatorTheme? separatorTheme,
+    ShadSonnerTheme? sonnerTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -625,6 +633,7 @@ class ShadThemeData extends ShadBaseTheme {
       inputOTPTheme: inputOTPTheme ?? this.inputOTPTheme,
       menubarTheme: menubarTheme ?? this.menubarTheme,
       separatorTheme: separatorTheme ?? this.separatorTheme,
+      sonnerTheme: sonnerTheme ?? this.sonnerTheme,
     );
   }
 }

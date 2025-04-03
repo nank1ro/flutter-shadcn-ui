@@ -29,6 +29,7 @@ class ShadToastTheme {
     this.closeIconPosition,
     this.constraints,
     this.orderPolicy,
+    this.closeIcon,
   });
 
   final bool merge;
@@ -93,6 +94,9 @@ class ShadToastTheme {
   /// {@macro ShadToast.orderPolicy}
   final WidgetOrderPolicy? orderPolicy;
 
+  /// {@macro ShadToast.closeIcon}
+  final Widget? closeIcon;
+
   static ShadToastTheme lerp(
     ShadToastTheme a,
     ShadToastTheme b,
@@ -125,6 +129,7 @@ class ShadToastTheme {
           ShadPosition.lerp(a.closeIconPosition, b.closeIconPosition, t),
       constraints: t < .5 ? a.constraints : b.constraints,
       orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
+      closeIcon: t < .5 ? a.closeIcon : b.closeIcon,
     );
   }
 
@@ -150,6 +155,7 @@ class ShadToastTheme {
     ShadPosition? closeIconPosition,
     BoxConstraints? constraints,
     WidgetOrderPolicy? orderPolicy,
+    Widget? closeIcon,
   }) {
     return ShadToastTheme(
       merge: merge ?? this.merge,
@@ -174,6 +180,7 @@ class ShadToastTheme {
       closeIconPosition: closeIconPosition ?? this.closeIconPosition,
       constraints: constraints ?? this.constraints,
       orderPolicy: orderPolicy ?? this.orderPolicy,
+      closeIcon: closeIcon ?? this.closeIcon,
     );
   }
 
@@ -201,6 +208,7 @@ class ShadToastTheme {
       closeIconPosition: other.closeIconPosition,
       constraints: other.constraints,
       orderPolicy: other.orderPolicy,
+      closeIcon: other.closeIcon,
     );
   }
 
@@ -229,7 +237,8 @@ class ShadToastTheme {
         other.padding == padding &&
         other.closeIconPosition == closeIconPosition &&
         other.constraints == constraints &&
-        other.orderPolicy == orderPolicy;
+        other.orderPolicy == orderPolicy &&
+        other.closeIcon == closeIcon;
   }
 
   @override
@@ -254,6 +263,7 @@ class ShadToastTheme {
         padding.hashCode ^
         closeIconPosition.hashCode ^
         constraints.hashCode ^
-        orderPolicy.hashCode;
+        orderPolicy.hashCode ^
+        closeIcon.hashCode;
   }
 }
