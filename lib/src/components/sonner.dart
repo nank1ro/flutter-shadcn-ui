@@ -44,6 +44,8 @@ class ShadSonner extends StatefulWidget {
     this.expandedGap,
     this.collapsedGap,
     this.scaleFactor,
+    this.animationDuration,
+    this.animationCurve,
   });
 
   /// The widget below the toaster in the tree, over which toasts are displayed.
@@ -98,6 +100,20 @@ class ShadSonner extends StatefulWidget {
   /// {@endtemplate}
   final double? scaleFactor;
 
+  /// {@template ShadSonner.animationDuration}
+  /// The duration of the animation when showing and hiding toasts.
+  ///
+  /// Defaults to 300 milliseconds if not provided.
+  /// {@endtemplate}
+  final Duration? animationDuration;
+
+  /// {@template ShadSonner.animationCurve}
+  /// The curve used for the animation when showing and hiding toasts.
+  ///
+  /// Defaults to [Cubic(0.215, 0.61, 0.355, 1)] if not provided.
+  /// {@endtemplate}
+  final Curve? animationCurve;
+
   @override
   State<ShadSonner> createState() => ShadSonnerState();
 
@@ -142,19 +158,31 @@ class ToastInfo {
 }
 
 class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
-  int get visibleToastsAmount => widget.visibleToastsAmount ?? 3;
+  ShadSonnerTheme get sonnerTheme =>
+      ShadTheme.of(context, listen: false).sonnerTheme;
+
+  int get visibleToastsAmount =>
+      widget.visibleToastsAmount ?? sonnerTheme.visibleToastsAmount ?? 3;
 
   final _temporarelyHiddenToasts = <ToastInfo>[];
   final _toasts = <ToastInfo>[];
-  static const Duration _animationDuration = Duration(milliseconds: 300);
 
-  final bezierCurve = const Cubic(0.215, 0.61, 0.355, 1);
+  Duration get animationDuration =>
+      widget.animationDuration ??
+      sonnerTheme.animationDuration ??
+      const Duration(milliseconds: 300);
+
+  Curve get animationCurve =>
+      widget.animationCurve ??
+      sonnerTheme.animationCurve ??
+      const Cubic(0.215, 0.61, 0.355, 1);
+
   late final animationController = AnimationController(
     vsync: this,
-    duration: _animationDuration,
+    duration: animationDuration,
   );
   late final animation = Tween<double>(begin: 0, end: 1).animate(
-    CurvedAnimation(curve: bezierCurve, parent: animationController),
+    CurvedAnimation(curve: animationCurve, parent: animationController),
   );
 
   final hovered = ValueNotifier(false);
@@ -195,7 +223,7 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
   }) {
     final controller = AnimationController(
       vsync: this,
-      duration: _animationDuration,
+      duration: animationDuration,
     );
     final effectiveId = toast.id ?? UniqueKey();
     final toastInfo = ToastInfo(
@@ -235,27 +263,17 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
     toastInfo.controller.dispose();
     setState(() {
       _toasts.remove(toastInfo);
-      print(
-          'toastsLength ${_toasts.length} visibleToastsAmount $visibleToastsAmount');
       if (_temporarelyHiddenToasts.isNotEmpty &&
           _toasts.length < visibleToastsAmount) {
         final hiddenToast = _temporarelyHiddenToasts.removeAt(0);
-        // hiddenToast.visible = true;
-        // hiddenToast.temporarelyHide = false;
         show(hiddenToast.toast, append: false);
-
-        // _toasts.insert(0, hiddenToast);
-        // hiddenToast.controller.reverse().then((_) {
-        //   // setState(() {
-        //   //   hiddenToast.visible = true;
-        //   //   hiddenToast.temporarelyHide = false;
-        //   // });
-        // });
-        print('inserted toast from hidden');
       }
     });
   }
 
+  /// Temporarily hides the toast with the provided [id]entifier.
+  ///
+  /// The hidden toast will be shown again when there is space for it.
   Future<void> hideTemporarely(Object? id) async {
     final toastInfo = _toasts.firstWhereOrNull((toast) => toast.id == id);
     if (toastInfo == null) return;

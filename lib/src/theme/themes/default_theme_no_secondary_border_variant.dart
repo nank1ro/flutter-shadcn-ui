@@ -1006,6 +1006,8 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       collapsedGap: 16,
       expandedGap: 8,
       scaleFactor: 0.05,
+      animationDuration: Duration(milliseconds: 300),
+      animationCurve: Cubic(0.215, 0.61, 0.355, 1),
     );
   }
 }

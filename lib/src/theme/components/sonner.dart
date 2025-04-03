@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 @immutable
@@ -12,6 +13,8 @@ class ShadSonnerTheme {
     this.expandedGap,
     this.collapsedGap,
     this.scaleFactor,
+    this.animationDuration,
+    this.animationCurve,
   });
 
   final bool merge;
@@ -34,6 +37,12 @@ class ShadSonnerTheme {
   /// {@macro ShadSonner.scaleFactor}
   final double? scaleFactor;
 
+  /// {@macro ShadSonner.animationDuration}
+  final Duration? animationDuration;
+
+  /// {@macro ShadSonner.animationCurve}
+  final Curve? animationCurve;
+
   static ShadSonnerTheme lerp(
     ShadSonnerTheme a,
     ShadSonnerTheme b,
@@ -49,6 +58,12 @@ class ShadSonnerTheme {
       expandedGap: lerpDouble(a.expandedGap, b.expandedGap, t),
       collapsedGap: lerpDouble(a.collapsedGap, b.collapsedGap, t),
       scaleFactor: lerpDouble(a.scaleFactor, b.scaleFactor, t),
+      animationDuration: lerpDuration(
+        a.animationDuration ?? Duration.zero,
+        b.animationDuration ?? Duration.zero,
+        t,
+      ),
+      animationCurve: t < .5 ? a.animationCurve : b.animationCurve,
     );
   }
 
@@ -60,6 +75,8 @@ class ShadSonnerTheme {
     double? expandedGap,
     double? collapsedGap,
     double? scaleFactor,
+    Duration? animationDuration,
+    Curve? animationCurve,
   }) {
     return ShadSonnerTheme(
       merge: merge ?? this.merge,
@@ -69,6 +86,8 @@ class ShadSonnerTheme {
       expandedGap: expandedGap ?? this.expandedGap,
       collapsedGap: collapsedGap ?? this.collapsedGap,
       scaleFactor: scaleFactor ?? this.scaleFactor,
+      animationDuration: animationDuration ?? this.animationDuration,
+      animationCurve: animationCurve ?? this.animationCurve,
     );
   }
 
@@ -82,6 +101,8 @@ class ShadSonnerTheme {
       expandedGap: other.expandedGap,
       collapsedGap: other.collapsedGap,
       scaleFactor: other.scaleFactor,
+      animationDuration: other.animationDuration,
+      animationCurve: other.animationCurve,
     );
   }
 
@@ -96,7 +117,9 @@ class ShadSonnerTheme {
         other.padding == padding &&
         other.expandedGap == expandedGap &&
         other.collapsedGap == collapsedGap &&
-        other.scaleFactor == scaleFactor;
+        other.scaleFactor == scaleFactor &&
+        other.animationDuration == animationDuration &&
+        other.animationCurve == animationCurve;
   }
 
   @override
@@ -107,6 +130,8 @@ class ShadSonnerTheme {
         padding.hashCode ^
         expandedGap.hashCode ^
         collapsedGap.hashCode ^
-        scaleFactor.hashCode;
+        scaleFactor.hashCode ^
+        animationDuration.hashCode ^
+        animationCurve.hashCode;
   }
 }
