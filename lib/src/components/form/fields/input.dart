@@ -228,6 +228,9 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadInput.constraints}
     BoxConstraints? constraints,
+
+    /// {@macro flutter.widgets.editableText.groupId}
+    Object? groupId,
   }) : super(
           initialValue: controller != null ? controller.text : initialValue,
           validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -312,6 +315,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
               inputPadding: inputPadding,
               gap: gap,
               constraints: constraints,
+              groupId: groupId,
             );
           },
         );

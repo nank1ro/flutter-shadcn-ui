@@ -95,6 +95,7 @@ class ShadInput extends StatefulWidget {
     this.constraints,
     this.stylusHandwritingEnabled =
         EditableText.defaultStylusHandwritingEnabled,
+    this.groupId,
   })  : smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ??
@@ -554,6 +555,9 @@ class ShadInput extends StatefulWidget {
   /// {@endtemplate}
   final BoxConstraints? constraints;
 
+  /// {@macro flutter.widgets.editableText.groupId}
+  final Object? groupId;
+
   /// A constant representing no maximum length for the input.
   static const int noMaxLength = -1;
 
@@ -575,6 +579,7 @@ class ShadInputState extends State<ShadInput>
   TextEditingController get effectiveController =>
       widget.controller ?? _controller!.value;
   bool _showSelectionHandles = false;
+  final _groupId = UniqueKey();
 
   @override
   void initState() {
@@ -826,6 +831,8 @@ class ShadInputState extends State<ShadInput>
           minHeight: maxFontSizeScaled,
         );
 
+    final effectiveGroupId = widget.groupId ?? _groupId;
+
     return ShadDisabled(
       disabled: !widget.enabled,
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
@@ -965,6 +972,7 @@ class ShadInputState extends State<ShadInput>
                                           onTapOutside: widget.onPressedOutside,
                                           rendererIgnoresPointer: true,
                                           showCursor: widget.showCursor,
+                                          groupId: effectiveGroupId,
                                         ),
                                       ),
                                     ),

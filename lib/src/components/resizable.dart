@@ -490,6 +490,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
         radius: const BorderRadius.all(Radius.circular(4)),
         width: 0,
       ),
+      disableSecondaryBorder: true,
     )
         .mergeWith(theme.resizableTheme.handleDecoration)
         .mergeWith(widget.handleDecoration);
@@ -603,22 +604,14 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
                         0,
                         (previousValue, element) => previousValue + element,
                       );
+
               leadingPosition = isHorizontal
                   ? leadingPosition * constraints.maxWidth / controller.base
                   : leadingPosition * constraints.maxHeight / controller.base;
 
-              leadingPosition -=
-                  effectiveDividerSize / 2 + effectiveDividerThickness / 2;
-
-              if (effectiveShowHandle) {
-                leadingPosition -= (isHorizontal
-                        ? effectiveHandlePadding.horizontal
-                        : effectiveHandlePadding.vertical) /
-                    2;
-                if (!theme.disableSecondaryBorder) {
-                  leadingPosition -= effectiveHandleSize / 2;
-                }
-              }
+              leadingPosition -= effectiveDividerSize > effectiveHandleSize
+                  ? effectiveDividerSize / 2
+                  : effectiveHandleSize / 2;
 
               dividers.add(
                 Positioned(
@@ -685,7 +678,6 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
             }
 
             return Stack(
-              fit: StackFit.expand,
               alignment: AlignmentDirectional.center,
               children: [
                 child,

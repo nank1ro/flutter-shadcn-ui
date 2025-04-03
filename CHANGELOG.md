@@ -1,3 +1,20 @@
+## 0.23.4
+
+- **FIX**: `ShadSelectFormField` and `ShadSelectMultipleFormField` controller not updating the parent `ShadForm`.
+
+## 0.23.3
+
+- **FIX**: `ShadInput` `onPressedOutside` when tapping on another `ShadInput`.
+- **FEAT**: Add `groupId` to `ShadInput` and `ShadInputFormField`, defaults to `UniqueKey` instead of `EditableText`.
+
+## 0.23.2
+
+- **FEAT**: Add `copyWith` method to `ShadColorScheme` (thanks to @Luckey-Elijah).
+
+## 0.23.1
+
+- **FIX**: `ShadResizable` divider alignments when `dividerSize` is overriden.
+
 ## 0.23.0
 
 - **FIX**: Expose `ShadMouseCursorProvider`.

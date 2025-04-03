@@ -725,6 +725,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           radius: const BorderRadius.all(Radius.circular(4)),
           width: 0,
         ),
+        disableSecondaryBorder: true,
       ),
       handleSize: 10,
       mainAxisAlignment: MainAxisAlignment.start,
