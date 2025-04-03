@@ -10,3 +10,6 @@ example:
 playground:
   dashmon -d chrome
 
+[working-directory: 'docs']
+docs:
+  npm start
