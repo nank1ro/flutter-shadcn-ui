@@ -20,7 +20,7 @@ class _SonnerPageState extends State<SonnerPage>
       appBarTitle: 'Sonner',
       children: [
         ShadButton.outline(
-          child: const Text('Add to calendar'),
+          child: const Text('Show Toast'),
           onPressed: () {
             final sonner = ShadSonner.of(context);
             final id = Random().nextInt(1000);
@@ -28,9 +28,9 @@ class _SonnerPageState extends State<SonnerPage>
             sonner.show(
               ShadToast(
                 id: id,
-                title: const Text('Scheduled: Catch up'),
-                description: Text(now.toString()),
-                action: ShadButton.outline(
+                title: const Text('Event has been created'),
+                description: Text(DateFormat.yMd().add_jms().format(now)),
+                action: ShadButton(
                   child: const Text('Undo'),
                   onPressed: () => sonner.hide(id),
                 ),

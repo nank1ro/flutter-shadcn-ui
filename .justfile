@@ -1,9 +1,12 @@
 d := "macos"
 
-example: (_run "example")
+[working-directory: 'example']
+example:
+  dashmon -d {{d}}
 
-playground: (_run "playground")
 
-_run dir:
-  cd {{dir}} && dashmon -d {{d}}
+# The playground runs on web only
+[working-directory: 'playground']
+playground:
+  dashmon -d chrome
 

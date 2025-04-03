@@ -265,7 +265,7 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
       _toasts.remove(toastInfo);
       if (_temporarelyHiddenToasts.isNotEmpty &&
           _toasts.length < visibleToastsAmount) {
-        final hiddenToast = _temporarelyHiddenToasts.removeAt(0);
+        final hiddenToast = _temporarelyHiddenToasts.removeLast();
         show(hiddenToast.toast, append: false);
       }
     });
