@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 @immutable
 class ShadResizableTheme {
@@ -13,7 +13,7 @@ class ShadResizableTheme {
     this.textDirection,
     this.verticalDirection,
     this.showHandle,
-    this.handleIconSrc,
+    this.handleIconData,
     this.dividerSize,
     this.resetOnDoubleTap,
     this.handleDecoration,
@@ -24,19 +24,47 @@ class ShadResizableTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadResizablePanelGroup.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@macro ShadResizablePanelGroup.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadResizablePanelGroup.mainAxisSize}
   final MainAxisSize? mainAxisSize;
+
+  /// {@macro ShadResizablePanelGroup.textDirection}
   final TextDirection? textDirection;
+
+  /// {@macro ShadResizablePanelGroup.verticalDirection}
   final VerticalDirection? verticalDirection;
+
+  /// {@macro ShadResizablePanelGroup.showHandle}
   final bool? showHandle;
-  final ShadImageSrc? handleIconSrc;
+
+  /// {@macro ShadResizablePanelGroup.handleIconData}
+  final IconData? handleIconData;
+
+  /// {@macro ShadResizablePanelGroup.dividerSize}
   final double? dividerSize;
+
+  /// {@macro ShadResizablePanelGroup.resetOnDoubleTap}
   final bool? resetOnDoubleTap;
+
+  /// {@macro ShadResizablePanelGroup.handleDecoration}
   final ShadDecoration? handleDecoration;
+
+  /// {@macro ShadResizablePanelGroup.handlePadding}
   final EdgeInsets? handlePadding;
-  final Size? handleSize;
+
+  /// {@macro ShadResizablePanelGroup.handleSize}
+  final double? handleSize;
+
+  /// {@macro ShadResizablePanelGroup.dividerThickness}
   final double? dividerThickness;
+
+  /// {@macro ShadResizablePanelGroup.dividerColor}
   final Color? dividerColor;
 
   static ShadResizableTheme lerp(
@@ -47,19 +75,19 @@ class ShadResizableTheme {
     if (identical(a, b)) return a;
     return ShadResizableTheme(
       merge: b.merge,
-      mainAxisAlignment: b.mainAxisAlignment,
-      crossAxisAlignment: b.crossAxisAlignment,
-      mainAxisSize: b.mainAxisSize,
-      textDirection: b.textDirection,
-      verticalDirection: b.verticalDirection,
-      showHandle: b.showHandle,
-      handleIconSrc: b.handleIconSrc,
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      mainAxisSize: t < 0.5 ? a.mainAxisSize : b.mainAxisSize,
+      textDirection: t < 0.5 ? a.textDirection : b.textDirection,
+      verticalDirection: t < 0.5 ? a.verticalDirection : b.verticalDirection,
+      showHandle: t < 0.5 ? a.showHandle : b.showHandle,
+      handleIconData: t < 0.5 ? a.handleIconData : b.handleIconData,
       dividerSize: lerpDouble(a.dividerSize, b.dividerSize, t),
-      resetOnDoubleTap: b.resetOnDoubleTap,
+      resetOnDoubleTap: t < 0.5 ? a.resetOnDoubleTap : b.resetOnDoubleTap,
       handleDecoration:
           ShadDecoration.lerp(a.handleDecoration, b.handleDecoration, t),
       handlePadding: EdgeInsets.lerp(a.handlePadding, b.handlePadding, t),
-      handleSize: Size.lerp(a.handleSize, b.handleSize, t),
+      handleSize: lerpDouble(a.handleSize, b.handleSize, t),
       dividerColor: Color.lerp(a.dividerColor, b.dividerColor, t),
       dividerThickness: lerpDouble(a.dividerThickness, b.dividerThickness, t),
     );
@@ -75,10 +103,11 @@ class ShadResizableTheme {
       textDirection: other.textDirection,
       verticalDirection: other.verticalDirection,
       showHandle: other.showHandle,
-      handleIconSrc: other.handleIconSrc,
+      handleIconData: other.handleIconData,
       dividerSize: other.dividerSize,
       resetOnDoubleTap: other.resetOnDoubleTap,
-      handleDecoration: other.handleDecoration,
+      handleDecoration: handleDecoration?.mergeWith(other.handleDecoration) ??
+          other.handleDecoration,
       handlePadding: other.handlePadding,
       handleSize: other.handleSize,
       dividerColor: other.dividerColor,
@@ -94,12 +123,12 @@ class ShadResizableTheme {
     TextDirection? textDirection,
     VerticalDirection? verticalDirection,
     bool? showHandle,
-    ShadImageSrc? handleIconSrc,
+    IconData? handleIconData,
     double? dividerSize,
     bool? resetOnDoubleTap,
     ShadDecoration? handleDecoration,
     EdgeInsets? handlePadding,
-    Size? handleSize,
+    double? handleSize,
     Color? dividerColor,
     double? dividerThickness,
   }) {
@@ -111,7 +140,7 @@ class ShadResizableTheme {
       textDirection: textDirection ?? this.textDirection,
       verticalDirection: verticalDirection ?? this.verticalDirection,
       showHandle: showHandle ?? this.showHandle,
-      handleIconSrc: handleIconSrc ?? this.handleIconSrc,
+      handleIconData: handleIconData ?? this.handleIconData,
       dividerSize: dividerSize ?? this.dividerSize,
       resetOnDoubleTap: resetOnDoubleTap ?? this.resetOnDoubleTap,
       handleDecoration: handleDecoration ?? this.handleDecoration,
@@ -134,7 +163,7 @@ class ShadResizableTheme {
         other.textDirection == textDirection &&
         other.verticalDirection == verticalDirection &&
         other.showHandle == showHandle &&
-        other.handleIconSrc == handleIconSrc &&
+        other.handleIconData == handleIconData &&
         other.dividerSize == dividerSize &&
         other.resetOnDoubleTap == resetOnDoubleTap &&
         other.handleDecoration == handleDecoration &&
@@ -153,7 +182,7 @@ class ShadResizableTheme {
         textDirection.hashCode ^
         verticalDirection.hashCode ^
         showHandle.hashCode ^
-        handleIconSrc.hashCode ^
+        handleIconData.hashCode ^
         dividerSize.hashCode ^
         resetOnDoubleTap.hashCode ^
         handleDecoration.hashCode ^

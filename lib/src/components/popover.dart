@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/mouse_area.dart';
 
 /// Controls the visibility of a [ShadPopover].
@@ -65,10 +66,14 @@ class ShadPopover extends StatefulWidget {
           'Either controller or visible must be provided',
         );
 
+  /// {@template ShadPopover.popover}
   /// The widget displayed as a popover.
+  /// {@endtemplate}
   final WidgetBuilder popover;
 
+  /// {@template ShadPopover.child}
   /// The child widget.
+  /// {@endtemplate}
   final Widget child;
 
   /// {@template ShadPopover.controller}
@@ -76,21 +81,26 @@ class ShadPopover extends StatefulWidget {
   /// {@endtemplate}
   final ShadPopoverController? controller;
 
+  /// {@template ShadPopover.visible}
   /// Indicates if the popover should be visible.
+  /// {@endtemplate}
   final bool? visible;
 
+  /// {@template ShadPopover.closeOnTapOutside}
   /// Closes the popover when the user taps outside, defaults to true.
+  /// {@endtemplate}
   final bool closeOnTapOutside;
 
+  /// {@template ShadPopover.focusNode}
   /// The focus node of the child, the [popover] will be shown when
   /// focused.
+  /// {@endtemplate}
   final FocusNode? focusNode;
 
   ///{@template ShadPopover.anchor}
   /// The position of the [popover] in the global coordinate system.
   ///
-  /// Defaults to
-  /// `ShadAnchorAutoPosition(verticalOffset: 24, preferBelow: true)`.
+  /// Defaults to `ShadAnchorAuto()`.
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
@@ -199,9 +209,8 @@ class _ShadPopoverState extends State<ShadPopover> {
       ),
     );
 
-    final effectiveAnchor = widget.anchor ??
-        theme.popoverTheme.anchor ??
-        const ShadAnchorAuto(verticalOffset: 24);
+    final effectiveAnchor =
+        widget.anchor ?? theme.popoverTheme.anchor ?? const ShadAnchorAuto();
 
     final effectiveFilter = widget.filter ?? theme.popoverTheme.filter;
 

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 /// The theme for ShadButton.
@@ -14,9 +15,8 @@ import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 class ShadButtonTheme {
   const ShadButtonTheme({
     this.merge = true,
-    this.applyIconColorFilter = true,
     this.cursor,
-    this.size = ShadButtonSize.regular,
+    this.size,
     this.sizesTheme,
     this.backgroundColor,
     this.hoverBackgroundColor,
@@ -37,27 +37,64 @@ class ShadButtonTheme {
     this.hoverStrategies,
     this.textDirection,
     this.gap,
+    this.orderPolicy,
+    this.expands,
   });
 
   final bool merge;
-  final bool applyIconColorFilter;
+
+  /// {@macro ShadButton.cursor}
   final MouseCursor? cursor;
-  final ShadButtonSize size;
+
+  /// {@macro ShadButton.size}
+  final ShadButtonSize? size;
+
+  /// {@macro ShadButtonSizesTheme}
   final ShadButtonSizesTheme? sizesTheme;
+
+  /// {@macro ShadButton.backgroundColor}
   final Color? backgroundColor;
+
+  /// {@macro ShadButton.hoverBackgroundColor}
   final Color? hoverBackgroundColor;
+
+  /// {@macro ShadButton.foregroundColor}
   final Color? foregroundColor;
+
+  /// {@macro ShadButton.hoverForegroundColor}
   final Color? hoverForegroundColor;
+
+  /// {@macro ShadButton.pressedBackgroundColor}
   final Color? pressedBackgroundColor;
+
+  /// {@macro ShadButton.pressedForegroundColor}
   final Color? pressedForegroundColor;
+
+  /// {@macro ShadButton.shadows}
   final List<BoxShadow>? shadows;
+
+  /// {@macro ShadButton.gradient}
   final Gradient? gradient;
+
+  /// {@macro ShadButton.textDecoration}
   final TextDecoration? textDecoration;
+
+  /// {@macro ShadButton.hoverTextDecoration}
   final TextDecoration? hoverTextDecoration;
+
+  /// {@macro ShadButton.decoration}
   final ShadDecoration? decoration;
+
+  /// {@macro ShadButton.width}
   final double? width;
+
+  /// {@macro ShadButton.height}
   final double? height;
+
+  /// {@macro ShadButton.longPressDuration}
   final Duration? longPressDuration;
+
+  /// {@macro ShadButton.hoverStrategies}
   final ShadHoverStrategies? hoverStrategies;
 
   /// {@macro ShadButton.mainAxisAlignment}
@@ -65,10 +102,18 @@ class ShadButtonTheme {
 
   /// {@macro ShadButton.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadButton.textDirection}
   final TextDirection? textDirection;
 
   /// {@macro ShadButton.gap}
   final double? gap;
+
+  /// {@macro ShadButton.orderPolicy}
+  final WidgetOrderPolicy? orderPolicy;
+
+  /// {@macro ShadButton.expands}
+  final bool? expands;
 
   static ShadButtonTheme lerp(
     ShadButtonTheme a,
@@ -77,8 +122,6 @@ class ShadButtonTheme {
   ) {
     if (identical(a, b)) return a;
     return ShadButtonTheme(
-      applyIconColorFilter:
-          t < 0.5 ? a.applyIconColorFilter : b.applyIconColorFilter,
       sizesTheme: ShadButtonSizesTheme.lerp(
         a.sizesTheme,
         b.sizesTheme,
@@ -113,11 +156,12 @@ class ShadButtonTheme {
       hoverStrategies: t < 0.5 ? a.hoverStrategies : b.hoverStrategies,
       textDirection: t < 0.5 ? a.textDirection : b.textDirection,
       gap: t < 0.5 ? a.gap : b.gap,
+      orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
+      expands: t < .5 ? a.expands : b.expands,
     );
   }
 
   ShadButtonTheme copyWith({
-    bool? applyIconColorFilter,
     MouseCursor? cursor,
     MouseCursor? disabledCursor,
     ShadButtonSize? size,
@@ -141,9 +185,10 @@ class ShadButtonTheme {
     ShadHoverStrategies? hoverStrategies,
     TextDirection? textDirection,
     double? gap,
+    WidgetOrderPolicy? orderPolicy,
+    bool? expands,
   }) {
     return ShadButtonTheme(
-      applyIconColorFilter: applyIconColorFilter ?? this.applyIconColorFilter,
       cursor: cursor ?? this.cursor,
       size: size ?? this.size,
       sizesTheme: sizesTheme ?? this.sizesTheme,
@@ -168,6 +213,8 @@ class ShadButtonTheme {
       hoverStrategies: hoverStrategies ?? this.hoverStrategies,
       textDirection: textDirection ?? this.textDirection,
       gap: gap ?? this.gap,
+      orderPolicy: orderPolicy ?? this.orderPolicy,
+      expands: expands ?? this.expands,
     );
   }
 
@@ -175,7 +222,6 @@ class ShadButtonTheme {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
-      applyIconColorFilter: other.applyIconColorFilter,
       cursor: other.cursor,
       size: other.size,
       backgroundColor: other.backgroundColor,
@@ -197,6 +243,8 @@ class ShadButtonTheme {
       hoverStrategies: other.hoverStrategies,
       textDirection: other.textDirection,
       gap: other.gap,
+      orderPolicy: other.orderPolicy,
+      expands: other.expands,
     );
   }
 
@@ -205,7 +253,7 @@ class ShadButtonTheme {
     if (identical(this, other)) return true;
 
     return other is ShadButtonTheme &&
-        other.applyIconColorFilter == applyIconColorFilter &&
+        other.merge == merge &&
         other.cursor == cursor &&
         other.size == size &&
         other.sizesTheme == sizesTheme &&
@@ -227,12 +275,14 @@ class ShadButtonTheme {
         other.longPressDuration == longPressDuration &&
         other.hoverStrategies == hoverStrategies &&
         other.textDirection == textDirection &&
-        other.gap == gap;
+        other.gap == gap &&
+        other.orderPolicy == orderPolicy &&
+        other.expands == expands;
   }
 
   @override
   int get hashCode {
-    return applyIconColorFilter.hashCode ^
+    return merge.hashCode ^
         cursor.hashCode ^
         size.hashCode ^
         sizesTheme.hashCode ^
@@ -254,7 +304,9 @@ class ShadButtonTheme {
         longPressDuration.hashCode ^
         hoverStrategies.hashCode ^
         textDirection.hashCode ^
-        gap.hashCode;
+        gap.hashCode ^
+        orderPolicy.hashCode ^
+        expands.hashCode;
   }
 }
 
@@ -321,7 +373,9 @@ class ShadButtonSizeTheme {
   int get hashCode => height.hashCode ^ padding.hashCode ^ width.hashCode;
 }
 
-// The theme for the predefined sizes of ShadButton.
+/// {@template ShadButtonSizesTheme}
+/// The theme for the predefined sizes of ShadButton.
+/// {@endtemplate}
 @immutable
 class ShadButtonSizesTheme {
   const ShadButtonSizesTheme({

@@ -1,13 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 
 @immutable
 class ShadAccordionTheme {
   const ShadAccordionTheme({
     this.merge = true,
-    this.iconSrc,
+    this.iconData,
     this.iconEffects,
     this.padding,
     this.underlineTitleOnHover,
@@ -19,14 +18,32 @@ class ShadAccordionTheme {
   });
 
   final bool merge;
-  final ShadImageSrc? iconSrc;
+
+  /// {@macro ShadAccordionItem.iconData}
+  final IconData? iconData;
+
+  /// {@macro ShadAccordionItem.iconEffects}
   final List<Effect<dynamic>>? iconEffects;
+
+  /// {@macro ShadAccordionItem.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadAccordionItem.underlineTitleOnHover}
   final bool? underlineTitleOnHover;
+
+  /// {@macro ShadAccordionItem.titleStyle}
   final TextStyle? titleStyle;
+
+  /// {@macro ShadAccordionItem.curve}
   final Curve? curve;
+
+  /// {@macro ShadAccordionItem.duration}
   final Duration? duration;
+
+  /// {@macro ShadAccordion.maintainState}
   final bool? maintainState;
+
+  /// {@macro ShadAccordionItem.effects}
   final List<Effect<dynamic>>? effects;
 
   static ShadAccordionTheme lerp(
@@ -37,7 +54,7 @@ class ShadAccordionTheme {
     if (identical(a, b)) return a;
     return ShadAccordionTheme(
       merge: t < 0.5 ? a.merge : b.merge,
-      iconSrc: t < 0.5 ? a.iconSrc : b.iconSrc,
+      iconData: t < 0.5 ? a.iconData : b.iconData,
       iconEffects: t < 0.5 ? a.iconEffects : b.iconEffects,
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       underlineTitleOnHover:
@@ -54,7 +71,7 @@ class ShadAccordionTheme {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
-      iconSrc: other.iconSrc,
+      iconData: other.iconData,
       iconEffects: other.iconEffects,
       padding: other.padding,
       underlineTitleOnHover: other.underlineTitleOnHover,
@@ -72,7 +89,7 @@ class ShadAccordionTheme {
 
     return other is ShadAccordionTheme &&
         other.merge == merge &&
-        other.iconSrc == iconSrc &&
+        other.iconData == iconData &&
         listEquals(other.iconEffects, iconEffects) &&
         other.padding == padding &&
         other.underlineTitleOnHover == underlineTitleOnHover &&
@@ -86,7 +103,7 @@ class ShadAccordionTheme {
   @override
   int get hashCode {
     return merge.hashCode ^
-        iconSrc.hashCode ^
+        iconData.hashCode ^
         iconEffects.hashCode ^
         padding.hashCode ^
         underlineTitleOnHover.hashCode ^
@@ -99,7 +116,7 @@ class ShadAccordionTheme {
 
   ShadAccordionTheme copyWith({
     bool? merge,
-    ShadImageSrc? iconSrc,
+    IconData? iconData,
     List<Effect<dynamic>>? iconEffects,
     EdgeInsets? padding,
     bool? underlineTitleOnHover,
@@ -111,7 +128,7 @@ class ShadAccordionTheme {
   }) {
     return ShadAccordionTheme(
       merge: merge ?? this.merge,
-      iconSrc: iconSrc ?? this.iconSrc,
+      iconData: iconData ?? this.iconData,
       iconEffects: iconEffects ?? this.iconEffects,
       padding: padding ?? this.padding,
       underlineTitleOnHover:

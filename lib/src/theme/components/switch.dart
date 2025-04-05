@@ -2,13 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 @immutable
 class ShadSwitchTheme {
   const ShadSwitchTheme({
     this.merge = true,
     this.thumbColor,
-    this.trackColor,
     this.uncheckedTrackColor,
     this.checkedTrackColor,
     this.width,
@@ -17,29 +17,41 @@ class ShadSwitchTheme {
     this.duration,
     this.decoration,
     this.padding,
+    this.orderPolicy,
   });
 
   final bool merge;
 
+  /// {@macro ShadSwitch.thumbColor}
   final Color? thumbColor;
 
-  final Color? trackColor;
-
+  /// {@macro ShadSwitch.uncheckedTrackColor}
   final Color? uncheckedTrackColor;
 
+  /// {@macro ShadSwitch.checkedTrackColor}
   final Color? checkedTrackColor;
 
+  /// {@macro ShadSwitch.width}
   final double? width;
 
+  /// {@macro ShadSwitch.height}
   final double? height;
 
+  /// {@macro ShadSwitch.margin}
   final double? margin;
 
+  /// {@macro ShadSwitch.duration}
   final Duration? duration;
 
+  /// {@macro ShadSwitch.decoration}
   final ShadDecoration? decoration;
 
+  /// {@macro ShadSwitch.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadSwitch.orderPolicy}
+  @Deprecated('Use textDirection instead.')
+  final WidgetOrderPolicy? orderPolicy;
 
   static ShadSwitchTheme lerp(
     ShadSwitchTheme a,
@@ -50,7 +62,6 @@ class ShadSwitchTheme {
     return ShadSwitchTheme(
       merge: b.merge,
       thumbColor: Color.lerp(a.thumbColor, b.thumbColor, t),
-      trackColor: Color.lerp(a.trackColor, b.trackColor, t),
       uncheckedTrackColor:
           Color.lerp(a.uncheckedTrackColor, b.uncheckedTrackColor, t),
       checkedTrackColor:
@@ -61,13 +72,13 @@ class ShadSwitchTheme {
       duration: b.duration,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
     );
   }
 
   ShadSwitchTheme copyWith({
     bool? merge,
     Color? thumbColor,
-    Color? trackColor,
     Color? uncheckedTrackColor,
     Color? checkedTrackColor,
     double? width,
@@ -76,11 +87,11 @@ class ShadSwitchTheme {
     Duration? duration,
     ShadDecoration? decoration,
     EdgeInsets? padding,
+    WidgetOrderPolicy? orderPolicy,
   }) {
     return ShadSwitchTheme(
       merge: merge ?? this.merge,
       thumbColor: thumbColor ?? this.thumbColor,
-      trackColor: trackColor ?? this.trackColor,
       uncheckedTrackColor: uncheckedTrackColor ?? this.uncheckedTrackColor,
       checkedTrackColor: checkedTrackColor ?? this.checkedTrackColor,
       width: width ?? this.width,
@@ -89,6 +100,7 @@ class ShadSwitchTheme {
       duration: duration ?? this.duration,
       decoration: decoration ?? this.decoration,
       padding: padding ?? this.padding,
+      orderPolicy: orderPolicy ?? this.orderPolicy,
     );
   }
 
@@ -97,7 +109,6 @@ class ShadSwitchTheme {
     if (!other.merge) return other;
     return copyWith(
       thumbColor: other.thumbColor,
-      trackColor: other.trackColor,
       uncheckedTrackColor: other.uncheckedTrackColor,
       checkedTrackColor: other.checkedTrackColor,
       width: other.width,
@@ -106,6 +117,7 @@ class ShadSwitchTheme {
       duration: other.duration,
       decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       padding: other.padding,
+      orderPolicy: other.orderPolicy,
     );
   }
 
@@ -116,7 +128,6 @@ class ShadSwitchTheme {
     return other is ShadSwitchTheme &&
         other.merge == merge &&
         other.thumbColor == thumbColor &&
-        other.trackColor == trackColor &&
         other.uncheckedTrackColor == uncheckedTrackColor &&
         other.checkedTrackColor == checkedTrackColor &&
         other.width == width &&
@@ -124,14 +135,14 @@ class ShadSwitchTheme {
         other.margin == margin &&
         other.duration == duration &&
         other.decoration == decoration &&
-        other.padding == padding;
+        other.padding == padding &&
+        other.orderPolicy == orderPolicy;
   }
 
   @override
   int get hashCode {
     return merge.hashCode ^
         thumbColor.hashCode ^
-        trackColor.hashCode ^
         uncheckedTrackColor.hashCode ^
         checkedTrackColor.hashCode ^
         width.hashCode ^
@@ -139,6 +150,7 @@ class ShadSwitchTheme {
         margin.hashCode ^
         duration.hashCode ^
         decoration.hashCode ^
-        padding.hashCode;
+        padding.hashCode ^
+        orderPolicy.hashCode;
   }
 }

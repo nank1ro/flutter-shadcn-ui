@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/components/image.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -10,7 +10,7 @@ class ShadToastTheme {
   const ShadToastTheme({
     this.merge = true,
     this.backgroundColor,
-    this.closeIconSrc,
+    this.closeIconData,
     this.alignment,
     this.offset,
     this.duration,
@@ -28,28 +28,74 @@ class ShadToastTheme {
     this.padding,
     this.closeIconPosition,
     this.constraints,
+    this.orderPolicy,
+    this.closeIcon,
   });
 
   final bool merge;
+
+  /// {@macro ShadToast.backgroundColor}
   final Color? backgroundColor;
-  final ShadImageSrc? closeIconSrc;
+
+  /// {@macro ShadToast.closeIconData}
+  final IconData? closeIconData;
+
+  /// {@macro ShadToast.alignment}
   final Alignment? alignment;
+
+  /// {@macro ShadToast.offset}
   final Offset? offset;
+
+  /// {@macro ShadToast.duration}
   final Duration? duration;
+
+  /// {@macro ShadToast.animateIn}
   final List<Effect<dynamic>>? animateIn;
+
+  /// {@macro ShadToast.animateOut}
   final List<Effect<dynamic>>? animateOut;
+
+  /// {@macro ShadToast.textDirection}
   final TextDirection? textDirection;
+
+  /// {@macro ShadToast.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadToast.showCloseIconOnlyWhenHovered}
   final bool? showCloseIconOnlyWhenHovered;
+
+  /// {@macro ShadToast.titleStyle}
   final TextStyle? titleStyle;
+
+  /// {@macro ShadToast.descriptionStyle}
   final TextStyle? descriptionStyle;
+
+  /// {@macro ShadToast.actionPadding}
   final EdgeInsets? actionPadding;
+
+  /// {@macro ShadToast.border}
   final Border? border;
+
+  /// {@macro ShadToast.radius}
   final BorderRadius? radius;
+
+  /// {@macro ShadToast.shadows}
   final List<BoxShadow>? shadows;
+
+  /// {@macro ShadToast.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadToast.closeIconPosition}
   final ShadPosition? closeIconPosition;
+
+  /// {@macro ShadToast.constraints}
   final BoxConstraints? constraints;
+
+  /// {@macro ShadToast.orderPolicy}
+  final WidgetOrderPolicy? orderPolicy;
+
+  /// {@macro ShadToast.closeIcon}
+  final Widget? closeIcon;
 
   static ShadToastTheme lerp(
     ShadToastTheme a,
@@ -60,33 +106,37 @@ class ShadToastTheme {
     return ShadToastTheme(
       merge: b.merge,
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
-      closeIconSrc: b.closeIconSrc,
+      closeIconData: t < .5 ? a.closeIconData : b.closeIconData,
       alignment: Alignment.lerp(a.alignment, b.alignment, t),
       offset: Offset.lerp(a.offset, b.offset, t),
-      duration: b.duration,
-      animateIn: b.animateIn,
-      animateOut: b.animateOut,
-      textDirection: b.textDirection,
-      crossAxisAlignment: b.crossAxisAlignment,
-      showCloseIconOnlyWhenHovered: b.showCloseIconOnlyWhenHovered,
+      duration: t < .5 ? a.duration : b.duration,
+      animateIn: t < .5 ? a.animateIn : b.animateIn,
+      animateOut: t < .5 ? a.animateOut : b.animateOut,
+      textDirection: t < .5 ? a.textDirection : b.textDirection,
+      crossAxisAlignment: t < .5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      showCloseIconOnlyWhenHovered: t < .5
+          ? a.showCloseIconOnlyWhenHovered
+          : b.showCloseIconOnlyWhenHovered,
       titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
       descriptionStyle:
           TextStyle.lerp(a.descriptionStyle, b.descriptionStyle, t),
       actionPadding: EdgeInsets.lerp(a.actionPadding, b.actionPadding, t),
       border: Border.lerp(a.border, b.border, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
-      shadows: b.shadows,
+      shadows: t < .5 ? a.shadows : b.shadows,
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       closeIconPosition:
           ShadPosition.lerp(a.closeIconPosition, b.closeIconPosition, t),
-      constraints: b.constraints,
+      constraints: t < .5 ? a.constraints : b.constraints,
+      orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
+      closeIcon: t < .5 ? a.closeIcon : b.closeIcon,
     );
   }
 
   ShadToastTheme copyWith({
     bool? merge,
     Color? backgroundColor,
-    ShadImageSrc? closeIconSrc,
+    IconData? closeIconData,
     Alignment? alignment,
     Offset? offset,
     Duration? duration,
@@ -104,11 +154,13 @@ class ShadToastTheme {
     EdgeInsets? padding,
     ShadPosition? closeIconPosition,
     BoxConstraints? constraints,
+    WidgetOrderPolicy? orderPolicy,
+    Widget? closeIcon,
   }) {
     return ShadToastTheme(
       merge: merge ?? this.merge,
       backgroundColor: backgroundColor ?? this.backgroundColor,
-      closeIconSrc: closeIconSrc ?? this.closeIconSrc,
+      closeIconData: closeIconData ?? this.closeIconData,
       alignment: alignment ?? this.alignment,
       offset: offset ?? this.offset,
       duration: duration ?? this.duration,
@@ -127,6 +179,8 @@ class ShadToastTheme {
       padding: padding ?? this.padding,
       closeIconPosition: closeIconPosition ?? this.closeIconPosition,
       constraints: constraints ?? this.constraints,
+      orderPolicy: orderPolicy ?? this.orderPolicy,
+      closeIcon: closeIcon ?? this.closeIcon,
     );
   }
 
@@ -135,7 +189,7 @@ class ShadToastTheme {
     if (!other.merge) return other;
     return copyWith(
       backgroundColor: other.backgroundColor,
-      closeIconSrc: other.closeIconSrc,
+      closeIconData: other.closeIconData,
       alignment: other.alignment,
       offset: other.offset,
       duration: other.duration,
@@ -153,6 +207,8 @@ class ShadToastTheme {
       padding: other.padding,
       closeIconPosition: other.closeIconPosition,
       constraints: other.constraints,
+      orderPolicy: other.orderPolicy,
+      closeIcon: other.closeIcon,
     );
   }
 
@@ -163,7 +219,7 @@ class ShadToastTheme {
     return other is ShadToastTheme &&
         other.merge == merge &&
         other.backgroundColor == backgroundColor &&
-        other.closeIconSrc == closeIconSrc &&
+        other.closeIconData == closeIconData &&
         other.alignment == alignment &&
         other.offset == offset &&
         other.duration == duration &&
@@ -180,14 +236,16 @@ class ShadToastTheme {
         listEquals(other.shadows, shadows) &&
         other.padding == padding &&
         other.closeIconPosition == closeIconPosition &&
-        other.constraints == constraints;
+        other.constraints == constraints &&
+        other.orderPolicy == orderPolicy &&
+        other.closeIcon == closeIcon;
   }
 
   @override
   int get hashCode {
     return merge.hashCode ^
         backgroundColor.hashCode ^
-        closeIconSrc.hashCode ^
+        closeIconData.hashCode ^
         alignment.hashCode ^
         offset.hashCode ^
         duration.hashCode ^
@@ -204,6 +262,8 @@ class ShadToastTheme {
         shadows.hashCode ^
         padding.hashCode ^
         closeIconPosition.hashCode ^
-        constraints.hashCode;
+        constraints.hashCode ^
+        orderPolicy.hashCode ^
+        closeIcon.hashCode;
   }
 }

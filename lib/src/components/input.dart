@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
@@ -9,7 +10,14 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
+/// A customizable text input field with optional leading and trailing widgets.
+///
+/// The [ShadInput] widget provides a styled text field with support for
+/// placeholders, leading/trailing decorations, and extensive text editing features. It integrates
+/// with [ShadTheme] for consistent styling and supports advanced interactions
+/// like selection, context menus, and autofill.
 class ShadInput extends StatefulWidget {
+  /// Creates a text input widget with customizable properties.
   const ShadInput({
     super.key,
     this.initialValue,
@@ -74,14 +82,20 @@ class ShadInput extends StatefulWidget {
     this.magnifierConfiguration = TextMagnifierConfiguration.disabled,
     this.selectionColor,
     this.padding,
-    this.prefix,
-    this.suffix,
+    @Deprecated('Use leading instead') this.prefix,
+    @Deprecated('Use trailing instead') this.suffix,
+    this.leading,
+    this.trailing,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
     this.placeholderStyle,
     this.placeholderAlignment,
     this.inputPadding,
     this.gap,
+    this.constraints,
+    this.stylusHandwritingEnabled =
+        EditableText.defaultStylusHandwritingEnabled,
+    this.groupId,
   })  : smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ??
@@ -95,79 +109,459 @@ class ShadInput extends StatefulWidget {
           'Either initialValue or controller must be specified',
         );
 
-  final ShadDecoration? decoration;
+  /// {@template ShadInput.initialValue}
+  /// The initial text value of the input.
+  /// Used if [controller] is null; cannot be used with [controller].
+  /// {@endtemplate}
   final String? initialValue;
+
+  /// {@template ShadInput.placeholder}
+  /// The widget displayed when the input is empty.
+  /// Typically a [Text] widget, styled with [placeholderStyle].
+  /// {@endtemplate}
   final Widget? placeholder;
-  final TextMagnifierConfiguration magnifierConfiguration;
+
+  /// {@template ShadInput.controller}
+  /// The controller for managing the text input’s value and selection.
+  /// If null, an internal controller is created with [initialValue].
+  /// {@endtemplate}
   final TextEditingController? controller;
+
+  /// {@template ShadInput.focusNode}
+  /// The focus node for controlling focus behavior.
+  /// If null, an internal focus node is created.
+  /// {@endtemplate}
   final FocusNode? focusNode;
-  final TextInputType keyboardType;
-  final TextInputAction? textInputAction;
-  final TextCapitalization textCapitalization;
-  final TextStyle? style;
-  final StrutStyle? strutStyle;
-  final TextAlign textAlign;
-  final TextDirection? textDirection;
-  final bool autofocus;
-  final String obscuringCharacter;
-  final bool obscureText;
-  final bool autocorrect;
-  final SmartDashesType smartDashesType;
-  final SmartQuotesType smartQuotesType;
-  final bool enableSuggestions;
-  final int? maxLines;
-  final int? minLines;
-  final bool expands;
-  final bool readOnly;
-  final bool? showCursor;
-  final int? maxLength;
-  final MaxLengthEnforcement? maxLengthEnforcement;
-  final ValueChanged<String>? onChanged;
-  final VoidCallback? onEditingComplete;
-  final ValueChanged<String>? onSubmitted;
-  final AppPrivateCommandCallback? onAppPrivateCommand;
-  final List<TextInputFormatter>? inputFormatters;
-  final bool enabled;
-  final double cursorWidth;
-  final double? cursorHeight;
-  final Radius? cursorRadius;
-  final bool? cursorOpacityAnimates;
-  final Color? cursorColor;
-  final ui.BoxHeightStyle selectionHeightStyle;
-  final ui.BoxWidthStyle selectionWidthStyle;
-  final Brightness? keyboardAppearance;
-  final EdgeInsets scrollPadding;
-  final bool enableInteractiveSelection;
-  final TextSelectionControls? selectionControls;
-  final DragStartBehavior dragStartBehavior;
-  final GestureTapCallback? onPressed;
-  final TapRegionCallback? onPressedOutside;
-  final MouseCursor? mouseCursor;
-  final ScrollPhysics? scrollPhysics;
-  final ScrollController? scrollController;
-  final Iterable<String>? autofillHints;
-  final Clip clipBehavior;
-  final String? restorationId;
-  final bool scribbleEnabled;
-  final bool enableIMEPersonalizedLearning;
-  final ContentInsertionConfiguration? contentInsertionConfiguration;
-  final EditableTextContextMenuBuilder? contextMenuBuilder;
+
+  /// {@template ShadInput.decoration}
+  /// The decoration applied to the input field.
+  /// Merged with the theme’s default decoration if provided.
+  /// {@endtemplate}
+  final ShadDecoration? decoration;
+
+  /// {@template ShadInput.undoController}
+  /// The controller for managing undo/redo history.
+  /// If null, undo functionality is not provided.
+  /// {@endtemplate}
   final UndoHistoryController? undoController;
-  final SpellCheckConfiguration? spellCheckConfiguration;
-  final Color? selectionColor;
-  final EdgeInsets? padding;
-  final Widget? prefix;
-  final Widget? suffix;
-  final MainAxisAlignment? mainAxisAlignment;
-  final CrossAxisAlignment? crossAxisAlignment;
-  final TextStyle? placeholderStyle;
-  final Alignment? placeholderAlignment;
-  final EdgeInsets? inputPadding;
+
+  /// {@template ShadInput.keyboardType}
+  /// The type of keyboard to display for the input.
+  /// Defaults to [TextInputType.text] for single-line,
+  /// [TextInputType.multiline] otherwise.
+  /// {@endtemplate}
+  final TextInputType keyboardType;
+
+  /// {@template ShadInput.textInputAction}
+  /// The action to perform when the user submits the input.
+  /// Defaults to null, relying on platform behavior.
+  /// {@endtemplate}
+  final TextInputAction? textInputAction;
+
+  /// {@template ShadInput.textCapitalization}
+  /// The capitalization behavior for the input text.
+  /// Defaults to [TextCapitalization.none].
+  /// {@endtemplate}
+  final TextCapitalization textCapitalization;
+
+  /// {@template ShadInput.style}
+  /// The text style for the input content.
+  /// Defaults to the theme’s muted style with foreground color if not
+  /// specified.
+  /// {@endtemplate}
+  final TextStyle? style;
+
+  /// {@template ShadInput.strutStyle}
+  /// The strut style for controlling line spacing.
+  /// Defaults to null, relying on the text style.
+  /// {@endtemplate}
+  final StrutStyle? strutStyle;
+
+  /// {@template ShadInput.textAlign}
+  /// The horizontal alignment of the text within the input.
+  /// Defaults to [TextAlign.start].
+  /// {@endtemplate}
+  final TextAlign textAlign;
+
+  /// {@template ShadInput.textDirection}
+  /// The directionality of the text (e.g., LTR or RTL).
+  /// Defaults to null, inheriting from the context.
+  /// {@endtemplate}
+  final TextDirection? textDirection;
+
+  /// {@template ShadInput.readOnly}
+  /// Whether the input is read-only.
+  /// Defaults to false; if true, editing is disabled but selection may still be
+  /// enabled.
+  /// {@endtemplate}
+  final bool readOnly;
+
+  /// {@template ShadInput.showCursor}
+  /// Whether to display the cursor in the input.
+  /// Defaults to null, relying on Flutter’s default behavior.
+  /// {@endtemplate}
+  final bool? showCursor;
+
+  /// {@template ShadInput.autofocus}
+  /// Whether the input automatically receives focus when built.
+  /// Defaults to false.
+  /// {@endtemplate}
+  final bool autofocus;
+
+  /// {@template ShadInput.obscuringCharacter}
+  /// The character used to obscure text when [obscureText] is true.
+  /// Defaults to '•'.
+  /// {@endtemplate}
+  final String obscuringCharacter;
+
+  /// {@template ShadInput.obscureText}
+  /// Whether the input text is obscured (e.g., for passwords).
+  /// Defaults to false; affects [smartDashesType] and [smartQuotesType].
+  /// {@endtemplate}
+  final bool obscureText;
+
+  /// {@template ShadInput.autocorrect}
+  /// Whether autocorrect is enabled for the input.
+  /// Defaults to true.
+  /// {@endtemplate}
+  final bool autocorrect;
+
+  /// {@template ShadInput.smartDashesType}
+  /// The smart dashes behavior for the input.
+  /// Defaults to enabled if not obscured, disabled if obscured.
+  /// {@endtemplate}
+  final SmartDashesType smartDashesType;
+
+  /// {@template ShadInput.smartQuotesType}
+  /// The smart quotes behavior for the input.
+  /// Defaults to enabled if not obscured, disabled if obscured.
+  /// {@endtemplate}
+  final SmartQuotesType smartQuotesType;
+
+  /// {@template ShadInput.enableSuggestions}
+  /// Whether text suggestions are enabled for the input.
+  /// Defaults to true.
+  /// {@endtemplate}
+  final bool enableSuggestions;
+
+  /// {@template ShadInput.maxLines}
+  /// The maximum number of lines the input can span.
+  /// Defaults to 1; affects [keyboardType].
+  /// {@endtemplate}
+  final int? maxLines;
+
+  /// {@template ShadInput.minLines}
+  /// The minimum number of lines the input should display.
+  /// Defaults to null; must be less than or equal to [maxLines].
+  /// {@endtemplate}
+  final int? minLines;
+
+  /// {@template ShadInput.expands}
+  /// Whether the input expands to fill available vertical space.
+  /// Defaults to false; requires [maxLines] and [minLines] to be null.
+  /// {@endtemplate}
+  final bool expands;
+
+  /// {@template ShadInput.maxLength}
+  /// The maximum length of the input text.
+  /// Defaults to null (no limit); enforced by [maxLengthEnforcement].
+  /// {@endtemplate}
+  final int? maxLength;
+
+  /// {@template ShadInput.maxLengthEnforcement}
+  /// How the [maxLength] is enforced.
+  /// Defaults to platform-specific behavior if not specified.
+  /// {@endtemplate}
+  final MaxLengthEnforcement? maxLengthEnforcement;
+
+  /// {@template ShadInput.onChanged}
+  /// Callback invoked when the input text changes.
+  /// Provides the new text value.
+  /// {@endtemplate}
+  final ValueChanged<String>? onChanged;
+
+  /// {@template ShadInput.onEditingComplete}
+  /// Callback invoked when editing is completed (e.g., via keyboard action).
+  /// Does not provide the text value.
+  /// {@endtemplate}
+  final VoidCallback? onEditingComplete;
+
+  /// {@template ShadInput.onSubmitted}
+  /// Callback invoked when the user submits the input (e.g., pressing Enter).
+  /// Provides the submitted text value.
+  /// {@endtemplate}
+  final ValueChanged<String>? onSubmitted;
+
+  /// {@template ShadInput.onAppPrivateCommand}
+  /// Callback for handling private app commands.
+  /// Provides action and data for platform-specific features.
+  /// {@endtemplate}
+  final AppPrivateCommandCallback? onAppPrivateCommand;
+
+  /// {@template ShadInput.inputFormatters}
+  /// The list of formatters to apply to the input text.
+  /// Controls text transformation (e.g., masking, filtering).
+  /// {@endtemplate}
+  final List<TextInputFormatter>? inputFormatters;
+
+  /// {@template ShadInput.enabled}
+  /// Whether the input is interactive.
+  /// Defaults to true; if false, the input is disabled and visually dimmed.
+  /// {@endtemplate}
+  final bool enabled;
+
+  /// {@template ShadInput.cursorWidth}
+  /// The width of the cursor.
+  /// Defaults to 2.0 pixels.
+  /// {@endtemplate}
+  final double cursorWidth;
+
+  /// {@template ShadInput.cursorHeight}
+  /// The height of the cursor.
+  /// Defaults to null, matching the text height.
+  /// {@endtemplate}
+  final double? cursorHeight;
+
+  /// {@template ShadInput.cursorRadius}
+  /// The radius of the cursor’s corners.
+  /// Defaults to null (sharp edges).
+  /// {@endtemplate}
+  final Radius? cursorRadius;
+
+  /// {@template ShadInput.cursorOpacityAnimates}
+  /// Whether the cursor opacity animates when blinking.
+  /// Defaults to null, relying on platform behavior.
+  /// {@endtemplate}
+  final bool? cursorOpacityAnimates;
+
+  /// {@template ShadInput.cursorColor}
+  /// The color of the cursor.
+  /// Defaults to the theme’s primary color if not specified.
+  /// {@endtemplate}
+  final Color? cursorColor;
+
+  /// {@template ShadInput.selectionHeightStyle}
+  /// The height style of the selection highlight.
+  /// Defaults to [ui.BoxHeightStyle.tight].
+  /// {@endtemplate}
+  final ui.BoxHeightStyle selectionHeightStyle;
+
+  /// {@template ShadInput.selectionWidthStyle}
+  /// The width style of the selection highlight.
+  /// Defaults to [ui.BoxWidthStyle.tight].
+  /// {@endtemplate}
+  final ui.BoxWidthStyle selectionWidthStyle;
+
+  /// {@template ShadInput.keyboardAppearance}
+  /// The appearance (brightness) of the keyboard.
+  /// Defaults to the theme’s brightness if not specified.
+  /// {@endtemplate}
+  final Brightness? keyboardAppearance;
+
+  /// {@template ShadInput.scrollPadding}
+  /// The padding applied around the input when scrolling to keep it visible.
+  /// Defaults to EdgeInsets.all(20).
+  /// {@endtemplate}
+  final EdgeInsets scrollPadding;
+
+  /// {@template ShadInput.dragStartBehavior}
+  /// The behavior for starting a drag gesture.
+  /// Defaults to [DragStartBehavior.start].
+  /// {@endtemplate}
+  final DragStartBehavior dragStartBehavior;
+
+  /// {@template ShadInput.enableInteractiveSelection}
+  /// Whether interactive text selection is enabled.
+  /// Defaults to true unless [readOnly] or [obscureText] is true.
+  /// {@endtemplate}
+  final bool enableInteractiveSelection;
+
+  /// {@template ShadInput.selectionControls}
+  /// Custom controls for text selection handles.
+  /// Defaults to platform-specific controls if not specified.
+  /// {@endtemplate}
+  final TextSelectionControls? selectionControls;
+
+  /// {@template ShadInput.onPressed}
+  /// Callback invoked when the input field is tapped.
+  /// Useful for custom tap handling, e.g., in read-only mode.
+  /// {@endtemplate}
+  final GestureTapCallback? onPressed;
+
+  /// {@template ShadInput.onPressedAlwaysCalled}
+  /// Whether [onPressed] is called even when selection is active.
+  /// Defaults to false; if true, always triggers on tap.
+  /// {@endtemplate}
   final bool onPressedAlwaysCalled;
+
+  /// {@template ShadInput.onPressedOutside}
+  /// Callback invoked when tapping outside the input field.
+  /// Useful for handling focus dismissal or other actions.
+  /// {@endtemplate}
+  final TapRegionCallback? onPressedOutside;
+
+  /// {@template ShadInput.mouseCursor}
+  /// The cursor displayed when hovering over the input.
+  /// Defaults to [WidgetStateMouseCursor.textable].
+  /// {@endtemplate}
+  final MouseCursor? mouseCursor;
+
+  /// {@template ShadInput.scrollController}
+  /// The controller for managing scrolling within the input.
+  /// Defaults to null (no custom scrolling).
+  /// {@endtemplate}
+  final ScrollController? scrollController;
+
+  /// {@template ShadInput.scrollPhysics}
+  /// The physics applied to scrolling within the input.
+  /// Defaults to null, relying on platform defaults.
+  /// {@endtemplate}
+  final ScrollPhysics? scrollPhysics;
+
+  /// {@template ShadInput.autofillHints}
+  /// Hints for autofill services to suggest values.
+  /// Defaults to an empty list.
+  /// {@endtemplate}
+  final Iterable<String>? autofillHints;
+
+  /// {@template ShadInput.contentInsertionConfiguration}
+  /// Configuration for content insertion (e.g., paste handling).
+  /// Defaults to null, using default behavior.
+  /// {@endtemplate}
+  final ContentInsertionConfiguration? contentInsertionConfiguration;
+
+  /// {@template ShadInput.clipBehavior}
+  /// The clip behavior for the input’s content.
+  /// Defaults to [Clip.hardEdge].
+  /// {@endtemplate}
+  final Clip clipBehavior;
+
+  /// {@template ShadInput.restorationId}
+  /// The ID for restoring the input’s state across sessions.
+  /// Defaults to null (no restoration).
+  /// {@endtemplate}
+  final String? restorationId;
+
+  /// {@template ShadInput.scribbleEnabled}
+  /// Whether scribble (handwriting) input is enabled.
+  /// Defaults to true.
+  /// {@endtemplate}
+  final bool scribbleEnabled;
+
+  /// {@macro flutter.widgets.editableText.stylusHandwritingEnabled}
+  final bool stylusHandwritingEnabled;
+
+  /// {@template ShadInput.enableIMEPersonalizedLearning}
+  /// Whether the IME can use personalized learning data.
+  /// Defaults to true.
+  /// {@endtemplate}
+  final bool enableIMEPersonalizedLearning;
+
+  /// {@template ShadInput.contextMenuBuilder}
+  /// Custom builder for the context menu (e.g., copy/paste).
+  /// Defaults to an adaptive toolbar if not specified.
+  /// {@endtemplate}
+  final EditableTextContextMenuBuilder? contextMenuBuilder;
+
+  /// {@template ShadInput.spellCheckConfiguration}
+  /// Configuration for spell checking in the input.
+  /// Defaults to null (no spell checking).
+  /// {@endtemplate}
+  final SpellCheckConfiguration? spellCheckConfiguration;
+
+  /// {@template ShadInput.magnifierConfiguration}
+  /// Configuration for the text magnifier.
+  /// Defaults to [TextMagnifierConfiguration.disabled].
+  /// {@endtemplate}
+  final TextMagnifierConfiguration magnifierConfiguration;
+
+  /// {@template ShadInput.selectionColor}
+  /// The color of the text selection highlight.
+  /// Defaults to the theme’s selection color when focused.
+  /// {@endtemplate}
+  final Color? selectionColor;
+
+  /// {@template ShadInput.padding}
+  /// The padding around the entire input, including decorations.
+  /// Defaults to theme’s input padding if not specified.
+  /// {@endtemplate}
+  final EdgeInsets? padding;
+
+  /// {@template ShadInput.prefix}
+  /// Deprecated widget displayed before the input (use [leading] instead).
+  /// {@endtemplate}
+  @Deprecated('Use leading instead')
+  final Widget? prefix;
+
+  /// {@template ShadInput.suffix}
+  /// Deprecated widget displayed after the input (use [trailing] instead).
+  /// {@endtemplate}
+  @Deprecated('Use trailing instead')
+  final Widget? suffix;
+
+  /// {@template ShadInput.leading}
+  /// The widget displayed before the input field.
+  /// Typically an icon or small graphic.
+  /// {@endtemplate}
+  final Widget? leading;
+
+  /// {@template ShadInput.trailing}
+  /// The widget displayed after the input field.
+  /// Typically an icon or small graphic.
+  /// {@endtemplate}
+  final Widget? trailing;
+
+  /// {@template ShadInput.mainAxisAlignment}
+  /// The main axis alignment of the input’s row (horizontal).
+  /// Defaults to [MainAxisAlignment.start] if not specified.
+  /// {@endtemplate}
+  final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@template ShadInput.crossAxisAlignment}
+  /// The cross axis alignment of the input’s row (vertical).
+  /// Defaults to [CrossAxisAlignment.center] if not specified.
+  /// {@endtemplate}
+  final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@template ShadInput.placeholderStyle}
+  /// The text style for the placeholder when the input is empty.
+  /// Defaults to the theme’s muted style if not specified.
+  /// {@endtemplate}
+  final TextStyle? placeholderStyle;
+
+  /// {@template ShadInput.placeholderAlignment}
+  /// The alignment of the placeholder within the input field.
+  /// Defaults to [Alignment.topLeft] if not specified.
+  /// {@endtemplate}
+  final Alignment? placeholderAlignment;
+
+  /// {@template ShadInput.inputPadding}
+  /// The padding around the editable text within the input field.
+  /// Defaults to [EdgeInsets.zero] if not specified.
+  /// {@endtemplate}
+  final EdgeInsets? inputPadding;
+
+  /// {@template ShadInput.gap}
+  /// The gap between the input field and its leading/trailing widgets.
+  /// Defaults to 8 if not specified.
+  /// {@endtemplate}
   final double? gap;
 
+  /// {@template ShadInput.constraints}
+  /// The constraints of the input field.
+  ///
+  /// By default only minHeight is set, based on the [style] and
+  /// [placeholderStyle].
+  /// {@endtemplate}
+  final BoxConstraints? constraints;
+
+  /// {@macro flutter.widgets.editableText.groupId}
+  final Object? groupId;
+
+  /// A constant representing no maximum length for the input.
   static const int noMaxLength = -1;
 
+  /// Whether text selection is enabled, based on [enableInteractiveSelection].
   bool get selectionEnabled => enableInteractiveSelection;
 
   @override
@@ -185,6 +579,7 @@ class ShadInputState extends State<ShadInput>
   TextEditingController get effectiveController =>
       widget.controller ?? _controller!.value;
   bool _showSelectionHandles = false;
+  final _groupId = UniqueKey();
 
   @override
   void initState() {
@@ -215,11 +610,9 @@ class ShadInputState extends State<ShadInput>
     }
 
     if (widget.readOnly != oldWidget.readOnly) {
-      _focusNode?.canRequestFocus = widget.readOnly;
-    }
-
-    if (effectiveFocusNode.hasFocus && widget.readOnly != oldWidget.readOnly) {
-      if (effectiveController.selection.isCollapsed) {
+      effectiveFocusNode.canRequestFocus = !widget.readOnly;
+      if (effectiveFocusNode.hasFocus &&
+          effectiveController.selection.isCollapsed) {
         _showSelectionHandles = !widget.readOnly;
       }
     }
@@ -352,11 +745,13 @@ class ShadInputState extends State<ShadInput>
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveTextStyle = widget.style ??
-        theme.inputTheme.style ??
-        theme.textTheme.muted.copyWith(
+    final effectiveTextStyle = theme.textTheme.muted
+        .copyWith(
           color: theme.colorScheme.foreground,
-        );
+        )
+        .merge(theme.inputTheme.style)
+        .merge(widget.style);
+
     final effectiveDecoration =
         (theme.inputTheme.decoration ?? const ShadDecoration())
             .mergeWith(widget.decoration);
@@ -368,9 +763,9 @@ class ShadInputState extends State<ShadInput>
     final effectiveInputPadding =
         widget.inputPadding ?? theme.inputTheme.inputPadding ?? EdgeInsets.zero;
 
-    final effectivePlaceholderStyle = widget.placeholderStyle ??
-        theme.inputTheme.placeholderStyle ??
-        theme.textTheme.muted;
+    final effectivePlaceholderStyle = theme.textTheme.muted
+        .merge(theme.inputTheme.placeholderStyle)
+        .merge(widget.placeholderStyle);
 
     final effectivePlaceholderAlignment = widget.placeholderAlignment ??
         theme.inputTheme.placeholderAlignment ??
@@ -408,6 +803,36 @@ class ShadInputState extends State<ShadInput>
           );
         };
 
+    final effectiveMaxLengthEnforcement = widget.maxLengthEnforcement ??
+        LengthLimitingTextInputFormatter.getDefaultMaxLengthEnforcement(
+          Theme.of(context).platform,
+        );
+
+    final effectiveInputFormatters = <TextInputFormatter>[
+      ...?widget.inputFormatters,
+      if (widget.maxLength != null)
+        LengthLimitingTextInputFormatter(
+          widget.maxLength,
+          maxLengthEnforcement: effectiveMaxLengthEnforcement,
+        ),
+    ];
+
+    final textScaler = MediaQuery.textScalerOf(context);
+
+    final maxFontSize = max(
+      (effectivePlaceholderStyle.fontSize ?? 0) *
+          (effectivePlaceholderStyle.height ?? 0),
+      (effectiveTextStyle.fontSize ?? 0) * (effectiveTextStyle.height ?? 0),
+    );
+    final maxFontSizeScaled = textScaler.scale(maxFontSize);
+
+    final effectiveConstraints = widget.constraints ??
+        BoxConstraints(
+          minHeight: maxFontSizeScaled,
+        );
+
+    final effectiveGroupId = widget.groupId ?? _groupId;
+
     return ShadDisabled(
       disabled: !widget.enabled,
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
@@ -427,124 +852,138 @@ class ShadInputState extends State<ShadInput>
                       mainAxisAlignment: effectiveMainAxisAlignment,
                       crossAxisAlignment: effectiveCrossAxisAlignment,
                       children: [
+                        if (widget.leading != null) widget.leading!,
                         if (widget.prefix != null) widget.prefix!,
                         Flexible(
-                          child: AbsorbPointer(
-                            // AbsorbPointer is needed when the input is
-                            // readOnly so the onTap callback is fired on each
-                            // part of the input
-                            absorbing: widget.readOnly,
-                            child: Padding(
-                              padding: effectiveInputPadding,
-                              child: Stack(
-                                children: [
-                                  // placeholder
-                                  if (textEditingValue.text.isEmpty &&
-                                      widget.placeholder != null)
-                                    Positioned.fill(
-                                      child: Align(
-                                        alignment:
-                                            effectivePlaceholderAlignment,
-                                        child: DefaultTextStyle(
-                                          style: effectivePlaceholderStyle,
-                                          child: widget.placeholder!,
+                          child: ConstrainedBox(
+                            constraints: effectiveConstraints,
+                            child: AbsorbPointer(
+                              // AbsorbPointer is needed when the input is
+                              // readOnly so the onTap callback is fired on each
+                              // part of the input
+                              absorbing: widget.readOnly,
+                              child: Padding(
+                                padding: effectiveInputPadding,
+                                child: Stack(
+                                  children: [
+                                    // placeholder
+                                    if (textEditingValue.text.isEmpty &&
+                                        widget.placeholder != null)
+                                      Positioned.fill(
+                                        child: Align(
+                                          alignment:
+                                              effectivePlaceholderAlignment,
+                                          child: DefaultTextStyle(
+                                            style: effectivePlaceholderStyle,
+                                            child: widget.placeholder!,
+                                          ),
+                                        ),
+                                      ),
+                                    RepaintBoundary(
+                                      child: UnmanagedRestorationScope(
+                                        bucket: bucket,
+                                        child: EditableText(
+                                          showSelectionHandles:
+                                              _showSelectionHandles,
+                                          key: editableTextKey,
+                                          controller: effectiveController,
+                                          obscuringCharacter:
+                                              widget.obscuringCharacter,
+                                          readOnly: widget.readOnly,
+                                          focusNode: effectiveFocusNode,
+                                          // ! Selection handler section here
+                                          onSelectionChanged:
+                                              _handleSelectionChanged,
+                                          selectionColor: focused
+                                              ? widget.selectionColor ??
+                                                  theme.colorScheme.selection
+                                              : null,
+                                          selectionHeightStyle:
+                                              widget.selectionHeightStyle,
+                                          selectionWidthStyle:
+                                              widget.selectionWidthStyle,
+                                          contextMenuBuilder:
+                                              effectiveContextMenuBuilder,
+                                          selectionControls:
+                                              effectiveSelectionControls,
+                                          // ! End of selection handler section
+                                          mouseCursor: effectiveMouseCursor,
+                                          enableInteractiveSelection:
+                                              widget.enableInteractiveSelection,
+                                          style: effectiveTextStyle,
+                                          strutStyle: widget.strutStyle,
+                                          cursorColor: widget.cursorColor ??
+                                              theme.colorScheme.primary,
+                                          backgroundCursorColor: Colors.grey,
+                                          keyboardType: widget.keyboardType,
+                                          keyboardAppearance:
+                                              widget.keyboardAppearance ??
+                                                  theme.brightness,
+                                          textInputAction:
+                                              widget.textInputAction,
+                                          textCapitalization:
+                                              widget.textCapitalization,
+                                          autofocus: widget.autofocus,
+                                          obscureText: widget.obscureText,
+                                          autocorrect: widget.autocorrect,
+                                          magnifierConfiguration:
+                                              widget.magnifierConfiguration,
+                                          smartDashesType:
+                                              widget.smartDashesType,
+                                          smartQuotesType:
+                                              widget.smartQuotesType,
+                                          enableSuggestions:
+                                              widget.enableSuggestions,
+                                          maxLines: widget.maxLines,
+                                          minLines: widget.minLines,
+                                          expands: widget.expands,
+                                          onChanged: widget.onChanged,
+                                          onEditingComplete:
+                                              widget.onEditingComplete,
+                                          onSubmitted: widget.onSubmitted,
+                                          onAppPrivateCommand:
+                                              widget.onAppPrivateCommand,
+                                          inputFormatters:
+                                              effectiveInputFormatters,
+                                          cursorWidth: widget.cursorWidth,
+                                          cursorHeight: widget.cursorHeight,
+                                          cursorRadius: widget.cursorRadius,
+                                          scrollPadding: widget.scrollPadding,
+                                          dragStartBehavior:
+                                              widget.dragStartBehavior,
+                                          scrollController:
+                                              widget.scrollController,
+                                          scrollPhysics: widget.scrollPhysics,
+                                          autofillHints: widget.autofillHints,
+                                          clipBehavior: widget.clipBehavior,
+                                          restorationId: 'editable',
+                                          scribbleEnabled:
+                                              widget.scribbleEnabled,
+                                          stylusHandwritingEnabled:
+                                              widget.stylusHandwritingEnabled,
+                                          enableIMEPersonalizedLearning: widget
+                                              .enableIMEPersonalizedLearning,
+                                          contentInsertionConfiguration: widget
+                                              .contentInsertionConfiguration,
+                                          undoController: widget.undoController,
+                                          spellCheckConfiguration:
+                                              widget.spellCheckConfiguration,
+                                          textAlign: widget.textAlign,
+                                          onTapOutside: widget.onPressedOutside,
+                                          rendererIgnoresPointer: true,
+                                          showCursor: widget.showCursor,
+                                          groupId: effectiveGroupId,
                                         ),
                                       ),
                                     ),
-                                  RepaintBoundary(
-                                    child: UnmanagedRestorationScope(
-                                      bucket: bucket,
-                                      child: EditableText(
-                                        showSelectionHandles:
-                                            _showSelectionHandles,
-                                        key: editableTextKey,
-                                        controller: effectiveController,
-                                        obscuringCharacter:
-                                            widget.obscuringCharacter,
-                                        readOnly: widget.readOnly,
-                                        focusNode: effectiveFocusNode,
-                                        // ! Selection handler section here
-                                        onSelectionChanged:
-                                            _handleSelectionChanged,
-                                        selectionColor: focused
-                                            ? widget.selectionColor ??
-                                                theme.colorScheme.selection
-                                            : null,
-                                        selectionHeightStyle:
-                                            widget.selectionHeightStyle,
-                                        selectionWidthStyle:
-                                            widget.selectionWidthStyle,
-                                        contextMenuBuilder:
-                                            effectiveContextMenuBuilder,
-                                        selectionControls:
-                                            effectiveSelectionControls,
-                                        // ! End of selection handler section
-                                        mouseCursor: effectiveMouseCursor,
-                                        enableInteractiveSelection:
-                                            widget.enableInteractiveSelection,
-                                        style: effectiveTextStyle,
-                                        strutStyle: widget.strutStyle,
-                                        cursorColor: widget.cursorColor ??
-                                            theme.colorScheme.primary,
-                                        backgroundCursorColor: Colors.grey,
-                                        keyboardType: widget.keyboardType,
-                                        keyboardAppearance:
-                                            widget.keyboardAppearance ??
-                                                theme.brightness,
-                                        textInputAction: widget.textInputAction,
-                                        textCapitalization:
-                                            widget.textCapitalization,
-                                        autofocus: widget.autofocus,
-                                        obscureText: widget.obscureText,
-                                        autocorrect: widget.autocorrect,
-                                        magnifierConfiguration:
-                                            widget.magnifierConfiguration,
-                                        smartDashesType: widget.smartDashesType,
-                                        smartQuotesType: widget.smartQuotesType,
-                                        enableSuggestions:
-                                            widget.enableSuggestions,
-                                        maxLines: widget.maxLines,
-                                        minLines: widget.minLines,
-                                        expands: widget.expands,
-                                        onChanged: widget.onChanged,
-                                        onEditingComplete:
-                                            widget.onEditingComplete,
-                                        onSubmitted: widget.onSubmitted,
-                                        onAppPrivateCommand:
-                                            widget.onAppPrivateCommand,
-                                        inputFormatters: widget.inputFormatters,
-                                        cursorWidth: widget.cursorWidth,
-                                        cursorHeight: widget.cursorHeight,
-                                        cursorRadius: widget.cursorRadius,
-                                        scrollPadding: widget.scrollPadding,
-                                        dragStartBehavior:
-                                            widget.dragStartBehavior,
-                                        scrollController:
-                                            widget.scrollController,
-                                        scrollPhysics: widget.scrollPhysics,
-                                        autofillHints: widget.autofillHints,
-                                        clipBehavior: widget.clipBehavior,
-                                        restorationId: 'editable',
-                                        scribbleEnabled: widget.scribbleEnabled,
-                                        enableIMEPersonalizedLearning: widget
-                                            .enableIMEPersonalizedLearning,
-                                        contentInsertionConfiguration: widget
-                                            .contentInsertionConfiguration,
-                                        undoController: widget.undoController,
-                                        spellCheckConfiguration:
-                                            widget.spellCheckConfiguration,
-                                        textAlign: widget.textAlign,
-                                        onTapOutside: widget.onPressedOutside,
-                                        rendererIgnoresPointer: true,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
                         if (widget.suffix != null) widget.suffix!,
+                        if (widget.trailing != null) widget.trailing!,
                       ].separatedBy(SizedBox(width: effectiveGap)),
                     ),
                   ),

@@ -14,18 +14,40 @@ class ShadInputTheme {
     this.mainAxisAlignment,
     this.crossAxisAlignment,
     this.gap,
+    this.constraints,
   });
 
   final bool merge;
+
+  /// {@macro ShadInput.decoration}
   final ShadDecoration? decoration;
+
+  /// {@macro ShadInput.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadInput.style}
   final TextStyle? style;
+
+  /// {@macro ShadInput.placeholderStyle}
   final TextStyle? placeholderStyle;
+
+  /// {@macro ShadInput.placeholderAlignment}
   final Alignment? placeholderAlignment;
+
+  /// {@macro ShadInput.inputPadding}
   final EdgeInsets? inputPadding;
+
+  /// {@macro ShadInput.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@macro ShadInput.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadInput.gap}
   final double? gap;
+
+  /// {@macro ShadInput.constraints}
+  final BoxConstraints? constraints;
 
   static ShadInputTheme lerp(
     ShadInputTheme a,
@@ -44,6 +66,7 @@ class ShadInputTheme {
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       gap: t < 0.5 ? a.gap : b.gap,
+      constraints: BoxConstraints.lerp(a.constraints, b.constraints, t),
     );
   }
 
@@ -57,6 +80,7 @@ class ShadInputTheme {
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
     double? gap,
+    BoxConstraints? constraints,
   }) {
     return ShadInputTheme(
       merge: merge ?? this.merge,
@@ -68,6 +92,7 @@ class ShadInputTheme {
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
       gap: gap ?? this.gap,
+      constraints: constraints ?? this.constraints,
     );
   }
 
@@ -83,6 +108,7 @@ class ShadInputTheme {
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
       gap: other.gap,
+      constraints: other.constraints,
     );
   }
 
@@ -99,7 +125,8 @@ class ShadInputTheme {
         other.inputPadding == inputPadding &&
         other.mainAxisAlignment == mainAxisAlignment &&
         other.crossAxisAlignment == crossAxisAlignment &&
-        other.gap == gap;
+        other.gap == gap &&
+        other.constraints == constraints;
   }
 
   @override
@@ -112,6 +139,7 @@ class ShadInputTheme {
         inputPadding.hashCode ^
         mainAxisAlignment.hashCode ^
         crossAxisAlignment.hashCode ^
-        gap.hashCode;
+        gap.hashCode ^
+        constraints.hashCode;
   }
 }

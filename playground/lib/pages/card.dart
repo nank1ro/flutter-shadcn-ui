@@ -125,9 +125,9 @@ class _CardNotificationsState extends State<CardNotifications> {
       description: const Text('You have 3 unread messages.'),
       footer: ShadButton(
         width: double.infinity,
-        icon: const Padding(
+        leading: const Padding(
           padding: EdgeInsets.only(right: 8),
-          child: ShadImage.square(LucideIcons.check, size: 16),
+          child: Icon(LucideIcons.check),
         ),
         onPressed: () {},
         child: const Text('Mark all as read'),
@@ -143,7 +143,7 @@ class _CardNotificationsState extends State<CardNotifications> {
             ),
             child: Row(
               children: [
-                ShadImage.square(
+                Icon(
                   LucideIcons.bellRing,
                   size: 24,
                   color: theme.colorScheme.foreground,

@@ -1,0 +1,169 @@
+---
+title: Calendar
+sidebar:
+  order: 4
+---
+
+import Preview from "../../../components/Preview.astro";
+
+A date field component that allows users to enter and edit date.
+
+<Preview src="calendar?style=single" minHeight="450px">
+
+```dart
+class SingleCalendar extends StatefulWidget {
+  const SingleCalendar({super.key});
+
+  @override
+  State<SingleCalendar> createState() => _SingleCalendarState();
+}
+
+class _SingleCalendarState extends State<SingleCalendar> {
+  final today = DateTime.now();
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadCalendar(
+      selected: today,
+      fromMonth: DateTime(today.year - 1),
+      toMonth: DateTime(today.year, 12),
+    );
+  }
+}
+```
+
+</Preview>
+
+## Multiple
+
+<Preview src="calendar?style=multiple" minHeight="450px">
+
+```dart
+class MultipleCalendar extends StatefulWidget {
+ const MultipleCalendar({super.key});
+
+ @override
+ State<MultipleCalendar> createState() => _MultipleCalendarState();
+}
+
+class _MultipleCalendarState extends State<MultipleCalendar> {
+ final today = DateTime.now();
+
+ @override
+ Widget build(BuildContext context) {
+   return ShadCalendar.multiple(
+     numberOfMonths: 2,
+     fromMonth: DateTime(today.year),
+     toMonth: DateTime(today.year + 1, 12),
+     min: 5,
+     max: 10,
+   );
+ }
+}
+```
+
+</Preview>
+
+## Range
+
+<Preview src="calendar?style=range" minHeight="450px">
+
+```dart
+class RangeCalendar extends StatelessWidget {
+ const RangeCalendar({super.key});
+
+ @override
+ Widget build(BuildContext context) {
+   return const ShadCalendar.range(
+     min: 2,
+     max: 5,
+   );
+ }
+}
+```
+
+</Preview>
+
+#### DropdownMonths
+
+<Preview src="calendar?captionLayout=dropdownMonths" minHeight="500px">
+
+```dart
+ShadCalendar(
+  captionLayout: ShadCalendarCaptionLayout.dropdownMonths,
+);
+```
+
+</Preview>
+
+#### DropdownYears
+
+<Preview src="calendar?captionLayout=dropdownYears" minHeight="450px">
+
+```dart
+ShadCalendar(
+  captionLayout: ShadCalendarCaptionLayout.dropdownYears,
+);
+```
+
+</Preview>
+
+### Hide Navigation
+
+<Preview src="calendar?hideNavigation" minHeight="450px">
+
+```dart
+ShadCalendar(
+  hideNavigation: true,
+);
+```
+
+</Preview>
+
+### Show Week Numbers
+
+<Preview src="calendar?showWeekNumbers" minHeight="450px">
+
+```dart
+ShadCalendar(
+  showWeekNumbers: true,
+);
+```
+
+</Preview>
+
+### Show Outside Days (false)
+
+<Preview src="calendar?showOutsideDays=0" minHeight="450px">
+
+```dart
+ShadCalendar(
+  showOutsideDays: false,
+);
+```
+
+</Preview>
+
+### Fixed Weeks
+
+<Preview src="calendar?fixedWeeks" minHeight="450px">
+
+```dart
+ShadCalendar(
+  fixedWeeks: true,
+);
+```
+
+</Preview>
+
+### Hide Weekday Names
+
+<Preview src="calendar?hideWeekdayNames" minHeight="450px">
+
+```dart
+ShadCalendar(
+  hideWeekdayNames: true,
+);
+```
+
+</Preview>

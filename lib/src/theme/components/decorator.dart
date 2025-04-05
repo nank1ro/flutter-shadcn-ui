@@ -1,175 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
-
-@immutable
-class ShadBorder extends Border {
-  const ShadBorder({
-    this.merge = true,
-    this.padding,
-    this.radius,
-    super.top,
-    super.right,
-    super.bottom,
-    super.left,
-  });
-
-  /// Creates a border whose sides are all the same.
-  const ShadBorder.fromBorderSide(
-    BorderSide side, {
-    this.merge = true,
-    this.padding,
-    this.radius,
-  }) : super(top: side, right: side, bottom: side, left: side);
-
-  /// Creates a border with symmetrical vertical and horizontal sides.
-  ///
-  /// The `vertical` argument applies to the [left] and [right] sides, and the
-  /// `horizontal` argument applies to the [top] and [bottom] sides.
-  ///
-  /// All arguments default to [BorderSide.none].
-  const ShadBorder.symmetric({
-    BorderSide vertical = BorderSide.none,
-    BorderSide horizontal = BorderSide.none,
-    this.merge = true,
-    this.padding,
-    this.radius,
-  }) : super(
-          top: vertical,
-          right: horizontal,
-          bottom: vertical,
-          left: horizontal,
-        );
-
-  factory ShadBorder.all({
-    bool merge = true,
-    Color color = const Color(0xFF000000),
-    double width = 1.0,
-    BorderStyle style = BorderStyle.solid,
-    double strokeAlign = BorderSide.strokeAlignInside,
-    EdgeInsets? padding,
-    BorderRadiusGeometry? radius,
-  }) {
-    return ShadBorder.fromBorderSide(
-      BorderSide(
-        color: color,
-        width: width,
-        style: style,
-        strokeAlign: strokeAlign,
-      ),
-      padding: padding,
-      merge: merge,
-      radius: radius,
-    );
-  }
-
-  static const ShadBorder none = ShadBorder(merge: false);
-
-  bool get hasBorder =>
-      top.width != 0 ||
-      right.width != 0 ||
-      bottom.width != 0 ||
-      left.width != 0;
-
-  /// The padding of the border, defaults to null.
-  final EdgeInsets? padding;
-
-  /// Whether to merge with another border, defaults to true.
-  final bool merge;
-
-  /// The border radius of the border, defaults to null.
-  final BorderRadiusGeometry? radius;
-
-  static ShadBorder? lerp(
-    ShadBorder? a,
-    ShadBorder? b,
-    double t,
-  ) {
-    if (a == null && b == null) return null;
-    return ShadBorder(
-      padding: EdgeInsets.lerp(a?.padding, b?.padding, t),
-      top: lerpBorderSide(a?.top, b?.top, t),
-      right: lerpBorderSide(a?.right, b?.right, t),
-      bottom: lerpBorderSide(a?.bottom, b?.bottom, t),
-      left: lerpBorderSide(a?.left, b?.left, t),
-      radius: BorderRadiusGeometry.lerp(a?.radius, b?.radius, t),
-    );
-  }
-
-  static BorderSide lerpBorderSide(
-    BorderSide? a,
-    BorderSide? b,
-    double t,
-  ) {
-    if (identical(a, b)) {
-      return a ?? BorderSide.none;
-    }
-    if (a == null) {
-      return b!.scale(t);
-    }
-    if (b == null) {
-      return a.scale(1.0 - t);
-    }
-    return BorderSide.lerp(a, b, t);
-  }
-
-  ShadBorder copyWith({
-    EdgeInsets? padding,
-    BorderSide? top,
-    BorderSide? right,
-    BorderSide? bottom,
-    BorderSide? left,
-    BorderRadiusGeometry? radius,
-  }) {
-    return ShadBorder(
-      padding: padding ?? this.padding,
-      top: top ?? this.top,
-      right: right ?? this.right,
-      bottom: bottom ?? this.bottom,
-      left: left ?? this.left,
-      radius: radius ?? this.radius,
-    );
-  }
-
-  ShadBorder mergeWith(ShadBorder? other) {
-    if (other == null) return this;
-    if (!other.merge) return other;
-    return copyWith(
-      padding: other.padding,
-      top: other.top,
-      right: other.right,
-      bottom: other.bottom,
-      left: other.left,
-      radius: other.radius,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ShadBorder &&
-        other.merge == merge &&
-        other.padding == padding &&
-        other.top == top &&
-        other.right == right &&
-        other.bottom == bottom &&
-        other.left == left &&
-        other.radius == radius;
-  }
-
-  @override
-  int get hashCode {
-    return merge.hashCode ^
-        padding.hashCode ^
-        top.hashCode ^
-        right.hashCode ^
-        bottom.hashCode ^
-        left.hashCode ^
-        radius.hashCode;
-  }
-}
+import 'package:shadcn_ui/src/utils/border.dart';
 
 @immutable
 class ShadDecoration {
@@ -197,6 +29,7 @@ class ShadDecoration {
     this.shape,
     this.hasError,
     this.fallbackToLabelStyle,
+    this.disableSecondaryBorder,
   });
 
   static const ShadDecoration none = ShadDecoration(
@@ -230,6 +63,7 @@ class ShadDecoration {
   final BlendMode? backgroundBlendMode;
   final BoxShape? shape;
   final bool? hasError;
+  final bool? disableSecondaryBorder;
 
   /// Whether to fallback to the [border] if no [focusedBorder] or [errorBorder]
   /// is provided, defaults to true.
@@ -281,6 +115,8 @@ class ShadDecoration {
       hasError: t < 0.5 ? a?.hasError : b?.hasError,
       fallbackToLabelStyle:
           t < 0.5 ? a?.fallbackToLabelStyle : b?.fallbackToLabelStyle,
+      disableSecondaryBorder:
+          t < 0.5 ? a?.disableSecondaryBorder : b?.disableSecondaryBorder,
     );
   }
 
@@ -317,6 +153,8 @@ class ShadDecoration {
       image: other.image ?? image,
       hasError: other.hasError ?? hasError,
       fallbackToLabelStyle: other.fallbackToLabelStyle ?? fallbackToLabelStyle,
+      disableSecondaryBorder:
+          other.disableSecondaryBorder ?? disableSecondaryBorder,
     );
   }
 
@@ -343,6 +181,7 @@ class ShadDecoration {
     DecorationImage? image,
     bool? hasError,
     bool? fallbackToLabelStyle,
+    bool? disableSecondaryBorder,
   }) {
     return ShadDecoration(
       border: border ?? this.border,
@@ -368,6 +207,8 @@ class ShadDecoration {
       image: image ?? this.image,
       hasError: hasError ?? this.hasError,
       fallbackToLabelStyle: fallbackToLabelStyle ?? this.fallbackToLabelStyle,
+      disableSecondaryBorder:
+          disableSecondaryBorder ?? this.disableSecondaryBorder,
     );
   }
 
@@ -397,7 +238,8 @@ class ShadDecoration {
         other.gradient == gradient &&
         other.image == image &&
         other.hasError == hasError &&
-        other.fallbackToLabelStyle == fallbackToLabelStyle;
+        other.fallbackToLabelStyle == fallbackToLabelStyle &&
+        other.disableSecondaryBorder == disableSecondaryBorder;
   }
 
   @override
@@ -423,11 +265,12 @@ class ShadDecoration {
       gradient.hashCode ^
       image.hashCode ^
       hasError.hashCode ^
-      fallbackToLabelStyle.hashCode;
+      fallbackToLabelStyle.hashCode ^
+      disableSecondaryBorder.hashCode;
 
   @override
   String toString() {
-    return '''ShadDecoration(border: $border, focusedBorder: $focusedBorder, errorBorder: $errorBorder, secondaryBorder: $secondaryBorder, secondaryFocusedBorder: $secondaryFocusedBorder, secondaryErrorBorder: $secondaryErrorBorder, labelStyle: $labelStyle, errorLabelStyle: $errorLabelStyle, errorStyle: $errorStyle, descriptionStyle: $descriptionStyle, labelPadding: $labelPadding, descriptionPadding: $descriptionPadding, errorPadding: $errorPadding, fallbackToBorder: $fallbackToBorder, color: $color, image: $image, shadows: $shadows, gradient: $gradient, backgroundBlendMode: $backgroundBlendMode, shape: $shape, hasError: $hasError, fallbackToLabelStyle: $fallbackToLabelStyle)''';
+    return '''ShadDecoration(border: $border, focusedBorder: $focusedBorder, errorBorder: $errorBorder, secondaryBorder: $secondaryBorder, secondaryFocusedBorder: $secondaryFocusedBorder, secondaryErrorBorder: $secondaryErrorBorder, labelStyle: $labelStyle, errorLabelStyle: $errorLabelStyle, errorStyle: $errorStyle, descriptionStyle: $descriptionStyle, labelPadding: $labelPadding, descriptionPadding: $descriptionPadding, errorPadding: $errorPadding, fallbackToBorder: $fallbackToBorder, color: $color, image: $image, shadows: $shadows, gradient: $gradient, backgroundBlendMode: $backgroundBlendMode, shape: $shape, hasError: $hasError, fallbackToLabelStyle: $fallbackToLabelStyle, disableSecondaryBorder: $disableSecondaryBorder)''';
   }
 }
 
@@ -456,6 +299,10 @@ class ShadDecorator extends StatelessWidget {
 
     final effectiveFallbackToBorder =
         effectiveDecoration.fallbackToBorder ?? true;
+
+    final effectiveDisableSecondaryBorder =
+        effectiveDecoration.disableSecondaryBorder ??
+            theme.disableSecondaryBorder;
 
     final hasError = effectiveDecoration.hasError ?? false;
 
@@ -490,7 +337,7 @@ class ShadDecorator extends StatelessWidget {
 
     Widget decorated = Container(
       decoration: BoxDecoration(
-        border: true == border?.hasBorder ? border : null,
+        border: true == border?.hasBorder ? border?.toBorder() : null,
         borderRadius: effectiveDecoration.shape == BoxShape.circle
             ? null
             : border?.radius,
@@ -505,10 +352,10 @@ class ShadDecorator extends StatelessWidget {
       child: child,
     );
 
-    if (secondaryBorder != null && !theme.disableSecondaryBorder) {
+    if (secondaryBorder != null && !effectiveDisableSecondaryBorder) {
       decorated = Container(
         decoration: BoxDecoration(
-          border: secondaryBorder.hasBorder ? secondaryBorder : null,
+          border: secondaryBorder.hasBorder ? secondaryBorder.toBorder() : null,
           borderRadius: secondaryBorder.radius,
         ),
         padding: secondaryBorder.padding,

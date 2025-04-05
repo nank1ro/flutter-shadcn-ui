@@ -5,66 +5,70 @@
 [![GitHub issues](https://img.shields.io/github/issues/nank1ro/flutter-shadcn-ui)](https://gitHub.com/nank1ro/flutter-shadcn-ui/issues/)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/nank1ro/flutter-shadcn-ui.svg)](https://gitHub.com/nank1ro/flutter-shadcn-ui/pull/)
 [![shadcn_ui Pub Version (including pre-releases)](https://img.shields.io/pub/v/shadcn_ui?include_prereleases)](https://pub.dev/packages/shadcn_ui)
-[![](https://dcbadge.vercel.app/api/server/ZhRMAPNh5Y)](https://discord.gg/ZhRMAPNh5Y)
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/nank1ro/flutter-shadcn-ui)
+[![Join Discord](https://dcbadge.vercel.app/api/server/ZhRMAPNh5Y)](https://discord.gg/ZhRMAPNh5Y)
+
+<a href="https://www.buymeacoffee.com/nank1ro" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
 ShadcnUI ported in Flutter.
 Awesome UI components for Flutter, fully customizable.
 
 ## Documentation
 
-See the [documentation](https://mariuti.com/shadcn-ui/) to interact with the components and see the code.
+See the [documentation](https://flutter-shadcn-ui.mariuti.com/) to interact with the components and see the code.
 
 ## Progress
 
 > Follow the progress on [X (Twitter)](https://twitter.com/nank1ro)
 
-- [x] [Accordion](https://mariuti.com/shadcn-ui/components/accordion/)
-- [x] [Alert](https://mariuti.com/shadcn-ui/components/alert/)
+- [x] [Accordion](https://flutter-shadcn-ui.mariuti.com/components/accordion/)
+- [x] [Alert](https://flutter-shadcn-ui.mariuti.com/components/alert/)
 - [ ] Breadcrumb
-- [x] [Dialog](https://mariuti.com/shadcn-ui/components/dialog/)
-- [x] [Avatar](https://mariuti.com/shadcn-ui/components/avatar/)
-- [x] [Badge](https://mariuti.com/shadcn-ui/components/badge/)
-- [x] [Button](https://mariuti.com/shadcn-ui/components/button/)
-- [ ] Calendar
-- [x] [Card](https://mariuti.com/shadcn-ui/components/card/)
+- [x] [Dialog](https://flutter-shadcn-ui.mariuti.com/components/dialog/)
+- [x] [Avatar](https://flutter-shadcn-ui.mariuti.com/components/avatar/)
+- [x] [Badge](https://flutter-shadcn-ui.mariuti.com/components/badge/)
+- [x] [Button](https://flutter-shadcn-ui.mariuti.com/components/button/)
+- [x] [IconButton](https://flutter-shadcn-ui.mariuti.com/components/icon-button/)
+- [x] [Calendar](https://flutter-shadcn-ui.mariuti.com/components/calendar/)
+- [x] [Card](https://flutter-shadcn-ui.mariuti.com/components/card/)
 - [ ] Carousel
-- [x] [Checkbox](https://mariuti.com/shadcn-ui/components/checkbox/)
+- [x] [Checkbox](https://flutter-shadcn-ui.mariuti.com/components/checkbox/)
 - [ ] Collapsible
-- [x] [Combobox](https://mariuti.com/shadcn-ui/components/select/#with-search)
+- [x] [Combobox](https://flutter-shadcn-ui.mariuti.com/components/select/#with-search)
 - [ ] Command
-- [x] [Context Menu](https://mariuti.com/shadcn-ui/components/context-menu/)
+- [x] [Context Menu](https://flutter-shadcn-ui.mariuti.com/components/context-menu/)
 - [ ] Data Table
-- [ ] Date Picker
+- [x] [Date Picker](https://flutter-shadcn-ui.mariuti.com/components/date-picker/)
 - [ ] Drawer
 - [x] <strike>Dropdown Menu</strike> Use Context Menu instead
-- [x] [Form](https://mariuti.com/shadcn-ui/components/form/)
+- [x] [Form](https://flutter-shadcn-ui.mariuti.com/components/form/)
 - [x] <strike>Hover Card</strike> Use Popover instead
-- [x] [Image](https://mariuti.com/shadcn-ui/components/image/)
-- [x] [Input](https://mariuti.com/shadcn-ui/components/input/)
-- [ ] Input OTP
+- [x] [Input](https://flutter-shadcn-ui.mariuti.com/components/input/)
+- [x] [Input OTP](https://flutter-shadcn-ui.mariuti.com/components/input-otp/)
 - [x] <strike>Label</strike> Use Text instead
-- [ ] Menubar
+- [x] [Menubar](https://flutter-shadcn-ui.mariuti.com/components/menubar/)
 - [ ] Navigation Menu
 - [ ] Pagination
-- [x] [Popover](https://mariuti.com/shadcn-ui/components/popover/)
-- [x] [Progress](https://mariuti.com/shadcn-ui/components/progress/)
-- [x] [RadioGroup](https://mariuti.com/shadcn-ui/components/radio-group/)
-- [x] [Resizable](https://mariuti.com/shadcn-ui/components/resizable/)
+- [x] [Popover](https://flutter-shadcn-ui.mariuti.com/components/popover/)
+- [x] [Progress](https://flutter-shadcn-ui.mariuti.com/components/progress/)
+- [x] [RadioGroup](https://flutter-shadcn-ui.mariuti.com/components/radio-group/)
+- [x] [Resizable](https://flutter-shadcn-ui.mariuti.com/components/resizable/)
 - [x] <strike>Scroll Area</strike> Use SingleScrollView, ListView etc. instead
-- [x] [Select](https://mariuti.com/shadcn-ui/components/select/)
-- [x] <strike>Separator</strike> Use Divider instead
-- [x] [Sheet](https://mariuti.com/shadcn-ui/components/sheet/)
+- [x] [Select](https://flutter-shadcn-ui.mariuti.com/components/select/)
+- [x] [Separator](https://flutter-shadcn-ui.mariuti.com/components/separator/)
+- [x] [Sheet](https://flutter-shadcn-ui.mariuti.com/components/sheet/)
 - [ ] Skeleton
-- [x] [Slider](https://mariuti.com/shadcn-ui/components/slider/)
-- [ ] Sonner (?)
-- [x] [Switch](https://mariuti.com/shadcn-ui/components/switch/)
-- [x] [Table](https://mariuti.com/shadcn-ui/components/table/)
-- [x] [Tabs](https://mariuti.com/shadcn-ui/components/tabs/)
+- [x] [Slider](https://flutter-shadcn-ui.mariuti.com/components/slider/)
+- [x] [Sonner](https://flutter-shadcn-ui.mariuti.com/components/sonner/)
+- [x] [Switch](https://flutter-shadcn-ui.mariuti.com/components/switch/)
+- [x] [Table](https://flutter-shadcn-ui.mariuti.com/components/table/)
+- [x] [Tabs](https://flutter-shadcn-ui.mariuti.com/components/tabs/)
 - [ ] TextArea
-- [x] [Toast](https://mariuti.com/shadcn-ui/components/toast/)
+- [x] [Time Picker](https://flutter-shadcn-ui.mariuti.com/components/time-picker/)
+- [x] [Toast](https://flutter-shadcn-ui.mariuti.com/components/toast/)
 - [ ] Toggle
 - [ ] ToggleGroup
-- [x] [Tooltip](https://mariuti.com/shadcn-ui/components/tooltip/)
+- [x] [Tooltip](https://flutter-shadcn-ui.mariuti.com/components/tooltip/)
 
 ## Star History
 

@@ -20,22 +20,52 @@ class ShadCardTheme {
     this.columnCrossAxisAlignment,
     this.rowMainAxisSize,
     this.columnMainAxisSize,
+    this.clipBehavior,
   });
 
   final bool merge;
+
+  /// {@macro ShadCard.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadCard.backgroundColor}
   final Color? backgroundColor;
+
+  /// {@macro ShadCard.radius}
   final BorderRadius? radius;
+
+  /// {@macro ShadCard.border}
   final Border? border;
+
+  /// {@macro ShadCard.shadows}
   final List<BoxShadow>? shadows;
+
+  /// {@macro ShadCard.width}
   final double? width;
+
+  /// {@macro ShadCard.height}
   final double? height;
+
+  /// {@macro ShadCard.rowMainAxisAlignment}
   final MainAxisAlignment? rowMainAxisAlignment;
+
+  /// {@macro ShadCard.rowCrossAxisAlignment}
   final CrossAxisAlignment? rowCrossAxisAlignment;
+
+  /// {@macro ShadCard.columnMainAxisAlignment}
   final MainAxisAlignment? columnMainAxisAlignment;
+
+  /// {@macro ShadCard.columnCrossAxisAlignment}
   final CrossAxisAlignment? columnCrossAxisAlignment;
+
+  /// {@macro ShadCard.rowMainAxisSize}
   final MainAxisSize? rowMainAxisSize;
+
+  /// {@macro ShadCard.columnMainAxisSize}
   final MainAxisSize? columnMainAxisSize;
+
+  /// {@macro ShadCard.clipBehavior}
+  final Clip? clipBehavior;
 
   static ShadCardTheme lerp(
     ShadCardTheme a,
@@ -49,15 +79,19 @@ class ShadCardTheme {
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       border: Border.lerp(a.border, b.border, t),
-      shadows: b.shadows,
+      shadows: t < .5 ? a.shadows : b.shadows,
       width: lerpDouble(a.width, b.width, t),
       height: lerpDouble(a.height, b.height, t),
-      rowMainAxisAlignment: b.rowMainAxisAlignment,
-      rowCrossAxisAlignment: b.rowCrossAxisAlignment,
-      columnMainAxisAlignment: b.columnMainAxisAlignment,
-      columnCrossAxisAlignment: b.columnCrossAxisAlignment,
-      rowMainAxisSize: b.rowMainAxisSize,
-      columnMainAxisSize: b.columnMainAxisSize,
+      rowMainAxisAlignment:
+          t < .5 ? a.rowMainAxisAlignment : b.rowMainAxisAlignment,
+      rowCrossAxisAlignment:
+          t < .5 ? a.rowCrossAxisAlignment : b.rowCrossAxisAlignment,
+      columnMainAxisAlignment:
+          t < .5 ? a.columnMainAxisAlignment : b.columnMainAxisAlignment,
+      columnCrossAxisAlignment:
+          t < .5 ? a.columnCrossAxisAlignment : b.columnCrossAxisAlignment,
+      rowMainAxisSize: t < .5 ? a.rowMainAxisSize : b.rowMainAxisSize,
+      columnMainAxisSize: t < .5 ? a.columnMainAxisSize : b.columnMainAxisSize,
     );
   }
 
@@ -76,6 +110,7 @@ class ShadCardTheme {
     CrossAxisAlignment? columnCrossAxisAlignment,
     MainAxisSize? rowMainAxisSize,
     MainAxisSize? columnMainAxisSize,
+    Clip? clipBehavior,
   }) {
     return ShadCardTheme(
       merge: merge ?? this.merge,
@@ -95,6 +130,7 @@ class ShadCardTheme {
           columnCrossAxisAlignment ?? this.columnCrossAxisAlignment,
       rowMainAxisSize: rowMainAxisSize ?? this.rowMainAxisSize,
       columnMainAxisSize: columnMainAxisSize ?? this.columnMainAxisSize,
+      clipBehavior: clipBehavior ?? this.clipBehavior,
     );
   }
 
@@ -115,6 +151,7 @@ class ShadCardTheme {
       columnCrossAxisAlignment: other.columnCrossAxisAlignment,
       rowMainAxisSize: other.rowMainAxisSize,
       columnMainAxisSize: other.columnMainAxisSize,
+      clipBehavior: other.clipBehavior,
     );
   }
 
@@ -136,7 +173,8 @@ class ShadCardTheme {
         other.columnMainAxisAlignment == columnMainAxisAlignment &&
         other.columnCrossAxisAlignment == columnCrossAxisAlignment &&
         other.rowMainAxisSize == rowMainAxisSize &&
-        other.columnMainAxisSize == columnMainAxisSize;
+        other.columnMainAxisSize == columnMainAxisSize &&
+        other.clipBehavior == clipBehavior;
   }
 
   @override
@@ -154,6 +192,7 @@ class ShadCardTheme {
         columnMainAxisAlignment.hashCode ^
         columnCrossAxisAlignment.hashCode ^
         rowMainAxisSize.hashCode ^
-        columnMainAxisSize.hashCode;
+        columnMainAxisSize.hashCode ^
+        clipBehavior.hashCode;
   }
 }

@@ -8,7 +8,6 @@ enum PlagroundButtonStyle {
   outline,
   ghost,
   link,
-  icon,
   textIcon,
   loading,
   gradientShadow,
@@ -48,27 +47,18 @@ class ButtonPage extends StatelessWidget {
               child: const Text('Link'),
               onPressed: () {},
             ),
-          PlagroundButtonStyle.icon => ShadButton.outline(
-              icon: const Icon(
-                Icons.chevron_right,
-                size: 16,
-              ),
-              onPressed: () {},
-            ),
           PlagroundButtonStyle.textIcon => ShadButton(
               onPressed: () {},
-              icon: const Icon(
-                Icons.mail_outlined,
-                size: 16,
-              ),
+              leading: const Icon(LucideIcons.mail),
               child: const Text('Login with Email'),
             ),
           PlagroundButtonStyle.loading => ShadButton(
               onPressed: () {},
-              icon: const SizedBox.square(
+              leading: SizedBox.square(
                 dimension: 16,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
+                  color: ShadTheme.of(context).colorScheme.primaryForeground,
                 ),
               ),
               child: const Text('Please wait'),
@@ -81,7 +71,7 @@ class ButtonPage extends StatelessWidget {
               ]),
               shadows: [
                 BoxShadow(
-                  color: Colors.blue.withOpacity(.4),
+                  color: Colors.blue.withValues(alpha: .4),
                   spreadRadius: 4,
                   blurRadius: 10,
                   offset: const Offset(0, 2),

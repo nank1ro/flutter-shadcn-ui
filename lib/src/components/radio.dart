@@ -7,41 +7,92 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
+import 'package:shadcn_ui/src/utils/provider.dart';
 
+/// A customizable radio group widget that allows selection of one item from
+/// a list of options.
+///
+/// The [ShadRadioGroup] widget is designed to manage a group of radio buttons
+/// and handle their state. It supports various configurations such as
+/// alignment, spacing, and initial value selection.
 class ShadRadioGroup<T> extends StatefulWidget {
+  /// Creates a [ShadRadioGroup] with the given [items] and optional
+  /// parameters.
+  ///
+  /// The [items] parameter is required and should contain the list of radio
+  /// options. The [initialValue] can be used to set the initially selected
+  /// item. The [onChanged] callback is triggered when the selected value
+  /// changes.
   const ShadRadioGroup({
     super.key,
     required this.items,
     this.initialValue,
     this.onChanged,
     this.enabled = true,
+    this.axis,
+    this.alignment,
+    this.runAlignment,
+    this.crossAxisAlignment,
+    this.spacing,
+    this.runSpacing,
   });
 
+  /// {@template ShadRadioGroup.initialValue}
   /// The initial value of the radio group.
+  /// {@endtemplate}
   final T? initialValue;
 
+  /// {@template ShadRadioGroup.items}
   /// The items of the radio group, any Widget can be used.
+  /// {@endtemplate}
   final Iterable<Widget> items;
 
+  /// {@template ShadRadioGroup.onChanged}
   /// Called when the user toggles a radio on.
+  /// {@endtemplate}
   final ValueChanged<T?>? onChanged;
 
+  /// {@template ShadRadioGroup.enabled}
   /// Whether the radio [items] are enabled, defaults to true.
+  /// {@endtemplate}
   final bool enabled;
+
+  /// {@template ShadRadioGroup.axis}
+  /// The axis of the radio group, defaults to [Axis.vertical].
+  /// {@endtemplate}
+  final Axis? axis;
+
+  /// {@template ShadRadioGroup.spacing}
+  /// The main axis spacing of the radio group items, defaults to 4
+  /// {@endtemplate}
+  final double? spacing;
+
+  /// {@template ShadRadioGroup.runSpacing}
+  /// The cross axis spacing of the radio group items, defaults to 0
+  /// {@endtemplate}
+  final double? runSpacing;
+
+  /// {@template ShadRadioGroup.alignment}
+  /// The main axis alignment of the radio group items, defaults to
+  /// [WrapAlignment.start]
+  /// {@endtemplate}
+  final WrapAlignment? alignment;
+
+  /// {@template ShadRadioGroup.runAlignment}
+  /// The cross axis alignment of the radio group items, defaults to
+  /// [WrapAlignment.start]
+  /// {@endtemplate}
+  final WrapAlignment? runAlignment;
+
+  /// {@template ShadRadioGroup.crossAxisAlignment}
+  /// The cross axis alignment of the radio group items, defaults to
+  /// [WrapCrossAlignment.start]
+  /// {@endtemplate}
+  final WrapCrossAlignment? crossAxisAlignment;
 
   @override
   State<ShadRadioGroup<T>> createState() => ShadRadioGroupState<T>();
-
-  static ShadRadioGroupState<T> of<T>(BuildContext context) {
-    return maybeOf<T>(context)!;
-  }
-
-  static ShadRadioGroupState<T>? maybeOf<T>(BuildContext context) {
-    return context
-        .dependOnInheritedWidgetOfExactType<
-            ShadInheritedRadioGroupContainer<T>>()
-        ?.data;
-  }
 }
 
 class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
@@ -64,32 +115,49 @@ class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return ShadInheritedRadioGroupContainer(
-      data: this,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+    final theme = ShadTheme.of(context);
+
+    final effectiveAxis = widget.axis ?? theme.radioTheme.axis ?? Axis.vertical;
+    final effectiveSpacing = widget.spacing ?? theme.radioTheme.spacing ?? 4;
+    final effectiveRunSpacing =
+        widget.runSpacing ?? theme.radioTheme.runSpacing ?? 0;
+    final effectiveAlignment =
+        widget.alignment ?? theme.radioTheme.alignment ?? WrapAlignment.start;
+    final effectiveRunAlignment = widget.runAlignment ??
+        theme.radioTheme.runAlignment ??
+        WrapAlignment.start;
+    final effectiveWrapCrossAlignment = widget.crossAxisAlignment ??
+        theme.radioTheme.crossAxisAlignment ??
+        WrapCrossAlignment.start;
+
+    return ShadProvider(
+      data: this as ShadRadioGroupState<dynamic>,
+      notifyUpdate: (_) => true,
+      child: Wrap(
+        direction: effectiveAxis,
+        spacing: effectiveSpacing,
+        runSpacing: effectiveRunSpacing,
+        alignment: effectiveAlignment,
+        runAlignment: effectiveRunAlignment,
+        crossAxisAlignment: effectiveWrapCrossAlignment,
         children: widget.items.toList(),
       ),
     );
   }
 }
 
-class ShadInheritedRadioGroupContainer<T> extends InheritedWidget {
-  const ShadInheritedRadioGroupContainer({
-    super.key,
-    required this.data,
-    required super.child,
-  });
-
-  final ShadRadioGroupState<T> data;
-
-  @override
-  bool updateShouldNotify(ShadInheritedRadioGroupContainer<T> oldWidget) =>
-      true;
-}
-
+/// A customizable radio button widget that represents a single option in a
+/// radio group.
+///
+/// The [ShadRadio] widget can be used to create individual radio buttons
+/// with various customization options such as size, color, and labels.
 class ShadRadio<T> extends StatefulWidget {
+  /// Creates a [ShadRadio] with the specified [value] and optional parameters.
+  ///
+  /// The [value] parameter is required and represents the value of the radio
+  /// button. The [enabled] parameter determines if the radio button is
+  /// interactive. Other parameters allow for customization of appearance and
+  /// behavior.
   const ShadRadio({
     super.key,
     required this.value,
@@ -104,44 +172,76 @@ class ShadRadio<T> extends StatefulWidget {
     this.sublabel,
     this.padding,
     this.direction,
+    this.orderPolicy,
   });
 
+  /// {@template ShadRadio.value}
   /// The value of the radio.
+  /// {@endtemplate}
   final T value;
 
+  /// {@template ShadRadio.enabled}
+  /// Whether the radio is enabled, defaults to true.
+  /// {@endtemplate}
   final bool enabled;
 
+  /// {@template ShadRadio.focusNode}
   /// The focus node of the radio.
+  /// {@endtemplate}
   final FocusNode? focusNode;
 
+  /// {@template ShadRadio.decoration}
   /// The decoration of the radio.
+  /// {@endtemplate}
   final ShadDecoration? decoration;
 
+  /// {@template ShadRadio.size}
   /// The size of the radio, defaults to 16.
+  /// {@endtemplate}
   final double? size;
 
+  /// {@template ShadRadio.circleSize}
   /// The circle size of the radio, defaults to 10.
+  /// {@endtemplate}
   final double? circleSize;
 
+  /// {@template ShadRadio.duration}
   /// The duration of the radio animation, defaults to 100ms.
+  /// {@endtemplate}
   final Duration? duration;
 
+  /// {@template ShadRadio.color}
   /// The color of the radio.
+  /// {@endtemplate}
   final Color? color;
 
+  /// {@template ShadRadio.label}
   /// An optional label for the radio, displayed on the right side if
   /// the [direction] is `TextDirection.ltr`.
+  /// {@endtemplate}
   final Widget? label;
 
+  /// {@template ShadRadio.sublabel}
   /// An optional sublabel for the radio, displayed below the label.
+  /// {@endtemplate}
   final Widget? sublabel;
 
+  /// {@template ShadRadio.padding}
   /// The padding between the radio and the label, defaults to
   /// `EdgeInsets.only(left: 8)`.
+  /// {@endtemplate}
   final EdgeInsets? padding;
 
+  /// {@template ShadRadio.direction}
   /// The direction of the radio.
+  /// {@endtemplate}
   final TextDirection? direction;
+
+  /// {@template ShadRadio.orderPolicy}
+  /// The order policy of the items that compose the radio, defaults to
+  /// [WidgetOrderPolicy.linear()].
+  /// {@endtemplate}
+  final WidgetOrderPolicy? orderPolicy;
 
   @override
   State<ShadRadio<T>> createState() => _ShadRadioState<T>();
@@ -167,12 +267,9 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
-    assert(
-      ShadRadioGroup.maybeOf<T>(context) != null,
-      'Cannot find ShadRadioGroup InheritedWidget',
-    );
     final theme = ShadTheme.of(context);
-    final inheritedRadioGroup = ShadRadioGroup.of<T>(context);
+    final inheritedRadioGroup =
+        context.watch<ShadRadioGroupState<dynamic>>() as ShadRadioGroupState<T>;
 
     void onTap() {
       inheritedRadioGroup.select(widget.value);
@@ -198,6 +295,10 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
     final effectivePadding = widget.padding ??
         theme.radioTheme.padding ??
         const EdgeInsets.only(left: 8);
+
+    final effectiveOrderPolicy = widget.orderPolicy ??
+        theme.radioTheme.orderPolicy ??
+        const WidgetOrderPolicy.linear();
 
     final radio = Semantics(
       checked: selected,
@@ -287,7 +388,7 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
                   ),
                 ),
               ),
-          ],
+          ].order(effectiveOrderPolicy),
         ),
       ),
     );

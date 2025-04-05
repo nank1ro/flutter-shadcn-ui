@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/dialog.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 
+/// Shows a [ShadSheet], which is a modal bottom sheet implementation.
+///
+/// Returns a [Future] that resolves to the value (if any) that the sheet is
+/// closed with.
 Future<T?> showShadSheet<T>({
   required BuildContext context,
   required WidgetBuilder builder,
@@ -89,6 +92,7 @@ Future<T?> showShadSheet<T>({
   );
 }
 
+/// Inherited widget to provide [ShadSheetSide] down the widget tree.
 class ShadSheetInheritedWidget extends InheritedWidget {
   const ShadSheetInheritedWidget({
     super.key,
@@ -96,8 +100,11 @@ class ShadSheetInheritedWidget extends InheritedWidget {
     required this.side,
   });
 
+  /// The side from which the sheet slides in.
   final ShadSheetSide side;
 
+  /// Retrieves the [ShadSheetSide] from the nearest [ShadSheetInheritedWidget]
+  /// ancestor.
   static ShadSheetSide of(BuildContext context) {
     final inherited = context
         .getElementForInheritedWidgetOfExactType<ShadSheetInheritedWidget>()!
@@ -109,12 +116,21 @@ class ShadSheetInheritedWidget extends InheritedWidget {
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
 }
 
+/// Enum representing the side from which the [ShadSheet] slides in.
 enum ShadSheetSide {
+  /// Sheet slides in from the top.
   top,
+
+  /// Sheet slides in from the right.
   right,
+
+  /// Sheet slides in from the bottom.
   bottom,
+
+  /// Sheet slides in from the left.
   left;
 
+  /// Converts the [ShadSheetSide] to an [Alignment].
   Alignment toAlignment() {
     return switch (this) {
       ShadSheetSide.top => Alignment.topCenter,
@@ -138,7 +154,14 @@ typedef SheetDragEndHandler = void Function(
   required bool isClosing,
 });
 
+/// {@template ShadSheet}
+/// A customizable sheet component that slides in from the edges of the screen.
+///
+/// It can be configured to slide from the top, bottom, left, or right, and
+/// supports draggable dismissal, custom styling, and actions.
+/// {@endtemplate}
 class ShadSheet extends StatefulWidget {
+  /// {@macro ShadSheet}
   const ShadSheet({
     super.key,
     this.title,
@@ -148,7 +171,7 @@ class ShadSheet extends StatefulWidget {
     this.constraints,
     this.expandCrossSide,
     this.closeIcon,
-    this.closeIconSrc,
+    this.closeIconData,
     this.closeIconPosition,
     this.radius,
     this.backgroundColor,
@@ -183,69 +206,200 @@ class ShadSheet extends StatefulWidget {
     this.disabledScrollControlMaxRatio,
   });
 
+  /// {@template ShadSheet.title}
+  /// The title widget of the sheet, typically displayed at the top.
+  /// {@endtemplate}
   final Widget? title;
+
+  /// {@template ShadSheet.description}
+  /// The description widget, providing more context under the title.
+  /// {@endtemplate}
   final Widget? description;
+
+  /// {@template ShadSheet.child}
+  /// The main content of the sheet.
+  /// {@endtemplate}
   final Widget? child;
+
+  /// {@template ShadSheet.actions}
+  /// List of action widgets, typically buttons, displayed at the bottom or side
+  /// of the sheet.
+  /// {@endtemplate}
   final List<Widget> actions;
+
+  /// {@template ShadSheet.constraints}
+  /// Constraints for the sheet's size.
+  /// {@endtemplate}
   final BoxConstraints? constraints;
+
+  /// {@template ShadSheet.expandCrossSide}
+  /// Whether to expand the sheet to the full width/height of the screen along the cross axis.
+  /// {@endtemplate}
   final bool? expandCrossSide;
+
+  /// {@template ShadSheet.closeIcon}
+  /// Custom close icon widget.
+  /// {@endtemplate}
   final Widget? closeIcon;
-  final ShadImageSrc? closeIconSrc;
+
+  /// {@template ShadSheet.closeIconData}
+  /// Icon data for the default close icon.
+  /// {@endtemplate}
+  final IconData? closeIconData;
+
+  /// {@template ShadSheet.closeIconPosition}
+  /// Position of the close icon.
+  /// {@endtemplate}
   final ShadPosition? closeIconPosition;
+
+  /// {@template ShadSheet.radius}
+  /// Border radius of the sheet.
+  /// {@endtemplate}
   final BorderRadius? radius;
+
+  /// {@template ShadSheet.backgroundColor}
+  /// Background color of the sheet.
+  /// {@endtemplate}
   final Color? backgroundColor;
+
+  /// {@template ShadSheet.expandActionsWhenTiny}
+  /// Whether to expand actions to full width when the screen is tiny.
+  /// {@endtemplate}
   final bool? expandActionsWhenTiny;
+
+  /// {@template ShadSheet.padding}
+  /// Padding around the content of the sheet.
+  /// {@endtemplate}
   final EdgeInsets? padding;
+
+  /// {@template ShadSheet.gap}
+  /// Vertical gap between title, description, child, and actions.
+  /// {@endtemplate}
   final double? gap;
+
+  /// {@template ShadSheet.actionsAxis}
+  /// Axis for arranging actions.
+  /// {@endtemplate}
   final Axis? actionsAxis;
+
+  /// {@template ShadSheet.actionsMainAxisSize}
+  /// Main axis size for actions.
+  /// {@endtemplate}
   final MainAxisSize? actionsMainAxisSize;
+
+  /// {@template ShadSheet.actionsMainAxisAlignment}
+  /// Main axis alignment for actions.
+  /// {@endtemplate}
   final MainAxisAlignment? actionsMainAxisAlignment;
+
+  /// {@template ShadSheet.actionsVerticalDirection}
+  /// Vertical direction for actions.
+  /// {@endtemplate}
   final VerticalDirection? actionsVerticalDirection;
+
+  /// {@template ShadSheet.border}
+  /// Border of the sheet.
+  /// {@endtemplate}
   final BoxBorder? border;
+
+  /// {@template ShadSheet.shadows}
+  /// List of shadows for the sheet.
+  /// {@endtemplate}
   final List<BoxShadow>? shadows;
+
+  /// {@template ShadSheet.removeBorderRadiusWhenTiny}
+  /// Whether to remove border radius when the screen is tiny.
+  /// {@endtemplate}
   final bool? removeBorderRadiusWhenTiny;
+
+  /// {@template ShadSheet.titleStyle}
+  /// Style for the title text.
+  /// {@endtemplate}
   final TextStyle? titleStyle;
+
+  /// {@template ShadSheet.descriptionStyle}
+  /// Style for the description text.
+  /// {@endtemplate}
   final TextStyle? descriptionStyle;
+
+  /// {@template ShadSheet.titleTextAlign}
+  /// Text alignment for the title.
+  /// {@endtemplate}
   final TextAlign? titleTextAlign;
+
+  /// {@template ShadSheet.descriptionTextAlign}
+  /// Text alignment for the description.
+  /// {@endtemplate}
   final TextAlign? descriptionTextAlign;
+
+  /// {@template ShadSheet.mainAxisAlignment}
+  /// Main axis alignment for the sheet's content.
+  /// {@endtemplate}
   final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@template ShadSheet.crossAxisAlignment}
+  /// Cross axis alignment for the sheet's content.
+  /// {@endtemplate}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@template ShadSheet.scrollable}
+  /// Whether the sheet's content is scrollable.
+  /// {@endtemplate}
   final bool? scrollable;
+
+  /// {@template ShadSheet.scrollPadding}
+  /// Padding for scrollable content.
+  /// {@endtemplate}
   final EdgeInsets? scrollPadding;
 
-  /// Whether the sheet is draggable, defaults to false.
+  /// {@template ShadSheet.draggable}
+  /// Whether the sheet is draggable, allowing dismissal by dragging.
+  /// Defaults to false.
+  /// {@endtemplate}
   final bool? draggable;
 
-  /// Whether the sheet is scroll controlled, defaults to false.
+  /// {@template ShadSheet.isScrollControlled}
+  /// Whether the sheet is scroll controlled, allowing it to expand to full
+  /// screen if content is taller.
+  /// Defaults to false.
+  /// {@endtemplate}
   final bool isScrollControlled;
 
+  /// {@template ShadSheet.onClosing}
   /// Called when the sheet begins to close.
   ///
   /// A sheet might be prevented from closing (e.g., by user
   /// interaction) even after this callback is called. For this reason, this
   /// callback might be call multiple times for a given sheet.
+  /// {@endtemplate}
   final VoidCallback? onClosing;
 
+  /// {@template ShadSheet.onDragStart}
   /// Called when the user begins dragging the sheet vertically, if
   /// [draggable] is true.
   ///
   /// Would typically be used to change the sheet animation curve so
   /// that it tracks the user's finger accurately.
+  /// {@endtemplate}
   final SheetDragStartHandler? onDragStart;
 
+  /// {@template ShadSheet.onDragEnd}
   /// Called when the user stops dragging the sheet, if [draggable]
   /// is true.
   ///
   /// Would typically be used to reset the sheet animation curve, so
   /// that it animates non-linearly. Called before [onClosing] if the
   /// sheet is closing.
+  /// {@endtemplate}
   final SheetDragEndHandler? onDragEnd;
 
+  /// {@template ShadSheet.animationController}
   /// The animation controller that controls the sheet's entrance and
   /// exit animations.
   ///
   /// The Sheet widget will manipulate the position of this animation, it
   /// is not just a passive observer.
+  /// {@endtemplate}
   final AnimationController? animationController;
 
   /// {@template ShadSheet.minFlingVelocity}
@@ -464,8 +618,8 @@ class _ShadSheetState extends State<ShadSheet>
     final effectiveDescriptionStyle =
         widget.descriptionStyle ?? theme.sheetTheme.descriptionStyle;
 
-    final effectiveCloseIconSrc =
-        widget.closeIconSrc ?? theme.sheetTheme.closeIconSrc;
+    final effectiveCloseIconData =
+        widget.closeIconData ?? theme.sheetTheme.closeIconData;
 
     final effectiveCloseIconPosition =
         widget.closeIconPosition ?? theme.sheetTheme.closeIconPosition;
@@ -504,7 +658,7 @@ class _ShadSheetState extends State<ShadSheet>
       actions: widget.actions,
       radius: effectiveRadius,
       closeIcon: widget.closeIcon,
-      closeIconSrc: effectiveCloseIconSrc,
+      closeIconData: effectiveCloseIconData,
       closeIconPosition: effectiveCloseIconPosition,
       backgroundColor: effectiveBackgroundColor,
       expandActionsWhenTiny: effectiveExpandActionsWhenTiny,
@@ -576,7 +730,12 @@ class _ShadSheetState extends State<ShadSheet>
   }
 }
 
+/// {@template ShadSheetGestureDetector}
+/// A [GestureDetector] specifically for [ShadSheet] to handle drag gestures for
+/// dismissal.
+/// {@endtemplate}
 class ShadSheetGestureDetector extends StatelessWidget {
+  /// {@macro ShadSheetGestureDetector}
   const ShadSheetGestureDetector({
     super.key,
     required this.child,
@@ -586,10 +745,29 @@ class ShadSheetGestureDetector extends StatelessWidget {
     required this.side,
   });
 
+  /// {@template ShadSheetGestureDetector.child}
+  /// The child widget to wrap with gesture detection.
+  /// {@endtemplate}
   final Widget child;
+
+  /// {@template ShadSheetGestureDetector.onDragStart}
+  /// Callback for drag start events.
+  /// {@endtemplate}
   final GestureDragStartCallback onDragStart;
+
+  /// {@template ShadSheetGestureDetector.onDragUpdate}
+  /// Callback for drag update events.
+  /// {@endtemplate}
   final GestureDragUpdateCallback onDragUpdate;
+
+  /// {@template ShadSheetGestureDetector.onDragEnd}
+  /// Callback for drag end events.
+  /// {@endtemplate}
   final GestureDragEndCallback onDragEnd;
+
+  /// {@template ShadSheetGestureDetector.side}
+  /// The side from which the sheet is sliding.
+  /// {@endtemplate}
   final ShadSheetSide side;
 
   @override
@@ -627,8 +805,11 @@ class ShadSheetGestureDetector extends StatelessWidget {
   }
 }
 
+/// Callback for when the size of a widget changes.
 typedef SizeChangeCallback<Size> = void Function(Size size);
 
+/// A [SingleChildRenderObjectWidget] that listens for size changes in its child
+/// and applies layout transformations for [ShadSheet] animations.
 class ShadSheetLayoutWithSizeListener extends SingleChildRenderObjectWidget {
   const ShadSheetLayoutWithSizeListener({
     super.key,
@@ -640,10 +821,29 @@ class ShadSheetLayoutWithSizeListener extends SingleChildRenderObjectWidget {
     super.child,
   });
 
+  /// {@template ShadSheetLayoutWithSizeListener.onChildSizeChanged}
+  /// Callback when the child widget's size changes.
+  /// {@endtemplate}
   final SizeChangeCallback<Size> onChildSizeChanged;
+
+  /// {@template ShadSheetLayoutWithSizeListener.animationValue}
+  /// The current animation value (0.0 to 1.0) for the sheet's animation.
+  /// {@endtemplate}
   final double animationValue;
+
+  /// {@template ShadSheetLayoutWithSizeListener.isScrollControlled}
+  /// Whether the sheet is scroll controlled.
+  /// {@endtemplate}
   final bool isScrollControlled;
+
+  /// {@template ShadSheetLayoutWithSizeListener.scrollControlDisabledMaxRatio}
+  /// Maximum height ratio when not scroll controlled.
+  /// {@endtemplate}
   final double scrollControlDisabledMaxRatio;
+
+  /// {@template ShadSheetLayoutWithSizeListener.side}
+  /// The side from which the sheet slides in.
+  /// {@endtemplate}
   final ShadSheetSide side;
 
   @override
@@ -671,7 +871,12 @@ class ShadSheetLayoutWithSizeListener extends SingleChildRenderObjectWidget {
   }
 }
 
+/// {@template RenderSheetLayoutWithSizeListener}
+/// The render object for [ShadSheetLayoutWithSizeListener], responsible for
+/// layout and size change notifications.
+/// {@endtemplate}
 class RenderSheetLayoutWithSizeListener extends RenderShiftedBox {
+  /// {@macro RenderSheetLayoutWithSizeListener}
   RenderSheetLayoutWithSizeListener({
     RenderBox? child,
     required this.side,
@@ -685,10 +890,15 @@ class RenderSheetLayoutWithSizeListener extends RenderShiftedBox {
         _scrollControlDisabledMaxRatio = scrollControlDisabledMaxRatio,
         super(child);
 
+  /// {@template RenderSheetLayoutWithSizeListener.side}
+  /// The side from which the sheet slides in.
+  /// {@endtemplate}
   final ShadSheetSide side;
 
+  /// The last size of the child widget to track size changes.
   Size _lastSize = Size.zero;
 
+  /// Callback when the child widget's size changes.
   SizeChangeCallback<Size> get onChildSizeChanged => _onChildSizeChanged;
   SizeChangeCallback<Size> _onChildSizeChanged;
   set onChildSizeChanged(SizeChangeCallback<Size> newCallback) {
@@ -700,6 +910,7 @@ class RenderSheetLayoutWithSizeListener extends RenderShiftedBox {
     markNeedsLayout();
   }
 
+  /// The current animation value (0.0 to 1.0) for the sheet's animation.
   double get animationValue => _animationValue;
   double _animationValue;
   set animationValue(double newValue) {
@@ -711,6 +922,7 @@ class RenderSheetLayoutWithSizeListener extends RenderShiftedBox {
     markNeedsLayout();
   }
 
+  /// Whether the sheet is scroll controlled.
   bool get isScrollControlled => _isScrollControlled;
   bool _isScrollControlled;
   set isScrollControlled(bool newValue) {
@@ -722,6 +934,7 @@ class RenderSheetLayoutWithSizeListener extends RenderShiftedBox {
     markNeedsLayout();
   }
 
+  /// Maximum height ratio when not scroll controlled.
   double get scrollControlDisabledMaxRatio => _scrollControlDisabledMaxRatio;
   double _scrollControlDisabledMaxRatio;
   set scrollControlDisabledMaxRatio(double newValue) {

@@ -126,6 +126,55 @@ class ShadColorScheme {
     );
   }
 
+  /// Creates a copy of this [ShadColorScheme] but with the given fields replaced
+  /// with the new values.
+  ShadColorScheme copyWith({
+    Color? background,
+    Color? foreground,
+    Color? card,
+    Color? cardForeground,
+    Color? popover,
+    Color? popoverForeground,
+    Color? primary,
+    Color? primaryForeground,
+    Color? secondary,
+    Color? secondaryForeground,
+    Color? muted,
+    Color? mutedForeground,
+    Color? accent,
+    Color? accentForeground,
+    Color? destructive,
+    Color? destructiveForeground,
+    Color? border,
+    Color? input,
+    Color? ring,
+    Color? selection,
+  }) {
+    return ShadColorScheme(
+      background: background ?? this.background,
+      foreground: foreground ?? this.foreground,
+      card: card ?? this.card,
+      cardForeground: cardForeground ?? this.cardForeground,
+      popover: popover ?? this.popover,
+      popoverForeground: popoverForeground ?? this.popoverForeground,
+      primary: primary ?? this.primary,
+      primaryForeground: primaryForeground ?? this.primaryForeground,
+      secondary: secondary ?? this.secondary,
+      secondaryForeground: secondaryForeground ?? this.secondaryForeground,
+      muted: muted ?? this.muted,
+      mutedForeground: mutedForeground ?? this.mutedForeground,
+      accent: accent ?? this.accent,
+      accentForeground: accentForeground ?? this.accentForeground,
+      destructive: destructive ?? this.destructive,
+      destructiveForeground:
+          destructiveForeground ?? this.destructiveForeground,
+      border: border ?? this.border,
+      input: input ?? this.input,
+      ring: ring ?? this.ring,
+      selection: selection ?? this.selection,
+    );
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

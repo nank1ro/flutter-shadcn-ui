@@ -7,18 +7,32 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 
+/// Builder function for creating [ShadTableCell] widgets.
 typedef ShadTableCellBuilder = ShadTableCell Function(
   BuildContext context,
   TableVicinity vicinity,
 );
 
+/// Enum representing different variants of [ShadTableCell].
 enum ShadTableCellVariant {
+  /// Variant for header cells.
   header,
+
+  /// Variant for regular data cells.
   cell,
+
+  /// Variant for footer cells.
   footer,
 }
 
+/// {@template ShadTableCell}
+/// A cell widget for use within [ShadTable].
+///
+/// Provides styling and structure for table cells, including header and footer
+/// variants.
+/// {@endtemplate}
 class ShadTableCell extends TableViewCell {
+  /// {@macro ShadTableCell}
   const ShadTableCell({
     super.key,
     required super.child,
@@ -28,6 +42,9 @@ class ShadTableCell extends TableViewCell {
     this.style,
   }) : variant = ShadTableCellVariant.cell;
 
+  /// Creates a [ShadTableCell] with the header variant.
+  ///
+  /// {@macro ShadTableCell}
   const ShadTableCell.header({
     super.key,
     required super.child,
@@ -37,6 +54,9 @@ class ShadTableCell extends TableViewCell {
     this.style,
   }) : variant = ShadTableCellVariant.header;
 
+  /// Creates a [ShadTableCell] with the footer variant.
+  ///
+  /// {@macro ShadTableCell}
   const ShadTableCell.footer({
     super.key,
     required super.child,
@@ -46,6 +66,10 @@ class ShadTableCell extends TableViewCell {
     this.style,
   }) : variant = ShadTableCellVariant.footer;
 
+  /// Creates a [ShadTableCell] with a raw variant, allowing explicit variant
+  /// specification.
+  ///
+  /// {@macro ShadTableCell}
   const ShadTableCell.raw({
     super.key,
     required this.variant,
@@ -56,10 +80,29 @@ class ShadTableCell extends TableViewCell {
     this.style,
   });
 
+  /// {@template ShadTableCell.variant}
+  /// The variant of the table cell, determining its styling.
+  /// {@endtemplate}
   final ShadTableCellVariant variant;
+
+  /// {@template ShadTableCell.alignment}
+  /// Alignment of the cell's content.
+  /// {@endtemplate}
   final Alignment? alignment;
+
+  /// {@template ShadTableCell.height}
+  /// Height of the table cell.
+  /// {@endtemplate}
   final double? height;
+
+  /// {@template ShadTableCell.padding}
+  /// Padding within the table cell.
+  /// {@endtemplate}
   final EdgeInsets? padding;
+
+  /// {@template ShadTableCell.style}
+  /// Text style for the cell's content.
+  /// {@endtemplate}
   final TextStyle? style;
 
   @override
@@ -105,6 +148,12 @@ class ShadTableCell extends TableViewCell {
   }
 }
 
+/// {@template ShadTable}
+/// A customizable table widget for displaying tabular data.
+///
+/// Supports on-demand cell building, fixed lists of cells, headers, footers,
+/// and various interactions.
+/// {@endtemplate}
 class ShadTable extends StatefulWidget {
   /// Creates a [ShadTable] of widgets that are created on demand.
   ///
@@ -215,51 +264,221 @@ class ShadTable extends StatefulWidget {
         columnCount = children.elementAt(0).length,
         rowCount = children.length;
 
+  /// {@template ShadTable.headerBuilder}
+  /// Builder function for creating header cells.
+  /// {@endtemplate}
   final ShadTableCell Function(BuildContext context, int column)? headerBuilder;
+
+  /// {@template ShadTable.footerBuilder}
+  /// Builder function for creating footer cells.
+  /// {@endtemplate}
   final ShadTableCell Function(BuildContext context, int column)? footerBuilder;
+
+  /// {@template ShadTable.header}
+  /// Explicit list of header cells.
+  /// {@endtemplate}
   final Iterable<ShadTableCell>? header;
+
+  /// {@template ShadTable.footer}
+  /// Explicit list of footer cells.
+  /// {@endtemplate}
   final Iterable<ShadTableCell>? footer;
+
+  /// {@template ShadTable.builder}
+  /// Builder function for creating table cells on demand.
+  /// {@endtemplate}
   final ShadTableCellBuilder? builder;
+
+  /// {@template ShadTable.columnCount}
+  /// Number of columns in the table.
+  /// {@endtemplate}
   final int columnCount;
+
+  /// {@template ShadTable.rowCount}
+  /// Number of rows in the table (excluding header and footer).
+  /// {@endtemplate}
   final int rowCount;
+
+  /// {@template ShadTable.children}
+  /// Explicit 2D list of [ShadTableCell] widgets.
+  /// {@endtemplate}
   final Iterable<Iterable<ShadTableCell>>? children;
+
+  /// {@template ShadTable.columnBuilder}
+  /// Builder for defining column properties.
+  /// {@endtemplate}
   final TableSpanBuilder? columnBuilder;
+
+  /// {@template ShadTable.rowBuilder}
+  /// Builder for defining row properties.
+  /// {@endtemplate}
   final TableSpanBuilder? rowBuilder;
+
+  /// {@template ShadTable.rowSpanExtent}
+  /// Function to define custom row span extents.
+  /// {@endtemplate}
   final TableSpanExtent? Function(int row)? rowSpanExtent;
+
+  /// {@template ShadTable.columnSpanExtent}
+  /// Function to define custom column span extents.
+  /// {@endtemplate}
   final TableSpanExtent? Function(int column)? columnSpanExtent;
+
+  /// {@template ShadTable.rowSpanBackgroundDecoration}
+  /// Function to define background decoration for rows.
+  /// {@endtemplate}
   final TableSpanDecoration? Function(int row)? rowSpanBackgroundDecoration;
+
+  /// {@template ShadTable.rowSpanForegroundDecoration}
+  /// Function to define foreground decoration for rows.
+  /// {@endtemplate}
   final TableSpanDecoration? Function(int row)? rowSpanForegroundDecoration;
+
+  /// {@template ShadTable.columnSpanBackgroundDecoration}
+  /// Function to define background decoration for columns.
+  /// {@endtemplate}
   final TableSpanDecoration? Function(int column)?
       columnSpanBackgroundDecoration;
+
+  /// {@template ShadTable.columnSpanForegroundDecoration}
+  /// Function to define foreground decoration for columns.
+  /// {@endtemplate}
   final TableSpanDecoration? Function(int column)?
       columnSpanForegroundDecoration;
+
+  /// {@template ShadTable.onHoveredRowIndex}
+  /// Callback for when a row is hovered, providing the row index.
+  /// {@endtemplate}
   final ValueChanged<int?>? onHoveredRowIndex;
+
+  /// {@template ShadTable.verticalScrollController}
+  /// Controller for vertical scrolling.
+  /// {@endtemplate}
   final ScrollController? verticalScrollController;
+
+  /// {@template ShadTable.horizontalScrollController}
+  /// Controller for horizontal scrolling.
+  /// {@endtemplate}
   final ScrollController? horizontalScrollController;
+
+  /// {@template ShadTable.pinnedRowCount}
+  /// Number of pinned rows at the top.
+  /// {@endtemplate}
   final int? pinnedRowCount;
+
+  /// {@template ShadTable.pinnedColumnCount}
+  /// Number of pinned columns at the start.
+  /// {@endtemplate}
   final int? pinnedColumnCount;
+
+  /// {@template ShadTable.primary}
+  /// Whether this is the primary scroll view.
+  /// {@endtemplate}
   final bool? primary;
+
+  /// {@template ShadTable.diagonalDragBehavior}
+  /// Drag behavior when dragging diagonally.
+  /// {@endtemplate}
   final DiagonalDragBehavior? diagonalDragBehavior;
+
+  /// {@template ShadTable.dragStartBehavior}
+  /// Determines when a drag formally starts.
+  /// {@endtemplate}
   final DragStartBehavior? dragStartBehavior;
+
+  /// {@template ShadTable.keyboardDismissBehavior}
+  /// Configures how the keyboard is dismissed when a drag starts.
+  /// {@endtemplate}
   final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
+
+  /// {@template ShadTable.verticalScrollPhysics}
+  /// Physics for vertical scrolling.
+  /// {@endtemplate}
   final ScrollPhysics? verticalScrollPhysics;
+
+  /// {@template ShadTable.horizontalScrollPhysics}
+  /// Physics for horizontal scrolling.
+  /// {@endtemplate}
   final ScrollPhysics? horizontalScrollPhysics;
 
+  /// {@template ShadTable.onRowTap}
+  /// Callback for tap gestures on a row.
+  /// {@endtemplate}
   final void Function(int row)? onRowTap;
+
+  /// {@template ShadTable.onRowTapDown}
+  /// Callback for tap down gestures on a row.
+  /// {@endtemplate}
   final void Function(int row)? onRowTapDown;
+
+  /// {@template ShadTable.onRowTapUp}
+  /// Callback for tap up gestures on a row.
+  /// {@endtemplate}
   final void Function(int row)? onRowTapUp;
+
+  /// {@template ShadTable.onRowTapCancel}
+  /// Callback for tap cancel gestures on a row.
+  /// {@endtemplate}
   final void Function(int row)? onRowTapCancel;
+
+  /// {@template ShadTable.onRowSecondaryTap}
+  /// Callback for secondary tap gestures on a row.
+  /// {@endtemplate}
   final void Function(int row)? onRowSecondaryTap;
+
+  /// {@template ShadTable.onRowSecondaryTapDown}
+  /// Callback for secondary tap down gestures on a row.
+  /// {@endtemplate}
   final void Function(int row)? onRowSecondaryTapDown;
+
+  /// {@template ShadTable.onRowSecondaryTapUp}
+  /// Callback for secondary tap up gestures on a row.
+  /// {@endtemplate}
   final void Function(int row)? onRowSecondaryTapUp;
+
+  /// {@template ShadTable.onRowSecondaryTapCancel}
+  /// Callback for secondary tap cancel gestures on a row.
+  /// {@endtemplate}
   final void Function(int row)? onRowSecondaryTapCancel;
+
+  /// {@template ShadTable.onColumnTap}
+  /// Callback for tap gestures on a column.
+  /// {@endtemplate}
   final void Function(int column)? onColumnTap;
+
+  /// {@template ShadTable.onColumnTapDown}
+  /// Callback for tap down gestures on a column.
+  /// {@endtemplate}
   final void Function(int column)? onColumnTapDown;
+
+  /// {@template ShadTable.onColumnTapUp}
+  /// Callback for tap up gestures on a column.
+  /// {@endtemplate}
   final void Function(int column)? onColumnTapUp;
+
+  /// {@template ShadTable.onColumnTapCancel}
+  /// Callback for tap cancel gestures on a column.
+  /// {@endtemplate}
   final void Function(int column)? onColumnTapCancel;
+
+  /// {@template ShadTable.onColumnSecondaryTap}
+  /// Callback for secondary tap gestures on a column.
+  /// {@endtemplate}
   final void Function(int column)? onColumnSecondaryTap;
+
+  /// {@template ShadTable.onColumnSecondaryTapDown}
+  /// Callback for secondary tap down gestures on a column.
+  /// {@endtemplate}
   final void Function(int column)? onColumnSecondaryTapDown;
+
+  /// {@template ShadTable.onColumnSecondaryTapUp}
+  /// Callback for secondary tap up gestures on a column.
+  /// {@endtemplate}
   final void Function(int column)? onColumnSecondaryTapUp;
+
+  /// {@template ShadTable.onColumnSecondaryTapCancel}
+  /// Callback for secondary tap cancel gestures on a column.
+  /// {@endtemplate}
   final void Function(int column)? onColumnSecondaryTapCancel;
 
   /// The kind of devices that are allowed to be recognized.
@@ -353,6 +572,9 @@ class _ShadTableState extends State<ShadTable> {
           },
         ),
       },
+      cursor: widget.onColumnTap != null
+          ? SystemMouseCursors.click
+          : MouseCursor.defer,
     );
   }
 
@@ -371,9 +593,9 @@ class _ShadTableState extends State<ShadTable> {
       backgroundDecoration: widget.rowSpanBackgroundDecoration?.call(index) ??
           TableSpanDecoration(
             color: hoveredRowIndex.value == index
-                ? colorScheme.muted.withOpacity(isFooter ? 1 : .5)
+                ? colorScheme.muted.withValues(alpha: isFooter ? 1 : .5)
                 : isFooter
-                    ? colorScheme.muted.withOpacity(.5)
+                    ? colorScheme.muted.withValues(alpha: .5)
                     : null,
             border: TableSpanBorder(
               trailing: isLast
@@ -388,6 +610,7 @@ class _ShadTableState extends State<ShadTable> {
         hoveredRowIndex.value = index;
       },
       onExit: (p) {
+        if (!mounted) return;
         if (previousPointerOffset == p.position) return;
         hoveredRowIndex.value = null;
       },
@@ -433,6 +656,9 @@ class _ShadTableState extends State<ShadTable> {
           },
         ),
       },
+      cursor: widget.onRowTap != null
+          ? SystemMouseCursors.click
+          : MouseCursor.defer,
     );
   }
 

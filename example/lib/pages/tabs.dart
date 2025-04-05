@@ -13,10 +13,11 @@ class TabsPage extends StatelessWidget {
       wrapSingleChildInColumn: false,
       alignment: Alignment.topCenter,
       children: [
-        ShadTabs<String>(
+        ShadTabs(
           value: 'account',
           tabBarConstraints: const BoxConstraints(maxWidth: 400),
           contentConstraints: const BoxConstraints(maxWidth: 400),
+          onChanged: (value) => print(value),
           tabs: [
             ShadTab(
               value: 'account',

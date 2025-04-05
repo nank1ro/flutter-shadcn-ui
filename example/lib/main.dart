@@ -4,14 +4,21 @@ import 'package:example/pages/alert.dart';
 import 'package:example/pages/avatar.dart';
 import 'package:example/pages/badge.dart';
 import 'package:example/pages/button.dart';
+import 'package:example/pages/calendar.dart';
 import 'package:example/pages/card.dart';
 import 'package:example/pages/checkbox.dart';
 import 'package:example/pages/checkbox_form_field.dart';
 import 'package:example/pages/context_menu.dart';
+import 'package:example/pages/date_picker.dart';
+import 'package:example/pages/date_picker_form_field.dart';
 import 'package:example/pages/dialog.dart';
-import 'package:example/pages/image.dart';
+import 'package:example/pages/separator.dart';
+import 'package:example/pages/icon_button.dart';
 import 'package:example/pages/input.dart';
 import 'package:example/pages/input_form_field.dart';
+import 'package:example/pages/input_otp.dart';
+import 'package:example/pages/input_otp_form_field.dart';
+import 'package:example/pages/menubar.dart';
 import 'package:example/pages/popover.dart';
 import 'package:example/pages/progress.dart';
 import 'package:example/pages/radio_group.dart';
@@ -21,16 +28,19 @@ import 'package:example/pages/select.dart';
 import 'package:example/pages/select_form_field.dart';
 import 'package:example/pages/sheet.dart';
 import 'package:example/pages/slider.dart';
+import 'package:example/pages/sonner.dart';
 import 'package:example/pages/switch.dart';
 import 'package:example/pages/switch_form_field.dart';
-import 'package:example/pages/tabs.dart';
 import 'package:example/pages/table.dart';
+import 'package:example/pages/tabs.dart';
+import 'package:example/pages/portal.dart';
+import 'package:example/pages/time_picker.dart';
+import 'package:example/pages/time_picker_form_field.dart';
 import 'package:example/pages/toast.dart';
 import 'package:example/pages/tooltip.dart';
 import 'package:example/pages/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
-
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 void main() {
@@ -45,15 +55,23 @@ final routes = <String, WidgetBuilder>{
   '/avatar': (_) => const AvatarPage(),
   '/badge': (_) => const BadgePage(),
   '/button': (_) => const ButtonPage(),
+  '/calendar': (_) => const CalendarPage(),
   '/card': (_) => const CardPage(),
   '/checkbox': (_) => const CheckboxPage(),
   '/checkbox-form-field': (_) => const CheckboxFormFieldPage(),
   '/context-menu': (_) => const ContextMenuPage(),
+  '/date-picker': (_) => const DatePickerPage(),
+  '/date-picker-form-field': (_) => const DatePickerFormFieldPage(),
   '/dialog': (_) => const DialogPage(),
-  '/image': (_) => const ImagePage(),
+  '/divider': (_) => const SeparatorPage(),
+  '/icon-button': (_) => const IconButtonPage(),
   '/input': (_) => const InputPage(),
+  '/input-OTP': (_) => const InputOTPPage(),
+  '/input-OTP-form-field': (_) => const InputOTPFormFieldPage(),
   '/input-form-field': (_) => const InputFormFieldPage(),
+  '/menubar': (_) => const MenubarPage(),
   '/popover': (_) => const PopoverPage(),
+  '/portal': (_) => const ShadPortalPage(),
   '/progress': (_) => const ProgressPage(),
   '/radio-group': (_) => const RadioPage(),
   '/radio-group-form-field': (_) => const RadioGroupFormFieldPage(),
@@ -62,15 +80,18 @@ final routes = <String, WidgetBuilder>{
   '/select-form-field': (_) => const SelectFormFieldPage(),
   '/sheet': (_) => const SheetPage(),
   '/slider': (_) => const SliderPage(),
+  '/sonner': (_) => const SonnerPage(),
   '/switch': (_) => const SwitchPage(),
   '/switch-form-field': (_) => const SwitchFormFieldPage(),
   '/table': (_) => const TablePage(),
   '/tabs': (_) => const TabsPage(),
+  '/time-picker': (_) => const TimePickerPage(),
+  '/time-picker-form-field': (_) => const TimePickerFormFieldPage(),
   '/toast': (_) => const ToastPage(),
   '/tooltip': (_) => const TooltipPage(),
   '/typography': (_) => const TypographyPage(),
 };
-final routeToNameRegex = RegExp('(?:^/|-)([a-z])');
+final routeToNameRegex = RegExp('(?:^/|-)([a-zA-Z])');
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -83,6 +104,19 @@ class App extends StatelessWidget {
       ],
       builder: (context) {
         final themeMode = context.observe<ThemeMode>();
+        // Custom App example
+        // return ShadApp.custom(
+        //   themeMode: themeMode,
+        //   appBuilder: (context, theme) => GetMaterialApp(
+        //     routes: routes,
+        //     themeMode: themeMode,
+        //     theme: theme,
+        //     home: const MainPage(),
+        //     builder: (context, child) {
+        //       return ShadToaster(child: child!);
+        //     },
+        //   ),
+        // );
         return ShadApp(
           debugShowCheckedModeBanner: false,
           themeMode: themeMode,

@@ -3,123 +3,127 @@ title: Button
 sidebar:
   order: 4
 ---
-import Preview from '../../../components/Preview.astro';
+
+import Preview from "../../../components/Preview.astro";
 
 Displays a button or a component that looks like a button.
 
 ## Primary
 
-<Preview src="https://shadcn-ui-playground.web.app/button?style=primary">
- ```dart
+<Preview src="button?style=primary">
+
+```dart
 ShadButton(
-  text: const Text('Primary'),
+  child: const Text('Primary'),
   onPressed: () {},
 )
 ```
+
 </Preview>
 
 ## Secondary
 
-<Preview src="https://shadcn-ui-playground.web.app/button?style=secondary">
+<Preview src="button?style=secondary">
+
 ```dart
 ShadButton.secondary(
-  text: const Text('Secondary'),
+  child: const Text('Secondary'),
   onPressed: () {},
 )
 ```
+
 </Preview>
 
 ## Destructive
 
-<Preview src="https://shadcn-ui-playground.web.app/button?style=destructive">
+<Preview src="button?style=destructive">
+
 ```dart
 ShadButton.destructive(
-  text: const Text('Destructive'),
+  child: const Text('Destructive'),
   onPressed: () {},
 )
 ```
+
 </Preview>
 
 ## Outline
 
-<Preview src="https://shadcn-ui-playground.web.app/button?style=outline">
+<Preview src="button?style=outline">
+
 ```dart
 ShadButton.outline(
-  text: const Text('Outline'),
+  child: const Text('Outline'),
   onPressed: () {},
 )
 ```
+
 </Preview>
 
 ## Ghost
 
-<Preview src="https://shadcn-ui-playground.web.app/button?style=ghost">
+<Preview src="button?style=ghost">
+
 ```dart
 ShadButton.ghost(
-  text: const Text('Ghost'),
+  child: const Text('Ghost'),
   onPressed: () {},
 )
 ```
+
 </Preview>
 
 ## Link
 
-<Preview src="https://shadcn-ui-playground.web.app/button?style=link">
+<Preview src="button?style=link">
+
 ```dart
 ShadButton.link(
-  text: const Text('Link'),
+  child: const Text('Link'),
   onPressed: () {},
 )
 ```
-</Preview>
 
-## Icon
-
-<Preview src="https://shadcn-ui-playground.web.app/button?style=icon">
-```dart
-ShadButton.outline(
-  icon: const Icon(
-    Icons.chevron_right,
-    size: 16,
-  ),
-  onPressed: () {},
-),
-```
 </Preview>
 
 ## Text and Icon
 
-<Preview src="https://shadcn-ui-playground.web.app/button?style=textIcon">
+<Preview src="button?style=textIcon">
+
 ```dart
 ShadButton(
   onPressed: () {},
-  text: const Text('Login with Email'),
-  icon: Icon(
-    Icons.mail_outlined,
-    size: 16,
-  ),
+  leading: const Icon(LucideIcons.mail),
+  child: const Text('Login with Email'),
 )
 ```
+
 </Preview>
 
 ## Loading
 
-<Preview src="https://shadcn-ui-playground.web.app/button?style=loading">
+<Preview src="button?style=loading">
+
 ```dart
 ShadButton(
   onPressed: () {},
-  text: const Text('Please wait'),
-  icon: SizedBox.square(
+  leading: const SizedBox.square(
     dimension: 16,
-    child: CircularProgressIndicator(strokeWidth: 2),
+    child: CircularProgressIndicator(
+      strokeWidth: 2,
+      color: ShadTheme.of(context).colorScheme.primaryForeground,
+    ),
   ),
+  child: const Text('Please wait'),
 )
 ```
+
 </Preview>
 
 ## Gradient and Shadow
 
-<Preview src="https://shadcn-ui-playground.web.app/button?style=gradientShadow">
+<Preview src="button?style=gradientShadow">
+
 ```dart
 ShadButton(
   onPressed: () {},
@@ -135,7 +139,8 @@ ShadButton(
       offset: const Offset(0, 2),
     ),
   ],
-  text: const Text('Gradient with Shadow'),
+  child: const Text('Gradient with Shadow'),
 )
 ```
+
 </Preview>

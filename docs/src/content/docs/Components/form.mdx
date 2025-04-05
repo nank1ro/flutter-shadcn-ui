@@ -3,12 +3,14 @@ title: Form
 sidebar:
   order: 4
 ---
-import Preview from '../../../components/Preview.astro';
+
+import Preview from "../../../components/Preview.astro";
 
 Builds a form with validation and easy access to form fields values.
 
-<Preview src="https://shadcn-ui-playground.web.app/form" minHeight="300px">
- ```dart
+<Preview src="form" minHeight="300px">
+
+```dart
 class FormPage extends StatefulWidget {
   const FormPage({
     super.key,
@@ -66,13 +68,17 @@ class _FormPageState extends State<FormPage> {
   }
 }
 ```
+
 </Preview>
 
 ## Examples
 
 See the following links for more examples on how to use the `ShadForm` component with other components:
+
 - [Checkbox](../checkbox#form)
 - [Switch](../switch#form)
 - [Input](../input#form)
 - [Select](../select#form)
 - [RadioGroup](../radio-group#form)
+- [DatePicker](../date-picker#form)
+- [TimePicker](../time-picker#form)

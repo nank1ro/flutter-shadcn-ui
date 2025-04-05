@@ -7,6 +7,10 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Flutter Shadcn UI docs',
+      components: {
+        LanguageSelect: './src/components/SelectColor.astro',
+
+      },
       social: {
         github: 'https://github.com/nank1ro',
         twitter: 'https://twitter.com/nank1ro'
@@ -15,10 +19,11 @@ export default defineConfig({
         tag: 'meta',
         attrs: {
           property: 'og:image',
-          content: 'https://mariuti.com/shadcn-ui/assets/shadcn-banner.png',
+          content: 'https://flutter-shadcn-ui.mariuti.com/shadcn-banner.png',
         }
       }],
       sidebar: [
+       
         {
           label: 'mariuti.com',
           link: 'https://mariuti.com',
@@ -40,6 +45,7 @@ export default defineConfig({
               collapsed: false,
             },
             { label: 'Typography', link: 'typography' },
+            { label: 'Packages', link: 'packages' },
             {
               label: 'Components',
               autogenerate: { directory: 'Components' },
@@ -74,7 +80,7 @@ export default defineConfig({
           ],
 
         }
-      ],
+      ], 
     }),
   ],
   site: 'https://flutter-shadcn-ui.mariuti.com',

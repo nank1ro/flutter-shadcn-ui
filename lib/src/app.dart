@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart'
         GlobalCupertinoLocalizations,
         GlobalMaterialLocalizations,
         GlobalWidgetsLocalizations;
+import 'package:shadcn_ui/src/components/sonner.dart';
 import 'package:shadcn_ui/src/components/toast.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
@@ -18,6 +19,7 @@ enum ShadAppType {
   shadcn,
   material,
   cupertino,
+  custom,
 }
 
 class ShadApp extends StatefulWidget {
@@ -28,6 +30,7 @@ class ShadApp extends StatefulWidget {
     this.onGenerateRoute,
     this.onGenerateInitialRoutes,
     this.onUnknownRoute,
+    this.onNavigationNotification,
     this.navigatorObservers = const <NavigatorObserver>[],
     this.initialRoute,
     this.home,
@@ -43,7 +46,7 @@ class ShadApp extends StatefulWidget {
     this.supportedLocales = const <Locale>[Locale('en', 'US')],
     this.showPerformanceOverlay = false,
     this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = true,
+    this.debugShowCheckedModeBanner = false,
     this.shortcuts,
     this.actions,
     this.theme,
@@ -60,6 +63,7 @@ class ShadApp extends StatefulWidget {
         backButtonDispatcher = null,
         routerConfig = null,
         cupertinoThemeBuilder = null,
+        appBuilder = null,
         type = ShadAppType.shadcn;
 
   /// Creates a [ShadApp] that uses the [Router] instead of a [Navigator].
@@ -76,6 +80,7 @@ class ShadApp extends StatefulWidget {
     this.builder,
     this.title = '',
     this.onGenerateTitle,
+    this.onNavigationNotification,
     this.color,
     this.locale,
     this.localizationsDelegates,
@@ -84,7 +89,7 @@ class ShadApp extends StatefulWidget {
     this.supportedLocales = const <Locale>[Locale('en', 'US')],
     this.showPerformanceOverlay = false,
     this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = true,
+    this.debugShowCheckedModeBanner = false,
     this.shortcuts,
     this.actions,
     this.restorationScopeId,
@@ -101,6 +106,7 @@ class ShadApp extends StatefulWidget {
         initialRoute = null,
         pageRouteBuilder = null,
         cupertinoThemeBuilder = null,
+        appBuilder = null,
         type = ShadAppType.shadcn;
 
   /// Creates a [MaterialApp] wrapped by a [ShadTheme].
@@ -110,6 +116,7 @@ class ShadApp extends StatefulWidget {
     this.onGenerateRoute,
     this.onGenerateInitialRoutes,
     this.onUnknownRoute,
+    this.onNavigationNotification,
     this.navigatorObservers = const <NavigatorObserver>[],
     this.initialRoute,
     this.home,
@@ -125,7 +132,7 @@ class ShadApp extends StatefulWidget {
     this.supportedLocales = const <Locale>[Locale('en', 'US')],
     this.showPerformanceOverlay = false,
     this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = true,
+    this.debugShowCheckedModeBanner = false,
     this.shortcuts,
     this.actions,
     this.theme,
@@ -142,6 +149,7 @@ class ShadApp extends StatefulWidget {
         backButtonDispatcher = null,
         routerConfig = null,
         cupertinoThemeBuilder = null,
+        appBuilder = null,
         type = ShadAppType.material;
 
   /// Creates a [MaterialApp] wrapped by a [ShadTheme] that uses the [Router] instead of a [Navigator].
@@ -158,6 +166,7 @@ class ShadApp extends StatefulWidget {
     this.builder,
     this.title = '',
     this.onGenerateTitle,
+    this.onNavigationNotification,
     this.color,
     this.locale,
     this.localizationsDelegates,
@@ -166,7 +175,7 @@ class ShadApp extends StatefulWidget {
     this.supportedLocales = const <Locale>[Locale('en', 'US')],
     this.showPerformanceOverlay = false,
     this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = true,
+    this.debugShowCheckedModeBanner = false,
     this.shortcuts,
     this.actions,
     this.restorationScopeId,
@@ -183,6 +192,7 @@ class ShadApp extends StatefulWidget {
         initialRoute = null,
         pageRouteBuilder = null,
         cupertinoThemeBuilder = null,
+        appBuilder = null,
         type = ShadAppType.material;
 
   /// Creates a [CupertinoApp] wrapped by a [ShadTheme].
@@ -192,6 +202,7 @@ class ShadApp extends StatefulWidget {
     this.onGenerateRoute,
     this.onGenerateInitialRoutes,
     this.onUnknownRoute,
+    this.onNavigationNotification,
     this.navigatorObservers = const <NavigatorObserver>[],
     this.initialRoute,
     this.home,
@@ -207,7 +218,7 @@ class ShadApp extends StatefulWidget {
     this.supportedLocales = const <Locale>[Locale('en', 'US')],
     this.showPerformanceOverlay = false,
     this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = true,
+    this.debugShowCheckedModeBanner = false,
     this.shortcuts,
     this.actions,
     this.theme,
@@ -224,6 +235,7 @@ class ShadApp extends StatefulWidget {
         routerDelegate = null,
         backButtonDispatcher = null,
         routerConfig = null,
+        appBuilder = null,
         type = ShadAppType.cupertino;
 
   /// Creates a [CupertinoApp] wrapped by a [ShadTheme] that uses the [Router] instead of a [Navigator].
@@ -240,6 +252,7 @@ class ShadApp extends StatefulWidget {
     this.builder,
     this.title = '',
     this.onGenerateTitle,
+    this.onNavigationNotification,
     this.color,
     this.locale,
     this.localizationsDelegates,
@@ -248,7 +261,7 @@ class ShadApp extends StatefulWidget {
     this.supportedLocales = const <Locale>[Locale('en', 'US')],
     this.showPerformanceOverlay = false,
     this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = true,
+    this.debugShowCheckedModeBanner = false,
     this.shortcuts,
     this.actions,
     this.restorationScopeId,
@@ -265,7 +278,51 @@ class ShadApp extends StatefulWidget {
         routes = null,
         initialRoute = null,
         pageRouteBuilder = null,
+        appBuilder = null,
         type = ShadAppType.cupertino;
+
+  const ShadApp.custom({
+    super.key,
+    required Widget Function(BuildContext context, ThemeData theme)
+        this.appBuilder,
+    this.theme,
+    this.darkTheme,
+    this.themeMode,
+  })  : actions = null,
+        backButtonDispatcher = null,
+        onNavigationNotification = null,
+        builder = null,
+        color = null,
+        cupertinoThemeBuilder = null,
+        debugShowCheckedModeBanner = false,
+        home = null,
+        initialRoute = null,
+        locale = null,
+        localeListResolutionCallback = null,
+        localeResolutionCallback = null,
+        localizationsDelegates = null,
+        materialThemeBuilder = null,
+        navigatorKey = null,
+        navigatorObservers = null,
+        onGenerateInitialRoutes = null,
+        onGenerateRoute = null,
+        onGenerateTitle = null,
+        onUnknownRoute = null,
+        pageRouteBuilder = null,
+        restorationScopeId = null,
+        routeInformationParser = null,
+        routeInformationProvider = null,
+        routerConfig = null,
+        routerDelegate = null,
+        routes = null,
+        scrollBehavior = const MaterialScrollBehavior(),
+        shortcuts = null,
+        showPerformanceOverlay = false,
+        showSemanticsDebugger = false,
+        supportedLocales = const <Locale>[Locale('en', 'US')],
+        themeCurve = Curves.linear,
+        title = '',
+        type = ShadAppType.custom;
 
   /// The type of app to use.
   ///
@@ -347,6 +404,10 @@ class ShadApp extends StatefulWidget {
 
   /// {@macro flutter.widgets.widgetsApp.onUnknownRoute}
   final RouteFactory? onUnknownRoute;
+
+  /// {@macro flutter.widgets.widgetsApp.onNavigationNotification}
+  final NotificationListenerCallback<NavigationNotification>?
+      onNavigationNotification;
 
   /// {@macro flutter.widgets.widgetsApp.navigatorObservers}
   final List<NavigatorObserver>? navigatorObservers;
@@ -517,6 +578,9 @@ class ShadApp extends StatefulWidget {
   /// to [Curves.linear].
   final Curve themeCurve;
 
+  /// A custom app widget builder.
+  final Widget Function(BuildContext context, ThemeData theme)? appBuilder;
+
   final ThemeData Function(BuildContext context, ThemeData theme)?
       materialThemeBuilder;
 
@@ -539,7 +603,7 @@ class _ShadAppState extends State<ShadApp> {
   /// contributed by the localizationsDelegates parameter, if any.
   ///
   /// The default value for the localizationsDelegates
-  /// ```
+  /// ```dart
   ///  DefaultMaterialLocalizations.delegate,
   ///  DefaultCupertinoLocalizations.delegate,
   ///  DefaultWidgetsLocalizations.delegate
@@ -571,7 +635,9 @@ class _ShadAppState extends State<ShadApp> {
           curve: widget.themeCurve,
           child: ShadMouseAreaSurface(
             child: ShadMouseCursorProvider(
-              child: _buildApp(context),
+              child: Builder(
+                builder: _buildApp,
+              ),
             ),
           ),
         ),
@@ -587,18 +653,15 @@ class _ShadAppState extends State<ShadApp> {
 
     final data = () {
       late ShadThemeData result;
+      final lightTheme = widget.theme ??
+          ShadThemeData(
+            colorScheme: const ShadSlateColorScheme.light(),
+            brightness: Brightness.light,
+          );
       if (useDarkStyle) {
-        result = widget.darkTheme ??
-            ShadThemeData(
-              colorScheme: const ShadSlateColorScheme.dark(),
-              brightness: Brightness.dark,
-            );
+        result = widget.darkTheme ?? lightTheme;
       } else {
-        result = widget.theme ??
-            ShadThemeData(
-              colorScheme: const ShadSlateColorScheme.light(),
-              brightness: Brightness.light,
-            );
+        result = lightTheme;
       }
       return result;
     }();
@@ -618,29 +681,28 @@ class _ShadAppState extends State<ShadApp> {
         onSecondary: themeData.colorScheme.secondaryForeground,
         error: themeData.colorScheme.destructive,
         onError: themeData.colorScheme.destructiveForeground,
-        // Keep deprecated members for backwards compatibility
-        // ignore: deprecated_member_use
-        background: themeData.colorScheme.background,
-        // ignore: deprecated_member_use
-        onBackground: themeData.colorScheme.foreground,
-        surface: themeData.colorScheme.card,
-        onSurface: themeData.colorScheme.cardForeground,
+        surface: themeData.colorScheme.background,
+        onSurface: themeData.colorScheme.foreground,
       ),
       scaffoldBackgroundColor: themeData.colorScheme.background,
       brightness: themeData.brightness,
       dividerTheme: DividerThemeData(
-        color: themeData.colorScheme.border,
-        thickness: 1,
+        color: themeData.separatorTheme.color ?? themeData.colorScheme.border,
+        thickness: themeData.separatorTheme.thickness ?? 1,
       ),
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: themeData.colorScheme.primary,
         selectionColor: themeData.colorScheme.selection,
         selectionHandleColor: themeData.colorScheme.primary,
       ),
+      iconTheme: IconThemeData(
+        size: 16,
+        color: themeData.colorScheme.foreground,
+      ),
     );
     mTheme = mTheme.copyWith(
-      textTheme:
-          themeData.textTheme.materialTextTheme(textTheme: mTheme.textTheme),
+      textTheme: themeData.textTheme
+          .applyGoogleFontToTextTheme(textTheme: mTheme.textTheme),
     );
 
     if (widget.materialThemeBuilder == null) {
@@ -667,33 +729,36 @@ class _ShadAppState extends State<ShadApp> {
 
   Widget _builder(BuildContext context, Widget? child) {
     return ShadToaster(
-      child: widget.builder != null
-          ? Builder(
-              builder: (BuildContext context) {
-                // Why are we surrounding a builder with a builder?
-                //
-                // The widget.builder may contain code that invokes
-                // Theme.of(), which should return the theme we selected
-                // above in AnimatedTheme. However, if we invoke
-                // widget.builder() directly as the child of AnimatedTheme
-                // then there is no Context separating them, and the
-                // widget.builder() will not find the theme. Therefore, we
-                // surround widget.builder with yet another builder so that
-                // a context separates them and Theme.of() correctly
-                // resolves to the theme we passed to AnimatedTheme.
-                return widget.builder!(context, child);
-              },
-            )
-          : child ?? const SizedBox.shrink(),
+      child: ShadSonner(
+        child: widget.builder != null
+            ? Builder(
+                builder: (BuildContext context) {
+                  // Why are we surrounding a builder with a builder?
+                  //
+                  // The widget.builder may contain code that invokes
+                  // Theme.of(), which should return the theme we selected
+                  // above in AnimatedTheme. However, if we invoke
+                  // widget.builder() directly as the child of AnimatedTheme
+                  // then there is no Context separating them, and the
+                  // widget.builder() will not find the theme. Therefore, we
+                  // surround widget.builder with yet another builder so that
+                  // a context separates them and Theme.of() correctly
+                  // resolves to the theme we passed to AnimatedTheme.
+                  return widget.builder!(context, child);
+                },
+              )
+            : child ?? const SizedBox.shrink(),
+      ),
     );
   }
 
   Widget _buildApp(BuildContext context) {
+    final mTheme = materialTheme(context);
     switch (widget.type) {
       case ShadAppType.shadcn:
         if (usesRouter) {
           return AnimatedTheme(
-            data: materialTheme(context),
+            data: mTheme,
             child: WidgetsApp.router(
               key: GlobalObjectKey(this),
               routeInformationProvider: widget.routeInformationProvider,
@@ -701,6 +766,7 @@ class _ShadAppState extends State<ShadApp> {
               routerDelegate: widget.routerDelegate,
               routerConfig: widget.routerConfig,
               backButtonDispatcher: widget.backButtonDispatcher,
+              onNavigationNotification: widget.onNavigationNotification,
               builder: _builder,
               title: widget.title,
               onGenerateTitle: widget.onGenerateTitle,
@@ -721,7 +787,7 @@ class _ShadAppState extends State<ShadApp> {
         }
 
         return AnimatedTheme(
-          data: materialTheme(context),
+          data: mTheme,
           child: WidgetsApp(
             key: GlobalObjectKey(this),
             navigatorKey: widget.navigatorKey,
@@ -732,6 +798,7 @@ class _ShadAppState extends State<ShadApp> {
             onGenerateRoute: widget.onGenerateRoute,
             onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
             onUnknownRoute: widget.onUnknownRoute,
+            onNavigationNotification: widget.onNavigationNotification,
             builder: _builder,
             title: widget.title,
             onGenerateTitle: widget.onGenerateTitle,
@@ -764,8 +831,11 @@ class _ShadAppState extends State<ShadApp> {
             routerDelegate: widget.routerDelegate,
             routerConfig: widget.routerConfig,
             backButtonDispatcher: widget.backButtonDispatcher,
+            onNavigationNotification: widget.onNavigationNotification,
             builder: _builder,
-            theme: materialTheme(context),
+            theme: mTheme.brightness == Brightness.light ? mTheme : null,
+            darkTheme: mTheme.brightness == Brightness.dark ? mTheme : null,
+            themeMode: widget.themeMode,
             title: widget.title,
             onGenerateTitle: widget.onGenerateTitle,
             color: widget.color ?? Colors.blue,
@@ -780,6 +850,7 @@ class _ShadAppState extends State<ShadApp> {
             actions: widget.actions,
             restorationScopeId: widget.restorationScopeId,
             localizationsDelegates: localizationsDelegates,
+            scrollBehavior: widget.scrollBehavior,
           );
         }
         return MaterialApp(
@@ -791,8 +862,11 @@ class _ShadAppState extends State<ShadApp> {
           onGenerateRoute: widget.onGenerateRoute,
           onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
           onUnknownRoute: widget.onUnknownRoute,
+          onNavigationNotification: widget.onNavigationNotification,
           builder: _builder,
-          theme: materialTheme(context),
+          theme: mTheme.brightness == Brightness.light ? mTheme : null,
+          darkTheme: mTheme.brightness == Brightness.dark ? mTheme : null,
+          themeMode: widget.themeMode,
           title: widget.title,
           onGenerateTitle: widget.onGenerateTitle,
           color: widget.color ?? Colors.blue,
@@ -807,6 +881,7 @@ class _ShadAppState extends State<ShadApp> {
           actions: widget.actions,
           restorationScopeId: widget.restorationScopeId,
           localizationsDelegates: localizationsDelegates,
+          scrollBehavior: widget.scrollBehavior,
         );
 
       case ShadAppType.cupertino:
@@ -819,6 +894,7 @@ class _ShadAppState extends State<ShadApp> {
               routerDelegate: widget.routerDelegate,
               routerConfig: widget.routerConfig,
               backButtonDispatcher: widget.backButtonDispatcher,
+              onNavigationNotification: widget.onNavigationNotification,
               builder: _builder,
               theme: cupertinoTheme(context),
               title: widget.title,
@@ -835,6 +911,7 @@ class _ShadAppState extends State<ShadApp> {
               actions: widget.actions,
               restorationScopeId: widget.restorationScopeId,
               localizationsDelegates: localizationsDelegates,
+              scrollBehavior: widget.scrollBehavior,
             ),
           );
         }
@@ -849,6 +926,7 @@ class _ShadAppState extends State<ShadApp> {
             onGenerateRoute: widget.onGenerateRoute,
             onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
             onUnknownRoute: widget.onUnknownRoute,
+            onNavigationNotification: widget.onNavigationNotification,
             builder: _builder,
             theme: cupertinoTheme(context),
             title: widget.title,
@@ -865,6 +943,27 @@ class _ShadAppState extends State<ShadApp> {
             actions: widget.actions,
             restorationScopeId: widget.restorationScopeId,
             localizationsDelegates: localizationsDelegates,
+            scrollBehavior: widget.scrollBehavior,
+          ),
+        );
+      case ShadAppType.custom:
+        return AnimatedTheme(
+          data: mTheme,
+          child: Builder(
+            builder: (BuildContext context) {
+              // Why are we surrounding a builder with a builder?
+              //
+              // The widget.builder may contain code that invokes
+              // Theme.of(), which should return the theme we selected
+              // above in AnimatedTheme. However, if we invoke
+              // widget.builder() directly as the child of AnimatedTheme
+              // then there is no Context separating them, and the
+              // widget.builder() will not find the theme. Therefore, we
+              // surround widget.builder with yet another builder so that
+              // a context separates them and Theme.of() correctly
+              // resolves to the theme we passed to AnimatedTheme.
+              return widget.appBuilder!(context, Theme.of(context));
+            },
           ),
         );
     }

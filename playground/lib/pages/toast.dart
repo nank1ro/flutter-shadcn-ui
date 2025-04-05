@@ -51,6 +51,7 @@ class ToastPage extends StatelessWidget {
                       decoration: ShadDecoration(
                         border: ShadBorder.all(
                           color: theme.colorScheme.destructiveForeground,
+                          width: 1,
                         ),
                       ),
                       onPressed: () => ShadToaster.of(context).hide(),

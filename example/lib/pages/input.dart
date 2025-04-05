@@ -40,11 +40,11 @@ class _InputPageState extends State<InputPage> {
           placeholder: const Text('Password'),
           enabled: enabled,
           obscureText: obscure,
-          prefix: const Padding(
+          leading: const Padding(
             padding: EdgeInsets.all(4.0),
-            child: ShadImage.square(size: 16, LucideIcons.lock),
+            child: Icon(LucideIcons.lock),
           ),
-          suffix: ShadButton(
+          trailing: ShadIconButton(
             width: 24,
             height: 24,
             padding: EdgeInsets.zero,
@@ -52,10 +52,7 @@ class _InputPageState extends State<InputPage> {
               secondaryBorder: ShadBorder.none,
               secondaryFocusedBorder: ShadBorder.none,
             ),
-            icon: ShadImage.square(
-              size: 16,
-              obscure ? LucideIcons.eyeOff : LucideIcons.eye,
-            ),
+            icon: Icon(obscure ? LucideIcons.eyeOff : LucideIcons.eye),
             onPressed: () {
               setState(() => obscure = !obscure);
             },

@@ -1,0 +1,35 @@
+---
+title: Separator
+sidebar:
+  order: 4
+---
+
+import Preview from "../../../components/Preview.astro";
+
+Visually or semantically separates content.
+
+<Preview src="separator?style=horizontal">
+
+```dart
+const ShadSeparator.horizontal(
+  thickness: 4,
+  margin: EdgeInsets.symmetric(horizontal: 20),
+  radius: BorderRadius.all(Radius.circular(4)),
+)
+```
+
+</Preview>
+
+## Destructive
+
+<Preview src="separator?style=vertical">
+
+```dart
+const ShadSeparator.vertical(
+  thickness: 4,
+  margin: EdgeInsets.symmetric(vertical: 20),
+  radius: BorderRadius.all(Radius.circular(4)),
+)
+```
+
+</Preview>

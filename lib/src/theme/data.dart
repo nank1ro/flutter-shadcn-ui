@@ -7,23 +7,30 @@ import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
+import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
+import 'package:shadcn_ui/src/theme/components/input_otp.dart';
+import 'package:shadcn_ui/src/theme/components/menubar.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/progress.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
+import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
+import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
+import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
@@ -82,6 +89,13 @@ class ShadThemeData extends ShadBaseTheme {
     ShadTabsTheme? tabsTheme,
     ShadThemeVariant? variant,
     ShadContextMenuTheme? contextMenuTheme,
+    ShadCalendarTheme? calendarTheme,
+    ShadDatePickerTheme? datePickerTheme,
+    ShadTimePickerTheme? timePickerTheme,
+    ShadInputOTPTheme? inputOTPTheme,
+    ShadMenubarTheme? menubarTheme,
+    ShadSeparatorTheme? separatorTheme,
+    ShadSonnerTheme? sonnerTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -218,6 +232,16 @@ class ShadThemeData extends ShadBaseTheme {
       tabsTheme: effectiveVariant.tabsTheme().mergeWith(tabsTheme),
       contextMenuTheme:
           effectiveVariant.contextMenuTheme().mergeWith(contextMenuTheme),
+      calendarTheme: effectiveVariant.calendarTheme().mergeWith(calendarTheme),
+      datePickerTheme:
+          effectiveVariant.datePickerTheme().mergeWith(datePickerTheme),
+      timePickerTheme:
+          effectiveVariant.timePickerTheme().mergeWith(timePickerTheme),
+      inputOTPTheme: effectiveVariant.inputOTPTheme().mergeWith(inputOTPTheme),
+      menubarTheme: effectiveVariant.menubarTheme().mergeWith(menubarTheme),
+      separatorTheme:
+          effectiveVariant.separatorTheme().mergeWith(separatorTheme),
+      sonnerTheme: effectiveVariant.sonnerTheme().mergeWith(sonnerTheme),
     );
   }
 
@@ -267,6 +291,13 @@ class ShadThemeData extends ShadBaseTheme {
     required super.disableSecondaryBorder,
     required super.tabsTheme,
     required super.contextMenuTheme,
+    required super.calendarTheme,
+    required super.datePickerTheme,
+    required super.timePickerTheme,
+    required super.inputOTPTheme,
+    required super.menubarTheme,
+    required super.separatorTheme,
+    required super.sonnerTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -361,6 +392,18 @@ class ShadThemeData extends ShadBaseTheme {
       tabsTheme: ShadTabsTheme.lerp(a.tabsTheme, b.tabsTheme, t),
       contextMenuTheme:
           ShadContextMenuTheme.lerp(a.contextMenuTheme, b.contextMenuTheme, t),
+      calendarTheme:
+          ShadCalendarTheme.lerp(a.calendarTheme, b.calendarTheme, t),
+      datePickerTheme:
+          ShadDatePickerTheme.lerp(a.datePickerTheme, b.datePickerTheme, t),
+      timePickerTheme:
+          ShadTimePickerTheme.lerp(a.timePickerTheme, b.timePickerTheme, t),
+      inputOTPTheme:
+          ShadInputOTPTheme.lerp(a.inputOTPTheme, b.inputOTPTheme, t),
+      menubarTheme: ShadMenubarTheme.lerp(a.menubarTheme, b.menubarTheme, t),
+      separatorTheme:
+          ShadSeparatorTheme.lerp(a.separatorTheme, b.separatorTheme, t),
+      sonnerTheme: ShadSonnerTheme.lerp(a.sonnerTheme, b.sonnerTheme, t),
     );
   }
 
@@ -413,7 +456,14 @@ class ShadThemeData extends ShadBaseTheme {
         other.hoverStrategies == hoverStrategies &&
         other.disableSecondaryBorder == disableSecondaryBorder &&
         other.tabsTheme == tabsTheme &&
-        other.contextMenuTheme == contextMenuTheme;
+        other.contextMenuTheme == contextMenuTheme &&
+        other.calendarTheme == calendarTheme &&
+        other.datePickerTheme == datePickerTheme &&
+        other.timePickerTheme == timePickerTheme &&
+        other.inputOTPTheme == inputOTPTheme &&
+        other.menubarTheme == menubarTheme &&
+        other.separatorTheme == separatorTheme &&
+        other.sonnerTheme == sonnerTheme;
   }
 
   @override
@@ -462,7 +512,14 @@ class ShadThemeData extends ShadBaseTheme {
         hoverStrategies.hashCode ^
         disableSecondaryBorder.hashCode ^
         tabsTheme.hashCode ^
-        contextMenuTheme.hashCode;
+        contextMenuTheme.hashCode ^
+        calendarTheme.hashCode ^
+        datePickerTheme.hashCode ^
+        timePickerTheme.hashCode ^
+        inputOTPTheme.hashCode ^
+        menubarTheme.hashCode ^
+        separatorTheme.hashCode ^
+        sonnerTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -511,6 +568,13 @@ class ShadThemeData extends ShadBaseTheme {
     bool? disableSecondaryBorder,
     ShadTabsTheme? tabsTheme,
     ShadContextMenuTheme? contextMenuTheme,
+    ShadCalendarTheme? calendarTheme,
+    ShadDatePickerTheme? datePickerTheme,
+    ShadTimePickerTheme? timePickerTheme,
+    ShadInputOTPTheme? inputOTPTheme,
+    ShadMenubarTheme? menubarTheme,
+    ShadSeparatorTheme? separatorTheme,
+    ShadSonnerTheme? sonnerTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -563,6 +627,13 @@ class ShadThemeData extends ShadBaseTheme {
           disableSecondaryBorder ?? this.disableSecondaryBorder,
       tabsTheme: tabsTheme ?? this.tabsTheme,
       contextMenuTheme: contextMenuTheme ?? this.contextMenuTheme,
+      calendarTheme: calendarTheme ?? this.calendarTheme,
+      datePickerTheme: datePickerTheme ?? this.datePickerTheme,
+      timePickerTheme: timePickerTheme ?? this.timePickerTheme,
+      inputOTPTheme: inputOTPTheme ?? this.inputOTPTheme,
+      menubarTheme: menubarTheme ?? this.menubarTheme,
+      separatorTheme: separatorTheme ?? this.separatorTheme,
+      sonnerTheme: sonnerTheme ?? this.sonnerTheme,
     );
   }
 }

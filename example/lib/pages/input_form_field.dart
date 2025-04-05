@@ -43,7 +43,11 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
             label: 'autovalidateMode',
             value: autovalidateMode,
             values: ShadAutovalidateMode.values,
-            onChanged: (value) => setState(() => autovalidateMode = value),
+            onChanged: (value) {
+              if (value != null) {
+                setState(() => autovalidateMode = value);
+              }
+            },
           ),
           MyStringProperty(
             label: 'Form Initial Value',
@@ -68,10 +72,7 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
               children: [
                 ShadInputFormField(
                   id: 'username',
-                  prefix: const ShadImage.square(
-                    size: 16,
-                    LucideIcons.user,
-                  ),
+                  leading: const Icon(LucideIcons.user),
                   label: const Text('Username'),
                   placeholder: const Text('Enter your username'),
                   description: const Text('This is your public display name.'),

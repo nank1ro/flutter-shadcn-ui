@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-const kDefaultFontFamily = 'Geist';
+const kDefaultFontFamily = 'packages/shadcn_ui/Geist';
+const kDefaultFontFamilyMono = 'packages/shadcn_ui/GeistMono';
 
 abstract class ShadTextDefaultTheme {
   static TextStyle h1Large({

@@ -4,6 +4,7 @@ description: |
   throw an exception, a widget is buggy, or something looks wrong.
 labels:
   - bug
+  - triage
 body:
   - type: markdown
     attributes:

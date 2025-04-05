@@ -10,6 +10,7 @@ import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/mouse_area.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
@@ -198,6 +199,10 @@ class ShadContextMenu extends StatefulWidget {
     this.decoration,
     this.filter,
     this.controller,
+    this.onTapOutside,
+    this.onTapInside,
+    this.onTapUpInside,
+    this.onTapUpOutside,
   });
 
   /// {@template ShadContextMenu.child}
@@ -257,6 +262,66 @@ class ShadContextMenu extends StatefulWidget {
   /// {@endtemplate}
   final ShadContextMenuController? controller;
 
+  /// {@template ShadContextMenu.onTapOutside}
+  /// A callback to be invoked when a tap down is detected outside of this
+  /// [TapRegion] and any other region with the same [groupId], if any.
+  ///
+  /// The [PointerDownEvent] passed to the function is the event that caused the
+  /// notification. If this region is part of a group (i.e. [groupId] is set),
+  /// then it's possible that the event may be outside of this immediate region,
+  /// although it will be within the region of one of the group members.
+  ///
+  /// See also:
+  /// * [onTapUpOutside], which is called when a tap up is detected outside
+  ///   of this region.
+  /// {@endtemplate}
+  final TapRegionCallback? onTapOutside;
+
+  /// {@template ShadContextMenu.onTapInside}
+  /// A callback to be invoked when a tap down is detected inside of this
+  /// [TapRegion], or any other tap region with the same [groupId], if any.
+  ///
+  /// The [PointerDownEvent] passed to the function is the event that caused the
+  /// notification. If this region is part of a group (i.e. [groupId] is set),
+  /// then it's possible that the event may be outside of this immediate region,
+  /// although it will be within the region of one of the group members.
+  ///
+  /// See also:
+  /// * [onTapUpInside], which is called when a tap up is detected inside
+  ///   of this region.
+  /// {@endtemplate}
+  final TapRegionCallback? onTapInside;
+
+  /// {@template ShadContextMenu.onTapUpInside}
+  /// A callback to be invoked when a tap up is detected inside of this
+  /// [TapRegion], or any other tap region with the same [groupId], if any.
+  ///
+  /// The [PointerUpEvent] passed to the function is the event that caused the
+  /// notification. If this region is part of a group (i.e. [groupId] is set),
+  /// then it's possible that the event may be outside of this immediate region,
+  /// although it will be within the region of one of the group members.
+  ///
+  /// See also:
+  /// * [onTapInside], which is called when a tap down is detected inside
+  ///   of this region.
+  /// {@endtemplate}
+  final TapRegionUpCallback? onTapUpInside;
+
+  /// {@template ShadContextMenu.onTapUpOutside}
+  /// A callback to be invoked when a tap up is detected outside of this
+  /// [TapRegion] and any other region with the same [groupId], if any.
+  ///
+  /// The [PointerUpEvent] passed to the function is the event that caused the
+  /// notification. If this region is part of a group (i.e. [groupId] is set),
+  /// then it's possible that the event may be outside of this immediate region,
+  /// although it will be within the region of one of the group members.
+  ///
+  /// See also:
+  /// * [onTapOutside], which is called when a tap down is detected outside
+  ///   of this region.
+  /// {@endtemplate}
+  final TapRegionUpCallback? onTapUpOutside;
+
   @override
   State<ShadContextMenu> createState() => ShadContextMenuState();
 }
@@ -303,7 +368,8 @@ class ShadContextMenuState extends State<ShadContextMenu> {
         const EdgeInsets.symmetric(vertical: 4);
 
     final effectiveDecoration =
-        widget.decoration ?? theme.contextMenuTheme.decoration;
+        (theme.contextMenuTheme.decoration ?? const ShadDecoration())
+            .mergeWith(widget.decoration);
 
     final effectiveFilter = widget.filter ?? theme.contextMenuTheme.filter;
 
@@ -330,6 +396,10 @@ class ShadContextMenuState extends State<ShadContextMenu> {
             constraints: effectiveConstraints,
             child: IntrinsicWidth(
               child: TapRegion(
+                onTapInside: widget.onTapInside,
+                onTapOutside: widget.onTapOutside,
+                onTapUpInside: widget.onTapUpInside,
+                onTapUpOutside: widget.onTapUpOutside,
                 groupId: kContextMenuGroupId,
                 child: FocusTraversalGroup(
                   policy: OrderedTraversalPolicy(),
@@ -547,8 +617,13 @@ class ShadContextMenuItem extends StatefulWidget {
 
   /// {@template ShadContextMenuItem.anchor}
   /// The anchor of the context menu item, defaults to
-  /// `ShadAnchor(overlayAlignment:
-  /// Alignment.topRight, offset: Offset(-8, -3))`.
+  /// ```dart
+  /// ShadAnchorAuto(
+  ///   offset: Offset(-8, parentItemController != null ? -5 : -3),
+  ///   targetAnchor: Alignment.topRight,
+  ///   followerAnchor: Alignment.bottomRight,
+  /// )
+  /// ```
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
@@ -676,9 +751,10 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
 
     final effectiveAnchor = widget.anchor ??
         theme.contextMenuTheme.anchor ??
-        ShadAnchor(
-          overlayAlignment: Alignment.topRight,
+        ShadAnchorAuto(
           offset: Offset(-8, parentItemController != null ? -5 : -3),
+          targetAnchor: Alignment.topRight,
+          followerAnchor: Alignment.bottomRight,
         );
 
     final effectiveHeight =
@@ -688,12 +764,12 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
         theme.contextMenuTheme.buttonVariant ??
         ShadButtonVariant.ghost;
 
-    final effectiveDecoration = widget.decoration ??
-        theme.contextMenuTheme.itemDecoration ??
-        const ShadDecoration(
-          secondaryBorder: ShadBorder.none,
-          secondaryFocusedBorder: ShadBorder.none,
-        );
+    final effectiveDecoration = const ShadDecoration(
+      secondaryBorder: ShadBorder.none,
+      secondaryFocusedBorder: ShadBorder.none,
+    )
+        .mergeWith(theme.contextMenuTheme.itemDecoration)
+        .mergeWith(widget.decoration);
 
     final effectiveTextStyle = widget.textStyle ??
         theme.contextMenuTheme.textStyle ??

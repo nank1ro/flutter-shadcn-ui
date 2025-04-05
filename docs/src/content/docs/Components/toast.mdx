@@ -3,12 +3,14 @@ title: Toast
 sidebar:
   order: 4
 ---
-import Preview from '../../../components/Preview.astro';
+
+import Preview from "../../../components/Preview.astro";
 
 A succinct message that is displayed temporarily.
 
-<Preview src="https://shadcn-ui-playground.web.app/toast?style=schedule" minHeight="400px">
- ```dart
+<Preview src="toast?style=schedule" minHeight="400px">
+
+```dart
 ShadButton.outline(
   child: const Text('Add to calendar'),
   onPressed: () {
@@ -26,12 +28,14 @@ ShadButton.outline(
   },
 ),
 ```
+
 </Preview>
 
 ## Simple
 
-<Preview src="https://shadcn-ui-playground.web.app/toast?style=simple" minHeight="400px">
- ```dart
+<Preview src="toast?style=simple" minHeight="400px">
+
+```dart
 ShadButton.outline(
   child: const Text('Show Toast'),
   onPressed: () {
@@ -43,12 +47,14 @@ ShadButton.outline(
   },
 ),
 ```
+
 </Preview>
 
 ## With Title
 
-<Preview src="https://shadcn-ui-playground.web.app/toast?style=withTitle" minHeight="400px">
- ```dart
+<Preview src="toast?style=withTitle" minHeight="400px">
+
+```dart
 ShadButton.outline(
   child: const Text('Show Toast'),
   onPressed: () {
@@ -62,12 +68,14 @@ ShadButton.outline(
   },
 ),
 ```
+
 </Preview>
 
 ## With Action
 
-<Preview src="https://shadcn-ui-playground.web.app/toast?style=withAction" minHeight="400px">
- ```dart
+<Preview src="toast?style=withAction" minHeight="400px">
+
+```dart
 ShadButton.outline(
   child: const Text('Show Toast'),
   onPressed: () {
@@ -85,12 +93,16 @@ ShadButton.outline(
   },
 ),
 ```
+
 </Preview>
 
 ## Destructive
 
-<Preview src="https://shadcn-ui-playground.web.app/toast?style=destructive" minHeight="400px">
+<Preview src="toast?style=destructive" minHeight="400px">
+
 ```dart
+final theme = ShadTheme.of(context);
+
 ShadButton.outline(
   child: const Text('Show Toast'),
   onPressed: () {
@@ -102,8 +114,9 @@ ShadButton.outline(
         action: ShadButton.destructive(
           child: const Text('Try again'),
           decoration: ShadDecoration(
-            border: ShadBorder(
+            border: ShadBorder.all(
               color: theme.colorScheme.destructiveForeground,
+              width: 1,
             ),
           ),
           onPressed: () => ShadToaster.of(context).hide(),
@@ -113,4 +126,5 @@ ShadButton.outline(
   },
 ),
 ```
+
 </Preview>

@@ -4,26 +4,29 @@ sidebar:
   order: 4
 ---
 
-import Preview from '../../../components/Preview.astro';
+import Preview from "../../../components/Preview.astro";
 
 Displays a form input field or a component that looks like an input field.
 
-<Preview src="https://shadcn-ui-playground.web.app/input?style=email">
- ```dart
+<Preview src="input?style=email">
+
+```dart
 ConstrainedBox(
   constraints: const BoxConstraints(maxWidth: 320),
   child: const ShadInput(
-    placeholder: 'Email',
+    placeholder: Text('Email'),
     keyboardType: TextInputType.emailAddress,
   ),
 ),
 ```
+
 </Preview>
 
-## With prefix and suffix
+## With leading and trailing
 
-<Preview src="https://shadcn-ui-playground.web.app/input?style=password">
- ```dart
+<Preview src="input?style=password">
+
+```dart
 class PasswordInput extends StatefulWidget {
   const PasswordInput({super.key});
 
@@ -39,11 +42,11 @@ class _PasswordInputState extends State<PasswordInput> {
     return ShadInput(
       placeholder: const Text('Password'),
       obscureText: obscure,
-      prefix: const Padding(
+      leading: const Padding(
         padding: EdgeInsets.all(4.0),
-        child: ShadImage.square(size: 16, LucideIcons.lock),
+        child: Icon(LucideIcons.lock),
       ),
-      suffix: ShadButton(
+      trailing: ShadButton(
         width: 24,
         height: 24,
         padding: EdgeInsets.zero,
@@ -51,10 +54,7 @@ class _PasswordInputState extends State<PasswordInput> {
           secondaryBorder: ShadBorder.none,
           secondaryFocusedBorder: ShadBorder.none,
         ),
-        icon: ShadImage.square(
-          size: 16,
-          obscure ? LucideIcons.eyeOff : LucideIcons.eye,
-        ),
+        icon: Icon(obscure ? LucideIcons.eyeOff : LucideIcons.eye),
         onPressed: () {
           setState(() => obscure = !obscure);
         },
@@ -63,12 +63,14 @@ class _PasswordInputState extends State<PasswordInput> {
   }
 }
 ```
+
 </Preview>
 
 ## Form
 
-<Preview src="https://shadcn-ui-playground.web.app/form?style=inputField" minHeight="300px">
- ```dart
+<Preview src="form?style=inputField" minHeight="300px">
+
+```dart
 ShadInputFormField(
   id: 'username',
   label: const Text('Username'),
@@ -83,4 +85,5 @@ ShadInputFormField(
   },
 ),
 ```
+
 </Preview>

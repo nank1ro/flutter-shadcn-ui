@@ -49,9 +49,11 @@ class _ToastPageState extends State<ToastPage> {
             value: alignment,
             values: Alignm.values,
             onChanged: (v) {
-              setState(() {
-                alignment = v;
-              });
+              if (v != null) {
+                setState(() {
+                  alignment = v;
+                });
+              }
             })
       ],
       children: [

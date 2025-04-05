@@ -12,29 +12,37 @@ import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
+import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
+import 'package:shadcn_ui/src/theme/components/input_otp.dart';
+import 'package:shadcn_ui/src/theme/components/menubar.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/progress.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
+import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
+import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
+import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -53,7 +61,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadButtonTheme primaryButtonTheme() {
     return ShadButtonTheme(
       backgroundColor: colorScheme.primary,
-      hoverBackgroundColor: colorScheme.primary.withOpacity(.9),
+      hoverBackgroundColor: colorScheme.primary.withValues(alpha: .9),
       foregroundColor: colorScheme.primaryForeground,
       hoverForegroundColor: colorScheme.primaryForeground,
       decoration: ShadDecoration(
@@ -64,6 +72,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
+      expands: false,
     );
   }
 
@@ -71,7 +80,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadButtonTheme secondaryButtonTheme() {
     return ShadButtonTheme(
       backgroundColor: colorScheme.secondary,
-      hoverBackgroundColor: colorScheme.secondary.withOpacity(.8),
+      hoverBackgroundColor: colorScheme.secondary.withValues(alpha: .8),
       foregroundColor: colorScheme.secondaryForeground,
       hoverForegroundColor: colorScheme.secondaryForeground,
       decoration: ShadDecoration(
@@ -82,6 +91,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
+      expands: false,
     );
   }
 
@@ -89,7 +99,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadButtonTheme destructiveButtonTheme() {
     return ShadButtonTheme(
       backgroundColor: colorScheme.destructive,
-      hoverBackgroundColor: colorScheme.destructive.withOpacity(.9),
+      hoverBackgroundColor: colorScheme.destructive.withValues(alpha: .9),
       foregroundColor: colorScheme.destructiveForeground,
       hoverForegroundColor: colorScheme.destructiveForeground,
       decoration: ShadDecoration(
@@ -100,6 +110,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
+      expands: false,
     );
   }
 
@@ -114,9 +125,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           radius: radius,
           color: colorScheme.input,
           padding: const EdgeInsets.all(1),
+          width: 1,
         ),
       ),
       gap: 8,
+      expands: false,
     );
   }
 
@@ -134,6 +147,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ),
       ),
       gap: 8,
+      expands: false,
     );
   }
 
@@ -144,6 +158,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       hoverForegroundColor: colorScheme.primary,
       hoverTextDecoration: TextDecoration.underline,
       gap: 8,
+      expands: false,
     );
   }
 
@@ -174,7 +189,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadBadgeTheme primaryBadgeTheme() {
     return ShadBadgeTheme(
       backgroundColor: colorScheme.primary,
-      hoverBackgroundColor: colorScheme.primary.withOpacity(.8),
+      hoverBackgroundColor: colorScheme.primary.withValues(alpha: .8),
       foregroundColor: colorScheme.primaryForeground,
       shape: const StadiumBorder(),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -185,7 +200,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadBadgeTheme secondaryBadgeTheme() {
     return ShadBadgeTheme(
       backgroundColor: colorScheme.secondary,
-      hoverBackgroundColor: colorScheme.secondary.withOpacity(.8),
+      hoverBackgroundColor: colorScheme.secondary.withValues(alpha: .8),
       foregroundColor: colorScheme.secondaryForeground,
       shape: const StadiumBorder(),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -196,7 +211,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadBadgeTheme destructiveBadgeTheme() {
     return ShadBadgeTheme(
       backgroundColor: colorScheme.destructive,
-      hoverBackgroundColor: colorScheme.destructive.withOpacity(.8),
+      hoverBackgroundColor: colorScheme.destructive.withValues(alpha: .8),
       foregroundColor: colorScheme.destructiveForeground,
       shape: const StadiumBorder(),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -237,9 +252,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         shadows: ShadShadows.md,
       ),
       anchor: const ShadAnchorAuto(
-        preferBelow: false,
-        verticalOffset: 24,
+        followerAnchor: Alignment.topCenter,
+        targetAnchor: Alignment.topCenter,
       ),
+      duration: Animate.defaultDuration,
+      reverseDuration: Duration.zero,
     );
   }
 
@@ -267,9 +284,10 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         border: ShadBorder.all(
           radius: radius,
           color: colorScheme.border,
+          width: 1,
         ),
       ),
-      anchor: const ShadAnchorAuto(verticalOffset: 24),
+      anchor: const ShadAnchorAuto(),
     );
   }
 
@@ -302,22 +320,21 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   }
 
   static ShadTextTheme get defaultTextTheme {
-    const defaultFontFamily = 'packages/shadcn_ui/$kDefaultFontFamily';
     return ShadTextTheme.custom(
-      h1Large: ShadTextDefaultTheme.h1Large(family: defaultFontFamily),
-      h1: ShadTextDefaultTheme.h1(family: defaultFontFamily),
-      h2: ShadTextDefaultTheme.h2(family: defaultFontFamily),
-      h3: ShadTextDefaultTheme.h3(family: defaultFontFamily),
-      h4: ShadTextDefaultTheme.h4(family: defaultFontFamily),
-      p: ShadTextDefaultTheme.p(family: defaultFontFamily),
-      blockquote: ShadTextDefaultTheme.blockquote(family: defaultFontFamily),
-      table: ShadTextDefaultTheme.table(family: defaultFontFamily),
-      list: ShadTextDefaultTheme.list(family: defaultFontFamily),
-      lead: ShadTextDefaultTheme.lead(family: defaultFontFamily),
-      large: ShadTextDefaultTheme.large(family: defaultFontFamily),
-      small: ShadTextDefaultTheme.small(family: defaultFontFamily),
-      muted: ShadTextDefaultTheme.muted(family: defaultFontFamily),
-      family: defaultFontFamily,
+      h1Large: ShadTextDefaultTheme.h1Large(family: kDefaultFontFamily),
+      h1: ShadTextDefaultTheme.h1(family: kDefaultFontFamily),
+      h2: ShadTextDefaultTheme.h2(family: kDefaultFontFamily),
+      h3: ShadTextDefaultTheme.h3(family: kDefaultFontFamily),
+      h4: ShadTextDefaultTheme.h4(family: kDefaultFontFamily),
+      p: ShadTextDefaultTheme.p(family: kDefaultFontFamily),
+      blockquote: ShadTextDefaultTheme.blockquote(family: kDefaultFontFamily),
+      table: ShadTextDefaultTheme.table(family: kDefaultFontFamily),
+      list: ShadTextDefaultTheme.list(family: kDefaultFontFamily),
+      lead: ShadTextDefaultTheme.lead(family: kDefaultFontFamily),
+      large: ShadTextDefaultTheme.large(family: kDefaultFontFamily),
+      small: ShadTextDefaultTheme.small(family: kDefaultFontFamily),
+      muted: ShadTextDefaultTheme.muted(family: kDefaultFontFamily),
+      family: kDefaultFontFamily,
     );
   }
 
@@ -332,12 +349,13 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           radius: radius,
           color: colorScheme.input,
           padding: const EdgeInsets.all(1),
+          width: 1,
         ),
       ),
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
-      anchor: const ShadAnchor(offset: Offset(1, 4)),
+      anchor: const ShadAnchorAuto(offset: Offset(1, 4)),
       searchPadding: const EdgeInsets.all(12),
     );
   }
@@ -407,6 +425,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           color: colorScheme.primary,
           radius: radius,
           padding: const EdgeInsets.all(1),
+          width: 1,
         ),
         focusedBorder: ShadBorder.all(width: 2),
       ),
@@ -422,9 +441,10 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
         border: ShadBorder.all(
-          width: 2,
+          width: 1,
           color: colorScheme.border,
           radius: radius,
+          padding: const EdgeInsets.all(1),
         ),
       ),
       gap: 8,
@@ -447,9 +467,15 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         border: ShadBorder.all(
           color: colorScheme.primary,
           padding: const EdgeInsets.all(1),
+          width: 1,
         ),
         focusedBorder: ShadBorder.all(radius: radius.add(radius / 2), width: 2),
       ),
+      spacing: 4,
+      alignment: WrapAlignment.start,
+      runAlignment: WrapAlignment.start,
+      crossAxisAlignment: WrapCrossAlignment.start,
+      axis: Axis.vertical,
     );
   }
 
@@ -457,13 +483,13 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadToastTheme primaryToastTheme() {
     return ShadToastTheme(
       alignment: Alignment.bottomRight,
-      closeIconSrc: LucideIcons.x,
+      closeIconData: LucideIcons.x,
       titleStyle: effectiveTextTheme.muted.copyWith(
         fontWeight: FontWeight.w500,
         color: colorScheme.foreground,
       ),
       descriptionStyle: effectiveTextTheme.muted.copyWith(
-        color: colorScheme.foreground.withOpacity(.9),
+        color: colorScheme.foreground.withValues(alpha: .9),
       ),
       actionPadding: const EdgeInsets.only(left: 16),
       border: Border.all(color: colorScheme.border),
@@ -480,13 +506,13 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadToastTheme destructiveToastTheme() {
     return ShadToastTheme(
       alignment: Alignment.bottomRight,
-      closeIconSrc: LucideIcons.x,
+      closeIconData: LucideIcons.x,
       titleStyle: effectiveTextTheme.muted.copyWith(
         fontWeight: FontWeight.w500,
         color: colorScheme.destructiveForeground,
       ),
       descriptionStyle: effectiveTextTheme.muted.copyWith(
-        color: colorScheme.destructiveForeground.withOpacity(.9),
+        color: colorScheme.destructiveForeground.withValues(alpha: .9),
       ),
       actionPadding: const EdgeInsets.only(left: 16),
       border: Border.all(color: colorScheme.border),
@@ -508,9 +534,9 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           color: colorScheme.border,
           radius: radius,
           padding: const EdgeInsets.all(16),
+          width: 1,
         ),
       ),
-      iconSize: const Size.square(16),
       iconColor: colorScheme.foreground,
       titleStyle: effectiveTextTheme.p.copyWith(
         color: colorScheme.foreground,
@@ -532,9 +558,9 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           color: colorScheme.destructive,
           radius: radius,
           padding: const EdgeInsets.all(16),
+          width: 1,
         ),
       ),
-      iconSize: const Size.square(16),
       iconColor: colorScheme.destructive,
       titleStyle: effectiveTextTheme.p.copyWith(
         color: colorScheme.destructive,
@@ -550,7 +576,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   @override
   ShadDialogTheme primaryDialogTheme() {
     return ShadDialogTheme(
-      closeIconSrc: LucideIcons.x,
+      closeIconData: LucideIcons.x,
       radius: const BorderRadius.all(Radius.circular(8)),
       backgroundColor: colorScheme.background,
       removeBorderRadiusWhenTiny: true,
@@ -614,11 +640,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       thumbColor: colorScheme.background,
       thumbBorderColor: colorScheme.primary,
       disabledThumbColor: colorScheme.background,
-      disabledThumbBorderColor: colorScheme.primary.withOpacity(.5),
+      disabledThumbBorderColor: colorScheme.primary.withValues(alpha: .5),
       activeTrackColor: colorScheme.primary,
       inactiveTrackColor: colorScheme.secondary,
-      disabledActiveTrackColor: colorScheme.primary.withOpacity(.5),
-      disabledInactiveTrackColor: colorScheme.secondary.withOpacity(.5),
+      disabledActiveTrackColor: colorScheme.primary.withValues(alpha: .5),
+      disabledInactiveTrackColor: colorScheme.secondary.withValues(alpha: .5),
       trackHeight: 8,
       thumbRadius: 10,
     );
@@ -647,7 +673,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
     const bezierCurve = Cubic(0.87, 0, 0.13, 1);
     const duration = Duration(milliseconds: 300);
     return ShadAccordionTheme(
-      iconSrc: LucideIcons.chevronDown,
+      iconData: LucideIcons.chevronDown,
       padding: const EdgeInsets.symmetric(vertical: 16),
       underlineTitleOnHover: true,
       duration: duration,
@@ -694,14 +720,14 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       dividerColor: colorScheme.border,
       resetOnDoubleTap: true,
       handleDecoration: ShadDecoration(
-        merge: false,
         color: colorScheme.border,
         border: ShadBorder.all(
           radius: const BorderRadius.all(Radius.circular(4)),
           width: 0,
         ),
+        disableSecondaryBorder: true,
       ),
-      handleSize: const Size.square(10),
+      handleSize: 10,
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
@@ -733,9 +759,17 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       dragStartBehavior: DragStartBehavior.start,
       padding: const EdgeInsets.all(4),
       decoration: ShadDecoration(
-        merge: false,
         color: colorScheme.muted,
         border: ShadBorder.all(radius: radius, width: 0),
+      ),
+      tabDecoration: ShadDecoration(
+        border: ShadBorder.all(
+          radius: const BorderRadius.all(Radius.circular(4)),
+          width: 0,
+        ),
+        focusedBorder: ShadBorder.all(
+          radius: const BorderRadius.all(Radius.circular(4)),
+        ),
       ),
       gap: 8,
       expandContent: false,
@@ -774,4 +808,207 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
             effectiveTextTheme.muted.copyWith(fontSize: 12, height: 1),
         selectedBackgroundColor: colorScheme.accent,
       );
+
+  @override
+  ShadCalendarTheme calendarTheme() => ShadCalendarTheme(
+        hideNavigation: false,
+        yearSelectorMinWidth: 100,
+        monthSelectorMinWidth: 130,
+        yearSelectorPadding:
+            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        monthSelectorPadding:
+            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        navigationButtonSize: 28,
+        navigationButtonIconSize: 16,
+        backNavigationButtonIconData: LucideIcons.chevronLeft,
+        forwardNavigationButtonIconData: LucideIcons.chevronRight,
+        navigationButtonPadding: EdgeInsets.zero,
+        navigationButtonDisabledOpacity: .5,
+        decoration: ShadDecoration(
+          border: ShadBorder.all(
+            radius: radius,
+            padding: const EdgeInsets.all(12),
+            color: colorScheme.border,
+            width: 1,
+          ),
+        ),
+        spacingBetweenMonths: 16,
+        runSpacingBetweenMonths: 16,
+        headerHeight: 38,
+        headerPadding: const EdgeInsets.only(bottom: 16),
+        captionLayoutGap: 8,
+        headerTextStyle: effectiveTextTheme.small,
+        weekdaysPadding: const EdgeInsets.only(bottom: 8),
+        weekNumbersHeaderText: '#',
+        weekNumbersHeaderTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+        weekNumbersTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+        dayButtonSize: 36,
+        dayButtonOutsideMonthOpacity: .5,
+        dayButtonPadding: EdgeInsets.zero,
+        selectedDayButtonTextStyle: textTheme().small.copyWith(
+              fontWeight: FontWeight.normal,
+              color: colorScheme.primaryForeground,
+            ),
+        insideRangeDayButtonTextStyle: textTheme().small.copyWith(
+              color: colorScheme.foreground,
+            ),
+        dayButtonTextStyle: textTheme().small.copyWith(
+              fontWeight: FontWeight.normal,
+              color: colorScheme.foreground,
+            ),
+        dayButtonOutsideMonthVariant: ShadButtonVariant.ghost,
+        dayButtonOutsideMonthTextStyle: textTheme().muted,
+        dayButtonVariant: ShadButtonVariant.ghost,
+        todayButtonVariant: ShadButtonVariant.secondary,
+        selectedDayButtonVariant: ShadButtonVariant.primary,
+        selectedDayButtonOusideMonthVariant: ShadButtonVariant.secondary,
+        insideRangeDayButtonVariant: ShadButtonVariant.secondary,
+        weekdaysTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+        weekdaysTextAlign: TextAlign.center,
+        gridMainAxisSpacing: 8,
+        gridCrossAxisSpacing: 0,
+        hideWeekdayNames: false,
+        showOutsideDays: true,
+        showWeekNumbers: false,
+        weekStartsOn: 1,
+        fixedWeeks: false,
+        allowDeselection: false,
+      );
+
+  @override
+  ShadDatePickerTheme datePickerTheme() {
+    return const ShadDatePickerTheme(
+      calendarDecoration: ShadDecoration.none,
+      allowDeselection: true,
+      buttonVariant: ShadButtonVariant.outline,
+      width: 276,
+      mainAxisAlignment: MainAxisAlignment.start,
+      iconData: LucideIcons.calendar,
+    );
+  }
+
+  @override
+  ShadTimePickerTheme timePickerTheme() {
+    return ShadTimePickerTheme(
+      axis: Axis.horizontal,
+      spacing: 4,
+      runSpacing: 4,
+      jumpToNextFieldWhenFilled: true,
+      alignment: WrapAlignment.center,
+      runAlignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      gap: 2,
+      style: effectiveTextTheme.muted.copyWith(
+        color: colorScheme.foreground,
+        fontSize: 16,
+        height: 24 / 16,
+      ),
+      placeholderStyle: effectiveTextTheme.muted.copyWith(
+        fontSize: 16,
+        height: 24 / 16,
+      ),
+      labelStyle: effectiveTextTheme.small.copyWith(fontSize: 12),
+      fieldWidth: 50,
+      fieldPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      periodHeight: 44,
+      periodMinWidth: 65,
+      fieldDecoration: ShadDecoration(
+        border: ShadBorder.all(
+          width: 1,
+          color: colorScheme.border,
+          radius: radius,
+        ),
+      ),
+      periodDecoration: ShadDecoration(
+        border: ShadBorder.all(
+          width: 2,
+          color: colorScheme.border,
+          radius: radius,
+        ),
+        focusedBorder: ShadBorder.all(
+          width: 2,
+          color: colorScheme.ring,
+          radius: radius,
+          padding: const EdgeInsets.symmetric(horizontal: 1),
+        ),
+      ),
+    );
+  }
+
+  @override
+  ShadInputOTPTheme inputOTPTheme() {
+    return ShadInputOTPTheme(
+      width: 40,
+      height: 40,
+      style: effectiveTextTheme.muted.copyWith(
+        color: colorScheme.foreground,
+        fontFamily: kDefaultFontFamilyMono,
+      ),
+      firstRadius: BorderRadius.only(
+        topLeft: radius.topLeft,
+        bottomLeft: radius.bottomLeft,
+      ),
+      lastRadius: BorderRadius.only(
+        topRight: radius.topRight,
+        bottomRight: radius.bottomRight,
+      ),
+      singleRadius: radius,
+      middleRadius: BorderRadius.zero,
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      decoration: ShadDecoration(
+        disableSecondaryBorder: true,
+        focusedBorder: ShadBorder.all(
+          color: colorScheme.ring,
+          width: 2,
+        ),
+        border: ShadBorder(
+          top: ShadBorderSide(color: colorScheme.border, width: 1),
+          bottom: ShadBorderSide(color: colorScheme.border, width: 1),
+          right: ShadBorderSide(color: colorScheme.border, width: 1),
+          padding: const EdgeInsets.all(1),
+        ),
+      ),
+    );
+  }
+
+  @override
+  ShadMenubarTheme menubarTheme() {
+    return ShadMenubarTheme(
+      radius: radius,
+      padding: const EdgeInsets.all(4),
+      border: ShadBorder.all(color: colorScheme.border, width: 1),
+      anchor: const ShadAnchorAuto(
+        offset: Offset(-8, 8),
+        followerAnchor: Alignment.bottomRight,
+        targetAnchor: Alignment.bottomLeft,
+      ),
+      buttonHeight: 32,
+      buttonVariant: ShadButtonVariant.ghost,
+      buttonSelectedBackgroundColor: colorScheme.accent,
+      buttonDecoration: const ShadDecoration(disableSecondaryBorder: true),
+    );
+  }
+
+  @override
+  ShadSeparatorTheme separatorTheme() {
+    return ShadSeparatorTheme(
+      thickness: 1,
+      color: colorScheme.border,
+      verticalMargin: const EdgeInsets.symmetric(horizontal: 16),
+      horizontalMargin: const EdgeInsets.symmetric(vertical: 16),
+    );
+  }
+
+  @override
+  ShadSonnerTheme sonnerTheme() {
+    return const ShadSonnerTheme(
+      alignment: Alignment.bottomRight,
+      padding: EdgeInsets.all(16),
+      collapsedGap: 16,
+      expandedGap: 8,
+      scaleFactor: 0.05,
+      animationDuration: Duration(milliseconds: 300),
+      animationCurve: Cubic(0.215, 0.61, 0.355, 1),
+    );
+  }
 }

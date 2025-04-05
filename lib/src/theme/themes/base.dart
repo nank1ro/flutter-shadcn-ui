@@ -5,23 +5,30 @@ import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
+import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
+import 'package:shadcn_ui/src/theme/components/input_otp.dart';
+import 'package:shadcn_ui/src/theme/components/menubar.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/progress.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
+import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
+import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
+import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
@@ -76,6 +83,13 @@ abstract class ShadBaseTheme {
     required this.disableSecondaryBorder,
     required this.tabsTheme,
     required this.contextMenuTheme,
+    required this.calendarTheme,
+    required this.datePickerTheme,
+    required this.timePickerTheme,
+    required this.inputOTPTheme,
+    required this.menubarTheme,
+    required this.separatorTheme,
+    required this.sonnerTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -123,6 +137,13 @@ abstract class ShadBaseTheme {
   final bool disableSecondaryBorder;
   final ShadTabsTheme tabsTheme;
   final ShadContextMenuTheme contextMenuTheme;
+  final ShadCalendarTheme calendarTheme;
+  final ShadDatePickerTheme datePickerTheme;
+  final ShadTimePickerTheme timePickerTheme;
+  final ShadInputOTPTheme inputOTPTheme;
+  final ShadMenubarTheme menubarTheme;
+  final ShadSeparatorTheme separatorTheme;
+  final ShadSonnerTheme sonnerTheme;
 }
 
 @immutable
@@ -165,4 +186,11 @@ abstract class ShadThemeVariant {
   ShadHoverStrategies hoverStrategies();
   ShadTabsTheme tabsTheme();
   ShadContextMenuTheme contextMenuTheme();
+  ShadCalendarTheme calendarTheme();
+  ShadDatePickerTheme datePickerTheme();
+  ShadTimePickerTheme timePickerTheme();
+  ShadInputOTPTheme inputOTPTheme();
+  ShadMenubarTheme menubarTheme();
+  ShadSeparatorTheme separatorTheme();
+  ShadSonnerTheme sonnerTheme();
 }

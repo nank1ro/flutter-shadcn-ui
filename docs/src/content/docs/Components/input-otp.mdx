@@ -1,0 +1,107 @@
+---
+title: InputOTP
+sidebar:
+  order: 4
+---
+
+import Preview from "../../../components/Preview.astro";
+
+Accessible one-time password component with copy paste functionality.
+
+<Preview src="input-otp?style=primary">
+
+```dart
+ShadInputOTP(
+  onChanged: (v) => print('OTP: $v'),
+  maxLength: 6,
+  children: const [
+    ShadInputOTPGroup(
+      children: [
+        ShadInputOTPSlot(),
+        ShadInputOTPSlot(),
+        ShadInputOTPSlot(),
+      ],
+    ),
+    Icon(size: 24, LucideIcons.dot),
+    ShadInputOTPGroup(
+      children: [
+        ShadInputOTPSlot(),
+        ShadInputOTPSlot(),
+        ShadInputOTPSlot(),
+      ],
+    ),
+  ],
+)
+```
+
+</Preview>
+
+## InputFormatters
+
+Using InputFormatters you can restrict the input characters.
+The example below shows how to restrict the input to only numbers.
+
+<Preview src="input-otp?style=pattern">
+
+```dart
+ShadInputOTP(
+  onChanged: (v) => print('OTP: $v'),
+  maxLength: 4,
+  keyboardType: TextInputType.number,
+  inputFormatters: [
+    FilteringTextInputFormatter.digitsOnly,
+  ],
+  children: const [
+    ShadInputOTPGroup(
+      children: [
+        ShadInputOTPSlot(),
+        ShadInputOTPSlot(),
+        ShadInputOTPSlot(),
+        ShadInputOTPSlot(),
+      ],
+    ),
+  ],
+)
+```
+
+</Preview>
+
+See also `UpperCaseTextInputFormatter` and `LowerCaseTextInputFormatter` which are provided by the package.
+
+## Form
+
+<Preview src="form?style=inputOTPField" minHeight="300px">
+
+```dart
+ShadInputOTPFormField(
+  id: 'otp',
+  maxLength: 6,
+  label: const Text('OTP'),
+  description: const Text('Enter your OTP.'),
+  validator: (v) {
+    if (v.contains(' ')) {
+      return 'Fill the whole OTP code';
+    }
+    return null;
+  },
+  children: const [
+    ShadInputOTPGroup(
+      children: [
+        ShadInputOTPSlot(),
+        ShadInputOTPSlot(),
+        ShadInputOTPSlot(),
+      ],
+    ),
+    Icon(size: 24, LucideIcons.dot),
+    ShadInputOTPGroup(
+      children: [
+        ShadInputOTPSlot(),
+        ShadInputOTPSlot(),
+        ShadInputOTPSlot(),
+      ],
+    ),
+  ],
+)
+```
+
+</Preview>

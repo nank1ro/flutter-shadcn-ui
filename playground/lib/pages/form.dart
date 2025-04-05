@@ -9,6 +9,11 @@ enum FormStyle {
   switchField,
   selectField,
   radioField,
+  datePickerField,
+  dateRangePickerField,
+  timePickerField,
+  periodTimePickerField,
+  inputOTPField,
 }
 
 enum NotifyAbout {
@@ -137,6 +142,78 @@ class _FormPageState extends State<FormPage> {
                         }
                         return null;
                       },
+                    ),
+                  FormStyle.datePickerField => ShadDatePickerFormField(
+                      label: const Text('Date of birth'),
+                      onChanged: print,
+                      description: const Text(
+                          'Your date of birth is used to calculate your age.'),
+                      validator: (v) {
+                        if (v == null) {
+                          return 'A date of birth is required.';
+                        }
+                        return null;
+                      },
+                    ),
+                  FormStyle.dateRangePickerField =>
+                    ShadDateRangePickerFormField(
+                      label: const Text('Range of dates'),
+                      onChanged: print,
+                      description: const Text(
+                          'Select the range of dates you want to search between.'),
+                      validator: (v) {
+                        if (v == null) return 'A range of dates is required.';
+                        if (v.start == null) {
+                          return 'The start date is required.';
+                        }
+                        if (v.end == null) return 'The end date is required.';
+
+                        return null;
+                      },
+                    ),
+                  FormStyle.timePickerField => ShadTimePickerFormField(
+                      label: const Text('Pick a time'),
+                      onChanged: print,
+                      description:
+                          const Text('The time of the day you want to pick'),
+                      validator: (v) => v == null ? 'A time is required' : null,
+                    ),
+                  FormStyle.periodTimePickerField =>
+                    ShadTimePickerFormField.period(
+                      label: const Text('Pick a time'),
+                      onChanged: print,
+                      description:
+                          const Text('The time of the day you want to pick'),
+                      validator: (v) => v == null ? 'A time is required' : null,
+                    ),
+                  FormStyle.inputOTPField => ShadInputOTPFormField(
+                      id: 'otp',
+                      maxLength: 6,
+                      label: const Text('OTP'),
+                      description: const Text('Enter your OTP.'),
+                      validator: (v) {
+                        if (v.contains(' ')) {
+                          return 'Fill the whole OTP code';
+                        }
+                        return null;
+                      },
+                      children: const [
+                        ShadInputOTPGroup(
+                          children: [
+                            ShadInputOTPSlot(),
+                            ShadInputOTPSlot(),
+                            ShadInputOTPSlot(),
+                          ],
+                        ),
+                        Icon(size: 24, LucideIcons.dot),
+                        ShadInputOTPGroup(
+                          children: [
+                            ShadInputOTPSlot(),
+                            ShadInputOTPSlot(),
+                            ShadInputOTPSlot(),
+                          ],
+                        ),
+                      ],
                     ),
                 },
                 const SizedBox(height: 16),

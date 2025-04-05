@@ -3,6 +3,7 @@ import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 class ShadSwitchFormField extends ShadFormBuilderField<bool> {
   ShadSwitchFormField({
@@ -18,21 +19,49 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
     super.enabled,
     super.autovalidateMode,
     super.restorationId,
+
+    /// {@macro ShadFormBuilderField.initialValue}
     required bool initialValue,
+
+    /// {@macro ShadSwitch.decoration}
     ShadDecoration? decoration,
     super.focusNode,
+
+    /// {@macro ShadFormBuilderField.validator}
     String? Function(bool)? validator,
+
+    /// {@macro ShadSwitch.thumbColor}
     Color? thumbColor,
-    Color? trackColor,
+
+    /// {@macro ShadSwitch.uncheckedTrackColor}
     Color? uncheckedTrackColor,
+
+    /// {@macro ShadSwitch.checkedTrackColor}
     Color? checkedTrackColor,
+
+    /// {@macro ShadSwitch.width}
     double? width,
+
+    /// {@macro ShadSwitch.margin}
     double? margin,
+
+    /// {@macro ShadSwitch.duration}
     Duration? duration,
+
+    /// {@macro ShadSwitch.inputLabel}
     Widget? inputLabel,
+
+    /// {@macro ShadSwitch.inputSublabel}
     Widget? inputSublabel,
+
+    /// {@macro ShadSwitch.padding}
     EdgeInsets? padding,
+
+    /// {@macro ShadSwitch.direction}
     TextDirection? direction,
+
+    /// {@macro ShadSwitch.orderPolicy}
+    WidgetOrderPolicy? orderPolicy,
   }) : super(
           initialValue: initialValue,
           onChanged: (!enabled || onChanged == null)
@@ -64,9 +93,9 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
               width: width,
               margin: margin,
               thumbColor: thumbColor,
-              trackColor: trackColor,
               uncheckedTrackColor: uncheckedTrackColor,
               checkedTrackColor: checkedTrackColor,
+              orderPolicy: orderPolicy,
             );
           },
         );

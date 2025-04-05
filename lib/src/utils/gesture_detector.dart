@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/extensions/tap_details.dart';
 
 @immutable
 class ShadHoverStrategies {
@@ -167,6 +168,31 @@ class ShadGestureDetector extends StatelessWidget {
   /// duplication of information.
   final bool excludeFromSemantics;
 
+  // See https://github.com/nank1ro/flutter-shadcn-ui/issues/319
+  Offset correctGlobalPosition(BuildContext context, Offset globalPosition) {
+    // Get the root navigator's overlay (screen coordinates)
+    final rootNavigator = Navigator.maybeOf(context, rootNavigator: true);
+    final rootOverlay = rootNavigator?.overlay;
+    if (rootOverlay == null) return globalPosition;
+
+    // Get the shell navigator's overlay (nearest Navigator)
+    final shellNavigator = Navigator.maybeOf(context);
+    final shellOverlay = shellNavigator?.overlay;
+    if (shellOverlay == null || shellOverlay == rootOverlay) {
+      return globalPosition;
+    }
+
+    final shellRenderObject = shellOverlay.context.findRenderObject();
+    if (shellRenderObject is! RenderBox) {
+      return globalPosition;
+    }
+
+    final shellOffset = shellRenderObject.localToGlobal(Offset.zero);
+    final correctedPosition = globalPosition - shellOffset;
+
+    return correctedPosition;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -198,15 +224,24 @@ class ShadGestureDetector extends StatelessWidget {
 
     void effectiveOnTapDown(TapDownDetails d) {
       setHover(ShadHoverStrategy.onTapDown);
-      onTapDown?.call(d);
+      final correctedGlobalPosition =
+          correctGlobalPosition(context, d.globalPosition);
+      onTapDown?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
     void effectiveOnSecondaryTapDown(TapDownDetails d) {
-      onSecondaryTapDown?.call(d);
+      final correctedGlobalPosition =
+          correctGlobalPosition(context, d.globalPosition);
+      onSecondaryTapDown?.call(
+        d.copyWith(globalPosition: correctedGlobalPosition),
+      );
     }
 
     void effectiveOnSecondaryTapUp(TapUpDetails d) {
-      onSecondaryTapUp?.call(d);
+      final correctedGlobalPosition =
+          correctGlobalPosition(context, d.globalPosition);
+      onSecondaryTapUp
+          ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
     void effectiveOnSecondaryTapCancel() {
@@ -219,7 +254,9 @@ class ShadGestureDetector extends StatelessWidget {
 
     void effectiveOnTapUp(TapUpDetails d) {
       setHover(ShadHoverStrategy.onTapUp);
-      onTapUp?.call(d);
+      final correctedGlobalPosition =
+          correctGlobalPosition(context, d.globalPosition);
+      onTapUp?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
     void effectiveOnTapCancel() {
@@ -229,7 +266,10 @@ class ShadGestureDetector extends StatelessWidget {
 
     void effectiveOnDoubleTapDown(TapDownDetails d) {
       setHover(ShadHoverStrategy.onDoubleTapDown);
-      onDoubleTapDown?.call(d);
+      final correctedGlobalPosition =
+          correctGlobalPosition(context, d.globalPosition);
+      onDoubleTapDown
+          ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
     void effectiveOnDoubleTapCancel() {
@@ -239,7 +279,10 @@ class ShadGestureDetector extends StatelessWidget {
 
     void effectiveOnLongPressStart(LongPressStartDetails d) {
       setHover(ShadHoverStrategy.onLongPressStart);
-      onLongPressStart?.call(d);
+      final correctedGlobalPosition =
+          correctGlobalPosition(context, d.globalPosition);
+      onLongPressStart
+          ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
     void effectiveOnLongPressCancel() {
@@ -254,12 +297,17 @@ class ShadGestureDetector extends StatelessWidget {
 
     void effectiveOnLongPressDown(LongPressDownDetails d) {
       setHover(ShadHoverStrategy.onLongPressDown);
-      onLongPressDown?.call(d);
+      final correctedGlobalPosition =
+          correctGlobalPosition(context, d.globalPosition);
+      onLongPressDown
+          ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
     void effectiveOnLongPressEnd(LongPressEndDetails d) {
       setHover(ShadHoverStrategy.onLongPressEnd);
-      onLongPressEnd?.call(d);
+      final correctedGlobalPosition =
+          correctGlobalPosition(context, d.globalPosition);
+      onLongPressEnd?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
     gestures[TapGestureRecognizer] =

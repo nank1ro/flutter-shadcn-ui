@@ -6,8 +6,16 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
+/// {@template ShadSwitch}
+/// A customizable switch widget, styled according to the Shadcn UI design
+/// system.
+///
+/// Allows users to toggle between two states: on or off.
+/// {@endtemplate}
 class ShadSwitch extends StatefulWidget {
+  /// {@macro ShadSwitch}
   const ShadSwitch({
     super.key,
     required this.value,
@@ -15,7 +23,6 @@ class ShadSwitch extends StatefulWidget {
     this.onChanged,
     this.focusNode,
     this.thumbColor,
-    this.trackColor,
     this.uncheckedTrackColor,
     this.checkedTrackColor,
     this.width,
@@ -27,60 +34,133 @@ class ShadSwitch extends StatefulWidget {
     this.label,
     this.sublabel,
     this.padding,
+    @Deprecated('Use textDirection instead') this.orderPolicy,
   });
 
-  /// Whether the switch is on or off.
+  /// {@template ShadSwitch.value}
+  /// Whether the switch is currently on or off.
+  ///
+  /// Represents the current state of the switch.
+  /// {@endtemplate}
   final bool value;
 
-  /// Whether the switch is enabled, defaults to true.
+  /// {@template ShadSwitch.enabled}
+  /// Whether the switch is enabled and can be interacted with.
+  ///
+  /// Defaults to true. When disabled, it visually indicates it's inactive and
+  /// ignores user interactions.
+  /// {@endtemplate}
   final bool enabled;
 
-  /// Called when the user toggles the switch on or off.
+  /// {@template ShadSwitch.onChanged}
+  /// Callback function invoked when the switch is toggled.
+  ///
+  /// Provides a boolean value indicating the new state of the switch (true for
+  /// on, false for off).
+  /// {@endtemplate}
   final ValueChanged<bool>? onChanged;
 
-  /// The focus node of the switch.
+  /// {@template ShadSwitch.focusNode}
+  /// Focus node to control the focus state of the switch.
+  ///
+  /// If not provided, an internal [FocusNode] is created.
+  /// {@endtemplate}
   final FocusNode? focusNode;
 
-  /// The color of the switch thumb.
+  /// {@template ShadSwitch.thumbColor}
+  /// Color of the switch's thumb (the draggable part).
+  ///
+  /// Defaults to the theme's background color.
+  /// {@endtemplate}
   final Color? thumbColor;
 
-  /// The color of the switch track.
-  final Color? trackColor;
-
-  /// The color of the unchecked track.
+  /// {@template ShadSwitch.uncheckedTrackColor}
+  /// Color of the track when the switch is in the unchecked (off) state.
+  ///
+  /// Defaults to the theme's input color.
+  /// {@endtemplate}
   final Color? uncheckedTrackColor;
 
-  /// The color of the checked track.
+  /// {@template ShadSwitch.checkedTrackColor}
+  /// Color of the track when the switch is in the checked (on) state.
+  ///
+  /// Defaults to the theme's primary color.
+  /// {@endtemplate}
   final Color? checkedTrackColor;
 
-  /// The width of the switch, defaults to 44.
+  /// {@template ShadSwitch.width}
+  /// Width of the switch widget.
+  ///
+  /// Defaults to 44.
+  /// {@endtemplate}
   final double? width;
 
-  /// The height of the switch, defaults to 24.
+  /// {@template ShadSwitch.height}
+  /// Height of the switch widget.
+  ///
+  /// Defaults to 24.
+  /// {@endtemplate}
   final double? height;
 
-  /// The margin of the switch, defaults to 2.
+  /// {@template ShadSwitch.margin}
+  /// Margin around the thumb within the track.
+  ///
+  /// Affects the visual spacing and thumb's draggable area. Defaults to 2.
+  /// {@endtemplate}
   final double? margin;
 
-  /// The duration of the switch animation, defaults to 100ms.
+  /// {@template ShadSwitch.duration}
+  /// Duration of the animation when toggling the switch.
+  ///
+  /// Defaults to 100 milliseconds.
+  /// {@endtemplate}
   final Duration? duration;
 
-  /// The decoration of the switch.
+  /// {@template ShadSwitch.decoration}
+  /// Custom decoration for the switch track.
+  ///
+  /// Allows styling the appearance of the track, such as border or background.
+  /// Uses [ShadDecoration].
+  /// {@endtemplate}
   final ShadDecoration? decoration;
 
-  /// An optional label for the switch, displayed on the right side if
-  /// the [direction] is `TextDirection.ltr`.
+  /// {@template ShadSwitch.direction}
+  /// Text direction of the switch and associated label.
+  ///
+  /// Determines the layout direction, e.g., left-to-right (LTR) or
+  /// right-to-left (RTL).
+  /// {@endtemplate}
+  final TextDirection? direction;
+
+  /// {@template ShadSwitch.label}
+  /// Widget to display as a label for the switch.
+  ///
+  /// Typically a [Text] widget describing the switch's function. Positioned to
+  /// the right in LTR direction.
+  /// {@endtemplate}
   final Widget? label;
 
-  /// An optional sublabel for the switch, displayed below the label.
+  /// {@template ShadSwitch.sublabel}
+  /// Widget to display as a sublabel, providing additional context below the
+  /// label.
+  ///
+  /// Usually a smaller [Text] widget for descriptive purposes.
+  /// {@endtemplate}
   final Widget? sublabel;
 
-  /// The padding between the switch and the label, defaults to
-  /// `EdgeInsets.only(left: 8)`.
+  /// {@template ShadSwitch.padding}
+  /// Padding between the switch itself and its label.
+  ///
+  /// Defaults to `EdgeInsets.only(left: 8)`.
+  /// {@endtemplate}
   final EdgeInsets? padding;
 
-  /// The direction of the switch.
-  final TextDirection? direction;
+  /// {@template ShadSwitch.orderPolicy}
+  /// The order policy of the items that compose the switch, defaults to
+  /// [WidgetOrderPolicy.linear()].
+  /// {@endtemplate}
+  @Deprecated('Use textDirection instead')
+  final WidgetOrderPolicy? orderPolicy;
 
   @override
   State<ShadSwitch> createState() => _ShadSwitchState();
@@ -155,6 +235,10 @@ class _ShadSwitchState extends State<ShadSwitch>
     final effectivePadding = widget.padding ??
         theme.switchTheme.padding ??
         const EdgeInsets.only(left: 8);
+
+    final effectiveOrderPolicy = widget.orderPolicy ??
+        theme.switchTheme.orderPolicy ??
+        const WidgetOrderPolicy.linear();
 
     final switchWidget = Semantics(
       toggled: widget.value,
@@ -259,7 +343,7 @@ class _ShadSwitchState extends State<ShadSwitch>
                   ),
                 ),
               ),
-          ],
+          ].order(effectiveOrderPolicy),
         ),
       ),
     );

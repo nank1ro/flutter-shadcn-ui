@@ -65,7 +65,7 @@ class ShadRoseColorScheme extends ShadColorScheme {
     super.mutedForeground = const Color(0xffa1a1aa),
     super.accent = const Color(0xff292524),
     super.accentForeground = const Color(0xfffafafa),
-    super.destructive = const Color(0xff7f1d1d),
+    super.destructive = const Color(0xffef4444),
     super.destructiveForeground = const Color(0xfffef2f2),
     super.border = const Color(0xff27272a),
     super.input = const Color(0xff27272a),

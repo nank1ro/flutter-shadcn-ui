@@ -1,3 +1,285 @@
+## 0.24.0
+
+- **FEAT**: Add `Sonner` component.
+
+## 0.23.4
+
+- **FIX**: `ShadSelectFormField` and `ShadSelectMultipleFormField` controller not updating the parent `ShadForm`.
+
+## 0.23.3
+
+- **FIX**: `ShadInput` `onPressedOutside` when tapping on another `ShadInput`.
+- **FEAT**: Add `groupId` to `ShadInput` and `ShadInputFormField`, defaults to `UniqueKey` instead of `EditableText`.
+
+## 0.23.2
+
+- **FEAT**: Add `copyWith` method to `ShadColorScheme` (thanks to @Luckey-Elijah).
+
+## 0.23.1
+
+- **FIX**: `ShadResizable` divider alignments when `dividerSize` is overriden.
+
+## 0.23.0
+
+- **FIX**: Expose `ShadMouseCursorProvider`.
+- **FIX**: `ShadMenubar` anchor.
+- **FIX**: `ShadBadge` should not enter the gesture arena if the `onPressed` callback is not provided.
+- **FEAT**: Add `cursor` to `ShadBadge`, defaults to `SystemMouseCursors.click` if `onPressed` is provided.
+- **BREAKING CHANGE**: Refactor `ShadAnchorAuto` to make it more powerful, removed `verticalOffset` and `preferBelow` in favor of `offset`, `followerAnchor` and `targetAnchor`. Now every component uses it by default.
+
+## 0.22.5
+
+- **FIX**: `ShadGestureDetector` global coordinates when using multiple `Navigator`s.
+
+## 0.22.4
+
+- **FIX**: Pass `themeMode` to `MaterialApp` (thanks to @mubareksd).
+- **FIX**: Add `focusNode` to `ShadInputFormField`.
+
+## 0.22.3
+
+- **FIX**: `ShadTooltip` exit animation, add `duration` and `reverseDuration` to it.
+- **FIX**: `ShadMenubar` no longer steals the focus.
+- **FIX**: `ShadButton` stealing focus when pressed.
+- **FEAT**: Add `stylusHandwritingEnabled` to `ShadInput`.
+
+## 0.22.2
+
+- **FIX**: Add `constraints` to `ShadInput` and `ShadInputFormField`, by default the min height is calculated based on the `style` and `placeholderStyle`.
+- **FIX**: `ShadInput` style and placeholder style which are now merged instead of replaced.
+- **FIX** `ShadMenubar` wrong padding used for the context menu.
+- **CHORE**: Set min flutter version to `3.29.0` (thanks to @qk7b)
+
+## 0.22.1
+
+- **FIX**: `ShadInput` icon color.
+
+## 0.22.0
+
+- **FEAT**: Add `ShadMenubar` component.
+- **REFACTOR**: Deprecate `ShadDivider` and `ShadDividerTheme`, use `ShadSeparator` and `ShadSeparatorTheme` instead.
+- **FEAT**: Add `onTapInside`, `onTapOutside`, `onTapUpInside` and `onTapUpOutside` to `ShadContextMenu`.
+
+## 0.21.0
+
+- **FEAT**: Add `ShadDivider` component (thanks to @Luckey-Elijah)
+- **FIX**: Pass `buttonDecoration` to `ShadButton` inside `ShadDatePicker` (thanks to @plusema86)
+- **CHORE**: Add comments to all components + test many of them
+
+## 0.20.3
+
+- **FIX**: Validation mode on form field reset (thanks to @Mayb3Nots)
+
+## 0.20.2
+
+- **REFACTOR**: Deprecate `ShadTab.icon`, use `ShadTab.leading` instead. Add `trailing`.
+- **FIX**: Disable scroll inside `ShadCalendar`
+
+## 0.20.1
+
+- **REFACTOR**: Set `debugShowCheckedModeBanner` to `false` by default in `ShadApp`.
+- **FIX** Expose `ShadInputOTPTheme`.
+
+## 0.20.0
+
+- **FEAT**: Add `ShadIconButton` component.
+- **REFACTOR**: Deprecated `ShadButton.icon`, use `ShadIconButton` for a button with just an icon and `ShadButton.leading` for a button with an icon and a text.
+- **REFACTOR**: Deprecate `orderPolicy`, use `leading` and `trailing` in the component.
+- **REFACTOR**: Deprecate `prefix` and `suffix` in `ShadInput`, use `leading` and `trailing` instead.
+- **REFACTOR** Deprecate `searchInputPrefix` in `ShadSelect`, use `searchInputLeading` instead.
+
+## 0.19.3
+
+- **FIX**: Make `selectedOptionBuilder` required in `ShadSelect` (thanks to @muradab).
+- **FIX**: Add `optionsBuilder` to `ShadSelect` and its form fields where it was missing.
+
+## 0.19.2
+
+- **FIX**: Add constraints to `ShadCard` child.
+
+## 0.19.1
+
+- **REFACTOR**: Rename `materialTextTheme` into `applyGoogleFontToTextTheme`.
+- **FEAT**: Allow accessing the `ShadTheme` with the context, in the `materialThemeBuilder` and `appBuilder`.
+
+## 0.19.0
+
+- **FIX**: `ShadInput` `readOnly` not updating.
+- **BREAKING CHANGE**: Rename `ShadSelect` and form fields `controller` to `popoverController`.
+- **FEAT**: Add `controller` to `ShadSelect` and form fields, to control the selected values.
+- **FIX**: Improve the `ShadResizable` controller handling and simplify the logic to resize the panels.
+- **FIX**: `ShadResizable` handle position with `Axis.vertical`.
+- **BREAKING CHANGE**: Now `ShadResizable` requires an `id`, to be able to handle when a panel is removed/added from the widget tree correctly.
+- **CHORE**: Correctly set the `theme` or `darkTheme` to the internal `MaterialApp`.
+
+## 0.18.7
+
+- **FIX**: `ShadApp` dark theme behavior now is the same as Material. The dark theme is applied only if you provide a `darkTheme` and the user theme mode is dark
+
+## 0.18.6
+
+- **FIX**: `ShadTimePicker` controller not being used correctly when the component is initialized. Now each field allows a single digit instead of two.
+
+## 0.18.5
+
+- **FIX**: `ShadCalendar` forward button icon color.
+- **CHORE**: Bump the version of `universal_image` (thanks to @brunosemfio).
+
+## 0.18.4
+
+- **FIX**: `ShadDatePicker` popover closes on caption selection.
+- **CHORE**: Add `onNavigationNotification` to `ShadApp` (thanks to @mllrr96)
+- **FIX**: `ShadDatePicker` crash when caption layout is different from label, due to misleading `Locale` type passed to `DateFormat`, thanks `dynamic` for these amazing errors.
+
+## 0.18.3
+
+- **FIX**: Improve `ShadAvatar` (thanks to @mickey35vn).
+- **FIX**: Locale not handled in `ShadCalendar` and `ShadDatePicker`.
+- **REFACTOR**: Remove `optionsOrderPolicy` from `ShadSelectTheme` and move it to `ShadOptionTheme` with the name `orderPolicy`.
+
+## 0.18.2
+
+- **FIX**: `InputOTP` component with RTL directionality.
+
+## 0.18.1
+
+- **FIX**: Set `ShadCard` clipBehavior to `Clip.antialias`, add `clipBehavior` to `ShadCard` and `ShadCardTheme`.
+- **FIX**: Use `selectedDecoration` in `ShadTabs` (thanks to @thisisamank)
+- **FEAT**: Add colorSelector to the ShadcnUI docs (thanks to @0xharkirat)
+- **FEAT**: Add `hourLabel`, `minuteLabel`, `secondLabel`, `periodLabel`, `hourPlaceholder`, `minutePlaceholder`, `secondPlaceholder` and `periodPlaceholder` to `ShadTimePickerTheme`.
+
+## 0.18.0
+
+- **BREAKING CHANGE**: Remove `applyIconColorFilter` from `ShadButton`.
+- **BREAKING CHANGE**: Remove `ShadImage` component. Prefer using the `Icon` widget for `IconData`, the `Image` widget for normal images, and `SvgPicture` (from the [flutter_svg package](https://pub.dev/packages/flutter_svg) for SVG images. If you want a fallback, use `UniversalImage`.
+- **BREAKING CHANGE**: Rename `iconSrc` in `iconData` around components.
+- **FIX**: `TimePickerFormField` initial value.
+
+## 0.17.6
+
+- **FIX**: Fix the iconSize of `ShadButton`, add `iconSize` to `ShadButton`.
+
+## 0.17.5
+
+- **FEAT**: New `OrderPolicy`, `LinearOrderPolicy`, `ReverseOrderPolicy` and `CustomOrderPolicy` to update the order policy of the items in a list, this can be very useful to arrange the order of the parts of the shadcn components.
+- **FEAT**: Add `orderPolicy` to `ShadOption`, `ShadAlert`, `ShadButton`, `ShadCheckbox`, `ShadCheckboxFormField`, `ShadDatePicker`, `ShadDatePickerFormField`, `ShadDateRangePickerFormField`, `ShadRadio`, `ShadSwitch`, `ShadSwitchFormField`, `ShadToast`.
+- **FEAT**: Add `expands` to `ShadButton`, defaults to false. Use it if you want the button's child to expand to fill the available space.
+
+## 0.17.4
+
+- **FIX** `ShadTabs` onChanged runtime exception due to misleading type
+
+## 0.17.3
+
+- **FIX**: `ShadTable` protect `onExit` from setting value after dispose (thanks to @jezell)
+
+## 0.17.2
+
+- **FIX**: Add `allowDeselection` to `ShadCalendar.range`
+- **CHORE**: Update dependencies
+
+## 0.17.1
+
+- **FIX**: `ShadInputOTP` text alignment and padding
+- **FEAT**: Add `textInputAction` to `ShadInputOTPSlot`
+
+## 0.17.0
+
+- **FEAT**: Add `ShadInputOTP` and `ShadInputOTPFormField` components.
+- **BREAKING CHANGE**: The `ShadBorder` no longer has default values, if you want to see the border rendered provide a color and a width greater than 0. This fixes the merge of material borders.
+- **FIX**: `ShadTabs` border radius.
+- **FIX**: `ShadSlider` focused thumb.
+- **FIX**: `ShadResizable` resize when Directionality is RTL.
+- **FIX**: Update the `destructive` color on dark mode to be more visible.
+- **FIX**: Make inherited widget lookup untyped
+
+## 0.16.3
+
+- **FIX**: `showCursor` default value in `ShadInputFormField`
+
+## 0.16.2
+
+- **FIX**: `ShadTabs` and `ShadResizable` lerp
+- **FIX**: `ShadTabs` focused border color in dark mode
+
+## 0.16.1
+
+- **FEAT**: Add parameters to `ShadFocusable`.
+
+## 0.16.0
+
+- **FEAT**: New `ShadTimePicker` and `ShadTimePickerFormField` components.
+- **FIX**: `maxLength`, `maxLengthEnforcement` and `showCursor` not working on `ShadInput`
+- **FIX**: `ShadCalendar` range day button text style when `disableSecondaryBorder` is `true`.
+- **CHORE**: Set minimum Flutter version to `3.24.0`
+- **CHORE**: Remove `trackColor` from `ShadSwitch` (thanks to @RaghavTheGreat)
+- **FIX**: `ShadSlider` `onChanged` called on every controller update (thanks to @helightdev).
+
+## 0.15.3
+
+- **FIX**: `ShadDialog` and `ShadSheet` children constraints.
+- **CHORE**: Replace `flutter_svg_plus` dependency with `flutter_svg` and `vector_graphics_plus` with `vector_graphics`.
+
+## 0.15.2
+
+- **FIX**: `ShadDialog` and `ShadSheet` children constraints.
+
+## 0.15.1
+
+- **FIX**: Decoration merge
+
+## 0.15.0
+
+- **FEAT**: New `ShadDatePicker` component.
+- **FEAT**: Add `allowDeselection` property to `ShadCalendar`.
+- **FIX**: `ShadSelect` crash when using `optionsBuilder`.
+- **FEAT**: Add `itemCount` and `shrinkWrap` to `ShadSelect` and `ShadSelectFormField`.
+
+## 0.14.1
+
+- **FIX**: `ShadApp` scroll behavior.
+
+## 0.14.0
+
+- **BREAKING CHANGE**: Remove `onChangedNullable` from `ShadSelect` and `ShadSelectFormField`. Now the `onChanged` callback will be called with `null` when the user deselects an option if `allowDeselection` is set to `true`. (thanks to @moshOntong-IT)
+- **FEAT**: Add click mouse cursor to `ShadTable` when `onRowTap` or `onColumnTap` is provided.
+
+## 0.13.5
+
+- **FIX**: Fix `ShadSelect` initial values on widget creation.
+
+## 0.13.4+1
+
+- **CHORE**: Update svg dependencies
+
+## 0.13.4
+
+- **CHORE**: Update svg dependencies
+
+## 0.13.3
+
+- **FEAT**: Add `ShadApp.custom` for custom _WidgetsApp_ implementation.
+
+## 0.13.2
+
+- **CHORE**: Use forked `flutter_svg` and `vector_graphics` packages.
+
+## 0.13.1
+
+- **CHORE**: Update `ShadImage` import due to WASM.
+
+## 0.13.0
+
+- **FEAT**: New `ShadCalendar` component with the `single`, `multiple` and `range` variants.
+
+## 0.12.0
+
+- **FEAT**: Add `axis`, `spacing`, `runSpacing`, `alignment`, `runAlignment`, `crossAxisAlignment` and `crossAxisAlignment` to `ShadRadioGroup` and `ShadRadioGroupFormField`.
+
+## 0.11.1
+
+- **FEAT**: Add `headers` to `ShadImage` to allow custom headers in the network requests.
+
 ## 0.11.0
 
 - **FEAT**: Add `ShadSelect.multiple`, `ShadSelect.multipleWithSearch`, `ShadSelectMultipleFormField` and `ShadSelectMultipleFormField.withSearch` constructors.

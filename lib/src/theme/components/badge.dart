@@ -9,14 +9,28 @@ class ShadBadgeTheme {
     this.hoverBackgroundColor,
     this.foregroundColor,
     this.padding,
+    this.cursor,
   });
 
   final bool merge;
+
+  /// {@macro ShadBadge.shape}
   final ShapeBorder? shape;
+
+  /// {@macro ShadBadge.backgroundColor}
   final Color? backgroundColor;
+
+  /// {@macro ShadBadge.hoverBackgroundColor}
   final Color? hoverBackgroundColor;
+
+  /// {@macro ShadBadge.foregroundColor}
   final Color? foregroundColor;
+
+  /// {@macro ShadBadge.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadBadge.cursor}
+  final MouseCursor? cursor;
 
   static ShadBadgeTheme lerp(
     ShadBadgeTheme a,
@@ -32,6 +46,7 @@ class ShadBadgeTheme {
           Color.lerp(a.hoverBackgroundColor, b.hoverBackgroundColor, t),
       foregroundColor: Color.lerp(a.foregroundColor, b.foregroundColor, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      cursor: t < 0.5 ? a.cursor : b.cursor,
     );
   }
 
@@ -42,6 +57,7 @@ class ShadBadgeTheme {
     Color? hoverBackgroundColor,
     Color? foregroundColor,
     EdgeInsets? padding,
+    MouseCursor? cursor,
   }) {
     return ShadBadgeTheme(
       merge: merge ?? this.merge,
@@ -50,6 +66,7 @@ class ShadBadgeTheme {
       hoverBackgroundColor: hoverBackgroundColor ?? this.hoverBackgroundColor,
       foregroundColor: foregroundColor ?? this.foregroundColor,
       padding: padding ?? this.padding,
+      cursor: cursor ?? this.cursor,
     );
   }
 
@@ -62,6 +79,7 @@ class ShadBadgeTheme {
       hoverBackgroundColor: other.hoverBackgroundColor,
       foregroundColor: other.foregroundColor,
       padding: other.padding,
+      cursor: other.cursor,
     );
   }
 
@@ -75,7 +93,8 @@ class ShadBadgeTheme {
         other.backgroundColor == backgroundColor &&
         other.hoverBackgroundColor == hoverBackgroundColor &&
         other.foregroundColor == foregroundColor &&
-        other.padding == padding;
+        other.padding == padding &&
+        other.cursor == cursor;
   }
 
   @override
@@ -85,6 +104,7 @@ class ShadBadgeTheme {
         backgroundColor.hashCode ^
         hoverBackgroundColor.hashCode ^
         foregroundColor.hashCode ^
-        padding.hashCode;
+        padding.hashCode ^
+        cursor.hashCode;
   }
 }

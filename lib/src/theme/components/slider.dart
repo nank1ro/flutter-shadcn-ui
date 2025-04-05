@@ -21,19 +21,47 @@ class ShadSliderTheme {
   });
 
   final bool merge;
+
+  /// {@macro ShadSlider.min}
   final double? min;
+
+  /// {@macro ShadSlider.max}
   final double? max;
+
+  /// {@macro ShadSlider.mouseCursor}
   final MouseCursor? mouseCursor;
+
+  /// {@macro ShadSlider.disabledMouseCursor}
   final MouseCursor? disabledMouseCursor;
+
+  /// {@macro ShadSlider.thumbColor}
   final Color? thumbColor;
+
+  /// {@macro ShadSlider.disabledThumbColor}
   final Color? disabledThumbColor;
+
+  /// {@macro ShadSlider.thumbBorderColor}
   final Color? thumbBorderColor;
+
+  /// {@macro ShadSlider.disabledThumbBorderColor}
   final Color? disabledThumbBorderColor;
+
+  /// {@macro ShadSlider.activeTrackColor}
   final Color? activeTrackColor;
+
+  /// {@macro ShadSlider.inactiveTrackColor}
   final Color? inactiveTrackColor;
+
+  /// {@macro ShadSlider.disabledActiveTrackColor}
   final Color? disabledActiveTrackColor;
+
+  /// {@macro ShadSlider.disabledInactiveTrackColor}
   final Color? disabledInactiveTrackColor;
+
+  /// {@macro ShadSlider.trackHeight}
   final double? trackHeight;
+
+  /// {@macro ShadSlider.thumbRadius}
   final double? thumbRadius;
 
   static ShadSliderTheme lerp(

@@ -15,32 +15,41 @@ class ShadTooltipTheme {
     this.anchor,
     this.hoverStrategies,
     this.longPressDuration,
+    this.duration,
+    this.reverseDuration,
   });
 
   final bool merge;
 
-  /// {@macro tooltip.waitDuration}
+  /// {@macro ShadTooltip.waitDuration}
   final Duration? waitDuration;
 
-  /// {@macro tooltip.showDuration}
+  /// {@macro ShadTooltip.showDuration}
   final Duration? showDuration;
 
-  /// {@macro tooltip.effects}
+  /// {@macro ShadTooltip.effects}
   final List<Effect<dynamic>>? effects;
 
-  /// {@macro tooltip.anchor}
+  /// {@macro ShadTooltip.anchor}
   final ShadAnchorBase? anchor;
 
-  /// {@macro tooltip.padding}
+  /// {@macro ShadTooltip.padding}
   final EdgeInsetsGeometry? padding;
 
-  /// {@macro tooltip.decoration}
+  /// {@macro ShadTooltip.decoration}
   final ShadDecoration? decoration;
 
-  /// {@macro tooltip.hoverStrategies}
+  /// {@macro ShadTooltip.hoverStrategies}
   final ShadHoverStrategies? hoverStrategies;
 
+  /// {@macro ShadTooltip.longPressDuration}
   final Duration? longPressDuration;
+
+  /// {@macro ShadTooltip.duration}
+  final Duration? duration;
+
+  /// {@macro ShadTooltip.reverseDuration}
+  final Duration? reverseDuration;
 
   static ShadTooltipTheme lerp(
     ShadTooltipTheme a,
@@ -65,6 +74,12 @@ class ShadTooltipTheme {
           a.longPressDuration != null && b.longPressDuration != null
               ? lerpDuration(a.longPressDuration!, b.longPressDuration!, t)
               : b.longPressDuration,
+      duration: a.duration != null && b.duration != null
+          ? lerpDuration(a.duration!, b.duration!, t)
+          : b.duration,
+      reverseDuration: a.reverseDuration != null && b.reverseDuration != null
+          ? lerpDuration(a.reverseDuration!, b.reverseDuration!, t)
+          : b.reverseDuration,
     );
   }
 
@@ -78,6 +93,8 @@ class ShadTooltipTheme {
     ShadAnchorBase? anchor,
     ShadHoverStrategies? hoverStrategies,
     Duration? longPressDuration,
+    Duration? duration,
+    Duration? reverseDuration,
   }) {
     return ShadTooltipTheme(
       merge: merge ?? this.merge,
@@ -89,6 +106,8 @@ class ShadTooltipTheme {
       anchor: anchor ?? this.anchor,
       hoverStrategies: hoverStrategies ?? this.hoverStrategies,
       longPressDuration: longPressDuration ?? this.longPressDuration,
+      duration: duration ?? this.duration,
+      reverseDuration: reverseDuration ?? this.reverseDuration,
     );
   }
 
@@ -104,6 +123,8 @@ class ShadTooltipTheme {
       anchor: other.anchor,
       hoverStrategies: other.hoverStrategies,
       longPressDuration: other.longPressDuration,
+      duration: other.duration,
+      reverseDuration: other.reverseDuration,
     );
   }
 
@@ -120,7 +141,9 @@ class ShadTooltipTheme {
         other.decoration == decoration &&
         other.anchor == anchor &&
         other.hoverStrategies == hoverStrategies &&
-        other.longPressDuration == longPressDuration;
+        other.longPressDuration == longPressDuration &&
+        other.duration == duration &&
+        other.reverseDuration == reverseDuration;
   }
 
   @override
@@ -133,6 +156,8 @@ class ShadTooltipTheme {
         decoration.hashCode ^
         anchor.hashCode ^
         hoverStrategies.hashCode ^
-        longPressDuration.hashCode;
+        longPressDuration.hashCode ^
+        duration.hashCode ^
+        reverseDuration.hashCode;
   }
 }

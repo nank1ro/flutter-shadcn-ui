@@ -12,7 +12,18 @@ class ShadTheme extends StatelessWidget {
   final Widget child;
 
   static ShadThemeData of(BuildContext context, {bool listen = true}) {
-    return maybeOf(context, listen: listen)!;
+    final provider = maybeOf(context, listen: listen);
+    if (provider == null) {
+      throw FlutterError(
+        '''
+        ShadTheme.of() called with a context that does not contain a ShadTheme.\n
+        No ShadTheme ancestor could be found starting from the context that was passed to ShadTheme.of(). 
+        This can happen because you do not have a ShadApp widget (which introduces a ShadTheme), 
+        or it can happen if the context you use comes from a widget above this widget.\n
+        The context used was: $context''',
+      );
+    }
+    return provider;
   }
 
   static ShadThemeData? maybeOf(

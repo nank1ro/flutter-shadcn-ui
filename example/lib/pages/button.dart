@@ -1,5 +1,4 @@
 import 'package:example/common/base_scaffold.dart';
-import 'package:example/common/component_view.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +17,7 @@ class _ButtonPageState extends State<ButtonPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
     return FocusTraversalGroup(
       policy: WidgetOrderTraversalPolicy(),
       child: BaseScaffold(
@@ -27,7 +27,11 @@ class _ButtonPageState extends State<ButtonPage> {
             label: 'Size',
             value: size,
             values: ShadButtonSize.values,
-            onChanged: (value) => setState(() => size = value),
+            onChanged: (value) {
+              if (value != null) {
+                setState(() => size = value);
+              }
+            },
           ),
           MyBoolProperty(
             label: 'Enabled',
@@ -71,19 +75,17 @@ class _ButtonPageState extends State<ButtonPage> {
           ShadButton(
             size: size,
             enabled: enabled,
-            icon: const Icon(
-              Icons.mail_outlined,
-              size: 16,
-            ),
+            leading: const Icon(LucideIcons.mail),
             child: const Text('Login with Email'),
           ),
           ShadButton(
             size: size,
             enabled: enabled,
-            icon: const SizedBox.square(
+            leading: SizedBox.square(
               dimension: 16,
               child: CircularProgressIndicator(
                 strokeWidth: 2,
+                color: theme.colorScheme.primaryForeground,
               ),
             ),
             child: const Text('Please wait'),
@@ -97,24 +99,13 @@ class _ButtonPageState extends State<ButtonPage> {
             ]),
             shadows: [
               BoxShadow(
-                color: Colors.blue.withOpacity(.4),
+                color: Colors.blue.withValues(alpha: .4),
                 spreadRadius: 4,
                 blurRadius: 10,
                 offset: const Offset(0, 2),
               ),
             ],
             child: const Text('Gradient with Shadow'),
-          ),
-          ComponentView(
-            label: 'Icon',
-            child: ShadButton.outline(
-              size: size,
-              enabled: enabled,
-              icon: const Icon(
-                Icons.chevron_right,
-                size: 16,
-              ),
-            ),
           ),
         ],
       ),

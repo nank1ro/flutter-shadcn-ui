@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/components/image.dart';
 
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -11,7 +10,7 @@ import 'package:shadcn_ui/src/utils/position.dart';
 class ShadDialogTheme {
   const ShadDialogTheme({
     this.merge = true,
-    this.closeIconSrc,
+    this.closeIconData,
     this.closeIconPosition,
     this.radius,
     this.backgroundColor,
@@ -40,31 +39,83 @@ class ShadDialogTheme {
   });
 
   final bool merge;
-  final ShadImageSrc? closeIconSrc;
+
+  /// {@macro ShadDialog.closeIconData}
+  final IconData? closeIconData;
+
+  /// {@macro ShadDialog.closeIconPosition}
   final ShadPosition? closeIconPosition;
+
+  /// {@macro ShadDialog.radius}
   final BorderRadius? radius;
+
+  /// {@macro ShadDialog.backgroundColor}
   final Color? backgroundColor;
+
+  /// {@macro ShadDialog.expandActionsWhenTiny}
   final bool? expandActionsWhenTiny;
+
+  /// {@macro ShadDialog.padding}
   final EdgeInsets? padding;
+
+  /// {@macro ShadDialog.gap}
   final double? gap;
+
+  /// {@macro ShadDialog.animateIn}
   final List<Effect<dynamic>>? animateIn;
+
+  /// {@macro ShadDialog.animateOut}
   final List<Effect<dynamic>>? animateOut;
+
+  /// {@macro ShadDialog.constraints}
   final BoxConstraints? constraints;
+
+  /// {@macro ShadDialog.actionsAxis}
   final Axis? actionsAxis;
+
+  /// {@macro ShadDialog.actionsMainAxisSize}
   final MainAxisSize? actionsMainAxisSize;
+
+  /// {@macro ShadDialog.actionsMainAxisAlignment}
   final MainAxisAlignment? actionsMainAxisAlignment;
+
+  /// {@macro ShadDialog.actionsVerticalDirection}
   final VerticalDirection? actionsVerticalDirection;
+
+  /// {@macro ShadDialog.border}
   final BoxBorder? border;
+
+  /// {@macro ShadDialog.shadows}
   final List<BoxShadow>? shadows;
+
+  /// {@macro ShadDialog.removeBorderRadiusWhenTiny}
   final bool? removeBorderRadiusWhenTiny;
+
+  /// {@macro ShadDialog.titleStyle}
   final TextStyle? titleStyle;
+
+  /// {@macro ShadDialog.descriptionStyle}
   final TextStyle? descriptionStyle;
+
+  /// {@macro ShadDialog.titleTextAlign}
   final TextAlign? titleTextAlign;
+
+  /// {@macro ShadDialog.descriptionTextAlign}
   final TextAlign? descriptionTextAlign;
+
+  /// {@macro ShadDialog.alignment}
   final Alignment? alignment;
+
+  /// {@macro ShadDialog.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@macro ShadDialog.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadDialog.scrollable}
   final bool? scrollable;
+
+  /// {@macro ShadDialog.scrollPadding}
   final EdgeInsets? scrollPadding;
 
   static ShadDialogTheme lerp(
@@ -75,7 +126,7 @@ class ShadDialogTheme {
     if (identical(a, b)) return a;
     return ShadDialogTheme(
       merge: b.merge,
-      closeIconSrc: b.closeIconSrc,
+      closeIconData: b.closeIconData,
       closeIconPosition:
           ShadPosition.lerp(a.closeIconPosition, b.closeIconPosition, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
@@ -108,7 +159,7 @@ class ShadDialogTheme {
 
   ShadDialogTheme copyWith({
     bool? merge,
-    ShadImageSrc? closeIconSrc,
+    IconData? closeIconData,
     ShadPosition? closeIconPosition,
     BorderRadius? radius,
     Color? backgroundColor,
@@ -137,7 +188,7 @@ class ShadDialogTheme {
   }) {
     return ShadDialogTheme(
       merge: merge ?? this.merge,
-      closeIconSrc: closeIconSrc,
+      closeIconData: closeIconData,
       closeIconPosition: closeIconPosition,
       radius: radius,
       backgroundColor: backgroundColor,
@@ -170,7 +221,7 @@ class ShadDialogTheme {
     if (other == null) return this;
     if (!other.merge) return other;
     return copyWith(
-      closeIconSrc: other.closeIconSrc,
+      closeIconData: other.closeIconData,
       closeIconPosition: other.closeIconPosition,
       radius: other.radius,
       backgroundColor: other.backgroundColor,
@@ -205,7 +256,7 @@ class ShadDialogTheme {
 
     return other is ShadDialogTheme &&
         other.merge == merge &&
-        other.closeIconSrc == closeIconSrc &&
+        other.closeIconData == closeIconData &&
         other.closeIconPosition == closeIconPosition &&
         other.radius == radius &&
         other.backgroundColor == backgroundColor &&
@@ -236,7 +287,7 @@ class ShadDialogTheme {
   @override
   int get hashCode {
     return merge.hashCode ^
-        closeIconSrc.hashCode ^
+        closeIconData.hashCode ^
         closeIconPosition.hashCode ^
         radius.hashCode ^
         backgroundColor.hashCode ^

@@ -3,6 +3,7 @@ import 'package:shadcn_ui/src/components/checkbox.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
   ShadCheckboxFormField({
@@ -20,19 +21,42 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
     super.restorationId,
     required bool initialValue,
     super.focusNode,
+
+    /// {@macro ShadCheckbox.decoration}
     ShadDecoration? decoration,
+
+    /// {@macro ShadFormBuilderField.validator}
     String? Function(bool)? validator,
+
+    /// {@macro ShadCheckbox.size}
     double? size,
+
+    /// {@macro ShadCheckbox.duration}
     Duration? duration,
+
+    /// {@macro ShadCheckbox.icon}
     Widget? icon,
+
+    /// {@macro ShadCheckbox.color}
     Color? color,
+
+    /// {@macro ShadCheckbox.inputLabel}
     Widget? inputLabel,
+
+    /// {@macro ShadCheckbox.inputSublabel}
     Widget? inputSublabel,
+
+    /// {@macro ShadCheckbox.padding}
     EdgeInsets? padding,
+
+    /// {@macro ShadCheckbox.direction}
     TextDirection? direction,
 
     /// {@macro ShadCheckbox.crossAxisAlignment}
     CrossAxisAlignment? crossAxisAlignment,
+
+    /// {@macro ShadCheckbox.orderPolicy}
+    WidgetOrderPolicy? orderPolicy,
   }) : super(
           initialValue: initialValue,
           onChanged: onChanged == null ? null : (v) => onChanged(v ?? false),
@@ -58,6 +82,7 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
               direction: direction,
               decoration: state.decoration,
               crossAxisAlignment: crossAxisAlignment,
+              orderPolicy: orderPolicy,
             );
           },
         );
