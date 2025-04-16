@@ -35,6 +35,7 @@ import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
+import 'package:shadcn_ui/src/theme/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
@@ -45,6 +46,7 @@ import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
+import 'package:shadcn_ui/src/utils/resize_grip.dart';
 
 class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadDefaultThemeNoSecondaryBorderVariant({
@@ -1009,6 +1011,38 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       scaleFactor: 0.05,
       animationDuration: Duration(milliseconds: 300),
       animationCurve: Cubic(0.215, 0.61, 0.355, 1),
+    );
+  }
+
+  @override
+  ShadTextareaTheme textareaTheme() {
+    return ShadTextareaTheme(
+      style: effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
+      placeholderStyle: effectiveTextTheme.muted,
+      placeholderAlignment: Alignment.topLeft,
+      inputPadding: EdgeInsets.zero,
+      decoration: ShadDecoration(
+        border: ShadBorder.all(
+          width: 1,
+          color: colorScheme.border,
+          radius: radius,
+          padding: const EdgeInsets.all(1),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      gap: 8,
+      minHeight: 80,
+      maxHeight: 500,
+      resizable: true,
+      resizeHandleBuilder: (context) => SizedBox(
+        width: 16,
+        height: 16,
+        child: CustomPaint(
+          painter: ShadResizeGripPainter(
+            color: Theme.of(context).dividerColor.withValues(alpha: .6),
+          ),
+        ),
+      ),
     );
   }
 }
