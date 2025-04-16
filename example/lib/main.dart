@@ -34,6 +34,8 @@ import 'package:example/pages/switch_form_field.dart';
 import 'package:example/pages/table.dart';
 import 'package:example/pages/tabs.dart';
 import 'package:example/pages/portal.dart';
+import 'package:example/pages/textarea.dart';
+import 'package:example/pages/textarea_form_field.dart';
 import 'package:example/pages/time_picker.dart';
 import 'package:example/pages/time_picker_form_field.dart';
 import 'package:example/pages/toast.dart';
@@ -85,6 +87,8 @@ final routes = <String, WidgetBuilder>{
   '/switch-form-field': (_) => const SwitchFormFieldPage(),
   '/table': (_) => const TablePage(),
   '/tabs': (_) => const TabsPage(),
+  '/textarea': (_) => const TextareaPage(),
+  '/textarea-form-field': (_) => const TextareaFormFieldPage(),
   '/time-picker': (_) => const TimePickerPage(),
   '/time-picker-form-field': (_) => const TimePickerFormFieldPage(),
   '/toast': (_) => const ToastPage(),
