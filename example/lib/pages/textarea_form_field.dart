@@ -88,13 +88,22 @@ class _TextareaFormFieldPageState extends State<TextareaFormFieldPage> {
                 ShadButton(
                   child: const Text('Submit'),
                   onPressed: () {
-                    print('submitted');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Form submitted successfully')),
+                    );
                     if (formKey.currentState!.saveAndValidate()) {
                       setState(() {
                         formValue = formKey.currentState!.value;
                       });
                     } else {
-                      print('validation failed');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content:
+                              Text('Please correct the errors in the form'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
                     }
                   },
                 ),

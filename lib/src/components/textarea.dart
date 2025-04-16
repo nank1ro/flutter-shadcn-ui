@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/utils/resize_grip.dart';
 
 /// A customizable multiline textarea widget with
 /// adjustable height and optional resizing grip.
@@ -560,43 +561,8 @@ class _DefaultResizeGrip extends StatelessWidget {
       width: 16,
       height: 16,
       child: CustomPaint(
-        painter: _ResizeGripPainter(color),
+        painter: ShadResizeGripPainter(color: color),
       ),
     );
-  }
-}
-
-/// A custom painter that draws diagonal grip lines for the
-/// [_DefaultResizeGrip] widget.
-///
-/// It creates a simple visual indicator using three lines
-/// that form a diagonal pattern in the corner.
-class _ResizeGripPainter extends CustomPainter {
-  /// Creates a painter with the given line [color].
-  const _ResizeGripPainter(this.color);
-
-  /// The color of the grip lines.
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 1.0;
-
-    const spacing = 4.0;
-    for (var i = 0; i < 3; i++) {
-      final offset = spacing * i;
-      canvas.drawLine(
-        Offset(size.width - offset, size.height),
-        Offset(size.width, size.height - offset),
-        paint,
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _ResizeGripPainter oldDelegate) {
-    return oldDelegate.color != color;
   }
 }
