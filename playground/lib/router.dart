@@ -27,6 +27,7 @@ import 'package:playground/pages/sonner.dart';
 import 'package:playground/pages/switch.dart';
 import 'package:playground/pages/table.dart';
 import 'package:playground/pages/tabs.dart';
+import 'package:playground/pages/textarea.dart';
 import 'package:playground/pages/time_picker.dart';
 import 'package:playground/pages/toast.dart';
 import 'package:playground/pages/tooltip.dart';
@@ -302,6 +303,12 @@ final router = GoRouter(
       path: '/sonner',
       builder: (context, state) {
         return const SonnerPage();
+      },
+    ),
+    GoRoute(
+      path: '/textarea',
+      builder: (context, state) {
+        return const TextareaPage();
       },
     ),
   ],
