@@ -17,7 +17,7 @@ class ShadTimeOfDay {
   const ShadTimeOfDay({
     required this.hour,
     required this.minute,
-    required this.second,
+    this.second = 0,
     DayPeriod? period,
   }) : _period = period;
 
@@ -149,11 +149,11 @@ class ShadTimePickerController extends ChangeNotifier {
   ///
   /// Returns `null` if any of hour, minute, or second are null.
   ShadTimeOfDay? get value {
-    if (hour == null || minute == null || second == null) return null;
+    if (hour == null || minute == null) return null;
     return ShadTimeOfDay(
       hour: hour!,
       minute: minute!,
-      second: second!,
+      second: second ?? 0,
       period: period,
     );
   }
@@ -237,6 +237,7 @@ class ShadTimePicker extends StatefulWidget {
     this.fieldDecoration,
     this.controller,
     this.enabled = true,
+    this.showSeconds = true,
   })  : variant = ShadTimePickerVariant.primary,
         initialDayPeriod = null,
         periodLabel = null,
@@ -286,6 +287,7 @@ class ShadTimePicker extends StatefulWidget {
     this.periodDecoration,
     this.controller,
     this.enabled = true,
+    this.showSeconds = true,
   }) : variant = ShadTimePickerVariant.period;
 
   /// Creates a [ShadTimePicker] with a raw variant, allowing explicit variant
@@ -331,7 +333,13 @@ class ShadTimePicker extends StatefulWidget {
     this.periodDecoration,
     this.controller,
     this.enabled = true,
+    this.showSeconds = true,
   });
+
+  /// {@template ShadTimePicker.showSeconds}
+  /// Whether to show the seconds field. Defaults to true.
+  /// {@endtemplate}
+  final bool showSeconds;
 
   /// {@template ShadTimePicker.axis}
   /// The axis along which the fields are laid out. Defaults to `horizontal`.
@@ -632,7 +640,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
   void onChanged() {
     if (controller.hour == null ||
         controller.minute == null ||
-        controller.second == null) {
+        (widget.showSeconds && controller.second == null)) {
       return;
     }
     if (widget.variant == ShadTimePickerVariant.period &&
@@ -643,7 +651,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
       ShadTimeOfDay(
         hour: controller.hour!,
         minute: controller.minute!,
-        second: controller.second!,
+        second: controller.second ?? 0,
         period: controller.period,
       ),
     );
@@ -782,34 +790,39 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
             if (v.isNotEmpty) {
               controller.setMinute(int.tryParse(v));
               if (v.length == 2 && effectiveJumpToNextField) {
-                focusNodes[2].requestFocus();
+                if (widget.showSeconds) {
+                  focusNodes[2].requestFocus();
+                } else if (widget.variant == ShadTimePickerVariant.period) {
+                  periodFocusNode.requestFocus();
+                }
               }
             }
           },
         ),
-        ShadTimePickerField(
-          focusNode: focusNodes[2],
-          label: effectiveSecondLabel,
-          controller: secondController,
-          gap: effectiveGap,
-          placeholder: effectiveSecondPlaceholder,
-          style: effectiveStyle,
-          labelStyle: effectiveLabelStyle,
-          width: effectiveFieldWidth,
-          padding: effectiveFieldPadding,
-          decoration: effectiveFieldDecoration,
-          enabled: widget.enabled,
-          onChanged: (v) {
-            if (v.isNotEmpty) {
-              controller.setSecond(int.tryParse(v));
-              if (v.length == 2 &&
-                  effectiveJumpToNextField &&
-                  widget.variant == ShadTimePickerVariant.period) {
-                periodFocusNode.requestFocus();
+        if (widget.showSeconds)
+          ShadTimePickerField(
+            focusNode: focusNodes[2],
+            label: effectiveSecondLabel,
+            controller: secondController,
+            gap: effectiveGap,
+            placeholder: effectiveSecondPlaceholder,
+            style: effectiveStyle,
+            labelStyle: effectiveLabelStyle,
+            width: effectiveFieldWidth,
+            padding: effectiveFieldPadding,
+            decoration: effectiveFieldDecoration,
+            enabled: widget.enabled,
+            onChanged: (v) {
+              if (v.isNotEmpty) {
+                controller.setSecond(int.tryParse(v));
+                if (v.length == 2 &&
+                    effectiveJumpToNextField &&
+                    widget.variant == ShadTimePickerVariant.period) {
+                  periodFocusNode.requestFocus();
+                }
               }
-            }
-          },
-        ),
+            },
+          ),
         if (widget.variant == ShadTimePickerVariant.period)
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
