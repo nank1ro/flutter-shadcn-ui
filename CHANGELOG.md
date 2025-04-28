@@ -1,3 +1,7 @@
+## 0.25.0
+
+- **CHORE**: Bump dependency versions (thanks to @mayapaw).
+
 ## 0.24.0
 
 - **FEAT**: Add `Sonner` component.
