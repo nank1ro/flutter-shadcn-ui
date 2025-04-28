@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/src/app.dart';
-import 'package:shadcn_ui/src/components/date_picker.dart';
 import 'package:shadcn_ui/src/components/table.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 

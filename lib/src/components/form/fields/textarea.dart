@@ -200,7 +200,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
               focusNode: state.focusNode,
               readOnly: readOnly,
               decoration: state.decoration,
-              initialValue: state.initialValue,
+              initialValue: initialValue,
               style: style,
               cursorColor: cursorColor,
               selectionColor: selectionColor,
