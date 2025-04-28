@@ -1,8 +1,8 @@
+import 'dart:math' as math;
 import 'dart:ui' as ui;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:shadcn_ui/src/utils/resize_grip.dart';
 
 /// A customizable multiline textarea widget with
 /// adjustable height and optional resizing grip.
@@ -440,22 +440,73 @@ class _ShadTextareaState extends State<ShadTextarea> {
   ///
   /// Falls back to the theme's [Theme.of(context).textTheme.bodyMedium] style
   /// or a default
-  /// size of 14px and line height of 1.5 if not provided.
+  /// size of 14px and line height of 20/4 if not provided.
   ///
   /// Returns a clamped value between 1 and 100.
-  int _calculateLineCount(BuildContext context) {
-    final style = widget.style ??
-        Theme.of(context).textTheme.bodyMedium ??
-        const TextStyle(fontSize: 14, height: 1.5);
+  int _calculateLineCount(TextStyle style) {
     final fontSize = style.fontSize ?? 14;
-    final heightFactor = style.height ?? 1.5;
+    final heightFactor = style.height ?? 20 / 4;
     final lineHeight = fontSize * heightFactor;
     return (_textareaHeight / lineHeight).floor().clamp(1, 100);
   }
 
   @override
   Widget build(BuildContext context) {
-    final lineCount = _calculateLineCount(context);
+    final theme = ShadTheme.of(context);
+
+    final effectiveTextStyle = theme.textTheme.muted
+        .copyWith(
+          color: theme.colorScheme.foreground,
+        )
+        .merge(theme.textareaTheme.style)
+        .merge(widget.style);
+
+    final lineCount = _calculateLineCount(effectiveTextStyle);
+
+    final effectiveDecoration =
+        (theme.textareaTheme.decoration ?? const ShadDecoration())
+            .mergeWith(widget.decoration);
+
+    final effectivePadding = widget.padding ??
+        theme.inputTheme.padding ??
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
+
+    final effectiveInputPadding =
+        widget.inputPadding ?? theme.inputTheme.inputPadding ?? EdgeInsets.zero;
+
+    final effectivePlaceholderStyle = theme.textTheme.muted
+        .merge(theme.inputTheme.placeholderStyle)
+        .merge(widget.placeholderStyle);
+
+    final effectivePlaceholderAlignment = widget.placeholderAlignment ??
+        theme.inputTheme.placeholderAlignment ??
+        Alignment.topLeft;
+
+    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
+        theme.inputTheme.mainAxisAlignment ??
+        MainAxisAlignment.start;
+
+    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+        theme.inputTheme.crossAxisAlignment ??
+        CrossAxisAlignment.center;
+    final effectiveMouseCursor =
+        widget.mouseCursor ?? WidgetStateMouseCursor.textable;
+
+    final effectiveGap = widget.gap ?? theme.inputTheme.gap ?? 8.0;
+
+    final textScaler = MediaQuery.textScalerOf(context);
+
+    final maxFontSize = math.max(
+      (effectivePlaceholderStyle.fontSize ?? 0) *
+          (effectivePlaceholderStyle.height ?? 0),
+      (effectiveTextStyle.fontSize ?? 0) * (effectiveTextStyle.height ?? 0),
+    );
+    final maxFontSizeScaled = textScaler.scale(maxFontSize);
+
+    final effectiveConstraints = widget.constraints ??
+        BoxConstraints(
+          minHeight: maxFontSizeScaled,
+        );
 
     final input = SizedBox(
       height: _textareaHeight,
@@ -464,7 +515,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
         controller: widget.controller,
         focusNode: widget.focusNode,
         placeholder: widget.placeholder,
-        placeholderAlignment: widget.placeholderAlignment ?? Alignment.topLeft,
+        placeholderAlignment: effectivePlaceholderAlignment,
         maxLines: lineCount,
         minLines: lineCount,
         keyboardType: TextInputType.multiline,
@@ -475,7 +526,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
         onEditingComplete: widget.onEditingComplete,
         onSubmitted: widget.onSubmitted,
         onAppPrivateCommand: widget.onAppPrivateCommand,
-        style: widget.style,
+        style: effectiveTextStyle,
         strutStyle: widget.strutStyle,
         textAlign: widget.textAlign,
         textDirection: widget.textDirection,
@@ -495,7 +546,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
         onPressed: widget.onPressed,
         onPressedAlwaysCalled: widget.onPressedAlwaysCalled,
         onPressedOutside: widget.onPressedOutside,
-        mouseCursor: widget.mouseCursor,
+        mouseCursor: effectiveMouseCursor,
         scrollController: widget.scrollController,
         scrollPhysics: widget.scrollPhysics,
         contentInsertionConfiguration: widget.contentInsertionConfiguration,
@@ -508,37 +559,37 @@ class _ShadTextareaState extends State<ShadTextarea> {
         spellCheckConfiguration: widget.spellCheckConfiguration,
         magnifierConfiguration: widget.magnifierConfiguration,
         selectionColor: widget.selectionColor,
-        padding: widget.padding,
-        decoration: widget.decoration,
-        mainAxisAlignment: widget.mainAxisAlignment,
-        crossAxisAlignment: widget.crossAxisAlignment,
-        placeholderStyle: widget.placeholderStyle,
-        inputPadding: widget.inputPadding,
-        gap: widget.gap,
-        constraints: widget.constraints,
+        padding: effectivePadding,
+        decoration: effectiveDecoration,
+        mainAxisAlignment: effectiveMainAxisAlignment,
+        crossAxisAlignment: effectiveCrossAxisAlignment,
+        placeholderStyle: effectivePlaceholderStyle,
+        inputPadding: effectiveInputPadding,
+        gap: effectiveGap,
+        constraints: effectiveConstraints,
         groupId: widget.groupId,
         undoController: widget.undoController,
       ),
     );
 
-    if (!widget.resizable) return input;
-
     return Stack(
       children: [
         input,
-        Positioned(
-          bottom: 6,
-          right: 6,
-          child: MouseRegion(
-            cursor: SystemMouseCursors.resizeUpDown,
-            child: GestureDetector(
-              onPanUpdate: _handleResize,
-              behavior: HitTestBehavior.translucent,
-              child: widget.resizeHandleBuilder?.call(context) ??
-                  const _DefaultResizeGrip(),
+        if (widget.resizable)
+          Positioned(
+            bottom: 6,
+            right: 6,
+            child: MouseRegion(
+              cursor: SystemMouseCursors.resizeUpDown,
+              child: GestureDetector(
+                onPanUpdate: _handleResize,
+                behavior: HitTestBehavior.translucent,
+                child: widget.resizeHandleBuilder != null
+                    ? Builder(builder: widget.resizeHandleBuilder!)
+                    : const ShadDefaultResizeGrip(),
+              ),
             ),
           ),
-        ),
       ],
     );
   }
@@ -549,20 +600,73 @@ class _ShadTextareaState extends State<ShadTextarea> {
 ///
 /// This widget appears in the bottom-right corner and allows
 /// the user to drag and resize the textarea vertically.
-class _DefaultResizeGrip extends StatelessWidget {
-  const _DefaultResizeGrip();
+class ShadDefaultResizeGrip extends StatelessWidget {
+  const ShadDefaultResizeGrip({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final color = theme.dividerColor.withValues(alpha: .5);
+    final theme = ShadTheme.of(context);
 
     return SizedBox(
       width: 16,
       height: 16,
       child: CustomPaint(
-        painter: ShadResizeGripPainter(color: color),
+        painter: ShadResizeGripPainter(color: theme.colorScheme.ring),
       ),
     );
+  }
+}
+
+/// A customizable painter for drawing diagonal resize grip lines,
+/// typically used in the bottom-right corner of a resizable widget.
+class ShadResizeGripPainter extends CustomPainter {
+  /// Creates a painter that draws multiple diagonal lines to represent a resize
+  /// grip.
+  ///
+  /// - [color]: The color of the lines.
+  /// - [strokeWidth]: Thickness of each grip line. Default is 0.8.
+  /// - [lineCount]: Number of diagonal lines to draw. Default is 3.
+  /// - [spacing]: Spacing between each line. Default is 4.0.
+  const ShadResizeGripPainter({
+    required this.color,
+    this.strokeWidth = 0.8,
+    this.lineCount = 3,
+    this.spacing = 4.0,
+  });
+
+  /// The color of the grip lines.
+  final Color color;
+
+  /// The thickness of the lines.
+  final double strokeWidth;
+
+  /// The number of diagonal lines in the grip.
+  final int lineCount;
+
+  /// The spacing between each grip line.
+  final double spacing;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = strokeWidth;
+
+    for (var i = 0; i < lineCount; i++) {
+      final offset = spacing * i;
+      canvas.drawLine(
+        Offset(size.width - offset, size.height),
+        Offset(size.width, size.height - offset),
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant ShadResizeGripPainter oldDelegate) {
+    return oldDelegate.color != color ||
+        oldDelegate.strokeWidth != strokeWidth ||
+        oldDelegate.lineCount != lineCount ||
+        oldDelegate.spacing != spacing;
   }
 }
