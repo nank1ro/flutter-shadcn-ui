@@ -46,7 +46,6 @@ import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
-import 'package:shadcn_ui/src/utils/resize_grip.dart';
 
 class ShadDefaultThemeVariant extends ShadThemeVariant {
   ShadDefaultThemeVariant({
@@ -999,15 +998,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       minHeight: 80,
       maxHeight: 500,
       resizable: true,
-      resizeHandleBuilder: (context) => SizedBox(
-        width: 16,
-        height: 16,
-        child: CustomPaint(
-          painter: ShadResizeGripPainter(
-            color: Theme.of(context).dividerColor.withValues(alpha: .6),
-          ),
-        ),
-      ),
     );
   }
 }

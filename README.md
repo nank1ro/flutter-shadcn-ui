@@ -63,7 +63,7 @@ See the [documentation](https://flutter-shadcn-ui.mariuti.com/) to interact with
 - [x] [Switch](https://flutter-shadcn-ui.mariuti.com/components/switch/)
 - [x] [Table](https://flutter-shadcn-ui.mariuti.com/components/table/)
 - [x] [Tabs](https://flutter-shadcn-ui.mariuti.com/components/tabs/)
-- [ ] TextArea
+- [x] [TextArea](https://flutter-shadcn-ui.mariuti.com/components/text-area/)
 - [x] [Time Picker](https://flutter-shadcn-ui.mariuti.com/components/time-picker/)
 - [x] [Toast](https://flutter-shadcn-ui.mariuti.com/components/toast/)
 - [ ] Toggle
