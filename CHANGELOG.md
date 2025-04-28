@@ -1,6 +1,8 @@
 ## 0.25.0
 
 - **CHORE**: Bump dependency versions (thanks to @mayapaw).
+- **FEAT**: Add `ShadTextarea` and `ShadTextareaFormField` components.
+- **FIX**: `ShadSelectFormField` initial value from `ShadForm` not working.
 
 ## 0.24.0
 
