@@ -28,6 +28,7 @@ import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
+import 'package:shadcn_ui/src/theme/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
@@ -90,6 +91,7 @@ abstract class ShadBaseTheme {
     required this.menubarTheme,
     required this.separatorTheme,
     required this.sonnerTheme,
+    required this.textareaTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -144,6 +146,7 @@ abstract class ShadBaseTheme {
   final ShadMenubarTheme menubarTheme;
   final ShadSeparatorTheme separatorTheme;
   final ShadSonnerTheme sonnerTheme;
+  final ShadTextareaTheme textareaTheme;
 }
 
 @immutable
@@ -193,4 +196,5 @@ abstract class ShadThemeVariant {
   ShadMenubarTheme menubarTheme();
   ShadSeparatorTheme separatorTheme();
   ShadSonnerTheme sonnerTheme();
+  ShadTextareaTheme textareaTheme();
 }

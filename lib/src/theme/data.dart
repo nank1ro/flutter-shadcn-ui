@@ -30,6 +30,7 @@ import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
+import 'package:shadcn_ui/src/theme/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
@@ -96,6 +97,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadMenubarTheme? menubarTheme,
     ShadSeparatorTheme? separatorTheme,
     ShadSonnerTheme? sonnerTheme,
+    ShadTextareaTheme? textareaTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -242,6 +244,7 @@ class ShadThemeData extends ShadBaseTheme {
       separatorTheme:
           effectiveVariant.separatorTheme().mergeWith(separatorTheme),
       sonnerTheme: effectiveVariant.sonnerTheme().mergeWith(sonnerTheme),
+      textareaTheme: effectiveVariant.textareaTheme().mergeWith(textareaTheme),
     );
   }
 
@@ -298,6 +301,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.menubarTheme,
     required super.separatorTheme,
     required super.sonnerTheme,
+    required super.textareaTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -575,6 +579,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadMenubarTheme? menubarTheme,
     ShadSeparatorTheme? separatorTheme,
     ShadSonnerTheme? sonnerTheme,
+    ShadTextareaTheme? textareaTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -634,6 +639,7 @@ class ShadThemeData extends ShadBaseTheme {
       menubarTheme: menubarTheme ?? this.menubarTheme,
       separatorTheme: separatorTheme ?? this.separatorTheme,
       sonnerTheme: sonnerTheme ?? this.sonnerTheme,
+      textareaTheme: textareaTheme ?? this.textareaTheme,
     );
   }
 }
