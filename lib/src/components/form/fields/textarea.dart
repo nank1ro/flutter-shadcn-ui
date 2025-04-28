@@ -191,7 +191,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
                       const ShadDecoration())
                   .mergeWith(decoration),
           builder: (field) {
-            final state = field as _ShadFormBuilderTextareaState; // typed state
+            final state = field as _ShadFormBuilderTextareaState;
             return ShadTextarea(
               key: state.textareaKey,
               controller: state.controller,
@@ -200,7 +200,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
               focusNode: state.focusNode,
               readOnly: readOnly,
               decoration: state.decoration,
-              initialValue: initialValue,
+              initialValue: state.initialValue,
               style: style,
               cursorColor: cursorColor,
               selectionColor: selectionColor,

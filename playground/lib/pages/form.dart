@@ -219,9 +219,10 @@ class _FormPageState extends State<FormPage> {
                   FormStyle.textareaField => ShadTextareaFormField(
                       id: 'bio',
                       label: const Text('Bio'),
-                      placeholder: const Text('Tell us about yourself'),
+                      placeholder:
+                          const Text('Tell us a little bit about yourself'),
                       description: const Text(
-                          'You can write a short bio that will be publicly visible.'),
+                          'You can @mention other users and organizations.'),
                       validator: (v) {
                         if (v.length < 10) {
                           return 'Bio must be at least 10 characters.';
