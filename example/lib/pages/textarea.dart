@@ -32,10 +32,18 @@ class _TextareaPageState extends State<TextareaPage> {
       ],
       children: [
         ShadTextarea(
+          scrollPadding: EdgeInsets.zero,
+          // padding: EdgeInsets.only(bottom: 8 + 1),
+          // inputPadding: EdgeInsets.zero,
           placeholder: const Text('Type your message here...'),
           enabled: enabled,
           resizable: resizable,
-          onChanged: (v) => debugPrint('Value changed: $v'),
+          onChanged: (v) => print('Value changed: $v'),
+        ),
+        TextField(
+          minLines: 5,
+          maxLines: 5,
+          scrollPadding: const EdgeInsets.all(200),
         ),
       ],
     );

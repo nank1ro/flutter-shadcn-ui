@@ -608,8 +608,8 @@ class ShadDefaultResizeGrip extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     return SizedBox(
-      width: 16,
-      height: 16,
+      width: 8,
+      height: 8,
       child: CustomPaint(
         painter: ShadResizeGripPainter(color: theme.colorScheme.ring),
       ),
