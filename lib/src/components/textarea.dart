@@ -84,6 +84,7 @@ class ShadTextarea extends StatefulWidget {
     this.resizable = true,
     this.onHeightChanged,
     this.resizeHandleBuilder,
+    this.scrollbarPadding,
   })  : enableInteractiveSelection = enableInteractiveSelection ?? !readOnly,
         assert(
           initialValue == null || controller == null,
@@ -399,6 +400,13 @@ class ShadTextarea extends StatefulWidget {
   /// {@endtemplate}
   final WidgetBuilder? resizeHandleBuilder;
 
+  /// {@template ShadTextarea.scrollbarPadding}
+  /// The padding around the scrollbar.
+  ///
+  /// Defaults to `EdgeInsets.only(bottom: 10)`.
+  /// {@endtemplate}
+  final EdgeInsets? scrollbarPadding;
+
   @override
   State<ShadTextarea> createState() => _ShadTextareaState();
 }
@@ -508,6 +516,10 @@ class _ShadTextareaState extends State<ShadTextarea> {
           minHeight: maxFontSizeScaled,
         );
 
+    final effectiveScrollbarPadding = widget.scrollbarPadding ??
+        theme.inputTheme.scrollbarPadding ??
+        const EdgeInsets.only(bottom: 10);
+
     final input = SizedBox(
       height: _textareaHeight,
       child: ShadInput(
@@ -569,6 +581,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
         constraints: effectiveConstraints,
         groupId: widget.groupId,
         undoController: widget.undoController,
+        scrollbarPadding: effectiveScrollbarPadding,
       ),
     );
 

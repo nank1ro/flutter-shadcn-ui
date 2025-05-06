@@ -96,6 +96,7 @@ class ShadInput extends StatefulWidget {
     this.stylusHandwritingEnabled =
         EditableText.defaultStylusHandwritingEnabled,
     this.groupId,
+    this.scrollbarPadding,
   })  : smartDashesType = smartDashesType ??
             (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
         smartQuotesType = smartQuotesType ??
@@ -558,6 +559,13 @@ class ShadInput extends StatefulWidget {
   /// {@macro flutter.widgets.editableText.groupId}
   final Object? groupId;
 
+  /// {@template ShadInput.scrollbarPadding}
+  /// The padding around the scrollbar.
+  ///
+  /// Defaults to null if not specified.
+  /// {@endtemplate}
+  final EdgeInsets? scrollbarPadding;
+
   /// A constant representing no maximum length for the input.
   static const int noMaxLength = -1;
 
@@ -850,6 +858,9 @@ class ShadInputState extends State<ShadInput>
 
     final effectiveGroupId = widget.groupId ?? _groupId;
 
+    final effectiveScrollbarPadding =
+        widget.scrollbarPadding ?? theme.inputTheme.scrollbarPadding;
+
     return ShadDisabled(
       disabled: !widget.enabled,
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
@@ -873,7 +884,7 @@ class ShadInputState extends State<ShadInput>
                         materialTheme.scrollbarTheme.thickness?.resolve({}),
                     thumbVisibility: isMultiline && isScrollable,
                     controller: effectiveScrollController,
-                    padding: EdgeInsets.only(bottom: 10),
+                    padding: effectiveScrollbarPadding,
                     child: SingleChildScrollView(
                       controller: effectiveScrollController,
                       padding: effectivePadding,

@@ -15,6 +15,7 @@ class ShadInputTheme {
     this.crossAxisAlignment,
     this.gap,
     this.constraints,
+    this.scrollbarPadding,
   });
 
   final bool merge;
@@ -49,6 +50,9 @@ class ShadInputTheme {
   /// {@macro ShadInput.constraints}
   final BoxConstraints? constraints;
 
+  /// {@macro ShadInput.scrollbarPadding}
+  final EdgeInsets? scrollbarPadding;
+
   static ShadInputTheme lerp(
     ShadInputTheme a,
     ShadInputTheme b,
@@ -67,6 +71,11 @@ class ShadInputTheme {
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       gap: t < 0.5 ? a.gap : b.gap,
       constraints: BoxConstraints.lerp(a.constraints, b.constraints, t),
+      scrollbarPadding: EdgeInsets.lerp(
+        a.scrollbarPadding,
+        b.scrollbarPadding,
+        t,
+      ),
     );
   }
 
@@ -81,6 +90,7 @@ class ShadInputTheme {
     CrossAxisAlignment? crossAxisAlignment,
     double? gap,
     BoxConstraints? constraints,
+    EdgeInsets? scrollbarPadding,
   }) {
     return ShadInputTheme(
       merge: merge ?? this.merge,
@@ -93,6 +103,7 @@ class ShadInputTheme {
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
       gap: gap ?? this.gap,
       constraints: constraints ?? this.constraints,
+      scrollbarPadding: scrollbarPadding ?? this.scrollbarPadding,
     );
   }
 
@@ -109,6 +120,7 @@ class ShadInputTheme {
       crossAxisAlignment: other.crossAxisAlignment,
       gap: other.gap,
       constraints: other.constraints,
+      scrollbarPadding: other.scrollbarPadding,
     );
   }
 
@@ -126,7 +138,8 @@ class ShadInputTheme {
         other.mainAxisAlignment == mainAxisAlignment &&
         other.crossAxisAlignment == crossAxisAlignment &&
         other.gap == gap &&
-        other.constraints == constraints;
+        other.constraints == constraints &&
+        other.scrollbarPadding == scrollbarPadding;
   }
 
   @override
@@ -140,6 +153,7 @@ class ShadInputTheme {
         mainAxisAlignment.hashCode ^
         crossAxisAlignment.hashCode ^
         gap.hashCode ^
-        constraints.hashCode;
+        constraints.hashCode ^
+        scrollbarPadding.hashCode;
   }
 }
