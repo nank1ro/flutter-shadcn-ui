@@ -1,6 +1,7 @@
 ## 0.25.1
 
 - **FIX**: The scrollbar of the `ShadTextarea` component has been fixed, added `scrollbarPadding` to `ShadTextareaTheme` and `ShadInputTheme`.
+- **FIX**: Focus of `ShadTextarea` on resize.
 
 ## 0.25.0
 

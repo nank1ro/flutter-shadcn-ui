@@ -413,11 +413,17 @@ class ShadTextarea extends StatefulWidget {
 
 class _ShadTextareaState extends State<ShadTextarea> {
   late double _textareaHeight;
+  FocusNode? _focusNode;
+
+  FocusNode get focusNode => widget.focusNode ?? _focusNode!;
 
   @override
   void initState() {
     super.initState();
     _textareaHeight = widget.minHeight;
+    if (widget.focusNode == null) {
+      _focusNode = FocusNode();
+    }
   }
 
   @override
@@ -430,11 +436,18 @@ class _ShadTextareaState extends State<ShadTextarea> {
     }
   }
 
+  @override
+  void dispose() {
+    _focusNode?.dispose();
+    super.dispose();
+  }
+
   /// Handles the drag gesture to resize the textarea.
   ///
   /// Updates [_textareaHeight] based on the vertical drag delta
   /// and clamps the result
   void _handleResize(DragUpdateDetails details) {
+    focusNode.requestFocus();
     final newHeight = (_textareaHeight + details.delta.dy)
         .clamp(widget.minHeight, widget.maxHeight);
     if (newHeight != _textareaHeight) {
@@ -525,7 +538,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
       child: ShadInput(
         initialValue: widget.initialValue,
         controller: widget.controller,
-        focusNode: widget.focusNode,
+        focusNode: focusNode,
         placeholder: widget.placeholder,
         placeholderAlignment: effectivePlaceholderAlignment,
         maxLines: lineCount,
