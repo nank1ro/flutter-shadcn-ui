@@ -32,9 +32,6 @@ class _TextareaPageState extends State<TextareaPage> {
       ],
       children: [
         ShadTextarea(
-          scrollPadding: EdgeInsets.zero,
-          // padding: EdgeInsets.only(bottom: 8 + 1),
-          // inputPadding: EdgeInsets.zero,
           placeholder: const Text('Type your message here...'),
           enabled: enabled,
           resizable: resizable,
