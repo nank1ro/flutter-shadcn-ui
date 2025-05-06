@@ -850,9 +850,6 @@ class ShadInputState extends State<ShadInput>
 
     final effectiveGroupId = widget.groupId ?? _groupId;
 
-    final effectiveScrollController =
-        widget.scrollController ?? _scrollController;
-
     return ShadDisabled(
       disabled: !widget.enabled,
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
@@ -892,8 +889,8 @@ class ShadInputState extends State<ShadInput>
                               constraints: effectiveConstraints,
                               child: AbsorbPointer(
                                 // AbsorbPointer is needed when the input is
-                                // readOnly so the onTap callback is fired on each
-                                // part of the input
+                                // readOnly so the onTap callback is fired on
+                                // each part of the input
                                 absorbing: widget.readOnly,
                                 child: Padding(
                                   padding: effectiveInputPadding,
