@@ -40,11 +40,6 @@ class _TextareaPageState extends State<TextareaPage> {
           resizable: resizable,
           onChanged: (v) => print('Value changed: $v'),
         ),
-        TextField(
-          minLines: 5,
-          maxLines: 5,
-          scrollPadding: const EdgeInsets.all(200),
-        ),
       ],
     );
   }

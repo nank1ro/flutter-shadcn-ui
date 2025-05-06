@@ -583,6 +583,16 @@ class ShadInputState extends State<ShadInput>
 
   ScrollController? _scrollController;
 
+  ScrollController get effectiveScrollController =>
+      widget.scrollController ?? _scrollController!;
+
+  bool get isScrollable {
+    if (!effectiveScrollController.hasClients) {
+      return false;
+    }
+    return effectiveScrollController.position.maxScrollExtent > 0;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -751,6 +761,7 @@ class ShadInputState extends State<ShadInput>
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final materialTheme = Theme.of(context);
     final effectiveTextStyle = theme.textTheme.muted
         .copyWith(
           color: theme.colorScheme.foreground,
@@ -842,10 +853,6 @@ class ShadInputState extends State<ShadInput>
     final effectiveScrollController =
         widget.scrollController ?? _scrollController;
 
-    print('effectiveInputPadding $effectiveInputPadding');
-    print('effectivePadding $effectivePadding');
-    print('MediaQuery.paddingOf ${MediaQuery.paddingOf(context)}');
-
     return ShadDisabled(
       disabled: !widget.enabled,
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
@@ -859,11 +866,21 @@ class ShadInputState extends State<ShadInput>
                 return ShadDecorator(
                   decoration: effectiveDecoration,
                   focused: focused,
-                  child: Scrollbar(
-                    thumbVisibility: isMultiline,
+                  child: RawScrollbar(
+                    mainAxisMargin:
+                        materialTheme.scrollbarTheme.mainAxisMargin ?? 0,
+                    crossAxisMargin:
+                        materialTheme.scrollbarTheme.crossAxisMargin ?? 0,
+                    radius: materialTheme.scrollbarTheme.radius,
+                    thickness:
+                        materialTheme.scrollbarTheme.thickness?.resolve({}),
+                    thumbVisibility: isMultiline && isScrollable,
                     controller: effectiveScrollController,
-                    child: Padding(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: SingleChildScrollView(
+                      controller: effectiveScrollController,
                       padding: effectivePadding,
+                      physics: widget.scrollPhysics,
                       child: Row(
                         mainAxisAlignment: effectiveMainAxisAlignment,
                         crossAxisAlignment: effectiveCrossAxisAlignment,
@@ -967,8 +984,6 @@ class ShadInputState extends State<ShadInput>
                                             scrollPadding: widget.scrollPadding,
                                             dragStartBehavior:
                                                 widget.dragStartBehavior,
-                                            scrollController:
-                                                effectiveScrollController,
                                             scrollPhysics: widget.scrollPhysics,
                                             // Disable the internal scrollbars
                                             // because there is already a
