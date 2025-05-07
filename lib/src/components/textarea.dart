@@ -84,6 +84,7 @@ class ShadTextarea extends StatefulWidget {
     this.resizable = true,
     this.onHeightChanged,
     this.resizeHandleBuilder,
+    this.scrollbarPadding,
   })  : enableInteractiveSelection = enableInteractiveSelection ?? !readOnly,
         assert(
           initialValue == null || controller == null,
@@ -399,17 +400,30 @@ class ShadTextarea extends StatefulWidget {
   /// {@endtemplate}
   final WidgetBuilder? resizeHandleBuilder;
 
+  /// {@template ShadTextarea.scrollbarPadding}
+  /// The padding around the scrollbar.
+  ///
+  /// Defaults to `EdgeInsets.only(bottom: 10)`.
+  /// {@endtemplate}
+  final EdgeInsets? scrollbarPadding;
+
   @override
   State<ShadTextarea> createState() => _ShadTextareaState();
 }
 
 class _ShadTextareaState extends State<ShadTextarea> {
   late double _textareaHeight;
+  FocusNode? _focusNode;
+
+  FocusNode get focusNode => widget.focusNode ?? _focusNode!;
 
   @override
   void initState() {
     super.initState();
     _textareaHeight = widget.minHeight;
+    if (widget.focusNode == null) {
+      _focusNode = FocusNode();
+    }
   }
 
   @override
@@ -422,11 +436,18 @@ class _ShadTextareaState extends State<ShadTextarea> {
     }
   }
 
+  @override
+  void dispose() {
+    _focusNode?.dispose();
+    super.dispose();
+  }
+
   /// Handles the drag gesture to resize the textarea.
   ///
   /// Updates [_textareaHeight] based on the vertical drag delta
   /// and clamps the result
   void _handleResize(DragUpdateDetails details) {
+    focusNode.requestFocus();
     final newHeight = (_textareaHeight + details.delta.dy)
         .clamp(widget.minHeight, widget.maxHeight);
     if (newHeight != _textareaHeight) {
@@ -508,12 +529,16 @@ class _ShadTextareaState extends State<ShadTextarea> {
           minHeight: maxFontSizeScaled,
         );
 
+    final effectiveScrollbarPadding = widget.scrollbarPadding ??
+        theme.inputTheme.scrollbarPadding ??
+        const EdgeInsets.only(bottom: 10);
+
     final input = SizedBox(
       height: _textareaHeight,
       child: ShadInput(
         initialValue: widget.initialValue,
         controller: widget.controller,
-        focusNode: widget.focusNode,
+        focusNode: focusNode,
         placeholder: widget.placeholder,
         placeholderAlignment: effectivePlaceholderAlignment,
         maxLines: lineCount,
@@ -569,6 +594,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
         constraints: effectiveConstraints,
         groupId: widget.groupId,
         undoController: widget.undoController,
+        scrollbarPadding: effectiveScrollbarPadding,
       ),
     );
 
@@ -608,8 +634,8 @@ class ShadDefaultResizeGrip extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     return SizedBox(
-      width: 16,
-      height: 16,
+      width: 8,
+      height: 8,
       child: CustomPaint(
         painter: ShadResizeGripPainter(color: theme.colorScheme.ring),
       ),

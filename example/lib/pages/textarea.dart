@@ -35,7 +35,7 @@ class _TextareaPageState extends State<TextareaPage> {
           placeholder: const Text('Type your message here...'),
           enabled: enabled,
           resizable: resizable,
-          onChanged: (v) => debugPrint('Value changed: $v'),
+          onChanged: (v) => print('Value changed: $v'),
         ),
       ],
     );

@@ -998,6 +998,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       minHeight: 80,
       maxHeight: 500,
       resizable: true,
+      scrollbarPadding: const EdgeInsets.only(bottom: 10),
     );
   }
 }

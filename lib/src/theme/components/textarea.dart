@@ -19,6 +19,7 @@ class ShadTextareaTheme {
     this.maxHeight,
     this.resizable,
     this.resizeHandleBuilder,
+    this.scrollbarPadding,
   });
 
   final bool merge;
@@ -65,6 +66,9 @@ class ShadTextareaTheme {
   /// {@macro ShadTextarea.resizeHandleBuilder}
   final WidgetBuilder? resizeHandleBuilder;
 
+  /// {@macro ShadTextarea.scrollbarPadding}
+  final EdgeInsets? scrollbarPadding;
+
   static ShadTextareaTheme lerp(
     ShadTextareaTheme a,
     ShadTextareaTheme b,
@@ -88,6 +92,8 @@ class ShadTextareaTheme {
       resizable: t < 0.5 ? a.resizable : b.resizable,
       resizeHandleBuilder:
           t < 0.5 ? a.resizeHandleBuilder : b.resizeHandleBuilder,
+      scrollbarPadding:
+          EdgeInsets.lerp(a.scrollbarPadding, b.scrollbarPadding, t),
     );
   }
 
@@ -106,6 +112,7 @@ class ShadTextareaTheme {
     double? maxHeight,
     bool? resizable,
     WidgetBuilder? resizeHandleBuilder,
+    EdgeInsets? scrollbarPadding,
   }) {
     return ShadTextareaTheme(
       merge: merge ?? this.merge,
@@ -122,6 +129,7 @@ class ShadTextareaTheme {
       maxHeight: maxHeight ?? this.maxHeight,
       resizable: resizable ?? this.resizable,
       resizeHandleBuilder: resizeHandleBuilder ?? this.resizeHandleBuilder,
+      scrollbarPadding: scrollbarPadding ?? this.scrollbarPadding,
     );
   }
 
@@ -142,6 +150,7 @@ class ShadTextareaTheme {
       maxHeight: other.maxHeight,
       resizable: other.resizable,
       resizeHandleBuilder: other.resizeHandleBuilder,
+      scrollbarPadding: other.scrollbarPadding,
     );
   }
 
@@ -163,7 +172,8 @@ class ShadTextareaTheme {
           minHeight == other.minHeight &&
           maxHeight == other.maxHeight &&
           resizable == other.resizable &&
-          resizeHandleBuilder == other.resizeHandleBuilder;
+          resizeHandleBuilder == other.resizeHandleBuilder &&
+          scrollbarPadding == other.scrollbarPadding;
 
   @override
   int get hashCode =>
@@ -180,5 +190,6 @@ class ShadTextareaTheme {
       minHeight.hashCode ^
       maxHeight.hashCode ^
       resizable.hashCode ^
-      resizeHandleBuilder.hashCode;
+      resizeHandleBuilder.hashCode ^
+      scrollbarPadding.hashCode;
 }

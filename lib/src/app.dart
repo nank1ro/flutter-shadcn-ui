@@ -699,6 +699,13 @@ class _ShadAppState extends State<ShadApp> {
         size: 16,
         color: themeData.colorScheme.foreground,
       ),
+      scrollbarTheme: ScrollbarThemeData(
+        crossAxisMargin: 1,
+        mainAxisMargin: 1,
+        thickness: const WidgetStatePropertyAll(8),
+        radius: const Radius.circular(999),
+        thumbColor: WidgetStatePropertyAll(themeData.colorScheme.border),
+      ),
     );
     mTheme = mTheme.copyWith(
       textTheme: themeData.textTheme
