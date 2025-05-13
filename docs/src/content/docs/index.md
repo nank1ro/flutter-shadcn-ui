@@ -136,6 +136,10 @@ ThemeData(
 ),
 ```
 
+:::note
+Use `Theme.of(context).copyWith(...)` to override the default theme, without losing the default values provided by shadcn_ui.
+:::
+
 ## Shadcn + Cupertino
 
 If you need to use shadcn components with Cupertino components, use `CupertinoApp` instead of `MaterialApp`, like you are already used to.
@@ -193,3 +197,7 @@ CupertinoThemeData(
   brightness: themeData.brightness,
 ),
 ```
+
+:::note
+Use `CupertinoTheme.of(context).copyWith(...)` to override the default theme, without losing the default values provided by shadcn_ui.
+:::
