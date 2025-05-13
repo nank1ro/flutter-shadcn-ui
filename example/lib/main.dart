@@ -111,15 +111,20 @@ class App extends StatelessWidget {
         // Custom App example
         // return ShadApp.custom(
         //   themeMode: themeMode,
-        //   appBuilder: (context, theme) => GetMaterialApp(
-        //     routes: routes,
-        //     themeMode: themeMode,
-        //     theme: theme,
-        //     home: const MainPage(),
-        //     builder: (context, child) {
-        //       return ShadToaster(child: child!);
-        //     },
+        //   darkTheme: ShadThemeData(
+        //     brightness: Brightness.dark,
+        //     colorScheme: const ShadSlateColorScheme.dark(),
         //   ),
+        //   appBuilder: (context) {
+        //     return MaterialApp(
+        //       routes: routes,
+        //       theme: Theme.of(context),
+        //       home: const MainPage(),
+        //       builder: (context, child) {
+        //         return ShadAppBuilder(child: child!);
+        //       },
+        //     );
+        //   },
         // );
         return ShadApp(
           debugShowCheckedModeBanner: false,
