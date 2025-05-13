@@ -299,8 +299,7 @@ class ShadApp extends StatefulWidget {
 
   const ShadApp.custom({
     super.key,
-    required Widget Function(BuildContext context, ThemeData theme)
-        this.appBuilder,
+    required WidgetBuilder this.appBuilder,
     this.theme,
     this.darkTheme,
     this.themeMode,
@@ -595,7 +594,7 @@ class ShadApp extends StatefulWidget {
   final Curve themeCurve;
 
   /// A custom app widget builder.
-  final Widget Function(BuildContext context, ThemeData theme)? appBuilder;
+  final WidgetBuilder? appBuilder;
 
   final ThemeData Function(BuildContext context, ThemeData theme)?
       materialThemeBuilder;
@@ -972,7 +971,7 @@ class _ShadAppState extends State<ShadApp> {
               // surround widget.builder with yet another builder so that
               // a context separates them and Theme.of() correctly
               // resolves to the theme we passed to AnimatedTheme.
-              return widget.appBuilder!(context, Theme.of(context));
+              return widget.appBuilder!(context);
             },
           ),
         );

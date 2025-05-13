@@ -115,9 +115,10 @@ class App extends StatelessWidget {
         //     brightness: Brightness.dark,
         //     colorScheme: const ShadSlateColorScheme.dark(),
         //   ),
-        //   appBuilder: (context, theme) {
+        //   appBuilder: (context) {
         //     return MaterialApp(
         //       routes: routes,
+        //       theme: Theme.of(context),
         //       home: const MainPage(),
         //       builder: (context, child) {
         //         return ShadAppBuilder(child: child!);

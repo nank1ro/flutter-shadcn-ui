@@ -1,3 +1,8 @@
+## 0.26.0
+
+- **BREAKING CHANGE**: Update the `appBuilder` of the `ShadApp` by removing the `ThemeData` parameter.
+- **REFACTOR**: Deprecate `ShadApp.material`, `ShadApp.materialRouter`, `ShadApp.cupertino` and `ShadApp.cupertinoRouter`. Use `ShadApp.custom` instead.
+
 ## 0.25.1
 
 - **FIX**: The scrollbar of the `ShadTextarea` component has been fixed, added `scrollbarPadding` to `ShadTextareaTheme` and `ShadInputTheme`.

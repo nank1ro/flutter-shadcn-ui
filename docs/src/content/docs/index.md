@@ -76,9 +76,9 @@ class MyApp extends StatelessWidget {
 +        brightness: Brightness.dark,
 +        colorScheme: const ShadSlateColorScheme.dark(),
 +      ),
-+      appBuilder: (context, theme) {
++      appBuilder: (context) {
 +        return MaterialApp(
-+          theme: theme,
++          theme: Theme.of(context),
 +          builder: (context, child) {
 +            return ShadAppBuilder(child: child!);
 +          },
@@ -159,8 +159,9 @@ class MyApp extends StatelessWidget {
 +        brightness: Brightness.dark,
 +        colorScheme: const ShadSlateColorScheme.dark(),
 +      ),
-+      appBuilder: (context, theme) {
++      appBuilder: (context) {
 +        return CupertinoApp(
++          theme: CupertinoTheme.of(context),
 +          localizationsDelegates: const [
 +            DefaultMaterialLocalizations.delegate,
 +            DefaultCupertinoLocalizations.delegate,
