@@ -59,6 +59,7 @@ The setup is simple:
 
 ```diff lang="dart"
 import 'package:shadcn_ui/shadcn_ui.dart';
++ import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
@@ -146,6 +147,8 @@ If you need to use shadcn components with Cupertino components, use `CupertinoAp
 
 ```diff lang="dart"
 import 'package:shadcn_ui/shadcn_ui.dart';
++ import 'package:flutter/cupertino.dart';
++ import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
