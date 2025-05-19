@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cli_tools/cli_tools.dart' hide Logger;
 import 'package:cli_util/cli_logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:shadcn/shadcn.dart';
-import 'package:cli_tools/cli_tools.dart' hide Logger;
 
 late Logger logger;
 
@@ -27,15 +27,7 @@ enum Options implements OptionDefinition<String> {
 
 class AddComponentCommand extends BetterCommand<Options, void> {
   AddComponentCommand() : super(options: Options.values);
-  // argParser.addOption(
-  //   'component',
-  //   aliases: [],
-  //   abbr: 'c',
-  //   help: 'The component to add',
-  //   mandatory: true,
-  //   allowed: components,
-  // );
-  // }
+
   @override
   String get name => 'add';
 
