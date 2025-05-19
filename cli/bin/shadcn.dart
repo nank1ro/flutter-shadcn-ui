@@ -38,6 +38,16 @@ class AddComponentCommand extends BetterCommand<Options, void> {
   Future<void> runWithConfig(Configuration<Options> commandConfig) async {
     final component = commandConfig.value(Options.component);
     logger.progress('Adding component: $component');
+    final result = await GitOperations.fetchFileFromGitHub(
+      path: 'lib/src/components/$component.dart',
+    );
+    final button = File(
+      '/Users/ale/github/flutter-shadcn-ui/lib/src/components/button.dart',
+    );
+    final bytes = await button.readAsBytes();
+    final localHash = GitOperations.calculateHashOfFile(bytes);
+    print('localHash: $localHash');
+    // print(result);
     logger.stdout('finish');
   }
 }
