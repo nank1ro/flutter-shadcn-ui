@@ -8,6 +8,8 @@ on:
 jobs:
   update-hashes:
     runs-on: ubuntu-latest
+    env:
+      BRANCH_NAME: update-hashes-${{ github.run_id }}-${{ github.run_attempt }}
 
     steps:
       - name: Checkout repository
@@ -20,7 +22,6 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          BRANCH_NAME="update-hashes-$(date +%s)"
           git checkout -b "$BRANCH_NAME"
           git add cli/hashes.json
           if git diff --staged --quiet; then
@@ -39,6 +40,7 @@ jobs:
           commit-message: "Update hashes.json with latest Dart file SHAs"
           title: "Update hashes.json with latest Dart file SHAs"
           body: "Automated update of cli/hashes.json with SHA-1 hashes of .dart files in lib directory."
-          branch: "update-hashes-$(date +%s)"
+          branch: ${{ env.BRANCH_NAME }}
           base: main
-          delete-branch: true # Deletes the branch after merging
+          delete-branch: true
+          add-paths: cli/hashes.json
