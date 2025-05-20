@@ -18,7 +18,14 @@ jobs:
           fetch-depth: 0 # Fetch full history for git hash-object
 
       - name: Run hash generation script
-        run: bash .github/scripts/generate_hashes.sh
+        run: |
+          bash .github/scripts/generate_hashes.sh
+          echo "Contents of cli/hashes.json:"
+          cat cli/hashes.json || echo "Error: cli/hashes.json not found"
+          if [ ! -f cli/hashes.json ]; then
+            echo "Error: Hash generation failed"
+            exit 1
+          fi
 
       - name: Create and push new branch
         run: |
@@ -44,5 +51,5 @@ jobs:
           body: "Automated update of cli/hashes.json with SHA-1 hashes of .dart files in lib directory."
           branch: ${{ env.BRANCH_NAME }}
           base: main
-          delete-branch: true
+          delete-branch: false
           add-paths: cli/hashes.json
