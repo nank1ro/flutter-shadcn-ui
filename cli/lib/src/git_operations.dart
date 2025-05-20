@@ -5,14 +5,6 @@ import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 
 abstract class GitOperations {
-  static bool get isGitRepository {
-    final value = Process.runSync('git', [
-      'rev-parse',
-      '--is-inside-work-tree',
-    ]);
-    return value.exitCode == 0;
-  }
-
   static String getGitRepositoryPath() {
     final path = Process.runSync('git', ['rev-parse', '--show-toplevel']);
     return path.stdout.toString().trim();
@@ -76,7 +68,7 @@ abstract class GitOperations {
       // Convert to hex string
       return hashBytes.bytes
           .map((byte) => byte.toRadixString(16).padLeft(2, '0'))
-          .join('');
+          .join();
     } catch (e) {
       throw Exception('Failed to calculate hash: $e');
     }
