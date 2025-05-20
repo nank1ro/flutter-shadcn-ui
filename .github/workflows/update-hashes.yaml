@@ -1,0 +1,44 @@
+name: Update Dart File Hashes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-hashes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run hash generation script
+        run: bash .github/scripts/generate_hashes.sh
+
+      - name: Create and push new branch
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          BRANCH_NAME="update-hashes-$(date +%s)"
+          git checkout -b "$BRANCH_NAME"
+          git add cli/hashes.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Update hashes.json with latest Dart file SHAs"
+          git push origin "$BRANCH_NAME"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update hashes.json with latest Dart file SHAs"
+          title: "Update hashes.json with latest Dart file SHAs"
+          body: "Automated update of cli/hashes.json with SHA-1 hashes of .dart files in lib directory."
+          branch: "update-hashes-$(date +%s)"
+          base: main
+          delete-branch: true # Deletes the branch after merging
