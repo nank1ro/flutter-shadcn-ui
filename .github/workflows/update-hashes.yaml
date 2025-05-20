@@ -8,37 +8,23 @@ on:
 jobs:
   update-hashes:
     runs-on: ubuntu-latest
-    env:
-      BRANCH_NAME: chore/update-hashes-${{ github.run_id }}-${{ github.run_attempt }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
 
       - name: Run hash generation script
         run: |
           bash .github/scripts/generate_hashes.sh
 
-      - name: Create pull request
-        id: cpr
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Update hashes.json with latest Dart file SHAs"
-          title: "Update hashes.json with latest Dart file SHAs"
-          body: "Automated update of cli/hashes.json with SHA-1 hashes of .dart files in lib directory."
-          branch: ${{ env.BRANCH_NAME }}
-          base: main
-          delete-branch: false
-          add-paths: cli/hashes.json
-      - name: Enable Pull Request Automerge
-        if: steps.cpr.outputs.pull-request-operation == 'created'
-        uses: peter-evans/enable-pull-request-automerge@v3
-        with:
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-          merge-method: squash
-      - name: Auto approve
-        if: steps.cpr.outputs.pull-request-operation == 'created'
-        run: gh pr review --approve "${{ steps.cpr.outputs.pull-request-number }}"
+      - name: Commit and force push changes
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add cli/hashes.json
+          git commit -m "Update hashes.json with latest Dart file SHAs" || echo "No changes to commit"
+          git push origin main --force-with-lease
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
