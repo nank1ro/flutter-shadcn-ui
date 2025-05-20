@@ -1,8 +1,5 @@
 name: Update Dart File Hashes
 
-permissions:
-  contents: write
-  pull-requests: write
 on:
   push:
     branches:
@@ -17,35 +14,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Fetch full history for git hash-object
 
       - name: Run hash generation script
         run: |
           bash .github/scripts/generate_hashes.sh
-          echo "Contents of cli/hashes.json:"
-          cat cli/hashes.json || echo "Error: cli/hashes.json not found"
-          if [ ! -f cli/hashes.json ]; then
-            echo "Error: Hash generation failed"
-            exit 1
-          fi
-
-      # - name: Create and push new branch
-      #   run: |
-      #     git config --global user.name 'github-actions[bot]'
-      #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-      #     git checkout -b "$BRANCH_NAME"
-      #     git add cli/hashes.json
-      #     if git diff --staged --quiet; then
-      #       echo "No changes to commit"
-      #       exit 0
-      #     fi
-      #     git commit -m "Update hashes.json with latest Dart file SHAs"
-      #     git push origin "$BRANCH_NAME"
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request
+        id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -56,3 +31,14 @@ jobs:
           base: main
           delete-branch: false
           add-paths: cli/hashes.json
+      - name: Enable Pull Request Automerge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
+      - name: Auto approve
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        run: gh pr review --approve "${{ steps.cpr.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
