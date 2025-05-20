@@ -31,7 +31,7 @@ class IsGitRepositoryRequirement extends Requirement<void> {
   @override
   FutureOr<RequirementResult<void>> check() {
     try {
-      final result = Process.runSync('gitx', [
+      final result = Process.runSync('git', [
         'rev-parse',
         '--is-inside-work-tree',
       ]);
