@@ -1,14 +1,18 @@
 import 'dart:async';
 
 class RequirementResult<T> {
-  RequirementResult.success({this.value}) : success = true, errorMessage = null;
-  RequirementResult.failure({this.errorMessage})
+  RequirementResult.success({this.value})
+    : success = true,
+      errorMessage = null,
+      internalError = null;
+  RequirementResult.failure({this.errorMessage, this.internalError})
     : success = false,
       value = null;
 
   final bool success;
   final T? value;
   final String? errorMessage;
+  final Object? internalError;
 }
 
 abstract class Requirement<T> {

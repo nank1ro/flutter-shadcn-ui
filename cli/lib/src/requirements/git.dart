@@ -16,7 +16,10 @@ class IsGitInstalledRequirement extends Requirement<void> {
       }
       return RequirementResult.failure(errorMessage: errorMessage);
     } catch (e) {
-      return RequirementResult.failure(errorMessage: errorMessage);
+      return RequirementResult.failure(
+        errorMessage: errorMessage,
+        internalError: e,
+      );
     }
   }
 }
@@ -28,7 +31,7 @@ class IsGitRepositoryRequirement extends Requirement<void> {
   @override
   FutureOr<RequirementResult<void>> check() {
     try {
-      final result = Process.runSync('git', [
+      final result = Process.runSync('gitx', [
         'rev-parse',
         '--is-inside-work-tree',
       ]);
@@ -38,7 +41,10 @@ class IsGitRepositoryRequirement extends Requirement<void> {
       }
       return RequirementResult.failure(errorMessage: errorMessage);
     } catch (e) {
-      return RequirementResult.failure(errorMessage: errorMessage);
+      return RequirementResult.failure(
+        errorMessage: errorMessage,
+        internalError: e,
+      );
     }
   }
 }
@@ -58,7 +64,10 @@ class GitTopLevelRepositoryRequirement extends Requirement<String> {
       final gitPath = result.stdout.toString().trim();
       return RequirementResult.success(value: gitPath);
     } catch (e) {
-      return RequirementResult.failure(errorMessage: errorMessage);
+      return RequirementResult.failure(
+        errorMessage: errorMessage,
+        internalError: e,
+      );
     }
   }
 }

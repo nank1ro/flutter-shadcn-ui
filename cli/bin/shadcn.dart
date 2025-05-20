@@ -66,6 +66,9 @@ Future<int> main(List<String> arguments) async {
   final result = await requirements.checkAll();
   if (!result.success) {
     logger.stderr(result.errorMessage!);
+    if (result.internalError != null && verbose) {
+      logger.stderr(result.internalError!.toString());
+    }
     return 1;
   }
 
