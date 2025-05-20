@@ -1,5 +1,8 @@
 name: Update Dart File Hashes
 
+permissions:
+  contents: write
+  pull-requests: write
 on:
   push:
     branches:
@@ -27,20 +30,20 @@ jobs:
             exit 1
           fi
 
-      - name: Create and push new branch
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git checkout -b "$BRANCH_NAME"
-          git add cli/hashes.json
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-          git commit -m "Update hashes.json with latest Dart file SHAs"
-          git push origin "$BRANCH_NAME"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Create and push new branch
+      #   run: |
+      #     git config --global user.name 'github-actions[bot]'
+      #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      #     git checkout -b "$BRANCH_NAME"
+      #     git add cli/hashes.json
+      #     if git diff --staged --quiet; then
+      #       echo "No changes to commit"
+      #       exit 0
+      #     fi
+      #     git commit -m "Update hashes.json with latest Dart file SHAs"
+      #     git push origin "$BRANCH_NAME"
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
