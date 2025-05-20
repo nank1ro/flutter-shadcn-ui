@@ -9,7 +9,7 @@ jobs:
   update-hashes:
     runs-on: ubuntu-latest
     env:
-      BRANCH_NAME: update-hashes-${{ github.run_id }}-${{ github.run_attempt }}
+      BRANCH_NAME: chore/update-hashes-${{ github.run_id }}-${{ github.run_attempt }}
 
     steps:
       - name: Checkout repository
@@ -51,5 +51,5 @@ jobs:
           body: "Automated update of cli/hashes.json with SHA-1 hashes of .dart files in lib directory."
           branch: ${{ env.BRANCH_NAME }}
           base: main
-          delete-branch: true
+          delete-branch: false
           add-paths: cli/hashes.json
