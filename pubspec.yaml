@@ -23,7 +23,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.16
-  intl: ^0.19.0
+  intl: ^0.20.2
   lucide_icons_flutter: ^3.0.0
   # used by Table
   two_dimensional_scrollables: ^0.3.3
