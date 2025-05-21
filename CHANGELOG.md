@@ -1,3 +1,7 @@
+## 0.26.3
+
+- **CHORE**: Bump the min flutter version to `3.32.0`.
+
 ## 0.26.2
 
 - **FIX**: Add `supportedDevices` to `ShadContextMenuRegion` to decide which devices trigger the context menu (thanks to @MousyBusiness).
