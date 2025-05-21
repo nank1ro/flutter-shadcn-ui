@@ -1,6 +1,7 @@
 ## 0.26.1
 
 - **CHORE**: Update `intl` dependency to `^0.20.2` (thanks to @jg-l)
+- **CHORE**: Update all other dependencies to the latest versions.
 
 ## 0.26.0
 
