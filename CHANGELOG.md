@@ -1,3 +1,7 @@
+## 0.26.2
+
+- **FIX**: Add `supportedDevices` to `ShadContextMenuRegion` to decide which devices trigger the context menu (thanks to @MousyBusiness).
+
 ## 0.26.1
 
 - **CHORE**: Update `intl` dependency to `^0.20.2` (thanks to @jg-l)
