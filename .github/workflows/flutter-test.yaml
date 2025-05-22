@@ -33,6 +33,9 @@ jobs:
       - name: Install and analyze
         run: |
           flutter pub get
+          cd cli && dart pub get
+          cd ../playground && flutter pub get
+          cd ..
           flutter analyze --no-fatal-infos --no-fatal-warnings
 
       - name: Test
