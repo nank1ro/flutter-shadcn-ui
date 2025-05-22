@@ -1,3 +1,7 @@
+## 0.26.5
+
+- **CHORE**: Update lower bound dependency versions.
+
 ## 0.26.4
 
 - **CHORE**: Relax dependencies, previous versions were too strict and have been retracted.

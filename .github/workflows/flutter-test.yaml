@@ -29,9 +29,20 @@ jobs:
 
       - name: Clean
         run: flutter clean
-
+        
       - name: Install dependencies
         run: flutter pub get
+        
+      - name: Analyze
+        run: flutter analyze
 
       - name: Test
         run: flutter test
+        
+      - name: Downgrade dependencies
+        run: |
+          flutter pub downgrade
+          flutter analyze
+      
+      
+      
