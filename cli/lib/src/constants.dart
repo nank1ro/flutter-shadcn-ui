@@ -1,0 +1,38 @@
+import 'package:version/version.dart';
+
+final kMinFlutterVersion = Version(3, 29, 0);
+
+const components = [
+  'accordion',
+  'alert',
+  'avatar',
+  'badge',
+  'button',
+  'calendar',
+  'card',
+  'checkbox',
+  'context-menu',
+  'date-picker',
+  'dialog',
+  'disabled',
+  'icon-button',
+  'input-otp',
+  'input',
+  'menubar',
+  'popover',
+  'progress',
+  'radio',
+  'resizable',
+  'select',
+  'separator',
+  'sheet',
+  'slider',
+  'sonner',
+  'switch',
+  'table',
+  'tabs',
+  'textarea',
+  'time_picker',
+  'toast',
+  'tooltip',
+];
