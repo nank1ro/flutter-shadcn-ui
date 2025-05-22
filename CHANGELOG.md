@@ -1,3 +1,7 @@
+## 0.26.4
+
+- **CHORE**: Relax dependencies, previous versions were too strict and have been retracted.
+
 ## 0.26.3
 
 - **CHORE**: Bump the min flutter version to `3.32.0`.
