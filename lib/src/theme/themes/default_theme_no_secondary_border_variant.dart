@@ -35,6 +35,7 @@ import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
+import 'package:shadcn_ui/src/theme/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
@@ -1009,6 +1010,30 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       scaleFactor: 0.05,
       animationDuration: Duration(milliseconds: 300),
       animationCurve: Cubic(0.215, 0.61, 0.355, 1),
+    );
+  }
+
+  @override
+  ShadTextareaTheme textareaTheme() {
+    return ShadTextareaTheme(
+      style: effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
+      placeholderStyle: effectiveTextTheme.muted,
+      placeholderAlignment: Alignment.topLeft,
+      inputPadding: EdgeInsets.zero,
+      decoration: ShadDecoration(
+        border: ShadBorder.all(
+          width: 1,
+          color: colorScheme.border,
+          radius: radius,
+          padding: const EdgeInsets.all(1),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      gap: 8,
+      minHeight: 80,
+      maxHeight: 500,
+      resizable: true,
+      scrollbarPadding: const EdgeInsets.only(bottom: 10),
     );
   }
 }

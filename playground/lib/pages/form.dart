@@ -14,6 +14,7 @@ enum FormStyle {
   timePickerField,
   periodTimePickerField,
   inputOTPField,
+  textareaField,
 }
 
 enum NotifyAbout {
@@ -214,6 +215,20 @@ class _FormPageState extends State<FormPage> {
                           ],
                         ),
                       ],
+                    ),
+                  FormStyle.textareaField => ShadTextareaFormField(
+                      id: 'bio',
+                      label: const Text('Bio'),
+                      placeholder:
+                          const Text('Tell us a little bit about yourself'),
+                      description: const Text(
+                          'You can @mention other users and organizations.'),
+                      validator: (v) {
+                        if (v.length < 10) {
+                          return 'Bio must be at least 10 characters.';
+                        }
+                        return null;
+                      },
                     ),
                 },
                 const SizedBox(height: 16),

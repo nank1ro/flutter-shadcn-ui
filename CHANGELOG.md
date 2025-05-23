@@ -1,3 +1,40 @@
+## 0.26.5
+
+- **CHORE**: Update lower bound dependency versions.
+
+## 0.26.4
+
+- **CHORE**: Relax dependencies, previous versions were too strict and have been retracted.
+
+## 0.26.3
+
+- **CHORE**: Bump the min flutter version to `3.32.0`.
+
+## 0.26.2
+
+- **FIX**: Add `supportedDevices` to `ShadContextMenuRegion` to decide which devices trigger the context menu (thanks to @MousyBusiness).
+
+## 0.26.1
+
+- **CHORE**: Update `intl` dependency to `^0.20.2` (thanks to @jg-l)
+- **CHORE**: Update all other dependencies to the latest versions.
+
+## 0.26.0
+
+- **BREAKING CHANGE**: Update the `appBuilder` of the `ShadApp` by removing the `ThemeData` parameter.
+- **REFACTOR**: Deprecate `ShadApp.material`, `ShadApp.materialRouter`, `ShadApp.cupertino` and `ShadApp.cupertinoRouter`. Use `ShadApp.custom` instead.
+
+## 0.25.1
+
+- **FIX**: The scrollbar of the `ShadTextarea` component has been fixed, added `scrollbarPadding` to `ShadTextareaTheme` and `ShadInputTheme`.
+- **FIX**: Focus of `ShadTextarea` on resize.
+
+## 0.25.0
+
+- **CHORE**: Bump dependency versions (thanks to @mayapaw).
+- **FEAT**: Add `ShadTextarea` and `ShadTextareaFormField` components (thanks to @dalroy44).
+- **FIX**: `ShadSelectFormField` initial value from `ShadForm` not working.
+
 ## 0.24.0
 
 - **FEAT**: Add `Sonner` component.

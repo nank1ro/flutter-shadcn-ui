@@ -1,0 +1,30 @@
+name: Update Dart File Hashes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-hashes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
+
+      - name: Run hash generation script
+        run: |
+          bash .github/scripts/generate_hashes.sh
+
+      - name: Commit and force push changes
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add cli/hashes.json
+          git commit -m "Update hashes.json with latest Dart file SHAs" || echo "No changes to commit"
+          git push origin main --force-with-lease
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}

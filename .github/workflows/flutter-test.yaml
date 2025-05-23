@@ -27,8 +27,24 @@ jobs:
           channel: "stable"
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Clean
+        run: flutter clean
+        
+      - name: Install and analyze
+        run: |
+          flutter pub get
+          cd cli && dart pub get
+          cd ../playground && flutter pub get
+          cd ..
+          flutter analyze --no-fatal-infos --no-fatal-warnings
 
       - name: Test
         run: flutter test
+        
+      - name: Downgrade dependencies
+        run: |
+          flutter pub downgrade
+          flutter analyze --no-fatal-infos --no-fatal-warnings
+      
+      
+      

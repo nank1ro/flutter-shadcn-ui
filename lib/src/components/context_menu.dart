@@ -38,6 +38,7 @@ class ShadContextMenuRegion extends StatefulWidget {
     this.decoration,
     this.filter,
     this.controller,
+    this.supportedDevices,
     this.longPressEnabled,
   });
 
@@ -78,6 +79,13 @@ class ShadContextMenuRegion extends StatefulWidget {
 
   /// {@macro ShadContextMenu.controller}
   final ShadContextMenuController? controller;
+
+  /// The kind of devices that are allowed to be recognized.
+  ///
+  /// If set to null, events from all device types will be recognized. Defaults
+  /// to null.
+  final Set<PointerDeviceKind>? supportedDevices;
+
 
   /// {@template ShadContextMenuRegion.longPressEnabled}
   /// Whether the context menu should be shown when the user long presses the
@@ -153,6 +161,7 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
       decoration: widget.decoration,
       filter: widget.filter,
       child: ShadGestureDetector(
+        supportedDevices: widget.supportedDevices,
         onTapDown: (_) => hide(),
         onSecondaryTapDown: (d) async {
           if (kIsWeb && !isContextMenuAlreadyDisabled) {

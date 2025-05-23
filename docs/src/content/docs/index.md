@@ -59,6 +59,7 @@ The setup is simple:
 
 ```diff lang="dart"
 import 'package:shadcn_ui/shadcn_ui.dart';
++ import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
@@ -70,40 +71,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 -    return ShadApp();
-+    return ShadApp.material();
++    return ShadApp.custom(
++      themeMode: ThemeMode.dark,
++      darkTheme: ShadThemeData(
++        brightness: Brightness.dark,
++        colorScheme: const ShadSlateColorScheme.dark(),
++      ),
++      appBuilder: (context) {
++        return MaterialApp(
++          theme: Theme.of(context),
++          builder: (context, child) {
++            return ShadAppBuilder(child: child!);
++          },
++        );
++      },
++    );
   }
 ```
 
 :::tip
-If you need to use the `Router` instead of the `Navigator`, use `ShadApp.materialRouter`.
+If you need to use the `Router` instead of the `Navigator`, use `MaterialApp.router`.
 :::
 
 ---
-
-The `ShadApp` widget automatically creates a Material `ThemeData`.
-If you need to customize the Material theme use `materialThemeBuilder`:
-
-```diff lang="dart"
-import 'package:shadcn_ui/shadcn_ui.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ShadApp.material(
-+      materialThemeBuilder: (context, theme) {
-+        return theme.copyWith(
-+          appBarTheme: const AppBarTheme(toolbarHeight: 52),
-+        );
-+      },
-    );
-  }
-```
 
 The default Material `ThemeData` created by `ShadApp` is:
 
@@ -137,15 +127,28 @@ ThemeData(
     size: 16,
     color: themeData.colorScheme.foreground,
   ),
+  scrollbarTheme: ScrollbarThemeData(
+    crossAxisMargin: 1,
+    mainAxisMargin: 1,
+    thickness: const WidgetStatePropertyAll(8),
+    radius: const Radius.circular(999),
+    thumbColor: WidgetStatePropertyAll(themeData.colorScheme.border),
+  ),
 ),
 ```
 
+:::note
+Use `Theme.of(context).copyWith(...)` to override the default theme, without losing the default values provided by shadcn_ui.
+:::
+
 ## Shadcn + Cupertino
 
-If you need to use shadcn components with Cupertino components, use `ShadApp.cupertino`.
+If you need to use shadcn components with Cupertino components, use `CupertinoApp` instead of `MaterialApp`, like you are already used to.
 
 ```diff lang="dart"
 import 'package:shadcn_ui/shadcn_ui.dart';
++ import 'package:flutter/cupertino.dart';
++ import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -157,43 +160,34 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 -    return ShadApp();
-+    return ShadApp.cupertino();
++    return ShadApp.custom(
++      themeMode: ThemeMode.dark,
++      darkTheme: ShadThemeData(
++        brightness: Brightness.dark,
++        colorScheme: const ShadSlateColorScheme.dark(),
++      ),
++      appBuilder: (context) {
++        return CupertinoApp(
++          theme: CupertinoTheme.of(context),
++          localizationsDelegates: const [
++            DefaultMaterialLocalizations.delegate,
++            DefaultCupertinoLocalizations.delegate,
++            DefaultWidgetsLocalizations.delegate,
++          ],
++          builder: (context, child) {
++            return ShadAppBuilder(child: child!);
++          },
++        );
++      },
++    );
   }
 ```
 
 :::tip
-If you need to use the `Router` instead of the `Navigator`, use `ShadApp.cupertinoRouter`.
+If you need to use the `Router` instead of the `Navigator`, use `CupertinoApp.router`.
 :::
 
 ---
-
-The `ShadApp` widget automatically creates a `CupertinoThemeData` and a Material `ThemeData`.
-If you need to customize the Material theme use `materialThemeBuilder`, and `cupertinoThemeBuilder` to customize the Cupertino theme:
-
-```diff lang="dart"
-import 'package:shadcn_ui/shadcn_ui.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ShadApp.cupertino(
-+      cupertinoThemeBuilder: (context, theme) {
-+        return theme.copyWith(applyThemeToAll: true);
-+      },
-+      materialThemeBuilder: (context, theme) {
-+        return theme.copyWith(
-+          appBarTheme: const AppBarTheme(toolbarHeight: 52),
-+        );
-+      },
-    );
-  }
-```
 
 The default `CupertinoThemeData` created by `ShadApp` is:
 
@@ -207,31 +201,6 @@ CupertinoThemeData(
 ),
 ```
 
-## Shadcn + Custom App
-
-If you want to integrate Shadcn with a custom WidgetsApp integration, like GetX (GetMaterialApp) you can use `ShadApp.custom`
-
-```diff lang="dart"
-import 'package:shadcn_ui/shadcn_ui.dart';
-+ import 'package:get/get.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
--    return ShadApp();
-+    return ShadApp.custom(
-+      appBuilder: (context, theme) => GetMaterialApp(
-+        theme: theme,
-+        builder: (context, child) {
-+          return ShadToaster(child: child!);
-+        },
-+      ),
-+    );
-  }
-```
+:::note
+Use `CupertinoTheme.of(context).copyWith(...)` to override the default theme, without losing the default values provided by shadcn_ui.
+:::

@@ -28,7 +28,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                     value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light,
               );
             },
-            icon: SignalBuilder(
+            leading: SignalBuilder(
               signal: context.get<Signal<ThemeMode>>(),
               builder: (context, themeMode, child) {
                 return Icon(
