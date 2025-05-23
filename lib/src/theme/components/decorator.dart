@@ -353,16 +353,47 @@ class ShadDecorator extends StatelessWidget {
     );
 
     if (secondaryBorder != null && !effectiveDisableSecondaryBorder) {
-      decorated = Container(
-        decoration: BoxDecoration(
-          border: secondaryBorder.hasBorder ? secondaryBorder.toBorder() : null,
-          borderRadius: secondaryBorder.radius,
+      decorated = CustomPaint(
+        foregroundPainter: MyCustomPainter(
+          border: secondaryBorder.toBorder(),
+          delta: 4,
+          radius: secondaryBorder.radius?.resolve(Directionality.of(context)) ??
+              BorderRadius.zero,
         ),
-        padding: secondaryBorder.padding,
         child: decorated,
       );
+      // decorated = Container(
+      //   decoration: BoxDecoration(
+      //     border: secondaryBorder.hasBorder ? secondaryBorder.toBorder() : null,
+      //     borderRadius: secondaryBorder.radius,
+      //   ),
+      //   padding: secondaryBorder.padding,
+      //   child: decorated,
+      // );
     }
 
     return decorated;
+  }
+}
+
+class MyCustomPainter extends CustomPainter {
+  const MyCustomPainter({
+    required this.border,
+    required this.delta,
+    required this.radius,
+  });
+
+  final Border border;
+  final double delta;
+  final BorderRadius? radius;
+  @override
+  void paint(Canvas canvas, Size size) {
+    border.paint(canvas, (Offset.zero & size).inflate(delta),
+        borderRadius: radius);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }
