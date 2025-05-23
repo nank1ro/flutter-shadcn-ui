@@ -294,6 +294,7 @@ class ShadDecorator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final textDirection = Directionality.of(context);
 
     final effectiveDecoration = theme.decoration.mergeWith(decoration);
 
@@ -354,46 +355,53 @@ class ShadDecorator extends StatelessWidget {
 
     if (secondaryBorder != null && !effectiveDisableSecondaryBorder) {
       decorated = CustomPaint(
-        foregroundPainter: MyCustomPainter(
+        foregroundPainter: ShadOutwardBorderPainter(
           border: secondaryBorder.toBorder(),
-          delta: 4,
-          radius: secondaryBorder.radius?.resolve(Directionality.of(context)) ??
+          delta: secondaryBorder.offset ?? 0,
+          radius: secondaryBorder.radius?.resolve(textDirection) ??
               BorderRadius.zero,
+          textDirection: textDirection,
         ),
         child: decorated,
       );
-      // decorated = Container(
-      //   decoration: BoxDecoration(
-      //     border: secondaryBorder.hasBorder ? secondaryBorder.toBorder() : null,
-      //     borderRadius: secondaryBorder.radius,
-      //   ),
-      //   padding: secondaryBorder.padding,
-      //   child: decorated,
-      // );
     }
 
     return decorated;
   }
 }
 
-class MyCustomPainter extends CustomPainter {
-  const MyCustomPainter({
+/// {@template shadOutwardBorderPainter}
+/// A [CustomPainter] that paints a border outward from the given rectangle.
+/// {@endtemplate}
+class ShadOutwardBorderPainter extends CustomPainter {
+  /// {@macro shadOutwardBorderPainter}
+  const ShadOutwardBorderPainter({
     required this.border,
     required this.delta,
     required this.radius,
+    required this.textDirection,
   });
 
   final Border border;
   final double delta;
   final BorderRadius? radius;
+  final TextDirection? textDirection;
+
   @override
   void paint(Canvas canvas, Size size) {
-    border.paint(canvas, (Offset.zero & size).inflate(delta),
-        borderRadius: radius);
+    border.paint(
+      canvas,
+      (Offset.zero & size).inflate(delta),
+      borderRadius: radius,
+      textDirection: textDirection,
+    );
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(covariant ShadOutwardBorderPainter oldDelegate) {
+    return border != oldDelegate.border ||
+        delta != oldDelegate.delta ||
+        radius != oldDelegate.radius ||
+        textDirection != oldDelegate.textDirection;
   }
 }
