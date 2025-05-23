@@ -294,6 +294,7 @@ class ShadDecorator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final textDirection = Directionality.of(context);
 
     final effectiveDecoration = theme.decoration.mergeWith(decoration);
 
@@ -353,16 +354,54 @@ class ShadDecorator extends StatelessWidget {
     );
 
     if (secondaryBorder != null && !effectiveDisableSecondaryBorder) {
-      decorated = Container(
-        decoration: BoxDecoration(
-          border: secondaryBorder.hasBorder ? secondaryBorder.toBorder() : null,
-          borderRadius: secondaryBorder.radius,
+      decorated = CustomPaint(
+        foregroundPainter: ShadOutwardBorderPainter(
+          border: secondaryBorder.toBorder(),
+          delta: secondaryBorder.offset ?? 0,
+          radius: secondaryBorder.radius?.resolve(textDirection) ??
+              BorderRadius.zero,
+          textDirection: textDirection,
         ),
-        padding: secondaryBorder.padding,
         child: decorated,
       );
     }
 
     return decorated;
+  }
+}
+
+/// {@template shadOutwardBorderPainter}
+/// A [CustomPainter] that paints a border outward from the given rectangle.
+/// {@endtemplate}
+class ShadOutwardBorderPainter extends CustomPainter {
+  /// {@macro shadOutwardBorderPainter}
+  const ShadOutwardBorderPainter({
+    required this.border,
+    required this.delta,
+    required this.radius,
+    required this.textDirection,
+  });
+
+  final Border border;
+  final double delta;
+  final BorderRadius? radius;
+  final TextDirection? textDirection;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    border.paint(
+      canvas,
+      (Offset.zero & size).inflate(delta),
+      borderRadius: radius,
+      textDirection: textDirection,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant ShadOutwardBorderPainter oldDelegate) {
+    return border != oldDelegate.border ||
+        delta != oldDelegate.delta ||
+        radius != oldDelegate.radius ||
+        textDirection != oldDelegate.textDirection;
   }
 }
