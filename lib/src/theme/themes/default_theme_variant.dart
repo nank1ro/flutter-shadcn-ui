@@ -275,14 +275,13 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   ShadDecoration decorationTheme() {
     return ShadDecoration(
       secondaryBorder: ShadBorder.all(
-        padding: const EdgeInsets.all(4),
         width: 0,
       ),
       secondaryFocusedBorder: ShadBorder.all(
         width: 2,
         color: colorScheme.ring,
         radius: radius.add(radius / 2),
-        padding: const EdgeInsets.all(2),
+        offset: 4,
       ),
       labelStyle: effectiveTextTheme.muted.copyWith(
         fontWeight: FontWeight.w500,

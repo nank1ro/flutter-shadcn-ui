@@ -294,6 +294,7 @@ class ShadDecorator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final textDirection = Directionality.of(context);
 
     final effectiveDecoration = theme.decoration.mergeWith(decoration);
 
@@ -353,16 +354,64 @@ class ShadDecorator extends StatelessWidget {
     );
 
     if (secondaryBorder != null && !effectiveDisableSecondaryBorder) {
-      decorated = Container(
-        decoration: BoxDecoration(
-          border: secondaryBorder.hasBorder ? secondaryBorder.toBorder() : null,
-          borderRadius: secondaryBorder.radius,
+      decorated = Padding(
+        padding: secondaryBorder.padding ?? EdgeInsets.zero,
+        child: CustomPaint(
+          foregroundPainter: ShadOutwardBorderPainter(
+            border: secondaryBorder.toBorder(),
+            offset: secondaryBorder.offset ?? 0,
+            radius: secondaryBorder.radius?.resolve(textDirection) ??
+                BorderRadius.zero,
+            textDirection: textDirection,
+          ),
+          child: decorated,
         ),
-        padding: secondaryBorder.padding,
-        child: decorated,
       );
     }
 
     return decorated;
+  }
+}
+
+/// {@template shadOutwardBorderPainter}
+/// A [CustomPainter] that paints a border outward from the given rectangle.
+/// {@endtemplate}
+class ShadOutwardBorderPainter extends CustomPainter {
+  /// {@macro shadOutwardBorderPainter}
+  const ShadOutwardBorderPainter({
+    required this.border,
+    required this.offset,
+    required this.radius,
+    required this.textDirection,
+  });
+
+  /// The border to paint.
+  final Border border;
+
+  /// The offset to inflate the border by.
+  final double offset;
+
+  /// The radius of the border.
+  final BorderRadius? radius;
+
+  /// The text direction to use when painting the border.
+  final TextDirection? textDirection;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    border.paint(
+      canvas,
+      (Offset.zero & size).inflate(offset),
+      borderRadius: radius,
+      textDirection: textDirection,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant ShadOutwardBorderPainter oldDelegate) {
+    return border != oldDelegate.border ||
+        offset != oldDelegate.offset ||
+        radius != oldDelegate.radius ||
+        textDirection != oldDelegate.textDirection;
   }
 }
