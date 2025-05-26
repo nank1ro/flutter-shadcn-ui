@@ -1474,6 +1474,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                                   ),
                                   if (!effectiveHideNavigation) ...[
                                     backButton,
+                                    SizedBox(width: effectiveCaptionLayoutGap),
                                     forwardButton,
                                   ],
                                 ],
