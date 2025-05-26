@@ -1,6 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart'
     show
@@ -55,6 +56,7 @@ class ShadApp extends StatefulWidget {
     this.pageRouteBuilder,
     this.themeCurve = Curves.linear,
     this.materialThemeBuilder,
+    this.backgroundColor,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
@@ -94,6 +96,7 @@ class ShadApp extends StatefulWidget {
     this.scrollBehavior = const ShadScrollBehavior(),
     this.themeCurve = Curves.linear,
     this.materialThemeBuilder,
+    this.backgroundColor,
   })  : navigatorObservers = null,
         navigatorKey = null,
         onGenerateRoute = null,
@@ -140,6 +143,7 @@ class ShadApp extends StatefulWidget {
         routerConfig = null,
         routerDelegate = null,
         routes = null,
+        backgroundColor = null,
         scrollBehavior = const ShadScrollBehavior(),
         shortcuts = null,
         showPerformanceOverlay = false,
@@ -405,6 +409,9 @@ class ShadApp extends StatefulWidget {
   /// A custom app widget builder.
   final WidgetBuilder? appBuilder;
 
+  /// {@macro ShadAppBuilder.backgroundColor}
+  final Color? backgroundColor;
+
   final ThemeData Function(BuildContext context, ThemeData theme)?
       materialThemeBuilder;
 
@@ -572,6 +579,7 @@ class _ShadAppState extends State<ShadApp> {
 
   Widget _buildApp(BuildContext context) {
     final mTheme = materialTheme(context);
+    final theme = ShadTheme.of(context);
     switch (widget.type) {
       case ShadAppType.shadcn:
         if (usesRouter) {
@@ -600,6 +608,7 @@ class _ShadAppState extends State<ShadApp> {
               actions: widget.actions,
               restorationScopeId: widget.restorationScopeId,
               localizationsDelegates: localizationsDelegates,
+              textStyle: TextStyle(color: theme.colorScheme.foreground),
             ),
           );
         }
@@ -632,6 +641,7 @@ class _ShadAppState extends State<ShadApp> {
             actions: widget.actions,
             restorationScopeId: widget.restorationScopeId,
             localizationsDelegates: localizationsDelegates,
+            textStyle: TextStyle(color: theme.colorScheme.foreground),
             pageRouteBuilder: widget.pageRouteBuilder ??
                 <T>(RouteSettings settings, WidgetBuilder builder) {
                   return MaterialPageRoute<T>(
@@ -726,33 +736,41 @@ class ShadAppBuilder extends StatelessWidget {
     super.key,
     this.builder,
     this.child,
+    this.backgroundColor,
   });
 
   final TransitionBuilder? builder;
   final Widget? child;
 
+  /// {@template ShadAppBuilder.backgroundColor}
+  /// The background color of the page, defaults to `ShadTheme.of(context).colorScheme.background`.
+  /// {@endtemplate}
+  final Color? backgroundColor;
+
   @override
   Widget build(BuildContext context) {
     return ShadToaster(
       child: ShadSonner(
-        child: builder != null
-            ? Builder(
-                builder: (BuildContext context) {
-                  // Why are we surrounding a builder with a builder?
-                  //
-                  // The widget.builder may contain code that invokes
-                  // Theme.of(), which should return the theme we selected
-                  // above in AnimatedTheme. However, if we invoke
-                  // widget.builder() directly as the child of AnimatedTheme
-                  // then there is no Context separating them, and the
-                  // widget.builder() will not find the theme. Therefore, we
-                  // surround widget.builder with yet another builder so that
-                  // a context separates them and Theme.of() correctly
-                  // resolves to the theme we passed to AnimatedTheme.
-                  return builder!(context, child);
-                },
-              )
-            : child ?? const SizedBox.shrink(),
+        child: Builder(
+          builder: (BuildContext context) {
+            // Why are we surrounding a builder with a builder?
+            //
+            // The widget.builder may contain code that invokes
+            // Theme.of(), which should return the theme we selected
+            // above in AnimatedTheme. However, if we invoke
+            // widget.builder() directly as the child of AnimatedTheme
+            // then there is no Context separating them, and the
+            // widget.builder() will not find the theme. Therefore, we
+            // surround widget.builder with yet another builder so that
+            // a context separates them and Theme.of() correctly
+            // resolves to the theme we passed to AnimatedTheme.
+            return ColoredBox(
+              color: backgroundColor ??
+                  ShadTheme.of(context).colorScheme.background,
+              child: builder?.call(context, child) ?? child,
+            );
+          },
+        ),
       ),
     );
   }

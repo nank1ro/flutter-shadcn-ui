@@ -7,6 +7,7 @@
 - **REFACTOR**: Add `checkboxPadding` to `ShadCheckbox`, `ShadCheckboxTheme` and `ShadCheckboxFormField`, defaults to `EdgeInsets.only(top: 1)`.
 - **REFACTOR**: Add `radioPadding` to `ShadRadio` and `ShadRadioTheme`, defaults to `EdgeInsets.only(top: 1)`.
 - **REFACTOR**: The default offset of `ShadAnchorAuto` has been changed from `Offset.zero` to `Offset(0, 4)`.
+- **FIX**: Background color of pages for pure `ShadApp` if no `Scaffold is used`, by adding a new `backgroundColor` parameter to `ShadApp` and `ShadAppBuilder`.
 
 ## 0.26.5
 
