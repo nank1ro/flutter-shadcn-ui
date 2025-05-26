@@ -10,6 +10,7 @@
 - **REFACTOR**: Update the `ShadTooltip` default anchor, defaults to `Offset(0, -4)` instead of `Offset.zero`.
 - **FEAT**: Add `actionsGap` to `ShadDialog`, defaults to `8`.
 - **REFACTOR**: Update `ShadTimePickerTheme` parameters: `spacing` changed from `0` to `8`, `runSpacing` changed from `0` to `4`, `gap` changed from `2` to `4`, `fieldWidth` changed from `58` to `48`, `periodHeight` changed from `50` to `42`.
+- **FIX**: Lookup of correct `ShadTextareaTheme` when retrieving the `scrollbarPadding`.
 
 ## 0.26.5
 
