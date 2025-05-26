@@ -7,7 +7,6 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 /// A customizable checkbox widget with optional label and sublabel.
 ///
@@ -33,7 +32,6 @@ class ShadCheckbox extends StatefulWidget {
     this.padding,
     this.direction,
     this.crossAxisAlignment,
-    @Deprecated('Use leading and trailing instead') this.orderPolicy,
   });
 
   /// {@template ShadCheckbox.value}
@@ -121,13 +119,6 @@ class ShadCheckbox extends StatefulWidget {
   /// {@endtemplate}
   final CrossAxisAlignment? crossAxisAlignment;
 
-  /// {@template ShadCheckbox.orderPolicy}
-  /// The deprecated order policy for arranging checkbox items.
-  /// Defaults to [WidgetOrderPolicy.linear()]; use layout properties instead.
-  /// {@endtemplate}
-  @Deprecated('Use leading and trailing instead')
-  final WidgetOrderPolicy? orderPolicy;
-
   @override
   State<ShadCheckbox> createState() => _ShadCheckboxState();
 }
@@ -185,10 +176,6 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
     final effectivePadding = widget.padding ??
         theme.checkboxTheme.padding ??
         const EdgeInsets.only(left: 8);
-
-    final effectiveOrderPolicy = widget.orderPolicy ??
-        theme.checkboxTheme.orderPolicy ??
-        const WidgetOrderPolicy.linear();
 
     final checkbox = Semantics(
       checked: widget.value,
@@ -281,7 +268,7 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
                   ),
                 ),
               ),
-          ].order(effectiveOrderPolicy),
+          ],
         ),
       ),
     );

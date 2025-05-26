@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use_from_same_package
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +7,6 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
@@ -44,10 +41,6 @@ class ShadButton extends StatefulWidget {
   const ShadButton({
     super.key,
     this.child,
-    @Deprecated(
-      '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
-    )
-    this.icon,
     this.leading,
     this.trailing,
     this.onPressed,
@@ -94,7 +87,6 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
   }) : variant = ShadButtonVariant.primary;
 
@@ -105,10 +97,6 @@ class ShadButton extends StatefulWidget {
     required this.variant,
     this.size,
     this.child,
-    @Deprecated(
-      '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
-    )
-    this.icon,
     this.leading,
     this.trailing,
     this.onPressed,
@@ -154,7 +142,6 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
   });
 
@@ -163,10 +150,6 @@ class ShadButton extends StatefulWidget {
   const ShadButton.destructive({
     super.key,
     this.child,
-    @Deprecated(
-      '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
-    )
-    this.icon,
     this.leading,
     this.trailing,
     this.onPressed,
@@ -213,7 +196,6 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
   }) : variant = ShadButtonVariant.destructive;
 
@@ -222,10 +204,6 @@ class ShadButton extends StatefulWidget {
   const ShadButton.outline({
     super.key,
     this.child,
-    @Deprecated(
-      '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
-    )
-    this.icon,
     this.leading,
     this.trailing,
     this.onPressed,
@@ -272,7 +250,6 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
   }) : variant = ShadButtonVariant.outline;
 
@@ -281,10 +258,6 @@ class ShadButton extends StatefulWidget {
   const ShadButton.secondary({
     super.key,
     this.child,
-    @Deprecated(
-      '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
-    )
-    this.icon,
     this.leading,
     this.trailing,
     this.onPressed,
@@ -331,7 +304,6 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
   }) : variant = ShadButtonVariant.secondary;
 
@@ -339,10 +311,6 @@ class ShadButton extends StatefulWidget {
   const ShadButton.ghost({
     super.key,
     this.child,
-    @Deprecated(
-      '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
-    )
-    this.icon,
     this.leading,
     this.trailing,
     this.onPressed,
@@ -389,7 +357,6 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
   }) : variant = ShadButtonVariant.ghost;
 
@@ -441,12 +408,10 @@ class ShadButton extends StatefulWidget {
     this.textDirection,
     this.gap,
     this.onFocusChange,
-    @Deprecated('Use leading and trailing instead') this.orderPolicy,
     this.expands,
     this.leading,
     this.trailing,
-  })  : variant = ShadButtonVariant.link,
-        icon = null;
+  }) : variant = ShadButtonVariant.link;
 
   /// {@template ShadButton.onPressed}
   /// The callback invoked when the button is tapped.
@@ -458,15 +423,6 @@ class ShadButton extends StatefulWidget {
   /// functionality if provided. Controlled by [longPressDuration] for timing.
   /// {@endtemplate}
   final VoidCallback? onLongPress;
-
-  /// {@template ShadButton.icon}
-  /// A deprecated widget for the button's icon; use [leading] instead.
-  /// For icon-only buttons, prefer `ShadIconButton`.
-  /// {@endtemplate}
-  @Deprecated(
-    '''Use leading instead, if you need just a button with an icon (without text) use ShadIconButton''',
-  )
-  final Widget? icon;
 
   /// {@template ShadButton.leading}
   /// The widget displayed before the main [child], typically an icon or small
@@ -620,13 +576,6 @@ class ShadButton extends StatefulWidget {
   /// focused). If null, an internal controller is created.
   /// {@endtemplate}
   final ShadStatesController? statesController;
-
-  /// {@template ShadButton.orderPolicy}
-  /// The deprecated order policy for arranging button items; use [leading] and
-  /// [trailing] instead. Defaults to [WidgetOrderPolicy.linear()].
-  /// {@endtemplate}
-  @Deprecated('Use leading and trailing instead')
-  final WidgetOrderPolicy? orderPolicy;
 
   /// {@template ShadButton.gap}
   /// The gap between the button's items (e.g., [leading], [child], [trailing]).
@@ -832,11 +781,6 @@ class _ShadButtonState extends State<ShadButton> {
     ShadThemeData theme,
     ShadButtonSize size,
   ) {
-    // TODO(nank1ro): will be removed because icon is deprecated
-    if (widget.icon != null && widget.child == null) {
-      return buttonTheme(theme).sizesTheme?.icon ??
-          theme.buttonSizesTheme.icon!;
-    }
     switch (size) {
       case ShadButtonSize.sm:
         return buttonTheme(theme).sizesTheme?.sm ?? theme.buttonSizesTheme.sm!;
@@ -1011,10 +955,6 @@ class _ShadButtonState extends State<ShadButton> {
 
     final effectiveGap = widget.gap ?? buttonTheme(theme).gap ?? 8;
 
-    final effectiveOrderPolicy = widget.orderPolicy ??
-        buttonTheme(theme).orderPolicy ??
-        const WidgetOrderPolicy.linear();
-
     final effectiveExpands =
         widget.expands ?? buttonTheme(theme).expands ?? false;
 
@@ -1139,12 +1079,9 @@ class _ShadButtonState extends State<ShadButton> {
                               textDirection: effectiveTextDirection,
                               children: [
                                 if (widget.leading != null) widget.leading!,
-                                if (widget.icon != null) widget.icon!,
                                 if (child != null) child,
                                 if (widget.trailing != null) widget.trailing!,
-                              ]
-                                  .order(effectiveOrderPolicy)
-                                  .separatedBy(SizedBox(width: effectiveGap)),
+                              ].separatedBy(SizedBox(width: effectiveGap)),
                             ),
                           ),
                         ),

@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 @immutable
 class ShadRadioTheme {
@@ -21,7 +20,6 @@ class ShadRadioTheme {
     this.alignment,
     this.runAlignment,
     this.crossAxisAlignment,
-    this.orderPolicy,
   });
 
   final bool merge;
@@ -62,9 +60,6 @@ class ShadRadioTheme {
   /// {@macro ShadRadioGroup.crossAxisAlignment}
   final WrapCrossAlignment? crossAxisAlignment;
 
-  /// {@macro ShadRadio.orderPolicy}
-  final WidgetOrderPolicy? orderPolicy;
-
   static ShadRadioTheme lerp(
     ShadRadioTheme a,
     ShadRadioTheme b,
@@ -102,7 +97,6 @@ class ShadRadioTheme {
     WrapAlignment? alignment,
     WrapAlignment? runAlignment,
     WrapCrossAlignment? crossAxisAlignment,
-    WidgetOrderPolicy? orderPolicy,
   }) {
     return ShadRadioTheme(
       merge: merge ?? this.merge,
@@ -118,7 +112,6 @@ class ShadRadioTheme {
       alignment: alignment ?? this.alignment,
       runAlignment: runAlignment ?? this.runAlignment,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
-      orderPolicy: orderPolicy ?? this.orderPolicy,
     );
   }
 
@@ -138,7 +131,6 @@ class ShadRadioTheme {
       alignment: other.alignment,
       runAlignment: other.runAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
-      orderPolicy: other.orderPolicy,
     );
   }
 
@@ -159,8 +151,7 @@ class ShadRadioTheme {
         other.runSpacing == runSpacing &&
         other.alignment == alignment &&
         other.runAlignment == runAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment &&
-        other.orderPolicy == orderPolicy;
+        other.crossAxisAlignment == crossAxisAlignment;
   }
 
   @override
@@ -177,7 +168,6 @@ class ShadRadioTheme {
         runSpacing.hashCode ^
         alignment.hashCode ^
         runAlignment.hashCode ^
-        crossAxisAlignment.hashCode ^
-        orderPolicy.hashCode;
+        crossAxisAlignment.hashCode;
   }
 }

@@ -71,9 +71,11 @@ class _CardPageState extends State<CardPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Text('Name'),
-                const ShadInput(placeholder: Text('Name of your project')),
                 const SizedBox(height: 6),
+                const ShadInput(placeholder: Text('Name of your project')),
+                const SizedBox(height: 16),
                 const Text('Framework'),
+                const SizedBox(height: 6),
                 ShadSelect<String>(
                   placeholder: const Text('Select'),
                   options: frameworks.entries

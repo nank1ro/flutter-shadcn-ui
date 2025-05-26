@@ -7,7 +7,6 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
 /// A customizable radio group widget that allows selection of one item from
@@ -172,7 +171,6 @@ class ShadRadio<T> extends StatefulWidget {
     this.sublabel,
     this.padding,
     this.direction,
-    this.orderPolicy,
   });
 
   /// {@template ShadRadio.value}
@@ -237,12 +235,6 @@ class ShadRadio<T> extends StatefulWidget {
   /// {@endtemplate}
   final TextDirection? direction;
 
-  /// {@template ShadRadio.orderPolicy}
-  /// The order policy of the items that compose the radio, defaults to
-  /// [WidgetOrderPolicy.linear()].
-  /// {@endtemplate}
-  final WidgetOrderPolicy? orderPolicy;
-
   @override
   State<ShadRadio<T>> createState() => _ShadRadioState<T>();
 }
@@ -295,10 +287,6 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
     final effectivePadding = widget.padding ??
         theme.radioTheme.padding ??
         const EdgeInsets.only(left: 8);
-
-    final effectiveOrderPolicy = widget.orderPolicy ??
-        theme.radioTheme.orderPolicy ??
-        const WidgetOrderPolicy.linear();
 
     final radio = Semantics(
       checked: selected,
@@ -388,7 +376,7 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
                   ),
                 ),
               ),
-          ].order(effectiveOrderPolicy),
+          ],
         ),
       ),
     );

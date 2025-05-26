@@ -2,6 +2,8 @@
 
 - **BREAKING CHANGE**: The secondary border of `ShadDecoration` now is drawn outward of the widget, without consuming any extra space. This change affects all components that are focusable.
 - **FEAT**: Add `offset` to `ShadBorder` to set the offset between the widget and the outward secondary border.
+- **REFACTOR**: Remove all deprecated parameters across the whole package.
+- **REFACTOR**: Update default `anchor` of `ShadSelect` from `ShadAnchorAuto()` to `ShadAnchorAuto(offset: Offset(0, 4))`.
 
 ## 0.26.5
 

@@ -8,7 +8,6 @@ import 'package:shadcn_ui/src/components/calendar.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 @immutable
@@ -102,7 +101,6 @@ class ShadDatePickerTheme {
     this.formatDateRange,
     this.buttonPadding,
     this.iconData,
-    this.orderPolicy,
     this.expands,
   });
 
@@ -381,9 +379,6 @@ class ShadDatePickerTheme {
   /// {@macro ShadButton.padding}
   final EdgeInsetsGeometry? buttonPadding;
 
-  /// {@macro ShadButton.orderPolicy}
-  final WidgetOrderPolicy? orderPolicy;
-
   /// {@macro ShadButton.expands}
   final bool? expands;
 
@@ -598,7 +593,6 @@ class ShadDatePickerTheme {
       buttonPadding:
           EdgeInsetsGeometry.lerp(a.buttonPadding, b.buttonPadding, t),
       iconData: t < 0.5 ? a.iconData : b.iconData,
-      orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
       expands: t < .5 ? a.expands : b.expands,
     );
   }
@@ -715,7 +709,6 @@ class ShadDatePickerTheme {
       buttonVariant: other.buttonVariant,
       buttonPadding: other.buttonPadding,
       iconData: other.iconData,
-      orderPolicy: other.orderPolicy,
       expands: other.expands,
     );
   }
@@ -816,7 +809,6 @@ class ShadDatePickerTheme {
         other.buttonVariant == buttonVariant &&
         other.buttonPadding == buttonPadding &&
         other.iconData == iconData &&
-        other.orderPolicy == orderPolicy &&
         other.expands == expands;
   }
 
@@ -909,7 +901,6 @@ class ShadDatePickerTheme {
         buttonVariant.hashCode ^
         buttonPadding.hashCode ^
         iconData.hashCode ^
-        orderPolicy.hashCode ^
         expands.hashCode;
   }
 
@@ -1004,7 +995,6 @@ class ShadDatePickerTheme {
     ShadButtonVariant? buttonVariant,
     EdgeInsetsGeometry? buttonPadding,
     IconData? iconData,
-    WidgetOrderPolicy? orderPolicy,
     bool? expands,
   }) {
     return ShadDatePickerTheme(
@@ -1117,7 +1107,6 @@ class ShadDatePickerTheme {
       buttonVariant: buttonVariant ?? this.buttonVariant,
       buttonPadding: buttonPadding ?? this.buttonPadding,
       iconData: iconData ?? this.iconData,
-      orderPolicy: orderPolicy ?? this.orderPolicy,
       expands: expands ?? this.expands,
     );
   }

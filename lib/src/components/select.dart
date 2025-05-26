@@ -16,7 +16,6 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
@@ -82,7 +81,6 @@ class ShadSelect<T> extends StatefulWidget {
         onSearchChanged = null,
         searchDivider = null,
         searchPlaceholder = null,
-        searchInputPrefix = null,
         searchInputLeading = null,
         onMultipleChanged = null,
         searchPadding = null,
@@ -104,7 +102,6 @@ class ShadSelect<T> extends StatefulWidget {
     this.onChanged,
     this.popoverController,
     this.searchDivider,
-    @Deprecated('Use searchInputLeading instead') this.searchInputPrefix,
     this.searchInputLeading,
     this.searchPlaceholder,
     this.searchPadding,
@@ -187,7 +184,6 @@ class ShadSelect<T> extends StatefulWidget {
         selectedOptionBuilder = null,
         searchDivider = null,
         searchPlaceholder = null,
-        searchInputPrefix = null,
         searchInputLeading = null,
         searchPadding = null,
         search = null,
@@ -209,7 +205,6 @@ class ShadSelect<T> extends StatefulWidget {
     ValueChanged<List<T>>? onChanged,
     this.popoverController,
     this.searchDivider,
-    @Deprecated('Use searchInputLeading instead') this.searchInputPrefix,
     this.searchInputLeading,
     this.searchPlaceholder,
     this.searchPadding,
@@ -263,7 +258,6 @@ class ShadSelect<T> extends StatefulWidget {
     this.popoverController,
     this.onSearchChanged,
     this.searchDivider,
-    @Deprecated('Use searchInputLeading instead') this.searchInputPrefix,
     this.searchInputLeading,
     this.searchPlaceholder,
     this.searchPadding,
@@ -490,7 +484,7 @@ class ShadSelect<T> extends StatefulWidget {
   /// The anchor configuration for positioning the popover relative to the
   /// select input.
   ///
-  /// Defaults to `ShadAnchorAuto()`
+  /// Defaults to `ShadAnchorAuto(offset: Offset(0, 4))`
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
@@ -519,16 +513,6 @@ class ShadSelect<T> extends StatefulWidget {
   /// Defaults to a [Divider] with height 1.
   /// {@endtemplate}
   final Widget? searchDivider;
-
-  /// {@template ShadSelect.searchInputPrefix}
-  /// Deprecated, use [searchInputLeading] instead.
-  ///
-  /// Widget to display at the beginning of the search input field.
-  ///
-  /// Consider using [searchInputLeading] for semantic correctness.
-  /// {@endtemplate}
-  @Deprecated('Use searchInputLeading instead')
-  final Widget? searchInputPrefix;
 
   /// {@template ShadSelect.searchInputLeading}
   /// Widget to display at the leading edge of the search input field.
@@ -1126,7 +1110,6 @@ class ShadOption<T> extends StatefulWidget {
     this.padding,
     this.selectedIcon,
     this.radius,
-    this.orderPolicy,
     this.direction,
   });
 
@@ -1149,12 +1132,6 @@ class ShadOption<T> extends StatefulWidget {
 
   /// The radius of the [ShadOption], defaults to `ShadThemeData.radius`.
   final BorderRadius? radius;
-
-  /// {@template ShadOption.orderPolicy}
-  /// The order policy of the items that compose the option, defaults to
-  /// [WidgetOrderPolicy.linear()].
-  /// {@endtemplate}
-  final WidgetOrderPolicy? orderPolicy;
 
   /// {@template ShadOption.direction}
   /// The direction of the ambient.
@@ -1219,10 +1196,6 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final effectiveRadius =
         widget.radius ?? theme.optionTheme.radius ?? theme.radius;
 
-    final effectiveOrderPolicy = widget.orderPolicy ??
-        theme.optionTheme.orderPolicy ??
-        const WidgetOrderPolicy.linear();
-
     final effectiveSelectedIcon = widget.selectedIcon ??
         Visibility.maintain(
           visible: selected,
@@ -1275,7 +1248,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
                     child: widget.child,
                   ),
                 ),
-              ].order(effectiveOrderPolicy),
+              ],
             ),
           ),
         ),

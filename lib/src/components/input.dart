@@ -82,8 +82,6 @@ class ShadInput extends StatefulWidget {
     this.magnifierConfiguration = TextMagnifierConfiguration.disabled,
     this.selectionColor,
     this.padding,
-    @Deprecated('Use leading instead') this.prefix,
-    @Deprecated('Use trailing instead') this.suffix,
     this.leading,
     this.trailing,
     this.mainAxisAlignment,
@@ -488,18 +486,6 @@ class ShadInput extends StatefulWidget {
   /// {@endtemplate}
   final EdgeInsets? padding;
 
-  /// {@template ShadInput.prefix}
-  /// Deprecated widget displayed before the input (use [leading] instead).
-  /// {@endtemplate}
-  @Deprecated('Use leading instead')
-  final Widget? prefix;
-
-  /// {@template ShadInput.suffix}
-  /// Deprecated widget displayed after the input (use [trailing] instead).
-  /// {@endtemplate}
-  @Deprecated('Use trailing instead')
-  final Widget? suffix;
-
   /// {@template ShadInput.leading}
   /// The widget displayed before the input field.
   /// Typically an icon or small graphic.
@@ -755,6 +741,7 @@ class ShadInputState extends State<ShadInput>
     }
 
     if (cause == SelectionChangedCause.longPress ||
+        // ignore: deprecated_member_use
         cause == SelectionChangedCause.scribble) {
       return true;
     }
@@ -894,7 +881,6 @@ class ShadInputState extends State<ShadInput>
                         crossAxisAlignment: effectiveCrossAxisAlignment,
                         children: [
                           if (widget.leading != null) widget.leading!,
-                          if (widget.prefix != null) widget.prefix!,
                           Flexible(
                             child: ConstrainedBox(
                               constraints: effectiveConstraints,
@@ -947,7 +933,8 @@ class ShadInputState extends State<ShadInput>
                                                 effectiveContextMenuBuilder,
                                             selectionControls:
                                                 effectiveSelectionControls,
-                                            // ! End of selection handler section
+                                            // ! End of selection handler
+                                            // ! section
                                             mouseCursor: effectiveMouseCursor,
                                             enableInteractiveSelection: widget
                                                 .enableInteractiveSelection,
@@ -1006,12 +993,15 @@ class ShadInputState extends State<ShadInput>
                                             autofillHints: widget.autofillHints,
                                             clipBehavior: widget.clipBehavior,
                                             restorationId: 'editable',
+                                            // ignore: deprecated_member_use
                                             scribbleEnabled:
                                                 widget.scribbleEnabled,
                                             stylusHandwritingEnabled:
                                                 widget.stylusHandwritingEnabled,
+                                            // ignore: lines_longer_than_80_chars
                                             enableIMEPersonalizedLearning: widget
                                                 .enableIMEPersonalizedLearning,
+                                            // ignore: lines_longer_than_80_chars
                                             contentInsertionConfiguration: widget
                                                 .contentInsertionConfiguration,
                                             undoController:
@@ -1033,7 +1023,6 @@ class ShadInputState extends State<ShadInput>
                               ),
                             ),
                           ),
-                          if (widget.suffix != null) widget.suffix!,
                           if (widget.trailing != null) widget.trailing!,
                         ].separatedBy(SizedBox(width: effectiveGap)),
                       ),

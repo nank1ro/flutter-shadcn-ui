@@ -3,7 +3,6 @@ import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 class ShadSwitchFormField extends ShadFormBuilderField<bool> {
   ShadSwitchFormField({
@@ -59,9 +58,6 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
 
     /// {@macro ShadSwitch.direction}
     TextDirection? direction,
-
-    /// {@macro ShadSwitch.orderPolicy}
-    WidgetOrderPolicy? orderPolicy,
   }) : super(
           initialValue: initialValue,
           onChanged: (!enabled || onChanged == null)
@@ -95,7 +91,6 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
               thumbColor: thumbColor,
               uncheckedTrackColor: uncheckedTrackColor,
               checkedTrackColor: checkedTrackColor,
-              orderPolicy: orderPolicy,
             );
           },
         );
