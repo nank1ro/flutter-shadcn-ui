@@ -8,6 +8,7 @@
 - **REFACTOR**: Add `radioPadding` to `ShadRadio` and `ShadRadioTheme`, defaults to `EdgeInsets.only(top: 1)`.
 - **FIX**: Background color of pages for pure `ShadApp` if no `Scaffold is used`, by adding a new `backgroundColor` parameter to `ShadApp` and `ShadAppBuilder`.
 - **REFACTOR**: Update the `ShadTooltip` default anchor, defaults to `Offset(0, -4)` instead of `Offset.zero`.
+- **FEAT**: Add `actionsGap` to `ShadDialog`, defaults to `8`.
 
 ## 0.26.5
 

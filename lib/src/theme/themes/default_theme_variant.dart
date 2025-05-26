@@ -577,6 +577,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       alignment: Alignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      actionsGap: 8,
     );
   }
 

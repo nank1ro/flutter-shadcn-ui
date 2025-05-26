@@ -148,6 +148,7 @@ class ShadDialog extends StatelessWidget {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
+    this.actionsGap,
   }) : variant = ShadDialogVariant.primary;
 
   /// Creates an alert variant dialog widget, typically for warnings or
@@ -183,6 +184,7 @@ class ShadDialog extends StatelessWidget {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
+    this.actionsGap,
   }) : variant = ShadDialogVariant.alert;
 
   /// Creates a dialog widget with a specified [variant], offering full
@@ -219,6 +221,7 @@ class ShadDialog extends StatelessWidget {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
+    this.actionsGap,
   });
 
   /// {@template ShadDialog.title}
@@ -394,15 +397,24 @@ class ShadDialog extends StatelessWidget {
 
   /// {@template ShadDialog.scrollable}
   /// Whether the dialog content is scrollable.
+  ///
   /// Defaults to true if not specified.
   /// {@endtemplate}
   final bool? scrollable;
 
   /// {@template ShadDialog.scrollPadding}
   /// The padding applied when the dialog content is scrollable.
+
   /// Defaults to the keyboard’s view insets if not specified.
   /// {@endtemplate}
   final EdgeInsets? scrollPadding;
+
+  /// {@template ShadDialog.actionsGap}
+  /// The gap between action buttons.
+
+  /// Defaults to 8 if not specified.
+  /// {@endtemplate}
+  final double? actionsGap;
 
   @override
   Widget build(BuildContext context) {
@@ -492,6 +504,9 @@ class ShadDialog extends StatelessWidget {
         effectiveDialogTheme.scrollPadding ??
         MediaQuery.viewInsetsOf(context);
 
+    final effectiveActionsGap =
+        actionsGap ?? effectiveDialogTheme.actionsGap ?? 8;
+
     Widget dialog = ConstrainedBox(
       constraints: effectiveConstraints,
       child: ShadResponsiveBuilder(
@@ -527,6 +542,7 @@ class ShadDialog extends StatelessWidget {
             mainAxisSize: effectiveActionsMainAxisSize,
             mainAxisAlignment: effectiveActionsMainAxisAlignment,
             verticalDirection: effectiveActionsVerticalDirection,
+            spacing: effectiveActionsGap,
             children: actions,
           );
 
