@@ -232,6 +232,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         shadows: ShadShadows.md,
       ),
       anchor: const ShadAnchorAuto(
+        offset: Offset(0, -4),
         followerAnchor: Alignment.topCenter,
         targetAnchor: Alignment.topCenter,
       ),
@@ -267,7 +268,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           width: 1,
         ),
       ),
-      anchor: const ShadAnchorAuto(),
+      anchor: const ShadAnchorAuto(offset: Offset(0, 4)),
     );
   }
 

@@ -11,7 +11,7 @@ sealed class ShadAnchorBase {
 @immutable
 class ShadAnchorAuto extends ShadAnchorBase {
   const ShadAnchorAuto({
-    this.offset = const Offset(0, 4),
+    this.offset = Offset.zero,
     this.followTargetOnResize = true,
     this.followerAnchor = Alignment.bottomCenter,
     this.targetAnchor = Alignment.bottomCenter,

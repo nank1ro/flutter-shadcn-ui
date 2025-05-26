@@ -86,7 +86,6 @@ class ShadContextMenuRegion extends StatefulWidget {
   /// to null.
   final Set<PointerDeviceKind>? supportedDevices;
 
-
   /// {@template ShadContextMenuRegion.longPressEnabled}
   /// Whether the context menu should be shown when the user long presses the
   /// child, defaults to true only on Android and iOS.
