@@ -743,6 +743,10 @@ class ShadCalendar extends StatefulWidget {
   ///                   radius: BorderRadius.zero,
   ///                 )
   ///       : null,
+  ///    secondaryFocusedBorder: ShadBorder.all(
+  ///       offset: 2,
+  ///       color: theme.colorScheme.ring.withValues(alpha: .5),
+  ///     ),
   ///   ),
   /// ```
   /// {@endtemplate}
@@ -1632,6 +1636,10 @@ class _ShadCalendarState extends State<ShadCalendar> {
                                       radius: BorderRadius.zero,
                                     )
                           : null,
+                      secondaryFocusedBorder: ShadBorder.all(
+                        offset: 2,
+                        color: theme.colorScheme.ring.withValues(alpha: .5),
+                      ),
                     )
                         .mergeWith(theme.calendarTheme.dayButtonDecoration)
                         .mergeWith(widget.dayButtonDecoration);

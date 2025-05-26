@@ -792,6 +792,12 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
 
   @override
   ShadCalendarTheme calendarTheme() => ShadCalendarTheme(
+        dayButtonDecoration: ShadDecoration(
+          secondaryFocusedBorder: ShadBorder.all(
+            offset: 2,
+            color: colorScheme.ring.withValues(alpha: .5),
+          ),
+        ),
         hideNavigation: false,
         yearSelectorMinWidth: 100,
         monthSelectorMinWidth: 130,
