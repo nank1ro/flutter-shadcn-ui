@@ -357,7 +357,7 @@ class ShadDecorator extends StatelessWidget {
       decorated = CustomPaint(
         foregroundPainter: ShadOutwardBorderPainter(
           border: secondaryBorder.toBorder(),
-          delta: secondaryBorder.offset ?? 0,
+          offset: secondaryBorder.offset ?? 0,
           radius: secondaryBorder.radius?.resolve(textDirection) ??
               BorderRadius.zero,
           textDirection: textDirection,
@@ -377,21 +377,28 @@ class ShadOutwardBorderPainter extends CustomPainter {
   /// {@macro shadOutwardBorderPainter}
   const ShadOutwardBorderPainter({
     required this.border,
-    required this.delta,
+    required this.offset,
     required this.radius,
     required this.textDirection,
   });
 
+  /// The border to paint.
   final Border border;
-  final double delta;
+
+  /// The offset to inflate the border by.
+  final double offset;
+
+  /// The radius of the border.
   final BorderRadius? radius;
+
+  /// The text direction to use when painting the border.
   final TextDirection? textDirection;
 
   @override
   void paint(Canvas canvas, Size size) {
     border.paint(
       canvas,
-      (Offset.zero & size).inflate(delta),
+      (Offset.zero & size).inflate(offset),
       borderRadius: radius,
       textDirection: textDirection,
     );
@@ -400,7 +407,7 @@ class ShadOutwardBorderPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant ShadOutwardBorderPainter oldDelegate) {
     return border != oldDelegate.border ||
-        delta != oldDelegate.delta ||
+        offset != oldDelegate.offset ||
         radius != oldDelegate.radius ||
         textDirection != oldDelegate.textDirection;
   }
