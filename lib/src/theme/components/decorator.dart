@@ -354,15 +354,18 @@ class ShadDecorator extends StatelessWidget {
     );
 
     if (secondaryBorder != null && !effectiveDisableSecondaryBorder) {
-      decorated = CustomPaint(
-        foregroundPainter: ShadOutwardBorderPainter(
-          border: secondaryBorder.toBorder(),
-          offset: secondaryBorder.offset ?? 0,
-          radius: secondaryBorder.radius?.resolve(textDirection) ??
-              BorderRadius.zero,
-          textDirection: textDirection,
+      decorated = Padding(
+        padding: secondaryBorder.padding ?? EdgeInsets.zero,
+        child: CustomPaint(
+          foregroundPainter: ShadOutwardBorderPainter(
+            border: secondaryBorder.toBorder(),
+            offset: secondaryBorder.offset ?? 0,
+            radius: secondaryBorder.radius?.resolve(textDirection) ??
+                BorderRadius.zero,
+            textDirection: textDirection,
+          ),
+          child: decorated,
         ),
-        child: decorated,
       );
     }
 

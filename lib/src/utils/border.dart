@@ -182,8 +182,6 @@ class ShadBorder {
   final bool merge;
 
   /// The padding of the border, defaults to null.
-  ///
-  /// NOTE: Padding has no effect on secondary borders, use [offset] instead.
   final EdgeInsets? padding;
 
   /// The border radius of the border, defaults to null.
