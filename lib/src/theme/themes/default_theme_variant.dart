@@ -440,13 +440,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         shape: BoxShape.circle,
         border: ShadBorder.all(
           color: colorScheme.primary,
-          padding: const EdgeInsets.all(2),
           width: 1,
         ),
         secondaryFocusedBorder: ShadBorder.all(
           radius: radius.add(radius / 2),
           width: 2,
-          padding: const EdgeInsets.all(2),
         ),
       ),
       spacing: 4,
@@ -454,6 +452,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       runAlignment: WrapAlignment.start,
       crossAxisAlignment: WrapCrossAlignment.start,
       axis: Axis.vertical,
+      radioPadding: const EdgeInsets.only(top: 1),
     );
   }
 

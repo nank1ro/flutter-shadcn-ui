@@ -5,6 +5,7 @@
 - **REFACTOR**: Remove all deprecated parameters across the whole package.
 - **REFACTOR**: Update default `anchor` of `ShadSelect` from `ShadAnchorAuto()` to `ShadAnchorAuto(offset: Offset(0, 4))`.
 - **REFACTOR**: Add `checkboxPadding` to `ShadCheckbox`, `ShadCheckboxTheme` and `ShadCheckboxFormField`, defaults to `EdgeInsets.only(top: 1)`.
+- **REFACTOR**: Add `radioPadding` to `ShadRadio` and `ShadRadioTheme`, defaults to `EdgeInsets.only(top: 1)`.
 
 ## 0.26.5
 

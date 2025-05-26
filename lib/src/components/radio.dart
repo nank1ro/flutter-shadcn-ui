@@ -171,6 +171,7 @@ class ShadRadio<T> extends StatefulWidget {
     this.sublabel,
     this.padding,
     this.direction,
+    this.radioPadding,
   });
 
   /// {@template ShadRadio.value}
@@ -228,7 +229,14 @@ class ShadRadio<T> extends StatefulWidget {
   /// The padding between the radio and the label, defaults to
   /// `EdgeInsets.only(left: 8)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
+
+  /// {@template ShadRadio.radioPadding}
+  /// The padding around the radio field only.
+  ///
+  /// Defaults to `EdgeInsets.only(top: 1)` if not specified.
+  /// {@endtemplate}
+  final EdgeInsetsGeometry? radioPadding;
 
   /// {@template ShadRadio.direction}
   /// The direction of the radio.
@@ -288,6 +296,10 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
         theme.radioTheme.padding ??
         const EdgeInsets.only(left: 8);
 
+    final effectiveRadioPadding = widget.radioPadding ??
+        theme.radioTheme.radioPadding ??
+        const EdgeInsets.only(top: 1);
+
     final radio = Semantics(
       checked: selected,
       child: ShadDisabled(
@@ -345,7 +357,10 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
           textDirection: widget.direction,
           mainAxisSize: MainAxisSize.min,
           children: [
-            radio,
+            Padding(
+              padding: effectiveRadioPadding,
+              child: radio,
+            ),
             if (widget.label != null)
               Flexible(
                 child: Padding(

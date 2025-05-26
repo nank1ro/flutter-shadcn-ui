@@ -20,6 +20,7 @@ class ShadRadioTheme {
     this.alignment,
     this.runAlignment,
     this.crossAxisAlignment,
+    this.radioPadding,
   });
 
   final bool merge;
@@ -37,7 +38,7 @@ class ShadRadioTheme {
   final ShadDecoration? decoration;
 
   /// {@macro ShadRadio.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadRadio.circleSize}
   final double? circleSize;
@@ -60,6 +61,9 @@ class ShadRadioTheme {
   /// {@macro ShadRadioGroup.crossAxisAlignment}
   final WrapCrossAlignment? crossAxisAlignment;
 
+  /// {@macro ShadRadio.radioPadding}
+  final EdgeInsetsGeometry? radioPadding;
+
   static ShadRadioTheme lerp(
     ShadRadioTheme a,
     ShadRadioTheme b,
@@ -72,7 +76,7 @@ class ShadRadioTheme {
       duration: b.duration,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       size: lerpDouble(a.size, b.size, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       circleSize: lerpDouble(a.circleSize, b.circleSize, t),
       axis: t < 0.5 ? a.axis : b.axis,
       spacing: lerpDouble(a.spacing, b.spacing, t),
@@ -80,6 +84,7 @@ class ShadRadioTheme {
       alignment: t < 0.5 ? a.alignment : b.alignment,
       runAlignment: t < 0.5 ? a.runAlignment : b.runAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      radioPadding: EdgeInsetsGeometry.lerp(a.radioPadding, b.radioPadding, t),
     );
   }
 
@@ -89,7 +94,7 @@ class ShadRadioTheme {
     double? size,
     Duration? duration,
     ShadDecoration? decoration,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     double? circleSize,
     Axis? axis,
     double? spacing,
@@ -97,6 +102,7 @@ class ShadRadioTheme {
     WrapAlignment? alignment,
     WrapAlignment? runAlignment,
     WrapCrossAlignment? crossAxisAlignment,
+    EdgeInsetsGeometry? radioPadding,
   }) {
     return ShadRadioTheme(
       merge: merge ?? this.merge,
@@ -112,6 +118,7 @@ class ShadRadioTheme {
       alignment: alignment ?? this.alignment,
       runAlignment: runAlignment ?? this.runAlignment,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
+      radioPadding: radioPadding ?? this.radioPadding,
     );
   }
 
@@ -131,6 +138,7 @@ class ShadRadioTheme {
       alignment: other.alignment,
       runAlignment: other.runAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
+      radioPadding: other.radioPadding,
     );
   }
 
@@ -151,7 +159,8 @@ class ShadRadioTheme {
         other.runSpacing == runSpacing &&
         other.alignment == alignment &&
         other.runAlignment == runAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment;
+        other.crossAxisAlignment == crossAxisAlignment &&
+        other.radioPadding == radioPadding;
   }
 
   @override
@@ -168,6 +177,7 @@ class ShadRadioTheme {
         runSpacing.hashCode ^
         alignment.hashCode ^
         runAlignment.hashCode ^
-        crossAxisAlignment.hashCode;
+        crossAxisAlignment.hashCode ^
+        radioPadding.hashCode;
   }
 }
