@@ -1,3 +1,8 @@
+## 0.27.0
+
+- **BREAKING CHANGE**: The secondary border of `ShadDecoration` now is drawn outward of the widget, without consuming any extra space. This change affects all components that are focusable.
+- **FEAT**: Add `offset` to `ShadBorder` to set the offset between the widget and the outward secondary border.
+
 ## 0.26.5
 
 - **CHORE**: Update lower bound dependency versions.
