@@ -872,13 +872,13 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   ShadTimePickerTheme timePickerTheme() {
     return ShadTimePickerTheme(
       axis: Axis.horizontal,
-      spacing: 0,
-      runSpacing: 0,
+      spacing: 8,
+      runSpacing: 4,
       jumpToNextFieldWhenFilled: true,
       alignment: WrapAlignment.center,
       runAlignment: WrapAlignment.center,
       crossAxisAlignment: WrapCrossAlignment.center,
-      gap: 2,
+      gap: 4,
       style: effectiveTextTheme.muted.copyWith(
         color: colorScheme.foreground,
         fontSize: 16,
@@ -889,9 +889,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         height: 24 / 16,
       ),
       labelStyle: effectiveTextTheme.small.copyWith(fontSize: 12),
-      fieldWidth: 58,
+      fieldWidth: 48,
       fieldPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      periodHeight: 50,
+      periodHeight: 42,
       periodMinWidth: 65,
       fieldDecoration: ShadDecoration(
         border: ShadBorder.all(

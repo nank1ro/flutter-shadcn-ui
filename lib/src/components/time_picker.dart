@@ -655,9 +655,9 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     final effectiveAxis =
         widget.axis ?? theme.timePickerTheme.axis ?? Axis.horizontal;
     final effectiveSpacing =
-        widget.spacing ?? theme.timePickerTheme.spacing ?? 0;
+        widget.spacing ?? theme.timePickerTheme.spacing ?? 8;
     final effectiveRunSpacing =
-        widget.runSpacing ?? theme.timePickerTheme.runSpacing ?? 0;
+        widget.runSpacing ?? theme.timePickerTheme.runSpacing ?? 4;
     final effectiveJumpToNextField = widget.jumpToNextFieldWhenFilled ??
         theme.timePickerTheme.jumpToNextFieldWhenFilled ??
         true;
@@ -699,12 +699,12 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         WrapCrossAlignment.center;
 
     final effectivePeriodHeight =
-        widget.periodHeight ?? theme.timePickerTheme.periodHeight ?? 50;
+        widget.periodHeight ?? theme.timePickerTheme.periodHeight ?? 42;
     final effectivePeriodMinWidth =
         widget.periodMinWidth ?? theme.timePickerTheme.periodMinWidth ?? 65;
-    final effectiveGap = widget.gap ?? theme.timePickerTheme.gap ?? 2;
+    final effectiveGap = widget.gap ?? theme.timePickerTheme.gap ?? 4;
     final effectiveFieldWidth =
-        widget.fieldWidth ?? theme.timePickerTheme.fieldWidth ?? 58;
+        widget.fieldWidth ?? theme.timePickerTheme.fieldWidth ?? 48;
     final effectiveFieldPadding = widget.fieldPadding ??
         theme.timePickerTheme.fieldPadding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
