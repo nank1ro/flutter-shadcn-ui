@@ -12,6 +12,7 @@
 - **REFACTOR**: Update `ShadTimePickerTheme` parameters: `spacing` changed from `0` to `8`, `runSpacing` changed from `0` to `4`, `gap` changed from `2` to `4`, `fieldWidth` changed from `58` to `48`, `periodHeight` changed from `50` to `42`.
 - **FIX**: Lookup of correct `ShadTextareaTheme` when retrieving the `scrollbarPadding`.
 - **REFACTOR**: Update the `ShadCalendarTheme.dayButtonDecoration.secondaryFocusedBorder` with another offset and with the same color with an alpha of `0.5` to make it more visible.
+- **REFACTOR**: The `ShadInputOTPTheme.padding` changed from `EdgeInsets.symmetric(vertical: 4)` to `null`.
 
 ## 0.26.5
 

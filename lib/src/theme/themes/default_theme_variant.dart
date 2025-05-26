@@ -928,7 +928,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ),
       singleRadius: radius,
       middleRadius: BorderRadius.zero,
-      padding: const EdgeInsets.symmetric(vertical: 4),
       decoration: ShadDecoration(
         disableSecondaryBorder: true,
         focusedBorder: ShadBorder.all(
@@ -939,7 +938,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           top: ShadBorderSide(color: colorScheme.border, width: 1),
           bottom: ShadBorderSide(color: colorScheme.border, width: 1),
           right: ShadBorderSide(color: colorScheme.border, width: 1),
-          padding: const EdgeInsets.all(1),
+          // padding: const EdgeInsets.all(1),
         ),
       ),
     );
