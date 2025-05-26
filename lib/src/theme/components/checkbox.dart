@@ -14,6 +14,7 @@ class ShadCheckboxTheme {
     this.size,
     this.padding,
     this.crossAxisAlignment,
+    this.checkboxPadding,
   });
 
   final bool merge;
@@ -31,10 +32,13 @@ class ShadCheckboxTheme {
   final ShadDecoration? decoration;
 
   /// {@macro ShadCheckbox.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadCheckbox.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadCheckbox.checkboxPadding}
+  final EdgeInsetsGeometry? checkboxPadding;
 
   static ShadCheckboxTheme lerp(
     ShadCheckboxTheme a,
@@ -48,8 +52,10 @@ class ShadCheckboxTheme {
       duration: b.duration,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       size: lerpDouble(a.size, b.size, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       crossAxisAlignment: t < .5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      checkboxPadding:
+          EdgeInsetsGeometry.lerp(a.checkboxPadding, b.checkboxPadding, t),
     );
   }
 
@@ -59,8 +65,9 @@ class ShadCheckboxTheme {
     double? size,
     Duration? duration,
     ShadDecoration? decoration,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     CrossAxisAlignment? crossAxisAlignment,
+    EdgeInsetsGeometry? checkboxPadding,
   }) {
     return ShadCheckboxTheme(
       merge: merge ?? this.merge,
@@ -70,6 +77,7 @@ class ShadCheckboxTheme {
       color: color ?? this.color,
       padding: padding ?? this.padding,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
+      checkboxPadding: checkboxPadding ?? this.checkboxPadding,
     );
   }
 
@@ -83,6 +91,7 @@ class ShadCheckboxTheme {
       size: other.size,
       padding: other.padding,
       crossAxisAlignment: other.crossAxisAlignment,
+      checkboxPadding: other.checkboxPadding,
     );
   }
 
@@ -97,7 +106,8 @@ class ShadCheckboxTheme {
         other.duration == duration &&
         other.decoration == decoration &&
         other.padding == padding &&
-        other.crossAxisAlignment == crossAxisAlignment;
+        other.crossAxisAlignment == crossAxisAlignment &&
+        other.checkboxPadding == checkboxPadding;
   }
 
   @override
@@ -108,6 +118,7 @@ class ShadCheckboxTheme {
         duration.hashCode ^
         decoration.hashCode ^
         padding.hashCode ^
-        crossAxisAlignment.hashCode;
+        crossAxisAlignment.hashCode ^
+        checkboxPadding.hashCode;
   }
 }

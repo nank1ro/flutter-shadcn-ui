@@ -46,13 +46,16 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
     Widget? inputSublabel,
 
     /// {@macro ShadCheckbox.padding}
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
 
     /// {@macro ShadCheckbox.direction}
     TextDirection? direction,
 
     /// {@macro ShadCheckbox.crossAxisAlignment}
     CrossAxisAlignment? crossAxisAlignment,
+
+    /// {@macro ShadCheckbox.checkboxPadding}
+    EdgeInsetsGeometry? checkboxPadding,
   }) : super(
           initialValue: initialValue,
           onChanged: onChanged == null ? null : (v) => onChanged(v ?? false),
@@ -78,6 +81,7 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
               direction: direction,
               decoration: state.decoration,
               crossAxisAlignment: crossAxisAlignment,
+              checkboxPadding: checkboxPadding,
             );
           },
         );
