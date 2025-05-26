@@ -484,7 +484,7 @@ class ShadSelect<T> extends StatefulWidget {
   /// The anchor configuration for positioning the popover relative to the
   /// select input.
   ///
-  /// Defaults to `ShadAnchorAuto(offset: Offset(0, 4))`
+  /// Defaults to `ShadAnchorAuto()`
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
