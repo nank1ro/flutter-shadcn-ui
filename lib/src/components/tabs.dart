@@ -736,6 +736,13 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
     final inherited =
         context.watch<ShadTabsState<dynamic>>() as ShadTabsState<T>;
 
+    void onMayChanged() {
+      final hasChanged = inherited.controller.select(widget.value);
+      if (hasChanged) {
+        inherited.widget.onChanged?.call(widget.value);
+      }
+    }
+
     final tabsTheme = theme.tabsTheme;
 
     final defaultWidth = inherited.scrollable ? null : double.infinity;
@@ -866,10 +873,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               : effectiveForegroundColor,
           shadows: selected ? effectiveSelectedShadows : effectiveShadows,
           onPressed: () {
-            final hasChanged = inherited.controller.select(widget.value);
-            if (hasChanged) {
-              inherited.widget.onChanged?.call(widget.value);
-            }
+            onMayChanged();
             widget.onPressed?.call();
           },
           enabled: widget.enabled,
@@ -900,6 +904,9 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
           onDoubleTapDown: widget.onDoubleTapDown,
           onDoubleTapCancel: widget.onDoubleTapCancel,
           longPressDuration: widget.longPressDuration,
+          onFocusChange: (focused) {
+            if (focused) onMayChanged();
+          },
           child: DefaultTextStyle(
             style: theme.textTheme.small,
             child: widget.child,

@@ -13,6 +13,7 @@
 - **FIX**: Lookup of correct `ShadTextareaTheme` when retrieving the `scrollbarPadding`.
 - **REFACTOR**: Update the `ShadCalendarTheme.dayButtonDecoration.secondaryFocusedBorder` with another offset and with the same color with an alpha of `0.5` to make it more visible.
 - **REFACTOR**: The `ShadInputOTPTheme.padding` changed from `EdgeInsets.symmetric(vertical: 4)` to `null`.
+- **REFACTOR**: Now when you focus a `ShadTab`, the tab is automatically selected. This to prevent secondary borders collision (This new behavior is the same of the original shadcn, when you focus tabs with the keyboard left and right arrows, the tab is selected accordingly)
 
 ## 0.26.5
 
