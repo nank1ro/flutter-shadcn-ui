@@ -6,19 +6,20 @@
 - **REFACTOR**: Update the default `anchor` of `ShadSelect`, `ShadTooltip` and `ShadPopover` from `ShadAnchorAuto()` to `ShadAnchorAuto(offset: Offset(0, 4))`.
 - **REFACTOR**: Add `checkboxPadding` to `ShadCheckbox`, `ShadCheckboxTheme` and `ShadCheckboxFormField`, defaults to `EdgeInsets.only(top: 1)`.
 - **REFACTOR**: Add `radioPadding` to `ShadRadio` and `ShadRadioTheme`, defaults to `EdgeInsets.only(top: 1)`.
-- **FIX**: Background color of pages for pure `ShadApp` if no `Scaffold is used`, by adding a new `backgroundColor` parameter to `ShadApp` and `ShadAppBuilder`.
+- **FIX**: Background color of pages for pure `ShadApp` if no `Scaffold` is used, by adding a new `backgroundColor` parameter to `ShadApp` and `ShadAppBuilder`.
 - **FEAT**: Add `actionsGap` to `ShadDialog`, defaults to `8`.
 - **REFACTOR**: Update `ShadTimePickerTheme` parameters: `spacing` changed from `0` to `8`, `runSpacing` changed from `0` to `4`, `gap` changed from `2` to `4`, `fieldWidth` changed from `58` to `48`, `periodHeight` changed from `50` to `42`.
 - **FIX**: Lookup of correct `ShadTextareaTheme` when retrieving the `scrollbarPadding`.
-- **REFACTOR**: Update the `ShadCalendarTheme.dayButtonDecoration.secondaryFocusedBorder` with another offset and with the same color with an alpha of `0.5` to make it more visible.
+- **REFACTOR**: Update `ShadCalendarTheme.dayButtonDecoration.secondaryFocusedBorder` to use a new offset and 50% opacity for improved visibility.
 - **REFACTOR**: The `ShadInputOTPTheme.padding` changed from `EdgeInsets.symmetric(vertical: 4)` to `null`.
-- **REFACTOR**: Now when you focus a `ShadTab`, the tab is automatically selected. This to prevent secondary borders collision (This new behavior is the same of the original shadcn, when you focus tabs with the keyboard left and right arrows, the tab is selected accordingly)
-- **REFACTOR**: The `ShadCalendarTheme.monthSelectorMinWidth` changed from `130` to `120`.
-- **REFACTOR**: The `ShadCalendar.yearSelector` and `ShadCalendar.monthSelector` now use a secondary focused border with an alpha of `0.5` to make it the same to the other parts.
+- **REFACTOR**: Change `ShadInputOTPTheme.padding` from `EdgeInsets.symmetric(vertical: 4)` to `null`.
+- **REFACTOR**: Automatically select the focused `ShadTab` to prevent secondary border collisions, matching original shadcn keyboard navigation behavior.
+- **REFACTOR**: Change `ShadCalendarTheme.monthSelectorMinWidth` from `130` to `120`.
+- **REFACTOR**: The `ShadCalendar.yearSelector` and `ShadCalendar.monthSelector` now use a secondary focused border with 50% opacity to match other parts.
 - **REFACTOR**: Update `ShadSelect` with presets example by adding padding.
 - **REFACTOR**: Remove secondary border removal from `ShadInput` example with trailing icon.
 - **REFACTOR**: Update `ShadMenubar.anchor.offset` from `Offset(-8, 8)` to `Offset(-4, 8)`.
-- **REFACTOR**: Update `ShadPopover` example by adding gap between input fields.
+- **REFACTOR**: Update `ShadPopover` example by adding a gap between input fields.
 - **FIX**: `ShadSelectController` now has a `Set` instead of a `List` to prevent duplicates in the selected options, this change has been applied to `ShadSelect.initialValues` and `ShadSelectFormField` as well.
 
 ## 0.26.5
