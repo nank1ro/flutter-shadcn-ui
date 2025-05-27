@@ -125,6 +125,7 @@ class EditProfileSheet extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: 16,
           children: profile
               .map(
                 (p) => Row(

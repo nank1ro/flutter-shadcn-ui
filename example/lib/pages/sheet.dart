@@ -66,6 +66,7 @@ class _SheetPageState extends State<SheetPage> {
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
+                      spacing: 16,
                       children: profile
                           .map(
                             (p) => Row(

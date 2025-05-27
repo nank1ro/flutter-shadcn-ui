@@ -1,4 +1,3 @@
-import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:example/common/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -33,6 +32,7 @@ class DialogPage extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.end,
+                    spacing: 16,
                     children: profile
                         .map(
                           (p) => Row(
@@ -52,7 +52,7 @@ class DialogPage extends StatelessWidget {
                             ],
                           ),
                         )
-                        .separatedBy(const SizedBox(height: 16)),
+                        .toList(),
                   ),
                 ),
               ),

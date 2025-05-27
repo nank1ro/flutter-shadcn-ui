@@ -40,6 +40,7 @@ class DialogExample extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.end,
+                spacing: 16,
                 children: profile
                     .map(
                       (p) => Row(
@@ -58,7 +59,7 @@ class DialogExample extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ).separatedBy(const SizedBox(height: 16)),
+                    ).toList(),
               ),
             ),
           ),
