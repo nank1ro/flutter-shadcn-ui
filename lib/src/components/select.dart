@@ -29,8 +29,8 @@ typedef ShadSelectedOptionBuilder<T> = Widget Function(
 ///
 /// It extends [ValueNotifier] to provide reactive updates when the selected
 /// values change.
-class ShadSelectController<T> extends ValueNotifier<List<T>> {
-  ShadSelectController({List<T>? initialValue}) : super(initialValue ?? []);
+class ShadSelectController<T> extends ValueNotifier<Set<T>> {
+  ShadSelectController({Set<T>? initialValue}) : super(initialValue ?? {});
 }
 
 /// Defines the different variants of the [ShadSelect] widget.
@@ -642,10 +642,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     super.initState();
     if (widget.controller == null) {
       _controller = ShadSelectController<T>(
-        initialValue: [
+        initialValue: {
           if (widget.initialValue is T) widget.initialValue as T,
           ...widget.initialValues,
-        ],
+        },
       );
     }
 
