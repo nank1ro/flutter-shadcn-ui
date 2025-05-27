@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 @immutable
 class ShadCheckboxTheme {
@@ -15,7 +14,7 @@ class ShadCheckboxTheme {
     this.size,
     this.padding,
     this.crossAxisAlignment,
-    this.orderPolicy,
+    this.checkboxPadding,
   });
 
   final bool merge;
@@ -33,13 +32,13 @@ class ShadCheckboxTheme {
   final ShadDecoration? decoration;
 
   /// {@macro ShadCheckbox.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadCheckbox.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
 
-  /// {@macro ShadCheckbox.orderPolicy}
-  final WidgetOrderPolicy? orderPolicy;
+  /// {@macro ShadCheckbox.checkboxPadding}
+  final EdgeInsetsGeometry? checkboxPadding;
 
   static ShadCheckboxTheme lerp(
     ShadCheckboxTheme a,
@@ -53,9 +52,10 @@ class ShadCheckboxTheme {
       duration: b.duration,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       size: lerpDouble(a.size, b.size, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       crossAxisAlignment: t < .5 ? a.crossAxisAlignment : b.crossAxisAlignment,
-      orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
+      checkboxPadding:
+          EdgeInsetsGeometry.lerp(a.checkboxPadding, b.checkboxPadding, t),
     );
   }
 
@@ -65,9 +65,9 @@ class ShadCheckboxTheme {
     double? size,
     Duration? duration,
     ShadDecoration? decoration,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     CrossAxisAlignment? crossAxisAlignment,
-    WidgetOrderPolicy? orderPolicy,
+    EdgeInsetsGeometry? checkboxPadding,
   }) {
     return ShadCheckboxTheme(
       merge: merge ?? this.merge,
@@ -77,7 +77,7 @@ class ShadCheckboxTheme {
       color: color ?? this.color,
       padding: padding ?? this.padding,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
-      orderPolicy: orderPolicy ?? this.orderPolicy,
+      checkboxPadding: checkboxPadding ?? this.checkboxPadding,
     );
   }
 
@@ -91,7 +91,7 @@ class ShadCheckboxTheme {
       size: other.size,
       padding: other.padding,
       crossAxisAlignment: other.crossAxisAlignment,
-      orderPolicy: other.orderPolicy,
+      checkboxPadding: other.checkboxPadding,
     );
   }
 
@@ -107,7 +107,7 @@ class ShadCheckboxTheme {
         other.decoration == decoration &&
         other.padding == padding &&
         other.crossAxisAlignment == crossAxisAlignment &&
-        other.orderPolicy == orderPolicy;
+        other.checkboxPadding == checkboxPadding;
   }
 
   @override
@@ -119,6 +119,6 @@ class ShadCheckboxTheme {
         decoration.hashCode ^
         padding.hashCode ^
         crossAxisAlignment.hashCode ^
-        orderPolicy.hashCode;
+        checkboxPadding.hashCode;
   }
 }

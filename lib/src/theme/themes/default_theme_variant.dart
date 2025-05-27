@@ -232,6 +232,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         shadows: ShadShadows.md,
       ),
       anchor: const ShadAnchorAuto(
+        offset: Offset(0, -4),
         followerAnchor: Alignment.topCenter,
         targetAnchor: Alignment.topCenter,
       ),
@@ -267,7 +268,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           width: 1,
         ),
       ),
-      anchor: const ShadAnchorAuto(),
+      anchor: const ShadAnchorAuto(offset: Offset(0, 4)),
     );
   }
 
@@ -337,7 +338,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
-      anchor: const ShadAnchorAuto(),
+      anchor: const ShadAnchorAuto(offset: Offset(0, 4)),
       searchPadding: const EdgeInsets.all(12),
     );
   }
@@ -396,6 +397,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       duration: 100.milliseconds,
       color: colorScheme.primary,
       padding: const EdgeInsets.only(left: 8),
+      checkboxPadding: const EdgeInsets.only(top: 1),
       decoration: ShadDecoration(
         border: ShadBorder.all(
           color: colorScheme.primary,
@@ -439,13 +441,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         shape: BoxShape.circle,
         border: ShadBorder.all(
           color: colorScheme.primary,
-          padding: const EdgeInsets.all(2),
           width: 1,
         ),
         secondaryFocusedBorder: ShadBorder.all(
           radius: radius.add(radius / 2),
           width: 2,
-          padding: const EdgeInsets.all(2),
         ),
       ),
       spacing: 4,
@@ -453,6 +453,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       runAlignment: WrapAlignment.start,
       crossAxisAlignment: WrapCrossAlignment.start,
       axis: Axis.vertical,
+      radioPadding: const EdgeInsets.only(top: 1),
     );
   }
 
@@ -576,6 +577,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       alignment: Alignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      actionsGap: 8,
     );
   }
 
@@ -790,9 +792,15 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
 
   @override
   ShadCalendarTheme calendarTheme() => ShadCalendarTheme(
+        dayButtonDecoration: ShadDecoration(
+          secondaryFocusedBorder: ShadBorder.all(
+            offset: 2,
+            color: colorScheme.ring.withValues(alpha: .5),
+          ),
+        ),
         hideNavigation: false,
         yearSelectorMinWidth: 100,
-        monthSelectorMinWidth: 130,
+        monthSelectorMinWidth: 120,
         yearSelectorPadding:
             const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         monthSelectorPadding:
@@ -870,13 +878,13 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   ShadTimePickerTheme timePickerTheme() {
     return ShadTimePickerTheme(
       axis: Axis.horizontal,
-      spacing: 0,
-      runSpacing: 0,
+      spacing: 8,
+      runSpacing: 4,
       jumpToNextFieldWhenFilled: true,
       alignment: WrapAlignment.center,
       runAlignment: WrapAlignment.center,
       crossAxisAlignment: WrapCrossAlignment.center,
-      gap: 2,
+      gap: 4,
       style: effectiveTextTheme.muted.copyWith(
         color: colorScheme.foreground,
         fontSize: 16,
@@ -887,9 +895,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         height: 24 / 16,
       ),
       labelStyle: effectiveTextTheme.small.copyWith(fontSize: 12),
-      fieldWidth: 58,
+      fieldWidth: 48,
       fieldPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      periodHeight: 50,
+      periodHeight: 42,
       periodMinWidth: 65,
       fieldDecoration: ShadDecoration(
         border: ShadBorder.all(
@@ -920,7 +928,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ),
       singleRadius: radius,
       middleRadius: BorderRadius.zero,
-      padding: const EdgeInsets.symmetric(vertical: 4),
       decoration: ShadDecoration(
         disableSecondaryBorder: true,
         focusedBorder: ShadBorder.all(
@@ -931,7 +938,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           top: ShadBorderSide(color: colorScheme.border, width: 1),
           bottom: ShadBorderSide(color: colorScheme.border, width: 1),
           right: ShadBorderSide(color: colorScheme.border, width: 1),
-          padding: const EdgeInsets.all(1),
         ),
       ),
     );
@@ -944,7 +950,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       padding: const EdgeInsets.all(4),
       border: ShadBorder.all(color: colorScheme.border, width: 1),
       anchor: const ShadAnchorAuto(
-        offset: Offset(-8, 8),
+        offset: Offset(-4, 8),
         followerAnchor: Alignment.bottomRight,
         targetAnchor: Alignment.bottomLeft,
       ),

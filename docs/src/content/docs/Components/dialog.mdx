@@ -11,6 +11,8 @@ A modal dialog that interrupts the user.
 <Preview src="dialog?style=primary" minHeight="500px">
 
 ```dart
+import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
+
 final profile = [
   (title: 'Name', value: 'Alexandru'),
   (title: 'Username', value: 'nank1ro'),
@@ -38,6 +40,7 @@ class DialogExample extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.end,
+                spacing: 16,
                 children: profile
                     .map(
                       (p) => Row(
@@ -56,8 +59,7 @@ class DialogExample extends StatelessWidget {
                           ),
                         ],
                       ),
-                    )
-                    .toList(),
+                    ).toList(),
               ),
             ),
           ),

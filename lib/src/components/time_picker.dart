@@ -339,12 +339,12 @@ class ShadTimePicker extends StatefulWidget {
   final Axis? axis;
 
   /// {@template ShadTimePicker.spacing}
-  /// The spacing between the fields in the picker. Defaults to `0`.
+  /// The spacing between the fields in the picker. Defaults to `8`.
   /// {@endtemplate}
   final double? spacing;
 
   /// {@template ShadTimePicker.runSpacing}
-  /// The run spacing between the fields in the picker. Defaults to `0`.
+  /// The run spacing between the fields in the picker. Defaults to `4`.
   /// {@endtemplate}
   final double? runSpacing;
 
@@ -479,7 +479,7 @@ class ShadTimePicker extends StatefulWidget {
   final Widget? periodPlaceholder;
 
   /// {@template ShadTimePicker.periodHeight}
-  /// The height of the period field, defaults to `50`.
+  /// The height of the period field, defaults to `42`.
   /// {@endtemplate}
   final double? periodHeight;
 
@@ -489,7 +489,7 @@ class ShadTimePicker extends StatefulWidget {
   final double? periodMinWidth;
 
   /// {@template ShadTimePicker.gap}
-  /// The gap between the label and the field in the picker. Defaults to `2`.
+  /// The gap between the label and the field in the picker. Defaults to `4`.
   /// {@endtemplate}
   final double? gap;
 
@@ -523,7 +523,7 @@ class ShadTimePicker extends StatefulWidget {
   final TextStyle? labelStyle;
 
   /// {@template ShadTimePicker.fieldWidth}
-  /// The width of the field, defaults to `58`.
+  /// The width of the field, defaults to `48`.
   /// {@endtemplate}
   final double? fieldWidth;
 
@@ -655,9 +655,9 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     final effectiveAxis =
         widget.axis ?? theme.timePickerTheme.axis ?? Axis.horizontal;
     final effectiveSpacing =
-        widget.spacing ?? theme.timePickerTheme.spacing ?? 0;
+        widget.spacing ?? theme.timePickerTheme.spacing ?? 8;
     final effectiveRunSpacing =
-        widget.runSpacing ?? theme.timePickerTheme.runSpacing ?? 0;
+        widget.runSpacing ?? theme.timePickerTheme.runSpacing ?? 4;
     final effectiveJumpToNextField = widget.jumpToNextFieldWhenFilled ??
         theme.timePickerTheme.jumpToNextFieldWhenFilled ??
         true;
@@ -699,12 +699,12 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         WrapCrossAlignment.center;
 
     final effectivePeriodHeight =
-        widget.periodHeight ?? theme.timePickerTheme.periodHeight ?? 50;
+        widget.periodHeight ?? theme.timePickerTheme.periodHeight ?? 42;
     final effectivePeriodMinWidth =
         widget.periodMinWidth ?? theme.timePickerTheme.periodMinWidth ?? 65;
-    final effectiveGap = widget.gap ?? theme.timePickerTheme.gap ?? 2;
+    final effectiveGap = widget.gap ?? theme.timePickerTheme.gap ?? 4;
     final effectiveFieldWidth =
-        widget.fieldWidth ?? theme.timePickerTheme.fieldWidth ?? 58;
+        widget.fieldWidth ?? theme.timePickerTheme.fieldWidth ?? 48;
     final effectiveFieldPadding = widget.fieldPadding ??
         theme.timePickerTheme.fieldPadding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);

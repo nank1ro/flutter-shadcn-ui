@@ -67,7 +67,7 @@ class _ShadPortalPageState extends State<ShadPortalPage> {
                     width: 200,
                     height: 200,
                     alignment: Alignment.center,
-                    child: const Text('100x100'),
+                    child: const Text('200x200'),
                   ),
                 );
               },

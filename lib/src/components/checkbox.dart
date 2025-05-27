@@ -7,7 +7,6 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 /// A customizable checkbox widget with optional label and sublabel.
 ///
@@ -33,7 +32,7 @@ class ShadCheckbox extends StatefulWidget {
     this.padding,
     this.direction,
     this.crossAxisAlignment,
-    @Deprecated('Use leading and trailing instead') this.orderPolicy,
+    this.checkboxPadding,
   });
 
   /// {@template ShadCheckbox.value}
@@ -104,9 +103,16 @@ class ShadCheckbox extends StatefulWidget {
 
   /// {@template ShadCheckbox.padding}
   /// The padding between the checkbox and its label/sublabel.
-  /// Defaults to EdgeInsets.only(left: 8) if not specified.
+  /// Defaults to `EdgeInsets.only(left: 8)` if not specified.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
+
+  /// {@template ShadCheckbox.checkboxPadding}
+  /// The padding around the checkbox field only.
+  ///
+  /// Defaults to `EdgeInsets.only(top: 1)` if not specified.
+  /// {@endtemplate}
+  final EdgeInsetsGeometry? checkboxPadding;
 
   /// {@template ShadCheckbox.direction}
   /// The text direction for arranging the checkbox and label/sublabel.
@@ -120,13 +126,6 @@ class ShadCheckbox extends StatefulWidget {
   /// present, otherwise [CrossAxisAlignment.center].
   /// {@endtemplate}
   final CrossAxisAlignment? crossAxisAlignment;
-
-  /// {@template ShadCheckbox.orderPolicy}
-  /// The deprecated order policy for arranging checkbox items.
-  /// Defaults to [WidgetOrderPolicy.linear()]; use layout properties instead.
-  /// {@endtemplate}
-  @Deprecated('Use leading and trailing instead')
-  final WidgetOrderPolicy? orderPolicy;
 
   @override
   State<ShadCheckbox> createState() => _ShadCheckboxState();
@@ -186,9 +185,9 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
         theme.checkboxTheme.padding ??
         const EdgeInsets.only(left: 8);
 
-    final effectiveOrderPolicy = widget.orderPolicy ??
-        theme.checkboxTheme.orderPolicy ??
-        const WidgetOrderPolicy.linear();
+    final effectiveCheckboxPadding = widget.checkboxPadding ??
+        theme.checkboxTheme.checkboxPadding ??
+        const EdgeInsets.only(top: 1);
 
     final checkbox = Semantics(
       checked: widget.value,
@@ -249,7 +248,10 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: effectiveCrossAxisAlignment,
           children: [
-            checkbox,
+            Padding(
+              padding: effectiveCheckboxPadding,
+              child: checkbox,
+            ),
             if (widget.label != null || widget.sublabel != null)
               Flexible(
                 child: Padding(
@@ -281,7 +283,7 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
                   ),
                 ),
               ),
-          ].order(effectiveOrderPolicy),
+          ],
         ),
       ),
     );

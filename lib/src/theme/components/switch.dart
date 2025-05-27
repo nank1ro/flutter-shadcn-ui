@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 @immutable
 class ShadSwitchTheme {
@@ -17,7 +16,6 @@ class ShadSwitchTheme {
     this.duration,
     this.decoration,
     this.padding,
-    this.orderPolicy,
   });
 
   final bool merge;
@@ -49,10 +47,6 @@ class ShadSwitchTheme {
   /// {@macro ShadSwitch.padding}
   final EdgeInsets? padding;
 
-  /// {@macro ShadSwitch.orderPolicy}
-  @Deprecated('Use textDirection instead.')
-  final WidgetOrderPolicy? orderPolicy;
-
   static ShadSwitchTheme lerp(
     ShadSwitchTheme a,
     ShadSwitchTheme b,
@@ -72,7 +66,6 @@ class ShadSwitchTheme {
       duration: b.duration,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
-      orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
     );
   }
 
@@ -87,7 +80,6 @@ class ShadSwitchTheme {
     Duration? duration,
     ShadDecoration? decoration,
     EdgeInsets? padding,
-    WidgetOrderPolicy? orderPolicy,
   }) {
     return ShadSwitchTheme(
       merge: merge ?? this.merge,
@@ -100,7 +92,6 @@ class ShadSwitchTheme {
       duration: duration ?? this.duration,
       decoration: decoration ?? this.decoration,
       padding: padding ?? this.padding,
-      orderPolicy: orderPolicy ?? this.orderPolicy,
     );
   }
 
@@ -117,7 +108,6 @@ class ShadSwitchTheme {
       duration: other.duration,
       decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       padding: other.padding,
-      orderPolicy: other.orderPolicy,
     );
   }
 
@@ -135,8 +125,7 @@ class ShadSwitchTheme {
         other.margin == margin &&
         other.duration == duration &&
         other.decoration == decoration &&
-        other.padding == padding &&
-        other.orderPolicy == orderPolicy;
+        other.padding == padding;
   }
 
   @override
@@ -150,7 +139,6 @@ class ShadSwitchTheme {
         margin.hashCode ^
         duration.hashCode ^
         decoration.hashCode ^
-        padding.hashCode ^
-        orderPolicy.hashCode;
+        padding.hashCode;
   }
 }

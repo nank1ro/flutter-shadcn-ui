@@ -17,8 +17,6 @@ import 'package:shadcn_ui/src/utils/mouse_cursor_provider.dart';
 
 enum ShadAppType {
   shadcn,
-  material,
-  cupertino,
   custom,
 }
 
@@ -57,6 +55,7 @@ class ShadApp extends StatefulWidget {
     this.pageRouteBuilder,
     this.themeCurve = Curves.linear,
     this.materialThemeBuilder,
+    this.backgroundColor,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
@@ -96,6 +95,7 @@ class ShadApp extends StatefulWidget {
     this.scrollBehavior = const ShadScrollBehavior(),
     this.themeCurve = Curves.linear,
     this.materialThemeBuilder,
+    this.backgroundColor,
   })  : navigatorObservers = null,
         navigatorKey = null,
         onGenerateRoute = null,
@@ -108,194 +108,6 @@ class ShadApp extends StatefulWidget {
         cupertinoThemeBuilder = null,
         appBuilder = null,
         type = ShadAppType.shadcn;
-
-  /// Creates a [MaterialApp] wrapped by a [ShadTheme].
-  @Deprecated(
-    'Use ShadApp.custom instead. '
-    'This constructor will be removed in a future version.',
-  )
-  const ShadApp.material({
-    super.key,
-    this.navigatorKey,
-    this.onGenerateRoute,
-    this.onGenerateInitialRoutes,
-    this.onUnknownRoute,
-    this.onNavigationNotification,
-    this.navigatorObservers = const <NavigatorObserver>[],
-    this.initialRoute,
-    this.home,
-    this.routes = const <String, WidgetBuilder>{},
-    this.builder,
-    this.title = '',
-    this.onGenerateTitle,
-    this.color,
-    this.locale,
-    this.localizationsDelegates,
-    this.localeListResolutionCallback,
-    this.localeResolutionCallback,
-    this.supportedLocales = const <Locale>[Locale('en', 'US')],
-    this.showPerformanceOverlay = false,
-    this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = false,
-    this.shortcuts,
-    this.actions,
-    this.theme,
-    this.darkTheme,
-    this.themeMode,
-    this.restorationScopeId,
-    this.scrollBehavior = const MaterialScrollBehavior(),
-    this.pageRouteBuilder,
-    this.themeCurve = Curves.linear,
-    this.materialThemeBuilder,
-  })  : routeInformationProvider = null,
-        routeInformationParser = null,
-        routerDelegate = null,
-        backButtonDispatcher = null,
-        routerConfig = null,
-        cupertinoThemeBuilder = null,
-        appBuilder = null,
-        type = ShadAppType.material;
-
-  /// Creates a [MaterialApp] wrapped by a [ShadTheme] that uses the [Router] instead of a [Navigator].
-  @Deprecated(
-    'Use ShadApp.custom instead. '
-    'This constructor will be removed in a future version.',
-  )
-  const ShadApp.materialRouter({
-    super.key,
-    this.theme,
-    this.darkTheme,
-    this.themeMode,
-    this.routeInformationProvider,
-    this.routeInformationParser,
-    this.routerDelegate,
-    this.backButtonDispatcher,
-    this.routerConfig,
-    this.builder,
-    this.title = '',
-    this.onGenerateTitle,
-    this.onNavigationNotification,
-    this.color,
-    this.locale,
-    this.localizationsDelegates,
-    this.localeListResolutionCallback,
-    this.localeResolutionCallback,
-    this.supportedLocales = const <Locale>[Locale('en', 'US')],
-    this.showPerformanceOverlay = false,
-    this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = false,
-    this.shortcuts,
-    this.actions,
-    this.restorationScopeId,
-    this.scrollBehavior = const MaterialScrollBehavior(),
-    this.themeCurve = Curves.linear,
-    this.materialThemeBuilder,
-  })  : navigatorObservers = null,
-        navigatorKey = null,
-        onGenerateRoute = null,
-        home = null,
-        onGenerateInitialRoutes = null,
-        onUnknownRoute = null,
-        routes = null,
-        initialRoute = null,
-        pageRouteBuilder = null,
-        cupertinoThemeBuilder = null,
-        appBuilder = null,
-        type = ShadAppType.material;
-
-  /// Creates a [CupertinoApp] wrapped by a [ShadTheme].
-  @Deprecated(
-    'Use ShadApp.custom instead. '
-    'This constructor will be removed in a future version.',
-  )
-  const ShadApp.cupertino({
-    super.key,
-    this.navigatorKey,
-    this.onGenerateRoute,
-    this.onGenerateInitialRoutes,
-    this.onUnknownRoute,
-    this.onNavigationNotification,
-    this.navigatorObservers = const <NavigatorObserver>[],
-    this.initialRoute,
-    this.home,
-    this.routes = const <String, WidgetBuilder>{},
-    this.builder,
-    this.title = '',
-    this.onGenerateTitle,
-    this.color,
-    this.locale,
-    this.localizationsDelegates,
-    this.localeListResolutionCallback,
-    this.localeResolutionCallback,
-    this.supportedLocales = const <Locale>[Locale('en', 'US')],
-    this.showPerformanceOverlay = false,
-    this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = false,
-    this.shortcuts,
-    this.actions,
-    this.theme,
-    this.darkTheme,
-    this.themeMode,
-    this.restorationScopeId,
-    this.scrollBehavior = const CupertinoScrollBehavior(),
-    this.pageRouteBuilder,
-    this.themeCurve = Curves.linear,
-    this.cupertinoThemeBuilder,
-    this.materialThemeBuilder,
-  })  : routeInformationProvider = null,
-        routeInformationParser = null,
-        routerDelegate = null,
-        backButtonDispatcher = null,
-        routerConfig = null,
-        appBuilder = null,
-        type = ShadAppType.cupertino;
-
-  /// Creates a [CupertinoApp] wrapped by a [ShadTheme] that uses the [Router] instead of a [Navigator].
-  @Deprecated(
-    'Use ShadApp.custom instead. '
-    'This constructor will be removed in a future version.',
-  )
-  const ShadApp.cupertinoRouter({
-    super.key,
-    this.theme,
-    this.darkTheme,
-    this.themeMode,
-    this.routeInformationProvider,
-    this.routeInformationParser,
-    this.routerDelegate,
-    this.backButtonDispatcher,
-    this.routerConfig,
-    this.builder,
-    this.title = '',
-    this.onGenerateTitle,
-    this.onNavigationNotification,
-    this.color,
-    this.locale,
-    this.localizationsDelegates,
-    this.localeListResolutionCallback,
-    this.localeResolutionCallback,
-    this.supportedLocales = const <Locale>[Locale('en', 'US')],
-    this.showPerformanceOverlay = false,
-    this.showSemanticsDebugger = false,
-    this.debugShowCheckedModeBanner = false,
-    this.shortcuts,
-    this.actions,
-    this.restorationScopeId,
-    this.scrollBehavior = const CupertinoScrollBehavior(),
-    this.themeCurve = Curves.linear,
-    this.cupertinoThemeBuilder,
-    this.materialThemeBuilder,
-  })  : navigatorObservers = null,
-        navigatorKey = null,
-        onGenerateRoute = null,
-        home = null,
-        onGenerateInitialRoutes = null,
-        onUnknownRoute = null,
-        routes = null,
-        initialRoute = null,
-        pageRouteBuilder = null,
-        appBuilder = null,
-        type = ShadAppType.cupertino;
 
   const ShadApp.custom({
     super.key,
@@ -330,7 +142,8 @@ class ShadApp extends StatefulWidget {
         routerConfig = null,
         routerDelegate = null,
         routes = null,
-        scrollBehavior = const MaterialScrollBehavior(),
+        backgroundColor = null,
+        scrollBehavior = const ShadScrollBehavior(),
         shortcuts = null,
         showPerformanceOverlay = false,
         showSemanticsDebugger = false,
@@ -342,8 +155,7 @@ class ShadApp extends StatefulWidget {
   /// The type of app to use.
   ///
   /// If you are going to use only Shad components, use [ShadAppType.shadcn].
-  /// If you are going to use also Material components, use [ShadAppType.material].
-  /// If you are going to use also Cupertino components, use [ShadAppType/cupertino].
+  /// If you are going to use also Material or Cupertino components, use [ShadAppType.custom].
   final ShadAppType type;
 
   /// Default visual properties, like colors fonts and shapes, for this app's
@@ -596,6 +408,9 @@ class ShadApp extends StatefulWidget {
   /// A custom app widget builder.
   final WidgetBuilder? appBuilder;
 
+  /// {@macro ShadAppBuilder.backgroundColor}
+  final Color? backgroundColor;
+
   final ThemeData Function(BuildContext context, ThemeData theme)?
       materialThemeBuilder;
 
@@ -763,6 +578,7 @@ class _ShadAppState extends State<ShadApp> {
 
   Widget _buildApp(BuildContext context) {
     final mTheme = materialTheme(context);
+    final theme = ShadTheme.of(context);
     switch (widget.type) {
       case ShadAppType.shadcn:
         if (usesRouter) {
@@ -791,6 +607,7 @@ class _ShadAppState extends State<ShadApp> {
               actions: widget.actions,
               restorationScopeId: widget.restorationScopeId,
               localizationsDelegates: localizationsDelegates,
+              textStyle: TextStyle(color: theme.colorScheme.foreground),
             ),
           );
         }
@@ -823,6 +640,7 @@ class _ShadAppState extends State<ShadApp> {
             actions: widget.actions,
             restorationScopeId: widget.restorationScopeId,
             localizationsDelegates: localizationsDelegates,
+            textStyle: TextStyle(color: theme.colorScheme.foreground),
             pageRouteBuilder: widget.pageRouteBuilder ??
                 <T>(RouteSettings settings, WidgetBuilder builder) {
                   return MaterialPageRoute<T>(
@@ -830,129 +648,6 @@ class _ShadAppState extends State<ShadApp> {
                     builder: builder,
                   );
                 },
-          ),
-        );
-      case ShadAppType.material:
-        if (usesRouter) {
-          return MaterialApp.router(
-            routeInformationProvider: widget.routeInformationProvider,
-            routeInformationParser: widget.routeInformationParser,
-            routerDelegate: widget.routerDelegate,
-            routerConfig: widget.routerConfig,
-            backButtonDispatcher: widget.backButtonDispatcher,
-            onNavigationNotification: widget.onNavigationNotification,
-            builder: _builder,
-            theme: mTheme.brightness == Brightness.light ? mTheme : null,
-            darkTheme: mTheme.brightness == Brightness.dark ? mTheme : null,
-            themeMode: widget.themeMode,
-            title: widget.title,
-            onGenerateTitle: widget.onGenerateTitle,
-            color: widget.color ?? Colors.blue,
-            locale: widget.locale,
-            localeResolutionCallback: widget.localeResolutionCallback,
-            localeListResolutionCallback: widget.localeListResolutionCallback,
-            supportedLocales: widget.supportedLocales,
-            showPerformanceOverlay: widget.showPerformanceOverlay,
-            showSemanticsDebugger: widget.showSemanticsDebugger,
-            debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
-            shortcuts: widget.shortcuts,
-            actions: widget.actions,
-            restorationScopeId: widget.restorationScopeId,
-            localizationsDelegates: localizationsDelegates,
-            scrollBehavior: widget.scrollBehavior,
-          );
-        }
-        return MaterialApp(
-          navigatorKey: widget.navigatorKey,
-          navigatorObservers: widget.navigatorObservers!,
-          home: widget.home,
-          routes: widget.routes!,
-          initialRoute: widget.initialRoute,
-          onGenerateRoute: widget.onGenerateRoute,
-          onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
-          onUnknownRoute: widget.onUnknownRoute,
-          onNavigationNotification: widget.onNavigationNotification,
-          builder: _builder,
-          theme: mTheme.brightness == Brightness.light ? mTheme : null,
-          darkTheme: mTheme.brightness == Brightness.dark ? mTheme : null,
-          themeMode: widget.themeMode,
-          title: widget.title,
-          onGenerateTitle: widget.onGenerateTitle,
-          color: widget.color ?? Colors.blue,
-          locale: widget.locale,
-          localeResolutionCallback: widget.localeResolutionCallback,
-          localeListResolutionCallback: widget.localeListResolutionCallback,
-          supportedLocales: widget.supportedLocales,
-          showPerformanceOverlay: widget.showPerformanceOverlay,
-          showSemanticsDebugger: widget.showSemanticsDebugger,
-          debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
-          shortcuts: widget.shortcuts,
-          actions: widget.actions,
-          restorationScopeId: widget.restorationScopeId,
-          localizationsDelegates: localizationsDelegates,
-          scrollBehavior: widget.scrollBehavior,
-        );
-
-      case ShadAppType.cupertino:
-        if (usesRouter) {
-          return AnimatedTheme(
-            data: materialTheme(context),
-            child: CupertinoApp.router(
-              routeInformationProvider: widget.routeInformationProvider,
-              routeInformationParser: widget.routeInformationParser,
-              routerDelegate: widget.routerDelegate,
-              routerConfig: widget.routerConfig,
-              backButtonDispatcher: widget.backButtonDispatcher,
-              onNavigationNotification: widget.onNavigationNotification,
-              builder: _builder,
-              theme: cupertinoTheme(context),
-              title: widget.title,
-              onGenerateTitle: widget.onGenerateTitle,
-              color: widget.color ?? Colors.blue,
-              locale: widget.locale,
-              localeResolutionCallback: widget.localeResolutionCallback,
-              localeListResolutionCallback: widget.localeListResolutionCallback,
-              supportedLocales: widget.supportedLocales,
-              showPerformanceOverlay: widget.showPerformanceOverlay,
-              showSemanticsDebugger: widget.showSemanticsDebugger,
-              debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
-              shortcuts: widget.shortcuts,
-              actions: widget.actions,
-              restorationScopeId: widget.restorationScopeId,
-              localizationsDelegates: localizationsDelegates,
-              scrollBehavior: widget.scrollBehavior,
-            ),
-          );
-        }
-        return AnimatedTheme(
-          data: materialTheme(context),
-          child: CupertinoApp(
-            navigatorKey: widget.navigatorKey,
-            navigatorObservers: widget.navigatorObservers!,
-            home: widget.home,
-            routes: widget.routes!,
-            initialRoute: widget.initialRoute,
-            onGenerateRoute: widget.onGenerateRoute,
-            onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
-            onUnknownRoute: widget.onUnknownRoute,
-            onNavigationNotification: widget.onNavigationNotification,
-            builder: _builder,
-            theme: cupertinoTheme(context),
-            title: widget.title,
-            onGenerateTitle: widget.onGenerateTitle,
-            color: widget.color ?? Colors.blue,
-            locale: widget.locale,
-            localeResolutionCallback: widget.localeResolutionCallback,
-            localeListResolutionCallback: widget.localeListResolutionCallback,
-            supportedLocales: widget.supportedLocales,
-            showPerformanceOverlay: widget.showPerformanceOverlay,
-            showSemanticsDebugger: widget.showSemanticsDebugger,
-            debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
-            shortcuts: widget.shortcuts,
-            actions: widget.actions,
-            restorationScopeId: widget.restorationScopeId,
-            localizationsDelegates: localizationsDelegates,
-            scrollBehavior: widget.scrollBehavior,
           ),
         );
       case ShadAppType.custom:
@@ -1040,33 +735,41 @@ class ShadAppBuilder extends StatelessWidget {
     super.key,
     this.builder,
     this.child,
+    this.backgroundColor,
   });
 
   final TransitionBuilder? builder;
   final Widget? child;
 
+  /// {@template ShadAppBuilder.backgroundColor}
+  /// The background color of the page, defaults to `ShadTheme.of(context).colorScheme.background`.
+  /// {@endtemplate}
+  final Color? backgroundColor;
+
   @override
   Widget build(BuildContext context) {
     return ShadToaster(
       child: ShadSonner(
-        child: builder != null
-            ? Builder(
-                builder: (BuildContext context) {
-                  // Why are we surrounding a builder with a builder?
-                  //
-                  // The widget.builder may contain code that invokes
-                  // Theme.of(), which should return the theme we selected
-                  // above in AnimatedTheme. However, if we invoke
-                  // widget.builder() directly as the child of AnimatedTheme
-                  // then there is no Context separating them, and the
-                  // widget.builder() will not find the theme. Therefore, we
-                  // surround widget.builder with yet another builder so that
-                  // a context separates them and Theme.of() correctly
-                  // resolves to the theme we passed to AnimatedTheme.
-                  return builder!(context, child);
-                },
-              )
-            : child ?? const SizedBox.shrink(),
+        child: Builder(
+          builder: (BuildContext context) {
+            // Why are we surrounding a builder with a builder?
+            //
+            // The widget.builder may contain code that invokes
+            // Theme.of(), which should return the theme we selected
+            // above in AnimatedTheme. However, if we invoke
+            // widget.builder() directly as the child of AnimatedTheme
+            // then there is no Context separating them, and the
+            // widget.builder() will not find the theme. Therefore, we
+            // surround widget.builder with yet another builder so that
+            // a context separates them and Theme.of() correctly
+            // resolves to the theme we passed to AnimatedTheme.
+            return ColoredBox(
+              color: backgroundColor ??
+                  ShadTheme.of(context).colorScheme.background,
+              child: builder?.call(context, child) ?? child,
+            );
+          },
+        ),
       ),
     );
   }

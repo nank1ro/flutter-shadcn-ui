@@ -10,7 +10,6 @@ import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
@@ -419,9 +418,6 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     /// {@macro ShadButton.onFocusChange}
     ValueChanged<bool>? onFocusChange,
 
-    /// {@macro ShadButton.orderPolicy}
-    WidgetOrderPolicy? orderPolicy,
-
     /// {@macro ShadButton.expands}
     bool? expands,
   }) : super(
@@ -559,7 +555,6 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
               textDirection: textDirection,
               onFocusChange: onFocusChange,
               placeholder: placeholder,
-              orderPolicy: orderPolicy,
               expands: expands,
             );
           },

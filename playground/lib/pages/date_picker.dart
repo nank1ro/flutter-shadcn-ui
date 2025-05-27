@@ -87,22 +87,25 @@ class _PresetsDatePickerState extends State<PresetsDatePicker> {
         // Using the same groupId to keep the date picker popover open when the
         // select popover is closed.
         groupId: groupId,
-        header: ShadSelect<int>(
-          groupId: groupId,
-          minWidth: 284,
-          placeholder: const Text('Select'),
-          options: presets.entries
-              .map((e) => ShadOption(value: e.key, child: Text(e.value)))
-              .toList(),
-          selectedOptionBuilder: (context, value) {
-            return Text(presets[value]!);
-          },
-          onChanged: (value) {
-            if (value == null) return;
-            setState(() {
-              selected = today.add(Duration(days: value));
-            });
-          },
+        header: Padding(
+          padding: const EdgeInsets.only(bottom: 4),
+          child: ShadSelect<int>(
+            groupId: groupId,
+            minWidth: 276,
+            placeholder: const Text('Select'),
+            options: presets.entries
+                .map((e) => ShadOption(value: e.key, child: Text(e.value)))
+                .toList(),
+            selectedOptionBuilder: (context, value) {
+              return Text(presets[value]!);
+            },
+            onChanged: (value) {
+              if (value == null) return;
+              setState(() {
+                selected = today.add(Duration(days: value));
+              });
+            },
+          ),
         ),
         selected: selected,
         calendarDecoration: theme.calendarTheme.decoration,

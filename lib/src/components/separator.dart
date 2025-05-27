@@ -2,9 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-@Deprecated('Use ShadSeparator instead.')
-typedef ShadDivider = ShadSeparator;
-
 /// Variants available for the [ShadSeparator] widget.
 enum ShadSeparatorVariant { vertical, horizontal }
 

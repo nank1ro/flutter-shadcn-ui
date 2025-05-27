@@ -117,7 +117,6 @@ export 'src/utils/extensions/breakpoints.dart';
 export 'src/utils/extensions/date_time.dart';
 export 'src/utils/extensions/double.dart';
 export 'src/utils/extensions/duration.dart';
-export 'src/utils/extensions/order_policy.dart';
 export 'src/utils/extensions/tap_details.dart';
 export 'src/utils/gesture_detector.dart';
 export 'src/utils/input_formatters.dart';

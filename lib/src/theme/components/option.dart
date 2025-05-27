@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 @immutable
 class ShadOptionTheme {
@@ -8,7 +7,6 @@ class ShadOptionTheme {
     this.hoveredBackgroundColor,
     this.padding,
     this.radius,
-    this.orderPolicy,
   });
 
   final bool merge;
@@ -16,9 +14,6 @@ class ShadOptionTheme {
   final Color? hoveredBackgroundColor;
   final EdgeInsets? padding;
   final BorderRadius? radius;
-
-  /// {@macro ShadOption.orderPolicy}
-  final WidgetOrderPolicy? orderPolicy;
 
   static ShadOptionTheme lerp(
     ShadOptionTheme a,
@@ -32,7 +27,6 @@ class ShadOptionTheme {
           Color.lerp(a.hoveredBackgroundColor, b.hoveredBackgroundColor, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
-      orderPolicy: t < 0.5 ? a.orderPolicy : b.orderPolicy,
     );
   }
 
@@ -41,7 +35,6 @@ class ShadOptionTheme {
     Color? hoveredBackgroundColor,
     EdgeInsets? padding,
     BorderRadius? radius,
-    WidgetOrderPolicy? orderPolicy,
   }) {
     return ShadOptionTheme(
       merge: merge ?? this.merge,
@@ -49,7 +42,6 @@ class ShadOptionTheme {
           hoveredBackgroundColor ?? this.hoveredBackgroundColor,
       padding: padding ?? this.padding,
       radius: radius ?? this.radius,
-      orderPolicy: orderPolicy ?? this.orderPolicy,
     );
   }
 
@@ -60,7 +52,6 @@ class ShadOptionTheme {
       hoveredBackgroundColor: other.hoveredBackgroundColor,
       padding: other.padding,
       radius: other.radius,
-      orderPolicy: other.orderPolicy,
     );
   }
 
@@ -72,8 +63,7 @@ class ShadOptionTheme {
         other.merge == merge &&
         other.hoveredBackgroundColor == hoveredBackgroundColor &&
         other.padding == padding &&
-        other.radius == radius &&
-        other.orderPolicy == orderPolicy;
+        other.radius == radius;
   }
 
   @override
@@ -81,7 +71,6 @@ class ShadOptionTheme {
     return merge.hashCode ^
         hoveredBackgroundColor.hashCode ^
         padding.hashCode ^
-        radius.hashCode ^
-        orderPolicy.hashCode;
+        radius.hashCode;
   }
 }
