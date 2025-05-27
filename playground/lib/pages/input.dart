@@ -65,10 +65,6 @@ class _PasswordInputState extends State<PasswordInput> {
         width: 24,
         height: 24,
         padding: EdgeInsets.zero,
-        decoration: const ShadDecoration(
-          secondaryBorder: ShadBorder.none,
-          secondaryFocusedBorder: ShadBorder.none,
-        ),
         icon: Icon(obscure ? LucideIcons.eyeOff : LucideIcons.eye),
         onPressed: () {
           setState(() => obscure = !obscure);

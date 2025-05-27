@@ -16,6 +16,7 @@
 - **REFACTOR**: The `ShadCalendarTheme.monthSelectorMinWidth` changed from `130` to `120`.
 - **REFACTOR**: The `ShadCalendar.yearSelector` and `ShadCalendar.monthSelector` now use a secondary focused border with an alpha of `0.5` to make it the same to the other parts.
 - **REFACTOR**: Update `ShadSelect` with presets example by adding padding.
+- **REFACTOR**: Remove secondary border removal from `ShadInput` example with trailing icon.
 
 ## 0.26.5
 
