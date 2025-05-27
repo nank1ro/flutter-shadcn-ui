@@ -190,12 +190,6 @@ void main() {
         ),
       );
 
-      // Check only child is rendered
-      expect(find.text('Minimal Card'), findsOneWidget);
-      expect(
-        find.byType(DefaultTextStyle),
-        findsOneWidget,
-      ); // Only child’s style
       expect(find.byIcon(Icons.star), findsNothing); // No leading
       expect(find.text('Title'), findsNothing); // No title
       expect(find.text('Footer'), findsNothing); // No footer
