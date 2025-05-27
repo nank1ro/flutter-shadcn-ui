@@ -2,7 +2,7 @@
 
 - **BREAKING CHANGE**: The secondary border of `ShadDecoration` now is drawn outward of the widget, without consuming any extra space. This change affects all components that are focusable.
 - **FEAT**: Add `offset` to `ShadBorder` to set the offset between the widget and the outward secondary border.
-- **REFACTOR**: Remove all deprecated parameters across the whole package.
+- **REFACTOR**: Remove all deprecated parameters across the whole package, including `orderPolicy`, `ShadApp.material`, `ShadApp.cupertino` and so on.
 - **REFACTOR**: Update the default `anchor` of `ShadSelect`, `ShadTooltip` and `ShadPopover` from `ShadAnchorAuto()` to `ShadAnchorAuto(offset: Offset(0, 4))`.
 - **REFACTOR**: Add `checkboxPadding` to `ShadCheckbox`, `ShadCheckboxTheme` and `ShadCheckboxFormField`, defaults to `EdgeInsets.only(top: 1)`.
 - **REFACTOR**: Add `radioPadding` to `ShadRadio` and `ShadRadioTheme`, defaults to `EdgeInsets.only(top: 1)`.
