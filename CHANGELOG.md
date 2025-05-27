@@ -15,6 +15,7 @@
 - **REFACTOR**: Now when you focus a `ShadTab`, the tab is automatically selected. This to prevent secondary borders collision (This new behavior is the same of the original shadcn, when you focus tabs with the keyboard left and right arrows, the tab is selected accordingly)
 - **REFACTOR**: The `ShadCalendarTheme.monthSelectorMinWidth` changed from `130` to `120`.
 - **REFACTOR**: The `ShadCalendar.yearSelector` and `ShadCalendar.monthSelector` now use a secondary focused border with an alpha of `0.5` to make it the same to the other parts.
+- **REFACTOR**: Update `ShadSelect` with presets example by adding padding.
 
 ## 0.26.5
 
