@@ -938,7 +938,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           top: ShadBorderSide(color: colorScheme.border, width: 1),
           bottom: ShadBorderSide(color: colorScheme.border, width: 1),
           right: ShadBorderSide(color: colorScheme.border, width: 1),
-          // padding: const EdgeInsets.all(1),
         ),
       ),
     );
