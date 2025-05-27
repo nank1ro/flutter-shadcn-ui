@@ -102,6 +102,7 @@ class ShadTooltip extends StatefulWidget {
   /// Defaults to
   /// ```dart
   /// const ShadAnchorAuto(
+  ///   offset: Offset(0, -4),
   ///   followerAnchor: Alignment.topCenter,
   ///   targetAnchor: Alignment.topCenter,
   /// );

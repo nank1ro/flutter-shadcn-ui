@@ -3,11 +3,10 @@
 - **BREAKING CHANGE**: The secondary border of `ShadDecoration` now is drawn outward of the widget, without consuming any extra space. This change affects all components that are focusable.
 - **FEAT**: Add `offset` to `ShadBorder` to set the offset between the widget and the outward secondary border.
 - **REFACTOR**: Remove all deprecated parameters across the whole package.
-- **REFACTOR**: Update default `anchor` of `ShadSelect` from `ShadAnchorAuto()` to `ShadAnchorAuto(offset: Offset(0, 4))`.
+- **REFACTOR**: Update default `anchor` of `ShadSelect`, `ShadTooltip` and `ShadPopover` from `ShadAnchorAuto()` to `ShadAnchorAuto(offset: Offset(0, 4))`.
 - **REFACTOR**: Add `checkboxPadding` to `ShadCheckbox`, `ShadCheckboxTheme` and `ShadCheckboxFormField`, defaults to `EdgeInsets.only(top: 1)`.
 - **REFACTOR**: Add `radioPadding` to `ShadRadio` and `ShadRadioTheme`, defaults to `EdgeInsets.only(top: 1)`.
 - **FIX**: Background color of pages for pure `ShadApp` if no `Scaffold is used`, by adding a new `backgroundColor` parameter to `ShadApp` and `ShadAppBuilder`.
-- **REFACTOR**: Update the `ShadTooltip` default anchor, defaults to `Offset(0, -4)` instead of `Offset.zero`.
 - **FEAT**: Add `actionsGap` to `ShadDialog`, defaults to `8`.
 - **REFACTOR**: Update `ShadTimePickerTheme` parameters: `spacing` changed from `0` to `8`, `runSpacing` changed from `0` to `4`, `gap` changed from `2` to `4`, `fieldWidth` changed from `58` to `48`, `periodHeight` changed from `50` to `42`.
 - **FIX**: Lookup of correct `ShadTextareaTheme` when retrieving the `scrollbarPadding`.

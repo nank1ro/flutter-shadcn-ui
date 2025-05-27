@@ -547,7 +547,8 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
               if (sanitizedV.isEmpty) {
                 final previousText = controller.previousValue?.text ?? '';
                 controller.text = kInvisibleCharCode;
-                // Jump to the previous slot only if the formatter was not applied
+                // Jump to the previous slot only if the formatter was not
+                // applied
                 if (!hasBeenFormatted) {
                   otpProvider.jumpToPreviousSlot(
                     clear: previousText == kInvisibleCharCode,
