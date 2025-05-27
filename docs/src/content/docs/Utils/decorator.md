@@ -50,3 +50,8 @@ ShadThemeData(
   disableSecondaryBorder: true,
 ),
 ```
+
+:::caution
+Be aware, this change is not recommended, as it may lead to accessibility issues.
+The secondary border is there to help users understand which component is focused.
+:::
