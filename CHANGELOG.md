@@ -18,6 +18,7 @@
 - **REFACTOR**: Update `ShadSelect` with presets example by adding padding.
 - **REFACTOR**: Remove secondary border removal from `ShadInput` example with trailing icon.
 - **REFACTOR**: Update `ShadMenubar.anchor.offset` from `Offset(-8, 8)` to `Offset(-4, 8)`.
+- **REFACTOR**: Update `ShadPopover` example by adding gap between input fields.
 
 ## 0.26.5
 

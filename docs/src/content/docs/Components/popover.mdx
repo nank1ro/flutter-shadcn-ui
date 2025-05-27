@@ -11,6 +11,7 @@ Displays rich content in a portal, triggered by a button.
 <Preview src="popover" minHeight="400px">
 
 ```dart
+import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -60,23 +61,25 @@ class _PopoverPageState extends State<PopoverPage> {
                 ),
                 const SizedBox(height: 4),
                 ...layer
-                    .map((e) => Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                child: Text(
-                              e.name,
-                              textAlign: TextAlign.start,
-                            )),
-                            Expanded(
-                              flex: 2,
-                              child: ShadInput(
-                                initialValue: e.initialValue,
-                              ),
-                            )
-                          ],
-                        ))
-                    .toList(),
+                    .map(
+                      (e) => Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                              child: Text(
+                            e.name,
+                            textAlign: TextAlign.start,
+                          )),
+                          Expanded(
+                            flex: 2,
+                            child: ShadInput(
+                              initialValue: e.initialValue,
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                    .separatedBy(const SizedBox(height: 8)),
               ],
             ),
           ),
