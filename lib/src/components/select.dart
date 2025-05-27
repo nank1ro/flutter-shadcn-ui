@@ -77,7 +77,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.shrinkWrap,
     this.controller,
   })  : variant = ShadSelectVariant.primary,
-        initialValues = const [],
+        initialValues = const {},
         onSearchChanged = null,
         searchDivider = null,
         searchPlaceholder = null,
@@ -137,7 +137,7 @@ class ShadSelect<T> extends StatefulWidget {
   })  : variant = ShadSelectVariant.search,
         selectedOptionsBuilder = null,
         onMultipleChanged = null,
-        initialValues = const [],
+        initialValues = const {},
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
@@ -152,8 +152,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.popoverController,
     this.enabled = true,
     this.placeholder,
-    this.initialValues = const [],
-    ValueChanged<List<T>>? onChanged,
+    this.initialValues = const {},
+    ValueChanged<Set<T>>? onChanged,
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
@@ -202,7 +202,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.optionsBuilder,
     required ValueChanged<String> this.onSearchChanged,
     required this.selectedOptionsBuilder,
-    ValueChanged<List<T>>? onChanged,
+    ValueChanged<Set<T>>? onChanged,
     this.popoverController,
     this.searchDivider,
     this.searchInputLeading,
@@ -212,7 +212,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.clearSearchOnClose,
     this.enabled = true,
     this.placeholder,
-    this.initialValues = const [],
+    this.initialValues = const {},
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
@@ -266,7 +266,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.enabled = true,
     this.placeholder,
     this.initialValue,
-    this.initialValues = const [],
+    this.initialValues = const {},
     this.onChanged,
     this.onMultipleChanged,
     this.focusNode,
@@ -322,7 +322,7 @@ class ShadSelect<T> extends StatefulWidget {
   /// The callback that is called when the values of the [ShadSelect] changes.
   /// Called only the variant is [ShadSelect.multiple].
   /// {@endtemplate}
-  final ValueChanged<List<T>>? onMultipleChanged;
+  final ValueChanged<Set<T>>? onMultipleChanged;
 
   /// {@template ShadSelect.allowDeselection}
   /// Whether the [ShadSelect] allows deselection, defaults to
@@ -348,7 +348,7 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@template ShadSelect.initialValues}
   /// The initial values of the [ShadSelect], defaults to `[]`.
   /// {@endtemplate}
-  final List<T> initialValues;
+  final Set<T> initialValues;
 
   /// {@template ShadSelect.placeholder}
   /// The widget to display as a placeholder when no option is selected.
@@ -757,7 +757,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
     if (changed) {
       if (isMultiSelection) {
-        widget.onMultipleChanged?.call(controller.value.toList());
+        widget.onMultipleChanged?.call(controller.value.toSet());
       } else {
         widget.onChanged?.call(controller.value.firstOrNull);
       }

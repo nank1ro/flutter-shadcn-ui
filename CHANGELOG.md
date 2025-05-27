@@ -19,7 +19,7 @@
 - **REFACTOR**: Remove secondary border removal from `ShadInput` example with trailing icon.
 - **REFACTOR**: Update `ShadMenubar.anchor.offset` from `Offset(-8, 8)` to `Offset(-4, 8)`.
 - **REFACTOR**: Update `ShadPopover` example by adding gap between input fields.
-- **FIX**: `ShadSelectController` now has a `Set` instead of a `List` to prevent duplicates in the selected options.
+- **FIX**: `ShadSelectController` now has a `Set` instead of a `List` to prevent duplicates in the selected options, this change has been applied to `ShadSelect.initialValues` and `ShadSelectFormField` as well.
 
 ## 0.26.5
 
