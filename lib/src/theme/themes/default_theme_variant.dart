@@ -951,7 +951,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       padding: const EdgeInsets.all(4),
       border: ShadBorder.all(color: colorScheme.border, width: 1),
       anchor: const ShadAnchorAuto(
-        offset: Offset(-8, 8),
+        offset: Offset(-4, 8),
         followerAnchor: Alignment.bottomRight,
         targetAnchor: Alignment.bottomLeft,
       ),
