@@ -1,5 +1,5 @@
-import 'package:shadcn/shadcn.dart' as shadcn;
+// ignore_for_file: document_ignores, avoid_print
 
 void main(List<String> arguments) {
-  print('Hello world: ${shadcn.calculate()}!');
+  print('Hello world:');
 }

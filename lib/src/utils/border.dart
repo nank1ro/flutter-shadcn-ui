@@ -1,14 +1,8 @@
-// // ignore_for_file: lines_longer_than_80_chars
-//
-
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
-//
 extension ShadBorderSideToBorderSide on ShadBorderSide {
   BorderSide toBorderSide() {
     if (width == null || width == 0) return BorderSide.none;
@@ -45,6 +39,7 @@ class ShadBorder {
     this.right,
     this.bottom,
     this.left,
+    this.offset,
   });
 
   /// Creates a border whose sides are all the same.
@@ -53,6 +48,7 @@ class ShadBorder {
     this.merge = true,
     this.padding,
     this.radius,
+    this.offset,
   })  : top = side,
         right = side,
         bottom = side,
@@ -68,6 +64,7 @@ class ShadBorder {
     this.merge = true,
     this.padding,
     this.radius,
+    this.offset,
   })  : left = vertical,
         top = horizontal,
         right = vertical,
@@ -84,6 +81,7 @@ class ShadBorder {
     double? strokeAlign,
     EdgeInsets? padding,
     BorderRadiusGeometry? radius,
+    double? offset,
   }) {
     final side = ShadBorderSide(
       color: color,
@@ -96,6 +94,7 @@ class ShadBorder {
       padding: padding,
       merge: merge,
       radius: radius,
+      offset: offset,
     );
   }
 
@@ -125,6 +124,7 @@ class ShadBorder {
         b?.left,
         t,
       ),
+      offset: lerpDouble(a?.offset, b?.offset, t),
     );
   }
 
@@ -148,6 +148,7 @@ class ShadBorder {
       left: left?.mergeWith(other.left) ?? other.left,
       padding: other.padding,
       radius: other.radius,
+      offset: other.offset,
     );
   }
 
@@ -158,6 +159,7 @@ class ShadBorder {
     ShadBorderSide? bottom,
     ShadBorderSide? left,
     BorderRadiusGeometry? radius,
+    double? offset,
   }) {
     return ShadBorder(
       top: top ?? this.top,
@@ -166,6 +168,7 @@ class ShadBorder {
       left: left ?? this.left,
       padding: padding ?? this.padding,
       radius: radius ?? this.radius,
+      offset: offset ?? this.offset,
     );
   }
 
@@ -178,6 +181,7 @@ class ShadBorder {
   /// The border radius of the border, defaults to null.
   final BorderRadiusGeometry? radius;
 
+  /// The top side of this border.
   final ShadBorderSide? top;
 
   /// The right side of this border.
@@ -188,9 +192,15 @@ class ShadBorder {
   /// The left side of this border.
   final ShadBorderSide? left;
 
+  /// The offset between the border and the widget.
+  ///
+  /// NOTE: This is supported only by the secondaryBorder, because the border is
+  /// drawn outward of the widget.
+  final double? offset;
+
   @override
   String toString() {
-    return '''ShadBorder(merge: $merge, padding: $padding, radius: $radius, top: $top, right: $right, bottom: $bottom, left: $left)''';
+    return '''ShadBorder(merge: $merge, padding: $padding, radius: $radius, top: $top, right: $right, bottom: $bottom, left: $left, offset: $offset)''';
   }
 }
 

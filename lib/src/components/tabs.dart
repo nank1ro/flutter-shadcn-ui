@@ -375,7 +375,6 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
     required this.value,
     required this.child,
     this.content,
-    @Deprecated('Use leading instead') this.icon,
     this.leading,
     this.trailing,
     this.enabled = true,
@@ -441,15 +440,6 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   /// Displayed when the tab is selected.
   /// {@endtemplate}
   final Widget? content;
-
-  /// {@template ShadTab.icon}
-  /// Deprecated, use [leading] instead.
-  ///
-  /// An icon to display in the tab. Consider using [leading] for semantic
-  /// correctness.
-  /// {@endtemplate}
-  @Deprecated('Use leading instead')
-  final Widget? icon;
 
   /// {@template ShadTab.leading}
   /// A widget to display at the start of the tab, often an [Icon].
@@ -746,6 +736,13 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
     final inherited =
         context.watch<ShadTabsState<dynamic>>() as ShadTabsState<T>;
 
+    void onMayChanged() {
+      final hasChanged = inherited.controller.select(widget.value);
+      if (hasChanged) {
+        inherited.widget.onChanged?.call(widget.value);
+      }
+    }
+
     final tabsTheme = theme.tabsTheme;
 
     final defaultWidth = inherited.scrollable ? null : double.infinity;
@@ -856,7 +853,6 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
             .mergeWith(widget.decoration);
 
         return ShadButton.secondary(
-          icon: widget.icon,
           leading: widget.leading,
           trailing: widget.trailing,
           focusNode: focusNode,
@@ -877,10 +873,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               : effectiveForegroundColor,
           shadows: selected ? effectiveSelectedShadows : effectiveShadows,
           onPressed: () {
-            final hasChanged = inherited.controller.select(widget.value);
-            if (hasChanged) {
-              inherited.widget.onChanged?.call(widget.value);
-            }
+            onMayChanged();
             widget.onPressed?.call();
           },
           enabled: widget.enabled,
@@ -911,6 +904,9 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
           onDoubleTapDown: widget.onDoubleTapDown,
           onDoubleTapCancel: widget.onDoubleTapCancel,
           longPressDuration: widget.longPressDuration,
+          onFocusChange: (focused) {
+            if (focused) onMayChanged();
+          },
           child: DefaultTextStyle(
             style: theme.textTheme.small,
             child: widget.child,

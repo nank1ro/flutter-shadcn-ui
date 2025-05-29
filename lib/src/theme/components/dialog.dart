@@ -36,6 +36,7 @@ class ShadDialogTheme {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
+    this.actionsGap,
   });
 
   final bool merge;
@@ -118,6 +119,9 @@ class ShadDialogTheme {
   /// {@macro ShadDialog.scrollPadding}
   final EdgeInsets? scrollPadding;
 
+  /// {@macro ShadDialog.actionsGap}
+  final double? actionsGap;
+
   static ShadDialogTheme lerp(
     ShadDialogTheme a,
     ShadDialogTheme b,
@@ -154,6 +158,7 @@ class ShadDialogTheme {
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       scrollable: t < 0.5 ? a.scrollable : b.scrollable,
       scrollPadding: EdgeInsets.lerp(a.scrollPadding, b.scrollPadding, t),
+      actionsGap: lerpDouble(a.actionsGap, b.actionsGap, t),
     );
   }
 
@@ -185,6 +190,7 @@ class ShadDialogTheme {
     CrossAxisAlignment? crossAxisAlignment,
     bool? scrollable,
     EdgeInsets? scrollPadding,
+    double? actionsGap,
   }) {
     return ShadDialogTheme(
       merge: merge ?? this.merge,
@@ -214,6 +220,7 @@ class ShadDialogTheme {
       crossAxisAlignment: crossAxisAlignment,
       scrollable: scrollable,
       scrollPadding: scrollPadding,
+      actionsGap: actionsGap,
     );
   }
 
@@ -247,6 +254,7 @@ class ShadDialogTheme {
       crossAxisAlignment: other.crossAxisAlignment,
       scrollable: other.scrollable,
       scrollPadding: other.scrollPadding,
+      actionsGap: other.actionsGap,
     );
   }
 
@@ -281,7 +289,8 @@ class ShadDialogTheme {
         other.mainAxisAlignment == mainAxisAlignment &&
         other.crossAxisAlignment == crossAxisAlignment &&
         other.scrollable == scrollable &&
-        other.scrollPadding == scrollPadding;
+        other.scrollPadding == scrollPadding &&
+        other.actionsGap == actionsGap;
   }
 
   @override
@@ -312,6 +321,7 @@ class ShadDialogTheme {
         mainAxisAlignment.hashCode ^
         crossAxisAlignment.hashCode ^
         scrollable.hashCode ^
-        scrollPadding.hashCode;
+        scrollPadding.hashCode ^
+        actionsGap.hashCode;
   }
 }

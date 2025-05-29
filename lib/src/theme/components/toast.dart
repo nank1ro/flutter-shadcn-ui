@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -28,7 +27,6 @@ class ShadToastTheme {
     this.padding,
     this.closeIconPosition,
     this.constraints,
-    this.orderPolicy,
     this.closeIcon,
   });
 
@@ -91,9 +89,6 @@ class ShadToastTheme {
   /// {@macro ShadToast.constraints}
   final BoxConstraints? constraints;
 
-  /// {@macro ShadToast.orderPolicy}
-  final WidgetOrderPolicy? orderPolicy;
-
   /// {@macro ShadToast.closeIcon}
   final Widget? closeIcon;
 
@@ -128,7 +123,6 @@ class ShadToastTheme {
       closeIconPosition:
           ShadPosition.lerp(a.closeIconPosition, b.closeIconPosition, t),
       constraints: t < .5 ? a.constraints : b.constraints,
-      orderPolicy: t < .5 ? a.orderPolicy : b.orderPolicy,
       closeIcon: t < .5 ? a.closeIcon : b.closeIcon,
     );
   }
@@ -154,7 +148,6 @@ class ShadToastTheme {
     EdgeInsets? padding,
     ShadPosition? closeIconPosition,
     BoxConstraints? constraints,
-    WidgetOrderPolicy? orderPolicy,
     Widget? closeIcon,
   }) {
     return ShadToastTheme(
@@ -179,7 +172,6 @@ class ShadToastTheme {
       padding: padding ?? this.padding,
       closeIconPosition: closeIconPosition ?? this.closeIconPosition,
       constraints: constraints ?? this.constraints,
-      orderPolicy: orderPolicy ?? this.orderPolicy,
       closeIcon: closeIcon ?? this.closeIcon,
     );
   }
@@ -207,7 +199,6 @@ class ShadToastTheme {
       padding: other.padding,
       closeIconPosition: other.closeIconPosition,
       constraints: other.constraints,
-      orderPolicy: other.orderPolicy,
       closeIcon: other.closeIcon,
     );
   }
@@ -237,7 +228,6 @@ class ShadToastTheme {
         other.padding == padding &&
         other.closeIconPosition == closeIconPosition &&
         other.constraints == constraints &&
-        other.orderPolicy == orderPolicy &&
         other.closeIcon == closeIcon;
   }
 
@@ -263,7 +253,6 @@ class ShadToastTheme {
         padding.hashCode ^
         closeIconPosition.hashCode ^
         constraints.hashCode ^
-        orderPolicy.hashCode ^
         closeIcon.hashCode;
   }
 }

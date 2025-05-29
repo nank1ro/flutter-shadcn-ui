@@ -318,8 +318,7 @@ class ShadInputOTPSlot extends StatefulWidget {
   final double? height;
 
   /// {@template ShadInputOTPSlot.padding}
-  /// The padding of the slot, defaults to
-  /// `EdgeInsets.symmetric(horizontal: 12, vertical: 4)`
+  /// The padding of the slot, defaults to `null`.
   /// {@endtemplate}
   final EdgeInsets? padding;
 
@@ -475,9 +474,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     final effectiveKeyboardType =
         widget.keyboardType ?? otpProvider.widget.keyboardType;
 
-    final effectivePadding = widget.padding ??
-        theme.inputOTPTheme.padding ??
-        const EdgeInsets.symmetric(vertical: 4);
+    final effectivePadding = widget.padding ?? theme.inputOTPTheme.padding;
 
     final effectiveWidth = widget.width ?? theme.inputOTPTheme.width ?? 40.0;
     final effectiveHeight = widget.height ?? theme.inputOTPTheme.height ?? 40.0;
@@ -513,64 +510,68 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     return SizedBox(
       width: effectiveWidth,
       height: effectiveHeight,
-      child: ShadInput(
-        focusNode: focusNode,
-        controller: controller,
-        decoration: effectiveDecoration,
-        textAlign: TextAlign.center,
-        textInputAction: widget.textInputAction,
-        onChanged: (v) {
-          // sanitize the text and format it
-          var sanitizedV = v.replaceAll(kInvisibleCharCode, '');
-          final result = TextEditingValue(text: sanitizedV);
-          final formattedValue =
-              effectiveInputFormatters.fold<TextEditingValue>(
-            result,
-            (TextEditingValue newValue, TextInputFormatter formatter) =>
-                formatter.formatEditUpdate(result, newValue),
-          );
+      child: Align(
+        child: ShadInput(
+          focusNode: focusNode,
+          controller: controller,
+          decoration: effectiveDecoration,
+          textAlign: TextAlign.center,
+          textInputAction: widget.textInputAction,
+          onChanged: (v) {
+            // sanitize the text and format it
+            var sanitizedV = v.replaceAll(kInvisibleCharCode, '');
+            final result = TextEditingValue(text: sanitizedV);
+            final formattedValue =
+                effectiveInputFormatters.fold<TextEditingValue>(
+              result,
+              (TextEditingValue newValue, TextInputFormatter formatter) =>
+                  formatter.formatEditUpdate(result, newValue),
+            );
 
-          final hasBeenFormatted = formattedValue.text != sanitizedV;
-          sanitizedV = formattedValue.text;
+            final hasBeenFormatted = formattedValue.text != sanitizedV;
+            sanitizedV = formattedValue.text;
 
-          // if the value is more than 1 and the slot is not the first
-          // get the last character from the value
-          if (index != 0 && sanitizedV.length > 1) {
-            sanitizedV = sanitizedV[sanitizedV.length - 1];
-          }
-          // if the max length is entered, set the values
-          // to all the slots
-          // this condition happens only for the first slot
-          if (sanitizedV.length > 1) {
-            otpProvider
-              ..setValues(sanitizedV)
-              ..jumpToSlot(sanitizedV.length - 1);
-          } else {
-            if (sanitizedV.isEmpty) {
-              final previousText = controller.previousValue?.text ?? '';
-              controller.text = kInvisibleCharCode;
-              // Jump to the previous slot only if the formatter was not applied
-              if (!hasBeenFormatted) {
-                otpProvider.jumpToPreviousSlot(
-                  clear: previousText == kInvisibleCharCode,
-                );
-              }
-            } else {
-              final newText = sanitizedV[sanitizedV.length - 1];
-              controller.value = controller.value.copyWith(
-                text: newText,
-                selection: TextSelection.collapsed(offset: newText.length),
-                composing: TextRange.empty,
-              );
-              otpProvider.jumpToNextSlot();
+            // if the value is more than 1 and the slot is not the first
+            // get the last character from the value
+            if (index != 0 && sanitizedV.length > 1) {
+              sanitizedV = sanitizedV[sanitizedV.length - 1];
             }
-          }
-        },
-        maxLength: otpProvider.widget.maxLength + 1,
-        maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
-        padding: effectivePadding,
-        style: defaultStyle,
-        keyboardType: effectiveKeyboardType,
+            // if the max length is entered, set the values
+            // to all the slots
+            // this condition happens only for the first slot
+            if (sanitizedV.length > 1) {
+              otpProvider
+                ..setValues(sanitizedV)
+                ..jumpToSlot(sanitizedV.length - 1);
+            } else {
+              if (sanitizedV.isEmpty) {
+                final previousText = controller.previousValue?.text ?? '';
+                controller.text = kInvisibleCharCode;
+                // Jump to the previous slot only if the formatter was not
+                // applied
+                if (!hasBeenFormatted) {
+                  otpProvider.jumpToPreviousSlot(
+                    clear: previousText == kInvisibleCharCode,
+                  );
+                }
+              } else {
+                final newText = sanitizedV[sanitizedV.length - 1];
+                controller.value = controller.value.copyWith(
+                  text: newText,
+                  selection: TextSelection.collapsed(offset: newText.length),
+                  composing: TextRange.empty,
+                );
+                otpProvider.jumpToNextSlot();
+              }
+            }
+          },
+          maxLength: otpProvider.widget.maxLength + 1,
+          maxLengthEnforcement:
+              MaxLengthEnforcement.truncateAfterCompositionEnds,
+          padding: effectivePadding,
+          style: defaultStyle,
+          keyboardType: effectiveKeyboardType,
+        ),
       ),
     );
   }

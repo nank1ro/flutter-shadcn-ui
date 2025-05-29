@@ -10,6 +10,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/extensions/date_time.dart';
+import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 /// Encapsulates a start and end [DateTime] that represent the range of dates.
 ///
@@ -565,7 +566,7 @@ class ShadCalendar extends StatefulWidget {
   final double? yearSelectorMinWidth;
 
   /// {@template ShadCalendar.monthSelectorMinWidth}
-  /// The minimum width of the month selector, defaults to 130
+  /// The minimum width of the month selector, defaults to 120
   /// {@endtemplate}
   final double? monthSelectorMinWidth;
 
@@ -743,6 +744,10 @@ class ShadCalendar extends StatefulWidget {
   ///                   radius: BorderRadius.zero,
   ///                 )
   ///       : null,
+  ///    secondaryFocusedBorder: ShadBorder.all(
+  ///       offset: 2,
+  ///       color: theme.colorScheme.ring.withValues(alpha: .5),
+  ///     ),
   ///   ),
   /// ```
   /// {@endtemplate}
@@ -1125,7 +1130,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     final effectiveMonthSelectorMinWidth = widget.monthSelectorMinWidth ??
         theme.calendarTheme.monthSelectorMinWidth ??
-        130;
+        120;
 
     final effectiveYearSelectorPadding = widget.yearSelectorPadding ??
         theme.calendarTheme.yearSelectorPadding ??
@@ -1305,6 +1310,11 @@ class _ShadCalendarState extends State<ShadCalendar> {
       initialValue: currentMonth.year,
       groupId: widget.groupId,
       padding: effectiveYearSelectorPadding,
+      decoration: ShadDecoration(
+        secondaryFocusedBorder: ShadBorder.all(
+          color: theme.colorScheme.ring.withValues(alpha: .5),
+        ),
+      ),
       minWidth: effectiveYearSelectorMinWidth,
       selectedOptionBuilder: (context, value) {
         return Text(effectiveFormatYear(DateTime(value, currentMonth.month)));
@@ -1325,6 +1335,11 @@ class _ShadCalendarState extends State<ShadCalendar> {
     final monthSelector = ShadSelect<int>(
       initialValue: currentMonth.month,
       groupId: widget.groupId,
+      decoration: ShadDecoration(
+        secondaryFocusedBorder: ShadBorder.all(
+          color: theme.colorScheme.ring.withValues(alpha: .5),
+        ),
+      ),
       padding: effectiveMonthSelectorPadding,
       minWidth: effectiveMonthSelectorMinWidth,
       selectedOptionBuilder: (context, value) {
@@ -1443,7 +1458,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
                                     backButton,
                                     forwardButton,
                                   ],
-                                ],
+                                ].separatedBy(
+                                  SizedBox(width: effectiveCaptionLayoutGap),
+                                ),
                               ),
                             ShadCalendarCaptionLayout.dropdownMonths => Row(
                                 children: [
@@ -1457,6 +1474,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                                   ),
                                   if (!effectiveHideNavigation) ...[
                                     backButton,
+                                    SizedBox(width: effectiveCaptionLayoutGap),
                                     forwardButton,
                                   ],
                                 ],
@@ -1632,6 +1650,10 @@ class _ShadCalendarState extends State<ShadCalendar> {
                                       radius: BorderRadius.zero,
                                     )
                           : null,
+                      secondaryFocusedBorder: ShadBorder.all(
+                        offset: 2,
+                        color: theme.colorScheme.ring.withValues(alpha: .5),
+                      ),
                     )
                         .mergeWith(theme.calendarTheme.dayButtonDecoration)
                         .mergeWith(widget.dayButtonDecoration);

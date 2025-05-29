@@ -16,7 +16,6 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
@@ -30,8 +29,8 @@ typedef ShadSelectedOptionBuilder<T> = Widget Function(
 ///
 /// It extends [ValueNotifier] to provide reactive updates when the selected
 /// values change.
-class ShadSelectController<T> extends ValueNotifier<List<T>> {
-  ShadSelectController({List<T>? initialValue}) : super(initialValue ?? []);
+class ShadSelectController<T> extends ValueNotifier<Set<T>> {
+  ShadSelectController({Set<T>? initialValue}) : super(initialValue ?? {});
 }
 
 /// Defines the different variants of the [ShadSelect] widget.
@@ -78,11 +77,10 @@ class ShadSelect<T> extends StatefulWidget {
     this.shrinkWrap,
     this.controller,
   })  : variant = ShadSelectVariant.primary,
-        initialValues = const [],
+        initialValues = const {},
         onSearchChanged = null,
         searchDivider = null,
         searchPlaceholder = null,
-        searchInputPrefix = null,
         searchInputLeading = null,
         onMultipleChanged = null,
         searchPadding = null,
@@ -104,7 +102,6 @@ class ShadSelect<T> extends StatefulWidget {
     this.onChanged,
     this.popoverController,
     this.searchDivider,
-    @Deprecated('Use searchInputLeading instead') this.searchInputPrefix,
     this.searchInputLeading,
     this.searchPlaceholder,
     this.searchPadding,
@@ -140,7 +137,7 @@ class ShadSelect<T> extends StatefulWidget {
   })  : variant = ShadSelectVariant.search,
         selectedOptionsBuilder = null,
         onMultipleChanged = null,
-        initialValues = const [],
+        initialValues = const {},
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
@@ -155,8 +152,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.popoverController,
     this.enabled = true,
     this.placeholder,
-    this.initialValues = const [],
-    ValueChanged<List<T>>? onChanged,
+    this.initialValues = const {},
+    ValueChanged<Set<T>>? onChanged,
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
@@ -187,7 +184,6 @@ class ShadSelect<T> extends StatefulWidget {
         selectedOptionBuilder = null,
         searchDivider = null,
         searchPlaceholder = null,
-        searchInputPrefix = null,
         searchInputLeading = null,
         searchPadding = null,
         search = null,
@@ -206,10 +202,9 @@ class ShadSelect<T> extends StatefulWidget {
     this.optionsBuilder,
     required ValueChanged<String> this.onSearchChanged,
     required this.selectedOptionsBuilder,
-    ValueChanged<List<T>>? onChanged,
+    ValueChanged<Set<T>>? onChanged,
     this.popoverController,
     this.searchDivider,
-    @Deprecated('Use searchInputLeading instead') this.searchInputPrefix,
     this.searchInputLeading,
     this.searchPlaceholder,
     this.searchPadding,
@@ -217,7 +212,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.clearSearchOnClose,
     this.enabled = true,
     this.placeholder,
-    this.initialValues = const [],
+    this.initialValues = const {},
     this.focusNode,
     this.closeOnTapOutside = true,
     this.minWidth,
@@ -263,7 +258,6 @@ class ShadSelect<T> extends StatefulWidget {
     this.popoverController,
     this.onSearchChanged,
     this.searchDivider,
-    @Deprecated('Use searchInputLeading instead') this.searchInputPrefix,
     this.searchInputLeading,
     this.searchPlaceholder,
     this.searchPadding,
@@ -272,7 +266,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.enabled = true,
     this.placeholder,
     this.initialValue,
-    this.initialValues = const [],
+    this.initialValues = const {},
     this.onChanged,
     this.onMultipleChanged,
     this.focusNode,
@@ -328,7 +322,7 @@ class ShadSelect<T> extends StatefulWidget {
   /// The callback that is called when the values of the [ShadSelect] changes.
   /// Called only the variant is [ShadSelect.multiple].
   /// {@endtemplate}
-  final ValueChanged<List<T>>? onMultipleChanged;
+  final ValueChanged<Set<T>>? onMultipleChanged;
 
   /// {@template ShadSelect.allowDeselection}
   /// Whether the [ShadSelect] allows deselection, defaults to
@@ -354,7 +348,7 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@template ShadSelect.initialValues}
   /// The initial values of the [ShadSelect], defaults to `[]`.
   /// {@endtemplate}
-  final List<T> initialValues;
+  final Set<T> initialValues;
 
   /// {@template ShadSelect.placeholder}
   /// The widget to display as a placeholder when no option is selected.
@@ -490,7 +484,7 @@ class ShadSelect<T> extends StatefulWidget {
   /// The anchor configuration for positioning the popover relative to the
   /// select input.
   ///
-  /// Defaults to `ShadAnchorAuto()`
+  /// Defaults to `ShadAnchorAuto(offset: Offset(0, 4))`
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
@@ -519,16 +513,6 @@ class ShadSelect<T> extends StatefulWidget {
   /// Defaults to a [Divider] with height 1.
   /// {@endtemplate}
   final Widget? searchDivider;
-
-  /// {@template ShadSelect.searchInputPrefix}
-  /// Deprecated, use [searchInputLeading] instead.
-  ///
-  /// Widget to display at the beginning of the search input field.
-  ///
-  /// Consider using [searchInputLeading] for semantic correctness.
-  /// {@endtemplate}
-  @Deprecated('Use searchInputLeading instead')
-  final Widget? searchInputPrefix;
 
   /// {@template ShadSelect.searchInputLeading}
   /// Widget to display at the leading edge of the search input field.
@@ -658,10 +642,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     super.initState();
     if (widget.controller == null) {
       _controller = ShadSelectController<T>(
-        initialValue: [
+        initialValue: {
           if (widget.initialValue is T) widget.initialValue as T,
           ...widget.initialValues,
-        ],
+        },
       );
     }
 
@@ -773,7 +757,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
     if (changed) {
       if (isMultiSelection) {
-        widget.onMultipleChanged?.call(controller.value.toList());
+        widget.onMultipleChanged?.call(controller.value.toSet());
       } else {
         widget.onChanged?.call(controller.value.firstOrNull);
       }
@@ -1126,7 +1110,6 @@ class ShadOption<T> extends StatefulWidget {
     this.padding,
     this.selectedIcon,
     this.radius,
-    this.orderPolicy,
     this.direction,
   });
 
@@ -1149,12 +1132,6 @@ class ShadOption<T> extends StatefulWidget {
 
   /// The radius of the [ShadOption], defaults to `ShadThemeData.radius`.
   final BorderRadius? radius;
-
-  /// {@template ShadOption.orderPolicy}
-  /// The order policy of the items that compose the option, defaults to
-  /// [WidgetOrderPolicy.linear()].
-  /// {@endtemplate}
-  final WidgetOrderPolicy? orderPolicy;
 
   /// {@template ShadOption.direction}
   /// The direction of the ambient.
@@ -1219,10 +1196,6 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final effectiveRadius =
         widget.radius ?? theme.optionTheme.radius ?? theme.radius;
 
-    final effectiveOrderPolicy = widget.orderPolicy ??
-        theme.optionTheme.orderPolicy ??
-        const WidgetOrderPolicy.linear();
-
     final effectiveSelectedIcon = widget.selectedIcon ??
         Visibility.maintain(
           visible: selected,
@@ -1275,7 +1248,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
                     child: widget.child,
                   ),
                 ),
-              ].order(effectiveOrderPolicy),
+              ],
             ),
           ),
         ),

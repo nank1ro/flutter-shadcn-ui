@@ -2,9 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 
-@Deprecated('Use ShadSeparatorTheme instead.')
-typedef ShadDividerTheme = ShadSeparatorTheme;
-
 /// {@template ShadDividerTheme}
 /// Theme for the `ShadSeparator` widget.
 /// {@endtemplate}

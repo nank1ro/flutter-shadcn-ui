@@ -530,7 +530,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
         );
 
     final effectiveScrollbarPadding = widget.scrollbarPadding ??
-        theme.inputTheme.scrollbarPadding ??
+        theme.textareaTheme.scrollbarPadding ??
         const EdgeInsets.only(bottom: 10);
 
     final input = SizedBox(
@@ -603,8 +603,8 @@ class _ShadTextareaState extends State<ShadTextarea> {
         input,
         if (widget.resizable)
           Positioned(
-            bottom: 6,
-            right: 6,
+            bottom: 2,
+            right: 2,
             child: MouseRegion(
               cursor: SystemMouseCursors.resizeUpDown,
               child: GestureDetector(

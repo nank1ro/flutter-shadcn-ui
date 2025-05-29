@@ -196,12 +196,6 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     /// {@macro ShadInput.padding}
     EdgeInsets? padding,
 
-    /// {@macro ShadInput.prefix}
-    @Deprecated('Use leading instead') Widget? prefix,
-
-    /// {@macro ShadInput.suffix}
-    @Deprecated('Use trailing instead') Widget? suffix,
-
     /// {@macro ShadInput.leading}
     Widget? leading,
 
@@ -304,8 +298,6 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
               maxLength: maxLength,
               maxLengthEnforcement: maxLengthEnforcement,
               padding: padding,
-              prefix: prefix,
-              suffix: suffix,
               leading: leading,
               trailing: trailing,
               mainAxisAlignment: mainAxisAlignment,

@@ -7,7 +7,6 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
 /// A customizable radio group widget that allows selection of one item from
@@ -172,7 +171,7 @@ class ShadRadio<T> extends StatefulWidget {
     this.sublabel,
     this.padding,
     this.direction,
-    this.orderPolicy,
+    this.radioPadding,
   });
 
   /// {@template ShadRadio.value}
@@ -230,18 +229,19 @@ class ShadRadio<T> extends StatefulWidget {
   /// The padding between the radio and the label, defaults to
   /// `EdgeInsets.only(left: 8)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
+
+  /// {@template ShadRadio.radioPadding}
+  /// The padding around the radio field only.
+  ///
+  /// Defaults to `EdgeInsets.only(top: 1)` if not specified.
+  /// {@endtemplate}
+  final EdgeInsetsGeometry? radioPadding;
 
   /// {@template ShadRadio.direction}
   /// The direction of the radio.
   /// {@endtemplate}
   final TextDirection? direction;
-
-  /// {@template ShadRadio.orderPolicy}
-  /// The order policy of the items that compose the radio, defaults to
-  /// [WidgetOrderPolicy.linear()].
-  /// {@endtemplate}
-  final WidgetOrderPolicy? orderPolicy;
 
   @override
   State<ShadRadio<T>> createState() => _ShadRadioState<T>();
@@ -296,9 +296,9 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
         theme.radioTheme.padding ??
         const EdgeInsets.only(left: 8);
 
-    final effectiveOrderPolicy = widget.orderPolicy ??
-        theme.radioTheme.orderPolicy ??
-        const WidgetOrderPolicy.linear();
+    final effectiveRadioPadding = widget.radioPadding ??
+        theme.radioTheme.radioPadding ??
+        const EdgeInsets.only(top: 1);
 
     final radio = Semantics(
       checked: selected,
@@ -357,7 +357,10 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
           textDirection: widget.direction,
           mainAxisSize: MainAxisSize.min,
           children: [
-            radio,
+            Padding(
+              padding: effectiveRadioPadding,
+              child: radio,
+            ),
             if (widget.label != null)
               Flexible(
                 child: Padding(
@@ -388,7 +391,7 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
                   ),
                 ),
               ),
-          ].order(effectiveOrderPolicy),
+          ],
         ),
       ),
     );

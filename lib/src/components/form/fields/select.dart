@@ -181,7 +181,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     ShadAnchorBase? anchor,
     ImageFilter? filter,
     Widget? searchDivider,
-    @Deprecated('Use searchInputLeading instead') Widget? searchInputPrefix,
     Widget? searchInputLeading,
     Widget? searchPlaceholder,
     EdgeInsets? searchPadding,
@@ -241,7 +240,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               filter: filter,
               onSearchChanged: onSearchChanged,
               searchDivider: searchDivider,
-              searchInputPrefix: searchInputPrefix,
               searchInputLeading: searchInputLeading,
               searchPlaceholder: searchPlaceholder,
               searchPadding: searchPadding,
@@ -296,7 +294,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     ShadAnchorBase? anchor,
     ImageFilter? filter,
     Widget? searchDivider,
-    @Deprecated('Use searchInputLeading instead') Widget? searchInputPrefix,
     Widget? searchInputLeading,
     Widget? searchPlaceholder,
     EdgeInsets? searchPadding,
@@ -364,7 +361,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               filter: filter,
               onSearchChanged: onSearchChanged,
               searchDivider: searchDivider,
-              searchInputPrefix: searchInputPrefix,
               searchInputLeading: searchInputLeading,
               searchPlaceholder: searchPlaceholder,
               searchPadding: searchPadding,
@@ -404,7 +400,7 @@ class _ShadFormBuilderSelectState<T>
   }
 }
 
-class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
+class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
   ShadSelectMultipleFormField({
     super.id,
     super.key,
@@ -466,7 +462,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               selectedOptionsBuilder: selectedOptionsBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
-              initialValues: state.initialValue as List<T>? ?? [],
+              initialValues: state.initialValue as Set<T>? ?? {},
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
@@ -529,7 +525,6 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     ShadAnchorBase? anchor,
     ImageFilter? filter,
     Widget? searchDivider,
-    @Deprecated('Use searchInputLeading instead') Widget? searchInputPrefix,
     Widget? searchInputLeading,
     Widget? searchPlaceholder,
     EdgeInsets? searchPadding,
@@ -561,7 +556,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               selectedOptionsBuilder: selectedOptionsBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
-              initialValues: state.initialValue as List<T>? ?? [],
+              initialValues: state.initialValue as Set<T>? ?? {},
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
@@ -579,7 +574,6 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               filter: filter,
               onSearchChanged: onSearchChanged,
               searchDivider: searchDivider,
-              searchInputPrefix: searchInputPrefix,
               searchInputLeading: searchInputLeading,
               searchPlaceholder: searchPlaceholder,
               searchPadding: searchPadding,
@@ -632,7 +626,6 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
     ShadAnchorBase? anchor,
     ImageFilter? filter,
     Widget? searchDivider,
-    @Deprecated('Use searchInputLeading instead') Widget? searchInputPrefix,
     Widget? searchInputLeading,
     Widget? searchPlaceholder,
     EdgeInsets? searchPadding,
@@ -668,7 +661,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               selectedOptionsBuilder: selectedOptionsBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
-              initialValues: state.initialValue as List<T>? ?? [],
+              initialValues: state.initialValue as Set<T>? ?? {},
               enabled: state.enabled,
               onMultipleChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
@@ -685,7 +678,6 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
               filter: filter,
               onSearchChanged: onSearchChanged,
               searchDivider: searchDivider,
-              searchInputPrefix: searchInputPrefix,
               searchInputLeading: searchInputLeading,
               searchPlaceholder: searchPlaceholder,
               searchPadding: searchPadding,
@@ -705,18 +697,18 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<List<T>> {
   final ShadSelectController<T>? controller;
 
   @override
-  ShadFormBuilderFieldState<ShadSelectMultipleFormField<T>, List<T>>
+  ShadFormBuilderFieldState<ShadSelectMultipleFormField<T>, Set<T>>
       createState() => _ShadFormBuilderSelectMultipleState<T>();
 }
 
 class _ShadFormBuilderSelectMultipleState<T>
-    extends ShadFormBuilderFieldState<ShadSelectMultipleFormField<T>, List<T>> {
+    extends ShadFormBuilderFieldState<ShadSelectMultipleFormField<T>, Set<T>> {
   @override
   void initState() {
     super.initState();
     if (widget.controller != null) {
       widget.controller!.addListener(() {
-        didChange(widget.controller!.value.toList());
+        didChange(widget.controller!.value.toSet());
       });
     }
   }

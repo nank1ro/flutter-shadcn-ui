@@ -32,6 +32,7 @@ class DialogPage extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.end,
+                    spacing: 16,
                     children: profile
                         .map(
                           (p) => Row(

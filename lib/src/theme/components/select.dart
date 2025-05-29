@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
-import 'package:shadcn_ui/src/utils/extensions/order_policy.dart';
 
 const kDefaultSelectMinWidth = 128.0;
 const kDefaultSelectMaxHeight = 384.0;
@@ -117,7 +116,6 @@ class ShadSelectTheme {
     List<Effect<dynamic>>? effects,
     List<BoxShadow>? shadows,
     ImageFilter? filter,
-    WidgetOrderPolicy? optionsOrderPolicy,
   }) {
     return ShadSelectTheme(
       merge: merge ?? this.merge,
