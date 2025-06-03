@@ -336,19 +336,40 @@ class ShadDecorator extends StatelessWidget {
           fallbackSecondaryBorder ?? effectiveDecoration.secondaryBorder;
     }
 
+    final primaryDecoration = switch (border) {
+      final ShadRoundedSuperellipseBorder border => ShapeDecoration(
+          color: effectiveDecoration.color,
+          image: effectiveDecoration.image,
+          shadows: effectiveDecoration.shadows,
+          gradient: effectiveDecoration.gradient,
+          shape: border.toBorder(
+            textDirection: textDirection,
+            defaultRadius: theme.radius,
+          ),
+        ),
+      final ShadBorder? border => BoxDecoration(
+          border: true == border?.hasBorder ? border?.toBorder() : null,
+          borderRadius: effectiveDecoration.shape == BoxShape.circle
+              ? null
+              : border?.radius,
+          color: effectiveDecoration.color,
+          shape: effectiveDecoration.shape ?? BoxShape.rectangle,
+          backgroundBlendMode: effectiveDecoration.backgroundBlendMode,
+          boxShadow: effectiveDecoration.shadows,
+          gradient: effectiveDecoration.gradient,
+          image: effectiveDecoration.image,
+        ),
+    };
+    switch (border) {
+      case ShadRoundedSuperellipseBorder():
+        print('rounded superellipse border');
+      // No additional padding needed for ShapeDecoration.
+      case ShadBorder():
+        print('box decoration');
+    }
+
     Widget decorated = Container(
-      decoration: BoxDecoration(
-        border: true == border?.hasBorder ? border?.toBorder() : null,
-        borderRadius: effectiveDecoration.shape == BoxShape.circle
-            ? null
-            : border?.radius,
-        color: effectiveDecoration.color,
-        shape: effectiveDecoration.shape ?? BoxShape.rectangle,
-        backgroundBlendMode: effectiveDecoration.backgroundBlendMode,
-        boxShadow: effectiveDecoration.shadows,
-        gradient: effectiveDecoration.gradient,
-        image: effectiveDecoration.image,
-      ),
+      decoration: primaryDecoration,
       padding: border?.padding,
       child: child,
     );
