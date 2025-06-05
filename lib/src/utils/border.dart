@@ -141,6 +141,16 @@ class ShadBorder {
   ShadBorder mergeWith(ShadBorder? other) {
     if (other == null) return this;
     if (!other.merge) return other;
+    if (other is ShadRoundedSuperellipseBorder) {
+      return ShadRoundedSuperellipseBorder(
+        side: switch (this) {
+          final ShadRoundedSuperellipseBorder border =>
+            border.side?.mergeWith(other.side) ?? other.side,
+          _ => other.side,
+        },
+        radius: other.radius ?? radius,
+      );
+    }
     return copyWith(
       top: top?.mergeWith(other.top) ?? other.top,
       right: right?.mergeWith(other.right) ?? other.right,
@@ -365,4 +375,45 @@ class ShadBorderSide with Diagnosticable {
         ),
       );
   }
+}
+
+extension ShadRoundedSuperellipseBorderExt on ShadRoundedSuperellipseBorder {
+  ShapeBorder toBorder({
+    TextDirection? textDirection,
+    BorderRadius defaultRadius = BorderRadius.zero,
+  }) {
+    final effectiveTextDirection = textDirection ?? TextDirection.ltr;
+    return RoundedSuperellipseBorder(
+      side: side?.toBorderSide() ?? BorderSide.none,
+      borderRadius: radius?.resolve(effectiveTextDirection) ?? defaultRadius,
+    );
+  }
+}
+
+/// A rectangular border with rounded corners following the shape of an
+/// [RSuperellipse].
+@immutable
+class ShadRoundedSuperellipseBorder extends ShadBorder {
+  const ShadRoundedSuperellipseBorder({
+    super.merge,
+    this.side,
+    super.radius,
+  });
+
+  final ShadBorderSide? side;
+
+  @override
+  String toString() {
+    return '''ShadRoundedSuperellipseBorder(merge: $merge, side: $side, radius: $radius)''';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShadRoundedSuperellipseBorder && other.side == side;
+  }
+
+  @override
+  int get hashCode => side.hashCode | radius.hashCode | merge.hashCode;
 }
