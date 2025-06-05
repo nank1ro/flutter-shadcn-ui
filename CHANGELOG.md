@@ -1,3 +1,7 @@
+## 0.27.1
+
+- **FEAT**: Add `ShadRoundedSuperellipseBorder` to support the rounded superellipse border style as the primary border of any widget that uses `ShadDecoration`.
+
 ## 0.27.0
 
 - **BREAKING CHANGE**: The secondary border of `ShadDecoration` now is drawn outward of the widget, without consuming any extra space. This change affects all components that are focusable.

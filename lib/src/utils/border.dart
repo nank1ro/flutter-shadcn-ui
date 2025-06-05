@@ -148,7 +148,7 @@ class ShadBorder {
             border.side?.mergeWith(other.side) ?? other.side,
           _ => other.side,
         },
-        radius: other.radius,
+        radius: other.radius ?? radius,
       );
     }
     return copyWith(
@@ -390,11 +390,30 @@ extension ShadRoundedSuperellipseBorderExt on ShadRoundedSuperellipseBorder {
   }
 }
 
+/// A rectangular border with rounded corners following the shape of an
+/// [RSuperellipse].
+@immutable
 class ShadRoundedSuperellipseBorder extends ShadBorder {
   const ShadRoundedSuperellipseBorder({
+    super.merge,
     this.side,
     super.radius,
   });
 
   final ShadBorderSide? side;
+
+  @override
+  String toString() {
+    return '''ShadRoundedSuperellipseBorder(merge: $merge, side: $side, radius: $radius)''';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShadRoundedSuperellipseBorder && other.side == side;
+  }
+
+  @override
+  int get hashCode => side.hashCode | radius.hashCode | merge.hashCode;
 }

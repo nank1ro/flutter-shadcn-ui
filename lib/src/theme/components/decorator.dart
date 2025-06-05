@@ -360,13 +360,6 @@ class ShadDecorator extends StatelessWidget {
           image: effectiveDecoration.image,
         ),
     };
-    switch (border) {
-      case ShadRoundedSuperellipseBorder():
-        print('rounded superellipse border');
-      // No additional padding needed for ShapeDecoration.
-      case ShadBorder():
-        print('box decoration');
-    }
 
     Widget decorated = Container(
       decoration: primaryDecoration,
