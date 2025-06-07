@@ -371,34 +371,35 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
               child: Padding(
                 padding: effectivePadding,
                 child: Row(
-                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CallbackShortcuts(
-                      bindings: {
-                        const SingleActivator(LogicalKeyboardKey.enter): () {
-                          inherited.toggle(widget.value);
+                    Expanded(
+                      child: CallbackShortcuts(
+                        bindings: {
+                          const SingleActivator(LogicalKeyboardKey.enter): () {
+                            inherited.toggle(widget.value);
+                          },
                         },
-                      },
-                      child: ShadFocusable(
-                        focusNode: focusNode,
-                        builder: (context, focused, child) {
-                          return ValueListenableBuilder(
-                            valueListenable: hovered,
-                            builder: (context, hovered, child) {
-                              return DefaultTextStyle(
-                                style: effectiveTitleStyle.copyWith(
-                                  decoration:
-                                      hovered && effectiveUnderlineTitleOnHover
-                                          ? TextDecoration.underline
-                                          : null,
-                                ),
-                                child: child!,
-                              );
-                            },
-                            child: widget.title,
-                          );
-                        },
+                        child: ShadFocusable(
+                          focusNode: focusNode,
+                          builder: (context, focused, child) {
+                            return ValueListenableBuilder(
+                              valueListenable: hovered,
+                              builder: (context, hovered, child) {
+                                return DefaultTextStyle(
+                                  style: effectiveTitleStyle.copyWith(
+                                    decoration: hovered &&
+                                            effectiveUnderlineTitleOnHover
+                                        ? TextDecoration.underline
+                                        : null,
+                                  ),
+                                  child: child!,
+                                );
+                              },
+                              child: widget.title,
+                            );
+                          },
+                        ),
                       ),
                     ),
                     Animate(
