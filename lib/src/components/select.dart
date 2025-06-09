@@ -934,25 +934,22 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                     FocusScope.of(context).unfocus();
                     popoverController.toggle();
                   },
-                  child: ConstrainedBox(
-                    constraints: effectiveConstraints,
-                    child: Padding(
-                      padding: effectivePadding,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            child: DefaultTextStyle(
-                              style: theme.textTheme.muted.copyWith(
-                                color: theme.colorScheme.foreground,
-                              ),
-                              child: effectiveText,
+                  child: Padding(
+                    padding: effectivePadding,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: DefaultTextStyle(
+                            style: theme.textTheme.muted.copyWith(
+                              color: theme.colorScheme.foreground,
                             ),
+                            child: effectiveText,
                           ),
-                          effectiveTrailing,
-                        ],
-                      ),
+                        ),
+                        effectiveTrailing,
+                      ],
                     ),
                   ),
                 ),
@@ -1046,50 +1043,24 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (search != null)
-                        Flexible(
-                          child: ConstrainedBox(
-                            constraints: effectiveConstraints,
-                            child: search,
-                          ),
-                        ),
-                      if (widget.header != null)
-                        Flexible(
-                          child: ConstrainedBox(
-                            constraints: effectiveConstraints,
-                            child: widget.header,
-                          ),
-                        ),
+                      if (search != null) search,
+                      if (widget.header != null) widget.header!,
                       if (scrollToTopChild != null) scrollToTopChild,
-                      Flexible(
-                        child: ConstrainedBox(
-                          constraints: effectiveConstraints,
-                          child: effectiveChild,
-                        ),
-                      ),
+                      effectiveChild,
                       if (scrollToBottomChild != null) scrollToBottomChild,
-                      if (widget.footer != null)
-                        Flexible(
-                          child: ConstrainedBox(
-                            constraints: effectiveConstraints,
-                            child: widget.footer,
-                          ),
-                        ),
+                      if (widget.footer != null) widget.footer!,
                     ],
                   );
 
-                  if (widget.optionsBuilder == null) {
+// Always stretch to max width unless shrinkWrap is explicitly true
+                  if (!(widget.shrinkWrap ?? false)) {
+                    effectiveColumn = SizedBox(
+                        width: double.infinity, child: effectiveColumn);
+                  } else {
                     effectiveColumn = IntrinsicWidth(child: effectiveColumn);
                   }
 
-                  return ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: effectiveMaxHeight,
-                      minWidth: calculatedMinWidth,
-                      maxWidth: effectiveMaxWidth,
-                    ),
-                    child: effectiveColumn,
-                  );
+                  return effectiveColumn;
                 },
                 child: select,
               ),
