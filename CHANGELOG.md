@@ -1,6 +1,7 @@
 ## 0.27.2
 
 - **CHORE**: Bump the minimum Flutter version to `3.32.0` to support the `RoundedSuperellipseBorder`.
+- **FIX**: `ShadAccordion` title overflow when the title is too long (thanks to @monteiz).
 
 ## 0.27.1
 
