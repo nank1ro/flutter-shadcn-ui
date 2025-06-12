@@ -1,3 +1,7 @@
+## 0.27.2
+
+- **CHORE**: Bump the minimum Flutter version to `3.32.0` to support the `RoundedSuperellipseBorder`.
+
 ## 0.27.1
 
 - **FEAT**: Add `ShadRoundedSuperellipseBorder` to support the rounded superellipse border style as the primary border of any widget that uses `ShadDecoration`.
