@@ -831,6 +831,7 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
               backgroundColor: controller.selected
                   ? effectiveSelectedBackgroundColor
                   : effectiveBackgroundColor,
+              hoverBackgroundColor: effectiveSelectedBackgroundColor,
               onFocusChange: controller.setFocused,
               onPressed: () {
                 widget.onPressed?.call();
