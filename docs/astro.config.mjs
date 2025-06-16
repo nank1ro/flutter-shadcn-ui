@@ -63,6 +63,10 @@ export default defineConfig({
           collapsed: false,
           items: [
             {
+              label: 'Submit your app',
+              link: 'submit-your-app',
+            },
+            {
               label: 'Notes Calculator',
               link: 'https://notescalculator.com',
               attrs: { target: '_blank' },
@@ -77,8 +81,42 @@ export default defineConfig({
               link: 'https://atcolombia.co',
               attrs: { target: '_blank', rel: 'noopener noreferrer' },
             },
+            {
+              label: 'Prompt Builder',
+              link: 'https://promptbuilder.site/',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
+              label: 'buildr.studio',
+              link: 'https://github.com/code-on-sunday/buildr.studio',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
+              label: 'Yandex Eats Clone',
+              link: 'https://github.com/itsezlife/yandex-eats-clone',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
+              label: 'Due Kasir',
+              link: 'https://play.google.com/store/apps/details?id=com.devindo.due_kasir',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
+              label: 'Snap Ink',
+              link: 'https://www.snapink.pro/',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
+              label: 'Cleaner for Flutter',
+              link: 'https://apps.apple.com/us/app/cleaner-for-flutter/id6661026876',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
+              label: 'Gessential',
+              link: 'https://github.com/mirarr-app/Gessential',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
           ],
-
         }
       ], 
     }),
