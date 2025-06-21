@@ -1,3 +1,8 @@
+## 0.27.3
+
+- **FIX**: `ShadCalendar` `initialMonth` update when the user did not interact with the month selector yet.
+- **DOCS**: Fix typo in button code snippet (thanks to @piedcipher).
+
 ## 0.27.2
 
 - **FIX**: `ShadAccordion` title overflow when the title is too long (thanks to @monteiz).
