@@ -849,8 +849,7 @@ class ShadCalendar extends StatefulWidget {
 
 class _ShadCalendarState extends State<ShadCalendar> {
   final today = DateTime.now().startOfDay;
-  late DateTime currentMonth =
-      widget.initialMonth ?? DateTime.now().startOfMonth;
+  late DateTime currentMonth = widget.initialMonth ?? today.startOfMonth;
   List<ShadCalendarModel> datesModels = [];
   // The first date shown in the calendar, used to render the week days
   late DateTime firstDateShown;
@@ -949,6 +948,16 @@ class _ShadCalendarState extends State<ShadCalendar> {
   @override
   void didUpdateWidget(covariant ShadCalendar oldWidget) {
     super.didUpdateWidget(oldWidget);
+    final bool initialMonthChanged;
+    if ((oldWidget.initialMonth == currentMonth ||
+            (currentMonth == today.startOfMonth)) &&
+        widget.initialMonth != null) {
+      currentMonth = widget.initialMonth!;
+      initialMonthChanged = true;
+    } else {
+      initialMonthChanged = false;
+    }
+
     if (widget.showOutsideDays != oldWidget.showOutsideDays ||
         widget.fixedWeeks != oldWidget.fixedWeeks ||
         widget.weekStartsOn != oldWidget.weekStartsOn ||
@@ -958,7 +967,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
         widget.reverseMonths != oldWidget.reverseMonths ||
         widget.min != oldWidget.min ||
         widget.max != oldWidget.max ||
-        widget.showWeekNumbers != oldWidget.showWeekNumbers) {
+        widget.showWeekNumbers != oldWidget.showWeekNumbers ||
+        initialMonthChanged) {
       generateDates();
     }
     if (widget.fromMonth != oldWidget.fromMonth ||
