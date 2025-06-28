@@ -85,5 +85,20 @@ void main() {
         matchesGoldenFile('goldens/icon_button_ghost.png'),
       );
     });
+
+    testWidgets('ShadIconButton.iconSize updates icon size', (tester) async {
+      const customIconSize = 10.0;
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          const ShadIconButton(
+            icon: Icon(Icons.add),
+            iconSize: customIconSize,
+          ),
+        ),
+      );
+
+      final iconSize = tester.getSize(find.byType(Icon));
+      expect(iconSize, const Size.square(customIconSize));
+    });    
   });
 }

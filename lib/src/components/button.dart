@@ -924,7 +924,7 @@ class _ShadButtonState extends State<ShadButton> {
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
     final theme = ShadTheme.of(context);
-    final materialTheme = Theme.of(context);
+    final iconTheme = IconTheme.of(context);
 
     final hasPressedBackgroundColor = widget.pressedBackgroundColor != null ||
         buttonTheme(theme).pressedBackgroundColor != null;
@@ -994,7 +994,7 @@ class _ShadButtonState extends State<ShadButton> {
           }
 
           return IconTheme(
-            data: materialTheme.iconTheme.copyWith(
+            data: iconTheme.copyWith(
               color: effectiveForegroundColor,
             ),
             child: DefaultTextStyle(
