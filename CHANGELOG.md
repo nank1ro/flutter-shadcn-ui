@@ -1,3 +1,7 @@
+## 0.27.4
+
+- **FIX**: `ShadIconButton` icon size property isn't applied (thanks to @TahaTesser).
+
 ## 0.27.3
 
 - **FIX**: `ShadCalendar` `initialMonth` update when the user did not interact with the month selector yet.
