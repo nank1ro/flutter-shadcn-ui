@@ -3,6 +3,7 @@ import 'package:playground/pages/accordion.dart';
 import 'package:playground/pages/alert.dart';
 import 'package:playground/pages/avatar.dart';
 import 'package:playground/pages/badge.dart';
+import 'package:playground/pages/breadcrumbs.dart';
 import 'package:playground/pages/button.dart';
 import 'package:playground/pages/calendar.dart';
 import 'package:playground/pages/card.dart';
@@ -22,6 +23,7 @@ import 'package:playground/pages/radio_group.dart';
 import 'package:playground/pages/resizable.dart';
 import 'package:playground/pages/select.dart';
 import 'package:playground/pages/sheet.dart';
+import 'package:playground/pages/sidebar.dart';
 import 'package:playground/pages/slider.dart';
 import 'package:playground/pages/sonner.dart';
 import 'package:playground/pages/switch.dart';
@@ -75,6 +77,10 @@ final router = GoRouter(
           variant: ShadBadgeVariant.values.byName(style),
         );
       },
+    ),
+    GoRoute(
+      path: '/breadcrumbs',
+      builder: (context, state) => const BreadcrumbsPage(),
     ),
     GoRoute(
       path: '/avatar',
@@ -309,6 +315,12 @@ final router = GoRouter(
       path: '/textarea',
       builder: (context, state) {
         return const TextareaPage();
+      },
+    ),
+    GoRoute(
+      path: '/sidebar',
+      builder: (context, state) {
+        return const SidebarPage();
       },
     ),
   ],
