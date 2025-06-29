@@ -44,7 +44,6 @@ class ShadSidebar extends StatefulWidget {
     this.footer,
     this.navGroups = const [],
     this.width = 280,
-    this.collapsedWidth = 64,
     this.isCollapsed = false,
     this.onCollapsedChanged,
     this.backgroundColor,
@@ -63,9 +62,6 @@ class ShadSidebar extends StatefulWidget {
 
   /// Width when expanded
   final double width;
-
-  /// Width when collapsed
-  final double collapsedWidth;
 
   /// Whether the sidebar is collapsed
   final bool isCollapsed;
@@ -114,8 +110,7 @@ class _ShadSidebarState extends State<ShadSidebar>
         _animationController.reverse();
       }
     }
-    if (oldWidget.width != widget.width ||
-        oldWidget.collapsedWidth != widget.collapsedWidth) {
+    if (oldWidget.width != widget.width) {
       _updateAnimation();
     }
   }
@@ -123,7 +118,7 @@ class _ShadSidebarState extends State<ShadSidebar>
   void _updateAnimation() {
     _widthAnimation = Tween<double>(
       begin: widget.width,
-      end: widget.collapsedWidth,
+      end: 0, // Completely hidden when collapsed
     ).animate(CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeInOut,
@@ -147,24 +142,33 @@ class _ShadSidebarState extends State<ShadSidebar>
     return AnimatedBuilder(
       animation: _widthAnimation,
       builder: (context, child) {
-        return Container(
-          width: _widthAnimation.value,
-          decoration: BoxDecoration(
-            color: effectiveBackgroundColor,
-            border: Border(
-              right: BorderSide(
-                color: effectiveBorderColor,
-                width: 1,
+        // If width is very small (nearly collapsed), don't render content
+        if (_widthAnimation.value < 1) {
+          return const SizedBox.shrink();
+        }
+
+        return ClipRect(
+          child: Container(
+            width: _widthAnimation.value,
+            decoration: BoxDecoration(
+              color: effectiveBackgroundColor,
+              border: Border(
+                right: BorderSide(
+                  color: effectiveBorderColor,
+                  width: 1,
+                ),
               ),
             ),
-          ),
-          child: Column(
-            children: [
-              // Header
+            child: Opacity(
+              opacity: widget.isCollapsed ? 0.0 : 1.0,
+              child: SizedBox(
+                width: widget.width,
+                child: Column(
+                  children: [              // Header
               if (widget.header != null)
                 Container(
                   width: double.infinity,
-                  padding: widget.padding ?? const EdgeInsets.all(16),
+                  padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
@@ -174,30 +178,26 @@ class _ShadSidebarState extends State<ShadSidebar>
                     ),
                   ),
                   child: widget.header!,
-                ),
-
-              // Content
+                ),// Content
               Expanded(
                 child: SingleChildScrollView(
-                  padding: widget.padding ?? const EdgeInsets.all(16),
+                  padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       for (int i = 0; i < widget.navGroups.length; i++) ...[
                         widget.navGroups[i],
                         if (i < widget.navGroups.length - 1)
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 16),
                       ],
                     ],
                   ),
                 ),
-              ),
-
-              // Footer
+              ),              // Footer
               if (widget.footer != null)
                 Container(
                   width: double.infinity,
-                  padding: widget.padding ?? const EdgeInsets.all(16),
+                  padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
                     border: Border(
                       top: BorderSide(
@@ -208,7 +208,10 @@ class _ShadSidebarState extends State<ShadSidebar>
                   ),
                   child: widget.footer!,
                 ),
-            ],
+                  ],
+                ),
+              ),
+            ),
           ),
         );
       },
@@ -248,7 +251,7 @@ class ShadSidebarGroup extends StatelessWidget {
       children: [
         for (int i = 0; i < items.length; i++) ...[
           ShadSidebarMenuItem(item: items[i]),
-          if (i < items.length - 1) const SizedBox(height: 4),
+          if (i < items.length - 1) const SizedBox(height: 1),
         ],
       ],
     );
@@ -263,39 +266,28 @@ class ShadSidebarGroup extends StatelessWidget {
       children: [
         if (label != null)
           if (collapsible)
-            ExpansionTile(
+            _ShadSidebarCollapsibleGroup(
+              label: label!,
               initiallyExpanded: initiallyExpanded,
-              title: Text(
-                label!,
-                style: theme.textTheme.muted.copyWith(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              children: [content],
-              tilePadding: EdgeInsets.zero,
-              childrenPadding: EdgeInsets.zero,
-              maintainState: true,
+              content: content,
             )
           else ...[
             Text(
               label!,
               style: theme.textTheme.muted.copyWith(
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: FontWeight.w500,
+                letterSpacing: 0.05,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             content,
           ]
         else if (collapsible)
-          ExpansionTile(
+          _ShadSidebarCollapsibleGroup(
+            label: '', // No label, just collapsible content
             initiallyExpanded: initiallyExpanded,
-            title: const SizedBox.shrink(),
-            children: [content],
-            tilePadding: EdgeInsets.zero,
-            childrenPadding: EdgeInsets.zero,
-            maintainState: true,
+            content: content,
           )
         else
           content,
@@ -305,7 +297,7 @@ class ShadSidebarGroup extends StatelessWidget {
 }
 
 /// Individual menu item in the sidebar
-class ShadSidebarMenuItem extends StatelessWidget {
+class ShadSidebarMenuItem extends StatefulWidget {
   const ShadSidebarMenuItem({
     super.key,
     required this.item,
@@ -314,107 +306,82 @@ class ShadSidebarMenuItem extends StatelessWidget {
   final ShadSidebarNavItem item;
 
   @override
+  State<ShadSidebarMenuItem> createState() => _ShadSidebarMenuItemState();
+}
+
+class _ShadSidebarMenuItemState extends State<ShadSidebarMenuItem> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
     // Main item button
-    final mainButton = GestureDetector(
-      onTap: item.onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: item.isActive 
-              ? theme.colorScheme.accent 
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Row(
-          children: [
-            if (item.icon != null) ...[
-              SizedBox(
-                width: 16,
-                height: 16,
-                child: item.icon!,
-              ),
-              const SizedBox(width: 8),
-            ],
-            Expanded(
-              child: Text(
-                item.title,
-                style: theme.textTheme.small.copyWith(
-                  fontWeight: item.isActive ? FontWeight.w500 : FontWeight.w400,
-                  color: item.isActive
-                      ? theme.colorScheme.accentForeground
-                      : theme.colorScheme.foreground,
+    final mainButton = MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTap: widget.item.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          decoration: BoxDecoration(
+            color: widget.item.isActive 
+                ? theme.colorScheme.accent 
+                : _isHovered 
+                    ? theme.colorScheme.accent.withValues(alpha: 0.1)
+                    : Colors.transparent,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Row(
+            children: [
+              if (widget.item.icon != null) ...[
+                SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: widget.item.icon!,
+                ),
+                const SizedBox(width: 8),
+              ],
+              Expanded(
+                child: Text(
+                  widget.item.title,
+                  style: theme.textTheme.small.copyWith(
+                    fontSize: 13,
+                    fontWeight: widget.item.isActive ? FontWeight.w500 : FontWeight.w400,
+                    color: widget.item.isActive
+                        ? theme.colorScheme.accentForeground
+                        : theme.colorScheme.foreground,
+                  ),
                 ),
               ),
-            ),
-            if (item.items?.isNotEmpty == true)
-              Icon(
-                LucideIcons.chevronRight,
-                size: 14,
-                color: theme.colorScheme.mutedForeground,
-              ),
-          ],
+              if (widget.item.items?.isNotEmpty == true)
+                Icon(
+                  LucideIcons.chevronRight,
+                  size: 12,
+                  color: theme.colorScheme.mutedForeground,
+                ),
+            ],
+          ),
         ),
       ),
     );
 
     // If no sub-items, return just the button
-    if (item.items?.isEmpty != false) {
+    if (widget.item.items?.isEmpty != false) {
       return mainButton;
     }
 
-    // If has sub-items, wrap in expansion tile
-    return ExpansionTile(
-      title: Row(
-        children: [
-          if (item.icon != null) ...[
-            SizedBox(
-              width: 16,
-              height: 16,
-              child: item.icon!,
-            ),
-            const SizedBox(width: 8),
-          ],
-          Expanded(
-            child: Text(
-              item.title,
-              style: theme.textTheme.small.copyWith(
-                fontWeight: item.isActive ? FontWeight.w500 : FontWeight.w400,
-                color: item.isActive
-                    ? theme.colorScheme.accentForeground
-                    : theme.colorScheme.foreground,
-              ),
-            ),
-          ),
-        ],
-      ),
-      backgroundColor: item.isActive 
-          ? theme.colorScheme.accent 
-          : Colors.transparent,
-      tilePadding: EdgeInsets.zero,
-      childrenPadding: EdgeInsets.zero,
-      maintainState: true,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 24),
-          child: Column(
-            children: [
-              for (int i = 0; i < item.items!.length; i++) ...[
-                ShadSidebarMenuItem(item: item.items![i]),
-                if (i < item.items!.length - 1) const SizedBox(height: 2),
-              ],
-            ],
-          ),
-        ),
-      ],
+    // If has sub-items, wrap in custom collapsible menu
+    return _ShadSidebarCollapsibleMenuItem(
+      item: widget.item,
     );
   }
 }
 
 /// Sidebar header with app branding
-class ShadSidebarHeader extends StatelessWidget {
+class ShadSidebarHeader extends StatefulWidget {
   const ShadSidebarHeader({
     super.key,
     this.logo,
@@ -429,53 +396,69 @@ class ShadSidebarHeader extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
+  State<ShadSidebarHeader> createState() => _ShadSidebarHeaderState();
+}
+
+class _ShadSidebarHeaderState extends State<ShadSidebarHeader> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.transparent,
-        ),
-        child: Row(
-          children: [
-            if (logo != null) ...[
-              Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Center(child: logo!),
-              ),
-              const SizedBox(width: 12),
-            ],
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.small.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+    return MouseRegion(
+      cursor: widget.onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: _isHovered && widget.onTap != null
+                ? theme.colorScheme.accent.withValues(alpha: 0.1)
+                : Colors.transparent,
+          ),
+          child: Row(
+            children: [
+              if (widget.logo != null) ...[
+                Container(
+                  width: 28,
+                  height: 28,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(6),
                   ),
-                  if (subtitle != null)
+                  child: Center(child: widget.logo!),
+                ),
+                const SizedBox(width: 8),
+              ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
                     Text(
-                      subtitle!,
-                      style: theme.textTheme.muted.copyWith(
-                        fontSize: 10,
+                      widget.title,
+                      style: theme.textTheme.small.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                ],
+                    if (widget.subtitle != null)
+                      Text(
+                        widget.subtitle!,
+                        style: theme.textTheme.muted.copyWith(
+                          fontSize: 11,
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -483,7 +466,7 @@ class ShadSidebarHeader extends StatelessWidget {
 }
 
 /// Sidebar footer with user information
-class ShadSidebarFooter extends StatelessWidget {
+class ShadSidebarFooter extends StatefulWidget {
   const ShadSidebarFooter({
     super.key,
     required this.user,
@@ -496,76 +479,92 @@ class ShadSidebarFooter extends StatelessWidget {
   final VoidCallback? onUserTap;
 
   @override
+  State<ShadSidebarFooter> createState() => _ShadSidebarFooterState();
+}
+
+class _ShadSidebarFooterState extends State<ShadSidebarFooter> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return GestureDetector(
-      onTap: onUserTap,
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.transparent,
-        ),
-        child: Row(
-          children: [
-            // Avatar
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.muted,
-                borderRadius: BorderRadius.circular(8),
+    return MouseRegion(
+      cursor: widget.onUserTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTap: widget.onUserTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: _isHovered && widget.onUserTap != null
+                ? theme.colorScheme.accent.withValues(alpha: 0.1)
+                : Colors.transparent,
+          ),
+          child: Row(
+            children: [
+              // Avatar
+              Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.muted,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: widget.user.avatar != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: Image.network(
+                          widget.user.avatar!,
+                          width: 28,
+                          height: 28,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              _buildFallbackAvatar(theme),
+                        ),
+                      )
+                    : _buildFallbackAvatar(theme),
               ),
-              child: user.avatar != null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        user.avatar!,
-                        width: 32,
-                        height: 32,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            _buildFallbackAvatar(theme),
-                      ),
-                    )
-                  : _buildFallbackAvatar(theme),
-            ),
-            const SizedBox(width: 12),
-            // User info
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    user.name,
-                    style: theme.textTheme.small.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    user.email,
-                    style: theme.textTheme.muted.copyWith(
-                      fontSize: 10,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            // Actions
-            if (actions?.isNotEmpty == true) ...[
               const SizedBox(width: 8),
-              ...actions!,
-            ] else
-              Icon(
-                LucideIcons.chevronsUpDown,
-                size: 14,
-                color: theme.colorScheme.mutedForeground,
+              // User info
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      widget.user.name,
+                      style: theme.textTheme.small.copyWith(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      widget.user.email,
+                      style: theme.textTheme.muted.copyWith(
+                        fontSize: 11,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
-          ],
+              // Actions
+              if (widget.actions?.isNotEmpty == true) ...[
+                const SizedBox(width: 8),
+                ...widget.actions!,
+              ] else
+                Icon(
+                  LucideIcons.chevronsUpDown,
+                  size: 12,
+                  color: theme.colorScheme.mutedForeground,
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -574,12 +573,319 @@ class ShadSidebarFooter extends StatelessWidget {
   Widget _buildFallbackAvatar(ShadThemeData theme) {
     return Center(
       child: Text(
-        user.name.isNotEmpty ? user.name[0].toUpperCase() : 'U',
+        widget.user.name.isNotEmpty ? widget.user.name[0].toUpperCase() : 'U',
         style: theme.textTheme.small.copyWith(
           fontWeight: FontWeight.w600,
           color: theme.colorScheme.mutedForeground,
         ),
       ),
+    );
+  }
+}
+
+/// Custom collapsible group widget that matches shadcn/ui guidelines
+class _ShadSidebarCollapsibleGroup extends StatefulWidget {
+  const _ShadSidebarCollapsibleGroup({
+    required this.label,
+    required this.initiallyExpanded,
+    required this.content,
+  });
+
+  final String label;
+  final bool initiallyExpanded;
+  final Widget content;
+
+  @override
+  State<_ShadSidebarCollapsibleGroup> createState() => _ShadSidebarCollapsibleGroupState();
+}
+
+class _ShadSidebarCollapsibleGroupState extends State<_ShadSidebarCollapsibleGroup> 
+    with SingleTickerProviderStateMixin {
+  late bool _isExpanded;
+  late AnimationController _animationController;
+  late Animation<double> _rotationAnimation;
+  late Animation<double> _sizeAnimation;
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isExpanded = widget.initiallyExpanded;
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+    _rotationAnimation = Tween<double>(
+      begin: 0,
+      end: 0.5,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+    _sizeAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+    
+    if (_isExpanded) {
+      _animationController.value = 1.0;
+    }
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _toggle() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+      if (_isExpanded) {
+        _animationController.forward();
+      } else {
+        _animationController.reverse();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Collapsible header button (only show if label is not empty)
+        if (widget.label.isNotEmpty)
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            onEnter: (_) => setState(() => _isHovered = true),
+            onExit: (_) => setState(() => _isHovered = false),
+            child: GestureDetector(
+              onTap: _toggle,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  color: _isHovered
+                      ? theme.colorScheme.accent.withValues(alpha: 0.1)
+                      : Colors.transparent,
+                ),
+                child: Row(
+                  children: [
+                    AnimatedBuilder(
+                      animation: _rotationAnimation,
+                      builder: (context, child) {
+                        return Transform.rotate(
+                          angle: _rotationAnimation.value * 3.14159, // 180 degrees
+                          child: Icon(
+                            LucideIcons.chevronDown,
+                            size: 12,
+                            color: theme.colorScheme.mutedForeground,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        widget.label,
+                        style: theme.textTheme.muted.copyWith(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.05,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          
+        // Collapsible content with vertical line
+        SizeTransition(
+          sizeFactor: _sizeAnimation,
+          axisAlignment: -1.0, // Align to top for top-to-bottom animation
+          child: Container(
+            margin: const EdgeInsets.only(left: 12, top: 4),
+            padding: const EdgeInsets.only(left: 8),
+            decoration: BoxDecoration(
+              border: Border(
+                left: BorderSide(
+                  color: theme.colorScheme.border,
+                  width: 1,
+                ),
+              ),
+            ),
+            child: widget.content,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Custom collapsible menu item widget that matches shadcn/ui guidelines
+class _ShadSidebarCollapsibleMenuItem extends StatefulWidget {
+  const _ShadSidebarCollapsibleMenuItem({
+    required this.item,
+  });
+
+  final ShadSidebarNavItem item;
+
+  @override
+  State<_ShadSidebarCollapsibleMenuItem> createState() => _ShadSidebarCollapsibleMenuItemState();
+}
+
+class _ShadSidebarCollapsibleMenuItemState extends State<_ShadSidebarCollapsibleMenuItem> 
+    with SingleTickerProviderStateMixin {
+  late bool _isExpanded;
+  late AnimationController _animationController;
+  late Animation<double> _rotationAnimation;
+  late Animation<double> _sizeAnimation;
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isExpanded = false; // Default collapsed for menu items
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+    _rotationAnimation = Tween<double>(
+      begin: 0,
+      end: 0.5,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+    _sizeAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _toggle() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+      if (_isExpanded) {
+        _animationController.forward();
+      } else {
+        _animationController.reverse();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Main menu item button
+        MouseRegion(
+          cursor: SystemMouseCursors.click,
+          onEnter: (_) => setState(() => _isHovered = true),
+          onExit: (_) => setState(() => _isHovered = false),
+          child: GestureDetector(
+            onTap: widget.item.onTap ?? _toggle,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              decoration: BoxDecoration(
+                color: widget.item.isActive 
+                    ? theme.colorScheme.accent 
+                    : _isHovered
+                        ? theme.colorScheme.accent.withValues(alpha: 0.1)
+                        : Colors.transparent,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Row(
+                children: [
+                  if (widget.item.icon != null) ...[
+                    SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: widget.item.icon!,
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                  Expanded(
+                    child: Text(
+                      widget.item.title,
+                      style: theme.textTheme.small.copyWith(
+                        fontSize: 13,
+                        fontWeight: widget.item.isActive ? FontWeight.w500 : FontWeight.w400,
+                        color: widget.item.isActive
+                            ? theme.colorScheme.accentForeground
+                            : theme.colorScheme.foreground,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: _toggle,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: AnimatedBuilder(
+                        animation: _rotationAnimation,
+                        builder: (context, child) {
+                          return Transform.rotate(
+                            angle: _rotationAnimation.value * 3.14159, // 180 degrees
+                            child: Icon(
+                              LucideIcons.chevronDown,
+                              size: 12,
+                              color: theme.colorScheme.mutedForeground,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        
+        // Collapsible sub-items with vertical line
+        SizeTransition(
+          sizeFactor: _sizeAnimation,
+          axisAlignment: -1.0, // Align to top for top-to-bottom animation
+          child: Container(
+            margin: const EdgeInsets.only(left: 12, top: 2),
+            padding: const EdgeInsets.only(left: 8),
+            decoration: BoxDecoration(
+              border: Border(
+                left: BorderSide(
+                  color: theme.colorScheme.border,
+                  width: 1,
+                ),
+              ),
+            ),
+            child: Column(
+              children: [
+                for (int i = 0; i < widget.item.items!.length; i++) ...[
+                  ShadSidebarMenuItem(item: widget.item.items![i]),
+                  if (i < widget.item.items!.length - 1) const SizedBox(height: 1),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
