@@ -138,7 +138,7 @@ class _SidebarPageState extends State<SidebarPage> {
               ],
             ),
           ),
-          
+
           // Main Content Area
           Expanded(
             child: Container(
@@ -158,14 +158,17 @@ class _SidebarPageState extends State<SidebarPage> {
                             });
                           },
                           icon: Icon(
-                            _isCollapsed ? LucideIcons.panelLeft : LucideIcons.panelRightClose,
+                            _isCollapsed
+                                ? LucideIcons.panelLeft
+                                : LucideIcons.panelRightClose,
                             size: 16,
                           ),
                         ),
                         const SizedBox(width: 16),
                         const Text(
                           'Sidebar',
-                          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 32, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -176,16 +179,64 @@ class _SidebarPageState extends State<SidebarPage> {
                     ),
                     const SizedBox(height: 32),
 
+                    // Features section
+                    const Text(
+                      'Features',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(height: 16),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _FeatureItem(
+                          icon: LucideIcons.layoutDashboard,
+                          title: 'Composable Structure',
+                          description:
+                              'Built with header, content, and footer sections that can be customized independently.',
+                        ),
+                        _FeatureItem(
+                          icon: LucideIcons.layers,
+                          title: 'Nested Navigation',
+                          description:
+                              'Support for hierarchical navigation with expandable sub-items.',
+                        ),
+                        _FeatureItem(
+                          icon: LucideIcons.minimize2,
+                          title: 'Collapsible',
+                          description:
+                              'Smooth animation when collapsing and expanding the sidebar.',
+                        ),
+                        _FeatureItem(
+                          icon: LucideIcons.palette,
+                          title: 'Theme Integration',
+                          description:
+                              'Fully integrated with shadcn/ui theming system.',
+                        ),
+                        _FeatureItem(
+                          icon: LucideIcons.smartphone,
+                          title: 'Responsive',
+                          description:
+                              'Adapts to different screen sizes and orientations.',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
+
                     // Usage Examples Section
                     const Text(
                       'Basic Usage',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 16),
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: ShadTheme.of(context).colorScheme.muted.withValues(alpha: 0.3),
+                        color: ShadTheme.of(context)
+                            .colorScheme
+                            .muted
+                            .withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
                           color: ShadTheme.of(context).colorScheme.border,
@@ -225,48 +276,11 @@ class _SidebarPageState extends State<SidebarPage> {
                     ),
                     const SizedBox(height: 32),
 
-                    // Features section
-                    const Text(
-                      'Features',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(height: 16),
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _FeatureItem(
-                          icon: LucideIcons.layoutDashboard,
-                          title: 'Composable Structure',
-                          description: 'Built with header, content, and footer sections that can be customized independently.',
-                        ),
-                        _FeatureItem(
-                          icon: LucideIcons.layers,
-                          title: 'Nested Navigation',
-                          description: 'Support for hierarchical navigation with expandable sub-items.',
-                        ),
-                        _FeatureItem(
-                          icon: LucideIcons.minimize2,
-                          title: 'Collapsible',
-                          description: 'Smooth animation when collapsing and expanding the sidebar.',
-                        ),
-                        _FeatureItem(
-                          icon: LucideIcons.palette,
-                          title: 'Theme Integration',
-                          description: 'Fully integrated with shadcn/ui theming system.',
-                        ),
-                        _FeatureItem(
-                          icon: LucideIcons.smartphone,
-                          title: 'Responsive',
-                          description: 'Adapts to different screen sizes and orientations.',
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 32),
-
                     // Components section
                     const Text(
                       'Components',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 16),
                     const Column(
@@ -274,31 +288,38 @@ class _SidebarPageState extends State<SidebarPage> {
                       children: [
                         _ComponentItem(
                           name: 'ShadSidebar',
-                          description: 'Main sidebar container with header, content, and footer areas.',
+                          description:
+                              'Main sidebar container with header, content, and footer areas.',
                         ),
                         _ComponentItem(
                           name: 'ShadSidebarHeader',
-                          description: 'Header component with logo, title, and subtitle.',
+                          description:
+                              'Header component with logo, title, and subtitle.',
                         ),
                         _ComponentItem(
                           name: 'ShadSidebarGroup',
-                          description: 'Groups navigation items with optional labels and collapsible functionality.',
+                          description:
+                              'Groups navigation items with optional labels and collapsible functionality.',
                         ),
                         _ComponentItem(
                           name: 'ShadSidebarMenuItem',
-                          description: 'Individual navigation item with icon, text, and nested support.',
+                          description:
+                              'Individual navigation item with icon, text, and nested support.',
                         ),
                         _ComponentItem(
                           name: 'ShadSidebarFooter',
-                          description: 'Footer component typically containing user information.',
+                          description:
+                              'Footer component typically containing user information.',
                         ),
                         _ComponentItem(
                           name: 'ShadSidebarUser',
-                          description: 'Data class for user information in the footer.',
+                          description:
+                              'Data class for user information in the footer.',
                         ),
                         _ComponentItem(
                           name: 'ShadSidebarNavItem',
-                          description: 'Data class for navigation item configuration.',
+                          description:
+                              'Data class for navigation item configuration.',
                         ),
                       ],
                     ),
@@ -327,7 +348,7 @@ class _FeatureItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
@@ -389,7 +410,7 @@ class _ComponentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Column(
