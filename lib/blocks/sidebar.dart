@@ -324,13 +324,13 @@ class _ShadSidebarMenuItemState extends State<ShadSidebarMenuItem> {
       child: GestureDetector(
         onTap: widget.item.onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           decoration: BoxDecoration(
             color: widget.item.isActive 
                 ? theme.colorScheme.accent 
                 : _isHovered 
-                    ? theme.colorScheme.accent.withValues(alpha: 0.1)
+                    ? theme.colorScheme.accent.withOpacity(0.1)
                     : Colors.transparent,
             borderRadius: BorderRadius.circular(6),
           ),
@@ -413,12 +413,12 @@ class _ShadSidebarHeaderState extends State<ShadSidebarHeader> {
       child: GestureDetector(
         onTap: widget.onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             color: _isHovered && widget.onTap != null
-                ? theme.colorScheme.accent.withValues(alpha: 0.1)
+                ? theme.colorScheme.accent.withOpacity(0.1)
                 : Colors.transparent,
           ),
           child: Row(
@@ -496,12 +496,12 @@ class _ShadSidebarFooterState extends State<ShadSidebarFooter> {
       child: GestureDetector(
         onTap: widget.onUserTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             color: _isHovered && widget.onUserTap != null
-                ? theme.colorScheme.accent.withValues(alpha: 0.1)
+                ? theme.colorScheme.accent.withOpacity(0.1)
                 : Colors.transparent,
           ),
           child: Row(
@@ -666,12 +666,12 @@ class _ShadSidebarCollapsibleGroupState extends State<_ShadSidebarCollapsibleGro
             child: GestureDetector(
               onTap: _toggle,
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 200),
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   color: _isHovered
-                      ? theme.colorScheme.accent.withValues(alpha: 0.1)
+                      ? theme.colorScheme.accent.withOpacity(0.1)
                       : Colors.transparent,
                 ),
                 child: Row(
@@ -803,13 +803,13 @@ class _ShadSidebarCollapsibleMenuItemState extends State<_ShadSidebarCollapsible
           child: GestureDetector(
             onTap: widget.item.onTap ?? _toggle,
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               decoration: BoxDecoration(
                 color: widget.item.isActive 
                     ? theme.colorScheme.accent 
                     : _isHovered
-                        ? theme.colorScheme.accent.withValues(alpha: 0.1)
+                        ? theme.colorScheme.accent.withOpacity(0.1)
                         : Colors.transparent,
                 borderRadius: BorderRadius.circular(6),
               ),
