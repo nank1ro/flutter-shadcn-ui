@@ -243,14 +243,15 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
     return ShadBreadcrumbTheme(
       separator: Icon(
         LucideIcons.chevronRight,
-        size: 16,
+        size: 14,
         color: colorScheme.mutedForeground,
       ),
       ellipsis: Icon(
         LucideIcons.ellipsis,
-        size: 16,
+        size: 14,
         color: colorScheme.mutedForeground,
       ),
+      spacing: 8.0,
       itemTextStyle: effectiveTextTheme.small,
       linkTextStyle: effectiveTextTheme.small.copyWith(
         color: colorScheme.foreground,

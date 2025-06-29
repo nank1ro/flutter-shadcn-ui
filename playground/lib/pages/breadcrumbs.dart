@@ -52,8 +52,8 @@ class BreadcrumbsPage extends StatelessWidget {
                   child: Text('Library'),
                 ),
                 ShadBreadcrumbItem(
-                  child: Text('Data'),
                   isCurrentPage: true,
+                  child: Text('Data'),
                 ),
               ],
             ),

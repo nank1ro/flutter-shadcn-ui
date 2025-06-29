@@ -53,7 +53,7 @@ class ShadBreadcrumb extends StatelessWidget {
         breadcrumbTheme.separator ??
         Icon(
           LucideIcons.chevronRight,
-          size: 16,
+          size: 14,
           color: theme.colorScheme.mutedForeground,
         );
 
@@ -63,11 +63,15 @@ class ShadBreadcrumb extends StatelessWidget {
     final effectiveCrossAxisAlignment =
         crossAxisAlignment ?? breadcrumbTheme.crossAxisAlignment ?? CrossAxisAlignment.center;
 
+    final effectiveSpacing = breadcrumbTheme.spacing ?? 8.0;
+
     final separatedChildren = <Widget>[];
     for (int i = 0; i < children.length; i++) {
       separatedChildren.add(children[i]);
       if (i < children.length - 1) {
+        separatedChildren.add(SizedBox(width: effectiveSpacing));
         separatedChildren.add(effectiveSeparator);
+        separatedChildren.add(SizedBox(width: effectiveSpacing));
       }
     }
 
@@ -276,7 +280,7 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
             breadcrumbTheme.ellipsis ??
             Icon(
               LucideIcons.ellipsis,
-              size: 16,
+              size: 14,
               color: theme.colorScheme.mutedForeground,
             ),
       ),

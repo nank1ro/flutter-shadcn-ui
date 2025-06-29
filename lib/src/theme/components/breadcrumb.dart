@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 /// The theme for breadcrumb components.
@@ -9,6 +11,7 @@ class ShadBreadcrumbTheme {
     this.merge = true,
     this.separator,
     this.ellipsis,
+    this.spacing,
     this.itemTextStyle,
     this.linkTextStyle,
     this.linkHoverTextStyle,
@@ -24,6 +27,9 @@ class ShadBreadcrumbTheme {
 
   /// The widget to use as ellipsis indicator.
   final Widget? ellipsis;
+
+  /// The spacing around separators between breadcrumb items.
+  final double? spacing;
 
   /// The text style for breadcrumb items.
   final TextStyle? itemTextStyle;
@@ -49,6 +55,7 @@ class ShadBreadcrumbTheme {
     bool? merge,
     Widget? separator,
     Widget? ellipsis,
+    double? spacing,
     TextStyle? itemTextStyle,
     TextStyle? linkTextStyle,
     TextStyle? linkHoverTextStyle,
@@ -60,6 +67,7 @@ class ShadBreadcrumbTheme {
       merge: merge ?? this.merge,
       separator: separator ?? this.separator,
       ellipsis: ellipsis ?? this.ellipsis,
+      spacing: spacing ?? this.spacing,
       itemTextStyle: itemTextStyle ?? this.itemTextStyle,
       linkTextStyle: linkTextStyle ?? this.linkTextStyle,
       linkHoverTextStyle: linkHoverTextStyle ?? this.linkHoverTextStyle,
@@ -76,6 +84,7 @@ class ShadBreadcrumbTheme {
     return copyWith(
       separator: other.separator,
       ellipsis: other.ellipsis,
+      spacing: other.spacing,
       itemTextStyle: other.itemTextStyle,
       linkTextStyle: other.linkTextStyle,
       linkHoverTextStyle: other.linkHoverTextStyle,
@@ -96,6 +105,7 @@ class ShadBreadcrumbTheme {
       merge: t < 0.5 ? a.merge : b.merge,
       separator: t < 0.5 ? a.separator : b.separator,
       ellipsis: t < 0.5 ? a.ellipsis : b.ellipsis,
+      spacing: lerpDouble(a.spacing, b.spacing, t),
       itemTextStyle: TextStyle.lerp(a.itemTextStyle, b.itemTextStyle, t),
       linkTextStyle: TextStyle.lerp(a.linkTextStyle, b.linkTextStyle, t),
       linkHoverTextStyle: TextStyle.lerp(a.linkHoverTextStyle, b.linkHoverTextStyle, t),
@@ -112,6 +122,7 @@ class ShadBreadcrumbTheme {
         other.merge == merge &&
         other.separator == separator &&
         other.ellipsis == ellipsis &&
+        other.spacing == spacing &&
         other.itemTextStyle == itemTextStyle &&
         other.linkTextStyle == linkTextStyle &&
         other.linkHoverTextStyle == linkHoverTextStyle &&
@@ -126,6 +137,7 @@ class ShadBreadcrumbTheme {
       merge,
       separator,
       ellipsis,
+      spacing,
       itemTextStyle,
       linkTextStyle,
       linkHoverTextStyle,
