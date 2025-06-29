@@ -3,9 +3,6 @@
 // App
 export 'src/app.dart';
 
-// Blocks
-export 'blocks/sidebar.dart';
-
 // Components
 export 'src/components/accordion.dart';
 export 'src/components/alert.dart';
@@ -41,6 +38,7 @@ export 'src/components/resizable.dart';
 export 'src/components/select.dart';
 export 'src/components/separator.dart';
 export 'src/components/sheet.dart';
+export 'src/components/sidebar.dart';
 export 'src/components/slider.dart';
 export 'src/components/sonner.dart';
 export 'src/components/switch.dart';
