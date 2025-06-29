@@ -184,9 +184,7 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
         onTap: widget.onPressed,
         child: DefaultTextStyle(
           style: (breadcrumbTheme.linkTextStyle ??
-                  theme.textTheme.small.copyWith(
-                    color: theme.colorScheme.mutedForeground,
-                  ))
+                  theme.textTheme.small)
               .copyWith(
             color: _isHovered && widget.onPressed != null
                 ? (breadcrumbTheme.linkHoverTextStyle?.color ??

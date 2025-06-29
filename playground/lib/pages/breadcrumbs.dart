@@ -51,8 +51,7 @@ class BreadcrumbsPage extends StatelessWidget {
                 ShadBreadcrumbItem(
                   child: Text('Library'),
                 ),
-                ShadBreadcrumbItem(
-                  isCurrentPage: true,
+                ShadBreadcrumbPage(
                   child: Text('Data'),
                 ),
               ],
@@ -79,9 +78,8 @@ class BreadcrumbsPage extends StatelessWidget {
                     child: const Text('Components'),
                   ),
                 ),
-                const ShadBreadcrumbItem(
+                const ShadBreadcrumbPage(
                   child: Text('Breadcrumb'),
-                  isCurrentPage: true,
                 ),
               ],
             ),
@@ -116,9 +114,8 @@ class BreadcrumbsPage extends StatelessWidget {
                     child: const Text('Components'),
                   ),
                 ),
-                const ShadBreadcrumbItem(
+                const ShadBreadcrumbPage(
                   child: Text('Breadcrumb'),
-                  isCurrentPage: true,
                 ),
               ],
             ),
@@ -145,9 +142,8 @@ class BreadcrumbsPage extends StatelessWidget {
                     child: const Text('Components'),
                   ),
                 ),
-                const ShadBreadcrumbItem(
+                const ShadBreadcrumbPage(
                   child: Text('Breadcrumb'),
-                  isCurrentPage: true,
                 ),
               ],
             ),
@@ -168,9 +164,8 @@ class BreadcrumbsPage extends StatelessWidget {
                 ShadBreadcrumbItem(
                   child: Text('Library'),
                 ),
-                ShadBreadcrumbItem(
+                ShadBreadcrumbPage(
                   child: Text('Data'),
-                  isCurrentPage: true,
                 ),
               ],
             ),

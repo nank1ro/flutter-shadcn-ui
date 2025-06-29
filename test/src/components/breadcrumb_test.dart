@@ -381,10 +381,9 @@ void main() {
   });
 
   group('Golden Tests', () {
-    // Golden tests are commented out until golden files are generated
+    // Golden tests are enabled
     // Run with --update-goldens to create the initial golden files
     
-    /*
     testWidgets('ShadBreadcrumb basic matches goldens', (tester) async {
       await tester.pumpAsyncWidget(
         createTestWidget(
@@ -396,9 +395,8 @@ void main() {
               ShadBreadcrumbItem(
                 child: Text('Library'),
               ),
-              ShadBreadcrumbItem(
+              ShadBreadcrumbPage(
                 child: Text('Data'),
-                isCurrentPage: true,
               ),
             ],
           ),
@@ -428,9 +426,8 @@ void main() {
                   child: const Text('Components'),
                 ),
               ),
-              const ShadBreadcrumbItem(
+              const ShadBreadcrumbPage(
                 child: Text('Breadcrumb'),
-                isCurrentPage: true,
               ),
             ],
           ),
@@ -463,9 +460,8 @@ void main() {
                   child: const Text('Components'),
                 ),
               ),
-              const ShadBreadcrumbItem(
+              const ShadBreadcrumbPage(
                 child: Text('Breadcrumb'),
-                isCurrentPage: true,
               ),
             ],
           ),
@@ -490,9 +486,8 @@ void main() {
               ShadBreadcrumbItem(
                 child: Text('Library'),
               ),
-              ShadBreadcrumbItem(
+              ShadBreadcrumbPage(
                 child: Text('Data'),
-                isCurrentPage: true,
               ),
             ],
           ),
@@ -504,6 +499,5 @@ void main() {
         matchesGoldenFile('goldens/breadcrumb_custom_separator.png'),
       );
     });
-    */
   });
 }
