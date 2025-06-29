@@ -4,6 +4,7 @@ import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
+import 'package:shadcn_ui/src/theme/components/breadcrumb.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
@@ -52,6 +53,7 @@ abstract class ShadBaseTheme {
     required this.secondaryBadgeTheme,
     required this.destructiveBadgeTheme,
     required this.outlineBadgeTheme,
+    required this.breadcrumbTheme,
     required this.radius,
     required this.avatarTheme,
     required this.buttonSizesTheme,
@@ -107,6 +109,7 @@ abstract class ShadBaseTheme {
   final ShadBadgeTheme secondaryBadgeTheme;
   final ShadBadgeTheme destructiveBadgeTheme;
   final ShadBadgeTheme outlineBadgeTheme;
+  final ShadBreadcrumbTheme breadcrumbTheme;
   final BorderRadius radius;
   final ShadAvatarTheme avatarTheme;
   final ShadButtonSizesTheme buttonSizesTheme;
@@ -163,6 +166,7 @@ abstract class ShadThemeVariant {
   ShadBadgeTheme destructiveBadgeTheme();
   ShadBadgeTheme outlineBadgeTheme();
   ShadAvatarTheme avatarTheme();
+  ShadBreadcrumbTheme breadcrumbTheme();
   ShadTooltipTheme tooltipTheme();
   ShadPopoverTheme popoverTheme();
   ShadDecoration decorationTheme();
