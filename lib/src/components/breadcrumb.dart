@@ -57,21 +57,24 @@ class ShadBreadcrumb extends StatelessWidget {
           color: theme.colorScheme.mutedForeground,
         );
 
-    final effectiveMainAxisAlignment =
-        mainAxisAlignment ?? breadcrumbTheme.mainAxisAlignment ?? MainAxisAlignment.start;
+    final effectiveMainAxisAlignment = mainAxisAlignment ??
+        breadcrumbTheme.mainAxisAlignment ??
+        MainAxisAlignment.start;
 
-    final effectiveCrossAxisAlignment =
-        crossAxisAlignment ?? breadcrumbTheme.crossAxisAlignment ?? CrossAxisAlignment.center;
+    final effectiveCrossAxisAlignment = crossAxisAlignment ??
+        breadcrumbTheme.crossAxisAlignment ??
+        CrossAxisAlignment.center;
 
     final effectiveSpacing = breadcrumbTheme.spacing ?? 8.0;
 
     final separatedChildren = <Widget>[];
-    for (int i = 0; i < children.length; i++) {
+    for (var i = 0; i < children.length; i++) {
       separatedChildren.add(children[i]);
       if (i < children.length - 1) {
-        separatedChildren.add(SizedBox(width: effectiveSpacing));
-        separatedChildren.add(effectiveSeparator);
-        separatedChildren.add(SizedBox(width: effectiveSpacing));
+        separatedChildren
+          ..add(SizedBox(width: effectiveSpacing))
+          ..add(effectiveSeparator)
+          ..add(SizedBox(width: effectiveSpacing));
       }
     }
 
@@ -165,12 +168,18 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
     final breadcrumbTheme = theme.breadcrumbTheme;
 
     final effectiveCursor = widget.cursor ??
-        (widget.onPressed != null ? SystemMouseCursors.click : SystemMouseCursors.basic);
+        (widget.onPressed != null
+            ? SystemMouseCursors.click
+            : SystemMouseCursors.basic);
 
     return MouseRegion(
       cursor: effectiveCursor,
-      onEnter: widget.onPressed != null ? (_) => setState(() => _isHovered = true) : null,
-      onExit: widget.onPressed != null ? (_) => setState(() => _isHovered = false) : null,
+      onEnter: widget.onPressed != null
+          ? (_) => setState(() => _isHovered = true)
+          : null,
+      onExit: widget.onPressed != null
+          ? (_) => setState(() => _isHovered = false)
+          : null,
       child: GestureDetector(
         onTap: widget.onPressed,
         child: DefaultTextStyle(
@@ -180,7 +189,8 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
                   ))
               .copyWith(
             color: _isHovered && widget.onPressed != null
-                ? (breadcrumbTheme.linkHoverTextStyle?.color ?? theme.colorScheme.foreground)
+                ? (breadcrumbTheme.linkHoverTextStyle?.color ??
+                    theme.colorScheme.foreground)
                 : null,
           ),
           child: widget.child,
