@@ -104,6 +104,7 @@ export 'src/theme/components/switch.dart';
 export 'src/theme/components/table.dart';
 export 'src/theme/components/tabs.dart';
 export 'src/theme/components/textarea.dart';
+export 'src/theme/components/sidebar.dart';
 export 'src/theme/components/time_picker.dart';
 export 'src/theme/components/toast.dart';
 export 'src/theme/components/tooltip.dart';

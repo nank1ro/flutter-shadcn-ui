@@ -36,6 +36,7 @@ import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
 import 'package:shadcn_ui/src/theme/components/textarea.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar.dart';
 import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
@@ -1034,6 +1035,19 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       maxHeight: 500,
       resizable: true,
       scrollbarPadding: const EdgeInsets.only(bottom: 10),
+    );
+  }
+
+  @override
+  ShadSidebarTheme sidebarTheme() {
+    return ShadSidebarTheme(
+      width: 280,
+      backgroundColor: colorScheme.card,
+      borderColor: colorScheme.border,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      animationDuration: const Duration(milliseconds: 200),
+      animationCurve: Curves.easeInOut,
+      groupSpacing: 16,
     );
   }
 }

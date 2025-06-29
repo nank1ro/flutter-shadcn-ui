@@ -25,6 +25,7 @@ import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -98,6 +99,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadSeparatorTheme? separatorTheme,
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
+    ShadSidebarTheme? sidebarTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -245,6 +247,7 @@ class ShadThemeData extends ShadBaseTheme {
           effectiveVariant.separatorTheme().mergeWith(separatorTheme),
       sonnerTheme: effectiveVariant.sonnerTheme().mergeWith(sonnerTheme),
       textareaTheme: effectiveVariant.textareaTheme().mergeWith(textareaTheme),
+      sidebarTheme: effectiveVariant.sidebarTheme().mergeWith(sidebarTheme),
     );
   }
 
@@ -302,6 +305,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.separatorTheme,
     required super.sonnerTheme,
     required super.textareaTheme,
+    required super.sidebarTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -408,6 +412,8 @@ class ShadThemeData extends ShadBaseTheme {
       separatorTheme:
           ShadSeparatorTheme.lerp(a.separatorTheme, b.separatorTheme, t),
       sonnerTheme: ShadSonnerTheme.lerp(a.sonnerTheme, b.sonnerTheme, t),
+      textareaTheme: ShadTextareaTheme.lerp(a.textareaTheme, b.textareaTheme, t),
+      sidebarTheme: ShadSidebarTheme.lerp(a.sidebarTheme, b.sidebarTheme, t),
     );
   }
 
@@ -467,7 +473,9 @@ class ShadThemeData extends ShadBaseTheme {
         other.inputOTPTheme == inputOTPTheme &&
         other.menubarTheme == menubarTheme &&
         other.separatorTheme == separatorTheme &&
-        other.sonnerTheme == sonnerTheme;
+        other.sonnerTheme == sonnerTheme &&
+        other.textareaTheme == textareaTheme &&
+        other.sidebarTheme == sidebarTheme;
   }
 
   @override
@@ -523,7 +531,9 @@ class ShadThemeData extends ShadBaseTheme {
         inputOTPTheme.hashCode ^
         menubarTheme.hashCode ^
         separatorTheme.hashCode ^
-        sonnerTheme.hashCode;
+        sonnerTheme.hashCode ^
+        textareaTheme.hashCode ^
+        sidebarTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -580,6 +590,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadSeparatorTheme? separatorTheme,
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
+    ShadSidebarTheme? sidebarTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -640,6 +651,7 @@ class ShadThemeData extends ShadBaseTheme {
       separatorTheme: separatorTheme ?? this.separatorTheme,
       sonnerTheme: sonnerTheme ?? this.sonnerTheme,
       textareaTheme: textareaTheme ?? this.textareaTheme,
+      sidebarTheme: sidebarTheme ?? this.sidebarTheme,
     );
   }
 }

@@ -1,5 +1,5 @@
 // Sidebar components
-export '../../blocks/sidebar.dart';
+export 'sidebar/sidebar.dart';
 export 'sidebar/sidebar_group.dart';
 export 'sidebar/sidebar_header.dart';
 export 'sidebar/sidebar_footer.dart';
