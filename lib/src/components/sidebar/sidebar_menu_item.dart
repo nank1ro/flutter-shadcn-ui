@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/shadcn_ui.dart' show LucideIcons;
 import 'package:shadcn_ui/src/components/sidebar/sidebar_nav_item.dart';
-import 'package:shadcn_ui/src/theme/theme.dart';
 
 /// Individual menu item in the sidebar.
 ///
@@ -31,53 +31,50 @@ class _ShadSidebarMenuItemState extends State<ShadSidebarMenuItem> {
     final theme = ShadTheme.of(context);
 
     // Main item button
-    final mainButton = MouseRegion(
-      cursor: SystemMouseCursors.click,
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: GestureDetector(
-        onTap: widget.item.onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-          decoration: BoxDecoration(
-            color: widget.item.isActive 
-                ? theme.colorScheme.accent 
-                : _isHovered 
-                    ? theme.colorScheme.accent.withOpacity(0.1)
-                    : Colors.transparent,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: Row(
-            children: [
-              if (widget.item.icon != null) ...[
-                SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: widget.item.icon!,
-                ),
-                const SizedBox(width: 8),
-              ],
-              Expanded(
-                child: Text(
-                  widget.item.title,
-                  style: theme.textTheme.small.copyWith(
-                    fontSize: 13,
-                    fontWeight: widget.item.isActive ? FontWeight.w500 : FontWeight.w400,
-                    color: widget.item.isActive
-                        ? theme.colorScheme.accentForeground
-                        : theme.colorScheme.foreground,
-                  ),
+    final mainButton = InkWell(
+      onHover: (value) => setState(() => _isHovered = value),
+      onTap: widget.item.onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        decoration: BoxDecoration(
+          color: widget.item.isActive 
+              ? theme.colorScheme.accent 
+              : _isHovered
+                  ? theme.colorScheme.accent.withValues(alpha: 0.1)
+                  : Colors.transparent,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Row(
+          children: [
+            if (widget.item.icon != null) ...[
+              SizedBox(
+                width: 16,
+                height: 16,
+                child: widget.item.icon!,
+              ),
+              const SizedBox(width: 8),
+            ],
+            Expanded(
+              child: Text(
+                widget.item.title,
+                style: theme.textTheme.small.copyWith(
+                  fontSize: 13,
+                  fontWeight:
+                      widget.item.isActive ? FontWeight.w500 : FontWeight.w400,
+                  color: widget.item.isActive
+                      ? theme.colorScheme.accentForeground
+                      : theme.colorScheme.foreground,
                 ),
               ),
-              if (widget.item.items?.isNotEmpty == true)
-                Icon(
-                  LucideIcons.chevronRight,
-                  size: 12,
-                  color: theme.colorScheme.mutedForeground,
-                ),
-            ],
-          ),
+            ),
+            if (widget.item.items?.isNotEmpty == true)
+              Icon(
+                LucideIcons.chevronRight,
+                size: 12,
+                color: theme.colorScheme.mutedForeground,
+              ),
+          ],
         ),
       ),
     );
@@ -103,10 +100,12 @@ class _ShadSidebarCollapsibleMenuItem extends StatefulWidget {
   final ShadSidebarNavItem item;
 
   @override
-  State<_ShadSidebarCollapsibleMenuItem> createState() => _ShadSidebarCollapsibleMenuItemState();
+  State<_ShadSidebarCollapsibleMenuItem> createState() =>
+      _ShadSidebarCollapsibleMenuItemState();
 }
 
-class _ShadSidebarCollapsibleMenuItemState extends State<_ShadSidebarCollapsibleMenuItem> 
+class _ShadSidebarCollapsibleMenuItemState
+    extends State<_ShadSidebarCollapsibleMenuItem>
     with SingleTickerProviderStateMixin {
   late bool _isExpanded;
   late AnimationController _animationController;
@@ -155,7 +154,7 @@ class _ShadSidebarCollapsibleMenuItemState extends State<_ShadSidebarCollapsible
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -171,8 +170,8 @@ class _ShadSidebarCollapsibleMenuItemState extends State<_ShadSidebarCollapsible
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               decoration: BoxDecoration(
-                color: widget.item.isActive 
-                    ? theme.colorScheme.accent 
+                color: widget.item.isActive
+                    ? theme.colorScheme.accent
                     : _isHovered
                         ? theme.colorScheme.accent.withOpacity(0.1)
                         : Colors.transparent,
@@ -193,7 +192,9 @@ class _ShadSidebarCollapsibleMenuItemState extends State<_ShadSidebarCollapsible
                       widget.item.title,
                       style: theme.textTheme.small.copyWith(
                         fontSize: 13,
-                        fontWeight: widget.item.isActive ? FontWeight.w500 : FontWeight.w400,
+                        fontWeight: widget.item.isActive
+                            ? FontWeight.w500
+                            : FontWeight.w400,
                         color: widget.item.isActive
                             ? theme.colorScheme.accentForeground
                             : theme.colorScheme.foreground,
@@ -208,7 +209,8 @@ class _ShadSidebarCollapsibleMenuItemState extends State<_ShadSidebarCollapsible
                         animation: _rotationAnimation,
                         builder: (context, child) {
                           return Transform.rotate(
-                            angle: _rotationAnimation.value * 3.14159, // 180 degrees
+                            angle: _rotationAnimation.value *
+                                3.14159, // 180 degrees
                             child: Icon(
                               LucideIcons.chevronDown,
                               size: 12,
@@ -224,7 +226,7 @@ class _ShadSidebarCollapsibleMenuItemState extends State<_ShadSidebarCollapsible
             ),
           ),
         ),
-        
+
         // Collapsible sub-items with vertical line
         SizeTransition(
           sizeFactor: _sizeAnimation,
@@ -244,7 +246,8 @@ class _ShadSidebarCollapsibleMenuItemState extends State<_ShadSidebarCollapsible
               children: [
                 for (int i = 0; i < widget.item.items!.length; i++) ...[
                   ShadSidebarMenuItem(item: widget.item.items![i]),
-                  if (i < widget.item.items!.length - 1) const SizedBox(height: 1),
+                  if (i < widget.item.items!.length - 1)
+                    const SizedBox(height: 1),
                 ],
               ],
             ),
