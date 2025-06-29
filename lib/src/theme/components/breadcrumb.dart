@@ -11,6 +11,7 @@ class ShadBreadcrumbTheme {
     this.merge = true,
     this.separator,
     this.ellipsis,
+    this.ellipsisSize,
     this.spacing,
     this.itemTextStyle,
     this.linkTextStyle,
@@ -27,6 +28,9 @@ class ShadBreadcrumbTheme {
 
   /// The widget to use as ellipsis indicator.
   final Widget? ellipsis;
+
+  /// The maximum size of the ellipsis widget.
+  final Size? ellipsisSize;
 
   /// The spacing around separators between breadcrumb items.
   final double? spacing;
@@ -55,6 +59,7 @@ class ShadBreadcrumbTheme {
     bool? merge,
     Widget? separator,
     Widget? ellipsis,
+    Size? ellipsisSize,
     double? spacing,
     TextStyle? itemTextStyle,
     TextStyle? linkTextStyle,
@@ -67,6 +72,7 @@ class ShadBreadcrumbTheme {
       merge: merge ?? this.merge,
       separator: separator ?? this.separator,
       ellipsis: ellipsis ?? this.ellipsis,
+      ellipsisSize: ellipsisSize ?? this.ellipsisSize,
       spacing: spacing ?? this.spacing,
       itemTextStyle: itemTextStyle ?? this.itemTextStyle,
       linkTextStyle: linkTextStyle ?? this.linkTextStyle,
@@ -84,6 +90,7 @@ class ShadBreadcrumbTheme {
     return copyWith(
       separator: other.separator,
       ellipsis: other.ellipsis,
+      ellipsisSize: other.ellipsisSize,
       spacing: other.spacing,
       itemTextStyle: other.itemTextStyle,
       linkTextStyle: other.linkTextStyle,
@@ -105,6 +112,7 @@ class ShadBreadcrumbTheme {
       merge: t < 0.5 ? a.merge : b.merge,
       separator: t < 0.5 ? a.separator : b.separator,
       ellipsis: t < 0.5 ? a.ellipsis : b.ellipsis,
+      ellipsisSize: Size.lerp(a.ellipsisSize, b.ellipsisSize, t),
       spacing: lerpDouble(a.spacing, b.spacing, t),
       itemTextStyle: TextStyle.lerp(a.itemTextStyle, b.itemTextStyle, t),
       linkTextStyle: TextStyle.lerp(a.linkTextStyle, b.linkTextStyle, t),
@@ -122,6 +130,7 @@ class ShadBreadcrumbTheme {
         other.merge == merge &&
         other.separator == separator &&
         other.ellipsis == ellipsis &&
+        other.ellipsisSize == ellipsisSize &&
         other.spacing == spacing &&
         other.itemTextStyle == itemTextStyle &&
         other.linkTextStyle == linkTextStyle &&
@@ -137,6 +146,7 @@ class ShadBreadcrumbTheme {
       merge,
       separator,
       ellipsis,
+      ellipsisSize,
       spacing,
       itemTextStyle,
       linkTextStyle,

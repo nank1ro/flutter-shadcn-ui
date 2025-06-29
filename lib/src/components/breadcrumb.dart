@@ -183,9 +183,8 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
       child: GestureDetector(
         onTap: widget.onPressed,
         child: DefaultTextStyle(
-          style: (breadcrumbTheme.linkTextStyle ??
-                  theme.textTheme.small)
-              .copyWith(
+          style:
+              (breadcrumbTheme.linkTextStyle ?? theme.textTheme.small).copyWith(
             color: _isHovered && widget.onPressed != null
                 ? (breadcrumbTheme.linkHoverTextStyle?.color ??
                     theme.colorScheme.foreground)
@@ -269,11 +268,15 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
   const ShadBreadcrumbEllipsis({
     super.key,
     this.child,
+    this.ellipsisSize,
   });
 
   /// The widget to display as the ellipsis.
   /// If null, uses the default more horizontal icon.
   final Widget? child;
+
+  /// The maximum size of the ellipsis widget.
+  final Size? ellipsisSize;
 
   @override
   Widget build(BuildContext context) {
@@ -281,8 +284,9 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
     final breadcrumbTheme = theme.breadcrumbTheme;
 
     return SizedBox(
-      width: 36,
-      height: 36,
+      width: ellipsisSize?.width ?? breadcrumbTheme.ellipsisSize?.width ?? 36,
+      height:
+          ellipsisSize?.height ?? breadcrumbTheme.ellipsisSize?.height ?? 36,
       child: Center(
         child: child ??
             breadcrumbTheme.ellipsis ??
