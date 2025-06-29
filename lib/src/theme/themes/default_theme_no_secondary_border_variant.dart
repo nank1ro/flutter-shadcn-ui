@@ -11,6 +11,7 @@ import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
+import 'package:shadcn_ui/src/theme/components/breadcrumb.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
@@ -234,6 +235,37 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       size: const Size.square(40),
       shape: const CircleBorder(),
       backgroundColor: colorScheme.muted,
+    );
+  }
+
+  @override
+  ShadBreadcrumbTheme breadcrumbTheme() {
+    return ShadBreadcrumbTheme(
+      separator: Icon(
+        LucideIcons.chevronRight,
+        size: 14,
+        color: colorScheme.mutedForeground,
+      ),
+      ellipsis: Icon(
+        LucideIcons.ellipsis,
+        size: 14,
+        color: colorScheme.mutedForeground,
+      ),
+      spacing: 8.0,
+      itemTextStyle: effectiveTextTheme.small,
+      linkTextStyle: effectiveTextTheme.small.copyWith(
+        color: colorScheme.foreground,
+      ),
+      linkHoverTextStyle: effectiveTextTheme.small.copyWith(
+        color: colorScheme.foreground,
+        decoration: TextDecoration.underline,
+      ),
+      currentPageTextStyle: effectiveTextTheme.small.copyWith(
+        color: colorScheme.foreground,
+        fontWeight: FontWeight.w500,
+      ),
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
     );
   }
 
