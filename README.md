@@ -23,7 +23,7 @@ See the [documentation](https://flutter-shadcn-ui.mariuti.com/) to interact with
 
 - [x] [Accordion](https://flutter-shadcn-ui.mariuti.com/components/accordion/)
 - [x] [Alert](https://flutter-shadcn-ui.mariuti.com/components/alert/)
-- [ ] Breadcrumb
+- [x] Breadcrumb
 - [x] [Dialog](https://flutter-shadcn-ui.mariuti.com/components/dialog/)
 - [x] [Avatar](https://flutter-shadcn-ui.mariuti.com/components/avatar/)
 - [x] [Badge](https://flutter-shadcn-ui.mariuti.com/components/badge/)
