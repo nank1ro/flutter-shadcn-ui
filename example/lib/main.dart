@@ -1,3 +1,5 @@
+import 'dart:html' as html;
+
 import 'package:example/common/app_bar.dart';
 import 'package:example/pages/accordion.dart';
 import 'package:example/pages/alert.dart';
@@ -45,8 +47,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 void main() {
   SolidartConfig.devToolsEnabled = false;
+  html.window.onMessage.listen((event) {
+    final data = event.data;
+    if (data is Map<String, dynamic>) {
+      final type = data['type'];
+      if (type == 'navigate') {
+        final route = data['route'];
+        if (route is String) {
+          navigatorKey.currentState?.pushNamed(route);
+        }
+      }
+    }
+  });
   runApp(const App());
 }
 
@@ -127,6 +143,7 @@ class App extends StatelessWidget {
         //   },
         // );
         return ShadApp(
+          navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           themeMode: themeMode,
           routes: routes,
