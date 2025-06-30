@@ -244,6 +244,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         color: colorScheme.foreground,
         fontWeight: FontWeight.w500,
       ),
+      itemPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      pagePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
     );

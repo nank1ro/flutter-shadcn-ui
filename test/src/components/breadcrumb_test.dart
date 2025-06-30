@@ -652,4 +652,44 @@ void main() {
       expect(find.text('Tutorials'), findsNothing);
     });
   });
+
+  group('Breadcrumb Padding', () {
+    testWidgets('applies consistent padding to page and link items', (WidgetTester tester) async {
+      await tester.pumpAsyncWidget(
+        createTestWidget(
+          ShadBreadcrumb(
+            children: [
+              ShadBreadcrumbItem(
+                child: ShadBreadcrumbLink(
+                  onPressed: () {},
+                  child: const Text('Link'),
+                ),
+              ),
+              const ShadBreadcrumbPage(
+                child: Text('Current Page'),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      // Both link and page items should have consistent visual spacing
+      expect(find.text('Link'), findsOneWidget);
+      expect(find.text('Current Page'), findsOneWidget);
+      
+      // Verify that the page item has padding applied
+      final pageItemFinder = find.byType(ShadBreadcrumbPage);
+      expect(pageItemFinder, findsOneWidget);
+      
+      // Check that padding was applied to the non-link item
+      final paddingFinder = find.descendant(
+        of: pageItemFinder,
+        matching: find.byType(Padding),
+      );
+      expect(paddingFinder, findsOneWidget);
+      
+      final padding = tester.widget<Padding>(paddingFinder);
+      expect(padding.padding, const EdgeInsets.symmetric(horizontal: 16, vertical: 8));
+    });
+  });
 }

@@ -112,7 +112,12 @@ class ShadBreadcrumbItem extends StatelessWidget {
     final theme = ShadTheme.of(context);
     final breadcrumbTheme = theme.breadcrumbTheme;
 
-    return DefaultTextStyle(
+    // Apply padding for non-current page items that aren't links
+    final effectivePadding = isCurrentPage 
+        ? (breadcrumbTheme.pagePadding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8))
+        : (breadcrumbTheme.itemPadding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8));
+
+    Widget content = DefaultTextStyle(
       style: isCurrentPage
           ? (breadcrumbTheme.currentPageTextStyle ??
               theme.textTheme.small.copyWith(
@@ -125,6 +130,16 @@ class ShadBreadcrumbItem extends StatelessWidget {
               )),
       child: child,
     );
+
+    // Only apply padding if the child isn't already a ShadButton (which has its own padding)
+    if (child is! ShadButton && child is! ShadBreadcrumbLink) {
+      content = Padding(
+        padding: effectivePadding,
+        child: content,
+      );
+    }
+
+    return content;
   }
 }
 

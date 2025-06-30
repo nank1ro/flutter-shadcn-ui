@@ -19,6 +19,8 @@ class ShadBreadcrumbTheme {
     this.currentPageTextStyle,
     this.dropdownTextStyle,
     this.dropdownTriggerStyle,
+    this.itemPadding,
+    this.pagePadding,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
   });
@@ -55,6 +57,12 @@ class ShadBreadcrumbTheme {
   /// The text style for dropdown trigger buttons.
   final TextStyle? dropdownTriggerStyle;
 
+  /// The padding for breadcrumb items that are not links.
+  final EdgeInsets? itemPadding;
+
+  /// The padding for breadcrumb page items (current page).
+  final EdgeInsets? pagePadding;
+
   /// How the breadcrumb children should be aligned along the main axis.
   final MainAxisAlignment? mainAxisAlignment;
 
@@ -75,6 +83,8 @@ class ShadBreadcrumbTheme {
     TextStyle? currentPageTextStyle,
     TextStyle? dropdownTextStyle,
     TextStyle? dropdownTriggerStyle,
+    EdgeInsets? itemPadding,
+    EdgeInsets? pagePadding,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
   }) {
@@ -90,6 +100,8 @@ class ShadBreadcrumbTheme {
       currentPageTextStyle: currentPageTextStyle ?? this.currentPageTextStyle,
       dropdownTextStyle: dropdownTextStyle ?? this.dropdownTextStyle,
       dropdownTriggerStyle: dropdownTriggerStyle ?? this.dropdownTriggerStyle,
+      itemPadding: itemPadding ?? this.itemPadding,
+      pagePadding: pagePadding ?? this.pagePadding,
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
     );
@@ -110,6 +122,8 @@ class ShadBreadcrumbTheme {
       currentPageTextStyle: other.currentPageTextStyle,
       dropdownTextStyle: other.dropdownTextStyle,
       dropdownTriggerStyle: other.dropdownTriggerStyle,
+      itemPadding: other.itemPadding,
+      pagePadding: other.pagePadding,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
     );
@@ -130,10 +144,28 @@ class ShadBreadcrumbTheme {
       spacing: lerpDouble(a.spacing, b.spacing, t),
       itemTextStyle: TextStyle.lerp(a.itemTextStyle, b.itemTextStyle, t),
       linkTextStyle: TextStyle.lerp(a.linkTextStyle, b.linkTextStyle, t),
-      linkHoverTextStyle: TextStyle.lerp(a.linkHoverTextStyle, b.linkHoverTextStyle, t),
-      currentPageTextStyle: TextStyle.lerp(a.currentPageTextStyle, b.currentPageTextStyle, t),
-      dropdownTextStyle: TextStyle.lerp(a.dropdownTextStyle, b.dropdownTextStyle, t),
-      dropdownTriggerStyle: TextStyle.lerp(a.dropdownTriggerStyle, b.dropdownTriggerStyle, t),
+      linkHoverTextStyle: TextStyle.lerp(
+        a.linkHoverTextStyle, 
+        b.linkHoverTextStyle, 
+        t,
+      ),
+      currentPageTextStyle: TextStyle.lerp(
+        a.currentPageTextStyle, 
+        b.currentPageTextStyle, 
+        t,
+      ),
+      dropdownTextStyle: TextStyle.lerp(
+        a.dropdownTextStyle, 
+        b.dropdownTextStyle, 
+        t,
+      ),
+      dropdownTriggerStyle: TextStyle.lerp(
+        a.dropdownTriggerStyle, 
+        b.dropdownTriggerStyle, 
+        t,
+      ),
+      itemPadding: EdgeInsets.lerp(a.itemPadding, b.itemPadding, t),
+      pagePadding: EdgeInsets.lerp(a.pagePadding, b.pagePadding, t),
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
     );
@@ -154,6 +186,8 @@ class ShadBreadcrumbTheme {
         other.currentPageTextStyle == currentPageTextStyle &&
         other.dropdownTextStyle == dropdownTextStyle &&
         other.dropdownTriggerStyle == dropdownTriggerStyle &&
+        other.itemPadding == itemPadding &&
+        other.pagePadding == pagePadding &&
         other.mainAxisAlignment == mainAxisAlignment &&
         other.crossAxisAlignment == crossAxisAlignment;
   }
@@ -172,6 +206,8 @@ class ShadBreadcrumbTheme {
       currentPageTextStyle,
       dropdownTextStyle,
       dropdownTriggerStyle,
+      itemPadding,
+      pagePadding,
       mainAxisAlignment,
       crossAxisAlignment,
     );
