@@ -252,7 +252,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         color: colorScheme.mutedForeground,
       ),
       ellipsisSize: const Size(36, 36),
-      spacing: 8.0,
+      spacing: 4.0,
       itemTextStyle: effectiveTextTheme.small,
       linkTextStyle: effectiveTextTheme.small.copyWith(
         color: colorScheme.foreground,

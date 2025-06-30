@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 /// {@template ShadBreadcrumb}
 /// A breadcrumb navigation component that displays the current page location
@@ -65,18 +68,7 @@ class ShadBreadcrumb extends StatelessWidget {
         breadcrumbTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
 
-    final effectiveSpacing = breadcrumbTheme.spacing ?? 8.0;
-
-    final separatedChildren = <Widget>[];
-    for (var i = 0; i < children.length; i++) {
-      separatedChildren.add(children[i]);
-      if (i < children.length - 1) {
-        separatedChildren
-          ..add(SizedBox(width: effectiveSpacing))
-          ..add(effectiveSeparator)
-          ..add(SizedBox(width: effectiveSpacing));
-      }
-    }
+    final effectiveSpacing = breadcrumbTheme.spacing ?? 4.0;
 
     return Row(
       mainAxisAlignment: effectiveMainAxisAlignment,
@@ -84,7 +76,12 @@ class ShadBreadcrumb extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       textDirection: textDirection,
       verticalDirection: verticalDirection ?? VerticalDirection.down,
-      children: separatedChildren,
+      children: children.separatedBy(
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: effectiveSpacing),
+          child: effectiveSeparator,
+        ),
+      ),
     );
   }
 }
@@ -137,13 +134,12 @@ class ShadBreadcrumbItem extends StatelessWidget {
 /// This widget wraps content in a clickable area and applies appropriate
 /// hover and focus styling for interactive breadcrumb items.
 /// {@endtemplate}
-class ShadBreadcrumbLink extends StatefulWidget {
+class ShadBreadcrumbLink extends StatelessWidget {
   /// {@macro ShadBreadcrumbLink}
   const ShadBreadcrumbLink({
     super.key,
     required this.child,
     this.onPressed,
-    this.cursor,
   });
 
   /// The widget to display as the link content.
@@ -152,46 +148,16 @@ class ShadBreadcrumbLink extends StatefulWidget {
   /// Called when the breadcrumb link is tapped.
   final VoidCallback? onPressed;
 
-  /// The cursor to display when hovering over the link.
-  final MouseCursor? cursor;
-
-  @override
-  State<ShadBreadcrumbLink> createState() => _ShadBreadcrumbLinkState();
-}
-
-class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
-  bool _isHovered = false;
-
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final breadcrumbTheme = theme.breadcrumbTheme;
 
-    final effectiveCursor = widget.cursor ??
-        (widget.onPressed != null
-            ? SystemMouseCursors.click
-            : SystemMouseCursors.basic);
-
-    return MouseRegion(
-      cursor: effectiveCursor,
-      onEnter: widget.onPressed != null
-          ? (_) => setState(() => _isHovered = true)
-          : null,
-      onExit: widget.onPressed != null
-          ? (_) => setState(() => _isHovered = false)
-          : null,
-      child: GestureDetector(
-        onTap: widget.onPressed,
-        child: DefaultTextStyle(
-          style:
-              (breadcrumbTheme.linkTextStyle ?? theme.textTheme.small).copyWith(
-            color: _isHovered && widget.onPressed != null
-                ? (breadcrumbTheme.linkHoverTextStyle?.color ??
-                    theme.colorScheme.foreground)
-                : null,
-          ),
-          child: widget.child,
-        ),
+    return ShadButton.ghost(
+      onPressed: onPressed,
+      child: DefaultTextStyle(
+        style: breadcrumbTheme.linkTextStyle ?? theme.textTheme.small,
+        child: child,
       ),
     );
   }
@@ -268,15 +234,11 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
   const ShadBreadcrumbEllipsis({
     super.key,
     this.child,
-    this.ellipsisSize,
   });
 
   /// The widget to display as the ellipsis.
   /// If null, uses the default more horizontal icon.
   final Widget? child;
-
-  /// The maximum size of the ellipsis widget.
-  final Size? ellipsisSize;
 
   @override
   Widget build(BuildContext context) {
@@ -284,9 +246,8 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
     final breadcrumbTheme = theme.breadcrumbTheme;
 
     return SizedBox(
-      width: ellipsisSize?.width ?? breadcrumbTheme.ellipsisSize?.width ?? 36,
-      height:
-          ellipsisSize?.height ?? breadcrumbTheme.ellipsisSize?.height ?? 36,
+      width: 36,
+      height: 36,
       child: Center(
         child: child ??
             breadcrumbTheme.ellipsis ??
@@ -296,6 +257,93 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
               color: theme.colorScheme.mutedForeground,
             ),
       ),
+    );
+  }
+}
+
+/// {@template ShadBreadcrumbDropdown}
+/// A dropdown breadcrumb item that displays a menu when clicked.
+///
+/// This widget is used to show collapsed breadcrumb items in a dropdown menu,
+/// typically represented by an ellipsis. It follows the shadcn/ui pattern of
+/// using a popover to show hidden navigation levels.
+/// {@endtemplate}
+class ShadBreadcrumbDropdown extends StatefulWidget {
+  /// {@macro ShadBreadcrumbDropdown}
+  const ShadBreadcrumbDropdown({
+    super.key,
+    required this.items,
+    this.trigger,
+  });
+
+  /// The list of dropdown menu items to display.
+  final List<Widget> items;
+
+  /// Custom trigger widget for the dropdown.
+  /// If null, uses an ellipsis button.
+  final Widget? trigger;
+
+  @override
+  State<ShadBreadcrumbDropdown> createState() => _ShadBreadcrumbDropdownState();
+}
+
+class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
+  final _controller = ShadPopoverController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final breadcrumbTheme = theme.breadcrumbTheme;
+
+    Widget effectiveTrigger;
+    if (widget.trigger != null) {
+      // If a custom trigger is provided, wrap it in a GestureDetector to handle taps
+      effectiveTrigger = GestureDetector(
+        onTap: _controller.toggle,
+        child: widget.trigger,
+      );
+    } else {
+      // Use default ellipsis button
+      effectiveTrigger = ShadButton.ghost(
+        size: ShadButtonSize.sm,
+        onPressed: _controller.toggle,
+        child: Icon(
+          LucideIcons.ellipsis,
+          size: 14,
+          color: theme.colorScheme.mutedForeground,
+        ),
+      );
+    }
+
+    return ShadPopover(
+      controller: _controller,
+      popover: (context) => IntrinsicWidth(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (int i = 0; i < widget.items.length; i++) ...[
+                DefaultTextStyle(
+                  style: breadcrumbTheme.dropdownTextStyle ?? 
+                         theme.textTheme.small,
+                  child: widget.items[i],
+                ),
+                if (i < widget.items.length - 1) 
+                  const SizedBox(height: 4),
+              ],
+            ],
+          ),
+        ),
+      ),
+      child: effectiveTrigger,
     );
   }
 }

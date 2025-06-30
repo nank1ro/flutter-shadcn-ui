@@ -17,6 +17,8 @@ class ShadBreadcrumbTheme {
     this.linkTextStyle,
     this.linkHoverTextStyle,
     this.currentPageTextStyle,
+    this.dropdownTextStyle,
+    this.dropdownTriggerStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
   });
@@ -47,6 +49,12 @@ class ShadBreadcrumbTheme {
   /// The text style for the current page breadcrumb item.
   final TextStyle? currentPageTextStyle;
 
+  /// The text style for dropdown menu items.
+  final TextStyle? dropdownTextStyle;
+
+  /// The text style for dropdown trigger buttons.
+  final TextStyle? dropdownTriggerStyle;
+
   /// How the breadcrumb children should be aligned along the main axis.
   final MainAxisAlignment? mainAxisAlignment;
 
@@ -65,6 +73,8 @@ class ShadBreadcrumbTheme {
     TextStyle? linkTextStyle,
     TextStyle? linkHoverTextStyle,
     TextStyle? currentPageTextStyle,
+    TextStyle? dropdownTextStyle,
+    TextStyle? dropdownTriggerStyle,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
   }) {
@@ -78,6 +88,8 @@ class ShadBreadcrumbTheme {
       linkTextStyle: linkTextStyle ?? this.linkTextStyle,
       linkHoverTextStyle: linkHoverTextStyle ?? this.linkHoverTextStyle,
       currentPageTextStyle: currentPageTextStyle ?? this.currentPageTextStyle,
+      dropdownTextStyle: dropdownTextStyle ?? this.dropdownTextStyle,
+      dropdownTriggerStyle: dropdownTriggerStyle ?? this.dropdownTriggerStyle,
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
     );
@@ -96,6 +108,8 @@ class ShadBreadcrumbTheme {
       linkTextStyle: other.linkTextStyle,
       linkHoverTextStyle: other.linkHoverTextStyle,
       currentPageTextStyle: other.currentPageTextStyle,
+      dropdownTextStyle: other.dropdownTextStyle,
+      dropdownTriggerStyle: other.dropdownTriggerStyle,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
     );
@@ -118,6 +132,8 @@ class ShadBreadcrumbTheme {
       linkTextStyle: TextStyle.lerp(a.linkTextStyle, b.linkTextStyle, t),
       linkHoverTextStyle: TextStyle.lerp(a.linkHoverTextStyle, b.linkHoverTextStyle, t),
       currentPageTextStyle: TextStyle.lerp(a.currentPageTextStyle, b.currentPageTextStyle, t),
+      dropdownTextStyle: TextStyle.lerp(a.dropdownTextStyle, b.dropdownTextStyle, t),
+      dropdownTriggerStyle: TextStyle.lerp(a.dropdownTriggerStyle, b.dropdownTriggerStyle, t),
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
     );
@@ -136,6 +152,8 @@ class ShadBreadcrumbTheme {
         other.linkTextStyle == linkTextStyle &&
         other.linkHoverTextStyle == linkHoverTextStyle &&
         other.currentPageTextStyle == currentPageTextStyle &&
+        other.dropdownTextStyle == dropdownTextStyle &&
+        other.dropdownTriggerStyle == dropdownTriggerStyle &&
         other.mainAxisAlignment == mainAxisAlignment &&
         other.crossAxisAlignment == crossAxisAlignment;
   }
@@ -152,6 +170,8 @@ class ShadBreadcrumbTheme {
       linkTextStyle,
       linkHoverTextStyle,
       currentPageTextStyle,
+      dropdownTextStyle,
+      dropdownTriggerStyle,
       mainAxisAlignment,
       crossAxisAlignment,
     );
