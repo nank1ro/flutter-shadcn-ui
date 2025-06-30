@@ -9,7 +9,6 @@ void main() {
   usePathUrlStrategy();
   window.onMessage.listen((event) {
     final data = event.data.dartify();
-    print('Received message: $data');
     if (data is Map) {
       final type = data['type'];
       if (type == 'navigate') {
