@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 /// {@template ShadBreadcrumb}
 /// A breadcrumb navigation component that displays the current page location
@@ -66,25 +67,19 @@ class ShadBreadcrumb extends StatelessWidget {
         CrossAxisAlignment.center;
 
     final effectiveSpacing = breadcrumbTheme.spacing ?? 8.0;
-
-    final separatedChildren = <Widget>[];
-    for (var i = 0; i < children.length; i++) {
-      separatedChildren.add(children[i]);
-      if (i < children.length - 1) {
-        separatedChildren
-          ..add(SizedBox(width: effectiveSpacing))
-          ..add(effectiveSeparator)
-          ..add(SizedBox(width: effectiveSpacing));
-      }
-    }
-
+    
     return Row(
       mainAxisAlignment: effectiveMainAxisAlignment,
       crossAxisAlignment: effectiveCrossAxisAlignment,
       mainAxisSize: MainAxisSize.min,
       textDirection: textDirection,
       verticalDirection: verticalDirection ?? VerticalDirection.down,
-      children: separatedChildren,
+      children: children.separatedBy(
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: effectiveSpacing),
+          child: effectiveSeparator,
+        ),
+      ),
     );
   }
 }
@@ -268,15 +263,11 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
   const ShadBreadcrumbEllipsis({
     super.key,
     this.child,
-    this.ellipsisSize,
   });
 
   /// The widget to display as the ellipsis.
   /// If null, uses the default more horizontal icon.
   final Widget? child;
-
-  /// The maximum size of the ellipsis widget.
-  final Size? ellipsisSize;
 
   @override
   Widget build(BuildContext context) {
@@ -284,9 +275,8 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
     final breadcrumbTheme = theme.breadcrumbTheme;
 
     return SizedBox(
-      width: ellipsisSize?.width ?? breadcrumbTheme.ellipsisSize?.width ?? 36,
-      height:
-          ellipsisSize?.height ?? breadcrumbTheme.ellipsisSize?.height ?? 36,
+      width: 36,
+      height: 36,
       child: Center(
         child: child ??
             breadcrumbTheme.ellipsis ??
