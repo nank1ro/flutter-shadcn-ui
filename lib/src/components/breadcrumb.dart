@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
@@ -66,8 +67,8 @@ class ShadBreadcrumb extends StatelessWidget {
         breadcrumbTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
 
-    final effectiveSpacing = breadcrumbTheme.spacing ?? 8.0;
-    
+    final effectiveSpacing = breadcrumbTheme.spacing ?? 4.0;
+
     return Row(
       mainAxisAlignment: effectiveMainAxisAlignment,
       crossAxisAlignment: effectiveCrossAxisAlignment,
@@ -132,13 +133,12 @@ class ShadBreadcrumbItem extends StatelessWidget {
 /// This widget wraps content in a clickable area and applies appropriate
 /// hover and focus styling for interactive breadcrumb items.
 /// {@endtemplate}
-class ShadBreadcrumbLink extends StatefulWidget {
+class ShadBreadcrumbLink extends StatelessWidget {
   /// {@macro ShadBreadcrumbLink}
   const ShadBreadcrumbLink({
     super.key,
     required this.child,
     this.onPressed,
-    this.cursor,
   });
 
   /// The widget to display as the link content.
@@ -147,46 +147,16 @@ class ShadBreadcrumbLink extends StatefulWidget {
   /// Called when the breadcrumb link is tapped.
   final VoidCallback? onPressed;
 
-  /// The cursor to display when hovering over the link.
-  final MouseCursor? cursor;
-
-  @override
-  State<ShadBreadcrumbLink> createState() => _ShadBreadcrumbLinkState();
-}
-
-class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
-  bool _isHovered = false;
-
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final breadcrumbTheme = theme.breadcrumbTheme;
 
-    final effectiveCursor = widget.cursor ??
-        (widget.onPressed != null
-            ? SystemMouseCursors.click
-            : SystemMouseCursors.basic);
-
-    return MouseRegion(
-      cursor: effectiveCursor,
-      onEnter: widget.onPressed != null
-          ? (_) => setState(() => _isHovered = true)
-          : null,
-      onExit: widget.onPressed != null
-          ? (_) => setState(() => _isHovered = false)
-          : null,
-      child: GestureDetector(
-        onTap: widget.onPressed,
-        child: DefaultTextStyle(
-          style:
-              (breadcrumbTheme.linkTextStyle ?? theme.textTheme.small).copyWith(
-            color: _isHovered && widget.onPressed != null
-                ? (breadcrumbTheme.linkHoverTextStyle?.color ??
-                    theme.colorScheme.foreground)
-                : null,
-          ),
-          child: widget.child,
-        ),
+    return ShadButton.ghost(
+      onPressed: onPressed,
+      child: DefaultTextStyle(
+        style: breadcrumbTheme.linkTextStyle ?? theme.textTheme.small,
+        child: child,
       ),
     );
   }
