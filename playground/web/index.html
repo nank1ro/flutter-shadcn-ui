@@ -77,11 +77,11 @@
   {{flutter_js}}
   {{flutter_build_config}}
 
-  const loader = document.querySelector('.loader');
+  const myloader = document.querySelector('.loader');
   _flutter.loader.load({
     onEntrypointLoaded: async function(engineInitializer) {
       const appRunner = await engineInitializer.initializeEngine();
-      loader.remove();
+      myloader.remove();
       await appRunner.runApp();
     }
   });

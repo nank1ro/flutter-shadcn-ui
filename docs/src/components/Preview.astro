@@ -6,12 +6,15 @@ interface Props {
 
 const { src, minHeight = "200px" } = Astro.props;
 import { Tabs, TabItem } from "@astrojs/starlight/components";
-let uuid = crypto.randomUUID();
+
+// Generate a stable, unique ID from the src prop to allow persistence
+const id = `shadcn-preview-${src.replace(/[^a-zA-Z0-9-]/g, '_')}`.toLowerCase();
+
 // Default prefix for flutter playground site on localmachine
 // const defaultPrefix = "http://localhost:12345/"; 
 
 // Default prefix for flutter playground site hosted by the author.
-const defaultPrefix = "https://shadcn-ui-playground.pages.dev/"; 
+const defaultPrefix = "https://ca3be91d.shadcn-ui-playground.pages.dev/"; 
 
 // Default prefix for flutter playground site hosted by the contributor (Harkirat Singh).
 // const defaultPrefix = "https://flutter-shadcn-playground.web.app/" 
@@ -20,10 +23,11 @@ const defaultPrefix = "https://shadcn-ui-playground.pages.dev/";
 <Tabs>
     <TabItem label="Preview">
         <iframe
-            id={uuid}
+            id={id}
             class="preview"
-            style={`border: 1px solid rgba(0, 0, 0, 0.1); min-height: ${minHeight}; width: 100%;`}
+            style={`min-height: ${minHeight}; width: 100%; border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 0.5rem; visibility: hidden;`}
             loading="lazy"
+            data-astro-persist
         ></iframe>
     </TabItem>
     <TabItem label="Code">
@@ -31,25 +35,17 @@ const defaultPrefix = "https://shadcn-ui-playground.pages.dev/";
     </TabItem>
 </Tabs>
 
-<script is:inline define:vars={{defaultPrefix, uuid, src }}>
-    const fullSrc = `${defaultPrefix}${src}`; // Combine prefix and prop src
-    const iframe = document.getElementById(uuid);
+<script is:inline define:vars={{ defaultPrefix, id, src }}>
+    const iframe = document.getElementById(id);
 
-    // Set the initial iframe src
-    iframe.src = fullSrc;
-
-    // Add a listener for when the iframe is loaded
-    iframe.addEventListener('load', () => {
-        // Listen for clicks on the sidebar links
-        document.querySelectorAll('a[data-astro-prefetch]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const href = link.getAttribute('href');
-                const route = href.substring(href.lastIndexOf('/'));
-                iframe.contentWindow.postMessage({ type: 'navigate', route }, '*');
-            });
+    // Make the iframe visible once it has loaded.
+    // This listener only needs to be attached once.
+    if (!iframe.dataset.loadListenerAttached) {
+        iframe.addEventListener('load', () => {
+            iframe.style.visibility = 'visible';
         });
-    });
+        iframe.dataset.loadListenerAttached = 'true';
+    }
 
     // Utility function to update query string parameters
     function updateQueryStringParameter(uri, key, value) {
@@ -62,13 +58,12 @@ const defaultPrefix = "https://shadcn-ui-playground.pages.dev/";
         }
     }
 
-    // Function to update iframe src for both theme and theme color
-    function updateIframeSrc() {
-        if (!iframe) return;
-
+    // Function to build the complete iframe src with theme parameters
+    function getIframeSrc() {
+        const fullSrc = `${defaultPrefix}${src}`;
         const themeMode = document.documentElement.getAttribute("data-theme");
         const themeColor = document.documentElement.getAttribute("data-theme-color");
-        let iframeSrc = iframe.getAttribute("src") || fullSrc;
+        let iframeSrc = fullSrc;
 
         if (themeMode) {
             iframeSrc = updateQueryStringParameter(iframeSrc, "theme", themeMode);
@@ -77,39 +72,38 @@ const defaultPrefix = "https://shadcn-ui-playground.pages.dev/";
         if (themeColor) {
             iframeSrc = updateQueryStringParameter(iframeSrc, "themeColor", themeColor);
         }
-
-        iframe.src = iframeSrc;
-        // console.log(`Updated iframe src: ${iframe.src}`);
+        return iframeSrc;
     }
 
-    // Observer callback for theme mode changes
-    function updateSrcForTheme() {
-        updateIframeSrc();
+    // Update the iframe src only if it has changed
+    function updateIframe() {
+        if (!iframe) return;
+        const newSrc = getIframeSrc();
+
+        // Check the decoded URI to handle encoded characters gracefully.
+        if (decodeURI(iframe.src) !== decodeURI(newSrc)) {
+            // Hide the iframe before changing the src to prevent flashing old content
+            iframe.style.visibility = 'hidden';
+            iframe.src = newSrc;
+        } else {
+            // If the src is already correct, ensure the iframe is visible.
+            iframe.style.visibility = 'visible';
+        }
     }
 
-    // Observer callback for theme color changes
-    function updateSrcForThemeColor() {
-        updateIframeSrc();
-    }
+    // Initial update on page load
+    updateIframe();
 
-    // Initialize iframe on page load
-    document.addEventListener("DOMContentLoaded", () => {
-        updateIframeSrc();
-    });
-
-    // Observe changes to the `data-theme` and `data-theme-color` attributes
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            if (mutation.attributeName === "data-theme") {
-                updateSrcForTheme();
-            } else if (mutation.attributeName === "data-theme-color") {
-                updateSrcForThemeColor();
-            }
+    // Set up a MutationObserver to watch for theme changes, but only once.
+    if (!iframe.dataset.themeObserverAttached) {
+        const observer = new MutationObserver(() => {
+            updateIframe();
         });
-    });
 
-    observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ["data-theme", "data-theme-color"],
-    });
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["data-theme", "data-theme-color"],
+        });
+        iframe.dataset.themeObserverAttached = 'true';
+    }
 </script>

@@ -1,3 +1,8 @@
+## 0.28.0
+
+- **REFACTOR**: Update `ShadCalendar` `yearSelectorMinWidth` from `100` to `64` and `monthSelectorMinWidth` from `120` to `64`.
+- **REFACTOR**: Update `ShadCalendar` position of dropdown, which is now centered in the header.
+
 ## 0.27.4
 
 - **FIX**: `ShadIconButton` icon size property isn't applied (thanks to @TahaTesser).
