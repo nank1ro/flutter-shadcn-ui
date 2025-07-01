@@ -179,6 +179,8 @@ class ShadCalendar extends StatefulWidget {
     this.selectedDayButtonOusideMonthVariant,
     this.allowDeselection,
     this.groupId,
+    this.dropdownFormatMonth,
+    this.dropdownFormatYear,
   })  : variant = ShadCalendarVariant.single,
         multipleSelected = null,
         onMultipleChanged = null,
@@ -254,6 +256,8 @@ class ShadCalendar extends StatefulWidget {
     this.dayButtonOutsideMonthVariant,
     this.selectedDayButtonOusideMonthVariant,
     this.groupId,
+    this.dropdownFormatMonth,
+    this.dropdownFormatYear,
   })  : variant = ShadCalendarVariant.multiple,
         multipleSelected = selected,
         selected = null,
@@ -331,6 +335,8 @@ class ShadCalendar extends StatefulWidget {
     this.selectedDayButtonOusideMonthVariant,
     this.allowDeselection,
     this.groupId,
+    this.dropdownFormatMonth,
+    this.dropdownFormatYear,
   })  : variant = ShadCalendarVariant.range,
         multipleSelected = null,
         selected = null,
@@ -413,6 +419,8 @@ class ShadCalendar extends StatefulWidget {
     this.selectedDayButtonOusideMonthVariant,
     this.allowDeselection,
     this.groupId,
+    this.dropdownFormatMonth,
+    this.dropdownFormatYear,
   });
 
   /// {@template ShadCalendar.variant}
@@ -451,14 +459,24 @@ class ShadCalendar extends StatefulWidget {
   final DateTime? initialMonth;
 
   /// {@template ShadCalendar.formatMonthYear}
-  /// The format to use for the month, defaults to 'MMM y'.
+  /// The format to use for the month, defaults to 'LLLL y'.
   /// {@endtemplate}
   final String Function(DateTime date)? formatMonthYear;
 
   /// {@template ShadCalendar.formatMonth}
-  /// The format to use for the month, defaults to 'MMM'.
+  /// The format to use for the month, defaults to 'LLLL'.
   /// {@endtemplate}
   final String Function(DateTime date)? formatMonth;
+
+  /// {@template ShadCalendar.dropdownFormatMonth}
+  /// The format to use for the month in dropdowns, defaults to 'MMM'.
+  /// {@endtemplate}
+  final String Function(DateTime date)? dropdownFormatMonth;
+
+  /// {@template ShadCalendar.dropdownFormatYear}
+  /// The format to use for the year in dropdowns, defaults to 'y'.
+  /// {@endtemplate}
+  final String Function(DateTime date)? dropdownFormatYear;
 
   /// {@template ShadCalendar.formatYear}
   /// The format to use for the year, defaults to 'y'.
@@ -1076,7 +1094,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
   }
 
   String defaultFormatMonthYear(DateTime date, Locale locale) {
-    return DateFormat('MMM y', locale.toLanguageTag()).format(date);
+    return DateFormat('LLLL y', locale.toLanguageTag()).format(date);
   }
 
   String defaultFormatYear(DateTime date, Locale locale) {
@@ -1084,7 +1102,15 @@ class _ShadCalendarState extends State<ShadCalendar> {
   }
 
   String defaultFormatMonth(DateTime date, Locale locale) {
+    return DateFormat('LLLL', locale.toLanguageTag()).format(date);
+  }
+
+  String defaultDropdownFormatMonth(DateTime date, Locale locale) {
     return DateFormat('MMM', locale.toLanguageTag()).format(date);
+  }
+
+  String defaultDropdownFormatYear(DateTime date, Locale locale) {
+    return DateFormat('y', locale.toLanguageTag()).format(date);
   }
 
   String defaultFormatWeekday(DateTime date, Locale locale) {
@@ -1109,23 +1135,35 @@ class _ShadCalendarState extends State<ShadCalendar> {
     );
 
     final theme = ShadTheme.of(context);
-
-    final effectiveCaptionLayout =
-        widget.captionLayout ?? ShadCalendarCaptionLayout.label;
-
     final locale = Localizations.localeOf(context);
 
-    final effectiveFormatMonth =
-        widget.formatMonth ?? (date) => defaultFormatMonth(date, locale);
+    final effectiveCaptionLayout = widget.captionLayout ??
+        theme.calendarTheme.captionLayout ??
+        ShadCalendarCaptionLayout.label;
 
-    final effectiveFormatYear =
-        widget.formatYear ?? (date) => defaultFormatYear(date, locale);
+    final effectiveFormatMonth = widget.formatMonth ??
+        theme.calendarTheme.formatMonth ??
+        (date) => defaultFormatMonth(date, locale);
+
+    final effectiveFormatYear = widget.formatYear ??
+        theme.calendarTheme.formatYear ??
+        (date) => defaultFormatYear(date, locale);
+
+    final effectiveDropdownFormatMonth = widget.dropdownFormatMonth ??
+        theme.calendarTheme.dropdownFormatMonth ??
+        (date) => defaultDropdownFormatMonth(date, locale);
+
+    final effectiveDropdownFormatYear = widget.dropdownFormatYear ??
+        theme.calendarTheme.dropdownFormatYear ??
+        (date) => defaultDropdownFormatYear(date, locale);
 
     final effectiveFormatMonthYear = widget.formatMonthYear ??
+        theme.calendarTheme.formatMonthYear ??
         (date) => defaultFormatMonthYear(date, locale);
 
-    final effectiveFormatWeekday =
-        widget.formatWeekday ?? (date) => defaultFormatWeekday(date, locale);
+    final effectiveFormatWeekday = widget.formatWeekday ??
+        theme.calendarTheme.formatWeekday ??
+        (date) => defaultFormatWeekday(date, locale);
 
     final models =
         widget.reverseMonths ? datesModels.reversed.toList() : datesModels;
@@ -1320,7 +1358,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
       ),
       minWidth: effectiveYearSelectorMinWidth,
       selectedOptionBuilder: (context, value) {
-        return Text(effectiveFormatYear(DateTime(value, currentMonth.month)));
+        return Text(
+          effectiveDropdownFormatYear(DateTime(value, currentMonth.month)),
+        );
       },
       options: availableYears.map(
         (year) => ShadOption(
@@ -1346,7 +1386,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
       padding: effectiveMonthSelectorPadding,
       minWidth: effectiveMonthSelectorMinWidth,
       selectedOptionBuilder: (context, value) {
-        return Text(effectiveFormatMonth(DateTime(currentMonth.year, value)));
+        return Text(
+          effectiveDropdownFormatMonth(DateTime(currentMonth.year, value)),
+        );
       },
       options: List.generate(
         12,
