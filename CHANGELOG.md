@@ -4,6 +4,7 @@
 - **REFACTOR**: Update `ShadCalendar` position of dropdown, which is now centered in the header.
 - **FIX**: Center the placeholder in `ShadAvatar`.
 - **DOCS**: Fix missing `MainAxisSize.min` in `ShadCard` notification example.
+- **DOCS**: Adjust sheet docs example, with some spacing between buttons.
 
 ## 0.27.4
 
