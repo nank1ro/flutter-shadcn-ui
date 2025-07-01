@@ -3,6 +3,7 @@
 - **REFACTOR**: Update `ShadCalendar` `yearSelectorMinWidth` from `100` to `64` and `monthSelectorMinWidth` from `120` to `64`.
 - **REFACTOR**: Update `ShadCalendar` position of dropdown, which is now centered in the header.
 - **FIX**: Center the placeholder in `ShadAvatar`.
+- **DOCS**: Fix missing `MainAxisSize.min` in `ShadCard` notification example.
 
 ## 0.27.4
 
