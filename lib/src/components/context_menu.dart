@@ -160,6 +160,7 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
       decoration: widget.decoration,
       filter: widget.filter,
       child: ShadGestureDetector(
+        behavior: HitTestBehavior.opaque,
         supportedDevices: widget.supportedDevices,
         onTapDown: (_) => hide(),
         onSecondaryTapDown: (d) async {

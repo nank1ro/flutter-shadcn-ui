@@ -6,6 +6,7 @@
 - **FIX**: Center the placeholder in `ShadAvatar`.
 - **DOCS**: Fix missing `MainAxisSize.min` in `ShadCard` notification example.
 - **DOCS**: Adjust sheet docs example, with some spacing between buttons.
+- **FIX**: Fix the hit test behavior of `ShadContextMenuRegion`.
 
 ## 0.27.4
 
