@@ -799,8 +799,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           ),
         ),
         hideNavigation: false,
-        yearSelectorMinWidth: 100,
-        monthSelectorMinWidth: 120,
+        yearSelectorMinWidth: 64,
+        monthSelectorMinWidth: 64,
         yearSelectorPadding:
             const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         monthSelectorPadding:

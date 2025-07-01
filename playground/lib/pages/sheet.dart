@@ -34,8 +34,10 @@ class SheetPage extends StatelessWidget {
               ),
             SheetStyle.side => Row(
                 mainAxisSize: MainAxisSize.min,
+                spacing: 16,
                 children: [
                   Column(
+                    spacing: 16,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ShadButton.outline(
@@ -61,6 +63,7 @@ class SheetPage extends StatelessWidget {
                     ],
                   ),
                   Column(
+                    spacing: 16,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ShadButton.outline(

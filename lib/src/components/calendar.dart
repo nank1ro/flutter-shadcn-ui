@@ -10,7 +10,6 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/extensions/date_time.dart';
-import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 /// Encapsulates a start and end [DateTime] that represent the range of dates.
 ///
@@ -452,12 +451,12 @@ class ShadCalendar extends StatefulWidget {
   final DateTime? initialMonth;
 
   /// {@template ShadCalendar.formatMonthYear}
-  /// The format to use for the month, defaults to 'LLLL y'.
+  /// The format to use for the month, defaults to 'MMM y'.
   /// {@endtemplate}
   final String Function(DateTime date)? formatMonthYear;
 
   /// {@template ShadCalendar.formatMonth}
-  /// The format to use for the month, defaults to 'LLLL'.
+  /// The format to use for the month, defaults to 'MMM'.
   /// {@endtemplate}
   final String Function(DateTime date)? formatMonth;
 
@@ -561,12 +560,12 @@ class ShadCalendar extends StatefulWidget {
   final bool? hideNavigation;
 
   /// {@template ShadCalendar.yearSelectorMinWidth}
-  /// The minimum width of the year selector, defaults to 100
+  /// The minimum width of the year selector, defaults to 64
   /// {@endtemplate}
   final double? yearSelectorMinWidth;
 
   /// {@template ShadCalendar.monthSelectorMinWidth}
-  /// The minimum width of the month selector, defaults to 120
+  /// The minimum width of the month selector, defaults to 64
   /// {@endtemplate}
   final double? monthSelectorMinWidth;
 
@@ -1077,7 +1076,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
   }
 
   String defaultFormatMonthYear(DateTime date, Locale locale) {
-    return DateFormat('LLLL y', locale.toLanguageTag()).format(date);
+    return DateFormat('MMM y', locale.toLanguageTag()).format(date);
   }
 
   String defaultFormatYear(DateTime date, Locale locale) {
@@ -1085,7 +1084,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
   }
 
   String defaultFormatMonth(DateTime date, Locale locale) {
-    return DateFormat('LLLL', locale.toLanguageTag()).format(date);
+    return DateFormat('MMM', locale.toLanguageTag()).format(date);
   }
 
   String defaultFormatWeekday(DateTime date, Locale locale) {
@@ -1136,11 +1135,11 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     final effectiveYearSelectorMinWidth = widget.yearSelectorMinWidth ??
         theme.calendarTheme.yearSelectorMinWidth ??
-        100;
+        64;
 
     final effectiveMonthSelectorMinWidth = widget.monthSelectorMinWidth ??
         theme.calendarTheme.monthSelectorMinWidth ??
-        120;
+        64;
 
     final effectiveYearSelectorPadding = widget.yearSelectorPadding ??
         theme.calendarTheme.yearSelectorPadding ??
@@ -1191,13 +1190,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     final effectiveMonthConstraints = widget.monthConstraints ??
         theme.calendarTheme.monthConstraints ??
-        BoxConstraints(
-          maxWidth: 252 +
-              (!effectiveHideNavigation &&
-                      effectiveCaptionLayout != ShadCalendarCaptionLayout.label
-                  ? 58
-                  : 0),
-        );
+        const BoxConstraints(maxWidth: 252);
 
     final effectiveHeaderHeight =
         widget.headerHeight ?? theme.calendarTheme.headerHeight ?? 38;
@@ -1462,47 +1455,72 @@ class _ShadCalendarState extends State<ShadCalendar> {
                             ShadCalendarCaptionLayout.label => labelNavigation,
                             ShadCalendarCaptionLayout.dropdown => Row(
                                 children: [
-                                  monthSelector,
-                                  yearSelector,
-                                  if (!effectiveHideNavigation) ...[
-                                    backButton,
-                                    forwardButton,
-                                  ],
-                                ].separatedBy(
-                                  SizedBox(width: effectiveCaptionLayoutGap),
-                                ),
+                                  if (!effectiveHideNavigation) backButton,
+                                  Expanded(
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Flexible(child: monthSelector),
+                                          SizedBox(
+                                            width: effectiveCaptionLayoutGap,
+                                          ),
+                                          Flexible(child: yearSelector),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  if (!effectiveHideNavigation) forwardButton,
+                                ],
                               ),
                             ShadCalendarCaptionLayout.dropdownMonths => Row(
                                 children: [
-                                  monthSelector,
-                                  SizedBox(width: effectiveCaptionLayoutGap),
+                                  if (!effectiveHideNavigation) backButton,
                                   Expanded(
-                                    child: Text(
-                                      effectiveFormatYear(dateModel.month),
-                                      style: effectiveHeaderTextStyle,
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Flexible(child: monthSelector),
+                                          SizedBox(
+                                            width: effectiveCaptionLayoutGap,
+                                          ),
+                                          Text(
+                                            effectiveFormatYear(
+                                              dateModel.month,
+                                            ),
+                                            style: effectiveHeaderTextStyle,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  if (!effectiveHideNavigation) ...[
-                                    backButton,
-                                    SizedBox(width: effectiveCaptionLayoutGap),
-                                    forwardButton,
-                                  ],
+                                  if (!effectiveHideNavigation) forwardButton,
                                 ],
                               ),
                             ShadCalendarCaptionLayout.dropdownYears => Row(
                                 children: [
-                                  yearSelector,
-                                  SizedBox(width: effectiveCaptionLayoutGap),
+                                  if (!effectiveHideNavigation) backButton,
                                   Expanded(
-                                    child: Text(
-                                      effectiveFormatMonth(dateModel.month),
-                                      style: effectiveHeaderTextStyle,
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Flexible(child: yearSelector),
+                                          SizedBox(
+                                            width: effectiveCaptionLayoutGap,
+                                          ),
+                                          Text(
+                                            effectiveFormatMonth(
+                                              dateModel.month,
+                                            ),
+                                            style: effectiveHeaderTextStyle,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  if (!effectiveHideNavigation) ...[
-                                    backButton,
-                                    forwardButton,
-                                  ],
+                                  if (!effectiveHideNavigation) forwardButton,
                                 ],
                               ),
                           },

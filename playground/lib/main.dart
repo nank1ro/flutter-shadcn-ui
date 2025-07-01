@@ -5,10 +5,20 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:web/web.dart';
 
-
-
 void main() {
   usePathUrlStrategy();
+  window.onMessage.listen((event) {
+    final data = event.data.dartify();
+    if (data is Map) {
+      final type = data['type'];
+      if (type == 'navigate') {
+        final route = data['route'];
+        if (route is String) {
+          router.push(route);
+        }
+      }
+    }
+  });
   runApp(const MyApp());
 }
 
@@ -40,7 +50,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final theme = Uri.base.queryParameters['theme'] ?? 'light';
-    final themeColor = Uri.base.queryParameters['themeColor'] ?? 'zinc'; // default theme color is zinc
+    final themeColor = Uri.base.queryParameters['themeColor'] ??
+        'zinc'; // default theme color is zinc
 
     return ShadApp.router(
       title: 'shadcn-ui Flutter Playground',
@@ -59,34 +70,59 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-
 ShadColorScheme getShadColorScheme(String themeColor, bool isDarkMode) {
   switch (themeColor.toLowerCase()) {
     case 'blue':
-      return isDarkMode ? const ShadBlueColorScheme.dark() : const ShadBlueColorScheme.light();
+      return isDarkMode
+          ? const ShadBlueColorScheme.dark()
+          : const ShadBlueColorScheme.light();
     case 'gray':
-      return isDarkMode ? const ShadGrayColorScheme.dark() : const ShadGrayColorScheme.light();
+      return isDarkMode
+          ? const ShadGrayColorScheme.dark()
+          : const ShadGrayColorScheme.light();
     case 'green':
-      return isDarkMode ? const ShadGreenColorScheme.dark() : const ShadGreenColorScheme.light();
+      return isDarkMode
+          ? const ShadGreenColorScheme.dark()
+          : const ShadGreenColorScheme.light();
     case 'neutral':
-      return isDarkMode ? const ShadNeutralColorScheme.dark() : const ShadNeutralColorScheme.light();
+      return isDarkMode
+          ? const ShadNeutralColorScheme.dark()
+          : const ShadNeutralColorScheme.light();
     case 'orange':
-      return isDarkMode ? const ShadOrangeColorScheme.dark() : const ShadOrangeColorScheme.light();
+      return isDarkMode
+          ? const ShadOrangeColorScheme.dark()
+          : const ShadOrangeColorScheme.light();
     case 'red':
-      return isDarkMode ? const ShadRedColorScheme.dark() : const ShadRedColorScheme.light();
+      return isDarkMode
+          ? const ShadRedColorScheme.dark()
+          : const ShadRedColorScheme.light();
     case 'rose':
-      return isDarkMode ? const ShadRoseColorScheme.dark() : const ShadRoseColorScheme.light();
+      return isDarkMode
+          ? const ShadRoseColorScheme.dark()
+          : const ShadRoseColorScheme.light();
     case 'slate':
-      return isDarkMode ? const ShadSlateColorScheme.dark() : const ShadSlateColorScheme.light();
+      return isDarkMode
+          ? const ShadSlateColorScheme.dark()
+          : const ShadSlateColorScheme.light();
     case 'stone':
-      return isDarkMode ? const ShadStoneColorScheme.dark() : const ShadStoneColorScheme.light();
+      return isDarkMode
+          ? const ShadStoneColorScheme.dark()
+          : const ShadStoneColorScheme.light();
     case 'violet':
-      return isDarkMode ? const ShadVioletColorScheme.dark() : const ShadVioletColorScheme.light();
+      return isDarkMode
+          ? const ShadVioletColorScheme.dark()
+          : const ShadVioletColorScheme.light();
     case 'yellow':
-      return isDarkMode ? const ShadYellowColorScheme.dark() : const ShadYellowColorScheme.light();
+      return isDarkMode
+          ? const ShadYellowColorScheme.dark()
+          : const ShadYellowColorScheme.light();
     case 'zinc':
-      return isDarkMode ? const ShadZincColorScheme.dark() : const ShadZincColorScheme.light();
+      return isDarkMode
+          ? const ShadZincColorScheme.dark()
+          : const ShadZincColorScheme.light();
     default:
-      return isDarkMode ? const ShadZincColorScheme.dark() : const ShadZincColorScheme.light();
+      return isDarkMode
+          ? const ShadZincColorScheme.dark()
+          : const ShadZincColorScheme.light();
   }
 }

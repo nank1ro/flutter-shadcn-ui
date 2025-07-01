@@ -292,8 +292,8 @@ void main() {
       expect(find.text('#'), findsOneWidget);
 
       // Check a week number is rendered (e.g., for the current week)
-      final now = DateTime.now();
-      final weekNumber = now.weekNumber.toString();
+      final date = DateTime(2025);
+      final weekNumber = date.weekNumber.toString();
       // 2 because there is also the day button with the same text
       expect(find.text(weekNumber), findsNWidgets(2));
 
