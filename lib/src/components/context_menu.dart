@@ -40,6 +40,7 @@ class ShadContextMenuRegion extends StatefulWidget {
     this.controller,
     this.supportedDevices,
     this.longPressEnabled,
+    this.hitTestBehavior = HitTestBehavior.opaque,
   });
 
   /// {@template ShadContextMenuRegion.child}
@@ -79,6 +80,13 @@ class ShadContextMenuRegion extends StatefulWidget {
 
   /// {@macro ShadContextMenu.controller}
   final ShadContextMenuController? controller;
+
+  /// {@template ShadContextMenuRegion.hitTestBehavior}
+  /// How this gesture detector should behave during hit testing.
+  ///
+  /// This defaults to [HitTestBehavior.opaque].
+  /// {@endtemplate}
+  final HitTestBehavior hitTestBehavior;
 
   /// The kind of devices that are allowed to be recognized.
   ///
@@ -160,7 +168,7 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
       decoration: widget.decoration,
       filter: widget.filter,
       child: ShadGestureDetector(
-        behavior: HitTestBehavior.opaque,
+        behavior: widget.hitTestBehavior,
         supportedDevices: widget.supportedDevices,
         onTapDown: (_) => hide(),
         onSecondaryTapDown: (d) async {
