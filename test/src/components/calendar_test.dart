@@ -291,12 +291,11 @@ void main() {
       // Check week numbers header (#) is rendered
       expect(find.text('#'), findsOneWidget);
 
-      // Check a week number is rendered
-      final now = DateTime.now();
-      final weekNumber = now.weekNumber.toString();
-      
-      // Check that at least one week number text exists
-      expect(find.text(weekNumber), findsAtLeast(1));
+      // Check a week number is rendered (e.g., for the current week)
+      final date = DateTime(2025);
+      final weekNumber = date.weekNumber.toString();
+      // 2 because there is also the day button with the same text
+      expect(find.text(weekNumber), findsNWidgets(2));
 
       // Check grid has 8 columns (7 days + 1 for week numbers)
       final gridFinder = find.byType(GridView);

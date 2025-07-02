@@ -61,6 +61,8 @@ class ShadCalendarTheme {
     this.weekStartsOn,
     this.fixedWeeks,
     this.allowDeselection,
+    this.dropdownFormatMonth,
+    this.dropdownFormatYear,
   });
 
   final bool merge;
@@ -211,6 +213,12 @@ class ShadCalendarTheme {
 
   /// {@macro ShadCalendar.formatWeekday}
   final String Function(DateTime date)? formatWeekday;
+
+  /// {@macro ShadCalendar.dropdownFormatMonth}
+  final String Function(DateTime date)? dropdownFormatMonth;
+
+  /// {@macro ShadCalendar.dropdownFormatYear}
+  final String Function(DateTime date)? dropdownFormatYear;
 
   /// {@macro ShadCalendar.showWeekNumbers}
   final bool? showWeekNumbers;
@@ -384,6 +392,9 @@ class ShadCalendarTheme {
       weekStartsOn: t < .5 ? a.weekStartsOn : b.weekStartsOn,
       fixedWeeks: t < .5 ? a.fixedWeeks : b.fixedWeeks,
       allowDeselection: t < .5 ? a.allowDeselection : b.allowDeselection,
+      dropdownFormatYear: t < .5 ? a.dropdownFormatYear : b.dropdownFormatYear,
+      dropdownFormatMonth:
+          t < .5 ? a.dropdownFormatMonth : b.dropdownFormatMonth,
     );
   }
 
@@ -462,6 +473,8 @@ class ShadCalendarTheme {
       weekStartsOn: other.weekStartsOn ?? weekStartsOn,
       fixedWeeks: other.fixedWeeks ?? fixedWeeks,
       allowDeselection: other.allowDeselection ?? allowDeselection,
+      dropdownFormatMonth: other.dropdownFormatMonth ?? dropdownFormatMonth,
+      dropdownFormatYear: other.dropdownFormatYear ?? dropdownFormatYear,
     );
   }
 
@@ -527,7 +540,9 @@ class ShadCalendarTheme {
         other.showWeekNumbers == showWeekNumbers &&
         other.weekStartsOn == weekStartsOn &&
         other.fixedWeeks == fixedWeeks &&
-        other.allowDeselection == allowDeselection;
+        other.allowDeselection == allowDeselection &&
+        other.dropdownFormatMonth == dropdownFormatMonth &&
+        other.dropdownFormatYear == dropdownFormatYear;
   }
 
   @override
@@ -585,7 +600,9 @@ class ShadCalendarTheme {
         showWeekNumbers.hashCode ^
         weekStartsOn.hashCode ^
         fixedWeeks.hashCode ^
-        allowDeselection.hashCode;
+        allowDeselection.hashCode ^
+        dropdownFormatMonth.hashCode ^
+        dropdownFormatYear.hashCode;
   }
 
   ShadCalendarTheme copyWith({
@@ -643,6 +660,8 @@ class ShadCalendarTheme {
     int? weekStartsOn,
     bool? fixedWeeks,
     bool? allowDeselection,
+    String Function(DateTime date)? dropdownFormatMonth,
+    String Function(DateTime date)? dropdownFormatYear,
   }) {
     return ShadCalendarTheme(
       merge: merge ?? this.merge,
@@ -717,6 +736,8 @@ class ShadCalendarTheme {
       weekStartsOn: weekStartsOn ?? this.weekStartsOn,
       fixedWeeks: fixedWeeks ?? this.fixedWeeks,
       allowDeselection: allowDeselection ?? this.allowDeselection,
+      dropdownFormatMonth: dropdownFormatMonth ?? this.dropdownFormatMonth,
+      dropdownFormatYear: dropdownFormatYear ?? this.dropdownFormatYear,
     );
   }
 }

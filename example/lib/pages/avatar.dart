@@ -8,12 +8,12 @@ class AvatarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const BaseScaffold(
+    return BaseScaffold(
       appBarTitle: 'Avatar',
       children: [
         ShadAvatar(
-          'https://avatars.githubusercontent.com/u/124599?v=4',
-          placeholder: Text('CN'),
+          'https://app.requestly.io/delay/2000/avatars.githubusercontent.com/u/124599?v=4&t=${DateTime.now().millisecondsSinceEpoch}',
+          placeholder: const Text('CN'),
         ),
       ],
     );
