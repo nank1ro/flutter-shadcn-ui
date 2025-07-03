@@ -8,6 +8,7 @@
 - **DOCS**: Adjust sheet docs example, with some spacing between buttons.
 - **FIX**: Fix the hit test behavior of `ShadContextMenuRegion`.
 - **FEAT**: Expose `hitTestBehavior` from `ShadContextMenuRegion`, defaults to `HitTestBehavior.opaque` (thanks to @NonymousMorlock).
+- **REFACTOR**: Set default text align of `ShadTooltip` to `null` instead of `TextAlign.center`.
 
 ## 0.27.4
 

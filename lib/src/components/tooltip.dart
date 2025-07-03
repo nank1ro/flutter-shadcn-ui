@@ -265,7 +265,6 @@ class _ShadTooltipState extends State<ShadTooltip>
                   child: DefaultTextStyle(
                     style: theme.textTheme.muted
                         .copyWith(color: theme.colorScheme.popoverForeground),
-                    textAlign: TextAlign.center,
                     child: widget.builder(context),
                   ),
                 ),
