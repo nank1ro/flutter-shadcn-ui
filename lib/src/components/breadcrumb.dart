@@ -76,7 +76,7 @@ class ShadBreadcrumb extends StatelessWidget {
       verticalDirection: verticalDirection ?? VerticalDirection.down,
       children: children.separatedBy(
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: effectiveSpacing),
+          padding: EdgeInsets.symmetric(horizontal: effectiveSpacing * 2.5),
           child: effectiveSeparator,
         ),
       ),
