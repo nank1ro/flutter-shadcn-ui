@@ -10,10 +10,6 @@ class BreadcrumbsPage extends StatelessWidget {
     print('Navigating to Home');
   }
 
-  void _navigateToLibrary() {
-    print('Navigating to Library');
-  }
-
   void _navigateToComponents() {
     print('Navigating to Components');
   }
@@ -104,114 +100,6 @@ class BreadcrumbsPage extends StatelessWidget {
                 ),
                 ShadBreadcrumbItem(
                   child: ShadBreadcrumbLink(
-                    onPressed: _navigateToLibrary,
-                    child: const Text('Library'),
-                  ),
-                ),
-                ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLink(
-                    onPressed: _navigateToComponents,
-                    child: const Text('Components'),
-                  ),
-                ),
-                const ShadBreadcrumbPage(
-                  child: Text('Breadcrumb'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 32),
-            
-            // Breadcrumb with Dropdown
-            const Text(
-              'Breadcrumb with Dropdown',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 16),
-            ShadBreadcrumb(
-              children: [
-                ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLink(
-                    onPressed: _navigateToHome,
-                    child: const Text('Home'),
-                  ),
-                ),
-                ShadBreadcrumbItem(
-                  child: ShadBreadcrumbDropdown(
-                    items: [
-                      ShadBreadcrumbLink(
-                        onPressed: () => print('Navigating to Documentation'),
-                        child: const Text('Documentation'),
-                      ),
-                      ShadBreadcrumbLink(
-                        onPressed: () => print('Navigating to Tutorials'),
-                        child: const Text('Tutorials'),
-                      ),
-                      ShadBreadcrumbLink(
-                        onPressed: () => print('Navigating to Building UI'),
-                        child: const Text('Building UI'),
-                      ),
-                      ShadBreadcrumbLink(
-                        onPressed: () => print('Navigating to Templates'),
-                        child: const Text('Templates'),
-                      ),
-                    ],
-                  ),
-                ),
-                ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLink(
-                    onPressed: _navigateToComponents,
-                    child: const Text('Components'),
-                  ),
-                ),
-                const ShadBreadcrumbPage(
-                  child: Text('Breadcrumb'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 32),
-            
-            // Breadcrumb with Custom Dropdown Trigger
-            const Text(
-              'Breadcrumb with Custom Dropdown Trigger',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 16),
-            ShadBreadcrumb(
-              children: [
-                ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLink(
-                    onPressed: _navigateToHome,
-                    child: const Text('Home'),
-                  ),
-                ),
-                ShadBreadcrumbItem(
-                  child: ShadBreadcrumbDropdown(
-                    trigger: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('More'),
-                        SizedBox(width: 4),
-                        Icon(Icons.keyboard_arrow_down, size: 16),
-                      ],
-                    ),
-                    items: [
-                      ShadBreadcrumbLink(
-                        onPressed: () => print('Navigating to Products'),
-                        child: const Text('Products'),
-                      ),
-                      ShadBreadcrumbLink(
-                        onPressed: () => print('Navigating to Categories'),
-                        child: const Text('Categories'),
-                      ),
-                      ShadBreadcrumbLink(
-                        onPressed: () => print('Navigating to Settings'),
-                        child: const Text('Settings'),
-                      ),
-                    ],
-                  ),
-                ),
-                ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLink(
                     onPressed: _navigateToComponents,
                     child: const Text('Components'),
                   ),
@@ -271,6 +159,9 @@ class BreadcrumbsPage extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 32),
+            
+        
           ],
         ),
       ),

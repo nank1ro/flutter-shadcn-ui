@@ -214,8 +214,7 @@ void main() {
       );
 
       expect(find.text('Hoverable'), findsOneWidget);
-      // Check that ShadBreadcrumbLink contains a MouseRegion (there may be others in the widget tree)
-      expect(find.byType(ShadBreadcrumbLink), findsOneWidget);
+      expect(find.byType(MouseRegion), findsOneWidget);
     });
   });
 

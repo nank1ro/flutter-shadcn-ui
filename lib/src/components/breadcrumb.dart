@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:shadcn_ui/src/components/button.dart';
-import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
@@ -97,49 +95,14 @@ class ShadBreadcrumbItem extends StatelessWidget {
   const ShadBreadcrumbItem({
     super.key,
     required this.child,
-    this.isCurrentPage = false,
   });
 
   /// The widget to display as the breadcrumb item content.
   final Widget child;
 
-  /// Whether this item represents the current page.
-  /// Current page items are typically not clickable and have different styling.
-  final bool isCurrentPage;
-
   @override
   Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-    final breadcrumbTheme = theme.breadcrumbTheme;
-
-    // Apply padding for non-current page items that aren't links
-    final effectivePadding = isCurrentPage 
-        ? (breadcrumbTheme.pagePadding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8))
-        : (breadcrumbTheme.itemPadding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8));
-
-    Widget content = DefaultTextStyle(
-      style: isCurrentPage
-          ? (breadcrumbTheme.currentPageTextStyle ??
-              theme.textTheme.small.copyWith(
-                color: theme.colorScheme.foreground,
-                fontWeight: FontWeight.normal,
-              ))
-          : (breadcrumbTheme.itemTextStyle ??
-              theme.textTheme.small.copyWith(
-                color: theme.colorScheme.mutedForeground,
-              )),
-      child: child,
-    );
-
-    // Only apply padding if the child isn't already a ShadButton (which has its own padding)
-    if (child is! ShadButton && child is! ShadBreadcrumbLink) {
-      content = Padding(
-        padding: effectivePadding,
-        child: content,
-      );
-    }
-
-    return content;
+    return child;
   }
 }
 
@@ -149,7 +112,7 @@ class ShadBreadcrumbItem extends StatelessWidget {
 /// This widget wraps content in a clickable area and applies appropriate
 /// hover and focus styling for interactive breadcrumb items.
 /// {@endtemplate}
-class ShadBreadcrumbLink extends StatelessWidget {
+class ShadBreadcrumbLink extends StatefulWidget {
   /// {@macro ShadBreadcrumbLink}
   const ShadBreadcrumbLink({
     super.key,
@@ -164,15 +127,33 @@ class ShadBreadcrumbLink extends StatelessWidget {
   final VoidCallback? onPressed;
 
   @override
+  State<ShadBreadcrumbLink> createState() => _ShadBreadcrumbLinkState();
+}
+
+class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final breadcrumbTheme = theme.breadcrumbTheme;
 
-    return ShadButton.ghost(
-      onPressed: onPressed,
-      child: DefaultTextStyle(
-        style: breadcrumbTheme.linkTextStyle ?? theme.textTheme.small,
-        child: child,
+    return MouseRegion(
+      cursor: widget.onPressed != null 
+          ? SystemMouseCursors.click 
+          : SystemMouseCursors.basic,
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTap: widget.onPressed,
+        child: DefaultTextStyle(
+          style: theme.textTheme.small.copyWith(
+            color: _isHovered 
+                ? theme.colorScheme.foreground 
+                : theme.colorScheme.mutedForeground,
+            fontWeight: FontWeight.normal,
+          ),
+          child: widget.child,
+        ),
       ),
     );
   }
@@ -197,8 +178,13 @@ class ShadBreadcrumbPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ShadBreadcrumbItem(
-      isCurrentPage: true,
+    final theme = ShadTheme.of(context);
+
+    return DefaultTextStyle(
+      style: theme.textTheme.small.copyWith(
+        color: theme.colorScheme.foreground,
+        fontWeight: FontWeight.normal,
+      ),
       child: child,
     );
   }
@@ -225,13 +211,11 @@ class ShadBreadcrumbSeparator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final breadcrumbTheme = theme.breadcrumbTheme;
 
     return child ??
-        breadcrumbTheme.separator ??
         Icon(
           LucideIcons.chevronRight,
-          size: 16,
+          size: 14,
           color: theme.colorScheme.mutedForeground,
         );
   }
@@ -258,107 +242,18 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final breadcrumbTheme = theme.breadcrumbTheme;
 
     return SizedBox(
       width: 36,
       height: 36,
       child: Center(
         child: child ??
-            breadcrumbTheme.ellipsis ??
             Icon(
               LucideIcons.ellipsis,
-              size: 14,
+              size: 16,
               color: theme.colorScheme.mutedForeground,
             ),
       ),
-    );
-  }
-}
-
-/// {@template ShadBreadcrumbDropdown}
-/// A dropdown breadcrumb item that displays a menu when clicked.
-///
-/// This widget is used to show collapsed breadcrumb items in a dropdown menu,
-/// typically represented by an ellipsis. It follows the shadcn/ui pattern of
-/// using a popover to show hidden navigation levels.
-/// {@endtemplate}
-class ShadBreadcrumbDropdown extends StatefulWidget {
-  /// {@macro ShadBreadcrumbDropdown}
-  const ShadBreadcrumbDropdown({
-    super.key,
-    required this.items,
-    this.trigger,
-  });
-
-  /// The list of dropdown menu items to display.
-  final List<Widget> items;
-
-  /// Custom trigger widget for the dropdown.
-  /// If null, uses an ellipsis button.
-  final Widget? trigger;
-
-  @override
-  State<ShadBreadcrumbDropdown> createState() => _ShadBreadcrumbDropdownState();
-}
-
-class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
-  final _controller = ShadPopoverController();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-    final breadcrumbTheme = theme.breadcrumbTheme;
-
-    Widget effectiveTrigger;
-    if (widget.trigger != null) {
-      // If a custom trigger is provided, wrap it in a GestureDetector to handle taps
-      effectiveTrigger = GestureDetector(
-        onTap: _controller.toggle,
-        child: widget.trigger,
-      );
-    } else {
-      // Use default ellipsis button
-      effectiveTrigger = ShadButton.ghost(
-        size: ShadButtonSize.sm,
-        onPressed: _controller.toggle,
-        child: Icon(
-          LucideIcons.ellipsis,
-          size: 14,
-          color: theme.colorScheme.mutedForeground,
-        ),
-      );
-    }
-
-    return ShadPopover(
-      controller: _controller,
-      popover: (context) => IntrinsicWidth(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              for (int i = 0; i < widget.items.length; i++) ...[
-                DefaultTextStyle(
-                  style: breadcrumbTheme.dropdownTextStyle ?? 
-                         theme.textTheme.small,
-                  child: widget.items[i],
-                ),
-                if (i < widget.items.length - 1) 
-                  const SizedBox(height: 4),
-              ],
-            ],
-          ),
-        ),
-      ),
-      child: effectiveTrigger,
     );
   }
 }
