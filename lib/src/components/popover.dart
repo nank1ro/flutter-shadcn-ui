@@ -266,11 +266,14 @@ class _ShadPopoverState extends State<ShadPopover> {
               controller.hide();
             },
           },
-          child: ShadPortal(
-            portalBuilder: (_) => popover,
-            visible: controller.isOpen,
-            anchor: effectiveAnchor,
-            child: widget.child,
+          child: Focus(
+            autofocus: true,
+            child: ShadPortal(
+              portalBuilder: (_) => popover,
+              visible: controller.isOpen,
+              anchor: effectiveAnchor,
+              child: widget.child,
+            ),
           ),
         );
       },
