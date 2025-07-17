@@ -215,10 +215,10 @@ class _TestBugState extends State<TestBug> {
                               // formKey = GlobalKey<ShadFormState>();
                             });
 
-                            WidgetsBinding.instance
-                                .addPostFrameCallback((timeStamp) {
-                              formKey.currentState!.reset();
-                            });
+                            // WidgetsBinding.instance
+                            //     .addPostFrameCallback((timeStamp) {
+                            //   formKey.currentState!.reset();
+                            // });
                           },
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -260,21 +260,21 @@ class _TestBugState extends State<TestBug> {
                           spacing: 16,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ShadInputFormField(
-                                id: "image",
-                                label: Text("image"),
-                                initialValue: selectedServiceDefinition.image),
+                            // ShadInputFormField(
+                            //     id: "image",
+                            //     label: Text("image"),
+                            //     initialValue: selectedServiceDefinition.image),
                             ShadInputFormField(
                                 id: "command",
                                 label: Text("command"),
                                 initialValue:
                                     selectedServiceDefinition.command),
-                            ShadInputFormField(
-                              id: "roomStoragePath",
-                              label: Text("room storage mount path"),
-                              initialValue:
-                                  selectedServiceDefinition.roomStoragePath,
-                            ),
+                            // ShadInputFormField(
+                            //   id: "roomStoragePath",
+                            //   label: Text("room storage mount path"),
+                            //   initialValue:
+                            //       selectedServiceDefinition.roomStoragePath,
+                            // ),
                           ],
                         ),
                       ),

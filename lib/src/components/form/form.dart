@@ -37,6 +37,7 @@ class ShadForm extends StatefulWidget {
     this.initialValue = const {},
     this.enabled = true,
     this.skipDisabled = false,
+    this.clearValueOnUnregister = false,
   });
 
   /// Callback when form value changes
@@ -64,6 +65,10 @@ class ShadForm extends StatefulWidget {
 
   /// Whether to skip disabled fields during validation
   final bool skipDisabled;
+
+  /// Whether to clear the value of fields when they are unregistered, defaults
+  /// to false;
+  final bool clearValueOnUnregister;
 
   @override
   State<ShadForm> createState() => ShadFormState();
@@ -138,13 +143,11 @@ class ShadFormState extends State<ShadForm> {
     Object id,
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
   ) {
-    final oldField = _fields[id];
     _fields[id] = field;
+    _value[id] = field.initialValue ?? initialValue[id];
     field
       ..registerTransformer(_transformers)
-      ..setValue(
-        oldField?.value ?? (_value[id] ??= field.initialValue),
-      );
+      ..setValue(_value[id]);
   }
 
   void setInternalFieldValue<T>(Object id, T? value) {
@@ -163,8 +166,10 @@ class ShadFormState extends State<ShadForm> {
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
   ) {
     _fields.remove(id);
-    _value.remove(id);
     _transformers.remove(id);
+    if (widget.clearValueOnUnregister) {
+      _value.remove(id);
+    }
   }
 
   /// Validates the form with optional focus and scroll behavior
