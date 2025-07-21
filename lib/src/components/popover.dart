@@ -161,6 +161,13 @@ class _ShadPopoverState extends State<ShadPopover> {
 
   late final _popoverKey = UniqueKey();
 
+  // The focus node of the popover.
+  // It's used to be able to focus the popover and receive key events.
+  final _popoverFocusNode = FocusNode();
+
+  // The focus scope node of the popover
+  final _popoverFocusScopeNode = FocusScopeNode();
+
   Object get groupId => widget.groupId ?? _popoverKey;
 
   @override
@@ -169,6 +176,7 @@ class _ShadPopoverState extends State<ShadPopover> {
     if (widget.controller == null) {
       _controller = ShadPopoverController();
     }
+    controller.addListener(_onPopoverToggle);
   }
 
   @override
@@ -185,8 +193,19 @@ class _ShadPopoverState extends State<ShadPopover> {
 
   @override
   void dispose() {
+    controller.removeListener(_onPopoverToggle);
+    _popoverFocusNode.dispose();
+    _popoverFocusScopeNode.dispose();
     _controller?.dispose();
     super.dispose();
+  }
+
+  // When the popover is opened, request focus to be able to receive key
+  // events.
+  void _onPopoverToggle() {
+    if (controller.isOpen) {
+      _popoverFocusNode.requestFocus();
+    }
   }
 
   @override
@@ -267,7 +286,17 @@ class _ShadPopoverState extends State<ShadPopover> {
             },
           },
           child: ShadPortal(
-            portalBuilder: (_) => popover,
+            portalBuilder: (_) {
+              // used to trap the focus inside the popover.
+              return FocusScope(
+                node: _popoverFocusScopeNode,
+                child: Focus(
+                  skipTraversal: true,
+                  focusNode: _popoverFocusNode,
+                  child: popover,
+                ),
+              );
+            },
             visible: controller.isOpen,
             anchor: effectiveAnchor,
             child: widget.child,
