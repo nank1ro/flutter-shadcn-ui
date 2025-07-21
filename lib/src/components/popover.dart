@@ -193,7 +193,6 @@ class _ShadPopoverState extends State<ShadPopover> {
 
   @override
   void dispose() {
-    controller.removeListener(_onPopoverToggle);
     _popoverFocusNode.dispose();
     _popoverFocusScopeNode.dispose();
     _controller?.dispose();
