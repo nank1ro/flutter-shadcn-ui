@@ -34,7 +34,6 @@ import 'package:example/pages/switch_form_field.dart';
 import 'package:example/pages/table.dart';
 import 'package:example/pages/tabs.dart';
 import 'package:example/pages/portal.dart';
-import 'package:example/pages/test_bug.dart';
 import 'package:example/pages/textarea.dart';
 import 'package:example/pages/textarea_form_field.dart';
 import 'package:example/pages/time_picker.dart';
@@ -53,7 +52,6 @@ void main() {
 
 // Maps the routes to the specific widget page.
 final routes = <String, WidgetBuilder>{
-  '/test_bug': (_) => const TestBug(),
   '/accordion': (_) => const AccordionPage(),
   '/alert': (_) => const AlertPage(),
   '/avatar': (_) => const AvatarPage(),
