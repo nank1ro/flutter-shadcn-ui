@@ -1,7 +1,7 @@
 ## 0.28.1
 
 - **FIX**: Add `clearValueOnUnregister` to `ShadForm` (defaults to `false`) to prevent clearing a form field's value from the form state when the field is unregistered (aka disposed).
-- **FIX**: `ShadPopover` not closing when pressic ESC (thanks to @DMouayad)
+- **FIX**: `ShadPopover` not closing when pressing ESC (thanks to @DMouayad)
 
 ## 0.28.0
 
