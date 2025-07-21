@@ -1,3 +1,7 @@
+## 0.28.1
+
+- **FIX**: Add `clearValueOnUnregister` to `ShadForm` (defaults to `false`) to prevent clearing a form field's value from the form state when the field is unregistered (aka disposed).
+
 ## 0.28.0
 
 - **REFACTOR**: Update `ShadCalendar` `yearSelectorMinWidth` from `100` to `64` and `monthSelectorMinWidth` from `120` to `64`.
