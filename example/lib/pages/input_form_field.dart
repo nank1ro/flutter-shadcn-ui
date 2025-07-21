@@ -22,7 +22,6 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
   String? initialValue;
   Map<Object, dynamic> formValue = {};
   final formKey = GlobalKey<ShadFormState>();
-  final randomNumbers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -64,15 +63,6 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
               });
             },
           ),
-          ShadButton(
-            child: const Text('Add Random Number'),
-            onPressed: () {
-              final n = DateTime.now().millisecondsSinceEpoch % 1000;
-              setState(() {
-                randomNumbers.add(n);
-              });
-            },
-          ),
         ],
         children: [
           ConstrainedBox(
@@ -93,15 +83,6 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
                     return null;
                   },
                 ),
-                for (final n in randomNumbers)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: ShadInputFormField(
-                      id: 'random_$n',
-                      label: Text('Random Number $n'),
-                      initialValue: n.toString(),
-                    ),
-                  ),
                 const SizedBox(height: 16),
                 ShadButton(
                   child: const Text('Submit'),
