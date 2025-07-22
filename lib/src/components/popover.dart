@@ -183,10 +183,14 @@ class _ShadPopoverState extends State<ShadPopover>
   // It's used to be able to focus the popover and receive key events.
   final _popoverFocusNode = FocusNode();
 
-  // The focus scope node of the popover
-  final _popoverFocusScopeNode = FocusScopeNode();
-
   Object get groupId => widget.groupId ?? _popoverKey;
+
+  late List<Effect<dynamic>> effectiveEffects;
+  late EdgeInsetsGeometry effectivePadding;
+  late List<BoxShadow>? effectiveShadows;
+  late ShadAnchorBase effectiveAnchor;
+  late ImageFilter? effectiveFilter;
+  late ShadDecoration effectiveDecoration;
 
   @override
   void initState() {
@@ -224,7 +228,6 @@ class _ShadPopoverState extends State<ShadPopover>
   void dispose() {
     animationController.dispose();
     _popoverFocusNode.dispose();
-    _popoverFocusScopeNode.dispose();
     _controller?.dispose();
     super.dispose();
   }
@@ -232,9 +235,9 @@ class _ShadPopoverState extends State<ShadPopover>
   void _onPopoverToggle() {
     if (controller.isOpen) {
       animationController.forward(from: 0);
-
       // When the popover is opened, request focus
       // to be able to receive key events.
+
       _popoverFocusNode.requestFocus();
     } else {
       animationController.reverse();
@@ -244,6 +247,7 @@ class _ShadPopoverState extends State<ShadPopover>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     final theme = ShadTheme.of(context);
 
     final effectiveDuration = widget.duration ?? theme.popoverTheme.duration;
@@ -253,18 +257,16 @@ class _ShadPopoverState extends State<ShadPopover>
     // Update the animation controller with the new durations.
     animationController.duration = effectiveDuration;
     animationController.reverseDuration = effectiveReverseDuration;
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
+    effectiveEffects = widget.effects ?? theme.popoverTheme.effects ?? [];
 
-    final effectiveEffects = widget.effects ?? theme.popoverTheme.effects ?? [];
-    final effectivePadding = widget.padding ??
+    effectivePadding = widget.padding ??
         theme.popoverTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 6);
+
     final effectiveShadows = widget.shadows ?? theme.popoverTheme.shadows;
-    var effectiveDecoration =
+
+    effectiveDecoration =
         (theme.popoverTheme.decoration ?? const ShadDecoration())
             .mergeWith(widget.decoration)
             .copyWith(shadows: effectiveShadows);
@@ -275,12 +277,15 @@ class _ShadPopoverState extends State<ShadPopover>
       ),
     );
 
-    final effectiveAnchor = widget.anchor ??
+    effectiveAnchor = widget.anchor ??
         theme.popoverTheme.anchor ??
         const ShadAnchorAuto(offset: Offset(0, 4));
 
-    final effectiveFilter = widget.filter ?? theme.popoverTheme.filter;
+    effectiveFilter = widget.filter ?? theme.popoverTheme.filter;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     Widget popover = ShadMouseArea(
       groupId: widget.areaGroupId,
       child: ShadDecorator(
@@ -289,7 +294,7 @@ class _ShadPopoverState extends State<ShadPopover>
           padding: effectivePadding,
           child: DefaultTextStyle(
             style: TextStyle(
-              color: theme.colorScheme.popoverForeground,
+              color: ShadTheme.of(context).colorScheme.popoverForeground,
             ),
             textAlign: TextAlign.center,
             child: Builder(
@@ -337,7 +342,6 @@ class _ShadPopoverState extends State<ShadPopover>
             portalBuilder: (_) {
               // used to trap the focus inside the popover.
               return FocusScope(
-                node: _popoverFocusScopeNode,
                 child: Focus(
                   skipTraversal: true,
                   focusNode: _popoverFocusNode,
