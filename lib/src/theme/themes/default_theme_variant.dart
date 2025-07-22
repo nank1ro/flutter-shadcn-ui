@@ -259,7 +259,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           duration: Duration(milliseconds: 100),
         ),
       ],
-      duration: Animate.defaultDuration,
+      duration: const Duration(milliseconds: 400),
       reverseDuration: const Duration(milliseconds: 150),
       shadows: ShadShadows.md,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

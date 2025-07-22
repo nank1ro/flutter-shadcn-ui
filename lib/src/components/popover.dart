@@ -155,7 +155,7 @@ class ShadPopover extends StatefulWidget {
   /// {@template ShadPopover.duration}
   /// The duration of the popover's entrance animation.
   ///
-  /// Defaults to [Animate.defaultDuration].
+  /// Defaults to [Duration(milliseconds: 400)].
   /// {@endtemplate}
   final Duration? duration;
 
