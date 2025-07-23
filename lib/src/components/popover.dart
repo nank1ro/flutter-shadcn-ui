@@ -54,7 +54,6 @@ class ShadPopover extends StatefulWidget {
     this.focusNode,
     this.anchor,
     this.effects,
-    this.duration,
     this.reverseDuration,
     this.shadows,
     this.padding,
@@ -152,17 +151,13 @@ class ShadPopover extends StatefulWidget {
   /// {@endtemplate}
   final bool useSameGroupIdForChild;
 
-  /// {@template ShadPopover.duration}
-  /// The duration of the popover's entrance animation.
-  ///
-  /// Defaults to [Duration(milliseconds: 400)].
-  /// {@endtemplate}
-  final Duration? duration;
-
   /// {@template ShadPopover.reverseDuration}
   /// The duration of the popover's exit animation.
   ///
   /// Defaults to [Duration(milliseconds: 150)].
+  ///
+  /// To customize the opening animation duration,
+  /// use [Effect.duration] in specified [effects].
   /// {@endtemplate}
   final Duration? reverseDuration;
 
@@ -250,12 +245,12 @@ class _ShadPopoverState extends State<ShadPopover>
 
     final theme = ShadTheme.of(context);
 
-    final effectiveDuration = widget.duration ?? theme.popoverTheme.duration;
     final effectiveReverseDuration =
         widget.reverseDuration ?? theme.popoverTheme.reverseDuration;
 
-    // Update the animation controller with the new durations.
-    animationController.duration = effectiveDuration;
+    // The duration will be overridden by the [Animate] widget based on the
+    // animation effects.
+    animationController.duration = Animate.defaultDuration;
     animationController.reverseDuration = effectiveReverseDuration;
 
     effectiveEffects = widget.effects ?? theme.popoverTheme.effects ?? [];
