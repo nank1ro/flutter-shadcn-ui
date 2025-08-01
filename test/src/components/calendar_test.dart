@@ -280,10 +280,12 @@ void main() {
 
     testWidgets('displays week numbers when enabled',
         (WidgetTester tester) async {
+      final date = DateTime(2025, 2);
       await tester.pumpAsyncWidget(
         createTestWidget(
-          const ShadCalendar(
+          ShadCalendar(
             showWeekNumbers: true,
+            initialMonth: date,
           ),
         ),
       );
@@ -292,7 +294,6 @@ void main() {
       expect(find.text('#'), findsOneWidget);
 
       // Check a week number is rendered (e.g., for the current week)
-      final date = DateTime(2025);
       final weekNumber = date.weekNumber.toString();
       // 2 because there is also the day button with the same text
       expect(find.text(weekNumber), findsNWidgets(2));
