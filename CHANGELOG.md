@@ -1,3 +1,7 @@
+## 0.28.2
+
+- **FIX**: `ShadDialog` and `ShadSheet` now use `SafeArea` to prevent the content from being cut off by the system UI.
+
 ## 0.28.1
 
 - **FIX**: Add `clearValueOnUnregister` to `ShadForm` (defaults to `false`) to prevent clearing a form field's value from the form state when the field is unregistered (aka disposed).
