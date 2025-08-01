@@ -572,41 +572,44 @@ class ShadDialog extends StatelessWidget {
               border: effectiveBorder,
               boxShadow: effectiveShadows,
             ),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: effectivePadding,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: effectiveMainAxisAlignment,
-                    crossAxisAlignment: effectiveCrossAxisAlignment,
-                    children: [
-                      if (title != null)
-                        DefaultTextStyle(
-                          style: effectiveTitleStyle,
-                          textAlign: effectiveTitleTextAlign,
-                          child: title!,
-                        ),
-                      if (description != null)
-                        DefaultTextStyle(
-                          style: effectiveDescriptionStyle,
-                          textAlign: effectiveDescriptionTextAlign,
-                          child: description!,
-                        ),
-                      if (child != null)
-                        Flexible(
-                          child: DefaultTextStyle(
-                            style: effectiveDescriptionStyle,
-                            child: child!,
+            child: SafeArea(
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: effectivePadding,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: effectiveMainAxisAlignment,
+                      crossAxisAlignment: effectiveCrossAxisAlignment,
+                      children: [
+                        if (title != null)
+                          DefaultTextStyle(
+                            style: effectiveTitleStyle,
+                            textAlign: effectiveTitleTextAlign,
+                            child: title!,
                           ),
-                        ),
-                      if (actions.isNotEmpty) effectiveActions,
-                    ].separatedBy(SizedBox(height: effectiveGap)),
+                        if (description != null)
+                          DefaultTextStyle(
+                            style: effectiveDescriptionStyle,
+                            textAlign: effectiveDescriptionTextAlign,
+                            child: description!,
+                          ),
+                        if (child != null)
+                          Flexible(
+                            child: DefaultTextStyle(
+                              style: effectiveDescriptionStyle,
+                              child: child!,
+                            ),
+                          ),
+                        if (actions.isNotEmpty) effectiveActions,
+                      ].separatedBy(SizedBox(height: effectiveGap)),
+                    ),
                   ),
-                ),
-                if (effectiveCloseIcon != null)
-                  effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),
-              ],
+                  if (effectiveCloseIcon != null)
+                    effectiveCloseIcon
+                        .positionedWith(effectiveCloseIconPosition),
+                ],
+              ),
             ),
           );
         },
