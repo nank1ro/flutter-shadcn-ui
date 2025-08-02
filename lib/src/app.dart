@@ -571,6 +571,7 @@ class _ShadAppState extends State<ShadApp> {
 
   Widget _builder(BuildContext context, Widget? child) {
     return ShadAppBuilder(
+      backgroundColor: widget.backgroundColor,
       builder: widget.builder,
       child: child,
     );
