@@ -1029,6 +1029,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                 anchor: effectiveAnchor,
                 closeOnTapOutside: widget.closeOnTapOutside,
                 effects: effectiveEffects,
+                reverseDuration: Duration.zero,
                 shadows: effectiveShadows,
                 filter: effectiveFilter,
                 popover: (_) {
