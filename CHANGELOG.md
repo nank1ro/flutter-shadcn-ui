@@ -1,3 +1,7 @@
+## 0.28.3
+
+- **FIX**: pass `backgroundColor` to `ShadAppBuilder` (thanks to @GuillaumeMCK)
+
 ## 0.28.2
 
 - **FIX**: `ShadDialog` and `ShadSheet` now use `SafeArea` to prevent the content from being cut off by the system UI.
