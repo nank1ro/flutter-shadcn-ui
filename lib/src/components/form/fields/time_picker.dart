@@ -111,6 +111,9 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
 
     /// {@macro ShadTimePicker.fieldDecoration}
     ShadDecoration? fieldDecoration,
+
+    /// {@macro ShadTimePicker.showSeconds}
+    bool showSeconds = true,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderTimePickerState;
@@ -147,6 +150,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
               fieldWidth: fieldWidth,
               fieldPadding: fieldPadding,
               fieldDecoration: fieldDecoration,
+              showSeconds: showSeconds,
             );
           },
         );
@@ -275,6 +279,9 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
 
     /// {@macro ShadTimePicker.periodDecoration}
     ShadDecoration? periodDecoration,
+
+    /// {@macro ShadTimePicker.showSeconds}
+    bool showSeconds = true,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderTimePickerState;
@@ -317,6 +324,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
               fieldPadding: fieldPadding,
               fieldDecoration: fieldDecoration,
               periodDecoration: periodDecoration,
+              showSeconds: showSeconds,
             );
           },
         );
@@ -446,6 +454,9 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
 
     /// {@macro ShadTimePicker.periodDecoration}
     ShadDecoration? periodDecoration,
+
+    /// {@macro ShadTimePicker.showSeconds}
+    bool showSeconds = true,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderTimePickerState;
@@ -489,6 +500,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
               fieldPadding: fieldPadding,
               fieldDecoration: fieldDecoration,
               periodDecoration: periodDecoration,
+              showSeconds: showSeconds,
             );
           },
         );
