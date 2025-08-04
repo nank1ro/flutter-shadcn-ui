@@ -33,7 +33,7 @@ class ShadInputTheme {
   final TextStyle? placeholderStyle;
 
   /// {@macro ShadInput.placeholderAlignment}
-  final Alignment? placeholderAlignment;
+  final AlignmentGeometry? placeholderAlignment;
 
   /// {@macro ShadInput.inputPadding}
   final EdgeInsets? inputPadding;

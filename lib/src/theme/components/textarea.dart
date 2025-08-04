@@ -37,7 +37,7 @@ class ShadTextareaTheme {
   final TextStyle? placeholderStyle;
 
   /// {@macro ShadTextarea.placeholderAlignment}
-  final Alignment? placeholderAlignment;
+  final AlignmentGeometry? placeholderAlignment;
 
   /// {@macro ShadTextarea.inputPadding}
   final EdgeInsets? inputPadding;
