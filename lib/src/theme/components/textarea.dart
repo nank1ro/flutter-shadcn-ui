@@ -82,6 +82,11 @@ class ShadTextareaTheme {
       style: TextStyle.lerp(a.style, b.style, t),
       placeholderStyle:
           TextStyle.lerp(a.placeholderStyle, b.placeholderStyle, t),
+      placeholderAlignment: AlignmentGeometry.lerp(
+        a.placeholderAlignment,
+        b.placeholderAlignment,
+        t,
+      ),
       inputPadding: EdgeInsets.lerp(a.inputPadding, b.inputPadding, t),
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
@@ -103,6 +108,7 @@ class ShadTextareaTheme {
     EdgeInsets? padding,
     TextStyle? style,
     TextStyle? placeholderStyle,
+    AlignmentGeometry? placeholderAlignment,
     EdgeInsets? inputPadding,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
@@ -120,6 +126,7 @@ class ShadTextareaTheme {
       padding: padding ?? this.padding,
       style: style ?? this.style,
       placeholderStyle: placeholderStyle ?? this.placeholderStyle,
+      placeholderAlignment: placeholderAlignment ?? this.placeholderAlignment,
       inputPadding: inputPadding ?? this.inputPadding,
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
@@ -141,6 +148,7 @@ class ShadTextareaTheme {
       padding: other.padding,
       style: other.style,
       placeholderStyle: other.placeholderStyle,
+      placeholderAlignment: other.placeholderAlignment,
       inputPadding: other.inputPadding,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
@@ -164,6 +172,7 @@ class ShadTextareaTheme {
           padding == other.padding &&
           style == other.style &&
           placeholderStyle == other.placeholderStyle &&
+          placeholderAlignment == other.placeholderAlignment &&
           inputPadding == other.inputPadding &&
           mainAxisAlignment == other.mainAxisAlignment &&
           crossAxisAlignment == other.crossAxisAlignment &&
@@ -182,6 +191,7 @@ class ShadTextareaTheme {
       padding.hashCode ^
       style.hashCode ^
       placeholderStyle.hashCode ^
+      placeholderAlignment.hashCode ^
       inputPadding.hashCode ^
       mainAxisAlignment.hashCode ^
       crossAxisAlignment.hashCode ^
