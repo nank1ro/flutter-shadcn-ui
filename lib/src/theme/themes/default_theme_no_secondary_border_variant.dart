@@ -265,18 +265,19 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   ShadPopoverTheme popoverTheme() {
     return ShadPopoverTheme(
       effects: const [
-        FadeEffect(duration: Duration(milliseconds: 100)),
+        FadeEffect(duration: Duration(milliseconds: 150)),
         ScaleEffect(
           begin: Offset(.95, .95),
           end: Offset(1, 1),
-          duration: Duration(milliseconds: 100),
+          duration: Duration(milliseconds: 150),
         ),
         MoveEffect(
           begin: Offset(0, 2),
           end: Offset.zero,
-          duration: Duration(milliseconds: 100),
+          duration: Duration(milliseconds: 150),
         ),
       ],
+      reverseDuration: const Duration(milliseconds: 150),
       shadows: ShadShadows.md,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: ShadDecoration(
