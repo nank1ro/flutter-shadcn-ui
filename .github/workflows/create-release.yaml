@@ -46,8 +46,7 @@ jobs:
 
       - name: Create GitHub Release (if it doesn't exist)
         env:
-          # The GITHUB_TOKEN is automatically provided by GitHub.
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.PAT }}
         run: |
           # Create a tag name, commonly prefixed with 'v'.
           TAG="v${{ steps.extract_info.outputs.VERSION }}"
