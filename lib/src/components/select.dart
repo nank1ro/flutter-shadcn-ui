@@ -76,6 +76,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.itemCount,
     this.shrinkWrap,
     this.controller,
+    this.popoverReverseDuration,
   })  : variant = ShadSelectVariant.primary,
         initialValues = const {},
         onSearchChanged = null,
@@ -134,6 +135,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.itemCount,
     this.shrinkWrap,
     this.controller,
+    this.popoverReverseDuration,
   })  : variant = ShadSelectVariant.search,
         selectedOptionsBuilder = null,
         onMultipleChanged = null,
@@ -178,6 +180,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.itemCount,
     this.shrinkWrap,
     this.controller,
+    this.popoverReverseDuration,
   })  : variant = ShadSelectVariant.multiple,
         onSearchChanged = null,
         initialValue = null,
@@ -237,6 +240,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.itemCount,
     this.shrinkWrap,
     this.controller,
+    this.popoverReverseDuration,
   })  : variant = ShadSelectVariant.multipleWithSearch,
         selectedOptionBuilder = null,
         onChanged = null,
@@ -293,6 +297,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.itemCount,
     this.shrinkWrap,
     this.controller,
+    this.popoverReverseDuration,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -608,6 +613,13 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@endtemplate}
   final bool? shrinkWrap;
 
+  /// {@template ShadSelect.popoverReverseDuration}
+  /// The duration of the popover's exit animation.
+  ///
+  /// Defaults to [Duration.zero ].
+  /// {@endtemplate}
+  final Duration? popoverReverseDuration;
+
   @override
   ShadSelectState<T> createState() => ShadSelectState();
 }
@@ -789,6 +801,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         widget.showScrollToBottomChevron ??
             theme.selectTheme.showScrollToBottomChevron ??
             true;
+
+    final popoverReverseDuration = widget.popoverReverseDuration ??
+        theme.selectTheme.popoverReverseDuration ??
+        Duration.zero;
 
     final effectiveAnchor =
         widget.anchor ?? theme.selectTheme.anchor ?? const ShadAnchorAuto();
@@ -1029,7 +1045,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                 anchor: effectiveAnchor,
                 closeOnTapOutside: widget.closeOnTapOutside,
                 effects: effectiveEffects,
-                reverseDuration: Duration.zero,
+                reverseDuration: popoverReverseDuration,
                 shadows: effectiveShadows,
                 filter: effectiveFilter,
                 popover: (_) {

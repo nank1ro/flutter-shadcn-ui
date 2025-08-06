@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
@@ -26,9 +27,13 @@ class ShadSelectTheme {
     this.effects,
     this.shadows,
     this.filter,
+    this.popoverReverseDuration,
   });
 
   final bool merge;
+
+  /// {@macro ShadPopover.reverseDuration}
+  final Duration? popoverReverseDuration;
 
   /// {@macro ShadSelect.decoration}
   final ShadDecoration? decoration;
@@ -95,6 +100,14 @@ class ShadSelectTheme {
       clearSearchOnClose: t < 0.5 ? a.clearSearchOnClose : b.clearSearchOnClose,
       effects: t < 0.5 ? a.effects : b.effects,
       shadows: t < 0.5 ? a.shadows : b.shadows,
+      popoverReverseDuration:
+          a.popoverReverseDuration != null && b.popoverReverseDuration != null
+              ? lerpDuration(
+                  a.popoverReverseDuration!,
+                  b.popoverReverseDuration!,
+                  t,
+                )
+              : b.popoverReverseDuration,
     );
   }
 
@@ -116,6 +129,7 @@ class ShadSelectTheme {
     List<Effect<dynamic>>? effects,
     List<BoxShadow>? shadows,
     ImageFilter? filter,
+    Duration? popoverReverseDuration,
   }) {
     return ShadSelectTheme(
       merge: merge ?? this.merge,
@@ -135,6 +149,8 @@ class ShadSelectTheme {
       effects: effects ?? this.effects,
       shadows: shadows ?? this.shadows,
       filter: filter ?? this.filter,
+      popoverReverseDuration:
+          popoverReverseDuration ?? this.popoverReverseDuration,
     );
   }
 
@@ -156,6 +172,7 @@ class ShadSelectTheme {
       effects: other.effects,
       shadows: other.shadows,
       filter: other.filter,
+      popoverReverseDuration: other.popoverReverseDuration,
     );
   }
 
@@ -178,7 +195,8 @@ class ShadSelectTheme {
         other.clearSearchOnClose == clearSearchOnClose &&
         other.effects == effects &&
         other.shadows == shadows &&
-        other.filter == filter;
+        other.filter == filter &&
+        other.popoverReverseDuration == popoverReverseDuration;
   }
 
   @override
@@ -197,6 +215,7 @@ class ShadSelectTheme {
         clearSearchOnClose.hashCode ^
         effects.hashCode ^
         shadows.hashCode ^
-        filter.hashCode;
+        filter.hashCode ^
+        popoverReverseDuration.hashCode;
   }
 }
