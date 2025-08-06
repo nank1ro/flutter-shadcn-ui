@@ -191,7 +191,7 @@ class _ShadPortalState extends State<ShadPortal> {
         overlayState.context.findRenderObject()! as RenderBox;
 
     final overlay = overlayKey.currentContext?.findRenderObject() as RenderBox?;
-    final overlaySize = overlay?.size ?? Size.zero;
+    final overlaySize = (true == overlay?.hasSize) ? overlay!.size : Size.zero;
 
     final targetOffset = switch (anchor.targetAnchor) {
       Alignment.topLeft => box.size.topLeft(Offset.zero),
