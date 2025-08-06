@@ -12,6 +12,8 @@ class ShadPopoverTheme {
     this.merge = true,
     this.effects,
     this.shadows,
+    this.duration,
+    this.reverseDuration,
     this.padding,
     this.decoration,
     this.anchor,
@@ -38,6 +40,12 @@ class ShadPopoverTheme {
   /// {@macro popover.filter}
   final ImageFilter? filter;
 
+  /// {@macro ShadPopover.duration}
+  final Duration? duration;
+
+  /// {@macro ShadPopover.reverseDuration}
+  final Duration? reverseDuration;
+
   static ShadPopoverTheme lerp(
     ShadPopoverTheme a,
     ShadPopoverTheme b,
@@ -52,6 +60,12 @@ class ShadPopoverTheme {
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       anchor: t < 0.5 ? a.anchor : b.anchor,
       filter: t < 0.5 ? a.filter : b.filter,
+      duration: a.duration != null && b.duration != null
+          ? lerpDuration(a.duration!, b.duration!, t)
+          : b.duration,
+      reverseDuration: a.reverseDuration != null && b.reverseDuration != null
+          ? lerpDuration(a.reverseDuration!, b.reverseDuration!, t)
+          : b.reverseDuration,
     );
   }
 
@@ -65,10 +79,14 @@ class ShadPopoverTheme {
     ShadDecoration? decoration,
     ShadAnchorBase? anchor,
     ImageFilter? filter,
+    Duration? duration,
+    Duration? reverseDuration,
   }) {
     return ShadPopoverTheme(
       merge: merge ?? this.merge,
       effects: effects ?? this.effects,
+      duration: duration ?? this.duration,
+      reverseDuration: reverseDuration ?? this.reverseDuration,
       shadows: shadows ?? this.shadows,
       padding: padding ?? this.padding,
       decoration: decoration ?? this.decoration,
@@ -87,6 +105,8 @@ class ShadPopoverTheme {
       decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       anchor: other.anchor,
       filter: other.filter,
+      duration: other.duration,
+      reverseDuration: other.reverseDuration,
     );
   }
 
@@ -101,7 +121,9 @@ class ShadPopoverTheme {
         other.padding == padding &&
         other.decoration == decoration &&
         other.anchor == anchor &&
-        other.filter == filter;
+        other.filter == filter &&
+        other.duration == duration &&
+        other.reverseDuration == reverseDuration;
   }
 
   @override
@@ -112,6 +134,8 @@ class ShadPopoverTheme {
         padding.hashCode ^
         decoration.hashCode ^
         anchor.hashCode ^
-        filter.hashCode;
+        filter.hashCode ^
+        duration.hashCode ^
+        reverseDuration.hashCode;
   }
 }

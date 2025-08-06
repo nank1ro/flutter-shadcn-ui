@@ -54,6 +54,8 @@ class ShadPopover extends StatefulWidget {
     this.focusNode,
     this.anchor,
     this.effects,
+    this.duration,
+    this.reverseDuration,
     this.shadows,
     this.padding,
     this.decoration,
@@ -150,14 +152,30 @@ class ShadPopover extends StatefulWidget {
   /// {@endtemplate}
   final bool useSameGroupIdForChild;
 
+  /// {@template ShadPopover.duration}
+  /// The duration of the popover's entrance animation.
+  ///
+  /// Defaults to [Animate.defaultDuration].
+  /// {@endtemplate}
+  final Duration? duration;
+
+  /// {@template ShadPopover.reverseDuration}
+  /// The duration of the popover's exit animation.
+  ///
+  /// Defaults to [Duration(milliseconds: 150)].
+  /// {@endtemplate}
+  final Duration? reverseDuration;
+
   @override
   State<ShadPopover> createState() => _ShadPopoverState();
 }
 
-class _ShadPopoverState extends State<ShadPopover> {
+class _ShadPopoverState extends State<ShadPopover>
+    with SingleTickerProviderStateMixin {
   ShadPopoverController? _controller;
   ShadPopoverController get controller => widget.controller ?? _controller!;
-  bool animating = false;
+
+  late final AnimationController animationController;
 
   late final _popoverKey = UniqueKey();
 
@@ -176,12 +194,23 @@ class _ShadPopoverState extends State<ShadPopover> {
     if (widget.controller == null) {
       _controller = ShadPopoverController();
     }
+    animationController = AnimationController(vsync: this);
     controller.addListener(_onPopoverToggle);
+
+    if (controller.isOpen) {
+      animationController.forward(from: 0);
+    }
   }
 
   @override
   void didUpdateWidget(covariant ShadPopover oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.controller != null &&
+        widget.controller != oldWidget.controller) {
+      oldWidget.controller?.removeListener(_onPopoverToggle);
+      widget.controller!.addListener(_onPopoverToggle);
+    }
+
     if (widget.visible != null) {
       if (widget.visible! && !controller.isOpen) {
         controller.show();
@@ -193,18 +222,37 @@ class _ShadPopoverState extends State<ShadPopover> {
 
   @override
   void dispose() {
+    animationController.dispose();
     _popoverFocusNode.dispose();
     _popoverFocusScopeNode.dispose();
     _controller?.dispose();
     super.dispose();
   }
 
-  // When the popover is opened, request focus to be able to receive key
-  // events.
   void _onPopoverToggle() {
     if (controller.isOpen) {
+      animationController.forward(from: 0);
+
+      // When the popover is opened, request focus
+      // to be able to receive key events.
       _popoverFocusNode.requestFocus();
+    } else {
+      animationController.reverse();
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final theme = ShadTheme.of(context);
+
+    final effectiveDuration = widget.duration ?? theme.popoverTheme.duration;
+    final effectiveReverseDuration =
+        widget.reverseDuration ?? theme.popoverTheme.reverseDuration;
+
+    // Update the animation controller with the new durations.
+    animationController.duration = effectiveDuration;
+    animationController.reverseDuration = effectiveReverseDuration;
   }
 
   @override
@@ -261,6 +309,7 @@ class _ShadPopoverState extends State<ShadPopover> {
 
     if (effectiveEffects.isNotEmpty) {
       popover = Animate(
+        controller: animationController,
         effects: effectiveEffects,
         child: popover,
       );
@@ -275,8 +324,8 @@ class _ShadPopoverState extends State<ShadPopover> {
       );
     }
 
-    Widget child = ListenableBuilder(
-      listenable: controller,
+    Widget child = AnimatedBuilder(
+      animation: animationController,
       builder: (context, _) {
         return CallbackShortcuts(
           bindings: {
@@ -296,7 +345,7 @@ class _ShadPopoverState extends State<ShadPopover> {
                 ),
               );
             },
-            visible: controller.isOpen,
+            visible: animationController.isDismissed == false,
             anchor: effectiveAnchor,
             child: widget.child,
           ),
