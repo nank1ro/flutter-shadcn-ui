@@ -33,7 +33,7 @@ class ShadInputTheme {
   final TextStyle? placeholderStyle;
 
   /// {@macro ShadInput.placeholderAlignment}
-  final Alignment? placeholderAlignment;
+  final AlignmentGeometry? placeholderAlignment;
 
   /// {@macro ShadInput.inputPadding}
   final EdgeInsets? inputPadding;
@@ -66,6 +66,11 @@ class ShadInputTheme {
       style: TextStyle.lerp(a.style, b.style, t),
       placeholderStyle:
           TextStyle.lerp(a.placeholderStyle, b.placeholderStyle, t),
+      placeholderAlignment: AlignmentGeometry.lerp(
+        a.placeholderAlignment,
+        b.placeholderAlignment,
+        t,
+      ),
       inputPadding: EdgeInsets.lerp(a.inputPadding, b.inputPadding, t),
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
@@ -85,6 +90,7 @@ class ShadInputTheme {
     EdgeInsets? padding,
     TextStyle? style,
     TextStyle? placeholderStyle,
+    AlignmentGeometry? placeholderAlignment,
     EdgeInsets? inputPadding,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
@@ -98,6 +104,7 @@ class ShadInputTheme {
       padding: padding ?? this.padding,
       style: style ?? this.style,
       placeholderStyle: placeholderStyle ?? this.placeholderStyle,
+      placeholderAlignment: placeholderAlignment ?? this.placeholderAlignment,
       inputPadding: inputPadding ?? this.inputPadding,
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
@@ -115,6 +122,7 @@ class ShadInputTheme {
       padding: other.padding,
       style: other.style,
       placeholderStyle: other.placeholderStyle,
+      placeholderAlignment: other.placeholderAlignment,
       inputPadding: other.inputPadding,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
@@ -134,6 +142,7 @@ class ShadInputTheme {
         other.padding == padding &&
         other.style == style &&
         other.placeholderStyle == placeholderStyle &&
+        other.placeholderAlignment == placeholderAlignment &&
         other.inputPadding == inputPadding &&
         other.mainAxisAlignment == mainAxisAlignment &&
         other.crossAxisAlignment == crossAxisAlignment &&
@@ -149,6 +158,7 @@ class ShadInputTheme {
         padding.hashCode ^
         style.hashCode ^
         placeholderStyle.hashCode ^
+        placeholderAlignment.hashCode ^
         inputPadding.hashCode ^
         mainAxisAlignment.hashCode ^
         crossAxisAlignment.hashCode ^

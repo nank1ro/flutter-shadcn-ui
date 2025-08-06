@@ -520,7 +520,7 @@ class ShadInput extends StatefulWidget {
   /// The alignment of the placeholder within the input field.
   /// Defaults to [Alignment.topLeft] if not specified.
   /// {@endtemplate}
-  final Alignment? placeholderAlignment;
+  final AlignmentGeometry? placeholderAlignment;
 
   /// {@template ShadInput.inputPadding}
   /// The padding around the editable text within the input field.

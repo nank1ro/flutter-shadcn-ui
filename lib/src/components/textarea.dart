@@ -124,7 +124,7 @@ class ShadTextarea extends StatefulWidget {
   /// Alignment for the placeholder inside the field.
   /// Defaults to [Alignment.topLeft].
   /// {@endtemplate}
-  final Alignment? placeholderAlignment;
+  final AlignmentGeometry? placeholderAlignment;
 
   /// {@template ShadTextarea.decoration}
   /// Optional visual decoration for the textarea.

@@ -36,7 +36,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
     TextStyle? placeholderStyle,
 
     /// {@macro ShadTextarea.placeholderAlignment}
-    Alignment? placeholderAlignment,
+    AlignmentGeometry? placeholderAlignment,
 
     /// {@macro ShadTextarea.padding}
     EdgeInsets? padding,
