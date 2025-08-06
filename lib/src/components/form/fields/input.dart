@@ -212,7 +212,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     TextStyle? placeholderStyle,
 
     /// {@macro ShadInput.placeholderAlignment}
-    Alignment? placeholderAlignment,
+    AlignmentGeometry? placeholderAlignment,
 
     /// {@macro ShadInput.inputPadding}
     EdgeInsets? inputPadding,
