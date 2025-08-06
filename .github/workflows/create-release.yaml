@@ -1,0 +1,66 @@
+name: Create Release on Main Push
+
+# This workflow runs on every push to the 'main' branch.
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+# Grant permissions for the workflow to create releases.
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract Version and Changelog
+        id: extract_info
+        run: |
+          # Extract the version from pubspec.yaml.
+          # It looks for the line starting with "version:", removes that prefix, and trims whitespace.
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          echo "Found version: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+          # Extract the release notes for the current version from CHANGELOG.md.
+          # This awk script finds the line with the version (e.g., "## 0.28.4") and prints all
+          # subsequent lines until it finds the next heading (another line starting with "##")
+          # or the end of the file.
+          CHANGELOG_BODY=$(awk -v ver="## $VERSION" '$0 ~ ver {p=1; next} /^## / {p=0} p' CHANGELOG.md)
+
+          # Check if changelog body was found
+          if [ -z "$CHANGELOG_BODY" ]; then
+            echo "::error::Could not find changelog entry for version $VERSION in CHANGELOG.md"
+            exit 1
+          fi
+
+          # To handle multiline changelog entries correctly, we write them to a file
+          # and pass the filename to the next step.
+          echo "$CHANGELOG_BODY" > release_notes.md
+          echo "CHANGELOG_FILE=release_notes.md" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release (if it doesn't exist)
+        env:
+          # The GITHUB_TOKEN is automatically provided by GitHub.
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Create a tag name, commonly prefixed with 'v'.
+          TAG="v${{ steps.extract_info.outputs.VERSION }}"
+
+          # Check if a release with this tag already exists.
+          # The 'gh release view' command will exit with a non-zero status code if the release is not found.
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            echo "Release '$TAG' already exists. Skipping."
+            exit 0
+          fi
+
+          # Create the release using the GitHub CLI.
+          echo "Creating release '$TAG'..."
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes-file "${{ steps.extract_info.outputs.CHANGELOG_FILE }}"
