@@ -768,6 +768,10 @@ class ShadInputState extends State<ShadInput>
         (theme.inputTheme.decoration ?? const ShadDecoration())
             .mergeWith(widget.decoration);
 
+    final effectiveCursorColor = widget.cursorColor ??
+        theme.inputTheme.cursorColor ??
+        theme.colorScheme.primary;
+
     final effectivePadding = widget.padding ??
         theme.inputTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
@@ -940,8 +944,7 @@ class ShadInputState extends State<ShadInput>
                                                 .enableInteractiveSelection,
                                             style: effectiveTextStyle,
                                             strutStyle: widget.strutStyle,
-                                            cursorColor: widget.cursorColor ??
-                                                theme.colorScheme.primary,
+                                            cursorColor: effectiveCursorColor,
                                             backgroundCursorColor: Colors.grey,
                                             keyboardType: widget.keyboardType,
                                             keyboardAppearance:

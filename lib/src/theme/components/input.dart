@@ -8,6 +8,7 @@ class ShadInputTheme {
     this.decoration,
     this.padding,
     this.style,
+    this.cursorColor,
     this.placeholderStyle,
     this.placeholderAlignment,
     this.inputPadding,
@@ -28,6 +29,9 @@ class ShadInputTheme {
 
   /// {@macro ShadInput.style}
   final TextStyle? style;
+
+  /// {@macro ShadInput.cursorColor}
+  final Color? cursorColor;
 
   /// {@macro ShadInput.placeholderStyle}
   final TextStyle? placeholderStyle;
@@ -64,6 +68,7 @@ class ShadInputTheme {
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       style: TextStyle.lerp(a.style, b.style, t),
+      cursorColor: Color.lerp(a.cursorColor, b.cursorColor, t),
       placeholderStyle:
           TextStyle.lerp(a.placeholderStyle, b.placeholderStyle, t),
       inputPadding: EdgeInsets.lerp(a.inputPadding, b.inputPadding, t),
@@ -84,6 +89,7 @@ class ShadInputTheme {
     ShadDecoration? decoration,
     EdgeInsets? padding,
     TextStyle? style,
+    Color? cursorColor,
     TextStyle? placeholderStyle,
     EdgeInsets? inputPadding,
     MainAxisAlignment? mainAxisAlignment,
@@ -97,6 +103,7 @@ class ShadInputTheme {
       decoration: decoration ?? this.decoration,
       padding: padding ?? this.padding,
       style: style ?? this.style,
+      cursorColor: cursorColor ?? this.cursorColor,
       placeholderStyle: placeholderStyle ?? this.placeholderStyle,
       inputPadding: inputPadding ?? this.inputPadding,
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
@@ -114,6 +121,7 @@ class ShadInputTheme {
       decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       padding: other.padding,
       style: other.style,
+      cursorColor: other.cursorColor,
       placeholderStyle: other.placeholderStyle,
       inputPadding: other.inputPadding,
       mainAxisAlignment: other.mainAxisAlignment,
@@ -133,6 +141,7 @@ class ShadInputTheme {
         other.decoration == decoration &&
         other.padding == padding &&
         other.style == style &&
+        other.cursorColor == cursorColor &&
         other.placeholderStyle == placeholderStyle &&
         other.inputPadding == inputPadding &&
         other.mainAxisAlignment == mainAxisAlignment &&
@@ -148,6 +157,7 @@ class ShadInputTheme {
         decoration.hashCode ^
         padding.hashCode ^
         style.hashCode ^
+        cursorColor.hashCode ^
         placeholderStyle.hashCode ^
         inputPadding.hashCode ^
         mainAxisAlignment.hashCode ^
