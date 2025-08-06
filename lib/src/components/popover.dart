@@ -293,8 +293,7 @@ class _ShadPopoverState extends State<ShadPopover>
 
     if (effectiveFilter != null) {
       popover = BackdropFilter(
-        filter: widget.filter!,
-        filter: widget.filter!,
+        filter: effectiveFilter,
         child: popover,
       );
     }
