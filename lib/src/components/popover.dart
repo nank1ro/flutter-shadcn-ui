@@ -182,7 +182,6 @@ class _ShadPopoverState extends State<ShadPopover>
 
   late List<Effect<dynamic>> effectiveEffects;
   late EdgeInsetsGeometry effectivePadding;
-  late List<BoxShadow>? effectiveShadows;
   late ShadAnchorBase effectiveAnchor;
   late ImageFilter? effectiveFilter;
   late ShadDecoration effectiveDecoration;

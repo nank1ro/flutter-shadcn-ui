@@ -64,8 +64,6 @@ class ShadPopoverTheme {
 
   ShadPopoverTheme copyWith({
     bool? merge,
-    Duration? waitDuration,
-    Duration? showDuration,
     List<Effect<dynamic>>? effects,
     List<BoxShadow>? shadows,
     EdgeInsetsGeometry? padding,
