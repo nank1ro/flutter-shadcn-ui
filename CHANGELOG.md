@@ -1,3 +1,8 @@
+## 0.28.4
+
+- **FEAT**: Add `cursorColor` to `ShadInput` (thanks to @GuillaumeMCK).
+- **FIX**: Use `AlignmentGeometry` instead of `Alignment` inside `ShadInput`, `ShadTextarea` and their form fields (thanks to @omaralmgerbie)
+
 ## 0.28.3
 
 - **FIX**: pass `backgroundColor` to `ShadAppBuilder` (thanks to @GuillaumeMCK)
