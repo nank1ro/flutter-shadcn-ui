@@ -1,3 +1,7 @@
+## 0.28.5
+
+- **FIX**: `ShadCalendar` back and forward buttons on RTL (thanks to @Harith Haroon).
+
 ## 0.28.4
 
 - **FEAT**: Add `cursorColor` to `ShadInput` (thanks to @GuillaumeMCK).
