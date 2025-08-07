@@ -70,6 +70,9 @@ See the [documentation](https://flutter-shadcn-ui.mariuti.com/) to interact with
 - [ ] ToggleGroup
 - [x] [Tooltip](https://flutter-shadcn-ui.mariuti.com/components/tooltip/)
 
+## Block Components
+- [x] [Sidebar](https://flutter-shadcn-ui.mariuti.com/components/sidebar/)
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=nank1ro/flutter-shadcn-ui&type=Date)](https://star-history.com/#nank1ro/flutter-shadcn-ui&Date)

@@ -23,6 +23,7 @@ import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -92,6 +93,7 @@ abstract class ShadBaseTheme {
     required this.separatorTheme,
     required this.sonnerTheme,
     required this.textareaTheme,
+    required this.sidebarTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -147,6 +149,7 @@ abstract class ShadBaseTheme {
   final ShadSeparatorTheme separatorTheme;
   final ShadSonnerTheme sonnerTheme;
   final ShadTextareaTheme textareaTheme;
+  final ShadSidebarTheme sidebarTheme;
 }
 
 @immutable
@@ -197,4 +200,5 @@ abstract class ShadThemeVariant {
   ShadSeparatorTheme separatorTheme();
   ShadSonnerTheme sonnerTheme();
   ShadTextareaTheme textareaTheme();
+  ShadSidebarTheme sidebarTheme();
 }
