@@ -161,6 +161,12 @@ class ShadPopover extends StatefulWidget {
   /// {@endtemplate}
   final Duration? reverseDuration;
 
+  static const EdgeInsetsGeometry defaultPadding =
+      EdgeInsets.symmetric(horizontal: 12, vertical: 6);
+
+  static const ShadAnchorBase defaultAnchor =
+      ShadAnchorAuto(offset: Offset(0, 4));
+
   @override
   State<ShadPopover> createState() => _ShadPopoverState();
 }
@@ -180,11 +186,11 @@ class _ShadPopoverState extends State<ShadPopover>
 
   Object get groupId => widget.groupId ?? _popoverKey;
 
-  late List<Effect<dynamic>> effectiveEffects;
-  late EdgeInsetsGeometry effectivePadding;
-  late ShadAnchorBase effectiveAnchor;
-  late ImageFilter? effectiveFilter;
-  late ShadDecoration effectiveDecoration;
+  EdgeInsetsGeometry effectivePadding = ShadPopover.defaultPadding;
+  ShadAnchorBase effectiveAnchor = ShadPopover.defaultAnchor;
+  List<Effect<dynamic>> effectiveEffects = [];
+  ImageFilter? effectiveFilter;
+  ShadDecoration? effectiveDecoration;
 
   @override
   void initState() {
@@ -256,7 +262,7 @@ class _ShadPopoverState extends State<ShadPopover>
 
     effectivePadding = widget.padding ??
         theme.popoverTheme.padding ??
-        const EdgeInsets.symmetric(horizontal: 12, vertical: 6);
+        ShadPopover.defaultPadding;
 
     final effectiveShadows = widget.shadows ?? theme.popoverTheme.shadows;
 
@@ -265,15 +271,14 @@ class _ShadPopoverState extends State<ShadPopover>
             .mergeWith(widget.decoration)
             .copyWith(shadows: effectiveShadows);
     // remove the top padding of the popover
-    effectiveDecoration = effectiveDecoration.copyWith(
+    effectiveDecoration = effectiveDecoration?.copyWith(
       secondaryBorder: ShadBorder(
         padding: theme.decoration.secondaryBorder?.padding?.copyWith(top: 0),
       ),
     );
 
-    effectiveAnchor = widget.anchor ??
-        theme.popoverTheme.anchor ??
-        const ShadAnchorAuto(offset: Offset(0, 4));
+    effectiveAnchor =
+        widget.anchor ?? theme.popoverTheme.anchor ?? ShadPopover.defaultAnchor;
 
     effectiveFilter = widget.filter ?? theme.popoverTheme.filter;
   }
