@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/icon_button.dart';
@@ -1463,15 +1463,41 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
           final labelNavigation = Stack(
             children: [
-              if (isFirstMonth && !effectiveHideNavigation) backButton,
+              // Show back button only if there are previous months to
+              // navigate to
+              if (isFirstMonth && !effectiveHideNavigation && !isLastMonth)
+                backButton,
+
+              // Show forward button only if there are next months to
+              // navigate to
+              if (isLastMonth && !effectiveHideNavigation && !isFirstMonth)
+                Align(
+                  alignment: AlignmentDirectional.topEnd,
+                  child: forwardButton,
+                ),
+
+              // For single month view, show both buttons in a Row layout
+              if (isFirstMonth && isLastMonth && !effectiveHideNavigation)
+                Builder(
+                  builder: (context) {
+                    final textDirection = Directionality.of(context);
+                    final isRTL = textDirection == TextDirection.rtl;
+
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: isRTL
+                          ? [forwardButton, backButton]
+                          : [backButton, forwardButton],
+                    );
+                  },
+                ),
+
               Center(
                 child: Text(
                   effectiveFormatMonthYear(dateModel.month),
                   style: effectiveHeaderTextStyle,
                 ),
               ),
-              if (isLastMonth && !effectiveHideNavigation)
-                Align(alignment: Alignment.topRight, child: forwardButton),
             ],
           );
 
