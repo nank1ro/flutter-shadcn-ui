@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/icon_button.dart';
@@ -1347,6 +1347,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
         theme.calendarTheme.allowDeselection ??
         false;
 
+    final textDirection = Directionality.of(context);
+
     final yearSelector = ShadSelect<int>(
       initialValue: currentMonth.year,
       groupId: widget.groupId,
@@ -1463,7 +1465,14 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
           final labelNavigation = Stack(
             children: [
-              if (isFirstMonth && !effectiveHideNavigation) backButton,
+              if (isFirstMonth && !effectiveHideNavigation)
+                Align(
+                  alignment: switch (textDirection) {
+                    TextDirection.ltr => AlignmentDirectional.topStart,
+                    TextDirection.rtl => AlignmentDirectional.topEnd,
+                  },
+                  child: backButton,
+                ),
               Center(
                 child: Text(
                   effectiveFormatMonthYear(dateModel.month),
@@ -1471,7 +1480,13 @@ class _ShadCalendarState extends State<ShadCalendar> {
                 ),
               ),
               if (isLastMonth && !effectiveHideNavigation)
-                Align(alignment: Alignment.topRight, child: forwardButton),
+                Align(
+                  alignment: switch (textDirection) {
+                    TextDirection.ltr => AlignmentDirectional.topEnd,
+                    TextDirection.rtl => AlignmentDirectional.topStart,
+                  },
+                  child: forwardButton,
+                ),
             ],
           );
 
