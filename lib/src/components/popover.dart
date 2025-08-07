@@ -192,12 +192,15 @@ class _ShadPopoverState extends State<ShadPopover>
     if (widget.controller == null) {
       _controller = ShadPopoverController();
     }
-    animationController = AnimationController(vsync: this);
+    animationController = AnimationController(
+      vsync: this,
+      // This duration will be overridden later
+      // by the [Animate] widget based on the effects.
+      duration: Animate.defaultDuration,
+    );
     controller.addListener(_onPopoverToggle);
 
-    if (controller.isOpen) {
-      animationController.forward(from: 0);
-    }
+    _onPopoverToggle();
   }
 
   @override
@@ -247,9 +250,6 @@ class _ShadPopoverState extends State<ShadPopover>
     final effectiveReverseDuration =
         widget.reverseDuration ?? theme.popoverTheme.reverseDuration;
 
-    // The duration will be overridden by the [Animate] widget based on the
-    // animation effects.
-    animationController.duration = Animate.defaultDuration;
     animationController.reverseDuration = effectiveReverseDuration;
 
     effectiveEffects = widget.effects ?? theme.popoverTheme.effects ?? [];
