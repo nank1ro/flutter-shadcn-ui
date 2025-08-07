@@ -1347,8 +1347,6 @@ class _ShadCalendarState extends State<ShadCalendar> {
         theme.calendarTheme.allowDeselection ??
         false;
 
-    final textDirection = Directionality.of(context);
-
     final yearSelector = ShadSelect<int>(
       initialValue: currentMonth.year,
       groupId: widget.groupId,
@@ -1463,30 +1461,19 @@ class _ShadCalendarState extends State<ShadCalendar> {
           final isFirstMonth = index == 0;
           final isLastMonth = index == models.length - 1;
 
-          final labelNavigation = Stack(
+          final labelNavigation = Row(
+            textDirection: TextDirection.ltr,
             children: [
-              if (isFirstMonth && !effectiveHideNavigation)
-                Align(
-                  alignment: switch (textDirection) {
-                    TextDirection.ltr => AlignmentDirectional.topStart,
-                    TextDirection.rtl => AlignmentDirectional.topEnd,
-                  },
-                  child: backButton,
-                ),
-              Center(
-                child: Text(
-                  effectiveFormatMonthYear(dateModel.month),
-                  style: effectiveHeaderTextStyle,
+              if (isFirstMonth && !effectiveHideNavigation) backButton,
+              Expanded(
+                child: Center(
+                  child: Text(
+                    effectiveFormatMonthYear(dateModel.month),
+                    style: effectiveHeaderTextStyle,
+                  ),
                 ),
               ),
-              if (isLastMonth && !effectiveHideNavigation)
-                Align(
-                  alignment: switch (textDirection) {
-                    TextDirection.ltr => AlignmentDirectional.topEnd,
-                    TextDirection.rtl => AlignmentDirectional.topStart,
-                  },
-                  child: forwardButton,
-                ),
+              if (isLastMonth && !effectiveHideNavigation) forwardButton,
             ],
           );
 
@@ -1511,6 +1498,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                         : switch (effectiveCaptionLayout) {
                             ShadCalendarCaptionLayout.label => labelNavigation,
                             ShadCalendarCaptionLayout.dropdown => Row(
+                                textDirection: TextDirection.ltr,
                                 children: [
                                   if (!effectiveHideNavigation) backButton,
                                   Expanded(
@@ -1531,6 +1519,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                                 ],
                               ),
                             ShadCalendarCaptionLayout.dropdownMonths => Row(
+                                textDirection: TextDirection.ltr,
                                 children: [
                                   if (!effectiveHideNavigation) backButton,
                                   Expanded(
@@ -1556,6 +1545,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
                                 ],
                               ),
                             ShadCalendarCaptionLayout.dropdownYears => Row(
+                                textDirection: TextDirection.ltr,
                                 children: [
                                   if (!effectiveHideNavigation) backButton,
                                   Expanded(
