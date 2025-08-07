@@ -1,6 +1,6 @@
 ## 0.28.5
 
-- **FIX**: `ShadCalendar` back and forward buttons on RTL (thanks to @Harith Haroon).
+- **FIX**: `ShadCalendar` back and forward buttons on RTL (thanks to @HarithHaroon).
 
 ## 0.28.4
 
