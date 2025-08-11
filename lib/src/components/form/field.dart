@@ -134,6 +134,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
 /// form.
 class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     extends FormFieldState<T> {
+  String? _customErrorText;
   FocusNode? _focusNode;
   ShadFormState? _parentForm;
 
@@ -155,6 +156,28 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
 
   /// Whether the field is enabled, factoring in parent form state.
   bool get enabled => widget.enabled && (_parentForm?.enabled ?? true);
+
+  @override
+
+  /// Returns the current error text,
+  /// As it might be validation error or programmatically set.
+  String? get errorText => super.errorText ?? _customErrorText;
+
+  @override
+
+  /// Returns `true` if the field has an error or has a custom error text.
+  bool get hasError => super.hasError || errorText != null;
+
+  @override
+
+  /// Returns `true` if the field is valid and has no custom error text.
+  bool get isValid => super.isValid && _customErrorText == null;
+
+  /// Returns `true` if the field's value is valid and ignores custom error.
+  bool get valueIsValid => super.isValid;
+
+  /// Returns `true` if the field has an error and ignores custom error.
+  bool get valueHasError => super.hasError;
 
   @override
   void initState() {
@@ -197,7 +220,36 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   void reset() {
     super.reset();
     didChange(initialValue);
+    if (_customErrorText != null) {
+      setState(() => _customErrorText = null);
+    }
     widget.onReset?.call();
+  }
+
+  /// Validate field
+  ///
+  /// Clear custom error if [clearCustomError] is `true`.
+  /// By default `true`
+  ///
+  @override
+  bool validate({
+    bool clearCustomError = true,
+  }) {
+    if (clearCustomError) {
+      setState(() => _customErrorText = null);
+    }
+    final isValid = super.validate() && !hasError;
+    return isValid;
+  }
+
+  /// Invalidate field with a [errorText]
+  ///
+  void invalidate(String errorText) {
+    setState(() => _customErrorText = errorText);
+
+    validate(
+      clearCustomError: false,
+    );
   }
 
   @override
