@@ -235,7 +235,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   bool validate({
     bool clearCustomError = true,
   }) {
-    if (clearCustomError) {
+    if (clearCustomError && _customErrorText != null) {
       setState(() => _customErrorText = null);
     }
     final isValid = super.validate() && !hasError;
@@ -244,12 +244,14 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
 
   /// Invalidate field with a [errorText]
   ///
-  void invalidate(String errorText) {
+  void invalidate(String errorText, {bool revalidate = true}) {
     setState(() => _customErrorText = errorText);
 
-    validate(
-      clearCustomError: false,
-    );
+    if (revalidate) {
+      validate(
+        clearCustomError: false,
+      );
+    }
   }
 
   @override

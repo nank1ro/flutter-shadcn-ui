@@ -52,7 +52,12 @@ void main() {
       // Programmatically set an error on the field
       key.currentState!.invalidate('This field is required');
       await tester.pumpAndSettle();
-
+      // Sanity-check state to catch regressions beyond the golden image.
+      expect(key.currentState!.hasError, isTrue);
+      expect(key.currentState!.errorText, 'This field is required');
+      expect(key.currentState!.isValid, isFalse);
+      // Base value has no validator in this test, so valueIsValid should be true.
+      expect(key.currentState!.valueIsValid, isTrue);
       expect(
         find.byType(ShadInputFormField),
         matchesGoldenFile('goldens/input_error.png'),
