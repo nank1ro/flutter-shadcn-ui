@@ -783,8 +783,9 @@ class ShadInputState extends State<ShadInput>
     final effectiveCursorRadius =
         widget.cursorRadius ?? theme.inputTheme.cursorRadius;
 
-    final effectiveCursorOpacityAnimates =
-        widget.cursorOpacityAnimates ?? false;
+    final effectiveCursorOpacityAnimates = widget.cursorOpacityAnimates ??
+        theme.inputTheme.cursorOpacityAnimates ??
+        false;
 
     final effectivePadding = widget.padding ??
         theme.inputTheme.padding ??
