@@ -113,7 +113,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     List<TextInputFormatter>? inputFormatters,
 
     /// {@macro ShadInput.cursorWidth}
-    double cursorWidth = 2.0,
+    double? cursorWidth,
 
     /// {@macro ShadInput.cursorHeight}
     double? cursorHeight,
