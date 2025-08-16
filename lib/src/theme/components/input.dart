@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
@@ -85,9 +87,9 @@ class ShadInputTheme {
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       style: TextStyle.lerp(a.style, b.style, t),
       cursorColor: Color.lerp(a.cursorColor, b.cursorColor, t),
-      cursorWidth: t < 0.5 ? a.cursorWidth : b.cursorWidth,
-      cursorHeight: t < 0.5 ? a.cursorHeight : b.cursorHeight,
-      cursorRadius: t < 0.5 ? a.cursorRadius : b.cursorRadius,
+      cursorWidth: lerpDouble(a.cursorWidth, b.cursorWidth, t),
+      cursorHeight: lerpDouble(a.cursorHeight, b.cursorHeight, t),
+      cursorRadius: Radius.lerp(a.cursorRadius, b.cursorRadius, t),
       cursorOpacityAnimates:
           t < 0.5 ? a.cursorOpacityAnimates : b.cursorOpacityAnimates,
       placeholderStyle:
