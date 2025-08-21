@@ -23,7 +23,7 @@ export default defineConfig({
         }
       }],
       sidebar: [
-       
+
         {
           label: 'mariuti.com',
           link: 'https://mariuti.com',
@@ -116,9 +116,14 @@ export default defineConfig({
               link: 'https://github.com/mirarr-app/Gessential',
               attrs: { target: '_blank', rel: 'noopener noreferrer' },
             },
+            {
+              label: 'ZikZak AI',
+              link: 'zuzu.dev',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
           ],
         }
-      ], 
+      ],
     }),
   ],
   site: 'https://flutter-shadcn-ui.mariuti.com',
