@@ -1,0 +1,16 @@
+name: Review Assign
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hkusu/review-assign-action@v1
+        with:
+          assignees: ${{ github.actor }} # assign pull request author
+          reviewers: nank1ro
+          bot-accounts: actions-user
+          ready-comment: 'Ready for review :ok: <reviewers>'
