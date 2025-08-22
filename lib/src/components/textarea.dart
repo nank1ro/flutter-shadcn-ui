@@ -40,7 +40,7 @@ class ShadTextarea extends StatefulWidget {
     this.showCursor,
     this.autofocus = false,
     this.enabled = true,
-    this.cursorWidth = 2.0,
+    this.cursorWidth,
     this.cursorHeight,
     this.cursorRadius,
     this.cursorOpacityAnimates,
@@ -206,7 +206,7 @@ class ShadTextarea extends StatefulWidget {
   /// {@template ShadTextarea.cursorWidth}
   /// Width of the cursor.
   /// {@endtemplate}
-  final double cursorWidth;
+  final double? cursorWidth;
 
   /// {@template ShadTextarea.cursorHeight}
   /// Height of the cursor.
