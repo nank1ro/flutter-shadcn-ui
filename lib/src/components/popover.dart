@@ -129,7 +129,7 @@ class ShadPopover extends StatefulWidget {
   final ShadDecoration? decoration;
 
   /// {@template ShadPopover.filter}
-  /// The filter of the [popover], defaults to `null`.
+  /// The filter of the [popover]. If `null`, falls back to `ShadPopoverTheme`.
   /// {@endtemplate}
   final ImageFilter? filter;
 
