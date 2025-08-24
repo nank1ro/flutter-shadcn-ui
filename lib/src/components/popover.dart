@@ -233,6 +233,9 @@ class _ShadPopoverState extends State<ShadPopover> {
 
     final effectiveFilter = widget.filter ?? theme.popoverTheme.filter;
 
+    final effectiveFilterRadius =
+        effectiveDecoration.border?.radius ?? BorderRadius.zero;
+
     Widget popover = ShadMouseArea(
       groupId: widget.areaGroupId,
       child: ShadDecorator(
@@ -253,9 +256,12 @@ class _ShadPopoverState extends State<ShadPopover> {
     );
 
     if (effectiveFilter != null) {
-      popover = BackdropFilter(
-        filter: effectiveFilter,
-        child: popover,
+      popover = ClipRRect(
+        borderRadius: effectiveFilterRadius,
+        child: BackdropFilter(
+          filter: effectiveFilter,
+          child: popover,
+        ),
       );
     }
 
