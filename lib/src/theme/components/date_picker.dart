@@ -102,6 +102,7 @@ class ShadDatePickerTheme {
     this.buttonPadding,
     this.iconData,
     this.expands,
+    this.popoverReverseDuration,
   });
 
   final bool merge;
@@ -299,6 +300,9 @@ class ShadDatePickerTheme {
 
   /// {@macro popover.filter}
   final ImageFilter? filter;
+
+  /// {@macro ShadPopover.reverseDuration}
+  final Duration? popoverReverseDuration;
 
   // ---
   // BUTTON
@@ -594,6 +598,14 @@ class ShadDatePickerTheme {
           EdgeInsetsGeometry.lerp(a.buttonPadding, b.buttonPadding, t),
       iconData: t < 0.5 ? a.iconData : b.iconData,
       expands: t < .5 ? a.expands : b.expands,
+      popoverReverseDuration:
+          a.popoverReverseDuration != null && b.popoverReverseDuration != null
+              ? lerpDuration(
+                  a.popoverReverseDuration!,
+                  b.popoverReverseDuration!,
+                  t,
+                )
+              : b.popoverReverseDuration,
     );
   }
 
@@ -710,6 +722,7 @@ class ShadDatePickerTheme {
       buttonPadding: other.buttonPadding,
       iconData: other.iconData,
       expands: other.expands,
+      popoverReverseDuration: other.popoverReverseDuration,
     );
   }
 
@@ -809,7 +822,8 @@ class ShadDatePickerTheme {
         other.buttonVariant == buttonVariant &&
         other.buttonPadding == buttonPadding &&
         other.iconData == iconData &&
-        other.expands == expands;
+        other.expands == expands &&
+        other.popoverReverseDuration == popoverReverseDuration;
   }
 
   @override
@@ -901,7 +915,8 @@ class ShadDatePickerTheme {
         buttonVariant.hashCode ^
         buttonPadding.hashCode ^
         iconData.hashCode ^
-        expands.hashCode;
+        expands.hashCode ^
+        popoverReverseDuration.hashCode;
   }
 
   ShadDatePickerTheme copyWith({
@@ -996,6 +1011,7 @@ class ShadDatePickerTheme {
     EdgeInsetsGeometry? buttonPadding,
     IconData? iconData,
     bool? expands,
+    Duration? popoverReverseDuration,
   }) {
     return ShadDatePickerTheme(
       merge: merge ?? this.merge,
@@ -1108,6 +1124,8 @@ class ShadDatePickerTheme {
       buttonPadding: buttonPadding ?? this.buttonPadding,
       iconData: iconData ?? this.iconData,
       expands: expands ?? this.expands,
+      popoverReverseDuration:
+          popoverReverseDuration ?? this.popoverReverseDuration,
     );
   }
 }

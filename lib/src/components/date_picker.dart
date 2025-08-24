@@ -164,6 +164,7 @@ class ShadDatePicker extends StatefulWidget {
     this.onFocusChange,
     this.iconData,
     this.expands,
+    this.popoverReverseDuration,
   })  : variant = ShadDatePickerVariant.single,
         formatDateRange = null,
         selectedRange = null;
@@ -305,6 +306,7 @@ class ShadDatePicker extends StatefulWidget {
     this.onFocusChange,
     this.iconData,
     this.expands,
+    this.popoverReverseDuration,
   })  : variant = ShadDatePickerVariant.range,
         selected = null,
         formatDate = null,
@@ -451,6 +453,7 @@ class ShadDatePicker extends StatefulWidget {
     this.formatDateRange,
     this.placeholder,
     this.expands,
+    this.popoverReverseDuration,
   });
 
   /// {@template ShadDatePicker.placeholder}
@@ -747,6 +750,9 @@ class ShadDatePicker extends StatefulWidget {
   /// {@macro ShadPopover.useSameGroupIdForChild}
   final bool useSameGroupIdForChild;
 
+  /// {@macro ShadPopover.reverseDuration}
+  final Duration? popoverReverseDuration;
+
   // ---
   // BUTTON
   // ---
@@ -1007,6 +1013,8 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
       filter: widget.filter ?? theme.datePickerTheme.filter,
       areaGroupId: widget.areaGroupId,
       useSameGroupIdForChild: widget.useSameGroupIdForChild,
+      reverseDuration: widget.popoverReverseDuration ??
+          theme.datePickerTheme.popoverReverseDuration,
       popover: (context) {
         return Column(
           mainAxisSize: MainAxisSize.min,
