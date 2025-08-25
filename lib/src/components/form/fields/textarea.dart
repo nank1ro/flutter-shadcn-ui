@@ -88,7 +88,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
         TextMagnifierConfiguration.disabled,
 
     /// {@macro ShadTextarea.cursorWidth}
-    double cursorWidth = 2.0,
+    double? cursorWidth,
 
     /// {@macro ShadTextarea.cursorHeight}
     double? cursorHeight,

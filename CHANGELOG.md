@@ -1,3 +1,11 @@
+## 0.28.7
+
+- **FIX**: Updated `ShadPopover` filter logic to use effectiveFilter instead of widget.filter.
+
+## 0.28.6
+
+- **REFACTOR**: Add `cursor*` customizations through theme (thanks to @GuillaumeMCK).
+
 ## 0.28.5
 
 - **FIX**: `ShadCalendar` back and forward buttons on RTL (thanks to @HarithHaroon).

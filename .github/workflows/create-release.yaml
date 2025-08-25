@@ -45,16 +45,20 @@ jobs:
           echo "CHANGELOG_FILE=release_notes.md" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release (if it doesn't exist)
+        id: create_release
         env:
           GH_TOKEN: ${{ secrets.PAT }}
         run: |
           # Create a tag name, commonly prefixed with 'v'.
           TAG="v${{ steps.extract_info.outputs.VERSION }}"
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
 
           # Check if a release with this tag already exists.
           # The 'gh release view' command will exit with a non-zero status code if the release is not found.
-          if gh release view "$TAG" > /dev/null 2>&1; then
+          if gh release view "$TAG" > /dev/null 2>&1;
+            then
             echo "Release '$TAG' already exists. Skipping."
+            echo "created=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -63,3 +67,13 @@ jobs:
           gh release create "$TAG" \
             --title "$TAG" \
             --notes-file "${{ steps.extract_info.outputs.CHANGELOG_FILE }}"
+          echo "created=true" >> $GITHUB_OUTPUT
+      - name: Notify Discord
+        if: steps.create_release.outputs.created == 'true'
+        uses: appleboy/discord-action@v1.2.0
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: |
+            Released the v${{ steps.extract_info.outputs.VERSION }}
+            
+            ${{ steps.extract_info.outputs.CHANGELOG_FILE }}

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
@@ -9,6 +11,10 @@ class ShadInputTheme {
     this.padding,
     this.style,
     this.cursorColor,
+    this.cursorWidth,
+    this.cursorHeight,
+    this.cursorRadius,
+    this.cursorOpacityAnimates,
     this.placeholderStyle,
     this.placeholderAlignment,
     this.inputPadding,
@@ -32,6 +38,18 @@ class ShadInputTheme {
 
   /// {@macro ShadInput.cursorColor}
   final Color? cursorColor;
+
+  /// {@macro ShadInput.cursorWidth}
+  final double? cursorWidth;
+
+  /// {@macro ShadInput.cursorHeight}
+  final double? cursorHeight;
+
+  /// {@macro ShadInput.cursorRadius}
+  final Radius? cursorRadius;
+
+  /// {@macro ShadInput.cursorOpacityAnimates}
+  final bool? cursorOpacityAnimates;
 
   /// {@macro ShadInput.placeholderStyle}
   final TextStyle? placeholderStyle;
@@ -69,6 +87,11 @@ class ShadInputTheme {
       padding: EdgeInsets.lerp(a.padding, b.padding, t),
       style: TextStyle.lerp(a.style, b.style, t),
       cursorColor: Color.lerp(a.cursorColor, b.cursorColor, t),
+      cursorWidth: lerpDouble(a.cursorWidth, b.cursorWidth, t),
+      cursorHeight: lerpDouble(a.cursorHeight, b.cursorHeight, t),
+      cursorRadius: Radius.lerp(a.cursorRadius, b.cursorRadius, t),
+      cursorOpacityAnimates:
+          t < 0.5 ? a.cursorOpacityAnimates : b.cursorOpacityAnimates,
       placeholderStyle:
           TextStyle.lerp(a.placeholderStyle, b.placeholderStyle, t),
       placeholderAlignment: AlignmentGeometry.lerp(
@@ -95,6 +118,10 @@ class ShadInputTheme {
     EdgeInsets? padding,
     TextStyle? style,
     Color? cursorColor,
+    double? cursorWidth,
+    double? cursorHeight,
+    Radius? cursorRadius,
+    bool? cursorOpacityAnimates,
     TextStyle? placeholderStyle,
     AlignmentGeometry? placeholderAlignment,
     EdgeInsets? inputPadding,
@@ -110,6 +137,11 @@ class ShadInputTheme {
       padding: padding ?? this.padding,
       style: style ?? this.style,
       cursorColor: cursorColor ?? this.cursorColor,
+      cursorWidth: cursorWidth ?? this.cursorWidth,
+      cursorHeight: cursorHeight ?? this.cursorHeight,
+      cursorRadius: cursorRadius ?? this.cursorRadius,
+      cursorOpacityAnimates:
+          cursorOpacityAnimates ?? this.cursorOpacityAnimates,
       placeholderStyle: placeholderStyle ?? this.placeholderStyle,
       placeholderAlignment: placeholderAlignment ?? this.placeholderAlignment,
       inputPadding: inputPadding ?? this.inputPadding,
@@ -128,7 +160,11 @@ class ShadInputTheme {
       decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
       padding: other.padding,
       style: other.style,
-      cursorColor: other.cursorColor,
+      cursorColor: other.cursorColor ?? cursorColor,
+      cursorWidth: other.cursorWidth ?? cursorWidth,
+      cursorHeight: other.cursorHeight ?? cursorHeight,
+      cursorRadius: other.cursorRadius ?? cursorRadius,
+      cursorOpacityAnimates: other.cursorOpacityAnimates,
       placeholderStyle: other.placeholderStyle,
       placeholderAlignment: other.placeholderAlignment,
       inputPadding: other.inputPadding,
@@ -150,6 +186,10 @@ class ShadInputTheme {
         other.padding == padding &&
         other.style == style &&
         other.cursorColor == cursorColor &&
+        other.cursorWidth == cursorWidth &&
+        other.cursorHeight == cursorHeight &&
+        other.cursorRadius == cursorRadius &&
+        other.cursorOpacityAnimates == cursorOpacityAnimates &&
         other.placeholderStyle == placeholderStyle &&
         other.placeholderAlignment == placeholderAlignment &&
         other.inputPadding == inputPadding &&
@@ -167,6 +207,10 @@ class ShadInputTheme {
         padding.hashCode ^
         style.hashCode ^
         cursorColor.hashCode ^
+        cursorWidth.hashCode ^
+        cursorHeight.hashCode ^
+        cursorRadius.hashCode ^
+        cursorOpacityAnimates.hashCode ^
         placeholderStyle.hashCode ^
         placeholderAlignment.hashCode ^
         inputPadding.hashCode ^

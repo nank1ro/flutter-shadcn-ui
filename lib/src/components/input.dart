@@ -53,7 +53,7 @@ class ShadInput extends StatefulWidget {
     this.onAppPrivateCommand,
     this.inputFormatters,
     this.enabled = true,
-    this.cursorWidth = 2.0,
+    this.cursorWidth,
     this.cursorHeight,
     this.cursorRadius,
     this.cursorOpacityAnimates,
@@ -313,7 +313,7 @@ class ShadInput extends StatefulWidget {
   /// The width of the cursor.
   /// Defaults to 2.0 pixels.
   /// {@endtemplate}
-  final double cursorWidth;
+  final double? cursorWidth;
 
   /// {@template ShadInput.cursorHeight}
   /// The height of the cursor.
@@ -329,7 +329,7 @@ class ShadInput extends StatefulWidget {
 
   /// {@template ShadInput.cursorOpacityAnimates}
   /// Whether the cursor opacity animates when blinking.
-  /// Defaults to null, relying on platform behavior.
+  /// Defaults to false, relying on EditableText default value.
   /// {@endtemplate}
   final bool? cursorOpacityAnimates;
 
@@ -567,9 +567,11 @@ class ShadInputState extends State<ShadInput>
     implements TextSelectionGestureDetectorBuilderDelegate {
   // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
+
   FocusNode get effectiveFocusNode => widget.focusNode ?? _focusNode!;
   final hasFocus = ValueNotifier(false);
   RestorableTextEditingController? _controller;
+
   TextEditingController get effectiveController =>
       widget.controller ?? _controller!.value;
   bool _showSelectionHandles = false;
@@ -772,6 +774,19 @@ class ShadInputState extends State<ShadInput>
         theme.inputTheme.cursorColor ??
         theme.colorScheme.primary;
 
+    final effectiveCursorWidth =
+        widget.cursorWidth ?? theme.inputTheme.cursorWidth ?? 2.0;
+
+    final effectiveCursorHeight =
+        widget.cursorHeight ?? theme.inputTheme.cursorHeight;
+
+    final effectiveCursorRadius =
+        widget.cursorRadius ?? theme.inputTheme.cursorRadius;
+
+    final effectiveCursorOpacityAnimates = widget.cursorOpacityAnimates ??
+        theme.inputTheme.cursorOpacityAnimates ??
+        false;
+
     final effectivePadding = widget.padding ??
         theme.inputTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
@@ -945,6 +960,11 @@ class ShadInputState extends State<ShadInput>
                                             style: effectiveTextStyle,
                                             strutStyle: widget.strutStyle,
                                             cursorColor: effectiveCursorColor,
+                                            cursorWidth: effectiveCursorWidth,
+                                            cursorHeight: effectiveCursorHeight,
+                                            cursorRadius: effectiveCursorRadius,
+                                            cursorOpacityAnimates:
+                                                effectiveCursorOpacityAnimates,
                                             backgroundCursorColor: Colors.grey,
                                             keyboardType: widget.keyboardType,
                                             keyboardAppearance:
@@ -976,9 +996,6 @@ class ShadInputState extends State<ShadInput>
                                                 widget.onAppPrivateCommand,
                                             inputFormatters:
                                                 effectiveInputFormatters,
-                                            cursorWidth: widget.cursorWidth,
-                                            cursorHeight: widget.cursorHeight,
-                                            cursorRadius: widget.cursorRadius,
                                             scrollPadding: widget.scrollPadding,
                                             dragStartBehavior:
                                                 widget.dragStartBehavior,
