@@ -6,6 +6,7 @@ import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
+import 'package:shadcn_ui/src/theme/components/breadcrumb.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
@@ -57,6 +58,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadBadgeTheme? secondaryBadgeTheme,
     ShadBadgeTheme? destructiveBadgeTheme,
     ShadBadgeTheme? outlineBadgeTheme,
+    ShadBreadcrumbTheme? breadcrumbTheme,
     BorderRadius? radius,
     ShadAvatarTheme? avatarTheme,
     ShadButtonSizesTheme? buttonSizesTheme,
@@ -190,6 +192,8 @@ class ShadThemeData extends ShadBaseTheme {
           .mergeWith(destructiveBadgeTheme),
       outlineBadgeTheme:
           effectiveVariant.outlineBadgeTheme().mergeWith(outlineBadgeTheme),
+      breadcrumbTheme:
+          effectiveVariant.breadcrumbTheme().mergeWith(breadcrumbTheme),
       buttonSizesTheme:
           effectiveVariant.buttonSizesTheme().mergeWith(buttonSizesTheme),
       radius: effectiveRadius,
@@ -262,6 +266,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.secondaryBadgeTheme,
     required super.destructiveBadgeTheme,
     required super.outlineBadgeTheme,
+    required super.breadcrumbTheme,
     required super.radius,
     required super.avatarTheme,
     required super.buttonSizesTheme,
