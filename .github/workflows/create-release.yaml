@@ -43,6 +43,9 @@ jobs:
           # and pass the filename to the next step.
           echo "$CHANGELOG_BODY" > release_notes.md
           echo "CHANGELOG_FILE=release_notes.md" >> $GITHUB_OUTPUT
+          echo "CHANGELOG_BODY<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG_BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release (if it doesn't exist)
         id: create_release
@@ -76,4 +79,4 @@ jobs:
           message: |
             Released the v${{ steps.extract_info.outputs.VERSION }}
             
-            ${{ steps.extract_info.outputs.CHANGELOG_FILE }}
+            ${{ steps.extract_info.outputs.CHANGELOG_BODY }}
