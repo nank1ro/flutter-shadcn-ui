@@ -1,3 +1,4 @@
+import 'package:example/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -23,14 +24,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.only(right: 8),
           child: ShadButton.ghost(
             onPressed: () {
-              context.update<ThemeMode>(
-                (value) =>
-                    value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light,
-              );
+              themeModeProvider.of(context).updateValue((value) =>
+                  value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light);
             },
             leading: SignalBuilder(
-              signal: context.get<Signal<ThemeMode>>(),
-              builder: (context, themeMode, child) {
+              builder: (context, child) {
+                final themeMode = themeModeProvider.of(context).value;
                 return Icon(
                   themeMode == ThemeMode.light
                       ? Icons.light_mode

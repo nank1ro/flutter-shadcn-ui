@@ -117,7 +117,6 @@ ShadSelect<String>(
 ),
 ```
 
-For example I'm using solidart as state management, here it is the example code used to rebuild the app widget when the user changes the theme mode.
-<https://docs.page/nank1ro/solidart/examples/toggle-theme>
+For example I'm using solidart as state management, here it is the example code used to rebuild the app widget when the user changes the theme mode. Check the "Toggle Theme" example at <https://solidart.mariuti.com/examples>
 
 The same can be done for the color scheme, using a `Signal<String>()`

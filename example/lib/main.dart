@@ -1,4 +1,6 @@
+import 'package:disco/disco.dart';
 import 'package:example/common/app_bar.dart';
+import 'package:example/common/extensions.dart';
 import 'package:example/pages/accordion.dart';
 import 'package:example/pages/alert.dart';
 import 'package:example/pages/avatar.dart';
@@ -97,60 +99,64 @@ final routes = <String, WidgetBuilder>{
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-zA-Z])');
 
+final themeModeProvider = Provider<Signal<ThemeMode>>(
+  (_) => Signal(ThemeMode.light),
+);
+
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Solid(
-      providers: [
-        Provider<Signal<ThemeMode>>(create: () => Signal(ThemeMode.light)),
-      ],
-      builder: (context) {
-        final themeMode = context.observe<ThemeMode>();
-        // Custom App example
-        // return ShadApp.custom(
-        //   themeMode: themeMode,
-        //   darkTheme: ShadThemeData(
-        //     brightness: Brightness.dark,
-        //     colorScheme: const ShadSlateColorScheme.dark(),
-        //   ),
-        //   appBuilder: (context) {
-        //     return MaterialApp(
-        //       routes: routes,
-        //       theme: Theme.of(context),
-        //       home: const MainPage(),
-        //       builder: (context, child) {
-        //         return ShadAppBuilder(child: child!);
-        //       },
-        //     );
-        //   },
-        // );
-        return ShadApp(
-          debugShowCheckedModeBanner: false,
-          themeMode: themeMode,
-          routes: routes,
-          theme: ShadThemeData(
-            brightness: Brightness.light,
-            colorScheme: const ShadZincColorScheme.light(),
-            // Example with google fonts
-            // textTheme: ShadTextTheme.fromGoogleFont(GoogleFonts.poppins),
+    return ProviderScope(
+      providers: [themeModeProvider],
+      child: SignalBuilder(
+        builder: (context, _) {
+          final themeMode = themeModeProvider.of(context).value;
+          // Custom App example
+          // return ShadApp.custom(
+          //   themeMode: themeMode,
+          //   darkTheme: ShadThemeData(
+          //     brightness: Brightness.dark,
+          //     colorScheme: const ShadSlateColorScheme.dark(),
+          //   ),
+          //   appBuilder: (context) {
+          //     return MaterialApp(
+          //       routes: routes,
+          //       theme: Theme.of(context),
+          //       home: const MainPage(),
+          //       builder: (context, child) {
+          //         return ShadAppBuilder(child: child!);
+          //       },
+          //     );
+          //   },
+          // );
+          return ShadApp(
+            debugShowCheckedModeBanner: false,
+            themeMode: themeMode,
+            routes: routes,
+            theme: ShadThemeData(
+              brightness: Brightness.light,
+              colorScheme: const ShadZincColorScheme.light(),
+              // Example with google fonts
+              // textTheme: ShadTextTheme.fromGoogleFont(GoogleFonts.poppins),
 
-            // Example of custom font family
-            // textTheme: ShadTextTheme(family: 'UbuntuMono'),
+              // Example of custom font family
+              // textTheme: ShadTextTheme(family: 'UbuntuMono'),
 
-            // Example to disable the secondary border
-            // disableSecondaryBorder: true,
-          ),
-          darkTheme: ShadThemeData(
-            brightness: Brightness.dark,
-            colorScheme: const ShadZincColorScheme.dark(),
-            // Example of custom font family
-            // textTheme: ShadTextTheme(family: 'UbuntuMono'),
-          ),
-          home: const MainPage(),
-        );
-      },
+              // Example to disable the secondary border
+              // disableSecondaryBorder: true,
+            ),
+            darkTheme: ShadThemeData(
+              brightness: Brightness.dark,
+              colorScheme: const ShadZincColorScheme.dark(),
+              // Example of custom font family
+              // textTheme: ShadTextTheme(family: 'UbuntuMono'),
+            ),
+            home: const MainPage(),
+          );
+        },
+      ),
     );
   }
 }
@@ -181,11 +187,10 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       body: SignalBuilder(
-        signal: search,
-        builder: (context, searchString, child) {
+        builder: (context, child) {
           final filteredRoutes = {
-            for (final k in routes.keys.where(
-                (k) => k.toLowerCase().contains(searchString.toLowerCase())))
+            for (final k in routes.keys
+                .where((k) => k.toLowerCase().contains(search().toLowerCase())))
               k: routes[k]!
           };
 
