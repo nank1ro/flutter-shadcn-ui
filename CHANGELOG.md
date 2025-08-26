@@ -1,3 +1,7 @@
+## 0.29.0
+
+- **FIX**: Add missing popover closing animation (thanks to @DMouayad).
+
 ## 0.28.8
 
 - **CHORE**: Resolve lint issues.
