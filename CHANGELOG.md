@@ -1,3 +1,11 @@
+## 0.28.8
+
+- **CHORE**: Resolve lint issues.
+
+## 0.28.7
+
+- **FIX**: Updated `ShadPopover` filter logic to use effectiveFilter instead of widget.filter.
+
 ## 0.28.6
 
 - **REFACTOR**: Add `cursor*` customizations through theme (thanks to @GuillaumeMCK).

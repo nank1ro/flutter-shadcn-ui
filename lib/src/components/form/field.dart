@@ -57,6 +57,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
               child: builder(field),
             );
           },
+          onReset: onReset,
         );
 
   /// {@template ShadFormBuilderField.id}
@@ -106,6 +107,8 @@ class ShadFormBuilderField<T> extends FormField<T> {
   /// Callback invoked when the field is reset to its initial value.
   /// Allows additional reset logic; defaults to null.
   /// {@endtemplate}
+  @override
+  // ignore: overridden_fields
   final VoidCallback? onReset;
 
   /// {@template ShadFormBuilderField.decorationBuilder}

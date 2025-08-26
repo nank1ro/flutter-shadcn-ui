@@ -14,3 +14,4 @@ jobs:
           reviewers: nank1ro
           bot-accounts: actions-user
           ready-comment: 'Ready for review :ok: <reviewers>'
+          github-token: ${{ github.token }}
