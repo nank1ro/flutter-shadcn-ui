@@ -41,7 +41,11 @@ class ShadContextMenuRegion extends StatefulWidget {
     this.supportedDevices,
     this.longPressEnabled,
     this.hitTestBehavior = HitTestBehavior.opaque,
+    this.popoverReverseDuration,
   });
+
+  /// {@macro ShadPopover.reverseDuration}
+  final Duration? popoverReverseDuration;
 
   /// {@template ShadContextMenuRegion.child}
   /// The child that triggers the visibility of the context menu.
@@ -167,6 +171,7 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
       shadows: widget.shadows,
       decoration: widget.decoration,
       filter: widget.filter,
+      popoverReverseDuration: widget.popoverReverseDuration,
       child: ShadGestureDetector(
         behavior: widget.hitTestBehavior,
         supportedDevices: widget.supportedDevices,
@@ -220,7 +225,11 @@ class ShadContextMenu extends StatefulWidget {
     this.onTapInside,
     this.onTapUpInside,
     this.onTapUpOutside,
+    this.popoverReverseDuration,
   });
+
+  /// {@macro ShadPopover.reverseDuration}
+  final Duration? popoverReverseDuration;
 
   /// {@template ShadContextMenu.child}
   /// The child of the context menu.
@@ -404,6 +413,7 @@ class ShadContextMenuState extends State<ShadContextMenu> {
       effects: effectiveEffects,
       shadows: effectiveShadows,
       filter: effectiveFilter,
+      reverseDuration: widget.popoverReverseDuration,
       useSameGroupIdForChild: false,
       popover: (context) {
         return ShadMouseArea(

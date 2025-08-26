@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/button.dart';
@@ -33,9 +34,13 @@ class ShadContextMenuTheme {
     this.shadows,
     this.itemDecoration,
     this.filter,
+    this.popoverReverseDuration,
   });
 
   final bool merge;
+
+  /// {@macro ShadPopover.reverseDuration}
+  final Duration? popoverReverseDuration;
 
   /// {@macro ShadContextMenu.constraints}
   final BoxConstraints? constraints;
@@ -140,6 +145,14 @@ class ShadContextMenuTheme {
       effects: t < .5 ? a.effects : b.effects,
       shadows: t < .5 ? a.shadows : b.shadows,
       filter: t < .5 ? a.filter : b.filter,
+      popoverReverseDuration:
+          a.popoverReverseDuration != null && b.popoverReverseDuration != null
+              ? lerpDuration(
+                  a.popoverReverseDuration!,
+                  b.popoverReverseDuration!,
+                  t,
+                )
+              : b.popoverReverseDuration,
     );
   }
 
@@ -167,6 +180,7 @@ class ShadContextMenuTheme {
     List<BoxShadow>? shadows,
     ShadDecoration? itemDecoration,
     ImageFilter? filter,
+    Duration? popoverReverseDuration,
   }) {
     return ShadContextMenuTheme(
       merge: merge ?? this.merge,
@@ -193,6 +207,8 @@ class ShadContextMenuTheme {
       shadows: shadows ?? this.shadows,
       itemDecoration: itemDecoration ?? this.itemDecoration,
       filter: filter ?? this.filter,
+      popoverReverseDuration:
+          popoverReverseDuration ?? this.popoverReverseDuration,
     );
   }
 
@@ -222,6 +238,7 @@ class ShadContextMenuTheme {
       shadows: other.shadows,
       itemDecoration: other.itemDecoration,
       filter: other.filter,
+      popoverReverseDuration: other.popoverReverseDuration,
     );
   }
 
@@ -252,7 +269,8 @@ class ShadContextMenuTheme {
         other.effects == effects &&
         other.shadows == shadows &&
         other.itemDecoration == itemDecoration &&
-        other.filter == filter;
+        other.filter == filter &&
+        other.popoverReverseDuration == popoverReverseDuration;
   }
 
   @override
@@ -279,6 +297,7 @@ class ShadContextMenuTheme {
         effects.hashCode ^
         shadows.hashCode ^
         itemDecoration.hashCode ^
-        filter.hashCode;
+        filter.hashCode ^
+        popoverReverseDuration.hashCode;
   }
 }
