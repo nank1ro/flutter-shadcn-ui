@@ -70,6 +70,7 @@ class ShadTextarea extends StatefulWidget {
     this.padding,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.alignment,
     this.placeholderStyle,
     this.placeholderAlignment,
     this.inputPadding,
@@ -125,6 +126,12 @@ class ShadTextarea extends StatefulWidget {
   /// Defaults to [Alignment.topLeft].
   /// {@endtemplate}
   final AlignmentGeometry? placeholderAlignment;
+
+  /// {@template ShadTextarea.alignment}
+  /// Alignment for the input field.
+  /// Defaults to [Alignment.topLeft].
+  /// {@endtemplate}
+  final AlignmentGeometry? alignment;
 
   /// {@template ShadTextarea.decoration}
   /// Optional visual decoration for the textarea.
@@ -503,6 +510,9 @@ class _ShadTextareaState extends State<ShadTextarea> {
         theme.inputTheme.placeholderAlignment ??
         Alignment.topLeft;
 
+    final effectiveAlignment =
+        widget.alignment ?? theme.inputTheme.alignment ?? Alignment.topLeft;
+
     final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
         theme.inputTheme.mainAxisAlignment ??
         MainAxisAlignment.start;
@@ -541,6 +551,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
         focusNode: focusNode,
         placeholder: widget.placeholder,
         placeholderAlignment: effectivePlaceholderAlignment,
+        alignment: effectiveAlignment,
         maxLines: lineCount,
         minLines: lineCount,
         keyboardType: TextInputType.multiline,
