@@ -211,6 +211,9 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     /// {@macro ShadInput.placeholderStyle}
     TextStyle? placeholderStyle,
 
+    /// {@macro ShadInput.alignment}
+    AlignmentGeometry? alignment,
+
     /// {@macro ShadInput.placeholderAlignment}
     AlignmentGeometry? placeholderAlignment,
 
@@ -302,6 +305,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
               trailing: trailing,
               mainAxisAlignment: mainAxisAlignment,
               crossAxisAlignment: crossAxisAlignment,
+              alignment: alignment,
               placeholderStyle: placeholderStyle,
               placeholderAlignment: placeholderAlignment,
               inputPadding: inputPadding,

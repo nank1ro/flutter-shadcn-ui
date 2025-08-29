@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
+
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 @immutable
@@ -16,6 +17,7 @@ class ShadInputTheme {
     this.cursorRadius,
     this.cursorOpacityAnimates,
     this.placeholderStyle,
+    this.alignment,
     this.placeholderAlignment,
     this.inputPadding,
     this.mainAxisAlignment,
@@ -53,6 +55,9 @@ class ShadInputTheme {
 
   /// {@macro ShadInput.placeholderStyle}
   final TextStyle? placeholderStyle;
+
+  /// {@macro ShadInput.alignment}
+  final AlignmentGeometry? alignment;
 
   /// {@macro ShadInput.placeholderAlignment}
   final AlignmentGeometry? placeholderAlignment;
@@ -94,6 +99,7 @@ class ShadInputTheme {
           t < 0.5 ? a.cursorOpacityAnimates : b.cursorOpacityAnimates,
       placeholderStyle:
           TextStyle.lerp(a.placeholderStyle, b.placeholderStyle, t),
+      alignment: AlignmentGeometry.lerp(a.alignment, b.alignment, t),
       placeholderAlignment: AlignmentGeometry.lerp(
         a.placeholderAlignment,
         b.placeholderAlignment,
@@ -123,6 +129,7 @@ class ShadInputTheme {
     Radius? cursorRadius,
     bool? cursorOpacityAnimates,
     TextStyle? placeholderStyle,
+    AlignmentGeometry? alignment,
     AlignmentGeometry? placeholderAlignment,
     EdgeInsets? inputPadding,
     MainAxisAlignment? mainAxisAlignment,
@@ -143,6 +150,7 @@ class ShadInputTheme {
       cursorOpacityAnimates:
           cursorOpacityAnimates ?? this.cursorOpacityAnimates,
       placeholderStyle: placeholderStyle ?? this.placeholderStyle,
+      alignment: alignment ?? this.alignment,
       placeholderAlignment: placeholderAlignment ?? this.placeholderAlignment,
       inputPadding: inputPadding ?? this.inputPadding,
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
@@ -166,6 +174,7 @@ class ShadInputTheme {
       cursorRadius: other.cursorRadius ?? cursorRadius,
       cursorOpacityAnimates: other.cursorOpacityAnimates,
       placeholderStyle: other.placeholderStyle,
+      alignment: other.alignment,
       placeholderAlignment: other.placeholderAlignment,
       inputPadding: other.inputPadding,
       mainAxisAlignment: other.mainAxisAlignment,
@@ -191,6 +200,7 @@ class ShadInputTheme {
         other.cursorRadius == cursorRadius &&
         other.cursorOpacityAnimates == cursorOpacityAnimates &&
         other.placeholderStyle == placeholderStyle &&
+        other.alignment == alignment &&
         other.placeholderAlignment == placeholderAlignment &&
         other.inputPadding == inputPadding &&
         other.mainAxisAlignment == mainAxisAlignment &&
@@ -212,6 +222,7 @@ class ShadInputTheme {
         cursorRadius.hashCode ^
         cursorOpacityAnimates.hashCode ^
         placeholderStyle.hashCode ^
+        alignment.hashCode ^
         placeholderAlignment.hashCode ^
         inputPadding.hashCode ^
         mainAxisAlignment.hashCode ^
