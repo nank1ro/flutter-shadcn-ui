@@ -1,11 +1,12 @@
-name: Create Release on Main Push
+name: Create Release
 
-# This workflow runs on every push to the 'main' branch.
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch: # Allows manual triggering of the workflow
+  workflow_run:
+    workflows: ["Flutter test"]
+    branches: [main]
+    types:
+      - completed
 
 # Grant permissions for the workflow to create releases.
 permissions:
@@ -14,6 +15,7 @@ permissions:
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
