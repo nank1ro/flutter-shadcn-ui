@@ -45,9 +45,8 @@ jobs:
           # and pass the filename to the next step.
           echo "$CHANGELOG_BODY" > release_notes.md
           echo "CHANGELOG_FILE=release_notes.md" >> $GITHUB_OUTPUT
-          echo "CHANGELOG_BODY<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG_BODY" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          # The sed script replaces newlines with the literal '\n' to ensure the changelog body is a single line.
+          echo "CHANGELOG_BODY=$(echo \"$CHANGELOG_BODY\" | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g')" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release (if it doesn't exist)
         id: create_release
@@ -78,6 +77,4 @@ jobs:
         uses: appleboy/discord-action@v1.2.0
         with:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          message: |
-            Released the v${{ steps.extract_info.outputs.VERSION }}
-            ${{ steps.extract_info.outputs.CHANGELOG_BODY }}
+          message: "Released the v${{ steps.extract_info.outputs.VERSION }}\n${{ steps.extract_info.outputs.CHANGELOG_BODY }}"
