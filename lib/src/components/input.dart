@@ -887,8 +887,8 @@ class ShadInputState extends State<ShadInput>
       child: _selectionGestureDetectorBuilder.buildGestureDetector(
         behavior: HitTestBehavior.translucent,
         child: ShadKeyboardToolbar(
-          toolbarBuilder: widget.toolbarBuilder,
           focusNode: effectiveFocusNode,
+          toolbarBuilder: widget.toolbarBuilder,
           child: ValueListenableBuilder(
             valueListenable: hasFocus,
             builder: (context, focused, _) {
@@ -938,8 +938,7 @@ class ShadInputState extends State<ShadInput>
                                               alignment:
                                                   effectivePlaceholderAlignment,
                                               child: DefaultTextStyle(
-                                                style:
-                                                    effectivePlaceholderStyle,
+                                                style: effectivePlaceholderStyle,
                                                 child: widget.placeholder!,
                                               ),
                                             ),
@@ -963,8 +962,8 @@ class ShadInputState extends State<ShadInput>
                                                     _handleSelectionChanged,
                                                 selectionColor: focused
                                                     ? widget.selectionColor ??
-                                                        theme.colorScheme
-                                                            .selection
+                                                        theme
+                                                            .colorScheme.selection
                                                     : null,
                                                 selectionHeightStyle:
                                                     widget.selectionHeightStyle,
@@ -976,16 +975,13 @@ class ShadInputState extends State<ShadInput>
                                                     effectiveSelectionControls,
                                                 // ! End of selection handler
                                                 // ! section
-                                                mouseCursor:
-                                                    effectiveMouseCursor,
+                                                mouseCursor: effectiveMouseCursor,
                                                 enableInteractiveSelection: widget
                                                     .enableInteractiveSelection,
                                                 style: effectiveTextStyle,
                                                 strutStyle: widget.strutStyle,
-                                                cursorColor:
-                                                    effectiveCursorColor,
-                                                cursorWidth:
-                                                    effectiveCursorWidth,
+                                                cursorColor: effectiveCursorColor,
+                                                cursorWidth: effectiveCursorWidth,
                                                 cursorHeight:
                                                     effectiveCursorHeight,
                                                 cursorRadius:
@@ -994,8 +990,7 @@ class ShadInputState extends State<ShadInput>
                                                     effectiveCursorOpacityAnimates,
                                                 backgroundCursorColor:
                                                     Colors.grey,
-                                                keyboardType:
-                                                    widget.keyboardType,
+                                                keyboardType: widget.keyboardType,
                                                 keyboardAppearance:
                                                     widget.keyboardAppearance ??
                                                         theme.brightness,
@@ -1006,8 +1001,8 @@ class ShadInputState extends State<ShadInput>
                                                 autofocus: widget.autofocus,
                                                 obscureText: widget.obscureText,
                                                 autocorrect: widget.autocorrect,
-                                                magnifierConfiguration: widget
-                                                    .magnifierConfiguration,
+                                                magnifierConfiguration:
+                                                    widget.magnifierConfiguration,
                                                 smartDashesType:
                                                     widget.smartDashesType,
                                                 smartQuotesType:
@@ -1043,8 +1038,7 @@ class ShadInputState extends State<ShadInput>
                                                 ),
                                                 autofillHints:
                                                     widget.autofillHints,
-                                                clipBehavior:
-                                                    widget.clipBehavior,
+                                                clipBehavior: widget.clipBehavior,
                                                 restorationId: 'editable',
                                                 // ignore: deprecated_member_use
                                                 scribbleEnabled:
@@ -1052,13 +1046,11 @@ class ShadInputState extends State<ShadInput>
                                                 stylusHandwritingEnabled: widget
                                                     .stylusHandwritingEnabled,
                                                 // ignore: lines_longer_than_80_chars
-                                                enableIMEPersonalizedLearning:
-                                                    widget
-                                                        .enableIMEPersonalizedLearning,
+                                                enableIMEPersonalizedLearning: widget
+                                                    .enableIMEPersonalizedLearning,
                                                 // ignore: lines_longer_than_80_chars
-                                                contentInsertionConfiguration:
-                                                    widget
-                                                        .contentInsertionConfiguration,
+                                                contentInsertionConfiguration: widget
+                                                    .contentInsertionConfiguration,
                                                 undoController:
                                                     widget.undoController,
                                                 spellCheckConfiguration: widget

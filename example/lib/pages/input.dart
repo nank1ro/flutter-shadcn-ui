@@ -35,9 +35,6 @@ class _InputPageState extends State<InputPage> {
           placeholder: const Text('Email'),
           enabled: enabled,
           keyboardType: TextInputType.emailAddress,
-          toolbarBuilder: (context) {
-            return Text('Custom Toolbar');
-          },
         ),
         ShadInput(
           placeholder: const Text('Password'),

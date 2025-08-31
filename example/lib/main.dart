@@ -14,6 +14,7 @@ import 'package:example/pages/context_menu.dart';
 import 'package:example/pages/date_picker.dart';
 import 'package:example/pages/date_picker_form_field.dart';
 import 'package:example/pages/dialog.dart';
+import 'package:example/pages/keyboard_toolbar.dart';
 import 'package:example/pages/separator.dart';
 import 'package:example/pages/icon_button.dart';
 import 'package:example/pages/input.dart';
@@ -73,6 +74,7 @@ final routes = <String, WidgetBuilder>{
   '/input-OTP': (_) => const InputOTPPage(),
   '/input-OTP-form-field': (_) => const InputOTPFormFieldPage(),
   '/input-form-field': (_) => const InputFormFieldPage(),
+  '/keyboard-toolbar': (_) => const KeyboardToolbarPage(),
   '/menubar': (_) => const MenubarPage(),
   '/popover': (_) => const PopoverPage(),
   '/portal': (_) => const ShadPortalPage(),

@@ -1,3 +1,7 @@
+## 0.30.0
+
+- **FEAT**: Add `ShadKeyboardToolbar` component to show a toolbar above the keyboard.
+
 ## 0.29.2
 
 - **FIX**: Fix `ShadResizable` on RTL. Remove useless `textDirection` parameter from `ShadResizable` and `ShadResizableTheme`.

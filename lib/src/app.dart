@@ -14,6 +14,7 @@ import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/mouse_area.dart';
 import 'package:shadcn_ui/src/utils/mouse_cursor_provider.dart';
+import 'package:shadcn_ui/src/utils/provider.dart';
 
 enum ShadAppType {
   shadcn,
@@ -456,6 +457,7 @@ class _ShadAppState extends State<ShadApp> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return ScrollConfiguration(
       behavior: widget.scrollBehavior,
       child: HeroControllerScope(
@@ -465,8 +467,12 @@ class _ShadAppState extends State<ShadApp> {
           curve: widget.themeCurve,
           child: ShadMouseAreaSurface(
             child: ShadMouseCursorProvider(
-              child: Builder(
-                builder: _buildApp,
+              child: ShadProvider(
+                data: mediaQuery,
+                notifyUpdate: (old) => old.data != mediaQuery,
+                child: Builder(
+                  builder: _buildApp,
+                ),
               ),
             ),
           ),
