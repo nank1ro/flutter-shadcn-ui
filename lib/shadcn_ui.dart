@@ -51,7 +51,7 @@ export 'src/components/tooltip.dart';
 // Raw Components
 export 'src/raw_components/focusable.dart';
 export 'src/raw_components/portal.dart';
-export 'src/raw_components/keyboard_actions.dart';
+export 'src/raw_components/keyboard_toolbar.dart';
 
 // App Themes & Color Schemes
 export 'src/theme/color_scheme/base.dart';
@@ -137,4 +137,3 @@ export 'package:intl/intl.dart' hide TextDirection;
 export 'package:lucide_icons_flutter/lucide_icons.dart';
 export 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 export 'package:universal_image/universal_image.dart';
-export 'package:keyboard_actions/keyboard_actions.dart';

@@ -32,7 +32,3 @@ The intl package provides internationalization and localization facilities, incl
 ### [universal_image](https://pub.dev/packages/universal_image)
 
 Support multiple image formats. Used by the [ShadAvatar](../components/avatar) component.
-
-### [keyboard_actions](https://pub.dev/packages/keyboard_actions)
-
-Add custom keyboard actions to the keyboard in iOS and Android.

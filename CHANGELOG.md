@@ -1,3 +1,11 @@
+## 0.29.2
+
+- **FIX**: Fix `ShadResizable` on RTL. Remove useless `textDirection` parameter from `ShadResizable` and `ShadResizableTheme`.
+
+## 0.29.1
+
+- **FIX**: Add missing `alignment` parameter to `ShadInput`, `ShadInputFormField`, `ShadTextArea` and `ShadTextAreaFormField`.
+
 ## 0.29.0
 
 - **FIX**: Add missing popover closing animation (thanks to @DMouayad).
