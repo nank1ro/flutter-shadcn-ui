@@ -1,7 +1,7 @@
 ## 0.29.3
 
 - **FIX**: Ensure `ShadForm.onChanged` is called for both standard `Form` fields and `ShadFormField` widgets.
-- **FIX**: Add missing `forceErrorText` field to ShadFormField's.
+- **FIX**: Add missing `forceErrorText` parameter to `ShadFormField` widgets.
 
 ## 0.29.2
 
