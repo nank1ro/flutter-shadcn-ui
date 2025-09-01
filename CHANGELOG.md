@@ -1,3 +1,8 @@
+## 0.29.3
+
+- **FIX**: Ensure `ShadForm.onChanged` handler is called for standard Form fields as well as Shad-FormField's.
+- **FIX**: Add missing `forceErrorText` field to ShadFormField's.
+
 ## 0.29.2
 
 - **FIX**: Fix `ShadResizable` on RTL. Remove useless `textDirection` parameter from `ShadResizable` and `ShadResizableTheme`.
