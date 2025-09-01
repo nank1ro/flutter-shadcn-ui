@@ -48,6 +48,3 @@ lcov.info
 .firebase
 .fvmrc
 .supermaven
-
-# Ignore golden test files
-test/**/*.png
