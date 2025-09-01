@@ -441,9 +441,15 @@ class ShadTextTheme {
     String? package,
     GoogleFontBuilder? googleFontBuilder,
   }) {
-    var effectiveFamily = family ?? kDefaultFontFamily;
-    if (package != null && package != '') {
-      effectiveFamily = 'packages/$package/$effectiveFamily';
+    final baseFamily = family ?? this.family;
+    late final String effectiveFamily;
+    if (package != null && package.isNotEmpty) {
+      final alreadyPrefixed = baseFamily.startsWith('packages/');
+      effectiveFamily = !alreadyPrefixed //
+          ? 'packages/$package/$baseFamily'
+          : baseFamily;
+    } else {
+      effectiveFamily = baseFamily;
     }
 
     return ShadTextTheme.custom(
