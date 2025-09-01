@@ -2,6 +2,15 @@
 
 - **FEAT**: Add `ShadKeyboardToolbar` component to show a toolbar above the keyboard.
 
+## 0.29.4
+
+- **FIX**: Fix `ShadTextTheme.copyWith` was always overwriting custom font with default `Geist` font. [#425]
+
+## 0.29.3
+
+- **FIX**: Ensure `ShadForm.onChanged` is called for both standard `Form` fields and `ShadFormField` widgets.
+- **FIX**: Add missing `forceErrorText` parameter to `ShadFormField` widgets.
+
 ## 0.29.2
 
 - **FIX**: Fix `ShadResizable` on RTL. Remove useless `textDirection` parameter from `ShadResizable` and `ShadResizableTheme`.

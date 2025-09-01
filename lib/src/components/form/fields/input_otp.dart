@@ -8,6 +8,7 @@ class ShadInputOTPFormField extends ShadFormBuilderField<String> {
     super.id,
     super.key,
     super.onSaved,
+    super.forceErrorText,
 
     /// {@macro ShadFormBuilderField.validator}
     String? Function(String)? validator,
