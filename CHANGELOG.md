@@ -1,3 +1,8 @@
+## 0.29.3
+
+- **FIX**: Ensure `ShadForm.onChanged` is called for both standard `Form` fields and `ShadFormField` widgets.
+- **FIX**: Add missing `forceErrorText` parameter to `ShadFormField` widgets.
+
 ## 0.29.2
 
 - **FIX**: Fix `ShadResizable` on RTL. Remove useless `textDirection` parameter from `ShadResizable` and `ShadResizableTheme`.

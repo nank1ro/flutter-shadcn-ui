@@ -12,6 +12,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
     super.key,
     super.id,
     super.onSaved,
+    super.forceErrorText,
     String? Function(String)? validator,
     String? initialValue,
     super.enabled,

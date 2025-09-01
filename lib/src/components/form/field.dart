@@ -24,6 +24,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
     super.key,
     required Widget Function(FormFieldState<T>) builder,
     super.onSaved,
+    super.forceErrorText,
     super.validator,
     super.initialValue,
     super.enabled,

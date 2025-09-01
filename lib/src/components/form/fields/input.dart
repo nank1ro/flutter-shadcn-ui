@@ -13,6 +13,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     super.id,
     super.key,
     super.onSaved,
+    super.forceErrorText,
     String? Function(String)? validator,
     String? initialValue,
     super.enabled,
