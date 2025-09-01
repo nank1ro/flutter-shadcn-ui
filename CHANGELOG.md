@@ -1,3 +1,7 @@
+## 0.29.4
+
+- **FIX**: Fix `ShadTextTheme.copyWith` was always overwriting custom font with default `Geist` font. [#425]
+
 ## 0.29.3
 
 - **FIX**: Ensure `ShadForm.onChanged` is called for both standard `Form` fields and `ShadFormField` widgets.
