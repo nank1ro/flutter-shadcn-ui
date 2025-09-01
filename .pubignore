@@ -1,1 +1,3 @@
 docs
+# Ignore golden test files
+test/**/*.png
