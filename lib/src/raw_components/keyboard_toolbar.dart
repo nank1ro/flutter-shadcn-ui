@@ -55,9 +55,8 @@ class _ShadKeyboardToolbarState extends State<ShadKeyboardToolbar> {
 
   @override
   Widget build(BuildContext context) {
-    if (!keyboardSupported) {
-      return widget.child;
-    }
+    if (!keyboardSupported) return widget.child;
+
     final mediaQuery = context.watch<MediaQueryData>();
 
     return ListenableBuilder(
