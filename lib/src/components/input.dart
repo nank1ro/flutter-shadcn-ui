@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'dart:math';
 import 'dart:ui' as ui;
 
@@ -949,7 +951,6 @@ class ShadInputState extends State<ShadInput>
                                                   widget.obscuringCharacter,
                                               readOnly: widget.readOnly,
                                               focusNode: effectiveFocusNode,
-                                              // ! Selection handler section here
                                               onSelectionChanged:
                                                   _handleSelectionChanged,
                                               selectionColor: focused
@@ -1037,10 +1038,8 @@ class ShadInputState extends State<ShadInput>
                                                   widget.scribbleEnabled,
                                               stylusHandwritingEnabled: widget
                                                   .stylusHandwritingEnabled,
-                                              // ignore: lines_longer_than_80_chars
                                               enableIMEPersonalizedLearning: widget
                                                   .enableIMEPersonalizedLearning,
-                                              // ignore: lines_longer_than_80_chars
                                               contentInsertionConfiguration: widget
                                                   .contentInsertionConfiguration,
                                               undoController:
