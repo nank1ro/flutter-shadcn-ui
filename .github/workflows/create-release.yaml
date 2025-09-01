@@ -72,5 +72,4 @@ jobs:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           message: |
             Released the v${{ steps.extract_info.outputs.VERSION }}
-
             ${{ steps.extract_info.outputs.CHANGELOG_BODY }}
