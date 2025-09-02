@@ -40,9 +40,18 @@ jobs:
           # Write changelog to a file for the release creation step
           echo "$CHANGELOG_BODY" > release_notes.md
           echo "CHANGELOG_FILE=release_notes.md" >> $GITHUB_OUTPUT
+          
+          # Format changelog for Discord (remove backticks to avoid message splitting)
+          DISCORD_CHANGELOG=$(echo "$CHANGELOG_BODY" | sed 's/`//g')
+          
           # Pass CHANGELOG_BODY as-is without escaping newlines
           echo "CHANGELOG_BODY<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG_BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          # Pass formatted Discord changelog
+          echo "DISCORD_CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$DISCORD_CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release (if it doesn't exist)
