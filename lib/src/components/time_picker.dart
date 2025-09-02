@@ -237,6 +237,7 @@ class ShadTimePicker extends StatefulWidget {
     this.fieldDecoration,
     this.controller,
     this.enabled = true,
+    this.keyboardToolbarBuilder,
   })  : variant = ShadTimePickerVariant.primary,
         initialDayPeriod = null,
         periodLabel = null,
@@ -286,6 +287,7 @@ class ShadTimePicker extends StatefulWidget {
     this.periodDecoration,
     this.controller,
     this.enabled = true,
+    this.keyboardToolbarBuilder,
   }) : variant = ShadTimePickerVariant.period;
 
   /// Creates a [ShadTimePicker] with a raw variant, allowing explicit variant
@@ -331,6 +333,7 @@ class ShadTimePicker extends StatefulWidget {
     this.periodDecoration,
     this.controller,
     this.enabled = true,
+    this.keyboardToolbarBuilder,
   });
 
   /// {@template ShadTimePicker.axis}
@@ -560,6 +563,9 @@ class ShadTimePicker extends StatefulWidget {
   /// {@endtemplate}
   final bool enabled;
 
+  /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+  final WidgetBuilder? keyboardToolbarBuilder;
+
   @override
   State<ShadTimePicker> createState() => _ShadTimePickerState();
 }
@@ -757,6 +763,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           padding: effectiveFieldPadding,
           decoration: effectiveFieldDecoration,
           enabled: widget.enabled,
+          keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
           onChanged: (v) {
             if (v.isNotEmpty) {
               controller.setHour(int.tryParse(v));
@@ -778,6 +785,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           padding: effectiveFieldPadding,
           decoration: effectiveFieldDecoration,
           enabled: widget.enabled,
+          keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
           onChanged: (v) {
             if (v.isNotEmpty) {
               controller.setMinute(int.tryParse(v));
@@ -799,6 +807,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           padding: effectiveFieldPadding,
           decoration: effectiveFieldDecoration,
           enabled: widget.enabled,
+          keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
           onChanged: (v) {
             if (v.isNotEmpty) {
               controller.setSecond(int.tryParse(v));
@@ -873,6 +882,7 @@ class ShadTimePickerField extends StatefulWidget {
     this.padding,
     this.decoration,
     this.enabled = true,
+    this.keyboardToolbarBuilder,
   });
 
   /// {@template ShadTimePickerField.label}
@@ -960,6 +970,10 @@ class ShadTimePickerField extends StatefulWidget {
   /// disabled. Defaults to `true`.
   /// {@endtemplate}
   final bool enabled;
+
+  /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+  final WidgetBuilder? keyboardToolbarBuilder;
+
   @override
   State<ShadTimePickerField> createState() => _ShadTimePickerFieldState();
 }
@@ -1049,6 +1063,7 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
             onChanged: (value) {
               widget.onChanged?.call(value);
             },
+            keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
           ),
         ),
       ].separatedBy(SizedBox(height: effectiveGap)),

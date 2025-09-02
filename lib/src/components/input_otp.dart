@@ -274,6 +274,7 @@ class ShadInputOTPSlot extends StatefulWidget {
     this.middleRadius,
     this.initialValue,
     this.textInputAction,
+    this.keyboardToolbarBuilder,
   });
 
   /// {@template ShadInputOTPSlot.focusNode}
@@ -358,6 +359,9 @@ class ShadInputOTPSlot extends StatefulWidget {
   /// The text input action for the slot, defaults to null
   /// {@endtemplate}
   final TextInputAction? textInputAction;
+
+  /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+  final WidgetBuilder? keyboardToolbarBuilder;
 
   @override
   State<ShadInputOTPSlot> createState() => _ShadInputOTPSlotState();
@@ -571,6 +575,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
           padding: effectivePadding,
           style: defaultStyle,
           keyboardType: effectiveKeyboardType,
+          keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
         ),
       ),
     );

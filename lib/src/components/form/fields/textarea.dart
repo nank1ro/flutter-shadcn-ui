@@ -186,6 +186,9 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadTextarea.groupId}
     Object? groupId,
+
+    /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+    WidgetBuilder? keyboardToolbarBuilder,
   }) : super(
           initialValue: controller != null ? controller.text : initialValue,
           validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -257,6 +260,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
               resizeHandleBuilder: resizeHandleBuilder,
               strutStyle: strutStyle,
               groupId: groupId,
+              keyboardToolbarBuilder: keyboardToolbarBuilder,
             );
           },
         );

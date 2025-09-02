@@ -112,6 +112,9 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
 
     /// {@macro ShadTimePicker.fieldDecoration}
     ShadDecoration? fieldDecoration,
+
+    /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+    WidgetBuilder? keyboardToolbarBuilder,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderTimePickerState;
@@ -148,6 +151,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
               fieldWidth: fieldWidth,
               fieldPadding: fieldPadding,
               fieldDecoration: fieldDecoration,
+              keyboardToolbarBuilder: keyboardToolbarBuilder,
             );
           },
         );
@@ -276,6 +280,9 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
 
     /// {@macro ShadTimePicker.periodDecoration}
     ShadDecoration? periodDecoration,
+
+    /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+    WidgetBuilder? keyboardToolbarBuilder,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderTimePickerState;
@@ -318,6 +325,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
               fieldPadding: fieldPadding,
               fieldDecoration: fieldDecoration,
               periodDecoration: periodDecoration,
+              keyboardToolbarBuilder: keyboardToolbarBuilder,
             );
           },
         );
@@ -447,6 +455,9 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
 
     /// {@macro ShadTimePicker.periodDecoration}
     ShadDecoration? periodDecoration,
+
+    /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+    WidgetBuilder? keyboardToolbarBuilder,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderTimePickerState;
@@ -490,6 +501,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
               fieldPadding: fieldPadding,
               fieldDecoration: fieldDecoration,
               periodDecoration: periodDecoration,
+              keyboardToolbarBuilder: keyboardToolbarBuilder,
             );
           },
         );
