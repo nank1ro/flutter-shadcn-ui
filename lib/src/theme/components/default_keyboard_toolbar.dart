@@ -9,6 +9,7 @@ class ShadDefaultKeyboardToolbarTheme {
     this.showPreviousButton,
     this.showNextButton,
     this.showDoneButton,
+    this.hideThreshold,
   });
 
   final bool merge;
@@ -28,6 +29,9 @@ class ShadDefaultKeyboardToolbarTheme {
   /// {@macro ShadDefaultKeyboardToolbar.showDoneButton}
   final bool? showDoneButton;
 
+  /// {@macro ShadKeyboardToolbar.hideThreshold}
+  final double? hideThreshold;
+
   static ShadDefaultKeyboardToolbarTheme lerp(
     ShadDefaultKeyboardToolbarTheme a,
     ShadDefaultKeyboardToolbarTheme b,
@@ -41,6 +45,7 @@ class ShadDefaultKeyboardToolbarTheme {
       showPreviousButton: t < 0.5 ? a.showPreviousButton : b.showPreviousButton,
       showNextButton: t < 0.5 ? a.showNextButton : b.showNextButton,
       showDoneButton: t < 0.5 ? a.showDoneButton : b.showDoneButton,
+      hideThreshold: t < 0.5 ? a.hideThreshold : b.hideThreshold,
     );
   }
 
@@ -55,6 +60,7 @@ class ShadDefaultKeyboardToolbarTheme {
       showPreviousButton: other.showPreviousButton,
       showNextButton: other.showNextButton,
       showDoneButton: other.showDoneButton,
+      hideThreshold: other.hideThreshold,
     );
   }
 
@@ -65,6 +71,7 @@ class ShadDefaultKeyboardToolbarTheme {
     bool? showPreviousButton,
     bool? showNextButton,
     bool? showDoneButton,
+    double? hideThreshold,
   }) {
     return ShadDefaultKeyboardToolbarTheme(
       merge: merge ?? this.merge,
@@ -73,6 +80,7 @@ class ShadDefaultKeyboardToolbarTheme {
       showPreviousButton: showPreviousButton ?? this.showPreviousButton,
       showNextButton: showNextButton ?? this.showNextButton,
       showDoneButton: showDoneButton ?? this.showDoneButton,
+      hideThreshold: hideThreshold ?? this.hideThreshold,
     );
   }
 
@@ -86,7 +94,8 @@ class ShadDefaultKeyboardToolbarTheme {
         other.doneText == doneText &&
         other.showPreviousButton == showPreviousButton &&
         other.showNextButton == showNextButton &&
-        other.showDoneButton == showDoneButton;
+        other.showDoneButton == showDoneButton &&
+        other.hideThreshold == hideThreshold;
   }
 
   @override
@@ -96,6 +105,7 @@ class ShadDefaultKeyboardToolbarTheme {
         doneText.hashCode ^
         showPreviousButton.hashCode ^
         showNextButton.hashCode ^
-        showDoneButton.hashCode;
+        showDoneButton.hashCode ^
+        hideThreshold.hashCode;
   }
 }

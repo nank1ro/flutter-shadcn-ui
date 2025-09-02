@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
 /// {@template ShadKeyboardToolbar}
@@ -12,7 +13,7 @@ class ShadKeyboardToolbar extends StatefulWidget {
     this.toolbarBuilder,
     required this.child,
     required this.focusNode,
-    this.hideThreshold = 20,
+    this.hideThreshold,
   });
 
   /// {@template ShadKeyboardToolbar.child}
@@ -33,9 +34,9 @@ class ShadKeyboardToolbar extends StatefulWidget {
 
   /// {@template ShadKeyboardToolbar.hideThreshold}
   /// The threshold in pixels for hiding the toolbar when the keyboard is
-  /// dismissed. Defaults to 10 pixels.
+  /// dismissed. Defaults to 20 pixels.
   /// {@endtemplate}
-  final double hideThreshold;
+  final double? hideThreshold;
 
   @override
   State<ShadKeyboardToolbar> createState() => _ShadKeyboardToolbarState();
@@ -57,14 +58,18 @@ class _ShadKeyboardToolbarState extends State<ShadKeyboardToolbar> {
   Widget build(BuildContext context) {
     if (!keyboardSupported) return widget.child;
 
+    final theme = ShadTheme.of(context);
     final mediaQuery = context.watch<MediaQueryData>();
+    final effectiveHideThreshold = widget.hideThreshold ??
+        theme.defaultKeyboardToolbarTheme.hideThreshold ??
+        20.0;
 
     return ListenableBuilder(
       listenable: widget.focusNode,
       builder: (context, child) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (!mounted) return;
-          if (mediaQuery.viewInsets.bottom > widget.hideThreshold &&
+          if (mediaQuery.viewInsets.bottom > effectiveHideThreshold &&
               widget.focusNode.hasFocus) {
             controller.show();
           } else {
