@@ -12,7 +12,7 @@ topics:
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
-  flutter: ">=3.32.0"
+  flutter: ">=3.35.0"
 
 dependencies:
   boxy: ">=2.0.0 <3.0.0"

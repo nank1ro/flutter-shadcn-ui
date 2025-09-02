@@ -1,3 +1,7 @@
+## 0.30.1
+
+- **CHORE**: Bump min Flutter SDK version to `3.35.0` to support `FormField.onReset` and `Brightness` from `'package:flutter/widgets.dart'` 
+
 ## 0.30.0
 
 - **FEAT**: Add `ShadKeyboardToolbar` and `ShadDefaultKeyboardToolbar` components to show a toolbar above the keyboard. Add `keyboardToolbarBuilder` to `ShadInput`, `ShadInputFormField`, `ShadTextArea`, `ShadTextAreaFormField`, `ShadInputOTP`, `ShadInputOTPFormField` to easily add a keyboard toolbar to these components.
