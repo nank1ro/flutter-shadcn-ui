@@ -10,6 +10,7 @@ class ShadResizableTheme {
     this.mainAxisAlignment,
     this.crossAxisAlignment,
     this.mainAxisSize,
+    this.textDirection,
     this.verticalDirection,
     this.showHandle,
     this.handleIconData,
@@ -32,6 +33,9 @@ class ShadResizableTheme {
 
   /// {@macro ShadResizablePanelGroup.mainAxisSize}
   final MainAxisSize? mainAxisSize;
+
+  /// {@macro ShadResizablePanelGroup.textDirection}
+  final TextDirection? textDirection;
 
   /// {@macro ShadResizablePanelGroup.verticalDirection}
   final VerticalDirection? verticalDirection;
@@ -74,6 +78,7 @@ class ShadResizableTheme {
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       mainAxisSize: t < 0.5 ? a.mainAxisSize : b.mainAxisSize,
+      textDirection: t < 0.5 ? a.textDirection : b.textDirection,
       verticalDirection: t < 0.5 ? a.verticalDirection : b.verticalDirection,
       showHandle: t < 0.5 ? a.showHandle : b.showHandle,
       handleIconData: t < 0.5 ? a.handleIconData : b.handleIconData,
@@ -95,6 +100,7 @@ class ShadResizableTheme {
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
       mainAxisSize: other.mainAxisSize,
+      textDirection: other.textDirection,
       verticalDirection: other.verticalDirection,
       showHandle: other.showHandle,
       handleIconData: other.handleIconData,
@@ -114,6 +120,7 @@ class ShadResizableTheme {
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
     MainAxisSize? mainAxisSize,
+    TextDirection? textDirection,
     VerticalDirection? verticalDirection,
     bool? showHandle,
     IconData? handleIconData,
@@ -130,6 +137,7 @@ class ShadResizableTheme {
       mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
       mainAxisSize: mainAxisSize ?? this.mainAxisSize,
+      textDirection: textDirection ?? this.textDirection,
       verticalDirection: verticalDirection ?? this.verticalDirection,
       showHandle: showHandle ?? this.showHandle,
       handleIconData: handleIconData ?? this.handleIconData,
@@ -152,6 +160,7 @@ class ShadResizableTheme {
         other.mainAxisAlignment == mainAxisAlignment &&
         other.crossAxisAlignment == crossAxisAlignment &&
         other.mainAxisSize == mainAxisSize &&
+        other.textDirection == textDirection &&
         other.verticalDirection == verticalDirection &&
         other.showHandle == showHandle &&
         other.handleIconData == handleIconData &&
@@ -170,6 +179,7 @@ class ShadResizableTheme {
         mainAxisAlignment.hashCode ^
         crossAxisAlignment.hashCode ^
         mainAxisSize.hashCode ^
+        textDirection.hashCode ^
         verticalDirection.hashCode ^
         showHandle.hashCode ^
         handleIconData.hashCode ^

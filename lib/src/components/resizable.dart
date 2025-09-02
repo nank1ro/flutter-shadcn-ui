@@ -211,6 +211,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
     this.mainAxisAlignment,
     this.crossAxisAlignment,
     this.mainAxisSize,
+    this.textDirection,
     this.verticalDirection,
     this.controller,
     this.showHandle,
@@ -252,6 +253,12 @@ class ShadResizablePanelGroup extends StatefulWidget {
   /// The size of the main axis for the panels.
   /// {@endtemplate}
   final MainAxisSize? mainAxisSize;
+
+  /// {@template ShadResizablePanelGroup.textDirection}
+  /// The text direction for the panels' content.
+  /// Can be set to [TextDirection.ltr] or [TextDirection.rtl].
+  /// {@endtemplate}
+  final TextDirection? textDirection;
 
   /// {@template ShadResizablePanelGroup.verticalDirection}
   /// The vertical direction for the panels' layout.
@@ -509,12 +516,18 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     final effectiveVerticalDirection = widget.verticalDirection ??
         theme.resizableTheme.verticalDirection ??
         VerticalDirection.down;
+    final effectiveTextDirection =
+        widget.textDirection ?? theme.resizableTheme.textDirection;
 
     return ListenableBuilder(
       listenable: controller,
       builder: (context, child) {
-        final effectivesSizes =
-            controller.panelsInfo.map((e) => e.size).toList();
+        var effectivesSizes = controller.panelsInfo.map((e) => e.size).toList();
+
+        final rtl = Directionality.of(context) == TextDirection.rtl;
+        if (rtl && isHorizontal) {
+          effectivesSizes = effectivesSizes.reversed.toList();
+        }
 
         final divider = switch (widget.axis) {
           Axis.horizontal => ShadSeparator.vertical(
@@ -547,7 +560,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
               mainAxisAlignment: effectiveMainAxisAlignment,
               crossAxisAlignment: effectiveCrossAxisAlignment,
               mainAxisSize: effectiveMainAxisSize,
-              textDirection: TextDirection.ltr,
+              textDirection: effectiveTextDirection,
               verticalDirection: effectiveVerticalDirection,
               children: widget.children.mapIndexed(
                 (i, e) {
@@ -603,7 +616,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
               dividers.add(
                 Positioned(
                   top: isHorizontal ? 0 : leadingPosition,
-                  left: isHorizontal ? leadingPosition : null,
+                  left: isHorizontal && !rtl ? leadingPosition : null,
+                  right: isHorizontal && rtl ? leadingPosition : null,
                   bottom: isHorizontal ? 0 : null,
                   child: GestureDetector(
                     onDoubleTap: widget.onDividerDoubleTap ??
