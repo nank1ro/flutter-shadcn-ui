@@ -29,7 +29,8 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
           # Extract the release notes for the current version from CHANGELOG.md.
-          CHANGELOG_BODY=$(awk -v ver="## $VERSION" '$0 ~ ver {p=1; next} /^## / {p=0} p' CHANGELOG.md)
+          # Escape the + character in version string for regex matching
+          CHANGELOG_BODY=$(awk -v ver="## $VERSION" 'BEGIN{gsub(/\+/, "\\+", ver)} $0 ~ ver {p=1; next} /^## / {p=0} p' CHANGELOG.md)
 
           # Check if changelog body was found
           if [ -z "$CHANGELOG_BODY" ]; then
