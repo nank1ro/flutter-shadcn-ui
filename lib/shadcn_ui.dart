@@ -14,6 +14,7 @@ export 'src/components/card.dart';
 export 'src/components/checkbox.dart';
 export 'src/components/context_menu.dart';
 export 'src/components/date_picker.dart';
+export 'src/components/default_keyboard_toolbar.dart';
 export 'src/components/dialog.dart';
 export 'src/components/form/field.dart';
 export 'src/components/form/fields/checkbox.dart';
@@ -51,6 +52,7 @@ export 'src/components/tooltip.dart';
 // Raw Components
 export 'src/raw_components/focusable.dart';
 export 'src/raw_components/portal.dart';
+export 'src/raw_components/keyboard_toolbar.dart';
 
 // App Themes & Color Schemes
 export 'src/theme/color_scheme/base.dart';

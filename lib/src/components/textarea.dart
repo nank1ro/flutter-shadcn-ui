@@ -86,6 +86,7 @@ class ShadTextarea extends StatefulWidget {
     this.onHeightChanged,
     this.resizeHandleBuilder,
     this.scrollbarPadding,
+    this.keyboardToolbarBuilder,
   })  : enableInteractiveSelection = enableInteractiveSelection ?? !readOnly,
         assert(
           initialValue == null || controller == null,
@@ -414,6 +415,9 @@ class ShadTextarea extends StatefulWidget {
   /// {@endtemplate}
   final EdgeInsets? scrollbarPadding;
 
+  /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+  final WidgetBuilder? keyboardToolbarBuilder;
+
   @override
   State<ShadTextarea> createState() => _ShadTextareaState();
 }
@@ -606,6 +610,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
         groupId: widget.groupId,
         undoController: widget.undoController,
         scrollbarPadding: effectiveScrollbarPadding,
+        keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
       ),
     );
 

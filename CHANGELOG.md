@@ -1,3 +1,7 @@
+## 0.30.0
+
+- **FEAT**: Add `ShadKeyboardToolbar` and `ShadDefaultKeyboardToolbar` components to show a toolbar above the keyboard. Add `keyboardToolbarBuilder` to `ShadInput`, `ShadInputFormField`, `ShadTextArea`, `ShadTextAreaFormField`, `ShadInputOTP`, `ShadInputOTPFormField` to easily add a keyboard toolbar to these components.
+
 ## 0.29.4
 
 - **FIX**: Fix `ShadTextTheme.copyWith` was always overwriting custom font with default `Geist` font. [#425]
