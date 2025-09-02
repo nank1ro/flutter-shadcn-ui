@@ -7,7 +7,6 @@ class KeyboardToolbarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
     return BaseScaffold(
       appBarTitle: 'KeyboardToolbar',
       children: [
@@ -15,38 +14,7 @@ class KeyboardToolbarPage extends StatelessWidget {
           placeholder:
               const Text('Focus on mobile to show keyboard and toolbar'),
           keyboardType: TextInputType.emailAddress,
-          toolbarBuilder: (context) {
-            return Container(
-              color: theme.colorScheme.accent,
-              child: FocusTraversalGroup(
-                descendantsAreFocusable: false,
-                descendantsAreTraversable: false,
-                child: Row(
-                  children: [
-                    ShadIconButton.ghost(
-                      icon: Icon(LucideIcons.chevronUp),
-                      onPressed: () {
-                        FocusScope.of(context).previousFocus();
-                      },
-                    ),
-                    ShadIconButton.ghost(
-                      icon: Icon(LucideIcons.chevronDown),
-                      onPressed: () {
-                        FocusScope.of(context).nextFocus();
-                      },
-                    ),
-                    Spacer(),
-                    ShadButton.link(
-                      child: Text('Done'),
-                      onPressed: () {
-                        FocusScope.of(context).unfocus();
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
+          keyboardToolbarBuilder: (context) => ShadDefaultKeyboardToolbar(),
         ),
         ShadInput(
           placeholder:

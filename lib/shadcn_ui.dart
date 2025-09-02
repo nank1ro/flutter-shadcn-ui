@@ -14,6 +14,7 @@ export 'src/components/card.dart';
 export 'src/components/checkbox.dart';
 export 'src/components/context_menu.dart';
 export 'src/components/date_picker.dart';
+export 'src/components/default_keyboard_toolbar.dart';
 export 'src/components/dialog.dart';
 export 'src/components/form/field.dart';
 export 'src/components/form/fields/checkbox.dart';

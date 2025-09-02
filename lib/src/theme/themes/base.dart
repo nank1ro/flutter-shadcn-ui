@@ -11,6 +11,7 @@ import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/default_keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
@@ -92,6 +93,7 @@ abstract class ShadBaseTheme {
     required this.separatorTheme,
     required this.sonnerTheme,
     required this.textareaTheme,
+    required this.defaultKeyboardToolbarTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -147,6 +149,7 @@ abstract class ShadBaseTheme {
   final ShadSeparatorTheme separatorTheme;
   final ShadSonnerTheme sonnerTheme;
   final ShadTextareaTheme textareaTheme;
+  final ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme;
 }
 
 @immutable
@@ -197,4 +200,5 @@ abstract class ShadThemeVariant {
   ShadSeparatorTheme separatorTheme();
   ShadSonnerTheme sonnerTheme();
   ShadTextareaTheme textareaTheme();
+  ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme();
 }

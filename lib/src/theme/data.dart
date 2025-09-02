@@ -13,6 +13,7 @@ import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/default_keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
@@ -98,6 +99,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadSeparatorTheme? separatorTheme,
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
+    ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -245,6 +247,9 @@ class ShadThemeData extends ShadBaseTheme {
           effectiveVariant.separatorTheme().mergeWith(separatorTheme),
       sonnerTheme: effectiveVariant.sonnerTheme().mergeWith(sonnerTheme),
       textareaTheme: effectiveVariant.textareaTheme().mergeWith(textareaTheme),
+      defaultKeyboardToolbarTheme: effectiveVariant
+          .defaultKeyboardToolbarTheme()
+          .mergeWith(defaultKeyboardToolbarTheme),
     );
   }
 
@@ -302,6 +307,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.separatorTheme,
     required super.sonnerTheme,
     required super.textareaTheme,
+    required super.defaultKeyboardToolbarTheme,
   });
 
   static ShadThemeData lerp(ShadThemeData a, ShadThemeData b, double t) {
@@ -408,6 +414,11 @@ class ShadThemeData extends ShadBaseTheme {
       separatorTheme:
           ShadSeparatorTheme.lerp(a.separatorTheme, b.separatorTheme, t),
       sonnerTheme: ShadSonnerTheme.lerp(a.sonnerTheme, b.sonnerTheme, t),
+      defaultKeyboardToolbarTheme: ShadDefaultKeyboardToolbarTheme.lerp(
+        a.defaultKeyboardToolbarTheme,
+        b.defaultKeyboardToolbarTheme,
+        t,
+      ),
     );
   }
 
@@ -467,7 +478,8 @@ class ShadThemeData extends ShadBaseTheme {
         other.inputOTPTheme == inputOTPTheme &&
         other.menubarTheme == menubarTheme &&
         other.separatorTheme == separatorTheme &&
-        other.sonnerTheme == sonnerTheme;
+        other.sonnerTheme == sonnerTheme &&
+        other.defaultKeyboardToolbarTheme == defaultKeyboardToolbarTheme;
   }
 
   @override
@@ -523,7 +535,8 @@ class ShadThemeData extends ShadBaseTheme {
         inputOTPTheme.hashCode ^
         menubarTheme.hashCode ^
         separatorTheme.hashCode ^
-        sonnerTheme.hashCode;
+        sonnerTheme.hashCode ^
+        defaultKeyboardToolbarTheme.hashCode;
   }
 
   ShadThemeData copyWith({
@@ -580,6 +593,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadSeparatorTheme? separatorTheme,
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
+    ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
@@ -640,6 +654,8 @@ class ShadThemeData extends ShadBaseTheme {
       separatorTheme: separatorTheme ?? this.separatorTheme,
       sonnerTheme: sonnerTheme ?? this.sonnerTheme,
       textareaTheme: textareaTheme ?? this.textareaTheme,
+      defaultKeyboardToolbarTheme:
+          defaultKeyboardToolbarTheme ?? this.defaultKeyboardToolbarTheme,
     );
   }
 }

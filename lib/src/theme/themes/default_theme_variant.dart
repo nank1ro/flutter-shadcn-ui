@@ -18,6 +18,7 @@ import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/default_keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
@@ -1008,6 +1009,17 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       maxHeight: 500,
       resizable: true,
       scrollbarPadding: const EdgeInsets.only(bottom: 10),
+    );
+  }
+
+  @override
+  ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme() {
+    return ShadDefaultKeyboardToolbarTheme(
+      backgroundColor: colorScheme.accent,
+      doneText: 'Done',
+      showDoneButton: true,
+      showNextButton: true,
+      showPreviousButton: true,
     );
   }
 }
