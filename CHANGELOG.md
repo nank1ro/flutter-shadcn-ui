@@ -1,5 +1,6 @@
 ## 0.30.1
 
+- **FIX**: Fix `ShadResizable` on RTL (for real this time).
 - **CHORE**: Bump min Flutter SDK version to `3.35.0` to support `FormField.onReset` and `Brightness` from `'package:flutter/widgets.dart'` 
 
 ## 0.30.0

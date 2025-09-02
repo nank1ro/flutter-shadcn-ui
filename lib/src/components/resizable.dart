@@ -428,8 +428,15 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     required int index,
     required Offset offset,
   }) {
-    final axisOffset =
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    var axisOffset =
         (widget.axis == Axis.horizontal ? offset.dx : offset.dy).asFixed(6);
+
+    // Invert the offset for RTL horizontal dragging
+    if (rtl && widget.axis == Axis.horizontal) {
+      axisOffset = -axisOffset;
+    }
+
     final leadingPanelInfo = getPanelInfo(index);
     final newLeadingSize =
         (leadingPanelInfo.size * controller.totalAvailableWidth + axisOffset) /
@@ -522,12 +529,10 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     return ListenableBuilder(
       listenable: controller,
       builder: (context, child) {
-        var effectivesSizes = controller.panelsInfo.map((e) => e.size).toList();
+        final effectivesSizes =
+            controller.panelsInfo.map((e) => e.size).toList();
 
         final rtl = Directionality.of(context) == TextDirection.rtl;
-        if (rtl && isHorizontal) {
-          effectivesSizes = effectivesSizes.reversed.toList();
-        }
 
         final divider = switch (widget.axis) {
           Axis.horizontal => ShadSeparator.vertical(
