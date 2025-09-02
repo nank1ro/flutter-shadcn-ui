@@ -1,3 +1,7 @@
+## 0.30.1+1
+
+- **CHORE**: Remove useless import.
+
 ## 0.30.1
 
 - **FIX**: Fix `ShadResizable` on RTL (for real this time).
