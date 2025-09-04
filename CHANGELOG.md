@@ -1,3 +1,7 @@
+## 0.30.3
+
+- **FIX**: `onChanged` of `ShadInputFormField` and `ShadTextareaFormField` fired twice for any change.
+
 ## 0.30.2
 
 - **FIX**: Expose `ShadDefaultKeyboardToolbarTheme`.

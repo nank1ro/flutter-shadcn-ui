@@ -226,7 +226,6 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
               constraints: constraints,
               mainAxisAlignment: mainAxisAlignment,
               crossAxisAlignment: crossAxisAlignment,
-              onChanged: onChanged,
               onEditingComplete: onEditingComplete,
               onSubmitted: onSubmitted,
               onAppPrivateCommand: onAppPrivateCommand,
