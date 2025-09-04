@@ -43,7 +43,7 @@ class ShadSeparator extends StatelessWidget {
   ///
   /// This will override [ShadSeparatorTheme.verticalMargin] and
   /// [ShadSeparatorTheme.horizontalMargin].
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? margin;
 
   /// {@template ShadSeparator.thickness}
   /// The thickness of the separator.
