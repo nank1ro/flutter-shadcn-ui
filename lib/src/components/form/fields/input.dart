@@ -265,7 +265,6 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
               maxLines: maxLines,
               minLines: minLines,
               expands: expands,
-              onChanged: onChanged,
               onEditingComplete: onEditingComplete,
               onSubmitted: onSubmitted,
               onAppPrivateCommand: onAppPrivateCommand,
