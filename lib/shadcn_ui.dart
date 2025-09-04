@@ -86,6 +86,7 @@ export 'src/theme/components/checkbox.dart';
 export 'src/theme/components/context_menu.dart';
 export 'src/theme/components/date_picker.dart';
 export 'src/theme/components/decorator.dart';
+export 'src/theme/components/default_keyboard_toolbar.dart';
 export 'src/theme/components/dialog.dart';
 export 'src/theme/components/input.dart';
 export 'src/theme/components/input_decorator.dart';

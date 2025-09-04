@@ -1,3 +1,7 @@
+## 0.30.2
+
+- **FIX**: Expose `ShadDefaultKeyboardToolbarTheme`.
+
 ## 0.30.1+1
 
 - **CHORE**: Remove useless import.

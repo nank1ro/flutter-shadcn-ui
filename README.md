@@ -70,6 +70,18 @@ See the [documentation](https://flutter-shadcn-ui.mariuti.com/) to interact with
 - [ ] ToggleGroup
 - [x] [Tooltip](https://flutter-shadcn-ui.mariuti.com/components/tooltip/)
 
+## FAQs
+
+<details>
+<summary>What's the difference with shadcn_flutter</summary>
+My repo was created the 05/01/2024 while he started the 12/02/2024. He never contacted me to contribute.
+It's an open source project, I'd love to have contributions.
+
+Each widget I make takes some time because I try to solve problems in a simple way, making each widget extremely customizable.
+
+Another library could probably come first with more widgets, but in the long run it's the quality the most important thing.
+</details>
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=nank1ro/flutter-shadcn-ui&type=Date)](https://star-history.com/#nank1ro/flutter-shadcn-ui&Date)
