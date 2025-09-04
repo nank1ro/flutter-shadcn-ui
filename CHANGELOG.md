@@ -1,3 +1,7 @@
+## 0.30.5
+
+- **FIX**: change `ShadSeparator.margin` type to `EdgeInsetsGeometry`
+
 ## 0.30.4
 
 - **FIX**: `ShadTextareaFormField` initial value assert due to controller being used internally.
