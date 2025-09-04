@@ -1,3 +1,7 @@
+## 0.30.4
+
+- **FIX**: `ShadTextareaFormField` initial value assert due to controller being used internally.
+
 ## 0.30.3
 
 - **FIX**: `onChanged` of `ShadInputFormField` and `ShadTextareaFormField` fired twice for any change.
