@@ -29,7 +29,16 @@ class _TooltipPageState extends State<TooltipPage> {
           child: ShadButton.outline(
             focusNode: focusNode,
             child: const Text('Hover/Focus'),
-            onPressed: () {},
+            onHoverChange: (value) {
+              if (value) {
+                focusNode.requestFocus();
+              } else {
+                focusNode.unfocus();
+              }
+            },
+            onPressed: () {
+              print('Button pressed');
+            },
           ),
         ),
       ],

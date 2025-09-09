@@ -754,6 +754,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         ShadHoverStrategy.onLongPressEnd,
         ShadHoverStrategy.onLongPressCancel,
       },
+      longPressDuration: kLongPressTimeout,
     );
   }
 
