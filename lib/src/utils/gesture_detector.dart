@@ -228,16 +228,6 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    // final supportsMouse = switch (Theme.of(context).platform) {
-    //   TargetPlatform.android ||
-    //   TargetPlatform.iOS ||
-    //   TargetPlatform.fuchsia =>
-    //     false,
-    //   TargetPlatform.windows ||
-    //   TargetPlatform.macOS ||
-    //   TargetPlatform.linux =>
-    //     true,
-    // };
 
     final effectiveHoverStrategies =
         widget.hoverStrategies ?? theme.hoverStrategies;
@@ -245,9 +235,6 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
     final gestureSettings = MediaQuery.maybeGestureSettingsOf(context);
 
     void setHover(ShadHoverStrategy strategy) {
-      // If the device supports mouse, we don't need to use any hover strategy.
-      // if (supportsMouse) return;
-
       final presentInHover = effectiveHoverStrategies.hover.contains(strategy);
       final presentInUnhover =
           effectiveHoverStrategies.unhover.contains(strategy);
