@@ -259,6 +259,21 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       ),
       duration: Animate.defaultDuration,
       reverseDuration: Duration.zero,
+      hoverStrategies: const ShadHoverStrategies(
+        hover: {
+          ShadHoverStrategy.onTap,
+          ShadHoverStrategy.onLongPressDown,
+          ShadHoverStrategy.onLongPressStart,
+        },
+        unhover: {
+          ShadHoverStrategy.onTap,
+          ShadHoverStrategy.onTapOutside,
+          ShadHoverStrategy.onLongPressUp,
+          ShadHoverStrategy.onLongPressEnd,
+          ShadHoverStrategy.onLongPressCancel,
+        },
+        longPressDuration: kLongPressTimeout,
+      ),
     );
   }
 
@@ -749,6 +764,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       },
       unhover: {
         ShadHoverStrategy.onTapUp,
+        ShadHoverStrategy.onTapOutside,
         ShadHoverStrategy.onTapCancel,
         ShadHoverStrategy.onLongPressUp,
         ShadHoverStrategy.onLongPressEnd,
