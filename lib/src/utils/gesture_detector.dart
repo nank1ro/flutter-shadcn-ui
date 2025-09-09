@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/extensions/tap_details.dart';
 
@@ -9,10 +9,14 @@ class ShadHoverStrategies {
   const ShadHoverStrategies({
     this.hover = const {},
     this.unhover = const {},
+    this.longPressDuration,
+    this.onHoverChange,
   });
 
   final Set<ShadHoverStrategy> hover;
   final Set<ShadHoverStrategy> unhover;
+  final Duration? longPressDuration;
+  final ValueChanged<bool>? onHoverChange;
 
   @override
   bool operator ==(Object other) {
@@ -20,19 +24,30 @@ class ShadHoverStrategies {
 
     return other is ShadHoverStrategies &&
         setEquals(other.hover, hover) &&
-        setEquals(other.unhover, unhover);
+        setEquals(other.unhover, unhover) &&
+        other.longPressDuration == longPressDuration &&
+        other.onHoverChange == onHoverChange;
   }
 
   @override
-  int get hashCode => hover.hashCode ^ unhover.hashCode;
+  int get hashCode {
+    return hover.hashCode ^
+        unhover.hashCode ^
+        longPressDuration.hashCode ^
+        onHoverChange.hashCode;
+  }
 
   ShadHoverStrategies copyWith({
     Set<ShadHoverStrategy>? hover,
     Set<ShadHoverStrategy>? unhover,
+    Duration? longPressDuration,
+    ValueChanged<bool>? onHoverChange,
   }) {
     return ShadHoverStrategies(
       hover: hover ?? this.hover,
       unhover: unhover ?? this.unhover,
+      longPressDuration: longPressDuration ?? this.longPressDuration,
+      onHoverChange: onHoverChange ?? this.onHoverChange,
     );
   }
 }
@@ -50,6 +65,8 @@ enum ShadHoverStrategy {
   onDoubleTapCancel,
   onForcePressStart,
   onForcePressEnd,
+  onTap,
+  onTapOutside,
 }
 
 /// A special [GestureDetector] that handles the hovering state of the [child]
@@ -58,7 +75,7 @@ enum ShadHoverStrategy {
 ///
 /// If the device supports mouse, the [hoverStrategies] will be ignored and
 /// [MouseRegion] will be used instead.
-class ShadGestureDetector extends StatelessWidget {
+class ShadGestureDetector extends StatefulWidget {
   const ShadGestureDetector({
     super.key,
     required this.child,
@@ -93,6 +110,8 @@ class ShadGestureDetector extends StatelessWidget {
     this.forceStartPressure = 0.4,
     this.forcePeakPressure = 0.85,
     this.excludeFromSemantics = false,
+    this.groupId,
+    this.onTapOutside,
   });
 
   final ShadHoverStrategies? hoverStrategies;
@@ -100,6 +119,9 @@ class ShadGestureDetector extends StatelessWidget {
   final MouseCursor cursor;
   final Widget child;
   final VoidCallback? onTap;
+
+  /// Called when the user taps outside the widget.
+  final VoidCallback? onTapOutside;
   final ValueChanged<TapDownDetails>? onTapDown;
   final ValueChanged<TapUpDetails>? onTapUp;
   final VoidCallback? onTapCancel;
@@ -168,6 +190,16 @@ class ShadGestureDetector extends StatelessWidget {
   /// duplication of information.
   final bool excludeFromSemantics;
 
+  /// {@macro ShadMouseArea.groupId}
+  final Object? groupId;
+
+  @override
+  State<ShadGestureDetector> createState() => _ShadGestureDetectorState();
+}
+
+class _ShadGestureDetectorState extends State<ShadGestureDetector> {
+  bool hovered = false;
+
   // See https://github.com/nank1ro/flutter-shadcn-ui/issues/319
   Offset correctGlobalPosition(BuildContext context, Offset globalPosition) {
     // Get the root navigator's overlay (screen coordinates)
@@ -196,29 +228,34 @@ class ShadGestureDetector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final supportsMouse = switch (Theme.of(context).platform) {
-      TargetPlatform.android ||
-      TargetPlatform.iOS ||
-      TargetPlatform.fuchsia =>
-        false,
-      TargetPlatform.windows ||
-      TargetPlatform.macOS ||
-      TargetPlatform.linux =>
-        true,
-    };
 
-    final effectiveHoverStrategies = hoverStrategies ?? theme.hoverStrategies;
+    final effectiveHoverStrategies =
+        widget.hoverStrategies ?? theme.hoverStrategies;
     final gestures = <Type, GestureRecognizerFactory>{};
     final gestureSettings = MediaQuery.maybeGestureSettingsOf(context);
 
     void setHover(ShadHoverStrategy strategy) {
-      // If the device supports mouse, we don't need to use any hover strategy.
-      if (supportsMouse) return;
+      final presentInHover = effectiveHoverStrategies.hover.contains(strategy);
+      final presentInUnhover =
+          effectiveHoverStrategies.unhover.contains(strategy);
 
-      if (effectiveHoverStrategies.hover.contains(strategy)) {
-        onHoverChange?.call(true);
-      } else if (effectiveHoverStrategies.unhover.contains(strategy)) {
-        onHoverChange?.call(false);
+      // Toggle the hover state if the strategy is present in both hover and
+      // unhover sets.
+      if (presentInHover && presentInUnhover) {
+        hovered = !hovered;
+        widget.onHoverChange?.call(hovered);
+        effectiveHoverStrategies.onHoverChange?.call(hovered);
+        return;
+      }
+
+      if (presentInHover) {
+        widget.onHoverChange?.call(true);
+        effectiveHoverStrategies.onHoverChange?.call(true);
+        hovered = true;
+      } else if (presentInUnhover) {
+        widget.onHoverChange?.call(false);
+        effectiveHoverStrategies.onHoverChange?.call(false);
+        hovered = false;
       }
     }
 
@@ -226,13 +263,24 @@ class ShadGestureDetector extends StatelessWidget {
       setHover(ShadHoverStrategy.onTapDown);
       final correctedGlobalPosition =
           correctGlobalPosition(context, d.globalPosition);
-      onTapDown?.call(d.copyWith(globalPosition: correctedGlobalPosition));
+      widget.onTapDown
+          ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
+    }
+
+    void effectiveOnTap() {
+      setHover(ShadHoverStrategy.onTap);
+      widget.onTap?.call();
+    }
+
+    void effectiveOnTapOutside(PointerDownEvent event) {
+      setHover(ShadHoverStrategy.onTapOutside);
+      widget.onTapOutside?.call();
     }
 
     void effectiveOnSecondaryTapDown(TapDownDetails d) {
       final correctedGlobalPosition =
           correctGlobalPosition(context, d.globalPosition);
-      onSecondaryTapDown?.call(
+      widget.onSecondaryTapDown?.call(
         d.copyWith(globalPosition: correctedGlobalPosition),
       );
     }
@@ -240,66 +288,66 @@ class ShadGestureDetector extends StatelessWidget {
     void effectiveOnSecondaryTapUp(TapUpDetails d) {
       final correctedGlobalPosition =
           correctGlobalPosition(context, d.globalPosition);
-      onSecondaryTapUp
+      widget.onSecondaryTapUp
           ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
     void effectiveOnSecondaryTapCancel() {
-      onSecondaryTapCancel?.call();
+      widget.onSecondaryTapCancel?.call();
     }
 
     void effectiveOnSecondaryTap() {
-      onSecondaryTap?.call();
+      widget.onSecondaryTap?.call();
     }
 
     void effectiveOnTapUp(TapUpDetails d) {
       setHover(ShadHoverStrategy.onTapUp);
       final correctedGlobalPosition =
           correctGlobalPosition(context, d.globalPosition);
-      onTapUp?.call(d.copyWith(globalPosition: correctedGlobalPosition));
+      widget.onTapUp?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
     void effectiveOnTapCancel() {
       setHover(ShadHoverStrategy.onTapCancel);
-      onTapCancel?.call();
+      widget.onTapCancel?.call();
     }
 
     void effectiveOnDoubleTapDown(TapDownDetails d) {
       setHover(ShadHoverStrategy.onDoubleTapDown);
       final correctedGlobalPosition =
           correctGlobalPosition(context, d.globalPosition);
-      onDoubleTapDown
+      widget.onDoubleTapDown
           ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
     void effectiveOnDoubleTapCancel() {
       setHover(ShadHoverStrategy.onDoubleTapCancel);
-      onDoubleTapCancel?.call();
+      widget.onDoubleTapCancel?.call();
     }
 
     void effectiveOnLongPressStart(LongPressStartDetails d) {
       setHover(ShadHoverStrategy.onLongPressStart);
       final correctedGlobalPosition =
           correctGlobalPosition(context, d.globalPosition);
-      onLongPressStart
+      widget.onLongPressStart
           ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
     void effectiveOnLongPressCancel() {
       setHover(ShadHoverStrategy.onLongPressCancel);
-      onLongPressCancel?.call();
+      widget.onLongPressCancel?.call();
     }
 
     void effectiveOnLongPressUp() {
       setHover(ShadHoverStrategy.onLongPressUp);
-      onLongPressUp?.call();
+      widget.onLongPressUp?.call();
     }
 
     void effectiveOnLongPressDown(LongPressDownDetails d) {
       setHover(ShadHoverStrategy.onLongPressDown);
       final correctedGlobalPosition =
           correctGlobalPosition(context, d.globalPosition);
-      onLongPressDown
+      widget.onLongPressDown
           ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
@@ -307,116 +355,123 @@ class ShadGestureDetector extends StatelessWidget {
       setHover(ShadHoverStrategy.onLongPressEnd);
       final correctedGlobalPosition =
           correctGlobalPosition(context, d.globalPosition);
-      onLongPressEnd?.call(d.copyWith(globalPosition: correctedGlobalPosition));
+      widget.onLongPressEnd
+          ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
     gestures[TapGestureRecognizer] =
         GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
       () => TapGestureRecognizer(
         debugOwner: this,
-        supportedDevices: supportedDevices,
+        supportedDevices: widget.supportedDevices,
       ),
       (TapGestureRecognizer instance) {
         instance
           ..onTapDown = effectiveOnTapDown
           ..onTapUp = effectiveOnTapUp
-          ..onTap = onTap
+          ..onTap = effectiveOnTap
           ..onTapCancel = effectiveOnTapCancel
           ..onSecondaryTapDown = effectiveOnSecondaryTapDown
           ..onSecondaryTapUp = effectiveOnSecondaryTapUp
           ..onSecondaryTap = effectiveOnSecondaryTap
           ..onSecondaryTapCancel = effectiveOnSecondaryTapCancel
           ..gestureSettings = gestureSettings
-          ..supportedDevices = supportedDevices;
+          ..supportedDevices = widget.supportedDevices;
       },
     );
 
-    if (onDoubleTap != null ||
-        onDoubleTapDown != null ||
-        onDoubleTapCancel != null) {
+    if (widget.onDoubleTap != null ||
+        widget.onDoubleTapDown != null ||
+        widget.onDoubleTapCancel != null) {
       gestures[DoubleTapGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<DoubleTapGestureRecognizer>(
         () => DoubleTapGestureRecognizer(
           debugOwner: this,
-          supportedDevices: supportedDevices,
+          supportedDevices: widget.supportedDevices,
         ),
         (DoubleTapGestureRecognizer instance) {
           instance
             ..onDoubleTapDown = effectiveOnDoubleTapDown
-            ..onDoubleTap = onDoubleTap
+            ..onDoubleTap = widget.onDoubleTap
             ..onDoubleTapCancel = effectiveOnDoubleTapCancel
             ..gestureSettings = gestureSettings
-            ..supportedDevices = supportedDevices;
+            ..supportedDevices = widget.supportedDevices;
         },
       );
     }
 
-    if (onLongPressDown != null ||
-        onLongPressCancel != null ||
-        onLongPress != null ||
-        onLongPressStart != null ||
-        onLongPressMoveUpdate != null ||
-        onLongPressUp != null ||
-        onLongPressEnd != null) {
+    if (widget.onLongPressDown != null ||
+        widget.onLongPressCancel != null ||
+        widget.onLongPress != null ||
+        widget.onLongPressStart != null ||
+        widget.onLongPressMoveUpdate != null ||
+        widget.onLongPressUp != null ||
+        widget.onLongPressEnd != null) {
       gestures[LongPressGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<LongPressGestureRecognizer>(
         () => LongPressGestureRecognizer(
-          duration: longPressDuration ?? kLongPressTimeout,
+          duration: widget.longPressDuration ??
+              effectiveHoverStrategies.longPressDuration ??
+              kLongPressTimeout,
           debugOwner: this,
-          supportedDevices: supportedDevices,
+          supportedDevices: widget.supportedDevices,
         ),
         (LongPressGestureRecognizer instance) {
           instance
             ..onLongPressDown = effectiveOnLongPressDown
             ..onLongPressCancel = effectiveOnLongPressCancel
-            ..onLongPress = onLongPress
+            ..onLongPress = widget.onLongPress
             ..onLongPressStart = effectiveOnLongPressStart
-            ..onLongPressMoveUpdate = onLongPressMoveUpdate
+            ..onLongPressMoveUpdate = widget.onLongPressMoveUpdate
             ..onLongPressUp = effectiveOnLongPressUp
             ..onLongPressEnd = effectiveOnLongPressEnd
             ..gestureSettings = gestureSettings
-            ..supportedDevices = supportedDevices;
+            ..supportedDevices = widget.supportedDevices;
         },
       );
     }
 
-    if (onForcePressStart != null ||
-        onForcePressPeak != null ||
-        onForcePressUpdate != null ||
-        onForcePressEnd != null) {
+    if (widget.onForcePressStart != null ||
+        widget.onForcePressPeak != null ||
+        widget.onForcePressUpdate != null ||
+        widget.onForcePressEnd != null) {
       gestures[ForcePressGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<ForcePressGestureRecognizer>(
         () => ForcePressGestureRecognizer(
           debugOwner: this,
-          supportedDevices: supportedDevices,
-          startPressure: forceStartPressure,
-          peakPressure: forcePeakPressure,
+          supportedDevices: widget.supportedDevices,
+          startPressure: widget.forceStartPressure,
+          peakPressure: widget.forcePeakPressure,
         ),
         (ForcePressGestureRecognizer instance) {
           instance
-            ..onStart = onForcePressStart
-            ..onPeak = onForcePressPeak
-            ..onUpdate = onForcePressUpdate
-            ..onEnd = onForcePressEnd
+            ..onStart = widget.onForcePressStart
+            ..onPeak = widget.onForcePressPeak
+            ..onUpdate = widget.onForcePressUpdate
+            ..onEnd = widget.onForcePressEnd
             ..gestureSettings = gestureSettings
-            ..supportedDevices = supportedDevices;
+            ..supportedDevices = widget.supportedDevices;
         },
       );
     }
 
-    return MouseRegion(
-      cursor: cursor,
-      onEnter: (_) {
-        onHoverChange?.call(true);
-      },
-      onExit: (_) {
-        onHoverChange?.call(false);
-      },
-      child: RawGestureDetector(
-        gestures: gestures,
-        behavior: behavior,
-        excludeFromSemantics: excludeFromSemantics,
-        child: child,
+    return TapRegion(
+      onTapOutside: effectiveOnTapOutside,
+      groupId: widget.groupId,
+      child: MouseRegion(
+        cursor: widget.cursor,
+        onEnter: (_) {
+          widget.onHoverChange?.call(true);
+        },
+        onExit: (_) {
+          widget.onHoverChange?.call(false);
+        },
+        child: RawGestureDetector(
+          gestures: gestures,
+          behavior: widget.behavior,
+          excludeFromSemantics: widget.excludeFromSemantics,
+          child: widget.child,
+        ),
       ),
     );
   }
