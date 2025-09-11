@@ -1,3 +1,7 @@
+## 0.31.1
+
+- **FEAT**: Add `side` to `ShadSheetTheme` to set the default side of the sheet from the theme.
+
 ## 0.31.0
 
 - **FEAT**: Modify the `ShadTooltip` component and its hover strategies to work on mobile on tap without a long press.

@@ -28,7 +28,7 @@ Future<T?> showShadSheet<T>({
   List<Effect<dynamic>>? animateOut,
 }) {
   final theme = ShadTheme.of(context);
-  final effectiveSide = side ?? ShadSheetSide.bottom;
+  final effectiveSide = side ?? theme.sheetTheme.side ?? ShadSheetSide.bottom;
   final defaultAnimateIn = switch (effectiveSide) {
     ShadSheetSide.top => const SlideEffect(
         begin: Offset(0, -1),
@@ -100,7 +100,9 @@ class ShadSheetInheritedWidget extends InheritedWidget {
     required this.side,
   });
 
+  /// {@template ShadSheet.side}
   /// The side from which the sheet slides in.
+  /// {@endtemplate}
   final ShadSheetSide side;
 
   /// Retrieves the [ShadSheetSide] from the nearest [ShadSheetInheritedWidget]
