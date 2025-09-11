@@ -21,11 +21,11 @@ class ShadAccordionController<T> extends ValueNotifier<List<T>> {
   /// {@macro ShadAccordionController}
   ShadAccordionController([T? value])
       : _variant = ShadAccordionVariant.single,
-        super(<T>[if (value != null) value]);
+        super(UnmodifiableListView<T>([if (value != null) value]));
 
   ShadAccordionController.multiple([List<T>? value])
       : _variant = ShadAccordionVariant.multiple,
-        super(value ?? <T>[]);
+        super(UnmodifiableListView(value ?? <T>[]));
 
   @override
   List<T> get value => UnmodifiableListView(super.value);
