@@ -1,6 +1,7 @@
 ## 0.31.2
 
 - **FEAT**: Add `ShadAccordionController` to manually control the open/close state of the `ShadAccordionItem`s.
+- **FEAT**: Toggle `ShadAccordionItem` by pressing `Space` (before it worked only with `Enter`) when the header is focused.
 
 ## 0.31.1
 

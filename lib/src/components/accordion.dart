@@ -476,6 +476,11 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
                                 inherited.effectiveController
                                     .toggle(widget.value);
                               },
+                              const SingleActivator(LogicalKeyboardKey.space):
+                                  () {
+                                inherited.effectiveController
+                                    .toggle(widget.value);
+                              },
                             },
                             child: ShadFocusable(
                               focusNode: focusNode,
