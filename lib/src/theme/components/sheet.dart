@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import 'package:shadcn_ui/src/components/sheet.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 
 @immutable
@@ -40,6 +41,7 @@ class ShadSheetTheme {
     this.disabledScrollControlMaxRatio,
     this.minFlingVelocity,
     this.closeProgressThreshold,
+    this.side,
   });
 
   final bool merge;
@@ -134,6 +136,9 @@ class ShadSheetTheme {
   /// {@macro ShadSheet.closeProgressThreshold}
   final double? closeProgressThreshold;
 
+  /// {@macro ShadSheet.side}
+  final ShadSheetSide? side;
+
   static ShadSheetTheme lerp(
     ShadSheetTheme a,
     ShadSheetTheme b,
@@ -176,6 +181,7 @@ class ShadSheetTheme {
       minFlingVelocity: t < 0.5 ? a.minFlingVelocity : b.minFlingVelocity,
       closeProgressThreshold:
           t < 0.5 ? a.closeProgressThreshold : b.closeProgressThreshold,
+      side: t < 0.5 ? a.side : b.side,
     );
   }
 
@@ -211,6 +217,7 @@ class ShadSheetTheme {
     double? disabledScrollControlMaxRatio,
     double? minFlingVelocity,
     double? closeProgressThreshold,
+    ShadSheetSide? side,
   }) {
     return ShadSheetTheme(
       merge: merge ?? this.merge,
@@ -250,6 +257,7 @@ class ShadSheetTheme {
       minFlingVelocity: minFlingVelocity ?? this.minFlingVelocity,
       closeProgressThreshold:
           closeProgressThreshold ?? this.closeProgressThreshold,
+      side: side ?? this.side,
     );
   }
 
@@ -284,6 +292,7 @@ class ShadSheetTheme {
       disabledScrollControlMaxRatio: other.disabledScrollControlMaxRatio,
       minFlingVelocity: other.minFlingVelocity,
       closeProgressThreshold: other.closeProgressThreshold,
+      side: other.side,
     );
   }
 
@@ -322,7 +331,8 @@ class ShadSheetTheme {
         other.scrollPadding == scrollPadding &&
         other.disabledScrollControlMaxRatio == disabledScrollControlMaxRatio &&
         other.minFlingVelocity == minFlingVelocity &&
-        other.closeProgressThreshold == closeProgressThreshold;
+        other.closeProgressThreshold == closeProgressThreshold &&
+        other.side == side;
   }
 
   @override
@@ -357,6 +367,7 @@ class ShadSheetTheme {
         scrollPadding.hashCode ^
         disabledScrollControlMaxRatio.hashCode ^
         minFlingVelocity.hashCode ^
-        closeProgressThreshold.hashCode;
+        closeProgressThreshold.hashCode ^
+        side.hashCode;
   }
 }
