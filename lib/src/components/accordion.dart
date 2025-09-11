@@ -330,7 +330,6 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
     return ValueListenableBuilder(
       valueListenable: inherited.effectiveController,
       builder: (context, value, child) {
-        print('rebuild with $value');
         final expanded = value.contains(widget.value);
         final theme = ShadTheme.of(context);
         final effectiveSeparator =
