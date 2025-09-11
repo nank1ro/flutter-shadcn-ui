@@ -65,7 +65,7 @@ class ShadDateRangePickerFormField
     ShadDecoration? calendarDecoration,
 
     /// {@macro ShadPopover.padding}
-    EdgeInsets? popoverPadding,
+    EdgeInsetsGeometry? popoverPadding,
 
     /// {@macro ShadCalendar.multipleSelected}
     List<DateTime>? multipleSelected,
@@ -140,10 +140,10 @@ class ShadDateRangePickerFormField
     double? monthSelectorMinWidth,
 
     /// {@macro ShadCalendar.yearSelectorPadding}
-    EdgeInsets? yearSelectorPadding,
+    EdgeInsetsGeometry? yearSelectorPadding,
 
     /// {@macro ShadCalendar.monthSelectorPadding}
-    EdgeInsets? monthSelectorPadding,
+    EdgeInsetsGeometry? monthSelectorPadding,
 
     /// {@macro ShadCalendar.navigationButtonSize}
     double? navigationButtonSize,
@@ -158,7 +158,7 @@ class ShadDateRangePickerFormField
     IconData? forwardNavigationButtonIconData,
 
     /// {@macro ShadCalendar.navigationButtonPadding}
-    EdgeInsets? navigationButtonPadding,
+    EdgeInsetsGeometry? navigationButtonPadding,
 
     /// {@macro ShadCalendar.navigationButtonDisabledOpacity}
     double? navigationButtonDisabledOpacity,
@@ -176,7 +176,7 @@ class ShadDateRangePickerFormField
     double? calendarHeaderHeight,
 
     /// {@macro ShadCalendar.headerPadding}
-    EdgeInsets? calendarHeaderPadding,
+    EdgeInsetsGeometry? calendarHeaderPadding,
 
     /// {@macro ShadCalendar.captionLayoutGap}
     double? captionLayoutGap,
@@ -185,7 +185,7 @@ class ShadDateRangePickerFormField
     TextStyle? calendarHeaderTextStyle,
 
     /// {@macro ShadCalendar.weekdaysPadding}
-    EdgeInsets? weekdaysPadding,
+    EdgeInsetsGeometry? weekdaysPadding,
 
     /// {@macro ShadCalendar.weekdaysTextStyle}
     TextStyle? weekdaysTextStyle,
@@ -212,7 +212,7 @@ class ShadDateRangePickerFormField
     double? dayButtonOutsideMonthOpacity,
 
     /// {@macro ShadCalendar.dayButtonPadding}
-    EdgeInsets? dayButtonPadding,
+    EdgeInsetsGeometry? dayButtonPadding,
 
     /// {@macro ShadCalendar.dayButtonDecoration}
     ShadDecoration? dayButtonDecoration,

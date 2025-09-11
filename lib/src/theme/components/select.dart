@@ -48,10 +48,10 @@ class ShadSelectTheme {
   final double? maxHeight;
 
   /// {@macro ShadSelect.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadSelect.optionsPadding}
-  final EdgeInsets? optionsPadding;
+  final EdgeInsetsGeometry? optionsPadding;
 
   /// {@macro ShadSelect.showScrollToTopChevron}
   final bool? showScrollToTopChevron;
@@ -63,7 +63,7 @@ class ShadSelectTheme {
   final ShadAnchorBase? anchor;
 
   /// {@macro ShadSelect.searchPadding}
-  final EdgeInsets? searchPadding;
+  final EdgeInsetsGeometry? searchPadding;
 
   /// {@macro ShadSelect.clearSearchOnClose}
   final bool? clearSearchOnClose;
@@ -89,14 +89,16 @@ class ShadSelectTheme {
       minWidth: lerpDouble(a.minWidth, b.minWidth, t),
       maxWidth: lerpDouble(a.maxWidth, b.maxWidth, t),
       maxHeight: lerpDouble(a.maxHeight, b.maxHeight, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
-      optionsPadding: EdgeInsets.lerp(a.optionsPadding, b.optionsPadding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      optionsPadding:
+          EdgeInsetsGeometry.lerp(a.optionsPadding, b.optionsPadding, t),
       showScrollToTopChevron:
           t < 0.5 ? a.showScrollToTopChevron : b.showScrollToTopChevron,
       showScrollToBottomChevron:
           t < 0.5 ? a.showScrollToBottomChevron : b.showScrollToBottomChevron,
       anchor: t < 0.5 ? a.anchor : b.anchor,
-      searchPadding: EdgeInsets.lerp(a.searchPadding, b.searchPadding, t),
+      searchPadding:
+          EdgeInsetsGeometry.lerp(a.searchPadding, b.searchPadding, t),
       clearSearchOnClose: t < 0.5 ? a.clearSearchOnClose : b.clearSearchOnClose,
       effects: t < 0.5 ? a.effects : b.effects,
       shadows: t < 0.5 ? a.shadows : b.shadows,
@@ -117,12 +119,12 @@ class ShadSelectTheme {
     double? minWidth,
     double? maxWidth,
     double? maxHeight,
-    EdgeInsets? padding,
-    EdgeInsets? optionsPadding,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? optionsPadding,
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ShadAnchorBase? anchor,
-    EdgeInsets? searchPadding,
+    EdgeInsetsGeometry? searchPadding,
     bool? clearSearchOnClose,
     Duration? waitDuration,
     Duration? showDuration,

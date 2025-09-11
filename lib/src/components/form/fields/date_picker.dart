@@ -64,7 +64,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     ShadDecoration? calendarDecoration,
 
     /// {@macro ShadPopover.padding}
-    EdgeInsets? popoverPadding,
+    EdgeInsetsGeometry? popoverPadding,
 
     /// {@macro ShadCalendar.multipleSelected}
     List<DateTime>? multipleSelected,
@@ -139,10 +139,10 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     double? monthSelectorMinWidth,
 
     /// {@macro ShadCalendar.yearSelectorPadding}
-    EdgeInsets? yearSelectorPadding,
+    EdgeInsetsGeometry? yearSelectorPadding,
 
     /// {@macro ShadCalendar.monthSelectorPadding}
-    EdgeInsets? monthSelectorPadding,
+    EdgeInsetsGeometry? monthSelectorPadding,
 
     /// {@macro ShadCalendar.navigationButtonSize}
     double? navigationButtonSize,
@@ -157,7 +157,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     IconData? forwardNavigationButtonIconData,
 
     /// {@macro ShadCalendar.navigationButtonPadding}
-    EdgeInsets? navigationButtonPadding,
+    EdgeInsetsGeometry? navigationButtonPadding,
 
     /// {@macro ShadCalendar.navigationButtonDisabledOpacity}
     double? navigationButtonDisabledOpacity,
@@ -175,7 +175,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     double? calendarHeaderHeight,
 
     /// {@macro ShadCalendar.headerPadding}
-    EdgeInsets? calendarHeaderPadding,
+    EdgeInsetsGeometry? calendarHeaderPadding,
 
     /// {@macro ShadCalendar.captionLayoutGap}
     double? captionLayoutGap,
@@ -211,7 +211,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     double? dayButtonOutsideMonthOpacity,
 
     /// {@macro ShadCalendar.dayButtonPadding}
-    EdgeInsets? dayButtonPadding,
+    EdgeInsetsGeometry? dayButtonPadding,
 
     /// {@macro ShadCalendar.dayButtonDecoration}
     ShadDecoration? dayButtonDecoration,

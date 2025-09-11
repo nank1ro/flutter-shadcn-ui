@@ -57,7 +57,7 @@ class ShadDialogTheme {
   final bool? expandActionsWhenTiny;
 
   /// {@macro ShadDialog.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadDialog.gap}
   final double? gap;
@@ -117,7 +117,7 @@ class ShadDialogTheme {
   final bool? scrollable;
 
   /// {@macro ShadDialog.scrollPadding}
-  final EdgeInsets? scrollPadding;
+  final EdgeInsetsGeometry? scrollPadding;
 
   /// {@macro ShadDialog.actionsGap}
   final double? actionsGap;
@@ -136,7 +136,7 @@ class ShadDialogTheme {
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       expandActionsWhenTiny: b.expandActionsWhenTiny,
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       gap: lerpDouble(a.gap, b.gap, t),
       animateIn: b.animateIn,
       animateOut: b.animateOut,
@@ -157,7 +157,8 @@ class ShadDialogTheme {
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       scrollable: t < 0.5 ? a.scrollable : b.scrollable,
-      scrollPadding: EdgeInsets.lerp(a.scrollPadding, b.scrollPadding, t),
+      scrollPadding:
+          EdgeInsetsGeometry.lerp(a.scrollPadding, b.scrollPadding, t),
       actionsGap: lerpDouble(a.actionsGap, b.actionsGap, t),
     );
   }
@@ -169,7 +170,7 @@ class ShadDialogTheme {
     BorderRadius? radius,
     Color? backgroundColor,
     bool? expandActionsWhenTiny,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     double? gap,
     List<Effect<dynamic>>? animateIn,
     List<Effect<dynamic>>? animateOut,
@@ -189,7 +190,7 @@ class ShadDialogTheme {
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
     bool? scrollable,
-    EdgeInsets? scrollPadding,
+    EdgeInsetsGeometry? scrollPadding,
     double? actionsGap,
   }) {
     return ShadDialogTheme(

@@ -87,7 +87,7 @@ class ShadTooltip extends StatefulWidget {
   ///
   /// Defaults to `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTooltip.decoration}
   /// The decoration of the tooltip.

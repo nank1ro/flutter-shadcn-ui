@@ -69,7 +69,7 @@ class ShadToastTheme {
   final TextStyle? descriptionStyle;
 
   /// {@macro ShadToast.actionPadding}
-  final EdgeInsets? actionPadding;
+  final EdgeInsetsGeometry? actionPadding;
 
   /// {@macro ShadToast.border}
   final Border? border;
@@ -81,7 +81,7 @@ class ShadToastTheme {
   final List<BoxShadow>? shadows;
 
   /// {@macro ShadToast.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadToast.closeIconPosition}
   final ShadPosition? closeIconPosition;
@@ -115,11 +115,12 @@ class ShadToastTheme {
       titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
       descriptionStyle:
           TextStyle.lerp(a.descriptionStyle, b.descriptionStyle, t),
-      actionPadding: EdgeInsets.lerp(a.actionPadding, b.actionPadding, t),
+      actionPadding:
+          EdgeInsetsGeometry.lerp(a.actionPadding, b.actionPadding, t),
       border: Border.lerp(a.border, b.border, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       shadows: t < .5 ? a.shadows : b.shadows,
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       closeIconPosition:
           ShadPosition.lerp(a.closeIconPosition, b.closeIconPosition, t),
       constraints: t < .5 ? a.constraints : b.constraints,
@@ -141,11 +142,11 @@ class ShadToastTheme {
     bool? showCloseIconOnlyWhenHovered,
     TextStyle? titleStyle,
     TextStyle? descriptionStyle,
-    EdgeInsets? actionPadding,
+    EdgeInsetsGeometry? actionPadding,
     Border? border,
     BorderRadius? radius,
     List<BoxShadow>? shadows,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     ShadPosition? closeIconPosition,
     BoxConstraints? constraints,
     Widget? closeIcon,

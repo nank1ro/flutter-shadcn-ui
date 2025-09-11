@@ -477,7 +477,7 @@ class ShadToast extends StatefulWidget {
   /// The padding around the action widget.
   /// Defaults to left padding of 16 if not specified.
   /// {@endtemplate}
-  final EdgeInsets? actionPadding;
+  final EdgeInsetsGeometry? actionPadding;
 
   /// {@template ShadToast.border}
   /// The border surrounding the toast.
@@ -507,7 +507,7 @@ class ShadToast extends StatefulWidget {
   /// The padding inside the toast, surrounding all content.
   /// Defaults to EdgeInsets.fromLTRB(24, 24, 32, 24) if not specified.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadToast.closeIconPosition}
   /// The position of the close icon within the toast.

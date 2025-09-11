@@ -20,7 +20,7 @@ class ShadAlertTheme {
   final ShadDecoration? decoration;
 
   /// {@macro ShadAlert.iconPadding}
-  final EdgeInsets? iconPadding;
+  final EdgeInsetsGeometry? iconPadding;
 
   /// {@macro ShadAlert.iconColor}
   final Color? iconColor;
@@ -46,7 +46,7 @@ class ShadAlertTheme {
     return ShadAlertTheme(
       merge: b.merge,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
-      iconPadding: EdgeInsets.lerp(a.iconPadding, b.iconPadding, t),
+      iconPadding: EdgeInsetsGeometry.lerp(a.iconPadding, b.iconPadding, t),
       iconColor: Color.lerp(a.iconColor, b.iconColor, t),
       titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
       descriptionStyle:
@@ -59,7 +59,7 @@ class ShadAlertTheme {
   ShadAlertTheme copyWith({
     bool? merge,
     ShadDecoration? decoration,
-    EdgeInsets? iconPadding,
+    EdgeInsetsGeometry? iconPadding,
     Color? iconColor,
     TextStyle? titleStyle,
     TextStyle? descriptionStyle,

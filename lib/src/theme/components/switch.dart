@@ -45,7 +45,7 @@ class ShadSwitchTheme {
   final ShadDecoration? decoration;
 
   /// {@macro ShadSwitch.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   static ShadSwitchTheme lerp(
     ShadSwitchTheme a,
@@ -65,7 +65,7 @@ class ShadSwitchTheme {
       margin: lerpDouble(a.margin, b.margin, t),
       duration: b.duration,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
     );
   }
 
@@ -79,7 +79,7 @@ class ShadSwitchTheme {
     double? margin,
     Duration? duration,
     ShadDecoration? decoration,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
   }) {
     return ShadSwitchTheme(
       merge: merge ?? this.merge,

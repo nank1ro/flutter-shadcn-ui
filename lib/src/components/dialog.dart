@@ -297,7 +297,7 @@ class ShadDialog extends StatelessWidget {
   /// The padding inside the dialog, surrounding all content.
   /// Defaults to EdgeInsets.all(24) if not specified.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadDialog.gap}
   /// The gap between content elements (title, description, child, actions).
@@ -407,7 +407,7 @@ class ShadDialog extends StatelessWidget {
 
   /// Defaults to the keyboard’s view insets if not specified.
   /// {@endtemplate}
-  final EdgeInsets? scrollPadding;
+  final EdgeInsetsGeometry? scrollPadding;
 
   /// {@template ShadDialog.actionsGap}
   /// The gap between action buttons.

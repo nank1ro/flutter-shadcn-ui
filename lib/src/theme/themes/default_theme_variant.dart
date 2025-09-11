@@ -401,7 +401,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       thumbColor: colorScheme.background,
       uncheckedTrackColor: colorScheme.input,
       checkedTrackColor: colorScheme.primary,
-      padding: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsetsDirectional.only(start: 8),
       decoration: ShadDecoration(
         border: ShadBorder.all(radius: radius.add(radius / 2), width: 0),
         secondaryFocusedBorder:
@@ -416,7 +416,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       size: 16,
       duration: 100.milliseconds,
       color: colorScheme.primary,
-      padding: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsetsDirectional.only(start: 8),
       checkboxPadding: const EdgeInsets.only(top: 1),
       decoration: ShadDecoration(
         border: ShadBorder.all(
@@ -433,7 +433,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
     return ShadInputTheme(
       style: effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
       placeholderStyle: effectiveTextTheme.muted,
-      placeholderAlignment: Alignment.topLeft,
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
         border: ShadBorder.all(
@@ -456,7 +455,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       circleSize: circleSize,
       duration: 100.milliseconds,
       color: colorScheme.primary,
-      padding: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsetsDirectional.only(start: 8),
       decoration: ShadDecoration(
         shape: BoxShape.circle,
         border: ShadBorder.all(
@@ -489,7 +488,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       descriptionStyle: effectiveTextTheme.muted.copyWith(
         color: colorScheme.foreground.withValues(alpha: .9),
       ),
-      actionPadding: const EdgeInsets.only(left: 16),
+      actionPadding: const EdgeInsetsDirectional.only(start: 16),
       border: Border.all(color: colorScheme.border),
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.background,
@@ -512,7 +511,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       descriptionStyle: effectiveTextTheme.muted.copyWith(
         color: colorScheme.destructiveForeground.withValues(alpha: .9),
       ),
-      actionPadding: const EdgeInsets.only(left: 16),
+      actionPadding: const EdgeInsetsDirectional.only(start: 16),
       border: Border.all(color: colorScheme.border),
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.destructive,
@@ -526,7 +525,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   @override
   ShadAlertTheme primaryAlertTheme() {
     return ShadAlertTheme(
-      iconPadding: const EdgeInsets.only(right: 12),
+      iconPadding: const EdgeInsetsDirectional.only(end: 12),
       decoration: ShadDecoration(
         border: ShadBorder.all(
           color: colorScheme.border,
@@ -550,7 +549,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   @override
   ShadAlertTheme destructiveAlertTheme() {
     return ShadAlertTheme(
-      iconPadding: const EdgeInsets.only(right: 12),
+      iconPadding: const EdgeInsetsDirectional.only(end: 12),
       decoration: ShadDecoration(
         border: ShadBorder.all(
           color: colorScheme.destructive,
@@ -796,8 +795,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         constraints: const BoxConstraints(minWidth: 128),
         padding: const EdgeInsets.symmetric(vertical: 4),
         itemPadding: const EdgeInsets.symmetric(horizontal: 4),
-        leadingPadding: const EdgeInsets.only(right: 8),
-        trailingPadding: const EdgeInsets.only(left: 8),
+        leadingPadding: const EdgeInsetsDirectional.only(end: 8),
+        trailingPadding: const EdgeInsetsDirectional.only(start: 8),
         showDelay: const Duration(milliseconds: 100),
         height: 32,
         buttonVariant: ShadButtonVariant.ghost,
@@ -1011,7 +1010,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
     return ShadTextareaTheme(
       style: effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
       placeholderStyle: effectiveTextTheme.muted,
-      placeholderAlignment: Alignment.topLeft,
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
         border: ShadBorder.all(

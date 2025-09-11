@@ -26,7 +26,7 @@ class ShadAccordionTheme {
   final List<Effect<dynamic>>? iconEffects;
 
   /// {@macro ShadAccordionItem.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadAccordionItem.underlineTitleOnHover}
   final bool? underlineTitleOnHover;
@@ -56,7 +56,7 @@ class ShadAccordionTheme {
       merge: t < 0.5 ? a.merge : b.merge,
       iconData: t < 0.5 ? a.iconData : b.iconData,
       iconEffects: t < 0.5 ? a.iconEffects : b.iconEffects,
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       underlineTitleOnHover:
           t < 0.5 ? a.underlineTitleOnHover : b.underlineTitleOnHover,
       titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
@@ -118,7 +118,7 @@ class ShadAccordionTheme {
     bool? merge,
     IconData? iconData,
     List<Effect<dynamic>>? iconEffects,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     bool? underlineTitleOnHover,
     TextStyle? titleStyle,
     Curve? curve,

@@ -27,7 +27,7 @@ class ShadBadgeTheme {
   final Color? foregroundColor;
 
   /// {@macro ShadBadge.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadBadge.cursor}
   final MouseCursor? cursor;
@@ -45,7 +45,7 @@ class ShadBadgeTheme {
       hoverBackgroundColor:
           Color.lerp(a.hoverBackgroundColor, b.hoverBackgroundColor, t),
       foregroundColor: Color.lerp(a.foregroundColor, b.foregroundColor, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       cursor: t < 0.5 ? a.cursor : b.cursor,
     );
   }
@@ -56,7 +56,7 @@ class ShadBadgeTheme {
     Color? backgroundColor,
     Color? hoverBackgroundColor,
     Color? foregroundColor,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     MouseCursor? cursor,
   }) {
     return ShadBadgeTheme(

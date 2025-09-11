@@ -43,7 +43,7 @@ class ShadTableTheme {
   final double? cellHeight;
 
   /// {@macro ShadTable.cellPadding}
-  final EdgeInsets? cellPadding;
+  final EdgeInsetsGeometry? cellPadding;
 
   /// {@macro ShadTable.cellHeaderStyle}
   final TextStyle? cellHeaderStyle;
@@ -105,7 +105,7 @@ class ShadTableTheme {
     TableSpanBuilder? rowBuilder,
     Alignment? cellAlignment,
     double? cellHeight,
-    EdgeInsets? cellPadding,
+    EdgeInsetsGeometry? cellPadding,
     TextStyle? cellStyle,
     TextStyle? cellHeaderStyle,
     TextStyle? cellFooterStyle,

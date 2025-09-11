@@ -294,7 +294,7 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
         widget.duration ?? theme.radioTheme.duration ?? 100.milliseconds;
     final effectivePadding = widget.padding ??
         theme.radioTheme.padding ??
-        const EdgeInsets.only(left: 8);
+        const EdgeInsetsDirectional.only(start: 8);
 
     final effectiveRadioPadding = widget.radioPadding ??
         theme.radioTheme.radioPadding ??

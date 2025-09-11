@@ -761,7 +761,7 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
       ShadContextMenuItemVariant.primary =>
         const EdgeInsets.symmetric(horizontal: 8),
       ShadContextMenuItemVariant.inset =>
-        const EdgeInsets.only(left: 32, right: 8),
+        const EdgeInsetsDirectional.only(start: 32, end: 8),
     };
 
     final effectiveInsetPadding = widget.insetPadding ??
@@ -770,11 +770,11 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
 
     final effectiveLeadingPadding = widget.leadingPadding ??
         theme.contextMenuTheme.leadingPadding ??
-        const EdgeInsets.only(right: 8);
+        const EdgeInsetsDirectional.only(end: 8);
 
     final effectiveTrailingPadding = widget.trailingPadding ??
         theme.contextMenuTheme.trailingPadding ??
-        const EdgeInsets.only(left: 8);
+        const EdgeInsetsDirectional.only(start: 8);
 
     final effectiveAnchor = widget.anchor ??
         theme.contextMenuTheme.anchor ??

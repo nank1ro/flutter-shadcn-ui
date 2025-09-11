@@ -26,7 +26,7 @@ class ShadCardTheme {
   final bool merge;
 
   /// {@macro ShadCard.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadCard.backgroundColor}
   final Color? backgroundColor;
@@ -76,7 +76,7 @@ class ShadCardTheme {
     return ShadCardTheme(
       merge: b.merge,
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       border: Border.lerp(a.border, b.border, t),
       shadows: t < .5 ? a.shadows : b.shadows,
@@ -98,7 +98,7 @@ class ShadCardTheme {
   ShadCardTheme copyWith({
     bool? merge,
     Color? backgroundColor,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     BorderRadius? radius,
     Border? border,
     List<BoxShadow>? shadows,
