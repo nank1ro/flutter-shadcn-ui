@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -21,14 +20,11 @@ class ShadAccordionController<T> extends ValueNotifier<List<T>> {
   /// {@macro ShadAccordionController}
   ShadAccordionController([T? value])
       : _variant = ShadAccordionVariant.single,
-        super(UnmodifiableListView<T>([if (value != null) value]));
+        super(List<T>.unmodifiable([if (value != null) value]));
 
   ShadAccordionController.multiple([List<T>? value])
       : _variant = ShadAccordionVariant.multiple,
-        super(UnmodifiableListView(value ?? <T>[]));
-
-  @override
-  List<T> get value => UnmodifiableListView(super.value);
+        super(List<T>.unmodifiable(value ?? <T>[]));
 
   @override
   set value(List<T> newValue) {
