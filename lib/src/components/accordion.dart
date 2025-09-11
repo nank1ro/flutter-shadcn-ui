@@ -334,6 +334,14 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
   @override
   void didUpdateWidget(covariant ShadAccordionItem<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // Internal -> external: detach from internal, attach to external.
+    if (oldWidget.focusNode == null && widget.focusNode != null) {
+      _focusNode?.removeListener(onFocusChange);
+      _focusNode?.dispose();
+      _focusNode = null;
+      widget.focusNode!.addListener(onFocusChange);
+    }
+    // External -> internal: detach from external, create internal, attach.
     if (oldWidget.focusNode != null && widget.focusNode == null) {
       oldWidget.focusNode!.removeListener(onFocusChange);
       _focusNode?.dispose();
