@@ -61,9 +61,9 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpAsyncWidget(
         createTestWidget(
-          const ShadAccordion.multiple(
-            initialValue: ['item1'],
-            children: [
+          ShadAccordion.multiple(
+            initialValue: const ['item1'],
+            children: const [
               ShadAccordionItem(
                 value: 'item1',
                 title: Text('Item 1'),

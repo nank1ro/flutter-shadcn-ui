@@ -30,7 +30,7 @@ class AccordionPage extends StatefulWidget {
 }
 
 class _AccordionPageState extends State<AccordionPage> {
-  var type = ShadAccordionVariant.multiple;
+  var type = ShadAccordionVariant.single;
   var underlineTitle = true;
 
   @override

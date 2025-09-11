@@ -10,6 +10,52 @@ import 'package:shadcn_ui/src/utils/effects.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
+/// {@template ShadAccordionController}
+/// A controller for managing the state of a [ShadAccordion] widget.
+///
+/// Supports both single `ShadAccordionController` and multiple item expansion
+/// modes `ShadAccordionController.multiple`.
+/// {@endtemplate}
+class ShadAccordionController<T> extends ValueNotifier<List<T>> {
+  /// {@macro ShadAccordionController}
+  ShadAccordionController([T? value])
+      : _variant = ShadAccordionVariant.single,
+        super(List<T>.unmodifiable([if (value != null) value]));
+
+  ShadAccordionController.multiple([List<T>? value])
+      : _variant = ShadAccordionVariant.multiple,
+        super(List<T>.unmodifiable(value ?? <T>[]));
+
+  @override
+  set value(List<T> newValue) {
+    super.value = List<T>.unmodifiable(newValue);
+  }
+
+  final ShadAccordionVariant _variant;
+
+  /// Toggles the expansion state of the item with the given value [v].
+  ///
+  /// In single mode, expands the item if it's not already expanded, or
+  /// collapses it if it is. In multiple mode, adds or removes the item from the
+  /// list of expanded items.
+  void toggle(T v) {
+    switch (_variant) {
+      case ShadAccordionVariant.single:
+        if (value.contains(v)) {
+          value = <T>[];
+        } else {
+          value = <T>[v];
+        }
+      case ShadAccordionVariant.multiple:
+        if (value.contains(v)) {
+          value = value.toList()..remove(v);
+        } else {
+          value = value.toList()..add(v);
+        }
+    }
+  }
+}
+
 /// Variants available for the [ShadAccordion] widget.
 enum ShadAccordionVariant {
   single,
@@ -30,17 +76,30 @@ class ShadAccordion<T> extends StatefulWidget {
     required this.children,
     T? initialValue,
     this.maintainState,
+    this.controller,
   })  : variant = ShadAccordionVariant.single,
-        initialValue = initialValue == null ? <T>[] : <T>[initialValue];
+        initialValue = initialValue == null ? <T>[] : <T>[initialValue],
+        assert(
+          controller == null ||
+              controller._variant == ShadAccordionVariant.single,
+          'Pass a single-mode ShadAccordionController to ShadAccordion(...)',
+        );
 
   /// Creates a multiple-type accordion where multiple items can be expanded
   /// simultaneously.
-  const ShadAccordion.multiple({
+  ShadAccordion.multiple({
     super.key,
     required this.children,
     this.initialValue,
     this.maintainState,
-  }) : variant = ShadAccordionVariant.multiple;
+    this.controller,
+  })  : variant = ShadAccordionVariant.multiple,
+        assert(
+          controller == null ||
+              controller._variant == ShadAccordionVariant.multiple,
+          'Pass a multiple-mode ShadAccordionController to '
+          'ShadAccordion.multiple(...)',
+        );
 
   /// {@template ShadAccordion.variant}
   /// The type of accordion, either [ShadAccordionVariant.single] or
@@ -69,36 +128,58 @@ class ShadAccordion<T> extends StatefulWidget {
   /// {@endtemplate}
   final bool? maintainState;
 
+  /// {@macro ShadAccordionController}
+  final ShadAccordionController<T>? controller;
+
   @override
   State<ShadAccordion<T>> createState() => ShadAccordionState<T>();
 }
 
 class ShadAccordionState<T> extends State<ShadAccordion<T>> {
-  late List<T> values = widget.initialValue?.toList() ?? <T>[];
+  ShadAccordionController<T>? _controller;
+
+  ShadAccordionController<T> get effectiveController {
+    if (widget.controller != null) return widget.controller!;
+    if (_controller != null) return _controller!;
+    return switch (widget.variant) {
+      ShadAccordionVariant.single => _controller ??= ShadAccordionController<T>(
+          widget.initialValue != null && widget.initialValue!.isNotEmpty
+              ? widget.initialValue!.first
+              : null,
+        ),
+      ShadAccordionVariant.multiple => _controller ??=
+            ShadAccordionController<T>.multiple(
+          widget.initialValue,
+        ),
+    };
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadAccordion<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Switched from internal to external controller: dispose internal.
+    if (oldWidget.controller == null && widget.controller != null) {
+      _controller?.dispose();
+      _controller = null;
+    }
+    // Switched from external to internal or variant changed: recreate lazily.
+    if ((oldWidget.controller != null && widget.controller == null) ||
+        (oldWidget.variant != widget.variant && widget.controller == null)) {
+      _controller?.dispose();
+      _controller = null;
+    }
+  }
 
   bool get maintainState {
     return widget.maintainState ??
         ShadTheme.of(context, listen: false).accordionTheme.maintainState ??
         false;
-  }
-
-  void toggle(T value) {
-    setState(() {
-      switch (widget.variant) {
-        case ShadAccordionVariant.single:
-          if (values.contains(value)) {
-            values = <T>[];
-          } else {
-            values = <T>[value];
-          }
-        case ShadAccordionVariant.multiple:
-          if (values.contains(value)) {
-            values.remove(value);
-          } else {
-            values.add(value);
-          }
-      }
-    });
   }
 
   @override
@@ -253,6 +334,14 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
   @override
   void didUpdateWidget(covariant ShadAccordionItem<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // Internal -> external: detach from internal, attach to external.
+    if (oldWidget.focusNode == null && widget.focusNode != null) {
+      _focusNode?.removeListener(onFocusChange);
+      _focusNode?.dispose();
+      _focusNode = null;
+      widget.focusNode!.addListener(onFocusChange);
+    }
+    // External -> internal: detach from external, create internal, attach.
     if (oldWidget.focusNode != null && widget.focusNode == null) {
       oldWidget.focusNode!.removeListener(onFocusChange);
       _focusNode?.dispose();
@@ -277,148 +366,163 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
   Widget build(BuildContext context) {
     final inherited =
         context.watch<ShadAccordionState<dynamic>>() as ShadAccordionState<T>;
-    final expanded = inherited.values.contains(widget.value);
-    final theme = ShadTheme.of(context);
-    final effectiveSeparator =
-        widget.separator ?? const ShadSeparator.horizontal();
 
-    final effectiveDuration =
-        widget.duration ?? theme.accordionTheme.duration ?? 300.milliseconds;
+    return ValueListenableBuilder(
+      valueListenable: inherited.effectiveController,
+      builder: (context, value, child) {
+        final expanded = value.contains(widget.value);
+        final theme = ShadTheme.of(context);
+        final effectiveSeparator =
+            widget.separator ?? const ShadSeparator.horizontal();
 
-    final effectiveCurve = widget.curve ??
-        theme.accordionTheme.curve ??
-        const Cubic(0.87, 0, 0.13, 1);
+        final effectiveDuration = widget.duration ??
+            theme.accordionTheme.duration ??
+            300.milliseconds;
 
-    final effectiveTitleStyle = widget.titleStyle ??
-        theme.accordionTheme.titleStyle ??
-        theme.textTheme.list.copyWith(
-          fontWeight: FontWeight.w500,
-        );
+        final effectiveCurve = widget.curve ??
+            theme.accordionTheme.curve ??
+            const Cubic(0.87, 0, 0.13, 1);
 
-    final effectiveUnderlineTitleOnHover = widget.underlineTitleOnHover ??
-        theme.accordionTheme.underlineTitleOnHover ??
-        true;
+        final effectiveTitleStyle = widget.titleStyle ??
+            theme.accordionTheme.titleStyle ??
+            theme.textTheme.list.copyWith(
+              fontWeight: FontWeight.w500,
+            );
 
-    final effectiveIconEffects = widget.iconEffects ??
-        theme.accordionTheme.iconEffects ??
-        [
-          RotateEffect(
-            begin: 0,
-            end: .5,
-            duration: 300.milliseconds,
-            curve: effectiveCurve,
-          ),
-        ];
+        final effectiveUnderlineTitleOnHover = widget.underlineTitleOnHover ??
+            theme.accordionTheme.underlineTitleOnHover ??
+            true;
 
-    final effectiveIconData = widget.iconData ??
-        theme.accordionTheme.iconData ??
-        LucideIcons.chevronDown;
+        final effectiveIconEffects = widget.iconEffects ??
+            theme.accordionTheme.iconEffects ??
+            [
+              RotateEffect(
+                begin: 0,
+                end: .5,
+                duration: 300.milliseconds,
+                curve: effectiveCurve,
+              ),
+            ];
 
-    final effectiveIcon = widget.icon ??
-        Icon(
-          effectiveIconData,
-          color: theme.colorScheme.foreground,
-          size: 16,
-        );
+        final effectiveIconData = widget.iconData ??
+            theme.accordionTheme.iconData ??
+            LucideIcons.chevronDown;
 
-    final effectivePadding = widget.padding ??
-        theme.accordionTheme.padding ??
-        const EdgeInsets.symmetric(vertical: 16);
+        final effectiveIcon = widget.icon ??
+            Icon(
+              effectiveIconData,
+              color: theme.colorScheme.foreground,
+              size: 16,
+            );
 
-    final effectiveEffects = widget.effects ??
-        theme.accordionTheme.effects ??
-        [
-          PaddingEffect(
-            padding: const EdgeInsets.only(bottom: 8),
-            curve: effectiveCurve,
-            duration: effectiveDuration,
-          ),
-          SlideEffect(
-            curve: effectiveCurve,
-            begin: const Offset(0, -1),
-            end: Offset.zero,
-            duration: effectiveDuration,
-          ),
-          SizeEffect(
-            curve: effectiveCurve,
-            duration: effectiveDuration,
-          ),
-        ];
+        final effectivePadding = widget.padding ??
+            theme.accordionTheme.padding ??
+            const EdgeInsets.symmetric(vertical: 16);
 
-    return ShadAnimationBuilder(
-      duration: effectiveDuration,
-      builder: (context, controller) {
-        if (expanded && !controller.isCompleted) {
-          // animates the opened item, to show it
-          controller.forward();
-        } else if (!expanded && !controller.isDismissed) {
-          // animates the closed item, to hide it
-          controller.reverse();
-        }
+        final effectiveEffects = widget.effects ??
+            theme.accordionTheme.effects ??
+            [
+              PaddingEffect(
+                padding: const EdgeInsets.only(bottom: 8),
+                curve: effectiveCurve,
+                duration: effectiveDuration,
+              ),
+              SlideEffect(
+                curve: effectiveCurve,
+                begin: const Offset(0, -1),
+                end: Offset.zero,
+                duration: effectiveDuration,
+              ),
+              SizeEffect(
+                curve: effectiveCurve,
+                duration: effectiveDuration,
+              ),
+            ];
 
-        final closed = !expanded && controller.isDismissed;
-        final shouldRemoveChild = closed && !inherited.maintainState;
+        return ShadAnimationBuilder(
+          duration: effectiveDuration,
+          builder: (context, controller) {
+            if (expanded && !controller.isCompleted) {
+              // animates the opened item, to show it
+              controller.forward();
+            } else if (!expanded && !controller.isDismissed) {
+              // animates the closed item, to hide it
+              controller.reverse();
+            }
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ShadGestureDetector(
-              cursor: SystemMouseCursors.click,
-              onHoverChange: (value) => hovered.value = value,
-              behavior: HitTestBehavior.opaque,
-              onTap: () => inherited.toggle(widget.value),
-              child: Padding(
-                padding: effectivePadding,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: CallbackShortcuts(
-                        bindings: {
-                          const SingleActivator(LogicalKeyboardKey.enter): () {
-                            inherited.toggle(widget.value);
-                          },
-                        },
-                        child: ShadFocusable(
-                          focusNode: focusNode,
-                          builder: (context, focused, child) {
-                            return ValueListenableBuilder(
-                              valueListenable: hovered,
-                              builder: (context, hovered, child) {
-                                return DefaultTextStyle(
-                                  style: effectiveTitleStyle.copyWith(
-                                    decoration: hovered &&
-                                            effectiveUnderlineTitleOnHover
-                                        ? TextDecoration.underline
-                                        : null,
-                                  ),
-                                  child: child!,
+            final closed = !expanded && controller.isDismissed;
+            final shouldRemoveChild = closed && !inherited.maintainState;
+
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ShadGestureDetector(
+                  cursor: SystemMouseCursors.click,
+                  onHoverChange: (value) => hovered.value = value,
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () =>
+                      inherited.effectiveController.toggle(widget.value),
+                  child: Padding(
+                    padding: effectivePadding,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: CallbackShortcuts(
+                            bindings: {
+                              const SingleActivator(LogicalKeyboardKey.enter):
+                                  () {
+                                inherited.effectiveController
+                                    .toggle(widget.value);
+                              },
+                              const SingleActivator(LogicalKeyboardKey.space):
+                                  () {
+                                inherited.effectiveController
+                                    .toggle(widget.value);
+                              },
+                            },
+                            child: ShadFocusable(
+                              focusNode: focusNode,
+                              builder: (context, focused, child) {
+                                return ValueListenableBuilder(
+                                  valueListenable: hovered,
+                                  builder: (context, hovered, child) {
+                                    return DefaultTextStyle(
+                                      style: effectiveTitleStyle.copyWith(
+                                        decoration: hovered &&
+                                                effectiveUnderlineTitleOnHover
+                                            ? TextDecoration.underline
+                                            : null,
+                                      ),
+                                      child: child!,
+                                    );
+                                  },
+                                  child: widget.title,
                                 );
                               },
-                              child: widget.title,
-                            );
-                          },
+                            ),
+                          ),
                         ),
-                      ),
+                        Animate(
+                          target: expanded ? 1 : 0,
+                          effects: effectiveIconEffects,
+                          child: effectiveIcon,
+                        ),
+                      ],
                     ),
-                    Animate(
-                      target: expanded ? 1 : 0,
-                      effects: effectiveIconEffects,
-                      child: effectiveIcon,
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            if (!shouldRemoveChild)
-              Animate(
-                controller: controller,
-                effects: effectiveEffects,
-                child: widget.child,
-              ),
-            effectiveSeparator,
-          ],
+                if (!shouldRemoveChild)
+                  Animate(
+                    controller: controller,
+                    effects: effectiveEffects,
+                    child: widget.child,
+                  ),
+                effectiveSeparator,
+              ],
+            );
+          },
         );
       },
     );
