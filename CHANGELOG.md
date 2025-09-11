@@ -1,3 +1,7 @@
+## 0.31.2
+
+- **FEAT**: Add `ShadAccordionController` to manually control the open/close state of the `ShadAccordionItem`s.
+
 ## 0.31.1
 
 - **FEAT**: Add `side` to `ShadSheetTheme` to set the default side of the sheet from the theme.
