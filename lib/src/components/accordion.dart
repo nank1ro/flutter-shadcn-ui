@@ -82,17 +82,28 @@ class ShadAccordion<T> extends StatefulWidget {
     this.maintainState,
     this.controller,
   })  : variant = ShadAccordionVariant.single,
-        initialValue = initialValue == null ? <T>[] : <T>[initialValue];
+        initialValue = initialValue == null ? <T>[] : <T>[initialValue],
+        assert(
+          controller == null ||
+              controller._variant == ShadAccordionVariant.single,
+          'Pass a single-mode ShadAccordionController to ShadAccordion(...)',
+        );
 
   /// Creates a multiple-type accordion where multiple items can be expanded
   /// simultaneously.
-  const ShadAccordion.multiple({
+  ShadAccordion.multiple({
     super.key,
     required this.children,
     this.initialValue,
     this.maintainState,
     this.controller,
-  }) : variant = ShadAccordionVariant.multiple;
+  })  : variant = ShadAccordionVariant.multiple,
+        assert(
+          controller == null ||
+              controller._variant == ShadAccordionVariant.multiple,
+          'Pass a multiple-mode ShadAccordionController to '
+          'ShadAccordion.multiple(...)',
+        );
 
   /// {@template ShadAccordion.variant}
   /// The type of accordion, either [ShadAccordionVariant.single] or
