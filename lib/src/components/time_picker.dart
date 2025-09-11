@@ -534,7 +534,7 @@ class ShadTimePicker extends StatefulWidget {
   /// The padding of the field, defaults to
   /// `const EdgeInsets.symmetric(horizontal: 12, vertical: 8)`.
   /// {@endtemplate}
-  final EdgeInsets? fieldPadding;
+  final EdgeInsetsGeometry? fieldPadding;
 
   /// {@template ShadTimePicker.fieldDecoration}
   /// The decoration of the field, defaults to
@@ -749,6 +749,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
       alignment: effectiveAlignment,
       runAlignment: effectiveRunAlignment,
       crossAxisAlignment: effectiveCrossAxisAlignment,
+      textDirection: TextDirection.ltr,
       children: [
         if (widget.leading != null) widget.leading!,
         ShadTimePickerField(
@@ -954,7 +955,7 @@ class ShadTimePickerField extends StatefulWidget {
   ///
   /// Defaults to `EdgeInsets.symmetric(horizontal: 12, vertical: 8)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTimePickerField.decoration}
   /// The visual decoration of the input field.

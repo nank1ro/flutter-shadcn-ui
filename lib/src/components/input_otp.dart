@@ -321,7 +321,7 @@ class ShadInputOTPSlot extends StatefulWidget {
   /// {@template ShadInputOTPSlot.padding}
   /// The padding of the slot, defaults to `null`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadInputOTPSlot.decoration}
   /// The decoration of the slot

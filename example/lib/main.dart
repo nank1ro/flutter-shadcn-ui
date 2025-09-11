@@ -101,9 +101,9 @@ final routes = <String, WidgetBuilder>{
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-zA-Z])');
 
-final themeModeProvider = Provider<Signal<ThemeMode>>(
-  (_) => Signal(ThemeMode.light),
-);
+final themeModeProvider = Provider((_) => Signal(ThemeMode.light));
+
+final directionalityProvider = Provider((context) => Signal(TextDirection.ltr));
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -111,10 +111,11 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
-      providers: [themeModeProvider],
+      providers: [themeModeProvider, directionalityProvider],
       child: SignalBuilder(
         builder: (context, _) {
           final themeMode = themeModeProvider.of(context).value;
+          final directionality = directionalityProvider.of(context).value;
           // Custom App example
           // return ShadApp.custom(
           //   themeMode: themeMode,
@@ -156,6 +157,12 @@ class App extends StatelessWidget {
               // textTheme: ShadTextTheme(family: 'UbuntuMono'),
             ),
             home: const MainPage(),
+            builder: (context, child) {
+              return Directionality(
+                textDirection: directionality,
+                child: child!,
+              );
+            },
           );
         },
       ),

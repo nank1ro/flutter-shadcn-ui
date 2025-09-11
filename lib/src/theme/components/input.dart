@@ -33,7 +33,7 @@ class ShadInputTheme {
   final ShadDecoration? decoration;
 
   /// {@macro ShadInput.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadInput.style}
   final TextStyle? style;
@@ -63,7 +63,7 @@ class ShadInputTheme {
   final AlignmentGeometry? placeholderAlignment;
 
   /// {@macro ShadInput.inputPadding}
-  final EdgeInsets? inputPadding;
+  final EdgeInsetsGeometry? inputPadding;
 
   /// {@macro ShadInput.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
@@ -78,7 +78,7 @@ class ShadInputTheme {
   final BoxConstraints? constraints;
 
   /// {@macro ShadInput.scrollbarPadding}
-  final EdgeInsets? scrollbarPadding;
+  final EdgeInsetsGeometry? scrollbarPadding;
 
   static ShadInputTheme lerp(
     ShadInputTheme a,
@@ -89,7 +89,7 @@ class ShadInputTheme {
     return ShadInputTheme(
       merge: b.merge,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       style: TextStyle.lerp(a.style, b.style, t),
       cursorColor: Color.lerp(a.cursorColor, b.cursorColor, t),
       cursorWidth: lerpDouble(a.cursorWidth, b.cursorWidth, t),
@@ -105,12 +105,12 @@ class ShadInputTheme {
         b.placeholderAlignment,
         t,
       ),
-      inputPadding: EdgeInsets.lerp(a.inputPadding, b.inputPadding, t),
+      inputPadding: EdgeInsetsGeometry.lerp(a.inputPadding, b.inputPadding, t),
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       gap: t < 0.5 ? a.gap : b.gap,
       constraints: BoxConstraints.lerp(a.constraints, b.constraints, t),
-      scrollbarPadding: EdgeInsets.lerp(
+      scrollbarPadding: EdgeInsetsGeometry.lerp(
         a.scrollbarPadding,
         b.scrollbarPadding,
         t,
@@ -121,7 +121,7 @@ class ShadInputTheme {
   ShadInputTheme copyWith({
     bool? merge,
     ShadDecoration? decoration,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     TextStyle? style,
     Color? cursorColor,
     double? cursorWidth,
@@ -131,12 +131,12 @@ class ShadInputTheme {
     TextStyle? placeholderStyle,
     AlignmentGeometry? alignment,
     AlignmentGeometry? placeholderAlignment,
-    EdgeInsets? inputPadding,
+    EdgeInsetsGeometry? inputPadding,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
     double? gap,
     BoxConstraints? constraints,
-    EdgeInsets? scrollbarPadding,
+    EdgeInsetsGeometry? scrollbarPadding,
   }) {
     return ShadInputTheme(
       merge: merge ?? this.merge,

@@ -273,7 +273,7 @@ class ShadAccordionItem<T> extends StatefulWidget {
   /// not specified.
   /// Controls the spacing within the item's header.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadAccordionItem.underlineTitleOnHover}
   /// Whether to underline the title when hovered, defaults to true if not

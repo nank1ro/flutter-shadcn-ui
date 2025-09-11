@@ -59,7 +59,7 @@ class ShadTabsTheme {
   final ScrollPhysics? physics;
 
   /// {@macro ShadTabs.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadTabs.decoration}
   final ShadDecoration? decoration;
@@ -89,7 +89,7 @@ class ShadTabsTheme {
   final Color? tabSelectedHoverBackgroundColor;
 
   /// {@macro ShadTab.padding}
-  final EdgeInsets? tabPadding;
+  final EdgeInsetsGeometry? tabPadding;
 
   /// {@macro ShadTab.decoration}
   final ShadDecoration? tabDecoration;
@@ -159,7 +159,7 @@ class ShadTabsTheme {
       gap: lerpDouble(a.gap, b.gap, t),
       dragStartBehavior: t < 0.5 ? a.dragStartBehavior : b.dragStartBehavior,
       physics: t < 0.5 ? a.physics : b.physics,
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       tabBarConstraints:
           BoxConstraints.lerp(a.tabBarConstraints, b.tabBarConstraints, t),
@@ -181,7 +181,7 @@ class ShadTabsTheme {
         b.tabSelectedHoverBackgroundColor,
         t,
       ),
-      tabPadding: EdgeInsets.lerp(a.tabPadding, b.tabPadding, t),
+      tabPadding: EdgeInsetsGeometry.lerp(a.tabPadding, b.tabPadding, t),
       tabDecoration: ShadDecoration.lerp(a.tabDecoration, b.tabDecoration, t),
       tabSelectedDecoration: ShadDecoration.lerp(
         a.tabSelectedDecoration,
@@ -357,7 +357,7 @@ class ShadTabsTheme {
     double? gap,
     DragStartBehavior? dragStartBehavior,
     ScrollPhysics? physics,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     ShadDecoration? decoration,
     BoxConstraints? tabBarConstraints,
     BoxConstraints? contentConstraints,
@@ -367,7 +367,7 @@ class ShadTabsTheme {
     Color? tabSelectedBackgroundColor,
     Color? tabHoverBackgroundColor,
     Color? tabSelectedHoverBackgroundColor,
-    EdgeInsets? tabPadding,
+    EdgeInsetsGeometry? tabPadding,
     ShadDecoration? tabDecoration,
     ShadDecoration? tabSelectedDecoration,
     Color? tabForegroundColor,

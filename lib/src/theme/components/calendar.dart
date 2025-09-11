@@ -77,10 +77,10 @@ class ShadCalendarTheme {
   final double? monthSelectorMinWidth;
 
   /// {@macro ShadCalendar.yearSelectorPadding}
-  final EdgeInsets? yearSelectorPadding;
+  final EdgeInsetsGeometry? yearSelectorPadding;
 
   /// {@macro ShadCalendar.monthSelectorPadding}
-  final EdgeInsets? monthSelectorPadding;
+  final EdgeInsetsGeometry? monthSelectorPadding;
 
   /// {@macro ShadCalendar.navigationButtonSize}
   final double? navigationButtonSize;
@@ -95,7 +95,7 @@ class ShadCalendarTheme {
   final IconData? forwardNavigationButtonIconData;
 
   /// {@macro ShadCalendar.navigationButtonPadding}
-  final EdgeInsets? navigationButtonPadding;
+  final EdgeInsetsGeometry? navigationButtonPadding;
 
   /// {@macro ShadCalendar.navigationButtonDisabledOpacity}
   final double? navigationButtonDisabledOpacity;
@@ -116,7 +116,7 @@ class ShadCalendarTheme {
   final double? headerHeight;
 
   /// {@macro ShadCalendar.headerPadding}
-  final EdgeInsets? headerPadding;
+  final EdgeInsetsGeometry? headerPadding;
 
   /// {@macro ShadCalendar.captionLayoutGap}
   final double? captionLayoutGap;
@@ -125,7 +125,7 @@ class ShadCalendarTheme {
   final TextStyle? headerTextStyle;
 
   /// {@macro ShadCalendar.weekdaysPadding}
-  final EdgeInsets? weekdaysPadding;
+  final EdgeInsetsGeometry? weekdaysPadding;
 
   /// {@macro ShadCalendar.weekdaysTextStyle}
   final TextStyle? weekdaysTextStyle;
@@ -152,7 +152,7 @@ class ShadCalendarTheme {
   final double? dayButtonOutsideMonthOpacity;
 
   /// {@macro ShadCalendar.dayButtonPadding}
-  final EdgeInsets? dayButtonPadding;
+  final EdgeInsetsGeometry? dayButtonPadding;
 
   /// {@macro ShadCalendar.dayButtonDecoration}
   final ShadDecoration? dayButtonDecoration;
@@ -245,12 +245,12 @@ class ShadCalendarTheme {
           lerpDouble(a.yearSelectorMinWidth, b.yearSelectorMinWidth, t),
       monthSelectorMinWidth:
           lerpDouble(a.monthSelectorMinWidth, b.monthSelectorMinWidth, t),
-      yearSelectorPadding: EdgeInsets.lerp(
+      yearSelectorPadding: EdgeInsetsGeometry.lerp(
         a.yearSelectorPadding,
         b.yearSelectorPadding,
         t,
       ),
-      monthSelectorPadding: EdgeInsets.lerp(
+      monthSelectorPadding: EdgeInsetsGeometry.lerp(
         a.monthSelectorPadding,
         b.monthSelectorPadding,
         t,
@@ -268,7 +268,7 @@ class ShadCalendarTheme {
       forwardNavigationButtonIconData: t < .5
           ? a.forwardNavigationButtonIconData
           : b.forwardNavigationButtonIconData,
-      navigationButtonPadding: EdgeInsets.lerp(
+      navigationButtonPadding: EdgeInsetsGeometry.lerp(
         a.navigationButtonPadding,
         b.navigationButtonPadding,
         t,
@@ -292,7 +292,7 @@ class ShadCalendarTheme {
         t,
       ),
       headerHeight: lerpDouble(a.headerHeight, b.headerHeight, t),
-      headerPadding: EdgeInsets.lerp(
+      headerPadding: EdgeInsetsGeometry.lerp(
         a.headerPadding,
         b.headerPadding,
         t,
@@ -303,7 +303,7 @@ class ShadCalendarTheme {
         b.headerTextStyle,
         t,
       ),
-      weekdaysPadding: EdgeInsets.lerp(
+      weekdaysPadding: EdgeInsetsGeometry.lerp(
         a.weekdaysPadding,
         b.weekdaysPadding,
         t,
@@ -328,7 +328,7 @@ class ShadCalendarTheme {
         b.dayButtonOutsideMonthOpacity,
         t,
       ),
-      dayButtonPadding: EdgeInsets.lerp(
+      dayButtonPadding: EdgeInsetsGeometry.lerp(
         a.dayButtonPadding,
         b.dayButtonPadding,
         t,
@@ -610,23 +610,23 @@ class ShadCalendarTheme {
     bool? hideNavigation,
     double? yearSelectorMinWidth,
     double? monthSelectorMinWidth,
-    EdgeInsets? yearSelectorPadding,
-    EdgeInsets? monthSelectorPadding,
+    EdgeInsetsGeometry? yearSelectorPadding,
+    EdgeInsetsGeometry? monthSelectorPadding,
     double? navigationButtonSize,
     double? navigationButtonIconSize,
     IconData? backNavigationButtonIconData,
     IconData? forwardNavigationButtonIconData,
-    EdgeInsets? navigationButtonPadding,
+    EdgeInsetsGeometry? navigationButtonPadding,
     double? navigationButtonDisabledOpacity,
     ShadDecoration? decoration,
     double? spacingBetweenMonths,
     double? runSpacingBetweenMonths,
     BoxConstraints? monthConstraints,
     double? headerHeight,
-    EdgeInsets? headerPadding,
+    EdgeInsetsGeometry? headerPadding,
     double? captionLayoutGap,
     TextStyle? headerTextStyle,
-    EdgeInsets? weekdaysPadding,
+    EdgeInsetsGeometry? weekdaysPadding,
     TextStyle? weekdaysTextStyle,
     TextAlign? weekdaysTextAlign,
     String? weekNumbersHeaderText,
@@ -635,7 +635,7 @@ class ShadCalendarTheme {
     TextAlign? weekNumbersTextAlign,
     double? dayButtonSize,
     double? dayButtonOutsideMonthOpacity,
-    EdgeInsets? dayButtonPadding,
+    EdgeInsetsGeometry? dayButtonPadding,
     ShadDecoration? dayButtonDecoration,
     TextStyle? selectedDayButtonTextStyle,
     TextStyle? insideRangeDayButtonTextStyle,

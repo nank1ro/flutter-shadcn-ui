@@ -262,7 +262,9 @@ class _ShadPopoverState extends State<ShadPopover>
     // remove the top padding of the popover
     effectiveDecoration = effectiveDecoration.copyWith(
       secondaryBorder: ShadBorder(
-        padding: theme.decoration.secondaryBorder?.padding?.copyWith(top: 0),
+        padding: theme.decoration.secondaryBorder?.padding
+            ?.resolve(Directionality.of(context))
+            .copyWith(top: 0),
       ),
     );
 

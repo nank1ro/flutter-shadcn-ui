@@ -71,7 +71,7 @@ class ShadSheetTheme {
   final bool? expandActionsWhenTiny;
 
   /// {@macro ShadSheet.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadSheet.gap}
   final double? gap;
@@ -125,7 +125,7 @@ class ShadSheetTheme {
   final bool? scrollable;
 
   /// {@macro ShadSheet.scrollPadding}
-  final EdgeInsets? scrollPadding;
+  final EdgeInsetsGeometry? scrollPadding;
 
   /// {@macro ShadSheet.disabledScrollControlMaxRatio}
   final double? disabledScrollControlMaxRatio;
@@ -153,7 +153,7 @@ class ShadSheetTheme {
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       expandActionsWhenTiny: b.expandActionsWhenTiny,
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       gap: lerpDouble(a.gap, b.gap, t),
       actionsAxis: b.actionsAxis,
       actionsMainAxisSize: b.actionsMainAxisSize,
@@ -174,7 +174,8 @@ class ShadSheetTheme {
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       scrollable: t < 0.5 ? a.scrollable : b.scrollable,
-      scrollPadding: EdgeInsets.lerp(a.scrollPadding, b.scrollPadding, t),
+      scrollPadding:
+          EdgeInsetsGeometry.lerp(a.scrollPadding, b.scrollPadding, t),
       disabledScrollControlMaxRatio: t < 0.5
           ? a.disabledScrollControlMaxRatio
           : b.disabledScrollControlMaxRatio,
@@ -195,7 +196,7 @@ class ShadSheetTheme {
     BorderRadius? radius,
     Color? backgroundColor,
     bool? expandActionsWhenTiny,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     double? gap,
     Axis? actionsAxis,
     MainAxisSize? actionsMainAxisSize,
@@ -213,7 +214,7 @@ class ShadSheetTheme {
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
     bool? scrollable,
-    EdgeInsets? scrollPadding,
+    EdgeInsetsGeometry? scrollPadding,
     double? disabledScrollControlMaxRatio,
     double? minFlingVelocity,
     double? closeProgressThreshold,

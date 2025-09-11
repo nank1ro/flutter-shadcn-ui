@@ -35,7 +35,7 @@ class ShadInputOTPTheme {
   final double? height;
 
   /// {@macro ShadInputOTPSlot.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadInputOTPSlot.decoration}
   final ShadDecoration? decoration;
@@ -64,7 +64,7 @@ class ShadInputOTPTheme {
       style: TextStyle.lerp(a.style, b.style, t),
       width: lerpDouble(a.width, b.width, t),
       height: lerpDouble(a.height, b.height, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       firstRadius: BorderRadius.lerp(a.firstRadius, b.firstRadius, t),
       lastRadius: BorderRadius.lerp(a.lastRadius, b.lastRadius, t),
@@ -79,7 +79,7 @@ class ShadInputOTPTheme {
     TextStyle? style,
     double? width,
     double? height,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     ShadDecoration? decoration,
     BorderRadius? firstRadius,
     BorderRadius? lastRadius,

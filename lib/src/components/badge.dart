@@ -139,7 +139,7 @@ class ShadBadge extends StatefulWidget {
   /// specified.
   /// Controls the internal spacing of the badge.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadBadge.onPressed}
   /// The callback invoked when the badge is tapped, making it interactive if
@@ -194,7 +194,7 @@ class _ShadBadgeState extends State<ShadBadge> {
     return widget.shape ?? badgeTheme(theme).shape ?? const StadiumBorder();
   }
 
-  EdgeInsets? padding(ShadThemeData theme) {
+  EdgeInsetsGeometry? padding(ShadThemeData theme) {
     return widget.padding ?? badgeTheme(theme).padding;
   }
 

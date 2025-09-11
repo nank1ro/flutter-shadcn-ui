@@ -56,7 +56,7 @@ class ShadResizableTheme {
   final ShadDecoration? handleDecoration;
 
   /// {@macro ShadResizablePanelGroup.handlePadding}
-  final EdgeInsets? handlePadding;
+  final EdgeInsetsGeometry? handlePadding;
 
   /// {@macro ShadResizablePanelGroup.handleSize}
   final double? handleSize;
@@ -86,7 +86,8 @@ class ShadResizableTheme {
       resetOnDoubleTap: t < 0.5 ? a.resetOnDoubleTap : b.resetOnDoubleTap,
       handleDecoration:
           ShadDecoration.lerp(a.handleDecoration, b.handleDecoration, t),
-      handlePadding: EdgeInsets.lerp(a.handlePadding, b.handlePadding, t),
+      handlePadding:
+          EdgeInsetsGeometry.lerp(a.handlePadding, b.handlePadding, t),
       handleSize: lerpDouble(a.handleSize, b.handleSize, t),
       dividerColor: Color.lerp(a.dividerColor, b.dividerColor, t),
       dividerThickness: lerpDouble(a.dividerThickness, b.dividerThickness, t),
@@ -127,7 +128,7 @@ class ShadResizableTheme {
     double? dividerSize,
     bool? resetOnDoubleTap,
     ShadDecoration? handleDecoration,
-    EdgeInsets? handlePadding,
+    EdgeInsetsGeometry? handlePadding,
     double? handleSize,
     Color? dividerColor,
     double? dividerThickness,

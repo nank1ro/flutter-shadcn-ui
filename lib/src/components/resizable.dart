@@ -321,7 +321,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
   /// {@template ShadResizablePanelGroup.handlePadding}
   /// Padding around the resize handle.
   /// {@endtemplate}
-  final EdgeInsets? handlePadding;
+  final EdgeInsetsGeometry? handlePadding;
 
   /// {@template ShadResizablePanelGroup.handleSize}
   /// The size of the resize handle icon.

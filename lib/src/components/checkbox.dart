@@ -183,7 +183,7 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
         widget.duration ?? theme.checkboxTheme.duration ?? 100.milliseconds;
     final effectivePadding = widget.padding ??
         theme.checkboxTheme.padding ??
-        const EdgeInsets.only(left: 8);
+        const EdgeInsetsDirectional.only(start: 8);
 
     final effectiveCheckboxPadding = widget.checkboxPadding ??
         theme.checkboxTheme.checkboxPadding ??

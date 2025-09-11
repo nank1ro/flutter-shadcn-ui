@@ -55,7 +55,7 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
     Widget? inputSublabel,
 
     /// {@macro ShadSwitch.padding}
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
 
     /// {@macro ShadSwitch.direction}
     TextDirection? direction,

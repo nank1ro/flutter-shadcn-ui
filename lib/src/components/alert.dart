@@ -122,7 +122,7 @@ class ShadAlert extends StatelessWidget {
   /// Padding around the icon, defaults to right padding of 12 if not specified.
   /// Controls the spacing between the icon and adjacent content.
   /// {@endtemplate}
-  final EdgeInsets? iconPadding;
+  final EdgeInsetsGeometry? iconPadding;
 
   /// {@template ShadAlert.iconColor}
   /// Color of the icon, overrides theme default if provided.
@@ -168,7 +168,7 @@ class ShadAlert extends StatelessWidget {
 
     final effectiveIconPadding = iconPadding ??
         effectiveAlertTheme.iconPadding ??
-        const EdgeInsets.only(right: 12);
+        const EdgeInsetsDirectional.only(end: 12);
 
     final defaultDecoration = ShadDecoration(
       border: ShadBorder.all(

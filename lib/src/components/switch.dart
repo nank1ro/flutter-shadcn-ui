@@ -151,7 +151,7 @@ class ShadSwitch extends StatefulWidget {
   ///
   /// Defaults to `EdgeInsets.only(left: 8)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   @override
   State<ShadSwitch> createState() => _ShadSwitchState();
@@ -225,7 +225,7 @@ class _ShadSwitchState extends State<ShadSwitch>
 
     final effectivePadding = widget.padding ??
         theme.switchTheme.padding ??
-        const EdgeInsets.only(left: 8);
+        const EdgeInsetsDirectional.only(start: 8);
 
     final switchWidget = Semantics(
       toggled: widget.value,

@@ -53,9 +53,9 @@ class ShadDecoration {
   final ShadBorder? secondaryErrorBorder;
   final TextStyle? errorStyle;
   final TextStyle? descriptionStyle;
-  final EdgeInsets? labelPadding;
-  final EdgeInsets? descriptionPadding;
-  final EdgeInsets? errorPadding;
+  final EdgeInsetsGeometry? labelPadding;
+  final EdgeInsetsGeometry? descriptionPadding;
+  final EdgeInsetsGeometry? errorPadding;
   final Color? color;
   final DecorationImage? image;
   final List<BoxShadow>? shadows;
@@ -100,10 +100,15 @@ class ShadDecoration {
       errorStyle: TextStyle.lerp(a?.errorStyle, b?.errorStyle, t),
       descriptionStyle:
           TextStyle.lerp(a?.descriptionStyle, b?.descriptionStyle, t),
-      labelPadding: EdgeInsets.lerp(a?.labelPadding, b?.labelPadding, t),
-      descriptionPadding:
-          EdgeInsets.lerp(a?.descriptionPadding, b?.descriptionPadding, t),
-      errorPadding: EdgeInsets.lerp(a?.errorPadding, b?.errorPadding, t),
+      labelPadding:
+          EdgeInsetsGeometry.lerp(a?.labelPadding, b?.labelPadding, t),
+      descriptionPadding: EdgeInsetsGeometry.lerp(
+        a?.descriptionPadding,
+        b?.descriptionPadding,
+        t,
+      ),
+      errorPadding:
+          EdgeInsetsGeometry.lerp(a?.errorPadding, b?.errorPadding, t),
       fallbackToBorder: t < 0.5 ? a?.fallbackToBorder : b?.fallbackToBorder,
       color: Color.lerp(a?.color, b?.color, t),
       image: DecorationImage.lerp(a?.image, b?.image, t),
@@ -169,9 +174,9 @@ class ShadDecoration {
     TextStyle? errorLabelStyle,
     TextStyle? errorStyle,
     TextStyle? descriptionStyle,
-    EdgeInsets? labelPadding,
-    EdgeInsets? descriptionPadding,
-    EdgeInsets? errorPadding,
+    EdgeInsetsGeometry? labelPadding,
+    EdgeInsetsGeometry? descriptionPadding,
+    EdgeInsetsGeometry? errorPadding,
     bool? fallbackToBorder,
     Color? color,
     BoxShape? shape,

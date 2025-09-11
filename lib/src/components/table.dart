@@ -98,7 +98,7 @@ class ShadTableCell extends TableViewCell {
   /// {@template ShadTableCell.padding}
   /// Padding within the table cell.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTableCell.style}
   /// Text style for the cell's content.

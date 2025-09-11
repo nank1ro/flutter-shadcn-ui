@@ -61,7 +61,7 @@ class ShadCard extends StatelessWidget {
   /// The padding inside the card, surrounding all content.
   /// Defaults to EdgeInsets.all(24) if not specified.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadCard.backgroundColor}
   /// The background color of the card.

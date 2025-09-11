@@ -28,7 +28,7 @@ class ShadTextareaTheme {
   final ShadDecoration? decoration;
 
   /// {@macro ShadTextarea.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadTextarea.style}
   final TextStyle? style;
@@ -40,7 +40,7 @@ class ShadTextareaTheme {
   final AlignmentGeometry? placeholderAlignment;
 
   /// {@macro ShadTextarea.inputPadding}
-  final EdgeInsets? inputPadding;
+  final EdgeInsetsGeometry? inputPadding;
 
   /// {@macro ShadTextarea.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
@@ -67,7 +67,7 @@ class ShadTextareaTheme {
   final WidgetBuilder? resizeHandleBuilder;
 
   /// {@macro ShadTextarea.scrollbarPadding}
-  final EdgeInsets? scrollbarPadding;
+  final EdgeInsetsGeometry? scrollbarPadding;
 
   static ShadTextareaTheme lerp(
     ShadTextareaTheme a,
@@ -78,7 +78,7 @@ class ShadTextareaTheme {
     return ShadTextareaTheme(
       merge: b.merge,
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       style: TextStyle.lerp(a.style, b.style, t),
       placeholderStyle:
           TextStyle.lerp(a.placeholderStyle, b.placeholderStyle, t),
@@ -87,7 +87,7 @@ class ShadTextareaTheme {
         b.placeholderAlignment,
         t,
       ),
-      inputPadding: EdgeInsets.lerp(a.inputPadding, b.inputPadding, t),
+      inputPadding: EdgeInsetsGeometry.lerp(a.inputPadding, b.inputPadding, t),
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       gap: t < 0.5 ? a.gap : b.gap,
@@ -98,18 +98,18 @@ class ShadTextareaTheme {
       resizeHandleBuilder:
           t < 0.5 ? a.resizeHandleBuilder : b.resizeHandleBuilder,
       scrollbarPadding:
-          EdgeInsets.lerp(a.scrollbarPadding, b.scrollbarPadding, t),
+          EdgeInsetsGeometry.lerp(a.scrollbarPadding, b.scrollbarPadding, t),
     );
   }
 
   ShadTextareaTheme copyWith({
     bool? merge,
     ShadDecoration? decoration,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     TextStyle? style,
     TextStyle? placeholderStyle,
     AlignmentGeometry? placeholderAlignment,
-    EdgeInsets? inputPadding,
+    EdgeInsetsGeometry? inputPadding,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
     double? gap,
@@ -118,7 +118,7 @@ class ShadTextareaTheme {
     double? maxHeight,
     bool? resizable,
     WidgetBuilder? resizeHandleBuilder,
-    EdgeInsets? scrollbarPadding,
+    EdgeInsetsGeometry? scrollbarPadding,
   }) {
     return ShadTextareaTheme(
       merge: merge ?? this.merge,

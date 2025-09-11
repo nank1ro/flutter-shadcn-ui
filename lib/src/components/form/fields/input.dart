@@ -195,7 +195,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     Color? selectionColor,
 
     /// {@macro ShadInput.padding}
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
 
     /// {@macro ShadInput.leading}
     Widget? leading,
@@ -219,7 +219,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     AlignmentGeometry? placeholderAlignment,
 
     /// {@macro ShadInput.inputPadding}
-    EdgeInsets? inputPadding,
+    EdgeInsetsGeometry? inputPadding,
 
     /// {@macro ShadInput.gap}
     double? gap,

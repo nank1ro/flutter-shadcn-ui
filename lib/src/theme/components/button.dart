@@ -310,12 +310,12 @@ class ShadButtonSizeTheme {
   });
   final bool merge;
   final double height;
-  final EdgeInsets padding;
+  final EdgeInsetsGeometry padding;
   final double? width;
 
   ShadButtonSizeTheme copyWith({
     double? height,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     double? width,
   }) {
     return ShadButtonSizeTheme(
@@ -333,7 +333,7 @@ class ShadButtonSizeTheme {
     if (identical(a, b)) return a;
     return ShadButtonSizeTheme(
       height: lerpDouble(a?.height, b?.height, t)!,
-      padding: EdgeInsets.lerp(a?.padding, b?.padding, t)!,
+      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t)!,
       width: lerpDouble(a?.width, b?.width, t),
     );
   }

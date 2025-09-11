@@ -489,7 +489,7 @@ class ShadInput extends StatefulWidget {
   /// The padding around the entire input, including decorations.
   /// Defaults to theme’s input padding if not specified.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadInput.leading}
   /// The widget displayed before the input field.
@@ -537,7 +537,7 @@ class ShadInput extends StatefulWidget {
   /// The padding around the editable text within the input field.
   /// Defaults to [EdgeInsets.zero] if not specified.
   /// {@endtemplate}
-  final EdgeInsets? inputPadding;
+  final EdgeInsetsGeometry? inputPadding;
 
   /// {@template ShadInput.gap}
   /// The gap between the input field and its leading/trailing widgets.
@@ -561,7 +561,7 @@ class ShadInput extends StatefulWidget {
   ///
   /// Defaults to null if not specified.
   /// {@endtemplate}
-  final EdgeInsets? scrollbarPadding;
+  final EdgeInsetsGeometry? scrollbarPadding;
 
   /// {@macro ShadKeyboardToolbar.toolbarBuilder}
   final WidgetBuilder? keyboardToolbarBuilder;
@@ -812,12 +812,16 @@ class ShadInputState extends State<ShadInput>
         .merge(theme.inputTheme.placeholderStyle)
         .merge(widget.placeholderStyle);
 
+    final defaultAlignment = Directionality.of(context) == TextDirection.rtl
+        ? Alignment.topRight
+        : Alignment.topLeft;
+
     final effectivePlaceholderAlignment = widget.placeholderAlignment ??
         theme.inputTheme.placeholderAlignment ??
-        Alignment.topLeft;
+        defaultAlignment;
 
     final effectiveAlignemnt =
-        widget.alignment ?? theme.inputTheme.alignment ?? Alignment.topLeft;
+        widget.alignment ?? theme.inputTheme.alignment ?? defaultAlignment;
 
     final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
         theme.inputTheme.mainAxisAlignment ??
@@ -910,7 +914,8 @@ class ShadInputState extends State<ShadInput>
                           materialTheme.scrollbarTheme.thickness?.resolve({}),
                       thumbVisibility: isMultiline && isScrollable,
                       controller: effectiveScrollController,
-                      padding: effectiveScrollbarPadding,
+                      padding: effectiveScrollbarPadding
+                          ?.resolve(Directionality.of(context)),
                       child: SingleChildScrollView(
                         controller: effectiveScrollController,
                         padding: effectivePadding,
