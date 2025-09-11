@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -25,6 +26,14 @@ class ShadAccordionController<T> extends ValueNotifier<List<T>> {
   ShadAccordionController.multiple([List<T>? value])
       : _variant = ShadAccordionVariant.multiple,
         super(value ?? <T>[]);
+
+  @override
+  List<T> get value => UnmodifiableListView(super.value);
+
+  @override
+  set value(List<T> newValue) {
+    super.value = List<T>.unmodifiable(newValue);
+  }
 
   final ShadAccordionVariant _variant;
 
@@ -142,6 +151,22 @@ class ShadAccordionState<T> extends State<ShadAccordion<T>> {
   void dispose() {
     _controller?.dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadAccordion<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Switched from internal to external controller: dispose internal.
+    if (oldWidget.controller == null && widget.controller != null) {
+      _controller?.dispose();
+      _controller = null;
+    }
+    // Switched from external to internal or variant changed: recreate lazily.
+    if ((oldWidget.controller != null && widget.controller == null) ||
+        (oldWidget.variant != widget.variant && widget.controller == null)) {
+      _controller?.dispose();
+      _controller = null;
+    }
   }
 
   bool get maintainState {

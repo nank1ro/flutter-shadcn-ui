@@ -31,18 +31,7 @@ class AccordionPage extends StatefulWidget {
 
 class _AccordionPageState extends State<AccordionPage> {
   var type = ShadAccordionVariant.single;
-  final singleController =
-      ShadAccordionController<({String content, String title})>();
-  final multipleController =
-      ShadAccordionController<({String content, String title})>.multiple();
   var underlineTitle = true;
-
-  @override
-  void dispose() {
-    singleController.dispose();
-    multipleController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +54,6 @@ class _AccordionPageState extends State<AccordionPage> {
           values: ShadAccordionVariant.values,
           onChanged: (value) {
             if (value != null) {
-              singleController.value = [];
-              multipleController.value = [];
               setState(() => type = value);
             }
           },
@@ -83,11 +70,9 @@ class _AccordionPageState extends State<AccordionPage> {
           child: type == ShadAccordionVariant.single
               ? ShadAccordion<({String content, String title})>(
                   children: children,
-                  controller: singleController,
                 )
               : ShadAccordion<({String content, String title})>.multiple(
                   children: children,
-                  controller: multipleController,
                 ),
         ),
       ],
