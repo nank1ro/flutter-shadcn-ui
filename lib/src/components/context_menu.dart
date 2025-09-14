@@ -748,7 +748,7 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
   }
 
   @override
-  Widget build(BuildContext contex) {
+  Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
     final contextMenu = context.read<ShadContextMenuState>();

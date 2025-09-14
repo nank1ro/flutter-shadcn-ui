@@ -227,6 +227,11 @@ class _ShadSwitchState extends State<ShadSwitch>
         theme.switchTheme.padding ??
         const EdgeInsetsDirectional.only(start: 8);
 
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
+
     final switchWidget = Semantics(
       toggled: widget.value,
       child: ShadDisabled(
@@ -234,10 +239,11 @@ class _ShadSwitchState extends State<ShadSwitch>
         disabled: !widget.enabled,
         child: CallbackShortcuts(
           bindings: {
-            const SingleActivator(LogicalKeyboardKey.enter): () {
-              if (!widget.enabled) return;
-              onTap();
-            },
+            for (final trigger in keyboardTriggers)
+              trigger: () {
+                if (!widget.enabled) return;
+                onTap();
+              },
           },
           child: ShadFocusable(
             focusNode: focusNode,

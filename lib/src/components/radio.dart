@@ -300,6 +300,11 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
         theme.radioTheme.radioPadding ??
         const EdgeInsets.only(top: 1);
 
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
+
     final radio = Semantics(
       checked: selected,
       child: ShadDisabled(
@@ -307,10 +312,11 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
         disabled: !enabled,
         child: CallbackShortcuts(
           bindings: {
-            const SingleActivator(LogicalKeyboardKey.enter): () {
-              if (!enabled) return;
-              onTap();
-            },
+            for (final trigger in keyboardTriggers)
+              trigger: () {
+                if (!enabled) return;
+                onTap();
+              },
           },
           child: ShadFocusable(
             focusNode: focusNode,

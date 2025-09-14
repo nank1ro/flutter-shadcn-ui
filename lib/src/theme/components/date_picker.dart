@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/calendar.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
@@ -553,7 +554,7 @@ class ShadDatePickerTheme {
       popoverPadding:
           EdgeInsetsGeometry.lerp(a.popoverPadding, b.popoverPadding, t),
       popoverDecoration:
-          ShadDecoration.lerp(a.calendarDecoration, b.calendarDecoration, t),
+          ShadDecoration.lerp(a.popoverDecoration, b.popoverDecoration, t),
       anchor: t < 0.5 ? a.anchor : b.anchor,
       filter: t < 0.5 ? a.filter : b.filter,
       sizesTheme: ShadButtonSizesTheme.lerp(
@@ -571,7 +572,7 @@ class ShadDatePickerTheme {
           Color.lerp(a.pressedBackgroundColor, b.pressedBackgroundColor, t),
       pressedForegroundColor:
           Color.lerp(a.pressedForegroundColor, b.pressedForegroundColor, t),
-      buttonShadows: t < 0.5 ? a.shadows : b.shadows,
+      buttonShadows: t < 0.5 ? a.buttonShadows : b.buttonShadows,
       gradient: t < 0.5 ? a.gradient : b.gradient,
       textDecoration: t < 0.5 ? a.textDecoration : b.textDecoration,
       hoverTextDecoration:
@@ -579,7 +580,7 @@ class ShadDatePickerTheme {
       cursor: t < 0.5 ? a.cursor : b.cursor,
       size: t < 0.5 ? a.size : b.size,
       buttonDecoration:
-          ShadDecoration.lerp(a.calendarDecoration, b.calendarDecoration, t),
+          ShadDecoration.lerp(a.buttonDecoration, b.buttonDecoration, t),
       width: lerpDouble(a.width, b.width, t),
       height: lerpDouble(a.height, b.height, t),
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
@@ -724,199 +725,6 @@ class ShadDatePickerTheme {
       expands: other.expands,
       popoverReverseDuration: other.popoverReverseDuration,
     );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ShadDatePickerTheme &&
-        other.merge == merge &&
-        other.hideNavigation == hideNavigation &&
-        other.yearSelectorMinWidth == yearSelectorMinWidth &&
-        other.monthSelectorMinWidth == monthSelectorMinWidth &&
-        other.yearSelectorPadding == yearSelectorPadding &&
-        other.monthSelectorPadding == monthSelectorPadding &&
-        other.navigationButtonSize == navigationButtonSize &&
-        other.navigationButtonIconSize == navigationButtonIconSize &&
-        other.backNavigationButtonIconData == backNavigationButtonIconData &&
-        other.forwardNavigationButtonIconData ==
-            forwardNavigationButtonIconData &&
-        other.navigationButtonPadding == navigationButtonPadding &&
-        other.navigationButtonDisabledOpacity ==
-            navigationButtonDisabledOpacity &&
-        other.calendarDecoration == calendarDecoration &&
-        other.spacingBetweenMonths == spacingBetweenMonths &&
-        other.runSpacingBetweenMonths == runSpacingBetweenMonths &&
-        other.monthConstraints == monthConstraints &&
-        other.calendarHeaderHeight == calendarHeaderHeight &&
-        other.calendarHeaderPadding == calendarHeaderPadding &&
-        other.captionLayoutGap == captionLayoutGap &&
-        other.calendarHeaderTextStyle == calendarHeaderTextStyle &&
-        other.weekdaysPadding == weekdaysPadding &&
-        other.weekdaysTextStyle == weekdaysTextStyle &&
-        other.weekdaysTextAlign == weekdaysTextAlign &&
-        other.weekNumbersHeaderText == weekNumbersHeaderText &&
-        other.weekNumbersHeaderTextStyle == weekNumbersHeaderTextStyle &&
-        other.weekNumbersTextStyle == weekNumbersTextStyle &&
-        other.weekNumbersTextAlign == weekNumbersTextAlign &&
-        other.dayButtonSize == dayButtonSize &&
-        other.dayButtonOutsideMonthOpacity == dayButtonOutsideMonthOpacity &&
-        other.dayButtonPadding == dayButtonPadding &&
-        other.dayButtonDecoration == dayButtonDecoration &&
-        other.selectedDayButtonTextStyle == selectedDayButtonTextStyle &&
-        other.insideRangeDayButtonTextStyle == insideRangeDayButtonTextStyle &&
-        other.dayButtonTextStyle == dayButtonTextStyle &&
-        other.dayButtonVariant == dayButtonVariant &&
-        other.selectedDayButtonVariant == selectedDayButtonVariant &&
-        other.insideRangeDayButtonVariant == insideRangeDayButtonVariant &&
-        other.todayButtonVariant == todayButtonVariant &&
-        other.gridMainAxisSpacing == gridMainAxisSpacing &&
-        other.gridCrossAxisSpacing == gridCrossAxisSpacing &&
-        other.dayButtonOutsideMonthTextStyle ==
-            dayButtonOutsideMonthTextStyle &&
-        other.dayButtonOutsideMonthVariant == dayButtonOutsideMonthVariant &&
-        other.selectedDayButtonOusideMonthVariant ==
-            selectedDayButtonOusideMonthVariant &&
-        other.captionLayout == captionLayout &&
-        other.hideWeekdayNames == hideWeekdayNames &&
-        other.showOutsideDays == showOutsideDays &&
-        other.formatMonthYear == formatMonthYear &&
-        other.formatMonth == formatMonth &&
-        other.formatYear == formatYear &&
-        other.formatWeekday == formatWeekday &&
-        other.showWeekNumbers == showWeekNumbers &&
-        other.weekStartsOn == weekStartsOn &&
-        other.fixedWeeks == fixedWeeks &&
-        other.allowDeselection == allowDeselection &&
-        listEquals(other.effects, effects) &&
-        listEquals(other.shadows, shadows) &&
-        other.popoverPadding == popoverPadding &&
-        other.calendarDecoration == calendarDecoration &&
-        other.anchor == anchor &&
-        other.filter == filter &&
-        other.cursor == cursor &&
-        other.size == size &&
-        other.sizesTheme == sizesTheme &&
-        other.backgroundColor == backgroundColor &&
-        other.hoverBackgroundColor == hoverBackgroundColor &&
-        other.foregroundColor == foregroundColor &&
-        other.hoverForegroundColor == hoverForegroundColor &&
-        other.pressedBackgroundColor == pressedBackgroundColor &&
-        other.pressedForegroundColor == pressedForegroundColor &&
-        listEquals(other.shadows, shadows) &&
-        other.gradient == gradient &&
-        other.textDecoration == textDecoration &&
-        other.hoverTextDecoration == hoverTextDecoration &&
-        other.calendarDecoration == calendarDecoration &&
-        other.width == width &&
-        other.height == height &&
-        other.mainAxisAlignment == mainAxisAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment &&
-        other.longPressDuration == longPressDuration &&
-        other.hoverStrategies == hoverStrategies &&
-        other.textDirection == textDirection &&
-        other.gap == gap &&
-        other.formatDate == formatDate &&
-        other.formatDateRange == formatDateRange &&
-        other.buttonVariant == buttonVariant &&
-        other.buttonPadding == buttonPadding &&
-        other.iconData == iconData &&
-        other.expands == expands &&
-        other.popoverReverseDuration == popoverReverseDuration;
-  }
-
-  @override
-  int get hashCode {
-    return merge.hashCode ^
-        hideNavigation.hashCode ^
-        yearSelectorMinWidth.hashCode ^
-        monthSelectorMinWidth.hashCode ^
-        yearSelectorPadding.hashCode ^
-        monthSelectorPadding.hashCode ^
-        navigationButtonSize.hashCode ^
-        navigationButtonIconSize.hashCode ^
-        backNavigationButtonIconData.hashCode ^
-        forwardNavigationButtonIconData.hashCode ^
-        navigationButtonPadding.hashCode ^
-        navigationButtonDisabledOpacity.hashCode ^
-        calendarDecoration.hashCode ^
-        spacingBetweenMonths.hashCode ^
-        runSpacingBetweenMonths.hashCode ^
-        monthConstraints.hashCode ^
-        calendarHeaderHeight.hashCode ^
-        calendarHeaderPadding.hashCode ^
-        captionLayoutGap.hashCode ^
-        calendarHeaderTextStyle.hashCode ^
-        weekdaysPadding.hashCode ^
-        weekdaysTextStyle.hashCode ^
-        weekdaysTextAlign.hashCode ^
-        weekNumbersHeaderText.hashCode ^
-        weekNumbersHeaderTextStyle.hashCode ^
-        weekNumbersTextStyle.hashCode ^
-        weekNumbersTextAlign.hashCode ^
-        dayButtonSize.hashCode ^
-        dayButtonOutsideMonthOpacity.hashCode ^
-        dayButtonPadding.hashCode ^
-        dayButtonDecoration.hashCode ^
-        selectedDayButtonTextStyle.hashCode ^
-        insideRangeDayButtonTextStyle.hashCode ^
-        dayButtonTextStyle.hashCode ^
-        dayButtonVariant.hashCode ^
-        selectedDayButtonVariant.hashCode ^
-        insideRangeDayButtonVariant.hashCode ^
-        todayButtonVariant.hashCode ^
-        gridMainAxisSpacing.hashCode ^
-        gridCrossAxisSpacing.hashCode ^
-        dayButtonOutsideMonthTextStyle.hashCode ^
-        dayButtonOutsideMonthVariant.hashCode ^
-        selectedDayButtonOusideMonthVariant.hashCode ^
-        captionLayout.hashCode ^
-        hideWeekdayNames.hashCode ^
-        showOutsideDays.hashCode ^
-        formatMonthYear.hashCode ^
-        formatMonth.hashCode ^
-        formatYear.hashCode ^
-        formatWeekday.hashCode ^
-        showWeekNumbers.hashCode ^
-        weekStartsOn.hashCode ^
-        fixedWeeks.hashCode ^
-        allowDeselection.hashCode ^
-        effects.hashCode ^
-        shadows.hashCode ^
-        popoverPadding.hashCode ^
-        calendarDecoration.hashCode ^
-        anchor.hashCode ^
-        filter.hashCode ^
-        cursor.hashCode ^
-        size.hashCode ^
-        sizesTheme.hashCode ^
-        backgroundColor.hashCode ^
-        hoverBackgroundColor.hashCode ^
-        foregroundColor.hashCode ^
-        hoverForegroundColor.hashCode ^
-        pressedBackgroundColor.hashCode ^
-        pressedForegroundColor.hashCode ^
-        shadows.hashCode ^
-        gradient.hashCode ^
-        textDecoration.hashCode ^
-        hoverTextDecoration.hashCode ^
-        calendarDecoration.hashCode ^
-        width.hashCode ^
-        height.hashCode ^
-        mainAxisAlignment.hashCode ^
-        crossAxisAlignment.hashCode ^
-        longPressDuration.hashCode ^
-        hoverStrategies.hashCode ^
-        textDirection.hashCode ^
-        gap.hashCode ^
-        formatDate.hashCode ^
-        formatDateRange.hashCode ^
-        buttonVariant.hashCode ^
-        buttonPadding.hashCode ^
-        iconData.hashCode ^
-        expands.hashCode ^
-        popoverReverseDuration.hashCode;
   }
 
   ShadDatePickerTheme copyWith({
@@ -1127,5 +935,200 @@ class ShadDatePickerTheme {
       popoverReverseDuration:
           popoverReverseDuration ?? this.popoverReverseDuration,
     );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ShadDatePickerTheme &&
+        other.merge == merge &&
+        other.formatDate == formatDate &&
+        other.formatDateRange == formatDateRange &&
+        other.iconData == iconData &&
+        other.hideNavigation == hideNavigation &&
+        other.yearSelectorMinWidth == yearSelectorMinWidth &&
+        other.monthSelectorMinWidth == monthSelectorMinWidth &&
+        other.yearSelectorPadding == yearSelectorPadding &&
+        other.monthSelectorPadding == monthSelectorPadding &&
+        other.navigationButtonSize == navigationButtonSize &&
+        other.navigationButtonIconSize == navigationButtonIconSize &&
+        other.backNavigationButtonIconData == backNavigationButtonIconData &&
+        other.forwardNavigationButtonIconData ==
+            forwardNavigationButtonIconData &&
+        other.navigationButtonPadding == navigationButtonPadding &&
+        other.navigationButtonDisabledOpacity ==
+            navigationButtonDisabledOpacity &&
+        other.calendarDecoration == calendarDecoration &&
+        other.spacingBetweenMonths == spacingBetweenMonths &&
+        other.runSpacingBetweenMonths == runSpacingBetweenMonths &&
+        other.monthConstraints == monthConstraints &&
+        other.calendarHeaderHeight == calendarHeaderHeight &&
+        other.calendarHeaderPadding == calendarHeaderPadding &&
+        other.captionLayoutGap == captionLayoutGap &&
+        other.calendarHeaderTextStyle == calendarHeaderTextStyle &&
+        other.weekdaysPadding == weekdaysPadding &&
+        other.weekdaysTextStyle == weekdaysTextStyle &&
+        other.weekdaysTextAlign == weekdaysTextAlign &&
+        other.weekNumbersHeaderText == weekNumbersHeaderText &&
+        other.weekNumbersHeaderTextStyle == weekNumbersHeaderTextStyle &&
+        other.weekNumbersTextStyle == weekNumbersTextStyle &&
+        other.weekNumbersTextAlign == weekNumbersTextAlign &&
+        other.dayButtonSize == dayButtonSize &&
+        other.dayButtonOutsideMonthOpacity == dayButtonOutsideMonthOpacity &&
+        other.dayButtonPadding == dayButtonPadding &&
+        other.dayButtonDecoration == dayButtonDecoration &&
+        other.selectedDayButtonTextStyle == selectedDayButtonTextStyle &&
+        other.insideRangeDayButtonTextStyle == insideRangeDayButtonTextStyle &&
+        other.dayButtonTextStyle == dayButtonTextStyle &&
+        other.dayButtonVariant == dayButtonVariant &&
+        other.selectedDayButtonVariant == selectedDayButtonVariant &&
+        other.insideRangeDayButtonVariant == insideRangeDayButtonVariant &&
+        other.todayButtonVariant == todayButtonVariant &&
+        other.gridMainAxisSpacing == gridMainAxisSpacing &&
+        other.gridCrossAxisSpacing == gridCrossAxisSpacing &&
+        other.dayButtonOutsideMonthTextStyle ==
+            dayButtonOutsideMonthTextStyle &&
+        other.dayButtonOutsideMonthVariant == dayButtonOutsideMonthVariant &&
+        other.selectedDayButtonOusideMonthVariant ==
+            selectedDayButtonOusideMonthVariant &&
+        other.captionLayout == captionLayout &&
+        other.hideWeekdayNames == hideWeekdayNames &&
+        other.showOutsideDays == showOutsideDays &&
+        other.formatMonthYear == formatMonthYear &&
+        other.formatMonth == formatMonth &&
+        other.formatYear == formatYear &&
+        other.formatWeekday == formatWeekday &&
+        other.showWeekNumbers == showWeekNumbers &&
+        other.weekStartsOn == weekStartsOn &&
+        other.fixedWeeks == fixedWeeks &&
+        other.allowDeselection == allowDeselection &&
+        listEquals(other.effects, effects) &&
+        listEquals(other.shadows, shadows) &&
+        other.popoverPadding == popoverPadding &&
+        other.popoverDecoration == popoverDecoration &&
+        other.anchor == anchor &&
+        other.filter == filter &&
+        other.popoverReverseDuration == popoverReverseDuration &&
+        other.cursor == cursor &&
+        other.size == size &&
+        other.sizesTheme == sizesTheme &&
+        other.buttonVariant == buttonVariant &&
+        other.backgroundColor == backgroundColor &&
+        other.hoverBackgroundColor == hoverBackgroundColor &&
+        other.foregroundColor == foregroundColor &&
+        other.hoverForegroundColor == hoverForegroundColor &&
+        other.pressedBackgroundColor == pressedBackgroundColor &&
+        other.pressedForegroundColor == pressedForegroundColor &&
+        other.disabledBackgroundColor == disabledBackgroundColor &&
+        listEquals(other.buttonShadows, buttonShadows) &&
+        other.gradient == gradient &&
+        other.textDecoration == textDecoration &&
+        other.hoverTextDecoration == hoverTextDecoration &&
+        other.buttonDecoration == buttonDecoration &&
+        other.width == width &&
+        other.height == height &&
+        other.longPressDuration == longPressDuration &&
+        other.hoverStrategies == hoverStrategies &&
+        other.mainAxisAlignment == mainAxisAlignment &&
+        other.crossAxisAlignment == crossAxisAlignment &&
+        other.textDirection == textDirection &&
+        other.gap == gap &&
+        other.buttonPadding == buttonPadding &&
+        other.expands == expands;
+  }
+
+  @override
+  int get hashCode {
+    return merge.hashCode ^
+        formatDate.hashCode ^
+        formatDateRange.hashCode ^
+        iconData.hashCode ^
+        hideNavigation.hashCode ^
+        yearSelectorMinWidth.hashCode ^
+        monthSelectorMinWidth.hashCode ^
+        yearSelectorPadding.hashCode ^
+        monthSelectorPadding.hashCode ^
+        navigationButtonSize.hashCode ^
+        navigationButtonIconSize.hashCode ^
+        backNavigationButtonIconData.hashCode ^
+        forwardNavigationButtonIconData.hashCode ^
+        navigationButtonPadding.hashCode ^
+        navigationButtonDisabledOpacity.hashCode ^
+        calendarDecoration.hashCode ^
+        spacingBetweenMonths.hashCode ^
+        runSpacingBetweenMonths.hashCode ^
+        monthConstraints.hashCode ^
+        calendarHeaderHeight.hashCode ^
+        calendarHeaderPadding.hashCode ^
+        captionLayoutGap.hashCode ^
+        calendarHeaderTextStyle.hashCode ^
+        weekdaysPadding.hashCode ^
+        weekdaysTextStyle.hashCode ^
+        weekdaysTextAlign.hashCode ^
+        weekNumbersHeaderText.hashCode ^
+        weekNumbersHeaderTextStyle.hashCode ^
+        weekNumbersTextStyle.hashCode ^
+        weekNumbersTextAlign.hashCode ^
+        dayButtonSize.hashCode ^
+        dayButtonOutsideMonthOpacity.hashCode ^
+        dayButtonPadding.hashCode ^
+        dayButtonDecoration.hashCode ^
+        selectedDayButtonTextStyle.hashCode ^
+        insideRangeDayButtonTextStyle.hashCode ^
+        dayButtonTextStyle.hashCode ^
+        dayButtonVariant.hashCode ^
+        selectedDayButtonVariant.hashCode ^
+        insideRangeDayButtonVariant.hashCode ^
+        todayButtonVariant.hashCode ^
+        gridMainAxisSpacing.hashCode ^
+        gridCrossAxisSpacing.hashCode ^
+        dayButtonOutsideMonthTextStyle.hashCode ^
+        dayButtonOutsideMonthVariant.hashCode ^
+        selectedDayButtonOusideMonthVariant.hashCode ^
+        captionLayout.hashCode ^
+        hideWeekdayNames.hashCode ^
+        showOutsideDays.hashCode ^
+        formatMonthYear.hashCode ^
+        formatMonth.hashCode ^
+        formatYear.hashCode ^
+        formatWeekday.hashCode ^
+        showWeekNumbers.hashCode ^
+        weekStartsOn.hashCode ^
+        fixedWeeks.hashCode ^
+        allowDeselection.hashCode ^
+        effects.hashCode ^
+        shadows.hashCode ^
+        popoverPadding.hashCode ^
+        popoverDecoration.hashCode ^
+        anchor.hashCode ^
+        filter.hashCode ^
+        popoverReverseDuration.hashCode ^
+        cursor.hashCode ^
+        size.hashCode ^
+        sizesTheme.hashCode ^
+        buttonVariant.hashCode ^
+        backgroundColor.hashCode ^
+        hoverBackgroundColor.hashCode ^
+        foregroundColor.hashCode ^
+        hoverForegroundColor.hashCode ^
+        pressedBackgroundColor.hashCode ^
+        pressedForegroundColor.hashCode ^
+        disabledBackgroundColor.hashCode ^
+        buttonShadows.hashCode ^
+        gradient.hashCode ^
+        textDecoration.hashCode ^
+        hoverTextDecoration.hashCode ^
+        buttonDecoration.hashCode ^
+        width.hashCode ^
+        height.hashCode ^
+        longPressDuration.hashCode ^
+        hoverStrategies.hashCode ^
+        mainAxisAlignment.hashCode ^
+        crossAxisAlignment.hashCode ^
+        textDirection.hashCode ^
+        gap.hashCode ^
+        buttonPadding.hashCode ^
+        expands.hashCode;
   }
 }

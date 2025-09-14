@@ -891,6 +891,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
       bindings: {
         const SingleActivator(LogicalKeyboardKey.enter):
             popoverController.toggle,
+        const SingleActivator(LogicalKeyboardKey.space):
+            popoverController.toggle,
         const SingleActivator(LogicalKeyboardKey.escape):
             popoverController.hide,
       },

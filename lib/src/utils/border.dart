@@ -410,10 +410,12 @@ class ShadRoundedSuperellipseBorder extends ShadBorder {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
-    return other is ShadRoundedSuperellipseBorder && other.side == side;
+    return other is ShadRoundedSuperellipseBorder &&
+        other.merge == merge &&
+        other.side == side &&
+        other.radius == radius;
   }
 
   @override
-  int get hashCode => side.hashCode | radius.hashCode | merge.hashCode;
+  int get hashCode => side.hashCode;
 }

@@ -827,7 +827,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               secondaryBorder: ShadBorder.all(
                 width: 0,
                 radius: BorderRadius.circular(2),
-                padding: EdgeInsets.fromLTRB(
+                padding: EdgeInsetsDirectional.fromSTEB(
                   isFirstTab ? 4 : 2,
                   4,
                   isLastTab ? 4 : 2,
@@ -837,7 +837,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               secondaryFocusedBorder: ShadBorder.all(
                 width: 2,
                 radius: theme.radius,
-                padding: EdgeInsets.fromLTRB(
+                padding: EdgeInsetsDirectional.fromSTEB(
                   isFirstTab ? 2 : 0,
                   2,
                   isLastTab ? 2 : 0,

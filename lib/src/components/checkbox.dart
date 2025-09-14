@@ -189,6 +189,11 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
         theme.checkboxTheme.checkboxPadding ??
         const EdgeInsets.only(top: 1);
 
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
+
     final checkbox = Semantics(
       checked: widget.value,
       child: ShadDisabled(
@@ -196,10 +201,11 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
         disabled: !widget.enabled,
         child: CallbackShortcuts(
           bindings: {
-            const SingleActivator(LogicalKeyboardKey.enter): () {
-              if (!widget.enabled) return;
-              onTap();
-            },
+            for (final trigger in keyboardTriggers)
+              trigger: () {
+                if (!widget.enabled) return;
+                onTap();
+              },
           },
           child: ShadFocusable(
             focusNode: focusNode,

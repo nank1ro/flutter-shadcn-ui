@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
@@ -157,7 +158,6 @@ class ShadButtonTheme {
 
   ShadButtonTheme copyWith({
     MouseCursor? cursor,
-    MouseCursor? disabledCursor,
     ShadButtonSize? size,
     ShadButtonSizesTheme? sizesTheme,
     Color? backgroundColor,
@@ -261,10 +261,10 @@ class ShadButtonTheme {
         other.decoration == decoration &&
         other.width == width &&
         other.height == height &&
-        other.mainAxisAlignment == mainAxisAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment &&
         other.longPressDuration == longPressDuration &&
         other.hoverStrategies == hoverStrategies &&
+        other.mainAxisAlignment == mainAxisAlignment &&
+        other.crossAxisAlignment == crossAxisAlignment &&
         other.textDirection == textDirection &&
         other.gap == gap &&
         other.expands == expands;
@@ -289,10 +289,10 @@ class ShadButtonTheme {
         decoration.hashCode ^
         width.hashCode ^
         height.hashCode ^
-        mainAxisAlignment.hashCode ^
-        crossAxisAlignment.hashCode ^
         longPressDuration.hashCode ^
         hoverStrategies.hashCode ^
+        mainAxisAlignment.hashCode ^
+        crossAxisAlignment.hashCode ^
         textDirection.hashCode ^
         gap.hashCode ^
         expands.hashCode;
