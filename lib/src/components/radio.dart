@@ -227,7 +227,7 @@ class ShadRadio<T> extends StatefulWidget {
 
   /// {@template ShadRadio.padding}
   /// The padding between the radio and the label, defaults to
-  /// `EdgeInsets.only(left: 8)`.
+  /// `EdgeInsetsDirectional.only(start: 8)`.
   /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
@@ -294,11 +294,16 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
         widget.duration ?? theme.radioTheme.duration ?? 100.milliseconds;
     final effectivePadding = widget.padding ??
         theme.radioTheme.padding ??
-        const EdgeInsets.only(left: 8);
+        const EdgeInsetsDirectional.only(start: 8);
 
     final effectiveRadioPadding = widget.radioPadding ??
         theme.radioTheme.radioPadding ??
         const EdgeInsets.only(top: 1);
+
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
 
     final radio = Semantics(
       checked: selected,
@@ -307,10 +312,11 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
         disabled: !enabled,
         child: CallbackShortcuts(
           bindings: {
-            const SingleActivator(LogicalKeyboardKey.enter): () {
-              if (!enabled) return;
-              onTap();
-            },
+            for (final trigger in keyboardTriggers)
+              trigger: () {
+                if (!enabled) return;
+                onTap();
+              },
           },
           child: ShadFocusable(
             focusNode: focusNode,

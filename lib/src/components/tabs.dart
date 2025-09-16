@@ -131,7 +131,7 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
   /// {@template ShadTabs.padding}
   /// The padding of the tabs, defaults to `EdgeInsets.zero`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTabs.decoration}
   /// The decoration of the tabs.
@@ -514,7 +514,7 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   ///
   /// Defaults to `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTab.decoration}
   /// Decoration for the tab when unselected.
@@ -827,7 +827,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               secondaryBorder: ShadBorder.all(
                 width: 0,
                 radius: BorderRadius.circular(2),
-                padding: EdgeInsets.fromLTRB(
+                padding: EdgeInsetsDirectional.fromSTEB(
                   isFirstTab ? 4 : 2,
                   4,
                   isLastTab ? 4 : 2,
@@ -837,7 +837,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               secondaryFocusedBorder: ShadBorder.all(
                 width: 2,
                 radius: theme.radius,
-                padding: EdgeInsets.fromLTRB(
+                padding: EdgeInsetsDirectional.fromSTEB(
                   isFirstTab ? 2 : 0,
                   2,
                   isLastTab ? 2 : 0,

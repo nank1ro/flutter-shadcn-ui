@@ -12,7 +12,7 @@ class ShadOptionTheme {
   final bool merge;
 
   final Color? hoveredBackgroundColor;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
   final BorderRadius? radius;
 
   static ShadOptionTheme lerp(
@@ -25,7 +25,7 @@ class ShadOptionTheme {
       merge: b.merge,
       hoveredBackgroundColor:
           Color.lerp(a.hoveredBackgroundColor, b.hoveredBackgroundColor, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
     );
   }
@@ -33,7 +33,7 @@ class ShadOptionTheme {
   ShadOptionTheme copyWith({
     bool? merge,
     Color? hoveredBackgroundColor,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     BorderRadius? radius,
   }) {
     return ShadOptionTheme(

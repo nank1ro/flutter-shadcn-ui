@@ -79,7 +79,7 @@ class ShadBorder {
     double? width,
     BorderStyle? style,
     double? strokeAlign,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     BorderRadiusGeometry? radius,
     double? offset,
   }) {
@@ -102,7 +102,7 @@ class ShadBorder {
     if (identical(a, b)) return a;
     return ShadBorder(
       merge: b?.merge ?? a?.merge ?? true,
-      padding: EdgeInsets.lerp(a?.padding, b?.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
       radius: BorderRadiusGeometry.lerp(a?.radius, b?.radius, t),
       top: ShadBorderSide.lerp(
         a?.top,
@@ -163,7 +163,7 @@ class ShadBorder {
   }
 
   ShadBorder copyWith({
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     ShadBorderSide? top,
     ShadBorderSide? right,
     ShadBorderSide? bottom,
@@ -186,7 +186,7 @@ class ShadBorder {
   final bool merge;
 
   /// The padding of the border, defaults to null.
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// The border radius of the border, defaults to null.
   final BorderRadiusGeometry? radius;
@@ -410,10 +410,12 @@ class ShadRoundedSuperellipseBorder extends ShadBorder {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
-    return other is ShadRoundedSuperellipseBorder && other.side == side;
+    return other is ShadRoundedSuperellipseBorder &&
+        other.merge == merge &&
+        other.side == side &&
+        other.radius == radius;
   }
 
   @override
-  int get hashCode => side.hashCode | radius.hashCode | merge.hashCode;
+  int get hashCode => side.hashCode;
 }

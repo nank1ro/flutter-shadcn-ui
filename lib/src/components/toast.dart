@@ -475,9 +475,9 @@ class ShadToast extends StatefulWidget {
 
   /// {@template ShadToast.actionPadding}
   /// The padding around the action widget.
-  /// Defaults to left padding of 16 if not specified.
+  /// Defaults to start padding of 16 if not specified.
   /// {@endtemplate}
-  final EdgeInsets? actionPadding;
+  final EdgeInsetsGeometry? actionPadding;
 
   /// {@template ShadToast.border}
   /// The border surrounding the toast.
@@ -505,9 +505,11 @@ class ShadToast extends StatefulWidget {
 
   /// {@template ShadToast.padding}
   /// The padding inside the toast, surrounding all content.
-  /// Defaults to EdgeInsets.fromLTRB(24, 24, 32, 24) if not specified.
+  ///
+  /// Defaults to EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24) if not
+  /// specified.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadToast.closeIconPosition}
   /// The position of the close icon within the toast.
@@ -586,7 +588,7 @@ class _ShadToastState extends State<ShadToast> {
         );
     final effectiveActionPadding = widget.actionPadding ??
         effectiveToastTheme.actionPadding ??
-        const EdgeInsets.only(left: 16);
+        const EdgeInsetsDirectional.only(start: 16);
     final effectiveBorder = widget.border ??
         effectiveToastTheme.border ??
         Border.all(color: theme.colorScheme.border);
@@ -599,7 +601,7 @@ class _ShadToastState extends State<ShadToast> {
         theme.colorScheme.background;
     final effectivePadding = widget.padding ??
         effectiveToastTheme.padding ??
-        const EdgeInsets.fromLTRB(24, 24, 32, 24);
+        const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24);
     final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
         effectiveToastTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;

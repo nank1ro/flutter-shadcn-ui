@@ -958,9 +958,18 @@ class _ShadButtonState extends State<ShadButton> {
     final effectiveExpands =
         widget.expands ?? buttonTheme(theme).expands ?? false;
 
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
+
     return CallbackShortcuts(
       bindings: {
-        const SingleActivator(LogicalKeyboardKey.enter): onTap,
+        for (final trigger in keyboardTriggers)
+          trigger: () {
+            if (!widget.enabled) return;
+            onTap();
+          },
       },
       child: ValueListenableBuilder(
         valueListenable: statesController,

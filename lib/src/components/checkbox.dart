@@ -103,7 +103,7 @@ class ShadCheckbox extends StatefulWidget {
 
   /// {@template ShadCheckbox.padding}
   /// The padding between the checkbox and its label/sublabel.
-  /// Defaults to `EdgeInsets.only(left: 8)` if not specified.
+  /// Defaults to `EdgeInsetsDirectional.only(start: 8)` if not specified.
   /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
@@ -183,11 +183,16 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
         widget.duration ?? theme.checkboxTheme.duration ?? 100.milliseconds;
     final effectivePadding = widget.padding ??
         theme.checkboxTheme.padding ??
-        const EdgeInsets.only(left: 8);
+        const EdgeInsetsDirectional.only(start: 8);
 
     final effectiveCheckboxPadding = widget.checkboxPadding ??
         theme.checkboxTheme.checkboxPadding ??
         const EdgeInsets.only(top: 1);
+
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
 
     final checkbox = Semantics(
       checked: widget.value,
@@ -196,10 +201,11 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
         disabled: !widget.enabled,
         child: CallbackShortcuts(
           bindings: {
-            const SingleActivator(LogicalKeyboardKey.enter): () {
-              if (!widget.enabled) return;
-              onTap();
-            },
+            for (final trigger in keyboardTriggers)
+              trigger: () {
+                if (!widget.enabled) return;
+                onTap();
+              },
           },
           child: ShadFocusable(
             focusNode: focusNode,

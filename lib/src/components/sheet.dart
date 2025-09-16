@@ -272,7 +272,7 @@ class ShadSheet extends StatefulWidget {
   /// {@template ShadSheet.padding}
   /// Padding around the content of the sheet.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadSheet.gap}
   /// Vertical gap between title, description, child, and actions.
@@ -352,7 +352,7 @@ class ShadSheet extends StatefulWidget {
   /// {@template ShadSheet.scrollPadding}
   /// Padding for scrollable content.
   /// {@endtemplate}
-  final EdgeInsets? scrollPadding;
+  final EdgeInsetsGeometry? scrollPadding;
 
   /// {@template ShadSheet.draggable}
   /// Whether the sheet is draggable, allowing dismissal by dragging.

@@ -273,7 +273,7 @@ class ShadAccordionItem<T> extends StatefulWidget {
   /// not specified.
   /// Controls the spacing within the item's header.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadAccordionItem.underlineTitleOnHover}
   /// Whether to underline the title when hovered, defaults to true if not
@@ -366,6 +366,11 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
   Widget build(BuildContext context) {
     final inherited =
         context.watch<ShadAccordionState<dynamic>>() as ShadAccordionState<T>;
+
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
 
     return ValueListenableBuilder(
       valueListenable: inherited.effectiveController,
@@ -471,16 +476,11 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
                         Expanded(
                           child: CallbackShortcuts(
                             bindings: {
-                              const SingleActivator(LogicalKeyboardKey.enter):
-                                  () {
-                                inherited.effectiveController
-                                    .toggle(widget.value);
-                              },
-                              const SingleActivator(LogicalKeyboardKey.space):
-                                  () {
-                                inherited.effectiveController
-                                    .toggle(widget.value);
-                              },
+                              for (final trigger in keyboardTriggers)
+                                trigger: () {
+                                  inherited.effectiveController
+                                      .toggle(widget.value);
+                                },
                             },
                             child: ShadFocusable(
                               focusNode: focusNode,

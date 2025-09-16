@@ -1,3 +1,7 @@
+## 0.31.3
+
+- **FIX**: Convert all `EdgeInsets` to `EdgeInsetsGeometry` to better support RTL and fix many components.
+
 ## 0.31.2
 
 - **FEAT**: Add `ShadAccordionController` to manually control the open/close state of the `ShadAccordionItem`s.

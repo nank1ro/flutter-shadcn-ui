@@ -149,9 +149,9 @@ class ShadSwitch extends StatefulWidget {
   /// {@template ShadSwitch.padding}
   /// Padding between the switch itself and its label.
   ///
-  /// Defaults to `EdgeInsets.only(left: 8)`.
+  /// Defaults to `EdgeInsetsDirectional.only(start: 8)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   @override
   State<ShadSwitch> createState() => _ShadSwitchState();
@@ -212,7 +212,8 @@ class _ShadSwitchState extends State<ShadSwitch>
     final effectiveThumbSize = effectiveHeight - effectiveMargin * 2;
     final transitionStep =
         effectiveWidth - effectiveMargin * 2 - effectiveThumbSize;
-    final effectiveDuration = widget.duration ?? 100.milliseconds;
+    final effectiveDuration =
+        widget.duration ?? theme.switchTheme.duration ?? 100.milliseconds;
 
     final effectiveDecoration =
         (theme.switchTheme.decoration ?? const ShadDecoration())
@@ -225,7 +226,12 @@ class _ShadSwitchState extends State<ShadSwitch>
 
     final effectivePadding = widget.padding ??
         theme.switchTheme.padding ??
-        const EdgeInsets.only(left: 8);
+        const EdgeInsetsDirectional.only(start: 8);
+
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
 
     final switchWidget = Semantics(
       toggled: widget.value,
@@ -234,10 +240,11 @@ class _ShadSwitchState extends State<ShadSwitch>
         disabled: !widget.enabled,
         child: CallbackShortcuts(
           bindings: {
-            const SingleActivator(LogicalKeyboardKey.enter): () {
-              if (!widget.enabled) return;
-              onTap();
-            },
+            for (final trigger in keyboardTriggers)
+              trigger: () {
+                if (!widget.enabled) return;
+                onTap();
+              },
           },
           child: ShadFocusable(
             focusNode: focusNode,
