@@ -1,3 +1,7 @@
+## 0.31.4
+
+- **FIX**: `closeOnTapOutside` of `ShadDatePicker` which wasn't passed to `ShadPopover`.
+
 ## 0.31.3
 
 - **FIX**: Convert all `EdgeInsets` to `EdgeInsetsGeometry` to better support RTL and fix many components.
