@@ -19,7 +19,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: titleWidget ?? Text(title!),
       centerTitle: true,
-      actionsPadding: EdgeInsets.only(right: 8),
+      actionsPadding: EdgeInsetsDirectional.only(start: 8),
       actions: [
         ShadButton.ghost(
           onPressed: () {
@@ -33,6 +33,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 themeMode == ThemeMode.light
                     ? Icons.light_mode
                     : Icons.dark_mode,
+                semanticLabel: themeMode == ThemeMode.light
+                    ? 'Switch to dark mode'
+                    : 'Switch to light mode',
               );
             },
           ),
@@ -51,6 +54,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 directionality == TextDirection.ltr
                     ? Icons.format_textdirection_r_to_l
                     : Icons.format_textdirection_l_to_r,
+                semanticLabel: directionality == TextDirection.ltr
+                    ? 'Switch to RTL'
+                    : 'Switch to LTR',
               );
             },
           ),

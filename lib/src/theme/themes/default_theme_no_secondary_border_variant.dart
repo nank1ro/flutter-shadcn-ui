@@ -516,7 +516,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       crossAxisAlignment: CrossAxisAlignment.center,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
-      padding: const EdgeInsets.fromLTRB(24, 24, 32, 24),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24),
     );
   }
 
@@ -539,7 +539,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       crossAxisAlignment: CrossAxisAlignment.center,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
-      padding: const EdgeInsets.fromLTRB(24, 24, 32, 24),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24),
     );
   }
 

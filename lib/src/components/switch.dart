@@ -149,7 +149,7 @@ class ShadSwitch extends StatefulWidget {
   /// {@template ShadSwitch.padding}
   /// Padding between the switch itself and its label.
   ///
-  /// Defaults to `EdgeInsets.only(left: 8)`.
+  /// Defaults to `EdgeInsetsDirectional.only(start: 8)`.
   /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
@@ -212,7 +212,8 @@ class _ShadSwitchState extends State<ShadSwitch>
     final effectiveThumbSize = effectiveHeight - effectiveMargin * 2;
     final transitionStep =
         effectiveWidth - effectiveMargin * 2 - effectiveThumbSize;
-    final effectiveDuration = widget.duration ?? 100.milliseconds;
+    final effectiveDuration =
+        widget.duration ?? theme.switchTheme.duration ?? 100.milliseconds;
 
     final effectiveDecoration =
         (theme.switchTheme.decoration ?? const ShadDecoration())

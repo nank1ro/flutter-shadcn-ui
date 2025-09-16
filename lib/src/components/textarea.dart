@@ -124,7 +124,9 @@ class ShadTextarea extends StatefulWidget {
 
   /// {@template ShadTextarea.placeholderAlignment}
   /// Alignment for the placeholder inside the field.
-  /// Defaults to [Alignment.topLeft].
+  ///
+  /// Defaults to direction-aware top start:
+  /// [Alignment.topLeft] in LTR, [Alignment.topRight] in RTL.
   /// {@endtemplate}
   final AlignmentGeometry? placeholderAlignment;
 
@@ -510,16 +512,13 @@ class _ShadTextareaState extends State<ShadTextarea> {
         .merge(theme.inputTheme.placeholderStyle)
         .merge(widget.placeholderStyle);
 
-    final defaultAlignment = Directionality.of(context) == TextDirection.rtl
-        ? Alignment.topRight
-        : Alignment.topLeft;
-
     final effectivePlaceholderAlignment = widget.placeholderAlignment ??
         theme.inputTheme.placeholderAlignment ??
-        defaultAlignment;
+        AlignmentDirectional.topStart;
 
-    final effectiveAlignment =
-        widget.alignment ?? theme.inputTheme.alignment ?? defaultAlignment;
+    final effectiveAlignment = widget.alignment ??
+        theme.inputTheme.alignment ??
+        AlignmentDirectional.topStart;
 
     final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
         theme.inputTheme.mainAxisAlignment ??

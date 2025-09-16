@@ -99,7 +99,7 @@ class _CardPageState extends State<CardPage> {
           footer: ShadButton(
             width: double.infinity,
             leading: const Padding(
-              padding: EdgeInsets.only(right: 8),
+              padding: EdgeInsetsDirectional.only(end: 8),
               child: Icon(LucideIcons.check),
             ),
             onPressed: () {},

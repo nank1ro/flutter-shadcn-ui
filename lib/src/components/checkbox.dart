@@ -103,7 +103,7 @@ class ShadCheckbox extends StatefulWidget {
 
   /// {@template ShadCheckbox.padding}
   /// The padding between the checkbox and its label/sublabel.
-  /// Defaults to `EdgeInsets.only(left: 8)` if not specified.
+  /// Defaults to `EdgeInsetsDirectional.only(start: 8)` if not specified.
   /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 

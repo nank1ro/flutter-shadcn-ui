@@ -227,7 +227,7 @@ class ShadRadio<T> extends StatefulWidget {
 
   /// {@template ShadRadio.padding}
   /// The padding between the radio and the label, defaults to
-  /// `EdgeInsets.only(left: 8)`.
+  /// `EdgeInsetsDirectional.only(start: 8)`.
   /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
