@@ -1005,6 +1005,7 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
       groupId: effectiveGroupId,
       padding: widget.popoverPadding ?? theme.datePickerTheme.popoverPadding,
       focusNode: widget.focusNode,
+      closeOnTapOutside: widget.closeOnTapOutside,
       anchor: widget.anchor ?? theme.datePickerTheme.anchor,
       effects: widget.effects ?? theme.datePickerTheme.effects,
       shadows: widget.shadows ?? theme.datePickerTheme.shadows,
