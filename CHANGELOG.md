@@ -1,3 +1,7 @@
+## 0.31.5
+
+- **FEAT**: Add `useSafeArea` to `ShadDialog` and `ShadSheet` to wrap the content with a `SafeArea`. Defaults to `true`.
+
 ## 0.31.4
 
 - **FIX**: `closeOnTapOutside` of `ShadDatePicker` which wasn't passed to `ShadPopover`.
