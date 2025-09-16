@@ -206,6 +206,7 @@ class ShadSheet extends StatefulWidget {
     this.enterDuration = const Duration(milliseconds: 250),
     this.exitDuration = const Duration(milliseconds: 200),
     this.disabledScrollControlMaxRatio,
+    this.useSafeArea,
   });
 
   /// {@template ShadSheet.title}
@@ -438,6 +439,9 @@ class ShadSheet extends StatefulWidget {
   /// {@endtemplate}
   final double? disabledScrollControlMaxRatio;
 
+  /// {@macro ShadDialog.useSafeArea}
+  final bool? useSafeArea;
+
   @override
   State<ShadSheet> createState() => _ShadSheetState();
 }
@@ -651,6 +655,9 @@ class _ShadSheetState extends State<ShadSheet>
         theme.sheetTheme.scrollPadding ??
         MediaQuery.viewInsetsOf(context);
 
+    final effectiveUseSafeArea =
+        widget.useSafeArea ?? theme.sheetTheme.useSafeArea ?? true;
+
     Widget child = ShadDialog(
       key: childKey,
       title: widget.title,
@@ -681,6 +688,7 @@ class _ShadSheetState extends State<ShadSheet>
       mainAxisAlignment: effectiveMainAxisAlignment,
       scrollable: effectiveScrollable,
       scrollPadding: effectiveScrollPadding,
+      useSafeArea: effectiveUseSafeArea,
       child: widget.child,
     );
 

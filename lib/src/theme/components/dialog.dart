@@ -37,6 +37,7 @@ class ShadDialogTheme {
     this.scrollable,
     this.scrollPadding,
     this.actionsGap,
+    this.useSafeArea,
   });
 
   final bool merge;
@@ -122,6 +123,9 @@ class ShadDialogTheme {
   /// {@macro ShadDialog.actionsGap}
   final double? actionsGap;
 
+  /// {@macro ShadDialog.useSafeArea}
+  final bool? useSafeArea;
+
   static ShadDialogTheme lerp(
     ShadDialogTheme a,
     ShadDialogTheme b,
@@ -160,6 +164,7 @@ class ShadDialogTheme {
       scrollPadding:
           EdgeInsetsGeometry.lerp(a.scrollPadding, b.scrollPadding, t),
       actionsGap: lerpDouble(a.actionsGap, b.actionsGap, t),
+      useSafeArea: t < 0.5 ? a.useSafeArea : b.useSafeArea,
     );
   }
 
@@ -175,13 +180,13 @@ class ShadDialogTheme {
     List<Effect<dynamic>>? animateIn,
     List<Effect<dynamic>>? animateOut,
     BoxConstraints? constraints,
-    BoxBorder? border,
-    List<BoxShadow>? shadows,
-    bool? removeBorderRadiusWhenTiny,
     Axis? actionsAxis,
     MainAxisSize? actionsMainAxisSize,
     MainAxisAlignment? actionsMainAxisAlignment,
     VerticalDirection? actionsVerticalDirection,
+    BoxBorder? border,
+    List<BoxShadow>? shadows,
+    bool? removeBorderRadiusWhenTiny,
     TextStyle? titleStyle,
     TextStyle? descriptionStyle,
     TextAlign? titleTextAlign,
@@ -192,36 +197,42 @@ class ShadDialogTheme {
     bool? scrollable,
     EdgeInsetsGeometry? scrollPadding,
     double? actionsGap,
+    bool? useSafeArea,
   }) {
     return ShadDialogTheme(
       merge: merge ?? this.merge,
-      closeIconData: closeIconData,
-      closeIconPosition: closeIconPosition,
-      radius: radius,
-      backgroundColor: backgroundColor,
-      expandActionsWhenTiny: expandActionsWhenTiny,
-      padding: padding,
-      gap: gap,
-      animateIn: animateIn,
-      animateOut: animateOut,
-      constraints: constraints,
-      border: border,
-      shadows: shadows,
-      removeBorderRadiusWhenTiny: removeBorderRadiusWhenTiny,
-      actionsAxis: actionsAxis,
-      actionsMainAxisSize: actionsMainAxisSize,
-      actionsMainAxisAlignment: actionsMainAxisAlignment,
-      actionsVerticalDirection: actionsVerticalDirection,
-      titleStyle: titleStyle,
-      descriptionStyle: descriptionStyle,
-      titleTextAlign: titleTextAlign,
-      descriptionTextAlign: descriptionTextAlign,
-      alignment: alignment,
-      mainAxisAlignment: mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment,
-      scrollable: scrollable,
-      scrollPadding: scrollPadding,
-      actionsGap: actionsGap,
+      closeIconData: closeIconData ?? this.closeIconData,
+      closeIconPosition: closeIconPosition ?? this.closeIconPosition,
+      radius: radius ?? this.radius,
+      backgroundColor: backgroundColor ?? this.backgroundColor,
+      expandActionsWhenTiny:
+          expandActionsWhenTiny ?? this.expandActionsWhenTiny,
+      padding: padding ?? this.padding,
+      gap: gap ?? this.gap,
+      animateIn: animateIn ?? this.animateIn,
+      animateOut: animateOut ?? this.animateOut,
+      constraints: constraints ?? this.constraints,
+      actionsAxis: actionsAxis ?? this.actionsAxis,
+      actionsMainAxisSize: actionsMainAxisSize ?? this.actionsMainAxisSize,
+      actionsMainAxisAlignment:
+          actionsMainAxisAlignment ?? this.actionsMainAxisAlignment,
+      actionsVerticalDirection:
+          actionsVerticalDirection ?? this.actionsVerticalDirection,
+      border: border ?? this.border,
+      shadows: shadows ?? this.shadows,
+      removeBorderRadiusWhenTiny:
+          removeBorderRadiusWhenTiny ?? this.removeBorderRadiusWhenTiny,
+      titleStyle: titleStyle ?? this.titleStyle,
+      descriptionStyle: descriptionStyle ?? this.descriptionStyle,
+      titleTextAlign: titleTextAlign ?? this.titleTextAlign,
+      descriptionTextAlign: descriptionTextAlign ?? this.descriptionTextAlign,
+      alignment: alignment ?? this.alignment,
+      mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
+      scrollable: scrollable ?? this.scrollable,
+      scrollPadding: scrollPadding ?? this.scrollPadding,
+      actionsGap: actionsGap ?? this.actionsGap,
+      useSafeArea: useSafeArea ?? this.useSafeArea,
     );
   }
 
@@ -256,6 +267,7 @@ class ShadDialogTheme {
       scrollable: other.scrollable,
       scrollPadding: other.scrollPadding,
       actionsGap: other.actionsGap,
+      useSafeArea: other.useSafeArea,
     );
   }
 
@@ -291,7 +303,8 @@ class ShadDialogTheme {
         other.crossAxisAlignment == crossAxisAlignment &&
         other.scrollable == scrollable &&
         other.scrollPadding == scrollPadding &&
-        other.actionsGap == actionsGap;
+        other.actionsGap == actionsGap &&
+        other.useSafeArea == useSafeArea;
   }
 
   @override
@@ -323,6 +336,7 @@ class ShadDialogTheme {
         crossAxisAlignment.hashCode ^
         scrollable.hashCode ^
         scrollPadding.hashCode ^
-        actionsGap.hashCode;
+        actionsGap.hashCode ^
+        useSafeArea.hashCode;
   }
 }

@@ -42,6 +42,7 @@ class ShadSheetTheme {
     this.minFlingVelocity,
     this.closeProgressThreshold,
     this.side,
+    this.useSafeArea,
   });
 
   final bool merge;
@@ -139,6 +140,9 @@ class ShadSheetTheme {
   /// {@macro ShadSheet.side}
   final ShadSheetSide? side;
 
+  /// {@macro ShadDialog.useSafeArea}
+  final bool? useSafeArea;
+
   static ShadSheetTheme lerp(
     ShadSheetTheme a,
     ShadSheetTheme b,
@@ -183,6 +187,7 @@ class ShadSheetTheme {
       closeProgressThreshold:
           t < 0.5 ? a.closeProgressThreshold : b.closeProgressThreshold,
       side: t < 0.5 ? a.side : b.side,
+      useSafeArea: t < 0.5 ? a.useSafeArea : b.useSafeArea,
     );
   }
 
@@ -219,6 +224,7 @@ class ShadSheetTheme {
     double? minFlingVelocity,
     double? closeProgressThreshold,
     ShadSheetSide? side,
+    bool? useSafeArea,
   }) {
     return ShadSheetTheme(
       merge: merge ?? this.merge,
@@ -259,6 +265,7 @@ class ShadSheetTheme {
       closeProgressThreshold:
           closeProgressThreshold ?? this.closeProgressThreshold,
       side: side ?? this.side,
+      useSafeArea: useSafeArea ?? this.useSafeArea,
     );
   }
 
@@ -294,6 +301,7 @@ class ShadSheetTheme {
       minFlingVelocity: other.minFlingVelocity,
       closeProgressThreshold: other.closeProgressThreshold,
       side: other.side,
+      useSafeArea: other.useSafeArea,
     );
   }
 
@@ -333,7 +341,8 @@ class ShadSheetTheme {
         other.disabledScrollControlMaxRatio == disabledScrollControlMaxRatio &&
         other.minFlingVelocity == minFlingVelocity &&
         other.closeProgressThreshold == closeProgressThreshold &&
-        other.side == side;
+        other.side == side &&
+        other.useSafeArea == useSafeArea;
   }
 
   @override
@@ -369,6 +378,7 @@ class ShadSheetTheme {
         disabledScrollControlMaxRatio.hashCode ^
         minFlingVelocity.hashCode ^
         closeProgressThreshold.hashCode ^
-        side.hashCode;
+        side.hashCode ^
+        useSafeArea.hashCode;
   }
 }
