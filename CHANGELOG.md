@@ -1,3 +1,7 @@
+## 0.31.6
+
+- **FIX**: `ShadSwitch` on RTL direction.
+
 ## 0.31.5
 
 - **FEAT**: Add `useSafeArea` to `ShadDialog` and `ShadSheet` to wrap the content with a `SafeArea`. Defaults to `true`.
