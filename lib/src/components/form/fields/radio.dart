@@ -84,7 +84,8 @@ class _ShadFormBuilderRadioGroupState<T>
   void initState() {
     super.initState();
     if (widget.controller == null) {
-      _controller = ShadRadioController<T>(initialValue, enabled: enabled);
+      _controller =
+          ShadRadioController<T>(value: initialValue, enabled: enabled);
     }
     controller.addListener(onControllerChanged);
   }
@@ -104,7 +105,7 @@ class _ShadFormBuilderRadioGroupState<T>
       _controller?.dispose();
     }
     if (oldWidget.controller != null && widget.controller == null) {
-      _controller = ShadRadioController(value, enabled: enabled);
+      _controller = ShadRadioController(value: value, enabled: enabled);
     }
   }
 

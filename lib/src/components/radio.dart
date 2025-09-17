@@ -10,7 +10,9 @@ import 'package:shadcn_ui/src/utils/debug_check.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
 class ShadRadioController<T> extends ValueNotifier<T?> {
-  ShadRadioController(super.value, {bool enabled = true}) : _enabled = enabled;
+  ShadRadioController({T? value, bool enabled = true})
+      : _enabled = enabled,
+        super(value);
 
   late bool _enabled;
   bool get enabled => _enabled;
@@ -117,8 +119,10 @@ class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
 
   ShadRadioController<T> get effectiveController =>
       widget.controller ??
-      (_controller ??=
-          ShadRadioController<T>(widget.initialValue, enabled: widget.enabled));
+      (_controller ??= ShadRadioController<T>(
+        value: widget.initialValue,
+        enabled: widget.enabled,
+      ));
 
   @override
   void initState() {
