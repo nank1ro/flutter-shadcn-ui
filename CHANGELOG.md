@@ -1,3 +1,7 @@
+## 0.31.7
+
+- **FEAT**: Add `controller` to `ShadRadioGroup` to manually control the selected value.
+
 ## 0.31.6
 
 - **FIX**: `ShadSwitch` on RTL direction.

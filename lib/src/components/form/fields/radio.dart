@@ -19,7 +19,7 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
     super.enabled,
     super.autovalidateMode,
     super.restorationId,
-    super.initialValue,
+    T? initialValue,
     super.focusNode,
     super.validator,
     required Iterable<Widget> items,
@@ -41,10 +41,14 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadRadioGroup.crossAxisAlignment}
     WrapCrossAlignment? crossAxisAlignment,
+
+    /// {@macro ShadRadioGroup.controller}
+    this.controller,
   }) : super(
           decorationBuilder: (context) =>
               ShadTheme.of(context).radioTheme.decoration ??
               const ShadDecoration(),
+          initialValue: controller?.value ?? initialValue,
           builder: (field) {
             final state = field as _ShadFormBuilderRadioGroupState;
             return ShadRadioGroup(
@@ -58,9 +62,12 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
               alignment: alignment,
               runAlignment: runAlignment,
               crossAxisAlignment: crossAxisAlignment,
+              controller: state.controller,
             );
           },
         );
+
+  final ShadRadioController<T>? controller;
 
   @override
   ShadFormBuilderFieldState<ShadRadioGroupFormField<T>, T> createState() =>
@@ -68,4 +75,57 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
 }
 
 class _ShadFormBuilderRadioGroupState<T>
-    extends ShadFormBuilderFieldState<ShadRadioGroupFormField<T>, T> {}
+    extends ShadFormBuilderFieldState<ShadRadioGroupFormField<T>, T> {
+  ShadRadioController<T>? _controller;
+
+  ShadRadioController<T> get controller => widget.controller ?? _controller!;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller == null) {
+      _controller =
+          ShadRadioController<T>(value: initialValue, enabled: enabled);
+    }
+    controller.addListener(onControllerChanged);
+  }
+
+  @override
+  void didChange(T? value) {
+    super.didChange(value);
+    if (controller.value != value) {
+      controller.value = value;
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadRadioGroupFormField<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller == null && widget.controller != null) {
+      _controller?.dispose();
+    }
+    if (oldWidget.controller != null && widget.controller == null) {
+      _controller = ShadRadioController(value: value, enabled: enabled);
+    }
+  }
+
+  @override
+  void reset() {
+    super.reset();
+    controller.value = initialValue;
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(onControllerChanged);
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  void onControllerChanged() {
+    if (controller.value != value) {
+      didChange(controller.value);
+      widget.onChanged?.call(controller.value);
+    }
+  }
+}
