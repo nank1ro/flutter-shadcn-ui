@@ -131,6 +131,13 @@ class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
   }
 
   @override
+  void dispose() {
+    effectiveController.removeListener(onValueChanged);
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
   void didUpdateWidget(covariant ShadRadioGroup<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
