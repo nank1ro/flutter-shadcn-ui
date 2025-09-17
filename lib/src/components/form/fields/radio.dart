@@ -113,7 +113,6 @@ class _ShadFormBuilderRadioGroupState<T>
   void reset() {
     super.reset();
     controller.value = initialValue;
-    widget.onChanged?.call(controller.value);
   }
 
   @override
@@ -126,6 +125,7 @@ class _ShadFormBuilderRadioGroupState<T>
   void onControllerChanged() {
     if (controller.value != value) {
       didChange(controller.value);
+      widget.onChanged?.call(controller.value);
     }
   }
 }
