@@ -36,7 +36,7 @@ jobs:
           cd cli && dart pub get
           cd ../playground && flutter pub get
           cd ..
-          flutter analyze --no-fatal-infos --no-fatal-warnings
+          flutter analyze
 
       - name: Test
         run: flutter test
