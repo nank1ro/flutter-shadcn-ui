@@ -108,7 +108,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     double? fieldWidth,
 
     /// {@macro ShadTimePicker.fieldPadding}
-    EdgeInsets? fieldPadding,
+    EdgeInsetsGeometry? fieldPadding,
 
     /// {@macro ShadTimePicker.fieldDecoration}
     ShadDecoration? fieldDecoration,
@@ -273,7 +273,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     double? fieldWidth,
 
     /// {@macro ShadTimePicker.fieldPadding}
-    EdgeInsets? fieldPadding,
+    EdgeInsetsGeometry? fieldPadding,
 
     /// {@macro ShadTimePicker.fieldDecoration}
     ShadDecoration? fieldDecoration,
@@ -448,7 +448,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     double? fieldWidth,
 
     /// {@macro ShadTimePicker.fieldPadding}
-    EdgeInsets? fieldPadding,
+    EdgeInsetsGeometry? fieldPadding,
 
     /// {@macro ShadTimePicker.fieldDecoration}
     ShadDecoration? fieldDecoration,

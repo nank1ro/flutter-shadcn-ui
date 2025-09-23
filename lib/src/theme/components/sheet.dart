@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import 'package:shadcn_ui/src/components/sheet.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 
 @immutable
@@ -40,6 +41,8 @@ class ShadSheetTheme {
     this.disabledScrollControlMaxRatio,
     this.minFlingVelocity,
     this.closeProgressThreshold,
+    this.side,
+    this.useSafeArea,
   });
 
   final bool merge;
@@ -69,7 +72,7 @@ class ShadSheetTheme {
   final bool? expandActionsWhenTiny;
 
   /// {@macro ShadSheet.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadSheet.gap}
   final double? gap;
@@ -123,7 +126,7 @@ class ShadSheetTheme {
   final bool? scrollable;
 
   /// {@macro ShadSheet.scrollPadding}
-  final EdgeInsets? scrollPadding;
+  final EdgeInsetsGeometry? scrollPadding;
 
   /// {@macro ShadSheet.disabledScrollControlMaxRatio}
   final double? disabledScrollControlMaxRatio;
@@ -133,6 +136,12 @@ class ShadSheetTheme {
 
   /// {@macro ShadSheet.closeProgressThreshold}
   final double? closeProgressThreshold;
+
+  /// {@macro ShadSheet.side}
+  final ShadSheetSide? side;
+
+  /// {@macro ShadDialog.useSafeArea}
+  final bool? useSafeArea;
 
   static ShadSheetTheme lerp(
     ShadSheetTheme a,
@@ -148,7 +157,7 @@ class ShadSheetTheme {
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       expandActionsWhenTiny: b.expandActionsWhenTiny,
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       gap: lerpDouble(a.gap, b.gap, t),
       actionsAxis: b.actionsAxis,
       actionsMainAxisSize: b.actionsMainAxisSize,
@@ -169,13 +178,16 @@ class ShadSheetTheme {
       mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
       crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       scrollable: t < 0.5 ? a.scrollable : b.scrollable,
-      scrollPadding: EdgeInsets.lerp(a.scrollPadding, b.scrollPadding, t),
+      scrollPadding:
+          EdgeInsetsGeometry.lerp(a.scrollPadding, b.scrollPadding, t),
       disabledScrollControlMaxRatio: t < 0.5
           ? a.disabledScrollControlMaxRatio
           : b.disabledScrollControlMaxRatio,
       minFlingVelocity: t < 0.5 ? a.minFlingVelocity : b.minFlingVelocity,
       closeProgressThreshold:
           t < 0.5 ? a.closeProgressThreshold : b.closeProgressThreshold,
+      side: t < 0.5 ? a.side : b.side,
+      useSafeArea: t < 0.5 ? a.useSafeArea : b.useSafeArea,
     );
   }
 
@@ -189,7 +201,7 @@ class ShadSheetTheme {
     BorderRadius? radius,
     Color? backgroundColor,
     bool? expandActionsWhenTiny,
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
     double? gap,
     Axis? actionsAxis,
     MainAxisSize? actionsMainAxisSize,
@@ -207,10 +219,12 @@ class ShadSheetTheme {
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
     bool? scrollable,
-    EdgeInsets? scrollPadding,
+    EdgeInsetsGeometry? scrollPadding,
     double? disabledScrollControlMaxRatio,
     double? minFlingVelocity,
     double? closeProgressThreshold,
+    ShadSheetSide? side,
+    bool? useSafeArea,
   }) {
     return ShadSheetTheme(
       merge: merge ?? this.merge,
@@ -250,6 +264,8 @@ class ShadSheetTheme {
       minFlingVelocity: minFlingVelocity ?? this.minFlingVelocity,
       closeProgressThreshold:
           closeProgressThreshold ?? this.closeProgressThreshold,
+      side: side ?? this.side,
+      useSafeArea: useSafeArea ?? this.useSafeArea,
     );
   }
 
@@ -284,6 +300,8 @@ class ShadSheetTheme {
       disabledScrollControlMaxRatio: other.disabledScrollControlMaxRatio,
       minFlingVelocity: other.minFlingVelocity,
       closeProgressThreshold: other.closeProgressThreshold,
+      side: other.side,
+      useSafeArea: other.useSafeArea,
     );
   }
 
@@ -322,7 +340,9 @@ class ShadSheetTheme {
         other.scrollPadding == scrollPadding &&
         other.disabledScrollControlMaxRatio == disabledScrollControlMaxRatio &&
         other.minFlingVelocity == minFlingVelocity &&
-        other.closeProgressThreshold == closeProgressThreshold;
+        other.closeProgressThreshold == closeProgressThreshold &&
+        other.side == side &&
+        other.useSafeArea == useSafeArea;
   }
 
   @override
@@ -357,6 +377,8 @@ class ShadSheetTheme {
         scrollPadding.hashCode ^
         disabledScrollControlMaxRatio.hashCode ^
         minFlingVelocity.hashCode ^
-        closeProgressThreshold.hashCode;
+        closeProgressThreshold.hashCode ^
+        side.hashCode ^
+        useSafeArea.hashCode;
   }
 }

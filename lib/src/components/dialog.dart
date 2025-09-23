@@ -149,6 +149,7 @@ class ShadDialog extends StatelessWidget {
     this.scrollable,
     this.scrollPadding,
     this.actionsGap,
+    this.useSafeArea,
   }) : variant = ShadDialogVariant.primary;
 
   /// Creates an alert variant dialog widget, typically for warnings or
@@ -185,6 +186,7 @@ class ShadDialog extends StatelessWidget {
     this.scrollable,
     this.scrollPadding,
     this.actionsGap,
+    this.useSafeArea,
   }) : variant = ShadDialogVariant.alert;
 
   /// Creates a dialog widget with a specified [variant], offering full
@@ -222,6 +224,7 @@ class ShadDialog extends StatelessWidget {
     this.scrollable,
     this.scrollPadding,
     this.actionsGap,
+    this.useSafeArea,
   });
 
   /// {@template ShadDialog.title}
@@ -297,7 +300,7 @@ class ShadDialog extends StatelessWidget {
   /// The padding inside the dialog, surrounding all content.
   /// Defaults to EdgeInsets.all(24) if not specified.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadDialog.gap}
   /// The gap between content elements (title, description, child, actions).
@@ -407,7 +410,7 @@ class ShadDialog extends StatelessWidget {
 
   /// Defaults to the keyboard’s view insets if not specified.
   /// {@endtemplate}
-  final EdgeInsets? scrollPadding;
+  final EdgeInsetsGeometry? scrollPadding;
 
   /// {@template ShadDialog.actionsGap}
   /// The gap between action buttons.
@@ -415,6 +418,14 @@ class ShadDialog extends StatelessWidget {
   /// Defaults to 8 if not specified.
   /// {@endtemplate}
   final double? actionsGap;
+
+  /// {@template ShadDialog.useSafeArea}
+  /// Whether to wrap the dialog in a SafeArea widget to avoid system UI
+  /// intrusions.
+  ///
+  /// Defaults to true if not specified.
+  /// {@endtemplate}
+  final bool? useSafeArea;
 
   @override
   Widget build(BuildContext context) {
@@ -507,6 +518,9 @@ class ShadDialog extends StatelessWidget {
     final effectiveActionsGap =
         actionsGap ?? effectiveDialogTheme.actionsGap ?? 8;
 
+    final effectiveUseSafeArea =
+        useSafeArea ?? effectiveDialogTheme.useSafeArea ?? true;
+
     Widget dialog = ConstrainedBox(
       constraints: effectiveConstraints,
       child: ShadResponsiveBuilder(
@@ -563,6 +577,48 @@ class ShadDialog extends StatelessWidget {
               child: effectiveActions,
             );
           }
+
+          Widget widget = Stack(
+            children: [
+              Padding(
+                padding: effectivePadding,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: effectiveMainAxisAlignment,
+                  crossAxisAlignment: effectiveCrossAxisAlignment,
+                  children: [
+                    if (title != null)
+                      DefaultTextStyle(
+                        style: effectiveTitleStyle,
+                        textAlign: effectiveTitleTextAlign,
+                        child: title!,
+                      ),
+                    if (description != null)
+                      DefaultTextStyle(
+                        style: effectiveDescriptionStyle,
+                        textAlign: effectiveDescriptionTextAlign,
+                        child: description!,
+                      ),
+                    if (child != null)
+                      Flexible(
+                        child: DefaultTextStyle(
+                          style: effectiveDescriptionStyle,
+                          child: child!,
+                        ),
+                      ),
+                    if (actions.isNotEmpty) effectiveActions,
+                  ].separatedBy(SizedBox(height: effectiveGap)),
+                ),
+              ),
+              if (effectiveCloseIcon != null)
+                effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),
+            ],
+          );
+
+          if (effectiveUseSafeArea) {
+            widget = SafeArea(child: widget);
+          }
+
           return DecoratedBox(
             decoration: BoxDecoration(
               color: effectiveBackgroundColor,
@@ -572,45 +628,7 @@ class ShadDialog extends StatelessWidget {
               border: effectiveBorder,
               boxShadow: effectiveShadows,
             ),
-            child: SafeArea(
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: effectivePadding,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: effectiveMainAxisAlignment,
-                      crossAxisAlignment: effectiveCrossAxisAlignment,
-                      children: [
-                        if (title != null)
-                          DefaultTextStyle(
-                            style: effectiveTitleStyle,
-                            textAlign: effectiveTitleTextAlign,
-                            child: title!,
-                          ),
-                        if (description != null)
-                          DefaultTextStyle(
-                            style: effectiveDescriptionStyle,
-                            textAlign: effectiveDescriptionTextAlign,
-                            child: description!,
-                          ),
-                        if (child != null)
-                          Flexible(
-                            child: DefaultTextStyle(
-                              style: effectiveDescriptionStyle,
-                              child: child!,
-                            ),
-                          ),
-                        if (actions.isNotEmpty) effectiveActions,
-                      ].separatedBy(SizedBox(height: effectiveGap)),
-                    ),
-                  ),
-                  if (effectiveCloseIcon != null)
-                    effectiveCloseIcon
-                        .positionedWith(effectiveCloseIconPosition),
-                ],
-              ),
-            ),
+            child: widget,
           );
         },
       ),

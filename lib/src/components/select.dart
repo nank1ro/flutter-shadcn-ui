@@ -457,14 +457,14 @@ class ShadSelect<T> extends StatefulWidget {
   ///
   /// Defaults to `EdgeInsets.symmetric(horizontal: 12, vertical: 8)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadSelect.optionsPadding}
   /// The padding around the options within the popover.
   ///
   /// Defaults to `EdgeInsets.all(4)`.
   /// {@endtemplate}
-  final EdgeInsets? optionsPadding;
+  final EdgeInsetsGeometry? optionsPadding;
 
   /// {@template ShadSelect.showScrollToTopChevron}
   /// Whether to display a chevron icon at the top of the popover when
@@ -537,7 +537,7 @@ class ShadSelect<T> extends StatefulWidget {
   ///
   /// Defaults to `EdgeInsets.all(12)`.
   /// {@endtemplate}
-  final EdgeInsets? searchPadding;
+  final EdgeInsetsGeometry? searchPadding;
 
   /// {@template ShadSelect.search}
   /// A completely customizable search input widget.
@@ -891,6 +891,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
       bindings: {
         const SingleActivator(LogicalKeyboardKey.enter):
             popoverController.toggle,
+        const SingleActivator(LogicalKeyboardKey.space):
+            popoverController.toggle,
         const SingleActivator(LogicalKeyboardKey.escape):
             popoverController.hide,
       },
@@ -1142,7 +1144,7 @@ class ShadOption<T> extends StatefulWidget {
 
   /// The padding of the [ShadOption], defaults to
   /// `EdgeInsets.symmetric(horizontal: 8, vertical: 6)`
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// The icon of the [ShadOption] when selected.
   final Widget? selectedIcon;

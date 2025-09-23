@@ -592,13 +592,13 @@ class ShadCalendar extends StatefulWidget {
   /// The padding of the year selector, defaults to
   /// `EdgeInsets.symmetric(horizontal: 8, vertical: 4)`
   /// {@endtemplate}
-  final EdgeInsets? yearSelectorPadding;
+  final EdgeInsetsGeometry? yearSelectorPadding;
 
   /// {@template ShadCalendar.monthSelectorPadding}
   /// The padding of the month selector, defaults to
   /// `EdgeInsets.symmetric(horizontal: 8, vertical: 4)`
   /// {@endtemplate}
-  final EdgeInsets? monthSelectorPadding;
+  final EdgeInsetsGeometry? monthSelectorPadding;
 
   /// {@template ShadCalendar.navigationButtonSize}
   /// The navigation button size, defaults to 28
@@ -623,7 +623,7 @@ class ShadCalendar extends StatefulWidget {
   /// {@template ShadCalendar.navigationButtonPadding}
   /// The padding of the navigation button, defaults to [EdgeInsets.zero]
   /// {@endtemplate}
-  final EdgeInsets? navigationButtonPadding;
+  final EdgeInsetsGeometry? navigationButtonPadding;
 
   /// {@template ShadCalendar.navigationButtonDisabledOpacity}
   /// The opacity of the navigation button when disabled, defaults to .5
@@ -669,7 +669,7 @@ class ShadCalendar extends StatefulWidget {
   /// {@template ShadCalendar.headerPadding}
   /// The padding of the header, defaults to `EdgeInsets.only(bottom: 16)`
   /// {@endtemplate}
-  final EdgeInsets? headerPadding;
+  final EdgeInsetsGeometry? headerPadding;
 
   /// {@template ShadCalendar.captionLayoutGap}
   /// The gap between the caption layout elements, defaults to 8
@@ -684,7 +684,7 @@ class ShadCalendar extends StatefulWidget {
   /// {@template ShadCalendar.weekdaysPadding}
   /// The padding of the weekdays, defaults to `EdgeInsets.only(bottom: 8)`
   /// {@endtemplate}
-  final EdgeInsets? weekdaysPadding;
+  final EdgeInsetsGeometry? weekdaysPadding;
 
   /// {@template ShadCalendar.weekdaysTextStyle}
   /// The text style of the weekdays, defaults to
@@ -732,7 +732,7 @@ class ShadCalendar extends StatefulWidget {
   /// {@template ShadCalendar.dayButtonPadding}
   /// The padding of the day buttons, defaults to [EdgeInsets.zero]
   /// {@endtemplate}
-  final EdgeInsets? dayButtonPadding;
+  final EdgeInsetsGeometry? dayButtonPadding;
 
   /// {@template ShadCalendar.dayButtonDecoration}
   /// The decoration of the day buttons, defaults to

@@ -28,7 +28,7 @@ Future<T?> showShadSheet<T>({
   List<Effect<dynamic>>? animateOut,
 }) {
   final theme = ShadTheme.of(context);
-  final effectiveSide = side ?? ShadSheetSide.bottom;
+  final effectiveSide = side ?? theme.sheetTheme.side ?? ShadSheetSide.bottom;
   final defaultAnimateIn = switch (effectiveSide) {
     ShadSheetSide.top => const SlideEffect(
         begin: Offset(0, -1),
@@ -100,7 +100,9 @@ class ShadSheetInheritedWidget extends InheritedWidget {
     required this.side,
   });
 
+  /// {@template ShadSheet.side}
   /// The side from which the sheet slides in.
+  /// {@endtemplate}
   final ShadSheetSide side;
 
   /// Retrieves the [ShadSheetSide] from the nearest [ShadSheetInheritedWidget]
@@ -204,6 +206,7 @@ class ShadSheet extends StatefulWidget {
     this.enterDuration = const Duration(milliseconds: 250),
     this.exitDuration = const Duration(milliseconds: 200),
     this.disabledScrollControlMaxRatio,
+    this.useSafeArea,
   });
 
   /// {@template ShadSheet.title}
@@ -270,7 +273,7 @@ class ShadSheet extends StatefulWidget {
   /// {@template ShadSheet.padding}
   /// Padding around the content of the sheet.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadSheet.gap}
   /// Vertical gap between title, description, child, and actions.
@@ -350,7 +353,7 @@ class ShadSheet extends StatefulWidget {
   /// {@template ShadSheet.scrollPadding}
   /// Padding for scrollable content.
   /// {@endtemplate}
-  final EdgeInsets? scrollPadding;
+  final EdgeInsetsGeometry? scrollPadding;
 
   /// {@template ShadSheet.draggable}
   /// Whether the sheet is draggable, allowing dismissal by dragging.
@@ -435,6 +438,9 @@ class ShadSheet extends StatefulWidget {
   /// Defaults to 9/16. Has no effect when [draggable] is false.
   /// {@endtemplate}
   final double? disabledScrollControlMaxRatio;
+
+  /// {@macro ShadDialog.useSafeArea}
+  final bool? useSafeArea;
 
   @override
   State<ShadSheet> createState() => _ShadSheetState();
@@ -649,6 +655,9 @@ class _ShadSheetState extends State<ShadSheet>
         theme.sheetTheme.scrollPadding ??
         MediaQuery.viewInsetsOf(context);
 
+    final effectiveUseSafeArea =
+        widget.useSafeArea ?? theme.sheetTheme.useSafeArea ?? true;
+
     Widget child = ShadDialog(
       key: childKey,
       title: widget.title,
@@ -679,6 +688,7 @@ class _ShadSheetState extends State<ShadSheet>
       mainAxisAlignment: effectiveMainAxisAlignment,
       scrollable: effectiveScrollable,
       scrollPadding: effectiveScrollPadding,
+      useSafeArea: effectiveUseSafeArea,
       child: widget.child,
     );
 

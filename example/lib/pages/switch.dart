@@ -46,11 +46,10 @@ class _SwitchPageState extends State<SwitchPage> {
         ShadSwitch(
           value: value,
           focusNode: focusNode,
-          onChanged: enabled
-              ? (v) {
-                  setState(() => value = v);
-                }
-              : null,
+          enabled: enabled,
+          onChanged: (v) {
+            setState(() => value = v);
+          },
           label: const Text('Airplane Mode'),
         ),
       ],

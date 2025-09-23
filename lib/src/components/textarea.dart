@@ -124,7 +124,9 @@ class ShadTextarea extends StatefulWidget {
 
   /// {@template ShadTextarea.placeholderAlignment}
   /// Alignment for the placeholder inside the field.
-  /// Defaults to [Alignment.topLeft].
+  ///
+  /// Defaults to direction-aware top start:
+  /// [Alignment.topLeft] in LTR, [Alignment.topRight] in RTL.
   /// {@endtemplate}
   final AlignmentGeometry? placeholderAlignment;
 
@@ -351,12 +353,12 @@ class ShadTextarea extends StatefulWidget {
   /// Padding around the field.
   /// This is outer padding including borders and input.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTextarea.inputPadding}
   /// Inner padding between text and decoration inside the textarea.
   /// {@endtemplate}
-  final EdgeInsets? inputPadding;
+  final EdgeInsetsGeometry? inputPadding;
 
   /// {@template ShadTextarea.gap}
   /// Horizontal spacing between text and any leading/trailing elements.
@@ -413,7 +415,7 @@ class ShadTextarea extends StatefulWidget {
   ///
   /// Defaults to `EdgeInsets.only(bottom: 10)`.
   /// {@endtemplate}
-  final EdgeInsets? scrollbarPadding;
+  final EdgeInsetsGeometry? scrollbarPadding;
 
   /// {@macro ShadKeyboardToolbar.toolbarBuilder}
   final WidgetBuilder? keyboardToolbarBuilder;
@@ -512,10 +514,11 @@ class _ShadTextareaState extends State<ShadTextarea> {
 
     final effectivePlaceholderAlignment = widget.placeholderAlignment ??
         theme.inputTheme.placeholderAlignment ??
-        Alignment.topLeft;
+        AlignmentDirectional.topStart;
 
-    final effectiveAlignment =
-        widget.alignment ?? theme.inputTheme.alignment ?? Alignment.topLeft;
+    final effectiveAlignment = widget.alignment ??
+        theme.inputTheme.alignment ??
+        AlignmentDirectional.topStart;
 
     final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
         theme.inputTheme.mainAxisAlignment ??

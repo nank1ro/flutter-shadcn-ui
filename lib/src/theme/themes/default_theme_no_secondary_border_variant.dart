@@ -259,6 +259,21 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       ),
       duration: Animate.defaultDuration,
       reverseDuration: Duration.zero,
+      hoverStrategies: const ShadHoverStrategies(
+        hover: {
+          ShadHoverStrategy.onTap,
+          ShadHoverStrategy.onLongPressDown,
+          ShadHoverStrategy.onLongPressStart,
+        },
+        unhover: {
+          ShadHoverStrategy.onTap,
+          ShadHoverStrategy.onTapOutside,
+          ShadHoverStrategy.onLongPressUp,
+          ShadHoverStrategy.onLongPressEnd,
+          ShadHoverStrategy.onLongPressCancel,
+        },
+        longPressDuration: kLongPressTimeout,
+      ),
     );
   }
 
@@ -402,7 +417,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       thumbColor: colorScheme.background,
       uncheckedTrackColor: colorScheme.input,
       checkedTrackColor: colorScheme.primary,
-      padding: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsetsDirectional.only(start: 8),
       decoration: ShadDecoration(
         border: ShadBorder.all(
           radius: radius,
@@ -423,7 +438,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       size: 16,
       duration: 100.milliseconds,
       color: colorScheme.primary,
-      padding: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsetsDirectional.only(start: 8),
       decoration: ShadDecoration(
         border: ShadBorder.all(
           color: colorScheme.primary,
@@ -441,7 +456,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
     return ShadInputTheme(
       style: effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
       placeholderStyle: effectiveTextTheme.muted,
-      placeholderAlignment: Alignment.topLeft,
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
         border: ShadBorder.all(
@@ -465,7 +479,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       circleSize: circleSize,
       duration: 100.milliseconds,
       color: colorScheme.primary,
-      padding: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsetsDirectional.only(start: 8),
       decoration: ShadDecoration(
         shape: BoxShape.circle,
         border: ShadBorder.all(
@@ -495,14 +509,14 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       descriptionStyle: effectiveTextTheme.muted.copyWith(
         color: colorScheme.foreground.withValues(alpha: .9),
       ),
-      actionPadding: const EdgeInsets.only(left: 16),
+      actionPadding: const EdgeInsetsDirectional.only(start: 16),
       border: Border.all(color: colorScheme.border),
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.background,
       crossAxisAlignment: CrossAxisAlignment.center,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
-      padding: const EdgeInsets.fromLTRB(24, 24, 32, 24),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24),
     );
   }
 
@@ -518,21 +532,21 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       descriptionStyle: effectiveTextTheme.muted.copyWith(
         color: colorScheme.destructiveForeground.withValues(alpha: .9),
       ),
-      actionPadding: const EdgeInsets.only(left: 16),
+      actionPadding: const EdgeInsetsDirectional.only(start: 16),
       border: Border.all(color: colorScheme.border),
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.destructive,
       crossAxisAlignment: CrossAxisAlignment.center,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
-      padding: const EdgeInsets.fromLTRB(24, 24, 32, 24),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24),
     );
   }
 
   @override
   ShadAlertTheme primaryAlertTheme() {
     return ShadAlertTheme(
-      iconPadding: const EdgeInsets.only(right: 12),
+      iconPadding: const EdgeInsetsDirectional.only(end: 12),
       decoration: ShadDecoration(
         border: ShadBorder.all(
           color: colorScheme.border,
@@ -556,7 +570,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   @override
   ShadAlertTheme destructiveAlertTheme() {
     return ShadAlertTheme(
-      iconPadding: const EdgeInsets.only(right: 12),
+      iconPadding: const EdgeInsetsDirectional.only(end: 12),
       decoration: ShadDecoration(
         border: ShadBorder.all(
           color: colorScheme.destructive,
@@ -749,11 +763,13 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       },
       unhover: {
         ShadHoverStrategy.onTapUp,
+        ShadHoverStrategy.onTapOutside,
         ShadHoverStrategy.onTapCancel,
         ShadHoverStrategy.onLongPressUp,
         ShadHoverStrategy.onLongPressEnd,
         ShadHoverStrategy.onLongPressCancel,
       },
+      longPressDuration: kLongPressTimeout,
     );
   }
 
@@ -798,8 +814,8 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         constraints: const BoxConstraints(minWidth: 128),
         padding: const EdgeInsets.symmetric(vertical: 4),
         itemPadding: const EdgeInsets.symmetric(horizontal: 4),
-        leadingPadding: const EdgeInsets.only(right: 8),
-        trailingPadding: const EdgeInsets.only(left: 8),
+        leadingPadding: const EdgeInsetsDirectional.only(end: 8),
+        trailingPadding: const EdgeInsetsDirectional.only(start: 8),
         showDelay: const Duration(milliseconds: 100),
         height: 32,
         buttonVariant: ShadButtonVariant.ghost,
@@ -1021,7 +1037,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
     return ShadTextareaTheme(
       style: effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
       placeholderStyle: effectiveTextTheme.muted,
-      placeholderAlignment: Alignment.topLeft,
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
         border: ShadBorder.all(

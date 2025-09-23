@@ -19,24 +19,46 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: titleWidget ?? Text(title!),
       centerTitle: true,
+      actionsPadding: EdgeInsetsDirectional.only(start: 8),
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 8),
-          child: ShadButton.ghost(
-            onPressed: () {
-              themeModeProvider.of(context).updateValue((value) =>
-                  value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light);
+        ShadButton.ghost(
+          onPressed: () {
+            themeModeProvider.of(context).updateValue((value) =>
+                value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light);
+          },
+          leading: SignalBuilder(
+            builder: (context, child) {
+              final themeMode = themeModeProvider.of(context).value;
+              return Icon(
+                themeMode == ThemeMode.light
+                    ? Icons.light_mode
+                    : Icons.dark_mode,
+                semanticLabel: themeMode == ThemeMode.light
+                    ? 'Switch to dark mode'
+                    : 'Switch to light mode',
+              );
             },
-            leading: SignalBuilder(
-              builder: (context, child) {
-                final themeMode = themeModeProvider.of(context).value;
-                return Icon(
-                  themeMode == ThemeMode.light
-                      ? Icons.light_mode
-                      : Icons.dark_mode,
-                );
-              },
-            ),
+          ),
+        ),
+        ShadButton.ghost(
+          onPressed: () {
+            directionalityProvider.of(context).updateValue((value) =>
+                value == TextDirection.ltr
+                    ? TextDirection.rtl
+                    : TextDirection.ltr);
+          },
+          leading: SignalBuilder(
+            builder: (context, child) {
+              final directionality = directionalityProvider.of(context).value;
+              return Icon(
+                directionality == TextDirection.ltr
+                    ? Icons.format_textdirection_r_to_l
+                    : Icons.format_textdirection_l_to_r,
+                semanticLabel: directionality == TextDirection.ltr
+                    ? 'Switch to RTL'
+                    : 'Switch to LTR',
+              );
+            },
           ),
         ),
       ],

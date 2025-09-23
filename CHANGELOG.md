@@ -1,6 +1,42 @@
-## 0.30.6
+## 0.31.8
 
 - **FEAT**: Add support for keyboard navigation in `ShadCalendar`
+
+## 0.31.7
+
+- **FEAT**: Add `controller` to `ShadRadioGroup` to manually control the selected value.
+
+## 0.31.6
+
+- **FIX**: `ShadSwitch` on RTL direction.
+
+## 0.31.5
+
+- **FEAT**: Add `useSafeArea` to `ShadDialog` and `ShadSheet` to wrap the content with a `SafeArea`. Defaults to `true`.
+
+## 0.31.4
+
+- **FIX**: `closeOnTapOutside` of `ShadDatePicker` which wasn't passed to `ShadPopover`.
+
+## 0.31.3
+
+- **FIX**: Convert all `EdgeInsets` to `EdgeInsetsGeometry` to better support RTL and fix many components.
+
+## 0.31.2
+
+- **FEAT**: Add `ShadAccordionController` to manually control the open/close state of the `ShadAccordionItem`s.
+- **FEAT**: Toggle `ShadAccordionItem` by pressing `Space` (before it worked only with `Enter`) when the header is focused.
+
+## 0.31.1
+
+- **FEAT**: Add `side` to `ShadSheetTheme` to set the default side of the sheet from the theme.
+
+## 0.31.0
+
+- **FEAT**: Modify the `ShadTooltip` component and its hover strategies to work on mobile on tap without a long press.
+- **FEAT**: Add `ShadHoverStrategy.onTapOutside` to trigger unhover when tapping outside the widget. 
+- **FEAT**: Add `ShadHoverStrategy.onTap` to trigger hover/unhover when tapping inside the widget.
+- **FEAT**: Now if an hover strategy is present in both `hoverStrategies.hover` and `hoverStrategies.unhover`, the hover will be toggled.
 
 ## 0.30.5
 

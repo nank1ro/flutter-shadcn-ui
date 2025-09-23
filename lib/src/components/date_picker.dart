@@ -522,7 +522,7 @@ class ShadDatePicker extends StatefulWidget {
   final ShadDecoration? calendarDecoration;
 
   /// {@macro ShadPopover.padding}
-  final EdgeInsets? popoverPadding;
+  final EdgeInsetsGeometry? popoverPadding;
 
   /// {@macro ShadCalendar.multipleSelected}
   final List<DateTime>? multipleSelected;
@@ -603,10 +603,10 @@ class ShadDatePicker extends StatefulWidget {
   final double? monthSelectorMinWidth;
 
   /// {@macro ShadCalendar.yearSelectorPadding}
-  final EdgeInsets? yearSelectorPadding;
+  final EdgeInsetsGeometry? yearSelectorPadding;
 
   /// {@macro ShadCalendar.monthSelectorPadding}
-  final EdgeInsets? monthSelectorPadding;
+  final EdgeInsetsGeometry? monthSelectorPadding;
 
   /// {@macro ShadCalendar.navigationButtonSize}
   final double? navigationButtonSize;
@@ -621,7 +621,7 @@ class ShadDatePicker extends StatefulWidget {
   final IconData? forwardNavigationButtonIconData;
 
   /// {@macro ShadCalendar.navigationButtonPadding}
-  final EdgeInsets? navigationButtonPadding;
+  final EdgeInsetsGeometry? navigationButtonPadding;
 
   /// {@macro ShadCalendar.navigationButtonDisabledOpacity}
   final double? navigationButtonDisabledOpacity;
@@ -642,7 +642,7 @@ class ShadDatePicker extends StatefulWidget {
   final double? calendarHeaderHeight;
 
   /// {@macro ShadCalendar.headerPadding}
-  final EdgeInsets? calendarHeaderPadding;
+  final EdgeInsetsGeometry? calendarHeaderPadding;
 
   /// {@macro ShadCalendar.captionLayoutGap}
   final double? captionLayoutGap;
@@ -651,7 +651,7 @@ class ShadDatePicker extends StatefulWidget {
   final TextStyle? calendarHeaderTextStyle;
 
   /// {@macro ShadCalendar.weekdaysPadding}
-  final EdgeInsets? weekdaysPadding;
+  final EdgeInsetsGeometry? weekdaysPadding;
 
   /// {@macro ShadCalendar.weekdaysTextStyle}
   final TextStyle? weekdaysTextStyle;
@@ -678,7 +678,7 @@ class ShadDatePicker extends StatefulWidget {
   final double? dayButtonOutsideMonthOpacity;
 
   /// {@macro ShadCalendar.dayButtonPadding}
-  final EdgeInsets? dayButtonPadding;
+  final EdgeInsetsGeometry? dayButtonPadding;
 
   /// {@macro ShadCalendar.dayButtonDecoration}
   final ShadDecoration? dayButtonDecoration;
@@ -1005,6 +1005,7 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
       groupId: effectiveGroupId,
       padding: widget.popoverPadding ?? theme.datePickerTheme.popoverPadding,
       focusNode: widget.focusNode,
+      closeOnTapOutside: widget.closeOnTapOutside,
       anchor: widget.anchor ?? theme.datePickerTheme.anchor,
       effects: widget.effects ?? theme.datePickerTheme.effects,
       shadows: widget.shadows ?? theme.datePickerTheme.shadows,

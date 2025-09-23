@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
@@ -43,7 +45,7 @@ class ShadTableTheme {
   final double? cellHeight;
 
   /// {@macro ShadTable.cellPadding}
-  final EdgeInsets? cellPadding;
+  final EdgeInsetsGeometry? cellPadding;
 
   /// {@macro ShadTable.cellHeaderStyle}
   final TextStyle? cellHeaderStyle;
@@ -62,18 +64,19 @@ class ShadTableTheme {
     if (identical(a, b)) return a;
     return ShadTableTheme(
       merge: b.merge,
-      diagonalDragBehavior: b.diagonalDragBehavior ?? a.diagonalDragBehavior,
-      dragStartBehavior: b.dragStartBehavior ?? a.dragStartBehavior,
+      diagonalDragBehavior:
+          t < 0.5 ? a.diagonalDragBehavior : b.diagonalDragBehavior,
+      dragStartBehavior: t < 0.5 ? a.dragStartBehavior : b.dragStartBehavior,
       keyboardDismissBehavior:
-          b.keyboardDismissBehavior ?? a.keyboardDismissBehavior,
-      columnBuilder: b.columnBuilder ?? a.columnBuilder,
-      rowBuilder: b.rowBuilder ?? a.rowBuilder,
-      cellAlignment: b.cellAlignment ?? a.cellAlignment,
-      cellHeight: b.cellHeight ?? a.cellHeight,
-      cellPadding: b.cellPadding ?? a.cellPadding,
-      cellStyle: b.cellStyle ?? a.cellStyle,
-      cellHeaderStyle: b.cellHeaderStyle ?? a.cellHeaderStyle,
-      cellFooterStyle: b.cellFooterStyle ?? a.cellFooterStyle,
+          t < 0.5 ? a.keyboardDismissBehavior : b.keyboardDismissBehavior,
+      columnBuilder: t < 0.5 ? a.columnBuilder : b.columnBuilder,
+      rowBuilder: t < 0.5 ? a.rowBuilder : b.rowBuilder,
+      cellAlignment: t < 0.5 ? a.cellAlignment : b.cellAlignment,
+      cellHeight: lerpDouble(a.cellHeight, b.cellHeight, t),
+      cellPadding: EdgeInsetsGeometry.lerp(a.cellPadding, b.cellPadding, t),
+      cellStyle: TextStyle.lerp(a.cellStyle, b.cellStyle, t),
+      cellHeaderStyle: TextStyle.lerp(a.cellHeaderStyle, b.cellHeaderStyle, t),
+      cellFooterStyle: TextStyle.lerp(a.cellFooterStyle, b.cellFooterStyle, t),
     );
   }
 
@@ -105,7 +108,7 @@ class ShadTableTheme {
     TableSpanBuilder? rowBuilder,
     Alignment? cellAlignment,
     double? cellHeight,
-    EdgeInsets? cellPadding,
+    EdgeInsetsGeometry? cellPadding,
     TextStyle? cellStyle,
     TextStyle? cellHeaderStyle,
     TextStyle? cellFooterStyle,
