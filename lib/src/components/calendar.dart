@@ -1626,9 +1626,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
                       LogicalKeySet(LogicalKeyboardKey.arrowDown):
                           const DirectionalFocusIntent(TraversalDirection.down),
                       LogicalKeySet(LogicalKeyboardKey.arrowLeft):
-                          const PreviousFocusIntent(),
+                          const DirectionalFocusIntent(TraversalDirection.left),
                       LogicalKeySet(LogicalKeyboardKey.arrowRight):
-                          const NextFocusIntent(),
+                          const DirectionalFocusIntent(TraversalDirection.right),
                     },
                     child: GridView.count(
                       mainAxisSpacing: effectiveGridMainAxisSpacing,
