@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
@@ -1607,237 +1608,268 @@ class _ShadCalendarState extends State<ShadCalendar> {
                     ),
                   ),
                 ),
-                GridView.count(
-                  mainAxisSpacing: effectiveGridMainAxisSpacing,
-                  crossAxisSpacing: effectiveGridCrossAxisSpacing,
-                  crossAxisCount: columnsCount,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: dateModel.dates.mapIndexed((index, date) {
-                    if (date == null) return const SizedBox.shrink();
-                    final selected = switch (widget.variant) {
-                      ShadCalendarVariant.range => false,
-                      ShadCalendarVariant.single ||
-                      ShadCalendarVariant.multiple =>
-                        selectedDays.any(
-                          (selectedDate) => selectedDate.isSameDay(date),
-                        ),
-                    };
+                Actions(
+                  actions: {
+                    DirectionalFocusAction:
+                        CallbackAction<DirectionalFocusIntent>(
+                      onInvoke: (intent) {
+                        FocusScope.of(context)
+                            .focusInDirection(intent.direction);
+                        return null;
+                      },
+                    ),
+                  },
+                  child: Shortcuts(
+                    shortcuts: {
+                      LogicalKeySet(LogicalKeyboardKey.arrowUp):
+                          const DirectionalFocusIntent(TraversalDirection.up),
+                      LogicalKeySet(LogicalKeyboardKey.arrowDown):
+                          const DirectionalFocusIntent(TraversalDirection.down),
+                      LogicalKeySet(LogicalKeyboardKey.arrowLeft):
+                          const PreviousFocusIntent(),
+                      LogicalKeySet(LogicalKeyboardKey.arrowRight):
+                          const NextFocusIntent(),
+                    },
+                    child: GridView.count(
+                      mainAxisSpacing: effectiveGridMainAxisSpacing,
+                      crossAxisSpacing: effectiveGridCrossAxisSpacing,
+                      crossAxisCount: columnsCount,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: dateModel.dates.mapIndexed((index, date) {
+                        if (date == null) return const SizedBox.shrink();
+                        final selected = switch (widget.variant) {
+                          ShadCalendarVariant.range => false,
+                          ShadCalendarVariant.single ||
+                          ShadCalendarVariant.multiple =>
+                            selectedDays.any(
+                              (selectedDate) => selectedDate.isSameDay(date),
+                            ),
+                        };
 
-                    final isInRange = switch (widget.variant) {
-                      ShadCalendarVariant.range => (startRange != null &&
-                              date.isSameDayOrGreatier(startRange!)) &&
-                          (endRange != null &&
-                              date.isSameDayOrLower(endRange!)),
-                      ShadCalendarVariant.single ||
-                      ShadCalendarVariant.multiple =>
-                        false,
-                    };
+                        final isInRange = switch (widget.variant) {
+                          ShadCalendarVariant.range => (startRange != null &&
+                                  date.isSameDayOrGreatier(startRange!)) &&
+                              (endRange != null &&
+                                  date.isSameDayOrLower(endRange!)),
+                          ShadCalendarVariant.single ||
+                          ShadCalendarVariant.multiple =>
+                            false,
+                        };
 
-                    final isFirstDateInRange =
-                        startRange != null && date.isSameDay(startRange!);
-                    final isLastDateInRange =
-                        endRange != null && date.isSameDay(endRange!);
+                        final isFirstDateInRange =
+                            startRange != null && date.isSameDay(startRange!);
+                        final isLastDateInRange =
+                            endRange != null && date.isSameDay(endRange!);
 
-                    final isToday = date.isSameDay(today);
-                    final isInMonth = date.month == dateModel.month.month;
-                    final textStyle = switch (widget.variant) {
-                      ShadCalendarVariant.range => () {
-                          if (isFirstDateInRange || isLastDateInRange) {
-                            return effectiveSelectedDayButtonTextStyle;
-                          }
+                        final isToday = date.isSameDay(today);
+                        final isInMonth = date.month == dateModel.month.month;
+                        final textStyle = switch (widget.variant) {
+                          ShadCalendarVariant.range => () {
+                              if (isFirstDateInRange || isLastDateInRange) {
+                                return effectiveSelectedDayButtonTextStyle;
+                              }
 
-                          if (isInRange) {
-                            return effectiveInsideRangeDayButtonTextStyle;
-                          }
+                              if (isInRange) {
+                                return effectiveInsideRangeDayButtonTextStyle;
+                              }
 
-                          return effectiveDayButtonTextStyle;
-                        }(),
-                      ShadCalendarVariant.single ||
-                      ShadCalendarVariant.multiple =>
-                        isInMonth
-                            ? selected
-                                ? effectiveSelectedDayButtonTextStyle
-                                : effectiveDayButtonTextStyle
-                            : effectiveDayButtonOutsideMonthTextStyle
-                    };
+                              return effectiveDayButtonTextStyle;
+                            }(),
+                          ShadCalendarVariant.single ||
+                          ShadCalendarVariant.multiple =>
+                            isInMonth
+                                ? selected
+                                    ? effectiveSelectedDayButtonTextStyle
+                                    : effectiveDayButtonTextStyle
+                                : effectiveDayButtonOutsideMonthTextStyle
+                        };
 
-                    final variant = switch (widget.variant) {
-                      ShadCalendarVariant.range => () {
-                          if (isFirstDateInRange || isLastDateInRange) {
-                            return effectiveSelectedDayButtonVariant;
-                          }
-                          if (isInRange) {
-                            return effectiveInsideRangeDayButtonVariant;
-                          }
-                          if (isToday) return effectiveTodayButtonVariant;
-                          return effectiveDayButtonVariant;
-                        }(),
-                      ShadCalendarVariant.single ||
-                      ShadCalendarVariant.multiple =>
-                        switch (isInMonth) {
-                          true => selected
-                              ? effectiveSelectedDayButtonVariant
-                              : isToday
-                                  ? effectiveTodayButtonVariant
-                                  : effectiveDayButtonVariant,
-                          false => selected
-                              ? effectiveSelectedDayButtonOusideMonthVariant
-                              : effectiveDayButtonOutsideMonthVariant,
-                        },
-                    };
+                        final variant = switch (widget.variant) {
+                          ShadCalendarVariant.range => () {
+                              if (isFirstDateInRange || isLastDateInRange) {
+                                return effectiveSelectedDayButtonVariant;
+                              }
+                              if (isInRange) {
+                                return effectiveInsideRangeDayButtonVariant;
+                              }
+                              if (isToday) return effectiveTodayButtonVariant;
+                              return effectiveDayButtonVariant;
+                            }(),
+                          ShadCalendarVariant.single ||
+                          ShadCalendarVariant.multiple =>
+                            switch (isInMonth) {
+                              true => selected
+                                  ? effectiveSelectedDayButtonVariant
+                                  : isToday
+                                      ? effectiveTodayButtonVariant
+                                      : effectiveDayButtonVariant,
+                              false => selected
+                                  ? effectiveSelectedDayButtonOusideMonthVariant
+                                  : effectiveDayButtonOutsideMonthVariant,
+                            },
+                        };
 
-                    if (effectiveShowWeekNumbers && index % 8 == 0) {
-                      return Center(
-                        child: Text(
-                          date.weekNumber.toString(),
-                          style: effectiveWeekNumbersTextStyle,
-                        ),
-                      );
-                    }
+                        if (effectiveShowWeekNumbers && index % 8 == 0) {
+                          return Center(
+                            child: Text(
+                              date.weekNumber.toString(),
+                              style: effectiveWeekNumbersTextStyle,
+                            ),
+                          );
+                        }
 
-                    final isFirstOfRow =
-                        (index - (effectiveShowWeekNumbers ? 1 : 0)) % 7 == 0;
-                    final isLastOfRow =
-                        (index - (effectiveShowWeekNumbers ? 1 : 0)) % 7 == 6;
+                        final isFirstOfRow =
+                            (index - (effectiveShowWeekNumbers ? 1 : 0)) % 7 ==
+                                0;
+                        final isLastOfRow =
+                            (index - (effectiveShowWeekNumbers ? 1 : 0)) % 7 ==
+                                6;
 
-                    final effectiveDayButtonDecoration = ShadDecoration(
-                      secondaryBorder:
-                          const ShadBorder(padding: EdgeInsets.zero),
-                      border: isInRange &&
-                              !isFirstDateInRange &&
-                              !isLastDateInRange
-                          ? isFirstOfRow
-                              ? ShadBorder(
-                                  radius: BorderRadius.only(
-                                    topLeft: theme.radius.topLeft,
-                                    bottomLeft: theme.radius.bottomLeft,
-                                  ),
-                                )
-                              : isLastOfRow
+                        final effectiveDayButtonDecoration = ShadDecoration(
+                          secondaryBorder:
+                              const ShadBorder(padding: EdgeInsets.zero),
+                          border: isInRange &&
+                                  !isFirstDateInRange &&
+                                  !isLastDateInRange
+                              ? isFirstOfRow
                                   ? ShadBorder(
                                       radius: BorderRadius.only(
-                                        topRight: theme.radius.topRight,
-                                        bottomRight: theme.radius.bottomRight,
+                                        topLeft: theme.radius.topLeft,
+                                        bottomLeft: theme.radius.bottomLeft,
                                       ),
                                     )
-                                  : const ShadBorder(
-                                      radius: BorderRadius.zero,
-                                    )
-                          : null,
-                      secondaryFocusedBorder: ShadBorder.all(
-                        offset: 2,
-                        color: theme.colorScheme.ring.withValues(alpha: .5),
-                      ),
-                    )
-                        .mergeWith(theme.calendarTheme.dayButtonDecoration)
-                        .mergeWith(widget.dayButtonDecoration);
-
-                    return Center(
-                      child: Opacity(
-                        opacity: isInMonth
-                            ? 1
-                            : effectiveDayButtonOutsideMonthOpacity,
-                        child: ShadButton.raw(
-                          variant: variant,
-                          width: effectiveDayButtonSize,
-                          height: effectiveDayButtonSize,
-                          decoration: effectiveDayButtonDecoration,
-                          enabled: enabled(date),
-                          padding: effectiveDayButtonPadding,
-                          child: Text(
-                            date.day.toString(),
-                            style: textStyle,
+                                  : isLastOfRow
+                                      ? ShadBorder(
+                                          radius: BorderRadius.only(
+                                            topRight: theme.radius.topRight,
+                                            bottomRight:
+                                                theme.radius.bottomRight,
+                                          ),
+                                        )
+                                      : const ShadBorder(
+                                          radius: BorderRadius.zero,
+                                        )
+                              : null,
+                          secondaryFocusedBorder: ShadBorder.all(
+                            offset: 2,
+                            color: theme.colorScheme.ring.withValues(alpha: .5),
                           ),
-                          onPressed: () {
-                            // ignore the operation if the min is reached
-                            if (selectedDays.contains(date) &&
-                                widget.min != null &&
-                                selectedDays.length == widget.min) {
-                              return;
-                            }
+                        )
+                            .mergeWith(theme.calendarTheme.dayButtonDecoration)
+                            .mergeWith(widget.dayButtonDecoration);
 
-                            if (widget.variant == ShadCalendarVariant.single) {
-                              final selectedDate = selectedDays.firstOrNull;
-                              selectedDays.clear();
-                              if (effectiveAllowDeselection &&
-                                  (selectedDate?.isSameDay(date) ?? false)) {
-                                widget.onChanged?.call(null);
+                        return Center(
+                          child: Opacity(
+                            opacity: isInMonth
+                                ? 1
+                                : effectiveDayButtonOutsideMonthOpacity,
+                            child: ShadButton.raw(
+                              variant: variant,
+                              width: effectiveDayButtonSize,
+                              height: effectiveDayButtonSize,
+                              decoration: effectiveDayButtonDecoration,
+                              enabled: enabled(date),
+                              padding: effectiveDayButtonPadding,
+                              child: Text(
+                                date.day.toString(),
+                                style: textStyle,
+                              ),
+                              onPressed: () {
+                                // ignore the operation if the min is reached
+                                if (selectedDays.contains(date) &&
+                                    widget.min != null &&
+                                    selectedDays.length == widget.min) {
+                                  return;
+                                }
 
-                                return;
-                              }
-                            }
-                            final startRangeEquals =
-                                startRange?.isSameDay(date) ?? false;
-                            final endDateEquals =
-                                endRange?.isSameDay(date) ?? false;
+                                if (widget.variant ==
+                                    ShadCalendarVariant.single) {
+                                  final selectedDate = selectedDays.firstOrNull;
+                                  selectedDays.clear();
+                                  if (effectiveAllowDeselection &&
+                                      (selectedDate?.isSameDay(date) ??
+                                          false)) {
+                                    widget.onChanged?.call(null);
 
-                            final singleDateSelectedInRange =
-                                (startRangeEquals && endRange == null) ||
-                                    (endDateEquals && startRange == null);
-
-                            // Skip the operation on the range if a single date
-                            // is selected and allowDeselection is false
-                            if (widget.variant == ShadCalendarVariant.range) {
-                              if (singleDateSelectedInRange &&
-                                  !effectiveAllowDeselection) {
-                                return;
-                              }
-                            }
-
-                            setState(() {
-                              if (widget.variant == ShadCalendarVariant.range) {
-                                // deselect the range
-                                if (singleDateSelectedInRange) {
-                                  startRange = null;
-                                } else {
-                                  // select the start range
-                                  if (startRange == null) {
-                                    startRange = date;
-                                  } else {
-                                    // update the start range
-                                    if (isFirstDateInRange ||
-                                        isLastDateInRange) {
-                                      startRange = date;
-                                      endRange = null;
-                                    } else {
-                                      // update the start/end range based on the date position
-                                      if (date.isBefore(startRange!)) {
-                                        startRange = date;
-                                      } else {
-                                        endRange = date;
-                                      }
-                                    }
+                                    return;
                                   }
                                 }
-                              } else {
-                                if (selectedDays.contains(date)) {
-                                  selectedDays.remove(date);
-                                } else {
-                                  selectedDays.add(date);
-                                }
-                              }
-                            });
+                                final startRangeEquals =
+                                    startRange?.isSameDay(date) ?? false;
+                                final endDateEquals =
+                                    endRange?.isSameDay(date) ?? false;
 
-                            switch (widget.variant) {
-                              case ShadCalendarVariant.single:
-                                widget.onChanged?.call(date);
-                              case ShadCalendarVariant.multiple:
-                                widget.onMultipleChanged
-                                    ?.call(selectedDays.toList());
-                              case ShadCalendarVariant.range:
-                                widget.onRangeChanged?.call(
-                                  ShadDateTimeRange(
-                                    start: startRange,
-                                    end: endRange,
-                                  ),
-                                );
-                            }
-                          },
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                                final singleDateSelectedInRange =
+                                    (startRangeEquals && endRange == null) ||
+                                        (endDateEquals && startRange == null);
+
+                                // Skip the operation on the range if a single date
+                                // is selected and allowDeselection is false
+                                if (widget.variant ==
+                                    ShadCalendarVariant.range) {
+                                  if (singleDateSelectedInRange &&
+                                      !effectiveAllowDeselection) {
+                                    return;
+                                  }
+                                }
+
+                                setState(() {
+                                  if (widget.variant ==
+                                      ShadCalendarVariant.range) {
+                                    // deselect the range
+                                    if (singleDateSelectedInRange) {
+                                      startRange = null;
+                                    } else {
+                                      // select the start range
+                                      if (startRange == null) {
+                                        startRange = date;
+                                      } else {
+                                        // update the start range
+                                        if (isFirstDateInRange ||
+                                            isLastDateInRange) {
+                                          startRange = date;
+                                          endRange = null;
+                                        } else {
+                                          // update the start/end range based on the date position
+                                          if (date.isBefore(startRange!)) {
+                                            startRange = date;
+                                          } else {
+                                            endRange = date;
+                                          }
+                                        }
+                                      }
+                                    }
+                                  } else {
+                                    if (selectedDays.contains(date)) {
+                                      selectedDays.remove(date);
+                                    } else {
+                                      selectedDays.add(date);
+                                    }
+                                  }
+                                });
+
+                                switch (widget.variant) {
+                                  case ShadCalendarVariant.single:
+                                    widget.onChanged?.call(date);
+                                  case ShadCalendarVariant.multiple:
+                                    widget.onMultipleChanged
+                                        ?.call(selectedDays.toList());
+                                  case ShadCalendarVariant.range:
+                                    widget.onRangeChanged?.call(
+                                      ShadDateTimeRange(
+                                        start: startRange,
+                                        end: endRange,
+                                      ),
+                                    );
+                                }
+                              },
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
               ],
             ),

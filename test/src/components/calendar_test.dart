@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -254,6 +255,122 @@ void main() {
 
       // Check previous month
       expect(find.text('October 2023'), findsOneWidget);
+    });
+    group('Keyboard navigation', () {
+      /// Press Tab until the target day button is focused
+      Future<void> focusDay(WidgetTester tester, String dayText,
+          {int maxTabs = 31}) async {
+        final finder = find.text(dayText).first;
+
+        for (var i = 0; i < maxTabs; i++) {
+          final semantics = tester.getSemantics(finder);
+          if (semantics.flagsCollection.isFocused) return;
+          await tester.sendKeyEvent(LogicalKeyboardKey.tab);
+          await tester.pumpAndSettle();
+        }
+
+        // Final check
+        final finalSemantics = tester.getSemantics(finder);
+        expect(
+          finalSemantics.flagsCollection.isFocused,
+          isTrue,
+          reason: 'Could not focus day $dayText after $maxTabs tabs',
+        );
+      }
+
+      /// Press a key and pump
+      Future<void> pressKey(WidgetTester tester, LogicalKeyboardKey key) async {
+        await tester.sendKeyEvent(key);
+        await tester.pumpAndSettle();
+      }
+
+      /// Check if a day is focused
+      bool isFocused(WidgetTester tester, String dayText) {
+        final finder = find.text(dayText).first;
+        final semantics = tester.getSemantics(finder);
+        return semantics.flagsCollection.isFocused;
+      }
+
+      testWidgets(
+          'GIVEN a day button is focused '
+          'AND right arrow key is pressed '
+          'THEN focus moves to the next day', (WidgetTester tester) async {
+        await tester.pumpAsyncWidget(
+          createTestWidget(
+            ShadCalendar(initialMonth: DateTime(2025, 9)),
+          ),
+        );
+
+        await focusDay(tester, '1');
+
+        expect(isFocused(tester, '1'), isTrue);
+
+        await pressKey(tester, LogicalKeyboardKey.arrowRight);
+
+        expect(isFocused(tester, '2'), isTrue);
+      });
+
+      testWidgets(
+          'GIVEN a day button is focused '
+          'AND left arrow key is pressed '
+          'THEN focus moves to the previous day', (WidgetTester tester) async {
+        await tester.pumpAsyncWidget(
+          createTestWidget(
+            ShadCalendar(initialMonth: DateTime(2025, 9)),
+          ),
+        );
+
+        await focusDay(tester, '1');
+
+        expect(isFocused(tester, '1'), isTrue);
+
+        await pressKey(tester, LogicalKeyboardKey.arrowRight);
+        await pressKey(tester, LogicalKeyboardKey.arrowLeft);
+
+        expect(isFocused(tester, '1'), isTrue);
+      });
+
+      testWidgets(
+          'GIVEN a day button is focused '
+          'AND there is a day right above it '
+          'AND arrow-up is pressed '
+          'THEN focus moves to the day right above',
+          (WidgetTester tester) async {
+        await tester.pumpAsyncWidget(
+          createTestWidget(
+            ShadCalendar(initialMonth: DateTime(2025, 9)),
+          ),
+        );
+
+        await focusDay(tester, '8');
+
+        expect(isFocused(tester, '8'), isTrue);
+
+        await pressKey(tester, LogicalKeyboardKey.arrowUp);
+
+        expect(isFocused(tester, '1'), isTrue);
+      });
+
+      testWidgets(
+          'GIVEN a day button is focused '
+          'AND there is a day right below it '
+          'AND arrow-down is pressed '
+          'THEN focus moves to the day below below',
+          (WidgetTester tester) async {
+        await tester.pumpAsyncWidget(
+          createTestWidget(
+            ShadCalendar(initialMonth: DateTime(2025, 9)),
+          ),
+        );
+
+        await focusDay(tester, '1');
+
+        expect(isFocused(tester, '1'), isTrue);
+
+        await pressKey(tester, LogicalKeyboardKey.arrowDown);
+
+        expect(isFocused(tester, '8'), isTrue);
+      });
     });
 
     testWidgets('applies custom day button size correctly',
