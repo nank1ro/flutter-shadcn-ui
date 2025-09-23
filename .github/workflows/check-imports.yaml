@@ -14,11 +14,23 @@ jobs:
       run: |
         echo "Checking for prohibited Material and Cupertino imports in lib directory..."
 
-        # Check for material.dart imports (excluding lib/src/app.dart)
-        MATERIAL_IMPORTS=$(grep -r "import.*material\.dart" lib/ | grep -v "lib/src/app.dart" || true)
+        # Define excluded files
+        EXCLUDED_FILES=(
+          "lib/src/app.dart"
+          "lib/src/theme/themes/base.dart"
+        )
 
-        # Check for cupertino.dart imports (excluding lib/src/app.dart)
-        CUPERTINO_IMPORTS=$(grep -r "import.*cupertino\.dart" lib/ | grep -v "lib/src/app.dart" || true)
+        # Build grep exclusion pattern
+        GREP_EXCLUDE=""
+        for file in "${EXCLUDED_FILES[@]}"; do
+          GREP_EXCLUDE="$GREP_EXCLUDE | grep -v \"$file\""
+        done
+
+        # Check for material.dart imports (excluding specified files)
+        MATERIAL_IMPORTS=$(eval "grep -r \"import.*material\.dart\" lib/ $GREP_EXCLUDE || true")
+
+        # Check for cupertino.dart imports (excluding specified files)
+        CUPERTINO_IMPORTS=$(eval "grep -r \"import.*cupertino\.dart\" lib/ $GREP_EXCLUDE || true")
 
         # Report all findings first
         FOUND_VIOLATIONS=false

@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show ThemeExtension;
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
