@@ -16,17 +16,27 @@ jobs:
 
         # Check for material.dart imports
         MATERIAL_IMPORTS=$(grep -r "import.*material\.dart" lib/ || true)
-        if [ ! -z "$MATERIAL_IMPORTS" ]; then
-          echo "❌ Found prohibited material.dart imports:"
-          echo "$MATERIAL_IMPORTS"
-          exit 1
-        fi
 
         # Check for cupertino.dart imports
         CUPERTINO_IMPORTS=$(grep -r "import.*cupertino\.dart" lib/ || true)
+
+        # Report all findings first
+        FOUND_VIOLATIONS=false
+
+        if [ ! -z "$MATERIAL_IMPORTS" ]; then
+          echo "❌ Found prohibited material.dart imports:"
+          echo "$MATERIAL_IMPORTS"
+          FOUND_VIOLATIONS=true
+        fi
+
         if [ ! -z "$CUPERTINO_IMPORTS" ]; then
           echo "❌ Found prohibited cupertino.dart imports:"
           echo "$CUPERTINO_IMPORTS"
+          FOUND_VIOLATIONS=true
+        fi
+
+        # Exit with error if any violations were found
+        if [ "$FOUND_VIOLATIONS" = true ]; then
           exit 1
         fi
 
