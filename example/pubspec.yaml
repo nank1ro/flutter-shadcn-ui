@@ -15,7 +15,7 @@ dependencies:
     path: ..
   flutter_solidart: ^2.1.0
   awesome_flutter_extensions: ^2.0.1
-  google_fonts: 6.3.0
+  google_fonts: 6.3.1
   collection: ^1.18.0
   get: ^4.6.6
   boxy: ^2.2.1
