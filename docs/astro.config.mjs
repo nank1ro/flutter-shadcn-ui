@@ -9,8 +9,8 @@ export default defineConfig({
       title: 'Flutter Shadcn UI docs',
       components: {
         LanguageSelect: './src/components/SelectColor.astro',
-
       },
+      customCss: ['./src/fonts.css'],
       social: {
         github: 'https://github.com/nank1ro',
         twitter: 'https://twitter.com/nank1ro'
