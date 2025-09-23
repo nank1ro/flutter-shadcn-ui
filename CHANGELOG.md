@@ -1,6 +1,6 @@
 ## 0.31.8
 
-- **FEAT**: Add support for keyboard navigation in `ShadCalendar`
+- **FEAT**: Add support for keyboard navigation in `ShadCalendar` (thanks to @pedromassango).
 
 ## 0.31.7
 

@@ -1628,7 +1628,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
                       LogicalKeySet(LogicalKeyboardKey.arrowLeft):
                           const DirectionalFocusIntent(TraversalDirection.left),
                       LogicalKeySet(LogicalKeyboardKey.arrowRight):
-                          const DirectionalFocusIntent(TraversalDirection.right),
+                          const DirectionalFocusIntent(
+                        TraversalDirection.right,
+                      ),
                     },
                     child: GridView.count(
                       mainAxisSpacing: effectiveGridMainAxisSpacing,
@@ -1804,8 +1806,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
                                     (startRangeEquals && endRange == null) ||
                                         (endDateEquals && startRange == null);
 
-                                // Skip the operation on the range if a single date
-                                // is selected and allowDeselection is false
+                                // Skip the operation on the range if a single
+                                // date is selected and allowDeselection is
+                                // false
                                 if (widget.variant ==
                                     ShadCalendarVariant.range) {
                                   if (singleDateSelectedInRange &&

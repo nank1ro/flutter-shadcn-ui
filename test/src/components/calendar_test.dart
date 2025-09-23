@@ -258,8 +258,11 @@ void main() {
     });
     group('Keyboard navigation', () {
       /// Press Tab until the target day button is focused
-      Future<void> focusDay(WidgetTester tester, String dayText,
-          {int maxTabs = 31}) async {
+      Future<void> focusDay(
+        WidgetTester tester,
+        String dayText, {
+        int maxTabs = 31,
+      }) async {
         final finder = find.text(dayText).first;
 
         for (var i = 0; i < maxTabs; i++) {
