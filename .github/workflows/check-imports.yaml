@@ -1,0 +1,36 @@
+name: Check Prohibited Imports
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check-imports:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Check for prohibited imports
+      run: |
+        echo "Checking for prohibited Material and Cupertino imports in lib directory..."
+
+        # Check for material.dart imports
+        MATERIAL_IMPORTS=$(grep -r "import.*material\.dart" lib/ || true)
+        if [ ! -z "$MATERIAL_IMPORTS" ]; then
+          echo "❌ Found prohibited material.dart imports:"
+          echo "$MATERIAL_IMPORTS"
+          exit 1
+        fi
+
+        # Check for cupertino.dart imports
+        CUPERTINO_IMPORTS=$(grep -r "import.*cupertino\.dart" lib/ || true)
+        if [ ! -z "$CUPERTINO_IMPORTS" ]; then
+          echo "❌ Found prohibited cupertino.dart imports:"
+          echo "$CUPERTINO_IMPORTS"
+          exit 1
+        fi
+
+        echo "✅ No prohibited imports found!"
