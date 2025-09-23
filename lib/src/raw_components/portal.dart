@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// The position of the [ShadPortal] in the global coordinate system.
 sealed class ShadAnchorBase {
@@ -292,19 +292,15 @@ class _ShadPortalState extends State<ShadPortal> {
       child: OverlayPortal(
         controller: overlayPortalController,
         overlayChildBuilder: (context) {
-          return Material(
-            type: MaterialType.transparency,
-            child: Center(
-              widthFactor: 1,
-              heightFactor: 1,
-              child: switch (widget.anchor) {
-                final ShadAnchorAuto anchor =>
-                  buildAutoPosition(context, anchor),
-                final ShadAnchor anchor => buildManualPosition(context, anchor),
-                final ShadGlobalAnchor anchor =>
-                  buildGlobalPosition(context, anchor),
-              },
-            ),
+          return Center(
+            widthFactor: 1,
+            heightFactor: 1,
+            child: switch (widget.anchor) {
+              final ShadAnchorAuto anchor => buildAutoPosition(context, anchor),
+              final ShadAnchor anchor => buildManualPosition(context, anchor),
+              final ShadGlobalAnchor anchor =>
+                buildGlobalPosition(context, anchor),
+            },
           );
         },
         child: widget.child,

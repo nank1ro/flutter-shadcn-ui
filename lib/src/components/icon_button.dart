@@ -1,5 +1,5 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -433,7 +433,6 @@ class ShadIconButton extends StatelessWidget {
     assert(debugCheckHasShadTheme(context));
 
     final theme = ShadTheme.of(context);
-    final materialTheme = Theme.of(context);
 
     final defaultSize =
         buttonTheme(theme).sizesTheme?.icon ?? theme.buttonSizesTheme.icon!;
@@ -444,7 +443,7 @@ class ShadIconButton extends StatelessWidget {
     final effectiveHeight = height ?? defaultSize.height;
 
     return IconTheme(
-      data: materialTheme.iconTheme.copyWith(size: iconSize),
+      data: IconThemeData(size: iconSize),
       child: ShadButton.raw(
         variant: variant,
         width: effectiveWidth,

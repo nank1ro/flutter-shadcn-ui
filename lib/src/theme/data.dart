@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
@@ -47,7 +47,6 @@ class ShadThemeData extends ShadBaseTheme {
   factory ShadThemeData({
     required ShadColorScheme colorScheme,
     required Brightness brightness,
-    Iterable<ThemeExtension<dynamic>>? extensions,
     ShadButtonTheme? primaryButtonTheme,
     ShadButtonTheme? secondaryButtonTheme,
     ShadButtonTheme? destructiveButtonTheme,
@@ -168,7 +167,6 @@ class ShadThemeData extends ShadBaseTheme {
     return ShadThemeData._internal(
       colorScheme: colorScheme,
       brightness: brightness,
-      extensions: extensions,
       primaryButtonTheme:
           effectiveVariant.primaryButtonTheme().mergeWith(primaryButtonTheme),
       secondaryButtonTheme: effectiveVariant
@@ -256,7 +254,6 @@ class ShadThemeData extends ShadBaseTheme {
   const ShadThemeData._internal({
     required super.colorScheme,
     required super.brightness,
-    required super.extensions,
     required super.primaryButtonTheme,
     required super.secondaryButtonTheme,
     required super.destructiveButtonTheme,
@@ -552,7 +549,6 @@ class ShadThemeData extends ShadBaseTheme {
     ShadBadgeTheme? destructiveBadgeTheme,
     ShadBadgeTheme? outlineBadgeTheme,
     Brightness? brightness,
-    Iterable<ThemeExtension<dynamic>>? extensions,
     BorderRadius? radius,
     ShadAvatarTheme? avatarTheme,
     ShadButtonSizesTheme? buttonSizesTheme,
@@ -597,7 +593,6 @@ class ShadThemeData extends ShadBaseTheme {
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
-      extensions: extensions ?? this.extensions,
       brightness: brightness ?? this.brightness,
       primaryButtonTheme: primaryButtonTheme ?? this.primaryButtonTheme,
       secondaryButtonTheme: secondaryButtonTheme ?? this.secondaryButtonTheme,

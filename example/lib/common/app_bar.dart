@@ -24,16 +24,18 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         ShadButton.ghost(
           onPressed: () {
             themeModeProvider.of(context).updateValue((value) =>
-                value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light);
+                value == ShadThemeMode.light
+                    ? ShadThemeMode.dark
+                    : ShadThemeMode.light);
           },
           leading: SignalBuilder(
             builder: (context, child) {
               final themeMode = themeModeProvider.of(context).value;
               return Icon(
-                themeMode == ThemeMode.light
+                themeMode == ShadThemeMode.light
                     ? Icons.light_mode
                     : Icons.dark_mode,
-                semanticLabel: themeMode == ThemeMode.light
+                semanticLabel: themeMode == ShadThemeMode.light
                     ? 'Switch to dark mode'
                     : 'Switch to light mode',
               );

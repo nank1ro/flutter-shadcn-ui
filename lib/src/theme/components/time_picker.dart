@@ -1,6 +1,7 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 @immutable
@@ -59,7 +60,7 @@ class ShadTimePickerTheme {
   final WrapCrossAlignment? crossAxisAlignment;
 
   /// {@macro ShadTimePicker.initialDayPeriod}
-  final DayPeriod? initialDayPeriod;
+  final ShadDayPeriod? initialDayPeriod;
 
   /// {@macro ShadTimePicker.periodHeight}
   final double? periodHeight;
@@ -165,7 +166,7 @@ class ShadTimePickerTheme {
     WrapAlignment? alignment,
     WrapAlignment? runAlignment,
     WrapCrossAlignment? crossAxisAlignment,
-    DayPeriod? initialDayPeriod,
+    ShadDayPeriod? initialDayPeriod,
     double? periodHeight,
     double? periodMinWidth,
     double? gap,

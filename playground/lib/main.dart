@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
     return ShadApp.router(
       title: 'shadcn-ui Flutter Playground',
       routerConfig: router,
-      themeMode: theme == 'dark' ? ThemeMode.dark : ThemeMode.light,
+      themeMode: theme == 'dark' ? ShadThemeMode.dark : ShadThemeMode.light,
       debugShowCheckedModeBanner: false,
       theme: ShadThemeData(
         colorScheme: getShadColorScheme(themeColor, false),

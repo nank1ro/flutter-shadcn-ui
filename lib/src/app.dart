@@ -1,7 +1,6 @@
 // ignore_for_file: lines_longer_than_80_chars
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart'
     show
         GlobalCupertinoLocalizations,
@@ -18,6 +17,84 @@ import 'package:shadcn_ui/src/utils/mouse_cursor_provider.dart';
 enum ShadAppType {
   shadcn,
   custom,
+}
+
+/// Describes which theme will be used by [ShadApp].
+enum ShadThemeMode {
+  /// Use either the light or dark theme based on what the user has selected in
+  /// the system settings.
+  system,
+
+  /// Always use the light mode regardless of system preference.
+  light,
+
+  /// Always use the dark mode (if available) regardless of system preference.
+  dark,
+}
+
+/// A modal route that replaces the entire screen with a platform-adaptive
+/// transition.
+///
+/// {@macro flutter.material.materialRouteTransitionMixin}
+///
+/// By default, when a modal route is replaced by another, the previous route
+/// remains in memory. To free all the resources when this is not necessary, set
+/// [maintainState] to false.
+///
+/// The `fullscreenDialog` property specifies whether the incoming route is a
+/// fullscreen modal dialog. On iOS, those routes animate from the bottom to the
+/// top rather than horizontally.
+///
+/// If `barrierDismissible` is true, then pressing the escape key on the keyboard
+/// will cause the current route to be popped with null as the value.
+///
+/// The type `T` specifies the return type of the route which can be supplied as
+/// the route is popped from the stack via [Navigator.pop] by providing the
+/// optional `result` argument.
+///
+class ShadPageRoute<T> extends PageRoute<T> {
+  /// Construct a MaterialPageRoute whose contents are defined by [builder].
+  ShadPageRoute({
+    required this.builder,
+    super.settings,
+    super.requestFocus,
+    this.maintainState = true,
+    super.fullscreenDialog,
+    super.allowSnapshotting = true,
+    super.barrierDismissible = false,
+    super.traversalEdgeBehavior,
+    super.directionalTraversalEdgeBehavior,
+  }) {
+    assert(opaque);
+  }
+
+  /// Builds the primary contents of the route.
+  final WidgetBuilder builder;
+
+  @override
+  final bool maintainState;
+
+  @override
+  Color? get barrierColor => null;
+
+  @override
+  String? get barrierLabel => null;
+
+  @override
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
+    return Semantics(
+      scopesRoute: true,
+      explicitChildNodes: true,
+      child: builder(context),
+    );
+  }
+
+  @override
+  Duration get transitionDuration => const Duration(microseconds: 300);
+
+  @override
+  Duration get reverseTransitionDuration => const Duration(microseconds: 300);
 }
 
 class ShadApp extends StatefulWidget {
@@ -54,14 +131,12 @@ class ShadApp extends StatefulWidget {
     this.scrollBehavior = const ShadScrollBehavior(),
     this.pageRouteBuilder,
     this.themeCurve = Curves.linear,
-    this.materialThemeBuilder,
     this.backgroundColor,
   })  : routeInformationProvider = null,
         routeInformationParser = null,
         routerDelegate = null,
         backButtonDispatcher = null,
         routerConfig = null,
-        cupertinoThemeBuilder = null,
         appBuilder = null,
         type = ShadAppType.shadcn;
 
@@ -94,7 +169,6 @@ class ShadApp extends StatefulWidget {
     this.restorationScopeId,
     this.scrollBehavior = const ShadScrollBehavior(),
     this.themeCurve = Curves.linear,
-    this.materialThemeBuilder,
     this.backgroundColor,
   })  : navigatorObservers = null,
         navigatorKey = null,
@@ -105,7 +179,6 @@ class ShadApp extends StatefulWidget {
         routes = null,
         initialRoute = null,
         pageRouteBuilder = null,
-        cupertinoThemeBuilder = null,
         appBuilder = null,
         type = ShadAppType.shadcn;
 
@@ -120,7 +193,6 @@ class ShadApp extends StatefulWidget {
         onNavigationNotification = null,
         builder = null,
         color = null,
-        cupertinoThemeBuilder = null,
         debugShowCheckedModeBanner = false,
         home = null,
         initialRoute = null,
@@ -128,7 +200,6 @@ class ShadApp extends StatefulWidget {
         localeListResolutionCallback = null,
         localeResolutionCallback = null,
         localizationsDelegates = null,
-        materialThemeBuilder = null,
         navigatorKey = null,
         navigatorObservers = null,
         onGenerateInitialRoutes = null,
@@ -188,21 +259,21 @@ class ShadApp extends StatefulWidget {
   /// Determines which theme will be used by the application if both [theme]
   /// and [darkTheme] are provided.
   ///
-  /// If set to [ThemeMode.system], the choice of which theme to use will
+  /// If set to [ShadThemeMode.system], the choice of which theme to use will
   /// be based on the user's system preferences. If the
   /// [MediaQuery.platformBrightnessOf] is [Brightness.light], [theme] will be
   /// used. If it is [Brightness.dark], [darkTheme] will be used (unless it is
   /// null, in which case [theme] will be used.
   ///
-  /// If set to [ThemeMode.light] the [theme] will always be used,
+  /// If set to [ShadThemeMode.light] the [theme] will always be used,
   /// regardless of the user's system preference.
   ///
-  /// If set to [ThemeMode.dark] the [darkTheme] will be used
+  /// If set to [ShadThemeMode.dark] the [darkTheme] will be used
   /// regardless of the user's system preference. If [darkTheme] is null
   /// then it will fallback to using [theme].
   ///
-  /// The default value is [ThemeMode.system].
-  final ThemeMode? themeMode;
+  /// The default value is [ShadThemeMode.system].
+  final ShadThemeMode? themeMode;
 
   /// {@macro flutter.widgets.widgetsApp.navigatorKey}
   final GlobalKey<NavigatorState>? navigatorKey;
@@ -214,7 +285,7 @@ class ShadApp extends StatefulWidget {
   ///
   /// When a named route is pushed with [Navigator.pushNamed], the route name is
   /// looked up in this map. If the name is present, the associated
-  /// [WidgetBuilder] is used to construct a [MaterialPageRoute] that performs
+  /// [WidgetBuilder] is used to construct a [ShadPageRoute] that performs
   /// an appropriate transition, including [Hero] animations, to the new route.
   ///
   /// {@macro flutter.widgets.widgetsApp.routes}
@@ -262,7 +333,7 @@ class ShadApp extends StatefulWidget {
   /// a route (e.g. which button a user selected in a modal dialog).
   ///
   /// This callback can be used, for example, to specify that a
-  /// [MaterialPageRoute] or a [CupertinoPageRoute] should be used for building
+  /// MaterialPageRoute or a CupertinoPageRoute should be used for building
   /// page transitions.
   ///
   /// The [PageRouteFactory] type is generic, meaning the provided function must
@@ -411,14 +482,6 @@ class ShadApp extends StatefulWidget {
   /// {@macro ShadAppBuilder.backgroundColor}
   final Color? backgroundColor;
 
-  final ThemeData Function(BuildContext context, ThemeData theme)?
-      materialThemeBuilder;
-
-  final CupertinoThemeData Function(
-    BuildContext context,
-    CupertinoThemeData theme,
-  )? cupertinoThemeBuilder;
-
   @override
   State<ShadApp> createState() => _ShadAppState();
 }
@@ -485,10 +548,10 @@ class _ShadAppState extends State<ShadApp> {
   ShadThemeData? get effectiveDarkTheme => widget.darkTheme;
 
   ShadThemeData theme(BuildContext context) {
-    final mode = widget.themeMode ?? ThemeMode.system;
+    final mode = widget.themeMode ?? ShadThemeMode.system;
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
-    final useDarkStyle = mode == ThemeMode.dark ||
-        (mode == ThemeMode.system && platformBrightness == Brightness.dark);
+    final useDarkStyle = mode == ShadThemeMode.dark ||
+        (mode == ShadThemeMode.system && platformBrightness == Brightness.dark);
 
     final data = () {
       late ShadThemeData result;
@@ -503,72 +566,6 @@ class _ShadAppState extends State<ShadApp> {
     return data;
   }
 
-  ThemeData materialTheme(BuildContext context) {
-    final themeData = theme(context);
-    var mTheme = ThemeData(
-      fontFamily: themeData.textTheme.family,
-      extensions: themeData.extensions,
-      colorScheme: ColorScheme(
-        brightness: themeData.brightness,
-        primary: themeData.colorScheme.primary,
-        onPrimary: themeData.colorScheme.primaryForeground,
-        secondary: themeData.colorScheme.secondary,
-        onSecondary: themeData.colorScheme.secondaryForeground,
-        error: themeData.colorScheme.destructive,
-        onError: themeData.colorScheme.destructiveForeground,
-        surface: themeData.colorScheme.background,
-        onSurface: themeData.colorScheme.foreground,
-      ),
-      scaffoldBackgroundColor: themeData.colorScheme.background,
-      brightness: themeData.brightness,
-      dividerTheme: DividerThemeData(
-        color: themeData.separatorTheme.color ?? themeData.colorScheme.border,
-        thickness: themeData.separatorTheme.thickness ?? 1,
-      ),
-      textSelectionTheme: TextSelectionThemeData(
-        cursorColor: themeData.colorScheme.primary,
-        selectionColor: themeData.colorScheme.selection,
-        selectionHandleColor: themeData.colorScheme.primary,
-      ),
-      iconTheme: IconThemeData(
-        size: 16,
-        color: themeData.colorScheme.foreground,
-      ),
-      scrollbarTheme: ScrollbarThemeData(
-        crossAxisMargin: 1,
-        mainAxisMargin: 1,
-        thickness: const WidgetStatePropertyAll(8),
-        radius: const Radius.circular(999),
-        thumbColor: WidgetStatePropertyAll(themeData.colorScheme.border),
-      ),
-    );
-    mTheme = mTheme.copyWith(
-      textTheme: themeData.textTheme
-          .applyGoogleFontToTextTheme(textTheme: mTheme.textTheme),
-    );
-
-    if (widget.materialThemeBuilder == null) {
-      return mTheme;
-    }
-    return widget.materialThemeBuilder!(context, mTheme);
-  }
-
-  CupertinoThemeData cupertinoTheme(BuildContext context) {
-    final themeData = theme(context);
-    final cTheme = CupertinoThemeData(
-      primaryColor: themeData.colorScheme.primary,
-      primaryContrastingColor: themeData.colorScheme.primaryForeground,
-      scaffoldBackgroundColor: themeData.colorScheme.background,
-      barBackgroundColor: themeData.colorScheme.primary,
-      brightness: themeData.brightness,
-    );
-
-    if (widget.cupertinoThemeBuilder == null) {
-      return cTheme;
-    }
-    return widget.cupertinoThemeBuilder!(context, cTheme);
-  }
-
   Widget _builder(BuildContext context, Widget? child) {
     return ShadAppBuilder(
       backgroundColor: widget.backgroundColor,
@@ -578,58 +575,22 @@ class _ShadAppState extends State<ShadApp> {
   }
 
   Widget _buildApp(BuildContext context) {
-    final mTheme = materialTheme(context);
     final theme = ShadTheme.of(context);
     switch (widget.type) {
       case ShadAppType.shadcn:
         if (usesRouter) {
-          return AnimatedTheme(
-            data: mTheme,
-            child: WidgetsApp.router(
-              key: GlobalObjectKey(this),
-              routeInformationProvider: widget.routeInformationProvider,
-              routeInformationParser: widget.routeInformationParser,
-              routerDelegate: widget.routerDelegate,
-              routerConfig: widget.routerConfig,
-              backButtonDispatcher: widget.backButtonDispatcher,
-              onNavigationNotification: widget.onNavigationNotification,
-              builder: _builder,
-              title: widget.title,
-              onGenerateTitle: widget.onGenerateTitle,
-              color: widget.color ?? Colors.blue,
-              locale: widget.locale,
-              localeResolutionCallback: widget.localeResolutionCallback,
-              localeListResolutionCallback: widget.localeListResolutionCallback,
-              supportedLocales: widget.supportedLocales,
-              showPerformanceOverlay: widget.showPerformanceOverlay,
-              showSemanticsDebugger: widget.showSemanticsDebugger,
-              debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
-              shortcuts: widget.shortcuts,
-              actions: widget.actions,
-              restorationScopeId: widget.restorationScopeId,
-              localizationsDelegates: localizationsDelegates,
-              textStyle: TextStyle(color: theme.colorScheme.foreground),
-            ),
-          );
-        }
-
-        return AnimatedTheme(
-          data: mTheme,
-          child: WidgetsApp(
+          return WidgetsApp.router(
             key: GlobalObjectKey(this),
-            navigatorKey: widget.navigatorKey,
-            navigatorObservers: widget.navigatorObservers!,
-            home: widget.home,
-            routes: widget.routes!,
-            initialRoute: widget.initialRoute,
-            onGenerateRoute: widget.onGenerateRoute,
-            onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
-            onUnknownRoute: widget.onUnknownRoute,
+            routeInformationProvider: widget.routeInformationProvider,
+            routeInformationParser: widget.routeInformationParser,
+            routerDelegate: widget.routerDelegate,
+            routerConfig: widget.routerConfig,
+            backButtonDispatcher: widget.backButtonDispatcher,
             onNavigationNotification: widget.onNavigationNotification,
             builder: _builder,
             title: widget.title,
             onGenerateTitle: widget.onGenerateTitle,
-            color: widget.color ?? Colors.blue,
+            color: widget.color ?? const Color(0xFF2196F3),
             locale: widget.locale,
             localeResolutionCallback: widget.localeResolutionCallback,
             localeListResolutionCallback: widget.localeListResolutionCallback,
@@ -642,34 +603,60 @@ class _ShadAppState extends State<ShadApp> {
             restorationScopeId: widget.restorationScopeId,
             localizationsDelegates: localizationsDelegates,
             textStyle: TextStyle(color: theme.colorScheme.foreground),
-            pageRouteBuilder: widget.pageRouteBuilder ??
-                <T>(RouteSettings settings, WidgetBuilder builder) {
-                  return MaterialPageRoute<T>(
-                    settings: settings,
-                    builder: builder,
-                  );
-                },
-          ),
+          );
+        }
+
+        return WidgetsApp(
+          key: GlobalObjectKey(this),
+          navigatorKey: widget.navigatorKey,
+          navigatorObservers: widget.navigatorObservers!,
+          home: widget.home,
+          routes: widget.routes!,
+          initialRoute: widget.initialRoute,
+          onGenerateRoute: widget.onGenerateRoute,
+          onGenerateInitialRoutes: widget.onGenerateInitialRoutes,
+          onUnknownRoute: widget.onUnknownRoute,
+          onNavigationNotification: widget.onNavigationNotification,
+          builder: _builder,
+          title: widget.title,
+          onGenerateTitle: widget.onGenerateTitle,
+          color: widget.color ?? const Color(0xFF2196F3),
+          locale: widget.locale,
+          localeResolutionCallback: widget.localeResolutionCallback,
+          localeListResolutionCallback: widget.localeListResolutionCallback,
+          supportedLocales: widget.supportedLocales,
+          showPerformanceOverlay: widget.showPerformanceOverlay,
+          showSemanticsDebugger: widget.showSemanticsDebugger,
+          debugShowCheckedModeBanner: widget.debugShowCheckedModeBanner,
+          shortcuts: widget.shortcuts,
+          actions: widget.actions,
+          restorationScopeId: widget.restorationScopeId,
+          localizationsDelegates: localizationsDelegates,
+          textStyle: TextStyle(color: theme.colorScheme.foreground),
+          pageRouteBuilder: widget.pageRouteBuilder ??
+              <T>(RouteSettings settings, WidgetBuilder builder) {
+                return ShadPageRoute<T>(
+                  settings: settings,
+                  builder: builder,
+                );
+              },
         );
       case ShadAppType.custom:
-        return AnimatedTheme(
-          data: mTheme,
-          child: Builder(
-            builder: (BuildContext context) {
-              // Why are we surrounding a builder with a builder?
-              //
-              // The widget.builder may contain code that invokes
-              // Theme.of(), which should return the theme we selected
-              // above in AnimatedTheme. However, if we invoke
-              // widget.builder() directly as the child of AnimatedTheme
-              // then there is no Context separating them, and the
-              // widget.builder() will not find the theme. Therefore, we
-              // surround widget.builder with yet another builder so that
-              // a context separates them and Theme.of() correctly
-              // resolves to the theme we passed to AnimatedTheme.
-              return widget.appBuilder!(context);
-            },
-          ),
+        return Builder(
+          builder: (BuildContext context) {
+            // Why are we surrounding a builder with a builder?
+            //
+            // The widget.builder may contain code that invokes
+            // Theme.of(), which should return the theme we selected
+            // above in AnimatedTheme. However, if we invoke
+            // widget.builder() directly as the child of AnimatedTheme
+            // then there is no Context separating them, and the
+            // widget.builder() will not find the theme. Therefore, we
+            // surround widget.builder with yet another builder so that
+            // a context separates them and Theme.of() correctly
+            // resolves to the theme we passed to AnimatedTheme.
+            return widget.appBuilder!(context);
+          },
         );
     }
   }
@@ -680,17 +667,15 @@ class _ShadAppState extends State<ShadApp> {
 /// {@macro flutter.widgets.scrollBehavior}
 ///
 /// When using the desktop platform, if the [Scrollable] widget scrolls in the
-/// [Axis.vertical], a [Scrollbar] is applied.
+/// [Axis.vertical], a Scrollbar is applied.
 ///
 /// See also:
 ///
 ///  * [ScrollBehavior], the default scrolling behavior extended by this class.
-/// By default we will use [CupertinoScrollbar] for iOS and macOS platforms
-/// for windows and Linux [Scrollbar]
-/// for Android and Fuchsia we will return the child
+/// By default will return the child
 class ShadScrollBehavior extends ScrollBehavior {
   /// Creates a ShadScrollBehavior that decorates [Scrollable]s with
-  /// [Scrollbar]s based on the current platform and provided
+  /// Scrollbars based on the current platform and provided
   /// [ScrollableDetails].
   const ShadScrollBehavior();
 
@@ -700,28 +685,7 @@ class ShadScrollBehavior extends ScrollBehavior {
     Widget child,
     ScrollableDetails details,
   ) {
-    switch (axisDirectionToAxis(details.direction)) {
-      case Axis.horizontal:
-        return child;
-      case Axis.vertical:
-        switch (getPlatform(context)) {
-          case TargetPlatform.macOS:
-          case TargetPlatform.iOS:
-            return CupertinoScrollbar(
-              controller: details.controller,
-              child: child,
-            );
-          case TargetPlatform.linux:
-          case TargetPlatform.windows:
-            return Scrollbar(
-              controller: details.controller,
-              child: child,
-            );
-          case TargetPlatform.android:
-          case TargetPlatform.fuchsia:
-            return child;
-        }
-    }
+    return child;
   }
 }
 

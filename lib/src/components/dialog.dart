@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/icon_button.dart';
@@ -454,7 +454,7 @@ class ShadDialog extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 foregroundColor:
                     theme.colorScheme.foreground.withValues(alpha: .5),
-                hoverBackgroundColor: Colors.transparent,
+                hoverBackgroundColor: const Color(0x00000000),
                 hoverForegroundColor: theme.colorScheme.foreground,
                 pressedForegroundColor: theme.colorScheme.foreground,
                 onPressed: () => Navigator.of(context).pop(),

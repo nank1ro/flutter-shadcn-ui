@@ -5,7 +5,7 @@ import 'package:shadcn_ui/src/theme/theme.dart';
 ///
 /// The [ShadProgress] widget displays a styled progress bar with configurable
 /// colors, height, and border radius. It integrates with [ShadTheme] for
-/// consistent styling and wraps [LinearProgressIndicator] with additional
+/// consistent styling and wraps LinearProgressIndicator with additional
 /// customization options.
 class ShadProgress extends StatelessWidget {
   /// Creates a progress bar widget with the specified properties.
