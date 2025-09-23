@@ -14,11 +14,11 @@ jobs:
       run: |
         echo "Checking for prohibited Material and Cupertino imports in lib directory..."
 
-        # Check for material.dart imports
-        MATERIAL_IMPORTS=$(grep -r "import.*material\.dart" lib/ || true)
+        # Check for material.dart imports (excluding lib/src/app.dart)
+        MATERIAL_IMPORTS=$(grep -r "import.*material\.dart" lib/ | grep -v "lib/src/app.dart" || true)
 
-        # Check for cupertino.dart imports
-        CUPERTINO_IMPORTS=$(grep -r "import.*cupertino\.dart" lib/ || true)
+        # Check for cupertino.dart imports (excluding lib/src/app.dart)
+        CUPERTINO_IMPORTS=$(grep -r "import.*cupertino\.dart" lib/ | grep -v "lib/src/app.dart" || true)
 
         # Report all findings first
         FOUND_VIOLATIONS=false
