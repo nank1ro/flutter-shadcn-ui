@@ -1,3 +1,6 @@
+analyzer:
+  errors:
+    specify_nonobvious_property_types: ignore
 include: package:very_good_analysis/analysis_options.yaml
 
 linter:
