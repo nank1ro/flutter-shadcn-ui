@@ -1,3 +1,7 @@
+## 0.30.6
+
+- **FEAT**: Add support for keyboard navigation in `ShadCalendar`
+
 ## 0.30.5
 
 - **FIX**: change `ShadSeparator.margin` type to `EdgeInsetsGeometry`
