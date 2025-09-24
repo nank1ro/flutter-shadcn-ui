@@ -442,6 +442,15 @@ class _ShadSliderState extends State<ShadSlider> {
     const focusRingPadding = 2.0;
     const thumbBorderWidth = 2.0;
 
+    // Division marks configuration
+    const divisionMarkWidth = 2.0;
+    const divisionMarkHeight = 6.0;
+    const divisionMarkOffset = 1.0;
+    const divisionMarkBorderRadius = 1.0;
+
+    // Track border radius
+    const activeTrackBorderRadius = 8.0;
+
     // Calculate total additional space needed when focused
     const focusRingTotalSpace = (focusRingBorderWidth + focusRingPadding) * 2;
 
@@ -532,8 +541,10 @@ class _ShadSliderState extends State<ShadSlider> {
                             child: DecoratedBox(
                               decoration: BoxDecoration(
                                 borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(8),
-                                  bottomLeft: Radius.circular(8),
+                                  topLeft:
+                                      Radius.circular(activeTrackBorderRadius),
+                                  bottomLeft:
+                                      Radius.circular(activeTrackBorderRadius),
                                 ),
                                 color: widget.enabled
                                     ? effectiveActiveTrackColor
@@ -546,17 +557,21 @@ class _ShadSliderState extends State<ShadSlider> {
                             ...List.generate(widget.divisions! + 1, (index) {
                               final position = index / widget.divisions!;
                               return Positioned(
-                                left: position * effectiveTrackWidth - 1,
-                                top: (effectiveTrackHeight - 6) / 2,
+                                left: position * effectiveTrackWidth -
+                                    divisionMarkOffset,
+                                top: (effectiveTrackHeight -
+                                        divisionMarkHeight) /
+                                    2,
                                 child: Container(
-                                  width: 2,
-                                  height: 6,
+                                  width: divisionMarkWidth,
+                                  height: divisionMarkHeight,
                                   decoration: BoxDecoration(
                                     color: widget.enabled
                                         ? theme.colorScheme.border
                                         : theme.colorScheme.border
                                             .withValues(alpha: 0.5),
-                                    borderRadius: BorderRadius.circular(1),
+                                    borderRadius: BorderRadius.circular(
+                                        divisionMarkBorderRadius),
                                   ),
                                 ),
                               );
