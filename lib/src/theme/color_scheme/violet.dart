@@ -25,6 +25,14 @@ class ShadVioletColorScheme extends ShadColorScheme {
     required super.input,
     required super.ring,
     required super.selection,
+    required super.sidebar,
+    required super.sidebarForeground,
+    required super.sidebarBorder,
+    required super.sidebarRing,
+    required super.sidebarAccent,
+    required super.sidebarAccentForeground,
+    required super.sidebarPrimary,
+    required super.sidebarPrimaryForeground,
   });
 
   const ShadVioletColorScheme.light({
@@ -48,6 +56,14 @@ class ShadVioletColorScheme extends ShadColorScheme {
     super.input = const Color(0xffe5e7eb),
     super.ring = const Color(0xff7c3aed),
     super.selection = const Color(0xFFB4D7FF),
+    super.sidebar = const Color(0xFFfafafa),
+    super.sidebarForeground = const Color(0xFF09090b),
+    super.sidebarAccent = const Color(0xFFf4f4f5),
+    super.sidebarAccentForeground = const Color(0xFF18181b),
+    super.sidebarBorder = const Color(0xFFe4e4e7),
+    super.sidebarPrimary = const Color(0xFF8e51ff),
+    super.sidebarPrimaryForeground = const Color(0xFFf5f3ff),
+    super.sidebarRing = const Color(0xFF8e51ff),
   });
 
   const ShadVioletColorScheme.dark({
@@ -71,5 +87,13 @@ class ShadVioletColorScheme extends ShadColorScheme {
     super.input = const Color(0xff1f2937),
     super.ring = const Color(0xff6d28d9),
     super.selection = const Color(0xFF355172),
+    super.sidebar = const Color(0xFF18181b),
+    super.sidebarForeground = const Color(0xFFfafafa),
+    super.sidebarAccent = const Color(0xFF27272a),
+    super.sidebarAccentForeground = const Color(0xFFfafafa),
+    super.sidebarBorder = const Color.fromRGBO(255, 255, 255, 0.1),
+    super.sidebarPrimary = const Color(0xFF7f22fe),
+    super.sidebarPrimaryForeground = const Color(0xFFf5f3ff),
+    super.sidebarRing = const Color(0xFF7f22fe),
   });
 }
