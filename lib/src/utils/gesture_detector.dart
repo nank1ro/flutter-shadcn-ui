@@ -112,6 +112,12 @@ class ShadGestureDetector extends StatefulWidget {
     this.excludeFromSemantics = false,
     this.groupId,
     this.onTapOutside,
+    this.onPanDown,
+    this.onPanStart,
+    this.onPanUpdate,
+    this.onPanEnd,
+    this.onPanCancel,
+    this.dragStartBehavior = DragStartBehavior.start,
   });
 
   final ShadHoverStrategies? hoverStrategies;
@@ -190,6 +196,56 @@ class ShadGestureDetector extends StatefulWidget {
   /// duplication of information.
   final bool excludeFromSemantics;
 
+  /// A pointer has contacted the screen with a primary button and might begin
+  /// to move.
+  ///
+  /// See also:
+  ///
+  ///  * [kPrimaryButton], the button this callback responds to.
+  final GestureDragDownCallback? onPanDown;
+
+  /// A pointer has contacted the screen with a primary button and has begun to
+  /// move.
+  ///
+  /// See also:
+  ///
+  ///  * [kPrimaryButton], the button this callback responds to.
+  final GestureDragStartCallback? onPanStart;
+
+  /// A pointer that is in contact with the screen with a primary button and
+  /// moving has moved again.
+  ///
+  /// See also:
+  ///
+  ///  * [kPrimaryButton], the button this callback responds to.
+  final GestureDragUpdateCallback? onPanUpdate;
+
+  /// A pointer that was previously in contact with the screen with a primary
+  /// button and moving is no longer in contact with the screen and was moving
+  /// at a specific velocity when it stopped contacting the screen.
+  final GestureDragEndCallback? onPanEnd;
+
+  /// The pointer that previously triggered [onPanDown] did not complete.
+  final GestureDragCancelCallback? onPanCancel;
+
+  /// Determines the way that drag start behavior is handled.
+  ///
+  /// If set to [DragStartBehavior.start], gesture drag behavior will
+  /// begin at the position where the drag gesture won the arena. If set to
+  /// [DragStartBehavior.down] it will begin at the position where a down event
+  /// is first detected.
+  ///
+  /// In general, setting this to [DragStartBehavior.start] will make drag
+  /// animation smoother and setting it to [DragStartBehavior.down] will make
+  /// drag behavior feel slightly more reactive.
+  ///
+  /// By default, the drag start behavior is [DragStartBehavior.start].
+  ///
+  /// Only the [DragGestureRecognizer.onStart] callbacks for the
+  /// [VerticalDragGestureRecognizer], [HorizontalDragGestureRecognizer] and
+  /// [PanGestureRecognizer] are affected by this setting.
+  final DragStartBehavior dragStartBehavior;
+
   /// {@macro ShadMouseArea.groupId}
   final Object? groupId;
 
@@ -228,6 +284,7 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final ScrollBehavior configuration = ScrollConfiguration.of(context);
 
     final effectiveHoverStrategies =
         widget.hoverStrategies ?? theme.hoverStrategies;
@@ -449,6 +506,31 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
             ..onPeak = widget.onForcePressPeak
             ..onUpdate = widget.onForcePressUpdate
             ..onEnd = widget.onForcePressEnd
+            ..gestureSettings = gestureSettings
+            ..supportedDevices = widget.supportedDevices;
+        },
+      );
+    }
+
+    if (widget.onPanDown != null ||
+        widget.onPanStart != null ||
+        widget.onPanUpdate != null ||
+        widget.onPanEnd != null ||
+        widget.onPanCancel != null) {
+      gestures[PanGestureRecognizer] =
+          GestureRecognizerFactoryWithHandlers<PanGestureRecognizer>(
+        () => PanGestureRecognizer(
+            debugOwner: this, supportedDevices: widget.supportedDevices),
+        (PanGestureRecognizer instance) {
+          instance
+            ..onDown = widget.onPanDown
+            ..onStart = widget.onPanStart
+            ..onUpdate = widget.onPanUpdate
+            ..onEnd = widget.onPanEnd
+            ..onCancel = widget.onPanCancel
+            ..dragStartBehavior = widget.dragStartBehavior
+            ..multitouchDragStrategy =
+                configuration.getMultitouchDragStrategy(context)
             ..gestureSettings = gestureSettings
             ..supportedDevices = widget.supportedDevices;
         },
