@@ -1,10 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
-import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 import 'package:shadcn_ui/src/theme/theme.dart';
-import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 /// Possible ways for a user to interact with a [ShadSlider].
@@ -353,7 +351,10 @@ class _ShadSliderState extends State<ShadSlider> {
   }
 
   bool _handleKeyEvent(KeyEvent event) {
-    if (!widget.enabled || (event is! KeyDownEvent && event is! KeyRepeatEvent)) return false;
+    if (!widget.enabled ||
+        (event is! KeyDownEvent && event is! KeyRepeatEvent)) {
+      return false;
+    }
 
     final effectiveMin = widget.min ?? 0;
     final effectiveMax = widget.max ?? 1;
@@ -436,7 +437,16 @@ class _ShadSliderState extends State<ShadSlider> {
     final effectiveAllowedInteraction =
         widget.allowedInteraction ?? ShadSliderInteraction.tapAndSlide;
 
+    // Focus ring configuration
+    const focusRingBorderWidth = 2.0;
+    const focusRingPadding = 2.0;
+    const thumbBorderWidth = 2.0;
+
+    // Calculate total additional space needed when focused
+    const focusRingTotalSpace = (focusRingBorderWidth + focusRingPadding) * 2;
+
     return ShadFocusable(
+      canRequestFocus: widget.enabled,
       focusNode: focusNode,
       onKeyEvent: (node, event) {
         return _handleKeyEvent(event)
@@ -513,8 +523,10 @@ class _ShadSliderState extends State<ShadSlider> {
                           // active track
                           SizedBox(
                             width: effectiveTrackWidth *
-                                ((value - effectiveMin) /
-                                        (effectiveMax - effectiveMin))
+                                ((effectiveMax - effectiveMin) == 0
+                                        ? 0.0
+                                        : ((value - effectiveMin) /
+                                            (effectiveMax - effectiveMin)))
                                     .clamp(0.0, 1.0),
                             height: effectiveTrackHeight,
                             child: DecoratedBox(
@@ -554,21 +566,31 @@ class _ShadSliderState extends State<ShadSlider> {
                     ),
                     // thumb
                     Positioned(
-                      left: (((value - effectiveMin) /
-                                      (effectiveMax - effectiveMin)) *
-                                  constraints.maxWidth -
-                              effectiveThumbRadius)
-                          .clamp(-effectiveThumbRadius,
-                              constraints.maxWidth - effectiveThumbRadius),
-                      top:
-                          (effectiveTrackHeight - effectiveThumbRadius * 2) / 2,
+                      left: (((effectiveMax - effectiveMin) == 0
+                                  ? 0.0
+                                  : ((value - effectiveMin) /
+                                          (effectiveMax - effectiveMin)) *
+                                      constraints.maxWidth) -
+                              effectiveThumbRadius -
+                              (focused ? focusRingTotalSpace / 2 : 0))
+                          .clamp(
+                              -(effectiveThumbRadius +
+                                  (focused ? focusRingTotalSpace / 2 : 0)),
+                              constraints.maxWidth -
+                                  effectiveThumbRadius -
+                                  (focused ? focusRingTotalSpace / 2 : 0)),
+                      top: (effectiveTrackHeight - effectiveThumbRadius * 2) /
+                              2 -
+                          (focused ? focusRingTotalSpace / 2 : 0),
                       child: Semantics(
                         slider: true,
                         value: widget.semanticFormatterCallback?.call(value) ??
                             value.toString(),
                         child: SizedBox(
-                          width: effectiveThumbRadius * 2,
-                          height: effectiveThumbRadius * 2,
+                          width: effectiveThumbRadius * 2 +
+                              (focused ? focusRingTotalSpace : 0),
+                          height: effectiveThumbRadius * 2 +
+                              (focused ? focusRingTotalSpace : 0),
                           child: ShadGestureDetector(
                             cursor: widget.enabled
                                 ? effectiveMouseCursor
@@ -596,29 +618,50 @@ class _ShadSliderState extends State<ShadSlider> {
                                 ? (details) =>
                                     widget.onChangeEnd?.call(controller.value)
                                 : null,
-                            child: ShadDecorator(
-                              focused: focused,
-                              decoration: ShadDecoration(
-                                merge: false,
-                                color: widget.enabled
-                                    ? effectiveThumbColor
-                                    : effectiveDisabledThumbColor,
-                                border: ShadBorder.all(
-                                  color: widget.enabled
-                                      ? effectiveThumbBorderColor
-                                      // ignore: lines_longer_than_80_chars
-                                      : effectiveDisabledThumbBorderColor,
-                                  width: 2,
-                                ),
-                                shape: BoxShape.circle,
-                                secondaryFocusedBorder: ShadBorder.all(
-                                  color: theme.colorScheme.ring,
-                                  width: 2,
-                                  offset: 4,
-                                  radius: BorderRadius.circular(999),
-                                ),
-                              ),
-                            ),
+                            child: focused
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: widget.enabled
+                                          ? effectiveThumbColor
+                                          : effectiveDisabledThumbColor,
+                                      border: Border.all(
+                                        color: theme.colorScheme.ring,
+                                        width: focusRingBorderWidth,
+                                      ),
+                                    ),
+                                    child: Container(
+                                      margin: const EdgeInsets.all(
+                                          focusRingPadding),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: widget.enabled
+                                            ? effectiveThumbColor
+                                            : effectiveDisabledThumbColor,
+                                        border: Border.all(
+                                          color: widget.enabled
+                                              ? effectiveThumbBorderColor
+                                              // ignore: lines_longer_than_80_chars
+                                              : effectiveDisabledThumbBorderColor,
+                                          width: thumbBorderWidth,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: widget.enabled
+                                          ? effectiveThumbColor
+                                          : effectiveDisabledThumbColor,
+                                      border: Border.all(
+                                        color: widget.enabled
+                                            ? effectiveThumbBorderColor
+                                            : effectiveDisabledThumbBorderColor,
+                                        width: thumbBorderWidth,
+                                      ),
+                                    ),
+                                  ),
                           ),
                         ),
                       ),

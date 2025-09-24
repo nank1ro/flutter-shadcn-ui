@@ -34,7 +34,8 @@ class _ProgressPageState extends State<ProgressPage> {
               icon: const Icon(Icons.add),
             ),
           ],
-        )
+        ),
+        ShadProgress(),
       ],
     );
   }
