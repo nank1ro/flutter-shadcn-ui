@@ -292,6 +292,7 @@ class _ShadSliderState extends State<ShadSlider> {
         controller.value = widget.initialValue!;
       }
     }
+
     if (oldWidget.focusNode != widget.focusNode) {
       // Dispose the old focus node if it was internally created
       if (oldWidget.focusNode == null) {
@@ -318,17 +319,17 @@ class _ShadSliderState extends State<ShadSlider> {
   void _updateSliderValue(double newValue) {
     final effectiveMin = widget.min ?? 0;
     final effectiveMax = widget.max ?? 1;
-    newValue = newValue.clamp(effectiveMin, effectiveMax);
+    var clampedValue = newValue.clamp(effectiveMin, effectiveMax);
 
     if (widget.divisions != null) {
       final step = (effectiveMax - effectiveMin) / widget.divisions!;
-      newValue =
-          ((newValue - effectiveMin) / step).round() * step + effectiveMin;
+      clampedValue =
+          ((clampedValue - effectiveMin) / step).round() * step + effectiveMin;
     }
 
-    if (newValue != controller.value) {
-      controller.value = newValue;
-      widget.onChanged?.call(newValue);
+    if (clampedValue != controller.value) {
+      controller.value = clampedValue;
+      widget.onChanged?.call(clampedValue);
     }
   }
 
@@ -494,6 +495,26 @@ class _ShadSliderState extends State<ShadSlider> {
                               ),
                             ),
                           ),
+                          // division marks
+                          if (widget.divisions != null && widget.divisions! > 0)
+                            ...List.generate(widget.divisions! + 1, (index) {
+                              final position = index / widget.divisions!;
+                              return Positioned(
+                                left: position * effectiveTrackWidth - 1,
+                                top: (effectiveTrackHeight - 6) / 2,
+                                child: Container(
+                                  width: 2,
+                                  height: 6,
+                                  decoration: BoxDecoration(
+                                    color: widget.enabled
+                                        ? theme.colorScheme.border
+                                        : theme.colorScheme.border
+                                            .withValues(alpha: 0.5),
+                                    borderRadius: BorderRadius.circular(1),
+                                  ),
+                                ),
+                              );
+                            }),
                         ],
                       ),
                     ),
@@ -501,8 +522,7 @@ class _ShadSliderState extends State<ShadSlider> {
                     Positioned(
                       left: (((value - effectiveMin) /
                                       (effectiveMax - effectiveMin)) *
-                                  (constraints.maxWidth +
-                                      effectiveThumbRadius) -
+                                  constraints.maxWidth -
                               effectiveThumbRadius)
                           .clamp(-effectiveThumbRadius,
                               constraints.maxWidth - effectiveThumbRadius),
@@ -510,60 +530,68 @@ class _ShadSliderState extends State<ShadSlider> {
                           (effectiveTrackHeight - effectiveThumbRadius * 2) / 2,
                       child: Focus(
                         focusNode: focusNode,
-                        child: SizedBox(
-                          width: effectiveThumbRadius * 2,
-                          height: effectiveThumbRadius * 2,
-                          child: ShadGestureDetector(
-                            cursor: widget.enabled
-                                ? effectiveMouseCursor
-                                : effectiveDisabledMouseCursor,
-                            onPanUpdate: widget.enabled &&
-                                    (effectiveAllowedInteraction ==
-                                            ShadSliderInteraction.tapAndSlide ||
-                                        effectiveAllowedInteraction ==
-                                            ShadSliderInteraction.slideOnly ||
-                                        effectiveAllowedInteraction ==
-                                            ShadSliderInteraction.slideThumb)
-                                ? (details) {
-                                    final box = context.findRenderObject()!
-                                        as RenderBox;
-                                    final localPosition = box
-                                        .globalToLocal(details.globalPosition);
-                                    _handleTrackPan(localPosition, constraints);
-                                  }
-                                : null,
-                            onPanStart: widget.enabled
-                                ? (details) =>
-                                    widget.onChangeStart?.call(controller.value)
-                                : null,
-                            onPanEnd: widget.enabled
-                                ? (details) =>
-                                    widget.onChangeEnd?.call(controller.value)
-                                : null,
-                            child: ListenableBuilder(
-                                listenable: focusNode,
-                                builder: (context, child) {
-                                  return ShadDecorator(
-                                    focused: focusNode.hasFocus,
-                                    decoration: ShadDecoration(
-                                      merge: false,
-                                      color: widget.enabled
-                                          ? effectiveThumbColor
-                                          : effectiveDisabledThumbColor,
-                                      border: ShadBorder.all(
+                        child: Semantics(
+                          slider: true,
+                          value:
+                              widget.semanticFormatterCallback?.call(value) ??
+                                  value.toString(),
+                          child: SizedBox(
+                            width: effectiveThumbRadius * 2,
+                            height: effectiveThumbRadius * 2,
+                            child: ShadGestureDetector(
+                              cursor: widget.enabled
+                                  ? effectiveMouseCursor
+                                  : effectiveDisabledMouseCursor,
+                              onPanUpdate: widget.enabled &&
+                                      (effectiveAllowedInteraction ==
+                                              ShadSliderInteraction
+                                                  .tapAndSlide ||
+                                          effectiveAllowedInteraction ==
+                                              ShadSliderInteraction.slideOnly ||
+                                          effectiveAllowedInteraction ==
+                                              ShadSliderInteraction.slideThumb)
+                                  ? (details) {
+                                      final box = context.findRenderObject()!
+                                          as RenderBox;
+                                      final localPosition = box.globalToLocal(
+                                          details.globalPosition);
+                                      _handleTrackPan(
+                                          localPosition, constraints);
+                                    }
+                                  : null,
+                              onPanStart: widget.enabled
+                                  ? (details) => widget.onChangeStart
+                                      ?.call(controller.value)
+                                  : null,
+                              onPanEnd: widget.enabled
+                                  ? (details) =>
+                                      widget.onChangeEnd?.call(controller.value)
+                                  : null,
+                              child: ListenableBuilder(
+                                  listenable: focusNode,
+                                  builder: (context, child) {
+                                    return ShadDecorator(
+                                      focused: focusNode.hasFocus,
+                                      decoration: ShadDecoration(
+                                        merge: false,
                                         color: widget.enabled
-                                            ? effectiveThumbBorderColor
-                                            : effectiveDisabledThumbBorderColor,
-                                        width: 2,
+                                            ? effectiveThumbColor
+                                            : effectiveDisabledThumbColor,
+                                        border: ShadBorder.all(
+                                          color: widget.enabled
+                                              ? effectiveThumbBorderColor
+                                              : effectiveDisabledThumbBorderColor,
+                                          width: 2,
+                                        ),
+                                        shape: BoxShape.circle,
+                                        secondaryFocusedBorder: ShadBorder.all(
+                                          color: theme.colorScheme.ring,
+                                          width: 2,
+                                        ),
                                       ),
-                                      shape: BoxShape.circle,
-                                      secondaryFocusedBorder: ShadBorder.all(
-                                        color: theme.colorScheme.ring,
-                                        width: 2,
-                                      ),
-                                    ),
-                                  );
-                                }),
+                                    );
+                                  }),
+                            ),
                           ),
                         ),
                       ),
