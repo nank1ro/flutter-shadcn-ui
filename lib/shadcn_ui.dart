@@ -34,6 +34,7 @@ export 'src/components/input_otp.dart';
 export 'src/components/menubar.dart';
 export 'src/components/popover.dart';
 export 'src/components/progress.dart';
+export 'src/components/progress_new.dart';
 export 'src/components/radio.dart';
 export 'src/components/resizable.dart';
 export 'src/components/select.dart';

@@ -20,6 +20,9 @@ class _ProgressPageState extends State<ProgressPage> {
         ShadProgress(
           value: value / 100,
         ),
+        ShadProgressNew(
+          value: value / 100,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -36,6 +39,7 @@ class _ProgressPageState extends State<ProgressPage> {
           ],
         ),
         ShadProgress(),
+        ShadProgressNew(),
       ],
     );
   }
