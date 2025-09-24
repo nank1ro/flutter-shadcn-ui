@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -351,6 +352,34 @@ class _ShadSliderState extends State<ShadSlider> {
     _updateSliderValue(newValue);
   }
 
+  bool _handleKeyEvent(KeyEvent event) {
+    if (!widget.enabled || (event is! KeyDownEvent && event is! KeyRepeatEvent)) return false;
+
+    final effectiveMin = widget.min ?? 0;
+    final effectiveMax = widget.max ?? 1;
+    final range = effectiveMax - effectiveMin;
+
+    double increment;
+    if (widget.divisions != null && widget.divisions! > 0) {
+      increment = range / widget.divisions!;
+    } else {
+      increment = range * 0.01; // 1% of range for smooth movement
+    }
+
+    var newValue = controller.value;
+
+    if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+      newValue -= increment;
+    } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+      newValue += increment;
+    } else {
+      return false;
+    }
+
+    _updateSliderValue(newValue);
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -408,7 +437,12 @@ class _ShadSliderState extends State<ShadSlider> {
         widget.allowedInteraction ?? ShadSliderInteraction.tapAndSlide;
 
     return ShadFocusable(
-      skipTraversal: true,
+      focusNode: focusNode,
+      onKeyEvent: (node, event) {
+        return _handleKeyEvent(event)
+            ? KeyEventResult.handled
+            : KeyEventResult.ignored;
+      },
       builder: (context, focused, child) {
         return ValueListenableBuilder(
           valueListenable: controller,
@@ -528,77 +562,67 @@ class _ShadSliderState extends State<ShadSlider> {
                               constraints.maxWidth - effectiveThumbRadius),
                       top:
                           (effectiveTrackHeight - effectiveThumbRadius * 2) / 2,
-                      child: Focus(
-                        focusNode: focusNode,
-                        child: Semantics(
-                          slider: true,
-                          value:
-                              widget.semanticFormatterCallback?.call(value) ??
-                                  value.toString(),
-                          child: SizedBox(
-                            width: effectiveThumbRadius * 2,
-                            height: effectiveThumbRadius * 2,
-                            child: ShadGestureDetector(
-                              cursor: widget.enabled
-                                  ? effectiveMouseCursor
-                                  : effectiveDisabledMouseCursor,
-                              onPanUpdate: widget.enabled &&
-                                      (effectiveAllowedInteraction ==
-                                              ShadSliderInteraction
-                                                  .tapAndSlide ||
-                                          effectiveAllowedInteraction ==
-                                              ShadSliderInteraction.slideOnly ||
-                                          effectiveAllowedInteraction ==
-                                              ShadSliderInteraction.slideThumb)
-                                  ? (details) {
-                                      final box = context.findRenderObject()!
-                                          as RenderBox;
-                                      final localPosition = box.globalToLocal(
-                                          details.globalPosition);
-                                      _handleTrackPan(
-                                          localPosition, constraints);
-                                    }
-                                  : null,
-                              onPanStart: widget.enabled
-                                  ? (details) => widget.onChangeStart
-                                      ?.call(controller.value)
-                                  : null,
-                              onPanEnd: widget.enabled
-                                  ? (details) =>
-                                      widget.onChangeEnd?.call(controller.value)
-                                  : null,
-                              child: ListenableBuilder(
-                                  listenable: focusNode,
-                                  builder: (context, child) {
-                                    return ShadDecorator(
-                                      focused: focusNode.hasFocus,
-                                      decoration: ShadDecoration(
-                                        merge: false,
-                                        color: widget.enabled
-                                            ? effectiveThumbColor
-                                            : effectiveDisabledThumbColor,
-                                        border: ShadBorder.all(
-                                          color: widget.enabled
-                                              ? effectiveThumbBorderColor
-                                              // ignore: lines_longer_than_80_chars
-                                              : effectiveDisabledThumbBorderColor,
-                                          width: 2,
-                                        ),
-                                        shape: BoxShape.circle,
-                                        secondaryFocusedBorder: ShadBorder.all(
-                                          color: theme.colorScheme.ring,
-                                          width: 2,
-                                          offset: 4,
-                                          radius: BorderRadius.circular(999),
-                                        ),
-                                      ),
-                                    );
-                                  }),
+                      child: Semantics(
+                        slider: true,
+                        value: widget.semanticFormatterCallback?.call(value) ??
+                            value.toString(),
+                        child: SizedBox(
+                          width: effectiveThumbRadius * 2,
+                          height: effectiveThumbRadius * 2,
+                          child: ShadGestureDetector(
+                            cursor: widget.enabled
+                                ? effectiveMouseCursor
+                                : effectiveDisabledMouseCursor,
+                            onPanUpdate: widget.enabled &&
+                                    (effectiveAllowedInteraction ==
+                                            ShadSliderInteraction.tapAndSlide ||
+                                        effectiveAllowedInteraction ==
+                                            ShadSliderInteraction.slideOnly ||
+                                        effectiveAllowedInteraction ==
+                                            ShadSliderInteraction.slideThumb)
+                                ? (details) {
+                                    final box = context.findRenderObject()!
+                                        as RenderBox;
+                                    final localPosition = box
+                                        .globalToLocal(details.globalPosition);
+                                    _handleTrackPan(localPosition, constraints);
+                                  }
+                                : null,
+                            onPanStart: widget.enabled
+                                ? (details) =>
+                                    widget.onChangeStart?.call(controller.value)
+                                : null,
+                            onPanEnd: widget.enabled
+                                ? (details) =>
+                                    widget.onChangeEnd?.call(controller.value)
+                                : null,
+                            child: ShadDecorator(
+                              focused: focused,
+                              decoration: ShadDecoration(
+                                merge: false,
+                                color: widget.enabled
+                                    ? effectiveThumbColor
+                                    : effectiveDisabledThumbColor,
+                                border: ShadBorder.all(
+                                  color: widget.enabled
+                                      ? effectiveThumbBorderColor
+                                      // ignore: lines_longer_than_80_chars
+                                      : effectiveDisabledThumbBorderColor,
+                                  width: 2,
+                                ),
+                                shape: BoxShape.circle,
+                                secondaryFocusedBorder: ShadBorder.all(
+                                  color: theme.colorScheme.ring,
+                                  width: 2,
+                                  offset: 4,
+                                  radius: BorderRadius.circular(999),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                    )
                   ],
                 );
               },
