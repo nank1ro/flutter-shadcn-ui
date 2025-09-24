@@ -15,15 +15,24 @@ export default defineConfig({
         github: 'https://github.com/nank1ro',
         twitter: 'https://twitter.com/nank1ro'
       },
-      head: [{
-        tag: 'meta',
-        attrs: {
-          property: 'og:image',
-          content: 'https://flutter-shadcn-ui.mariuti.com/shadcn-banner.png',
-        }
-      }],
+      head: [
+        {
+          tag: 'meta',
+          attrs: {
+            property: 'og:image',
+            content: 'https://flutter-shadcn-ui.mariuti.com/shadcn-banner.png',
+          }
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'preconnect',
+            href: 'https://cdn.jsdelivr.net',
+            crossorigin: ''
+          },
+        },
+      ],
       sidebar: [
-
         {
           label: 'mariuti.com',
           link: 'https://mariuti.com',
