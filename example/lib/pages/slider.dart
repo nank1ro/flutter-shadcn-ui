@@ -1,7 +1,8 @@
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
-import 'package:flutter/material.dart';
+import 'package:example/common/properties/string_property.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -16,7 +17,7 @@ class _SliderPageState extends State<SliderPage> {
   var enabled = true;
   double value = 33;
   ShadSliderInteraction sliderInteraction = ShadSliderInteraction.tapAndSlide;
-  SliderInteraction materialSliderInteraction = SliderInteraction.tapAndSlide;
+  int? divisions;
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +33,18 @@ class _SliderPageState extends State<SliderPage> {
           label: 'Interaction',
           value: sliderInteraction,
           values: ShadSliderInteraction.values,
-          onChanged: (value) => setState(() {
-            sliderInteraction = value!;
-            materialSliderInteraction = SliderInteraction.values
-                .firstWhere((e) => e.name == value.name);
-          }),
+          onChanged: (value) => setState(() => sliderInteraction = value!),
+        ),
+        MyStringProperty(
+          label: 'Divisions',
+          initialValue: divisions?.toString() ?? '',
+          onChanged: (v) {
+            setState(() {
+              final parsed = int.tryParse(v);
+              divisions = parsed;
+            });
+          },
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         ),
       ],
       children: [
@@ -48,19 +56,8 @@ class _SliderPageState extends State<SliderPage> {
           allowedInteraction: sliderInteraction,
           semanticFormatterCallback: (double value) =>
               '${value.round()}% volume level',
+          divisions: divisions,
         ),
-        Slider(
-          value: value,
-          min: 0,
-          max: 100,
-          allowedInteraction: materialSliderInteraction,
-          onChanged: (double value) {
-            print('value: $value');
-            setState(() {
-              this.value = value;
-            });
-          },
-        )
       ],
     );
   }

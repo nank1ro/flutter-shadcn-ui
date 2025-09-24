@@ -580,6 +580,7 @@ class _ShadSliderState extends State<ShadSlider> {
                                         border: ShadBorder.all(
                                           color: widget.enabled
                                               ? effectiveThumbBorderColor
+                                              // ignore: lines_longer_than_80_chars
                                               : effectiveDisabledThumbBorderColor,
                                           width: 2,
                                         ),
@@ -587,6 +588,8 @@ class _ShadSliderState extends State<ShadSlider> {
                                         secondaryFocusedBorder: ShadBorder.all(
                                           color: theme.colorScheme.ring,
                                           width: 2,
+                                          offset: 4,
+                                          radius: BorderRadius.circular(999),
                                         ),
                                       ),
                                     );

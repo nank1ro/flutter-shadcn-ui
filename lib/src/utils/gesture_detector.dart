@@ -284,7 +284,7 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final ScrollBehavior configuration = ScrollConfiguration.of(context);
+    final configuration = ScrollConfiguration.of(context);
 
     final effectiveHoverStrategies =
         widget.hoverStrategies ?? theme.hoverStrategies;
