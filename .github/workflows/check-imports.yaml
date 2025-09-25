@@ -17,8 +17,6 @@ jobs:
         # Define excluded files
         EXCLUDED_FILES=(
           "lib/src/app.dart"
-          "lib/src/theme/themes/base.dart"
-          "lib/src/components/time_picker.dart"
         )
 
         # Build grep exclusion pattern
