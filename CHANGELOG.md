@@ -1,3 +1,8 @@
+## 0.31.9
+
+- **FIX**: `ShadSelect` not reacting to the controller and rebuilding `selectedOptionBuilder`.
+- **FIX**: `ShadSelectFormField` and `ShadSelectMultipleFormField` not resetting the value on form reset.
+
 ## 0.31.8
 
 - **FEAT**: Add support for keyboard navigation in `ShadCalendar` (thanks to @pedromassango).
