@@ -32,15 +32,16 @@ void main() {
 
 void setupInitialThemeFromURL() {
   final uri = Uri.base;
-  final themeModeParam = uri.queryParameters['themeMode'];
 
+  final themeModeParam = uri.queryParameters['themeMode'];
   if (themeModeParam != null) {
-    themeSignal.updateValue(
-        (_) => themeModeParam == 'dark' ? ThemeMode.dark : ThemeMode.light);
+    themeSignal.value =
+        themeModeParam == 'dark' ? ThemeMode.dark : ThemeMode.light;
   }
+
   final themeColorParam = uri.queryParameters['themeColor'];
   if (themeColorParam != null) {
-    themeColorSignal.updateValue((_) => themeColorParam);
+    themeColorSignal.value = themeColorParam;
   }
 }
 
@@ -60,8 +61,7 @@ void setupWindowMessagesListener() {
       if (type == 'theme-change') {
         handleThemeEvent(data);
       } else if (type == 'navigate') {
-        final route = data['route'];
-        if (route is String) {
+        if (data['route'] case String route) {
           router.push(route);
         }
       }
@@ -76,9 +76,10 @@ void handleThemeEvent(Map data) {
       data['themeMode'] == 'dark' ? ThemeMode.dark : ThemeMode.light;
   final String? themeColor = data['themeColor'];
 
-  themeSignal.updateValue((_) => themeMode);
+  themeSignal.value = themeMode;
+
   if (themeColor != null) {
-    themeColorSignal.updateValue((_) => themeColor);
+    themeColorSignal.value = themeColor;
   }
 }
 
