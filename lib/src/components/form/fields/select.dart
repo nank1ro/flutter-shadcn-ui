@@ -400,15 +400,18 @@ class _ShadFormBuilderSelectState<T>
   @override
   void initState() {
     super.initState();
-    controller.addListener(() {
-      didChange(controller.value.firstOrNull);
-    });
+    controller.addListener(onControllerChange);
   }
 
   @override
   void dispose() {
+    controller.removeListener(onControllerChange);
     _controller?.dispose();
     super.dispose();
+  }
+
+  void onControllerChange() {
+    didChange(controller.value.firstOrNull);
   }
 
   @override
@@ -730,15 +733,18 @@ class _ShadFormBuilderSelectMultipleState<T>
   @override
   void initState() {
     super.initState();
-    controller.addListener(() {
-      didChange(controller.value.toSet());
-    });
+    controller.addListener(onControllerChange);
   }
 
   @override
   void dispose() {
+    controller.removeListener(onControllerChange);
     _controller?.dispose();
     super.dispose();
+  }
+
+  void onControllerChange() {
+    didChange(controller.value.toSet());
   }
 
   @override
