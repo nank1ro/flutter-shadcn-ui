@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 /// A customizable linear progress indicator widget.
@@ -86,27 +87,27 @@ class _ShadProgressNewState extends State<ShadProgressNew>
   static const int _kIndeterminateLinearDuration = 1800;
 
   static const Curve line1HeadCurve = Interval(
-    0.0,
+    0,
     750 / _kIndeterminateLinearDuration,
-    curve: Cubic(0.2, 0.0, 0.8, 1.0),
+    curve: Cubic(0.2, 0, 0.8, 1),
   );
 
   static const Curve line1TailCurve = Interval(
     333 / _kIndeterminateLinearDuration,
     (333 + 750) / _kIndeterminateLinearDuration,
-    curve: Cubic(0.4, 0.0, 1.0, 1.0),
+    curve: Cubic(0.4, 0, 1, 1),
   );
 
   static const Curve line2HeadCurve = Interval(
     1000 / _kIndeterminateLinearDuration,
     (1000 + 567) / _kIndeterminateLinearDuration,
-    curve: Cubic(0.0, 0.0, 0.65, 1.0),
+    curve: Cubic(0, 0, 0.65, 1),
   );
 
   static const Curve line2TailCurve = Interval(
     1267 / _kIndeterminateLinearDuration,
     (1267 + 533) / _kIndeterminateLinearDuration,
-    curve: Cubic(0.10, 0.0, 0.45, 1.0),
+    curve: Cubic(0.10, 0, 0.45, 1),
   );
 
   AnimationController? _controller;
@@ -227,57 +228,79 @@ class _ShadProgressNewState extends State<ShadProgressNew>
   ) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return AnimatedBuilder(
-          animation: _controller!,
-          builder: (context, child) {
-            final double t = _controller!.value;
-            final double containerWidth = constraints.maxWidth;
+        final containerWidth = constraints.maxWidth;
+        final bar = Container(
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: borderRadius,
+          ),
+        );
 
-            final double line1Start =
-                containerWidth * line1TailCurve.transform(t);
-            final double line1End =
-                containerWidth * line1HeadCurve.transform(t);
-            double line1Width = line1End - line1Start;
-            if (line1Width < 0) line1Width = 0;
-
-            final double line2Start =
-                containerWidth * line2TailCurve.transform(t);
-            final double line2End =
-                containerWidth * line2HeadCurve.transform(t);
-            double line2Width = line2End - line2Start;
-            if (line2Width < 0) line2Width = 0;
-
-            return Stack(
-              children: <Widget>[
-                if (line1Width > 0)
-                  Positioned(
-                    left: line1Start,
-                    top: 0,
-                    width: line1Width,
-                    bottom: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: color,
-                        borderRadius: borderRadius,
-                      ),
-                    ),
-                  ),
-                if (line2Width > 0)
-                  Positioned(
-                    left: line2Start,
-                    top: 0,
-                    width: line2Width,
-                    bottom: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: color,
-                        borderRadius: borderRadius,
-                      ),
-                    ),
-                  ),
+        return Stack(
+          children: <Widget>[
+            Animate(
+              controller: _controller,
+              autoPlay: true,
+              onPlay: (controller) => controller.repeat(),
+              effects: [
+                CustomEffect(
+                  duration: const Duration(
+                      milliseconds: _kIndeterminateLinearDuration),
+                  curve: Curves.linear,
+                  builder: (context, value, child) {
+                    final start =
+                        line1TailCurve.transform(value) * containerWidth;
+                    final end =
+                        line1HeadCurve.transform(value) * containerWidth;
+                    final w =
+                        (end - start).clamp(0, double.infinity).toDouble();
+                    if (w <= 0) {
+                      return const SizedBox.shrink();
+                    }
+                    return Positioned(
+                      left: start,
+                      top: 0,
+                      bottom: 0,
+                      width: w,
+                      child: child,
+                    );
+                  },
+                ),
               ],
-            );
-          },
+              child: bar,
+            ),
+            Animate(
+              controller: _controller,
+              autoPlay: true,
+              onPlay: (controller) => controller.repeat(),
+              effects: [
+                CustomEffect(
+                  duration: const Duration(
+                      milliseconds: _kIndeterminateLinearDuration),
+                  curve: Curves.linear,
+                  builder: (context, value, child) {
+                    final start =
+                        line2TailCurve.transform(value) * containerWidth;
+                    final end =
+                        line2HeadCurve.transform(value) * containerWidth;
+                    final w =
+                        (end - start).clamp(0, double.infinity).toDouble();
+                    if (w <= 0) {
+                      return const SizedBox.shrink();
+                    }
+                    return Positioned(
+                      left: start,
+                      top: 0,
+                      bottom: 0,
+                      width: w,
+                      child: child,
+                    );
+                  },
+                ),
+              ],
+              child: bar,
+            ),
+          ],
         );
       },
     );
