@@ -8,6 +8,83 @@ import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
+/// Calculates the total duration of a list of [Effect]s.
+Duration _getEffectsDuration(List<Effect<dynamic>> effects) {
+  if (effects.isEmpty) return Duration.zero;
+
+  return effects.fold<Duration>(
+    Duration.zero, // start with zero
+    (max, effect) {
+      final total = (effect.delay ?? Duration.zero) +
+          (effect.duration ?? Animate.defaultDuration);
+      return total > max ? total : max;
+    },
+  );
+}
+
+/// A custom dialog route that allows specifying a `reverseTransitionDuration`.
+///
+/// Used internally by [showShadDialog].
+class _ShadDialogRoute<T> extends PopupRoute<T> {
+  _ShadDialogRoute({
+    required this.pageBuilder,
+    this.barrierDismissible = true,
+    this.barrierLabel,
+    this.barrierColor = const Color(0x80000000),
+    this.transitionDuration = const Duration(milliseconds: 200),
+    this.reverseTransitionDuration = const Duration(milliseconds: 200),
+    this.transitionBuilder,
+    this.anchorPoint,
+    super.settings,
+  });
+
+  final WidgetBuilder pageBuilder;
+
+  @override
+  final bool barrierDismissible;
+
+  @override
+  final String? barrierLabel;
+
+  @override
+  final Color? barrierColor;
+
+  @override
+  final Duration transitionDuration;
+
+  @override
+  final Duration reverseTransitionDuration;
+
+  final RouteTransitionsBuilder? transitionBuilder;
+
+  final Offset? anchorPoint;
+
+  @override
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
+    return Builder(builder: pageBuilder);
+  }
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    if (transitionBuilder != null) {
+      return transitionBuilder!(context, animation, secondaryAnimation, child);
+    }
+    return FadeTransition(
+      opacity: animation,
+      child: child,
+    );
+  }
+}
+
 /// Displays a [ShadDialog] as a modal dialog with animation.
 ///
 /// Shows a dialog with customizable barrier and animation properties, returning
@@ -73,32 +150,27 @@ Future<T?> showShadDialog<T>({
         ScaleEffect(begin: Offset(1, 1), end: Offset(.95, .95)),
       ];
 
-  var maxDuration = Animate.defaultDuration;
-  for (final e in [...effectiveAnimateIn, ...effectiveAnimateOut]) {
-    final duration = e.duration ?? Duration.zero;
-    maxDuration = maxDuration > duration ? maxDuration : duration;
-  }
-
-  return showGeneralDialog(
-    context: context,
-    pageBuilder: (context, animation, secondaryAnimation) => builder(context),
-    barrierColor: barrierColor,
-    barrierDismissible: barrierDismissible,
-    barrierLabel: barrierLabel,
-    useRootNavigator: useRootNavigator,
-    routeSettings: routeSettings,
-    anchorPoint: anchorPoint,
-    transitionDuration: maxDuration,
-    transitionBuilder: (context, animation, secondaryAnimation, child) {
-      if (animation.status == AnimationStatus.completed) {
-        return child;
-      }
-      final animateIn = animation.status == AnimationStatus.forward;
-      return Animate(
-        effects: animateIn ? effectiveAnimateIn : effectiveAnimateOut,
-        child: child,
-      );
-    },
+  return Navigator.of(context, rootNavigator: useRootNavigator).push(
+    _ShadDialogRoute(
+      pageBuilder: builder,
+      barrierColor: barrierColor,
+      barrierDismissible: barrierDismissible,
+      barrierLabel: barrierLabel,
+      anchorPoint: anchorPoint,
+      settings: routeSettings,
+      transitionDuration: _getEffectsDuration(effectiveAnimateIn),
+      reverseTransitionDuration: _getEffectsDuration(effectiveAnimateOut),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        if (animation.status == AnimationStatus.completed) {
+          return child;
+        }
+        final animateIn = animation.status == AnimationStatus.forward;
+        return Animate(
+          effects: animateIn ? effectiveAnimateIn : effectiveAnimateOut,
+          child: child,
+        );
+      },
+    ),
   );
 }
 
