@@ -117,6 +117,11 @@ export default defineConfig({
               attrs: { target: '_blank', rel: 'noopener noreferrer' },
             },
             {
+              label: 'Movie Paradise',
+              link: 'https://movieparadise.app/',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
               label: 'ZikZak AI',
               link: 'https://zuzu.dev',
               attrs: { target: '_blank', rel: 'noopener noreferrer' },
