@@ -35,6 +35,14 @@ class ShadColorScheme {
     required this.input,
     required this.ring,
     required this.selection,
+    required this.sidebar,
+    required this.sidebarForeground,
+    required this.sidebarBorder,
+    required this.sidebarRing,
+    required this.sidebarAccent,
+    required this.sidebarAccentForeground,
+    required this.sidebarPrimary,
+    required this.sidebarPrimaryForeground,
   });
 
   factory ShadColorScheme.fromName(
@@ -102,6 +110,14 @@ class ShadColorScheme {
   final Color input;
   final Color ring;
   final Color selection;
+  final Color sidebar;
+  final Color sidebarForeground;
+  final Color sidebarBorder;
+  final Color sidebarRing;
+  final Color sidebarAccent;
+  final Color sidebarAccentForeground;
+  final Color sidebarPrimary;
+  final Color sidebarPrimaryForeground;
 
   static ShadColorScheme lerp(
     ShadColorScheme a,
@@ -133,6 +149,23 @@ class ShadColorScheme {
       input: Color.lerp(a.input, b.input, t)!,
       ring: Color.lerp(a.ring, b.ring, t)!,
       selection: Color.lerp(a.selection, b.selection, t)!,
+      sidebar: Color.lerp(a.sidebar, b.sidebar, t)!,
+      sidebarForeground:
+          Color.lerp(a.sidebarForeground, b.sidebarForeground, t)!,
+      sidebarBorder: Color.lerp(a.sidebarBorder, b.sidebarBorder, t)!,
+      sidebarRing: Color.lerp(a.sidebarRing, b.sidebarRing, t)!,
+      sidebarAccent: Color.lerp(a.sidebarAccent, b.sidebarAccent, t)!,
+      sidebarAccentForeground: Color.lerp(
+        a.sidebarAccentForeground,
+        b.sidebarAccentForeground,
+        t,
+      )!,
+      sidebarPrimary: Color.lerp(a.sidebarPrimary, b.sidebarPrimary, t)!,
+      sidebarPrimaryForeground: Color.lerp(
+        a.sidebarPrimaryForeground,
+        b.sidebarPrimaryForeground,
+        t,
+      )!,
     );
   }
 
@@ -159,6 +192,14 @@ class ShadColorScheme {
     Color? input,
     Color? ring,
     Color? selection,
+    Color? sidebar,
+    Color? sidebarForeground,
+    Color? sidebarBorder,
+    Color? sidebarRing,
+    Color? sidebarAccent,
+    Color? sidebarAccentForeground,
+    Color? sidebarPrimary,
+    Color? sidebarPrimaryForeground,
   }) {
     return ShadColorScheme(
       background: background ?? this.background,
@@ -182,6 +223,16 @@ class ShadColorScheme {
       input: input ?? this.input,
       ring: ring ?? this.ring,
       selection: selection ?? this.selection,
+      sidebar: sidebar ?? this.sidebar,
+      sidebarForeground: sidebarForeground ?? this.sidebarForeground,
+      sidebarBorder: sidebarBorder ?? this.sidebarBorder,
+      sidebarRing: sidebarRing ?? this.sidebarRing,
+      sidebarAccent: sidebarAccent ?? this.sidebarAccent,
+      sidebarAccentForeground:
+          sidebarAccentForeground ?? this.sidebarAccentForeground,
+      sidebarPrimary: sidebarPrimary ?? this.sidebarPrimary,
+      sidebarPrimaryForeground:
+          sidebarPrimaryForeground ?? this.sidebarPrimaryForeground,
     );
   }
 
@@ -209,7 +260,15 @@ class ShadColorScheme {
         other.border == border &&
         other.input == input &&
         other.ring == ring &&
-        other.selection == selection;
+        other.selection == selection &&
+        other.sidebar == sidebar &&
+        other.sidebarForeground == sidebarForeground &&
+        other.sidebarBorder == sidebarBorder &&
+        other.sidebarRing == sidebarRing &&
+        other.sidebarAccent == sidebarAccent &&
+        other.sidebarAccentForeground == sidebarAccentForeground &&
+        other.sidebarPrimary == sidebarPrimary &&
+        other.sidebarPrimaryForeground == sidebarPrimaryForeground;
   }
 
   @override
@@ -233,6 +292,14 @@ class ShadColorScheme {
         border.hashCode ^
         input.hashCode ^
         ring.hashCode ^
-        selection.hashCode;
+        selection.hashCode ^
+        sidebar.hashCode ^
+        sidebarForeground.hashCode ^
+        sidebarBorder.hashCode ^
+        sidebarRing.hashCode ^
+        sidebarAccent.hashCode ^
+        sidebarAccentForeground.hashCode ^
+        sidebarPrimary.hashCode ^
+        sidebarPrimaryForeground.hashCode;
   }
 }
