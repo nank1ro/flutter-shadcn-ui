@@ -1,11 +1,20 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
+
+/// Whether the TimeOfDay is before or after noon.
+enum ShadDayPeriod {
+  /// Ante meridiem (before noon).
+  am,
+
+  /// Post meridiem (after noon).
+  pm,
+}
 
 /// Represents a time of day, including hour, minute, and second, and optionally period (AM/PM).
 @immutable
@@ -18,7 +27,7 @@ class ShadTimeOfDay {
     required this.hour,
     required this.minute,
     required this.second,
-    DayPeriod? period,
+    ShadDayPeriod? period,
   }) : _period = period;
 
   /// Creates a time of day based on the given time.
@@ -48,12 +57,23 @@ class ShadTimeOfDay {
   final int second;
 
   /// The selected period of the day.
-  final DayPeriod? _period;
+  final ShadDayPeriod? _period;
 
   /// Whether this time of day is before or after noon.
-  DayPeriod get period =>
+  ShadDayPeriod get period =>
       _period ??
-      (hour < TimeOfDay.hoursPerPeriod ? DayPeriod.am : DayPeriod.pm);
+      (hour < ShadTimeOfDay.hoursPerPeriod
+          ? ShadDayPeriod.am
+          : ShadDayPeriod.pm);
+
+  /// The number of hours in one day, i.e. 24.
+  static const int hoursPerDay = 24;
+
+  /// The number of hours in one day period (see also [ShadDayPeriod]), i.e. 12.
+  static const int hoursPerPeriod = 12;
+
+  /// The number of minutes in one hour, i.e. 60.
+  static const int minutesPerHour = 60;
 
   @override
   bool operator ==(Object other) {
@@ -77,7 +97,7 @@ class ShadTimeOfDay {
     final minuteLabel = addLeadingZeroIfNeeded(minute);
     final secondLabel = addLeadingZeroIfNeeded(second);
 
-    var s = '$TimeOfDay($hourLabel:$minuteLabel:$secondLabel';
+    var s = '$ShadTimeOfDay($hourLabel:$minuteLabel:$secondLabel';
 
     if (_period != null) {
       s += ' ${_period!.name.toUpperCase()}';
@@ -89,7 +109,7 @@ class ShadTimeOfDay {
     int? hour,
     int? minute,
     int? second,
-    DayPeriod? period,
+    ShadDayPeriod? period,
   }) {
     return ShadTimeOfDay(
       hour: hour ?? this.hour,
@@ -143,7 +163,7 @@ class ShadTimePickerController extends ChangeNotifier {
   /// {@template ShadTimePickerController.period}
   /// The selected day period (AM/PM).
   /// {@endtemplate}
-  DayPeriod? period;
+  ShadDayPeriod? period;
 
   /// Returns the current [ShadTimeOfDay] value from the controller.
   ///
@@ -180,7 +200,7 @@ class ShadTimePickerController extends ChangeNotifier {
   }
 
   /// Sets the day period (AM/PM) and notifies listeners.
-  void setDayPeriod(DayPeriod? period) {
+  void setDayPeriod(ShadDayPeriod? period) {
     if (this.period == period) return;
     this.period = period;
     notifyListeners();
@@ -466,9 +486,10 @@ class ShadTimePicker extends StatefulWidget {
   final ShadTimePickerVariant variant;
 
   /// {@template ShadTimePicker.initialDayPeriod}
-  /// The initial day period to show in the picker, defaults to `DayPeriod.am`.
+  /// The initial day period to show in the picker, defaults to
+  /// `ShadDayPeriod.am`.
   /// {@endtemplate}
-  final DayPeriod? initialDayPeriod;
+  final ShadDayPeriod? initialDayPeriod;
 
   /// {@template ShadTimePicker.periodLabel}
   /// The widget to display as the label for the period field.
@@ -839,7 +860,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
                   initialValue: controller.period,
                   decoration: effectivePeriodDecoration,
                   enabled: widget.enabled,
-                  options: DayPeriod.values
+                  options: ShadDayPeriod.values
                       .map(
                         (v) => ShadOption(
                           value: v,

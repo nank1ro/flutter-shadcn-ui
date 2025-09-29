@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/calendar.dart';
@@ -124,7 +124,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     int? max,
 
     /// {@macro ShadCalendar.selectableDayPredicate}
-    SelectableDayPredicate? selectableDayPredicate,
+    bool Function(DateTime day)? selectableDayPredicate,
 
     /// {@macro ShadCalendar.captionLayout}
     ShadCalendarCaptionLayout? captionLayout,

@@ -1,8 +1,8 @@
 // ignore_for_file: cascade_invocations
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -451,6 +451,7 @@ class _ShadSheetState extends State<ShadSheet>
   AnimationController? _animationController;
   final dragHandleMaterialState = <WidgetState>{};
   final GlobalKey childKey = GlobalKey(debugLabel: 'ShadSheet child');
+  static const Curve legacyDecelerate = Cubic(0, 0, 0.2, 1);
 
   @override
   void dispose() {
@@ -718,9 +719,8 @@ class _ShadSheetState extends State<ShadSheet>
         child: AnimatedBuilder(
           animation: animationController,
           builder: (context, child) {
-            final animationValue = Easing.legacyDecelerate.transform(
-              animationController.view.value,
-            );
+            final animationValue =
+                legacyDecelerate.transform(animationController.view.value);
             return ShadSheetLayoutWithSizeListener(
               animationValue: animationValue,
               onChildSizeChanged: (_) {},

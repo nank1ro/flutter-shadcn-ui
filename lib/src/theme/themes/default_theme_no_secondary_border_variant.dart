@@ -1,7 +1,7 @@
 // ignore_for_file: overridden_fields
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
@@ -312,7 +312,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   @override
   ShadDecoration decorationTheme() {
     return ShadDecoration(
-      border: ShadBorder.all(width: 2, color: Colors.transparent),
+      border: ShadBorder.all(width: 2, color: const Color(0x00000000)),
       focusedBorder: ShadBorder.all(
         color: colorScheme.ring,
         radius: BorderRadius.circular(6),
@@ -793,9 +793,9 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       ),
       gap: 8,
       expandContent: false,
-      tabBackgroundColor: Colors.transparent,
+      tabBackgroundColor: const Color(0x00000000),
       tabSelectedBackgroundColor: colorScheme.background,
-      tabHoverBackgroundColor: Colors.transparent,
+      tabHoverBackgroundColor: const Color(0x00000000),
       tabSelectedHoverBackgroundColor: colorScheme.background,
       tabPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       tabForegroundColor: colorScheme.foreground,

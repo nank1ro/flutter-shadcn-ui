@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
@@ -42,7 +42,9 @@ class ShadDateTimeRange {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    return other is DateTimeRange && other.start == start && other.end == end;
+    return other is ShadDateTimeRange &&
+        other.start == start &&
+        other.end == end;
   }
 
   @override
@@ -556,7 +558,7 @@ class ShadCalendar extends StatefulWidget {
   /// {@template ShadCalendar.selectableDayPredicate}
   /// A function that determines whether a day is selectable.
   /// {@endtemplate}
-  final SelectableDayPredicate? selectableDayPredicate;
+  final bool Function(DateTime day)? selectableDayPredicate;
 
   /// {@template ShadCalendar.selectedRange}
   /// The range of dates that are currently selected, defaults to null.

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/separator.dart';
@@ -244,7 +244,7 @@ class ShadAccordionItem<T> extends StatefulWidget {
 
   /// {@template ShadAccordionItem.separator}
   /// The widget displayed below the item as a separator, defaults to a
-  /// [Divider] if null.
+  /// Divider if null.
   /// {@endtemplate}
   final Widget? separator;
 

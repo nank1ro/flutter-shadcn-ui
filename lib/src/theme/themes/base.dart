@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
@@ -42,7 +42,6 @@ abstract class ShadBaseTheme {
   const ShadBaseTheme({
     required this.colorScheme,
     required this.brightness,
-    required this.extensions,
     required this.primaryButtonTheme,
     required this.secondaryButtonTheme,
     required this.destructiveButtonTheme,
@@ -98,7 +97,6 @@ abstract class ShadBaseTheme {
 
   final ShadColorScheme colorScheme;
   final Brightness brightness;
-  final Iterable<ThemeExtension<dynamic>>? extensions;
   final ShadButtonTheme primaryButtonTheme;
   final ShadButtonTheme secondaryButtonTheme;
   final ShadButtonTheme destructiveButtonTheme;

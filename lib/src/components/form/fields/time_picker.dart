@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -243,7 +243,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     int minSecond = 0,
 
     /// {@macro ShadTimePicker.initialDayPeriod}
-    DayPeriod? initialDayPeriod,
+    ShadDayPeriod? initialDayPeriod,
 
     /// {@macro ShadTimePicker.periodLabel}
     Widget? periodLabel,
@@ -418,7 +418,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     int minSecond = 0,
 
     /// {@macro ShadTimePicker.initialDayPeriod}
-    DayPeriod? initialDayPeriod,
+    ShadDayPeriod? initialDayPeriod,
 
     /// {@macro ShadTimePicker.periodLabel}
     Widget? periodLabel,

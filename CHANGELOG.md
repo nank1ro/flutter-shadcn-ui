@@ -1,3 +1,7 @@
+## 0.32.0
+
+- **REFACTOR**: Now all components are material-free. The only exception is `ShadApp` which provides platform adaptive routing and scroll behavior.
+
 ## 0.31.9
 
 - **FIX**: `ShadSelect` not reacting to the controller and rebuilding `selectedOptionBuilder`.
