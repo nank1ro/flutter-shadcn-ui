@@ -224,8 +224,7 @@ class ShadThemeData extends ShadBaseTheme {
       sliderTheme: effectiveVariant.sliderTheme().mergeWith(sliderTheme),
       sheetTheme: effectiveVariant.sheetTheme().mergeWith(sheetTheme),
       progressTheme: effectiveVariant.progressTheme().mergeWith(progressTheme),
-      accordionTheme:
-          effectiveVariant.accordionTheme().mergeWith(accordionTheme),
+      accordionTheme: effectiveVariant.accordionTheme().merge(accordionTheme),
       tableTheme: effectiveVariant.tableTheme().mergeWith(tableTheme),
       resizableTheme:
           effectiveVariant.resizableTheme().mergeWith(resizableTheme),
