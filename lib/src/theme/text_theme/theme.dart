@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/themes/default_theme_variant.dart';
 
-extension on TextStyle {
+extension OmitFamilyAndPackageExtension on TextStyle {
   TextStyle get omitFamilyAndPackage {
     return TextStyle(
       inherit: inherit,

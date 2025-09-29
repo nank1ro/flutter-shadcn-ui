@@ -101,7 +101,7 @@ final routes = <String, WidgetBuilder>{
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-zA-Z])');
 
-final themeModeProvider = Provider((_) => Signal(ShadThemeMode.light));
+final themeModeProvider = Provider((_) => Signal(ThemeMode.light));
 
 final directionalityProvider = Provider((context) => Signal(TextDirection.ltr));
 
