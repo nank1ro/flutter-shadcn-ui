@@ -817,27 +817,34 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
     final isMultiSelect = widget.selectedOptionsBuilder != null;
 
-    final Widget effectiveText;
-    if (controller.value.isNotEmpty) {
-      switch (isMultiSelect) {
-        case true:
-          effectiveText = widget.selectedOptionsBuilder!(
-            context,
-            controller.value.toList(),
+    // make effectiveText listen to controller changes
+    final effectiveText = ListenableBuilder(
+      listenable: controller,
+      builder: (context, child) {
+        final Widget result;
+        if (controller.value.isNotEmpty) {
+          switch (isMultiSelect) {
+            case true:
+              result = widget.selectedOptionsBuilder!(
+                context,
+                controller.value.toList(),
+              );
+            case false:
+              result = widget.selectedOptionBuilder!(
+                context,
+                controller.value.first,
+              );
+          }
+        } else {
+          assert(
+            widget.placeholder != null,
+            'placeholder must not be null when value is null',
           );
-        case false:
-          effectiveText = widget.selectedOptionBuilder!(
-            context,
-            controller.value.first,
-          );
-      }
-    } else {
-      assert(
-        widget.placeholder != null,
-        'placeholder must not be null when value is null',
-      );
-      effectiveText = widget.placeholder!;
-    }
+          result = widget.placeholder!;
+        }
+        return result;
+      },
+    );
 
     final effectiveTrailing = widget.trailing ??
         Icon(
