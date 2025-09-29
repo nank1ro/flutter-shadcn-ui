@@ -1,7 +1,6 @@
 import 'dart:js_interop';
 
 import 'package:web/web.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
@@ -20,13 +19,12 @@ const kParentOrigin = "https://shadcn-ui-playground.pages.dev";
 void main() {
   usePathUrlStrategy();
 
-  if (kIsWeb) {
-    // Read theme from URL query parameters then update the signals.
-    setupInitialThemeFromURL();
+  // Read theme from URL query parameters then update the signals.
+  setupInitialThemeFromURL();
 
-    // Listen for messages from the parent window (the Astro docs site).
-    setupWindowMessagesListener();
-  }
+  // Listen for messages from the parent window (the Astro docs site).
+  setupWindowMessagesListener();
+
   runApp(const MyApp());
 }
 
