@@ -26,14 +26,17 @@ dependencies:
   intl: ">=0.19.0 <1.0.0"
   lucide_icons_flutter: ">=3.0.0 <4.0.0"
   # used by Table
+  theme_extensions_builder_annotation: ^6.0.0-dev.1
   two_dimensional_scrollables: ">=0.2.0 <1.0.0"
   universal_image: ">=1.0.3 <2.0.0"
   vector_graphics: ">=1.0.0 <2.0.0"
 
 dev_dependencies:
+  build_runner: ^2.8.0
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.4
+  theme_extensions_builder: ^6.0.0-dev.1
   very_good_analysis: ^8.0.0
 
 flutter:
