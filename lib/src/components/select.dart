@@ -2,8 +2,8 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -515,7 +515,7 @@ class ShadSelect<T> extends StatefulWidget {
   /// list
   /// in search-enabled [ShadSelect] variants.
   ///
-  /// Defaults to a [Divider] with height 1.
+  /// Defaults to a Divider with height 1.
   /// {@endtemplate}
   final Widget? searchDivider;
 

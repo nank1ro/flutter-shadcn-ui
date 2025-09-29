@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -585,7 +585,7 @@ class ShadDatePicker extends StatefulWidget {
   final int? max;
 
   /// {@macro ShadCalendar.selectableDayPredicate}
-  final SelectableDayPredicate? selectableDayPredicate;
+  final bool Function(DateTime day)? selectableDayPredicate;
 
   /// {@macro ShadCalendar.onRangeChanged}
   final ValueChanged<ShadDateTimeRange?>? onRangeChanged;
@@ -1256,10 +1256,7 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
                   )
                 : DefaultTextStyle(
                     style: theme.textTheme.muted,
-                    child: widget.placeholder ??
-                        Text(
-                          MaterialLocalizations.of(context).datePickerHelpText,
-                        ),
+                    child: widget.placeholder ?? const Text('Select date'),
                   )),
       ),
     );

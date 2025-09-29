@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -749,7 +749,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
     final effectiveWidth = widget.width ?? tabsTheme.tabWidth ?? defaultWidth;
     final effectiveBackgroundColor = widget.backgroundColor ??
         tabsTheme.tabBackgroundColor ??
-        Colors.transparent;
+        const Color(0x00000000);
     final effectiveSelectedBackgroundColor = widget.selectedBackgroundColor ??
         tabsTheme.tabSelectedBackgroundColor ??
         theme.colorScheme.background;

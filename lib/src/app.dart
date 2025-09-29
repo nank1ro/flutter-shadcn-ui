@@ -11,6 +11,7 @@ import 'package:shadcn_ui/src/components/sonner.dart';
 import 'package:shadcn_ui/src/components/toast.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
+import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/mouse_area.dart';
 import 'package:shadcn_ui/src/utils/mouse_cursor_provider.dart';
@@ -507,7 +508,6 @@ class _ShadAppState extends State<ShadApp> {
     final themeData = theme(context);
     var mTheme = ThemeData(
       fontFamily: themeData.textTheme.family,
-      extensions: themeData.extensions,
       colorScheme: ColorScheme(
         brightness: themeData.brightness,
         primary: themeData.colorScheme.primary,
@@ -543,8 +543,10 @@ class _ShadAppState extends State<ShadApp> {
       ),
     );
     mTheme = mTheme.copyWith(
-      textTheme: themeData.textTheme
-          .applyGoogleFontToTextTheme(textTheme: mTheme.textTheme),
+      textTheme: applyGoogleFontToTextTheme(
+        mTheme.textTheme,
+        googleFontBuilder: themeData.textTheme.googleFontBuilder,
+      ),
     );
 
     if (widget.materialThemeBuilder == null) {
@@ -774,4 +776,86 @@ class ShadAppBuilder extends StatelessWidget {
       ),
     );
   }
+}
+
+TextTheme applyGoogleFontToTextTheme(TextTheme textTheme,
+    {GoogleFontBuilder? googleFontBuilder}) {
+  if (googleFontBuilder == null) return textTheme;
+  return TextTheme(
+    displayLarge: GoogleFontTextStyle(
+      (textTheme.displayLarge ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    displayMedium: GoogleFontTextStyle(
+      (textTheme.displayMedium ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    displaySmall: GoogleFontTextStyle(
+      (textTheme.displaySmall ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    headlineLarge: GoogleFontTextStyle(
+      (textTheme.headlineLarge ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    headlineMedium: GoogleFontTextStyle(
+      (textTheme.headlineMedium ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    headlineSmall: GoogleFontTextStyle(
+      (textTheme.headlineSmall ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    titleLarge: GoogleFontTextStyle(
+      (textTheme.titleLarge ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    titleMedium: GoogleFontTextStyle(
+      (textTheme.titleMedium ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    titleSmall: GoogleFontTextStyle(
+      (textTheme.titleSmall ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    bodyLarge: GoogleFontTextStyle(
+      (textTheme.bodyLarge ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    bodyMedium: GoogleFontTextStyle(
+      (textTheme.bodyMedium ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    bodySmall: GoogleFontTextStyle(
+      (textTheme.bodySmall ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    labelLarge: GoogleFontTextStyle(
+      (textTheme.labelLarge ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    labelMedium: GoogleFontTextStyle(
+      (textTheme.labelMedium ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+    labelSmall: GoogleFontTextStyle(
+      (textTheme.labelSmall ?? const TextStyle()).omitFamilyAndPackage,
+      builder: googleFontBuilder,
+      overrideFamilyWithBuilder: true,
+    ),
+  );
 }

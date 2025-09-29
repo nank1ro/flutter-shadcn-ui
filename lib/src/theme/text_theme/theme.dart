@@ -1,9 +1,9 @@
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/themes/default_theme_variant.dart';
 
-extension on TextStyle {
+extension OmitFamilyAndPackageExtension on TextStyle {
   TextStyle get omitFamilyAndPackage {
     return TextStyle(
       inherit: inherit,
@@ -302,103 +302,6 @@ class ShadTextTheme {
       ),
       family: p.fontFamily,
       googleFontBuilder: fontBuilder,
-    );
-  }
-
-  TextTheme applyGoogleFontToTextTheme({TextTheme? textTheme}) {
-    final effectiveTextTheme = textTheme ?? const TextTheme();
-    if (googleFontBuilder == null) return effectiveTextTheme;
-    return TextTheme(
-      displayLarge: GoogleFontTextStyle(
-        (effectiveTextTheme.displayLarge ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      displayMedium: GoogleFontTextStyle(
-        (effectiveTextTheme.displayMedium ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      displaySmall: GoogleFontTextStyle(
-        (effectiveTextTheme.displaySmall ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      headlineLarge: GoogleFontTextStyle(
-        (effectiveTextTheme.headlineLarge ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      headlineMedium: GoogleFontTextStyle(
-        (effectiveTextTheme.headlineMedium ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      headlineSmall: GoogleFontTextStyle(
-        (effectiveTextTheme.headlineSmall ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      titleLarge: GoogleFontTextStyle(
-        (effectiveTextTheme.titleLarge ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      titleMedium: GoogleFontTextStyle(
-        (effectiveTextTheme.titleMedium ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      titleSmall: GoogleFontTextStyle(
-        (effectiveTextTheme.titleSmall ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      bodyLarge: GoogleFontTextStyle(
-        (effectiveTextTheme.bodyLarge ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      bodyMedium: GoogleFontTextStyle(
-        (effectiveTextTheme.bodyMedium ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      bodySmall: GoogleFontTextStyle(
-        (effectiveTextTheme.bodySmall ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      labelLarge: GoogleFontTextStyle(
-        (effectiveTextTheme.labelLarge ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      labelMedium: GoogleFontTextStyle(
-        (effectiveTextTheme.labelMedium ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
-      labelSmall: GoogleFontTextStyle(
-        (effectiveTextTheme.labelSmall ?? const TextStyle())
-            .omitFamilyAndPackage,
-        builder: googleFontBuilder!,
-        overrideFamilyWithBuilder: true,
-      ),
     );
   }
 

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -165,10 +165,11 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
     final effectiveColor =
         widget.color ?? theme.checkboxTheme.color ?? theme.colorScheme.primary;
 
-    final effectiveDecoration = (theme.checkboxTheme.decoration ??
-            const ShadDecoration())
-        .mergeWith(widget.decoration)
-        .copyWith(color: widget.value ? effectiveColor : Colors.transparent);
+    final effectiveDecoration =
+        (theme.checkboxTheme.decoration ?? const ShadDecoration())
+            .mergeWith(widget.decoration)
+            .copyWith(
+                color: widget.value ? effectiveColor : const Color(0x00000000));
 
     final effectiveSize = widget.size ?? theme.checkboxTheme.size ?? 16;
 

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
@@ -153,11 +153,11 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
     final effectiveLongPressEnabled = widget.longPressEnabled ??
-        (platform == TargetPlatform.android || platform == TargetPlatform.iOS);
+        (defaultTargetPlatform == TargetPlatform.android ||
+            defaultTargetPlatform == TargetPlatform.iOS);
 
-    final isWindows = platform == TargetPlatform.windows;
+    final isWindows = defaultTargetPlatform == TargetPlatform.windows;
 
     return ShadContextMenu(
       anchor: offset == null ? null : ShadGlobalAnchor(offset!),

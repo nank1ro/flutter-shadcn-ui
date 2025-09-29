@@ -1,13 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 extension ShadBorderSideToBorderSide on ShadBorderSide {
   BorderSide toBorderSide() {
     if (width == null || width == 0) return BorderSide.none;
     return BorderSide(
-      color: color ?? Colors.transparent,
+      color: color ?? const Color(0x00000000),
       width: width ?? 1,
       style: style ?? BorderStyle.solid,
       strokeAlign: strokeAlign ?? BorderSide.strokeAlignInside,

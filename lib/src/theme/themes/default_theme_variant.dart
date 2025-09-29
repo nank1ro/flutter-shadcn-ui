@@ -1,7 +1,7 @@
 // ignore_for_file: overridden_fields
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
@@ -774,9 +774,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ),
       gap: 8,
       expandContent: false,
-      tabBackgroundColor: Colors.transparent,
+      tabBackgroundColor: const Color(0x00000000),
       tabSelectedBackgroundColor: colorScheme.background,
-      tabHoverBackgroundColor: Colors.transparent,
+      tabHoverBackgroundColor: const Color(0x00000000),
       tabSelectedHoverBackgroundColor: colorScheme.background,
       tabPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       tabForegroundColor: colorScheme.foreground,
