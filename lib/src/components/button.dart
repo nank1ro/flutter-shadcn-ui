@@ -1003,9 +1003,7 @@ class _ShadButtonState extends State<ShadButton> {
           }
 
           return IconTheme(
-            data: iconTheme.copyWith(
-              color: effectiveForegroundColor,
-            ),
+            data: iconTheme.copyWith(color: effectiveForegroundColor),
             child: DefaultTextStyle(
               style: theme.textTheme.small.copyWith(
                 color: effectiveForegroundColor,

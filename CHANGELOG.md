@@ -1,3 +1,9 @@
+## 0.32.1
+
+- **FIX**: `ShadToast` constraints were not being used.
+- **FIX**: `ShadToast` text direction was not taken from theme.
+- **FEAT**: Add `mainAxisSize` and `mainAxisAlignment` to `ShadToast` and `ShadToastTheme`, defaults to `MainAxisSize.max` and `MainAxisAlignment.spaceBetween`.
+
 ## 0.32.0
 
 - **REFACTOR**: Now all components are material-free. The only exception is `ShadApp` which provides platform adaptive routing and scroll behavior.
