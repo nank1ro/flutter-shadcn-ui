@@ -493,9 +493,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.background,
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsetsGeometry.fromSTEB(24, 24, 32, 24),
+      mainAxisSize: MainAxisSize.max,
     );
   }
 
@@ -516,9 +518,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.destructive,
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24),
+      mainAxisSize: MainAxisSize.max,
     );
   }
 

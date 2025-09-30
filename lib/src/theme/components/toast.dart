@@ -28,6 +28,8 @@ class ShadToastTheme {
     this.closeIconPosition,
     this.constraints,
     this.closeIcon,
+    this.mainAxisAlignment,
+    this.mainAxisSize,
   });
 
   final bool merge;
@@ -92,6 +94,12 @@ class ShadToastTheme {
   /// {@macro ShadToast.closeIcon}
   final Widget? closeIcon;
 
+  /// {@macro ShadToast.mainAxisAlignment}
+  final MainAxisAlignment? mainAxisAlignment;
+
+  /// {@macro ShadToast.mainAxisSize}
+  final MainAxisSize? mainAxisSize;
+
   static ShadToastTheme lerp(
     ShadToastTheme a,
     ShadToastTheme b,
@@ -125,6 +133,8 @@ class ShadToastTheme {
           ShadPosition.lerp(a.closeIconPosition, b.closeIconPosition, t),
       constraints: t < .5 ? a.constraints : b.constraints,
       closeIcon: t < .5 ? a.closeIcon : b.closeIcon,
+      mainAxisAlignment: t < .5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      mainAxisSize: t < .5 ? a.mainAxisSize : b.mainAxisSize,
     );
   }
 
@@ -150,6 +160,8 @@ class ShadToastTheme {
     ShadPosition? closeIconPosition,
     BoxConstraints? constraints,
     Widget? closeIcon,
+    MainAxisAlignment? mainAxisAlignment,
+    MainAxisSize? mainAxisSize,
   }) {
     return ShadToastTheme(
       merge: merge ?? this.merge,
@@ -174,6 +186,8 @@ class ShadToastTheme {
       closeIconPosition: closeIconPosition ?? this.closeIconPosition,
       constraints: constraints ?? this.constraints,
       closeIcon: closeIcon ?? this.closeIcon,
+      mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
+      mainAxisSize: mainAxisSize ?? this.mainAxisSize,
     );
   }
 
@@ -201,6 +215,8 @@ class ShadToastTheme {
       closeIconPosition: other.closeIconPosition,
       constraints: other.constraints,
       closeIcon: other.closeIcon,
+      mainAxisAlignment: other.mainAxisAlignment,
+      mainAxisSize: other.mainAxisSize,
     );
   }
 
@@ -229,7 +245,9 @@ class ShadToastTheme {
         other.padding == padding &&
         other.closeIconPosition == closeIconPosition &&
         other.constraints == constraints &&
-        other.closeIcon == closeIcon;
+        other.closeIcon == closeIcon &&
+        other.mainAxisAlignment == mainAxisAlignment &&
+        other.mainAxisSize == mainAxisSize;
   }
 
   @override
@@ -254,6 +272,8 @@ class ShadToastTheme {
         padding.hashCode ^
         closeIconPosition.hashCode ^
         constraints.hashCode ^
-        closeIcon.hashCode;
+        closeIcon.hashCode ^
+        mainAxisAlignment.hashCode ^
+        mainAxisSize.hashCode;
   }
 }
