@@ -210,3 +210,33 @@ return ShadApp(
   ...
 );
 ```
+
+## Extend with custom styles
+
+You can extend the `ShadTextTheme` with your own custom styles by using the `custom` parameter.
+```diff lang="dart"
+return ShadApp(
+  theme: ShadThemeData(
++    textTheme: ShadTextTheme(
++      custom: {
++        'myCustomStyle': const TextStyle(
++          fontSize: 16,
++          fontWeight: FontWeight.w400,
++          color: Colors.blue,
++        ),
++      },
++    ),
+  ),
+);
+```
+
+Then you can access it like this `ShadTheme.of(context).textTheme.custom['myCustomStyle']!`.
+
+Or you can create an extension on `ShadTextTheme` to make it easier to access:
+```dart
+extension CustomStyleExtension on ShadTextTheme {
+  TextStyle get myCustomStyle => custom['myCustomStyle']!;
+}
+```
+
+In this way you can access it like other styles `ShadTheme.of(context).textTheme.myCustomStyle`.

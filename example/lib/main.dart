@@ -149,6 +149,17 @@ class App extends StatelessWidget {
 
               // Example to disable the secondary border
               // disableSecondaryBorder: true,
+
+              // Example of extending the ShadTextTheme with a new custom style and name (see `/typography` page for usage example).
+              textTheme: ShadTextTheme(
+                custom: {
+                  'myCustomStyle': const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.blue,
+                  ),
+                },
+              ),
             ),
             darkTheme: ShadThemeData(
               brightness: Brightness.dark,

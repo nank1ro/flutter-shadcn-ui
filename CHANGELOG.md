@@ -1,3 +1,7 @@
+## 0.33.0
+
+- **FEAT**: Allow extending `ShadTextTheme` with custom text styles through the `custom` parameter. [See docs](https://flutter-shadcn-ui.mariuti.com/typography#extend-with-custom-styles).
+
 ## 0.32.2
 
 - **FIX**: `ShadTooltip` not showing on hover.

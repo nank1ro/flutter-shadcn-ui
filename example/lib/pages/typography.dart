@@ -4,6 +4,12 @@ import 'package:example/common/component_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+// Example of extending the ShadTextTheme with a custom style.
+// which can be retrieved with `ShadTheme.of(context).textTheme.myCustomStyle`.
+extension CustomStyleExtension on ShadTextTheme {
+  TextStyle get myCustomStyle => custom['myCustomStyle']!;
+}
+
 class TypographyPage extends StatelessWidget {
   const TypographyPage({super.key});
 
@@ -101,6 +107,13 @@ class TypographyPage extends StatelessWidget {
           child: Text(
             'Enter your email address.',
             style: ShadTheme.of(context).textTheme.muted,
+          ),
+        ),
+        ComponentView(
+          label: 'extend with custom style',
+          child: Text(
+            'Enter your email address.',
+            style: ShadTheme.of(context).textTheme.myCustomStyle,
           ),
         ),
       ].separatedBy(const ShadSeparator.horizontal()),
