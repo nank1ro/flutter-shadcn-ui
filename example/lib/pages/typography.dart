@@ -4,7 +4,7 @@ import 'package:example/common/component_view.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-// Example of extending the ShadTextTheme with a custom style.
+// Example of extension on ShadTextTheme with a custom style.
 // which can be retrieved with `ShadTheme.of(context).textTheme.myCustomStyle`.
 extension CustomStyleExtension on ShadTextTheme {
   TextStyle get myCustomStyle => custom['myCustomStyle']!;
