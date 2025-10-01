@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/themes/default_theme_variant.dart';
@@ -305,7 +306,13 @@ class ShadTextTheme {
       ),
       family: p.fontFamily,
       googleFontBuilder: fontBuilder,
-      custom: effectiveTextTheme.custom,
+      custom: {
+        for (final e in effectiveTextTheme.custom.entries)
+          e.key: GoogleFontTextStyle(
+            e.value.omitFamilyAndPackage,
+            builder: fontBuilder,
+          ),
+      },
     );
   }
 
@@ -638,7 +645,7 @@ class ShadTextTheme {
         other.muted == muted &&
         other.family == family &&
         other.googleFontBuilder == googleFontBuilder &&
-        other.custom == custom;
+        mapEquals(other.custom, custom);
   }
 
   @override
