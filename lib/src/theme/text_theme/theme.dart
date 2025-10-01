@@ -667,7 +667,7 @@ class ShadTextTheme {
       family,
       merge,
       googleFontBuilder,
-      custom,
+      Object.hashAllUnordered(custom.entries),
     );
   }
 }
