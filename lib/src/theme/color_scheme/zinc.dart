@@ -24,6 +24,7 @@ class ShadZincColorScheme extends ShadColorScheme {
     required super.input,
     required super.ring,
     required super.selection,
+    super.custom,
   });
 
   const ShadZincColorScheme.light({
@@ -47,6 +48,7 @@ class ShadZincColorScheme extends ShadColorScheme {
     super.input = const Color(0xffe4e4e7),
     super.ring = const Color(0xff18181b),
     super.selection = const Color(0xFFB4D7FF),
+    super.custom,
   });
 
   const ShadZincColorScheme.dark({
@@ -70,5 +72,6 @@ class ShadZincColorScheme extends ShadColorScheme {
     super.input = const Color(0xff27272a),
     super.ring = const Color(0xffd4d4d8),
     super.selection = const Color(0xFF355172),
+    super.custom,
   });
 }

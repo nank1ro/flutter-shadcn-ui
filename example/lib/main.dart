@@ -140,7 +140,14 @@ class App extends StatelessWidget {
             routes: routes,
             theme: ShadThemeData(
               brightness: Brightness.light,
-              colorScheme: const ShadZincColorScheme.light(),
+              colorScheme: const ShadZincColorScheme.light(
+                  // Example of adding a custom color to the color scheme
+                  /* 
+                  custom: {
+                     'myCustomColor': Color.fromARGB(255, 177, 4, 196),
+                   },
+                  */
+                  ),
               // Example with google fonts
               // textTheme: ShadTextTheme.fromGoogleFont(GoogleFonts.poppins),
 

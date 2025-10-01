@@ -24,6 +24,7 @@ class ShadNeutralColorScheme extends ShadColorScheme {
     required super.input,
     required super.ring,
     required super.selection,
+    super.custom,
   });
 
   const ShadNeutralColorScheme.light({
@@ -47,6 +48,7 @@ class ShadNeutralColorScheme extends ShadColorScheme {
     super.input = const Color(0xffe5e5e5),
     super.ring = const Color(0xff0a0a0a),
     super.selection = const Color(0xFFB4D7FF),
+    super.custom,
   });
 
   const ShadNeutralColorScheme.dark({
@@ -70,5 +72,6 @@ class ShadNeutralColorScheme extends ShadColorScheme {
     super.input = const Color(0xff262626),
     super.ring = const Color(0xffd4d4d4),
     super.selection = const Color(0xFF355172),
+    super.custom,
   });
 }

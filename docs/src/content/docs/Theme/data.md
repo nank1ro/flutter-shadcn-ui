@@ -120,3 +120,30 @@ ShadSelect<String>(
 For example I'm using solidart as state management, here it is the example code used to rebuild the app widget when the user changes the theme mode. Check the "Toggle Theme" example at <https://solidart.mariuti.com/examples>
 
 The same can be done for the color scheme, using a `Signal<String>()`
+
+## Extend with custom colors
+
+You can extend the `ShadColorScheme` with your own custom colors by using the `custom` parameter.
+```diff lang="dart"
+return ShadApp(
+  theme: ShadThemeData(
++    colorScheme: const ShadZincColorScheme.light(
++      custom: {
++        'myCustomColor': Color.fromARGB(255, 177, 4, 196),
++      },
++    ),
+  ),
+);
+```
+
+Then you can access it like this `ShadTheme.of(context).colorScheme.custom['myCustomColor']!`.
+
+Or you can create an extension on `ShadColorScheme` to make it easier to access:
+```dart
+extension CustomColorExtension on ShadColorScheme {
+  Color get myCustomColor => custom['myCustomColor']!;
+}
+```
+
+In this way you can access it like other styles `ShadTheme.of(context).colorScheme.myCustomColor`.
+
