@@ -1,3 +1,7 @@
+## 0.32.2
+
+- **FIX**: `ShadTooltip` not showing on hover.
+
 ## 0.32.1
 
 - **FIX**: `ShadToast` constraints were not being used.
