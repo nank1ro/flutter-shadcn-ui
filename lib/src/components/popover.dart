@@ -257,7 +257,7 @@ class _ShadPopoverState extends State<ShadPopover>
     final effectiveShadows = widget.shadows ?? theme.popoverTheme.shadows;
     var effectiveDecoration =
         (theme.popoverTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration)
+            .merge(widget.decoration)
             .copyWith(shadows: effectiveShadows);
     // remove the top padding of the popover
     effectiveDecoration = effectiveDecoration.copyWith(

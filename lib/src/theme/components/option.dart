@@ -1,15 +1,23 @@
 import 'package:flutter/widgets.dart';
+import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
 
+part 'option.g.theme.dart';
+
+@themeGen
 @immutable
-class ShadOptionTheme {
+class ShadOptionTheme with _$ShadOptionTheme {
   const ShadOptionTheme({
-    this.merge = true,
+    bool canMerge = true,
     this.hoveredBackgroundColor,
     this.padding,
     this.radius,
-  });
+  }) : _canMerge = canMerge;
 
-  final bool merge;
+  @ignore
+  final bool _canMerge;
+
+  @override
+  bool get canMerge => _canMerge;
 
   final Color? hoveredBackgroundColor;
   final EdgeInsetsGeometry? padding;
@@ -19,58 +27,6 @@ class ShadOptionTheme {
     ShadOptionTheme a,
     ShadOptionTheme b,
     double t,
-  ) {
-    if (identical(a, b)) return a;
-    return ShadOptionTheme(
-      merge: b.merge,
-      hoveredBackgroundColor:
-          Color.lerp(a.hoveredBackgroundColor, b.hoveredBackgroundColor, t),
-      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
-      radius: BorderRadius.lerp(a.radius, b.radius, t),
-    );
-  }
-
-  ShadOptionTheme copyWith({
-    bool? merge,
-    Color? hoveredBackgroundColor,
-    EdgeInsetsGeometry? padding,
-    BorderRadius? radius,
-  }) {
-    return ShadOptionTheme(
-      merge: merge ?? this.merge,
-      hoveredBackgroundColor:
-          hoveredBackgroundColor ?? this.hoveredBackgroundColor,
-      padding: padding ?? this.padding,
-      radius: radius ?? this.radius,
-    );
-  }
-
-  ShadOptionTheme mergeWith(ShadOptionTheme? other) {
-    if (other == null) return this;
-    if (!other.merge) return other;
-    return copyWith(
-      hoveredBackgroundColor: other.hoveredBackgroundColor,
-      padding: other.padding,
-      radius: other.radius,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ShadOptionTheme &&
-        other.merge == merge &&
-        other.hoveredBackgroundColor == hoveredBackgroundColor &&
-        other.padding == padding &&
-        other.radius == radius;
-  }
-
-  @override
-  int get hashCode {
-    return merge.hashCode ^
-        hoveredBackgroundColor.hashCode ^
-        padding.hashCode ^
-        radius.hashCode;
-  }
+  ) =>
+      _$ShadOptionTheme.lerp(a, b, t);
 }

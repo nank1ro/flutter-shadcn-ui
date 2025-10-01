@@ -8,6 +8,7 @@ part 'accordion.g.theme.dart';
 @immutable
 class ShadAccordionTheme with _$ShadAccordionTheme {
   const ShadAccordionTheme({
+    bool canMerge = true,
     this.iconData,
     this.iconEffects,
     this.padding,
@@ -17,7 +18,13 @@ class ShadAccordionTheme with _$ShadAccordionTheme {
     this.duration,
     this.maintainState,
     this.effects,
-  });
+  }) : _canMerge = canMerge;
+
+  @ignore
+  final bool _canMerge;
+
+  @override
+  bool get canMerge => _canMerge;
 
   /// {@macro ShadAccordionItem.iconData}
   final IconData? iconData;

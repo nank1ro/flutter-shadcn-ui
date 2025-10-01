@@ -32,7 +32,7 @@ extension ShadBorderToBorder on ShadBorder {
 class ShadBorder {
   /// {@macro ShadBorder}
   const ShadBorder({
-    this.merge = true,
+    this.canMerge = true,
     this.padding,
     this.radius,
     this.top,
@@ -45,7 +45,7 @@ class ShadBorder {
   /// Creates a border whose sides are all the same.
   const ShadBorder.fromBorderSide(
     ShadBorderSide side, {
-    this.merge = true,
+    this.canMerge = true,
     this.padding,
     this.radius,
     this.offset,
@@ -61,7 +61,7 @@ class ShadBorder {
   const ShadBorder.symmetric({
     ShadBorderSide? vertical,
     ShadBorderSide? horizontal,
-    this.merge = true,
+    this.canMerge = true,
     this.padding,
     this.radius,
     this.offset,
@@ -74,7 +74,7 @@ class ShadBorder {
   ///
   /// The sides default to black solid borders, one logical pixel wide.
   factory ShadBorder.all({
-    bool merge = true,
+    bool canMerge = true,
     Color? color,
     double? width,
     BorderStyle? style,
@@ -92,7 +92,7 @@ class ShadBorder {
     return ShadBorder.fromBorderSide(
       side,
       padding: padding,
-      merge: merge,
+      canMerge: canMerge,
       radius: radius,
       offset: offset,
     );
@@ -101,7 +101,7 @@ class ShadBorder {
   static ShadBorder? lerp(ShadBorder? a, ShadBorder? b, double t) {
     if (identical(a, b)) return a;
     return ShadBorder(
-      merge: b?.merge ?? a?.merge ?? true,
+      canMerge: b?.canMerge ?? a?.canMerge ?? true,
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
       radius: BorderRadiusGeometry.lerp(a?.radius, b?.radius, t),
       top: ShadBorderSide.lerp(
@@ -134,28 +134,28 @@ class ShadBorder {
       (bottom?.width ?? 0) != 0 ||
       (left?.width ?? 0) != 0;
 
-  static const ShadBorder none = ShadBorder(merge: false);
+  static const ShadBorder none = ShadBorder(canMerge: false);
 
   /// Creates a [ShadBorder] that represents the addition of the two given
   /// [ShadBorder]s.
-  ShadBorder mergeWith(ShadBorder? other) {
+  ShadBorder merge(ShadBorder? other) {
     if (other == null) return this;
-    if (!other.merge) return other;
+    if (!other.canMerge) return other;
     if (other is ShadRoundedSuperellipseBorder) {
       return ShadRoundedSuperellipseBorder(
         side: switch (this) {
           final ShadRoundedSuperellipseBorder border =>
-            border.side?.mergeWith(other.side) ?? other.side,
+            border.side?.merge(other.side) ?? other.side,
           _ => other.side,
         },
         radius: other.radius ?? radius,
       );
     }
     return copyWith(
-      top: top?.mergeWith(other.top) ?? other.top,
-      right: right?.mergeWith(other.right) ?? other.right,
-      bottom: bottom?.mergeWith(other.bottom) ?? other.bottom,
-      left: left?.mergeWith(other.left) ?? other.left,
+      top: top?.merge(other.top) ?? other.top,
+      right: right?.merge(other.right) ?? other.right,
+      bottom: bottom?.merge(other.bottom) ?? other.bottom,
+      left: left?.merge(other.left) ?? other.left,
       padding: other.padding,
       radius: other.radius,
       offset: other.offset,
@@ -183,7 +183,7 @@ class ShadBorder {
   }
 
   /// Whether to merge with another border, defaults to true.
-  final bool merge;
+  final bool canMerge;
 
   /// The padding of the border, defaults to null.
   final EdgeInsetsGeometry? padding;
@@ -219,7 +219,7 @@ class ShadBorder {
 class ShadBorderSide with Diagnosticable {
   /// Creates the side of a border.
   const ShadBorderSide({
-    this.merge = true,
+    this.canMerge = true,
     this.color,
     this.width,
     this.style,
@@ -227,9 +227,9 @@ class ShadBorderSide with Diagnosticable {
   }) : assert(width == null || width >= 0.0);
 
   /// Merges two border sides into one
-  ShadBorderSide mergeWith(ShadBorderSide? other) {
+  ShadBorderSide merge(ShadBorderSide? other) {
     if (other == null) return this;
-    if (!other.merge) return other;
+    if (!other.canMerge) return other;
     return copyWith(
       color: other.color,
       width: other.width,
@@ -239,7 +239,7 @@ class ShadBorderSide with Diagnosticable {
   }
 
   /// Whether to merge the border side
-  final bool merge;
+  final bool canMerge;
 
   /// The color of this side of the border.
   final Color? color;
@@ -257,7 +257,7 @@ class ShadBorderSide with Diagnosticable {
   final BorderStyle? style;
 
   /// A hairline black border that is not rendered.
-  static const ShadBorderSide none = ShadBorderSide(merge: false);
+  static const ShadBorderSide none = ShadBorderSide(canMerge: false);
 
   /// The relative position of the stroke on a [ShadBorderSide] in an
   /// [OutlinedBorder] or [Border].
@@ -290,14 +290,14 @@ class ShadBorderSide with Diagnosticable {
   /// Creates a copy of this border but with the given fields replaced with the
   /// new values.
   ShadBorderSide copyWith({
-    bool? merge,
+    bool? canMerge,
     Color? color,
     double? width,
     BorderStyle? style,
     double? strokeAlign,
   }) {
     return ShadBorderSide(
-      merge: merge ?? this.merge,
+      canMerge: canMerge ?? this.canMerge,
       color: color ?? this.color,
       width: width ?? this.width,
       style: style ?? this.style,
@@ -308,7 +308,7 @@ class ShadBorderSide with Diagnosticable {
   static ShadBorderSide? lerp(ShadBorderSide? a, ShadBorderSide? b, double t) {
     if (identical(a, b)) return a;
     return ShadBorderSide(
-      merge: b?.merge ?? a?.merge ?? true,
+      canMerge: b?.canMerge ?? a?.canMerge ?? true,
       color: Color.lerp(a?.color, b?.color, t),
       width: lerpDouble(a?.width, b?.width, t),
       style: t < 0.5 ? a?.style : b?.style,
@@ -351,8 +351,8 @@ class ShadBorderSide with Diagnosticable {
       )
       ..add(
         DiagnosticsProperty<bool>(
-          'merge',
-          merge,
+          'canMerge',
+          canMerge,
           defaultValue: true,
         ),
       );
@@ -395,7 +395,7 @@ extension ShadRoundedSuperellipseBorderExt on ShadRoundedSuperellipseBorder {
 @immutable
 class ShadRoundedSuperellipseBorder extends ShadBorder {
   const ShadRoundedSuperellipseBorder({
-    super.merge,
+    super.canMerge,
     this.side,
     super.radius,
   });

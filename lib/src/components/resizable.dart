@@ -499,8 +499,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
       ),
       disableSecondaryBorder: true,
     )
-        .mergeWith(theme.resizableTheme.handleDecoration)
-        .mergeWith(widget.handleDecoration);
+        .merge(theme.resizableTheme.handleDecoration)
+        .merge(widget.handleDecoration);
 
     final effectiveHandlePadding = widget.handlePadding ??
         theme.resizableTheme.handlePadding ??

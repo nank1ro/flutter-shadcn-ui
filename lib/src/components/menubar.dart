@@ -116,8 +116,8 @@ class _ShadMenubarState extends State<ShadMenubar> {
         widget.backgroundColor ?? theme.menubarTheme.backgroundColor;
     final effectiveBorder =
         ShadBorder.all(color: theme.colorScheme.border, width: 1)
-            .mergeWith(theme.menubarTheme.border)
-            .mergeWith(widget.border);
+            .merge(theme.menubarTheme.border)
+            .merge(widget.border);
 
     return ShadProvider(
       data: this,
@@ -461,9 +461,7 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
         theme.colorScheme.accent;
     final effectiveButtonDecoration = const ShadDecoration(
       disableSecondaryBorder: true,
-    )
-        .mergeWith(theme.menubarTheme.buttonDecoration)
-        .mergeWith(widget.buttonDecoration);
+    ).merge(theme.menubarTheme.buttonDecoration).merge(widget.buttonDecoration);
     final effectiveSelectOnHover = inherited.widget.selectOnHover ??
         theme.menubarTheme.selectOnHover ??
         true;

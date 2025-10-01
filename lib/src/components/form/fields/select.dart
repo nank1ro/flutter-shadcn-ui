@@ -106,7 +106,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectState<T>;
 
@@ -212,7 +212,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectState<T>;
 
@@ -334,7 +334,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectState<T>;
 
@@ -473,7 +473,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectMultipleState<T>;
 
@@ -567,7 +567,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectMultipleState<T>;
 
@@ -671,7 +671,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectMultipleState<T>;
 

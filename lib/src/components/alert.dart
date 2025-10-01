@@ -179,8 +179,8 @@ class ShadAlert extends StatelessWidget {
     );
 
     final effectiveDecoration = defaultDecoration
-        .mergeWith(effectiveAlertTheme.decoration)
-        .mergeWith(decoration);
+        .merge(effectiveAlertTheme.decoration)
+        .merge(decoration);
 
     final effectiveIconColor = iconColor ??
         effectiveAlertTheme.iconColor ??

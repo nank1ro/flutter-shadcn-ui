@@ -220,7 +220,7 @@ class ShadTextTheme {
   }
 
   const ShadTextTheme.custom({
-    this.merge = true,
+    this.canMerge = true,
     required this.h1Large,
     required this.h1,
     required this.h2,
@@ -322,7 +322,7 @@ class ShadTextTheme {
   /// The font family of the theme.
   final String family;
 
-  final bool merge;
+  final bool canMerge;
 
   final GoogleFontBuilder? googleFontBuilder;
 
@@ -356,7 +356,7 @@ class ShadTextTheme {
     }
 
     return ShadTextTheme.custom(
-      merge: merge,
+      canMerge: canMerge,
       h1Large: h1Large ?? this.h1Large,
       h1: h1 ?? this.h1,
       h2: h2 ?? this.h2,
@@ -375,10 +375,9 @@ class ShadTextTheme {
     );
   }
 
-  ShadTextTheme mergeWith(ShadTextTheme? other) {
+  ShadTextTheme merge(ShadTextTheme? other) {
     if (other == null) return this;
-    if (!other.merge) return other;
-
+    if (!other.canMerge) return other;
     return copyWith(
       h1Large: h1Large.merge(other.h1Large),
       h1: h1.merge(other.h1),
@@ -412,7 +411,7 @@ class ShadTextTheme {
   }) {
     final effectiveFamily = family ?? this.family;
     return ShadTextTheme.custom(
-      merge: merge,
+      canMerge: canMerge,
       family: effectiveFamily,
       h1Large: h1Large.apply(
         fontFamily: effectiveFamily,
@@ -631,7 +630,7 @@ class ShadTextTheme {
       small,
       muted,
       family,
-      merge,
+      canMerge,
       googleFontBuilder,
     );
   }

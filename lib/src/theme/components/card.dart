@@ -2,11 +2,15 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
 
+part 'card.g.theme.dart';
+
+@themeGen
 @immutable
-class ShadCardTheme {
+class ShadCardTheme with _$ShadCardTheme {
   const ShadCardTheme({
-    this.merge = true,
+    bool canMerge = true,
     this.backgroundColor,
     this.padding,
     this.radius,
@@ -21,9 +25,13 @@ class ShadCardTheme {
     this.rowMainAxisSize,
     this.columnMainAxisSize,
     this.clipBehavior,
-  });
+  }) : _canMerge = canMerge;
 
-  final bool merge;
+  @ignore
+  final bool _canMerge;
+
+  @override
+  bool get canMerge => _canMerge;
 
   /// {@macro ShadCard.padding}
   final EdgeInsetsGeometry? padding;
@@ -71,128 +79,6 @@ class ShadCardTheme {
     ShadCardTheme a,
     ShadCardTheme b,
     double t,
-  ) {
-    if (identical(a, b)) return a;
-    return ShadCardTheme(
-      merge: b.merge,
-      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
-      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
-      radius: BorderRadius.lerp(a.radius, b.radius, t),
-      border: Border.lerp(a.border, b.border, t),
-      shadows: t < .5 ? a.shadows : b.shadows,
-      width: lerpDouble(a.width, b.width, t),
-      height: lerpDouble(a.height, b.height, t),
-      rowMainAxisAlignment:
-          t < .5 ? a.rowMainAxisAlignment : b.rowMainAxisAlignment,
-      rowCrossAxisAlignment:
-          t < .5 ? a.rowCrossAxisAlignment : b.rowCrossAxisAlignment,
-      columnMainAxisAlignment:
-          t < .5 ? a.columnMainAxisAlignment : b.columnMainAxisAlignment,
-      columnCrossAxisAlignment:
-          t < .5 ? a.columnCrossAxisAlignment : b.columnCrossAxisAlignment,
-      rowMainAxisSize: t < .5 ? a.rowMainAxisSize : b.rowMainAxisSize,
-      columnMainAxisSize: t < .5 ? a.columnMainAxisSize : b.columnMainAxisSize,
-    );
-  }
-
-  ShadCardTheme copyWith({
-    bool? merge,
-    Color? backgroundColor,
-    EdgeInsetsGeometry? padding,
-    BorderRadius? radius,
-    Border? border,
-    List<BoxShadow>? shadows,
-    double? width,
-    double? height,
-    MainAxisAlignment? rowMainAxisAlignment,
-    CrossAxisAlignment? rowCrossAxisAlignment,
-    MainAxisAlignment? columnMainAxisAlignment,
-    CrossAxisAlignment? columnCrossAxisAlignment,
-    MainAxisSize? rowMainAxisSize,
-    MainAxisSize? columnMainAxisSize,
-    Clip? clipBehavior,
-  }) {
-    return ShadCardTheme(
-      merge: merge ?? this.merge,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      padding: padding ?? this.padding,
-      radius: radius ?? this.radius,
-      border: border ?? this.border,
-      shadows: shadows ?? this.shadows,
-      width: width ?? this.width,
-      height: height ?? this.height,
-      rowMainAxisAlignment: rowMainAxisAlignment ?? this.rowMainAxisAlignment,
-      rowCrossAxisAlignment:
-          rowCrossAxisAlignment ?? this.rowCrossAxisAlignment,
-      columnMainAxisAlignment:
-          columnMainAxisAlignment ?? this.columnMainAxisAlignment,
-      columnCrossAxisAlignment:
-          columnCrossAxisAlignment ?? this.columnCrossAxisAlignment,
-      rowMainAxisSize: rowMainAxisSize ?? this.rowMainAxisSize,
-      columnMainAxisSize: columnMainAxisSize ?? this.columnMainAxisSize,
-      clipBehavior: clipBehavior ?? this.clipBehavior,
-    );
-  }
-
-  ShadCardTheme mergeWith(ShadCardTheme? other) {
-    if (other == null) return this;
-    if (!other.merge) return other;
-    return copyWith(
-      backgroundColor: other.backgroundColor,
-      padding: other.padding,
-      radius: other.radius,
-      border: other.border,
-      shadows: other.shadows,
-      width: other.width,
-      height: other.height,
-      rowMainAxisAlignment: other.rowMainAxisAlignment,
-      rowCrossAxisAlignment: other.rowCrossAxisAlignment,
-      columnMainAxisAlignment: other.columnMainAxisAlignment,
-      columnCrossAxisAlignment: other.columnCrossAxisAlignment,
-      rowMainAxisSize: other.rowMainAxisSize,
-      columnMainAxisSize: other.columnMainAxisSize,
-      clipBehavior: other.clipBehavior,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ShadCardTheme &&
-        other.merge == merge &&
-        other.padding == padding &&
-        other.backgroundColor == backgroundColor &&
-        other.radius == radius &&
-        other.border == border &&
-        listEquals(other.shadows, shadows) &&
-        other.width == width &&
-        other.height == height &&
-        other.rowMainAxisAlignment == rowMainAxisAlignment &&
-        other.rowCrossAxisAlignment == rowCrossAxisAlignment &&
-        other.columnMainAxisAlignment == columnMainAxisAlignment &&
-        other.columnCrossAxisAlignment == columnCrossAxisAlignment &&
-        other.rowMainAxisSize == rowMainAxisSize &&
-        other.columnMainAxisSize == columnMainAxisSize &&
-        other.clipBehavior == clipBehavior;
-  }
-
-  @override
-  int get hashCode {
-    return merge.hashCode ^
-        padding.hashCode ^
-        backgroundColor.hashCode ^
-        radius.hashCode ^
-        border.hashCode ^
-        shadows.hashCode ^
-        width.hashCode ^
-        height.hashCode ^
-        rowMainAxisAlignment.hashCode ^
-        rowCrossAxisAlignment.hashCode ^
-        columnMainAxisAlignment.hashCode ^
-        columnCrossAxisAlignment.hashCode ^
-        rowMainAxisSize.hashCode ^
-        columnMainAxisSize.hashCode ^
-        clipBehavior.hashCode;
-  }
+  ) =>
+      _$ShadCardTheme.lerp(a, b, t);
 }

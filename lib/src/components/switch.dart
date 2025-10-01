@@ -227,7 +227,7 @@ class _ShadSwitchState extends State<ShadSwitch>
 
     final effectiveDecoration =
         (theme.switchTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration)
+            .merge(widget.decoration)
             .copyWith(
               color: widget.value
                   ? effectiveCheckedTrackColor
@@ -303,7 +303,7 @@ class _ShadSwitchState extends State<ShadSwitch>
                               decoration: ShadDecoration(
                                 color: effectiveThumbColor,
                                 shape: BoxShape.circle,
-                                merge: false,
+                                canMerge: false,
                               ),
                             ),
                           ),

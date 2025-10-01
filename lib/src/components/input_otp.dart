@@ -497,9 +497,9 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       ),
     );
     final effectiveDecoration = defaultDecoration
-        .mergeWith(theme.inputOTPTheme.decoration)
-        .mergeWith(widget.decoration)
-        .mergeWith(
+        .merge(theme.inputOTPTheme.decoration)
+        .merge(widget.decoration)
+        .merge(
           ShadDecoration(
             border: ShadBorder(
               radius: effectiveRadius,
