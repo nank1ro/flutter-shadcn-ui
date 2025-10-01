@@ -139,7 +139,9 @@ mixin _$ShadToastTheme {
           current.descriptionStyle?.merge(other.descriptionStyle) ??
               other.descriptionStyle,
       actionPadding: other.actionPadding,
-      border: current.border?.merge(other.border) ?? other.border,
+      border: current.border != null && other.border != null
+          ? Border.merge(current.border!, other.border!)
+          : other.border,
       radius: other.radius,
       shadows: other.shadows,
       padding: other.padding,

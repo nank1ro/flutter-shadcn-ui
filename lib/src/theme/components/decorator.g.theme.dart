@@ -151,12 +151,19 @@ mixin _$ShadDecoration {
           current.labelStyle?.merge(other.labelStyle) ?? other.labelStyle,
       errorLabelStyle: current.errorLabelStyle?.merge(other.errorLabelStyle) ??
           other.errorLabelStyle,
-      border: other.border,
-      focusedBorder: other.focusedBorder,
-      errorBorder: other.errorBorder,
-      secondaryBorder: other.secondaryBorder,
-      secondaryFocusedBorder: other.secondaryFocusedBorder,
-      secondaryErrorBorder: other.secondaryErrorBorder,
+      border: current.border?.merge(other.border) ?? other.border,
+      focusedBorder: current.focusedBorder?.merge(other.focusedBorder) ??
+          other.focusedBorder,
+      errorBorder:
+          current.errorBorder?.merge(other.errorBorder) ?? other.errorBorder,
+      secondaryBorder: current.secondaryBorder?.merge(other.secondaryBorder) ??
+          other.secondaryBorder,
+      secondaryFocusedBorder:
+          current.secondaryFocusedBorder?.merge(other.secondaryFocusedBorder) ??
+              other.secondaryFocusedBorder,
+      secondaryErrorBorder:
+          current.secondaryErrorBorder?.merge(other.secondaryErrorBorder) ??
+              other.secondaryErrorBorder,
       errorStyle:
           current.errorStyle?.merge(other.errorStyle) ?? other.errorStyle,
       descriptionStyle:

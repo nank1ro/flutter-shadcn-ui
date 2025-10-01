@@ -218,7 +218,7 @@ mixin _$ShadMenubarTheme {
       radius: other.radius,
       padding: other.padding,
       backgroundColor: other.backgroundColor,
-      border: other.border,
+      border: current.border?.merge(other.border) ?? other.border,
       constraints: other.constraints,
       contextMenuPadding: other.contextMenuPadding,
       effects: other.effects,

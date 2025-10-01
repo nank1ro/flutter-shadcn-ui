@@ -44,8 +44,15 @@ mixin _$ShadButtonSizeTheme {
 
   ShadButtonSizeTheme merge(ShadButtonSizeTheme? other) {
     final current = (this as ShadButtonSizeTheme);
-    if (other == null) return current;
-    if (!other.canMerge) return other;
+
+    if (other == null) {
+      return current;
+    }
+
+    if (!other.canMerge) {
+      return other;
+    }
+
     return copyWith(
       height: other.height,
       padding: other.padding,

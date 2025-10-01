@@ -93,7 +93,9 @@ mixin _$ShadCardTheme {
       padding: other.padding,
       backgroundColor: other.backgroundColor,
       radius: other.radius,
-      border: current.border?.merge(other.border) ?? other.border,
+      border: current.border != null && other.border != null
+          ? Border.merge(current.border!, other.border!)
+          : other.border,
       shadows: other.shadows,
       width: other.width,
       height: other.height,
