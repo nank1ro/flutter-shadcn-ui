@@ -24,6 +24,7 @@ class ShadSlateColorScheme extends ShadColorScheme {
     required super.input,
     required super.ring,
     required super.selection,
+    super.custom,
   });
 
   const ShadSlateColorScheme.light({
@@ -47,6 +48,7 @@ class ShadSlateColorScheme extends ShadColorScheme {
     super.input = const Color(0xffe2e8f0),
     super.ring = const Color(0xff020817),
     super.selection = const Color(0xFFB4D7FF),
+    super.custom,
   });
 
   const ShadSlateColorScheme.dark({
@@ -70,5 +72,6 @@ class ShadSlateColorScheme extends ShadColorScheme {
     super.input = const Color(0xff1e293b),
     super.ring = const Color(0xffcbd5e1),
     super.selection = const Color(0xFF355172),
+    super.custom,
   });
 }

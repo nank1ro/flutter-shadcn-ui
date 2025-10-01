@@ -24,6 +24,7 @@ class ShadStoneColorScheme extends ShadColorScheme {
     required super.input,
     required super.ring,
     required super.selection,
+    super.custom,
   });
 
   const ShadStoneColorScheme.light({
@@ -47,6 +48,7 @@ class ShadStoneColorScheme extends ShadColorScheme {
     super.input = const Color(0xffe7e5e4),
     super.ring = const Color(0xff0c0a09),
     super.selection = const Color(0xFFB4D7FF),
+    super.custom,
   });
 
   const ShadStoneColorScheme.dark({
@@ -70,5 +72,6 @@ class ShadStoneColorScheme extends ShadColorScheme {
     super.input = const Color(0xff292524),
     super.ring = const Color(0xffd6d3d1),
     super.selection = const Color(0xFF355172),
+    super.custom,
   });
 }

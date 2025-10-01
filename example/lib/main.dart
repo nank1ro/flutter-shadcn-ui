@@ -140,7 +140,14 @@ class App extends StatelessWidget {
             routes: routes,
             theme: ShadThemeData(
               brightness: Brightness.light,
-              colorScheme: const ShadZincColorScheme.light(),
+              colorScheme: const ShadZincColorScheme.light(
+                  // Example of adding a custom color to the color scheme
+                  /* 
+                  custom: {
+                     'myCustomColor': Color.fromARGB(255, 177, 4, 196),
+                   },
+                  */
+                  ),
               // Example with google fonts
               // textTheme: ShadTextTheme.fromGoogleFont(GoogleFonts.poppins),
 
@@ -149,6 +156,17 @@ class App extends StatelessWidget {
 
               // Example to disable the secondary border
               // disableSecondaryBorder: true,
+
+              // Example of extending the ShadTextTheme with a new custom style and name (see `/typography` page for usage example).
+              textTheme: ShadTextTheme(
+                custom: {
+                  'myCustomStyle': const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.blue,
+                  ),
+                },
+              ),
             ),
             darkTheme: ShadThemeData(
               brightness: Brightness.dark,
