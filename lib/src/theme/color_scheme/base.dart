@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/blue.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/gray.dart';
@@ -219,7 +220,7 @@ class ShadColorScheme {
         other.input == input &&
         other.ring == ring &&
         other.selection == selection &&
-        other.custom == custom;
+        mapEquals(other.custom, custom);
   }
 
   @override
@@ -244,6 +245,6 @@ class ShadColorScheme {
         input.hashCode ^
         ring.hashCode ^
         selection.hashCode ^
-        custom.hashCode;
+        Object.hashAllUnordered(custom.entries);
   }
 }
