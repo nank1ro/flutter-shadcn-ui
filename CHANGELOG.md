@@ -1,3 +1,7 @@
+## 0.34.0
+
+- **FEAT**: Add `leading`, `trailing`, `top` and `bottom` parameters to `ShadAlert` to add widgets before, after, above or below the main content of the alert.
+
 ## 0.33.1
 
 - **FIX**: `ShadSelect` always scrolling to the selected option when opening the popover which can now be disabled with `ensureSelectedVisible: false`.
