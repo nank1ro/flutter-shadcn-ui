@@ -46,6 +46,7 @@ void setupInitialThemeFromURL() {
 void setupWindowMessagesListener() {
   window.onMessage.listen((event) {
     // IMPORTANT: For security, always verify the origin of the message.
+    print('event.origin: ${event.origin}');
     if (event.origin != kParentOrigin) {
       return;
     }
