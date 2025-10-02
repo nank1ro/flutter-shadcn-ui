@@ -23,7 +23,7 @@ void main() {
           const ShadAlert(
             title: Text('Primary Alert'),
             description: Text('This is a primary alert'),
-            iconData: Icons.info,
+            icon: Icon(Icons.info),
           ),
         ),
       );
@@ -45,7 +45,7 @@ void main() {
           const ShadAlert.destructive(
             title: Text('Error Alert'),
             description: Text('This is a destructive alert'),
-            iconData: Icons.error,
+            icon: Icon(Icons.error),
           ),
         ),
       );
@@ -83,7 +83,7 @@ void main() {
         createTestWidget(
           const ShadAlert(
             title: Text('Styled Alert'),
-            iconData: Icons.info,
+            icon: Icon(Icons.info),
             iconColor: customColor,
             iconPadding: customPadding,
             titleStyle: TextStyle(fontSize: 20),
@@ -145,11 +145,7 @@ void main() {
     testWidgets('handles null title and description',
         (WidgetTester tester) async {
       await tester.pumpAsyncWidget(
-        createTestWidget(
-          const ShadAlert(
-            iconData: Icons.info,
-          ),
-        ),
+        createTestWidget(const ShadAlert(icon: Icon(Icons.info))),
       );
 
       // Check icon renders
@@ -163,7 +159,7 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           const ShadAlert(
-            iconData: LucideIcons.mail,
+            icon: Icon(LucideIcons.mail),
             title: Text('Title'),
             description: Text('Description'),
           ),
@@ -180,7 +176,7 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           const ShadAlert.destructive(
-            iconData: LucideIcons.mail,
+            icon: Icon(LucideIcons.mail),
             title: Text('Title'),
             description: Text('Description'),
           ),
