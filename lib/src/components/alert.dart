@@ -33,6 +33,10 @@ class ShadAlert extends StatelessWidget {
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.leading,
+    this.trailing,
+    this.top,
+    this.bottom,
   }) : variant = ShadAlertVariant.primary;
 
   /// Creates a destructive variant alert widget, typically used for error or
@@ -51,6 +55,10 @@ class ShadAlert extends StatelessWidget {
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.leading,
+    this.trailing,
+    this.top,
+    this.bottom,
   }) : variant = ShadAlertVariant.destructive;
 
   /// Creates a raw alert widget with a specified [variant], allowing full
@@ -70,6 +78,10 @@ class ShadAlert extends StatelessWidget {
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.leading,
+    this.trailing,
+    this.top,
+    this.bottom,
   });
 
   /// {@template ShadAlert.variant}
@@ -158,6 +170,30 @@ class ShadAlert extends StatelessWidget {
   /// {@endtemplate}
   final CrossAxisAlignment? crossAxisAlignment;
 
+  /// {@template ShadAlert.top}
+  /// An optional widget to display at the top of the alert, above the main
+  /// content. This can be used to add additional information or controls.
+  /// {@endtemplate}
+  final Widget? top;
+
+  /// {@template ShadAlert.bottom}
+  /// An optional widget to display at the bottom of the alert, below the main
+  /// content. This can be used to add additional information or controls.
+  /// {@endtemplate}
+  final Widget? bottom;
+
+  /// {@template ShadAlert.leading}
+  /// An optional widget to display at the leading edge of the alert, before the
+  /// main content. This can be used to add additional information or controls.
+  /// {@endtemplate}
+  final Widget? leading;
+
+  /// {@template ShadAlert.trailing}
+  /// An optional widget to display at the trailing edge of the alert, after the
+  /// main content. This can be used to add additional information or controls.
+  /// {@endtemplate}
+  final Widget? trailing;
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -221,30 +257,40 @@ class ShadAlert extends StatelessWidget {
 
     return ShadDecorator(
       decoration: effectiveDecoration,
-      child: Row(
-        crossAxisAlignment: effectiveCrossAxisAlignment,
-        mainAxisAlignment: effectiveMainAxisAlignment,
-        textDirection: textDirection,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          if (effectiveIcon != null) effectiveIcon,
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (title != null)
-                  DefaultTextStyle(
-                    style: effectiveTitleStyle,
-                    child: title!,
-                  ),
-                if (description != null)
-                  DefaultTextStyle(
-                    style: effectiveDescriptionStyle,
-                    child: description!,
-                  ),
-              ],
-            ),
+          if (top != null) top!,
+          Row(
+            crossAxisAlignment: effectiveCrossAxisAlignment,
+            mainAxisAlignment: effectiveMainAxisAlignment,
+            textDirection: textDirection,
+            children: [
+              if (leading != null) leading!,
+              if (effectiveIcon != null) effectiveIcon,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (title != null)
+                      DefaultTextStyle(
+                        style: effectiveTitleStyle,
+                        child: title!,
+                      ),
+                    if (description != null)
+                      DefaultTextStyle(
+                        style: effectiveDescriptionStyle,
+                        child: description!,
+                      ),
+                  ],
+                ),
+              ),
+              if (trailing != null) trailing!,
+            ],
           ),
+          if (bottom != null) bottom!,
         ],
       ),
     );
