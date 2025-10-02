@@ -3,6 +3,7 @@ import 'package:playground/pages/accordion.dart';
 import 'package:playground/pages/alert.dart';
 import 'package:playground/pages/avatar.dart';
 import 'package:playground/pages/badge.dart';
+import 'package:playground/pages/breadcrumbs.dart';
 import 'package:playground/pages/button.dart';
 import 'package:playground/pages/calendar.dart';
 import 'package:playground/pages/card.dart';
@@ -75,6 +76,10 @@ final router = GoRouter(
           variant: ShadBadgeVariant.values.byName(style),
         );
       },
+    ),
+    GoRoute(
+      path: '/breadcrumbs',
+      builder: (context, state) => const BreadcrumbsPage(),
     ),
     GoRoute(
       path: '/avatar',
