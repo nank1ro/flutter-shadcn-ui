@@ -238,9 +238,9 @@ class ShadCalendarTheme with _$ShadCalendarTheme {
   /// {@macro ShadCalendar.allowDeselection}
   final bool? allowDeselection;
 
-  static ShadCalendarTheme lerp(
-    ShadCalendarTheme a,
-    ShadCalendarTheme b,
+  static ShadCalendarTheme? lerp(
+    ShadCalendarTheme? a,
+    ShadCalendarTheme? b,
     double t,
   ) =>
       _$ShadCalendarTheme.lerp(a, b, t);

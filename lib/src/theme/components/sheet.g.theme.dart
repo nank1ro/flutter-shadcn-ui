@@ -12,9 +12,9 @@ part of 'sheet.dart';
 mixin _$ShadSheetTheme {
   bool get canMerge => true;
 
-  static ShadSheetTheme lerp(ShadSheetTheme? a, ShadSheetTheme? b, double t) {
+  static ShadSheetTheme? lerp(ShadSheetTheme? a, ShadSheetTheme? b, double t) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadSheetTheme(

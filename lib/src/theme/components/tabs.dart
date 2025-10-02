@@ -153,9 +153,9 @@ class ShadTabsTheme with _$ShadTabsTheme {
   /// {@macro ShadButton.longPressDuration}
   final Duration? longPressDuration;
 
-  static ShadTabsTheme lerp(
-    ShadTabsTheme a,
-    ShadTabsTheme b,
+  static ShadTabsTheme? lerp(
+    ShadTabsTheme? a,
+    ShadTabsTheme? b,
     double t,
   ) =>
       _$ShadTabsTheme.lerp(a, b, t);

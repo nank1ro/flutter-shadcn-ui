@@ -58,9 +58,9 @@ class ShadInputOTPTheme with _$ShadInputOTPTheme {
   /// {@macro ShadInputOTPSlot.middleRadius}
   final BorderRadius? middleRadius;
 
-  static ShadInputOTPTheme lerp(
-    ShadInputOTPTheme a,
-    ShadInputOTPTheme b,
+  static ShadInputOTPTheme? lerp(
+    ShadInputOTPTheme? a,
+    ShadInputOTPTheme? b,
     double t,
   ) =>
       _$ShadInputOTPTheme.lerp(a, b, t);

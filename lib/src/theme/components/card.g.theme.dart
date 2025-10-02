@@ -12,9 +12,9 @@ part of 'card.dart';
 mixin _$ShadCardTheme {
   bool get canMerge => true;
 
-  static ShadCardTheme lerp(ShadCardTheme? a, ShadCardTheme? b, double t) {
+  static ShadCardTheme? lerp(ShadCardTheme? a, ShadCardTheme? b, double t) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadCardTheme(

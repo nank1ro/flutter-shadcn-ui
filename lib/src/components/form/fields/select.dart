@@ -403,7 +403,8 @@ class _ShadFormBuilderSelectState<T>
   ShadSelectController<T> get controller =>
       widget.controller ??
       (_controller ??= ShadSelectController<T>(
-          initialValue: {if (initialValue is T) initialValue as T}));
+        initialValue: {if (initialValue is T) initialValue as T},
+      ));
 
   @override
   void initState() {

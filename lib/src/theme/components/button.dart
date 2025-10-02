@@ -115,10 +115,11 @@ class ShadButtonTheme with _$ShadButtonTheme {
   /// {@macro ShadButton.expands}
   final bool? expands;
 
-  static ShadButtonTheme lerp(
-    ShadButtonTheme a,
-    ShadButtonTheme b,
+  static ShadButtonTheme? lerp(
+    ShadButtonTheme? a,
+    ShadButtonTheme? b,
     double t,
-  ) =>
-      _$ShadButtonTheme.lerp(a, b, t);
+  ) {
+    return _$ShadButtonTheme.lerp(a, b, t);
+  }
 }

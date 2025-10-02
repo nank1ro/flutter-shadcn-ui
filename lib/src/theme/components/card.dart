@@ -72,9 +72,9 @@ class ShadCardTheme with _$ShadCardTheme {
   /// {@macro ShadCard.clipBehavior}
   final Clip? clipBehavior;
 
-  static ShadCardTheme lerp(
-    ShadCardTheme a,
-    ShadCardTheme b,
+  static ShadCardTheme? lerp(
+    ShadCardTheme? a,
+    ShadCardTheme? b,
     double t,
   ) =>
       _$ShadCardTheme.lerp(a, b, t);

@@ -12,13 +12,13 @@ part of 'select.dart';
 mixin _$ShadSelectTheme {
   bool get canMerge => true;
 
-  static ShadSelectTheme lerp(
+  static ShadSelectTheme? lerp(
     ShadSelectTheme? a,
     ShadSelectTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadSelectTheme(

@@ -62,9 +62,9 @@ class ShadTableTheme with _$ShadTableTheme {
   /// {@macro ShadTable.cellFooterStyle}
   final TextStyle? cellFooterStyle;
 
-  static ShadTableTheme lerp(
-    ShadTableTheme a,
-    ShadTableTheme b,
+  static ShadTableTheme? lerp(
+    ShadTableTheme? a,
+    ShadTableTheme? b,
     double t,
   ) =>
       _$ShadTableTheme.lerp(a, b, t);

@@ -40,9 +40,9 @@ class ShadBadgeTheme with _$ShadBadgeTheme {
   /// {@macro ShadBadge.cursor}
   final MouseCursor? cursor;
 
-  static ShadBadgeTheme lerp(
-    ShadBadgeTheme a,
-    ShadBadgeTheme b,
+  static ShadBadgeTheme? lerp(
+    ShadBadgeTheme? a,
+    ShadBadgeTheme? b,
     double t,
   ) =>
       _$ShadBadgeTheme.lerp(a, b, t);

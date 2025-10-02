@@ -36,9 +36,9 @@ class ShadProgressTheme with _$ShadProgressTheme {
   /// {@macro ShadProgress.minHeight}
   final double? minHeight;
 
-  static ShadProgressTheme lerp(
-    ShadProgressTheme a,
-    ShadProgressTheme b,
+  static ShadProgressTheme? lerp(
+    ShadProgressTheme? a,
+    ShadProgressTheme? b,
     double t,
   ) =>
       _$ShadProgressTheme.lerp(a, b, t);

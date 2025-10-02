@@ -12,9 +12,9 @@ part of 'input.dart';
 mixin _$ShadInputTheme {
   bool get canMerge => true;
 
-  static ShadInputTheme lerp(ShadInputTheme? a, ShadInputTheme? b, double t) {
+  static ShadInputTheme? lerp(ShadInputTheme? a, ShadInputTheme? b, double t) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadInputTheme(

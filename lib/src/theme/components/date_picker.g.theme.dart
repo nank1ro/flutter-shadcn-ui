@@ -12,13 +12,13 @@ part of 'date_picker.dart';
 mixin _$ShadDatePickerTheme {
   bool get canMerge => true;
 
-  static ShadDatePickerTheme lerp(
+  static ShadDatePickerTheme? lerp(
     ShadDatePickerTheme? a,
     ShadDatePickerTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadDatePickerTheme(

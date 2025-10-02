@@ -12,13 +12,13 @@ part of 'context_menu.dart';
 mixin _$ShadContextMenuTheme {
   bool get canMerge => true;
 
-  static ShadContextMenuTheme lerp(
+  static ShadContextMenuTheme? lerp(
     ShadContextMenuTheme? a,
     ShadContextMenuTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadContextMenuTheme(

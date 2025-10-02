@@ -12,13 +12,13 @@ part of 'popover.dart';
 mixin _$ShadPopoverTheme {
   bool get canMerge => true;
 
-  static ShadPopoverTheme lerp(
+  static ShadPopoverTheme? lerp(
     ShadPopoverTheme? a,
     ShadPopoverTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadPopoverTheme(

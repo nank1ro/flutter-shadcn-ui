@@ -12,13 +12,13 @@ part of 'checkbox.dart';
 mixin _$ShadCheckboxTheme {
   bool get canMerge => true;
 
-  static ShadCheckboxTheme lerp(
+  static ShadCheckboxTheme? lerp(
     ShadCheckboxTheme? a,
     ShadCheckboxTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadCheckboxTheme(

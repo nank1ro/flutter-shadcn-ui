@@ -343,7 +343,7 @@ class _ShadPopoverState extends State<ShadPopover>
                 ),
               );
             },
-            visible: animationController.isDismissed == false,
+            visible: !animationController.isDismissed,
             anchor: effectiveAnchor,
             child: widget.child,
           );

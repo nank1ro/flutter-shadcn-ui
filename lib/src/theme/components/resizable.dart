@@ -73,9 +73,9 @@ class ShadResizableTheme with _$ShadResizableTheme {
   /// {@macro ShadResizablePanelGroup.dividerColor}
   final Color? dividerColor;
 
-  static ShadResizableTheme lerp(
-    ShadResizableTheme a,
-    ShadResizableTheme b,
+  static ShadResizableTheme? lerp(
+    ShadResizableTheme? a,
+    ShadResizableTheme? b,
     double t,
   ) =>
       _$ShadResizableTheme.lerp(a, b, t);

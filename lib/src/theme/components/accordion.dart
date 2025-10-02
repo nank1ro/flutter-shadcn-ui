@@ -53,9 +53,9 @@ class ShadAccordionTheme with _$ShadAccordionTheme {
   /// {@macro ShadAccordionItem.effects}
   final List<Effect<dynamic>>? effects;
 
-  static ShadAccordionTheme lerp(
-    ShadAccordionTheme a,
-    ShadAccordionTheme b,
+  static ShadAccordionTheme? lerp(
+    ShadAccordionTheme? a,
+    ShadAccordionTheme? b,
     double t,
   ) =>
       _$ShadAccordionTheme.lerp(a, b, t);

@@ -12,13 +12,13 @@ part of 'switch.dart';
 mixin _$ShadSwitchTheme {
   bool get canMerge => true;
 
-  static ShadSwitchTheme lerp(
+  static ShadSwitchTheme? lerp(
     ShadSwitchTheme? a,
     ShadSwitchTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadSwitchTheme(

@@ -12,9 +12,9 @@ part of 'radio.dart';
 mixin _$ShadRadioTheme {
   bool get canMerge => true;
 
-  static ShadRadioTheme lerp(ShadRadioTheme? a, ShadRadioTheme? b, double t) {
+  static ShadRadioTheme? lerp(ShadRadioTheme? a, ShadRadioTheme? b, double t) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadRadioTheme(

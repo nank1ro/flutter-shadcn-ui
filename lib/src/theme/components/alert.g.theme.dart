@@ -12,9 +12,9 @@ part of 'alert.dart';
 mixin _$ShadAlertTheme {
   bool get canMerge => true;
 
-  static ShadAlertTheme lerp(ShadAlertTheme? a, ShadAlertTheme? b, double t) {
+  static ShadAlertTheme? lerp(ShadAlertTheme? a, ShadAlertTheme? b, double t) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadAlertTheme(

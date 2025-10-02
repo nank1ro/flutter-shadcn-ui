@@ -342,11 +342,8 @@ class ShadThemeData extends ShadBaseTheme {
           ShadBadgeTheme.lerp(a.outlineBadgeTheme, b.outlineBadgeTheme, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       avatarTheme: ShadAvatarTheme.lerp(a.avatarTheme, b.avatarTheme, t),
-      buttonSizesTheme: ShadButtonSizesTheme.lerp(
-        a.buttonSizesTheme,
-        b.buttonSizesTheme,
-        t,
-      ),
+      buttonSizesTheme:
+          ShadButtonSizesTheme.lerp(a.buttonSizesTheme, b.buttonSizesTheme, t),
       tooltipTheme: ShadTooltipTheme.lerp(a.tooltipTheme, b.tooltipTheme, t),
       popoverTheme: ShadPopoverTheme.lerp(a.popoverTheme, b.popoverTheme, t),
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),

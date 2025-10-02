@@ -12,13 +12,13 @@ part of 'progress.dart';
 mixin _$ShadProgressTheme {
   bool get canMerge => true;
 
-  static ShadProgressTheme lerp(
+  static ShadProgressTheme? lerp(
     ShadProgressTheme? a,
     ShadProgressTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadProgressTheme(

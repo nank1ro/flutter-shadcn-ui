@@ -12,13 +12,13 @@ part of 'separator.dart';
 mixin _$ShadSeparatorTheme {
   bool get canMerge => true;
 
-  static ShadSeparatorTheme lerp(
+  static ShadSeparatorTheme? lerp(
     ShadSeparatorTheme? a,
     ShadSeparatorTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadSeparatorTheme(

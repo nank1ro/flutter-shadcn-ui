@@ -370,7 +370,6 @@ class ShadInputOTPSlot extends StatefulWidget {
 class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
   late final otpProvider = context.read<ShadInputOTPState>();
 
-  // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
   ShadTextEditingController? _controller;

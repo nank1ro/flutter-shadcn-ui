@@ -12,13 +12,13 @@ part of 'input_otp.dart';
 mixin _$ShadInputOTPTheme {
   bool get canMerge => true;
 
-  static ShadInputOTPTheme lerp(
+  static ShadInputOTPTheme? lerp(
     ShadInputOTPTheme? a,
     ShadInputOTPTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadInputOTPTheme(

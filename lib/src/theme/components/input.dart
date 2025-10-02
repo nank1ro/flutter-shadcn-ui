@@ -86,9 +86,9 @@ class ShadInputTheme with _$ShadInputTheme {
   /// {@macro ShadInput.scrollbarPadding}
   final EdgeInsetsGeometry? scrollbarPadding;
 
-  static ShadInputTheme lerp(
-    ShadInputTheme a,
-    ShadInputTheme b,
+  static ShadInputTheme? lerp(
+    ShadInputTheme? a,
+    ShadInputTheme? b,
     double t,
   ) =>
       _$ShadInputTheme.lerp(a, b, t);

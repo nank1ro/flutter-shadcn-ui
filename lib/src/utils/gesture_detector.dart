@@ -520,7 +520,9 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
       gestures[PanGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<PanGestureRecognizer>(
         () => PanGestureRecognizer(
-            debugOwner: this, supportedDevices: widget.supportedDevices),
+          debugOwner: this,
+          supportedDevices: widget.supportedDevices,
+        ),
         (PanGestureRecognizer instance) {
           instance
             ..onDown = widget.onPanDown

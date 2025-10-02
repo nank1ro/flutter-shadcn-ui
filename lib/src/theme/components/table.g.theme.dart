@@ -12,9 +12,9 @@ part of 'table.dart';
 mixin _$ShadTableTheme {
   bool get canMerge => true;
 
-  static ShadTableTheme lerp(ShadTableTheme? a, ShadTableTheme? b, double t) {
+  static ShadTableTheme? lerp(ShadTableTheme? a, ShadTableTheme? b, double t) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadTableTheme(

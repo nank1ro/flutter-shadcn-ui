@@ -40,9 +40,9 @@ class ShadDefaultKeyboardToolbarTheme with _$ShadDefaultKeyboardToolbarTheme {
   /// {@macro ShadKeyboardToolbar.hideThreshold}
   final double? hideThreshold;
 
-  static ShadDefaultKeyboardToolbarTheme lerp(
-    ShadDefaultKeyboardToolbarTheme a,
-    ShadDefaultKeyboardToolbarTheme b,
+  static ShadDefaultKeyboardToolbarTheme? lerp(
+    ShadDefaultKeyboardToolbarTheme? a,
+    ShadDefaultKeyboardToolbarTheme? b,
     double t,
   ) =>
       _$ShadDefaultKeyboardToolbarTheme.lerp(a, b, t);

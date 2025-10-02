@@ -48,9 +48,9 @@ class ShadSonnerTheme with _$ShadSonnerTheme {
   /// {@macro ShadSonner.animationCurve}
   final Curve? animationCurve;
 
-  static ShadSonnerTheme lerp(
-    ShadSonnerTheme a,
-    ShadSonnerTheme b,
+  static ShadSonnerTheme? lerp(
+    ShadSonnerTheme? a,
+    ShadSonnerTheme? b,
     double t,
   ) =>
       _$ShadSonnerTheme.lerp(a, b, t);

@@ -46,9 +46,9 @@ class ShadCheckboxTheme with _$ShadCheckboxTheme {
   /// {@macro ShadCheckbox.checkboxPadding}
   final EdgeInsetsGeometry? checkboxPadding;
 
-  static ShadCheckboxTheme lerp(
-    ShadCheckboxTheme a,
-    ShadCheckboxTheme b,
+  static ShadCheckboxTheme? lerp(
+    ShadCheckboxTheme? a,
+    ShadCheckboxTheme? b,
     double t,
   ) =>
       _$ShadCheckboxTheme.lerp(a, b, t);

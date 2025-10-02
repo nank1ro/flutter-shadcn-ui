@@ -12,13 +12,13 @@ part of 'time_picker.dart';
 mixin _$ShadTimePickerTheme {
   bool get canMerge => true;
 
-  static ShadTimePickerTheme lerp(
+  static ShadTimePickerTheme? lerp(
     ShadTimePickerTheme? a,
     ShadTimePickerTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadTimePickerTheme(

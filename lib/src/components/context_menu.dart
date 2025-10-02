@@ -373,7 +373,6 @@ class ShadContextMenuState extends State<ShadContextMenu> {
     super.dispose();
   }
 
-  // ignore: use_setters_to_change_properties
   void setVisible(bool visible) {
     controller.setOpen(visible);
   }

@@ -107,9 +107,9 @@ class ShadToastTheme with _$ShadToastTheme {
   /// {@macro ShadToast.mainAxisSize}
   final MainAxisSize? mainAxisSize;
 
-  static ShadToastTheme lerp(
-    ShadToastTheme a,
-    ShadToastTheme b,
+  static ShadToastTheme? lerp(
+    ShadToastTheme? a,
+    ShadToastTheme? b,
     double t,
   ) =>
       _$ShadToastTheme.lerp(a, b, t);

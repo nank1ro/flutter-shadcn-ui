@@ -12,13 +12,13 @@ part of 'default_keyboard_toolbar.dart';
 mixin _$ShadDefaultKeyboardToolbarTheme {
   bool get canMerge => true;
 
-  static ShadDefaultKeyboardToolbarTheme lerp(
+  static ShadDefaultKeyboardToolbarTheme? lerp(
     ShadDefaultKeyboardToolbarTheme? a,
     ShadDefaultKeyboardToolbarTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadDefaultKeyboardToolbarTheme(

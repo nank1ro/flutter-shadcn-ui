@@ -49,9 +49,9 @@ class ShadPopoverTheme with _$ShadPopoverTheme {
   /// {@macro ShadPopover.reverseDuration}
   final Duration? reverseDuration;
 
-  static ShadPopoverTheme lerp(
-    ShadPopoverTheme a,
-    ShadPopoverTheme b,
+  static ShadPopoverTheme? lerp(
+    ShadPopoverTheme? a,
+    ShadPopoverTheme? b,
     double t,
   ) =>
       _$ShadPopoverTheme.lerp(a, b, t);

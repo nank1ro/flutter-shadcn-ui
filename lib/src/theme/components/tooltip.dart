@@ -58,9 +58,9 @@ class ShadTooltipTheme with _$ShadTooltipTheme {
   /// {@macro ShadTooltip.reverseDuration}
   final Duration? reverseDuration;
 
-  static ShadTooltipTheme lerp(
-    ShadTooltipTheme a,
-    ShadTooltipTheme b,
+  static ShadTooltipTheme? lerp(
+    ShadTooltipTheme? a,
+    ShadTooltipTheme? b,
     double t,
   ) =>
       _$ShadTooltipTheme.lerp(a, b, t);

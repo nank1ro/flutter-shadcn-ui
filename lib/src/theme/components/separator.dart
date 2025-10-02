@@ -40,9 +40,9 @@ class ShadSeparatorTheme with _$ShadSeparatorTheme {
   /// {@macro ShadDivider.radius}
   final BorderRadiusGeometry? radius;
 
-  static ShadSeparatorTheme lerp(
-    ShadSeparatorTheme a,
-    ShadSeparatorTheme b,
+  static ShadSeparatorTheme? lerp(
+    ShadSeparatorTheme? a,
+    ShadSeparatorTheme? b,
     double t,
   ) =>
       _$ShadSeparatorTheme.lerp(a, b, t);

@@ -12,13 +12,13 @@ part of 'calendar.dart';
 mixin _$ShadCalendarTheme {
   bool get canMerge => true;
 
-  static ShadCalendarTheme lerp(
+  static ShadCalendarTheme? lerp(
     ShadCalendarTheme? a,
     ShadCalendarTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadCalendarTheme(

@@ -72,9 +72,9 @@ class ShadSliderTheme with _$ShadSliderTheme {
   /// {@macro ShadSlider.thumbRadius}
   final double? thumbRadius;
 
-  static ShadSliderTheme lerp(
-    ShadSliderTheme a,
-    ShadSliderTheme b,
+  static ShadSliderTheme? lerp(
+    ShadSliderTheme? a,
+    ShadSliderTheme? b,
     double t,
   ) =>
       _$ShadSliderTheme.lerp(a, b, t);

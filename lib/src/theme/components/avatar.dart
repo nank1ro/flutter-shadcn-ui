@@ -32,9 +32,9 @@ class ShadAvatarTheme with _$ShadAvatarTheme {
   /// {@macro ShadAvatar.fit}
   final BoxFit? fit;
 
-  static ShadAvatarTheme lerp(
-    ShadAvatarTheme a,
-    ShadAvatarTheme b,
+  static ShadAvatarTheme? lerp(
+    ShadAvatarTheme? a,
+    ShadAvatarTheme? b,
     double t,
   ) =>
       _$ShadAvatarTheme.lerp(a, b, t);

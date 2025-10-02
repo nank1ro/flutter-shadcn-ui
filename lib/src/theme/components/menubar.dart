@@ -173,9 +173,9 @@ class ShadMenubarTheme with _$ShadMenubarTheme {
   /// {@macro ShadMenubar.selectOnHover}
   final bool? selectOnHover;
 
-  static ShadMenubarTheme lerp(
-    ShadMenubarTheme a,
-    ShadMenubarTheme b,
+  static ShadMenubarTheme? lerp(
+    ShadMenubarTheme? a,
+    ShadMenubarTheme? b,
     double t,
   ) =>
       _$ShadMenubarTheme.lerp(a, b, t);

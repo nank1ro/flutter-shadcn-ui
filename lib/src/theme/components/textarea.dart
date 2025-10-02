@@ -77,9 +77,9 @@ class ShadTextareaTheme with _$ShadTextareaTheme {
   /// {@macro ShadTextarea.scrollbarPadding}
   final EdgeInsetsGeometry? scrollbarPadding;
 
-  static ShadTextareaTheme lerp(
-    ShadTextareaTheme a,
-    ShadTextareaTheme b,
+  static ShadTextareaTheme? lerp(
+    ShadTextareaTheme? a,
+    ShadTextareaTheme? b,
     double t,
   ) =>
       _$ShadTextareaTheme.lerp(a, b, t);

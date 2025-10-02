@@ -12,13 +12,13 @@ part of 'accordion.dart';
 mixin _$ShadAccordionTheme {
   bool get canMerge => true;
 
-  static ShadAccordionTheme lerp(
+  static ShadAccordionTheme? lerp(
     ShadAccordionTheme? a,
     ShadAccordionTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadAccordionTheme(

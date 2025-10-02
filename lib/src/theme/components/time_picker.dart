@@ -122,9 +122,9 @@ class ShadTimePickerTheme with _$ShadTimePickerTheme {
   /// {@macro ShadTimePicker.periodPlaceholder}
   final Widget? periodPlaceholder;
 
-  static ShadTimePickerTheme lerp(
-    ShadTimePickerTheme a,
-    ShadTimePickerTheme b,
+  static ShadTimePickerTheme? lerp(
+    ShadTimePickerTheme? a,
+    ShadTimePickerTheme? b,
     double t,
   ) =>
       _$ShadTimePickerTheme.lerp(a, b, t);

@@ -115,9 +115,9 @@ class ShadContextMenuTheme with _$ShadContextMenuTheme {
   /// {@macro ShadPopover.filter}
   final ImageFilter? filter;
 
-  static ShadContextMenuTheme lerp(
-    ShadContextMenuTheme a,
-    ShadContextMenuTheme b,
+  static ShadContextMenuTheme? lerp(
+    ShadContextMenuTheme? a,
+    ShadContextMenuTheme? b,
     double t,
   ) =>
       _$ShadContextMenuTheme.lerp(a, b, t);

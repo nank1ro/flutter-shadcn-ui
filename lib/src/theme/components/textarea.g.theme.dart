@@ -12,13 +12,13 @@ part of 'textarea.dart';
 mixin _$ShadTextareaTheme {
   bool get canMerge => true;
 
-  static ShadTextareaTheme lerp(
+  static ShadTextareaTheme? lerp(
     ShadTextareaTheme? a,
     ShadTextareaTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadTextareaTheme(

@@ -83,9 +83,9 @@ class ShadSelectTheme with _$ShadSelectTheme {
   /// {@macro ShadPopover.shadows}
   final List<BoxShadow>? shadows;
 
-  static ShadSelectTheme lerp(
-    ShadSelectTheme a,
-    ShadSelectTheme b,
+  static ShadSelectTheme? lerp(
+    ShadSelectTheme? a,
+    ShadSelectTheme? b,
     double t,
   ) =>
       _$ShadSelectTheme.lerp(a, b, t);

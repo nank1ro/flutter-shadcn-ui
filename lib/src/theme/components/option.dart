@@ -23,9 +23,9 @@ class ShadOptionTheme with _$ShadOptionTheme {
   final EdgeInsetsGeometry? padding;
   final BorderRadius? radius;
 
-  static ShadOptionTheme lerp(
-    ShadOptionTheme a,
-    ShadOptionTheme b,
+  static ShadOptionTheme? lerp(
+    ShadOptionTheme? a,
+    ShadOptionTheme? b,
     double t,
   ) =>
       _$ShadOptionTheme.lerp(a, b, t);

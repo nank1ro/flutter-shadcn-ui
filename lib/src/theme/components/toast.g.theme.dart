@@ -12,9 +12,9 @@ part of 'toast.dart';
 mixin _$ShadToastTheme {
   bool get canMerge => true;
 
-  static ShadToastTheme lerp(ShadToastTheme? a, ShadToastTheme? b, double t) {
+  static ShadToastTheme? lerp(ShadToastTheme? a, ShadToastTheme? b, double t) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadToastTheme(

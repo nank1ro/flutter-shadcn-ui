@@ -12,13 +12,13 @@ part of 'resizable.dart';
 mixin _$ShadResizableTheme {
   bool get canMerge => true;
 
-  static ShadResizableTheme lerp(
+  static ShadResizableTheme? lerp(
     ShadResizableTheme? a,
     ShadResizableTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadResizableTheme(

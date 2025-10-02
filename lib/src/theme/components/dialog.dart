@@ -131,9 +131,9 @@ class ShadDialogTheme with _$ShadDialogTheme {
   /// {@macro ShadDialog.useSafeArea}
   final bool? useSafeArea;
 
-  static ShadDialogTheme lerp(
-    ShadDialogTheme a,
-    ShadDialogTheme b,
+  static ShadDialogTheme? lerp(
+    ShadDialogTheme? a,
+    ShadDialogTheme? b,
     double t,
   ) =>
       _$ShadDialogTheme.lerp(a, b, t);

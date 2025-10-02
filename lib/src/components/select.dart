@@ -146,8 +146,10 @@ class ShadSelect<T> extends StatefulWidget {
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
         ),
-        assert(search != null || onSearchChanged != null,
-            'Either search or onSearchChanged must be provided');
+        assert(
+          search != null || onSearchChanged != null,
+          'Either search or onSearchChanged must be provided',
+        );
 
   /// Creates a [ShadSelect] with the multiple select variant.
   const ShadSelect.multiple({
@@ -1206,7 +1208,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final selected = inherited.controller.value.contains(widget.value);
     if (selected) {
       focusNode.requestFocus();
-      if (inherited.ensureSelectedVisible == true) {
+      if (inherited.ensureSelectedVisible) {
         // scroll to the selected option
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (!mounted) return;

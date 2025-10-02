@@ -12,13 +12,13 @@ part of 'sonner.dart';
 mixin _$ShadSonnerTheme {
   bool get canMerge => true;
 
-  static ShadSonnerTheme lerp(
+  static ShadSonnerTheme? lerp(
     ShadSonnerTheme? a,
     ShadSonnerTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadSonnerTheme(

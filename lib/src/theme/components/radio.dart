@@ -70,9 +70,9 @@ class ShadRadioTheme with _$ShadRadioTheme {
   /// {@macro ShadRadio.radioPadding}
   final EdgeInsetsGeometry? radioPadding;
 
-  static ShadRadioTheme lerp(
-    ShadRadioTheme a,
-    ShadRadioTheme b,
+  static ShadRadioTheme? lerp(
+    ShadRadioTheme? a,
+    ShadRadioTheme? b,
     double t,
   ) =>
       _$ShadRadioTheme.lerp(a, b, t);

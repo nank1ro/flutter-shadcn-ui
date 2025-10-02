@@ -12,13 +12,13 @@ part of 'menubar.dart';
 mixin _$ShadMenubarTheme {
   bool get canMerge => true;
 
-  static ShadMenubarTheme lerp(
+  static ShadMenubarTheme? lerp(
     ShadMenubarTheme? a,
     ShadMenubarTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadMenubarTheme(

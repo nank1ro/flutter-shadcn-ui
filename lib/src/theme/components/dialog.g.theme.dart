@@ -12,13 +12,13 @@ part of 'dialog.dart';
 mixin _$ShadDialogTheme {
   bool get canMerge => true;
 
-  static ShadDialogTheme lerp(
+  static ShadDialogTheme? lerp(
     ShadDialogTheme? a,
     ShadDialogTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadDialogTheme(

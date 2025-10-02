@@ -53,9 +53,9 @@ class ShadSwitchTheme with _$ShadSwitchTheme {
   /// {@macro ShadSwitch.padding}
   final EdgeInsetsGeometry? padding;
 
-  static ShadSwitchTheme lerp(
-    ShadSwitchTheme a,
-    ShadSwitchTheme b,
+  static ShadSwitchTheme? lerp(
+    ShadSwitchTheme? a,
+    ShadSwitchTheme? b,
     double t,
   ) =>
       _$ShadSwitchTheme.lerp(a, b, t);

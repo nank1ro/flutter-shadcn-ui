@@ -28,8 +28,9 @@ class ShadButtonSizeTheme with _$ShadButtonSizeTheme {
     ShadButtonSizeTheme? a,
     ShadButtonSizeTheme? b,
     double t,
-  ) =>
-      _$ShadButtonSizeTheme.lerp(a, b, t);
+  ) {
+    return _$ShadButtonSizeTheme.lerp(a, b, t);
+  }
 }
 
 /// {@template ShadButtonSizesTheme}

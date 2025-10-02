@@ -45,9 +45,9 @@ class ShadAlertTheme with _$ShadAlertTheme {
   /// {@macro ShadAlert.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
 
-  static ShadAlertTheme lerp(
-    ShadAlertTheme a,
-    ShadAlertTheme b,
+  static ShadAlertTheme? lerp(
+    ShadAlertTheme? a,
+    ShadAlertTheme? b,
     double t,
   ) =>
       _$ShadAlertTheme.lerp(a, b, t);

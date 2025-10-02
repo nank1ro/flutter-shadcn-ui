@@ -12,9 +12,9 @@ part of 'badge.dart';
 mixin _$ShadBadgeTheme {
   bool get canMerge => true;
 
-  static ShadBadgeTheme lerp(ShadBadgeTheme? a, ShadBadgeTheme? b, double t) {
+  static ShadBadgeTheme? lerp(ShadBadgeTheme? a, ShadBadgeTheme? b, double t) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadBadgeTheme(

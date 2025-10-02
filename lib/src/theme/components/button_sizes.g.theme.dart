@@ -12,13 +12,13 @@ part of 'button_sizes.dart';
 mixin _$ShadButtonSizeTheme {
   bool get canMerge => true;
 
-  static ShadButtonSizeTheme lerp(
+  static ShadButtonSizeTheme? lerp(
     ShadButtonSizeTheme? a,
     ShadButtonSizeTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadButtonSizeTheme(
@@ -89,13 +89,13 @@ mixin _$ShadButtonSizeTheme {
 mixin _$ShadButtonSizesTheme {
   bool get canMerge => true;
 
-  static ShadButtonSizesTheme lerp(
+  static ShadButtonSizesTheme? lerp(
     ShadButtonSizesTheme? a,
     ShadButtonSizesTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadButtonSizesTheme(

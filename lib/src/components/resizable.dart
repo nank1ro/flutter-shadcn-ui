@@ -115,9 +115,7 @@ class ShadResizableController extends ChangeNotifier {
   /// Update the panel info with the given [panels]
   void update(List<ShadPanelInfo> panels) {
     clear();
-    for (final panel in panels) {
-      registerPanel(panel);
-    }
+    panels.forEach(registerPanel);
     notifyListeners();
   }
 
@@ -366,13 +364,10 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     super.didUpdateWidget(oldWidget);
     // Adding and removing panels
     if (oldWidget.children.length != widget.children.length) {
-      final removedIds = oldWidget.children
+      oldWidget.children
           .map((e) => e.id)
           .where((e) => !widget.children.map((e) => e.id).contains(e))
-          .toList();
-      for (final id in removedIds) {
-        controller.unregisterPanel(id);
-      }
+          .forEach(controller.unregisterPanel);
       final addedIds = widget.children
           .map((e) => e.id)
           .where((e) => !oldWidget.children.map((e) => e.id).contains(e))

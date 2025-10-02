@@ -12,13 +12,13 @@ part of 'button.dart';
 mixin _$ShadButtonTheme {
   bool get canMerge => true;
 
-  static ShadButtonTheme lerp(
+  static ShadButtonTheme? lerp(
     ShadButtonTheme? a,
     ShadButtonTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadButtonTheme(

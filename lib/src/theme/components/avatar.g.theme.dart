@@ -12,13 +12,13 @@ part of 'avatar.dart';
 mixin _$ShadAvatarTheme {
   bool get canMerge => true;
 
-  static ShadAvatarTheme lerp(
+  static ShadAvatarTheme? lerp(
     ShadAvatarTheme? a,
     ShadAvatarTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadAvatarTheme(

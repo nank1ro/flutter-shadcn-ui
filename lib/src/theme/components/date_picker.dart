@@ -394,9 +394,9 @@ class ShadDatePickerTheme with _$ShadDatePickerTheme {
   /// {@macro ShadButton.expands}
   final bool? expands;
 
-  static ShadDatePickerTheme lerp(
-    ShadDatePickerTheme a,
-    ShadDatePickerTheme b,
+  static ShadDatePickerTheme? lerp(
+    ShadDatePickerTheme? a,
+    ShadDatePickerTheme? b,
     double t,
   ) =>
       _$ShadDatePickerTheme.lerp(a, b, t);

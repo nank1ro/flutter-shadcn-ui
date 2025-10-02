@@ -12,13 +12,13 @@ part of 'tooltip.dart';
 mixin _$ShadTooltipTheme {
   bool get canMerge => true;
 
-  static ShadTooltipTheme lerp(
+  static ShadTooltipTheme? lerp(
     ShadTooltipTheme? a,
     ShadTooltipTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadTooltipTheme(

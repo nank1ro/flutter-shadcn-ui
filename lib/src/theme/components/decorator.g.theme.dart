@@ -12,9 +12,9 @@ part of 'decorator.dart';
 mixin _$ShadDecoration {
   bool get canMerge => true;
 
-  static ShadDecoration lerp(ShadDecoration? a, ShadDecoration? b, double t) {
+  static ShadDecoration? lerp(ShadDecoration? a, ShadDecoration? b, double t) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadDecoration(

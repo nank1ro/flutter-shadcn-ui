@@ -12,13 +12,13 @@ part of 'slider.dart';
 mixin _$ShadSliderTheme {
   bool get canMerge => true;
 
-  static ShadSliderTheme lerp(
+  static ShadSliderTheme? lerp(
     ShadSliderTheme? a,
     ShadSliderTheme? b,
     double t,
   ) {
     if (a == null && b == null) {
-      throw ArgumentError('Both a and b cannot be null');
+      return null;
     }
 
     return ShadSliderTheme(

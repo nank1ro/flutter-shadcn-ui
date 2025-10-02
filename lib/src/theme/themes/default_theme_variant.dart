@@ -1,5 +1,3 @@
-// ignore_for_file: overridden_fields
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
