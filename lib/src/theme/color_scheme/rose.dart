@@ -24,6 +24,7 @@ class ShadRoseColorScheme extends ShadColorScheme {
     required super.input,
     required super.ring,
     required super.selection,
+    super.custom,
   });
 
   const ShadRoseColorScheme.light({
@@ -47,6 +48,7 @@ class ShadRoseColorScheme extends ShadColorScheme {
     super.input = const Color(0xffe4e4e7),
     super.ring = const Color(0xffe11d48),
     super.selection = const Color(0xFFB4D7FF),
+    super.custom,
   });
 
   const ShadRoseColorScheme.dark({
@@ -70,5 +72,6 @@ class ShadRoseColorScheme extends ShadColorScheme {
     super.input = const Color(0xff27272a),
     super.ring = const Color(0xffe11d48),
     super.selection = const Color(0xFF355172),
+    super.custom,
   });
 }
