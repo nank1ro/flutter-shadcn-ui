@@ -1204,18 +1204,17 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final inherited =
         context.read<ShadSelectState<dynamic>>() as ShadSelectState<T>;
     final selected = inherited.controller.value.contains(widget.value);
-    if (selected) focusNode.requestFocus();
-
-    print(
-        'inherited.ensureSelectedVisible: ${inherited.ensureSelectedVisible}');
-    if (selected && inherited.ensureSelectedVisible == true) {
-      // scroll to the selected option
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        Scrollable.maybeOf(context)
-            ?.position
-            .ensureVisible(context.findRenderObject()!);
-      });
+    if (selected) {
+      focusNode.requestFocus();
+      if (inherited.ensureSelectedVisible == true) {
+        // scroll to the selected option
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          Scrollable.maybeOf(context)
+              ?.position
+              .ensureVisible(context.findRenderObject()!);
+        });
+      }
     }
   }
 
