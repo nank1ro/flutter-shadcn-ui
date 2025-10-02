@@ -1,3 +1,8 @@
+## 0.33.1
+
+- **FIX**: `ShadSelect` always scrolling to the selected option when opening the popover which can now be disabled with `ensureSelectedVisible: false`.
+- **CHORE**: Remove `required` from `onSearchChanged` in `ShadSelect` and `ShadSelectFormField` to make it optional, as it is not required when a custom `search` widget is provided.
+
 ## 0.33.0
 
 - **FEAT**: Allow extending `ShadTextTheme` with custom text styles through the `custom` parameter. [See docs](https://flutter-shadcn-ui.mariuti.com/typography#extend-with-custom-styles).
