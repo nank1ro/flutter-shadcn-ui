@@ -1,16 +1,24 @@
 import 'package:flutter/widgets.dart';
+import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
 
+part 'avatar.g.theme.dart';
+
+@themeGen
 @immutable
-class ShadAvatarTheme {
+class ShadAvatarTheme with _$ShadAvatarTheme {
   const ShadAvatarTheme({
-    this.merge = true,
+    bool canMerge = true,
     this.size,
     this.shape,
     this.backgroundColor,
     this.fit,
-  });
+  }) : _canMerge = canMerge;
 
-  final bool merge;
+  @ignore
+  final bool _canMerge;
+
+  @override
+  bool get canMerge => _canMerge;
 
   /// {@macro ShadAvatar.size}
   final Size? size;
@@ -24,66 +32,10 @@ class ShadAvatarTheme {
   /// {@macro ShadAvatar.fit}
   final BoxFit? fit;
 
-  static ShadAvatarTheme lerp(
-    ShadAvatarTheme a,
-    ShadAvatarTheme b,
+  static ShadAvatarTheme? lerp(
+    ShadAvatarTheme? a,
+    ShadAvatarTheme? b,
     double t,
-  ) {
-    if (identical(a, b)) return a;
-    return ShadAvatarTheme(
-      merge: b.merge,
-      shape: ShapeBorder.lerp(a.shape, b.shape, t),
-      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
-      size: Size.lerp(a.size, b.size, t),
-      fit: b.fit,
-    );
-  }
-
-  ShadAvatarTheme copyWith({
-    bool? merge,
-    Size? size,
-    ShapeBorder? shape,
-    Color? backgroundColor,
-    BoxFit? fit,
-  }) {
-    return ShadAvatarTheme(
-      merge: merge ?? this.merge,
-      shape: shape ?? this.shape,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      size: size ?? this.size,
-      fit: fit ?? this.fit,
-    );
-  }
-
-  ShadAvatarTheme mergeWith(ShadAvatarTheme? other) {
-    if (other == null) return this;
-    if (!other.merge) return other;
-    return copyWith(
-      shape: other.shape,
-      backgroundColor: other.backgroundColor,
-      size: other.size,
-      fit: other.fit,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ShadAvatarTheme &&
-        other.merge == merge &&
-        other.shape == shape &&
-        other.backgroundColor == backgroundColor &&
-        other.size == size &&
-        other.fit == fit;
-  }
-
-  @override
-  int get hashCode {
-    return shape.hashCode ^
-        merge.hashCode ^
-        backgroundColor.hashCode ^
-        size.hashCode ^
-        fit.hashCode;
-  }
+  ) =>
+      _$ShadAvatarTheme.lerp(a, b, t);
 }

@@ -499,7 +499,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
 
     final effectiveDecoration =
         (theme.textareaTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+            .merge(widget.decoration);
 
     final effectivePadding = widget.padding ??
         theme.inputTheme.padding ??

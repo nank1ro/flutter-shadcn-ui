@@ -781,7 +781,7 @@ class ShadInputState extends State<ShadInput>
 
     final effectiveDecoration =
         (theme.inputTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+            .merge(widget.decoration);
 
     final effectiveCursorColor = widget.cursorColor ??
         theme.inputTheme.cursorColor ??
@@ -836,7 +836,8 @@ class ShadInputState extends State<ShadInput>
 
     final effectiveMaxLengthEnforcement = widget.maxLengthEnforcement ??
         LengthLimitingTextInputFormatter.getDefaultMaxLengthEnforcement(
-            defaultTargetPlatform);
+          defaultTargetPlatform,
+        );
 
     final effectiveInputFormatters = <TextInputFormatter>[
       ...?widget.inputFormatters,

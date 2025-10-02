@@ -112,36 +112,39 @@ class ShadColorScheme {
     double t,
   ) {
     return ShadColorScheme(
-        background: Color.lerp(a.background, b.background, t)!,
-        foreground: Color.lerp(a.foreground, b.foreground, t)!,
-        card: Color.lerp(a.card, b.card, t)!,
-        cardForeground: Color.lerp(a.cardForeground, b.cardForeground, t)!,
-        popover: Color.lerp(a.popover, b.popover, t)!,
-        popoverForeground:
-            Color.lerp(a.popoverForeground, b.popoverForeground, t)!,
-        primary: Color.lerp(a.primary, b.primary, t)!,
-        primaryForeground:
-            Color.lerp(a.primaryForeground, b.primaryForeground, t)!,
-        secondary: Color.lerp(a.secondary, b.secondary, t)!,
-        secondaryForeground:
-            Color.lerp(a.secondaryForeground, b.secondaryForeground, t)!,
-        muted: Color.lerp(a.muted, b.muted, t)!,
-        mutedForeground: Color.lerp(a.mutedForeground, b.mutedForeground, t)!,
-        accent: Color.lerp(a.accent, b.accent, t)!,
-        accentForeground:
-            Color.lerp(a.accentForeground, b.accentForeground, t)!,
-        destructive: Color.lerp(a.destructive, b.destructive, t)!,
-        destructiveForeground:
-            Color.lerp(a.destructiveForeground, b.destructiveForeground, t)!,
-        border: Color.lerp(a.border, b.border, t)!,
-        input: Color.lerp(a.input, b.input, t)!,
-        ring: Color.lerp(a.ring, b.ring, t)!,
-        selection: Color.lerp(a.selection, b.selection, t)!,
-        custom: {
-          for (final key in {...a.custom.keys, ...b.custom.keys})
-            key: Color.lerp(a.custom[key] ?? a.foreground,
-                b.custom[key] ?? b.foreground, t)!,
-        });
+      background: Color.lerp(a.background, b.background, t)!,
+      foreground: Color.lerp(a.foreground, b.foreground, t)!,
+      card: Color.lerp(a.card, b.card, t)!,
+      cardForeground: Color.lerp(a.cardForeground, b.cardForeground, t)!,
+      popover: Color.lerp(a.popover, b.popover, t)!,
+      popoverForeground:
+          Color.lerp(a.popoverForeground, b.popoverForeground, t)!,
+      primary: Color.lerp(a.primary, b.primary, t)!,
+      primaryForeground:
+          Color.lerp(a.primaryForeground, b.primaryForeground, t)!,
+      secondary: Color.lerp(a.secondary, b.secondary, t)!,
+      secondaryForeground:
+          Color.lerp(a.secondaryForeground, b.secondaryForeground, t)!,
+      muted: Color.lerp(a.muted, b.muted, t)!,
+      mutedForeground: Color.lerp(a.mutedForeground, b.mutedForeground, t)!,
+      accent: Color.lerp(a.accent, b.accent, t)!,
+      accentForeground: Color.lerp(a.accentForeground, b.accentForeground, t)!,
+      destructive: Color.lerp(a.destructive, b.destructive, t)!,
+      destructiveForeground:
+          Color.lerp(a.destructiveForeground, b.destructiveForeground, t)!,
+      border: Color.lerp(a.border, b.border, t)!,
+      input: Color.lerp(a.input, b.input, t)!,
+      ring: Color.lerp(a.ring, b.ring, t)!,
+      selection: Color.lerp(a.selection, b.selection, t)!,
+      custom: {
+        for (final key in {...a.custom.keys, ...b.custom.keys})
+          key: Color.lerp(
+            a.custom[key] ?? a.foreground,
+            b.custom[key] ?? b.foreground,
+            t,
+          )!,
+      },
+    );
   }
 
   /// Creates a copy of this [ShadColorScheme] but with the given fields

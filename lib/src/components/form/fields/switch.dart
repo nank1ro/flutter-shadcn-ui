@@ -72,7 +72,7 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).switchTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSwitchState;
 

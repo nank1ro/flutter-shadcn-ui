@@ -20,7 +20,7 @@ class ShadInputDecorator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveDecoration = theme.decoration.mergeWith(decoration);
+    final effectiveDecoration = theme.decoration.merge(decoration);
     final hasError = effectiveDecoration.hasError ?? false;
 
     final effectiveFallbackToLabelStyle =

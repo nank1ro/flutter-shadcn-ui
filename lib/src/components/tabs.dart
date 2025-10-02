@@ -274,7 +274,7 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
     final effectiveDecoration = ShadDecoration(
       color: theme.colorScheme.muted,
       border: ShadBorder.all(radius: theme.radius, width: 0),
-    ).mergeWith(tabsTheme.decoration).mergeWith(widget.decoration);
+    ).merge(tabsTheme.decoration).merge(widget.decoration);
 
     final effectiveGap = widget.gap ?? tabsTheme.gap ?? 8;
 
@@ -849,8 +849,8 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
         };
 
         final effectiveDecoration = defaultDecoration
-            .mergeWith(tabsTheme.tabDecoration)
-            .mergeWith(widget.decoration);
+            .merge(tabsTheme.tabDecoration)
+            .merge(widget.decoration);
 
         return ShadButton.secondary(
           leading: widget.leading,
@@ -866,7 +866,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               : effectiveHoverBackgroundColor,
           padding: effectivePadding,
           decoration: selected
-              ? effectiveDecoration.mergeWith(widget.selectedDecoration)
+              ? effectiveDecoration.merge(widget.selectedDecoration)
               : effectiveDecoration,
           foregroundColor: selected
               ? effectiveSelectedForegroundColor
