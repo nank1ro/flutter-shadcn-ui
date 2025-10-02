@@ -370,7 +370,6 @@ class ShadInputOTPSlot extends StatefulWidget {
 class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
   late final otpProvider = context.read<ShadInputOTPState>();
 
-  // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
   ShadTextEditingController? _controller;
@@ -497,9 +496,9 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       ),
     );
     final effectiveDecoration = defaultDecoration
-        .mergeWith(theme.inputOTPTheme.decoration)
-        .mergeWith(widget.decoration)
-        .mergeWith(
+        .merge(theme.inputOTPTheme.decoration)
+        .merge(widget.decoration)
+        .merge(
           ShadDecoration(
             border: ShadBorder(
               radius: effectiveRadius,

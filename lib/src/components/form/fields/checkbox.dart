@@ -64,7 +64,7 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).checkboxTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderCheckboxState;
             return ShadCheckbox(

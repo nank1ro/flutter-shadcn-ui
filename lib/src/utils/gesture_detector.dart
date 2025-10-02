@@ -520,7 +520,9 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
       gestures[PanGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<PanGestureRecognizer>(
         () => PanGestureRecognizer(
-            debugOwner: this, supportedDevices: widget.supportedDevices),
+          debugOwner: this,
+          supportedDevices: widget.supportedDevices,
+        ),
         (PanGestureRecognizer instance) {
           instance
             ..onDown = widget.onPanDown
@@ -543,10 +545,14 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
       child: MouseRegion(
         cursor: widget.cursor,
         onEnter: (_) {
+          hovered = true;
           widget.onHoverChange?.call(true);
+          effectiveHoverStrategies.onHoverChange?.call(true);
         },
         onExit: (_) {
+          hovered = false;
           widget.onHoverChange?.call(false);
+          effectiveHoverStrategies.onHoverChange?.call(false);
         },
         child: RawGestureDetector(
           gestures: gestures,

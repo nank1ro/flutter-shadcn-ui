@@ -468,8 +468,10 @@ class _ShadSliderState extends State<ShadSlider> {
           builder: (context, value, child) {
             return LayoutBuilder(
               builder: (context, constraints) {
-                assert(constraints.hasBoundedWidth,
-                    'ShadSlider requires a bounded width');
+                assert(
+                  constraints.hasBoundedWidth,
+                  'ShadSlider requires a bounded width',
+                );
                 // Calculate the effective width available for the track
                 final effectiveTrackWidth = constraints.maxWidth;
                 return Stack(
@@ -571,7 +573,8 @@ class _ShadSliderState extends State<ShadSlider> {
                                         : theme.colorScheme.border
                                             .withValues(alpha: 0.5),
                                     borderRadius: BorderRadius.circular(
-                                        divisionMarkBorderRadius),
+                                      divisionMarkBorderRadius,
+                                    ),
                                   ),
                                 ),
                               );
@@ -589,11 +592,12 @@ class _ShadSliderState extends State<ShadSlider> {
                               effectiveThumbRadius -
                               (focused ? focusRingTotalSpace / 2 : 0))
                           .clamp(
-                              -(effectiveThumbRadius +
-                                  (focused ? focusRingTotalSpace / 2 : 0)),
-                              constraints.maxWidth -
-                                  effectiveThumbRadius -
-                                  (focused ? focusRingTotalSpace / 2 : 0)),
+                        -(effectiveThumbRadius +
+                            (focused ? focusRingTotalSpace / 2 : 0)),
+                        constraints.maxWidth -
+                            effectiveThumbRadius -
+                            (focused ? focusRingTotalSpace / 2 : 0),
+                      ),
                       top: (effectiveTrackHeight - effectiveThumbRadius * 2) /
                               2 -
                           (focused ? focusRingTotalSpace / 2 : 0),
@@ -647,7 +651,8 @@ class _ShadSliderState extends State<ShadSlider> {
                                     ),
                                     child: Container(
                                       margin: const EdgeInsets.all(
-                                          focusRingPadding),
+                                        focusRingPadding,
+                                      ),
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: widget.enabled
@@ -680,7 +685,7 @@ class _ShadSliderState extends State<ShadSlider> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 );
               },

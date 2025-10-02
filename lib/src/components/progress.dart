@@ -192,7 +192,8 @@ class _ShadProgressState extends State<ShadProgress>
                 ? ShadDeterminateProgress(
                     value: widget.value!,
                     color: currentColor,
-                    borderRadius: effectiveInnerBorderRadius)
+                    borderRadius: effectiveInnerBorderRadius,
+                  )
                 : ShadIndeterminateProgress(
                     controller: _controller,
                     indeterminateLinearDuration: _kIndeterminateLinearDuration,
@@ -201,7 +202,8 @@ class _ShadProgressState extends State<ShadProgress>
                     line2TailCurve: line2TailCurve,
                     line2HeadCurve: line2HeadCurve,
                     color: currentColor,
-                    borderRadius: effectiveInnerBorderRadius),
+                    borderRadius: effectiveInnerBorderRadius,
+                  ),
           ),
         ),
       ),

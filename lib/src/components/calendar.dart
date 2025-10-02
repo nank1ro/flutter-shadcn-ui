@@ -1219,7 +1219,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     final effectiveDecoration =
         (theme.calendarTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+            .merge(widget.decoration);
 
     final effectiveSpacingBetweenMonths = widget.spacingBetweenMonths ??
         theme.calendarTheme.spacingBetweenMonths ??
@@ -1760,8 +1760,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
                             color: theme.colorScheme.ring.withValues(alpha: .5),
                           ),
                         )
-                            .mergeWith(theme.calendarTheme.dayButtonDecoration)
-                            .mergeWith(widget.dayButtonDecoration);
+                            .merge(theme.calendarTheme.dayButtonDecoration)
+                            .merge(widget.dayButtonDecoration);
 
                         return Center(
                           child: Opacity(

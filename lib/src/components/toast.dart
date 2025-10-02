@@ -312,6 +312,8 @@ class ShadToast extends StatefulWidget {
     this.padding,
     this.closeIconPosition,
     this.constraints,
+    this.mainAxisAlignment,
+    this.mainAxisSize,
   }) : variant = ShadToastVariant.primary;
 
   /// Creates a destructive variant toast widget, typically for error or warning
@@ -342,6 +344,8 @@ class ShadToast extends StatefulWidget {
     this.padding,
     this.closeIconPosition,
     this.constraints,
+    this.mainAxisAlignment,
+    this.mainAxisSize,
   }) : variant = ShadToastVariant.destructive;
 
   /// Creates a toast widget with a specified [variant], offering full
@@ -373,6 +377,8 @@ class ShadToast extends StatefulWidget {
     this.padding,
     this.closeIconPosition,
     this.constraints,
+    this.mainAxisAlignment,
+    this.mainAxisSize,
   });
 
   /// {@template ShadToast.id}
@@ -454,6 +460,12 @@ class ShadToast extends StatefulWidget {
   /// {@endtemplate}
   final CrossAxisAlignment? crossAxisAlignment;
 
+  /// {@template ShadToast.mainAxisAlignment}
+  /// The main-axis alignment of the toast’s content (horizontally).
+  /// Defaults to [MainAxisAlignment.spaceBetween] if not specified.
+  /// {@endtemplate}
+  final MainAxisAlignment? mainAxisAlignment;
+
   /// {@template ShadToast.showCloseIconOnlyWhenHovered}
   /// Whether the close icon is visible only when the toast is hovered.
   /// Defaults to true if not specified.
@@ -530,6 +542,12 @@ class ShadToast extends StatefulWidget {
   /// {@endtemplate}
   final BoxConstraints? constraints;
 
+  /// {@template ShadToast.mainAxisSize}
+  /// The main axis size of the toast's content (horizontal).
+  /// Defaults to [MainAxisSize.max] if not specified.
+  /// {@endtemplate}
+  final MainAxisSize? mainAxisSize;
+
   @override
   State<ShadToast> createState() => _ShadToastState();
 }
@@ -604,6 +622,9 @@ class _ShadToastState extends State<ShadToast> {
     final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
         effectiveToastTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
+    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
+        effectiveToastTheme.mainAxisAlignment ??
+        MainAxisAlignment.spaceBetween;
     final effectiveCloseIconPosition = widget.closeIconPosition ??
         effectiveToastTheme.closeIconPosition ??
         const ShadPosition(top: 8, right: 8);
@@ -611,19 +632,27 @@ class _ShadToastState extends State<ShadToast> {
         widget.showCloseIconOnlyWhenHovered ??
             effectiveToastTheme.showCloseIconOnlyWhenHovered ??
             true;
+    final effectiveTextDirection =
+        widget.textDirection ?? effectiveToastTheme.textDirection;
+    final effectiveMainAxisSize = widget.mainAxisSize ??
+        effectiveToastTheme.mainAxisSize ??
+        MainAxisSize.max;
 
     return MouseRegion(
       onEnter: (_) => hovered.value = true,
       onExit: (_) => hovered.value = false,
       child: ShadResponsiveBuilder(
         builder: (context, breakpoint) {
+          final effectiveConstraints = widget.constraints ??
+              effectiveToastTheme.constraints ??
+              BoxConstraints(
+                minWidth:
+                    breakpoint >= theme.breakpoints.md ? 0 : double.infinity,
+                maxWidth:
+                    breakpoint >= theme.breakpoints.md ? 420 : double.infinity,
+              );
           return ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth:
-                  breakpoint >= theme.breakpoints.md ? 0 : double.infinity,
-              maxWidth:
-                  breakpoint >= theme.breakpoints.md ? 420 : double.infinity,
-            ),
+            constraints: effectiveConstraints,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 border: effectiveBorder,
@@ -636,8 +665,9 @@ class _ShadToastState extends State<ShadToast> {
                   Padding(
                     padding: effectivePadding,
                     child: Row(
-                      textDirection: widget.textDirection,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      textDirection: effectiveTextDirection,
+                      mainAxisAlignment: effectiveMainAxisAlignment,
+                      mainAxisSize: effectiveMainAxisSize,
                       crossAxisAlignment: effectiveCrossAxisAlignment,
                       children: [
                         Flexible(

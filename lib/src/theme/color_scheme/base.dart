@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/blue.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/gray.dart';
@@ -35,6 +36,7 @@ class ShadColorScheme {
     required this.input,
     required this.ring,
     required this.selection,
+    this.custom = const {},
   });
 
   factory ShadColorScheme.fromName(
@@ -102,6 +104,7 @@ class ShadColorScheme {
   final Color input;
   final Color ring;
   final Color selection;
+  final Map<String, Color> custom;
 
   static ShadColorScheme lerp(
     ShadColorScheme a,
@@ -133,6 +136,14 @@ class ShadColorScheme {
       input: Color.lerp(a.input, b.input, t)!,
       ring: Color.lerp(a.ring, b.ring, t)!,
       selection: Color.lerp(a.selection, b.selection, t)!,
+      custom: {
+        for (final key in {...a.custom.keys, ...b.custom.keys})
+          key: Color.lerp(
+            a.custom[key] ?? a.foreground,
+            b.custom[key] ?? b.foreground,
+            t,
+          )!,
+      },
     );
   }
 
@@ -159,6 +170,7 @@ class ShadColorScheme {
     Color? input,
     Color? ring,
     Color? selection,
+    Map<String, Color>? custom,
   }) {
     return ShadColorScheme(
       background: background ?? this.background,
@@ -182,6 +194,7 @@ class ShadColorScheme {
       input: input ?? this.input,
       ring: ring ?? this.ring,
       selection: selection ?? this.selection,
+      custom: custom ?? this.custom,
     );
   }
 
@@ -209,7 +222,8 @@ class ShadColorScheme {
         other.border == border &&
         other.input == input &&
         other.ring == ring &&
-        other.selection == selection;
+        other.selection == selection &&
+        mapEquals(other.custom, custom);
   }
 
   @override
@@ -233,6 +247,7 @@ class ShadColorScheme {
         border.hashCode ^
         input.hashCode ^
         ring.hashCode ^
-        selection.hashCode;
+        selection.hashCode ^
+        Object.hashAllUnordered(custom.entries);
   }
 }

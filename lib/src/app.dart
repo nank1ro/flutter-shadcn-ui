@@ -778,8 +778,10 @@ class ShadAppBuilder extends StatelessWidget {
   }
 }
 
-TextTheme applyGoogleFontToTextTheme(TextTheme textTheme,
-    {GoogleFontBuilder? googleFontBuilder}) {
+TextTheme applyGoogleFontToTextTheme(
+  TextTheme textTheme, {
+  GoogleFontBuilder? googleFontBuilder,
+}) {
   if (googleFontBuilder == null) return textTheme;
   return TextTheme(
     displayLarge: GoogleFontTextStyle(

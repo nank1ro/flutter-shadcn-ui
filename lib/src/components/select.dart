@@ -77,6 +77,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.shrinkWrap,
     this.controller,
     this.popoverReverseDuration,
+    this.ensureSelectedVisible,
   })  : variant = ShadSelectVariant.primary,
         initialValues = const {},
         onSearchChanged = null,
@@ -99,7 +100,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.options,
     this.optionsBuilder,
     required this.selectedOptionBuilder,
-    required ValueChanged<String> this.onSearchChanged,
+    this.onSearchChanged,
     this.onChanged,
     this.popoverController,
     this.searchDivider,
@@ -136,6 +137,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.shrinkWrap,
     this.controller,
     this.popoverReverseDuration,
+    this.ensureSelectedVisible,
   })  : variant = ShadSelectVariant.search,
         selectedOptionsBuilder = null,
         onMultipleChanged = null,
@@ -143,6 +145,10 @@ class ShadSelect<T> extends StatefulWidget {
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
+        ),
+        assert(
+          search != null || onSearchChanged != null,
+          'Either search or onSearchChanged must be provided',
         );
 
   /// Creates a [ShadSelect] with the multiple select variant.
@@ -181,6 +187,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.shrinkWrap,
     this.controller,
     this.popoverReverseDuration,
+    this.ensureSelectedVisible,
   })  : variant = ShadSelectVariant.multiple,
         onSearchChanged = null,
         initialValue = null,
@@ -203,7 +210,7 @@ class ShadSelect<T> extends StatefulWidget {
     super.key,
     this.options,
     this.optionsBuilder,
-    required ValueChanged<String> this.onSearchChanged,
+    this.onSearchChanged,
     required this.selectedOptionsBuilder,
     ValueChanged<Set<T>>? onChanged,
     this.popoverController,
@@ -241,6 +248,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.shrinkWrap,
     this.controller,
     this.popoverReverseDuration,
+    this.ensureSelectedVisible,
   })  : variant = ShadSelectVariant.multipleWithSearch,
         selectedOptionBuilder = null,
         onChanged = null,
@@ -249,6 +257,10 @@ class ShadSelect<T> extends StatefulWidget {
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
+        ),
+        assert(
+          search != null || onSearchChanged != null,
+          'Either search or onSearchChanged must be provided',
         );
 
   /// Creates a [ShadSelect] with a raw variant, allowing full customization.
@@ -298,6 +310,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.shrinkWrap,
     this.controller,
     this.popoverReverseDuration,
+    this.ensureSelectedVisible,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -620,6 +633,14 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@endtemplate}
   final Duration? popoverReverseDuration;
 
+  /// {@template ShadSelect.ensureSelectedVisible}
+  /// Whether to automatically scroll the options list to ensure the selected
+  /// option is visible when the popover opens.
+  /// Defaults to true if the variant is [ShadSelectVariant.primary] or
+  /// [ShadSelectVariant.search], false otherwise.
+  /// {@endtemplate}
+  final bool? ensureSelectedVisible;
+
   @override
   ShadSelectState<T> createState() => ShadSelectState();
 }
@@ -648,6 +669,11 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
   ScrollController get scrollController =>
       widget.scrollController ?? _scrollController!;
+
+  bool get ensureSelectedVisible =>
+      widget.ensureSelectedVisible ??
+      (widget.variant == ShadSelectVariant.primary ||
+          widget.variant == ShadSelectVariant.search);
 
   @override
   void initState() {
@@ -782,8 +808,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     final theme = ShadTheme.of(context);
 
     final effectiveDecoration = theme.decoration
-        .mergeWith(theme.selectTheme.decoration)
-        .mergeWith(widget.decoration);
+        .merge(theme.selectTheme.decoration)
+        .merge(widget.decoration);
 
     final decorationHorizontalPadding =
         (effectiveDecoration.border?.padding?.horizontal ?? 0.0) +
@@ -1180,7 +1206,18 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final inherited =
         context.read<ShadSelectState<dynamic>>() as ShadSelectState<T>;
     final selected = inherited.controller.value.contains(widget.value);
-    if (selected) focusNode.requestFocus();
+    if (selected) {
+      focusNode.requestFocus();
+      if (inherited.ensureSelectedVisible) {
+        // scroll to the selected option
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          Scrollable.maybeOf(context)
+              ?.position
+              .ensureVisible(context.findRenderObject()!);
+        });
+      }
+    }
   }
 
   @override
@@ -1202,16 +1239,6 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final inheritedSelect =
         context.watch<ShadSelectState<dynamic>>() as ShadSelectState<T>;
     final selected = inheritedSelect.controller.value.contains(widget.value);
-
-    if (selected) {
-      // scroll to the selected option
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        Scrollable.maybeOf(context)
-            ?.position
-            .ensureVisible(context.findRenderObject()!);
-      });
-    }
 
     final effectiveHoveredBackgroundColor = widget.hoveredBackgroundColor ??
         theme.optionTheme.hoveredBackgroundColor ??

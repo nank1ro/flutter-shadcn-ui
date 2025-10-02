@@ -102,11 +102,14 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     /// {@macro ShadSelect.shrinkWrap}
     bool? shrinkWrap,
     this.controller,
+
+    /// {@macro ShadSelect.ensureSelectedVisible}
+    bool? ensureSelectedVisible,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectState<T>;
 
@@ -141,6 +144,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               itemCount: itemCount,
               shrinkWrap: shrinkWrap,
               controller: state.controller,
+              ensureSelectedVisible: ensureSelectedVisible,
             );
           },
         );
@@ -166,7 +170,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// The builder for the options of the [ShadSelect].
     Widget? Function(BuildContext, int)? optionsBuilder,
-    required ValueChanged<String> onSearchChanged,
+    ValueChanged<String>? onSearchChanged,
     Widget? placeholder,
     bool closeOnTapOutside = true,
     double? minWidth,
@@ -208,11 +212,14 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.controller}
     this.controller,
+
+    /// {@macro ShadSelect.ensureSelectedVisible}
+    bool? ensureSelectedVisible,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectState<T>;
 
@@ -254,6 +261,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               itemCount: itemCount,
               shrinkWrap: shrinkWrap,
               controller: state.controller,
+              ensureSelectedVisible: ensureSelectedVisible,
             );
           },
         );
@@ -321,11 +329,10 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.controller}
     this.controller,
+
+    /// {@macro ShadSelect.ensureSelectedVisible}
+    bool? ensureSelectedVisible,
   })  : assert(
-          variant == ShadSelectVariant.primary || onSearchChanged != null,
-          'onSearchChanged must be provided when variant is search',
-        ),
-        assert(
           variant == ShadSelectVariant.primary ||
               variant == ShadSelectVariant.search,
           '''The variant is not supported. Use primary or search or use ShadSelectMultipleFormField instead.''',
@@ -334,7 +341,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectState<T>;
 
@@ -376,6 +383,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               itemCount: itemCount,
               shrinkWrap: shrinkWrap,
               controller: state.controller,
+              ensureSelectedVisible: ensureSelectedVisible,
             );
           },
         );
@@ -395,7 +403,8 @@ class _ShadFormBuilderSelectState<T>
   ShadSelectController<T> get controller =>
       widget.controller ??
       (_controller ??= ShadSelectController<T>(
-          initialValue: {if (initialValue is T) initialValue as T}));
+        initialValue: {if (initialValue is T) initialValue as T},
+      ));
 
   @override
   void initState() {
@@ -469,11 +478,14 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     /// {@macro ShadSelect.allowDeselection}
     bool allowDeselection = true,
     this.controller,
+
+    /// {@macro ShadSelect.ensureSelectedVisible}
+    bool? ensureSelectedVisible,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectMultipleState<T>;
 
@@ -505,6 +517,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               closeOnSelect: closeOnSelect,
               allowDeselection: allowDeselection,
               controller: state.controller,
+              ensureSelectedVisible: ensureSelectedVisible,
             );
           },
         );
@@ -530,7 +543,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// The builder for the options of the [ShadSelect].
     Widget? Function(BuildContext, int)? optionsBuilder,
-    required ValueChanged<String> onSearchChanged,
+    ValueChanged<String>? onSearchChanged,
     Widget? placeholder,
     bool closeOnTapOutside = true,
     double? minWidth,
@@ -563,11 +576,14 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     /// {@macro ShadSelect.allowDeselection}
     bool allowDeselection = true,
     this.controller,
+
+    /// {@macro ShadSelect.ensureSelectedVisible}
+    bool? ensureSelectedVisible,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectMultipleState<T>;
 
@@ -606,6 +622,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               closeOnSelect: closeOnSelect,
               allowDeselection: allowDeselection,
               controller: state.controller,
+              ensureSelectedVisible: ensureSelectedVisible,
             );
           },
         );
@@ -662,6 +679,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     bool allowDeselection = true,
     bool closeOnSelect = true,
     this.controller,
+
+    /// {@macro ShadSelect.ensureSelectedVisible}
+    bool? ensureSelectedVisible,
   })  : assert(
           variant == ShadSelectVariant.multiple ||
               variant == ShadSelectVariant.multipleWithSearch,
@@ -671,7 +691,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSelectMultipleState<T>;
 
@@ -710,6 +730,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               allowDeselection: allowDeselection,
               closeOnSelect: closeOnSelect,
               controller: state.controller,
+              ensureSelectedVisible: ensureSelectedVisible,
             );
           },
         );

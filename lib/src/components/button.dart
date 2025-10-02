@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/button_sizes.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -933,7 +934,7 @@ class _ShadButtonState extends State<ShadButton> {
 
     final effectiveDecoration =
         (buttonTheme(theme).decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+            .merge(widget.decoration);
 
     final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
         buttonTheme(theme).mainAxisAlignment ??
@@ -1003,9 +1004,7 @@ class _ShadButtonState extends State<ShadButton> {
           }
 
           return IconTheme(
-            data: iconTheme.copyWith(
-              color: effectiveForegroundColor,
-            ),
+            data: iconTheme.copyWith(color: effectiveForegroundColor),
             child: DefaultTextStyle(
               style: theme.textTheme.small.copyWith(
                 color: effectiveForegroundColor,

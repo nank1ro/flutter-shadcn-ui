@@ -42,8 +42,8 @@ jobs:
           echo "$CHANGELOG_BODY" > release_notes.md
           echo "CHANGELOG_FILE=release_notes.md" >> $GITHUB_OUTPUT
           
-          # Format changelog for Discord (remove backticks to avoid message splitting)
-          DISCORD_CHANGELOG=$(echo "$CHANGELOG_BODY" | sed 's/`//g')
+          # Format changelog for Discord (remove characters that cause message splitting)
+          DISCORD_CHANGELOG=$(echo "$CHANGELOG_BODY" | sed 's/`//g' | sed 's/,/•/g' | sed 's/;/•/g')
           
           # Pass CHANGELOG_BODY as-is without escaping newlines
           echo "CHANGELOG_BODY<<EOF" >> $GITHUB_OUTPUT
@@ -82,4 +82,6 @@ jobs:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           message: |
             Released the v${{ steps.extract_info.outputs.VERSION }}
-            ${{ steps.extract_info.outputs.CHANGELOG_BODY }}
+            ```
+            ${{ steps.extract_info.outputs.DISCORD_CHANGELOG }}
+            ```

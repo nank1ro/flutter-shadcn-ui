@@ -1,5 +1,3 @@
-// ignore_for_file: cascade_invocations
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';

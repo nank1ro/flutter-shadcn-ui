@@ -196,7 +196,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).inputTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderTextareaState;
             return ShadTextarea(

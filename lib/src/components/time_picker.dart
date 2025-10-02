@@ -756,12 +756,12 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         radius: theme.radius,
       ),
     )
-        .mergeWith(theme.timePickerTheme.fieldDecoration)
-        .mergeWith(widget.fieldDecoration);
+        .merge(theme.timePickerTheme.fieldDecoration)
+        .merge(widget.fieldDecoration);
 
     final effectivePeriodDecoration =
         (theme.timePickerTheme.periodDecoration ?? const ShadDecoration())
-            .mergeWith(widget.periodDecoration);
+            .merge(widget.periodDecoration);
 
     return Wrap(
       direction: effectiveAxis,
@@ -1052,7 +1052,7 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
         color: theme.colorScheme.border,
         radius: theme.radius,
       ),
-    ).mergeWith(widget.decoration);
+    ).merge(widget.decoration);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

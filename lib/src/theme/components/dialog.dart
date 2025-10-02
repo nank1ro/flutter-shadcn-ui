@@ -1,15 +1,16 @@
-import 'dart:ui';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import 'package:shadcn_ui/src/utils/position.dart';
+import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
 
+part 'dialog.g.theme.dart';
+
+@themeGen
 @immutable
-class ShadDialogTheme {
+class ShadDialogTheme with _$ShadDialogTheme {
   const ShadDialogTheme({
-    this.merge = true,
+    bool canMerge = true,
     this.closeIconData,
     this.closeIconPosition,
     this.radius,
@@ -38,9 +39,13 @@ class ShadDialogTheme {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
-  });
+  }) : _canMerge = canMerge;
 
-  final bool merge;
+  @ignore
+  final bool _canMerge;
+
+  @override
+  bool get canMerge => _canMerge;
 
   /// {@macro ShadDialog.closeIconData}
   final IconData? closeIconData;
@@ -126,217 +131,10 @@ class ShadDialogTheme {
   /// {@macro ShadDialog.useSafeArea}
   final bool? useSafeArea;
 
-  static ShadDialogTheme lerp(
-    ShadDialogTheme a,
-    ShadDialogTheme b,
+  static ShadDialogTheme? lerp(
+    ShadDialogTheme? a,
+    ShadDialogTheme? b,
     double t,
-  ) {
-    if (identical(a, b)) return a;
-    return ShadDialogTheme(
-      merge: b.merge,
-      closeIconData: b.closeIconData,
-      closeIconPosition:
-          ShadPosition.lerp(a.closeIconPosition, b.closeIconPosition, t),
-      radius: BorderRadius.lerp(a.radius, b.radius, t),
-      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
-      expandActionsWhenTiny: b.expandActionsWhenTiny,
-      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
-      gap: lerpDouble(a.gap, b.gap, t),
-      animateIn: b.animateIn,
-      animateOut: b.animateOut,
-      constraints: b.constraints,
-      border: b.border,
-      shadows: b.shadows,
-      removeBorderRadiusWhenTiny: b.removeBorderRadiusWhenTiny,
-      actionsAxis: b.actionsAxis,
-      actionsMainAxisSize: b.actionsMainAxisSize,
-      actionsMainAxisAlignment: b.actionsMainAxisAlignment,
-      actionsVerticalDirection: b.actionsVerticalDirection,
-      titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
-      descriptionStyle:
-          TextStyle.lerp(a.descriptionStyle, b.descriptionStyle, t),
-      titleTextAlign: b.titleTextAlign,
-      descriptionTextAlign: b.descriptionTextAlign,
-      alignment: Alignment.lerp(a.alignment, b.alignment, t),
-      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
-      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
-      scrollable: t < 0.5 ? a.scrollable : b.scrollable,
-      scrollPadding:
-          EdgeInsetsGeometry.lerp(a.scrollPadding, b.scrollPadding, t),
-      actionsGap: lerpDouble(a.actionsGap, b.actionsGap, t),
-      useSafeArea: t < 0.5 ? a.useSafeArea : b.useSafeArea,
-    );
-  }
-
-  ShadDialogTheme copyWith({
-    bool? merge,
-    IconData? closeIconData,
-    ShadPosition? closeIconPosition,
-    BorderRadius? radius,
-    Color? backgroundColor,
-    bool? expandActionsWhenTiny,
-    EdgeInsetsGeometry? padding,
-    double? gap,
-    List<Effect<dynamic>>? animateIn,
-    List<Effect<dynamic>>? animateOut,
-    BoxConstraints? constraints,
-    Axis? actionsAxis,
-    MainAxisSize? actionsMainAxisSize,
-    MainAxisAlignment? actionsMainAxisAlignment,
-    VerticalDirection? actionsVerticalDirection,
-    BoxBorder? border,
-    List<BoxShadow>? shadows,
-    bool? removeBorderRadiusWhenTiny,
-    TextStyle? titleStyle,
-    TextStyle? descriptionStyle,
-    TextAlign? titleTextAlign,
-    TextAlign? descriptionTextAlign,
-    Alignment? alignment,
-    MainAxisAlignment? mainAxisAlignment,
-    CrossAxisAlignment? crossAxisAlignment,
-    bool? scrollable,
-    EdgeInsetsGeometry? scrollPadding,
-    double? actionsGap,
-    bool? useSafeArea,
-  }) {
-    return ShadDialogTheme(
-      merge: merge ?? this.merge,
-      closeIconData: closeIconData ?? this.closeIconData,
-      closeIconPosition: closeIconPosition ?? this.closeIconPosition,
-      radius: radius ?? this.radius,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      expandActionsWhenTiny:
-          expandActionsWhenTiny ?? this.expandActionsWhenTiny,
-      padding: padding ?? this.padding,
-      gap: gap ?? this.gap,
-      animateIn: animateIn ?? this.animateIn,
-      animateOut: animateOut ?? this.animateOut,
-      constraints: constraints ?? this.constraints,
-      actionsAxis: actionsAxis ?? this.actionsAxis,
-      actionsMainAxisSize: actionsMainAxisSize ?? this.actionsMainAxisSize,
-      actionsMainAxisAlignment:
-          actionsMainAxisAlignment ?? this.actionsMainAxisAlignment,
-      actionsVerticalDirection:
-          actionsVerticalDirection ?? this.actionsVerticalDirection,
-      border: border ?? this.border,
-      shadows: shadows ?? this.shadows,
-      removeBorderRadiusWhenTiny:
-          removeBorderRadiusWhenTiny ?? this.removeBorderRadiusWhenTiny,
-      titleStyle: titleStyle ?? this.titleStyle,
-      descriptionStyle: descriptionStyle ?? this.descriptionStyle,
-      titleTextAlign: titleTextAlign ?? this.titleTextAlign,
-      descriptionTextAlign: descriptionTextAlign ?? this.descriptionTextAlign,
-      alignment: alignment ?? this.alignment,
-      mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
-      scrollable: scrollable ?? this.scrollable,
-      scrollPadding: scrollPadding ?? this.scrollPadding,
-      actionsGap: actionsGap ?? this.actionsGap,
-      useSafeArea: useSafeArea ?? this.useSafeArea,
-    );
-  }
-
-  ShadDialogTheme mergeWith(ShadDialogTheme? other) {
-    if (other == null) return this;
-    if (!other.merge) return other;
-    return copyWith(
-      closeIconData: other.closeIconData,
-      closeIconPosition: other.closeIconPosition,
-      radius: other.radius,
-      backgroundColor: other.backgroundColor,
-      expandActionsWhenTiny: other.expandActionsWhenTiny,
-      padding: other.padding,
-      gap: other.gap,
-      animateIn: other.animateIn,
-      animateOut: other.animateOut,
-      constraints: other.constraints,
-      border: other.border,
-      shadows: other.shadows,
-      removeBorderRadiusWhenTiny: other.removeBorderRadiusWhenTiny,
-      actionsAxis: other.actionsAxis,
-      actionsMainAxisSize: other.actionsMainAxisSize,
-      actionsMainAxisAlignment: other.actionsMainAxisAlignment,
-      actionsVerticalDirection: other.actionsVerticalDirection,
-      titleStyle: other.titleStyle,
-      descriptionStyle: other.descriptionStyle,
-      titleTextAlign: other.titleTextAlign,
-      descriptionTextAlign: other.descriptionTextAlign,
-      alignment: other.alignment,
-      mainAxisAlignment: other.mainAxisAlignment,
-      crossAxisAlignment: other.crossAxisAlignment,
-      scrollable: other.scrollable,
-      scrollPadding: other.scrollPadding,
-      actionsGap: other.actionsGap,
-      useSafeArea: other.useSafeArea,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ShadDialogTheme &&
-        other.merge == merge &&
-        other.closeIconData == closeIconData &&
-        other.closeIconPosition == closeIconPosition &&
-        other.radius == radius &&
-        other.backgroundColor == backgroundColor &&
-        other.expandActionsWhenTiny == expandActionsWhenTiny &&
-        other.padding == padding &&
-        other.gap == gap &&
-        listEquals(other.animateIn, animateIn) &&
-        listEquals(other.animateOut, animateOut) &&
-        other.constraints == constraints &&
-        other.actionsAxis == actionsAxis &&
-        other.actionsMainAxisSize == actionsMainAxisSize &&
-        other.actionsMainAxisAlignment == actionsMainAxisAlignment &&
-        other.actionsVerticalDirection == actionsVerticalDirection &&
-        other.border == border &&
-        listEquals(other.shadows, shadows) &&
-        other.removeBorderRadiusWhenTiny == removeBorderRadiusWhenTiny &&
-        other.titleStyle == titleStyle &&
-        other.descriptionStyle == descriptionStyle &&
-        other.titleTextAlign == titleTextAlign &&
-        other.descriptionTextAlign == descriptionTextAlign &&
-        other.alignment == alignment &&
-        other.mainAxisAlignment == mainAxisAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment &&
-        other.scrollable == scrollable &&
-        other.scrollPadding == scrollPadding &&
-        other.actionsGap == actionsGap &&
-        other.useSafeArea == useSafeArea;
-  }
-
-  @override
-  int get hashCode {
-    return merge.hashCode ^
-        closeIconData.hashCode ^
-        closeIconPosition.hashCode ^
-        radius.hashCode ^
-        backgroundColor.hashCode ^
-        expandActionsWhenTiny.hashCode ^
-        padding.hashCode ^
-        gap.hashCode ^
-        animateIn.hashCode ^
-        animateOut.hashCode ^
-        constraints.hashCode ^
-        actionsAxis.hashCode ^
-        actionsMainAxisSize.hashCode ^
-        actionsMainAxisAlignment.hashCode ^
-        actionsVerticalDirection.hashCode ^
-        border.hashCode ^
-        shadows.hashCode ^
-        removeBorderRadiusWhenTiny.hashCode ^
-        titleStyle.hashCode ^
-        descriptionStyle.hashCode ^
-        titleTextAlign.hashCode ^
-        descriptionTextAlign.hashCode ^
-        alignment.hashCode ^
-        mainAxisAlignment.hashCode ^
-        crossAxisAlignment.hashCode ^
-        scrollable.hashCode ^
-        scrollPadding.hashCode ^
-        actionsGap.hashCode ^
-        useSafeArea.hashCode;
-  }
+  ) =>
+      _$ShadDialogTheme.lerp(a, b, t);
 }

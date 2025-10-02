@@ -1,3 +1,32 @@
+## 0.35.0
+
+- **BREAKING CHANGE**: The `mergeWith` method has been renamed into `merge` and the `merge` boolean has been renamed into `canMerge` (ShadThemes).
+- **CHORE**: The theme generation has been automated by using the [theme_extensions_builder](https://pub.dev/packages/theme_extensions_builder) package (thanks to @pro100andrey). 
+
+## 0.34.0
+
+- **FEAT**: Add `leading`, `trailing`, `top` and `bottom` parameters to `ShadAlert` to add widgets before, after, above or below the main content of the alert.
+
+## 0.33.1
+
+- **FIX**: `ShadSelect` always scrolling to the selected option when opening the popover which can now be disabled with `ensureSelectedVisible: false`.
+- **CHORE**: Remove `required` from `onSearchChanged` in `ShadSelect` and `ShadSelectFormField` to make it optional, as it is not required when a custom `search` widget is provided.
+
+## 0.33.0
+
+- **FEAT**: Allow extending `ShadTextTheme` with custom text styles through the `custom` parameter. [See docs](https://flutter-shadcn-ui.mariuti.com/typography#extend-with-custom-styles).
+- **FEAT**: Allow extending `ShadColorScheme` with custom colors through the `custom` parameter. [See docs](https://flutter-shadcn-ui.mariuti.com/theme/data/#extend-with-custom-colors).
+
+## 0.32.2
+
+- **FIX**: `ShadTooltip` not showing on hover.
+
+## 0.32.1
+
+- **FIX**: `ShadToast` constraints were not being used.
+- **FIX**: `ShadToast` text direction was not taken from theme.
+- **FEAT**: Add `mainAxisSize` and `mainAxisAlignment` to `ShadToast` and `ShadToastTheme`, defaults to `MainAxisSize.max` and `MainAxisAlignment.spaceBetween`.
+
 ## 0.32.0
 
 - **REFACTOR**: Now all components are material-free. The only exception is `ShadApp` which provides platform adaptive routing and scroll behavior.

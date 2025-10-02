@@ -1,5 +1,3 @@
-// ignore_for_file: overridden_fields
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -12,6 +10,7 @@ import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/button_sizes.dart';
 import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
@@ -493,9 +492,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.background,
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsetsGeometry.fromSTEB(24, 24, 32, 24),
+      mainAxisSize: MainAxisSize.max,
     );
   }
 
@@ -516,9 +517,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.destructive,
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24),
+      mainAxisSize: MainAxisSize.max,
     );
   }
 
