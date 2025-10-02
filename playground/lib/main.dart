@@ -14,7 +14,7 @@ final themeColorSignal = Signal<String>('zinc');
 
 // For Dev ONLY: use your local Astro dev server
 // const kParentOrigin = "http://localhost:4321";
-const kParentOrigin = "https://shadcn-ui-playground.pages.dev";
+const kParentOrigin = "https://flutter-shadcn-ui.mariuti.com";
 
 void main() {
   usePathUrlStrategy();
@@ -46,7 +46,6 @@ void setupInitialThemeFromURL() {
 void setupWindowMessagesListener() {
   window.onMessage.listen((event) {
     // IMPORTANT: For security, always verify the origin of the message.
-    print('event.origin: ${event.origin}');
     if (event.origin != kParentOrigin) {
       return;
     }
