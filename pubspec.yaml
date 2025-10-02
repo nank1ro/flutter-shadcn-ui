@@ -27,7 +27,7 @@ dependencies:
   lucide_icons_flutter: ">=3.0.0 <4.0.0"
   # used by Table
   theme_extensions_builder_annotation: ^6.0.0-dev.1
-  two_dimensional_scrollables: ">=0.2.0 <1.0.0"
+  two_dimensional_scrollables: ">=0.2.1 <1.0.0"
   universal_image: ">=1.0.3 <2.0.0"
   vector_graphics: ">=1.0.0 <2.0.0"
 
