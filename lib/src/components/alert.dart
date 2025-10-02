@@ -22,13 +22,13 @@ class ShadAlert extends StatelessWidget {
   const ShadAlert({
     super.key,
     this.icon,
-    this.iconData,
     this.title,
     this.description,
     this.textDirection,
     this.decoration,
     this.iconPadding,
     this.iconColor,
+    this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
     this.mainAxisAlignment,
@@ -44,13 +44,13 @@ class ShadAlert extends StatelessWidget {
   const ShadAlert.destructive({
     super.key,
     this.icon,
-    this.iconData,
     this.title,
     this.description,
     this.textDirection,
     this.decoration,
     this.iconPadding,
     this.iconColor,
+    this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
     this.mainAxisAlignment,
@@ -67,13 +67,13 @@ class ShadAlert extends StatelessWidget {
     super.key,
     required this.variant,
     this.icon,
-    this.iconData,
     this.title,
     this.description,
     this.textDirection,
     this.decoration,
     this.iconPadding,
     this.iconColor,
+    this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
     this.mainAxisAlignment,
@@ -92,17 +92,9 @@ class ShadAlert extends StatelessWidget {
   final ShadAlertVariant variant;
 
   /// {@template ShadAlert.icon}
-  /// A custom widget to use as the alert's icon, takes precedence over
-  /// [iconData]. If provided, this widget will be displayed instead of an icon
-  /// generated from [iconData].
+  /// A custom widget to use as the alert's icon.
   /// {@endtemplate}
   final Widget? icon;
-
-  /// {@template ShadAlert.iconData}
-  /// The icon data to display if [icon] is not provided.
-  /// Used to create a default [Icon] widget with the specified [iconColor].
-  /// {@endtemplate}
-  final IconData? iconData;
 
   /// {@template ShadAlert.title}
   /// The title widget of the alert, typically a [Text] widget.
@@ -138,9 +130,17 @@ class ShadAlert extends StatelessWidget {
 
   /// {@template ShadAlert.iconColor}
   /// Color of the icon, overrides theme default if provided.
-  /// Applied to the [Icon] created from [iconData] if [icon] is null.
+  /// Applied to the [IconTheme] if [icon] is not null.
   /// {@endtemplate}
   final Color? iconColor;
+
+  /// {@template ShadAlert.iconSize}
+  /// Size of the icon, overrides theme default if provided.
+  ///
+  /// Applied to the [IconTheme] if [icon] is not null.
+  /// Fallbacks to 16 if not specified.
+  /// {@endtemplate}
+  final double? iconSize;
 
   /// {@template ShadAlert.titleStyle}
   /// Style for the title text, overrides theme default if provided.
@@ -222,15 +222,18 @@ class ShadAlert extends StatelessWidget {
         effectiveAlertTheme.iconColor ??
         theme.colorScheme.foreground;
 
-    final hasIcon = icon != null || iconData != null;
-    final effectiveIcon = hasIcon
+    final effectiveIconSize = iconSize ?? effectiveAlertTheme.iconSize;
+
+    final effectiveIcon = icon != null
         ? Padding(
             padding: effectiveIconPadding,
-            child: icon ??
-                Icon(
-                  iconData,
-                  color: effectiveIconColor,
-                ),
+            child: IconTheme(
+              data: IconThemeData(
+                color: effectiveIconColor,
+                size: effectiveIconSize,
+              ),
+              child: icon!,
+            ),
           )
         : null;
 

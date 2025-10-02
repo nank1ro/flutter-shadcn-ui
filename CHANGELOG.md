@@ -1,3 +1,8 @@
+## 0.36.0
+
+- **BREAKING CHANGE**: Remove `iconData` from `ShadAlert`, use `icon` instead.
+- **FEAT**: Add `iconSize` to `ShadAlert` and `ShadAlertTheme`, fallbacks to `16`.
+
 ## 0.35.0
 
 - **BREAKING CHANGE**: The `mergeWith` method has been renamed into `merge` and the `merge` boolean has been renamed into `canMerge` (ShadThemes).
