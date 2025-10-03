@@ -1,3 +1,9 @@
+## 0.37.0
+
+- **FEAT**: Add `tabsGap` and `tabBarAlignment` to `ShadTabs` in order to customize the gaps between tabs and the alignment of the tab bar (thanks to @9dan).
+- **FIX**: Fix the resulting TextStyle applied to ShadTab (thanks to @9dan).
+- **FIX**: Fix the resulting decoration applied to ShadTab (thanks to @9dan).
+
 ## 0.36.1
 
 - **FIX**: Expose `ShadButtonSizesTheme`.
@@ -16,7 +22,7 @@
 ## 0.35.0
 
 - **BREAKING CHANGE**: The `mergeWith` method has been renamed into `merge` and the `merge` boolean has been renamed into `canMerge` (ShadThemes).
-- **CHORE**: The theme generation has been automated by using the [theme_extensions_builder](https://pub.dev/packages/theme_extensions_builder) package (thanks to @pro100andrey). 
+- **CHORE**: The theme generation has been automated by using the [theme_extensions_builder](https://pub.dev/packages/theme_extensions_builder) package (thanks to @pro100andrey).
 
 ## 0.34.0
 
