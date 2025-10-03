@@ -21,7 +21,7 @@ mixin _$ShadCardTheme {
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
       radius: BorderRadius.lerp(a?.radius, b?.radius, t),
-      border: Border.lerp(a?.border, b?.border, t),
+      border: ShadBorder.lerp(a?.border, b?.border, t),
       shadows: t < 0.5 ? a?.shadows : b?.shadows,
       width: lerpDouble$(a?.width, b?.width, t),
       height: lerpDouble$(a?.height, b?.height, t),
@@ -44,7 +44,7 @@ mixin _$ShadCardTheme {
     EdgeInsetsGeometry? padding,
     Color? backgroundColor,
     BorderRadius? radius,
-    Border? border,
+    ShadBorder? border,
     List<BoxShadow>? shadows,
     double? width,
     double? height,
@@ -93,9 +93,7 @@ mixin _$ShadCardTheme {
       padding: other.padding,
       backgroundColor: other.backgroundColor,
       radius: other.radius,
-      border: current.border != null && other.border != null
-          ? Border.merge(current.border!, other.border!)
-          : other.border,
+      border: current.border?.merge(other.border) ?? other.border,
       shadows: other.shadows,
       width: other.width,
       height: other.height,
