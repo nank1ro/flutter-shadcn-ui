@@ -77,6 +77,8 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
     this.value,
     required this.tabs,
     this.controller,
+    this.tabBarAlignment,
+    this.tabsGap,
     this.gap,
     this.scrollable,
     this.dragStartBehavior,
@@ -107,6 +109,16 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
   /// The controller of the tabs.
   /// {@endtemplate}
   final ShadTabsController<T>? controller;
+
+  /// {@template ShadTabs.tabsGap}
+  /// The horizontal gap between the tabs in the tabBar.
+  /// {@endtemplate}
+  final double? tabsGap;
+
+  /// {@template ShadTabs.tabBarAlignment}
+  /// The alignment of the tabBar.
+  /// {@endtemplate}
+  final Alignment? tabBarAlignment;
 
   /// {@template ShadTabs.gap}
   /// The gap between the tabBar and the content.
@@ -287,7 +299,10 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
     final effectiveExpandContent =
         widget.expandContent ?? tabsTheme.expandContent ?? false;
 
-    Widget tabBar = Row(children: widget.tabs);
+    Widget tabBar = Row(
+      spacing: widget.tabsGap ?? tabsTheme.tabsGap ?? 0,
+      children: widget.tabs,
+    );
 
     if (effectiveTabBarConstraints != null) {
       tabBar = ConstrainedBox(
@@ -311,6 +326,12 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
       );
     } else {
       tabBar = Padding(padding: effectivePadding, child: tabBar);
+    }
+
+    final effectiveTabBarAlignment =
+        widget.tabBarAlignment ?? tabsTheme.tabBarAlignment;
+    if (effectiveTabBarAlignment != null) {
+      tabBar = Align(alignment: effectiveTabBarAlignment, child: tabBar);
     }
 
     return ShadProvider(
@@ -750,12 +771,13 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
     final effectiveBackgroundColor = widget.backgroundColor ??
         tabsTheme.tabBackgroundColor ??
         const Color(0x00000000);
+
     final effectiveSelectedBackgroundColor = widget.selectedBackgroundColor ??
         tabsTheme.tabSelectedBackgroundColor ??
         theme.colorScheme.background;
 
     final effectiveHoverBackgroundColor = widget.hoverBackgroundColor ??
-        tabsTheme.tabHoverForegroundColor ??
+        tabsTheme.tabHoverBackgroundColor ??
         effectiveBackgroundColor;
 
     final effectiveSelectedHoverBackgroundColor =

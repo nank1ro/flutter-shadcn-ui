@@ -19,6 +19,7 @@ mixin _$ShadTabsTheme {
 
     return ShadTabsTheme(
       gap: lerpDouble$(a?.gap, b?.gap, t),
+      tabsGap: lerpDouble$(a?.tabsGap, b?.tabsGap, t),
       dragStartBehavior: t < 0.5 ? a?.dragStartBehavior : b?.dragStartBehavior,
       physics: t < 0.5 ? a?.physics : b?.physics,
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
@@ -113,6 +114,7 @@ mixin _$ShadTabsTheme {
 
   ShadTabsTheme copyWith({
     double? gap,
+    double? tabsGap,
     DragStartBehavior? dragStartBehavior,
     ScrollPhysics? physics,
     EdgeInsetsGeometry? padding,
@@ -150,6 +152,7 @@ mixin _$ShadTabsTheme {
 
     return ShadTabsTheme(
       gap: gap ?? a.gap,
+      tabsGap: tabsGap ?? a.tabsGap,
       dragStartBehavior: dragStartBehavior ?? a.dragStartBehavior,
       physics: physics ?? a.physics,
       padding: padding ?? a.padding,
@@ -206,6 +209,7 @@ mixin _$ShadTabsTheme {
 
     return copyWith(
       gap: other.gap,
+      tabsGap: other.tabsGap,
       dragStartBehavior: other.dragStartBehavior,
       physics: other.physics,
       padding: other.padding,
@@ -256,6 +260,7 @@ mixin _$ShadTabsTheme {
 
     return other is ShadTabsTheme &&
         other.gap == value.gap &&
+        other.tabsGap == value.tabsGap &&
         other.dragStartBehavior == value.dragStartBehavior &&
         other.physics == value.physics &&
         other.padding == value.padding &&
@@ -298,6 +303,7 @@ mixin _$ShadTabsTheme {
     return Object.hashAll([
       runtimeType,
       value.gap,
+      value.tabsGap,
       value.dragStartBehavior,
       value.physics,
       value.padding,
