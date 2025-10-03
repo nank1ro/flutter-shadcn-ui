@@ -801,6 +801,8 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
     final effectivePressedForegroundColor =
         widget.pressedForegroundColor ?? tabsTheme.tabPressedForegroundColor;
 
+    final effectiveTextStyle = widget.textStyle ?? tabsTheme.tabTextStyle ?? theme.textTheme.small;
+
     Widget tab = ListenableBuilder(
       listenable: inherited.controller,
       builder: (context, _) {
@@ -907,9 +909,15 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
           onFocusChange: (focused) {
             if (focused) onMayChanged();
           },
-          child: DefaultTextStyle(
-            style: theme.textTheme.small,
-            child: widget.child,
+          child: Builder(
+            builder: (context) {
+              final inheritedTextStyle = DefaultTextStyle.of(context).style;
+              final mergedTextStyle = effectiveTextStyle.merge(inheritedTextStyle);
+              return DefaultTextStyle(
+                style: mergedTextStyle,
+                child: widget.child,
+              );
+            }
           ),
         );
       },
