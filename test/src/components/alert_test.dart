@@ -97,18 +97,18 @@ void main() {
       final alertFinder = find.byType(ShadAlert);
       expect(alertFinder, findsOneWidget);
 
-      // Find the icon within the ShadAlert and check its color
-      final iconFinder = find.descendant(
+      // Find the IconTheme within the ShadAlert and check its color
+      final iconThemeFinder = find.descendant(
         of: alertFinder,
-        matching: find.byType(Icon),
+        matching: find.byType(IconTheme),
       );
-      expect(iconFinder, findsOneWidget);
-      final icon = tester.widget<Icon>(iconFinder);
-      expect(icon.color, customColor);
+      expect(iconThemeFinder, findsOneWidget);
+      final iconTheme = tester.widget<IconTheme>(iconThemeFinder);
+      expect(iconTheme.data.color, customColor);
 
       // Find the specific padding that wraps the icon
       final paddingFinder = find.ancestor(
-        of: iconFinder,
+        of: find.byIcon(Icons.info),
         matching: find.byType(Padding),
       );
       final padding = tester.widget<Padding>(paddingFinder.first);
