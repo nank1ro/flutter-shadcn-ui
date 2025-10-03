@@ -1,7 +1,12 @@
+## 0.35.1
+
+- **FIX**: Fix the resulting TextStyle applied to ShadTab
+- **FIX**: Fix the resulting decoration applied to ShadTab
+- 
 ## 0.35.0
 
 - **BREAKING CHANGE**: The `mergeWith` method has been renamed into `merge` and the `merge` boolean has been renamed into `canMerge` (ShadThemes).
-- **CHORE**: The theme generation has been automated by using the [theme_extensions_builder](https://pub.dev/packages/theme_extensions_builder) package (thanks to @pro100andrey). 
+- **CHORE**: The theme generation has been automated by using the [theme_extensions_builder](https://pub.dev/packages/theme_extensions_builder) package (thanks to @pro100andrey).
 
 ## 0.34.0
 
