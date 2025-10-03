@@ -1,8 +1,9 @@
 ## 0.35.1
 
+- **FEAT**: Add `tabGaps` and `tabBarAlignment` to `ShadTabs` in order to customize the gaps between tabs and the alignment of the tab bar.
 - **FIX**: Fix the resulting TextStyle applied to ShadTab
 - **FIX**: Fix the resulting decoration applied to ShadTab
-- 
+
 ## 0.35.0
 
 - **BREAKING CHANGE**: The `mergeWith` method has been renamed into `merge` and the `merge` boolean has been renamed into `canMerge` (ShadThemes).
