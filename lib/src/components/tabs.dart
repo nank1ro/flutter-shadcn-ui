@@ -850,9 +850,11 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
             ),
         };
 
-        final effectiveDecoration = defaultDecoration
-            .merge(tabsTheme.tabDecoration)
-            .merge(widget.decoration);
+        final effectiveDecoration = defaultDecoration.merge(
+          selected
+              ? tabsTheme.tabSelectedDecoration ?? tabsTheme.tabDecoration
+              : tabsTheme.tabDecoration,
+        ).merge(widget.decoration);
 
         return ShadButton.secondary(
           leading: widget.leading,
@@ -867,9 +869,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               ? effectiveSelectedHoverBackgroundColor
               : effectiveHoverBackgroundColor,
           padding: effectivePadding,
-          decoration: selected
-              ? effectiveDecoration.merge(widget.selectedDecoration)
-              : effectiveDecoration,
+          decoration: effectiveDecoration,
           foregroundColor: selected
               ? effectiveSelectedForegroundColor
               : effectiveForegroundColor,
