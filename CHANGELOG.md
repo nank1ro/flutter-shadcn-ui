@@ -1,3 +1,8 @@
+## 0.35.1
+
+- **FIX**: The `lerp` method of themes was overriding null double values with 0.
+- **FIX**: Replaced `Border` with `ShadBorder` because `Border.merge` from Flutter is a mess (sums widths of a and b).
+
 ## 0.35.0
 
 - **BREAKING CHANGE**: The `mergeWith` method has been renamed into `merge` and the `merge` boolean has been renamed into `canMerge` (ShadThemes).
