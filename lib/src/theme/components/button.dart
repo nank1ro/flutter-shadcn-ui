@@ -38,6 +38,7 @@ class ShadButtonTheme with _$ShadButtonTheme {
     this.textDirection,
     this.gap,
     this.expands,
+    this.textStyle,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -114,6 +115,9 @@ class ShadButtonTheme with _$ShadButtonTheme {
 
   /// {@macro ShadButton.expands}
   final bool? expands;
+
+  /// {@macro ShadButton.textStyle}
+  final TextStyle? textStyle;
 
   static ShadButtonTheme? lerp(
     ShadButtonTheme? a,

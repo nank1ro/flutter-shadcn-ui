@@ -1,3 +1,8 @@
+## 0.36.1
+
+- **FIX**: Expose `ShadButtonSizesTheme`.
+- **FEAT**: Add `textStyle` to `ShadButton` and `ShadButtonTheme` to customize the text style of the button.
+
 ## 0.36.0
 
 - **BREAKING CHANGE**: Remove `iconData` from `ShadAlert`, use `icon` instead.
