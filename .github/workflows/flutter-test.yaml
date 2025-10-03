@@ -33,7 +33,7 @@ jobs:
 
       - name: Clean
         run: flutter clean
-        
+
       - name: Install and analyze
         run: |
           flutter pub get
@@ -43,12 +43,9 @@ jobs:
           flutter analyze
 
       - name: Test
-        run: flutter test
-        
+        run: flutter test -r github
+
       - name: Downgrade dependencies
         run: |
           flutter pub downgrade
           flutter analyze --no-fatal-infos --no-fatal-warnings
-      
-      
-      

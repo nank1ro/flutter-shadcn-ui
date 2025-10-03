@@ -1,3 +1,8 @@
+## 0.36.0
+
+- **BREAKING CHANGE**: Remove `iconData` from `ShadAlert`, use `icon` instead.
+- **FEAT**: Add `iconSize` to `ShadAlert` and `ShadAlertTheme`, fallbacks to `16` from inherited `IconTheme`.
+
 ## 0.35.1
 
 - **FIX**: The `lerp` method of themes was overriding null double values with 0.

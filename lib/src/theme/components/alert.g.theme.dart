@@ -30,6 +30,7 @@ mixin _$ShadAlertTheme {
       mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
       crossAxisAlignment:
           t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
+      iconSize: lerpDouble$(a?.iconSize, b?.iconSize, t),
     );
   }
 
@@ -41,6 +42,7 @@ mixin _$ShadAlertTheme {
     TextStyle? descriptionStyle,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
+    double? iconSize,
   }) {
     final a = (this as ShadAlertTheme);
 
@@ -52,6 +54,7 @@ mixin _$ShadAlertTheme {
       descriptionStyle: descriptionStyle ?? a.descriptionStyle,
       mainAxisAlignment: mainAxisAlignment ?? a.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
+      iconSize: iconSize ?? a.iconSize,
     );
   }
 
@@ -77,6 +80,7 @@ mixin _$ShadAlertTheme {
               other.descriptionStyle,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
+      iconSize: other.iconSize,
     );
   }
 
@@ -99,7 +103,8 @@ mixin _$ShadAlertTheme {
         other.titleStyle == value.titleStyle &&
         other.descriptionStyle == value.descriptionStyle &&
         other.mainAxisAlignment == value.mainAxisAlignment &&
-        other.crossAxisAlignment == value.crossAxisAlignment;
+        other.crossAxisAlignment == value.crossAxisAlignment &&
+        other.iconSize == value.iconSize;
   }
 
   @override
@@ -115,6 +120,7 @@ mixin _$ShadAlertTheme {
       value.descriptionStyle,
       value.mainAxisAlignment,
       value.crossAxisAlignment,
+      value.iconSize,
     );
   }
 }

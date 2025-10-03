@@ -12,6 +12,7 @@ class ShadAlertTheme with _$ShadAlertTheme {
     this.decoration,
     this.iconPadding,
     this.iconColor,
+    this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
     this.mainAxisAlignment,
@@ -44,6 +45,9 @@ class ShadAlertTheme with _$ShadAlertTheme {
 
   /// {@macro ShadAlert.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
+
+  /// {@macro ShadAlert.iconSize}
+  final double? iconSize;
 
   static ShadAlertTheme? lerp(
     ShadAlertTheme? a,

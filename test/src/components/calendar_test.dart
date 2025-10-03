@@ -83,11 +83,12 @@ void main() {
 
     testWidgets('renders multiple variant correctly',
         (WidgetTester tester) async {
-      final now = DateTime.now();
+      final now = DateTime(2024);
       await tester.pumpAsyncWidget(
         createTestWidget(
-          const ShadCalendar.multiple(
-            selected: [],
+          ShadCalendar.multiple(
+            initialMonth: DateTime(2024),
+            selected: const [],
           ),
         ),
       );
@@ -101,10 +102,12 @@ void main() {
     });
 
     testWidgets('renders range variant correctly', (WidgetTester tester) async {
-      final now = DateTime.now();
+      final now = DateTime(2024);
       await tester.pumpAsyncWidget(
         createTestWidget(
-          const ShadCalendar.range(),
+          ShadCalendar.range(
+            initialMonth: DateTime(2024),
+          ),
         ),
       );
 
@@ -140,6 +143,7 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           ShadCalendar(
+            initialMonth: DateTime(2024),
             onChanged: (date) => selectedDate = date,
           ),
         ),
@@ -168,6 +172,7 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           ShadCalendar.multiple(
+            initialMonth: DateTime(2024),
             onChanged: (dates) => selectedDates = dates,
           ),
         ),
@@ -191,6 +196,7 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           ShadCalendar.range(
+            initialMonth: DateTime(2024),
             onChanged: (range) => selectedRange = range,
           ),
         ),
@@ -362,7 +368,9 @@ void main() {
           (WidgetTester tester) async {
         await tester.pumpAsyncWidget(
           createTestWidget(
-            ShadCalendar(initialMonth: DateTime(2025, 9)),
+            ShadCalendar(
+              initialMonth: DateTime(2025, 9),
+            ),
           ),
         );
 
@@ -381,7 +389,8 @@ void main() {
       const customDayButtonSize = 50.0;
       await tester.pumpAsyncWidget(
         createTestWidget(
-          const ShadCalendar(
+          ShadCalendar(
+            initialMonth: DateTime(2024),
             dayButtonSize: customDayButtonSize,
           ),
         ),
@@ -404,8 +413,9 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           ShadCalendar(
+            selected: DateTime(2024, 12),
             showWeekNumbers: true,
-            initialMonth: date,
+            initialMonth: DateTime(2024),
           ),
         ),
       );
@@ -433,6 +443,7 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           ShadCalendar(
+            initialMonth: DateTime(2024),
             fromMonth: DateTime(2023),
             toMonth: DateTime(2024, 12),
             hideNavigation: true,
@@ -456,6 +467,7 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           ShadCalendar(
+            initialMonth: DateTime(2024),
             fromMonth: DateTime(2023),
             toMonth: DateTime(2024, 12),
             hideNavigation: false,
@@ -473,6 +485,7 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           ShadCalendar(
+            initialMonth: DateTime(2024),
             fromMonth: DateTime(2023),
             toMonth: DateTime(2024, 12),
             showWeekNumbers: true,
@@ -490,6 +503,7 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           ShadCalendar(
+            initialMonth: DateTime(2024),
             fromMonth: DateTime(2023),
             toMonth: DateTime(2024, 12),
             captionLayout: ShadCalendarCaptionLayout.label,
@@ -509,6 +523,7 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           ShadCalendar(
+            initialMonth: DateTime(2024),
             fromMonth: DateTime(2023),
             toMonth: DateTime(2024, 12),
             captionLayout: ShadCalendarCaptionLayout.label,
@@ -527,6 +542,7 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           ShadCalendar.multiple(
+            initialMonth: DateTime(2024),
             numberOfMonths: 2,
             fromMonth: DateTime(2024),
             toMonth: DateTime(2024, 12),
@@ -546,6 +562,7 @@ void main() {
       await tester.pumpAsyncWidget(
         createTestWidget(
           ShadCalendar.range(
+            initialMonth: DateTime(2024),
             numberOfMonths: 2,
             fromMonth: DateTime(2024),
             toMonth: DateTime(2024, 12),
