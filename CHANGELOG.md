@@ -1,8 +1,18 @@
-## 0.35.1
+## 0.37.0
 
 - **FEAT**: Add `tabGaps` and `tabBarAlignment` to `ShadTabs` in order to customize the gaps between tabs and the alignment of the tab bar.
 - **FIX**: Fix the resulting TextStyle applied to ShadTab
 - **FIX**: Fix the resulting decoration applied to ShadTab
+
+## 0.36.0
+
+- **BREAKING CHANGE**: Remove `iconData` from `ShadAlert`, use `icon` instead.
+- **FEAT**: Add `iconSize` to `ShadAlert` and `ShadAlertTheme`, fallbacks to `16` from inherited `IconTheme`.
+
+## 0.35.1
+
+- **FIX**: The `lerp` method of themes was overriding null double values with 0.
+- **FIX**: Replaced `Border` with `ShadBorder` because `Border.merge` from Flutter is a mess (sums widths of a and b).
 
 ## 0.35.0
 

@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 
@@ -494,7 +495,7 @@ class ShadToast extends StatefulWidget {
   /// The border surrounding the toast.
   /// Defaults to a border with the theme’s border color if not specified.
   /// {@endtemplate}
-  final Border? border;
+  final ShadBorder? border;
 
   /// {@template ShadToast.radius}
   /// The border radius of the toast’s corners.
@@ -608,7 +609,7 @@ class _ShadToastState extends State<ShadToast> {
         const EdgeInsetsDirectional.only(start: 16);
     final effectiveBorder = widget.border ??
         effectiveToastTheme.border ??
-        Border.all(color: theme.colorScheme.border);
+        ShadBorder.all(color: theme.colorScheme.border, width: 1);
     final effectiveBorderRadius =
         widget.radius ?? effectiveToastTheme.radius ?? theme.radius;
     final effectiveShadows =
@@ -655,7 +656,7 @@ class _ShadToastState extends State<ShadToast> {
             constraints: effectiveConstraints,
             child: DecoratedBox(
               decoration: BoxDecoration(
-                border: effectiveBorder,
+                border: effectiveBorder.toBorder(),
                 borderRadius: effectiveBorderRadius,
                 boxShadow: effectiveShadows,
                 color: effectiveBackgroundColor,

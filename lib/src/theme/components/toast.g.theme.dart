@@ -42,7 +42,7 @@ mixin _$ShadToastTheme {
         b?.actionPadding,
         t,
       ),
-      border: Border.lerp(a?.border, b?.border, t),
+      border: ShadBorder.lerp(a?.border, b?.border, t),
       radius: BorderRadius.lerp(a?.radius, b?.radius, t),
       shadows: t < 0.5 ? a?.shadows : b?.shadows,
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
@@ -72,7 +72,7 @@ mixin _$ShadToastTheme {
     TextStyle? titleStyle,
     TextStyle? descriptionStyle,
     EdgeInsetsGeometry? actionPadding,
-    Border? border,
+    ShadBorder? border,
     BorderRadius? radius,
     List<BoxShadow>? shadows,
     EdgeInsetsGeometry? padding,
@@ -139,9 +139,7 @@ mixin _$ShadToastTheme {
           current.descriptionStyle?.merge(other.descriptionStyle) ??
               other.descriptionStyle,
       actionPadding: other.actionPadding,
-      border: current.border != null && other.border != null
-          ? Border.merge(current.border!, other.border!)
-          : other.border,
+      border: current.border?.merge(other.border) ?? other.border,
       radius: other.radius,
       shadows: other.shadows,
       padding: other.padding,

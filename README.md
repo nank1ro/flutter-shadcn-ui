@@ -6,7 +6,7 @@
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/nank1ro/flutter-shadcn-ui.svg)](https://gitHub.com/nank1ro/flutter-shadcn-ui/pull/)
 [![shadcn_ui Pub Version (including pre-releases)](https://img.shields.io/pub/v/shadcn_ui?include_prereleases)](https://pub.dev/packages/shadcn_ui)
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/nank1ro/flutter-shadcn-ui)
-[![Join Discord](https://dcbadge.vercel.app/api/server/ZhRMAPNh5Y)](https://discord.gg/ZhRMAPNh5Y)
+[![Join Discord](https://dcbadge.limes.pink/api/server/ZhRMAPNh5Y?style=flat)](https://discord.gg/ZhRMAPNh5Y)
 
 <a href="https://www.buymeacoffee.com/nank1ro" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 

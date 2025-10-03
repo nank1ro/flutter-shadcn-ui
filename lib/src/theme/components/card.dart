@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
 
 part 'card.g.theme.dart';
@@ -40,7 +41,7 @@ class ShadCardTheme with _$ShadCardTheme {
   final BorderRadius? radius;
 
   /// {@macro ShadCard.border}
-  final Border? border;
+  final ShadBorder? border;
 
   /// {@macro ShadCard.shadows}
   final List<BoxShadow>? shadows;
