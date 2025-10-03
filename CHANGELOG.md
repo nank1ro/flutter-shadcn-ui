@@ -1,6 +1,6 @@
 ## 0.37.0
 
-- **FEAT**: Add `tabGaps` and `tabBarAlignment` to `ShadTabs` in order to customize the gaps between tabs and the alignment of the tab bar.
+- **FEAT**: Add `tabsGap` and `tabBarAlignment` to `ShadTabs` in order to customize the gaps between tabs and the alignment of the tab bar.
 - **FIX**: Fix the resulting TextStyle applied to ShadTab
 - **FIX**: Fix the resulting decoration applied to ShadTab
 
