@@ -67,6 +67,7 @@ mixin _$ShadButtonTheme {
       textDirection: t < 0.5 ? a?.textDirection : b?.textDirection,
       gap: lerpDouble$(a?.gap, b?.gap, t),
       expands: t < 0.5 ? a?.expands : b?.expands,
+      textStyle: TextStyle.lerp(a?.textStyle, b?.textStyle, t),
     );
   }
 
@@ -94,6 +95,7 @@ mixin _$ShadButtonTheme {
     TextDirection? textDirection,
     double? gap,
     bool? expands,
+    TextStyle? textStyle,
   }) {
     final a = (this as ShadButtonTheme);
 
@@ -123,6 +125,7 @@ mixin _$ShadButtonTheme {
       textDirection: textDirection ?? a.textDirection,
       gap: gap ?? a.gap,
       expands: expands ?? a.expands,
+      textStyle: textStyle ?? a.textStyle,
     );
   }
 
@@ -161,6 +164,7 @@ mixin _$ShadButtonTheme {
       textDirection: other.textDirection,
       gap: other.gap,
       expands: other.expands,
+      textStyle: current.textStyle?.merge(other.textStyle) ?? other.textStyle,
     );
   }
 
@@ -199,7 +203,8 @@ mixin _$ShadButtonTheme {
         other.crossAxisAlignment == value.crossAxisAlignment &&
         other.textDirection == value.textDirection &&
         other.gap == value.gap &&
-        other.expands == value.expands;
+        other.expands == value.expands &&
+        other.textStyle == value.textStyle;
   }
 
   @override
@@ -231,6 +236,7 @@ mixin _$ShadButtonTheme {
       value.textDirection,
       value.gap,
       value.expands,
+      value.textStyle,
     ]);
   }
 }
