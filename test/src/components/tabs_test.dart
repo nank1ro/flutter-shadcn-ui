@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/card.dart';
 import 'package:shadcn_ui/src/components/form/fields/input.dart';
 import 'package:shadcn_ui/src/components/tabs.dart';
+import 'package:shadcn_ui/src/theme/color_scheme/green.dart';
+import 'package:shadcn_ui/src/theme/components/tabs.dart';
+import 'package:shadcn_ui/src/theme/data.dart';
 
 import '../../extra/pump_async_widget.dart';
 
