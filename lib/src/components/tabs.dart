@@ -801,7 +801,8 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
     final effectivePressedForegroundColor =
         widget.pressedForegroundColor ?? tabsTheme.tabPressedForegroundColor;
 
-    final effectiveTextStyle = widget.textStyle ?? tabsTheme.tabTextStyle ?? theme.textTheme.small;
+    final effectiveTextStyle =
+        widget.textStyle ?? tabsTheme.tabTextStyle ?? theme.textTheme.small;
 
     Widget tab = ListenableBuilder(
       listenable: inherited.controller,
@@ -850,11 +851,13 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
             ),
         };
 
-        final effectiveDecoration = defaultDecoration.merge(
-          selected
-              ? tabsTheme.tabSelectedDecoration ?? tabsTheme.tabDecoration
-              : tabsTheme.tabDecoration,
-        ).merge(widget.decoration);
+        final effectiveDecoration = defaultDecoration
+            .merge(
+              selected
+                  ? tabsTheme.tabSelectedDecoration ?? tabsTheme.tabDecoration
+                  : tabsTheme.tabDecoration,
+            )
+            .merge(widget.decoration);
 
         return ShadButton.secondary(
           leading: widget.leading,
@@ -909,15 +912,9 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
           onFocusChange: (focused) {
             if (focused) onMayChanged();
           },
-          child: Builder(
-            builder: (context) {
-              final inheritedTextStyle = DefaultTextStyle.of(context).style;
-              final mergedTextStyle = effectiveTextStyle.merge(inheritedTextStyle);
-              return DefaultTextStyle(
-                style: mergedTextStyle,
-                child: widget.child,
-              );
-            }
+          child: DefaultTextStyle.merge(
+            style: effectiveTextStyle,
+            child: widget.child,
           ),
         );
       },
