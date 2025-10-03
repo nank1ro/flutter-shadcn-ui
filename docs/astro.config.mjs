@@ -127,7 +127,7 @@ export default defineConfig({
             },
             {
               label: 'Gift Grab',
-              link: 'https://giftgrab.codemagic.app/#/login',
+              link: 'https://giftgrab.codemagic.app',
               attrs: { target: '_blank', rel: 'noopener noreferrer' },
             },
             {
