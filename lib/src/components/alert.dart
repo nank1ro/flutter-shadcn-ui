@@ -227,7 +227,7 @@ class ShadAlert extends StatelessWidget {
     final effectiveIcon = icon != null
         ? Padding(
             padding: effectiveIconPadding,
-            child: IconTheme(
+            child: IconTheme.merge(
               data: IconThemeData(
                 color: effectiveIconColor,
                 size: effectiveIconSize,
