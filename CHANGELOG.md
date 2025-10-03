@@ -1,7 +1,7 @@
 ## 0.36.0
 
 - **BREAKING CHANGE**: Remove `iconData` from `ShadAlert`, use `icon` instead.
-- **FEAT**: Add `iconSize` to `ShadAlert` and `ShadAlertTheme`, fallbacks to `16`.
+- **FEAT**: Add `iconSize` to `ShadAlert` and `ShadAlertTheme`, fallbacks to `16` from inherited `IconTheme`.
 
 ## 0.35.1
 
