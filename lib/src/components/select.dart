@@ -1249,10 +1249,10 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final effectiveRadius =
         widget.radius ?? theme.optionTheme.radius ?? theme.radius;
 
-    final effectiveSelectedIcon = widget.selectedIcon ??
-        Visibility.maintain(
-          visible: selected,
-          child: Padding(
+    final effectiveSelectedIcon = Visibility.maintain(
+      visible: selected,
+      child: widget.selectedIcon ??
+          Padding(
             padding: const EdgeInsets.only(right: 8),
             child: Icon(
               LucideIcons.check,
@@ -1260,7 +1260,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
               color: theme.colorScheme.popoverForeground,
             ),
           ),
-        );
+    );
 
     return CallbackShortcuts(
       bindings: {
