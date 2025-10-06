@@ -369,11 +369,13 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           width: 1,
         ),
       ),
-      popoverReverseDuration: Duration.zero,
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
-      anchor: const ShadAnchorAuto(offset: Offset(1, 4)),
+      popoverTheme: const ShadPopoverTheme(
+        reverseDuration: Duration.zero,
+        anchor: ShadAnchorAuto(offset: Offset(1, 4)),
+      ),
       searchPadding: const EdgeInsets.all(12),
     );
   }
