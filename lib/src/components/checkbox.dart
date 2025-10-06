@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 /// A customizable checkbox widget with optional label and sublabel.
 ///
@@ -283,7 +284,9 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: DefaultTextStyle(
-                            style: theme.textTheme.muted,
+                            style: theme.textTheme.muted.fallback(
+                              color: theme.colorScheme.mutedForeground,
+                            ),
                             child: widget.sublabel!,
                           ),
                         ),

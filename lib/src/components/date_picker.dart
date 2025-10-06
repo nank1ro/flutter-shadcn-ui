@@ -12,6 +12,7 @@ import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/extensions/date_time.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
@@ -1255,7 +1256,8 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
                     },
                   )
                 : DefaultTextStyle(
-                    style: theme.textTheme.muted,
+                    style: theme.textTheme.muted
+                        .fallback(color: theme.colorScheme.mutedForeground),
                     child: widget.placeholder ?? const Text('Select date'),
                   )),
       ),

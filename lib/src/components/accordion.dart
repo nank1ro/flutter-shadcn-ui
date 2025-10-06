@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/animation_builder.dart';
 import 'package:shadcn_ui/src/utils/effects.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
@@ -388,11 +389,12 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
             theme.accordionTheme.curve ??
             const Cubic(0.87, 0, 0.13, 1);
 
-        final effectiveTitleStyle = widget.titleStyle ??
-            theme.accordionTheme.titleStyle ??
-            theme.textTheme.list.copyWith(
-              fontWeight: FontWeight.w500,
-            );
+        final effectiveTitleStyle = (widget.titleStyle ??
+                theme.accordionTheme.titleStyle ??
+                theme.textTheme.list.copyWith(
+                  fontWeight: FontWeight.w500,
+                ))
+            .fallback(color: theme.colorScheme.foreground);
 
         final effectiveUnderlineTitleOnHover = widget.underlineTitleOnHover ??
             theme.accordionTheme.underlineTitleOnHover ??

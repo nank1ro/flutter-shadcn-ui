@@ -3,6 +3,8 @@
 - **FEAT**: Add `tabsGap` and `tabBarAlignment` to `ShadTabs` in order to customize the gaps between tabs and the alignment of the tab bar (thanks to @9dan).
 - **FIX**: Fix the resulting TextStyle applied to ShadTab (thanks to @9dan).
 - **FIX**: Fix the resulting decoration applied to ShadTab (thanks to @9dan).
+- **REFACTOR**: Before all text styles from `ShadTextTheme` had a color applied and `inherited` set to `false`, this prevented customizing the text styles easily. Now all text styles have `inherit` set to `true` and no color applied, so they can be customized more easily (thanks to @9dan)
+- **FEAT**: Expose `TextStyle.fallback` method to easily set a fallback property to a TextStyle if it is null; for example, `textStyle.fallback(color: Colors.red)` will set the color to red if it is null, and will keep the original color if it is not null (thanks to @9dan).
 
 ## 0.36.1
 

@@ -11,6 +11,7 @@ import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/raw_components/keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 /// A customizable text input field with optional leading and trailing widgets.
@@ -809,7 +810,8 @@ class ShadInputState extends State<ShadInput>
 
     final effectivePlaceholderStyle = theme.textTheme.muted
         .merge(theme.inputTheme.placeholderStyle)
-        .merge(widget.placeholderStyle);
+        .merge(widget.placeholderStyle)
+        .fallback(color: theme.colorScheme.mutedForeground);
 
     final defaultAlignment = Directionality.of(context) == TextDirection.rtl
         ? Alignment.topRight

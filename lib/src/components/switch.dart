@@ -6,6 +6,7 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 /// {@template ShadSwitch}
 /// A customizable switch widget, styled according to the Shadcn UI design
@@ -353,7 +354,9 @@ class _ShadSwitchState extends State<ShadSwitch>
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: DefaultTextStyle(
-                            style: theme.textTheme.muted,
+                            style: theme.textTheme.muted.fallback(
+                              color: theme.colorScheme.mutedForeground,
+                            ),
                             child: widget.sublabel!,
                           ),
                         ),
