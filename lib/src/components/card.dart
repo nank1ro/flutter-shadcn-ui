@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 // A customizable card widget for displaying structured content.
 ///
@@ -226,7 +227,8 @@ class ShadCard extends StatelessWidget {
                   ),
                 if (description != null)
                   DefaultTextStyle(
-                    style: theme.textTheme.muted,
+                    style: theme.textTheme.muted
+                        .fallback(color: theme.colorScheme.mutedForeground),
                     child: description!,
                   ),
                 if (child != null) Flexible(child: child!),

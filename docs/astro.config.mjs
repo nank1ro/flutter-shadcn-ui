@@ -78,7 +78,7 @@ export default defineConfig({
             {
               label: 'Notes Calculator',
               link: 'https://notescalculator.com',
-              attrs: { target: '_blank' },
+              badge: { text: 'Author' },
             },
             {
               label: 'Pic Gen',

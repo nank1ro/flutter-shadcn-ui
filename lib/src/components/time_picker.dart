@@ -5,6 +5,7 @@ import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 /// Whether the TimeOfDay is before or after noon.
@@ -748,7 +749,8 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     final effectiveLabelStyle = theme.textTheme.small
         .copyWith(fontSize: 12)
         .merge(theme.timePickerTheme.labelStyle)
-        .merge(widget.labelStyle);
+        .merge(widget.labelStyle)
+        .fallback(color: theme.colorScheme.foreground);
 
     final effectiveFieldDecoration = ShadDecoration(
       border: ShadBorder.all(

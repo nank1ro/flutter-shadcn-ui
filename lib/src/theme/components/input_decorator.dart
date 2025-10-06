@@ -52,6 +52,10 @@ class ShadInputDecorator extends StatelessWidget {
           };
     }
 
+    final effectiveDescriptionStyle =
+        (effectiveDecoration.descriptionStyle ?? theme.textTheme.muted)
+            .fallback(color: theme.colorScheme.mutedForeground);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,8 +75,7 @@ class ShadInputDecorator extends StatelessWidget {
             padding: effectiveDecoration.descriptionPadding ??
                 const EdgeInsets.only(top: 8),
             child: DefaultTextStyle(
-              style:
-                  effectiveDecoration.descriptionStyle ?? theme.textTheme.muted,
+              style: effectiveDescriptionStyle,
               child: description!,
             ),
           ),

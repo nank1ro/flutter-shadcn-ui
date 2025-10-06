@@ -173,6 +173,17 @@ class App extends StatelessWidget {
               colorScheme: const ShadZincColorScheme.dark(),
               // Example of custom font family
               // textTheme: ShadTextTheme(family: 'UbuntuMono'),
+
+              // Example of extending the ShadTextTheme with a new custom style and name (see `/typography` page for usage example).
+              textTheme: ShadTextTheme(
+                custom: {
+                  'myCustomStyle': const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.green,
+                  ),
+                },
+              ),
             ),
             home: const MainPage(),
             builder: (context, child) {

@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
@@ -491,11 +492,15 @@ class ShadDialog extends StatelessWidget {
     final effectiveGap = gap ?? effectiveDialogTheme.gap ?? 8;
 
     final effectiveTitleStyle =
-        titleStyle ?? effectiveDialogTheme.titleStyle ?? theme.textTheme.large;
+        (titleStyle ?? effectiveDialogTheme.titleStyle ?? theme.textTheme.large)
+            .fallback(color: theme.colorScheme.foreground);
 
-    final effectiveDescriptionStyle = descriptionStyle ??
-        effectiveDialogTheme.descriptionStyle ??
-        theme.textTheme.muted;
+    final effectiveDescriptionStyle = (descriptionStyle ??
+            effectiveDialogTheme.descriptionStyle ??
+            theme.textTheme.muted)
+        .fallback(
+      color: theme.colorScheme.mutedForeground,
+    );
 
     final effectiveAlignment =
         alignment ?? effectiveDialogTheme.alignment ?? Alignment.center;
