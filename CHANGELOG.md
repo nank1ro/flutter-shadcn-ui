@@ -7,6 +7,7 @@
 - **FEAT**: Expose `TextStyle.fallback` method to easily set a fallback property to a TextStyle if it is null; for example, `textStyle.fallback(color: Colors.red)` will set the color to red if it is null, and will keep the original color if it is not null (thanks to @9dan).
 - **FIX**: `ShadOption.selectedIcon` was always visible, even if the option was not selected (thanks to @DMouayad).
 - **FEAT**: Allow custom exit transition duration in `showShadDialog` (thanks to @DMouayad).
+- **FEAT**: Add `showHours`, `showMinutes` and `showSeconds` to `ShadTimePicker` and `ShadTimePickerFormField` to customize which fields are shown.
 
 ## 0.36.1
 
