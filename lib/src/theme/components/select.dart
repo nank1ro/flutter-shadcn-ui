@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
@@ -23,13 +24,10 @@ class ShadSelectTheme with _$ShadSelectTheme {
     this.optionsPadding,
     this.showScrollToTopChevron,
     this.showScrollToBottomChevron,
-    this.anchor,
     this.searchPadding,
     this.clearSearchOnClose,
-    this.effects,
-    this.shadows,
-    this.filter,
-    this.popoverReverseDuration,
+    this.popoverTheme,
+    this.optionTheme,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -37,9 +35,6 @@ class ShadSelectTheme with _$ShadSelectTheme {
 
   @override
   bool get canMerge => _canMerge;
-
-  /// {@macro ShadPopover.reverseDuration}
-  final Duration? popoverReverseDuration;
 
   /// {@macro ShadSelect.decoration}
   final ShadDecoration? decoration;
@@ -65,23 +60,19 @@ class ShadSelectTheme with _$ShadSelectTheme {
   /// {@macro ShadSelect.showScrollToBottomChevron}
   final bool? showScrollToBottomChevron;
 
-  /// {@macro ShadSelect.anchor}
-  final ShadAnchorBase? anchor;
-
   /// {@macro ShadSelect.searchPadding}
   final EdgeInsetsGeometry? searchPadding;
 
   /// {@macro ShadSelect.clearSearchOnClose}
   final bool? clearSearchOnClose;
 
-  /// {@macro ShadPopover.filter}
-  final ImageFilter? filter;
+  /// {@macro ShadSelect.popoverTheme}
+  /// See also [ShadPopoverTheme].
+  final ShadPopoverTheme? popoverTheme;
 
-  /// {@macro ShadPopover.effects}
-  final List<Effect<dynamic>>? effects;
-
-  /// {@macro ShadPopover.shadows}
-  final List<BoxShadow>? shadows;
+  /// {@macro ShadSelect.optionTheme}
+  /// See also [ShadOptionTheme].
+  final ShadOptionTheme? optionTheme;
 
   static ShadSelectTheme? lerp(
     ShadSelectTheme? a,
