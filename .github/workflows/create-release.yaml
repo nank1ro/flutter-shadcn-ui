@@ -94,11 +94,7 @@ jobs:
             --rawfile changelog release_notes.md \
             '{content: ($prefix + $version + "\n" + $changelog)}' > discord_payload.json
 
-          echo "=== Discord payload content ==="
-          cat discord_payload.json
-          echo "=== End of payload ==="
-
-          # curl -H "Content-Type: application/json" \
-          #   -X POST \
-          #   --data @discord_payload.json \
-          #   "${{ secrets.DISCORD_WEBHOOK_URL }}"
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            --data @discord_payload.json \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
