@@ -35,8 +35,8 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
           # Extract the release notes for the current version from CHANGELOG.md.
-          # Use sed to extract content between version headers, preserving backticks
-          sed -n "/^## $VERSION/,/^## /p" CHANGELOG.md | sed '$d' | tail -n +2 > release_notes.md
+          # Use awk to extract content between version headers, preserving backticks
+          awk "/^## $VERSION\$/{flag=1; next} /^## /{if(flag) exit} flag" CHANGELOG.md > release_notes.md
 
           # Check if changelog body was found
           if [ ! -s release_notes.md ]; then
@@ -87,13 +87,18 @@ jobs:
             PREFIX="[TEST] Released the v"
           fi
 
+          # Read changelog directly from file to avoid shell interpretation of backticks
           jq -n \
             --arg version "${{ steps.extract_info.outputs.VERSION }}" \
-            --arg changelog "${{ steps.extract_info.outputs.CHANGELOG_BODY }}" \
             --arg prefix "$PREFIX" \
+            --rawfile changelog release_notes.md \
             '{content: ($prefix + $version + "\n" + $changelog)}' > discord_payload.json
 
-          curl -H "Content-Type: application/json" \
-            -X POST \
-            --data @discord_payload.json \
-            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+          echo "=== Discord payload content ==="
+          cat discord_payload.json
+          echo "=== End of payload ==="
+
+          # curl -H "Content-Type: application/json" \
+          #   -X POST \
+          #   --data @discord_payload.json \
+          #   "${{ secrets.DISCORD_WEBHOOK_URL }}"
