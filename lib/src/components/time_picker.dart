@@ -279,7 +279,7 @@ class ShadTimePicker extends StatefulWidget {
         periodMinWidth = null,
         assert(
           false != showHours || false != showMinutes || false != showSeconds,
-          'At least one of showHours, showMinutes, or showSeconds must be true',
+          '''At least one of showHours, showMinutes, or showSeconds must not be false''',
         );
 
   /// Creates a [ShadTimePicker] with the period variant (12-hour format with AM/PM).
@@ -330,7 +330,7 @@ class ShadTimePicker extends StatefulWidget {
   })  : variant = ShadTimePickerVariant.period,
         assert(
           false != showHours || false != showMinutes || false != showSeconds,
-          'At least one of showHours, showMinutes, or showSeconds must be true',
+          '''At least one of showHours, showMinutes, or showSeconds must not be false''',
         );
 
   /// Creates a [ShadTimePicker] with a raw variant, allowing explicit variant
@@ -382,7 +382,7 @@ class ShadTimePicker extends StatefulWidget {
     this.showSeconds,
   }) : assert(
           false != showHours || false != showMinutes || false != showSeconds,
-          'At least one of showHours, showMinutes, or showSeconds must be true',
+          '''At least one of showHours, showMinutes, or showSeconds must not be false''',
         );
 
   /// {@template ShadTimePicker.axis}
