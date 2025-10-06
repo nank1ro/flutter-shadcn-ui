@@ -141,16 +141,17 @@ Future<T?> showShadDialog<T>({
         ScaleEffect(begin: Offset(1, 1), end: Offset(.95, .95)),
       ];
 
-  /// Calculates the total duration of a list of [Effect]s.
-  Duration getEffectsDuration(List<Effect<dynamic>> effects) {
+  /// Returns the maximum duration(including delay) from
+  /// the list of [Effect]s.
+  Duration maxCompletionDuration(List<Effect<dynamic>> effects) {
     if (effects.isEmpty) return Duration.zero;
 
     return effects.fold<Duration>(
       Duration.zero, // start with zero
       (max, effect) {
-        final total = (effect.delay ?? Duration.zero) +
+        final effectTotal = (effect.delay ?? Duration.zero) +
             (effect.duration ?? Animate.defaultDuration);
-        return total > max ? total : max;
+        return effectTotal > max ? effectTotal : max;
       },
     );
   }
@@ -163,8 +164,8 @@ Future<T?> showShadDialog<T>({
       barrierLabel: barrierLabel,
       anchorPoint: anchorPoint,
       settings: routeSettings,
-      transitionDuration: getEffectsDuration(effectiveAnimateIn),
-      reverseTransitionDuration: getEffectsDuration(effectiveAnimateOut),
+      transitionDuration: maxCompletionDuration(effectiveAnimateIn),
+      reverseTransitionDuration: maxCompletionDuration(effectiveAnimateOut),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         if (animation.status == AnimationStatus.completed) {
           return child;
