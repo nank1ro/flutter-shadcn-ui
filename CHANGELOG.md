@@ -1,3 +1,10 @@
+## 0.38.0
+
+- **BREAKING CHANGE**: Remove `anchor`, `effects`, `shadows`, `filter` and `popoverReverseDuration` from `ShadSelectTheme` and `ShadSelect`, use `popoverTheme` instead.
+- **BREAKING CHANGE**: Remove `anchor`, `filter` from `ShadSelectFormField` and `ShadSelectMultipleFormField`, use `popoverTheme` instead.
+- **FEAT**: Add `backgroundColor`, `selectedBackgroundColor`, `textStyle` and `selectedTextStyle` to `ShadOptionTheme` to customize the background color and text style of `ShadOption`.
+- **FEAT**: Add `optionTheme` to `ShadSelectTheme`, `ShadSelect`, `ShadSelectFormField` and `ShadSelectMultipleFormField` to customize the options.
+
 ## 0.37.1
 
 - **FIX**: Test fails due to pending Timer when using `Animate` and `Duration.zero`, which has been replaced with `ShadAnimate`.
