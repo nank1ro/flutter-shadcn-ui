@@ -29,9 +29,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          repository: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_repository.full_name || github.repository }}
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.ref }}
 
       - uses: subosito/flutter-action@v2.21.0
         with:
