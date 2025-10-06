@@ -4,9 +4,9 @@ on:
   workflow_dispatch: # Allows manual triggering of the workflow
     inputs:
       test_discord_only:
-        description: 'Test Discord notification only (skip release creation)'
+        description: "Test Discord notification only (skip release creation)"
         required: false
-        default: 'false'
+        default: false
         type: boolean
   workflow_run:
     workflows: ["Flutter test"]
