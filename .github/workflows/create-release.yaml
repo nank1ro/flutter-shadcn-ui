@@ -29,22 +29,20 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
           # Extract the release notes for the current version from CHANGELOG.md.
-          # Escape the + character in version string for regex matching
-          CHANGELOG_BODY=$(awk -v ver="## $VERSION" 'BEGIN{gsub(/\+/, "\\+", ver)} $0 ~ ver {p=1; next} /^## / {p=0} p' CHANGELOG.md)
+          # Use sed to extract content between version headers, preserving backticks
+          sed -n "/^## $VERSION/,/^## /p" CHANGELOG.md | sed '$d' | tail -n +2 > release_notes.md
 
           # Check if changelog body was found
-          if [ -z "$CHANGELOG_BODY" ]; then
+          if [ ! -s release_notes.md ]; then
             echo "::error::Could not find changelog entry for version $VERSION in CHANGELOG.md"
             exit 1
           fi
 
-          # Write changelog to a file for the release creation step
-          echo "$CHANGELOG_BODY" > release_notes.md
           echo "CHANGELOG_FILE=release_notes.md" >> $GITHUB_OUTPUT
 
-          # Pass CHANGELOG_BODY as-is without escaping newlines
+          # Read the changelog and pass it as output, preserving all characters
           echo "CHANGELOG_BODY<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG_BODY" >> $GITHUB_OUTPUT
+          cat release_notes.md >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release (if it doesn't exist)
