@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/sidebar/common/enums.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
@@ -30,6 +32,8 @@ import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar_scaffold.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -1038,6 +1042,34 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       showDoneButton: true,
       showNextButton: true,
       showPreviousButton: true,
+    );
+  }
+
+  @override
+  ShadSidebarTheme sidebarTheme() {
+    return ShadSidebarTheme(
+      backgroundColor: colorScheme.sidebar,
+      foregroundColor: colorScheme.sidebarForeground,
+      borderColor: colorScheme.sidebarBorder,
+      ringColor: colorScheme.sidebarRing,
+      accentColor: colorScheme.sidebarAccent,
+      accentForegroundColor: colorScheme.sidebarAccentForeground,
+      primaryColor: colorScheme.sidebarPrimary,
+      primaryForegroundColor: colorScheme.sidebarPrimaryForeground,
+    );
+  }
+
+  @override
+  ShadSidebarScaffoldTheme sidebarScaffoldTheme() {
+    return const ShadSidebarScaffoldTheme(
+      keyboardShortcut: SingleActivator(LogicalKeyboardKey.keyB),
+      mobileBreakPoint: 768,
+      side: ShadSidebarSide.left,
+      initiallyExtended: true,
+      collapsedToIconsWidth: 48,
+      extendedWidth: 256,
+      mobileWidth: 288,
+      collapseMode: ShadSidebarCollapseMode.offScreen,
     );
   }
 }

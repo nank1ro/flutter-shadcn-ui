@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
   shadcn_ui:
     path: ..
-  flutter_solidart: ^2.1.0
+  flutter_solidart: ^2.4.1
   awesome_flutter_extensions: ^2.0.1
   google_fonts: 6.3.2
   collection: ^1.18.0

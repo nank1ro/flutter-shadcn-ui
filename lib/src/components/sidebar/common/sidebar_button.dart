@@ -1,0 +1,90 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' show Colors;
+import 'package:shadcn_ui/shadcn_ui.dart';
+
+/// An internal component used in [ShadSidebarMenuItem]
+///  and `SidebarCollapsible`.
+class SidebarButton extends StatelessWidget {
+  const SidebarButton({
+    super.key,
+    this.label,
+    this.labelText,
+    this.labelStyle,
+    this.trailing,
+    this.leadingIcon,
+    this.onPressed,
+    this.selected = false,
+    this.enabled = true,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+    required this.labelPadding,
+    this.height,
+  });
+
+  final double? height;
+  final Widget? label;
+  final String? labelText;
+  final TextStyle? labelStyle;
+  final Widget? trailing;
+  final Widget? leadingIcon;
+  final EdgeInsetsGeometry labelPadding;
+  final void Function()? onPressed;
+  final MainAxisAlignment mainAxisAlignment;
+  final bool selected;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final cs = theme.colorScheme;
+    final foregroundColor =
+        theme.sidebarTheme.foregroundColor ?? cs.sidebarForeground;
+    final hoverBgColor = theme.sidebarTheme.accentColor ?? cs.sidebarAccent;
+    final hoverFgColor =
+        theme.sidebarTheme.accentForegroundColor ?? cs.sidebarAccentForeground;
+    final effectiveLabel = label ??
+        (labelText != null ? Text(labelText!, style: labelStyle) : null);
+    // The state of the closest [ShadSidebarScaffold] ancestor.
+    final sidebarState = ShadSidebarScaffold.of(context);
+    final collapsedToIcons = sidebarState.collapsedToIcons;
+
+    return ShadButton.ghost(
+      height: height,
+      size: ShadButtonSize.sm,
+      padding: labelPadding,
+      enabled: enabled,
+      decoration: ShadDecoration(
+        border: ShadBorder.all(
+          color: Colors.transparent,
+          radius: BorderRadius.circular(8),
+        ),
+        focusedBorder: ShadBorder.all(
+          radius: BorderRadius.circular(8),
+          color: cs.sidebarRing,
+        ),
+        labelStyle: labelStyle,
+        secondaryBorder: ShadBorder.all(
+          radius: BorderRadius.circular(8),
+          color: cs.sidebarRing,
+        ),
+      ),
+      backgroundColor:
+          selected ? theme.sidebarTheme.accentColor ?? cs.sidebarAccent : null,
+      foregroundColor: foregroundColor,
+      hoverBackgroundColor: hoverBgColor,
+      hoverForegroundColor: hoverFgColor,
+      mainAxisAlignment:
+          collapsedToIcons ? MainAxisAlignment.center : mainAxisAlignment,
+      onPressed: collapsedToIcons ? null : onPressed,
+      trailing: collapsedToIcons
+          ? null
+          : Flexible(
+              child: Container(
+                alignment: AlignmentDirectional.centerEnd,
+                child: trailing,
+              ),
+            ),
+      leading: leadingIcon,
+      child: collapsedToIcons ? null : effectiveLabel,
+    );
+  }
+}
