@@ -114,6 +114,7 @@ export 'src/theme/text_theme/text_styles_default.dart';
 export 'src/theme/text_theme/theme.dart';
 
 // Utils
+export 'src/utils/animate.dart';
 export 'src/utils/animation_builder.dart';
 export 'src/utils/border.dart';
 export 'src/utils/effects.dart';

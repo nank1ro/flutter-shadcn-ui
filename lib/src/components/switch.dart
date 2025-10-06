@@ -5,6 +5,7 @@ import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/animate.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
@@ -290,7 +291,7 @@ class _ShadSwitchState extends State<ShadSwitch>
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: EdgeInsets.all(effectiveMargin),
-                    child: Animate(
+                    child: ShadAnimate(
                       controller: controller,
                       autoPlay: false,
                       effects: effectiveEffects,

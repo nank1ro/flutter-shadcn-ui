@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/animate.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
@@ -171,7 +172,7 @@ Future<T?> showShadDialog<T>({
           return child;
         }
         final animateIn = animation.status == AnimationStatus.forward;
-        return Animate(
+        return ShadAnimate(
           effects: animateIn ? effectiveAnimateIn : effectiveAnimateOut,
           child: child,
         );

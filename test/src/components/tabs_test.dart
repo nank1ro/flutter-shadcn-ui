@@ -9,8 +9,6 @@ import 'package:shadcn_ui/src/theme/color_scheme/green.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 
-import '../../extra/pump_async_widget.dart';
-
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
@@ -103,7 +101,7 @@ void main() {
 
   group('ShadTabs', () {
     testWidgets('ShadTabs matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadTabs<String>(
             value: 'account',
@@ -177,11 +175,10 @@ void main() {
 
     testWidgets(
         'ShadTab applies the correct color to the button when provided '
-            'from ShadTab',
-        (tester) async {
+        'from ShadTab', (tester) async {
       const redColor = Color(0xFFFF0000);
       const blueColor = Color(0xFF0000FF);
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createColorTestWidget(
           tabForegroundColor: (selected: blueColor, unselected: redColor),
         ),
@@ -202,11 +199,10 @@ void main() {
 
     testWidgets(
         'ShadTab applies the correct color to the button when provided '
-            'from ShadTheme',
-        (tester) async {
+        'from ShadTheme', (tester) async {
       const redColor = Color(0xFFFF0000);
       const blueColor = Color(0xFF0000FF);
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createColorTestWidget(
           themeForegroundColor: (selected: blueColor, unselected: redColor),
         ),
@@ -230,7 +226,7 @@ void main() {
       const redColor = Color(0xFFFF0000);
       const blueColor = Color(0xFF0000FF);
       const greenColor = Color(0xFF00FF00);
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createColorTestWidget(
           themeForegroundColor: (selected: redColor, unselected: redColor),
           tabForegroundColor: (selected: blueColor, unselected: greenColor),

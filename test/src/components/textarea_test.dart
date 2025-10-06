@@ -3,8 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/textarea.dart';
 
-import '../../extra/pump_async_widget.dart';
-
 void main() {
   Widget createTestWidget(Widget child) {
     return ShadApp(home: Scaffold(body: child));
@@ -12,7 +10,7 @@ void main() {
 
   group('ShadTextarea', () {
     testWidgets('ShadTextarea matches golden', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadTextarea(
             placeholder: Text('Enter your message'),
