@@ -41,7 +41,7 @@ jobs:
           # Write changelog to a file for the release creation step
           echo "$CHANGELOG_BODY" > release_notes.md
           echo "CHANGELOG_FILE=release_notes.md" >> $GITHUB_OUTPUT
-          
+
           # Pass CHANGELOG_BODY as-is without escaping newlines
           echo "CHANGELOG_BODY<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG_BODY" >> $GITHUB_OUTPUT
@@ -69,12 +69,5 @@ jobs:
 
       - name: Notify Discord
         if: steps.create_release.outputs.created == 'true'
-        uses: appleboy/discord-action@v1.2.0
-        with:
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          message: |
-            Released v${{ steps.extract_info.outputs.VERSION }}
-
-            ```markdown
-            ${{ steps.extract_info.outputs.CHANGELOG_BODY }}
-            ```
+        run: |
+          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"Released the v${{ steps.extract_info.outputs.VERSION }}\n\n${{ steps.extract_info.outputs.CHANGELOG_BODY }}\"}" {{ secrets.DISCORD_WEBHOOK_URL }}
