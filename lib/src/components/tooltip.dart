@@ -4,6 +4,7 @@ import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/animate.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/mouse_area.dart';
 
@@ -277,7 +278,7 @@ class _ShadTooltipState extends State<ShadTooltip>
             );
 
             if (effectiveEffects.isNotEmpty) {
-              tooltip = Animate(
+              tooltip = ShadAnimate(
                 controller: animationController,
                 effects: effectiveEffects,
                 child: tooltip,

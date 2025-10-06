@@ -9,8 +9,6 @@ import 'package:shadcn_ui/src/components/calendar.dart'; // Adjust import path b
 import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/utils/extensions/date_time.dart';
 
-import '../../extra/pump_async_widget.dart'; // Assuming this is available in your project
-
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
@@ -26,7 +24,7 @@ void main() {
         (WidgetTester tester) async {
       final now = DateTime.now();
       final initialMonth = DateTime(now.year, now.month);
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
             initialMonth: initialMonth,
@@ -84,7 +82,7 @@ void main() {
     testWidgets('renders multiple variant correctly',
         (WidgetTester tester) async {
       final now = DateTime(2024);
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar.multiple(
             initialMonth: DateTime(2024),
@@ -103,7 +101,7 @@ void main() {
 
     testWidgets('renders range variant correctly', (WidgetTester tester) async {
       final now = DateTime(2024);
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar.range(
             initialMonth: DateTime(2024),
@@ -122,7 +120,7 @@ void main() {
     testWidgets('displays initial month correctly',
         (WidgetTester tester) async {
       final initialMonth = DateTime(2023, 10);
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
             initialMonth: initialMonth,
@@ -140,7 +138,7 @@ void main() {
 
     testWidgets('selects date in single variant', (WidgetTester tester) async {
       DateTime? selectedDate;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
             initialMonth: DateTime(2024),
@@ -169,7 +167,7 @@ void main() {
     testWidgets('selects multiple dates in multiple variant',
         (WidgetTester tester) async {
       var selectedDates = <DateTime>[];
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar.multiple(
             initialMonth: DateTime(2024),
@@ -193,7 +191,7 @@ void main() {
     testWidgets('selects date range in range variant',
         (WidgetTester tester) async {
       ShadDateTimeRange? selectedRange;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar.range(
             initialMonth: DateTime(2024),
@@ -235,7 +233,7 @@ void main() {
     testWidgets('navigates to previous and next months',
         (WidgetTester tester) async {
       final initialMonth = DateTime(2023, 10);
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
             initialMonth: initialMonth,
@@ -304,7 +302,7 @@ void main() {
           'GIVEN a day button is focused '
           'AND right arrow key is pressed '
           'THEN focus moves to the next day', (WidgetTester tester) async {
-        await tester.pumpAsyncWidget(
+        await tester.pumpWidget(
           createTestWidget(
             ShadCalendar(initialMonth: DateTime(2025, 9)),
           ),
@@ -323,7 +321,7 @@ void main() {
           'GIVEN a day button is focused '
           'AND left arrow key is pressed '
           'THEN focus moves to the previous day', (WidgetTester tester) async {
-        await tester.pumpAsyncWidget(
+        await tester.pumpWidget(
           createTestWidget(
             ShadCalendar(initialMonth: DateTime(2025, 9)),
           ),
@@ -345,7 +343,7 @@ void main() {
           'AND arrow-up is pressed '
           'THEN focus moves to the day right above',
           (WidgetTester tester) async {
-        await tester.pumpAsyncWidget(
+        await tester.pumpWidget(
           createTestWidget(
             ShadCalendar(initialMonth: DateTime(2025, 9)),
           ),
@@ -366,7 +364,7 @@ void main() {
           'AND arrow-down is pressed '
           'THEN focus moves to the day below below',
           (WidgetTester tester) async {
-        await tester.pumpAsyncWidget(
+        await tester.pumpWidget(
           createTestWidget(
             ShadCalendar(
               initialMonth: DateTime(2025, 9),
@@ -387,7 +385,7 @@ void main() {
     testWidgets('applies custom day button size correctly',
         (WidgetTester tester) async {
       const customDayButtonSize = 50.0;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
             initialMonth: DateTime(2024),
@@ -410,7 +408,7 @@ void main() {
     testWidgets('displays week numbers when enabled',
         (WidgetTester tester) async {
       final date = DateTime(2025, 2);
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
             selected: DateTime(2024, 12),
@@ -440,7 +438,7 @@ void main() {
     });
 
     testWidgets('ShadCalendar matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
             initialMonth: DateTime(2024),
@@ -464,7 +462,7 @@ void main() {
 
     testWidgets('ShadCalendar hideNavigation false matches goldens',
         (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
             initialMonth: DateTime(2024),
@@ -482,7 +480,7 @@ void main() {
     });
 
     testWidgets('ShadCalendar showWeekNumbers matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
             initialMonth: DateTime(2024),
@@ -500,7 +498,7 @@ void main() {
     });
 
     testWidgets('ShadCalendar fixedWeeks matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
             initialMonth: DateTime(2024),
@@ -520,7 +518,7 @@ void main() {
 
     testWidgets('ShadCalendar hideWeekdayNames matches goldens',
         (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
             initialMonth: DateTime(2024),
@@ -539,7 +537,7 @@ void main() {
     });
 
     testWidgets('ShadCalendar.multiple matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar.multiple(
             initialMonth: DateTime(2024),
@@ -559,7 +557,7 @@ void main() {
     });
 
     testWidgets('ShadCalendar.range matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCalendar.range(
             initialMonth: DateTime(2024),

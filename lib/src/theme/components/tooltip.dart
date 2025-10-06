@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
 
 part 'tooltip.g.theme.dart';

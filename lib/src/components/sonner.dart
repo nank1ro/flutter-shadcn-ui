@@ -6,7 +6,12 @@ import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/components/toast.dart';
+import 'package:shadcn_ui/src/theme/components/sonner.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/animate.dart';
+import 'package:shadcn_ui/src/utils/mouse_area.dart';
+import 'package:shadcn_ui/src/utils/responsive.dart';
 
 ///
 /// Allows descendants to access the toaster state via [ShadSonner.of] or
@@ -509,7 +514,7 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                                     effectiveToastTheme.animateOut ??
                                     defaultAnimateOut;
 
-                                return Animate(
+                                return ShadAnimate(
                                   autoPlay: false,
                                   controller: animationController,
                                   effects: [
@@ -518,7 +523,7 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                                       end: const Offset(1, 1),
                                     ),
                                   ],
-                                  child: Animate(
+                                  child: ShadAnimate(
                                     autoPlay: false,
                                     controller: toastInfo.controller,
                                     effects: toastInfo.temporarelyHide

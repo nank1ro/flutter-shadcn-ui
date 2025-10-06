@@ -26,6 +26,24 @@ class ShadTheme extends StatelessWidget {
     return provider;
   }
 
+  /// Creates a [ShadThemeData] that overrides the [ShadThemeData] in
+  /// scope at this point in the widget tree.
+  ///
+  /// The given [data] is merged with the [data] from the default [ShadTheme]
+  /// for the [BuildContext] where the widget is inserted.
+  static Widget merge({
+    Key? key,
+    ShadThemeData? data,
+    required Widget child,
+  }) {
+    return Builder(
+      builder: (BuildContext context) {
+        final parent = ShadTheme.of(context);
+        return ShadTheme(data: parent.merge(data), child: child);
+      },
+    );
+  }
+
   static ShadThemeData? maybeOf(
     BuildContext context, {
     bool listen = true,

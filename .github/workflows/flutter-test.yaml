@@ -1,18 +1,14 @@
 name: Flutter test
 
 on:
-  pull_request:
-    paths-ignore:
-      - "**.md"
-  push:
-    branches:
-      - main
-      - dev
-    paths-ignore:
-      - "**.md"
+  workflow_run:
+    workflows: ["Build Runner"]
+    types:
+      - completed
 
 jobs:
   check-imports:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     uses: ./.github/workflows/check-imports.yaml
 
   build:
@@ -25,8 +21,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_repository.full_name || github.repository }}
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.ref }}
 
-      - uses: subosito/flutter-action@v2.18.0
+      - uses: subosito/flutter-action@v2.21.0
         with:
           channel: "stable"
           cache: true

@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/animate.dart';
 
 /// A customizable linear progress indicator widget.
 ///
@@ -251,9 +252,8 @@ class ShadIndeterminateProgress extends StatelessWidget {
 
         return Stack(
           children: [
-            Animate(
+            ShadAnimate(
               controller: controller,
-              autoPlay: true,
               onPlay: (controller) => controller.repeat(),
               effects: [
                 CustomEffect(
@@ -281,9 +281,8 @@ class ShadIndeterminateProgress extends StatelessWidget {
               ],
               child: bar,
             ),
-            Animate(
+            ShadAnimate(
               controller: controller,
-              autoPlay: true,
               onPlay: (controller) => controller.repeat(),
               effects: [
                 CustomEffect(

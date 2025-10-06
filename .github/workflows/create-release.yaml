@@ -2,6 +2,12 @@ name: Create Release
 
 on:
   workflow_dispatch: # Allows manual triggering of the workflow
+    inputs:
+      test_discord_only:
+        description: "Test Discord notification only (skip release creation)"
+        required: false
+        default: false
+        type: boolean
   workflow_run:
     workflows: ["Flutter test"]
     branches: [main]
@@ -29,26 +35,25 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
           # Extract the release notes for the current version from CHANGELOG.md.
-          # Escape the + character in version string for regex matching
-          CHANGELOG_BODY=$(awk -v ver="## $VERSION" 'BEGIN{gsub(/\+/, "\\+", ver)} $0 ~ ver {p=1; next} /^## / {p=0} p' CHANGELOG.md)
+          # Use awk to extract content between version headers, preserving backticks
+          awk "/^## $VERSION\$/{flag=1; next} /^## /{if(flag) exit} flag" CHANGELOG.md > release_notes.md
 
           # Check if changelog body was found
-          if [ -z "$CHANGELOG_BODY" ]; then
+          if [ ! -s release_notes.md ]; then
             echo "::error::Could not find changelog entry for version $VERSION in CHANGELOG.md"
             exit 1
           fi
 
-          # Write changelog to a file for the release creation step
-          echo "$CHANGELOG_BODY" > release_notes.md
           echo "CHANGELOG_FILE=release_notes.md" >> $GITHUB_OUTPUT
 
-          # Pass CHANGELOG_BODY as-is without escaping newlines
+          # Read the changelog and pass it as output, preserving all characters
           echo "CHANGELOG_BODY<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG_BODY" >> $GITHUB_OUTPUT
+          cat release_notes.md >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release (if it doesn't exist)
         id: create_release
+        if: ${{ github.event.inputs.test_discord_only != 'true' }}
         env:
           GH_TOKEN: ${{ secrets.PAT }}
         run: |
@@ -67,7 +72,29 @@ jobs:
             --notes-file "${{ steps.extract_info.outputs.CHANGELOG_FILE }}"
           echo "created=true" >> $GITHUB_OUTPUT
 
-      - name: Notify Discord
-        if: steps.create_release.outputs.created == 'true'
+      - name: Set test mode output
+        id: test_mode
+        if: ${{ github.event.inputs.test_discord_only == 'true' }}
         run: |
-          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"Released the v${{ steps.extract_info.outputs.VERSION }}\n\n${{ steps.extract_info.outputs.CHANGELOG_BODY }}\"}" {{ secrets.DISCORD_WEBHOOK_URL }}
+          echo "created=true" >> $GITHUB_OUTPUT
+
+      - name: Notify Discord
+        if: steps.create_release.outputs.created == 'true' || steps.test_mode.outputs.created == 'true'
+        run: |
+          # Create properly escaped JSON payload
+          PREFIX="Released the v"
+          if [ "${{ github.event.inputs.test_discord_only }}" = "true" ]; then
+            PREFIX="[TEST] Released the v"
+          fi
+
+          # Read changelog directly from file to avoid shell interpretation of backticks
+          jq -n \
+            --arg version "${{ steps.extract_info.outputs.VERSION }}" \
+            --arg prefix "$PREFIX" \
+            --rawfile changelog release_notes.md \
+            '{content: ($prefix + $version + "\n" + $changelog)}' > discord_payload.json
+
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            --data @discord_payload.json \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
