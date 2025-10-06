@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -257,7 +257,7 @@ class _ShadPopoverState extends State<ShadPopover>
     final effectiveShadows = widget.shadows ?? theme.popoverTheme.shadows;
     var effectiveDecoration =
         (theme.popoverTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration)
+            .merge(widget.decoration)
             .copyWith(shadows: effectiveShadows);
     // remove the top padding of the popover
     effectiveDecoration = effectiveDecoration.copyWith(
@@ -343,7 +343,7 @@ class _ShadPopoverState extends State<ShadPopover>
                 ),
               );
             },
-            visible: animationController.isDismissed == false,
+            visible: !animationController.isDismissed,
             anchor: effectiveAnchor,
             child: widget.child,
           );

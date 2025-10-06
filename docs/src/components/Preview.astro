@@ -8,16 +8,16 @@ const { src, minHeight = "200px" } = Astro.props;
 import { Tabs, TabItem } from "@astrojs/starlight/components";
 
 // Generate a stable, unique ID from the src prop to allow persistence
-const id = `shadcn-preview-${src.replace(/[^a-zA-Z0-9-]/g, '_')}`.toLowerCase();
+const id = `shadcn-preview-${src.replace(/[^a-zA-Z0-9-]/g, "_")}`.toLowerCase();
 
 // Default prefix for flutter playground site on localmachine
-// const defaultPrefix = "http://localhost:12345/"; 
+// const defaultPrefix = "http://localhost:12345/";
 
 // Default prefix for flutter playground site hosted by the author.
-const defaultPrefix = "https://shadcn-ui-playground.pages.dev/"; 
+const defaultPrefix = "https://shadcn-ui-playground.pages.dev/";
 
 // Default prefix for flutter playground site hosted by the contributor (Harkirat Singh).
-// const defaultPrefix = "https://flutter-shadcn-playground.web.app/" 
+// const defaultPrefix = "https://flutter-shadcn-playground.web.app/"
 ---
 
 <Tabs>
@@ -27,8 +27,7 @@ const defaultPrefix = "https://shadcn-ui-playground.pages.dev/";
             class="preview"
             style={`min-height: ${minHeight}; width: 100%; border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 0.5rem; visibility: hidden;`}
             loading="lazy"
-            data-astro-persist
-        ></iframe>
+            data-astro-persist></iframe>
     </TabItem>
     <TabItem label="Code">
         <slot />
@@ -38,72 +37,92 @@ const defaultPrefix = "https://shadcn-ui-playground.pages.dev/";
 <script is:inline define:vars={{ defaultPrefix, id, src }}>
     const iframe = document.getElementById(id);
 
-    // Make the iframe visible once it has loaded.
-    // This listener only needs to be attached once.
+    // `isIframeLoaded` tracks if the iframe's HTML has loaded.
+    // This is set to true when the iframe's 'load' event fires.
+    let isIframeLoaded = iframe.dataset.isLoaded === "true";
+
+    // Fired when the iframe's initial HTML/resources are loaded.
     if (!iframe.dataset.loadListenerAttached) {
-        iframe.addEventListener('load', () => {
-            iframe.style.visibility = 'visible';
+        iframe.addEventListener("load", () => {
+            iframe.style.visibility = "visible";
+            isIframeLoaded = true;
+            iframe.dataset.isLoaded = "true";
         });
-        iframe.dataset.loadListenerAttached = 'true';
+        iframe.dataset.loadListenerAttached = "true";
     }
 
-    // Utility function to update query string parameters
-    function updateQueryStringParameter(uri, key, value) {
-        const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-        const separator = uri.includes("?") ? "&" : "?";
-        if (uri.match(re)) {
-            return uri.replace(re, `$1${key}=${value}$2`);
-        } else {
-            return `${uri}${separator}${key}=${value}`;
+    // This function sends the current theme state to the iframe.
+    function sendThemeUpdate() {
+        // Only send the theme if the iframe is loaded.
+        if (!iframe || !iframe.contentWindow || !isIframeLoaded) {
+            return;
         }
-    }
 
-    // Function to build the complete iframe src with theme parameters
-    function getIframeSrc() {
-        const fullSrc = `${defaultPrefix}${src}`;
         const themeMode = document.documentElement.getAttribute("data-theme");
-        const themeColor = document.documentElement.getAttribute("data-theme-color");
-        let iframeSrc = fullSrc;
+        const themeColor =
+            document.documentElement.getAttribute("data-theme-color");
 
-        if (themeMode) {
-            iframeSrc = updateQueryStringParameter(iframeSrc, "theme", themeMode);
-        }
+        const message = {
+            type: "theme-change",
+            themeMode: themeMode,
+            themeColor: themeColor,
+        };
 
-        if (themeColor) {
-            iframeSrc = updateQueryStringParameter(iframeSrc, "themeColor", themeColor);
-        }
-        return iframeSrc;
+        // Use postMessage for safe cross-origin communication.
+        iframe.contentWindow.postMessage(
+            message,
+            new URL(defaultPrefix).origin,
+        );
     }
 
-    // Update the iframe src only if it has changed
-    function updateIframe() {
+    // Sets the iframe's src attribute to load the content.
+    function initializeIframe() {
         if (!iframe) return;
-        const newSrc = getIframeSrc();
 
-        // Check the decoded URI to handle encoded characters gracefully.
-        if (decodeURI(iframe.src) !== decodeURI(newSrc)) {
-            // Hide the iframe before changing the src to prevent flashing old content
-            iframe.style.visibility = 'hidden';
-            iframe.src = newSrc;
-        } else {
-            // If the src is already correct, ensure the iframe is visible.
-            iframe.style.visibility = 'visible';
+        // Set the src only if it's not already set (e.g., on initial page load).
+        if (!iframe.src) {
+            iframe.style.visibility = "hidden";
+            const themeMode =
+                document.documentElement.getAttribute("data-theme");
+            const themeColor =
+                document.documentElement.getAttribute("data-theme-color");
+
+            const url = new URL(`${defaultPrefix}${src}`);
+            if (themeMode) {
+                url.searchParams.set("themeMode", themeMode);
+            }
+            if (themeColor) {
+                url.searchParams.set("themeColor", themeColor);
+            }
+            iframe.src = url.toString();
+        }
+
+        // If it's a persisted iframe (from Astro's View Transitions), it's already
+        // loaded. Make it visible.
+        if (isIframeLoaded) {
+            iframe.style.visibility = "visible";
         }
     }
 
-    // Initial update on page load
-    updateIframe();
+    // --- Initializations ---
 
-    // Set up a MutationObserver to watch for theme changes, but only once.
+    // Set up the iframe when the page is loaded.
+    // This's to ensure that theme and themeColor attributes were set.
+    window.addEventListener("DOMContentLoaded", initializeIframe);
+
+    // Use a MutationObserver to watch for live theme changes on the parent page.
     if (!iframe.dataset.themeObserverAttached) {
         const observer = new MutationObserver(() => {
-            updateIframe();
+            // When the user changes the theme, send the update to the iframe
+            // (if it's ready).
+            sendThemeUpdate();
         });
 
+        // Observe the <html> element for changes to theme attributes.
         observer.observe(document.documentElement, {
             attributes: true,
             attributeFilter: ["data-theme", "data-theme-color"],
         });
-        iframe.dataset.themeObserverAttached = 'true';
+        iframe.dataset.themeObserverAttached = "true";
     }
 </script>

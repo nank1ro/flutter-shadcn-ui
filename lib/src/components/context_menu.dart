@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
@@ -11,6 +11,7 @@ import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/mouse_area.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
@@ -153,11 +154,11 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
 
   @override
   Widget build(BuildContext context) {
-    final platform = Theme.of(context).platform;
     final effectiveLongPressEnabled = widget.longPressEnabled ??
-        (platform == TargetPlatform.android || platform == TargetPlatform.iOS);
+        (defaultTargetPlatform == TargetPlatform.android ||
+            defaultTargetPlatform == TargetPlatform.iOS);
 
-    final isWindows = platform == TargetPlatform.windows;
+    final isWindows = defaultTargetPlatform == TargetPlatform.windows;
 
     return ShadContextMenu(
       anchor: offset == null ? null : ShadGlobalAnchor(offset!),
@@ -373,7 +374,6 @@ class ShadContextMenuState extends State<ShadContextMenu> {
     super.dispose();
   }
 
-  // ignore: use_setters_to_change_properties
   void setVisible(bool visible) {
     controller.setOpen(visible);
   }
@@ -395,7 +395,7 @@ class ShadContextMenuState extends State<ShadContextMenu> {
 
     final effectiveDecoration =
         (theme.contextMenuTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+            .merge(widget.decoration);
 
     final effectiveFilter = widget.filter ?? theme.contextMenuTheme.filter;
 
@@ -794,13 +794,12 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
     final effectiveDecoration = const ShadDecoration(
       secondaryBorder: ShadBorder.none,
       secondaryFocusedBorder: ShadBorder.none,
-    )
-        .mergeWith(theme.contextMenuTheme.itemDecoration)
-        .mergeWith(widget.decoration);
+    ).merge(theme.contextMenuTheme.itemDecoration).merge(widget.decoration);
 
-    final effectiveTextStyle = widget.textStyle ??
-        theme.contextMenuTheme.textStyle ??
-        theme.textTheme.small.copyWith(fontWeight: FontWeight.normal);
+    final effectiveTextStyle = (widget.textStyle ??
+            theme.contextMenuTheme.textStyle ??
+            theme.textTheme.small.copyWith(fontWeight: FontWeight.normal))
+        .fallback(color: theme.colorScheme.foreground);
 
     final effectiveTrailingTextStyle = widget.trailingTextStyle ??
         theme.contextMenuTheme.trailingTextStyle ??

@@ -1,12 +1,13 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/button_sizes.dart';
 import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
@@ -47,7 +48,6 @@ class ShadThemeData extends ShadBaseTheme {
   factory ShadThemeData({
     required ShadColorScheme colorScheme,
     required Brightness brightness,
-    Iterable<ThemeExtension<dynamic>>? extensions,
     ShadButtonTheme? primaryButtonTheme,
     ShadButtonTheme? secondaryButtonTheme,
     ShadButtonTheme? destructiveButtonTheme,
@@ -104,50 +104,8 @@ class ShadThemeData extends ShadBaseTheme {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
 
-    var effectiveTextTheme =
-        ShadDefaultThemeVariant.defaultTextTheme.mergeWith(textTheme);
-
-    effectiveTextTheme = effectiveTextTheme.copyWith(
-      h1Large: effectiveTextTheme.h1Large.copyWith(
-        color: effectiveTextTheme.h1Large.color ?? colorScheme.foreground,
-      ),
-      h1: effectiveTextTheme.h1.copyWith(
-        color: effectiveTextTheme.h1.color ?? colorScheme.foreground,
-      ),
-      h2: effectiveTextTheme.h2.copyWith(
-        color: effectiveTextTheme.h2.color ?? colorScheme.foreground,
-      ),
-      h3: effectiveTextTheme.h3.copyWith(
-        color: effectiveTextTheme.h3.color ?? colorScheme.foreground,
-      ),
-      h4: effectiveTextTheme.h4.copyWith(
-        color: effectiveTextTheme.h4.color ?? colorScheme.foreground,
-      ),
-      p: effectiveTextTheme.p.copyWith(
-        color: effectiveTextTheme.p.color ?? colorScheme.foreground,
-      ),
-      blockquote: effectiveTextTheme.blockquote.copyWith(
-        color: effectiveTextTheme.blockquote.color ?? colorScheme.foreground,
-      ),
-      table: effectiveTextTheme.table.copyWith(
-        color: effectiveTextTheme.table.color ?? colorScheme.foreground,
-      ),
-      list: effectiveTextTheme.list.copyWith(
-        color: effectiveTextTheme.list.color ?? colorScheme.foreground,
-      ),
-      lead: effectiveTextTheme.lead.copyWith(
-        color: effectiveTextTheme.lead.color ?? colorScheme.mutedForeground,
-      ),
-      large: effectiveTextTheme.large.copyWith(
-        color: effectiveTextTheme.large.color ?? colorScheme.foreground,
-      ),
-      small: effectiveTextTheme.small.copyWith(
-        color: effectiveTextTheme.small.color ?? colorScheme.foreground,
-      ),
-      muted: effectiveTextTheme.muted.copyWith(
-        color: effectiveTextTheme.muted.color ?? colorScheme.mutedForeground,
-      ),
-    );
+    final effectiveTextTheme =
+        ShadDefaultThemeVariant.defaultTextTheme.merge(textTheme);
 
     final effectiveDisableSecondaryBorder = disableSecondaryBorder ?? false;
 
@@ -168,95 +126,86 @@ class ShadThemeData extends ShadBaseTheme {
     return ShadThemeData._internal(
       colorScheme: colorScheme,
       brightness: brightness,
-      extensions: extensions,
       primaryButtonTheme:
-          effectiveVariant.primaryButtonTheme().mergeWith(primaryButtonTheme),
-      secondaryButtonTheme: effectiveVariant
-          .secondaryButtonTheme()
-          .mergeWith(secondaryButtonTheme),
+          effectiveVariant.primaryButtonTheme().merge(primaryButtonTheme),
+      secondaryButtonTheme:
+          effectiveVariant.secondaryButtonTheme().merge(secondaryButtonTheme),
       destructiveButtonTheme: effectiveVariant
           .destructiveButtonTheme()
-          .mergeWith(destructiveButtonTheme),
+          .merge(destructiveButtonTheme),
       outlineButtonTheme:
-          effectiveVariant.outlineButtonTheme().mergeWith(outlineButtonTheme),
+          effectiveVariant.outlineButtonTheme().merge(outlineButtonTheme),
       ghostButtonTheme:
-          effectiveVariant.ghostButtonTheme().mergeWith(ghostButtonTheme),
+          effectiveVariant.ghostButtonTheme().merge(ghostButtonTheme),
       linkButtonTheme:
-          effectiveVariant.linkButtonTheme().mergeWith(linkButtonTheme),
+          effectiveVariant.linkButtonTheme().merge(linkButtonTheme),
       primaryBadgeTheme:
-          effectiveVariant.primaryBadgeTheme().mergeWith(primaryBadgeTheme),
+          effectiveVariant.primaryBadgeTheme().merge(primaryBadgeTheme),
       secondaryBadgeTheme:
-          effectiveVariant.secondaryBadgeTheme().mergeWith(secondaryBadgeTheme),
-      destructiveBadgeTheme: effectiveVariant
-          .destructiveBadgeTheme()
-          .mergeWith(destructiveBadgeTheme),
+          effectiveVariant.secondaryBadgeTheme().merge(secondaryBadgeTheme),
+      destructiveBadgeTheme:
+          effectiveVariant.destructiveBadgeTheme().merge(destructiveBadgeTheme),
       outlineBadgeTheme:
-          effectiveVariant.outlineBadgeTheme().mergeWith(outlineBadgeTheme),
+          effectiveVariant.outlineBadgeTheme().merge(outlineBadgeTheme),
       buttonSizesTheme:
-          effectiveVariant.buttonSizesTheme().mergeWith(buttonSizesTheme),
+          effectiveVariant.buttonSizesTheme().merge(buttonSizesTheme),
       radius: effectiveRadius,
-      avatarTheme: effectiveVariant.avatarTheme().mergeWith(avatarTheme),
-      tooltipTheme: effectiveVariant.tooltipTheme().mergeWith(tooltipTheme),
-      popoverTheme: effectiveVariant.popoverTheme().mergeWith(popoverTheme),
-      decoration: effectiveVariant.decorationTheme().mergeWith(decoration),
+      avatarTheme: effectiveVariant.avatarTheme().merge(avatarTheme),
+      tooltipTheme: effectiveVariant.tooltipTheme().merge(tooltipTheme),
+      popoverTheme: effectiveVariant.popoverTheme().merge(popoverTheme),
+      decoration: effectiveVariant.decorationTheme().merge(decoration),
       textTheme: effectiveTextTheme,
       disabledOpacity: disabledOpacity ?? .5,
-      selectTheme: effectiveVariant.selectTheme().mergeWith(selectTheme),
-      optionTheme: effectiveVariant.optionTheme().mergeWith(optionTheme),
-      cardTheme: effectiveVariant.cardTheme().mergeWith(cardTheme),
-      switchTheme: effectiveVariant.switchTheme().mergeWith(switchTheme),
-      checkboxTheme: effectiveVariant.checkboxTheme().mergeWith(checkboxTheme),
-      inputTheme: effectiveVariant.inputTheme().mergeWith(inputTheme),
-      radioTheme: effectiveVariant.radioTheme().mergeWith(radioTheme),
+      selectTheme: effectiveVariant.selectTheme().merge(selectTheme),
+      optionTheme: effectiveVariant.optionTheme().merge(optionTheme),
+      cardTheme: effectiveVariant.cardTheme().merge(cardTheme),
+      switchTheme: effectiveVariant.switchTheme().merge(switchTheme),
+      checkboxTheme: effectiveVariant.checkboxTheme().merge(checkboxTheme),
+      inputTheme: effectiveVariant.inputTheme().merge(inputTheme),
+      radioTheme: effectiveVariant.radioTheme().merge(radioTheme),
       primaryToastTheme:
-          effectiveVariant.primaryToastTheme().mergeWith(primaryToastTheme),
-      destructiveToastTheme: effectiveVariant
-          .destructiveToastTheme()
-          .mergeWith(destructiveToastTheme),
+          effectiveVariant.primaryToastTheme().merge(primaryToastTheme),
+      destructiveToastTheme:
+          effectiveVariant.destructiveToastTheme().merge(destructiveToastTheme),
       breakpoints: breakpoints ?? ShadBreakpoints(),
       primaryAlertTheme:
-          effectiveVariant.primaryAlertTheme().mergeWith(primaryAlertTheme),
-      destructiveAlertTheme: effectiveVariant
-          .destructiveAlertTheme()
-          .mergeWith(destructiveAlertTheme),
+          effectiveVariant.primaryAlertTheme().merge(primaryAlertTheme),
+      destructiveAlertTheme:
+          effectiveVariant.destructiveAlertTheme().merge(destructiveAlertTheme),
       primaryDialogTheme:
-          effectiveVariant.primaryDialogTheme().mergeWith(primaryDialogTheme),
+          effectiveVariant.primaryDialogTheme().merge(primaryDialogTheme),
       alertDialogTheme:
-          effectiveVariant.alertDialogTheme().mergeWith(alertDialogTheme),
-      sliderTheme: effectiveVariant.sliderTheme().mergeWith(sliderTheme),
-      sheetTheme: effectiveVariant.sheetTheme().mergeWith(sheetTheme),
-      progressTheme: effectiveVariant.progressTheme().mergeWith(progressTheme),
-      accordionTheme:
-          effectiveVariant.accordionTheme().mergeWith(accordionTheme),
-      tableTheme: effectiveVariant.tableTheme().mergeWith(tableTheme),
-      resizableTheme:
-          effectiveVariant.resizableTheme().mergeWith(resizableTheme),
+          effectiveVariant.alertDialogTheme().merge(alertDialogTheme),
+      sliderTheme: effectiveVariant.sliderTheme().merge(sliderTheme),
+      sheetTheme: effectiveVariant.sheetTheme().merge(sheetTheme),
+      progressTheme: effectiveVariant.progressTheme().merge(progressTheme),
+      accordionTheme: effectiveVariant.accordionTheme().merge(accordionTheme),
+      tableTheme: effectiveVariant.tableTheme().merge(tableTheme),
+      resizableTheme: effectiveVariant.resizableTheme().merge(resizableTheme),
       hoverStrategies: hoverStrategies ?? effectiveVariant.hoverStrategies(),
       disableSecondaryBorder: effectiveDisableSecondaryBorder,
-      tabsTheme: effectiveVariant.tabsTheme().mergeWith(tabsTheme),
+      tabsTheme: effectiveVariant.tabsTheme().merge(tabsTheme),
       contextMenuTheme:
-          effectiveVariant.contextMenuTheme().mergeWith(contextMenuTheme),
-      calendarTheme: effectiveVariant.calendarTheme().mergeWith(calendarTheme),
+          effectiveVariant.contextMenuTheme().merge(contextMenuTheme),
+      calendarTheme: effectiveVariant.calendarTheme().merge(calendarTheme),
       datePickerTheme:
-          effectiveVariant.datePickerTheme().mergeWith(datePickerTheme),
+          effectiveVariant.datePickerTheme().merge(datePickerTheme),
       timePickerTheme:
-          effectiveVariant.timePickerTheme().mergeWith(timePickerTheme),
-      inputOTPTheme: effectiveVariant.inputOTPTheme().mergeWith(inputOTPTheme),
-      menubarTheme: effectiveVariant.menubarTheme().mergeWith(menubarTheme),
-      separatorTheme:
-          effectiveVariant.separatorTheme().mergeWith(separatorTheme),
-      sonnerTheme: effectiveVariant.sonnerTheme().mergeWith(sonnerTheme),
-      textareaTheme: effectiveVariant.textareaTheme().mergeWith(textareaTheme),
+          effectiveVariant.timePickerTheme().merge(timePickerTheme),
+      inputOTPTheme: effectiveVariant.inputOTPTheme().merge(inputOTPTheme),
+      menubarTheme: effectiveVariant.menubarTheme().merge(menubarTheme),
+      separatorTheme: effectiveVariant.separatorTheme().merge(separatorTheme),
+      sonnerTheme: effectiveVariant.sonnerTheme().merge(sonnerTheme),
+      textareaTheme: effectiveVariant.textareaTheme().merge(textareaTheme),
       defaultKeyboardToolbarTheme: effectiveVariant
           .defaultKeyboardToolbarTheme()
-          .mergeWith(defaultKeyboardToolbarTheme),
+          .merge(defaultKeyboardToolbarTheme),
     );
   }
 
   const ShadThemeData._internal({
     required super.colorScheme,
     required super.brightness,
-    required super.extensions,
     required super.primaryButtonTheme,
     required super.secondaryButtonTheme,
     required super.destructiveButtonTheme,
@@ -351,11 +300,8 @@ class ShadThemeData extends ShadBaseTheme {
           ShadBadgeTheme.lerp(a.outlineBadgeTheme, b.outlineBadgeTheme, t),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
       avatarTheme: ShadAvatarTheme.lerp(a.avatarTheme, b.avatarTheme, t),
-      buttonSizesTheme: ShadButtonSizesTheme.lerp(
-        a.buttonSizesTheme,
-        b.buttonSizesTheme,
-        t,
-      ),
+      buttonSizesTheme:
+          ShadButtonSizesTheme.lerp(a.buttonSizesTheme, b.buttonSizesTheme, t),
       tooltipTheme: ShadTooltipTheme.lerp(a.tooltipTheme, b.tooltipTheme, t),
       popoverTheme: ShadPopoverTheme.lerp(a.popoverTheme, b.popoverTheme, t),
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
@@ -552,7 +498,6 @@ class ShadThemeData extends ShadBaseTheme {
     ShadBadgeTheme? destructiveBadgeTheme,
     ShadBadgeTheme? outlineBadgeTheme,
     Brightness? brightness,
-    Iterable<ThemeExtension<dynamic>>? extensions,
     BorderRadius? radius,
     ShadAvatarTheme? avatarTheme,
     ShadButtonSizesTheme? buttonSizesTheme,
@@ -597,7 +542,6 @@ class ShadThemeData extends ShadBaseTheme {
   }) {
     return ShadThemeData(
       colorScheme: colorScheme ?? this.colorScheme,
-      extensions: extensions ?? this.extensions,
       brightness: brightness ?? this.brightness,
       primaryButtonTheme: primaryButtonTheme ?? this.primaryButtonTheme,
       secondaryButtonTheme: secondaryButtonTheme ?? this.secondaryButtonTheme,

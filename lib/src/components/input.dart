@@ -3,14 +3,15 @@
 import 'dart:math';
 import 'dart:ui' as ui;
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/raw_components/keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 /// A customizable text input field with optional leading and trailing widgets.
@@ -679,7 +680,7 @@ class ShadInputState extends State<ShadInput>
 
   @override
   bool get forcePressEnabled {
-    return switch (Theme.of(context).platform) {
+    return switch (defaultTargetPlatform) {
       TargetPlatform.iOS => true,
       _ => false,
     };
@@ -711,7 +712,7 @@ class ShadInputState extends State<ShadInput>
       });
     }
 
-    switch (Theme.of(context).platform) {
+    switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:
       case TargetPlatform.macOS:
       case TargetPlatform.linux:
@@ -723,7 +724,7 @@ class ShadInputState extends State<ShadInput>
         }
     }
 
-    switch (Theme.of(context).platform) {
+    switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:
       case TargetPlatform.fuchsia:
       case TargetPlatform.android:
@@ -772,7 +773,6 @@ class ShadInputState extends State<ShadInput>
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final materialTheme = Theme.of(context);
     final effectiveTextStyle = theme.textTheme.muted
         .copyWith(
           color: theme.colorScheme.foreground,
@@ -782,7 +782,7 @@ class ShadInputState extends State<ShadInput>
 
     final effectiveDecoration =
         (theme.inputTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+            .merge(widget.decoration);
 
     final effectiveCursorColor = widget.cursorColor ??
         theme.inputTheme.cursorColor ??
@@ -810,7 +810,8 @@ class ShadInputState extends State<ShadInput>
 
     final effectivePlaceholderStyle = theme.textTheme.muted
         .merge(theme.inputTheme.placeholderStyle)
-        .merge(widget.placeholderStyle);
+        .merge(widget.placeholderStyle)
+        .fallback(color: theme.colorScheme.mutedForeground);
 
     final defaultAlignment = Directionality.of(context) == TextDirection.rtl
         ? Alignment.topRight
@@ -835,29 +836,9 @@ class ShadInputState extends State<ShadInput>
 
     final effectiveGap = widget.gap ?? theme.inputTheme.gap ?? 8.0;
 
-    final defaultSelectionControls = switch (Theme.of(context).platform) {
-      TargetPlatform.iOS => cupertinoTextSelectionHandleControls,
-      TargetPlatform.macOS => cupertinoDesktopTextSelectionHandleControls,
-      TargetPlatform.android ||
-      TargetPlatform.fuchsia =>
-        materialTextSelectionHandleControls,
-      TargetPlatform.linux ||
-      TargetPlatform.windows =>
-        desktopTextSelectionHandleControls,
-    };
-    final effectiveSelectionControls =
-        widget.selectionControls ?? defaultSelectionControls;
-
-    final effectiveContextMenuBuilder = widget.contextMenuBuilder ??
-        (context, editableState) {
-          return AdaptiveTextSelectionToolbar.editableText(
-            editableTextState: _editableText!,
-          );
-        };
-
     final effectiveMaxLengthEnforcement = widget.maxLengthEnforcement ??
         LengthLimitingTextInputFormatter.getDefaultMaxLengthEnforcement(
-          Theme.of(context).platform,
+          defaultTargetPlatform,
         );
 
     final effectiveInputFormatters = <TextInputFormatter>[
@@ -905,13 +886,6 @@ class ShadInputState extends State<ShadInput>
                     decoration: effectiveDecoration,
                     focused: focused,
                     child: RawScrollbar(
-                      mainAxisMargin:
-                          materialTheme.scrollbarTheme.mainAxisMargin ?? 0,
-                      crossAxisMargin:
-                          materialTheme.scrollbarTheme.crossAxisMargin ?? 0,
-                      radius: materialTheme.scrollbarTheme.radius,
-                      thickness:
-                          materialTheme.scrollbarTheme.thickness?.resolve({}),
                       thumbVisibility: isMultiline && isScrollable,
                       controller: effectiveScrollController,
                       padding: effectiveScrollbarPadding
@@ -978,9 +952,9 @@ class ShadInputState extends State<ShadInput>
                                                 selectionWidthStyle:
                                                     widget.selectionWidthStyle,
                                                 contextMenuBuilder:
-                                                    effectiveContextMenuBuilder,
+                                                    widget.contextMenuBuilder,
                                                 selectionControls:
-                                                    effectiveSelectionControls,
+                                                    widget.selectionControls,
                                                 // ! End of selection handler
                                                 // ! section
                                                 mouseCursor:
@@ -1000,7 +974,7 @@ class ShadInputState extends State<ShadInput>
                                                 cursorOpacityAnimates:
                                                     effectiveCursorOpacityAnimates,
                                                 backgroundCursorColor:
-                                                    Colors.grey,
+                                                    const Color(0xFF9E9E9E),
                                                 keyboardType:
                                                     widget.keyboardType,
                                                 keyboardAppearance:
@@ -1134,7 +1108,7 @@ class _InputSelectionGestureDetectorBuilder
   void onSingleLongTapStart(LongPressStartDetails details) {
     super.onSingleLongTapStart(details);
     if (delegate.selectionEnabled) {
-      switch (Theme.of(_state.context).platform) {
+      switch (defaultTargetPlatform) {
         case TargetPlatform.iOS:
         case TargetPlatform.macOS:
           break;

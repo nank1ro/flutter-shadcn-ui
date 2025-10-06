@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -196,7 +196,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).inputTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderTextareaState;
             return ShadTextarea(

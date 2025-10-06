@@ -1,7 +1,5 @@
-// ignore_for_file: overridden_fields
-
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
@@ -12,6 +10,7 @@ import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/button_sizes.dart';
 import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
@@ -376,7 +375,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
     return ShadCardTheme(
       backgroundColor: colorScheme.card,
       padding: const EdgeInsets.all(24),
-      border: Border.all(color: colorScheme.border),
+      border: ShadBorder.all(color: colorScheme.border, width: 1),
       radius: const BorderRadius.all(Radius.circular(8)),
       shadows: ShadShadows.sm,
       rowMainAxisSize: MainAxisSize.min,
@@ -489,13 +488,15 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         color: colorScheme.foreground.withValues(alpha: .9),
       ),
       actionPadding: const EdgeInsetsDirectional.only(start: 16),
-      border: Border.all(color: colorScheme.border),
+      border: ShadBorder.all(color: colorScheme.border, width: 1),
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.background,
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsetsGeometry.fromSTEB(24, 24, 32, 24),
+      mainAxisSize: MainAxisSize.max,
     );
   }
 
@@ -512,13 +513,15 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         color: colorScheme.destructiveForeground.withValues(alpha: .9),
       ),
       actionPadding: const EdgeInsetsDirectional.only(start: 16),
-      border: Border.all(color: colorScheme.border),
+      border: ShadBorder.all(color: colorScheme.border, width: 1),
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.destructive,
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24),
+      mainAxisSize: MainAxisSize.max,
     );
   }
 
@@ -774,9 +777,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ),
       gap: 8,
       expandContent: false,
-      tabBackgroundColor: Colors.transparent,
+      tabBackgroundColor: const Color(0x00000000),
       tabSelectedBackgroundColor: colorScheme.background,
-      tabHoverBackgroundColor: Colors.transparent,
+      tabHoverBackgroundColor: const Color(0x00000000),
       tabSelectedHoverBackgroundColor: colorScheme.background,
       tabPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       tabForegroundColor: colorScheme.foreground,

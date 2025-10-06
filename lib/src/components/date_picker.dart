@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -12,6 +12,7 @@ import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/extensions/date_time.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
@@ -585,7 +586,7 @@ class ShadDatePicker extends StatefulWidget {
   final int? max;
 
   /// {@macro ShadCalendar.selectableDayPredicate}
-  final SelectableDayPredicate? selectableDayPredicate;
+  final bool Function(DateTime day)? selectableDayPredicate;
 
   /// {@macro ShadCalendar.onRangeChanged}
   final ValueChanged<ShadDateTimeRange?>? onRangeChanged;
@@ -1255,11 +1256,9 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
                     },
                   )
                 : DefaultTextStyle(
-                    style: theme.textTheme.muted,
-                    child: widget.placeholder ??
-                        Text(
-                          MaterialLocalizations.of(context).datePickerHelpText,
-                        ),
+                    style: theme.textTheme.muted
+                        .fallback(color: theme.colorScheme.mutedForeground),
+                    child: widget.placeholder ?? const Text('Select date'),
                   )),
       ),
     );

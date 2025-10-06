@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 /// A customizable multiline textarea widget with
@@ -499,7 +499,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
 
     final effectiveDecoration =
         (theme.textareaTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+            .merge(widget.decoration);
 
     final effectivePadding = widget.padding ??
         theme.inputTheme.padding ??

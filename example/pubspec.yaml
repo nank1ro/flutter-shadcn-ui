@@ -15,7 +15,7 @@ dependencies:
     path: ..
   flutter_solidart: ^2.1.0
   awesome_flutter_extensions: ^2.0.1
-  google_fonts: 6.3.1
+  google_fonts: 6.3.2
   collection: ^1.18.0
   get: ^4.6.6
   boxy: ^2.2.1
@@ -33,15 +33,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-
-  fonts:
-    - family: UbuntuMono
-      fonts:
-        - asset: fonts/UbuntuMono-Regular.ttf
-        - asset: fonts/UbuntuMono-Bold.ttf
-          weight: 700
-        - asset: fonts/UbuntuMono-Italic.ttf
-          style: italic
-        - asset: fonts/UbuntuMono-BoldItalic.ttf
-          weight: 700
-          style: italic

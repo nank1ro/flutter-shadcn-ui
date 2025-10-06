@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 /// A customizable checkbox widget with optional label and sublabel.
 ///
@@ -165,10 +166,12 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
     final effectiveColor =
         widget.color ?? theme.checkboxTheme.color ?? theme.colorScheme.primary;
 
-    final effectiveDecoration = (theme.checkboxTheme.decoration ??
-            const ShadDecoration())
-        .mergeWith(widget.decoration)
-        .copyWith(color: widget.value ? effectiveColor : Colors.transparent);
+    final effectiveDecoration =
+        (theme.checkboxTheme.decoration ?? const ShadDecoration())
+            .merge(widget.decoration)
+            .copyWith(
+              color: widget.value ? effectiveColor : const Color(0x00000000),
+            );
 
     final effectiveSize = widget.size ?? theme.checkboxTheme.size ?? 16;
 
@@ -281,7 +284,9 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: DefaultTextStyle(
-                            style: theme.textTheme.muted,
+                            style: theme.textTheme.muted.fallback(
+                              color: theme.colorScheme.mutedForeground,
+                            ),
                             child: widget.sublabel!,
                           ),
                         ),

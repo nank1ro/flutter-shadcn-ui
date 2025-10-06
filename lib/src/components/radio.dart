@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -330,7 +329,7 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
 
     final effectiveDecoration =
         (theme.radioTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+            .merge(widget.decoration);
 
     final effectiveSize = widget.size ?? theme.radioTheme.size ?? 16;
     final effectiveCircleSize =

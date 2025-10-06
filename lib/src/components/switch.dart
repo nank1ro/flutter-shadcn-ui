@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 /// {@template ShadSwitch}
 /// A customizable switch widget, styled according to the Shadcn UI design
@@ -227,7 +228,7 @@ class _ShadSwitchState extends State<ShadSwitch>
 
     final effectiveDecoration =
         (theme.switchTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration)
+            .merge(widget.decoration)
             .copyWith(
               color: widget.value
                   ? effectiveCheckedTrackColor
@@ -303,7 +304,7 @@ class _ShadSwitchState extends State<ShadSwitch>
                               decoration: ShadDecoration(
                                 color: effectiveThumbColor,
                                 shape: BoxShape.circle,
-                                merge: false,
+                                canMerge: false,
                               ),
                             ),
                           ),
@@ -353,7 +354,9 @@ class _ShadSwitchState extends State<ShadSwitch>
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: DefaultTextStyle(
-                            style: theme.textTheme.muted,
+                            style: theme.textTheme.muted.fallback(
+                              color: theme.colorScheme.mutedForeground,
+                            ),
                             child: widget.sublabel!,
                           ),
                         ),

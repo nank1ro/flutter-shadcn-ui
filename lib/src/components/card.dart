@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 // A customizable card widget for displaying structured content.
 ///
@@ -79,7 +81,7 @@ class ShadCard extends StatelessWidget {
   /// The border surrounding the card.
   /// Defaults to a border with the theme’s border color if not specified.
   /// {@endtemplate}
-  final Border? border;
+  final ShadBorder? border;
 
   /// {@template ShadCard.shadows}
   /// The list of box shadows applied to the card for elevation.
@@ -165,7 +167,7 @@ class ShadCard extends StatelessWidget {
     final effectiveRadius = radius ?? theme.cardTheme.radius ?? theme.radius;
     final effectiveBorder = border ??
         theme.cardTheme.border ??
-        Border.all(color: theme.colorScheme.border);
+        ShadBorder.all(color: theme.colorScheme.border, width: 1);
     final effectiveShadows = shadows ?? theme.cardTheme.shadows;
 
     final effectiveRowMainAxisSize =
@@ -202,7 +204,7 @@ class ShadCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: effectiveBackgroundColor,
         borderRadius: effectiveRadius,
-        border: effectiveBorder,
+        border: effectiveBorder.toBorder(),
         boxShadow: effectiveShadows,
       ),
       child: Row(
@@ -225,7 +227,8 @@ class ShadCard extends StatelessWidget {
                   ),
                 if (description != null)
                   DefaultTextStyle(
-                    style: theme.textTheme.muted,
+                    style: theme.textTheme.muted
+                        .fallback(color: theme.colorScheme.mutedForeground),
                     child: description!,
                   ),
                 if (child != null) Flexible(child: child!),
