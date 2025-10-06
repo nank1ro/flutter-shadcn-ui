@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -62,7 +61,7 @@ class PaddingEffect extends Effect<double> {
     );
   }
 
-  final EdgeInsets padding;
+  final EdgeInsetsGeometry padding;
 
   static const neutralValue = 1.0;
   static const defaultValue = 0.0;

@@ -1,10 +1,7 @@
-// ignore_for_file: cascade_invocations
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 
 /// Builder function for creating [ShadTableCell] widgets.
@@ -98,7 +95,7 @@ class ShadTableCell extends TableViewCell {
   /// {@template ShadTableCell.padding}
   /// Padding within the table cell.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTableCell.style}
   /// Text style for the cell's content.
@@ -120,18 +117,15 @@ class ShadTableCell extends TableViewCell {
 
     final textStyle = style ??
         switch (variant) {
-          ShadTableCellVariant.cell => theme.tableTheme.cellStyle ??
-              theme.textTheme.muted
-                  .copyWith(color: theme.colorScheme.foreground),
-          ShadTableCellVariant.header => theme.tableTheme.cellHeaderStyle ??
-              theme.textTheme.muted.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-          ShadTableCellVariant.footer => theme.tableTheme.cellFooterStyle ??
-              theme.textTheme.muted.copyWith(
-                fontWeight: FontWeight.w500,
-                color: theme.colorScheme.foreground,
-              ),
+          ShadTableCellVariant.cell =>
+            (theme.tableTheme.cellStyle ?? theme.textTheme.muted)
+                .fallback(color: theme.colorScheme.foreground),
+          ShadTableCellVariant.header => (theme.tableTheme.cellHeaderStyle ??
+                  theme.textTheme.muted.copyWith(fontWeight: FontWeight.w500))
+              .fallback(color: theme.colorScheme.foreground),
+          ShadTableCellVariant.footer => (theme.tableTheme.cellFooterStyle ??
+                  theme.textTheme.muted.copyWith(fontWeight: FontWeight.w500))
+              .fallback(color: theme.colorScheme.foreground),
         };
 
     return TableViewCell(

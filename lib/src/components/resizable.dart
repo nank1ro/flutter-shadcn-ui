@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -115,9 +115,7 @@ class ShadResizableController extends ChangeNotifier {
   /// Update the panel info with the given [panels]
   void update(List<ShadPanelInfo> panels) {
     clear();
-    for (final panel in panels) {
-      registerPanel(panel);
-    }
+    panels.forEach(registerPanel);
     notifyListeners();
   }
 
@@ -321,7 +319,7 @@ class ShadResizablePanelGroup extends StatefulWidget {
   /// {@template ShadResizablePanelGroup.handlePadding}
   /// Padding around the resize handle.
   /// {@endtemplate}
-  final EdgeInsets? handlePadding;
+  final EdgeInsetsGeometry? handlePadding;
 
   /// {@template ShadResizablePanelGroup.handleSize}
   /// The size of the resize handle icon.
@@ -366,13 +364,10 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     super.didUpdateWidget(oldWidget);
     // Adding and removing panels
     if (oldWidget.children.length != widget.children.length) {
-      final removedIds = oldWidget.children
+      oldWidget.children
           .map((e) => e.id)
           .where((e) => !widget.children.map((e) => e.id).contains(e))
-          .toList();
-      for (final id in removedIds) {
-        controller.unregisterPanel(id);
-      }
+          .forEach(controller.unregisterPanel);
       final addedIds = widget.children
           .map((e) => e.id)
           .where((e) => !oldWidget.children.map((e) => e.id).contains(e))
@@ -428,8 +423,15 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     required int index,
     required Offset offset,
   }) {
-    final axisOffset =
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    var axisOffset =
         (widget.axis == Axis.horizontal ? offset.dx : offset.dy).asFixed(6);
+
+    // Invert the offset for RTL horizontal dragging
+    if (rtl && widget.axis == Axis.horizontal) {
+      axisOffset = -axisOffset;
+    }
+
     final leadingPanelInfo = getPanelInfo(index);
     final newLeadingSize =
         (leadingPanelInfo.size * controller.totalAvailableWidth + axisOffset) /
@@ -492,8 +494,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
       ),
       disableSecondaryBorder: true,
     )
-        .mergeWith(theme.resizableTheme.handleDecoration)
-        .mergeWith(widget.handleDecoration);
+        .merge(theme.resizableTheme.handleDecoration)
+        .merge(widget.handleDecoration);
 
     final effectiveHandlePadding = widget.handlePadding ??
         theme.resizableTheme.handlePadding ??
@@ -522,12 +524,10 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     return ListenableBuilder(
       listenable: controller,
       builder: (context, child) {
-        var effectivesSizes = controller.panelsInfo.map((e) => e.size).toList();
+        final effectivesSizes =
+            controller.panelsInfo.map((e) => e.size).toList();
 
         final rtl = Directionality.of(context) == TextDirection.rtl;
-        if (rtl && isHorizontal) {
-          effectivesSizes = effectivesSizes.reversed.toList();
-        }
 
         final divider = switch (widget.axis) {
           Axis.horizontal => ShadSeparator.vertical(

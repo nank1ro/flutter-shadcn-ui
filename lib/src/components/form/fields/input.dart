@@ -1,8 +1,8 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -13,6 +13,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     super.id,
     super.key,
     super.onSaved,
+    super.forceErrorText,
     String? Function(String)? validator,
     String? initialValue,
     super.enabled,
@@ -113,7 +114,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     List<TextInputFormatter>? inputFormatters,
 
     /// {@macro ShadInput.cursorWidth}
-    double cursorWidth = 2.0,
+    double? cursorWidth,
 
     /// {@macro ShadInput.cursorHeight}
     double? cursorHeight,
@@ -194,7 +195,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     Color? selectionColor,
 
     /// {@macro ShadInput.padding}
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
 
     /// {@macro ShadInput.leading}
     Widget? leading,
@@ -211,11 +212,14 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     /// {@macro ShadInput.placeholderStyle}
     TextStyle? placeholderStyle,
 
+    /// {@macro ShadInput.alignment}
+    AlignmentGeometry? alignment,
+
     /// {@macro ShadInput.placeholderAlignment}
     AlignmentGeometry? placeholderAlignment,
 
     /// {@macro ShadInput.inputPadding}
-    EdgeInsets? inputPadding,
+    EdgeInsetsGeometry? inputPadding,
 
     /// {@macro ShadInput.gap}
     double? gap,
@@ -225,6 +229,9 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
 
     /// {@macro flutter.widgets.editableText.groupId}
     Object? groupId,
+
+    /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+    WidgetBuilder? keyboardToolbarBuilder,
   }) : super(
           initialValue: controller != null ? controller.text : initialValue,
           validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -232,7 +239,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).inputTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderInputState;
             return ShadInput(
@@ -258,7 +265,6 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
               maxLines: maxLines,
               minLines: minLines,
               expands: expands,
-              onChanged: onChanged,
               onEditingComplete: onEditingComplete,
               onSubmitted: onSubmitted,
               onAppPrivateCommand: onAppPrivateCommand,
@@ -302,12 +308,14 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
               trailing: trailing,
               mainAxisAlignment: mainAxisAlignment,
               crossAxisAlignment: crossAxisAlignment,
+              alignment: alignment,
               placeholderStyle: placeholderStyle,
               placeholderAlignment: placeholderAlignment,
               inputPadding: inputPadding,
               gap: gap,
               constraints: constraints,
               groupId: groupId,
+              keyboardToolbarBuilder: keyboardToolbarBuilder,
             );
           },
         );

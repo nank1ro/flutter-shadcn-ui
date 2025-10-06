@@ -152,7 +152,6 @@ class ShadFormState extends State<ShadForm> {
 
   void setInternalFieldValue<T>(Object id, T? value) {
     _value[id] = value;
-    widget.onChanged?.call();
   }
 
   /// Removes internal field value
@@ -239,6 +238,7 @@ class ShadFormState extends State<ShadForm> {
           onPopInvoked: widget.onPopInvoked,
           onPopInvokedWithResult: widget.onPopInvokedWithResult,
           canPop: widget.canPop,
+          onChanged: widget.onChanged,
           child: child!,
         );
       },

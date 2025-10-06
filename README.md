@@ -6,7 +6,7 @@
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/nank1ro/flutter-shadcn-ui.svg)](https://gitHub.com/nank1ro/flutter-shadcn-ui/pull/)
 [![shadcn_ui Pub Version (including pre-releases)](https://img.shields.io/pub/v/shadcn_ui?include_prereleases)](https://pub.dev/packages/shadcn_ui)
 ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/nank1ro/flutter-shadcn-ui)
-[![Join Discord](https://dcbadge.vercel.app/api/server/ZhRMAPNh5Y)](https://discord.gg/ZhRMAPNh5Y)
+[![Join Discord](https://dcbadge.limes.pink/api/server/ZhRMAPNh5Y?style=flat)](https://discord.gg/ZhRMAPNh5Y)
 
 <a href="https://www.buymeacoffee.com/nank1ro" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
@@ -69,6 +69,18 @@ See the [documentation](https://flutter-shadcn-ui.mariuti.com/) to interact with
 - [ ] Toggle
 - [ ] ToggleGroup
 - [x] [Tooltip](https://flutter-shadcn-ui.mariuti.com/components/tooltip/)
+
+## FAQs
+
+<details>
+<summary>What's the difference with shadcn_flutter</summary>
+My repo was created the 05/01/2024 while he started the 12/02/2024. He never contacted me to contribute.
+It's an open source project, I'd love to have contributions.
+
+Each widget I make takes some time because I try to solve problems in a simple way, making each widget extremely customizable.
+
+Another library could probably come first with more widgets, but in the long run it's the quality the most important thing.
+</details>
 
 ## Star History
 

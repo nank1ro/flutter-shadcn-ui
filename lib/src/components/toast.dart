@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-
 import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 
@@ -313,6 +313,8 @@ class ShadToast extends StatefulWidget {
     this.padding,
     this.closeIconPosition,
     this.constraints,
+    this.mainAxisAlignment,
+    this.mainAxisSize,
   }) : variant = ShadToastVariant.primary;
 
   /// Creates a destructive variant toast widget, typically for error or warning
@@ -343,6 +345,8 @@ class ShadToast extends StatefulWidget {
     this.padding,
     this.closeIconPosition,
     this.constraints,
+    this.mainAxisAlignment,
+    this.mainAxisSize,
   }) : variant = ShadToastVariant.destructive;
 
   /// Creates a toast widget with a specified [variant], offering full
@@ -374,6 +378,8 @@ class ShadToast extends StatefulWidget {
     this.padding,
     this.closeIconPosition,
     this.constraints,
+    this.mainAxisAlignment,
+    this.mainAxisSize,
   });
 
   /// {@template ShadToast.id}
@@ -455,6 +461,12 @@ class ShadToast extends StatefulWidget {
   /// {@endtemplate}
   final CrossAxisAlignment? crossAxisAlignment;
 
+  /// {@template ShadToast.mainAxisAlignment}
+  /// The main-axis alignment of the toast’s content (horizontally).
+  /// Defaults to [MainAxisAlignment.spaceBetween] if not specified.
+  /// {@endtemplate}
+  final MainAxisAlignment? mainAxisAlignment;
+
   /// {@template ShadToast.showCloseIconOnlyWhenHovered}
   /// Whether the close icon is visible only when the toast is hovered.
   /// Defaults to true if not specified.
@@ -475,15 +487,15 @@ class ShadToast extends StatefulWidget {
 
   /// {@template ShadToast.actionPadding}
   /// The padding around the action widget.
-  /// Defaults to left padding of 16 if not specified.
+  /// Defaults to start padding of 16 if not specified.
   /// {@endtemplate}
-  final EdgeInsets? actionPadding;
+  final EdgeInsetsGeometry? actionPadding;
 
   /// {@template ShadToast.border}
   /// The border surrounding the toast.
   /// Defaults to a border with the theme’s border color if not specified.
   /// {@endtemplate}
-  final Border? border;
+  final ShadBorder? border;
 
   /// {@template ShadToast.radius}
   /// The border radius of the toast’s corners.
@@ -505,9 +517,11 @@ class ShadToast extends StatefulWidget {
 
   /// {@template ShadToast.padding}
   /// The padding inside the toast, surrounding all content.
-  /// Defaults to EdgeInsets.fromLTRB(24, 24, 32, 24) if not specified.
+  ///
+  /// Defaults to EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24) if not
+  /// specified.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadToast.closeIconPosition}
   /// The position of the close icon within the toast.
@@ -528,6 +542,12 @@ class ShadToast extends StatefulWidget {
   /// width on larger screens.
   /// {@endtemplate}
   final BoxConstraints? constraints;
+
+  /// {@template ShadToast.mainAxisSize}
+  /// The main axis size of the toast's content (horizontal).
+  /// Defaults to [MainAxisSize.max] if not specified.
+  /// {@endtemplate}
+  final MainAxisSize? mainAxisSize;
 
   @override
   State<ShadToast> createState() => _ShadToastState();
@@ -568,7 +588,7 @@ class _ShadToastState extends State<ShadToast> {
           height: 20,
           padding: EdgeInsets.zero,
           foregroundColor: effectiveForegroundColor.withValues(alpha: .5),
-          hoverBackgroundColor: Colors.transparent,
+          hoverBackgroundColor: const Color(0x00000000),
           hoverForegroundColor: effectiveForegroundColor,
           pressedForegroundColor: effectiveForegroundColor,
           onPressed: () => ShadToaster.of(context).hide(),
@@ -586,10 +606,10 @@ class _ShadToastState extends State<ShadToast> {
         );
     final effectiveActionPadding = widget.actionPadding ??
         effectiveToastTheme.actionPadding ??
-        const EdgeInsets.only(left: 16);
+        const EdgeInsetsDirectional.only(start: 16);
     final effectiveBorder = widget.border ??
         effectiveToastTheme.border ??
-        Border.all(color: theme.colorScheme.border);
+        ShadBorder.all(color: theme.colorScheme.border, width: 1);
     final effectiveBorderRadius =
         widget.radius ?? effectiveToastTheme.radius ?? theme.radius;
     final effectiveShadows =
@@ -599,10 +619,13 @@ class _ShadToastState extends State<ShadToast> {
         theme.colorScheme.background;
     final effectivePadding = widget.padding ??
         effectiveToastTheme.padding ??
-        const EdgeInsets.fromLTRB(24, 24, 32, 24);
+        const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24);
     final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
         effectiveToastTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
+    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
+        effectiveToastTheme.mainAxisAlignment ??
+        MainAxisAlignment.spaceBetween;
     final effectiveCloseIconPosition = widget.closeIconPosition ??
         effectiveToastTheme.closeIconPosition ??
         const ShadPosition(top: 8, right: 8);
@@ -610,22 +633,30 @@ class _ShadToastState extends State<ShadToast> {
         widget.showCloseIconOnlyWhenHovered ??
             effectiveToastTheme.showCloseIconOnlyWhenHovered ??
             true;
+    final effectiveTextDirection =
+        widget.textDirection ?? effectiveToastTheme.textDirection;
+    final effectiveMainAxisSize = widget.mainAxisSize ??
+        effectiveToastTheme.mainAxisSize ??
+        MainAxisSize.max;
 
     return MouseRegion(
       onEnter: (_) => hovered.value = true,
       onExit: (_) => hovered.value = false,
       child: ShadResponsiveBuilder(
         builder: (context, breakpoint) {
+          final effectiveConstraints = widget.constraints ??
+              effectiveToastTheme.constraints ??
+              BoxConstraints(
+                minWidth:
+                    breakpoint >= theme.breakpoints.md ? 0 : double.infinity,
+                maxWidth:
+                    breakpoint >= theme.breakpoints.md ? 420 : double.infinity,
+              );
           return ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth:
-                  breakpoint >= theme.breakpoints.md ? 0 : double.infinity,
-              maxWidth:
-                  breakpoint >= theme.breakpoints.md ? 420 : double.infinity,
-            ),
+            constraints: effectiveConstraints,
             child: DecoratedBox(
               decoration: BoxDecoration(
-                border: effectiveBorder,
+                border: effectiveBorder.toBorder(),
                 borderRadius: effectiveBorderRadius,
                 boxShadow: effectiveShadows,
                 color: effectiveBackgroundColor,
@@ -635,8 +666,9 @@ class _ShadToastState extends State<ShadToast> {
                   Padding(
                     padding: effectivePadding,
                     child: Row(
-                      textDirection: widget.textDirection,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      textDirection: effectiveTextDirection,
+                      mainAxisAlignment: effectiveMainAxisAlignment,
+                      mainAxisSize: effectiveMainAxisSize,
                       crossAxisAlignment: effectiveCrossAxisAlignment,
                       children: [
                         Flexible(

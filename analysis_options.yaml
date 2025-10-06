@@ -1,4 +1,11 @@
+analyzer:
+  errors:
+    specify_nonobvious_property_types: ignore
+    discarded_futures: ignore
 include: package:very_good_analysis/analysis_options.yaml
+exclude:
+  - "**/*.g.dart"
+  - "**/*.g.theme.dart"
 
 linter:
   rules:

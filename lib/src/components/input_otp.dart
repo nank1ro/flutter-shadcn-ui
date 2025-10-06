@@ -274,6 +274,7 @@ class ShadInputOTPSlot extends StatefulWidget {
     this.middleRadius,
     this.initialValue,
     this.textInputAction,
+    this.keyboardToolbarBuilder,
   });
 
   /// {@template ShadInputOTPSlot.focusNode}
@@ -320,7 +321,7 @@ class ShadInputOTPSlot extends StatefulWidget {
   /// {@template ShadInputOTPSlot.padding}
   /// The padding of the slot, defaults to `null`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadInputOTPSlot.decoration}
   /// The decoration of the slot
@@ -359,6 +360,9 @@ class ShadInputOTPSlot extends StatefulWidget {
   /// {@endtemplate}
   final TextInputAction? textInputAction;
 
+  /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+  final WidgetBuilder? keyboardToolbarBuilder;
+
   @override
   State<ShadInputOTPSlot> createState() => _ShadInputOTPSlotState();
 }
@@ -366,7 +370,6 @@ class ShadInputOTPSlot extends StatefulWidget {
 class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
   late final otpProvider = context.read<ShadInputOTPState>();
 
-  // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
   ShadTextEditingController? _controller;
@@ -493,9 +496,9 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       ),
     );
     final effectiveDecoration = defaultDecoration
-        .mergeWith(theme.inputOTPTheme.decoration)
-        .mergeWith(widget.decoration)
-        .mergeWith(
+        .merge(theme.inputOTPTheme.decoration)
+        .merge(widget.decoration)
+        .merge(
           ShadDecoration(
             border: ShadBorder(
               radius: effectiveRadius,
@@ -571,6 +574,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
           padding: effectivePadding,
           style: defaultStyle,
           keyboardType: effectiveKeyboardType,
+          keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
         ),
       ),
     );

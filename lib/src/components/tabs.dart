@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -77,6 +77,8 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
     this.value,
     required this.tabs,
     this.controller,
+    this.tabBarAlignment,
+    this.tabsGap,
     this.gap,
     this.scrollable,
     this.dragStartBehavior,
@@ -108,6 +110,16 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
   /// {@endtemplate}
   final ShadTabsController<T>? controller;
 
+  /// {@template ShadTabs.tabsGap}
+  /// The horizontal gap between the tabs in the tabBar.
+  /// {@endtemplate}
+  final double? tabsGap;
+
+  /// {@template ShadTabs.tabBarAlignment}
+  /// The alignment of the tabBar.
+  /// {@endtemplate}
+  final Alignment? tabBarAlignment;
+
   /// {@template ShadTabs.gap}
   /// The gap between the tabBar and the content.
   /// {@endtemplate}
@@ -131,7 +143,7 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
   /// {@template ShadTabs.padding}
   /// The padding of the tabs, defaults to `EdgeInsets.zero`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTabs.decoration}
   /// The decoration of the tabs.
@@ -274,7 +286,7 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
     final effectiveDecoration = ShadDecoration(
       color: theme.colorScheme.muted,
       border: ShadBorder.all(radius: theme.radius, width: 0),
-    ).mergeWith(tabsTheme.decoration).mergeWith(widget.decoration);
+    ).merge(tabsTheme.decoration).merge(widget.decoration);
 
     final effectiveGap = widget.gap ?? tabsTheme.gap ?? 8;
 
@@ -287,7 +299,10 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
     final effectiveExpandContent =
         widget.expandContent ?? tabsTheme.expandContent ?? false;
 
-    Widget tabBar = Row(children: widget.tabs);
+    Widget tabBar = Row(
+      spacing: widget.tabsGap ?? tabsTheme.tabsGap ?? 0,
+      children: widget.tabs,
+    );
 
     if (effectiveTabBarConstraints != null) {
       tabBar = ConstrainedBox(
@@ -311,6 +326,12 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
       );
     } else {
       tabBar = Padding(padding: effectivePadding, child: tabBar);
+    }
+
+    final effectiveTabBarAlignment =
+        widget.tabBarAlignment ?? tabsTheme.tabBarAlignment;
+    if (effectiveTabBarAlignment != null) {
+      tabBar = Align(alignment: effectiveTabBarAlignment, child: tabBar);
     }
 
     return ShadProvider(
@@ -514,7 +535,7 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   ///
   /// Defaults to `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTab.decoration}
   /// Decoration for the tab when unselected.
@@ -749,13 +770,14 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
     final effectiveWidth = widget.width ?? tabsTheme.tabWidth ?? defaultWidth;
     final effectiveBackgroundColor = widget.backgroundColor ??
         tabsTheme.tabBackgroundColor ??
-        Colors.transparent;
+        const Color(0x00000000);
+
     final effectiveSelectedBackgroundColor = widget.selectedBackgroundColor ??
         tabsTheme.tabSelectedBackgroundColor ??
         theme.colorScheme.background;
 
     final effectiveHoverBackgroundColor = widget.hoverBackgroundColor ??
-        tabsTheme.tabHoverForegroundColor ??
+        tabsTheme.tabHoverBackgroundColor ??
         effectiveBackgroundColor;
 
     final effectiveSelectedHoverBackgroundColor =
@@ -801,6 +823,9 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
     final effectivePressedForegroundColor =
         widget.pressedForegroundColor ?? tabsTheme.tabPressedForegroundColor;
 
+    final effectiveTextStyle =
+        widget.textStyle ?? tabsTheme.tabTextStyle ?? theme.textTheme.small;
+
     Widget tab = ListenableBuilder(
       listenable: inherited.controller,
       builder: (context, _) {
@@ -827,7 +852,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               secondaryBorder: ShadBorder.all(
                 width: 0,
                 radius: BorderRadius.circular(2),
-                padding: EdgeInsets.fromLTRB(
+                padding: EdgeInsetsDirectional.fromSTEB(
                   isFirstTab ? 4 : 2,
                   4,
                   isLastTab ? 4 : 2,
@@ -837,7 +862,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               secondaryFocusedBorder: ShadBorder.all(
                 width: 2,
                 radius: theme.radius,
-                padding: EdgeInsets.fromLTRB(
+                padding: EdgeInsetsDirectional.fromSTEB(
                   isFirstTab ? 2 : 0,
                   2,
                   isLastTab ? 2 : 0,
@@ -849,8 +874,12 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
         };
 
         final effectiveDecoration = defaultDecoration
-            .mergeWith(tabsTheme.tabDecoration)
-            .mergeWith(widget.decoration);
+            .merge(
+              selected
+                  ? tabsTheme.tabSelectedDecoration ?? tabsTheme.tabDecoration
+                  : tabsTheme.tabDecoration,
+            )
+            .merge(widget.decoration);
 
         return ShadButton.secondary(
           leading: widget.leading,
@@ -865,9 +894,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
               ? effectiveSelectedHoverBackgroundColor
               : effectiveHoverBackgroundColor,
           padding: effectivePadding,
-          decoration: selected
-              ? effectiveDecoration.mergeWith(widget.selectedDecoration)
-              : effectiveDecoration,
+          decoration: effectiveDecoration,
           foregroundColor: selected
               ? effectiveSelectedForegroundColor
               : effectiveForegroundColor,
@@ -907,8 +934,8 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
           onFocusChange: (focused) {
             if (focused) onMayChanged();
           },
-          child: DefaultTextStyle(
-            style: theme.textTheme.small,
+          child: DefaultTextStyle.merge(
+            style: effectiveTextStyle,
             child: widget.child,
           ),
         );

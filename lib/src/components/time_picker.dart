@@ -1,11 +1,21 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
+
+/// Whether the TimeOfDay is before or after noon.
+enum ShadDayPeriod {
+  /// Ante meridiem (before noon).
+  am,
+
+  /// Post meridiem (after noon).
+  pm,
+}
 
 /// Represents a time of day, including hour, minute, and second, and optionally period (AM/PM).
 @immutable
@@ -18,7 +28,7 @@ class ShadTimeOfDay {
     required this.hour,
     required this.minute,
     required this.second,
-    DayPeriod? period,
+    ShadDayPeriod? period,
   }) : _period = period;
 
   /// Creates a time of day based on the given time.
@@ -48,12 +58,23 @@ class ShadTimeOfDay {
   final int second;
 
   /// The selected period of the day.
-  final DayPeriod? _period;
+  final ShadDayPeriod? _period;
 
   /// Whether this time of day is before or after noon.
-  DayPeriod get period =>
+  ShadDayPeriod get period =>
       _period ??
-      (hour < TimeOfDay.hoursPerPeriod ? DayPeriod.am : DayPeriod.pm);
+      (hour < ShadTimeOfDay.hoursPerPeriod
+          ? ShadDayPeriod.am
+          : ShadDayPeriod.pm);
+
+  /// The number of hours in one day, i.e. 24.
+  static const int hoursPerDay = 24;
+
+  /// The number of hours in one day period (see also [ShadDayPeriod]), i.e. 12.
+  static const int hoursPerPeriod = 12;
+
+  /// The number of minutes in one hour, i.e. 60.
+  static const int minutesPerHour = 60;
 
   @override
   bool operator ==(Object other) {
@@ -77,7 +98,7 @@ class ShadTimeOfDay {
     final minuteLabel = addLeadingZeroIfNeeded(minute);
     final secondLabel = addLeadingZeroIfNeeded(second);
 
-    var s = '$TimeOfDay($hourLabel:$minuteLabel:$secondLabel';
+    var s = '$ShadTimeOfDay($hourLabel:$minuteLabel:$secondLabel';
 
     if (_period != null) {
       s += ' ${_period!.name.toUpperCase()}';
@@ -89,7 +110,7 @@ class ShadTimeOfDay {
     int? hour,
     int? minute,
     int? second,
-    DayPeriod? period,
+    ShadDayPeriod? period,
   }) {
     return ShadTimeOfDay(
       hour: hour ?? this.hour,
@@ -143,7 +164,7 @@ class ShadTimePickerController extends ChangeNotifier {
   /// {@template ShadTimePickerController.period}
   /// The selected day period (AM/PM).
   /// {@endtemplate}
-  DayPeriod? period;
+  ShadDayPeriod? period;
 
   /// Returns the current [ShadTimeOfDay] value from the controller.
   ///
@@ -180,7 +201,7 @@ class ShadTimePickerController extends ChangeNotifier {
   }
 
   /// Sets the day period (AM/PM) and notifies listeners.
-  void setDayPeriod(DayPeriod? period) {
+  void setDayPeriod(ShadDayPeriod? period) {
     if (this.period == period) return;
     this.period = period;
     notifyListeners();
@@ -237,6 +258,7 @@ class ShadTimePicker extends StatefulWidget {
     this.fieldDecoration,
     this.controller,
     this.enabled = true,
+    this.keyboardToolbarBuilder,
   })  : variant = ShadTimePickerVariant.primary,
         initialDayPeriod = null,
         periodLabel = null,
@@ -286,6 +308,7 @@ class ShadTimePicker extends StatefulWidget {
     this.periodDecoration,
     this.controller,
     this.enabled = true,
+    this.keyboardToolbarBuilder,
   }) : variant = ShadTimePickerVariant.period;
 
   /// Creates a [ShadTimePicker] with a raw variant, allowing explicit variant
@@ -331,6 +354,7 @@ class ShadTimePicker extends StatefulWidget {
     this.periodDecoration,
     this.controller,
     this.enabled = true,
+    this.keyboardToolbarBuilder,
   });
 
   /// {@template ShadTimePicker.axis}
@@ -463,9 +487,10 @@ class ShadTimePicker extends StatefulWidget {
   final ShadTimePickerVariant variant;
 
   /// {@template ShadTimePicker.initialDayPeriod}
-  /// The initial day period to show in the picker, defaults to `DayPeriod.am`.
+  /// The initial day period to show in the picker, defaults to
+  /// `ShadDayPeriod.am`.
   /// {@endtemplate}
-  final DayPeriod? initialDayPeriod;
+  final ShadDayPeriod? initialDayPeriod;
 
   /// {@template ShadTimePicker.periodLabel}
   /// The widget to display as the label for the period field.
@@ -531,7 +556,7 @@ class ShadTimePicker extends StatefulWidget {
   /// The padding of the field, defaults to
   /// `const EdgeInsets.symmetric(horizontal: 12, vertical: 8)`.
   /// {@endtemplate}
-  final EdgeInsets? fieldPadding;
+  final EdgeInsetsGeometry? fieldPadding;
 
   /// {@template ShadTimePicker.fieldDecoration}
   /// The decoration of the field, defaults to
@@ -559,6 +584,9 @@ class ShadTimePicker extends StatefulWidget {
   /// Whether the time picker is enabled, defaults to `true`.
   /// {@endtemplate}
   final bool enabled;
+
+  /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+  final WidgetBuilder? keyboardToolbarBuilder;
 
   @override
   State<ShadTimePicker> createState() => _ShadTimePickerState();
@@ -721,7 +749,8 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     final effectiveLabelStyle = theme.textTheme.small
         .copyWith(fontSize: 12)
         .merge(theme.timePickerTheme.labelStyle)
-        .merge(widget.labelStyle);
+        .merge(widget.labelStyle)
+        .fallback(color: theme.colorScheme.foreground);
 
     final effectiveFieldDecoration = ShadDecoration(
       border: ShadBorder.all(
@@ -729,12 +758,12 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         radius: theme.radius,
       ),
     )
-        .mergeWith(theme.timePickerTheme.fieldDecoration)
-        .mergeWith(widget.fieldDecoration);
+        .merge(theme.timePickerTheme.fieldDecoration)
+        .merge(widget.fieldDecoration);
 
     final effectivePeriodDecoration =
         (theme.timePickerTheme.periodDecoration ?? const ShadDecoration())
-            .mergeWith(widget.periodDecoration);
+            .merge(widget.periodDecoration);
 
     return Wrap(
       direction: effectiveAxis,
@@ -743,6 +772,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
       alignment: effectiveAlignment,
       runAlignment: effectiveRunAlignment,
       crossAxisAlignment: effectiveCrossAxisAlignment,
+      textDirection: TextDirection.ltr,
       children: [
         if (widget.leading != null) widget.leading!,
         ShadTimePickerField(
@@ -757,6 +787,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           padding: effectiveFieldPadding,
           decoration: effectiveFieldDecoration,
           enabled: widget.enabled,
+          keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
           onChanged: (v) {
             if (v.isNotEmpty) {
               controller.setHour(int.tryParse(v));
@@ -778,6 +809,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           padding: effectiveFieldPadding,
           decoration: effectiveFieldDecoration,
           enabled: widget.enabled,
+          keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
           onChanged: (v) {
             if (v.isNotEmpty) {
               controller.setMinute(int.tryParse(v));
@@ -799,6 +831,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
           padding: effectiveFieldPadding,
           decoration: effectiveFieldDecoration,
           enabled: widget.enabled,
+          keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
           onChanged: (v) {
             if (v.isNotEmpty) {
               controller.setSecond(int.tryParse(v));
@@ -829,7 +862,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
                   initialValue: controller.period,
                   decoration: effectivePeriodDecoration,
                   enabled: widget.enabled,
-                  options: DayPeriod.values
+                  options: ShadDayPeriod.values
                       .map(
                         (v) => ShadOption(
                           value: v,
@@ -873,6 +906,7 @@ class ShadTimePickerField extends StatefulWidget {
     this.padding,
     this.decoration,
     this.enabled = true,
+    this.keyboardToolbarBuilder,
   });
 
   /// {@template ShadTimePickerField.label}
@@ -944,7 +978,7 @@ class ShadTimePickerField extends StatefulWidget {
   ///
   /// Defaults to `EdgeInsets.symmetric(horizontal: 12, vertical: 8)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTimePickerField.decoration}
   /// The visual decoration of the input field.
@@ -960,6 +994,10 @@ class ShadTimePickerField extends StatefulWidget {
   /// disabled. Defaults to `true`.
   /// {@endtemplate}
   final bool enabled;
+
+  /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+  final WidgetBuilder? keyboardToolbarBuilder;
+
   @override
   State<ShadTimePickerField> createState() => _ShadTimePickerFieldState();
 }
@@ -1016,7 +1054,7 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
         color: theme.colorScheme.border,
         radius: theme.radius,
       ),
-    ).mergeWith(widget.decoration);
+    ).merge(widget.decoration);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -1049,6 +1087,7 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
             onChanged: (value) {
               widget.onChanged?.call(value);
             },
+            keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
           ),
         ),
       ].separatedBy(SizedBox(height: effectiveGap)),

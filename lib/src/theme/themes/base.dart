@@ -1,16 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/button_sizes.dart';
 import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/default_keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
@@ -41,7 +43,6 @@ abstract class ShadBaseTheme {
   const ShadBaseTheme({
     required this.colorScheme,
     required this.brightness,
-    required this.extensions,
     required this.primaryButtonTheme,
     required this.secondaryButtonTheme,
     required this.destructiveButtonTheme,
@@ -92,11 +93,11 @@ abstract class ShadBaseTheme {
     required this.separatorTheme,
     required this.sonnerTheme,
     required this.textareaTheme,
+    required this.defaultKeyboardToolbarTheme,
   });
 
   final ShadColorScheme colorScheme;
   final Brightness brightness;
-  final Iterable<ThemeExtension<dynamic>>? extensions;
   final ShadButtonTheme primaryButtonTheme;
   final ShadButtonTheme secondaryButtonTheme;
   final ShadButtonTheme destructiveButtonTheme;
@@ -147,6 +148,7 @@ abstract class ShadBaseTheme {
   final ShadSeparatorTheme separatorTheme;
   final ShadSonnerTheme sonnerTheme;
   final ShadTextareaTheme textareaTheme;
+  final ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme;
 }
 
 @immutable
@@ -197,4 +199,5 @@ abstract class ShadThemeVariant {
   ShadSeparatorTheme separatorTheme();
   ShadSonnerTheme sonnerTheme();
   ShadTextareaTheme textareaTheme();
+  ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme();
 }

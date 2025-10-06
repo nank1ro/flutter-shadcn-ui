@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
@@ -22,17 +22,21 @@ class ShadAlert extends StatelessWidget {
   const ShadAlert({
     super.key,
     this.icon,
-    this.iconData,
     this.title,
     this.description,
     this.textDirection,
     this.decoration,
     this.iconPadding,
     this.iconColor,
+    this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.leading,
+    this.trailing,
+    this.top,
+    this.bottom,
   }) : variant = ShadAlertVariant.primary;
 
   /// Creates a destructive variant alert widget, typically used for error or
@@ -40,17 +44,21 @@ class ShadAlert extends StatelessWidget {
   const ShadAlert.destructive({
     super.key,
     this.icon,
-    this.iconData,
     this.title,
     this.description,
     this.textDirection,
     this.decoration,
     this.iconPadding,
     this.iconColor,
+    this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.leading,
+    this.trailing,
+    this.top,
+    this.bottom,
   }) : variant = ShadAlertVariant.destructive;
 
   /// Creates a raw alert widget with a specified [variant], allowing full
@@ -59,17 +67,21 @@ class ShadAlert extends StatelessWidget {
     super.key,
     required this.variant,
     this.icon,
-    this.iconData,
     this.title,
     this.description,
     this.textDirection,
     this.decoration,
     this.iconPadding,
     this.iconColor,
+    this.iconSize,
     this.titleStyle,
     this.descriptionStyle,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.leading,
+    this.trailing,
+    this.top,
+    this.bottom,
   });
 
   /// {@template ShadAlert.variant}
@@ -80,17 +92,9 @@ class ShadAlert extends StatelessWidget {
   final ShadAlertVariant variant;
 
   /// {@template ShadAlert.icon}
-  /// A custom widget to use as the alert's icon, takes precedence over
-  /// [iconData]. If provided, this widget will be displayed instead of an icon
-  /// generated from [iconData].
+  /// A custom widget to use as the alert's icon.
   /// {@endtemplate}
   final Widget? icon;
-
-  /// {@template ShadAlert.iconData}
-  /// The icon data to display if [icon] is not provided.
-  /// Used to create a default [Icon] widget with the specified [iconColor].
-  /// {@endtemplate}
-  final IconData? iconData;
 
   /// {@template ShadAlert.title}
   /// The title widget of the alert, typically a [Text] widget.
@@ -122,13 +126,21 @@ class ShadAlert extends StatelessWidget {
   /// Padding around the icon, defaults to right padding of 12 if not specified.
   /// Controls the spacing between the icon and adjacent content.
   /// {@endtemplate}
-  final EdgeInsets? iconPadding;
+  final EdgeInsetsGeometry? iconPadding;
 
   /// {@template ShadAlert.iconColor}
   /// Color of the icon, overrides theme default if provided.
-  /// Applied to the [Icon] created from [iconData] if [icon] is null.
+  /// Applied to the [IconTheme] if [icon] is not null.
   /// {@endtemplate}
   final Color? iconColor;
+
+  /// {@template ShadAlert.iconSize}
+  /// Size of the icon, overrides theme default if provided.
+  ///
+  /// Applied to the [IconTheme] if [icon] is not null.
+  /// Fallbacks to 16 if not specified.
+  /// {@endtemplate}
+  final double? iconSize;
 
   /// {@template ShadAlert.titleStyle}
   /// Style for the title text, overrides theme default if provided.
@@ -158,6 +170,30 @@ class ShadAlert extends StatelessWidget {
   /// {@endtemplate}
   final CrossAxisAlignment? crossAxisAlignment;
 
+  /// {@template ShadAlert.top}
+  /// An optional widget to display at the top of the alert, above the main
+  /// content. This can be used to add additional information or controls.
+  /// {@endtemplate}
+  final Widget? top;
+
+  /// {@template ShadAlert.bottom}
+  /// An optional widget to display at the bottom of the alert, below the main
+  /// content. This can be used to add additional information or controls.
+  /// {@endtemplate}
+  final Widget? bottom;
+
+  /// {@template ShadAlert.leading}
+  /// An optional widget to display at the leading edge of the alert, before the
+  /// main content. This can be used to add additional information or controls.
+  /// {@endtemplate}
+  final Widget? leading;
+
+  /// {@template ShadAlert.trailing}
+  /// An optional widget to display at the trailing edge of the alert, after the
+  /// main content. This can be used to add additional information or controls.
+  /// {@endtemplate}
+  final Widget? trailing;
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -168,7 +204,7 @@ class ShadAlert extends StatelessWidget {
 
     final effectiveIconPadding = iconPadding ??
         effectiveAlertTheme.iconPadding ??
-        const EdgeInsets.only(right: 12);
+        const EdgeInsetsDirectional.only(end: 12);
 
     final defaultDecoration = ShadDecoration(
       border: ShadBorder.all(
@@ -179,22 +215,25 @@ class ShadAlert extends StatelessWidget {
     );
 
     final effectiveDecoration = defaultDecoration
-        .mergeWith(effectiveAlertTheme.decoration)
-        .mergeWith(decoration);
+        .merge(effectiveAlertTheme.decoration)
+        .merge(decoration);
 
     final effectiveIconColor = iconColor ??
         effectiveAlertTheme.iconColor ??
         theme.colorScheme.foreground;
 
-    final hasIcon = icon != null || iconData != null;
-    final effectiveIcon = hasIcon
+    final effectiveIconSize = iconSize ?? effectiveAlertTheme.iconSize;
+
+    final effectiveIcon = icon != null
         ? Padding(
             padding: effectiveIconPadding,
-            child: icon ??
-                Icon(
-                  iconData,
-                  color: effectiveIconColor,
-                ),
+            child: IconTheme.merge(
+              data: IconThemeData(
+                color: effectiveIconColor,
+                size: effectiveIconSize,
+              ),
+              child: icon!,
+            ),
           )
         : null;
 
@@ -221,30 +260,40 @@ class ShadAlert extends StatelessWidget {
 
     return ShadDecorator(
       decoration: effectiveDecoration,
-      child: Row(
-        crossAxisAlignment: effectiveCrossAxisAlignment,
-        mainAxisAlignment: effectiveMainAxisAlignment,
-        textDirection: textDirection,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          if (effectiveIcon != null) effectiveIcon,
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (title != null)
-                  DefaultTextStyle(
-                    style: effectiveTitleStyle,
-                    child: title!,
-                  ),
-                if (description != null)
-                  DefaultTextStyle(
-                    style: effectiveDescriptionStyle,
-                    child: description!,
-                  ),
-              ],
-            ),
+          if (top != null) top!,
+          Row(
+            crossAxisAlignment: effectiveCrossAxisAlignment,
+            mainAxisAlignment: effectiveMainAxisAlignment,
+            textDirection: textDirection,
+            children: [
+              if (leading != null) leading!,
+              if (effectiveIcon != null) effectiveIcon,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (title != null)
+                      DefaultTextStyle(
+                        style: effectiveTitleStyle,
+                        child: title!,
+                      ),
+                    if (description != null)
+                      DefaultTextStyle(
+                        style: effectiveDescriptionStyle,
+                        child: description!,
+                      ),
+                  ],
+                ),
+              ),
+              if (trailing != null) trailing!,
+            ],
           ),
+          if (bottom != null) bottom!,
         ],
       ),
     );

@@ -1,8 +1,9 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/button_sizes.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -88,6 +89,7 @@ class ShadButton extends StatefulWidget {
     this.gap,
     this.onFocusChange,
     this.expands,
+    this.textStyle,
   }) : variant = ShadButtonVariant.primary;
 
   /// Creates a button widget with a specified [variant], allowing full control
@@ -143,6 +145,7 @@ class ShadButton extends StatefulWidget {
     this.gap,
     this.onFocusChange,
     this.expands,
+    this.textStyle,
   });
 
   /// Creates a destructive variant button widget, typically for warning or
@@ -197,6 +200,7 @@ class ShadButton extends StatefulWidget {
     this.gap,
     this.onFocusChange,
     this.expands,
+    this.textStyle,
   }) : variant = ShadButtonVariant.destructive;
 
   /// Creates an outline variant button widget, typically with a bordered
@@ -251,6 +255,7 @@ class ShadButton extends StatefulWidget {
     this.gap,
     this.onFocusChange,
     this.expands,
+    this.textStyle,
   }) : variant = ShadButtonVariant.outline;
 
   /// Creates a secondary variant button widget, typically for less prominent
@@ -305,6 +310,7 @@ class ShadButton extends StatefulWidget {
     this.gap,
     this.onFocusChange,
     this.expands,
+    this.textStyle,
   }) : variant = ShadButtonVariant.secondary;
 
   /// Creates a ghost variant button widget, typically with minimal styling.
@@ -358,6 +364,7 @@ class ShadButton extends StatefulWidget {
     this.gap,
     this.onFocusChange,
     this.expands,
+    this.textStyle,
   }) : variant = ShadButtonVariant.ghost;
 
   /// Creates a link variant button widget, styled like a hyperlink.
@@ -411,6 +418,7 @@ class ShadButton extends StatefulWidget {
     this.expands,
     this.leading,
     this.trailing,
+    this.textStyle,
   }) : variant = ShadButtonVariant.link;
 
   /// {@template ShadButton.onPressed}
@@ -716,6 +724,13 @@ class ShadButton extends StatefulWidget {
   /// {@endtemplate}
   final bool? expands;
 
+  /// {@template ShadButton.textStyle}
+  /// The text style applied to the button's [child] when it is a [Text] widget,
+  /// overriding the theme default if provided.
+  /// Allows customization of font size, weight, and other text properties.
+  /// {@endtemplate}
+  final TextStyle? textStyle;
+
   @override
   State<ShadButton> createState() => _ShadButtonState();
 }
@@ -933,7 +948,7 @@ class _ShadButtonState extends State<ShadButton> {
 
     final effectiveDecoration =
         (buttonTheme(theme).decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+            .merge(widget.decoration);
 
     final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
         buttonTheme(theme).mainAxisAlignment ??
@@ -958,9 +973,22 @@ class _ShadButtonState extends State<ShadButton> {
     final effectiveExpands =
         widget.expands ?? buttonTheme(theme).expands ?? false;
 
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
+
+    final effectiveTextStyle = widget.textStyle ??
+        buttonTheme(theme).textStyle ??
+        theme.textTheme.small;
+
     return CallbackShortcuts(
       bindings: {
-        const SingleActivator(LogicalKeyboardKey.enter): onTap,
+        for (final trigger in keyboardTriggers)
+          trigger: () {
+            if (!widget.enabled) return;
+            onTap();
+          },
       },
       child: ValueListenableBuilder(
         valueListenable: statesController,
@@ -994,11 +1022,9 @@ class _ShadButtonState extends State<ShadButton> {
           }
 
           return IconTheme(
-            data: iconTheme.copyWith(
-              color: effectiveForegroundColor,
-            ),
+            data: iconTheme.copyWith(color: effectiveForegroundColor),
             child: DefaultTextStyle(
-              style: theme.textTheme.small.copyWith(
+              style: effectiveTextStyle.copyWith(
                 color: effectiveForegroundColor,
                 decoration: textDecoration(
                   theme,

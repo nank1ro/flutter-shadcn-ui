@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 /// A customizable multiline textarea widget with
@@ -40,7 +40,7 @@ class ShadTextarea extends StatefulWidget {
     this.showCursor,
     this.autofocus = false,
     this.enabled = true,
-    this.cursorWidth = 2.0,
+    this.cursorWidth,
     this.cursorHeight,
     this.cursorRadius,
     this.cursorOpacityAnimates,
@@ -70,6 +70,7 @@ class ShadTextarea extends StatefulWidget {
     this.padding,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.alignment,
     this.placeholderStyle,
     this.placeholderAlignment,
     this.inputPadding,
@@ -85,6 +86,7 @@ class ShadTextarea extends StatefulWidget {
     this.onHeightChanged,
     this.resizeHandleBuilder,
     this.scrollbarPadding,
+    this.keyboardToolbarBuilder,
   })  : enableInteractiveSelection = enableInteractiveSelection ?? !readOnly,
         assert(
           initialValue == null || controller == null,
@@ -122,9 +124,17 @@ class ShadTextarea extends StatefulWidget {
 
   /// {@template ShadTextarea.placeholderAlignment}
   /// Alignment for the placeholder inside the field.
-  /// Defaults to [Alignment.topLeft].
+  ///
+  /// Defaults to direction-aware top start:
+  /// [Alignment.topLeft] in LTR, [Alignment.topRight] in RTL.
   /// {@endtemplate}
   final AlignmentGeometry? placeholderAlignment;
+
+  /// {@template ShadTextarea.alignment}
+  /// Alignment for the input field.
+  /// Defaults to [Alignment.topLeft].
+  /// {@endtemplate}
+  final AlignmentGeometry? alignment;
 
   /// {@template ShadTextarea.decoration}
   /// Optional visual decoration for the textarea.
@@ -206,7 +216,7 @@ class ShadTextarea extends StatefulWidget {
   /// {@template ShadTextarea.cursorWidth}
   /// Width of the cursor.
   /// {@endtemplate}
-  final double cursorWidth;
+  final double? cursorWidth;
 
   /// {@template ShadTextarea.cursorHeight}
   /// Height of the cursor.
@@ -343,12 +353,12 @@ class ShadTextarea extends StatefulWidget {
   /// Padding around the field.
   /// This is outer padding including borders and input.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTextarea.inputPadding}
   /// Inner padding between text and decoration inside the textarea.
   /// {@endtemplate}
-  final EdgeInsets? inputPadding;
+  final EdgeInsetsGeometry? inputPadding;
 
   /// {@template ShadTextarea.gap}
   /// Horizontal spacing between text and any leading/trailing elements.
@@ -405,7 +415,10 @@ class ShadTextarea extends StatefulWidget {
   ///
   /// Defaults to `EdgeInsets.only(bottom: 10)`.
   /// {@endtemplate}
-  final EdgeInsets? scrollbarPadding;
+  final EdgeInsetsGeometry? scrollbarPadding;
+
+  /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+  final WidgetBuilder? keyboardToolbarBuilder;
 
   @override
   State<ShadTextarea> createState() => _ShadTextareaState();
@@ -486,7 +499,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
 
     final effectiveDecoration =
         (theme.textareaTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+            .merge(widget.decoration);
 
     final effectivePadding = widget.padding ??
         theme.inputTheme.padding ??
@@ -501,7 +514,11 @@ class _ShadTextareaState extends State<ShadTextarea> {
 
     final effectivePlaceholderAlignment = widget.placeholderAlignment ??
         theme.inputTheme.placeholderAlignment ??
-        Alignment.topLeft;
+        AlignmentDirectional.topStart;
+
+    final effectiveAlignment = widget.alignment ??
+        theme.inputTheme.alignment ??
+        AlignmentDirectional.topStart;
 
     final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
         theme.inputTheme.mainAxisAlignment ??
@@ -541,6 +558,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
         focusNode: focusNode,
         placeholder: widget.placeholder,
         placeholderAlignment: effectivePlaceholderAlignment,
+        alignment: effectiveAlignment,
         maxLines: lineCount,
         minLines: lineCount,
         keyboardType: TextInputType.multiline,
@@ -595,6 +613,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
         groupId: widget.groupId,
         undoController: widget.undoController,
         scrollbarPadding: effectiveScrollbarPadding,
+        keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
       ),
     );
 

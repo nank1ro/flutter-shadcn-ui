@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -9,6 +9,7 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
     super.id,
     super.key,
     super.onSaved,
+    super.forceErrorText,
     super.label,
     super.error,
     super.description,
@@ -54,7 +55,7 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
     Widget? inputSublabel,
 
     /// {@macro ShadSwitch.padding}
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
 
     /// {@macro ShadSwitch.direction}
     TextDirection? direction,
@@ -71,7 +72,7 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).switchTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderSwitchState;
 

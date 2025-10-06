@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -8,6 +7,20 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
+
+class ShadRadioController<T> extends ValueNotifier<T?> {
+  ShadRadioController({T? value, bool enabled = true})
+      : _enabled = enabled,
+        super(value);
+
+  late bool _enabled;
+  bool get enabled => _enabled;
+  set enabled(bool value) {
+    if (_enabled == value) return;
+    _enabled = value;
+    notifyListeners();
+  }
+}
 
 /// A customizable radio group widget that allows selection of one item from
 /// a list of options.
@@ -35,6 +48,7 @@ class ShadRadioGroup<T> extends StatefulWidget {
     this.crossAxisAlignment,
     this.spacing,
     this.runSpacing,
+    this.controller,
   });
 
   /// {@template ShadRadioGroup.initialValue}
@@ -90,26 +104,62 @@ class ShadRadioGroup<T> extends StatefulWidget {
   /// {@endtemplate}
   final WrapCrossAlignment? crossAxisAlignment;
 
+  /// {@template ShadRadioGroup.controller}
+  /// An optional controller to programmatically control the selected value.
+  /// {@endtemplate}
+  final ShadRadioController<T>? controller;
+
   @override
   State<ShadRadioGroup<T>> createState() => ShadRadioGroupState<T>();
 }
 
 class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
-  late T? selected = widget.initialValue;
+  ShadRadioController<T>? _controller;
+
+  ShadRadioController<T> get effectiveController =>
+      widget.controller ??
+      (_controller ??= ShadRadioController<T>(
+        value: widget.initialValue,
+        enabled: widget.enabled,
+      ));
+
+  @override
+  void initState() {
+    super.initState();
+    effectiveController.addListener(onValueChanged);
+  }
+
+  @override
+  void dispose() {
+    effectiveController.removeListener(onValueChanged);
+    _controller?.dispose();
+    super.dispose();
+  }
 
   @override
   void didUpdateWidget(covariant ShadRadioGroup<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.controller != widget.controller) {
+      effectiveController.removeListener(onValueChanged);
+      if (oldWidget.controller == null && widget.controller != null) {
+        _controller?.dispose();
+        _controller = null;
+      }
+      effectiveController.addListener(onValueChanged);
+    }
+
     if (oldWidget.initialValue != widget.initialValue) {
-      selected = widget.initialValue;
+      effectiveController.value = widget.initialValue;
+    }
+
+    if (oldWidget.enabled != widget.enabled) {
+      effectiveController.enabled = widget.enabled;
     }
   }
 
-  void select(T value, {bool hideOptions = true}) {
-    final changed = value != selected;
-    if (!changed) return;
-    setState(() => selected = value);
-    widget.onChanged?.call(value);
+  void onValueChanged() {
+    widget.onChanged?.call(effectiveController.value);
   }
 
   @override
@@ -130,8 +180,7 @@ class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
         WrapCrossAlignment.start;
 
     return ShadProvider(
-      data: this as ShadRadioGroupState<dynamic>,
-      notifyUpdate: (_) => true,
+      data: effectiveController as ShadRadioController<dynamic>,
       child: Wrap(
         direction: effectiveAxis,
         spacing: effectiveSpacing,
@@ -227,7 +276,7 @@ class ShadRadio<T> extends StatefulWidget {
 
   /// {@template ShadRadio.padding}
   /// The padding between the radio and the label, defaults to
-  /// `EdgeInsets.only(left: 8)`.
+  /// `EdgeInsetsDirectional.only(start: 8)`.
   /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
@@ -268,22 +317,19 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
     final theme = ShadTheme.of(context);
-    final inheritedRadioGroup =
-        context.watch<ShadRadioGroupState<dynamic>>() as ShadRadioGroupState<T>;
+    final inheritedController =
+        context.watch<ShadRadioController<dynamic>>() as ShadRadioController<T>;
 
     void onTap() {
-      inheritedRadioGroup.select(widget.value);
+      inheritedController.value = widget.value;
       if (!focusNode.hasFocus) {
         FocusScope.of(context).unfocus();
       }
     }
 
-    final selected = inheritedRadioGroup.selected == widget.value;
-    final enabled = widget.enabled && inheritedRadioGroup.widget.enabled;
-
     final effectiveDecoration =
         (theme.radioTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+            .merge(widget.decoration);
 
     final effectiveSize = widget.size ?? theme.radioTheme.size ?? 16;
     final effectiveCircleSize =
@@ -294,106 +340,120 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
         widget.duration ?? theme.radioTheme.duration ?? 100.milliseconds;
     final effectivePadding = widget.padding ??
         theme.radioTheme.padding ??
-        const EdgeInsets.only(left: 8);
+        const EdgeInsetsDirectional.only(start: 8);
 
     final effectiveRadioPadding = widget.radioPadding ??
         theme.radioTheme.radioPadding ??
         const EdgeInsets.only(top: 1);
 
-    final radio = Semantics(
-      checked: selected,
-      child: ShadDisabled(
-        showForbiddenCursor: true,
-        disabled: !enabled,
-        child: CallbackShortcuts(
-          bindings: {
-            const SingleActivator(LogicalKeyboardKey.enter): () {
-              if (!enabled) return;
-              onTap();
-            },
-          },
-          child: ShadFocusable(
-            focusNode: focusNode,
-            builder: (context, focused, child) {
-              return ShadDecorator(
-                focused: focused,
-                decoration: effectiveDecoration,
-                child: child,
-              );
-            },
-            child: MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: SizedBox.square(
-                dimension: effectiveSize,
-                child: AnimatedSwitcher(
-                  duration: effectiveDuration,
-                  child: selected
-                      ? Align(
-                          child: SizedBox.square(
-                            dimension: effectiveCircleSize,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: effectiveColor,
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
+
+    return ValueListenableBuilder(
+      valueListenable: inheritedController,
+      builder: (context, value, child) {
+        final selected = value == widget.value;
+        final enabled = widget.enabled && inheritedController.enabled;
+
+        final radio = Semantics(
+          checked: selected,
+          child: ShadDisabled(
+            showForbiddenCursor: true,
+            disabled: !enabled,
+            child: CallbackShortcuts(
+              bindings: {
+                for (final trigger in keyboardTriggers)
+                  trigger: () {
+                    if (!enabled) return;
+                    onTap();
+                  },
+              },
+              child: ShadFocusable(
+                focusNode: focusNode,
+                builder: (context, focused, child) {
+                  return ShadDecorator(
+                    focused: focused,
+                    decoration: effectiveDecoration,
+                    child: child,
+                  );
+                },
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: SizedBox.square(
+                    dimension: effectiveSize,
+                    child: AnimatedSwitcher(
+                      duration: effectiveDuration,
+                      child: selected
+                          ? Align(
+                              child: SizedBox.square(
+                                dimension: effectiveCircleSize,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: effectiveColor,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        )
-                      : const SizedBox(),
+                            )
+                          : const SizedBox(),
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
-    );
-    return ShadDisabled(
-      showForbiddenCursor: true,
-      disabled: !enabled,
-      disabledOpacity: 1,
-      child: GestureDetector(
-        onTap: enabled ? onTap : null,
-        child: Row(
-          textDirection: widget.direction,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: effectiveRadioPadding,
-              child: radio,
-            ),
-            if (widget.label != null)
-              Flexible(
-                child: Padding(
-                  padding: effectivePadding,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: DefaultTextStyle(
-                          style: theme.textTheme.muted.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: theme.colorScheme.foreground,
-                          ),
-                          child: widget.label!,
-                        ),
-                      ),
-                      if (widget.sublabel != null)
-                        MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: DefaultTextStyle(
-                            style: theme.textTheme.muted,
-                            child: widget.sublabel!,
-                          ),
-                        ),
-                    ],
-                  ),
+        );
+        return ShadDisabled(
+          showForbiddenCursor: true,
+          disabled: !enabled,
+          disabledOpacity: 1,
+          child: GestureDetector(
+            onTap: enabled ? onTap : null,
+            child: Row(
+              textDirection: widget.direction,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: effectiveRadioPadding,
+                  child: radio,
                 ),
-              ),
-          ],
-        ),
-      ),
+                if (widget.label != null)
+                  Flexible(
+                    child: Padding(
+                      padding: effectivePadding,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: DefaultTextStyle(
+                              style: theme.textTheme.muted.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: theme.colorScheme.foreground,
+                              ),
+                              child: widget.label!,
+                            ),
+                          ),
+                          if (widget.sublabel != null)
+                            MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: DefaultTextStyle(
+                                style: theme.textTheme.muted,
+                                child: widget.sublabel!,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

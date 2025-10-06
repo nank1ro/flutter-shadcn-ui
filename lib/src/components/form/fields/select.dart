@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/components/select.dart';
@@ -13,6 +13,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.id,
     super.key,
     super.onSaved,
+    super.forceErrorText,
     super.label,
     super.error,
     super.description,
@@ -57,10 +58,10 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     Widget? trailing,
 
     /// {@macro ShadSelect.padding}
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
 
     /// {@macro ShadSelect.optionsPadding}
-    EdgeInsets? optionsPadding,
+    EdgeInsetsGeometry? optionsPadding,
 
     /// {@macro ShadSelect.showScrollToTopChevron}
     bool? showScrollToTopChevron,
@@ -101,13 +102,16 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     /// {@macro ShadSelect.shrinkWrap}
     bool? shrinkWrap,
     this.controller,
+
+    /// {@macro ShadSelect.ensureSelectedVisible}
+    bool? ensureSelectedVisible,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
-            final state = field as _ShadFormBuilderSelectState;
+            final state = field as _ShadFormBuilderSelectState<T>;
 
             return ShadSelect<T>(
               options: options,
@@ -116,7 +120,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               selectedOptionBuilder: selectedOptionBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
-              initialValue: state.initialValue as T?,
+              initialValue: state.initialValue,
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
@@ -139,7 +143,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               groupId: groupId,
               itemCount: itemCount,
               shrinkWrap: shrinkWrap,
-              controller: controller,
+              controller: state.controller,
+              ensureSelectedVisible: ensureSelectedVisible,
             );
           },
         );
@@ -165,7 +170,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// The builder for the options of the [ShadSelect].
     Widget? Function(BuildContext, int)? optionsBuilder,
-    required ValueChanged<String> onSearchChanged,
+    ValueChanged<String>? onSearchChanged,
     Widget? placeholder,
     bool closeOnTapOutside = true,
     double? minWidth,
@@ -173,8 +178,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     double? maxHeight,
     ShadDecoration? decoration,
     Widget? trailing,
-    EdgeInsets? padding,
-    EdgeInsets? optionsPadding,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? optionsPadding,
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ScrollController? scrollController,
@@ -183,7 +188,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     Widget? searchDivider,
     Widget? searchInputLeading,
     Widget? searchPlaceholder,
-    EdgeInsets? searchPadding,
+    EdgeInsetsGeometry? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
     ShadPopoverController? popoverController,
@@ -207,13 +212,16 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.controller}
     this.controller,
+
+    /// {@macro ShadSelect.ensureSelectedVisible}
+    bool? ensureSelectedVisible,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
-            final state = field as _ShadFormBuilderSelectState;
+            final state = field as _ShadFormBuilderSelectState<T>;
 
             return ShadSelect<T>.withSearch(
               options: options,
@@ -222,9 +230,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               selectedOptionBuilder: selectedOptionBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
-              initialValue: state.initialValue as T?,
+              initialValue: state.initialValue,
               enabled: state.enabled,
-              onChanged: onChanged != null ? state.didChange : null,
+              onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
               anchor: anchor,
               minWidth: minWidth,
@@ -252,7 +260,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               groupId: groupId,
               itemCount: itemCount,
               shrinkWrap: shrinkWrap,
-              controller: controller,
+              controller: state.controller,
+              ensureSelectedVisible: ensureSelectedVisible,
             );
           },
         );
@@ -286,8 +295,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     double? maxHeight,
     ShadDecoration? decoration,
     Widget? trailing,
-    EdgeInsets? padding,
-    EdgeInsets? optionsPadding,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? optionsPadding,
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ScrollController? scrollController,
@@ -296,7 +305,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     Widget? searchDivider,
     Widget? searchInputLeading,
     Widget? searchPlaceholder,
-    EdgeInsets? searchPadding,
+    EdgeInsetsGeometry? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
     ShadPopoverController? popoverController,
@@ -320,11 +329,10 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.controller}
     this.controller,
+
+    /// {@macro ShadSelect.ensureSelectedVisible}
+    bool? ensureSelectedVisible,
   })  : assert(
-          variant == ShadSelectVariant.primary || onSearchChanged != null,
-          'onSearchChanged must be provided when variant is search',
-        ),
-        assert(
           variant == ShadSelectVariant.primary ||
               variant == ShadSelectVariant.search,
           '''The variant is not supported. Use primary or search or use ShadSelectMultipleFormField instead.''',
@@ -333,9 +341,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
-            final state = field as _ShadFormBuilderSelectState;
+            final state = field as _ShadFormBuilderSelectState<T>;
 
             return ShadSelect<T>.raw(
               variant: variant,
@@ -344,9 +352,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               selectedOptionBuilder: selectedOptionBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
-              initialValue: state.initialValue as T?,
+              initialValue: state.initialValue,
               enabled: state.enabled,
-              onChanged: onChanged != null ? state.didChange : null,
+              onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
               anchor: anchor,
               minWidth: minWidth,
@@ -374,7 +382,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               groupId: groupId,
               itemCount: itemCount,
               shrinkWrap: shrinkWrap,
-              controller: controller,
+              controller: state.controller,
+              ensureSelectedVisible: ensureSelectedVisible,
             );
           },
         );
@@ -389,14 +398,35 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
 class _ShadFormBuilderSelectState<T>
     extends ShadFormBuilderFieldState<ShadSelectFormField<T>, T> {
+  ShadSelectController<T>? _controller;
+
+  ShadSelectController<T> get controller =>
+      widget.controller ??
+      (_controller ??= ShadSelectController<T>(
+        initialValue: {if (initialValue is T) initialValue as T},
+      ));
+
   @override
   void initState() {
     super.initState();
-    if (widget.controller != null) {
-      widget.controller!.addListener(() {
-        didChange(widget.controller!.value.firstOrNull);
-      });
-    }
+    controller.addListener(onControllerChange);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(onControllerChange);
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  void onControllerChange() {
+    didChange(controller.value.firstOrNull);
+  }
+
+  @override
+  void reset() {
+    super.reset();
+    controller.value = initialValue is T ? <T>{initialValue as T} : <T>{};
   }
 }
 
@@ -429,8 +459,8 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     double? maxHeight,
     ShadDecoration? decoration,
     Widget? trailing,
-    EdgeInsets? padding,
-    EdgeInsets? optionsPadding,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? optionsPadding,
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ScrollController? scrollController,
@@ -448,13 +478,16 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     /// {@macro ShadSelect.allowDeselection}
     bool allowDeselection = true,
     this.controller,
+
+    /// {@macro ShadSelect.ensureSelectedVisible}
+    bool? ensureSelectedVisible,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
-            final state = field as _ShadFormBuilderSelectMultipleState;
+            final state = field as _ShadFormBuilderSelectMultipleState<T>;
 
             return ShadSelect<T>.multiple(
               options: options,
@@ -462,7 +495,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               selectedOptionsBuilder: selectedOptionsBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
-              initialValues: state.initialValue as Set<T>? ?? {},
+              initialValues: state.initialValue ?? {},
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
@@ -483,7 +516,8 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               footer: footer,
               closeOnSelect: closeOnSelect,
               allowDeselection: allowDeselection,
-              controller: controller,
+              controller: state.controller,
+              ensureSelectedVisible: ensureSelectedVisible,
             );
           },
         );
@@ -509,7 +543,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// The builder for the options of the [ShadSelect].
     Widget? Function(BuildContext, int)? optionsBuilder,
-    required ValueChanged<String> onSearchChanged,
+    ValueChanged<String>? onSearchChanged,
     Widget? placeholder,
     bool closeOnTapOutside = true,
     double? minWidth,
@@ -517,8 +551,8 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     double? maxHeight,
     ShadDecoration? decoration,
     Widget? trailing,
-    EdgeInsets? padding,
-    EdgeInsets? optionsPadding,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? optionsPadding,
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ScrollController? scrollController,
@@ -527,7 +561,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     Widget? searchDivider,
     Widget? searchInputLeading,
     Widget? searchPlaceholder,
-    EdgeInsets? searchPadding,
+    EdgeInsetsGeometry? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
     ShadPopoverController? popoverController,
@@ -542,13 +576,16 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     /// {@macro ShadSelect.allowDeselection}
     bool allowDeselection = true,
     this.controller,
+
+    /// {@macro ShadSelect.ensureSelectedVisible}
+    bool? ensureSelectedVisible,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
-            final state = field as _ShadFormBuilderSelectMultipleState;
+            final state = field as _ShadFormBuilderSelectMultipleState<T>;
 
             return ShadSelect<T>.multipleWithSearch(
               options: options,
@@ -556,7 +593,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               selectedOptionsBuilder: selectedOptionsBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
-              initialValues: state.initialValue as Set<T>? ?? {},
+              initialValues: state.initialValue ?? {},
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
@@ -584,7 +621,8 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               footer: footer,
               closeOnSelect: closeOnSelect,
               allowDeselection: allowDeselection,
-              controller: controller,
+              controller: state.controller,
+              ensureSelectedVisible: ensureSelectedVisible,
             );
           },
         );
@@ -618,8 +656,8 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     double? maxHeight,
     ShadDecoration? decoration,
     Widget? trailing,
-    EdgeInsets? padding,
-    EdgeInsets? optionsPadding,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? optionsPadding,
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ScrollController? scrollController,
@@ -628,7 +666,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     Widget? searchDivider,
     Widget? searchInputLeading,
     Widget? searchPlaceholder,
-    EdgeInsets? searchPadding,
+    EdgeInsetsGeometry? searchPadding,
     Widget? search,
     bool? clearSearchOnClose,
     ShadPopoverController? popoverController,
@@ -641,6 +679,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     bool allowDeselection = true,
     bool closeOnSelect = true,
     this.controller,
+
+    /// {@macro ShadSelect.ensureSelectedVisible}
+    bool? ensureSelectedVisible,
   })  : assert(
           variant == ShadSelectVariant.multiple ||
               variant == ShadSelectVariant.multipleWithSearch,
@@ -650,9 +691,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
-            final state = field as _ShadFormBuilderSelectMultipleState;
+            final state = field as _ShadFormBuilderSelectMultipleState<T>;
 
             return ShadSelect<T>.raw(
               variant: variant,
@@ -661,7 +702,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               selectedOptionsBuilder: selectedOptionsBuilder,
               focusNode: state.focusNode,
               placeholder: placeholder,
-              initialValues: state.initialValue as Set<T>? ?? {},
+              initialValues: state.initialValue ?? {},
               enabled: state.enabled,
               onMultipleChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
@@ -688,7 +729,8 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               footer: footer,
               allowDeselection: allowDeselection,
               closeOnSelect: closeOnSelect,
-              controller: controller,
+              controller: state.controller,
+              ensureSelectedVisible: ensureSelectedVisible,
             );
           },
         );
@@ -703,13 +745,32 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
 class _ShadFormBuilderSelectMultipleState<T>
     extends ShadFormBuilderFieldState<ShadSelectMultipleFormField<T>, Set<T>> {
+  ShadSelectController<T>? _controller;
+
+  ShadSelectController<T> get controller =>
+      widget.controller ??
+      (_controller ??= ShadSelectController<T>(initialValue: initialValue));
+
   @override
   void initState() {
     super.initState();
-    if (widget.controller != null) {
-      widget.controller!.addListener(() {
-        didChange(widget.controller!.value.toSet());
-      });
-    }
+    controller.addListener(onControllerChange);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(onControllerChange);
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  void onControllerChange() {
+    didChange(controller.value.toSet());
+  }
+
+  @override
+  void reset() {
+    super.reset();
+    controller.value = initialValue ?? {};
   }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -8,6 +8,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     super.id,
     super.key,
     super.onSaved,
+    super.forceErrorText,
     super.label,
     super.error,
     super.description,
@@ -107,10 +108,13 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     double? fieldWidth,
 
     /// {@macro ShadTimePicker.fieldPadding}
-    EdgeInsets? fieldPadding,
+    EdgeInsetsGeometry? fieldPadding,
 
     /// {@macro ShadTimePicker.fieldDecoration}
     ShadDecoration? fieldDecoration,
+
+    /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+    WidgetBuilder? keyboardToolbarBuilder,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderTimePickerState;
@@ -147,6 +151,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
               fieldWidth: fieldWidth,
               fieldPadding: fieldPadding,
               fieldDecoration: fieldDecoration,
+              keyboardToolbarBuilder: keyboardToolbarBuilder,
             );
           },
         );
@@ -238,7 +243,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     int minSecond = 0,
 
     /// {@macro ShadTimePicker.initialDayPeriod}
-    DayPeriod? initialDayPeriod,
+    ShadDayPeriod? initialDayPeriod,
 
     /// {@macro ShadTimePicker.periodLabel}
     Widget? periodLabel,
@@ -268,13 +273,16 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     double? fieldWidth,
 
     /// {@macro ShadTimePicker.fieldPadding}
-    EdgeInsets? fieldPadding,
+    EdgeInsetsGeometry? fieldPadding,
 
     /// {@macro ShadTimePicker.fieldDecoration}
     ShadDecoration? fieldDecoration,
 
     /// {@macro ShadTimePicker.periodDecoration}
     ShadDecoration? periodDecoration,
+
+    /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+    WidgetBuilder? keyboardToolbarBuilder,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderTimePickerState;
@@ -317,6 +325,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
               fieldPadding: fieldPadding,
               fieldDecoration: fieldDecoration,
               periodDecoration: periodDecoration,
+              keyboardToolbarBuilder: keyboardToolbarBuilder,
             );
           },
         );
@@ -409,7 +418,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     int minSecond = 0,
 
     /// {@macro ShadTimePicker.initialDayPeriod}
-    DayPeriod? initialDayPeriod,
+    ShadDayPeriod? initialDayPeriod,
 
     /// {@macro ShadTimePicker.periodLabel}
     Widget? periodLabel,
@@ -439,13 +448,16 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     double? fieldWidth,
 
     /// {@macro ShadTimePicker.fieldPadding}
-    EdgeInsets? fieldPadding,
+    EdgeInsetsGeometry? fieldPadding,
 
     /// {@macro ShadTimePicker.fieldDecoration}
     ShadDecoration? fieldDecoration,
 
     /// {@macro ShadTimePicker.periodDecoration}
     ShadDecoration? periodDecoration,
+
+    /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+    WidgetBuilder? keyboardToolbarBuilder,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderTimePickerState;
@@ -489,6 +501,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
               fieldPadding: fieldPadding,
               fieldDecoration: fieldDecoration,
               periodDecoration: periodDecoration,
+              keyboardToolbarBuilder: keyboardToolbarBuilder,
             );
           },
         );

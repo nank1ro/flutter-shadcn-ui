@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
@@ -87,7 +87,7 @@ class ShadTooltip extends StatefulWidget {
   ///
   /// Defaults to `EdgeInsets.symmetric(horizontal: 12, vertical: 6)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTooltip.decoration}
   /// The decoration of the tooltip.
@@ -195,6 +195,27 @@ class _ShadTooltipState extends State<ShadTooltip>
     hasFocus ? controller.show() : controller.hide();
   }
 
+  Future<void> onHoverChange(bool value) async {
+    if (hovered == value) return;
+    hovered = value;
+    if (value) {
+      if (widget.waitDuration != null) {
+        await Future<void>.delayed(widget.waitDuration!);
+      }
+      if (hovered) {
+        controller.show();
+      }
+    } else {
+      if (widget.showDuration != null) {
+        await Future<void>.delayed(widget.showDuration!);
+      }
+      if (!hovered && !hasFocus) {
+        await animationController.reverse();
+        controller.hide();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -203,7 +224,7 @@ class _ShadTooltipState extends State<ShadTooltip>
     final effectivePadding = widget.padding ?? theme.tooltipTheme.padding;
     final effectiveDecoration =
         (theme.tooltipTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+            .merge(widget.decoration);
 
     final effectiveAnchor = widget.anchor ??
         theme.tooltipTheme.anchor ??
@@ -213,12 +234,20 @@ class _ShadTooltipState extends State<ShadTooltip>
           targetAnchor: Alignment.topCenter,
         );
 
-    final effectiveHoverStrategies = widget.hoverStrategies ??
+    final hoverStrategies = widget.hoverStrategies ??
         theme.tooltipTheme.hoverStrategies ??
         theme.hoverStrategies;
 
     final effectiveLongPressDuration =
         widget.longPressDuration ?? theme.tooltipTheme.longPressDuration;
+
+    final effectiveHoverStrategies = hoverStrategies.copyWith(
+      onHoverChange: (value) {
+        hoverStrategies.onHoverChange?.call(value);
+        onHoverChange(value);
+      },
+      longPressDuration: effectiveLongPressDuration,
+    );
 
     final effectiveDuration = widget.duration ?? theme.tooltipTheme.duration;
     final effectiveReverseDuration =
@@ -228,64 +257,43 @@ class _ShadTooltipState extends State<ShadTooltip>
     animationController.duration = effectiveDuration;
     animationController.reverseDuration = effectiveReverseDuration;
 
-    return ShadGestureDetector(
-      longPressDuration: effectiveLongPressDuration,
-      hoverStrategies: effectiveHoverStrategies,
-      onHoverChange: (value) async {
-        if (hovered == value) return;
-        hovered = value;
-        if (value) {
-          if (widget.waitDuration != null) {
-            await Future<void>.delayed(widget.waitDuration!);
-          }
-          if (hovered) {
-            controller.show();
-          }
-        } else {
-          if (widget.showDuration != null) {
-            await Future<void>.delayed(widget.showDuration!);
-          }
-          if (!hovered && !hasFocus) {
-            await animationController.reverse();
-            controller.hide();
-          }
-        }
-      },
-      child: ListenableBuilder(
-        listenable: controller,
-        builder: (context, child) {
-          return ShadPortal(
-            visible: controller.isOpen,
-            anchor: effectiveAnchor,
-            portalBuilder: (context) {
-              Widget tooltip = ShadDecorator(
-                decoration: effectiveDecoration,
-                child: Padding(
-                  padding: effectivePadding ?? EdgeInsets.zero,
-                  child: DefaultTextStyle(
-                    style: theme.textTheme.muted
-                        .copyWith(color: theme.colorScheme.popoverForeground),
-                    child: widget.builder(context),
-                  ),
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, child) {
+        return ShadPortal(
+          visible: controller.isOpen,
+          anchor: effectiveAnchor,
+          portalBuilder: (context) {
+            Widget tooltip = ShadDecorator(
+              decoration: effectiveDecoration,
+              child: Padding(
+                padding: effectivePadding ?? EdgeInsets.zero,
+                child: DefaultTextStyle(
+                  style: theme.textTheme.muted
+                      .copyWith(color: theme.colorScheme.popoverForeground),
+                  child: widget.builder(context),
                 ),
-              );
+              ),
+            );
 
-              if (effectiveEffects.isNotEmpty) {
-                tooltip = Animate(
-                  controller: animationController,
-                  effects: effectiveEffects,
-                  child: tooltip,
-                );
-              }
-              return ShadMouseArea(groupId: 'tooltip', child: tooltip);
-            },
-            child: ShadMouseArea(
-              groupId: 'tooltip',
+            if (effectiveEffects.isNotEmpty) {
+              tooltip = Animate(
+                controller: animationController,
+                effects: effectiveEffects,
+                child: tooltip,
+              );
+            }
+            return ShadMouseArea(groupId: 'tooltip', child: tooltip);
+          },
+          child: ShadMouseArea(
+            groupId: 'tooltip',
+            child: ShadTheme(
+              data: theme.copyWith(hoverStrategies: effectiveHoverStrategies),
               child: widget.child,
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/input_otp.dart';
 
@@ -8,6 +8,7 @@ class ShadInputOTPFormField extends ShadFormBuilderField<String> {
     super.id,
     super.key,
     super.onSaved,
+    super.forceErrorText,
 
     /// {@macro ShadFormBuilderField.validator}
     String? Function(String)? validator,

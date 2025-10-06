@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 
@@ -25,6 +24,7 @@ class ShadRedColorScheme extends ShadColorScheme {
     required super.input,
     required super.ring,
     required super.selection,
+    super.custom,
   });
 
   const ShadRedColorScheme.light({
@@ -48,6 +48,7 @@ class ShadRedColorScheme extends ShadColorScheme {
     super.input = const Color(0xffe5e5e5),
     super.ring = const Color(0xffdc2626),
     super.selection = const Color(0xFFB4D7FF),
+    super.custom,
   });
 
   const ShadRedColorScheme.dark({
@@ -71,5 +72,6 @@ class ShadRedColorScheme extends ShadColorScheme {
     super.input = const Color(0xff262626),
     super.ring = const Color(0xffdc2626),
     super.selection = const Color(0xFF355172),
+    super.custom,
   });
 }

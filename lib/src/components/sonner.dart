@@ -3,8 +3,8 @@ import 'dart:math' as math;
 
 import 'package:boxy/boxy.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -379,7 +379,7 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                           // This ColoredBox keeps the hover working even for
                           // the empty spaces
                           child: ColoredBox(
-                            color: Colors.transparent,
+                            color: const Color(0x00000000),
                             child: CustomBoxy(
                               delegate: SonnerBoxy(
                                 animation: animation,

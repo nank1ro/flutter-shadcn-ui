@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/calendar.dart';
@@ -18,6 +18,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     super.id,
     super.key,
     super.onSaved,
+    super.forceErrorText,
     super.label,
     super.error,
     super.description,
@@ -63,7 +64,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     ShadDecoration? calendarDecoration,
 
     /// {@macro ShadPopover.padding}
-    EdgeInsets? popoverPadding,
+    EdgeInsetsGeometry? popoverPadding,
 
     /// {@macro ShadCalendar.multipleSelected}
     List<DateTime>? multipleSelected,
@@ -123,7 +124,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     int? max,
 
     /// {@macro ShadCalendar.selectableDayPredicate}
-    SelectableDayPredicate? selectableDayPredicate,
+    bool Function(DateTime day)? selectableDayPredicate,
 
     /// {@macro ShadCalendar.captionLayout}
     ShadCalendarCaptionLayout? captionLayout,
@@ -138,10 +139,10 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     double? monthSelectorMinWidth,
 
     /// {@macro ShadCalendar.yearSelectorPadding}
-    EdgeInsets? yearSelectorPadding,
+    EdgeInsetsGeometry? yearSelectorPadding,
 
     /// {@macro ShadCalendar.monthSelectorPadding}
-    EdgeInsets? monthSelectorPadding,
+    EdgeInsetsGeometry? monthSelectorPadding,
 
     /// {@macro ShadCalendar.navigationButtonSize}
     double? navigationButtonSize,
@@ -156,7 +157,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     IconData? forwardNavigationButtonIconData,
 
     /// {@macro ShadCalendar.navigationButtonPadding}
-    EdgeInsets? navigationButtonPadding,
+    EdgeInsetsGeometry? navigationButtonPadding,
 
     /// {@macro ShadCalendar.navigationButtonDisabledOpacity}
     double? navigationButtonDisabledOpacity,
@@ -174,7 +175,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     double? calendarHeaderHeight,
 
     /// {@macro ShadCalendar.headerPadding}
-    EdgeInsets? calendarHeaderPadding,
+    EdgeInsetsGeometry? calendarHeaderPadding,
 
     /// {@macro ShadCalendar.captionLayoutGap}
     double? captionLayoutGap,
@@ -210,7 +211,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     double? dayButtonOutsideMonthOpacity,
 
     /// {@macro ShadCalendar.dayButtonPadding}
-    EdgeInsets? dayButtonPadding,
+    EdgeInsetsGeometry? dayButtonPadding,
 
     /// {@macro ShadCalendar.dayButtonDecoration}
     ShadDecoration? dayButtonDecoration,

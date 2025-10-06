@@ -9,21 +9,30 @@ export default defineConfig({
       title: 'Flutter Shadcn UI docs',
       components: {
         LanguageSelect: './src/components/SelectColor.astro',
-
       },
+      customCss: ['./src/fonts.css'],
       social: {
         github: 'https://github.com/nank1ro',
         twitter: 'https://twitter.com/nank1ro'
       },
-      head: [{
-        tag: 'meta',
-        attrs: {
-          property: 'og:image',
-          content: 'https://flutter-shadcn-ui.mariuti.com/shadcn-banner.png',
-        }
-      }],
+      head: [
+        {
+          tag: 'meta',
+          attrs: {
+            property: 'og:image',
+            content: 'https://flutter-shadcn-ui.mariuti.com/shadcn-banner.png',
+          }
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'preconnect',
+            href: 'https://cdn.jsdelivr.net',
+            crossorigin: ''
+          },
+        },
+      ],
       sidebar: [
-       
         {
           label: 'mariuti.com',
           link: 'https://mariuti.com',
@@ -69,7 +78,7 @@ export default defineConfig({
             {
               label: 'Notes Calculator',
               link: 'https://notescalculator.com',
-              attrs: { target: '_blank' },
+              badge: { text: 'Author' },
             },
             {
               label: 'Pic Gen',
@@ -116,9 +125,24 @@ export default defineConfig({
               link: 'https://github.com/mirarr-app/Gessential',
               attrs: { target: '_blank', rel: 'noopener noreferrer' },
             },
+            {
+              label: 'Gift Grab',
+              link: 'https://giftgrab.codemagic.app',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
+              label: 'Movie Paradise',
+              link: 'https://movieparadise.app/',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
+              label: 'ZikZak AI',
+              link: 'https://zuzu.dev',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
           ],
         }
-      ], 
+      ],
     }),
   ],
   site: 'https://flutter-shadcn-ui.mariuti.com',

@@ -1,0 +1,54 @@
+name: Check Prohibited Imports
+
+on:
+  workflow_call:
+
+jobs:
+  check-imports:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Check for prohibited imports
+      run: |
+        echo "Checking for prohibited Material and Cupertino imports in lib directory..."
+
+        # Define excluded files
+        EXCLUDED_FILES=(
+          "lib/src/app.dart"
+        )
+
+        # Build grep exclusion pattern
+        GREP_EXCLUDE=""
+        for file in "${EXCLUDED_FILES[@]}"; do
+          GREP_EXCLUDE="$GREP_EXCLUDE | grep -v \"$file\""
+        done
+
+        # Check for material.dart imports (excluding specified files)
+        MATERIAL_IMPORTS=$(eval "grep -r \"import.*material\.dart\" lib/ $GREP_EXCLUDE || true")
+
+        # Check for cupertino.dart imports (excluding specified files)
+        CUPERTINO_IMPORTS=$(eval "grep -r \"import.*cupertino\.dart\" lib/ $GREP_EXCLUDE || true")
+
+        # Report all findings first
+        FOUND_VIOLATIONS=false
+
+        if [ ! -z "$MATERIAL_IMPORTS" ]; then
+          echo "❌ Found prohibited material.dart imports:"
+          echo "$MATERIAL_IMPORTS"
+          FOUND_VIOLATIONS=true
+        fi
+
+        if [ ! -z "$CUPERTINO_IMPORTS" ]; then
+          echo "❌ Found prohibited cupertino.dart imports:"
+          echo "$CUPERTINO_IMPORTS"
+          FOUND_VIOLATIONS=true
+        fi
+
+        # Exit with error if any violations were found
+        if [ "$FOUND_VIOLATIONS" = true ]; then
+          exit 1
+        fi
+
+        echo "✅ No prohibited imports found!"

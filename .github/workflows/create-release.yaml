@@ -1,11 +1,12 @@
-name: Create Release on Main Push
+name: Create Release
 
-# This workflow runs on every push to the 'main' branch.
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch: # Allows manual triggering of the workflow
+  workflow_run:
+    workflows: ["Flutter test"]
+    branches: [main]
+    types:
+      - completed
 
 # Grant permissions for the workflow to create releases.
 permissions:
@@ -14,6 +15,7 @@ permissions:
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,16 +24,13 @@ jobs:
         id: extract_info
         run: |
           # Extract the version from pubspec.yaml.
-          # It looks for the line starting with "version:", removes that prefix, and trims whitespace.
           VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //')
           echo "Found version: $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
           # Extract the release notes for the current version from CHANGELOG.md.
-          # This awk script finds the line with the version (e.g., "## 0.28.4") and prints all
-          # subsequent lines until it finds the next heading (another line starting with "##")
-          # or the end of the file.
-          CHANGELOG_BODY=$(awk -v ver="## $VERSION" '$0 ~ ver {p=1; next} /^## / {p=0} p' CHANGELOG.md)
+          # Escape the + character in version string for regex matching
+          CHANGELOG_BODY=$(awk -v ver="## $VERSION" 'BEGIN{gsub(/\+/, "\\+", ver)} $0 ~ ver {p=1; next} /^## / {p=0} p' CHANGELOG.md)
 
           # Check if changelog body was found
           if [ -z "$CHANGELOG_BODY" ]; then
@@ -39,27 +38,43 @@ jobs:
             exit 1
           fi
 
-          # To handle multiline changelog entries correctly, we write them to a file
-          # and pass the filename to the next step.
+          # Write changelog to a file for the release creation step
           echo "$CHANGELOG_BODY" > release_notes.md
           echo "CHANGELOG_FILE=release_notes.md" >> $GITHUB_OUTPUT
+          
+          # Pass CHANGELOG_BODY as-is without escaping newlines
+          echo "CHANGELOG_BODY<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG_BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release (if it doesn't exist)
+        id: create_release
         env:
           GH_TOKEN: ${{ secrets.PAT }}
         run: |
-          # Create a tag name, commonly prefixed with 'v'.
           TAG="v${{ steps.extract_info.outputs.VERSION }}"
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
 
-          # Check if a release with this tag already exists.
-          # The 'gh release view' command will exit with a non-zero status code if the release is not found.
           if gh release view "$TAG" > /dev/null 2>&1; then
             echo "Release '$TAG' already exists. Skipping."
+            echo "created=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          # Create the release using the GitHub CLI.
           echo "Creating release '$TAG'..."
           gh release create "$TAG" \
             --title "$TAG" \
             --notes-file "${{ steps.extract_info.outputs.CHANGELOG_FILE }}"
+          echo "created=true" >> $GITHUB_OUTPUT
+
+      - name: Notify Discord
+        if: steps.create_release.outputs.created == 'true'
+        uses: appleboy/discord-action@v1.2.0
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: |
+            Released v${{ steps.extract_info.outputs.VERSION }}
+
+            ```markdown
+            ${{ steps.extract_info.outputs.CHANGELOG_BODY }}
+            ```

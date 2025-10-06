@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -12,6 +12,7 @@ import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/extensions/date_time.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
 
@@ -164,6 +165,7 @@ class ShadDatePicker extends StatefulWidget {
     this.onFocusChange,
     this.iconData,
     this.expands,
+    this.popoverReverseDuration,
   })  : variant = ShadDatePickerVariant.single,
         formatDateRange = null,
         selectedRange = null;
@@ -305,6 +307,7 @@ class ShadDatePicker extends StatefulWidget {
     this.onFocusChange,
     this.iconData,
     this.expands,
+    this.popoverReverseDuration,
   })  : variant = ShadDatePickerVariant.range,
         selected = null,
         formatDate = null,
@@ -451,6 +454,7 @@ class ShadDatePicker extends StatefulWidget {
     this.formatDateRange,
     this.placeholder,
     this.expands,
+    this.popoverReverseDuration,
   });
 
   /// {@template ShadDatePicker.placeholder}
@@ -519,7 +523,7 @@ class ShadDatePicker extends StatefulWidget {
   final ShadDecoration? calendarDecoration;
 
   /// {@macro ShadPopover.padding}
-  final EdgeInsets? popoverPadding;
+  final EdgeInsetsGeometry? popoverPadding;
 
   /// {@macro ShadCalendar.multipleSelected}
   final List<DateTime>? multipleSelected;
@@ -582,7 +586,7 @@ class ShadDatePicker extends StatefulWidget {
   final int? max;
 
   /// {@macro ShadCalendar.selectableDayPredicate}
-  final SelectableDayPredicate? selectableDayPredicate;
+  final bool Function(DateTime day)? selectableDayPredicate;
 
   /// {@macro ShadCalendar.onRangeChanged}
   final ValueChanged<ShadDateTimeRange?>? onRangeChanged;
@@ -600,10 +604,10 @@ class ShadDatePicker extends StatefulWidget {
   final double? monthSelectorMinWidth;
 
   /// {@macro ShadCalendar.yearSelectorPadding}
-  final EdgeInsets? yearSelectorPadding;
+  final EdgeInsetsGeometry? yearSelectorPadding;
 
   /// {@macro ShadCalendar.monthSelectorPadding}
-  final EdgeInsets? monthSelectorPadding;
+  final EdgeInsetsGeometry? monthSelectorPadding;
 
   /// {@macro ShadCalendar.navigationButtonSize}
   final double? navigationButtonSize;
@@ -618,7 +622,7 @@ class ShadDatePicker extends StatefulWidget {
   final IconData? forwardNavigationButtonIconData;
 
   /// {@macro ShadCalendar.navigationButtonPadding}
-  final EdgeInsets? navigationButtonPadding;
+  final EdgeInsetsGeometry? navigationButtonPadding;
 
   /// {@macro ShadCalendar.navigationButtonDisabledOpacity}
   final double? navigationButtonDisabledOpacity;
@@ -639,7 +643,7 @@ class ShadDatePicker extends StatefulWidget {
   final double? calendarHeaderHeight;
 
   /// {@macro ShadCalendar.headerPadding}
-  final EdgeInsets? calendarHeaderPadding;
+  final EdgeInsetsGeometry? calendarHeaderPadding;
 
   /// {@macro ShadCalendar.captionLayoutGap}
   final double? captionLayoutGap;
@@ -648,7 +652,7 @@ class ShadDatePicker extends StatefulWidget {
   final TextStyle? calendarHeaderTextStyle;
 
   /// {@macro ShadCalendar.weekdaysPadding}
-  final EdgeInsets? weekdaysPadding;
+  final EdgeInsetsGeometry? weekdaysPadding;
 
   /// {@macro ShadCalendar.weekdaysTextStyle}
   final TextStyle? weekdaysTextStyle;
@@ -675,7 +679,7 @@ class ShadDatePicker extends StatefulWidget {
   final double? dayButtonOutsideMonthOpacity;
 
   /// {@macro ShadCalendar.dayButtonPadding}
-  final EdgeInsets? dayButtonPadding;
+  final EdgeInsetsGeometry? dayButtonPadding;
 
   /// {@macro ShadCalendar.dayButtonDecoration}
   final ShadDecoration? dayButtonDecoration;
@@ -746,6 +750,9 @@ class ShadDatePicker extends StatefulWidget {
 
   /// {@macro ShadPopover.useSameGroupIdForChild}
   final bool useSameGroupIdForChild;
+
+  /// {@macro ShadPopover.reverseDuration}
+  final Duration? popoverReverseDuration;
 
   // ---
   // BUTTON
@@ -999,6 +1006,7 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
       groupId: effectiveGroupId,
       padding: widget.popoverPadding ?? theme.datePickerTheme.popoverPadding,
       focusNode: widget.focusNode,
+      closeOnTapOutside: widget.closeOnTapOutside,
       anchor: widget.anchor ?? theme.datePickerTheme.anchor,
       effects: widget.effects ?? theme.datePickerTheme.effects,
       shadows: widget.shadows ?? theme.datePickerTheme.shadows,
@@ -1007,6 +1015,8 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
       filter: widget.filter ?? theme.datePickerTheme.filter,
       areaGroupId: widget.areaGroupId,
       useSameGroupIdForChild: widget.useSameGroupIdForChild,
+      reverseDuration: widget.popoverReverseDuration ??
+          theme.datePickerTheme.popoverReverseDuration,
       popover: (context) {
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -1246,11 +1256,9 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
                     },
                   )
                 : DefaultTextStyle(
-                    style: theme.textTheme.muted,
-                    child: widget.placeholder ??
-                        Text(
-                          MaterialLocalizations.of(context).datePickerHelpText,
-                        ),
+                    style: theme.textTheme.muted
+                        .fallback(color: theme.colorScheme.mutedForeground),
+                    child: widget.placeholder ?? const Text('Select date'),
                   )),
       ),
     );

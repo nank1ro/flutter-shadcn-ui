@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -12,6 +12,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
     super.key,
     super.id,
     super.onSaved,
+    super.forceErrorText,
     String? Function(String)? validator,
     String? initialValue,
     super.enabled,
@@ -35,14 +36,17 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
     /// {@macro ShadTextarea.placeholderStyle}
     TextStyle? placeholderStyle,
 
+    /// {@macro ShadTextarea.alignment}
+    AlignmentGeometry? alignment,
+
     /// {@macro ShadTextarea.placeholderAlignment}
     AlignmentGeometry? placeholderAlignment,
 
     /// {@macro ShadTextarea.padding}
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
 
     /// {@macro ShadTextarea.inputPadding}
-    EdgeInsets? inputPadding,
+    EdgeInsetsGeometry? inputPadding,
 
     /// {@macro ShadTextarea.gap}
     double? gap,
@@ -88,7 +92,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
         TextMagnifierConfiguration.disabled,
 
     /// {@macro ShadTextarea.cursorWidth}
-    double cursorWidth = 2.0,
+    double? cursorWidth,
 
     /// {@macro ShadTextarea.cursorHeight}
     double? cursorHeight,
@@ -182,6 +186,9 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadTextarea.groupId}
     Object? groupId,
+
+    /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+    WidgetBuilder? keyboardToolbarBuilder,
   }) : super(
           initialValue: controller != null ? controller.text : initialValue,
           validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -189,7 +196,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
           decorationBuilder: (context) =>
               (ShadTheme.of(context).inputTheme.decoration ??
                       const ShadDecoration())
-                  .mergeWith(decoration),
+                  .merge(decoration),
           builder: (field) {
             final state = field as _ShadFormBuilderTextareaState;
             return ShadTextarea(
@@ -200,7 +207,6 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
               focusNode: state.focusNode,
               readOnly: readOnly,
               decoration: state.decoration,
-              initialValue: initialValue,
               style: style,
               cursorColor: cursorColor,
               selectionColor: selectionColor,
@@ -212,13 +218,13 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
               placeholder: placeholder,
               placeholderStyle: placeholderStyle,
               placeholderAlignment: placeholderAlignment,
+              alignment: alignment,
               padding: padding,
               inputPadding: inputPadding,
               gap: gap,
               constraints: constraints,
               mainAxisAlignment: mainAxisAlignment,
               crossAxisAlignment: crossAxisAlignment,
-              onChanged: onChanged,
               onEditingComplete: onEditingComplete,
               onSubmitted: onSubmitted,
               onAppPrivateCommand: onAppPrivateCommand,
@@ -252,6 +258,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
               resizeHandleBuilder: resizeHandleBuilder,
               strutStyle: strutStyle,
               groupId: groupId,
+              keyboardToolbarBuilder: keyboardToolbarBuilder,
             );
           },
         );

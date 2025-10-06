@@ -57,18 +57,21 @@ class _PasswordInputState extends State<PasswordInput> {
     return ShadInput(
       placeholder: const Text('Password'),
       obscureText: obscure,
-      leading: const Padding(
-        padding: EdgeInsets.all(4.0),
-        child: Icon(LucideIcons.lock),
-      ),
-      trailing: ShadIconButton(
-        width: 24,
-        height: 24,
-        padding: EdgeInsets.zero,
-        icon: Icon(obscure ? LucideIcons.eyeOff : LucideIcons.eye),
-        onPressed: () {
-          setState(() => obscure = !obscure);
-        },
+      leading: Icon(LucideIcons.lock),
+      trailing: SizedBox.square(
+        dimension: 24,
+        child: OverflowBox(
+          maxWidth: 28,
+          maxHeight: 28,
+          child: ShadIconButton(
+            iconSize: 20,
+            padding: EdgeInsets.all(2),
+            icon: Icon(obscure ? LucideIcons.eyeOff : LucideIcons.eye),
+            onPressed: () {
+              setState(() => obscure = !obscure);
+            },
+          ),
+        ),
       ),
     );
   }
