@@ -1,5 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/icon_button.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 /// {@template ShadDefaultKeyboardToolbar}
 /// A default keyboard toolbar with "Previous", "Next", and "Done" buttons.

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/utils/provider.dart';
 
 class ShadMouseCursorController extends ChangeNotifier {
   ShadMouseCursorController({MouseCursor cursor = MouseCursor.defer})
