@@ -39,7 +39,7 @@ jobs:
           fi
 
       - name: Commit generated files
-        if: steps.verify-changed-files.outputs.changed == 'true'
+        if: steps.verify-changed-files.outputs.changed == 'true' && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
