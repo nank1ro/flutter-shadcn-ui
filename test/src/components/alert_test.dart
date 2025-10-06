@@ -4,8 +4,6 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/alert.dart';
 
-import '../../extra/pump_async_widget.dart';
-
 void main() {
   Widget createTestWidget(Widget child) {
     return ShadApp(
@@ -18,7 +16,7 @@ void main() {
   group('ShadAlert', () {
     testWidgets('renders primary variant correctly',
         (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAlert(
             title: Text('Primary Alert'),
@@ -40,7 +38,7 @@ void main() {
 
     testWidgets('renders destructive variant correctly',
         (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAlert.destructive(
             title: Text('Error Alert'),
@@ -58,7 +56,7 @@ void main() {
 
     testWidgets('renders without icon when not provided',
         (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAlert(
             title: Text('No Icon Alert'),
@@ -79,7 +77,7 @@ void main() {
       const customColor = Colors.red;
       const customPadding = EdgeInsets.all(20);
 
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAlert(
             title: Text('Styled Alert'),
@@ -129,7 +127,7 @@ void main() {
 
     testWidgets('handles text direction correctly',
         (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAlert(
             title: Text('RTL Alert'),
@@ -144,7 +142,7 @@ void main() {
 
     testWidgets('handles null title and description',
         (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(const ShadAlert(icon: Icon(Icons.info))),
       );
 
@@ -156,7 +154,7 @@ void main() {
     });
 
     testWidgets('ShardAlert matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAlert(
             icon: Icon(LucideIcons.mail),
@@ -173,7 +171,7 @@ void main() {
     });
 
     testWidgets('ShardAlert.destructive matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAlert.destructive(
             icon: Icon(LucideIcons.mail),

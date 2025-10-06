@@ -5,8 +5,6 @@ import 'package:shadcn_ui/src/components/checkbox.dart'; // Adjust import path b
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
-import '../../extra/pump_async_widget.dart'; // Assuming this is available in your project
-
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
@@ -20,7 +18,7 @@ void main() {
   group('ShadCheckbox', () {
     testWidgets('renders unchecked state correctly',
         (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCheckbox(
             value: false,
@@ -45,7 +43,7 @@ void main() {
     });
 
     testWidgets('renders checked state correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCheckbox(
             value: true,
@@ -66,7 +64,7 @@ void main() {
     });
 
     testWidgets('renders with label and sublabel', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCheckbox(
             value: false,
@@ -94,7 +92,7 @@ void main() {
 
     testWidgets('toggles state on tap', (WidgetTester tester) async {
       var value = false;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCheckbox(
             value: value,
@@ -116,7 +114,7 @@ void main() {
 
       // Tap to toggle
       await tester.tap(find.byType(ShadCheckbox));
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         // Rebuild with new state
         createTestWidget(
           ShadCheckbox(
@@ -143,7 +141,7 @@ void main() {
 
       // Tap again to toggle back
       await tester.tap(find.byType(ShadCheckbox));
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         // Rebuild with new state
         createTestWidget(
           ShadCheckbox(
@@ -175,7 +173,7 @@ void main() {
     testWidgets('handles disabled state correctly',
         (WidgetTester tester) async {
       var value = false;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCheckbox(
             value: value,
@@ -204,7 +202,7 @@ void main() {
 
     testWidgets('applies custom size correctly', (WidgetTester tester) async {
       const customSize = 24.0;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCheckbox(
             value: true,
@@ -236,7 +234,7 @@ void main() {
 
     testWidgets('applies custom color correctly', (WidgetTester tester) async {
       const customColor = Colors.red;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCheckbox(
             value: true,
@@ -255,7 +253,7 @@ void main() {
     testWidgets('applies custom padding correctly',
         (WidgetTester tester) async {
       const customPadding = EdgeInsets.all(16);
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCheckbox(
             value: false,
@@ -280,7 +278,7 @@ void main() {
 
     testWidgets('handles focus correctly', (WidgetTester tester) async {
       final focusNode = FocusNode();
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadCheckbox(
             value: false,
@@ -305,7 +303,7 @@ void main() {
 
     testWidgets('renders without label and sublabel',
         (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCheckbox(
             value: false,
@@ -320,7 +318,7 @@ void main() {
     });
 
     testWidgets('ShadCheckbox on matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCheckbox(
             value: true,
@@ -338,7 +336,7 @@ void main() {
     });
 
     testWidgets('ShadCheckbox off matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCheckbox(
             value: false,

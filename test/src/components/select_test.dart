@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../../extra/pump_async_widget.dart';
-
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
@@ -12,7 +10,7 @@ void main() {
 
   group('ShadSelect', () {
     testWidgets('ShadSelect matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadSelect<String>(
             placeholder: const Text('Select a fruit'),

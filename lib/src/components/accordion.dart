@@ -5,6 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/separator.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/animate.dart';
 import 'package:shadcn_ui/src/utils/animation_builder.dart';
 import 'package:shadcn_ui/src/utils/effects.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
@@ -506,7 +507,7 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
                             ),
                           ),
                         ),
-                        Animate(
+                        ShadAnimate(
                           target: expanded ? 1 : 0,
                           effects: effectiveIconEffects,
                           child: effectiveIcon,
@@ -516,7 +517,7 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
                   ),
                 ),
                 if (!shouldRemoveChild)
-                  Animate(
+                  ShadAnimate(
                     controller: controller,
                     effects: effectiveEffects,
                     child: widget.child,

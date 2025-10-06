@@ -1,5 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/icon_button.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 /// {@template ShadDefaultKeyboardToolbar}
 /// A default keyboard toolbar with "Previous", "Next", and "Done" buttons.
@@ -16,7 +19,7 @@ class ShadDefaultKeyboardToolbar extends StatelessWidget {
   });
 
   /// {@template ShadDefaultKeyboardToolbar.backgroundColor}
-  /// The background color of the toolbar, defaults to [ShadColorScheme.accent].
+  /// The background color of the toolbar, defaults to ShadColorScheme.accent.
   /// {@endtemplate}
   final Color? backgroundColor;
 

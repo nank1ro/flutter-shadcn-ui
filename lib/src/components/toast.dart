@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/animate.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
@@ -229,7 +230,7 @@ class ShadToasterState extends State<ShadToaster>
                       effectiveToastTheme.offset ??
                       defaultOffset;
 
-                  return Animate(
+                  return ShadAnimate(
                     controller: _controller,
                     effects: visible ? effectiveAnimateIn : effectiveAnimateOut,
                     child: Align(
