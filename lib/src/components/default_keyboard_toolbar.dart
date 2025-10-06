@@ -19,7 +19,7 @@ class ShadDefaultKeyboardToolbar extends StatelessWidget {
   });
 
   /// {@template ShadDefaultKeyboardToolbar.backgroundColor}
-  /// The background color of the toolbar, defaults to [ShadColorScheme.accent].
+  /// The background color of the toolbar, defaults to ShadColorScheme.accent.
   /// {@endtemplate}
   final Color? backgroundColor;
 
