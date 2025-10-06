@@ -19,7 +19,7 @@ dependencies:
   collection: ">=1.0.0 <2.0.0"
   flutter:
     sdk: flutter
-  flutter_animate: ">=4.1.0 <5.0.0"
+  flutter_animate: ">=4.4.0 <5.0.0"
   flutter_localizations:
     sdk: flutter
   flutter_svg: ">=2.0.0 <3.0.0"
