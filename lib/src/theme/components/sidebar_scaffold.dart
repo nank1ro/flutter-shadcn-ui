@@ -1,11 +1,15 @@
-import 'dart:ui';
-
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 
+import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
+
+part 'sidebar_scaffold.g.theme.dart';
+
+@themeGen
 @immutable
-class ShadSidebarScaffoldTheme {
+class ShadSidebarScaffoldTheme with _$ShadSidebarScaffoldTheme {
   const ShadSidebarScaffoldTheme({
+    bool canMerge = true,
     this.keyboardShortcut,
     this.mobileBreakPoint,
     this.side,
@@ -18,10 +22,13 @@ class ShadSidebarScaffoldTheme {
     this.mobileWidth,
     this.collapseMode,
     this.sidebarBorderColor,
-    this.merge = true,
-  });
+  }) : _canMerge = canMerge;
 
-  final bool merge;
+  @ignore
+  final bool _canMerge;
+
+  @override
+  bool get canMerge => _canMerge;
 
   // {{@macro ShadSidebarScaffold.side}}
   final ShadSidebarSide? side;
@@ -59,117 +66,11 @@ class ShadSidebarScaffoldTheme {
   // {{@macro ShadSidebarScaffold.sidebarBorderColor}}
   final Color? sidebarBorderColor;
 
-  static ShadSidebarScaffoldTheme lerp(
+  static ShadSidebarScaffoldTheme? lerp(
     ShadSidebarScaffoldTheme a,
     ShadSidebarScaffoldTheme b,
     double t,
   ) {
-    if (identical(a, b)) return a;
-    return ShadSidebarScaffoldTheme(
-      merge: b.merge,
-      keyboardShortcut: b.keyboardShortcut,
-      mobileBreakPoint: lerpDouble(a.mobileBreakPoint, b.mobileBreakPoint, t),
-      side: t < .5 ? a.side : b.side,
-      variant: t < .5 ? a.variant : b.variant,
-      initiallyExtended: t < .5 ? a.initiallyExtended : b.initiallyExtended,
-      collapsedToIconsWidth:
-          lerpDouble(a.collapsedToIconsWidth, b.collapsedToIconsWidth, t),
-      extendedWidth: lerpDouble(a.extendedWidth, b.extendedWidth, t),
-      mobileWidth: lerpDouble(a.mobileWidth, b.mobileWidth, t),
-      animationDuration: t < .5 ? a.animationDuration : b.animationDuration,
-      animationCurve: t < .5 ? a.animationCurve : b.animationCurve,
-      collapseMode: t < .5 ? a.collapseMode : b.collapseMode,
-      sidebarBorderColor:
-          Color.lerp(a.sidebarBorderColor, b.sidebarBorderColor, t),
-    );
+    return _$ShadSidebarScaffoldTheme.lerp(a, b, t);
   }
-
-  ShadSidebarScaffoldTheme copyWith({
-    bool? merge,
-    ShortcutActivator? keyboardShortcut,
-    double? mobileBreakPoint,
-    ShadSidebarSide? side,
-    ShadSidebarVariant? variant,
-    bool? initiallyExtended,
-    double? collapsedToIconsWidth,
-    double? extendedWidth,
-    double? mobileWidth,
-    Duration? animationDuration,
-    Curve? animationCurve,
-    ShadSidebarCollapseMode? collapseMode,
-    Color? sidebarBorderColor,
-  }) {
-    return ShadSidebarScaffoldTheme(
-      merge: merge ?? this.merge,
-      keyboardShortcut: keyboardShortcut ?? this.keyboardShortcut,
-      mobileBreakPoint: mobileBreakPoint ?? this.mobileBreakPoint,
-      side: side ?? this.side,
-      variant: variant ?? this.variant,
-      initiallyExtended: initiallyExtended ?? this.initiallyExtended,
-      collapsedToIconsWidth:
-          collapsedToIconsWidth ?? this.collapsedToIconsWidth,
-      extendedWidth: extendedWidth ?? this.extendedWidth,
-      animationDuration: animationDuration ?? this.animationDuration,
-      animationCurve: animationCurve ?? this.animationCurve,
-      collapseMode: collapseMode ?? this.collapseMode,
-      mobileWidth: mobileWidth ?? this.mobileWidth,
-      sidebarBorderColor: sidebarBorderColor ?? this.sidebarBorderColor,
-    );
-  }
-
-  ShadSidebarScaffoldTheme mergeWith(ShadSidebarScaffoldTheme? other) {
-    if (other == null) return this;
-    if (!other.merge) return other;
-    return copyWith(
-      merge: other.merge,
-      keyboardShortcut: other.keyboardShortcut,
-      sidebarBorderColor: other.sidebarBorderColor,
-      mobileWidth: other.mobileWidth,
-      extendedWidth: other.extendedWidth,
-      collapseMode: other.collapseMode,
-      animationCurve: other.animationCurve,
-      animationDuration: other.animationDuration,
-      mobileBreakPoint: other.mobileBreakPoint,
-      side: other.side,
-      variant: other.variant,
-      initiallyExtended: other.initiallyExtended,
-      collapsedToIconsWidth: other.collapsedToIconsWidth,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ShadSidebarScaffoldTheme &&
-        other.merge == merge &&
-        other.keyboardShortcut == keyboardShortcut &&
-        other.mobileBreakPoint == mobileBreakPoint &&
-        other.side == side &&
-        other.variant == variant &&
-        other.initiallyExtended == initiallyExtended &&
-        other.animationDuration == animationDuration &&
-        other.animationCurve == animationCurve &&
-        other.collapsedToIconsWidth == collapsedToIconsWidth &&
-        other.extendedWidth == extendedWidth &&
-        other.mobileWidth == mobileWidth &&
-        other.collapseMode == collapseMode &&
-        other.sidebarBorderColor == sidebarBorderColor;
-  }
-
-  @override
-  int get hashCode =>
-      merge.hashCode ^
-      keyboardShortcut.hashCode ^
-      mobileBreakPoint.hashCode ^
-      side.hashCode ^
-      variant.hashCode ^
-      initiallyExtended.hashCode ^
-      animationDuration.hashCode ^
-      animationCurve.hashCode ^
-      collapsedToIconsWidth.hashCode ^
-      extendedWidth.hashCode ^
-      mobileWidth.hashCode ^
-      collapseMode.hashCode ^
-      sidebarBorderColor.hashCode;
 }

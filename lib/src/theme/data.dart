@@ -204,10 +204,9 @@ class ShadThemeData extends ShadBaseTheme {
       defaultKeyboardToolbarTheme: effectiveVariant
           .defaultKeyboardToolbarTheme()
           .merge(defaultKeyboardToolbarTheme),
-      sidebarTheme: effectiveVariant.sidebarTheme().mergeWith(sidebarTheme),
-      sidebarScaffoldTheme: effectiveVariant
-          .sidebarScaffoldTheme()
-          .mergeWith(sidebarScaffoldTheme),
+      sidebarTheme: effectiveVariant.sidebarTheme().merge(sidebarTheme),
+      sidebarScaffoldTheme:
+          effectiveVariant.sidebarScaffoldTheme().merge(sidebarScaffoldTheme),
     );
   }
 
