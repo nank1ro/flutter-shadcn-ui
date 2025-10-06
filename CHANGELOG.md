@@ -1,6 +1,7 @@
 ## 0.37.1
 
 - **FIX**: Test fails due to pending Timer when using `Animate` and `Duration.zero`, which has been replaced with `ShadAnimate`.
+- **FEAT**: Add `ShadThemeData.merge` and `ShadTheme.merge` methods to easily merge two themes together. This is useful when you want to override only a few properties of the theme for a subtree of the widget tree.
 
 ## 0.37.0
 
