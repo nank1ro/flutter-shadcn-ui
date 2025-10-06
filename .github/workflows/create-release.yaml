@@ -70,4 +70,13 @@ jobs:
       - name: Notify Discord
         if: steps.create_release.outputs.created == 'true'
         run: |
-          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"Released the v${{ steps.extract_info.outputs.VERSION }}\n\n${{ steps.extract_info.outputs.CHANGELOG_BODY }}\"}" {{ secrets.DISCORD_WEBHOOK_URL }}
+          # Create properly escaped JSON payload
+          jq -n \
+            --arg version "${{ steps.extract_info.outputs.VERSION }}" \
+            --arg changelog "${{ steps.extract_info.outputs.CHANGELOG_BODY }}" \
+            '{content: ("Released the v" + $version + "\n\n" + $changelog)}' > discord_payload.json
+
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            --data @discord_payload.json \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
