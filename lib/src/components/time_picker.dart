@@ -179,6 +179,14 @@ class ShadTimePickerController extends ChangeNotifier {
     );
   }
 
+  set value(ShadTimeOfDay? value) {
+    hour = value?.hour;
+    minute = value?.minute;
+    second = value?.second;
+    period = value?.period;
+    notifyListeners();
+  }
+
   /// Sets the hour and notifies listeners.
   void setHour(int? hour) {
     if (this.hour == hour) return;
@@ -712,6 +720,29 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     );
   }
 
+  void focusNextField(int currentIndex) {
+    final nextIndex = currentIndex + 1;
+    if (nextIndex < 3) {
+      final shouldShow = [
+        widget.showHours ?? true,
+        widget.showMinutes ?? true,
+        widget.showSeconds ?? true,
+      ];
+
+      for (var i = nextIndex; i < 3; i++) {
+        if (shouldShow[i]) {
+          focusNodes[i].requestFocus();
+          return;
+        }
+      }
+    }
+
+    // Handle period focus for period variant
+    if (widget.variant == ShadTimePickerVariant.period) {
+      periodFocusNode.requestFocus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -828,7 +859,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
               if (v.isNotEmpty) {
                 controller.setHour(int.tryParse(v));
                 if (v.length == 2 && effectiveJumpToNextField) {
-                  focusNodes[1].requestFocus();
+                  focusNextField(0);
                 }
               }
             },
@@ -851,7 +882,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
               if (v.isNotEmpty) {
                 controller.setMinute(int.tryParse(v));
                 if (v.length == 2 && effectiveJumpToNextField) {
-                  focusNodes[2].requestFocus();
+                  focusNextField(1);
                 }
               }
             },
@@ -876,7 +907,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
                 if (v.length == 2 &&
                     effectiveJumpToNextField &&
                     widget.variant == ShadTimePickerVariant.period) {
-                  periodFocusNode.requestFocus();
+                  focusNextField(2);
                 }
               }
             },

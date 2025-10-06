@@ -556,9 +556,15 @@ class _ShadFormBuilderTimePickerState
     if (widget.controller == null) {
       _controller = ShadTimePickerController.fromTimeOfDay(widget.initialValue);
     }
-    controller.setHour(showHours ? null : 0);
-    controller.setMinute(showMinutes ? null : 0);
-    controller.setSecond(showSeconds ? null : 0);
+    controller.setHour(showHours ? initialValue?.hour : 0);
+    controller.setMinute(showMinutes ? initialValue?.minute : 0);
+    controller.setSecond(showSeconds ? initialValue?.second : 0);
+  }
+
+  @override
+  void reset() {
+    super.reset();
+    controller.value = initialValue;
   }
 
   @override
