@@ -32,7 +32,7 @@ jobs:
           CUPERTINO_IMPORTS=$(eval "grep -r \"import.*cupertino\.dart\" lib/ $GREP_EXCLUDE || true")
 
           # Check for shadcn_ui.dart imports in lib directory
-          SHADCN_UI_IMPORTS=$(grep -r "import 'package:shadcn_ui/shadcn_ui.dart'" lib/ || true)
+          SHADCN_UI_IMPORTS=$(grep -r "import.*shadcn_ui/shadcn_ui\.dart" lib/ || true)
 
           # Report all findings first
           FOUND_VIOLATIONS=false
