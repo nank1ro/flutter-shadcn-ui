@@ -2,6 +2,7 @@ analyzer:
   errors:
     specify_nonobvious_property_types: ignore
     discarded_futures: ignore
+    cascade_invocations: ignore
 include: package:very_good_analysis/analysis_options.yaml
 exclude:
   - "**/*.g.dart"
