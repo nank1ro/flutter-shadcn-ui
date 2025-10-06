@@ -74,7 +74,7 @@ jobs:
           jq -n \
             --arg version "${{ steps.extract_info.outputs.VERSION }}" \
             --arg changelog "${{ steps.extract_info.outputs.CHANGELOG_BODY }}" \
-            '{content: ("Released the v" + $version + "\n\n" + $changelog)}' > discord_payload.json
+            '{content: ("Released the v" + $version + "\n" + $changelog)}' > discord_payload.json
 
           curl -H "Content-Type: application/json" \
             -X POST \
