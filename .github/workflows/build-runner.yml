@@ -9,6 +9,9 @@ on:
 jobs:
   build-runner:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout code
