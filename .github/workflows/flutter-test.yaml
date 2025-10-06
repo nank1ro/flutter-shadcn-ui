@@ -2,7 +2,7 @@ name: Flutter test
 
 on:
   workflow_run:
-    workflows: ["Build Runner Auto-commit"]
+    workflows: ["Build Runner"]
     types:
       - completed
 

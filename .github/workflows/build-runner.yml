@@ -44,5 +44,5 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m "chore: regenerate build_runner output [skip ci]"
+          git commit -m "chore: regenerate build_runner output"
           git push origin HEAD:${{ github.head_ref || github.ref_name }}
