@@ -115,6 +115,9 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
 
     /// {@macro ShadKeyboardToolbar.toolbarBuilder}
     WidgetBuilder? keyboardToolbarBuilder,
+    this.showHours,
+    this.showMinutes,
+    this.showSeconds,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderTimePickerState;
@@ -152,6 +155,9 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
               fieldPadding: fieldPadding,
               fieldDecoration: fieldDecoration,
               keyboardToolbarBuilder: keyboardToolbarBuilder,
+              showHours: showHours,
+              showMinutes: showMinutes,
+              showSeconds: showSeconds,
             );
           },
         );
@@ -283,6 +289,9 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
 
     /// {@macro ShadKeyboardToolbar.toolbarBuilder}
     WidgetBuilder? keyboardToolbarBuilder,
+    this.showHours,
+    this.showMinutes,
+    this.showSeconds,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderTimePickerState;
@@ -326,6 +335,9 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
               fieldDecoration: fieldDecoration,
               periodDecoration: periodDecoration,
               keyboardToolbarBuilder: keyboardToolbarBuilder,
+              showHours: showHours,
+              showMinutes: showMinutes,
+              showSeconds: showSeconds,
             );
           },
         );
@@ -458,6 +470,9 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
 
     /// {@macro ShadKeyboardToolbar.toolbarBuilder}
     WidgetBuilder? keyboardToolbarBuilder,
+    this.showHours,
+    this.showMinutes,
+    this.showSeconds,
   }) : super(
           builder: (field) {
             final state = field as _ShadFormBuilderTimePickerState;
@@ -502,6 +517,9 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
               fieldDecoration: fieldDecoration,
               periodDecoration: periodDecoration,
               keyboardToolbarBuilder: keyboardToolbarBuilder,
+              showHours: showHours,
+              showMinutes: showMinutes,
+              showSeconds: showSeconds,
             );
           },
         );
@@ -511,6 +529,15 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
       createState() => _ShadFormBuilderTimePickerState();
 
   final ShadTimePickerController? controller;
+
+  /// {@macro ShadTimePicker.showHours}
+  final bool? showHours;
+
+  /// {@macro ShadTimePicker.showMinutes}
+  final bool? showMinutes;
+
+  /// {@macro ShadTimePicker.showSeconds}
+  final bool? showSeconds;
 }
 
 class _ShadFormBuilderTimePickerState
@@ -519,11 +546,46 @@ class _ShadFormBuilderTimePickerState
   ShadTimePickerController? _controller;
   ShadTimePickerController get controller => widget.controller ?? _controller!;
 
+  bool get showSeconds => widget.showSeconds ?? true;
+  bool get showHours => widget.showHours ?? true;
+  bool get showMinutes => widget.showMinutes ?? true;
+
   @override
   void initState() {
     super.initState();
     if (widget.controller == null) {
       _controller = ShadTimePickerController.fromTimeOfDay(widget.initialValue);
+    }
+    controller.setHour(showHours ? controller.hour : 0);
+    controller.setMinute(showMinutes ? controller.minute : 0);
+    controller.setSecond(showSeconds ? controller.second : 0);
+  }
+
+  @override
+  void reset() {
+    super.reset();
+    controller.value = initialValue;
+  }
+
+  @override
+  void didUpdateWidget(
+    covariant ShadTimePickerFormField oldWidget,
+  ) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.showHours != widget.showHours) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        controller.setHour(showHours ? null : 0);
+      });
+    }
+    if (oldWidget.showMinutes != widget.showMinutes) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        controller.setMinute(showMinutes ? null : 0);
+      });
+    }
+    if (oldWidget.showSeconds != widget.showSeconds) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        controller.setSecond(showSeconds ? null : 0);
+      });
     }
   }
 }
