@@ -12,18 +12,8 @@ on:
     branches: [main]
 
 jobs:
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Debug workflow_run event
-        run: |
-          echo "Event name: ${{ github.event_name }}"
-          echo "Workflow run conclusion: ${{ github.event.workflow_run.conclusion }}"
-          echo "Workflow run name: ${{ github.event.workflow_run.name }}"
-          echo "Workflow run status: ${{ github.event.workflow_run.status }}"
-
   check-imports:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name != 'workflow_run' }}
     uses: ./.github/workflows/check-imports.yaml
 
   build:
