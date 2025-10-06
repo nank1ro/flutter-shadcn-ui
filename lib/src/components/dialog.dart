@@ -9,25 +9,15 @@ import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
-/// Calculates the total duration of a list of [Effect]s.
-Duration _getEffectsDuration(List<Effect<dynamic>> effects) {
-  if (effects.isEmpty) return Duration.zero;
-
-  return effects.fold<Duration>(
-    Duration.zero, // start with zero
-    (max, effect) {
-      final total = (effect.delay ?? Duration.zero) +
-          (effect.duration ?? Animate.defaultDuration);
-      return total > max ? total : max;
-    },
-  );
-}
-
+/// {@template ShadDialogRoute}
 /// A custom dialog route that allows specifying a `reverseTransitionDuration`.
+/// {@macro flutter.widgets.ModalRoute.barrierDismissible}
 ///
 /// Used internally by [showShadDialog].
-class _ShadDialogRoute<T> extends PopupRoute<T> {
-  _ShadDialogRoute({
+/// {@endtemplate}
+class ShadDialogRoute<T> extends PopupRoute<T> {
+  /// {@macro ShadDialogRoute}
+  ShadDialogRoute({
     required this.pageBuilder,
     this.barrierDismissible = true,
     this.barrierLabel,
@@ -151,16 +141,30 @@ Future<T?> showShadDialog<T>({
         ScaleEffect(begin: Offset(1, 1), end: Offset(.95, .95)),
       ];
 
+  /// Calculates the total duration of a list of [Effect]s.
+  Duration getEffectsDuration(List<Effect<dynamic>> effects) {
+    if (effects.isEmpty) return Duration.zero;
+
+    return effects.fold<Duration>(
+      Duration.zero, // start with zero
+      (max, effect) {
+        final total = (effect.delay ?? Duration.zero) +
+            (effect.duration ?? Animate.defaultDuration);
+        return total > max ? total : max;
+      },
+    );
+  }
+
   return Navigator.of(context, rootNavigator: useRootNavigator).push(
-    _ShadDialogRoute(
+    ShadDialogRoute(
       pageBuilder: builder,
       barrierColor: barrierColor,
       barrierDismissible: barrierDismissible,
       barrierLabel: barrierLabel,
       anchorPoint: anchorPoint,
       settings: routeSettings,
-      transitionDuration: _getEffectsDuration(effectiveAnimateIn),
-      reverseTransitionDuration: _getEffectsDuration(effectiveAnimateOut),
+      transitionDuration: getEffectsDuration(effectiveAnimateIn),
+      reverseTransitionDuration: getEffectsDuration(effectiveAnimateOut),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         if (animation.status == AnimationStatus.completed) {
           return child;
