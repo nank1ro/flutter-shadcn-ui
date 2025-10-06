@@ -259,13 +259,20 @@ class ShadTimePicker extends StatefulWidget {
     this.controller,
     this.enabled = true,
     this.keyboardToolbarBuilder,
+    this.showHours,
+    this.showSeconds,
+    this.showMinutes,
   })  : variant = ShadTimePickerVariant.primary,
         initialDayPeriod = null,
         periodLabel = null,
         periodPlaceholder = null,
         periodHeight = null,
         periodDecoration = null,
-        periodMinWidth = null;
+        periodMinWidth = null,
+        assert(
+          false != showHours || false != showMinutes || false != showSeconds,
+          'At least one of showHours, showMinutes, or showSeconds must be true',
+        );
 
   /// Creates a [ShadTimePicker] with the period variant (12-hour format with AM/PM).
   const ShadTimePicker.period({
@@ -309,7 +316,14 @@ class ShadTimePicker extends StatefulWidget {
     this.controller,
     this.enabled = true,
     this.keyboardToolbarBuilder,
-  }) : variant = ShadTimePickerVariant.period;
+    this.showHours,
+    this.showMinutes,
+    this.showSeconds,
+  })  : variant = ShadTimePickerVariant.period,
+        assert(
+          false != showHours || false != showMinutes || false != showSeconds,
+          'At least one of showHours, showMinutes, or showSeconds must be true',
+        );
 
   /// Creates a [ShadTimePicker] with a raw variant, allowing explicit variant
   /// specification.
@@ -355,7 +369,13 @@ class ShadTimePicker extends StatefulWidget {
     this.controller,
     this.enabled = true,
     this.keyboardToolbarBuilder,
-  });
+    this.showHours,
+    this.showMinutes,
+    this.showSeconds,
+  }) : assert(
+          false != showHours || false != showMinutes || false != showSeconds,
+          'At least one of showHours, showMinutes, or showSeconds must be true',
+        );
 
   /// {@template ShadTimePicker.axis}
   /// The axis along which the fields are laid out. Defaults to `horizontal`.
@@ -588,6 +608,21 @@ class ShadTimePicker extends StatefulWidget {
   /// {@macro ShadKeyboardToolbar.toolbarBuilder}
   final WidgetBuilder? keyboardToolbarBuilder;
 
+  /// {@template ShadTimePicker.showHours}
+  /// Whether to show the hours field, defaults to `true`.
+  /// {@endtemplate}
+  final bool? showHours;
+
+  /// {@template ShadTimePicker.showMinutes}
+  /// Whether to show the minutes field, defaults to `true`.
+  /// {@endtemplate}
+  final bool? showMinutes;
+
+  /// {@template ShadTimePicker.showSeconds}
+  /// Whether to show the seconds field, defaults to `true`.
+  /// {@endtemplate}
+  final bool? showSeconds;
+
   @override
   State<ShadTimePicker> createState() => _ShadTimePickerState();
 }
@@ -775,74 +810,77 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
       textDirection: TextDirection.ltr,
       children: [
         if (widget.leading != null) widget.leading!,
-        ShadTimePickerField(
-          focusNode: focusNodes[0],
-          label: effectiveHourLabel,
-          controller: hourController,
-          gap: effectiveGap,
-          placeholder: effectiveHourPlaceholder,
-          style: effectiveStyle,
-          labelStyle: effectiveLabelStyle,
-          width: effectiveFieldWidth,
-          padding: effectiveFieldPadding,
-          decoration: effectiveFieldDecoration,
-          enabled: widget.enabled,
-          keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
-          onChanged: (v) {
-            if (v.isNotEmpty) {
-              controller.setHour(int.tryParse(v));
-              if (v.length == 2 && effectiveJumpToNextField) {
-                focusNodes[1].requestFocus();
+        if (widget.showHours ?? true)
+          ShadTimePickerField(
+            focusNode: focusNodes[0],
+            label: effectiveHourLabel,
+            controller: hourController,
+            gap: effectiveGap,
+            placeholder: effectiveHourPlaceholder,
+            style: effectiveStyle,
+            labelStyle: effectiveLabelStyle,
+            width: effectiveFieldWidth,
+            padding: effectiveFieldPadding,
+            decoration: effectiveFieldDecoration,
+            enabled: widget.enabled,
+            keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
+            onChanged: (v) {
+              if (v.isNotEmpty) {
+                controller.setHour(int.tryParse(v));
+                if (v.length == 2 && effectiveJumpToNextField) {
+                  focusNodes[1].requestFocus();
+                }
               }
-            }
-          },
-        ),
-        ShadTimePickerField(
-          focusNode: focusNodes[1],
-          label: effectiveMinuteLabel,
-          controller: minuteController,
-          placeholder: effectiveMinutePlaceholder,
-          gap: effectiveGap,
-          style: effectiveStyle,
-          labelStyle: effectiveLabelStyle,
-          width: effectiveFieldWidth,
-          padding: effectiveFieldPadding,
-          decoration: effectiveFieldDecoration,
-          enabled: widget.enabled,
-          keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
-          onChanged: (v) {
-            if (v.isNotEmpty) {
-              controller.setMinute(int.tryParse(v));
-              if (v.length == 2 && effectiveJumpToNextField) {
-                focusNodes[2].requestFocus();
+            },
+          ),
+        if (widget.showMinutes ?? true)
+          ShadTimePickerField(
+            focusNode: focusNodes[1],
+            label: effectiveMinuteLabel,
+            controller: minuteController,
+            placeholder: effectiveMinutePlaceholder,
+            gap: effectiveGap,
+            style: effectiveStyle,
+            labelStyle: effectiveLabelStyle,
+            width: effectiveFieldWidth,
+            padding: effectiveFieldPadding,
+            decoration: effectiveFieldDecoration,
+            enabled: widget.enabled,
+            keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
+            onChanged: (v) {
+              if (v.isNotEmpty) {
+                controller.setMinute(int.tryParse(v));
+                if (v.length == 2 && effectiveJumpToNextField) {
+                  focusNodes[2].requestFocus();
+                }
               }
-            }
-          },
-        ),
-        ShadTimePickerField(
-          focusNode: focusNodes[2],
-          label: effectiveSecondLabel,
-          controller: secondController,
-          gap: effectiveGap,
-          placeholder: effectiveSecondPlaceholder,
-          style: effectiveStyle,
-          labelStyle: effectiveLabelStyle,
-          width: effectiveFieldWidth,
-          padding: effectiveFieldPadding,
-          decoration: effectiveFieldDecoration,
-          enabled: widget.enabled,
-          keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
-          onChanged: (v) {
-            if (v.isNotEmpty) {
-              controller.setSecond(int.tryParse(v));
-              if (v.length == 2 &&
-                  effectiveJumpToNextField &&
-                  widget.variant == ShadTimePickerVariant.period) {
-                periodFocusNode.requestFocus();
+            },
+          ),
+        if (widget.showSeconds ?? true)
+          ShadTimePickerField(
+            focusNode: focusNodes[2],
+            label: effectiveSecondLabel,
+            controller: secondController,
+            gap: effectiveGap,
+            placeholder: effectiveSecondPlaceholder,
+            style: effectiveStyle,
+            labelStyle: effectiveLabelStyle,
+            width: effectiveFieldWidth,
+            padding: effectiveFieldPadding,
+            decoration: effectiveFieldDecoration,
+            enabled: widget.enabled,
+            keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
+            onChanged: (v) {
+              if (v.isNotEmpty) {
+                controller.setSecond(int.tryParse(v));
+                if (v.length == 2 &&
+                    effectiveJumpToNextField &&
+                    widget.variant == ShadTimePickerVariant.period) {
+                  periodFocusNode.requestFocus();
+                }
               }
-            }
-          },
-        ),
+            },
+          ),
         if (widget.variant == ShadTimePickerVariant.period)
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
