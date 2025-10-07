@@ -22,6 +22,11 @@ mixin _$ShadSelectTheme {
     }
 
     return ShadSelectTheme(
+      popoverReverseDuration: lerpDuration$(
+        a?.popoverReverseDuration,
+        b?.popoverReverseDuration,
+        t,
+      ),
       decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
       placeholderStyle: TextStyle.lerp(
         a?.placeholderStyle,
@@ -41,6 +46,7 @@ mixin _$ShadSelectTheme {
           t < 0.5 ? a?.showScrollToTopChevron : b?.showScrollToTopChevron,
       showScrollToBottomChevron:
           t < 0.5 ? a?.showScrollToBottomChevron : b?.showScrollToBottomChevron,
+      anchor: t < 0.5 ? a?.anchor : b?.anchor,
       searchPadding: EdgeInsetsGeometry.lerp(
         a?.searchPadding,
         b?.searchPadding,
@@ -48,12 +54,14 @@ mixin _$ShadSelectTheme {
       ),
       clearSearchOnClose:
           t < 0.5 ? a?.clearSearchOnClose : b?.clearSearchOnClose,
-      popoverTheme: ShadPopoverTheme.lerp(a?.popoverTheme, b?.popoverTheme, t),
-      optionTheme: ShadOptionTheme.lerp(a?.optionTheme, b?.optionTheme, t),
+      filter: t < 0.5 ? a?.filter : b?.filter,
+      effects: t < 0.5 ? a?.effects : b?.effects,
+      shadows: t < 0.5 ? a?.shadows : b?.shadows,
     );
   }
 
   ShadSelectTheme copyWith({
+    Duration? popoverReverseDuration,
     ShadDecoration? decoration,
     TextStyle? placeholderStyle,
     double? minWidth,
@@ -63,14 +71,18 @@ mixin _$ShadSelectTheme {
     EdgeInsetsGeometry? optionsPadding,
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
+    ShadAnchorBase? anchor,
     EdgeInsetsGeometry? searchPadding,
     bool? clearSearchOnClose,
-    ShadPopoverTheme? popoverTheme,
-    ShadOptionTheme? optionTheme,
+    ImageFilter? filter,
+    List<Effect<dynamic>>? effects,
+    List<BoxShadow>? shadows,
   }) {
     final a = (this as ShadSelectTheme);
 
     return ShadSelectTheme(
+      popoverReverseDuration:
+          popoverReverseDuration ?? a.popoverReverseDuration,
       decoration: decoration ?? a.decoration,
       placeholderStyle: placeholderStyle ?? a.placeholderStyle,
       minWidth: minWidth ?? a.minWidth,
@@ -82,10 +94,12 @@ mixin _$ShadSelectTheme {
           showScrollToTopChevron ?? a.showScrollToTopChevron,
       showScrollToBottomChevron:
           showScrollToBottomChevron ?? a.showScrollToBottomChevron,
+      anchor: anchor ?? a.anchor,
       searchPadding: searchPadding ?? a.searchPadding,
       clearSearchOnClose: clearSearchOnClose ?? a.clearSearchOnClose,
-      popoverTheme: popoverTheme ?? a.popoverTheme,
-      optionTheme: optionTheme ?? a.optionTheme,
+      filter: filter ?? a.filter,
+      effects: effects ?? a.effects,
+      shadows: shadows ?? a.shadows,
     );
   }
 
@@ -101,6 +115,7 @@ mixin _$ShadSelectTheme {
     }
 
     return copyWith(
+      popoverReverseDuration: other.popoverReverseDuration,
       decoration: other.decoration,
       placeholderStyle:
           current.placeholderStyle?.merge(other.placeholderStyle) ??
@@ -112,10 +127,12 @@ mixin _$ShadSelectTheme {
       optionsPadding: other.optionsPadding,
       showScrollToTopChevron: other.showScrollToTopChevron,
       showScrollToBottomChevron: other.showScrollToBottomChevron,
+      anchor: other.anchor,
       searchPadding: other.searchPadding,
       clearSearchOnClose: other.clearSearchOnClose,
-      popoverTheme: other.popoverTheme,
-      optionTheme: other.optionTheme,
+      filter: other.filter,
+      effects: other.effects,
+      shadows: other.shadows,
     );
   }
 
@@ -132,6 +149,7 @@ mixin _$ShadSelectTheme {
     final value = (this as ShadSelectTheme);
 
     return other is ShadSelectTheme &&
+        other.popoverReverseDuration == value.popoverReverseDuration &&
         other.decoration == value.decoration &&
         other.placeholderStyle == value.placeholderStyle &&
         other.minWidth == value.minWidth &&
@@ -141,10 +159,12 @@ mixin _$ShadSelectTheme {
         other.optionsPadding == value.optionsPadding &&
         other.showScrollToTopChevron == value.showScrollToTopChevron &&
         other.showScrollToBottomChevron == value.showScrollToBottomChevron &&
+        other.anchor == value.anchor &&
         other.searchPadding == value.searchPadding &&
         other.clearSearchOnClose == value.clearSearchOnClose &&
-        other.popoverTheme == value.popoverTheme &&
-        other.optionTheme == value.optionTheme;
+        other.filter == value.filter &&
+        other.effects == value.effects &&
+        other.shadows == value.shadows;
   }
 
   @override
@@ -153,6 +173,7 @@ mixin _$ShadSelectTheme {
 
     return Object.hash(
       runtimeType,
+      value.popoverReverseDuration,
       value.decoration,
       value.placeholderStyle,
       value.minWidth,
@@ -162,10 +183,12 @@ mixin _$ShadSelectTheme {
       value.optionsPadding,
       value.showScrollToTopChevron,
       value.showScrollToBottomChevron,
+      value.anchor,
       value.searchPadding,
       value.clearSearchOnClose,
-      value.popoverTheme,
-      value.optionTheme,
+      value.filter,
+      value.effects,
+      value.shadows,
     );
   }
 }

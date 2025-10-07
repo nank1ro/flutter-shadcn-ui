@@ -356,10 +356,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
-      popoverTheme: const ShadPopoverTheme(
-        reverseDuration: Duration.zero,
-        anchor: ShadAnchorAuto(offset: Offset(0, 4)),
-      ),
+      popoverReverseDuration: Duration.zero,
+      anchor: const ShadAnchorAuto(offset: Offset(0, 4)),
       searchPadding: const EdgeInsets.all(12),
     );
   }

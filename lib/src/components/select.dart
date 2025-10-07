@@ -16,6 +16,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
@@ -841,21 +842,18 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             theme.selectTheme.showScrollToBottomChevron ??
             true;
 
-    final effectivePopoverTheme =
-        theme.selectTheme.popoverTheme ?? theme.popoverTheme;
-
-    final popoverReverseDuration = widget.popoverReverseDuration ??
-        effectivePopoverTheme.reverseDuration ??
+    final effectivePopoverReverseDuration = widget.popoverReverseDuration ??
+        theme.selectTheme.popoverReverseDuration ??
         Duration.zero;
 
     final effectiveAnchor =
-        widget.anchor ?? effectivePopoverTheme.anchor ?? const ShadAnchorAuto();
+        widget.anchor ?? theme.selectTheme.anchor ?? const ShadAnchorAuto();
 
-    final effectiveEffects = widget.effects ?? effectivePopoverTheme.effects;
+    final effectiveEffects = widget.effects ?? theme.selectTheme.effects;
 
-    final effectiveShadows = widget.shadows ?? effectivePopoverTheme.shadows;
+    final effectiveShadows = widget.shadows ?? theme.selectTheme.shadows;
 
-    final effectiveFilter = widget.filter ?? effectivePopoverTheme.filter;
+    final effectiveFilter = widget.filter ?? theme.selectTheme.filter;
 
     final isMultiSelect = widget.selectedOptionsBuilder != null;
 
@@ -867,9 +865,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         final TextStyle resultDefaultTextStyle;
 
         if (controller.value.isNotEmpty) {
-          final effectiveOptionTheme =
-              theme.selectTheme.optionTheme ?? theme.optionTheme;
-          resultDefaultTextStyle = effectiveOptionTheme.selectedTextStyle ??
+          resultDefaultTextStyle = theme.optionTheme.selectedTextStyle ??
               theme.textTheme.muted.fallback(
                 color: theme.colorScheme.foreground,
               );
@@ -1102,7 +1098,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                 anchor: effectiveAnchor,
                 closeOnTapOutside: widget.closeOnTapOutside,
                 effects: effectiveEffects,
-                reverseDuration: popoverReverseDuration,
+                reverseDuration: effectivePopoverReverseDuration,
                 shadows: effectiveShadows,
                 filter: effectiveFilter,
                 popover: (_) {
@@ -1185,6 +1181,10 @@ class ShadOption<T> extends StatefulWidget {
     this.selectedIcon,
     this.radius,
     this.direction,
+    this.backgroundColor,
+    this.selectedBackgroundColor,
+    this.textStyle,
+    this.selectedTextStyle,
   });
 
   /// The value of the [ShadOption], it must be unique above the options.
@@ -1206,6 +1206,18 @@ class ShadOption<T> extends StatefulWidget {
 
   /// The radius of the [ShadOption], defaults to `ShadThemeData.radius`.
   final BorderRadius? radius;
+
+  /// The background color of the [ShadOption], defaults to `ShadThemeData.optionTheme.backgroundColor`.
+  final Color? backgroundColor;
+
+  /// The background color of the [ShadOption] when selected, defaults to `ShadThemeData.optionTheme.selectedBackgroundColor`.
+  final Color? selectedBackgroundColor;
+
+  /// The text style of the [ShadOption], defaults to `ShadThemeData.optionTheme.textStyle`.
+  final TextStyle? textStyle;
+
+  /// The text style of the [ShadOption] when selected, defaults to `ShadThemeData.optionTheme.selectedTextStyle`.
+  final TextStyle? selectedTextStyle;
 
   /// {@template ShadOption.direction}
   /// The direction of the ambient.
@@ -1262,34 +1274,33 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
         context.watch<ShadSelectState<dynamic>>() as ShadSelectState<T>;
     final selected = inheritedSelect.controller.value.contains(widget.value);
 
-    final effectiveOptionTheme =
-        theme.selectTheme.optionTheme ?? theme.optionTheme;
-
     final effectiveHoveredBackgroundColor =
-        effectiveOptionTheme.hoveredBackgroundColor ?? theme.colorScheme.accent;
-
-    final effectiveSelectedBackgroundColor =
-        effectiveOptionTheme.selectedBackgroundColor;
-
-    final effectiveDefaultBackgroundColor =
-        effectiveOptionTheme.backgroundColor;
+        theme.optionTheme.hoveredBackgroundColor ?? theme.colorScheme.accent;
 
     final effectivePadding = widget.padding ??
-        effectiveOptionTheme.padding ??
+        theme.optionTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
 
-    final effectiveTextStyle = effectiveOptionTheme.textStyle ??
+    final effectiveTextStyle = widget.textStyle ??
+        theme.optionTheme.textStyle ??
         theme.textTheme.muted.fallback(
           color: theme.colorScheme.popoverForeground,
         );
 
-    final effectiveSelectedTextStyle = effectiveOptionTheme.selectedTextStyle ??
+    final effectiveSelectedTextStyle = widget.selectedTextStyle ??
+        theme.optionTheme.selectedTextStyle ??
         theme.textTheme.muted.fallback(
           color: theme.colorScheme.popoverForeground,
         );
+
+    final effectiveSelectedBackgroundColor = widget.selectedBackgroundColor ??
+        theme.optionTheme.selectedBackgroundColor;
+
+    final effectiveBackgroundColor =
+        widget.backgroundColor ?? theme.optionTheme.backgroundColor;
 
     final effectiveRadius =
-        widget.radius ?? effectiveOptionTheme.radius ?? theme.radius;
+        widget.radius ?? theme.optionTheme.radius ?? theme.radius;
 
     final effectiveSelectedIcon = Visibility.maintain(
       visible: selected,
@@ -1322,16 +1333,16 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
           child: ValueListenableBuilder(
             valueListenable: hovered,
             builder: (context, hovered, child) {
-              final effectiveBackgroundColor = hovered
+              final resolvedBackgroundColor = hovered
                   ? effectiveHoveredBackgroundColor
                   : selected
                       ? effectiveSelectedBackgroundColor
-                      : effectiveDefaultBackgroundColor;
+                      : effectiveBackgroundColor;
 
               return Container(
                 padding: effectivePadding,
                 decoration: BoxDecoration(
-                  color: effectiveBackgroundColor,
+                  color: resolvedBackgroundColor,
                   borderRadius: effectiveRadius,
                 ),
                 child: child,
