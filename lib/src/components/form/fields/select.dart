@@ -6,8 +6,6 @@ import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
-import 'package:shadcn_ui/src/theme/components/option.dart';
-import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
@@ -74,6 +72,12 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     /// {@macro ShadSelect.scrollController}
     ScrollController? scrollController,
 
+    /// {@macro ShadSelect.anchor}
+    ShadAnchorBase? anchor,
+
+    /// {@macro ShadSelect.filter}
+    ImageFilter? filter,
+
     /// {@macro ShadSelect.popoverController}
     ShadPopoverController? popoverController,
 
@@ -101,12 +105,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
-
-    /// {@macro ShadSelect.popoverTheme}
-    ShadPopoverTheme? popoverTheme,
-
-    /// {@macro ShadSelect.optionTheme}
-    ShadOptionTheme? optionTheme,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -126,6 +124,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
+              anchor: anchor,
               minWidth: minWidth,
               maxWidth: maxWidth,
               maxHeight: maxHeight,
@@ -136,6 +135,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               showScrollToTopChevron: showScrollToTopChevron,
               showScrollToBottomChevron: showScrollToBottomChevron,
               scrollController: scrollController,
+              filter: filter,
               popoverController: popoverController,
               header: header,
               footer: footer,
@@ -145,8 +145,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               shrinkWrap: shrinkWrap,
               controller: state.controller,
               ensureSelectedVisible: ensureSelectedVisible,
-              popoverTheme: popoverTheme,
-              optionTheme: optionTheme,
             );
           },
         );
@@ -185,6 +183,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ScrollController? scrollController,
+    ShadAnchorBase? anchor,
+    ImageFilter? filter,
     Widget? searchDivider,
     Widget? searchInputLeading,
     Widget? searchPlaceholder,
@@ -215,12 +215,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
-
-    /// {@macro ShadSelect.popoverTheme}
-    ShadPopoverTheme? popoverTheme,
-
-    /// {@macro ShadSelect.optionTheme}
-    ShadOptionTheme? optionTheme,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -240,6 +234,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
+              anchor: anchor,
               minWidth: minWidth,
               maxWidth: maxWidth,
               maxHeight: maxHeight,
@@ -250,6 +245,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               showScrollToTopChevron: showScrollToTopChevron,
               showScrollToBottomChevron: showScrollToBottomChevron,
               scrollController: scrollController,
+              filter: filter,
               onSearchChanged: onSearchChanged,
               searchDivider: searchDivider,
               searchInputLeading: searchInputLeading,
@@ -266,8 +262,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               shrinkWrap: shrinkWrap,
               controller: state.controller,
               ensureSelectedVisible: ensureSelectedVisible,
-              popoverTheme: popoverTheme,
-              optionTheme: optionTheme,
             );
           },
         );
@@ -306,6 +300,8 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ScrollController? scrollController,
+    ShadAnchorBase? anchor,
+    ImageFilter? filter,
     Widget? searchDivider,
     Widget? searchInputLeading,
     Widget? searchPlaceholder,
@@ -336,12 +332,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
-
-    /// {@macro ShadSelect.popoverTheme}
-    ShadPopoverTheme? popoverTheme,
-
-    /// {@macro ShadSelect.optionTheme}
-    ShadOptionTheme? optionTheme,
   })  : assert(
           variant == ShadSelectVariant.primary ||
               variant == ShadSelectVariant.search,
@@ -366,6 +356,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
+              anchor: anchor,
               minWidth: minWidth,
               maxHeight: maxHeight,
               decoration: state.decoration,
@@ -375,6 +366,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               showScrollToTopChevron: showScrollToTopChevron,
               showScrollToBottomChevron: showScrollToBottomChevron,
               scrollController: scrollController,
+              filter: filter,
               onSearchChanged: onSearchChanged,
               searchDivider: searchDivider,
               searchInputLeading: searchInputLeading,
@@ -392,8 +384,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               shrinkWrap: shrinkWrap,
               controller: state.controller,
               ensureSelectedVisible: ensureSelectedVisible,
-              popoverTheme: popoverTheme,
-              optionTheme: optionTheme,
             );
           },
         );
@@ -474,6 +464,8 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ScrollController? scrollController,
+    ShadAnchorBase? anchor,
+    ImageFilter? filter,
     ShadPopoverController? popoverController,
 
     /// {@macro ShadSelect.header}
@@ -489,12 +481,6 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
-
-    /// {@macro ShadSelect.popoverTheme}
-    ShadPopoverTheme? popoverTheme,
-
-    /// {@macro ShadSelect.optionTheme}
-    ShadOptionTheme? optionTheme,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -513,6 +499,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
+              anchor: anchor,
               minWidth: minWidth,
               maxWidth: maxWidth,
               maxHeight: maxHeight,
@@ -523,6 +510,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               showScrollToTopChevron: showScrollToTopChevron,
               showScrollToBottomChevron: showScrollToBottomChevron,
               scrollController: scrollController,
+              filter: filter,
               popoverController: popoverController,
               header: header,
               footer: footer,
@@ -530,8 +518,6 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               allowDeselection: allowDeselection,
               controller: state.controller,
               ensureSelectedVisible: ensureSelectedVisible,
-              popoverTheme: popoverTheme,
-              optionTheme: optionTheme,
             );
           },
         );
@@ -570,6 +556,8 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ScrollController? scrollController,
+    ShadAnchorBase? anchor,
+    ImageFilter? filter,
     Widget? searchDivider,
     Widget? searchInputLeading,
     Widget? searchPlaceholder,
@@ -591,12 +579,6 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
-
-    /// {@macro ShadSelect.popoverTheme}
-    ShadPopoverTheme? popoverTheme,
-
-    /// {@macro ShadSelect.optionTheme}
-    ShadOptionTheme? optionTheme,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -615,6 +597,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               enabled: state.enabled,
               onChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
+              anchor: anchor,
               minWidth: minWidth,
               maxWidth: maxWidth,
               maxHeight: maxHeight,
@@ -625,6 +608,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               showScrollToTopChevron: showScrollToTopChevron,
               showScrollToBottomChevron: showScrollToBottomChevron,
               scrollController: scrollController,
+              filter: filter,
               onSearchChanged: onSearchChanged,
               searchDivider: searchDivider,
               searchInputLeading: searchInputLeading,
@@ -639,8 +623,6 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               allowDeselection: allowDeselection,
               controller: state.controller,
               ensureSelectedVisible: ensureSelectedVisible,
-              popoverTheme: popoverTheme,
-              optionTheme: optionTheme,
             );
           },
         );
@@ -679,6 +661,8 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     bool? showScrollToTopChevron,
     bool? showScrollToBottomChevron,
     ScrollController? scrollController,
+    ShadAnchorBase? anchor,
+    ImageFilter? filter,
     Widget? searchDivider,
     Widget? searchInputLeading,
     Widget? searchPlaceholder,
@@ -698,12 +682,6 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
-
-    /// {@macro ShadSelect.popoverTheme}
-    ShadPopoverTheme? popoverTheme,
-
-    /// {@macro ShadSelect.optionTheme}
-    ShadOptionTheme? optionTheme,
   })  : assert(
           variant == ShadSelectVariant.multiple ||
               variant == ShadSelectVariant.multipleWithSearch,
@@ -728,6 +706,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               enabled: state.enabled,
               onMultipleChanged: state.didChange,
               closeOnTapOutside: closeOnTapOutside,
+              anchor: anchor,
               minWidth: minWidth,
               maxHeight: maxHeight,
               decoration: state.decoration,
@@ -737,6 +716,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               showScrollToTopChevron: showScrollToTopChevron,
               showScrollToBottomChevron: showScrollToBottomChevron,
               scrollController: scrollController,
+              filter: filter,
               onSearchChanged: onSearchChanged,
               searchDivider: searchDivider,
               searchInputLeading: searchInputLeading,
@@ -751,8 +731,6 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               closeOnSelect: closeOnSelect,
               controller: state.controller,
               ensureSelectedVisible: ensureSelectedVisible,
-              popoverTheme: popoverTheme,
-              optionTheme: optionTheme,
             );
           },
         );

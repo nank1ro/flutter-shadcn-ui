@@ -1,17 +1,18 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/components/separator.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
-import 'package:shadcn_ui/src/theme/components/option.dart';
-import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
@@ -49,6 +50,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.popoverController,
     this.enabled = true,
     this.placeholder,
+    this.placeholderStyle,
     this.initialValue,
     this.onChanged,
     this.focusNode,
@@ -63,6 +65,10 @@ class ShadSelect<T> extends StatefulWidget {
     this.showScrollToBottomChevron,
     this.showScrollToTopChevron,
     this.scrollController,
+    this.anchor,
+    this.effects,
+    this.shadows,
+    this.filter,
     this.header,
     this.footer,
     this.closeOnSelect = true,
@@ -71,9 +77,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.itemCount,
     this.shrinkWrap,
     this.controller,
+    this.popoverReverseDuration,
     this.ensureSelectedVisible,
-    this.popoverTheme,
-    this.optionTheme,
   })  : variant = ShadSelectVariant.primary,
         initialValues = const {},
         onSearchChanged = null,
@@ -107,6 +112,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.clearSearchOnClose,
     this.enabled = true,
     this.placeholder,
+    this.placeholderStyle,
     this.initialValue,
     this.focusNode,
     this.closeOnTapOutside = true,
@@ -120,6 +126,10 @@ class ShadSelect<T> extends StatefulWidget {
     this.showScrollToBottomChevron,
     this.showScrollToTopChevron,
     this.scrollController,
+    this.anchor,
+    this.effects,
+    this.shadows,
+    this.filter,
     this.header,
     this.footer,
     this.closeOnSelect = true,
@@ -128,9 +138,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.itemCount,
     this.shrinkWrap,
     this.controller,
+    this.popoverReverseDuration,
     this.ensureSelectedVisible,
-    this.popoverTheme,
-    this.optionTheme,
   })  : variant = ShadSelectVariant.search,
         selectedOptionsBuilder = null,
         onMultipleChanged = null,
@@ -153,6 +162,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.popoverController,
     this.enabled = true,
     this.placeholder,
+    this.placeholderStyle,
     this.initialValues = const {},
     ValueChanged<Set<T>>? onChanged,
     this.focusNode,
@@ -167,6 +177,10 @@ class ShadSelect<T> extends StatefulWidget {
     this.showScrollToBottomChevron,
     this.showScrollToTopChevron,
     this.scrollController,
+    this.anchor,
+    this.effects,
+    this.shadows,
+    this.filter,
     this.header,
     this.footer,
     this.allowDeselection = true,
@@ -175,9 +189,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.itemCount,
     this.shrinkWrap,
     this.controller,
+    this.popoverReverseDuration,
     this.ensureSelectedVisible,
-    this.popoverTheme,
-    this.optionTheme,
   })  : variant = ShadSelectVariant.multiple,
         onSearchChanged = null,
         initialValue = null,
@@ -212,6 +225,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.clearSearchOnClose,
     this.enabled = true,
     this.placeholder,
+    this.placeholderStyle,
     this.initialValues = const {},
     this.focusNode,
     this.closeOnTapOutside = true,
@@ -225,6 +239,10 @@ class ShadSelect<T> extends StatefulWidget {
     this.showScrollToBottomChevron,
     this.showScrollToTopChevron,
     this.scrollController,
+    this.anchor,
+    this.effects,
+    this.shadows,
+    this.filter,
     this.header,
     this.footer,
     this.allowDeselection = true,
@@ -233,9 +251,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.itemCount,
     this.shrinkWrap,
     this.controller,
+    this.popoverReverseDuration,
     this.ensureSelectedVisible,
-    this.popoverTheme,
-    this.optionTheme,
   })  : variant = ShadSelectVariant.multipleWithSearch,
         selectedOptionBuilder = null,
         onChanged = null,
@@ -268,6 +285,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.clearSearchOnClose,
     this.enabled = true,
     this.placeholder,
+    this.placeholderStyle,
     this.initialValue,
     this.initialValues = const {},
     this.onChanged,
@@ -284,6 +302,10 @@ class ShadSelect<T> extends StatefulWidget {
     this.showScrollToBottomChevron,
     this.showScrollToTopChevron,
     this.scrollController,
+    this.anchor,
+    this.effects,
+    this.shadows,
+    this.filter,
     this.header,
     this.footer,
     this.allowDeselection = false,
@@ -292,8 +314,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.itemCount,
     this.shrinkWrap,
     this.controller,
-    this.popoverTheme,
-    this.optionTheme,
+    this.popoverReverseDuration,
     this.ensureSelectedVisible,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
@@ -358,6 +379,13 @@ class ShadSelect<T> extends StatefulWidget {
   /// Typically a [Text] widget prompting the user to make a selection.
   /// {@endtemplate}
   final Widget? placeholder;
+
+  /// {@template ShadSelect.placeholderStyle}
+  /// The text style to apply by default to the placeholder widget.
+  /// If the placeholder contains a [Text] widget, this style will be merged
+  /// with its existing style.
+  /// {@endtemplate}
+  final TextStyle? placeholderStyle;
 
   /// {@template ShadSelect.selectedOptionBuilder}
   /// Builder function for rendering the currently selected option in single
@@ -482,6 +510,14 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@endtemplate}
   final ScrollController? scrollController;
 
+  /// {@template ShadSelect.anchor}
+  /// The anchor configuration for positioning the popover relative to the
+  /// select input.
+  ///
+  /// Defaults to `ShadAnchorAuto(offset: Offset(0, 4))`
+  /// {@endtemplate}
+  final ShadAnchorBase? anchor;
+
   /// {@template ShadSelect.variant}
   /// The variant of the [ShadSelect] widget, determining its behavior and
   /// appearance.
@@ -543,6 +579,15 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@endtemplate}
   final bool? clearSearchOnClose;
 
+  /// {@macro ShadPopover.effects}
+  final List<Effect<dynamic>>? effects;
+
+  /// {@macro ShadPopover.shadows}
+  final List<BoxShadow>? shadows;
+
+  /// {@macro ShadPopover.filter}
+  final ImageFilter? filter;
+
   /// {@template ShadSelect.popoverController}
   /// Controller for managing the visibility and behavior of the popover.
   ///
@@ -593,6 +638,13 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@endtemplate}
   final bool? shrinkWrap;
 
+  /// {@template ShadSelect.popoverReverseDuration}
+  /// The duration of the popover's exit animation.
+  ///
+  /// Defaults to [Duration.zero ].
+  /// {@endtemplate}
+  final Duration? popoverReverseDuration;
+
   /// {@template ShadSelect.ensureSelectedVisible}
   /// Whether to automatically scroll the options list to ensure the selected
   /// option is visible when the popover opens.
@@ -600,19 +652,6 @@ class ShadSelect<T> extends StatefulWidget {
   /// [ShadSelectVariant.search], false otherwise.
   /// {@endtemplate}
   final bool? ensureSelectedVisible;
-
-  /// {@template ShadSelect.popoverTheme}
-  /// The theme for the popover, allowing customization of its appearance
-  /// and behavior.
-  /// See also [ShadPopoverTheme].
-  /// {@endtemplate}
-  final ShadPopoverTheme? popoverTheme;
-
-  /// {@template ShadSelect.optionTheme}
-  /// The theme for the options, allowing customization of their appearance.
-  /// See also [ShadOptionTheme].
-  /// {@endtemplate}
-  final ShadOptionTheme? optionTheme;
 
   @override
   ShadSelectState<T> createState() => ShadSelectState();
@@ -781,19 +820,6 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     assert(debugCheckHasShadTheme(context));
     final theme = ShadTheme.of(context);
 
-    final effectivePopoverTheme = theme.popoverTheme
-        .merge(theme.selectTheme.popoverTheme)
-        .merge(widget.popoverTheme);
-
-    final effectiveOptionTheme = theme.optionTheme
-        .merge(theme.selectTheme.optionTheme)
-        .merge(widget.optionTheme);
-
-    final effectiveThemeData = theme.copyWith(
-      popoverTheme: effectivePopoverTheme,
-      optionTheme: effectiveOptionTheme,
-    );
-
     final effectiveDecoration = theme.decoration
         .merge(theme.selectTheme.decoration)
         .merge(widget.decoration);
@@ -815,6 +841,22 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             theme.selectTheme.showScrollToBottomChevron ??
             true;
 
+    final effectivePopoverTheme =
+        theme.selectTheme.popoverTheme ?? theme.popoverTheme;
+
+    final popoverReverseDuration = widget.popoverReverseDuration ??
+        effectivePopoverTheme.reverseDuration ??
+        Duration.zero;
+
+    final effectiveAnchor =
+        widget.anchor ?? effectivePopoverTheme.anchor ?? const ShadAnchorAuto();
+
+    final effectiveEffects = widget.effects ?? effectivePopoverTheme.effects;
+
+    final effectiveShadows = widget.shadows ?? effectivePopoverTheme.shadows;
+
+    final effectiveFilter = widget.filter ?? effectivePopoverTheme.filter;
+
     final isMultiSelect = widget.selectedOptionsBuilder != null;
 
     // make effectiveText listen to controller changes
@@ -822,7 +864,15 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
       listenable: controller,
       builder: (context, child) {
         final Widget result;
+        final TextStyle resultDefaultTextStyle;
+
         if (controller.value.isNotEmpty) {
+          final effectiveOptionTheme =
+              theme.selectTheme.optionTheme ?? theme.optionTheme;
+          resultDefaultTextStyle = effectiveOptionTheme.selectedTextStyle ??
+              theme.textTheme.muted.copyWith(
+                color: theme.colorScheme.foreground,
+              );
           switch (isMultiSelect) {
             case true:
               result = widget.selectedOptionsBuilder!(
@@ -840,9 +890,14 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             widget.placeholder != null,
             'placeholder must not be null when value is null',
           );
+          resultDefaultTextStyle = widget.placeholderStyle ??
+              theme.selectTheme.placeholderStyle ??
+              theme.textTheme.muted.copyWith(
+                color: theme.colorScheme.foreground,
+              );
           result = widget.placeholder!;
         }
-        return result;
+        return DefaultTextStyle(style: resultDefaultTextStyle, child: result);
       },
     );
 
@@ -967,14 +1022,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Flexible(
-                            child: DefaultTextStyle(
-                              style: theme.textTheme.muted.copyWith(
-                                color: theme.colorScheme.foreground,
-                              ),
-                              child: effectiveText,
-                            ),
-                          ),
+                          Flexible(child: effectiveText),
                           effectiveTrailing,
                         ],
                       ),
@@ -1047,81 +1095,77 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             return ShadProvider(
               data: this as ShadSelectState<dynamic>,
               notifyUpdate: (_) => true,
-              child: ShadTheme(
-                data: effectiveThemeData,
-                child: ShadPopover(
-                  groupId: widget.groupId,
-                  padding: EdgeInsets.zero,
-                  controller: popoverController,
-                  anchor: effectivePopoverTheme.anchor,
-                  closeOnTapOutside: widget.closeOnTapOutside,
-                  effects: effectivePopoverTheme.effects,
-                  reverseDuration: effectivePopoverTheme.reverseDuration,
-                  shadows: effectivePopoverTheme.shadows,
-                  filter: effectivePopoverTheme.filter,
-                  decoration: effectivePopoverTheme.decoration,
-                  popover: (_) {
-                    // set the initial value for showScrollToBottom and
-                    // showScrollToTop, after the popover is rendered
-                    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                      if (scrollController.hasClients) {
-                        showScrollToBottom.value = scrollController.offset <
-                            scrollController.position.maxScrollExtent;
-                        showScrollToTop.value = scrollController.offset > 0;
-                      }
-                    });
+              child: ShadPopover(
+                groupId: widget.groupId,
+                padding: EdgeInsets.zero,
+                controller: popoverController,
+                anchor: effectiveAnchor,
+                closeOnTapOutside: widget.closeOnTapOutside,
+                effects: effectiveEffects,
+                reverseDuration: popoverReverseDuration,
+                shadows: effectiveShadows,
+                filter: effectiveFilter,
+                popover: (_) {
+                  // set the initial value for showScrollToBottom and
+                  // showScrollToTop, after the popover is rendered
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                    if (scrollController.hasClients) {
+                      showScrollToBottom.value = scrollController.offset <
+                          scrollController.position.maxScrollExtent;
+                      showScrollToTop.value = scrollController.offset > 0;
+                    }
+                  });
 
-                    Widget effectiveColumn = Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (search != null)
-                          Flexible(
-                            child: ConstrainedBox(
-                              constraints: effectiveConstraints,
-                              child: search,
-                            ),
-                          ),
-                        if (widget.header != null)
-                          Flexible(
-                            child: ConstrainedBox(
-                              constraints: effectiveConstraints,
-                              child: widget.header,
-                            ),
-                          ),
-                        if (scrollToTopChild != null) scrollToTopChild,
+                  Widget effectiveColumn = Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (search != null)
                         Flexible(
                           child: ConstrainedBox(
                             constraints: effectiveConstraints,
-                            child: effectiveChild,
+                            child: search,
                           ),
                         ),
-                        if (scrollToBottomChild != null) scrollToBottomChild,
-                        if (widget.footer != null)
-                          Flexible(
-                            child: ConstrainedBox(
-                              constraints: effectiveConstraints,
-                              child: widget.footer,
-                            ),
+                      if (widget.header != null)
+                        Flexible(
+                          child: ConstrainedBox(
+                            constraints: effectiveConstraints,
+                            child: widget.header,
                           ),
-                      ],
-                    );
-
-                    if (widget.optionsBuilder == null) {
-                      effectiveColumn = IntrinsicWidth(child: effectiveColumn);
-                    }
-
-                    return ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: effectiveMaxHeight,
-                        minWidth: calculatedMinWidth,
-                        maxWidth: effectiveMaxWidth,
+                        ),
+                      if (scrollToTopChild != null) scrollToTopChild,
+                      Flexible(
+                        child: ConstrainedBox(
+                          constraints: effectiveConstraints,
+                          child: effectiveChild,
+                        ),
                       ),
-                      child: effectiveColumn,
-                    );
-                  },
-                  child: select,
-                ),
+                      if (scrollToBottomChild != null) scrollToBottomChild,
+                      if (widget.footer != null)
+                        Flexible(
+                          child: ConstrainedBox(
+                            constraints: effectiveConstraints,
+                            child: widget.footer,
+                          ),
+                        ),
+                    ],
+                  );
+
+                  if (widget.optionsBuilder == null) {
+                    effectiveColumn = IntrinsicWidth(child: effectiveColumn);
+                  }
+
+                  return ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: effectiveMaxHeight,
+                      minWidth: calculatedMinWidth,
+                      maxWidth: effectiveMaxWidth,
+                    ),
+                    child: effectiveColumn,
+                  );
+                },
+                child: select,
               ),
             );
           },
@@ -1137,10 +1181,6 @@ class ShadOption<T> extends StatefulWidget {
     required this.value,
     required this.child,
     this.hoveredBackgroundColor,
-    this.selectedBackgroundColor,
-    this.textStyle,
-    this.selectedTextStyle,
-    this.backgroundColor,
     this.padding,
     this.selectedIcon,
     this.radius,
@@ -1153,22 +1193,9 @@ class ShadOption<T> extends StatefulWidget {
   /// The child widget.
   final Widget child;
 
-  /// The background color of the [ShadOption]
-  final Color? backgroundColor;
-
   /// The background color of the [ShadOption] when hovered, defaults to
   /// `ShadThemeData.accent`.
   final Color? hoveredBackgroundColor;
-
-  /// The background color of the [ShadOption] when selected
-  final Color? selectedBackgroundColor;
-
-  /// The text style of the [ShadOption].
-  final TextStyle? textStyle;
-
-  /// The text style of the [ShadOption] when selected.
-  /// If null, defaults to `textStyle`
-  final TextStyle? selectedTextStyle;
 
   /// The padding of the [ShadOption], defaults to
   /// `EdgeInsets.symmetric(horizontal: 8, vertical: 6)`
@@ -1235,32 +1262,34 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
         context.watch<ShadSelectState<dynamic>>() as ShadSelectState<T>;
     final selected = inheritedSelect.controller.value.contains(widget.value);
 
-    final effectiveHoveredBackgroundColor = widget.hoveredBackgroundColor ??
-        theme.optionTheme.hoveredBackgroundColor ??
-        theme.colorScheme.accent;
+    final effectiveOptionTheme =
+        theme.selectTheme.optionTheme ?? theme.optionTheme;
 
-    final effectiveSelectedBackgroundColor = widget.selectedBackgroundColor ??
-        theme.optionTheme.selectedBackgroundColor;
+    final effectiveHoveredBackgroundColor =
+        effectiveOptionTheme.hoveredBackgroundColor ?? theme.colorScheme.accent;
+
+    final effectiveSelectedBackgroundColor =
+        effectiveOptionTheme.selectedBackgroundColor;
 
     final effectiveDefaultBackgroundColor =
-        widget.backgroundColor ?? theme.optionTheme.backgroundColor;
+        effectiveOptionTheme.backgroundColor;
 
     final effectivePadding = widget.padding ??
-        theme.optionTheme.padding ??
+        effectiveOptionTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
 
-    final effectiveTextStyle = widget.textStyle ??
-        theme.optionTheme.textStyle ??
+    final effectiveTextStyle = effectiveOptionTheme.textStyle ??
         theme.textTheme.muted.copyWith(
           color: theme.colorScheme.popoverForeground,
         );
 
-    final effectiveSelectedTextStyle = widget.selectedTextStyle ??
-        theme.optionTheme.selectedTextStyle ??
-        effectiveTextStyle;
+    final effectiveSelectedTextStyle = effectiveOptionTheme.selectedTextStyle ??
+        theme.textTheme.muted.copyWith(
+          color: theme.colorScheme.popoverForeground,
+        );
 
     final effectiveRadius =
-        widget.radius ?? theme.optionTheme.radius ?? theme.radius;
+        widget.radius ?? effectiveOptionTheme.radius ?? theme.radius;
 
     final effectiveSelectedIcon = Visibility.maintain(
       visible: selected,

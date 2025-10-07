@@ -14,6 +14,7 @@ class ShadSelectTheme with _$ShadSelectTheme {
   const ShadSelectTheme({
     bool canMerge = true,
     this.decoration,
+    this.placeholderStyle,
     this.minWidth,
     this.maxWidth,
     this.maxHeight,
@@ -35,6 +36,9 @@ class ShadSelectTheme with _$ShadSelectTheme {
 
   /// {@macro ShadSelect.decoration}
   final ShadDecoration? decoration;
+
+  /// {@macro ShadSelect.placeholderStyle}
+  final TextStyle? placeholderStyle;
 
   /// {@macro ShadSelect.minWidth}
   final double? minWidth;
