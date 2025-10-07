@@ -28,7 +28,6 @@ class ShadOptionTheme with _$ShadOptionTheme {
   final BorderRadius? radius;
   final Color? backgroundColor;
   final TextStyle? textStyle;
-
   final Color? selectedBackgroundColor;
   final TextStyle? selectedTextStyle;
 

@@ -870,7 +870,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
           final effectiveOptionTheme =
               theme.selectTheme.optionTheme ?? theme.optionTheme;
           resultDefaultTextStyle = effectiveOptionTheme.selectedTextStyle ??
-              theme.textTheme.muted.copyWith(
+              theme.textTheme.muted.fallback(
                 color: theme.colorScheme.foreground,
               );
           switch (isMultiSelect) {
@@ -892,7 +892,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
           );
           resultDefaultTextStyle = widget.placeholderStyle ??
               theme.selectTheme.placeholderStyle ??
-              theme.textTheme.muted.copyWith(
+              theme.textTheme.muted.fallback(
                 color: theme.colorScheme.foreground,
               );
           result = widget.placeholder!;
@@ -1279,12 +1279,12 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
         const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
 
     final effectiveTextStyle = effectiveOptionTheme.textStyle ??
-        theme.textTheme.muted.copyWith(
+        theme.textTheme.muted.fallback(
           color: theme.colorScheme.popoverForeground,
         );
 
     final effectiveSelectedTextStyle = effectiveOptionTheme.selectedTextStyle ??
-        theme.textTheme.muted.copyWith(
+        theme.textTheme.muted.fallback(
           color: theme.colorScheme.popoverForeground,
         );
 
