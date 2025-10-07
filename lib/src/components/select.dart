@@ -1207,16 +1207,20 @@ class ShadOption<T> extends StatefulWidget {
   /// The radius of the [ShadOption], defaults to `ShadThemeData.radius`.
   final BorderRadius? radius;
 
-  /// The background color of the [ShadOption], defaults to `ShadThemeData.optionTheme.backgroundColor`.
+  /// The background color of the [ShadOption], defaults to
+  /// `ShadThemeData.optionTheme.backgroundColor`.
   final Color? backgroundColor;
 
-  /// The background color of the [ShadOption] when selected, defaults to `ShadThemeData.optionTheme.selectedBackgroundColor`.
+  /// The background color of the [ShadOption] when selected, defaults to
+  /// `ShadThemeData.optionTheme.selectedBackgroundColor`.
   final Color? selectedBackgroundColor;
 
-  /// The text style of the [ShadOption], defaults to `ShadThemeData.optionTheme.textStyle`.
+  /// The text style of the [ShadOption], defaults to
+  /// `ShadThemeData.optionTheme.textStyle`.
   final TextStyle? textStyle;
 
-  /// The text style of the [ShadOption] when selected, defaults to `ShadThemeData.optionTheme.selectedTextStyle`.
+  /// The text style of the [ShadOption] when selected, defaults to
+  /// `ShadThemeData.optionTheme.selectedTextStyle`.
   final TextStyle? selectedTextStyle;
 
   /// {@template ShadOption.direction}
