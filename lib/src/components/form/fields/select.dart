@@ -215,6 +215,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
+
+    /// {@macro ShadSelect.searchFocusNode}
+    FocusNode? searchFocusNode,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -262,6 +265,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               shrinkWrap: shrinkWrap,
               controller: state.controller,
               ensureSelectedVisible: ensureSelectedVisible,
+              searchFocusNode: searchFocusNode,
             );
           },
         );
@@ -332,6 +336,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
+
+    /// {@macro ShadSelect.searchFocusNode}
+    FocusNode? searchFocusNode,
   })  : assert(
           variant == ShadSelectVariant.primary ||
               variant == ShadSelectVariant.search,
@@ -384,6 +391,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
               shrinkWrap: shrinkWrap,
               controller: state.controller,
               ensureSelectedVisible: ensureSelectedVisible,
+              searchFocusNode: searchFocusNode,
             );
           },
         );
@@ -578,6 +586,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
+
+    /// {@macro ShadSelect.searchFocusNode}
+    FocusNode? searchFocusNode,
   }) : super(
           decorationBuilder: (context) =>
               (ShadTheme.of(context).selectTheme.decoration ??
@@ -621,6 +632,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               allowDeselection: allowDeselection,
               controller: state.controller,
               ensureSelectedVisible: ensureSelectedVisible,
+              searchFocusNode: searchFocusNode,
             );
           },
         );
@@ -680,6 +692,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
+
+    /// {@macro ShadSelect.searchFocusNode}
+    FocusNode? searchFocusNode,
   })  : assert(
           variant == ShadSelectVariant.multiple ||
               variant == ShadSelectVariant.multipleWithSearch,
@@ -728,6 +743,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
               closeOnSelect: closeOnSelect,
               controller: state.controller,
               ensureSelectedVisible: ensureSelectedVisible,
+              searchFocusNode: searchFocusNode,
             );
           },
         );

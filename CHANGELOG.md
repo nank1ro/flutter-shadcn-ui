@@ -1,3 +1,7 @@
+## 0.37.4
+
+- **FEAT**: Add `searchFocusNode` to `ShadSelect` and `ShadSelectFormField` to provide a custom focus node for the search input.
+
 ## 0.37.3
 
 - **FIX**: `ShadSelect` not updating the controller when the form field value changes.
