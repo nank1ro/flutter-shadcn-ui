@@ -660,6 +660,7 @@ class ShadSelect<T> extends StatefulWidget {
 
 class ShadSelectState<T> extends State<ShadSelect<T>> {
   FocusNode? internalFocusNode;
+  final searchFocused = ValueNotifier(false);
 
   // ignore: use_late_for_private_fields_and_variables
   ShadSelectController<T>? _controller;
@@ -754,6 +755,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     _scrollController?.dispose();
     showScrollToBottom.dispose();
     showScrollToTop.dispose();
+    searchFocused.dispose();
     super.dispose();
   }
 
@@ -808,6 +810,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     }
 
     if (changed) {
+      // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+      controller.notifyListeners();
       if (isMultiSelection) {
         widget.onMultipleChanged?.call(controller.value.toSet());
       } else {
@@ -922,37 +926,52 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            widget.search ??
-                ShadInput(
-                  leading: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Icon(
-                      LucideIcons.search,
-                      size: 16,
-                      color: theme.colorScheme.popoverForeground,
-                    ),
-                  ),
-                  padding: widget.searchPadding ??
-                      theme.selectTheme.searchPadding ??
-                      const EdgeInsets.all(12),
-                  placeholder: widget.searchPlaceholder,
-                  decoration: ShadDecoration.none,
-                  onChanged: widget.onSearchChanged,
-                ),
+            ShadFocusable(
+              builder: (context, focused, child) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  searchFocused.value = focused;
+                });
+                return widget.search ??
+                    ShadInput(
+                      leading: Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Icon(
+                          LucideIcons.search,
+                          size: 16,
+                          color: theme.colorScheme.popoverForeground,
+                        ),
+                      ),
+                      padding: widget.searchPadding ??
+                          theme.selectTheme.searchPadding ??
+                          const EdgeInsets.all(12),
+                      placeholder: widget.searchPlaceholder,
+                      decoration: ShadDecoration.none,
+                      onChanged: widget.onSearchChanged,
+                    );
+              },
+            ),
             widget.searchDivider ??
                 const ShadSeparator.horizontal(margin: EdgeInsets.zero),
           ],
         ),
     };
 
-    return CallbackShortcuts(
-      bindings: {
-        const SingleActivator(LogicalKeyboardKey.enter):
-            popoverController.toggle,
-        const SingleActivator(LogicalKeyboardKey.space):
-            popoverController.toggle,
-        const SingleActivator(LogicalKeyboardKey.escape):
-            popoverController.hide,
+    return ValueListenableBuilder(
+      valueListenable: searchFocused,
+      builder: (context, focused, child) {
+        return CallbackShortcuts(
+          bindings: focused
+              ? const {}
+              : {
+                  const SingleActivator(LogicalKeyboardKey.enter):
+                      popoverController.toggle,
+                  const SingleActivator(LogicalKeyboardKey.space):
+                      popoverController.toggle,
+                  const SingleActivator(LogicalKeyboardKey.escape):
+                      popoverController.hide,
+                },
+          child: child!,
+        );
       },
       child: FocusTraversalGroup(
         policy: WidgetOrderTraversalPolicy(),

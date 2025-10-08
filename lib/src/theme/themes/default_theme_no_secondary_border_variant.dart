@@ -44,6 +44,7 @@ import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 
@@ -453,7 +454,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   @override
   ShadInputTheme inputTheme() {
     return ShadInputTheme(
-      style: effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
+      style: effectiveTextTheme.muted,
       placeholderStyle: effectiveTextTheme.muted,
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
@@ -723,12 +724,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       cellAlignment: Alignment.centerLeft,
       cellHeight: 48,
       cellPadding: const EdgeInsets.symmetric(horizontal: 16),
-      cellStyle:
-          effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
+      cellStyle: effectiveTextTheme.muted,
       cellHeaderStyle:
-          effectiveTextTheme.muted.copyWith(fontWeight: FontWeight.w500),
-      cellFooterStyle: effectiveTextTheme.muted
-          .copyWith(color: colorScheme.foreground, fontWeight: FontWeight.w500),
+          effectiveTextTheme.muted.fallback(fontWeight: FontWeight.w500),
+      cellFooterStyle:
+          effectiveTextTheme.muted.fallback(fontWeight: FontWeight.w500),
     );
   }
 
@@ -1038,7 +1038,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
   @override
   ShadTextareaTheme textareaTheme() {
     return ShadTextareaTheme(
-      style: effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
+      style: effectiveTextTheme.muted,
       placeholderStyle: effectiveTextTheme.muted,
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
