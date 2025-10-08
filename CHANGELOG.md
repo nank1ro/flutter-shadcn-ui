@@ -1,3 +1,8 @@
+## 0.37.3
+
+- **FIX**: `ShadSelect` not updating the controller when the form field value changes.
+- **FIX**: Remove `initialValues` from `ShadSelectMultipleFormField`, use `controller` instead.
+
 ## 0.37.2
 
 - **FEAT**: Add `backgroundColor`, `selectedBackgroundColor`, `textStyle` and `selectedTextStyle` to `ShadOptionTheme` and `ShadOption`, to customize the background color and text style of `ShadOption` (thanks to @9dan).
