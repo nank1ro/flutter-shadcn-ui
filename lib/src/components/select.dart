@@ -91,6 +91,7 @@ class ShadSelect<T> extends StatefulWidget {
         selectedOptionsBuilder = null,
         search = null,
         clearSearchOnClose = false,
+        searchFocusNode = null,
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
@@ -141,6 +142,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.controller,
     this.popoverReverseDuration,
     this.ensureSelectedVisible,
+    this.searchFocusNode,
   })  : variant = ShadSelectVariant.search,
         selectedOptionsBuilder = null,
         onMultipleChanged = null,
@@ -204,6 +206,7 @@ class ShadSelect<T> extends StatefulWidget {
         clearSearchOnClose = false,
         onChanged = null,
         onMultipleChanged = onChanged,
+        searchFocusNode = null,
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
@@ -254,6 +257,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.controller,
     this.popoverReverseDuration,
     this.ensureSelectedVisible,
+    this.searchFocusNode,
   })  : variant = ShadSelectVariant.multipleWithSearch,
         selectedOptionBuilder = null,
         onChanged = null,
@@ -317,6 +321,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.controller,
     this.popoverReverseDuration,
     this.ensureSelectedVisible,
+    this.searchFocusNode,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -654,6 +659,12 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@endtemplate}
   final bool? ensureSelectedVisible;
 
+  /// {@template ShadSelect.searchFocusNode}
+  /// Focus node for the search input field in search-enabled variants.
+  /// If null, a default [FocusNode] will be created internally.
+  /// {@endtemplate}
+  final FocusNode? searchFocusNode;
+
   @override
   ShadSelectState<T> createState() => ShadSelectState();
 }
@@ -927,6 +938,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ShadFocusable(
+              focusNode: widget.searchFocusNode,
               builder: (context, focused, child) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   searchFocused.value = focused;
