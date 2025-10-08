@@ -41,6 +41,14 @@ export 'src/components/separator.dart';
 export 'src/components/sheet.dart';
 export 'src/components/slider.dart';
 export 'src/components/sonner.dart';
+export 'src/components/sidebar/sidebar.dart';
+export 'src/components/sidebar/common/enums.dart';
+export 'src/components/sidebar/sidebar_trigger.dart';
+export 'src/components/sidebar/sidebar_scaffold/sidebar_scaffold.dart'
+    show ShadSidebarScaffold, ShadSidebarScaffoldState;
+export 'src/components/sidebar/sidebar_group.dart';
+export 'src/components/sidebar/sidebar_separator.dart';
+export 'src/components/sidebar/sidebar_menu.dart';
 export 'src/components/switch.dart';
 export 'src/components/table.dart';
 export 'src/components/tabs.dart';

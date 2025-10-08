@@ -24,6 +24,14 @@ class ShadNeutralColorScheme extends ShadColorScheme {
     required super.input,
     required super.ring,
     required super.selection,
+    required super.sidebar,
+    required super.sidebarForeground,
+    required super.sidebarBorder,
+    required super.sidebarRing,
+    required super.sidebarAccent,
+    required super.sidebarAccentForeground,
+    required super.sidebarPrimary,
+    required super.sidebarPrimaryForeground,
     super.custom,
   });
 
@@ -48,6 +56,14 @@ class ShadNeutralColorScheme extends ShadColorScheme {
     super.input = const Color(0xffe5e5e5),
     super.ring = const Color(0xff0a0a0a),
     super.selection = const Color(0xFFB4D7FF),
+    super.sidebar = const Color(0xFFfafafa),
+    super.sidebarForeground = const Color(0xFF0a0a0a),
+    super.sidebarPrimary = const Color(0xFF171717),
+    super.sidebarPrimaryForeground = const Color(0xFFfafafa),
+    super.sidebarAccent = const Color(0xFFf5f5f5),
+    super.sidebarAccentForeground = const Color(0xFF171717),
+    super.sidebarBorder = const Color(0xFFe5e5e5),
+    super.sidebarRing = const Color(0xFFa1a1a1),
     super.custom,
   });
 
@@ -72,6 +88,14 @@ class ShadNeutralColorScheme extends ShadColorScheme {
     super.input = const Color(0xff262626),
     super.ring = const Color(0xffd4d4d4),
     super.selection = const Color(0xFF355172),
+    super.sidebar = const Color(0xFF171717),
+    super.sidebarForeground = const Color(0xFFfafafa),
+    super.sidebarPrimary = const Color(0xFF1447e6),
+    super.sidebarPrimaryForeground = const Color(0xFFfafafa),
+    super.sidebarAccent = const Color(0xFF262626),
+    super.sidebarAccentForeground = const Color(0xFFfafafa),
+    super.sidebarBorder = const Color.fromRGBO(255, 255, 255, 0.102),
+    super.sidebarRing = const Color(0xFF737373),
     super.custom,
   });
 }
