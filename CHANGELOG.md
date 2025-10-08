@@ -2,6 +2,7 @@
 
 - **FIX**: `ShadSelect` not updating the controller when the form field value changes.
 - **FIX**: Remove `initialValues` from `ShadSelectMultipleFormField`, use `controller` instead.
+- **FIX**: `ShadSelect.withSearch` keyboard shortcuts closing the popover when the search input is focused.
 
 ## 0.37.2
 
