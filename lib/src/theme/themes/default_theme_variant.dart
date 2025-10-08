@@ -353,10 +353,10 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           width: 1,
         ),
       ),
-      popoverReverseDuration: Duration.zero,
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
+      popoverReverseDuration: Duration.zero,
       anchor: const ShadAnchorAuto(offset: Offset(0, 4)),
       searchPadding: const EdgeInsets.all(12),
     );

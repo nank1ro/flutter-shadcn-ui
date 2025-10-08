@@ -9,6 +9,10 @@ class ShadOptionTheme with _$ShadOptionTheme {
   const ShadOptionTheme({
     bool canMerge = true,
     this.hoveredBackgroundColor,
+    this.selectedBackgroundColor,
+    this.backgroundColor,
+    this.textStyle,
+    this.selectedTextStyle,
     this.padding,
     this.radius,
   }) : _canMerge = canMerge;
@@ -22,6 +26,10 @@ class ShadOptionTheme with _$ShadOptionTheme {
   final Color? hoveredBackgroundColor;
   final EdgeInsetsGeometry? padding;
   final BorderRadius? radius;
+  final Color? backgroundColor;
+  final TextStyle? textStyle;
+  final Color? selectedBackgroundColor;
+  final TextStyle? selectedTextStyle;
 
   static ShadOptionTheme? lerp(
     ShadOptionTheme? a,

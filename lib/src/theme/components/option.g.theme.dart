@@ -29,6 +29,18 @@ mixin _$ShadOptionTheme {
       ),
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
       radius: BorderRadius.lerp(a?.radius, b?.radius, t),
+      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      textStyle: TextStyle.lerp(a?.textStyle, b?.textStyle, t),
+      selectedBackgroundColor: Color.lerp(
+        a?.selectedBackgroundColor,
+        b?.selectedBackgroundColor,
+        t,
+      ),
+      selectedTextStyle: TextStyle.lerp(
+        a?.selectedTextStyle,
+        b?.selectedTextStyle,
+        t,
+      ),
     );
   }
 
@@ -36,6 +48,10 @@ mixin _$ShadOptionTheme {
     Color? hoveredBackgroundColor,
     EdgeInsetsGeometry? padding,
     BorderRadius? radius,
+    Color? backgroundColor,
+    TextStyle? textStyle,
+    Color? selectedBackgroundColor,
+    TextStyle? selectedTextStyle,
   }) {
     final a = (this as ShadOptionTheme);
 
@@ -44,6 +60,11 @@ mixin _$ShadOptionTheme {
           hoveredBackgroundColor ?? a.hoveredBackgroundColor,
       padding: padding ?? a.padding,
       radius: radius ?? a.radius,
+      backgroundColor: backgroundColor ?? a.backgroundColor,
+      textStyle: textStyle ?? a.textStyle,
+      selectedBackgroundColor:
+          selectedBackgroundColor ?? a.selectedBackgroundColor,
+      selectedTextStyle: selectedTextStyle ?? a.selectedTextStyle,
     );
   }
 
@@ -62,6 +83,12 @@ mixin _$ShadOptionTheme {
       hoveredBackgroundColor: other.hoveredBackgroundColor,
       padding: other.padding,
       radius: other.radius,
+      backgroundColor: other.backgroundColor,
+      textStyle: current.textStyle?.merge(other.textStyle) ?? other.textStyle,
+      selectedBackgroundColor: other.selectedBackgroundColor,
+      selectedTextStyle:
+          current.selectedTextStyle?.merge(other.selectedTextStyle) ??
+              other.selectedTextStyle,
     );
   }
 
@@ -80,7 +107,11 @@ mixin _$ShadOptionTheme {
     return other is ShadOptionTheme &&
         other.hoveredBackgroundColor == value.hoveredBackgroundColor &&
         other.padding == value.padding &&
-        other.radius == value.radius;
+        other.radius == value.radius &&
+        other.backgroundColor == value.backgroundColor &&
+        other.textStyle == value.textStyle &&
+        other.selectedBackgroundColor == value.selectedBackgroundColor &&
+        other.selectedTextStyle == value.selectedTextStyle;
   }
 
   @override
@@ -92,6 +123,10 @@ mixin _$ShadOptionTheme {
       value.hoveredBackgroundColor,
       value.padding,
       value.radius,
+      value.backgroundColor,
+      value.textStyle,
+      value.selectedBackgroundColor,
+      value.selectedTextStyle,
     );
   }
 }
