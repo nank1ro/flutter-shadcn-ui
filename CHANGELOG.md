@@ -1,3 +1,8 @@
+## 0.37.4
+
+- **FIX**: Export `Effect` from `flutter_animate` as `AnimateEffect` to avoid name conflicts.
+- **FIX**: Export `TextDirection` from `intl` as `IntlTextDirection` to avoid name conflicts.
+
 ## 0.37.3
 
 - **FIX**: `ShadSelect` not updating the controller when the form field value changes.
