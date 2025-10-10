@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shadcn_ui/src/components/sidebar/common/sidebar_button.dart';
 
@@ -35,9 +36,8 @@ class _SidebarCollapsibleState extends State<SidebarCollapsible> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final sidebar = ShadSidebarScaffold.of(context);
-    // When the sidebar is collapsed, the collapsible menu should also be
-    // collapsed.
+    final state = ShadSidebarController.of(context);
+    final collapsedToIcons = !state.extended && state.collapseMode.isIcons;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -57,7 +57,7 @@ class _SidebarCollapsibleState extends State<SidebarCollapsible> {
         ),
         Flexible(
           child: Offstage(
-            offstage: collapsed || sidebar.collapsedToIcons,
+            offstage: collapsed || collapsedToIcons,
             child: widget.content,
           ),
         ),
@@ -73,8 +73,7 @@ class _SidebarCollapsibleState extends State<SidebarCollapsible> {
             turns: collapsed ? 0 : -(1.0 / 2.0),
             child: Icon(
               LucideIcons.chevronDown,
-              color: theme.sidebarTheme.foregroundColor ??
-                  theme.colorScheme.sidebarForeground,
+              color: theme.colorScheme.sidebarForeground,
             ),
           );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Colors;
+
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 /// An internal component used in [ShadSidebarMenuItem]
@@ -36,16 +37,16 @@ class SidebarButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final cs = theme.colorScheme;
-    final foregroundColor =
-        theme.sidebarTheme.foregroundColor ?? cs.sidebarForeground;
-    final hoverBgColor = theme.sidebarTheme.accentColor ?? cs.sidebarAccent;
-    final hoverFgColor =
-        theme.sidebarTheme.accentForegroundColor ?? cs.sidebarAccentForeground;
+    final foregroundColor = cs.sidebarForeground;
+    final hoverBgColor = cs.sidebarAccent;
+    final hoverFgColor = cs.sidebarAccentForeground;
     final effectiveLabel = label ??
         (labelText != null ? Text(labelText!, style: labelStyle) : null);
-    // The state of the closest [ShadSidebarScaffold] ancestor.
-    final sidebarState = ShadSidebarScaffold.of(context);
-    final collapsedToIcons = sidebarState.collapsedToIcons;
+
+    final controller = ShadSidebarController.maybeOf(context);
+
+    final collapsedToIcons = !(controller?.extended ?? true) &&
+        (controller?.collapseMode.isIcons ?? false);
 
     return ShadButton.ghost(
       height: height,
@@ -67,8 +68,7 @@ class SidebarButton extends StatelessWidget {
           color: cs.sidebarRing,
         ),
       ),
-      backgroundColor:
-          selected ? theme.sidebarTheme.accentColor ?? cs.sidebarAccent : null,
+      backgroundColor: selected ? cs.sidebarAccent : null,
       foregroundColor: foregroundColor,
       hoverBackgroundColor: hoverBgColor,
       hoverForegroundColor: hoverFgColor,

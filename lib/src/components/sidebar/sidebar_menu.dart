@@ -94,7 +94,8 @@ class ShadSidebarMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sidebar = ShadSidebarScaffold.of(context);
+    final c = ShadSidebarController.of(context);
+    final collapsedToIcons = !c.extended && c.collapseMode.isIcons;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -114,7 +115,7 @@ class ShadSidebarMenuItem extends StatelessWidget {
                 fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
               ),
         ),
-        if (subMenu != null && !sidebar.collapsedToIcons) subMenu!,
+        if (subMenu != null && !collapsedToIcons) subMenu!,
       ],
     );
   }
@@ -163,8 +164,7 @@ class ShadSidebarSubMenu extends ShadSidebarMenu {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final borderColor =
-        theme.sidebarTheme.borderColor ?? theme.colorScheme.sidebarBorder;
+    final borderColor = theme.colorScheme.sidebarBorder;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
       margin: const EdgeInsets.symmetric(horizontal: 14),
@@ -336,7 +336,7 @@ class __DropdownMenuItemState extends State<_DropdownMenuItem> {
 
   @override
   Widget build(BuildContext context) {
-    final side = ShadSidebarScaffold.of(context).side;
+    final side = ShadSidebarController.of(context).side;
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) {

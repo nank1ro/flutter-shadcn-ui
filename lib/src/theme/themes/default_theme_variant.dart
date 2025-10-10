@@ -1,5 +1,4 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -33,7 +32,6 @@ import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/sidebar.dart';
-import 'package:shadcn_ui/src/theme/components/sidebar_scaffold.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -1047,29 +1045,15 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
 
   @override
   ShadSidebarTheme sidebarTheme() {
-    return ShadSidebarTheme(
-      backgroundColor: colorScheme.sidebar,
-      foregroundColor: colorScheme.sidebarForeground,
-      borderColor: colorScheme.sidebarBorder,
-      ringColor: colorScheme.sidebarRing,
-      accentColor: colorScheme.sidebarAccent,
-      accentForegroundColor: colorScheme.sidebarAccentForeground,
-      primaryColor: colorScheme.sidebarPrimary,
-      primaryForegroundColor: colorScheme.sidebarPrimaryForeground,
-    );
-  }
-
-  @override
-  ShadSidebarScaffoldTheme sidebarScaffoldTheme() {
-    return const ShadSidebarScaffoldTheme(
-      keyboardShortcut: SingleActivator(LogicalKeyboardKey.keyB),
-      mobileBreakPoint: 768,
+    return const ShadSidebarTheme(
       side: ShadSidebarSide.left,
-      initiallyExtended: true,
+      animationDuration: Duration(milliseconds: 200),
+      animationCurve: Curves.linear,
+      collapseMode: ShadSidebarCollapseMode.offScreen,
       collapsedToIconsWidth: 48,
       extendedWidth: 256,
       mobileWidth: 288,
-      collapseMode: ShadSidebarCollapseMode.offScreen,
+      mobileBreakPoint: 768,
     );
   }
 }

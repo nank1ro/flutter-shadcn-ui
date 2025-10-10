@@ -22,47 +22,50 @@ mixin _$ShadSidebarTheme {
     }
 
     return ShadSidebarTheme(
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
-      borderColor: Color.lerp(a?.borderColor, b?.borderColor, t),
-      ringColor: Color.lerp(a?.ringColor, b?.ringColor, t),
-      accentColor: Color.lerp(a?.accentColor, b?.accentColor, t),
-      accentForegroundColor: Color.lerp(
-        a?.accentForegroundColor,
-        b?.accentForegroundColor,
+      side: t < 0.5 ? a?.side : b?.side,
+      extendedWidth: lerpDouble$(a?.extendedWidth, b?.extendedWidth, t),
+      mobileWidth: lerpDouble$(a?.mobileWidth, b?.mobileWidth, t),
+      mobileBreakPoint: lerpDouble$(
+        a?.mobileBreakPoint,
+        b?.mobileBreakPoint,
         t,
       ),
-      primaryColor: Color.lerp(a?.primaryColor, b?.primaryColor, t),
-      primaryForegroundColor: Color.lerp(
-        a?.primaryForegroundColor,
-        b?.primaryForegroundColor,
+      collapsedToIconsWidth: lerpDouble$(
+        a?.collapsedToIconsWidth,
+        b?.collapsedToIconsWidth,
         t,
       ),
+      collapseMode: t < 0.5 ? a?.collapseMode : b?.collapseMode,
+      animationDuration: lerpDuration$(
+        a?.animationDuration,
+        b?.animationDuration,
+        t,
+      ),
+      animationCurve: t < 0.5 ? a?.animationCurve : b?.animationCurve,
     );
   }
 
   ShadSidebarTheme copyWith({
-    Color? backgroundColor,
-    Color? foregroundColor,
-    Color? borderColor,
-    Color? ringColor,
-    Color? accentColor,
-    Color? accentForegroundColor,
-    Color? primaryColor,
-    Color? primaryForegroundColor,
+    ShadSidebarSide? side,
+    double? extendedWidth,
+    double? mobileWidth,
+    double? mobileBreakPoint,
+    double? collapsedToIconsWidth,
+    ShadSidebarCollapseMode? collapseMode,
+    Duration? animationDuration,
+    Curve? animationCurve,
   }) {
     final a = (this as ShadSidebarTheme);
 
     return ShadSidebarTheme(
-      backgroundColor: backgroundColor ?? a.backgroundColor,
-      foregroundColor: foregroundColor ?? a.foregroundColor,
-      borderColor: borderColor ?? a.borderColor,
-      ringColor: ringColor ?? a.ringColor,
-      accentColor: accentColor ?? a.accentColor,
-      accentForegroundColor: accentForegroundColor ?? a.accentForegroundColor,
-      primaryColor: primaryColor ?? a.primaryColor,
-      primaryForegroundColor:
-          primaryForegroundColor ?? a.primaryForegroundColor,
+      side: side ?? a.side,
+      extendedWidth: extendedWidth ?? a.extendedWidth,
+      mobileWidth: mobileWidth ?? a.mobileWidth,
+      mobileBreakPoint: mobileBreakPoint ?? a.mobileBreakPoint,
+      collapsedToIconsWidth: collapsedToIconsWidth ?? a.collapsedToIconsWidth,
+      collapseMode: collapseMode ?? a.collapseMode,
+      animationDuration: animationDuration ?? a.animationDuration,
+      animationCurve: animationCurve ?? a.animationCurve,
     );
   }
 
@@ -78,14 +81,14 @@ mixin _$ShadSidebarTheme {
     }
 
     return copyWith(
-      backgroundColor: other.backgroundColor,
-      foregroundColor: other.foregroundColor,
-      borderColor: other.borderColor,
-      ringColor: other.ringColor,
-      accentColor: other.accentColor,
-      accentForegroundColor: other.accentForegroundColor,
-      primaryColor: other.primaryColor,
-      primaryForegroundColor: other.primaryForegroundColor,
+      side: other.side,
+      extendedWidth: other.extendedWidth,
+      mobileWidth: other.mobileWidth,
+      mobileBreakPoint: other.mobileBreakPoint,
+      collapsedToIconsWidth: other.collapsedToIconsWidth,
+      collapseMode: other.collapseMode,
+      animationDuration: other.animationDuration,
+      animationCurve: other.animationCurve,
     );
   }
 
@@ -102,14 +105,14 @@ mixin _$ShadSidebarTheme {
     final value = (this as ShadSidebarTheme);
 
     return other is ShadSidebarTheme &&
-        other.backgroundColor == value.backgroundColor &&
-        other.foregroundColor == value.foregroundColor &&
-        other.borderColor == value.borderColor &&
-        other.ringColor == value.ringColor &&
-        other.accentColor == value.accentColor &&
-        other.accentForegroundColor == value.accentForegroundColor &&
-        other.primaryColor == value.primaryColor &&
-        other.primaryForegroundColor == value.primaryForegroundColor;
+        other.side == value.side &&
+        other.extendedWidth == value.extendedWidth &&
+        other.mobileWidth == value.mobileWidth &&
+        other.mobileBreakPoint == value.mobileBreakPoint &&
+        other.collapsedToIconsWidth == value.collapsedToIconsWidth &&
+        other.collapseMode == value.collapseMode &&
+        other.animationDuration == value.animationDuration &&
+        other.animationCurve == value.animationCurve;
   }
 
   @override
@@ -118,14 +121,14 @@ mixin _$ShadSidebarTheme {
 
     return Object.hash(
       runtimeType,
-      value.backgroundColor,
-      value.foregroundColor,
-      value.borderColor,
-      value.ringColor,
-      value.accentColor,
-      value.accentForegroundColor,
-      value.primaryColor,
-      value.primaryForegroundColor,
+      value.side,
+      value.extendedWidth,
+      value.mobileWidth,
+      value.mobileBreakPoint,
+      value.collapsedToIconsWidth,
+      value.collapseMode,
+      value.animationDuration,
+      value.animationCurve,
     );
   }
 }

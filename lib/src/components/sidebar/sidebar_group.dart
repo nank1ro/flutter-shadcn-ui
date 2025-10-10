@@ -62,8 +62,10 @@ class ShadSidebarGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sidebar = ShadSidebarScaffold.of(context);
-    final isCollapsedToIcons = sidebar.collapsedToIcons;
+    final c = ShadSidebarController.of(
+      context,
+    );
+    final isCollapsedToIcons = !c.extended && c.collapseMode.isIcons;
     if (hiddenWhenCollapsedToIcons && isCollapsedToIcons) {
       return const SizedBox.shrink();
     }
@@ -166,9 +168,7 @@ class _SidebarGroupLabelText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = ShadTheme.of(context).colorScheme;
-    final sidebarTheme = ShadTheme.of(context).sidebarTheme;
-    final fColor =
-        sidebarTheme.foregroundColor ?? colorScheme.sidebarForeground;
+    final fColor = colorScheme.sidebarForeground;
     return Text(
       label,
       style: TextStyle(

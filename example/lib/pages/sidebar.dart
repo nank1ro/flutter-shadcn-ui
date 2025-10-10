@@ -87,12 +87,6 @@ class _SidebarPageState extends State<SidebarPage>
               ),
               _DeviceToggle(),
               MyEnumProperty(
-                label: 'Sidebar side',
-                value: sideSignal.value,
-                values: ShadSidebarSide.values,
-                onChanged: (v) => sideSignal.value = v!,
-              ),
-              MyEnumProperty(
                 label: 'Collapse mode',
                 value: collapseModeSignal.value,
                 values: ShadSidebarCollapseMode.values,
@@ -185,12 +179,11 @@ class _NormalVariant extends StatelessWidget {
       child: SignalBuilder(
         builder: (context, contentWidget) {
           return ShadSidebarScaffold(
-            extendedWidth: sidebarExtendedWidth,
-            side: sideSignal.value,
-            variant: ShadSidebarVariant.normal,
-            collapseMode: collapseModeSignal.value,
             body: contentWidget!,
-            sidebarBuilder: (context) => ShadSidebar(
+            sidebar: ShadSidebar.normal(
+              extendedWidth: sidebarExtendedWidth,
+              side: sideSignal.value,
+              collapseMode: collapseModeSignal.value,
               header: ShadSidebarHeader(
                 childrenSpacing: 8,
                 children: [
@@ -284,217 +277,213 @@ class _InsetVariant extends StatelessWidget {
         builder: (context, mainContent) {
           final side = sideSignal.value;
           return ShadSidebarScaffold(
-            extendedWidth: sidebarExtendedWidth,
-            side: side,
-            variant: ShadSidebarVariant.inset,
-            collapseMode: collapseModeSignal.value,
             body: mainContent!,
-            sidebarBuilder: (context) {
-              final sidebar = ShadSidebarScaffold.of(context);
-              return ShadSidebar(
-                header: ShadSidebarHeader(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  childrenSpacing: 8,
-                  children: [
-                    ShadSidebarTile(
-                      titleText: 'Ace Inc.',
-                      subTitleText: 'Enterprise',
-                      leadingIconData: LucideIcons.command400,
+            sidebar: ShadSidebar.inset(
+              extendedWidth: sidebarExtendedWidth,
+              side: side,
+              collapseMode: collapseModeSignal.value,
+              header: ShadSidebarHeader(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                childrenSpacing: 8,
+                children: [
+                  ShadSidebarTile(
+                    titleText: 'Ace Inc.',
+                    subTitleText: 'Enterprise',
+                    leadingIconData: LucideIcons.command400,
+                  ),
+                ],
+              ),
+              footer: ShadSidebarFooter(
+                children: [
+                  ShadSidebarMenuTile(
+                    menuConstraints:
+                        BoxConstraints(minWidth: sidebarExtendedWidth),
+                    titleText: 'Flutter Shadcn',
+                    subTitleText: 'me@example.com',
+                    trailingIcon: const Icon(LucideIcons.chevronsUpDown400),
+                    leadingIconData: LucideIcons.userRound,
+                    menuAnchor:
+                        //  sidebar.isMobile
+                        //     ? const ShadAnchor(
+                        //         overlayAlignment: Alignment.topCenter,
+                        //       )
+                        // :
+                        ShadAnchor(
+                      overlayAlignment: side.isLeft
+                          ? Alignment.bottomRight
+                          : Alignment.bottomLeft,
+                      childAlignment: side.isLeft
+                          ? Alignment.bottomLeft
+                          : Alignment.bottomRight,
                     ),
-                  ],
-                ),
-                footer: ShadSidebarFooter(
-                  children: [
-                    ShadSidebarMenuTile(
-                      menuConstraints:
-                          BoxConstraints(minWidth: sidebarExtendedWidth),
-                      titleText: 'Flutter Shadcn',
-                      subTitleText: 'me@example.com',
-                      trailingIcon: const Icon(LucideIcons.chevronsUpDown400),
-                      leadingIconData: LucideIcons.userRound,
-                      menuAnchor: sidebar.isMobile
-                          ? const ShadAnchor(
-                              overlayAlignment: Alignment.topCenter,
-                            )
-                          : ShadAnchor(
-                              overlayAlignment: side.isLeft
-                                  ? Alignment.bottomRight
-                                  : Alignment.bottomLeft,
-                              childAlignment: side.isLeft
-                                  ? Alignment.bottomLeft
-                                  : Alignment.bottomRight,
-                            ),
+                    items: [
+                      const ShadContextMenuItem(
+                        leading: Icon(LucideIcons.user400),
+                        child: Text('Account'),
+                      ),
+                      const ShadContextMenuItem(
+                        leading: Icon(LucideIcons.cog400),
+                        child: Text('Settings'),
+                      ),
+                      const ShadSidebarSeparator(),
+                      const ShadContextMenuItem(
+                        leading: Icon(LucideIcons.logOut400),
+                        child: Text('Sign out'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              content: ShadSidebarContent(
+                children: [
+                  ShadSidebarGroup(
+                    labelText: 'Platform',
+                    hiddenWhenCollapsedToIcons: false,
+                    content: ShadSidebarMenu(
                       items: [
-                        const ShadContextMenuItem(
-                          leading: Icon(LucideIcons.user400),
-                          child: Text('Account'),
+                        const ShadSidebarMenuItem.collapsible(
+                          labelText: 'Playground',
+                          leading: Icon(LucideIcons.squareTerminal400),
+                          subMenu: ShadSidebarSubMenu(
+                            items: [
+                              ShadSidebarSubMenuItem(labelText: 'History'),
+                              ShadSidebarSubMenuItem(labelText: 'Starred'),
+                              ShadSidebarSubMenuItem(labelText: 'Settings'),
+                            ],
+                          ),
                         ),
-                        const ShadContextMenuItem(
-                          leading: Icon(LucideIcons.cog400),
-                          child: Text('Settings'),
+                        const ShadSidebarMenuItem.collapsible(
+                          labelText: 'Models',
+                          initiallyCollapsed: true,
+                          leading: Icon(LucideIcons.bot400),
+                          subMenu: ShadSidebarSubMenu(
+                            items: [
+                              ShadSidebarSubMenuItem(labelText: 'Genesis'),
+                              ShadSidebarSubMenuItem(labelText: 'Explorer'),
+                              ShadSidebarSubMenuItem(labelText: 'Quantum'),
+                            ],
+                          ),
                         ),
-                        const ShadSidebarSeparator(),
-                        const ShadContextMenuItem(
-                          leading: Icon(LucideIcons.logOut400),
-                          child: Text('Sign out'),
+                        const ShadSidebarMenuItem.collapsible(
+                          labelText: 'Documentation',
+                          initiallyCollapsed: true,
+                          leading: Icon(LucideIcons.bookOpen400),
+                          subMenu: ShadSidebarSubMenu(
+                            items: [
+                              ShadSidebarSubMenuItem(labelText: 'Introduction'),
+                              ShadSidebarSubMenuItem(labelText: 'Get started'),
+                              ShadSidebarSubMenuItem(labelText: 'Tutorials'),
+                              ShadSidebarSubMenuItem(labelText: 'Examples'),
+                            ],
+                          ),
+                        ),
+                        const ShadSidebarMenuItem.collapsible(
+                          labelText: 'Settings',
+                          initiallyCollapsed: true,
+                          leading: Icon(LucideIcons.settings2400),
+                          subMenu: ShadSidebarSubMenu(
+                            items: [
+                              ShadSidebarSubMenuItem(labelText: 'General'),
+                              ShadSidebarSubMenuItem(labelText: 'Team'),
+                              ShadSidebarSubMenuItem(labelText: 'Billing'),
+                              ShadSidebarSubMenuItem(labelText: 'Limits'),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  ],
-                ),
-                content: ShadSidebarContent(
-                  children: [
-                    ShadSidebarGroup(
-                      labelText: 'Platform',
-                      hiddenWhenCollapsedToIcons: false,
-                      content: ShadSidebarMenu(
-                        items: [
-                          const ShadSidebarMenuItem.collapsible(
-                            labelText: 'Playground',
-                            leading: Icon(LucideIcons.squareTerminal400),
-                            subMenu: ShadSidebarSubMenu(
-                              items: [
-                                ShadSidebarSubMenuItem(labelText: 'History'),
-                                ShadSidebarSubMenuItem(labelText: 'Starred'),
-                                ShadSidebarSubMenuItem(labelText: 'Settings'),
-                              ],
+                  ),
+                  ShadSidebarGroup(
+                    labelText: 'Projects',
+                    content: ShadSidebarMenu(
+                      items: [
+                        ShadSidebarDropdownMenuItem(
+                          labelText: 'Design Engineering',
+                          leading: Icon(LucideIcons.frame400),
+                          items: [
+                            ShadContextMenuItem(
+                              leading: Icon(LucideIcons.folder400),
+                              child: Text('View Project'),
                             ),
-                          ),
-                          const ShadSidebarMenuItem.collapsible(
-                            labelText: 'Models',
-                            initiallyCollapsed: true,
-                            leading: Icon(LucideIcons.bot400),
-                            subMenu: ShadSidebarSubMenu(
-                              items: [
-                                ShadSidebarSubMenuItem(labelText: 'Genesis'),
-                                ShadSidebarSubMenuItem(labelText: 'Explorer'),
-                                ShadSidebarSubMenuItem(labelText: 'Quantum'),
-                              ],
+                            ShadContextMenuItem(
+                              leading: Icon(LucideIcons.share400),
+                              child: Text('Share Project'),
                             ),
-                          ),
-                          const ShadSidebarMenuItem.collapsible(
-                            labelText: 'Documentation',
-                            initiallyCollapsed: true,
-                            leading: Icon(LucideIcons.bookOpen400),
-                            subMenu: ShadSidebarSubMenu(
-                              items: [
-                                ShadSidebarSubMenuItem(
-                                    labelText: 'Introduction'),
-                                ShadSidebarSubMenuItem(
-                                    labelText: 'Get started'),
-                                ShadSidebarSubMenuItem(labelText: 'Tutorials'),
-                                ShadSidebarSubMenuItem(labelText: 'Examples'),
-                              ],
+                            ShadSeparator.horizontal(
+                              margin: EdgeInsets.symmetric(vertical: 4),
                             ),
-                          ),
-                          const ShadSidebarMenuItem.collapsible(
-                            labelText: 'Settings',
-                            initiallyCollapsed: true,
-                            leading: Icon(LucideIcons.settings2400),
-                            subMenu: ShadSidebarSubMenu(
-                              items: [
-                                ShadSidebarSubMenuItem(labelText: 'General'),
-                                ShadSidebarSubMenuItem(labelText: 'Team'),
-                                ShadSidebarSubMenuItem(labelText: 'Billing'),
-                                ShadSidebarSubMenuItem(labelText: 'Limits'),
-                              ],
+                            ShadContextMenuItem(
+                              leading: Icon(LucideIcons.trash400),
+                              child: Text('Delete Project'),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                        ShadSidebarDropdownMenuItem(
+                          labelText: 'Sales & Marketing',
+                          leading: Icon(LucideIcons.chartPie400),
+                          items: [
+                            ShadContextMenuItem(
+                              leading: Icon(LucideIcons.folder400),
+                              child: Text('View Project'),
+                            ),
+                            ShadContextMenuItem(
+                              leading: Icon(LucideIcons.share400),
+                              child: Text('Share Project'),
+                            ),
+                            ShadSeparator.horizontal(
+                              margin: EdgeInsets.symmetric(vertical: 4),
+                            ),
+                            ShadContextMenuItem(
+                              leading: Icon(LucideIcons.trash400),
+                              child: Text('Delete Project'),
+                            ),
+                          ],
+                        ),
+                        ShadSidebarDropdownMenuItem(
+                          labelText: 'Travel',
+                          leading: Icon(LucideIcons.map400),
+                          items: [
+                            ShadContextMenuItem(
+                              leading: Icon(LucideIcons.folder400),
+                              child: Text('View Project'),
+                            ),
+                            ShadContextMenuItem(
+                              leading: Icon(LucideIcons.share400),
+                              child: Text('Share Project'),
+                            ),
+                            ShadSeparator.horizontal(
+                              margin: EdgeInsets.symmetric(vertical: 4),
+                            ),
+                            ShadContextMenuItem(
+                              leading: Icon(LucideIcons.trash400),
+                              child: Text('Delete Project'),
+                            ),
+                          ],
+                        ),
+                        ShadSidebarMenuItem(
+                          labelText: 'More',
+                        ),
+                      ],
                     ),
-                    const ShadSidebarGroup(
-                      labelText: 'Projects',
-                      content: ShadSidebarMenu(
-                        items: [
-                          ShadSidebarDropdownMenuItem(
-                            labelText: 'Design Engineering',
-                            leading: Icon(LucideIcons.frame400),
-                            items: [
-                              ShadContextMenuItem(
-                                leading: Icon(LucideIcons.folder400),
-                                child: Text('View Project'),
-                              ),
-                              ShadContextMenuItem(
-                                leading: Icon(LucideIcons.share400),
-                                child: Text('Share Project'),
-                              ),
-                              ShadSeparator.horizontal(
-                                margin: EdgeInsets.symmetric(vertical: 4),
-                              ),
-                              ShadContextMenuItem(
-                                leading: Icon(LucideIcons.trash400),
-                                child: Text('Delete Project'),
-                              ),
-                            ],
-                          ),
-                          ShadSidebarDropdownMenuItem(
-                            labelText: 'Sales & Marketing',
-                            leading: Icon(LucideIcons.chartPie400),
-                            items: [
-                              ShadContextMenuItem(
-                                leading: Icon(LucideIcons.folder400),
-                                child: Text('View Project'),
-                              ),
-                              ShadContextMenuItem(
-                                leading: Icon(LucideIcons.share400),
-                                child: Text('Share Project'),
-                              ),
-                              ShadSeparator.horizontal(
-                                margin: EdgeInsets.symmetric(vertical: 4),
-                              ),
-                              ShadContextMenuItem(
-                                leading: Icon(LucideIcons.trash400),
-                                child: Text('Delete Project'),
-                              ),
-                            ],
-                          ),
-                          ShadSidebarDropdownMenuItem(
-                            labelText: 'Travel',
-                            leading: Icon(LucideIcons.map400),
-                            items: [
-                              ShadContextMenuItem(
-                                leading: Icon(LucideIcons.folder400),
-                                child: Text('View Project'),
-                              ),
-                              ShadContextMenuItem(
-                                leading: Icon(LucideIcons.share400),
-                                child: Text('Share Project'),
-                              ),
-                              ShadSeparator.horizontal(
-                                margin: EdgeInsets.symmetric(vertical: 4),
-                              ),
-                              ShadContextMenuItem(
-                                leading: Icon(LucideIcons.trash400),
-                                child: Text('Delete Project'),
-                              ),
-                            ],
-                          ),
-                          ShadSidebarMenuItem(
-                            labelText: 'More',
-                          ),
-                        ],
-                      ),
+                  ),
+                  ShadSidebarGroup(
+                    flex: 1,
+                    content: ShadSidebarMenu(
+                      items: [
+                        ShadSidebarMenuItem(
+                          labelText: 'Support',
+                          leading: Icon(LucideIcons.lifeBuoy400, size: 16),
+                        ),
+                        ShadSidebarMenuItem(
+                          labelText: 'Feedback',
+                          leading: Icon(LucideIcons.send400, size: 16),
+                        ),
+                      ],
                     ),
-                    const ShadSidebarGroup(
-                      flex: 1,
-                      content: ShadSidebarMenu(
-                        items: [
-                          ShadSidebarMenuItem(
-                            labelText: 'Support',
-                            leading: Icon(LucideIcons.lifeBuoy400, size: 16),
-                          ),
-                          ShadSidebarMenuItem(
-                            labelText: 'Feedback',
-                            leading: Icon(LucideIcons.send400, size: 16),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
+                  ),
+                ],
+              ),
+            ),
           );
         },
         child: _MainContent(
@@ -516,12 +505,11 @@ class _FloatingVariant extends StatelessWidget {
         builder: (context, contentWidget) {
           final side = sideSignal.value;
           return ShadSidebarScaffold(
-            extendedWidth: 300,
-            side: side,
-            variant: ShadSidebarVariant.floating,
-            collapseMode: collapseModeSignal.value,
             body: contentWidget!,
-            sidebarBuilder: (context) => ShadSidebar(
+            sidebar: ShadSidebar.floating(
+              extendedWidth: 300,
+              side: side,
+              collapseMode: collapseModeSignal.value,
               header: ShadSidebarHeader(
                 children: [
                   ShadSidebarMenuTile(
@@ -650,7 +638,7 @@ class _SearchInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = ShadTheme.of(context).colorScheme;
-    final sidebar = ShadSidebarScaffold.of(context);
+    final state = ShadSidebarController.of(context);
     return ShadInput(
       placeholder: const Text('Search the docs...'),
       maxLines: 1,
@@ -691,7 +679,7 @@ class _SearchInput extends StatelessWidget {
       ),
       constraints: BoxConstraints(
         maxHeight: 23,
-        maxWidth: sidebar.collapsedToIcons ? 32 : double.infinity,
+        maxWidth: state.collapsedToIcons ? 32 : double.infinity,
       ),
     );
   }
@@ -898,21 +886,21 @@ class ShadSidebarTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = ShadTheme.of(context).colorScheme;
-    final state = ShadSidebarScaffold.of(context);
+    final state = ShadSidebarController.of(context);
+    final collapsedToIcons = state.collapseMode.isIcons && !state.extended;
     final leading = buildLeading(cs);
     return ShadButton.ghost(
-      height: state.collapsedToIcons ? 32 : minHeight,
+      height: collapsedToIcons ? 32 : minHeight,
       expands: true,
-      gap: state.collapsedToIcons ? 0 : null,
-      width: state.collapsedToIcons ? 32 : null,
-      padding: state.collapsedToIcons ? EdgeInsets.zero : padding,
+      gap: collapsedToIcons ? 0 : null,
+      width: collapsedToIcons ? 32 : null,
+      padding: collapsedToIcons ? EdgeInsets.zero : padding,
       hoverBackgroundColor: cs.sidebarAccent,
       backgroundColor: Colors.transparent,
       pressedBackgroundColor: cs.sidebarAccent,
-      mainAxisAlignment:
-          state.collapsedToIcons ? MainAxisAlignment.center : null,
+      mainAxisAlignment: collapsedToIcons ? MainAxisAlignment.center : null,
       onPressed: onPressed,
-      trailing: state.collapsedToIcons ? null : trailing,
+      trailing: collapsedToIcons ? null : trailing,
       decoration: ShadDecoration(
         border: ShadBorder.all(
           radius: BorderRadius.circular(8),
@@ -927,7 +915,7 @@ class ShadSidebarTile extends StatelessWidget {
       ),
       leading: leading,
       child: Offstage(
-        offstage: state.collapsedToIcons,
+        offstage: collapsedToIcons,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1022,7 +1010,7 @@ class ShadSidebarMenuTile extends StatelessWidget {
     var opened = false;
     return StatefulBuilder(
       builder: (context, mSetState) {
-        final side = ShadSidebarScaffold.of(context).side;
+        final side = ShadSidebarController.of(context).side;
         return ShadContextMenu(
           decoration: menuDecoration,
           items: items,

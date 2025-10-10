@@ -13,7 +13,7 @@ class ShadSidebarTrigger extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = ShadTheme.of(context).colorScheme;
     return ShadIconButton.ghost(
-      onPressed: () => ShadSidebarScaffold.of(context).toggle(),
+      onPressed: () => ShadSidebarScaffold.of(context).toggleSidebar(),
       icon: const Icon(LucideIcons.panelLeft, size: 16),
       decoration: ShadDecoration(
         border: ShadBorder.all(

@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/components/sidebar/common/enums.dart';
 import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
 
 part 'sidebar.g.theme.dart';
@@ -8,37 +9,30 @@ part 'sidebar.g.theme.dart';
 class ShadSidebarTheme with _$ShadSidebarTheme {
   const ShadSidebarTheme({
     bool canMerge = true,
-    this.backgroundColor,
-    this.foregroundColor,
-    this.borderColor,
-    this.ringColor,
-    this.accentColor,
-    this.accentForegroundColor,
-    this.primaryColor,
-    this.primaryForegroundColor,
+    this.side,
+    this.extendedWidth,
+    this.mobileWidth,
+    this.mobileBreakPoint,
+    this.collapseMode,
+    this.collapsedToIconsWidth,
+    this.animationDuration,
+    this.animationCurve,
   }) : _canMerge = canMerge;
 
   @ignore
   final bool _canMerge;
 
+  final ShadSidebarSide? side;
+  final double? extendedWidth;
+  final double? mobileWidth;
+  final double? mobileBreakPoint;
+  final double? collapsedToIconsWidth;
+  final ShadSidebarCollapseMode? collapseMode;
+  final Duration? animationDuration;
+  final Curve? animationCurve;
+
   @override
   bool get canMerge => _canMerge;
-
-  final Color? backgroundColor;
-
-  final Color? foregroundColor;
-
-  final Color? borderColor;
-
-  final Color? ringColor;
-
-  final Color? accentColor;
-
-  final Color? accentForegroundColor;
-
-  final Color? primaryColor;
-
-  final Color? primaryForegroundColor;
 
   static ShadSidebarTheme? lerp(
     ShadSidebarTheme a,
