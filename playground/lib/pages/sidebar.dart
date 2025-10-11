@@ -45,10 +45,10 @@ class SidebarWithMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarScaffold(
-      // This's because of the preview frame width
-      mobileBreakPoint: 400,
       body: const Center(child: ShadSidebarTrigger()),
-      sidebarBuilder: (context) => const ShadSidebar(
+      sidebar: const ShadSidebar.normal(
+        // This's because of the preview frame width
+        mobileBreakPoint: 400,
         content: ShadSidebarContent(
           children: [
             ShadSidebarGroup(
@@ -89,22 +89,20 @@ class SidebarWithDropdownHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarScaffold(
-      mobileBreakPoint: 400,
       body: const Center(child: ShadSidebarTrigger()),
-      sidebarBuilder: (context) {
-        return ShadSidebar(
-          header: ShadSidebarHeader(
-            children: [
-              ShadSidebarSelectTile(
-                title: 'Documentation',
-                initialValue: versions.first,
-                minWidth: 240,
-                menuItems: versions,
-              ),
-            ],
-          ),
-        );
-      },
+      sidebar: ShadSidebar.normal(
+        mobileBreakPoint: 400,
+        header: ShadSidebarHeader(
+          children: [
+            ShadSidebarSelectTile(
+              title: 'Documentation',
+              initialValue: versions.first,
+              minWidth: 240,
+              menuItems: versions,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -115,55 +113,42 @@ class SidebarWithDropdownFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarScaffold(
-      mobileBreakPoint: 400,
       body: const Center(child: ShadSidebarTrigger()),
-      sidebarBuilder: (context) {
-        final sidebar = ShadSidebarScaffold.of(context);
-        final side = sidebar.side;
-        return ShadSidebar(
-          footer: ShadSidebarFooter(
-            children: [
-              ShadSidebarMenuTile(
-                menuAnchor: sidebar.isMobile
-                    ? const ShadAnchor(
-                        overlayAlignment: Alignment.topCenter,
-                      )
-                    : ShadAnchor(
-                        overlayAlignment: side.isLeft
-                            ? Alignment.bottomRight
-                            : Alignment.bottomLeft,
-                        childAlignment: side.isLeft
-                            ? Alignment.bottomLeft
-                            : Alignment.bottomRight,
-                      ),
-                titleText: 'Alicia Koch',
-                subTitleText: 'alicia@example.com',
-                leadingIconData: LucideIcons.userRound,
-                trailingIcon: const Icon(LucideIcons.chevronsUpDown, size: 16),
-                items: const [
-                  ShadContextMenuItem(
-                    leading: Icon(LucideIcons.user, size: 16),
-                    child: Text('Profile'),
-                  ),
-                  ShadContextMenuItem(
-                    leading: Icon(LucideIcons.mail, size: 16),
-                    child: Text('Mail'),
-                  ),
-                  ShadContextMenuItem(
-                    leading: Icon(LucideIcons.settings, size: 16),
-                    child: Text('Settings'),
-                  ),
-                  ShadSidebarSeparator(),
-                  ShadContextMenuItem(
-                    leading: Icon(LucideIcons.logOut, size: 16),
-                    child: Text('Log out'),
-                  ),
-                ],
+      sidebar: ShadSidebar.normal(
+        mobileBreakPoint: 400,
+        footer: ShadSidebarFooter(
+          children: [
+            ShadSidebarMenuTile(
+              menuAnchor: const ShadAnchor(
+                overlayAlignment: Alignment.topCenter,
               ),
-            ],
-          ),
-        );
-      },
+              titleText: 'Alicia Koch',
+              subTitleText: 'alicia@example.com',
+              leadingIconData: LucideIcons.userRound,
+              trailingIcon: const Icon(LucideIcons.chevronsUpDown, size: 16),
+              items: const [
+                ShadContextMenuItem(
+                  leading: Icon(LucideIcons.user, size: 16),
+                  child: Text('Profile'),
+                ),
+                ShadContextMenuItem(
+                  leading: Icon(LucideIcons.mail, size: 16),
+                  child: Text('Mail'),
+                ),
+                ShadContextMenuItem(
+                  leading: Icon(LucideIcons.settings, size: 16),
+                  child: Text('Settings'),
+                ),
+                ShadSidebarSeparator(),
+                ShadContextMenuItem(
+                  leading: Icon(LucideIcons.logOut, size: 16),
+                  child: Text('Log out'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -175,9 +160,9 @@ class SidebarWithGroups extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = ShadTheme.of(context).colorScheme;
     return ShadSidebarScaffold(
-      mobileBreakPoint: 400,
       body: const Center(child: ShadSidebarTrigger()),
-      sidebarBuilder: (context) => ShadSidebar(
+      sidebar: ShadSidebar.normal(
+        mobileBreakPoint: 400,
         content: ShadSidebarContent(
           children: [
             const ShadSidebarGroup(
@@ -225,9 +210,9 @@ class SidebarWithCollapsibleGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarScaffold(
-      mobileBreakPoint: 400,
       body: const Center(child: ShadSidebarTrigger()),
-      sidebarBuilder: (context) => const ShadSidebar(
+      sidebar: const ShadSidebar.normal(
+        mobileBreakPoint: 400,
         content: ShadSidebarContent(
           children: [
             ShadSidebarGroup.collapsible(
@@ -263,9 +248,9 @@ class SidebarWithMenus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarScaffold(
-      mobileBreakPoint: 400,
       body: const Center(child: ShadSidebarTrigger()),
-      sidebarBuilder: (context) => const ShadSidebar(
+      sidebar: const ShadSidebar.normal(
+        mobileBreakPoint: 400,
         content: ShadSidebarContent(
           children: [
             ShadSidebarGroup(
@@ -300,9 +285,9 @@ class SidebarWithSubMenus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarScaffold(
-      mobileBreakPoint: 400,
       body: const Center(child: ShadSidebarTrigger()),
-      sidebarBuilder: (context) => const ShadSidebar(
+      sidebar: const ShadSidebar.normal(
+        mobileBreakPoint: 400,
         content: ShadSidebarContent(
           children: [
             ShadSidebarGroup(
@@ -377,9 +362,9 @@ class SidebarWithCollapsibleMenus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarScaffold(
-      mobileBreakPoint: 400,
       body: const Center(child: ShadSidebarTrigger()),
-      sidebarBuilder: (context) => const ShadSidebar(
+      sidebar: const ShadSidebar.normal(
+        mobileBreakPoint: 400,
         content: ShadSidebarContent(
           children: [
             ShadSidebarGroup(
@@ -453,7 +438,7 @@ class SidebarWithLeadingAndTrailingMenuIcons extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShadSidebarScaffold(
       body: const Center(child: Text('With Leading and Trailing Icons')),
-      sidebarBuilder: (context) => const ShadSidebar(
+      sidebar: const ShadSidebar.normal(
         content: ShadSidebarContent(
           children: [
             ShadSidebarGroup(
@@ -491,24 +476,22 @@ class SidebarWithCustomTrigger extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarScaffold(
-      mobileBreakPoint: 400,
       body: Builder(builder: (context) {
-        var sidebar = ShadSidebarScaffold.of(context);
+        var extended = ShadSidebarScaffold.of(context).isSidebarExtended();
         return Center(
           child: ShadButton.outline(
             leading: Icon(
-              sidebar.extended
-                  ? LucideIcons.panelLeftClose
-                  : LucideIcons.panelLeftOpen,
+              extended ? LucideIcons.panelLeftClose : LucideIcons.panelLeftOpen,
             ),
             child: Text(
-              sidebar.extended ? 'Close sidebar' : 'Open sidebar',
+              extended ? 'Close sidebar' : 'Open sidebar',
             ),
-            onPressed: () => sidebar.toggle(),
+            onPressed: () => ShadSidebarScaffold.of(context).toggleSidebar(),
           ),
         );
       }),
-      sidebarBuilder: (context) => const ShadSidebar(
+      sidebar: const ShadSidebar.normal(
+        mobileBreakPoint: 400,
         content: ShadSidebarContent(
           children: [
             ShadSidebarGroup(
@@ -576,7 +559,7 @@ class ShadSidebarTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = ShadTheme.of(context).colorScheme;
-    final state = ShadSidebarScaffold.of(context);
+    final state = ShadSidebarController.of(context);
     final leading = buildLeading(cs);
     return ShadButton.ghost(
       height: state.collapsedToIcons ? 32 : minHeight,
@@ -701,14 +684,14 @@ class ShadSidebarMenuTile extends StatelessWidget {
     var opened = false;
     return StatefulBuilder(
       builder: (context, mSetState) {
-        final side = ShadSidebarScaffold.of(context).side;
+        final side = ShadSidebarController.of(context).side;
         return ShadContextMenu(
           decoration: menuDecoration,
           items: items,
           visible: opened,
           constraints: menuConstraints ??
               BoxConstraints(
-                minWidth: ShadSidebarScaffold.of(context).extendedWidth - 8,
+                minWidth: ShadSidebarController.of(context).extendedWidth - 8,
               ),
           effects: [
             const FadeEffect(
