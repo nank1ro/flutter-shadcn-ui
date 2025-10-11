@@ -163,7 +163,7 @@ class _ShadPortalState extends State<ShadPortal> {
   void updateVisibility() {
     final shouldShow = widget.visible;
 
-    WidgetsBinding.instance.addPostFrameCallback((timer) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (shouldShow) {
         _calculatePosition();
         show();
@@ -248,15 +248,15 @@ class _ShadPortalState extends State<ShadPortal> {
 
     followerOffset += targetOffset + anchor.offset;
 
-    final newTarget = box.localToGlobal(
+    final target = box.localToGlobal(
       followerOffset,
       ancestor: overlayAncestor,
     );
 
-    if (newTarget != _calculatedTarget) {
+    if (target != _calculatedTarget) {
       if (mounted) {
         setState(() {
-          _calculatedTarget = newTarget;
+          _calculatedTarget = target;
         });
       }
     } else if (overlay == null) {
