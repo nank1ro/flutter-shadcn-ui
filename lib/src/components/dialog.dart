@@ -711,22 +711,20 @@ class ShadDialog extends StatelessWidget {
               border: effectiveBorder,
               boxShadow: effectiveShadows,
             ),
-            child: widget,
+            child: effectiveScrollable
+                ? SingleChildScrollView(
+                    padding: effectiveScrollPadding,
+                    child: widget,
+                  )
+                : widget,
           );
         },
       ),
     );
 
-    if (effectiveScrollable) {
-      dialog = SingleChildScrollView(
-        padding: effectiveScrollPadding,
-        child: dialog,
-      );
-    }
-
     return Align(
       alignment: effectiveAlignment,
-      child: dialog,
+      child: ConstrainedBox(constraints: effectiveConstraints, child: dialog),
     );
   }
 }
