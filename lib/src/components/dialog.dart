@@ -604,122 +604,119 @@ class ShadDialog extends StatelessWidget {
     final effectiveUseSafeArea =
         useSafeArea ?? effectiveDialogTheme.useSafeArea ?? true;
 
-    Widget dialog = ConstrainedBox(
-      constraints: effectiveConstraints,
-      child: ShadResponsiveBuilder(
-        builder: (context, breakpoint) {
-          final sm = breakpoint >= theme.breakpoints.sm;
-
-          final effectiveActionsAxis = actionsAxis ??
-              effectiveDialogTheme.actionsAxis ??
-              (sm ? Axis.horizontal : Axis.vertical);
-
-          final effectiveActionsMainAxisSize = actionsMainAxisSize ??
-              effectiveDialogTheme.actionsMainAxisSize ??
-              MainAxisSize.max;
-
-          final effectiveActionsMainAxisAlignment = actionsMainAxisAlignment ??
-              effectiveDialogTheme.actionsMainAxisAlignment ??
-              MainAxisAlignment.end;
-
-          final effectiveActionsVerticalDirection = actionsVerticalDirection ??
-              effectiveDialogTheme.actionsVerticalDirection ??
-              (sm ? VerticalDirection.down : VerticalDirection.up);
-
-          final effectiveTitleTextAlign = titleTextAlign ??
-              effectiveDialogTheme.titleTextAlign ??
-              (sm ? TextAlign.start : TextAlign.center);
-
-          final effectiveDescriptionTextAlign = descriptionTextAlign ??
-              effectiveDialogTheme.descriptionTextAlign ??
-              (sm ? TextAlign.start : TextAlign.center);
-
-          Widget effectiveActions = Flex(
-            direction: effectiveActionsAxis,
-            mainAxisSize: effectiveActionsMainAxisSize,
-            mainAxisAlignment: effectiveActionsMainAxisAlignment,
-            verticalDirection: effectiveActionsVerticalDirection,
-            spacing: effectiveActionsGap,
-            children: actions,
-          );
-
-          if (!sm && effectiveExpandActionsWhenTiny) {
-            effectiveActions = ShadTheme(
-              data: theme.copyWith(
-                primaryButtonTheme:
-                    theme.primaryButtonTheme.copyWith(width: double.infinity),
-                secondaryButtonTheme:
-                    theme.secondaryButtonTheme.copyWith(width: double.infinity),
-                outlineButtonTheme:
-                    theme.outlineButtonTheme.copyWith(width: double.infinity),
-                ghostButtonTheme:
-                    theme.ghostButtonTheme.copyWith(width: double.infinity),
-                destructiveButtonTheme: theme.destructiveButtonTheme
-                    .copyWith(width: double.infinity),
-              ),
-              child: effectiveActions,
-            );
-          }
-
-          Widget widget = Stack(
-            children: [
-              Padding(
-                padding: effectivePadding,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: effectiveMainAxisAlignment,
-                  crossAxisAlignment: effectiveCrossAxisAlignment,
-                  children: [
-                    if (title != null)
-                      DefaultTextStyle(
-                        style: effectiveTitleStyle,
-                        textAlign: effectiveTitleTextAlign,
-                        child: title!,
-                      ),
-                    if (description != null)
-                      DefaultTextStyle(
-                        style: effectiveDescriptionStyle,
-                        textAlign: effectiveDescriptionTextAlign,
-                        child: description!,
-                      ),
-                    if (child != null)
-                      Flexible(
-                        child: DefaultTextStyle(
-                          style: effectiveDescriptionStyle,
-                          child: child!,
-                        ),
-                      ),
-                    if (actions.isNotEmpty) effectiveActions,
-                  ].separatedBy(SizedBox(height: effectiveGap)),
-                ),
-              ),
-              if (effectiveCloseIcon != null)
-                effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),
-            ],
-          );
-
-          if (effectiveUseSafeArea) {
-            widget = SafeArea(child: widget);
-          }
-
-          return DecoratedBox(
-            decoration: BoxDecoration(
-              color: effectiveBackgroundColor,
-              borderRadius: (!sm && effectiveRemoveBorderRadiusWhenTiny)
-                  ? null
-                  : effectiveRadius,
-              border: effectiveBorder,
-              boxShadow: effectiveShadows,
+    final dialog = ShadResponsiveBuilder(
+      builder: (context, breakpoint) {
+        final sm = breakpoint >= theme.breakpoints.sm;
+    
+        final effectiveActionsAxis = actionsAxis ??
+            effectiveDialogTheme.actionsAxis ??
+            (sm ? Axis.horizontal : Axis.vertical);
+    
+        final effectiveActionsMainAxisSize = actionsMainAxisSize ??
+            effectiveDialogTheme.actionsMainAxisSize ??
+            MainAxisSize.max;
+    
+        final effectiveActionsMainAxisAlignment = actionsMainAxisAlignment ??
+            effectiveDialogTheme.actionsMainAxisAlignment ??
+            MainAxisAlignment.end;
+    
+        final effectiveActionsVerticalDirection = actionsVerticalDirection ??
+            effectiveDialogTheme.actionsVerticalDirection ??
+            (sm ? VerticalDirection.down : VerticalDirection.up);
+    
+        final effectiveTitleTextAlign = titleTextAlign ??
+            effectiveDialogTheme.titleTextAlign ??
+            (sm ? TextAlign.start : TextAlign.center);
+    
+        final effectiveDescriptionTextAlign = descriptionTextAlign ??
+            effectiveDialogTheme.descriptionTextAlign ??
+            (sm ? TextAlign.start : TextAlign.center);
+    
+        Widget effectiveActions = Flex(
+          direction: effectiveActionsAxis,
+          mainAxisSize: effectiveActionsMainAxisSize,
+          mainAxisAlignment: effectiveActionsMainAxisAlignment,
+          verticalDirection: effectiveActionsVerticalDirection,
+          spacing: effectiveActionsGap,
+          children: actions,
+        );
+    
+        if (!sm && effectiveExpandActionsWhenTiny) {
+          effectiveActions = ShadTheme(
+            data: theme.copyWith(
+              primaryButtonTheme:
+                  theme.primaryButtonTheme.copyWith(width: double.infinity),
+              secondaryButtonTheme:
+                  theme.secondaryButtonTheme.copyWith(width: double.infinity),
+              outlineButtonTheme:
+                  theme.outlineButtonTheme.copyWith(width: double.infinity),
+              ghostButtonTheme:
+                  theme.ghostButtonTheme.copyWith(width: double.infinity),
+              destructiveButtonTheme: theme.destructiveButtonTheme
+                  .copyWith(width: double.infinity),
             ),
-            child: effectiveScrollable
-                ? SingleChildScrollView(
-                    padding: effectiveScrollPadding,
-                    child: widget,
-                  )
-                : widget,
+            child: effectiveActions,
           );
-        },
-      ),
+        }
+    
+        Widget widget = Stack(
+          children: [
+            Padding(
+              padding: effectivePadding,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: effectiveMainAxisAlignment,
+                crossAxisAlignment: effectiveCrossAxisAlignment,
+                children: [
+                  if (title != null)
+                    DefaultTextStyle(
+                      style: effectiveTitleStyle,
+                      textAlign: effectiveTitleTextAlign,
+                      child: title!,
+                    ),
+                  if (description != null)
+                    DefaultTextStyle(
+                      style: effectiveDescriptionStyle,
+                      textAlign: effectiveDescriptionTextAlign,
+                      child: description!,
+                    ),
+                  if (child != null)
+                    Flexible(
+                      child: DefaultTextStyle(
+                        style: effectiveDescriptionStyle,
+                        child: child!,
+                      ),
+                    ),
+                  if (actions.isNotEmpty) effectiveActions,
+                ].separatedBy(SizedBox(height: effectiveGap)),
+              ),
+            ),
+            if (effectiveCloseIcon != null)
+              effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),
+          ],
+        );
+    
+        if (effectiveUseSafeArea) {
+          widget = SafeArea(child: widget);
+        }
+    
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: effectiveBackgroundColor,
+            borderRadius: (!sm && effectiveRemoveBorderRadiusWhenTiny)
+                ? null
+                : effectiveRadius,
+            border: effectiveBorder,
+            boxShadow: effectiveShadows,
+          ),
+          child: effectiveScrollable
+              ? SingleChildScrollView(
+                  padding: effectiveScrollPadding,
+                  child: widget,
+                )
+              : widget,
+        );
+      },
     );
 
     return Align(
