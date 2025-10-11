@@ -607,31 +607,31 @@ class ShadDialog extends StatelessWidget {
     final dialog = ShadResponsiveBuilder(
       builder: (context, breakpoint) {
         final sm = breakpoint >= theme.breakpoints.sm;
-    
+
         final effectiveActionsAxis = actionsAxis ??
             effectiveDialogTheme.actionsAxis ??
             (sm ? Axis.horizontal : Axis.vertical);
-    
+
         final effectiveActionsMainAxisSize = actionsMainAxisSize ??
             effectiveDialogTheme.actionsMainAxisSize ??
             MainAxisSize.max;
-    
+
         final effectiveActionsMainAxisAlignment = actionsMainAxisAlignment ??
             effectiveDialogTheme.actionsMainAxisAlignment ??
             MainAxisAlignment.end;
-    
+
         final effectiveActionsVerticalDirection = actionsVerticalDirection ??
             effectiveDialogTheme.actionsVerticalDirection ??
             (sm ? VerticalDirection.down : VerticalDirection.up);
-    
+
         final effectiveTitleTextAlign = titleTextAlign ??
             effectiveDialogTheme.titleTextAlign ??
             (sm ? TextAlign.start : TextAlign.center);
-    
+
         final effectiveDescriptionTextAlign = descriptionTextAlign ??
             effectiveDialogTheme.descriptionTextAlign ??
             (sm ? TextAlign.start : TextAlign.center);
-    
+
         Widget effectiveActions = Flex(
           direction: effectiveActionsAxis,
           mainAxisSize: effectiveActionsMainAxisSize,
@@ -640,7 +640,7 @@ class ShadDialog extends StatelessWidget {
           spacing: effectiveActionsGap,
           children: actions,
         );
-    
+
         if (!sm && effectiveExpandActionsWhenTiny) {
           effectiveActions = ShadTheme(
             data: theme.copyWith(
@@ -652,13 +652,13 @@ class ShadDialog extends StatelessWidget {
                   theme.outlineButtonTheme.copyWith(width: double.infinity),
               ghostButtonTheme:
                   theme.ghostButtonTheme.copyWith(width: double.infinity),
-              destructiveButtonTheme: theme.destructiveButtonTheme
-                  .copyWith(width: double.infinity),
+              destructiveButtonTheme:
+                  theme.destructiveButtonTheme.copyWith(width: double.infinity),
             ),
             child: effectiveActions,
           );
         }
-    
+
         Widget widget = Stack(
           children: [
             Padding(
@@ -695,11 +695,11 @@ class ShadDialog extends StatelessWidget {
               effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),
           ],
         );
-    
+
         if (effectiveUseSafeArea) {
           widget = SafeArea(child: widget);
         }
-    
+
         return DecoratedBox(
           decoration: BoxDecoration(
             color: effectiveBackgroundColor,
