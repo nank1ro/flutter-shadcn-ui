@@ -140,6 +140,8 @@ class _ShadPortalState extends State<ShadPortal> {
   final overlayPortalController = OverlayPortalController();
   final overlayKey = GlobalKey();
 
+  Offset? _calculatedTarget;
+
   @override
   void initState() {
     super.initState();
@@ -162,7 +164,15 @@ class _ShadPortalState extends State<ShadPortal> {
     final shouldShow = widget.visible;
 
     WidgetsBinding.instance.addPostFrameCallback((timer) {
-      shouldShow ? show() : hide();
+      if (shouldShow) {
+        _calculatePosition();
+        show();
+      } else {
+        if (_calculatedTarget != null && mounted) {
+          setState(() => _calculatedTarget = null);
+        }
+        hide();
+      }
     });
   }
 
@@ -178,17 +188,28 @@ class _ShadPortalState extends State<ShadPortal> {
     }
   }
 
-  Widget buildAutoPosition(
-    BuildContext context,
-    ShadAnchorAuto anchor,
-  ) {
-    if (anchor.followTargetOnResize) {
-      MediaQuery.sizeOf(context);
-    }
+  void _calculatePosition() {
+    if (!mounted || widget.anchor is! ShadAnchorAuto) return;
+
+    final anchor = widget.anchor as ShadAnchorAuto;
+
+    final box = context.findRenderObject();
     final overlayState = Overlay.of(context, debugRequiredFor: widget);
-    final box = this.context.findRenderObject()! as RenderBox;
-    final overlayAncestor =
-        overlayState.context.findRenderObject()! as RenderBox;
+    final overlayAncestor = overlayState.context.findRenderObject();
+
+    final ready = box is RenderBox &&
+        box.attached &&
+        box.hasSize &&
+        overlayAncestor is RenderBox &&
+        overlayAncestor.attached &&
+        overlayAncestor.hasSize;
+
+    if (!ready) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _calculatePosition();
+      });
+      return;
+    }
 
     final overlay = overlayKey.currentContext?.findRenderObject() as RenderBox?;
     final overlaySize = (true == overlay?.hasSize) ? overlay!.size : Size.zero;
@@ -227,16 +248,47 @@ class _ShadPortalState extends State<ShadPortal> {
 
     followerOffset += targetOffset + anchor.offset;
 
-    final target = box.localToGlobal(
+    final newTarget = box.localToGlobal(
       followerOffset,
       ancestor: overlayAncestor,
     );
 
-    if (overlay == null) {
+    if (newTarget != _calculatedTarget) {
+      if (mounted) {
+        setState(() {
+          _calculatedTarget = newTarget;
+        });
+      }
+    } else if (overlay == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {});
+        _calculatePosition();
       });
     }
+  }
+
+  Widget buildAutoPosition(
+    BuildContext context,
+    ShadAnchorAuto anchor,
+  ) {
+    if (anchor.followTargetOnResize) {
+      MediaQuery.sizeOf(context);
+    }
+
+    if (_calculatedTarget == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _calculatePosition());
+      return const SizedBox.shrink();
+    }
+
+    final target = _calculatedTarget!;
+
+    final overlay = overlayKey.currentContext?.findRenderObject() as RenderBox?;
+
+    if (overlay == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _calculatePosition();
+      });
+    }
+
     return CustomSingleChildLayout(
       delegate: ShadPositionDelegate(
         target: target,
