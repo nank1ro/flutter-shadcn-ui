@@ -6,6 +6,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
+import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
 /// A widget that holds the configuration and content for a sidebar.
 ///
@@ -296,21 +297,22 @@ class _ResizeHandleState extends State<_ResizeHandle> {
       bottom: 0,
       left: widget.side.isRight ? null : (widget.width - 17),
       right: widget.side.isRight ? (widget.width - 17) : null,
-      child: SizedBox(
-        width: 16,
-        child: InkWell(
-          mouseCursor: SystemMouseCursors.resizeColumn,
-          onTap: () => ShadSidebarController.maybeOf(context)?.toggle(context),
-          onHover: (value) => setState(() => _isHovered = value),
-          child: Container(
-            alignment: widget.side.isRight
-                ? Alignment.centerLeft
-                : Alignment.centerRight,
-            child: VerticalDivider(
-              width: 1,
-              thickness: _isHovered ? 2 : 0,
-              color: widget.borderColor,
-            ),
+      width: 16,
+      child: ShadGestureDetector(
+        behavior: HitTestBehavior.opaque,
+        cursor: SystemMouseCursors.resizeColumn,
+        onHoverChange: (value) => setState(() => _isHovered = value),
+        onTap: () {
+          ShadSidebarController.maybeOf(context)?.toggle(context);
+        },
+        child: Container(
+          alignment: widget.side.isRight
+              ? Alignment.centerLeft
+              : Alignment.centerRight,
+          child: VerticalDivider(
+            width: 1,
+            thickness: _isHovered ? 2 : 0,
+            color: widget.borderColor,
           ),
         ),
       ),
