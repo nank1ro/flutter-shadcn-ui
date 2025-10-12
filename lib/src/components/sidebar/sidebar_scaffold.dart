@@ -72,12 +72,22 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   ShadSidebarController? _sidebarController;
   ShadSidebarController? _endSidebarController;
   double? _lastMaxWidth;
+  TextDirection? _direction;
 
   @override
   void initState() {
     super.initState();
-    _initSidebarController();
-    _initEndSidebarController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final direction = Directionality.of(context);
+    if (direction != _direction) {
+      _direction = direction;
+      _initSidebarController();
+      _initEndSidebarController();
+    }
   }
 
   @override
@@ -93,11 +103,12 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
 
   void _initSidebarController() {
     if (widget.sidebar != null) {
+      final isRtl = _direction == TextDirection.rtl;
       _sidebarController = ShadSidebarController(
         key: _sidebarKey,
         onExtendedChange: widget.onSidebarChange,
         sidebar: widget.sidebar!,
-        side: ShadSidebarSide.left,
+        side: isRtl ? ShadSidebarSide.right : ShadSidebarSide.left,
       );
       // Rebuild after the first frame to make `_sidebarKey.currentState`
       // available for the body padding calculation.
@@ -111,11 +122,12 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
 
   void _initEndSidebarController() {
     if (widget.endSidebar != null) {
+      final isRtl = _direction == TextDirection.rtl;
       _endSidebarController = ShadSidebarController(
         key: _endSidebarKey,
         onExtendedChange: widget.onEndSidebarChange,
         sidebar: widget.endSidebar!,
-        side: ShadSidebarSide.right,
+        side: isRtl ? ShadSidebarSide.left : ShadSidebarSide.right,
       );
       // Rebuild after the first frame to make `_endSidebarKey.currentState`
       // available for the body padding calculation.
@@ -141,6 +153,8 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
 
   @override
   Widget build(BuildContext context) {
+    final textDirection = Directionality.of(context);
+    final isRtl = textDirection == TextDirection.rtl;
     return LayoutBuilder(
       builder: (context, constraints) {
         if (_lastMaxWidth != constraints.maxWidth) {
@@ -168,7 +182,8 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
             children: [
               if (_sidebarController != null)
                 Positioned(
-                  left: 0,
+                  left: isRtl ? null : 0,
+                  right: isRtl ? 0 : null,
                   top: 0,
                   bottom: 0,
                   child: Offstage(
@@ -178,7 +193,8 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
                 ),
               if (_endSidebarController != null)
                 Positioned(
-                  right: 0,
+                  left: isRtl ? 0 : null,
+                  right: isRtl ? null : 0,
                   top: 0,
                   bottom: 0,
                   child: Offstage(
@@ -191,8 +207,8 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
                 builder: (context, child) {
                   return Padding(
                     padding: EdgeInsets.only(
-                      left: _leftBodyPadding,
-                      right: _rightBodyPadding,
+                      left: isRtl ? _rightBodyPadding : _leftBodyPadding,
+                      right: isRtl ? _leftBodyPadding : _rightBodyPadding,
                     ),
                     child: child,
                   );
