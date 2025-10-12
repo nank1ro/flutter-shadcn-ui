@@ -32,9 +32,11 @@ class ShadSidebarController extends StatefulWidget {
     super.key,
     required this.sidebar,
     this.onExtendedChange,
+    required this.side,
   });
 
   final ShadSidebar sidebar;
+  final ShadSidebarSide side;
 
   final ValueChanged<bool>? onExtendedChange;
 
@@ -61,15 +63,18 @@ class ShadSidebarControllerState extends State<ShadSidebarController>
     with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
   bool _extended = false;
+  bool _isInitiallyExtendedSet = false;
+
+  // Theme data is cached and update in didChangeDependencies to avoid
+  // repeated lookups during the build phase.
+  late ShadThemeData _theme;
+  late ShadSidebarTheme _sidebarTheme;
 
   @override
   void initState() {
     super.initState();
-    _extended = widget.sidebar.initiallyExtended;
     _animationController = AnimationController(
       vsync: this,
-      value: _extended ? 1.0 : 0.0,
-      // This will be updated in didChangeDependencies to respect theme changes
       duration: const Duration(milliseconds: 200),
     );
   }
@@ -77,6 +82,15 @@ class ShadSidebarControllerState extends State<ShadSidebarController>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    _theme = ShadTheme.of(context);
+    _sidebarTheme = _theme.sidebarTheme;
+
+    if (!_isInitiallyExtendedSet) {
+      _extended = initiallyExtended;
+      _animationController.value = _extended ? 1.0 : 0.0;
+      _isInitiallyExtendedSet = true;
+    }
     _animationController.duration = animationDuration;
   }
 
@@ -96,7 +110,8 @@ class ShadSidebarControllerState extends State<ShadSidebarController>
 
   ShadSidebar get sidebar => widget.sidebar;
 
-  ShadSidebarTheme get _sidebarTheme => ShadTheme.of(context).sidebarTheme;
+  bool get initiallyExtended =>
+      sidebar.initiallyExtended ?? _sidebarTheme.initiallyExtended ?? true;
 
   ShadSidebarCollapseMode get collapseMode =>
       sidebar.collapseMode ??
@@ -117,8 +132,9 @@ class ShadSidebarControllerState extends State<ShadSidebarController>
       _sidebarTheme.collapsedToIconsWidth ??
       48.0;
 
-  ShadSidebarSide get side =>
-      sidebar.side ?? _sidebarTheme.side ?? ShadSidebarSide.left;
+  ShadSidebarSide get side => widget.side;
+
+  ShadSidebarVariant get variant => sidebar.variant;
 
   Duration get animationDuration =>
       sidebar.animationDuration ??
@@ -128,20 +144,18 @@ class ShadSidebarControllerState extends State<ShadSidebarController>
   Curve get animationCurve =>
       sidebar.animationCurve ?? _sidebarTheme.animationCurve ?? Curves.linear;
 
-  Color get borderColor =>
-      sidebar.borderColor ?? ShadTheme.of(context).colorScheme.border;
+  Color get borderColor => sidebar.borderColor ?? _theme.colorScheme.border;
 
-  void extend(BuildContext context) {
+  void extend() {
     if (_extended) return;
 
     setState(() => _extended = true);
-
     _animationController.forward();
 
     widget.onExtendedChange?.call(true);
   }
 
-  void collapse(BuildContext context) {
+  void collapse() {
     if (!_extended) return;
     if (collapseMode.isNone) return;
 
@@ -156,7 +170,7 @@ class ShadSidebarControllerState extends State<ShadSidebarController>
     if (isMobile) {
       _extendedMobile ? _closeMobile(context) : _openMobile(context);
     } else {
-      _extended ? collapse(context) : extend(context);
+      _extended ? collapse() : extend();
     }
   }
 

@@ -9,7 +9,7 @@ part 'sidebar.g.theme.dart';
 class ShadSidebarTheme with _$ShadSidebarTheme {
   const ShadSidebarTheme({
     bool canMerge = true,
-    this.side,
+    this.initiallyExtended,
     this.extendedWidth,
     this.mobileWidth,
     this.mobileBreakPoint,
@@ -22,7 +22,7 @@ class ShadSidebarTheme with _$ShadSidebarTheme {
   @ignore
   final bool _canMerge;
 
-  final ShadSidebarSide? side;
+  final bool? initiallyExtended;
   final double? extendedWidth;
   final double? mobileWidth;
   final double? mobileBreakPoint;

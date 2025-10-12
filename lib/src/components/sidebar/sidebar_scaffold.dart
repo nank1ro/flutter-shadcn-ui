@@ -97,6 +97,7 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
         key: _sidebarKey,
         onExtendedChange: widget.onSidebarChange,
         sidebar: widget.sidebar!,
+        side: ShadSidebarSide.left,
       );
       // Rebuild after the first frame to make `_sidebarKey.currentState`
       // available for the body padding calculation.
@@ -114,6 +115,7 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
         key: _endSidebarKey,
         onExtendedChange: widget.onEndSidebarChange,
         sidebar: widget.endSidebar!,
+        side: ShadSidebarSide.right,
       );
       // Rebuild after the first frame to make `_endSidebarKey.currentState`
       // available for the body padding calculation.
@@ -151,43 +153,56 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
           if (_endSidebarKey.currentState != null)
             _endSidebarKey.currentState!.animationController,
         ]);
+        final isMobile = (_sidebarKey.currentState?.isMobile ?? false) ||
+            (_endSidebarKey.currentState?.isMobile ?? false);
 
-        return Stack(
-          children: [
-            if (_sidebarController != null)
-              Positioned(
-                left: 0,
-                top: 0,
-                bottom: 0,
-                child: Offstage(
-                  offstage: _sidebarKey.currentState?.isMobile ?? false,
-                  child: _sidebarController,
-                ),
-              ),
-            if (_endSidebarController != null)
-              Positioned(
-                right: 0,
-                top: 0,
-                bottom: 0,
-                child: Offstage(
-                  offstage: _endSidebarKey.currentState?.isMobile ?? false,
-                  child: _endSidebarController,
-                ),
-              ),
-            AnimatedBuilder(
-              animation: animation,
-              builder: (context, child) {
-                return Padding(
-                  padding: EdgeInsets.only(
-                    left: _leftBodyPadding,
-                    right: _rightBodyPadding,
+        final isInsetLayout = !isMobile &&
+            (_sidebarKey.currentState?.variant == ShadSidebarVariant.inset ||
+                _endSidebarKey.currentState?.variant ==
+                    ShadSidebarVariant.inset);
+        final colorScheme = ShadTheme.of(context).colorScheme;
+
+        return ColoredBox(
+          color: isInsetLayout ? colorScheme.sidebar : colorScheme.background,
+          child: Stack(
+            children: [
+              if (_sidebarController != null)
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: Offstage(
+                    offstage: _sidebarKey.currentState?.isMobile ?? false,
+                    child: _sidebarController,
                   ),
-                  child: child,
-                );
-              },
-              child: widget.body,
-            ),
-          ],
+                ),
+              if (_endSidebarController != null)
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: Offstage(
+                    offstage: _endSidebarKey.currentState?.isMobile ?? false,
+                    child: _endSidebarController,
+                  ),
+                ),
+              AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      left: _leftBodyPadding,
+                      right: _rightBodyPadding,
+                    ),
+                    child: child,
+                  );
+                },
+                child: isInsetLayout
+                    ? _insetBodyWrapper(context, widget.body)
+                    : widget.body,
+              ),
+            ],
+          ),
         );
       },
     );
@@ -240,5 +255,18 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
           state.animationController.value,
         ) ??
         0;
+  }
+
+  Widget _insetBodyWrapper(BuildContext context, Widget body) {
+    final theme = ShadTheme.of(context);
+    return Container(
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        boxShadow: ShadShadows.sm,
+        borderRadius: BorderRadius.circular(12),
+        color: theme.colorScheme.background,
+      ),
+      child: body,
+    );
   }
 }

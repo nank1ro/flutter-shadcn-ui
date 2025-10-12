@@ -182,7 +182,6 @@ class _NormalVariant extends StatelessWidget {
             body: contentWidget!,
             sidebar: ShadSidebar.normal(
               extendedWidth: sidebarExtendedWidth,
-              side: sideSignal.value,
               collapseMode: collapseModeSignal.value,
               header: ShadSidebarHeader(
                 childrenSpacing: 8,
@@ -280,7 +279,6 @@ class _InsetVariant extends StatelessWidget {
             body: mainContent!,
             sidebar: ShadSidebar.inset(
               extendedWidth: sidebarExtendedWidth,
-              side: side,
               collapseMode: collapseModeSignal.value,
               header: ShadSidebarHeader(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -508,7 +506,6 @@ class _FloatingVariant extends StatelessWidget {
             body: contentWidget!,
             sidebar: ShadSidebar.floating(
               extendedWidth: 300,
-              side: side,
               collapseMode: collapseModeSignal.value,
               header: ShadSidebarHeader(
                 children: [
@@ -679,7 +676,7 @@ class _SearchInput extends StatelessWidget {
       ),
       constraints: BoxConstraints(
         maxHeight: 23,
-        maxWidth: state.collapsedToIcons ? 32 : double.infinity,
+        maxWidth: state.collapsedToIcons ? 36 : double.infinity,
       ),
     );
   }

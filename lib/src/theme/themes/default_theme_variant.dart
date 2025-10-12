@@ -1046,12 +1046,12 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   @override
   ShadSidebarTheme sidebarTheme() {
     return const ShadSidebarTheme(
-      side: ShadSidebarSide.left,
       animationDuration: Duration(milliseconds: 200),
       animationCurve: Curves.linear,
       collapseMode: ShadSidebarCollapseMode.offScreen,
       collapsedToIconsWidth: 48,
       extendedWidth: 256,
+      initiallyExtended: true,
       mobileWidth: 288,
       mobileBreakPoint: 768,
     );

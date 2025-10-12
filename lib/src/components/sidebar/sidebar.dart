@@ -10,9 +10,7 @@ import 'package:shadcn_ui/src/utils/border.dart';
 /// A widget that holds the configuration and content for a sidebar.
 ///
 /// This widget is used with `ShadSidebarScaffold` to define the appearance,
-/// content, and behavior of a sidebar. It is a stateless widget that simply
-/// provides the configuration to the scaffold, which then handles the state
-/// and animation.
+/// content, and behavior of a sidebar.
 class ShadSidebar extends StatelessWidget {
   const ShadSidebar.variant({
     super.key,
@@ -21,7 +19,6 @@ class ShadSidebar extends StatelessWidget {
     this.footer,
     this.backgroundColor,
     this.borderColor,
-    this.side,
     this.animationDuration,
     this.animationCurve,
     this.collapseMode,
@@ -30,8 +27,8 @@ class ShadSidebar extends StatelessWidget {
     this.mobileWidth,
     this.mobileBreakPoint,
     this.keyboardShortcut,
+    this.initiallyExtended,
     required this.variant,
-    this.initiallyExtended = true,
   });
 
   /// Creates a sidebar with the `ShadSidebarVariant.normal` variant.
@@ -42,7 +39,6 @@ class ShadSidebar extends StatelessWidget {
     this.footer,
     this.backgroundColor,
     this.borderColor,
-    this.side,
     this.animationDuration,
     this.animationCurve,
     this.collapseMode,
@@ -51,7 +47,7 @@ class ShadSidebar extends StatelessWidget {
     this.mobileWidth,
     this.mobileBreakPoint,
     this.keyboardShortcut,
-    this.initiallyExtended = true,
+    this.initiallyExtended,
   }) : variant = ShadSidebarVariant.normal;
 
   /// Creates a sidebar with the `ShadSidebarVariant.floating` variant.
@@ -62,7 +58,6 @@ class ShadSidebar extends StatelessWidget {
     this.footer,
     this.backgroundColor,
     this.borderColor,
-    this.side,
     this.animationDuration,
     this.animationCurve,
     this.collapseMode,
@@ -71,7 +66,7 @@ class ShadSidebar extends StatelessWidget {
     this.mobileWidth,
     this.mobileBreakPoint,
     this.keyboardShortcut,
-    this.initiallyExtended = true,
+    this.initiallyExtended,
   }) : variant = ShadSidebarVariant.floating;
 
   /// Creates a sidebar with the `ShadSidebarVariant.inset` variant.
@@ -82,7 +77,6 @@ class ShadSidebar extends StatelessWidget {
     this.footer,
     this.backgroundColor,
     this.borderColor,
-    this.side,
     this.animationDuration,
     this.animationCurve,
     this.collapseMode,
@@ -91,55 +85,105 @@ class ShadSidebar extends StatelessWidget {
     this.mobileWidth,
     this.mobileBreakPoint,
     this.keyboardShortcut,
-    this.initiallyExtended = true,
+    this.initiallyExtended,
   }) : variant = ShadSidebarVariant.inset;
 
+  /// {@template ShadSidebar.header}
   /// The header of the sidebar.
+  /// {@endtemplate}
   final ShadSidebarHeader? header;
 
+  /// {@template ShadSidebar.content}
   /// The main content of the sidebar.
+  /// {@endtemplate}
   final ShadSidebarContent? content;
 
+  /// {@template ShadSidebar.footer}
   /// The footer of the sidebar.
+  /// {@endtemplate}
   final ShadSidebarFooter? footer;
 
   /// The background color of the sidebar.
   final Color? backgroundColor;
 
-  /// The color of the sidebar's border.
+  /// {@template ShadSidebar.borderColor}
+  /// The color of the sidebar border.
+  ///
+  /// Defaults to `ShadTheme.colorScheme.sidebarBorder`.
+  /// {@endtemplate}
   final Color? borderColor;
 
-  /// The visual style of the sidebar.
-  final ShadSidebarVariant variant;
+  /// {@template ShadSidebar.initiallyExtended}
+  /// Whether the sidebar is initially extended. Defaults to `true`.
+  /// {@endtemplate}
+  final bool? initiallyExtended;
 
-  /// The side of the screen where the sidebar is located.
-  final ShadSidebarSide? side;
-
-  /// Whether the sidebar is initially extended.
-  final bool initiallyExtended;
-
+  /// {@template ShadSidebar.animationDuration}
   /// The duration of the animation when the sidebar is extended or collapsed.
+  ///
+  /// Defaults to `Duration(milliseconds: 200)`.
+  /// {@endtemplate}
   final Duration? animationDuration;
 
+  /// {@template ShadSidebar.animationCurve}
   /// The curve of the animation when the sidebar is extended or collapsed.
+  ///
+  /// Defaults to `Curves.linear`.
+  /// {@endtemplate}
   final Curve? animationCurve;
 
-  /// The collapse mode of the sidebar.
-  final ShadSidebarCollapseMode? collapseMode;
-
-  /// The width of the sidebar when it's collapsed to icons.
+  /// {@template ShadSidebar.collapsedToIconsWidth}
+  /// The width of the sidebar when it [collapseMode] is
+  ///  set to [ShadSidebarCollapseMode.icons].
+  ///
+  /// Defaults to `48`.
+  /// {@endtemplate}
   final double? collapsedToIconsWidth;
 
-  /// The width of the sidebar when it's extended.
+  /// {@template ShadSidebar.extendedWidth}
+  /// The minimum width of the sidebar when it is extended.
+  ///
+  /// Defaults to `256`.
+  /// {@endtemplate}
   final double? extendedWidth;
 
-  /// The width of the sidebar when it's shown on mobile.
+  /// {@template ShadSidebar.mobileWidth}
+  /// The minimum width of the sidebar when it is extended on mobile.
+  ///
+  /// Defaults to `288`.
+  /// {@endtemplate}
   final double? mobileWidth;
 
-  /// The breakpoint at which the sidebar switches to mobile view.
+  /// {@template ShadSidebar.collapseMode}
+  /// The collapse mode of the sidebar.
+  ///
+  /// Defaults to [ShadSidebarCollapseMode.offScreen].
+  /// {@endtemplate}
+  final ShadSidebarCollapseMode? collapseMode;
+
+  /// {@template ShadSidebar.variant}
+  ///
+  /// Defaults to [ShadSidebarVariant.normal].
+  /// {@endtemplate}
+  final ShadSidebarVariant variant;
+
+  /// {@template ShadSidebar.mobileBreakPoint}
+  /// The breakpoint at which....
+  ///
+  /// Defaults to `768`px.
+  /// {@endtemplate}
   final double? mobileBreakPoint;
 
-  /// The keyboard shortcut to toggle the sidebar.
+  /// {@template ShadSidebar.keyboardShortcut}
+  /// The keyboard shortcut that will toggle the sidebar.
+  ///
+  /// Defaults to `CTRL+b` on Windows and Linux, and `CMD+b` on macOS.
+  ///
+  /// example:
+  /// ```dart
+  ///   keyboardShortcut: SingleActivator(LogicalKeyboardKey.keyB),
+  /// ```
+  /// {@endtemplate}
   final ShortcutActivator? keyboardShortcut;
 
   @override
@@ -160,7 +204,11 @@ class ShadSidebar extends StatelessWidget {
         ],
       ),
     );
+    final controller = ShadSidebarController.maybeOf(context);
 
+    if (controller?.isMobile ?? false) {
+      return sidebarContent;
+    }
     return switch (variant) {
       ShadSidebarVariant.normal => _buildNormalVariant(context, sidebarContent),
       ShadSidebarVariant.floating =>
@@ -173,11 +221,11 @@ class ShadSidebar extends StatelessWidget {
     BuildContext context,
     Widget sidebar,
   ) {
-    final theme = ShadTheme.of(context).sidebarTheme;
-    final side = this.side ?? theme.side ?? ShadSidebarSide.left;
+    final theme = ShadTheme.of(context);
+    final controller = ShadSidebarController.maybeOf(context);
+    final side = controller?.side ?? ShadSidebarSide.left;
 
-    final effectiveBorderColor =
-        borderColor ?? ShadTheme.of(context).colorScheme.border;
+    final effectiveBorderColor = borderColor ?? theme.colorScheme.border;
 
     return LayoutBuilder(
       builder: (context, constraints) {

@@ -22,7 +22,7 @@ mixin _$ShadSidebarTheme {
     }
 
     return ShadSidebarTheme(
-      side: t < 0.5 ? a?.side : b?.side,
+      initiallyExtended: t < 0.5 ? a?.initiallyExtended : b?.initiallyExtended,
       extendedWidth: lerpDouble$(a?.extendedWidth, b?.extendedWidth, t),
       mobileWidth: lerpDouble$(a?.mobileWidth, b?.mobileWidth, t),
       mobileBreakPoint: lerpDouble$(
@@ -46,7 +46,7 @@ mixin _$ShadSidebarTheme {
   }
 
   ShadSidebarTheme copyWith({
-    ShadSidebarSide? side,
+    bool? initiallyExtended,
     double? extendedWidth,
     double? mobileWidth,
     double? mobileBreakPoint,
@@ -58,7 +58,7 @@ mixin _$ShadSidebarTheme {
     final a = (this as ShadSidebarTheme);
 
     return ShadSidebarTheme(
-      side: side ?? a.side,
+      initiallyExtended: initiallyExtended ?? a.initiallyExtended,
       extendedWidth: extendedWidth ?? a.extendedWidth,
       mobileWidth: mobileWidth ?? a.mobileWidth,
       mobileBreakPoint: mobileBreakPoint ?? a.mobileBreakPoint,
@@ -81,7 +81,7 @@ mixin _$ShadSidebarTheme {
     }
 
     return copyWith(
-      side: other.side,
+      initiallyExtended: other.initiallyExtended,
       extendedWidth: other.extendedWidth,
       mobileWidth: other.mobileWidth,
       mobileBreakPoint: other.mobileBreakPoint,
@@ -105,7 +105,7 @@ mixin _$ShadSidebarTheme {
     final value = (this as ShadSidebarTheme);
 
     return other is ShadSidebarTheme &&
-        other.side == value.side &&
+        other.initiallyExtended == value.initiallyExtended &&
         other.extendedWidth == value.extendedWidth &&
         other.mobileWidth == value.mobileWidth &&
         other.mobileBreakPoint == value.mobileBreakPoint &&
@@ -121,7 +121,7 @@ mixin _$ShadSidebarTheme {
 
     return Object.hash(
       runtimeType,
-      value.side,
+      value.initiallyExtended,
       value.extendedWidth,
       value.mobileWidth,
       value.mobileBreakPoint,
