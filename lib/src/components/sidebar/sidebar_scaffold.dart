@@ -75,11 +75,6 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   TextDirection? _direction;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final direction = Directionality.of(context);
@@ -110,14 +105,14 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
         sidebar: widget.sidebar!,
         side: isRtl ? ShadSidebarSide.right : ShadSidebarSide.left,
       );
-      // Rebuild after the first frame to make `_sidebarKey.currentState`
-      // available for the body padding calculation.
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) setState(() {});
-      });
     } else {
       _sidebarController = null;
     }
+    // Rebuild after the first frame to make `_sidebarKey.currentState`
+    // available for the body padding calculation.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() {});
+    });
   }
 
   void _initEndSidebarController() {
@@ -129,14 +124,14 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
         sidebar: widget.endSidebar!,
         side: isRtl ? ShadSidebarSide.left : ShadSidebarSide.right,
       );
-      // Rebuild after the first frame to make `_endSidebarKey.currentState`
-      // available for the body padding calculation.
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) setState(() {});
-      });
     } else {
       _endSidebarController = null;
     }
+    // Rebuild after the first frame to make `_endSidebarKey.currentState`
+    // available for the body padding calculation.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() {});
+    });
   }
 
   /// Extends the sidebar.
@@ -256,7 +251,7 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
 
   double get _rightBodyPadding {
     final state = _endSidebarKey.currentState;
-    if (state == null) {
+    if (state == null || state.isMobile) {
       return 0;
     }
     final collapseMode = state.collapseMode;
