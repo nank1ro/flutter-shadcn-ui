@@ -692,7 +692,8 @@ class ShadDialog extends StatelessWidget {
                     padding: effectiveScrollPadding,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: effectiveMainAxisAlignment,
+                      crossAxisAlignment: effectiveCrossAxisAlignment,
                       children: [
                         if (effectiveTitle != null) effectiveTitle,
                         if (effectiveDescription != null) effectiveDescription,
