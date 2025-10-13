@@ -698,7 +698,7 @@ class ShadDialog extends StatelessWidget {
                         if (effectiveTitle != null) effectiveTitle,
                         if (effectiveDescription != null) effectiveDescription,
                         if (effectiveChild != null) effectiveChild,
-                      ],
+                      ].separatedBy(SizedBox(height: effectiveGap)),
                     ),
                   ),
                 ),
