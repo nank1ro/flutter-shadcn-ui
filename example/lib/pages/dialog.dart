@@ -2,10 +2,10 @@ import 'package:example/common/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-List<({String title, String value})> get profile => [
-      (title: 'Name', value: 'Alexandru'),
-      (title: 'Username', value: 'nank1ro'),
-    ];
+final profile = [
+  (title: 'Name', value: 'Alexandru'),
+  (title: 'Username', value: 'nank1ro'),
+];
 
 class DialogPage extends StatelessWidget {
   const DialogPage({super.key});
