@@ -486,8 +486,9 @@ class ShadDialog extends StatelessWidget {
 
   /// {@template ShadDialog.scrollPadding}
   /// The padding applied when the dialog content is scrollable.
-
-  /// Defaults to the keyboard’s view insets if not specified.
+  ///
+  /// If not specified, no additional padding is applied to the scrollable
+  /// content.
   /// {@endtemplate}
   final EdgeInsetsGeometry? scrollPadding;
 
