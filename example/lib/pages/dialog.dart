@@ -5,18 +5,6 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 List<({String title, String value})> get profile => [
       (title: 'Name', value: 'Alexandru'),
       (title: 'Username', value: 'nank1ro'),
-      (title: 'Name', value: 'Alexandru'),
-      (title: 'Username', value: 'nank1ro'),
-      (title: 'Name', value: 'Alexandru'),
-      (title: 'Username', value: 'nank1ro'),
-      (title: 'Name', value: 'Alexandru'),
-      (title: 'Username', value: 'nank1ro'),
-      (title: 'Name', value: 'Alexandru'),
-      (title: 'Username', value: 'nank1ro'),
-      (title: 'Name', value: 'Alexandru'),
-      (title: 'Username', value: 'nank1ro'),
-      (title: 'Name', value: 'Alexandru'),
-      (title: 'Username', value: 'nank1ro'),
     ];
 
 class DialogPage extends StatelessWidget {
@@ -34,17 +22,13 @@ class DialogPage extends StatelessWidget {
             showShadDialog(
               context: context,
               builder: (context) => ShadDialog(
-                useSafeArea: true,
                 title: const Text('Edit Profile'),
-                constraints:
-                    const BoxConstraints(maxWidth: 540, maxHeight: 700),
                 description: const Text(
                     "Make changes to your profile here. Click save when you're done"),
                 actions: const [ShadButton(child: Text('Save changes'))],
                 child: Container(
                   width: 375,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 4),
+                  padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.end,
