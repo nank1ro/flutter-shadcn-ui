@@ -695,7 +695,7 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   final Duration? longPressDuration;
 
   /// {@template ShadTab.expand}
-  /// Whether the [child] content should be expanded, defaults to `false`.
+  /// Whether the tab content should be expanded, defaults to `false`.
   /// {@endtemplate}
   final bool? expandContent;
 
