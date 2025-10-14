@@ -1,8 +1,13 @@
-## 0.37.4
+## 0.37.5
 
 - **FEAT**: Add `searchFocusNode` to `ShadSelect` and `ShadSelectFormField` to provide a custom focus node for the search input.
 - **FEAT**: Add `onSearchSubmitted` to `ShadSelect` and `ShadSelectFormField` to handle the submission of the search input (e.g., when the user presses the Enter key).
 - **FIX**: `ShadInput` crash when removing the external `focusNode`.
+
+## 0.37.4
+
+- **FIX**: Export `Effect` from `flutter_animate` as `AnimateEffect` to avoid name conflicts.
+- **FIX**: Export `TextDirection` from `intl` as `IntlTextDirection` to avoid name conflicts.
 
 ## 0.37.3
 
