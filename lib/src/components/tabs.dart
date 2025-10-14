@@ -87,7 +87,6 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
     this.decoration,
     this.tabBarConstraints,
     this.contentConstraints,
-    this.expandContent,
     this.restorationId,
     this.onChanged,
   }) : assert(
@@ -159,11 +158,6 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
   /// The constraints of the content, defaults to `null`.
   /// {@endtemplate}
   final BoxConstraints? contentConstraints;
-
-  /// {@template ShadTabs.expandContent}
-  /// Whether the content should be expanded, defaults to `false`.
-  /// {@endtemplate}
-  final bool? expandContent;
 
   /// {@template ShadTabs.restorationId}
   /// The restoration id, defaults to `null`.
@@ -296,9 +290,6 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
     final effectiveContentConstraints =
         widget.contentConstraints ?? tabsTheme.contentConstraints;
 
-    final effectiveExpandContent =
-        widget.expandContent ?? tabsTheme.expandContent ?? false;
-
     Widget tabBar = Row(
       spacing: widget.tabsGap ?? tabsTheme.tabsGap ?? 0,
       children: widget.tabs,
@@ -341,7 +332,6 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
         listenable: controller,
         builder: (context, _) {
           return Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               ShadDecorator(
                 decoration: effectiveDecoration,
@@ -351,15 +341,13 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
               ...List<Widget>.generate(widget.tabs.length, (int index) {
                 final tab = widget.tabs[index];
                 final selected = tab.value == controller.selected;
-                Widget content = Offstage(
-                  offstage: !selected,
-                  child: FocusTraversalGroup(
-                    descendantsAreFocusable: selected,
-                    policy: WidgetOrderTraversalPolicy(),
-                    child: KeyedSubtree(
-                      key: _tabKeys[index],
-                      child: tab.content ?? const SizedBox.shrink(),
-                    ),
+                if (!selected) return const SizedBox.shrink();
+                Widget content = FocusTraversalGroup(
+                  descendantsAreFocusable: selected,
+                  policy: WidgetOrderTraversalPolicy(),
+                  child: KeyedSubtree(
+                    key: _tabKeys[index],
+                    child: tab.content ?? const SizedBox.shrink(),
                   ),
                 );
 
@@ -370,7 +358,9 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
                   );
                 }
 
-                if (effectiveExpandContent && selected) {
+                final effectiveExpandContent =
+                    tab.expandContent ?? theme.tabsTheme.expandContent ?? false;
+                if (effectiveExpandContent) {
                   content = Expanded(child: content);
                 }
 
@@ -443,6 +433,7 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
     this.onDoubleTapDown,
     this.onDoubleTapCancel,
     this.longPressDuration,
+    this.expandContent,
   });
 
   /// {@template ShadTab.value}
@@ -702,6 +693,11 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
 
   /// {@macro ShadButton.longPressDuration}
   final Duration? longPressDuration;
+
+  /// {@template ShadTab.expand}
+  /// Whether the [child] content should be expanded, defaults to `false`.
+  /// {@endtemplate}
+  final bool? expandContent;
 
   @override
   State<ShadTab<T>> createState() => _ShadTabState<T>();
