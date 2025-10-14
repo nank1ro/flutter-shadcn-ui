@@ -129,7 +129,10 @@ class App extends StatelessWidget {
           //       theme: Theme.of(context),
           //       home: const MainPage(),
           //       builder: (context, child) {
-          //         return ShadAppBuilder(child: child!);
+          //         return Directionality(
+          //           textDirection: directionality,
+          //           child: ShadAppBuilder(child: child!),
+          //         );
           //       },
           //     );
           //   },
