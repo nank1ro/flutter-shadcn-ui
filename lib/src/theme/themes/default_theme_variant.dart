@@ -46,7 +46,6 @@ import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
-import 'package:shadcn_ui/src/utils/position.dart';
 
 class ShadDefaultThemeVariant extends ShadThemeVariant {
   ShadDefaultThemeVariant({
@@ -494,7 +493,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       backgroundColor: colorScheme.background,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsetsGeometry.fromSTEB(24, 24, 32, 24),
       mainAxisSize: MainAxisSize.max,
@@ -519,7 +517,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       backgroundColor: colorScheme.destructive,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24),
       mainAxisSize: MainAxisSize.max,
@@ -582,7 +579,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       backgroundColor: colorScheme.background,
       removeBorderRadiusWhenTiny: true,
       expandActionsWhenTiny: true,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       animateIn: const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
@@ -611,7 +607,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       radius: const BorderRadius.all(Radius.circular(8)),
       removeBorderRadiusWhenTiny: true,
       expandActionsWhenTiny: true,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       animateIn: const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
