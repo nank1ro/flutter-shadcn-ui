@@ -353,7 +353,7 @@ class ShadDialog extends StatelessWidget {
 
   /// {@template ShadDialog.closeIconPosition}
   /// The position of the close icon within the dialog.
-  /// Defaults to top-right (8, 8) if not specified.
+  /// Defaults to top-end (8, 8) if not specified.
   /// {@endtemplate}
   final ShadPosition? closeIconPosition;
 
@@ -486,8 +486,9 @@ class ShadDialog extends StatelessWidget {
 
   /// {@template ShadDialog.scrollPadding}
   /// The padding applied when the dialog content is scrollable.
-
-  /// Defaults to the keyboard’s view insets if not specified.
+  ///
+  /// If not specified, no additional padding is applied to the scrollable
+  /// content.
   /// {@endtemplate}
   final EdgeInsetsGeometry? scrollPadding;
 
@@ -541,7 +542,11 @@ class ShadDialog extends StatelessWidget {
 
     final effectiveCloseIconPosition = closeIconPosition ??
         effectiveDialogTheme.closeIconPosition ??
-        const ShadPosition(top: 8, right: 8);
+        ShadPosition.directional(
+          top: 8,
+          end: 8,
+          textDirection: Directionality.of(context),
+        );
 
     final effectiveRadius =
         radius ?? effectiveDialogTheme.radius ?? theme.radius;
@@ -594,9 +599,8 @@ class ShadDialog extends StatelessWidget {
     final effectiveScrollable =
         scrollable ?? effectiveDialogTheme.scrollable ?? true;
 
-    final effectiveScrollPadding = scrollPadding ??
-        effectiveDialogTheme.scrollPadding ??
-        MediaQuery.viewInsetsOf(context);
+    final effectiveScrollPadding =
+        scrollPadding ?? effectiveDialogTheme.scrollPadding;
 
     final effectiveActionsGap =
         actionsGap ?? effectiveDialogTheme.actionsGap ?? 8;
@@ -604,7 +608,7 @@ class ShadDialog extends StatelessWidget {
     final effectiveUseSafeArea =
         useSafeArea ?? effectiveDialogTheme.useSafeArea ?? true;
 
-    Widget dialog = ConstrainedBox(
+    final dialog = ConstrainedBox(
       constraints: effectiveConstraints,
       child: ShadResponsiveBuilder(
         builder: (context, breakpoint) {
@@ -661,6 +665,59 @@ class ShadDialog extends StatelessWidget {
             );
           }
 
+          final effectiveTitle = title != null
+              ? DefaultTextStyle(
+                  style: effectiveTitleStyle,
+                  textAlign: effectiveTitleTextAlign,
+                  child: title!,
+                )
+              : null;
+
+          final effectiveDescription = description != null
+              ? DefaultTextStyle(
+                  style: effectiveDescriptionStyle,
+                  textAlign: effectiveDescriptionTextAlign,
+                  child: description!,
+                )
+              : null;
+
+          final effectiveChild = child != null
+              ? DefaultTextStyle(
+                  style: effectiveDescriptionStyle,
+                  child: child!,
+                )
+              : null;
+
+          List<Widget> columnChildren;
+          if (effectiveScrollable) {
+            columnChildren = [
+              if (title != null || child != null || description != null)
+                Flexible(
+                  child: SingleChildScrollView(
+                    padding: effectiveScrollPadding,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: effectiveMainAxisAlignment,
+                      crossAxisAlignment: effectiveCrossAxisAlignment,
+                      children: [
+                        if (effectiveTitle != null) effectiveTitle,
+                        if (effectiveDescription != null) effectiveDescription,
+                        if (effectiveChild != null) effectiveChild,
+                      ].separatedBy(SizedBox(height: effectiveGap)),
+                    ),
+                  ),
+                ),
+              effectiveActions,
+            ];
+          } else {
+            columnChildren = [
+              if (effectiveTitle != null) effectiveTitle,
+              if (effectiveDescription != null) effectiveDescription,
+              if (effectiveChild != null) Flexible(child: effectiveChild),
+              effectiveActions,
+            ];
+          }
+
           Widget widget = Stack(
             children: [
               Padding(
@@ -669,28 +726,8 @@ class ShadDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: effectiveMainAxisAlignment,
                   crossAxisAlignment: effectiveCrossAxisAlignment,
-                  children: [
-                    if (title != null)
-                      DefaultTextStyle(
-                        style: effectiveTitleStyle,
-                        textAlign: effectiveTitleTextAlign,
-                        child: title!,
-                      ),
-                    if (description != null)
-                      DefaultTextStyle(
-                        style: effectiveDescriptionStyle,
-                        textAlign: effectiveDescriptionTextAlign,
-                        child: description!,
-                      ),
-                    if (child != null)
-                      Flexible(
-                        child: DefaultTextStyle(
-                          style: effectiveDescriptionStyle,
-                          child: child!,
-                        ),
-                      ),
-                    if (actions.isNotEmpty) effectiveActions,
-                  ].separatedBy(SizedBox(height: effectiveGap)),
+                  children: columnChildren
+                      .separatedBy(SizedBox(height: effectiveGap)),
                 ),
               ),
               if (effectiveCloseIcon != null)
@@ -717,16 +754,15 @@ class ShadDialog extends StatelessWidget {
       ),
     );
 
-    if (effectiveScrollable) {
-      dialog = SingleChildScrollView(
-        padding: effectiveScrollPadding,
-        child: dialog,
-      );
-    }
+    // Get the current view padding
+    final viewPadding = MediaQuery.viewInsetsOf(context);
 
     return Align(
       alignment: effectiveAlignment,
-      child: dialog,
+      child: Padding(
+        padding: viewPadding,
+        child: dialog,
+      ),
     );
   }
 }
