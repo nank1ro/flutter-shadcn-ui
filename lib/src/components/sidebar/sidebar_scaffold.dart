@@ -11,6 +11,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 class ShadSidebarScaffold extends StatefulWidget {
   const ShadSidebarScaffold({
     super.key,
+    this.bodyBackgroundColor,
     this.onSidebarChange,
     this.onEndSidebarChange,
     this.sidebar,
@@ -32,6 +33,13 @@ class ShadSidebarScaffold extends StatefulWidget {
 
   /// The sidebar to display on the end side of the screen.
   final ShadSidebar? endSidebar;
+
+  /// {@template ShadSidebarScaffold.backgroundColor}
+  /// The background color of the [body].
+  ///
+  /// It defaults to [ShadColorScheme.background].
+  /// {@endtemplate}
+  final Color? bodyBackgroundColor;
 
   static ShadSidebarScaffoldState of(BuildContext context) {
     final result = context.findAncestorStateOfType<ShadSidebarScaffoldState>();
@@ -148,20 +156,26 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
 
   @override
   Widget build(BuildContext context) {
-    final textDirection = Directionality.of(context);
-    final isRtl = textDirection == TextDirection.rtl;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final theme = ShadTheme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    final effectiveBodyColor = widget.bodyBackgroundColor ??
+        theme.sidebarScaffoldTheme.bodyBackgroundColor ??
+        theme.colorScheme.background;
+
+    final animation = Listenable.merge([
+      if (_sidebarKey.currentState != null)
+        _sidebarKey.currentState!.animationController,
+      if (_endSidebarKey.currentState != null)
+        _endSidebarKey.currentState!.animationController,
+    ]);
     return LayoutBuilder(
       builder: (context, constraints) {
         if (_lastMaxWidth != constraints.maxWidth) {
           _updateMobileBreakpoints(constraints);
         }
 
-        final animation = Listenable.merge([
-          if (_sidebarKey.currentState != null)
-            _sidebarKey.currentState!.animationController,
-          if (_endSidebarKey.currentState != null)
-            _endSidebarKey.currentState!.animationController,
-        ]);
         final isMobile = (_sidebarKey.currentState?.isMobile ?? false) ||
             (_endSidebarKey.currentState?.isMobile ?? false);
 
@@ -169,10 +183,9 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
             (_sidebarKey.currentState?.variant == ShadSidebarVariant.inset ||
                 _endSidebarKey.currentState?.variant ==
                     ShadSidebarVariant.inset);
-        final colorScheme = ShadTheme.of(context).colorScheme;
 
         return ColoredBox(
-          color: isInsetLayout ? colorScheme.sidebar : colorScheme.background,
+          color: (isInsetLayout ? colorScheme.sidebar : effectiveBodyColor),
           child: Stack(
             children: [
               if (_sidebarController != null)
@@ -209,7 +222,7 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
                   );
                 },
                 child: isInsetLayout
-                    ? _insetBodyWrapper(context, widget.body)
+                    ? _insetBodyWrapper(widget.body, effectiveBodyColor)
                     : widget.body,
               ),
             ],
@@ -230,19 +243,24 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     });
   }
 
+  double _collapsedWidth(ShadSidebarControllerState state) {
+    switch (state.collapseMode) {
+      case ShadSidebarCollapseMode.icons:
+        return state.collapsedToIconsWidth;
+      case ShadSidebarCollapseMode.offScreen:
+        return 0;
+      case ShadSidebarCollapseMode.none:
+        return state.extendedWidth;
+    }
+  }
+
   double get _leftBodyPadding {
     final state = _sidebarKey.currentState;
     if (state == null || state.isMobile) {
       return 0;
     }
-    final collapseMode = state.collapseMode;
-    final collapsedWidth = switch (collapseMode) {
-      ShadSidebarCollapseMode.icons => state.collapsedToIconsWidth,
-      ShadSidebarCollapseMode.offScreen => 0.0,
-      ShadSidebarCollapseMode.none => state.extendedWidth,
-    };
     return lerpDouble(
-          collapsedWidth,
+          _collapsedWidth(state),
           state.extendedWidth,
           state.animationController.value,
         ) ??
@@ -254,28 +272,22 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     if (state == null || state.isMobile) {
       return 0;
     }
-    final collapseMode = state.collapseMode;
-    final collapsedWidth = switch (collapseMode) {
-      ShadSidebarCollapseMode.icons => state.collapsedToIconsWidth,
-      ShadSidebarCollapseMode.offScreen => 0.0,
-      ShadSidebarCollapseMode.none => state.extendedWidth,
-    };
+
     return lerpDouble(
-          collapsedWidth,
+          _collapsedWidth(state),
           state.extendedWidth,
           state.animationController.value,
         ) ??
         0;
   }
 
-  Widget _insetBodyWrapper(BuildContext context, Widget body) {
-    final theme = ShadTheme.of(context);
+  Widget _insetBodyWrapper(Widget body, Color bodyBackgroundColor) {
     return Container(
       margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         boxShadow: ShadShadows.sm,
         borderRadius: BorderRadius.circular(12),
-        color: theme.colorScheme.background,
+        color: bodyBackgroundColor,
       ),
       child: body,
     );

@@ -32,6 +32,7 @@ import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/sidebar.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar_scaffold.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -1083,5 +1084,10 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       mobileWidth: 288,
       mobileBreakPoint: 768,
     );
+  }
+
+  @override
+  ShadSidebarScaffoldTheme sidebarScaffoldTheme() {
+    return const ShadSidebarScaffoldTheme();
   }
 }
