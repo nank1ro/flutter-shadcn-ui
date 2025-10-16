@@ -47,8 +47,8 @@ import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
-import 'package:shadcn_ui/src/utils/position.dart';
 
 class ShadDefaultThemeVariant extends ShadThemeVariant {
   ShadDefaultThemeVariant({
@@ -356,10 +356,10 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           width: 1,
         ),
       ),
-      popoverReverseDuration: Duration.zero,
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
+      popoverReverseDuration: Duration.zero,
       anchor: const ShadAnchorAuto(offset: Offset(0, 4)),
       searchPadding: const EdgeInsets.all(12),
     );
@@ -433,7 +433,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   @override
   ShadInputTheme inputTheme() {
     return ShadInputTheme(
-      style: effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
+      style: effectiveTextTheme.muted,
       placeholderStyle: effectiveTextTheme.muted,
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
@@ -496,7 +496,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       backgroundColor: colorScheme.background,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsetsGeometry.fromSTEB(24, 24, 32, 24),
       mainAxisSize: MainAxisSize.max,
@@ -521,7 +520,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       backgroundColor: colorScheme.destructive,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24),
       mainAxisSize: MainAxisSize.max,
@@ -584,7 +582,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       backgroundColor: colorScheme.background,
       removeBorderRadiusWhenTiny: true,
       expandActionsWhenTiny: true,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       animateIn: const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
@@ -613,7 +610,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       radius: const BorderRadius.all(Radius.circular(8)),
       removeBorderRadiusWhenTiny: true,
       expandActionsWhenTiny: true,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       animateIn: const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
@@ -706,12 +702,10 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       cellAlignment: Alignment.centerLeft,
       cellHeight: 48,
       cellPadding: const EdgeInsets.symmetric(horizontal: 16),
-      cellStyle:
-          effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
-      cellHeaderStyle:
-          effectiveTextTheme.muted.copyWith(fontWeight: FontWeight.w500),
-      cellFooterStyle: effectiveTextTheme.muted
-          .copyWith(color: colorScheme.foreground, fontWeight: FontWeight.w500),
+      cellStyle: effectiveTextTheme.muted,
+      cellHeaderStyle: effectiveTextTheme.muted,
+      cellFooterStyle:
+          effectiveTextTheme.muted.fallback(fontWeight: FontWeight.w500),
     );
   }
 
@@ -1014,7 +1008,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   @override
   ShadTextareaTheme textareaTheme() {
     return ShadTextareaTheme(
-      style: effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
+      style: effectiveTextTheme.muted,
       placeholderStyle: effectiveTextTheme.muted,
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(

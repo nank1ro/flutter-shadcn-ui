@@ -751,29 +751,31 @@ class ShadAppBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ShadToaster(
-      child: ShadSonner(
-        child: Builder(
-          builder: (BuildContext context) {
-            // Why are we surrounding a builder with a builder?
-            //
-            // The widget.builder may contain code that invokes
-            // Theme.of(), which should return the theme we selected
-            // above in AnimatedTheme. However, if we invoke
-            // widget.builder() directly as the child of AnimatedTheme
-            // then there is no Context separating them, and the
-            // widget.builder() will not find the theme. Therefore, we
-            // surround widget.builder with yet another builder so that
-            // a context separates them and Theme.of() correctly
-            // resolves to the theme we passed to AnimatedTheme.
-            return ColoredBox(
-              color: backgroundColor ??
-                  ShadTheme.of(context).colorScheme.background,
-              child: builder?.call(context, child) ?? child,
-            );
-          },
-        ),
-      ),
+    // Why are we surrounding a builder with a builder?
+    //
+    // The widget.builder may contain code that invokes
+    // Theme.of(), which should return the theme we selected
+    // above in AnimatedTheme. However, if we invoke
+    // widget.builder() directly as the child of AnimatedTheme
+    // then there is no Context separating them, and the
+    // widget.builder() will not find the theme. Therefore, we
+    // surround widget.builder with yet another builder so that
+    // a context separates them and Theme.of() correctly
+    // resolves to the theme we passed to AnimatedTheme.
+    return Builder(
+      builder: (BuildContext context) {
+        // The reason for wrapping the [child] with `ShadToaster` and `ShadSonner`
+        // is to ensures that any `InheritedWidget`s introduced by the [builder]
+        // (such as `Directionality`) are inherited by the toaster and sonner.
+        final effectiveChild = child != null
+            ? ShadToaster(child: ShadSonner(child: child!))
+            : child;
+        return ColoredBox(
+          color:
+              backgroundColor ?? ShadTheme.of(context).colorScheme.background,
+          child: builder?.call(context, effectiveChild) ?? effectiveChild,
+        );
+      },
     );
   }
 }

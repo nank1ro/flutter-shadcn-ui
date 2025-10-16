@@ -85,7 +85,7 @@ class ShadTableCell extends TableViewCell {
   /// {@template ShadTableCell.alignment}
   /// Alignment of the cell's content.
   /// {@endtemplate}
-  final Alignment? alignment;
+  final AlignmentGeometry? alignment;
 
   /// {@template ShadTableCell.height}
   /// Height of the table cell.
@@ -106,8 +106,9 @@ class ShadTableCell extends TableViewCell {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    final effectiveAlignment =
-        alignment ?? theme.tableTheme.cellAlignment ?? Alignment.centerLeft;
+    final effectiveAlignment = alignment ??
+        theme.tableTheme.cellAlignment ??
+        AlignmentDirectional.centerStart;
 
     final effectiveHeight = height ?? theme.tableTheme.cellHeight ?? 48;
 
@@ -684,6 +685,8 @@ class _ShadTableState extends State<ShadTable> {
         theme.tableTheme.keyboardDismissBehavior ??
         ScrollViewKeyboardDismissBehavior.manual;
 
+    final textDirection = Directionality.of(context);
+
     return ValueListenableBuilder(
       valueListenable: hoveredRowIndex,
       builder: (context, value, child) {
@@ -702,6 +705,7 @@ class _ShadTableState extends State<ShadTable> {
             horizontalDetails: ScrollableDetails.horizontal(
               controller: widget.horizontalScrollController,
               physics: widget.horizontalScrollPhysics,
+              reverse: textDirection == TextDirection.rtl,
             ),
             cells: [
               if (widget.header != null) widget.header!.toList(),
@@ -724,6 +728,7 @@ class _ShadTableState extends State<ShadTable> {
           horizontalDetails: ScrollableDetails.horizontal(
             controller: widget.horizontalScrollController,
             physics: widget.horizontalScrollPhysics,
+            reverse: textDirection == TextDirection.rtl,
           ),
           cellBuilder: (context, index) {
             if (widget.headerBuilder != null && index.row == 0) {

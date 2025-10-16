@@ -28,6 +28,11 @@ mixin _$ShadSelectTheme {
         t,
       ),
       decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
+      placeholderStyle: TextStyle.lerp(
+        a?.placeholderStyle,
+        b?.placeholderStyle,
+        t,
+      ),
       minWidth: lerpDouble$(a?.minWidth, b?.minWidth, t),
       maxWidth: lerpDouble$(a?.maxWidth, b?.maxWidth, t),
       maxHeight: lerpDouble$(a?.maxHeight, b?.maxHeight, t),
@@ -58,6 +63,7 @@ mixin _$ShadSelectTheme {
   ShadSelectTheme copyWith({
     Duration? popoverReverseDuration,
     ShadDecoration? decoration,
+    TextStyle? placeholderStyle,
     double? minWidth,
     double? maxWidth,
     double? maxHeight,
@@ -78,6 +84,7 @@ mixin _$ShadSelectTheme {
       popoverReverseDuration:
           popoverReverseDuration ?? a.popoverReverseDuration,
       decoration: decoration ?? a.decoration,
+      placeholderStyle: placeholderStyle ?? a.placeholderStyle,
       minWidth: minWidth ?? a.minWidth,
       maxWidth: maxWidth ?? a.maxWidth,
       maxHeight: maxHeight ?? a.maxHeight,
@@ -110,6 +117,9 @@ mixin _$ShadSelectTheme {
     return copyWith(
       popoverReverseDuration: other.popoverReverseDuration,
       decoration: other.decoration,
+      placeholderStyle:
+          current.placeholderStyle?.merge(other.placeholderStyle) ??
+              other.placeholderStyle,
       minWidth: other.minWidth,
       maxWidth: other.maxWidth,
       maxHeight: other.maxHeight,
@@ -141,6 +151,7 @@ mixin _$ShadSelectTheme {
     return other is ShadSelectTheme &&
         other.popoverReverseDuration == value.popoverReverseDuration &&
         other.decoration == value.decoration &&
+        other.placeholderStyle == value.placeholderStyle &&
         other.minWidth == value.minWidth &&
         other.maxWidth == value.maxWidth &&
         other.maxHeight == value.maxHeight &&
@@ -164,6 +175,7 @@ mixin _$ShadSelectTheme {
       runtimeType,
       value.popoverReverseDuration,
       value.decoration,
+      value.placeholderStyle,
       value.minWidth,
       value.maxWidth,
       value.maxHeight,

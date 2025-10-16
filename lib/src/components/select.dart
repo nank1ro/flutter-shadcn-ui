@@ -16,6 +16,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
@@ -50,6 +51,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.popoverController,
     this.enabled = true,
     this.placeholder,
+    this.placeholderStyle,
     this.initialValue,
     this.onChanged,
     this.focusNode,
@@ -111,6 +113,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.clearSearchOnClose,
     this.enabled = true,
     this.placeholder,
+    this.placeholderStyle,
     this.initialValue,
     this.focusNode,
     this.closeOnTapOutside = true,
@@ -160,6 +163,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.popoverController,
     this.enabled = true,
     this.placeholder,
+    this.placeholderStyle,
     this.initialValues = const {},
     ValueChanged<Set<T>>? onChanged,
     this.focusNode,
@@ -222,6 +226,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.clearSearchOnClose,
     this.enabled = true,
     this.placeholder,
+    this.placeholderStyle,
     this.initialValues = const {},
     this.focusNode,
     this.closeOnTapOutside = true,
@@ -281,6 +286,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.clearSearchOnClose,
     this.enabled = true,
     this.placeholder,
+    this.placeholderStyle,
     this.initialValue,
     this.initialValues = const {},
     this.onChanged,
@@ -374,6 +380,13 @@ class ShadSelect<T> extends StatefulWidget {
   /// Typically a [Text] widget prompting the user to make a selection.
   /// {@endtemplate}
   final Widget? placeholder;
+
+  /// {@template ShadSelect.placeholderStyle}
+  /// The text style to apply by default to the placeholder widget.
+  /// If the placeholder contains a [Text] widget, this style will be merged
+  /// with its existing style.
+  /// {@endtemplate}
+  final TextStyle? placeholderStyle;
 
   /// {@template ShadSelect.selectedOptionBuilder}
   /// Builder function for rendering the currently selected option in single
@@ -647,6 +660,8 @@ class ShadSelect<T> extends StatefulWidget {
 
 class ShadSelectState<T> extends State<ShadSelect<T>> {
   FocusNode? internalFocusNode;
+  final searchFocused = ValueNotifier(false);
+
   // ignore: use_late_for_private_fields_and_variables
   ShadSelectController<T>? _controller;
 
@@ -740,6 +755,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     _scrollController?.dispose();
     showScrollToBottom.dispose();
     showScrollToTop.dispose();
+    searchFocused.dispose();
     super.dispose();
   }
 
@@ -794,6 +810,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     }
 
     if (changed) {
+      // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+      controller.notifyListeners();
       if (isMultiSelection) {
         widget.onMultipleChanged?.call(controller.value.toSet());
       } else {
@@ -828,7 +846,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             theme.selectTheme.showScrollToBottomChevron ??
             true;
 
-    final popoverReverseDuration = widget.popoverReverseDuration ??
+    final effectivePopoverReverseDuration = widget.popoverReverseDuration ??
         theme.selectTheme.popoverReverseDuration ??
         Duration.zero;
 
@@ -848,7 +866,13 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
       listenable: controller,
       builder: (context, child) {
         final Widget result;
+        final TextStyle resultDefaultTextStyle;
+
         if (controller.value.isNotEmpty) {
+          resultDefaultTextStyle = theme.optionTheme.selectedTextStyle ??
+              theme.textTheme.muted.fallback(
+                color: theme.colorScheme.foreground,
+              );
           switch (isMultiSelect) {
             case true:
               result = widget.selectedOptionsBuilder!(
@@ -866,9 +890,14 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             widget.placeholder != null,
             'placeholder must not be null when value is null',
           );
+          resultDefaultTextStyle = widget.placeholderStyle ??
+              theme.selectTheme.placeholderStyle ??
+              theme.textTheme.muted.fallback(
+                color: theme.colorScheme.foreground,
+              );
           result = widget.placeholder!;
         }
-        return result;
+        return DefaultTextStyle(style: resultDefaultTextStyle, child: result);
       },
     );
 
@@ -897,37 +926,52 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            widget.search ??
-                ShadInput(
-                  leading: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Icon(
-                      LucideIcons.search,
-                      size: 16,
-                      color: theme.colorScheme.popoverForeground,
-                    ),
-                  ),
-                  padding: widget.searchPadding ??
-                      theme.selectTheme.searchPadding ??
-                      const EdgeInsets.all(12),
-                  placeholder: widget.searchPlaceholder,
-                  decoration: ShadDecoration.none,
-                  onChanged: widget.onSearchChanged,
-                ),
+            ShadFocusable(
+              builder: (context, focused, child) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  searchFocused.value = focused;
+                });
+                return widget.search ??
+                    ShadInput(
+                      leading: Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Icon(
+                          LucideIcons.search,
+                          size: 16,
+                          color: theme.colorScheme.popoverForeground,
+                        ),
+                      ),
+                      padding: widget.searchPadding ??
+                          theme.selectTheme.searchPadding ??
+                          const EdgeInsets.all(12),
+                      placeholder: widget.searchPlaceholder,
+                      decoration: ShadDecoration.none,
+                      onChanged: widget.onSearchChanged,
+                    );
+              },
+            ),
             widget.searchDivider ??
                 const ShadSeparator.horizontal(margin: EdgeInsets.zero),
           ],
         ),
     };
 
-    return CallbackShortcuts(
-      bindings: {
-        const SingleActivator(LogicalKeyboardKey.enter):
-            popoverController.toggle,
-        const SingleActivator(LogicalKeyboardKey.space):
-            popoverController.toggle,
-        const SingleActivator(LogicalKeyboardKey.escape):
-            popoverController.hide,
+    return ValueListenableBuilder(
+      valueListenable: searchFocused,
+      builder: (context, focused, child) {
+        return CallbackShortcuts(
+          bindings: focused
+              ? const {}
+              : {
+                  const SingleActivator(LogicalKeyboardKey.enter):
+                      popoverController.toggle,
+                  const SingleActivator(LogicalKeyboardKey.space):
+                      popoverController.toggle,
+                  const SingleActivator(LogicalKeyboardKey.escape):
+                      popoverController.hide,
+                },
+          child: child!,
+        );
       },
       child: FocusTraversalGroup(
         policy: WidgetOrderTraversalPolicy(),
@@ -993,14 +1037,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Flexible(
-                            child: DefaultTextStyle(
-                              style: theme.textTheme.muted.copyWith(
-                                color: theme.colorScheme.foreground,
-                              ),
-                              child: effectiveText,
-                            ),
-                          ),
+                          Flexible(child: effectiveText),
                           effectiveTrailing,
                         ],
                       ),
@@ -1080,7 +1117,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                 anchor: effectiveAnchor,
                 closeOnTapOutside: widget.closeOnTapOutside,
                 effects: effectiveEffects,
-                reverseDuration: popoverReverseDuration,
+                reverseDuration: effectivePopoverReverseDuration,
                 shadows: effectiveShadows,
                 filter: effectiveFilter,
                 popover: (_) {
@@ -1163,6 +1200,10 @@ class ShadOption<T> extends StatefulWidget {
     this.selectedIcon,
     this.radius,
     this.direction,
+    this.backgroundColor,
+    this.selectedBackgroundColor,
+    this.textStyle,
+    this.selectedTextStyle,
   });
 
   /// The value of the [ShadOption], it must be unique above the options.
@@ -1184,6 +1225,22 @@ class ShadOption<T> extends StatefulWidget {
 
   /// The radius of the [ShadOption], defaults to `ShadThemeData.radius`.
   final BorderRadius? radius;
+
+  /// The background color of the [ShadOption], defaults to
+  /// `ShadThemeData.optionTheme.backgroundColor`.
+  final Color? backgroundColor;
+
+  /// The background color of the [ShadOption] when selected, defaults to
+  /// `ShadThemeData.optionTheme.selectedBackgroundColor`.
+  final Color? selectedBackgroundColor;
+
+  /// The text style of the [ShadOption], defaults to
+  /// `ShadThemeData.optionTheme.textStyle`.
+  final TextStyle? textStyle;
+
+  /// The text style of the [ShadOption] when selected, defaults to
+  /// `ShadThemeData.optionTheme.selectedTextStyle`.
+  final TextStyle? selectedTextStyle;
 
   /// {@template ShadOption.direction}
   /// The direction of the ambient.
@@ -1240,12 +1297,31 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
         context.watch<ShadSelectState<dynamic>>() as ShadSelectState<T>;
     final selected = inheritedSelect.controller.value.contains(widget.value);
 
-    final effectiveHoveredBackgroundColor = widget.hoveredBackgroundColor ??
-        theme.optionTheme.hoveredBackgroundColor ??
-        theme.colorScheme.accent;
+    final effectiveHoveredBackgroundColor =
+        theme.optionTheme.hoveredBackgroundColor ?? theme.colorScheme.accent;
+
     final effectivePadding = widget.padding ??
         theme.optionTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
+
+    final effectiveTextStyle = widget.textStyle ??
+        theme.optionTheme.textStyle ??
+        theme.textTheme.muted.fallback(
+          color: theme.colorScheme.popoverForeground,
+        );
+
+    final effectiveSelectedTextStyle = widget.selectedTextStyle ??
+        theme.optionTheme.selectedTextStyle ??
+        theme.textTheme.muted.fallback(
+          color: theme.colorScheme.popoverForeground,
+        );
+
+    final effectiveSelectedBackgroundColor = widget.selectedBackgroundColor ??
+        theme.optionTheme.selectedBackgroundColor;
+
+    final effectiveBackgroundColor =
+        widget.backgroundColor ?? theme.optionTheme.backgroundColor;
+
     final effectiveRadius =
         widget.radius ?? theme.optionTheme.radius ?? theme.radius;
 
@@ -1280,10 +1356,16 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
           child: ValueListenableBuilder(
             valueListenable: hovered,
             builder: (context, hovered, child) {
+              final resolvedBackgroundColor = hovered
+                  ? effectiveHoveredBackgroundColor
+                  : selected
+                      ? effectiveSelectedBackgroundColor
+                      : effectiveBackgroundColor;
+
               return Container(
                 padding: effectivePadding,
                 decoration: BoxDecoration(
-                  color: hovered ? effectiveHoveredBackgroundColor : null,
+                  color: resolvedBackgroundColor,
                   borderRadius: effectiveRadius,
                 ),
                 child: child,
@@ -1295,9 +1377,9 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
                 effectiveSelectedIcon,
                 Expanded(
                   child: DefaultTextStyle(
-                    style: theme.textTheme.muted.copyWith(
-                      color: theme.colorScheme.popoverForeground,
-                    ),
+                    style: selected
+                        ? effectiveSelectedTextStyle
+                        : effectiveTextStyle,
                     child: widget.child,
                   ),
                 ),

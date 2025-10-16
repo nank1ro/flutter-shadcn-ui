@@ -1,3 +1,30 @@
+## 0.38.1
+
+- **FIX**: FixShadTable doesn't support RTL (thanks to @DMouayad).
+- **FIX**: ShadToast & ShadSonner doesn't react to text direction change (thanks to @DMouayad).
+- **FIX**: ShadSheet crash when tap outside the sheet (thanks to @pro100andrey).
+- **FIX**: Feat: direction-aware dialog and toast close buttons (thanks to @DMouayad).
+- **FIX**: ShadDialog - scrolling doesn’t work when constraints are set (thanks to @pro100andrey).
+
+## 0.38.0
+
+- **BREAKING CHANGE**: `ShadTabs.expandContent` has been removed and added to `ShadTab.expandContent` to allow expanding only specific tabs.
+
+## 0.37.4
+
+- **FIX**: Export `Effect` from `flutter_animate` as `AnimateEffect` to avoid name conflicts.
+- **FIX**: Export `TextDirection` from `intl` as `IntlTextDirection` to avoid name conflicts.
+
+## 0.37.3
+
+- **FIX**: `ShadSelect` not updating the controller when the form field value changes.
+- **FIX**: Remove `initialValues` from `ShadSelectMultipleFormField`, use `controller` instead.
+- **FIX**: `ShadSelect.withSearch` keyboard shortcuts closing the popover when the search input is focused.
+
+## 0.37.2
+
+- **FEAT**: Add `backgroundColor`, `selectedBackgroundColor`, `textStyle` and `selectedTextStyle` to `ShadOptionTheme` and `ShadOption`, to customize the background color and text style of `ShadOption` (thanks to @9dan).
+
 ## 0.37.1
 
 - **FIX**: Test fails due to pending Timer when using `Animate` and `Duration.zero`, which has been replaced with `ShadAnimate`.

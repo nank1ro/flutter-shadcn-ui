@@ -13,9 +13,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ github.head_ref || github.ref }}
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2.21.0
