@@ -91,6 +91,8 @@ class ShadSelect<T> extends StatefulWidget {
         selectedOptionsBuilder = null,
         search = null,
         clearSearchOnClose = false,
+        searchFocusNode = null,
+        onSearchSubmitted = null,
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
@@ -141,6 +143,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.controller,
     this.popoverReverseDuration,
     this.ensureSelectedVisible,
+    this.searchFocusNode,
+    this.onSearchSubmitted,
   })  : variant = ShadSelectVariant.search,
         selectedOptionsBuilder = null,
         onMultipleChanged = null,
@@ -204,6 +208,8 @@ class ShadSelect<T> extends StatefulWidget {
         clearSearchOnClose = false,
         onChanged = null,
         onMultipleChanged = onChanged,
+        searchFocusNode = null,
+        onSearchSubmitted = null,
         assert(
           options != null || optionsBuilder != null,
           'Either options or optionsBuilder must be provided',
@@ -254,6 +260,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.controller,
     this.popoverReverseDuration,
     this.ensureSelectedVisible,
+    this.searchFocusNode,
+    this.onSearchSubmitted,
   })  : variant = ShadSelectVariant.multipleWithSearch,
         selectedOptionBuilder = null,
         onChanged = null,
@@ -317,6 +325,8 @@ class ShadSelect<T> extends StatefulWidget {
     this.controller,
     this.popoverReverseDuration,
     this.ensureSelectedVisible,
+    this.searchFocusNode,
+    this.onSearchSubmitted,
   })  : assert(
           variant == ShadSelectVariant.primary || onSearchChanged != null,
           'onSearchChanged must be provided when variant is search',
@@ -654,13 +664,27 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@endtemplate}
   final bool? ensureSelectedVisible;
 
+  /// {@template ShadSelect.searchFocusNode}
+  /// Focus node for the search input field in search-enabled variants.
+  /// If null, a default [FocusNode] will be created internally.
+  /// {@endtemplate}
+  final FocusNode? searchFocusNode;
+
+  /// {@template ShadSelect.onSearchSubmitted}
+  /// Callback function invoked when the search query is submitted in
+  /// search-enabled
+  /// [ShadSelect] variants.
+  /// Provides the current search string as an argument.
+  /// {@endtemplate}
+  final ValueChanged<String>? onSearchSubmitted;
+
   @override
   ShadSelectState<T> createState() => ShadSelectState();
 }
 
 class ShadSelectState<T> extends State<ShadSelect<T>> {
   FocusNode? internalFocusNode;
-  final searchFocused = ValueNotifier(false);
+  FocusNode? _internalSearchFocusNode;
 
   // ignore: use_late_for_private_fields_and_variables
   ShadSelectController<T>? _controller;
@@ -681,6 +705,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
   bool shouldAnimateToBottom = false;
 
   FocusNode get focusNode => widget.focusNode ?? internalFocusNode!;
+  FocusNode get searchFocusNode =>
+      widget.searchFocusNode ?? (_internalSearchFocusNode ??= FocusNode());
 
   ScrollController get scrollController =>
       widget.scrollController ?? _scrollController!;
@@ -750,12 +776,12 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
   @override
   void dispose() {
+    _internalSearchFocusNode?.dispose();
     _popoverController?.dispose();
     internalFocusNode?.dispose();
     _scrollController?.dispose();
     showScrollToBottom.dispose();
     showScrollToTop.dispose();
-    searchFocused.dispose();
     super.dispose();
   }
 
@@ -926,41 +952,36 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ShadFocusable(
-              builder: (context, focused, child) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  searchFocused.value = focused;
-                });
-                return widget.search ??
-                    ShadInput(
-                      leading: Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: Icon(
-                          LucideIcons.search,
-                          size: 16,
-                          color: theme.colorScheme.popoverForeground,
-                        ),
-                      ),
-                      padding: widget.searchPadding ??
-                          theme.selectTheme.searchPadding ??
-                          const EdgeInsets.all(12),
-                      placeholder: widget.searchPlaceholder,
-                      decoration: ShadDecoration.none,
-                      onChanged: widget.onSearchChanged,
-                    );
-              },
-            ),
+            widget.search ??
+                ShadInput(
+                  focusNode: widget.searchFocusNode,
+                  leading: Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Icon(
+                      LucideIcons.search,
+                      size: 16,
+                      color: theme.colorScheme.popoverForeground,
+                    ),
+                  ),
+                  padding: widget.searchPadding ??
+                      theme.selectTheme.searchPadding ??
+                      const EdgeInsets.all(12),
+                  placeholder: widget.searchPlaceholder,
+                  decoration: ShadDecoration.none,
+                  onChanged: widget.onSearchChanged,
+                  onSubmitted: widget.onSearchSubmitted,
+                ),
             widget.searchDivider ??
                 const ShadSeparator.horizontal(margin: EdgeInsets.zero),
           ],
         ),
     };
 
-    return ValueListenableBuilder(
-      valueListenable: searchFocused,
-      builder: (context, focused, child) {
+    return ListenableBuilder(
+      listenable: searchFocusNode,
+      builder: (context, child) {
         return CallbackShortcuts(
-          bindings: focused
+          bindings: searchFocusNode.hasFocus
               ? const {}
               : {
                   const SingleActivator(LogicalKeyboardKey.enter):
@@ -1263,17 +1284,15 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final inherited =
         context.read<ShadSelectState<dynamic>>() as ShadSelectState<T>;
     final selected = inherited.controller.value.contains(widget.value);
-    if (selected) {
+    if (selected && inherited.ensureSelectedVisible) {
       focusNode.requestFocus();
-      if (inherited.ensureSelectedVisible) {
-        // scroll to the selected option
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) return;
-          Scrollable.maybeOf(context)
-              ?.position
-              .ensureVisible(context.findRenderObject()!);
-        });
-      }
+      // scroll to the selected option
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        Scrollable.maybeOf(context)
+            ?.position
+            .ensureVisible(context.findRenderObject()!);
+      });
     }
   }
 
