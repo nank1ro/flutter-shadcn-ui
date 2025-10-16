@@ -353,7 +353,7 @@ class ShadDialog extends StatelessWidget {
 
   /// {@template ShadDialog.closeIconPosition}
   /// The position of the close icon within the dialog.
-  /// Defaults to top-right (8, 8) if not specified.
+  /// Defaults to top-end (8, 8) if not specified.
   /// {@endtemplate}
   final ShadPosition? closeIconPosition;
 
@@ -542,7 +542,11 @@ class ShadDialog extends StatelessWidget {
 
     final effectiveCloseIconPosition = closeIconPosition ??
         effectiveDialogTheme.closeIconPosition ??
-        const ShadPosition(top: 8, right: 8);
+        ShadPosition.directional(
+          top: 8,
+          end: 8,
+          textDirection: Directionality.of(context),
+        );
 
     final effectiveRadius =
         radius ?? effectiveDialogTheme.radius ?? theme.radius;

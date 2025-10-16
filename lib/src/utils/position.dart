@@ -9,10 +9,43 @@ class ShadPosition {
     this.bottom,
   });
 
+  factory ShadPosition.directional({
+    double? top,
+    double? bottom,
+    double? start,
+    double? end,
+    required TextDirection textDirection,
+  }) {
+    final (double? left, double? right) = switch (textDirection) {
+      TextDirection.rtl => (end, start),
+      TextDirection.ltr => (start, end),
+    };
+    return ShadPosition(
+      top: top,
+      bottom: bottom,
+      left: left,
+      right: right,
+    );
+  }
+
   final double? top;
   final double? left;
   final double? right;
   final double? bottom;
+
+  ShadPosition copyWith({
+    double? top,
+    double? left,
+    double? right,
+    double? bottom,
+  }) {
+    return ShadPosition(
+      top: top ?? this.top,
+      left: left ?? this.left,
+      right: right ?? this.right,
+      bottom: bottom ?? this.bottom,
+    );
+  }
 
   static ShadPosition? lerp(
     ShadPosition? a,
@@ -37,6 +70,12 @@ class ShadPosition {
         other.left == left &&
         other.right == right &&
         other.bottom == bottom;
+  }
+
+  @override
+  String toString() {
+    return 'ShadPosition(top: $top, left: $left, '
+        'right: $right, bottom: $bottom)';
   }
 
   @override
