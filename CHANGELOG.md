@@ -1,3 +1,11 @@
+## 0.38.1
+
+- **FIX**: FixShadTable doesn't support RTL (thanks to @DMouayad).
+- **FIX**: ShadToast & ShadSonner doesn't react to text direction change (thanks to @DMouayad).
+- **FIX**: ShadSheet crash when tap outside the sheet (thanks to @pro100andrey).
+- **FIX**: Feat: direction-aware dialog and toast close buttons (thanks to @DMouayad).
+- **FIX**: ShadDialog - scrolling doesn’t work when constraints are set (thanks to @pro100andrey).
+
 ## 0.38.0
 
 - **BREAKING CHANGE**: `ShadTabs.expandContent` has been removed and added to `ShadTab.expandContent` to allow expanding only specific tabs.
