@@ -1,3 +1,7 @@
+## 0.38.0
+
+- **BREAKING CHANGE**: `ShadTabs.expandContent` has been removed and added to `ShadTab.expandContent` to allow expanding only specific tabs.
+
 ## 0.37.4
 
 - **FIX**: Export `Effect` from `flutter_animate` as `AnimateEffect` to avoid name conflicts.
