@@ -597,6 +597,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       actionsGap: 8,
+      isHeaderPinned: true,
+      isActionsPinned: true,
     );
   }
 
@@ -624,6 +626,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       alignment: Alignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      actionsGap: 8,
+      isHeaderPinned: true,
+      isActionsPinned: true,
     );
   }
 

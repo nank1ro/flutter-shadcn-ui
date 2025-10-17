@@ -226,8 +226,8 @@ class ShadDialog extends StatelessWidget {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
-    this.isStickyHeader,
-    this.isStickyActions,
+    this.isHeaderPinned,
+    this.isActionsPinned,
     this.actionsGap,
     this.useSafeArea,
   }) : variant = ShadDialogVariant.primary;
@@ -265,8 +265,8 @@ class ShadDialog extends StatelessWidget {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
-    this.isStickyHeader,
-    this.isStickyActions,
+    this.isHeaderPinned,
+    this.isActionsPinned,
     this.actionsGap,
     this.useSafeArea,
   }) : variant = ShadDialogVariant.alert;
@@ -307,8 +307,8 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
-    this.isStickyHeader,
-    this.isStickyActions,
+    this.isHeaderPinned,
+    this.isActionsPinned,
   });
 
   /// {@template ShadDialog.title}
@@ -497,19 +497,21 @@ class ShadDialog extends StatelessWidget {
   /// {@endtemplate}
   final EdgeInsetsGeometry? scrollPadding;
 
-  /// {@template ShadDialog.isStickyHeader}
-  /// Whether the header (title and description) is sticky when scrolling.
+  /// {@template ShadDialog.isHeaderPinned}
+  /// Whether the header (title, description) is pinned to the top of the
+  /// dialog. If true, it remains fixed when scrolling with the content.
   ///
-  /// Defaults to false if not specified.
+  /// Defaults to true if not specified.
   /// {@endtemplate}
-  final bool? isStickyHeader;
+  final bool? isHeaderPinned;
 
-  /// {@template ShadDialog.isStickyActions}
-  /// Whether the actions are sticky when scrolling.
+  /// {@template ShadDialog.isActionsPinned}
+  /// Whether the action buttons are pinned to the bottom of the dialog. If
+  /// true, they remain fixed when scrolling with the content.
   ///
-  /// Defaults to false if not specified.
+  /// Defaults to true if not specified.
   /// {@endtemplate}
-  final bool? isStickyActions;
+  final bool? isActionsPinned;
 
   /// {@template ShadDialog.actionsGap}
   /// The gap between action buttons.
@@ -588,6 +590,7 @@ class ShadDialog extends StatelessWidget {
     final effectiveRemoveBorderRadiusWhenTiny = removeBorderRadiusWhenTiny ??
         effectiveDialogTheme.removeBorderRadiusWhenTiny ??
         true;
+
     final effectivePadding =
         padding ?? effectiveDialogTheme.padding ?? const EdgeInsets.all(24);
 
@@ -657,6 +660,14 @@ class ShadDialog extends StatelessWidget {
               effectiveDialogTheme.descriptionTextAlign ??
               (sm ? TextAlign.start : TextAlign.center);
 
+          final isHeaderPinned = this.isHeaderPinned ??
+              effectiveDialogTheme.isHeaderPinned ??
+              true;
+
+          final isActionsPinned = this.isActionsPinned ??
+              effectiveDialogTheme.isActionsPinned ??
+              true;
+
           final hasActions = actions.isNotEmpty;
 
           Widget? effectiveActions = hasActions
@@ -709,14 +720,12 @@ class ShadDialog extends StatelessWidget {
               ),
           ];
 
-          final isStickyHeader = this.isStickyHeader ?? false;
-          final isStickyActions = this.isStickyActions ?? false;
-
           Widget buildScrollableContent() {
             final contentChildren = [
-              if (isStickyHeader) ...header,
+              if (!isHeaderPinned) ...header,
               if (effectiveChild != null) effectiveChild,
-              if (isStickyActions && effectiveActions != null) effectiveActions,
+              if (!isActionsPinned && effectiveActions != null)
+                effectiveActions,
             ];
 
             return Flexible(
@@ -739,10 +748,9 @@ class ShadDialog extends StatelessWidget {
               if (effectiveChild != null) effectiveChild,
               if (effectiveActions != null) effectiveActions,
             ] else ...[
-              if (!isStickyHeader) ...header,
+              if (isHeaderPinned) ...header,
               buildScrollableContent(),
-              if (!isStickyActions && effectiveActions != null)
-                effectiveActions,
+              if (isActionsPinned && effectiveActions != null) effectiveActions,
             ],
           ];
 
@@ -782,7 +790,7 @@ class ShadDialog extends StatelessWidget {
       ),
     );
 
-    // Get the current view padding
+    // Handle view insets (e.g., keyboard)
     final viewPadding = MediaQuery.viewInsetsOf(context);
 
     return Align(

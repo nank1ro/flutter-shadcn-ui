@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-
 import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
 
@@ -37,6 +36,8 @@ class ShadDialogTheme with _$ShadDialogTheme {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
+    this.isHeaderPinned,
+    this.isActionsPinned,
     this.actionsGap,
     this.useSafeArea,
   }) : _canMerge = canMerge;
@@ -124,6 +125,12 @@ class ShadDialogTheme with _$ShadDialogTheme {
 
   /// {@macro ShadDialog.scrollPadding}
   final EdgeInsetsGeometry? scrollPadding;
+
+  /// {@macro ShadDialog.isHeaderPinned}
+  final bool? isHeaderPinned;
+
+  /// {@macro ShadDialog.isActionsPinned}
+  final bool? isActionsPinned;
 
   /// {@macro ShadDialog.actionsGap}
   final double? actionsGap;
