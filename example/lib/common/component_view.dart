@@ -8,13 +8,15 @@ class ComponentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Text(
-        label,
-        style: const TextStyle(fontSize: 14),
-      ),
-      const SizedBox(height: 8),
-      child,
-    ]);
+    return Column(
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 14),
+        ),
+        const SizedBox(height: 8),
+        child,
+      ],
+    );
   }
 }

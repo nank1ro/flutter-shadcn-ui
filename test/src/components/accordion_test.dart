@@ -16,8 +16,9 @@ void main() {
   }
 
   group('ShadAccordion', () {
-    testWidgets('renders single variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders single variant correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           ShadAccordion<String>(
@@ -55,8 +56,9 @@ void main() {
       expect(find.text('Content 2'), findsOneWidget);
     });
 
-    testWidgets('renders multiple variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders multiple variant correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           ShadAccordion.multiple(

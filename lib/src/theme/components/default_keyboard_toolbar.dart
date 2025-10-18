@@ -44,6 +44,5 @@ class ShadDefaultKeyboardToolbarTheme with _$ShadDefaultKeyboardToolbarTheme {
     ShadDefaultKeyboardToolbarTheme? a,
     ShadDefaultKeyboardToolbarTheme? b,
     double t,
-  ) =>
-      _$ShadDefaultKeyboardToolbarTheme.lerp(a, b, t);
+  ) => _$ShadDefaultKeyboardToolbarTheme.lerp(a, b, t);
 }

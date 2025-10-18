@@ -37,8 +37,9 @@ void main() {
       // Check UniversalImage uses the custom size
       final universalImageFinder = find.byType(UniversalImage);
       expect(universalImageFinder, findsOneWidget);
-      final universalImage =
-          tester.widget<UniversalImage>(universalImageFinder);
+      final universalImage = tester.widget<UniversalImage>(
+        universalImageFinder,
+      );
       expect(universalImage.width, customSize.width);
       expect(universalImage.height, customSize.height);
     });
@@ -64,8 +65,9 @@ void main() {
       expect(decoration?.shape, customShape);
     });
 
-    testWidgets('applies custom background color correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom background color correctly', (
+      WidgetTester tester,
+    ) async {
       const customBackgroundColor = Colors.blue;
       await tester.pumpWidget(
         createTestWidget(
@@ -98,13 +100,15 @@ void main() {
       // Check UniversalImage uses custom fit
       final universalImageFinder = find.byType(UniversalImage);
       expect(universalImageFinder, findsOneWidget);
-      final universalImage =
-          tester.widget<UniversalImage>(universalImageFinder);
+      final universalImage = tester.widget<UniversalImage>(
+        universalImageFinder,
+      );
       expect(universalImage.fit, customFit);
     });
 
-    testWidgets('renders with default size when not specified',
-        (WidgetTester tester) async {
+    testWidgets('renders with default size when not specified', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadAvatar('assets/test_image.png'),
@@ -121,14 +125,16 @@ void main() {
       // Check UniversalImage uses default size
       final universalImageFinder = find.byType(UniversalImage);
       expect(universalImageFinder, findsOneWidget);
-      final universalImage =
-          tester.widget<UniversalImage>(universalImageFinder);
+      final universalImage = tester.widget<UniversalImage>(
+        universalImageFinder,
+      );
       expect(universalImage.width, 40.0);
       expect(universalImage.height, 40.0);
     });
 
-    testWidgets('renders with default circular shape when not specified',
-        (WidgetTester tester) async {
+    testWidgets('renders with default circular shape when not specified', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadAvatar('assets/test_image.png'),

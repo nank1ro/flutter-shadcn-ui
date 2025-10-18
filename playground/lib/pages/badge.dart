@@ -14,17 +14,17 @@ class BadgePage extends StatelessWidget {
       body: Center(
         child: switch (variant) {
           ShadBadgeVariant.primary => const ShadBadge(
-              child: Text('Primary'),
-            ),
+            child: Text('Primary'),
+          ),
           ShadBadgeVariant.secondary => const ShadBadge.secondary(
-              child: Text('Secondary'),
-            ),
+            child: Text('Secondary'),
+          ),
           ShadBadgeVariant.outline => const ShadBadge.outline(
-              child: Text('Outline'),
-            ),
+            child: Text('Outline'),
+          ),
           ShadBadgeVariant.destructive => const ShadBadge.destructive(
-              child: Text('Destructive'),
-            ),
+            child: Text('Destructive'),
+          ),
         },
       ),
     );

@@ -139,11 +139,14 @@ class _ShadAnimatedThemeState
 
   @override
   void forEachTween(TweenVisitor<dynamic> visitor) {
-    _data = visitor(
-      _data,
-      widget.data,
-      (dynamic value) => ShadThemeDataTween(begin: value as ShadThemeData),
-    )! as ShadThemeDataTween;
+    _data =
+        visitor(
+              _data,
+              widget.data,
+              (dynamic value) =>
+                  ShadThemeDataTween(begin: value as ShadThemeData),
+            )!
+            as ShadThemeDataTween;
   }
 
   @override

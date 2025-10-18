@@ -18,15 +18,15 @@ class SeparatorPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: switch (style) {
             ShadSeparatorVariant.horizontal => const ShadSeparator.horizontal(
-                thickness: 4,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                radius: BorderRadius.all(Radius.circular(4)),
-              ),
+              thickness: 4,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              radius: BorderRadius.all(Radius.circular(4)),
+            ),
             ShadSeparatorVariant.vertical => const ShadSeparator.vertical(
-                thickness: 4,
-                margin: EdgeInsets.symmetric(vertical: 20),
-                radius: BorderRadius.all(Radius.circular(4)),
-              ),
+              thickness: 4,
+              margin: EdgeInsets.symmetric(vertical: 20),
+              radius: BorderRadius.all(Radius.circular(4)),
+            ),
           },
         ),
       ),

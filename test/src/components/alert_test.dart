@@ -14,8 +14,9 @@ void main() {
   }
 
   group('ShadAlert', () {
-    testWidgets('renders primary variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders primary variant correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadAlert(
@@ -36,8 +37,9 @@ void main() {
       expect(rowFinder, findsOneWidget);
     });
 
-    testWidgets('renders destructive variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders destructive variant correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadAlert.destructive(
@@ -54,8 +56,9 @@ void main() {
       expect(find.byIcon(Icons.error), findsOneWidget);
     });
 
-    testWidgets('renders without icon when not provided',
-        (WidgetTester tester) async {
+    testWidgets('renders without icon when not provided', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadAlert(
@@ -120,13 +123,15 @@ void main() {
         ),
       );
       expect(defaultTextStyleFinder, findsOneWidget);
-      final defaultTextStyle =
-          tester.widget<DefaultTextStyle>(defaultTextStyleFinder);
+      final defaultTextStyle = tester.widget<DefaultTextStyle>(
+        defaultTextStyleFinder,
+      );
       expect(defaultTextStyle.style.fontSize, 20);
     });
 
-    testWidgets('handles text direction correctly',
-        (WidgetTester tester) async {
+    testWidgets('handles text direction correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadAlert(
@@ -140,8 +145,9 @@ void main() {
       expect(row.textDirection, TextDirection.rtl);
     });
 
-    testWidgets('handles null title and description',
-        (WidgetTester tester) async {
+    testWidgets('handles null title and description', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(const ShadAlert(icon: Icon(Icons.info))),
       );

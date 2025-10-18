@@ -76,9 +76,10 @@ class MouseAreaSurfaceRenderBox extends RenderProxyBoxWithHitTestBehavior
 
     // A child was hit, so we need to call onExit for those regions or
     // groups of regions that were not hit.
-    final hitRegions = _getRegionsHit(_registeredRegions, result.path)
-        .cast<ShadMouseAreaRenderBox>()
-        .toSet();
+    final hitRegions = _getRegionsHit(
+      _registeredRegions,
+      result.path,
+    ).cast<ShadMouseAreaRenderBox>().toSet();
 
     final insideRegions = <ShadMouseAreaRenderBox>{
       for (final ShadMouseAreaRenderBox region in hitRegions)
@@ -335,12 +336,12 @@ class ShadMouseAreaRenderBox extends RenderProxyBoxWithHitTestBehavior {
     Object? groupId,
     String? debugLabel,
     MouseCursor cursor = MouseCursor.defer,
-  })  : _registry = registry,
-        _cursor = cursor,
-        _validForMouseTracker = validForMouseTracker,
-        _enabled = enabled,
-        _groupId = groupId,
-        debugLabel = kReleaseMode ? null : debugLabel;
+  }) : _registry = registry,
+       _cursor = cursor,
+       _validForMouseTracker = validForMouseTracker,
+       _enabled = enabled,
+       _groupId = groupId,
+       debugLabel = kReleaseMode ? null : debugLabel;
 
   bool _isRegistered = false;
 

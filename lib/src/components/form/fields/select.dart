@@ -106,48 +106,48 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
   }) : super(
-          decorationBuilder: (context) =>
-              (ShadTheme.of(context).selectTheme.decoration ??
-                      const ShadDecoration())
-                  .merge(decoration),
-          builder: (field) {
-            final state = field as _ShadFormBuilderSelectState<T>;
+         decorationBuilder: (context) =>
+             (ShadTheme.of(context).selectTheme.decoration ??
+                     const ShadDecoration())
+                 .merge(decoration),
+         builder: (field) {
+           final state = field as _ShadFormBuilderSelectState<T>;
 
-            return ShadSelect<T>(
-              options: options,
-              allowDeselection: allowDeselection,
-              optionsBuilder: optionsBuilder,
-              selectedOptionBuilder: selectedOptionBuilder,
-              focusNode: state.focusNode,
-              placeholder: placeholder,
-              initialValue: state.initialValue,
-              enabled: state.enabled,
-              onChanged: state.didChange,
-              closeOnTapOutside: closeOnTapOutside,
-              anchor: anchor,
-              minWidth: minWidth,
-              maxWidth: maxWidth,
-              maxHeight: maxHeight,
-              decoration: state.decoration,
-              trailing: trailing,
-              padding: padding,
-              optionsPadding: optionsPadding,
-              showScrollToTopChevron: showScrollToTopChevron,
-              showScrollToBottomChevron: showScrollToBottomChevron,
-              scrollController: scrollController,
-              filter: filter,
-              popoverController: popoverController,
-              header: header,
-              footer: footer,
-              closeOnSelect: closeOnSelect,
-              groupId: groupId,
-              itemCount: itemCount,
-              shrinkWrap: shrinkWrap,
-              controller: state.controller,
-              ensureSelectedVisible: ensureSelectedVisible,
-            );
-          },
-        );
+           return ShadSelect<T>(
+             options: options,
+             allowDeselection: allowDeselection,
+             optionsBuilder: optionsBuilder,
+             selectedOptionBuilder: selectedOptionBuilder,
+             focusNode: state.focusNode,
+             placeholder: placeholder,
+             initialValue: state.initialValue,
+             enabled: state.enabled,
+             onChanged: state.didChange,
+             closeOnTapOutside: closeOnTapOutside,
+             anchor: anchor,
+             minWidth: minWidth,
+             maxWidth: maxWidth,
+             maxHeight: maxHeight,
+             decoration: state.decoration,
+             trailing: trailing,
+             padding: padding,
+             optionsPadding: optionsPadding,
+             showScrollToTopChevron: showScrollToTopChevron,
+             showScrollToBottomChevron: showScrollToBottomChevron,
+             scrollController: scrollController,
+             filter: filter,
+             popoverController: popoverController,
+             header: header,
+             footer: footer,
+             closeOnSelect: closeOnSelect,
+             groupId: groupId,
+             itemCount: itemCount,
+             shrinkWrap: shrinkWrap,
+             controller: state.controller,
+             ensureSelectedVisible: ensureSelectedVisible,
+           );
+         },
+       );
 
   ShadSelectFormField.withSearch({
     super.id,
@@ -216,55 +216,55 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
   }) : super(
-          decorationBuilder: (context) =>
-              (ShadTheme.of(context).selectTheme.decoration ??
-                      const ShadDecoration())
-                  .merge(decoration),
-          builder: (field) {
-            final state = field as _ShadFormBuilderSelectState<T>;
+         decorationBuilder: (context) =>
+             (ShadTheme.of(context).selectTheme.decoration ??
+                     const ShadDecoration())
+                 .merge(decoration),
+         builder: (field) {
+           final state = field as _ShadFormBuilderSelectState<T>;
 
-            return ShadSelect<T>.withSearch(
-              options: options,
-              allowDeselection: allowDeselection,
-              optionsBuilder: optionsBuilder,
-              selectedOptionBuilder: selectedOptionBuilder,
-              focusNode: state.focusNode,
-              placeholder: placeholder,
-              initialValue: state.initialValue,
-              enabled: state.enabled,
-              onChanged: state.didChange,
-              closeOnTapOutside: closeOnTapOutside,
-              anchor: anchor,
-              minWidth: minWidth,
-              maxWidth: maxWidth,
-              maxHeight: maxHeight,
-              decoration: state.decoration,
-              trailing: trailing,
-              padding: padding,
-              optionsPadding: optionsPadding,
-              showScrollToTopChevron: showScrollToTopChevron,
-              showScrollToBottomChevron: showScrollToBottomChevron,
-              scrollController: scrollController,
-              filter: filter,
-              onSearchChanged: onSearchChanged,
-              searchDivider: searchDivider,
-              searchInputLeading: searchInputLeading,
-              searchPlaceholder: searchPlaceholder,
-              searchPadding: searchPadding,
-              search: search,
-              clearSearchOnClose: clearSearchOnClose,
-              popoverController: popoverController,
-              header: header,
-              footer: footer,
-              closeOnSelect: closeOnSelect,
-              groupId: groupId,
-              itemCount: itemCount,
-              shrinkWrap: shrinkWrap,
-              controller: state.controller,
-              ensureSelectedVisible: ensureSelectedVisible,
-            );
-          },
-        );
+           return ShadSelect<T>.withSearch(
+             options: options,
+             allowDeselection: allowDeselection,
+             optionsBuilder: optionsBuilder,
+             selectedOptionBuilder: selectedOptionBuilder,
+             focusNode: state.focusNode,
+             placeholder: placeholder,
+             initialValue: state.initialValue,
+             enabled: state.enabled,
+             onChanged: state.didChange,
+             closeOnTapOutside: closeOnTapOutside,
+             anchor: anchor,
+             minWidth: minWidth,
+             maxWidth: maxWidth,
+             maxHeight: maxHeight,
+             decoration: state.decoration,
+             trailing: trailing,
+             padding: padding,
+             optionsPadding: optionsPadding,
+             showScrollToTopChevron: showScrollToTopChevron,
+             showScrollToBottomChevron: showScrollToBottomChevron,
+             scrollController: scrollController,
+             filter: filter,
+             onSearchChanged: onSearchChanged,
+             searchDivider: searchDivider,
+             searchInputLeading: searchInputLeading,
+             searchPlaceholder: searchPlaceholder,
+             searchPadding: searchPadding,
+             search: search,
+             clearSearchOnClose: clearSearchOnClose,
+             popoverController: popoverController,
+             header: header,
+             footer: footer,
+             closeOnSelect: closeOnSelect,
+             groupId: groupId,
+             itemCount: itemCount,
+             shrinkWrap: shrinkWrap,
+             controller: state.controller,
+             ensureSelectedVisible: ensureSelectedVisible,
+           );
+         },
+       );
 
   ShadSelectFormField.raw({
     super.id,
@@ -332,61 +332,61 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
-  })  : assert(
-          variant == ShadSelectVariant.primary ||
-              variant == ShadSelectVariant.search,
-          '''The variant is not supported. Use primary or search or use ShadSelectMultipleFormField instead.''',
-        ),
-        super(
-          decorationBuilder: (context) =>
-              (ShadTheme.of(context).selectTheme.decoration ??
-                      const ShadDecoration())
-                  .merge(decoration),
-          builder: (field) {
-            final state = field as _ShadFormBuilderSelectState<T>;
+  }) : assert(
+         variant == ShadSelectVariant.primary ||
+             variant == ShadSelectVariant.search,
+         '''The variant is not supported. Use primary or search or use ShadSelectMultipleFormField instead.''',
+       ),
+       super(
+         decorationBuilder: (context) =>
+             (ShadTheme.of(context).selectTheme.decoration ??
+                     const ShadDecoration())
+                 .merge(decoration),
+         builder: (field) {
+           final state = field as _ShadFormBuilderSelectState<T>;
 
-            return ShadSelect<T>.raw(
-              variant: variant,
-              options: options,
-              optionsBuilder: optionsBuilder,
-              selectedOptionBuilder: selectedOptionBuilder,
-              focusNode: state.focusNode,
-              placeholder: placeholder,
-              initialValue: state.initialValue,
-              enabled: state.enabled,
-              onChanged: state.didChange,
-              closeOnTapOutside: closeOnTapOutside,
-              anchor: anchor,
-              minWidth: minWidth,
-              maxHeight: maxHeight,
-              decoration: state.decoration,
-              trailing: trailing,
-              padding: padding,
-              optionsPadding: optionsPadding,
-              showScrollToTopChevron: showScrollToTopChevron,
-              showScrollToBottomChevron: showScrollToBottomChevron,
-              scrollController: scrollController,
-              filter: filter,
-              onSearchChanged: onSearchChanged,
-              searchDivider: searchDivider,
-              searchInputLeading: searchInputLeading,
-              searchPlaceholder: searchPlaceholder,
-              searchPadding: searchPadding,
-              search: search,
-              clearSearchOnClose: clearSearchOnClose,
-              popoverController: popoverController,
-              header: header,
-              footer: footer,
-              allowDeselection: allowDeselection,
-              closeOnSelect: closeOnSelect,
-              groupId: groupId,
-              itemCount: itemCount,
-              shrinkWrap: shrinkWrap,
-              controller: state.controller,
-              ensureSelectedVisible: ensureSelectedVisible,
-            );
-          },
-        );
+           return ShadSelect<T>.raw(
+             variant: variant,
+             options: options,
+             optionsBuilder: optionsBuilder,
+             selectedOptionBuilder: selectedOptionBuilder,
+             focusNode: state.focusNode,
+             placeholder: placeholder,
+             initialValue: state.initialValue,
+             enabled: state.enabled,
+             onChanged: state.didChange,
+             closeOnTapOutside: closeOnTapOutside,
+             anchor: anchor,
+             minWidth: minWidth,
+             maxHeight: maxHeight,
+             decoration: state.decoration,
+             trailing: trailing,
+             padding: padding,
+             optionsPadding: optionsPadding,
+             showScrollToTopChevron: showScrollToTopChevron,
+             showScrollToBottomChevron: showScrollToBottomChevron,
+             scrollController: scrollController,
+             filter: filter,
+             onSearchChanged: onSearchChanged,
+             searchDivider: searchDivider,
+             searchInputLeading: searchInputLeading,
+             searchPlaceholder: searchPlaceholder,
+             searchPadding: searchPadding,
+             search: search,
+             clearSearchOnClose: clearSearchOnClose,
+             popoverController: popoverController,
+             header: header,
+             footer: footer,
+             allowDeselection: allowDeselection,
+             closeOnSelect: closeOnSelect,
+             groupId: groupId,
+             itemCount: itemCount,
+             shrinkWrap: shrinkWrap,
+             controller: state.controller,
+             ensureSelectedVisible: ensureSelectedVisible,
+           );
+         },
+       );
 
   /// {@macro ShadSelect.controller}
   final ShadSelectController<T>? controller;
@@ -482,44 +482,44 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
   }) : super(
-          decorationBuilder: (context) =>
-              (ShadTheme.of(context).selectTheme.decoration ??
-                      const ShadDecoration())
-                  .merge(decoration),
-          builder: (field) {
-            final state = field as _ShadFormBuilderSelectMultipleState<T>;
+         decorationBuilder: (context) =>
+             (ShadTheme.of(context).selectTheme.decoration ??
+                     const ShadDecoration())
+                 .merge(decoration),
+         builder: (field) {
+           final state = field as _ShadFormBuilderSelectMultipleState<T>;
 
-            return ShadSelect<T>.multiple(
-              options: options,
-              optionsBuilder: optionsBuilder,
-              selectedOptionsBuilder: selectedOptionsBuilder,
-              focusNode: state.focusNode,
-              placeholder: placeholder,
-              enabled: state.enabled,
-              onChanged: state.didChange,
-              closeOnTapOutside: closeOnTapOutside,
-              anchor: anchor,
-              minWidth: minWidth,
-              maxWidth: maxWidth,
-              maxHeight: maxHeight,
-              decoration: state.decoration,
-              trailing: trailing,
-              padding: padding,
-              optionsPadding: optionsPadding,
-              showScrollToTopChevron: showScrollToTopChevron,
-              showScrollToBottomChevron: showScrollToBottomChevron,
-              scrollController: scrollController,
-              filter: filter,
-              popoverController: popoverController,
-              header: header,
-              footer: footer,
-              closeOnSelect: closeOnSelect,
-              allowDeselection: allowDeselection,
-              controller: state.controller,
-              ensureSelectedVisible: ensureSelectedVisible,
-            );
-          },
-        );
+           return ShadSelect<T>.multiple(
+             options: options,
+             optionsBuilder: optionsBuilder,
+             selectedOptionsBuilder: selectedOptionsBuilder,
+             focusNode: state.focusNode,
+             placeholder: placeholder,
+             enabled: state.enabled,
+             onChanged: state.didChange,
+             closeOnTapOutside: closeOnTapOutside,
+             anchor: anchor,
+             minWidth: minWidth,
+             maxWidth: maxWidth,
+             maxHeight: maxHeight,
+             decoration: state.decoration,
+             trailing: trailing,
+             padding: padding,
+             optionsPadding: optionsPadding,
+             showScrollToTopChevron: showScrollToTopChevron,
+             showScrollToBottomChevron: showScrollToBottomChevron,
+             scrollController: scrollController,
+             filter: filter,
+             popoverController: popoverController,
+             header: header,
+             footer: footer,
+             closeOnSelect: closeOnSelect,
+             allowDeselection: allowDeselection,
+             controller: state.controller,
+             ensureSelectedVisible: ensureSelectedVisible,
+           );
+         },
+       );
 
   ShadSelectMultipleFormField.withSearch({
     super.id,
@@ -579,51 +579,51 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
   }) : super(
-          decorationBuilder: (context) =>
-              (ShadTheme.of(context).selectTheme.decoration ??
-                      const ShadDecoration())
-                  .merge(decoration),
-          builder: (field) {
-            final state = field as _ShadFormBuilderSelectMultipleState<T>;
+         decorationBuilder: (context) =>
+             (ShadTheme.of(context).selectTheme.decoration ??
+                     const ShadDecoration())
+                 .merge(decoration),
+         builder: (field) {
+           final state = field as _ShadFormBuilderSelectMultipleState<T>;
 
-            return ShadSelect<T>.multipleWithSearch(
-              options: options,
-              optionsBuilder: optionsBuilder,
-              selectedOptionsBuilder: selectedOptionsBuilder,
-              focusNode: state.focusNode,
-              placeholder: placeholder,
-              enabled: state.enabled,
-              onChanged: state.didChange,
-              closeOnTapOutside: closeOnTapOutside,
-              anchor: anchor,
-              minWidth: minWidth,
-              maxWidth: maxWidth,
-              maxHeight: maxHeight,
-              decoration: state.decoration,
-              trailing: trailing,
-              padding: padding,
-              optionsPadding: optionsPadding,
-              showScrollToTopChevron: showScrollToTopChevron,
-              showScrollToBottomChevron: showScrollToBottomChevron,
-              scrollController: scrollController,
-              filter: filter,
-              onSearchChanged: onSearchChanged,
-              searchDivider: searchDivider,
-              searchInputLeading: searchInputLeading,
-              searchPlaceholder: searchPlaceholder,
-              searchPadding: searchPadding,
-              search: search,
-              clearSearchOnClose: clearSearchOnClose,
-              popoverController: popoverController,
-              header: header,
-              footer: footer,
-              closeOnSelect: closeOnSelect,
-              allowDeselection: allowDeselection,
-              controller: state.controller,
-              ensureSelectedVisible: ensureSelectedVisible,
-            );
-          },
-        );
+           return ShadSelect<T>.multipleWithSearch(
+             options: options,
+             optionsBuilder: optionsBuilder,
+             selectedOptionsBuilder: selectedOptionsBuilder,
+             focusNode: state.focusNode,
+             placeholder: placeholder,
+             enabled: state.enabled,
+             onChanged: state.didChange,
+             closeOnTapOutside: closeOnTapOutside,
+             anchor: anchor,
+             minWidth: minWidth,
+             maxWidth: maxWidth,
+             maxHeight: maxHeight,
+             decoration: state.decoration,
+             trailing: trailing,
+             padding: padding,
+             optionsPadding: optionsPadding,
+             showScrollToTopChevron: showScrollToTopChevron,
+             showScrollToBottomChevron: showScrollToBottomChevron,
+             scrollController: scrollController,
+             filter: filter,
+             onSearchChanged: onSearchChanged,
+             searchDivider: searchDivider,
+             searchInputLeading: searchInputLeading,
+             searchPlaceholder: searchPlaceholder,
+             searchPadding: searchPadding,
+             search: search,
+             clearSearchOnClose: clearSearchOnClose,
+             popoverController: popoverController,
+             header: header,
+             footer: footer,
+             closeOnSelect: closeOnSelect,
+             allowDeselection: allowDeselection,
+             controller: state.controller,
+             ensureSelectedVisible: ensureSelectedVisible,
+           );
+         },
+       );
 
   ShadSelectMultipleFormField.raw({
     super.id,
@@ -680,64 +680,64 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
-  })  : assert(
-          variant == ShadSelectVariant.multiple ||
-              variant == ShadSelectVariant.multipleWithSearch,
-          '''The variant is not supported. Use multiple or multipleWithSearch or use ShadSelectFormField instead.''',
-        ),
-        super(
-          decorationBuilder: (context) =>
-              (ShadTheme.of(context).selectTheme.decoration ??
-                      const ShadDecoration())
-                  .merge(decoration),
-          builder: (field) {
-            final state = field as _ShadFormBuilderSelectMultipleState<T>;
+  }) : assert(
+         variant == ShadSelectVariant.multiple ||
+             variant == ShadSelectVariant.multipleWithSearch,
+         '''The variant is not supported. Use multiple or multipleWithSearch or use ShadSelectFormField instead.''',
+       ),
+       super(
+         decorationBuilder: (context) =>
+             (ShadTheme.of(context).selectTheme.decoration ??
+                     const ShadDecoration())
+                 .merge(decoration),
+         builder: (field) {
+           final state = field as _ShadFormBuilderSelectMultipleState<T>;
 
-            return ShadSelect<T>.raw(
-              variant: variant,
-              options: options,
-              optionsBuilder: optionsBuilder,
-              selectedOptionsBuilder: selectedOptionsBuilder,
-              focusNode: state.focusNode,
-              placeholder: placeholder,
-              enabled: state.enabled,
-              onMultipleChanged: state.didChange,
-              closeOnTapOutside: closeOnTapOutside,
-              anchor: anchor,
-              minWidth: minWidth,
-              maxHeight: maxHeight,
-              decoration: state.decoration,
-              trailing: trailing,
-              padding: padding,
-              optionsPadding: optionsPadding,
-              showScrollToTopChevron: showScrollToTopChevron,
-              showScrollToBottomChevron: showScrollToBottomChevron,
-              scrollController: scrollController,
-              filter: filter,
-              onSearchChanged: onSearchChanged,
-              searchDivider: searchDivider,
-              searchInputLeading: searchInputLeading,
-              searchPlaceholder: searchPlaceholder,
-              searchPadding: searchPadding,
-              search: search,
-              clearSearchOnClose: clearSearchOnClose,
-              popoverController: popoverController,
-              header: header,
-              footer: footer,
-              allowDeselection: allowDeselection,
-              closeOnSelect: closeOnSelect,
-              controller: state.controller,
-              ensureSelectedVisible: ensureSelectedVisible,
-            );
-          },
-        );
+           return ShadSelect<T>.raw(
+             variant: variant,
+             options: options,
+             optionsBuilder: optionsBuilder,
+             selectedOptionsBuilder: selectedOptionsBuilder,
+             focusNode: state.focusNode,
+             placeholder: placeholder,
+             enabled: state.enabled,
+             onMultipleChanged: state.didChange,
+             closeOnTapOutside: closeOnTapOutside,
+             anchor: anchor,
+             minWidth: minWidth,
+             maxHeight: maxHeight,
+             decoration: state.decoration,
+             trailing: trailing,
+             padding: padding,
+             optionsPadding: optionsPadding,
+             showScrollToTopChevron: showScrollToTopChevron,
+             showScrollToBottomChevron: showScrollToBottomChevron,
+             scrollController: scrollController,
+             filter: filter,
+             onSearchChanged: onSearchChanged,
+             searchDivider: searchDivider,
+             searchInputLeading: searchInputLeading,
+             searchPlaceholder: searchPlaceholder,
+             searchPadding: searchPadding,
+             search: search,
+             clearSearchOnClose: clearSearchOnClose,
+             popoverController: popoverController,
+             header: header,
+             footer: footer,
+             allowDeselection: allowDeselection,
+             closeOnSelect: closeOnSelect,
+             controller: state.controller,
+             ensureSelectedVisible: ensureSelectedVisible,
+           );
+         },
+       );
 
   /// {@macro ShadSelect.controller}
   final ShadSelectController<T>? controller;
 
   @override
   ShadFormBuilderFieldState<ShadSelectMultipleFormField<T>, Set<T>>
-      createState() => _ShadFormBuilderSelectMultipleState<T>();
+  createState() => _ShadFormBuilderSelectMultipleState<T>();
 }
 
 class _ShadFormBuilderSelectMultipleState<T>

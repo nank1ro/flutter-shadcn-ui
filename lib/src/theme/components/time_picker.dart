@@ -126,6 +126,5 @@ class ShadTimePickerTheme with _$ShadTimePickerTheme {
     ShadTimePickerTheme? a,
     ShadTimePickerTheme? b,
     double t,
-  ) =>
-      _$ShadTimePickerTheme.lerp(a, b, t);
+  ) => _$ShadTimePickerTheme.lerp(a, b, t);
 }

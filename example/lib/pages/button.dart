@@ -93,10 +93,12 @@ class _ButtonPageState extends State<ButtonPage> {
           ShadButton(
             size: size,
             enabled: enabled,
-            gradient: const LinearGradient(colors: [
-              Colors.cyan,
-              Colors.indigo,
-            ]),
+            gradient: const LinearGradient(
+              colors: [
+                Colors.cyan,
+                Colors.indigo,
+              ],
+            ),
             shadows: [
               BoxShadow(
                 color: Colors.blue.withValues(alpha: .4),

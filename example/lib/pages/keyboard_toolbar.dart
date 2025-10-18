@@ -11,14 +11,16 @@ class KeyboardToolbarPage extends StatelessWidget {
       appBarTitle: 'KeyboardToolbar',
       children: [
         ShadInput(
-          placeholder:
-              const Text('Focus on mobile to show keyboard and toolbar'),
+          placeholder: const Text(
+            'Focus on mobile to show keyboard and toolbar',
+          ),
           keyboardType: TextInputType.emailAddress,
           keyboardToolbarBuilder: (context) => ShadDefaultKeyboardToolbar(),
         ),
         ShadInput(
-          placeholder:
-              const Text('Without toolbar, just to show how the chevron works'),
+          placeholder: const Text(
+            'Without toolbar, just to show how the chevron works',
+          ),
           keyboardType: TextInputType.emailAddress,
         ),
       ],

@@ -88,7 +88,7 @@ mixin _$ShadOptionTheme {
       selectedBackgroundColor: other.selectedBackgroundColor,
       selectedTextStyle:
           current.selectedTextStyle?.merge(other.selectedTextStyle) ??
-              other.selectedTextStyle,
+          other.selectedTextStyle,
     );
   }
 
