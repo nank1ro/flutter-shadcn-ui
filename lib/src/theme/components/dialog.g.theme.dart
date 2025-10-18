@@ -68,6 +68,8 @@ mixin _$ShadDialogTheme {
         b?.scrollPadding,
         t,
       ),
+      isHeaderPinned: t < 0.5 ? a?.isHeaderPinned : b?.isHeaderPinned,
+      isActionsPinned: t < 0.5 ? a?.isActionsPinned : b?.isActionsPinned,
       actionsGap: lerpDouble$(a?.actionsGap, b?.actionsGap, t),
       useSafeArea: t < 0.5 ? a?.useSafeArea : b?.useSafeArea,
     );
@@ -100,6 +102,8 @@ mixin _$ShadDialogTheme {
     CrossAxisAlignment? crossAxisAlignment,
     bool? scrollable,
     EdgeInsetsGeometry? scrollPadding,
+    bool? isHeaderPinned,
+    bool? isActionsPinned,
     double? actionsGap,
     bool? useSafeArea,
   }) {
@@ -135,6 +139,8 @@ mixin _$ShadDialogTheme {
       crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
       scrollable: scrollable ?? a.scrollable,
       scrollPadding: scrollPadding ?? a.scrollPadding,
+      isHeaderPinned: isHeaderPinned ?? a.isHeaderPinned,
+      isActionsPinned: isActionsPinned ?? a.isActionsPinned,
       actionsGap: actionsGap ?? a.actionsGap,
       useSafeArea: useSafeArea ?? a.useSafeArea,
     );
@@ -181,6 +187,8 @@ mixin _$ShadDialogTheme {
       crossAxisAlignment: other.crossAxisAlignment,
       scrollable: other.scrollable,
       scrollPadding: other.scrollPadding,
+      isHeaderPinned: other.isHeaderPinned,
+      isActionsPinned: other.isActionsPinned,
       actionsGap: other.actionsGap,
       useSafeArea: other.useSafeArea,
     );
@@ -225,6 +233,8 @@ mixin _$ShadDialogTheme {
         other.crossAxisAlignment == value.crossAxisAlignment &&
         other.scrollable == value.scrollable &&
         other.scrollPadding == value.scrollPadding &&
+        other.isHeaderPinned == value.isHeaderPinned &&
+        other.isActionsPinned == value.isActionsPinned &&
         other.actionsGap == value.actionsGap &&
         other.useSafeArea == value.useSafeArea;
   }
@@ -261,6 +271,8 @@ mixin _$ShadDialogTheme {
       value.crossAxisAlignment,
       value.scrollable,
       value.scrollPadding,
+      value.isHeaderPinned,
+      value.isActionsPinned,
       value.actionsGap,
       value.useSafeArea,
     ]);

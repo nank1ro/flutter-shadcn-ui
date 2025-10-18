@@ -8,7 +8,6 @@ import 'package:shadcn_ui/src/utils/animate.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
-import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 /// {@template ShadDialogRoute}
 /// A custom dialog route that allows specifying a `reverseTransitionDuration`.
@@ -227,6 +226,8 @@ class ShadDialog extends StatelessWidget {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
+    this.isHeaderPinned,
+    this.isActionsPinned,
     this.actionsGap,
     this.useSafeArea,
   }) : variant = ShadDialogVariant.primary;
@@ -264,6 +265,8 @@ class ShadDialog extends StatelessWidget {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
+    this.isHeaderPinned,
+    this.isActionsPinned,
     this.actionsGap,
     this.useSafeArea,
   }) : variant = ShadDialogVariant.alert;
@@ -304,6 +307,8 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.isHeaderPinned,
+    this.isActionsPinned,
   });
 
   /// {@template ShadDialog.title}
@@ -492,6 +497,22 @@ class ShadDialog extends StatelessWidget {
   /// {@endtemplate}
   final EdgeInsetsGeometry? scrollPadding;
 
+  /// {@template ShadDialog.isHeaderPinned}
+  /// Whether the header (title, description) is pinned to the top of the
+  /// dialog. If true, it remains fixed when scrolling with the content.
+  ///
+  /// Defaults to true if not specified.
+  /// {@endtemplate}
+  final bool? isHeaderPinned;
+
+  /// {@template ShadDialog.isActionsPinned}
+  /// Whether the action buttons are pinned to the bottom of the dialog. If
+  /// true, they remain fixed when scrolling with the content.
+  ///
+  /// Defaults to true if not specified.
+  /// {@endtemplate}
+  final bool? isActionsPinned;
+
   /// {@template ShadDialog.actionsGap}
   /// The gap between action buttons.
 
@@ -569,6 +590,7 @@ class ShadDialog extends StatelessWidget {
     final effectiveRemoveBorderRadiusWhenTiny = removeBorderRadiusWhenTiny ??
         effectiveDialogTheme.removeBorderRadiusWhenTiny ??
         true;
+
     final effectivePadding =
         padding ?? effectiveDialogTheme.padding ?? const EdgeInsets.all(24);
 
@@ -638,16 +660,28 @@ class ShadDialog extends StatelessWidget {
               effectiveDialogTheme.descriptionTextAlign ??
               (sm ? TextAlign.start : TextAlign.center);
 
-          Widget effectiveActions = Flex(
-            direction: effectiveActionsAxis,
-            mainAxisSize: effectiveActionsMainAxisSize,
-            mainAxisAlignment: effectiveActionsMainAxisAlignment,
-            verticalDirection: effectiveActionsVerticalDirection,
-            spacing: effectiveActionsGap,
-            children: actions,
-          );
+          final isHeaderPinned = this.isHeaderPinned ??
+              effectiveDialogTheme.isHeaderPinned ??
+              true;
 
-          if (!sm && effectiveExpandActionsWhenTiny) {
+          final isActionsPinned = this.isActionsPinned ??
+              effectiveDialogTheme.isActionsPinned ??
+              true;
+
+          final hasActions = actions.isNotEmpty;
+
+          Widget? effectiveActions = hasActions
+              ? Flex(
+                  direction: effectiveActionsAxis,
+                  mainAxisSize: effectiveActionsMainAxisSize,
+                  mainAxisAlignment: effectiveActionsMainAxisAlignment,
+                  verticalDirection: effectiveActionsVerticalDirection,
+                  spacing: effectiveActionsGap,
+                  children: actions,
+                )
+              : null;
+
+          if (!sm && effectiveExpandActionsWhenTiny && hasActions) {
             effectiveActions = ShadTheme(
               data: theme.copyWith(
                 primaryButtonTheme:
@@ -661,25 +695,9 @@ class ShadDialog extends StatelessWidget {
                 destructiveButtonTheme: theme.destructiveButtonTheme
                     .copyWith(width: double.infinity),
               ),
-              child: effectiveActions,
+              child: effectiveActions!,
             );
           }
-
-          final effectiveTitle = title != null
-              ? DefaultTextStyle(
-                  style: effectiveTitleStyle,
-                  textAlign: effectiveTitleTextAlign,
-                  child: title!,
-                )
-              : null;
-
-          final effectiveDescription = description != null
-              ? DefaultTextStyle(
-                  style: effectiveDescriptionStyle,
-                  textAlign: effectiveDescriptionTextAlign,
-                  child: description!,
-                )
-              : null;
 
           final effectiveChild = child != null
               ? DefaultTextStyle(
@@ -687,47 +705,65 @@ class ShadDialog extends StatelessWidget {
                   child: child!,
                 )
               : null;
+          final header = [
+            if (title != null)
+              DefaultTextStyle(
+                style: effectiveTitleStyle,
+                textAlign: effectiveTitleTextAlign,
+                child: title!,
+              ),
+            if (description != null)
+              DefaultTextStyle(
+                style: effectiveDescriptionStyle,
+                textAlign: effectiveDescriptionTextAlign,
+                child: description!,
+              ),
+          ];
 
-          List<Widget> columnChildren;
-          if (effectiveScrollable) {
-            columnChildren = [
-              if (title != null || child != null || description != null)
-                Flexible(
-                  child: SingleChildScrollView(
-                    padding: effectiveScrollPadding,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: effectiveMainAxisAlignment,
-                      crossAxisAlignment: effectiveCrossAxisAlignment,
-                      children: [
-                        if (effectiveTitle != null) effectiveTitle,
-                        if (effectiveDescription != null) effectiveDescription,
-                        if (effectiveChild != null) effectiveChild,
-                      ].separatedBy(SizedBox(height: effectiveGap)),
-                    ),
-                  ),
+          Widget buildScrollableContent() {
+            final contentChildren = [
+              if (!isHeaderPinned) ...header,
+              if (effectiveChild != null) effectiveChild,
+              if (!isActionsPinned && effectiveActions != null)
+                effectiveActions,
+            ];
+
+            return Flexible(
+              child: SingleChildScrollView(
+                padding: effectiveScrollPadding,
+                child: Column(
+                  spacing: effectiveGap,
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: effectiveMainAxisAlignment,
+                  crossAxisAlignment: effectiveCrossAxisAlignment,
+                  children: contentChildren,
                 ),
-              effectiveActions,
-            ];
-          } else {
-            columnChildren = [
-              if (effectiveTitle != null) effectiveTitle,
-              if (effectiveDescription != null) effectiveDescription,
-              if (effectiveChild != null) Flexible(child: effectiveChild),
-              effectiveActions,
-            ];
+              ),
+            );
           }
+
+          final columnChildren = [
+            if (!effectiveScrollable) ...[
+              ...header,
+              if (effectiveChild != null) effectiveChild,
+              if (effectiveActions != null) effectiveActions,
+            ] else ...[
+              if (isHeaderPinned) ...header,
+              buildScrollableContent(),
+              if (isActionsPinned && effectiveActions != null) effectiveActions,
+            ],
+          ];
 
           Widget widget = Stack(
             children: [
               Padding(
                 padding: effectivePadding,
                 child: Column(
+                  spacing: effectiveGap,
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: effectiveMainAxisAlignment,
                   crossAxisAlignment: effectiveCrossAxisAlignment,
-                  children: columnChildren
-                      .separatedBy(SizedBox(height: effectiveGap)),
+                  children: columnChildren,
                 ),
               ),
               if (effectiveCloseIcon != null)
@@ -754,7 +790,7 @@ class ShadDialog extends StatelessWidget {
       ),
     );
 
-    // Get the current view padding
+    // Handle view insets (e.g., keyboard)
     final viewPadding = MediaQuery.viewInsetsOf(context);
 
     return Align(
