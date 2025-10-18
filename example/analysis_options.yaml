@@ -4,6 +4,9 @@ analyzer:
   plugins:
     - custom_lint
 
+formatter:
+  trailing_commas: preserve
+
 linter:
   rules:
     avoid_print: false
