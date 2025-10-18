@@ -77,6 +77,5 @@ class ShadResizableTheme with _$ShadResizableTheme {
     ShadResizableTheme? a,
     ShadResizableTheme? b,
     double t,
-  ) =>
-      _$ShadResizableTheme.lerp(a, b, t);
+  ) => _$ShadResizableTheme.lerp(a, b, t);
 }

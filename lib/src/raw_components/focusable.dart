@@ -1,10 +1,11 @@
 import 'package:flutter/widgets.dart';
 
-typedef FocusWidgetBuilder = Widget Function(
-  BuildContext context,
-  bool focused,
-  Widget? child,
-);
+typedef FocusWidgetBuilder =
+    Widget Function(
+      BuildContext context,
+      bool focused,
+      Widget? child,
+    );
 
 class ShadFocusable extends StatefulWidget {
   const ShadFocusable({

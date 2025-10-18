@@ -24,44 +24,44 @@ class InputOTPPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: switch (style) {
             ShadInputOTPVariant.primary => ShadInputOTP(
-                onChanged: (v) => print('OTP: $v'),
-                maxLength: 6,
-                children: const [
-                  ShadInputOTPGroup(
-                    children: [
-                      ShadInputOTPSlot(),
-                      ShadInputOTPSlot(),
-                      ShadInputOTPSlot(),
-                    ],
-                  ),
-                  Icon(size: 24, LucideIcons.dot),
-                  ShadInputOTPGroup(
-                    children: [
-                      ShadInputOTPSlot(),
-                      ShadInputOTPSlot(),
-                      ShadInputOTPSlot(),
-                    ],
-                  ),
-                ],
-              ),
+              onChanged: (v) => print('OTP: $v'),
+              maxLength: 6,
+              children: const [
+                ShadInputOTPGroup(
+                  children: [
+                    ShadInputOTPSlot(),
+                    ShadInputOTPSlot(),
+                    ShadInputOTPSlot(),
+                  ],
+                ),
+                Icon(size: 24, LucideIcons.dot),
+                ShadInputOTPGroup(
+                  children: [
+                    ShadInputOTPSlot(),
+                    ShadInputOTPSlot(),
+                    ShadInputOTPSlot(),
+                  ],
+                ),
+              ],
+            ),
             ShadInputOTPVariant.pattern => ShadInputOTP(
-                onChanged: (v) => print('OTP: $v'),
-                maxLength: 4,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                children: const [
-                  ShadInputOTPGroup(
-                    children: [
-                      ShadInputOTPSlot(),
-                      ShadInputOTPSlot(),
-                      ShadInputOTPSlot(),
-                      ShadInputOTPSlot(),
-                    ],
-                  ),
-                ],
-              ),
+              onChanged: (v) => print('OTP: $v'),
+              maxLength: 4,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              children: const [
+                ShadInputOTPGroup(
+                  children: [
+                    ShadInputOTPSlot(),
+                    ShadInputOTPSlot(),
+                    ShadInputOTPSlot(),
+                    ShadInputOTPSlot(),
+                  ],
+                ),
+              ],
+            ),
           },
         ),
       ),

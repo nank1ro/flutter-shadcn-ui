@@ -164,13 +164,16 @@ class _ShadProgressState extends State<ShadProgress>
     final effectiveColor =
         widget.color ?? theme.progressTheme.color ?? theme.colorScheme.primary;
     final currentColor = widget.valueColor?.value ?? effectiveColor;
-    final effectiveBackgroundColor = widget.backgroundColor ??
+    final effectiveBackgroundColor =
+        widget.backgroundColor ??
         theme.progressTheme.backgroundColor ??
         theme.colorScheme.secondary;
-    final effectiveBorderRadius = widget.borderRadius ??
+    final effectiveBorderRadius =
+        widget.borderRadius ??
         theme.progressTheme.borderRadius ??
         const BorderRadius.all(Radius.circular(16));
-    final effectiveInnerBorderRadius = widget.innerBorderRadius ??
+    final effectiveInnerBorderRadius =
+        widget.innerBorderRadius ??
         theme.progressTheme.innerBorderRadius ??
         BorderRadius.zero;
 
@@ -264,8 +267,9 @@ class ShadIndeterminateProgress extends StatelessWidget {
                         line1TailCurve.transform(value) * containerWidth;
                     final end =
                         line1HeadCurve.transform(value) * containerWidth;
-                    final w =
-                        (end - start).clamp(0, double.infinity).toDouble();
+                    final w = (end - start)
+                        .clamp(0, double.infinity)
+                        .toDouble();
                     if (w <= 0) {
                       return const SizedBox.shrink();
                     }
@@ -293,8 +297,9 @@ class ShadIndeterminateProgress extends StatelessWidget {
                         line2TailCurve.transform(value) * containerWidth;
                     final end =
                         line2HeadCurve.transform(value) * containerWidth;
-                    final w =
-                        (end - start).clamp(0, double.infinity).toDouble();
+                    final w = (end - start)
+                        .clamp(0, double.infinity)
+                        .toDouble();
                     if (w <= 0) {
                       return const SizedBox.shrink();
                     }

@@ -71,7 +71,7 @@ class _SeparatorPageState extends State<SeparatorPage> {
               Text('divider', style: theme.textTheme.h4),
             ],
           ),
-        )
+        ),
       ],
     );
   }

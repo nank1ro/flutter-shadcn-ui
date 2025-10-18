@@ -67,7 +67,11 @@ class BaseScaffold extends StatelessWidget {
                     showHandle: true,
                     children: [
                       ShadResizablePanel(
-                          id: 0, defaultSize: .7, minSize: .5, child: left),
+                        id: 0,
+                        defaultSize: .7,
+                        minSize: .5,
+                        child: left,
+                      ),
                       ShadResizablePanel(
                         id: 1,
                         defaultSize: .3,

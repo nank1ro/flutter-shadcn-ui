@@ -40,6 +40,5 @@ class ShadProgressTheme with _$ShadProgressTheme {
     ShadProgressTheme? a,
     ShadProgressTheme? b,
     double t,
-  ) =>
-      _$ShadProgressTheme.lerp(a, b, t);
+  ) => _$ShadProgressTheme.lerp(a, b, t);
 }

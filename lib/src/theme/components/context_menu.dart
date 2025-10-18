@@ -119,6 +119,5 @@ class ShadContextMenuTheme with _$ShadContextMenuTheme {
     ShadContextMenuTheme? a,
     ShadContextMenuTheme? b,
     double t,
-  ) =>
-      _$ShadContextMenuTheme.lerp(a, b, t);
+  ) => _$ShadContextMenuTheme.lerp(a, b, t);
 }

@@ -23,8 +23,9 @@ mixin _$ShadResizableTheme {
 
     return ShadResizableTheme(
       mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
+      crossAxisAlignment: t < 0.5
+          ? a?.crossAxisAlignment
+          : b?.crossAxisAlignment,
       mainAxisSize: t < 0.5 ? a?.mainAxisSize : b?.mainAxisSize,
       textDirection: t < 0.5 ? a?.textDirection : b?.textDirection,
       verticalDirection: t < 0.5 ? a?.verticalDirection : b?.verticalDirection,

@@ -54,13 +54,14 @@ class _SheetPageState extends State<SheetPage> {
               builder: (context) {
                 return ShadSheet(
                   draggable: draggable,
-                  constraints: side == ShadSheetSide.left ||
-                          side == ShadSheetSide.right
+                  constraints:
+                      side == ShadSheetSide.left || side == ShadSheetSide.right
                       ? const BoxConstraints(maxWidth: 512)
                       : null,
                   title: const Text('Edit Profile'),
                   description: const Text(
-                      "Make changes to your profile here. Click save when you're done"),
+                    "Make changes to your profile here. Click save when you're done",
+                  ),
                   actions: const [ShadButton(child: Text('Save changes'))],
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
@@ -93,7 +94,7 @@ class _SheetPageState extends State<SheetPage> {
               },
             );
           },
-        )
+        ),
       ],
     );
   }

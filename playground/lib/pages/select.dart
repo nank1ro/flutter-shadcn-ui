@@ -75,63 +75,63 @@ class SelectPage extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: switch (variant) {
             SelectVariant.fruits => ConstrainedBox(
-                constraints: const BoxConstraints(minWidth: 180),
-                child: ShadSelect<String>(
-                  placeholder: const Text('Select a fruit'),
-                  options: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-                      child: Text(
-                        'Fruits',
-                        style: theme.textTheme.muted.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: theme.colorScheme.popoverForeground,
-                        ),
-                        textAlign: TextAlign.start,
+              constraints: const BoxConstraints(minWidth: 180),
+              child: ShadSelect<String>(
+                placeholder: const Text('Select a fruit'),
+                options: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+                    child: Text(
+                      'Fruits',
+                      style: theme.textTheme.muted.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.popoverForeground,
                       ),
-                    ),
-                    ...fruits.entries.map(
-                        (e) => ShadOption(value: e.key, child: Text(e.value))),
-                  ],
-                  selectedOptionBuilder: (context, value) =>
-                      Text(fruits[value]!),
-                  onChanged: print,
-                ),
-              ),
-            SelectVariant.timezone => ConstrainedBox(
-                constraints: const BoxConstraints(minWidth: 280),
-                child: ShadSelect<String>(
-                  placeholder: const Text('Select a timezone'),
-                  options: timezones.entries.map(
-                    (zone) => Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
-                          child: Text(
-                            zone.key,
-                            style: theme.textTheme.muted.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: theme.colorScheme.popoverForeground,
-                            ),
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-                        ...zone.value.entries.map((e) =>
-                            ShadOption(value: e.key, child: Text(e.value)))
-                      ],
+                      textAlign: TextAlign.start,
                     ),
                   ),
-                  onChanged: print,
-                  selectedOptionBuilder: (context, value) {
-                    final timezone = timezones.entries
-                        .firstWhere(
-                            (element) => element.value.containsKey(value))
-                        .value[value];
-                    return Text(timezone!);
-                  },
-                ),
+                  ...fruits.entries.map(
+                    (e) => ShadOption(value: e.key, child: Text(e.value)),
+                  ),
+                ],
+                selectedOptionBuilder: (context, value) => Text(fruits[value]!),
+                onChanged: print,
               ),
+            ),
+            SelectVariant.timezone => ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 280),
+              child: ShadSelect<String>(
+                placeholder: const Text('Select a timezone'),
+                options: timezones.entries.map(
+                  (zone) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+                        child: Text(
+                          zone.key,
+                          style: theme.textTheme.muted.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: theme.colorScheme.popoverForeground,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      ...zone.value.entries.map(
+                        (e) => ShadOption(value: e.key, child: Text(e.value)),
+                      ),
+                    ],
+                  ),
+                ),
+                onChanged: print,
+                selectedOptionBuilder: (context, value) {
+                  final timezone = timezones.entries
+                      .firstWhere((element) => element.value.containsKey(value))
+                      .value[value];
+                  return Text(timezone!);
+                },
+              ),
+            ),
             SelectVariant.frameworks => const SelectWithSearch(),
             SelectVariant.multiple => const SelectMultiple(),
           },
@@ -160,10 +160,10 @@ class _SelectWithSearchState extends State<SelectWithSearch> {
   var searchValue = '';
 
   Map<String, String> get filteredFrameworks => {
-        for (final framework in frameworks.entries)
-          if (framework.value.toLowerCase().contains(searchValue.toLowerCase()))
-            framework.key: framework.value
-      };
+    for (final framework in frameworks.entries)
+      if (framework.value.toLowerCase().contains(searchValue.toLowerCase()))
+        framework.key: framework.value,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +190,7 @@ class _SelectWithSearchState extends State<SelectWithSearch> {
               ),
             );
           },
-        )
+        ),
       ],
       selectedOptionBuilder: (context, value) => Text(frameworks[value]!),
     );

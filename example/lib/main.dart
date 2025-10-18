@@ -144,13 +144,13 @@ class App extends StatelessWidget {
             theme: ShadThemeData(
               brightness: Brightness.light,
               colorScheme: const ShadZincColorScheme.light(
-                  // Example of adding a custom color to the color scheme
-                  /* 
+                // Example of adding a custom color to the color scheme
+                /* 
                   custom: {
                      'myCustomColor': Color.fromARGB(255, 177, 4, 196),
                    },
                   */
-                  ),
+              ),
               // Example with google fonts
               // textTheme: ShadTextTheme.fromGoogleFont(GoogleFonts.poppins),
 
@@ -230,9 +230,10 @@ class _MainPageState extends State<MainPage> {
       body: SignalBuilder(
         builder: (context, child) {
           final filteredRoutes = {
-            for (final k in routes.keys
-                .where((k) => k.toLowerCase().contains(search().toLowerCase())))
-              k: routes[k]!
+            for (final k in routes.keys.where(
+              (k) => k.toLowerCase().contains(search().toLowerCase()),
+            ))
+              k: routes[k]!,
           };
 
           return ListView.builder(

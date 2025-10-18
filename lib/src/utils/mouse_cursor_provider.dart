@@ -3,7 +3,7 @@ import 'package:shadcn_ui/src/utils/provider.dart';
 
 class ShadMouseCursorController extends ChangeNotifier {
   ShadMouseCursorController({MouseCursor cursor = MouseCursor.defer})
-      : _cursor = cursor;
+    : _cursor = cursor;
 
   late MouseCursor _cursor;
 

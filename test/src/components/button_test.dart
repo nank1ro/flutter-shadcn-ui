@@ -16,8 +16,9 @@ void main() {
   }
 
   group('ShadButton', () {
-    testWidgets('renders primary variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders primary variant correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadButton(
@@ -39,8 +40,9 @@ void main() {
       expect(button.enabled, true);
     });
 
-    testWidgets('renders destructive variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders destructive variant correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadButton.destructive(
@@ -57,8 +59,9 @@ void main() {
       expect(rowFinder, findsOneWidget);
     });
 
-    testWidgets('renders outline variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders outline variant correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadButton.outline(
@@ -75,8 +78,9 @@ void main() {
       expect(rowFinder, findsOneWidget);
     });
 
-    testWidgets('renders secondary variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders secondary variant correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadButton.secondary(
@@ -127,8 +131,9 @@ void main() {
       expect(rowFinder, findsOneWidget);
     });
 
-    testWidgets('renders with leading and trailing widgets',
-        (WidgetTester tester) async {
+    testWidgets('renders with leading and trailing widgets', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadButton(
@@ -208,8 +213,9 @@ void main() {
       expect(decorator.decoration?.color, customBackgroundColor);
     });
 
-    testWidgets('handles disabled state correctly',
-        (WidgetTester tester) async {
+    testWidgets('handles disabled state correctly', (
+      WidgetTester tester,
+    ) async {
       var pressed = false;
       await tester.pumpWidget(
         createTestWidget(
@@ -274,8 +280,9 @@ void main() {
       expect(decorator.focused, true);
     });
 
-    testWidgets('handles text direction correctly',
-        (WidgetTester tester) async {
+    testWidgets('handles text direction correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadButton(
@@ -300,8 +307,9 @@ void main() {
       expect(row.children.elementAt(4), isA<Icon>()); // leading
     });
 
-    testWidgets('handles size variations correctly',
-        (WidgetTester tester) async {
+    testWidgets('handles size variations correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadButton(
@@ -322,8 +330,9 @@ void main() {
       expect(sizedBox.height, theme.buttonSizesTheme.lg?.height);
     });
 
-    testWidgets('executes onPressed callback on tap',
-        (WidgetTester tester) async {
+    testWidgets('executes onPressed callback on tap', (
+      WidgetTester tester,
+    ) async {
       var pressed = false;
       await tester.pumpWidget(
         createTestWidget(

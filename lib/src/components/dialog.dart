@@ -128,14 +128,16 @@ Future<T?> showShadDialog<T>({
     ShadDialogVariant.alert => theme.alertDialogTheme,
   };
 
-  final effectiveAnimateIn = animateIn ??
+  final effectiveAnimateIn =
+      animateIn ??
       effectiveDialogTheme.animateIn ??
       const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
       ];
 
-  final effectiveAnimateOut = animateOut ??
+  final effectiveAnimateOut =
+      animateOut ??
       effectiveDialogTheme.animateOut ??
       const [
         FadeEffect(begin: 1, end: 0),
@@ -150,7 +152,8 @@ Future<T?> showShadDialog<T>({
     return effects.fold<Duration>(
       Duration.zero, // start with zero
       (max, effect) {
-        final effectTotal = (effect.delay ?? Duration.zero) +
+        final effectTotal =
+            (effect.delay ?? Duration.zero) +
             (effect.duration ?? Animate.defaultDuration);
         return effectTotal > max ? effectTotal : max;
       },
@@ -515,11 +518,13 @@ class ShadDialog extends StatelessWidget {
       ShadDialogVariant.alert => theme.alertDialogTheme,
     };
 
-    final effectiveBackgroundColor = backgroundColor ??
+    final effectiveBackgroundColor =
+        backgroundColor ??
         effectiveDialogTheme.backgroundColor ??
         theme.colorScheme.background;
 
-    final effectiveCloseIcon = closeIcon ??
+    final effectiveCloseIcon =
+        closeIcon ??
         (closeIconData == null && effectiveDialogTheme.closeIconData == null
             ? null
             : ShadIconButton.ghost(
@@ -532,15 +537,17 @@ class ShadDialog extends StatelessWidget {
                 width: 20,
                 height: 20,
                 padding: EdgeInsets.zero,
-                foregroundColor:
-                    theme.colorScheme.foreground.withValues(alpha: .5),
+                foregroundColor: theme.colorScheme.foreground.withValues(
+                  alpha: .5,
+                ),
                 hoverBackgroundColor: const Color(0x00000000),
                 hoverForegroundColor: theme.colorScheme.foreground,
                 pressedForegroundColor: theme.colorScheme.foreground,
                 onPressed: () => Navigator.of(context).pop(),
               ));
 
-    final effectiveCloseIconPosition = closeIconPosition ??
+    final effectiveCloseIconPosition =
+        closeIconPosition ??
         effectiveDialogTheme.closeIconPosition ??
         ShadPosition.directional(
           top: 8,
@@ -551,22 +558,26 @@ class ShadDialog extends StatelessWidget {
     final effectiveRadius =
         radius ?? effectiveDialogTheme.radius ?? theme.radius;
 
-    final effectiveExpandActionsWhenTiny = expandActionsWhenTiny ??
+    final effectiveExpandActionsWhenTiny =
+        expandActionsWhenTiny ??
         effectiveDialogTheme.expandActionsWhenTiny ??
         true;
 
-    final effectiveConstraints = constraints ??
+    final effectiveConstraints =
+        constraints ??
         effectiveDialogTheme.constraints ??
         const BoxConstraints(maxWidth: 512);
 
-    final effectiveBorder = border ??
+    final effectiveBorder =
+        border ??
         effectiveDialogTheme.border ??
         Border.all(color: theme.colorScheme.border);
 
     final effectiveShadows =
         shadows ?? effectiveDialogTheme.shadows ?? ShadShadows.lg;
 
-    final effectiveRemoveBorderRadiusWhenTiny = removeBorderRadiusWhenTiny ??
+    final effectiveRemoveBorderRadiusWhenTiny =
+        removeBorderRadiusWhenTiny ??
         effectiveDialogTheme.removeBorderRadiusWhenTiny ??
         true;
     final effectivePadding =
@@ -578,21 +589,24 @@ class ShadDialog extends StatelessWidget {
         (titleStyle ?? effectiveDialogTheme.titleStyle ?? theme.textTheme.large)
             .fallback(color: theme.colorScheme.foreground);
 
-    final effectiveDescriptionStyle = (descriptionStyle ??
-            effectiveDialogTheme.descriptionStyle ??
-            theme.textTheme.muted)
-        .fallback(
-      color: theme.colorScheme.mutedForeground,
-    );
+    final effectiveDescriptionStyle =
+        (descriptionStyle ??
+                effectiveDialogTheme.descriptionStyle ??
+                theme.textTheme.muted)
+            .fallback(
+              color: theme.colorScheme.mutedForeground,
+            );
 
     final effectiveAlignment =
         alignment ?? effectiveDialogTheme.alignment ?? Alignment.center;
 
-    final effectiveMainAxisAlignment = mainAxisAlignment ??
+    final effectiveMainAxisAlignment =
+        mainAxisAlignment ??
         effectiveDialogTheme.mainAxisAlignment ??
         MainAxisAlignment.start;
 
-    final effectiveCrossAxisAlignment = crossAxisAlignment ??
+    final effectiveCrossAxisAlignment =
+        crossAxisAlignment ??
         effectiveDialogTheme.crossAxisAlignment ??
         CrossAxisAlignment.stretch;
 
@@ -614,27 +628,33 @@ class ShadDialog extends StatelessWidget {
         builder: (context, breakpoint) {
           final sm = breakpoint >= theme.breakpoints.sm;
 
-          final effectiveActionsAxis = actionsAxis ??
+          final effectiveActionsAxis =
+              actionsAxis ??
               effectiveDialogTheme.actionsAxis ??
               (sm ? Axis.horizontal : Axis.vertical);
 
-          final effectiveActionsMainAxisSize = actionsMainAxisSize ??
+          final effectiveActionsMainAxisSize =
+              actionsMainAxisSize ??
               effectiveDialogTheme.actionsMainAxisSize ??
               MainAxisSize.max;
 
-          final effectiveActionsMainAxisAlignment = actionsMainAxisAlignment ??
+          final effectiveActionsMainAxisAlignment =
+              actionsMainAxisAlignment ??
               effectiveDialogTheme.actionsMainAxisAlignment ??
               MainAxisAlignment.end;
 
-          final effectiveActionsVerticalDirection = actionsVerticalDirection ??
+          final effectiveActionsVerticalDirection =
+              actionsVerticalDirection ??
               effectiveDialogTheme.actionsVerticalDirection ??
               (sm ? VerticalDirection.down : VerticalDirection.up);
 
-          final effectiveTitleTextAlign = titleTextAlign ??
+          final effectiveTitleTextAlign =
+              titleTextAlign ??
               effectiveDialogTheme.titleTextAlign ??
               (sm ? TextAlign.start : TextAlign.center);
 
-          final effectiveDescriptionTextAlign = descriptionTextAlign ??
+          final effectiveDescriptionTextAlign =
+              descriptionTextAlign ??
               effectiveDialogTheme.descriptionTextAlign ??
               (sm ? TextAlign.start : TextAlign.center);
 
@@ -650,16 +670,21 @@ class ShadDialog extends StatelessWidget {
           if (!sm && effectiveExpandActionsWhenTiny) {
             effectiveActions = ShadTheme(
               data: theme.copyWith(
-                primaryButtonTheme:
-                    theme.primaryButtonTheme.copyWith(width: double.infinity),
-                secondaryButtonTheme:
-                    theme.secondaryButtonTheme.copyWith(width: double.infinity),
-                outlineButtonTheme:
-                    theme.outlineButtonTheme.copyWith(width: double.infinity),
-                ghostButtonTheme:
-                    theme.ghostButtonTheme.copyWith(width: double.infinity),
-                destructiveButtonTheme: theme.destructiveButtonTheme
-                    .copyWith(width: double.infinity),
+                primaryButtonTheme: theme.primaryButtonTheme.copyWith(
+                  width: double.infinity,
+                ),
+                secondaryButtonTheme: theme.secondaryButtonTheme.copyWith(
+                  width: double.infinity,
+                ),
+                outlineButtonTheme: theme.outlineButtonTheme.copyWith(
+                  width: double.infinity,
+                ),
+                ghostButtonTheme: theme.ghostButtonTheme.copyWith(
+                  width: double.infinity,
+                ),
+                destructiveButtonTheme: theme.destructiveButtonTheme.copyWith(
+                  width: double.infinity,
+                ),
               ),
               child: effectiveActions,
             );
@@ -700,9 +725,9 @@ class ShadDialog extends StatelessWidget {
                       mainAxisAlignment: effectiveMainAxisAlignment,
                       crossAxisAlignment: effectiveCrossAxisAlignment,
                       children: [
-                        if (effectiveTitle != null) effectiveTitle,
-                        if (effectiveDescription != null) effectiveDescription,
-                        if (effectiveChild != null) effectiveChild,
+                        ?effectiveTitle,
+                        ?effectiveDescription,
+                        ?effectiveChild,
                       ].separatedBy(SizedBox(height: effectiveGap)),
                     ),
                   ),
@@ -711,8 +736,8 @@ class ShadDialog extends StatelessWidget {
             ];
           } else {
             columnChildren = [
-              if (effectiveTitle != null) effectiveTitle,
-              if (effectiveDescription != null) effectiveDescription,
+              ?effectiveTitle,
+              ?effectiveDescription,
               if (effectiveChild != null) Flexible(child: effectiveChild),
               effectiveActions,
             ];
@@ -726,8 +751,9 @@ class ShadDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: effectiveMainAxisAlignment,
                   crossAxisAlignment: effectiveCrossAxisAlignment,
-                  children: columnChildren
-                      .separatedBy(SizedBox(height: effectiveGap)),
+                  children: columnChildren.separatedBy(
+                    SizedBox(height: effectiveGap),
+                  ),
                 ),
               ),
               if (effectiveCloseIcon != null)

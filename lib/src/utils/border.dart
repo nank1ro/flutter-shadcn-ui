@@ -49,10 +49,10 @@ class ShadBorder {
     this.padding,
     this.radius,
     this.offset,
-  })  : top = side,
-        right = side,
-        bottom = side,
-        left = side;
+  }) : top = side,
+       right = side,
+       bottom = side,
+       left = side;
 
   /// Creates a border with symmetrical vertical and horizontal sides.
   ///
@@ -65,10 +65,10 @@ class ShadBorder {
     this.padding,
     this.radius,
     this.offset,
-  })  : left = vertical,
-        top = horizontal,
-        right = vertical,
-        bottom = horizontal;
+  }) : left = vertical,
+       top = horizontal,
+       right = vertical,
+       bottom = horizontal;
 
   /// A uniform border with all sides the same color and width.
   ///

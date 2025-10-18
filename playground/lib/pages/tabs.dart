@@ -21,7 +21,8 @@ class TabsPage extends StatelessWidget {
                 content: ShadCard(
                   title: const Text('Account'),
                   description: const Text(
-                      "Make changes to your account here. Click save when you're done."),
+                    "Make changes to your account here. Click save when you're done.",
+                  ),
                   footer: const ShadButton(child: Text('Save changes')),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -47,7 +48,8 @@ class TabsPage extends StatelessWidget {
                 content: ShadCard(
                   title: const Text('Password'),
                   description: const Text(
-                      "Change your password here. After saving, you'll be logged out."),
+                    "Change your password here. After saving, you'll be logged out.",
+                  ),
                   footer: const ShadButton(child: Text('Save password')),
                   child: Column(
                     children: [

@@ -44,8 +44,10 @@ extension TextStyleExtension on TextStyle {
       wordSpacing: fallback(this.wordSpacing, wordSpacing),
       textBaseline: fallback(this.textBaseline, textBaseline),
       height: fallback(this.height, height),
-      leadingDistribution:
-          fallback(this.leadingDistribution, leadingDistribution),
+      leadingDistribution: fallback(
+        this.leadingDistribution,
+        leadingDistribution,
+      ),
       locale: fallback(this.locale, locale),
       foreground: fallback(this.foreground, foreground),
       background: fallback(this.background, background),
@@ -55,8 +57,10 @@ extension TextStyleExtension on TextStyle {
       decoration: fallback(this.decoration, decoration),
       decorationColor: fallback(this.decorationColor, decorationColor),
       decorationStyle: fallback(this.decorationStyle, decorationStyle),
-      decorationThickness:
-          fallback(this.decorationThickness, decorationThickness),
+      decorationThickness: fallback(
+        this.decorationThickness,
+        decorationThickness,
+      ),
       debugLabel: fallback(this.debugLabel, debugLabel),
       fontFamily: fallback(this.fontFamily, fontFamily),
       fontFamilyFallback: fallback(this.fontFamilyFallback, fontFamilyFallback),

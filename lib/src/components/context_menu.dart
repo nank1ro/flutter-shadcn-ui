@@ -113,8 +113,9 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
   ShadContextMenuController? _controller;
   ShadContextMenuController get controller =>
       widget.controller ??
-      (_controller ??=
-          ShadContextMenuController(isOpen: widget.visible ?? false));
+      (_controller ??= ShadContextMenuController(
+        isOpen: widget.visible ?? false,
+      ));
   Offset? offset;
 
   final isContextMenuAlreadyDisabled = kIsWeb && !BrowserContextMenu.enabled;
@@ -154,7 +155,8 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveLongPressEnabled = widget.longPressEnabled ??
+    final effectiveLongPressEnabled =
+        widget.longPressEnabled ??
         (defaultTargetPlatform == TargetPlatform.android ||
             defaultTargetPlatform == TargetPlatform.iOS);
 
@@ -357,8 +359,9 @@ class ShadContextMenuState extends State<ShadContextMenu> {
   ShadContextMenuController? _controller;
   ShadContextMenuController get controller =>
       widget.controller ??
-      (_controller ??=
-          ShadContextMenuController(isOpen: widget.visible ?? false));
+      (_controller ??= ShadContextMenuController(
+        isOpen: widget.visible ?? false,
+      ));
 
   @override
   void didUpdateWidget(covariant ShadContextMenu oldWidget) {
@@ -385,17 +388,20 @@ class ShadContextMenuState extends State<ShadContextMenu> {
 
     final theme = ShadTheme.of(context);
 
-    final effectiveConstraints = widget.constraints ??
+    final effectiveConstraints =
+        widget.constraints ??
         theme.contextMenuTheme.constraints ??
         const BoxConstraints(minWidth: 128);
 
-    final effectivePadding = widget.padding ??
+    final effectivePadding =
+        widget.padding ??
         theme.contextMenuTheme.padding ??
         const EdgeInsets.symmetric(vertical: 4);
 
     final effectiveDecoration =
-        (theme.contextMenuTheme.decoration ?? const ShadDecoration())
-            .merge(widget.decoration);
+        (theme.contextMenuTheme.decoration ?? const ShadDecoration()).merge(
+          widget.decoration,
+        );
 
     final effectiveFilter = widget.filter ?? theme.contextMenuTheme.filter;
 
@@ -464,8 +470,8 @@ class ShadContextMenuItemController extends ChangeNotifier {
     required this.itemKey,
     bool hovered = false,
     bool focused = false,
-  })  : _hovered = hovered,
-        _focused = focused;
+  }) : _hovered = hovered,
+       _focused = focused;
 
   bool _hovered = false;
   bool get hovered => _hovered;
@@ -530,8 +536,8 @@ class ShadContextMenuItem extends StatefulWidget {
     this.backgroundColor,
     this.selectedBackgroundColor,
     this.closeOnTap,
-  })  : variant = ShadContextMenuItemVariant.primary,
-        insetPadding = null;
+  }) : variant = ShadContextMenuItemVariant.primary,
+       insetPadding = null;
 
   const ShadContextMenuItem.raw({
     super.key,
@@ -728,8 +734,8 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
   final itemKey = UniqueKey();
   late final controller = ShadContextMenuItemController(itemKey: itemKey);
   // get the parent item controller, if any, meaning this item is a submenu
-  late final parentItemController =
-      context.maybeRead<ShadContextMenuItemController>();
+  late final parentItemController = context
+      .maybeRead<ShadContextMenuItemController>();
 
   bool get hasTrailingIcon => widget.items.isNotEmpty;
 
@@ -753,30 +759,38 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
 
     final contextMenu = context.read<ShadContextMenuState>();
 
-    final effectivePadding = widget.padding ??
+    final effectivePadding =
+        widget.padding ??
         theme.contextMenuTheme.itemPadding ??
         const EdgeInsets.symmetric(horizontal: 4);
 
     final defaultInsetPadding = switch (widget.variant) {
-      ShadContextMenuItemVariant.primary =>
-        const EdgeInsets.symmetric(horizontal: 8),
-      ShadContextMenuItemVariant.inset =>
-        const EdgeInsetsDirectional.only(start: 32, end: 8),
+      ShadContextMenuItemVariant.primary => const EdgeInsets.symmetric(
+        horizontal: 8,
+      ),
+      ShadContextMenuItemVariant.inset => const EdgeInsetsDirectional.only(
+        start: 32,
+        end: 8,
+      ),
     };
 
-    final effectiveInsetPadding = widget.insetPadding ??
+    final effectiveInsetPadding =
+        widget.insetPadding ??
         theme.contextMenuTheme.insetPadding ??
         defaultInsetPadding;
 
-    final effectiveLeadingPadding = widget.leadingPadding ??
+    final effectiveLeadingPadding =
+        widget.leadingPadding ??
         theme.contextMenuTheme.leadingPadding ??
         const EdgeInsetsDirectional.only(end: 8);
 
-    final effectiveTrailingPadding = widget.trailingPadding ??
+    final effectiveTrailingPadding =
+        widget.trailingPadding ??
         theme.contextMenuTheme.trailingPadding ??
         const EdgeInsetsDirectional.only(start: 8);
 
-    final effectiveAnchor = widget.anchor ??
+    final effectiveAnchor =
+        widget.anchor ??
         theme.contextMenuTheme.anchor ??
         ShadAnchorAuto(
           offset: Offset(-8, parentItemController != null ? -5 : -3),
@@ -787,7 +801,8 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
     final effectiveHeight =
         widget.height ?? theme.contextMenuTheme.height ?? 32;
 
-    final effectiveButtonVariant = widget.buttonVariant ??
+    final effectiveButtonVariant =
+        widget.buttonVariant ??
         theme.contextMenuTheme.buttonVariant ??
         ShadButtonVariant.ghost;
 
@@ -796,12 +811,14 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
       secondaryFocusedBorder: ShadBorder.none,
     ).merge(theme.contextMenuTheme.itemDecoration).merge(widget.decoration);
 
-    final effectiveTextStyle = (widget.textStyle ??
-            theme.contextMenuTheme.textStyle ??
-            theme.textTheme.small.copyWith(fontWeight: FontWeight.normal))
-        .fallback(color: theme.colorScheme.foreground);
+    final effectiveTextStyle =
+        (widget.textStyle ??
+                theme.contextMenuTheme.textStyle ??
+                theme.textTheme.small.copyWith(fontWeight: FontWeight.normal))
+            .fallback(color: theme.colorScheme.foreground);
 
-    final effectiveTrailingTextStyle = widget.trailingTextStyle ??
+    final effectiveTrailingTextStyle =
+        widget.trailingTextStyle ??
         theme.contextMenuTheme.trailingTextStyle ??
         theme.textTheme.muted.copyWith(
           fontSize: 12,
@@ -811,11 +828,13 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
     final effectiveBackgroundColor =
         widget.backgroundColor ?? theme.contextMenuTheme.backgroundColor;
 
-    final effectiveSelectedBackgroundColor = widget.selectedBackgroundColor ??
+    final effectiveSelectedBackgroundColor =
+        widget.selectedBackgroundColor ??
         theme.contextMenuTheme.selectedBackgroundColor ??
         theme.colorScheme.accent;
 
-    final effectiveCloseOnTap = widget.closeOnTap ??
+    final effectiveCloseOnTap =
+        widget.closeOnTap ??
         theme.contextMenuTheme.closeOnTap ??
         widget.items.isEmpty;
 

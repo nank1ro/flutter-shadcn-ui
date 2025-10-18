@@ -32,7 +32,7 @@ class MyStringProperty extends StatelessWidget {
           onChanged: onChanged,
           placeholder: placeholder,
           inputFormatters: inputFormatters,
-        )
+        ),
       ],
     );
   }

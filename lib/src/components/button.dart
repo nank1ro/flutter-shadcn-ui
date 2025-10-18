@@ -885,8 +885,9 @@ class _ShadButtonState extends State<ShadButton> {
     if (widget.hoverForegroundColor != null) {
       return widget.hoverForegroundColor!;
     }
-    final btnThemeHoverForegroundColor =
-        buttonTheme(theme).hoverForegroundColor;
+    final btnThemeHoverForegroundColor = buttonTheme(
+      theme,
+    ).hoverForegroundColor;
     assert(
       btnThemeHoverForegroundColor != null,
       'Button hoverForegroundColor is null in ShadButtonTheme',
@@ -941,27 +942,33 @@ class _ShadButtonState extends State<ShadButton> {
     final theme = ShadTheme.of(context);
     final iconTheme = IconTheme.of(context);
 
-    final hasPressedBackgroundColor = widget.pressedBackgroundColor != null ||
+    final hasPressedBackgroundColor =
+        widget.pressedBackgroundColor != null ||
         buttonTheme(theme).pressedBackgroundColor != null;
-    final hasPressedForegroundColor = widget.pressedForegroundColor != null ||
+    final hasPressedForegroundColor =
+        widget.pressedForegroundColor != null ||
         buttonTheme(theme).pressedForegroundColor != null;
 
     final effectiveDecoration =
-        (buttonTheme(theme).decoration ?? const ShadDecoration())
-            .merge(widget.decoration);
+        (buttonTheme(theme).decoration ?? const ShadDecoration()).merge(
+          widget.decoration,
+        );
 
-    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
+    final effectiveMainAxisAlignment =
+        widget.mainAxisAlignment ??
         buttonTheme(theme).mainAxisAlignment ??
         MainAxisAlignment.center;
 
-    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+    final effectiveCrossAxisAlignment =
+        widget.crossAxisAlignment ??
         buttonTheme(theme).crossAxisAlignment ??
         CrossAxisAlignment.center;
 
     final effectiveLongPressDuration =
         widget.longPressDuration ?? buttonTheme(theme).longPressDuration;
 
-    final effectiveHoverStrategies = widget.hoverStrategies ??
+    final effectiveHoverStrategies =
+        widget.hoverStrategies ??
         buttonTheme(theme).hoverStrategies ??
         theme.hoverStrategies;
 
@@ -978,7 +985,8 @@ class _ShadButtonState extends State<ShadButton> {
       const SingleActivator(LogicalKeyboardKey.space),
     ];
 
-    final effectiveTextStyle = widget.textStyle ??
+    final effectiveTextStyle =
+        widget.textStyle ??
         buttonTheme(theme).textStyle ??
         theme.textTheme.small;
 
@@ -1000,14 +1008,14 @@ class _ShadButtonState extends State<ShadButton> {
           final effectiveBackgroundColor = hasPressedBackgroundColor && pressed
               ? pressedBackgroundColor(theme)
               : hovered
-                  ? hoverBackground(theme)
-                  : background(theme);
+              ? hoverBackground(theme)
+              : background(theme);
 
           final effectiveForegroundColor = hasPressedForegroundColor && pressed
               ? pressedForegroundColor(theme)
               : hovered
-                  ? hoverForeground(theme)
-                  : foreground(theme);
+              ? hoverForeground(theme)
+              : foreground(theme);
 
           final updatedDecoration = effectiveDecoration.copyWith(
             color: effectiveBackgroundColor,
@@ -1104,9 +1112,9 @@ class _ShadButtonState extends State<ShadButton> {
                               mainAxisAlignment: effectiveMainAxisAlignment,
                               textDirection: effectiveTextDirection,
                               children: [
-                                if (widget.leading != null) widget.leading!,
-                                if (child != null) child,
-                                if (widget.trailing != null) widget.trailing!,
+                                ?widget.leading,
+                                ?child,
+                                ?widget.trailing,
                               ].separatedBy(SizedBox(width: effectiveGap)),
                             ),
                           ),
