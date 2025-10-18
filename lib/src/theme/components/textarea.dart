@@ -81,6 +81,5 @@ class ShadTextareaTheme with _$ShadTextareaTheme {
     ShadTextareaTheme? a,
     ShadTextareaTheme? b,
     double t,
-  ) =>
-      _$ShadTextareaTheme.lerp(a, b, t);
+  ) => _$ShadTextareaTheme.lerp(a, b, t);
 }

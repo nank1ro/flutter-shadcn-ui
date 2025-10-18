@@ -112,6 +112,5 @@ class ShadToastTheme with _$ShadToastTheme {
     ShadToastTheme? a,
     ShadToastTheme? b,
     double t,
-  ) =>
-      _$ShadToastTheme.lerp(a, b, t);
+  ) => _$ShadToastTheme.lerp(a, b, t);
 }

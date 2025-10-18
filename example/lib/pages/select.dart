@@ -78,10 +78,10 @@ class _SelectPageState extends State<SelectPage> {
   bool ensureSelectedVisible = true;
 
   Map<String, String> get filteredFrameworks => {
-        for (final framework in frameworks.entries)
-          if (framework.value.toLowerCase().contains(searchValue.toLowerCase()))
-            framework.key: framework.value
-      };
+    for (final framework in frameworks.entries)
+      if (framework.value.toLowerCase().contains(searchValue.toLowerCase()))
+        framework.key: framework.value,
+  };
 
   @override
   void dispose() {
@@ -198,7 +198,7 @@ class _SelectPageState extends State<SelectPage> {
                     value: e.key,
                     child: Text(e.value),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -238,7 +238,7 @@ class _SelectPageState extends State<SelectPage> {
                   ),
                 );
               },
-            )
+            ),
           ],
           selectedOptionBuilder: (context, value) => Text(frameworks[value]!),
           onChanged: print,

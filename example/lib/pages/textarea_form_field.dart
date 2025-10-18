@@ -89,15 +89,18 @@ class _TextareaFormFieldPageState extends State<TextareaFormFieldPage> {
                   child: const Text('Submit'),
                   onPressed: () {
                     ShadToaster.of(context).show(
-                        ShadToast(title: Text('Form submitted successfylly')));
+                      ShadToast(title: Text('Form submitted successfylly')),
+                    );
                     if (formKey.currentState!.saveAndValidate()) {
                       setState(() {
                         formValue = formKey.currentState!.value;
                       });
                     } else {
-                      ShadToaster.of(context).show(ShadToast.destructive(
-                          title:
-                              Text('Please correct the errors in the form')));
+                      ShadToaster.of(context).show(
+                        ShadToast.destructive(
+                          title: Text('Please correct the errors in the form'),
+                        ),
+                      );
                     }
                   },
                 ),
@@ -110,8 +113,9 @@ class _TextareaFormFieldPageState extends State<TextareaFormFieldPage> {
                         Text('FormValue', style: theme.textTheme.p),
                         const SizedBox(height: 4),
                         SelectableText(
-                          const JsonEncoder.withIndent('    ')
-                              .convert(formValue),
+                          const JsonEncoder.withIndent(
+                            '    ',
+                          ).convert(formValue),
                           style: theme.textTheme.small,
                         ),
                       ],

@@ -50,6 +50,5 @@ class ShadCheckboxTheme with _$ShadCheckboxTheme {
     ShadCheckboxTheme? a,
     ShadCheckboxTheme? b,
     double t,
-  ) =>
-      _$ShadCheckboxTheme.lerp(a, b, t);
+  ) => _$ShadCheckboxTheme.lerp(a, b, t);
 }

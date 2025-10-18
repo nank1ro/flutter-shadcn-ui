@@ -398,6 +398,5 @@ class ShadDatePickerTheme with _$ShadDatePickerTheme {
     ShadDatePickerTheme? a,
     ShadDatePickerTheme? b,
     double t,
-  ) =>
-      _$ShadDatePickerTheme.lerp(a, b, t);
+  ) => _$ShadDatePickerTheme.lerp(a, b, t);
 }

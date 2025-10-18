@@ -56,16 +56,17 @@ class _PopoverPageState extends State<PopoverPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Expanded(
-                                child: Text(
-                              e.name,
-                              textAlign: TextAlign.start,
-                            )),
+                              child: Text(
+                                e.name,
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
                             Expanded(
                               flex: 2,
                               child: ShadInput(
                                 initialValue: e.initialValue,
                               ),
-                            )
+                            ),
                           ],
                         ),
                       )

@@ -20,8 +20,9 @@ void main() {
   }
 
   group('ShadCalendar', () {
-    testWidgets('renders single variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders single variant correctly', (
+      WidgetTester tester,
+    ) async {
       final now = DateTime.now();
       final initialMonth = DateTime(now.year, now.month);
       await tester.pumpWidget(
@@ -79,8 +80,9 @@ void main() {
       expect(weekdayTexts.length, 7); // 7 weekdays
     });
 
-    testWidgets('renders multiple variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders multiple variant correctly', (
+      WidgetTester tester,
+    ) async {
       final now = DateTime(2024);
       await tester.pumpWidget(
         createTestWidget(
@@ -117,8 +119,9 @@ void main() {
       expect(find.byType(GridView), findsOneWidget);
     });
 
-    testWidgets('displays initial month correctly',
-        (WidgetTester tester) async {
+    testWidgets('displays initial month correctly', (
+      WidgetTester tester,
+    ) async {
       final initialMonth = DateTime(2023, 10);
       await tester.pumpWidget(
         createTestWidget(
@@ -164,8 +167,9 @@ void main() {
       expect(selectedButton.variant, ShadButtonVariant.primary);
     });
 
-    testWidgets('selects multiple dates in multiple variant',
-        (WidgetTester tester) async {
+    testWidgets('selects multiple dates in multiple variant', (
+      WidgetTester tester,
+    ) async {
       var selectedDates = <DateTime>[];
       await tester.pumpWidget(
         createTestWidget(
@@ -188,8 +192,9 @@ void main() {
       expect(selectedDates.any((d) => d.day == 16), true);
     });
 
-    testWidgets('selects date range in range variant',
-        (WidgetTester tester) async {
+    testWidgets('selects date range in range variant', (
+      WidgetTester tester,
+    ) async {
       ShadDateTimeRange? selectedRange;
       await tester.pumpWidget(
         createTestWidget(
@@ -230,8 +235,9 @@ void main() {
       );
     });
 
-    testWidgets('navigates to previous and next months',
-        (WidgetTester tester) async {
+    testWidgets('navigates to previous and next months', (
+      WidgetTester tester,
+    ) async {
       final initialMonth = DateTime(2023, 10);
       await tester.pumpWidget(
         createTestWidget(
@@ -298,8 +304,7 @@ void main() {
         return semantics.flagsCollection.isFocused;
       }
 
-      testWidgets(
-          'GIVEN a day button is focused '
+      testWidgets('GIVEN a day button is focused '
           'AND right arrow key is pressed '
           'THEN focus moves to the next day', (WidgetTester tester) async {
         await tester.pumpWidget(
@@ -317,8 +322,7 @@ void main() {
         expect(isFocused(tester, '2'), isTrue);
       });
 
-      testWidgets(
-          'GIVEN a day button is focused '
+      testWidgets('GIVEN a day button is focused '
           'AND left arrow key is pressed '
           'THEN focus moves to the previous day', (WidgetTester tester) async {
         await tester.pumpWidget(
@@ -337,12 +341,12 @@ void main() {
         expect(isFocused(tester, '1'), isTrue);
       });
 
-      testWidgets(
-          'GIVEN a day button is focused '
+      testWidgets('GIVEN a day button is focused '
           'AND there is a day right above it '
           'AND arrow-up is pressed '
-          'THEN focus moves to the day right above',
-          (WidgetTester tester) async {
+          'THEN focus moves to the day right above', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           createTestWidget(
             ShadCalendar(initialMonth: DateTime(2025, 9)),
@@ -358,12 +362,12 @@ void main() {
         expect(isFocused(tester, '1'), isTrue);
       });
 
-      testWidgets(
-          'GIVEN a day button is focused '
+      testWidgets('GIVEN a day button is focused '
           'AND there is a day right below it '
           'AND arrow-down is pressed '
-          'THEN focus moves to the day below below',
-          (WidgetTester tester) async {
+          'THEN focus moves to the day below below', (
+        WidgetTester tester,
+      ) async {
         await tester.pumpWidget(
           createTestWidget(
             ShadCalendar(
@@ -382,8 +386,9 @@ void main() {
       });
     });
 
-    testWidgets('applies custom day button size correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom day button size correctly', (
+      WidgetTester tester,
+    ) async {
       const customDayButtonSize = 50.0;
       await tester.pumpWidget(
         createTestWidget(
@@ -405,8 +410,9 @@ void main() {
       expect(dayButton.height, customDayButtonSize);
     });
 
-    testWidgets('displays week numbers when enabled',
-        (WidgetTester tester) async {
+    testWidgets('displays week numbers when enabled', (
+      WidgetTester tester,
+    ) async {
       final date = DateTime(2025, 2);
       await tester.pumpWidget(
         createTestWidget(
@@ -460,8 +466,9 @@ void main() {
       );
     });
 
-    testWidgets('ShadCalendar hideNavigation false matches goldens',
-        (tester) async {
+    testWidgets('ShadCalendar hideNavigation false matches goldens', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
@@ -516,8 +523,9 @@ void main() {
       );
     });
 
-    testWidgets('ShadCalendar hideWeekdayNames matches goldens',
-        (tester) async {
+    testWidgets('ShadCalendar hideWeekdayNames matches goldens', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(

@@ -224,10 +224,12 @@ class _ShadTooltipState extends State<ShadTooltip>
     final effectiveEffects = widget.effects ?? theme.tooltipTheme.effects ?? [];
     final effectivePadding = widget.padding ?? theme.tooltipTheme.padding;
     final effectiveDecoration =
-        (theme.tooltipTheme.decoration ?? const ShadDecoration())
-            .merge(widget.decoration);
+        (theme.tooltipTheme.decoration ?? const ShadDecoration()).merge(
+          widget.decoration,
+        );
 
-    final effectiveAnchor = widget.anchor ??
+    final effectiveAnchor =
+        widget.anchor ??
         theme.tooltipTheme.anchor ??
         const ShadAnchorAuto(
           offset: Offset(0, -4),
@@ -235,7 +237,8 @@ class _ShadTooltipState extends State<ShadTooltip>
           targetAnchor: Alignment.topCenter,
         );
 
-    final hoverStrategies = widget.hoverStrategies ??
+    final hoverStrategies =
+        widget.hoverStrategies ??
         theme.tooltipTheme.hoverStrategies ??
         theme.hoverStrategies;
 
@@ -270,8 +273,9 @@ class _ShadTooltipState extends State<ShadTooltip>
               child: Padding(
                 padding: effectivePadding ?? EdgeInsets.zero,
                 child: DefaultTextStyle(
-                  style: theme.textTheme.muted
-                      .copyWith(color: theme.colorScheme.popoverForeground),
+                  style: theme.textTheme.muted.copyWith(
+                    color: theme.colorScheme.popoverForeground,
+                  ),
                   child: widget.builder(context),
                 ),
               ),

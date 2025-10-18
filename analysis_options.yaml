@@ -8,6 +8,9 @@ exclude:
   - "**/*.g.dart"
   - "**/*.g.theme.dart"
 
+formatter:
+  trailing_commas: preserve
+
 linter:
   rules:
     public_member_api_docs: false

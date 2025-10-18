@@ -10,12 +10,12 @@ final terms = [
   (
     title: 'Acceptance of Terms',
     description:
-        'By accessing and using this service, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.'
+        'By accessing and using this service, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.',
   ),
   (
     title: 'Use License',
     description:
-        'Permission is granted to temporarily download one copy of the materials (information or software) on our service for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.'
+        'Permission is granted to temporarily download one copy of the materials (information or software) on our service for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.',
   ),
   (
     title: 'Disclaimer',
@@ -26,7 +26,7 @@ final terms = [
     title: 'Limitations',
     description:
         'In no event shall we or our suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on our service, even if we or a ShadcnUi supplier has been advised of the possibility of such damages. Furthermore, you agree that ShadcnUi shall not be liable for direct, indirect, consequential, incidental, special, exemplary, or punitive damages.',
-  )
+  ),
 ];
 
 class DialogPage extends StatelessWidget {
@@ -46,7 +46,8 @@ class DialogPage extends StatelessWidget {
               builder: (context) => ShadDialog(
                 title: const Text('Edit Profile'),
                 description: const Text(
-                    "Make changes to your profile here. Click save when you're done"),
+                  "Make changes to your profile here. Click save when you're done",
+                ),
                 actions: const [ShadButton(child: Text('Save changes'))],
                 child: Container(
                   width: 375,

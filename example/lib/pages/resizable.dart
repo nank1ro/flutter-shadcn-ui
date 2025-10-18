@@ -95,7 +95,7 @@ class _ResizablePageState extends State<ResizablePage> {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }

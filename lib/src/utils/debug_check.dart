@@ -18,9 +18,10 @@ bool debugCheckHasShadTheme(BuildContext context) {
           'The ownership chain for the affected widget is',
         ),
         ErrorHint(
-            'No ShadTheme ancestor could be found starting from the context '
-            'that was passed to ShadTheme.of(). This can happen because the '
-            'app is not wrapped with the Shad widget.'),
+          'No ShadTheme ancestor could be found starting from the context '
+          'that was passed to ShadTheme.of(). This can happen because the '
+          'app is not wrapped with the Shad widget.',
+        ),
       ]);
     }
     return true;
