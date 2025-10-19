@@ -747,13 +747,17 @@ class ShadDialog extends StatelessWidget {
               ),
           ];
 
-          Widget buildScrollableContent() {
+          Widget? buildScrollableContent() {
             final contentChildren = [
               if (!isHeaderPinned) ...header,
               ?effectiveChild,
               if (!isActionsPinned && effectiveActions != null)
                 effectiveActions,
             ];
+
+            if (contentChildren.isEmpty) {
+              return null;
+            }
 
             return Flexible(
               child: SingleChildScrollView(
@@ -776,7 +780,7 @@ class ShadDialog extends StatelessWidget {
               ?effectiveActions,
             ] else ...[
               if (isHeaderPinned) ...header,
-              buildScrollableContent(),
+              ?buildScrollableContent(),
               if (isActionsPinned && effectiveActions != null) effectiveActions,
             ],
           ];
