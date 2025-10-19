@@ -751,8 +751,7 @@ class ShadDialog extends StatelessWidget {
             final contentChildren = [
               if (!isHeaderPinned) ...header,
               ?effectiveChild,
-              if (!isActionsPinned && effectiveActions != null)
-                effectiveActions,
+              if (!isActionsPinned) ?effectiveActions,
             ];
 
             if (contentChildren.isEmpty) {
@@ -781,7 +780,7 @@ class ShadDialog extends StatelessWidget {
             ] else ...[
               if (isHeaderPinned) ...header,
               ?buildScrollableContent(),
-              if (isActionsPinned && effectiveActions != null) effectiveActions,
+              if (isActionsPinned) ?effectiveActions,
             ],
           ];
 
