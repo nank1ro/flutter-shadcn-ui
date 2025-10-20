@@ -158,8 +158,16 @@ class ShadFormState extends State<ShadForm> {
   }
 
   /// Sets forced internal error for a form field
+  /// Throws if the field with [id] is not registered with the form.
   void setInternalFieldError(Object id, String? error) {
-    _fields[id]!.setInternalError(error);
+    final field = _fields[id];
+    if (field == null) {
+      throw FlutterError(
+        'Field with id "$id" not found. '
+        'Make sure the field is registered with the form.',
+      );
+    }
+    field.setInternalError(error);
   }
 
   /// Removes internal field value

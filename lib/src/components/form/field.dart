@@ -39,7 +39,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.valueTransformer,
     this.onReset,
     this.decorationBuilder,
-    this.forceErrorText,
+    super.forceErrorText,
   }) : super(
          builder: (field) {
            final state =
@@ -124,14 +124,6 @@ class ShadFormBuilderField<T> extends FormField<T> {
   /// {@endtemplate}
   final bool readOnly;
 
-  /// {@template ShadFormBuilderField.forceErrorText}
-  /// An optional forced error text that overrides validation errors.
-  /// If provided, this text is displayed as the error message.
-  /// {@endtemplate}
-  @override
-  // ignore: overridden_fields
-  final String? forceErrorText;
-
   @override
   ShadFormBuilderFieldState<ShadFormBuilderField<T>, T> createState() =>
       ShadFormBuilderFieldState<ShadFormBuilderField<T>, T>();
@@ -169,8 +161,9 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
 
   /// Sets an internal error message that overrides validation errors.
   void setInternalError(String? error) {
-    _forceErrorText = error;
-    didChange(value);
+    setState(() {
+      _forceErrorText = error;
+    });
   }
 
   @override
