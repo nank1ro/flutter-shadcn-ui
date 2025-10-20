@@ -787,7 +787,7 @@ class ShadDialog extends StatelessWidget {
       alignment: effectiveAlignment,
       child: Padding(
         padding: viewPadding,
-        child: dialog,
+        child: IntrinsicWidth(child: dialog),
       ),
     );
   }
