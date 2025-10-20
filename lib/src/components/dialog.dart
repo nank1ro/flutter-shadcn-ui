@@ -8,7 +8,6 @@ import 'package:shadcn_ui/src/utils/animate.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
-import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 /// {@template ShadDialogRoute}
 /// A custom dialog route that allows specifying a `reverseTransitionDuration`.
@@ -230,9 +229,13 @@ class ShadDialog extends StatelessWidget {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
+    this.isHeaderPinned,
+    this.isFooterPinned,
     this.actionsGap,
     this.useSafeArea,
-  }) : variant = ShadDialogVariant.primary;
+  }) : variant = ShadDialogVariant.primary,
+       header = null,
+       footer = null;
 
   /// Creates an alert variant dialog widget, typically for warnings or
   /// critical messages.
@@ -267,17 +270,19 @@ class ShadDialog extends StatelessWidget {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
+    this.isHeaderPinned,
+    this.isFooterPinned,
     this.actionsGap,
     this.useSafeArea,
-  }) : variant = ShadDialogVariant.alert;
+  }) : variant = ShadDialogVariant.alert,
+       header = null,
+       footer = null;
 
   /// Creates a dialog widget with a specified [variant], offering full
   /// customization.
   const ShadDialog.raw({
     super.key,
     required this.variant,
-    this.title,
-    this.description,
     this.child,
     this.actions = const [],
     this.closeIcon,
@@ -307,7 +312,12 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
-  });
+    this.header,
+    this.footer,
+    this.isHeaderPinned,
+    this.isFooterPinned,
+  }) : title = null,
+       description = null;
 
   /// {@template ShadDialog.title}
   /// The title widget displayed at the top of the dialog.
@@ -495,6 +505,34 @@ class ShadDialog extends StatelessWidget {
   /// {@endtemplate}
   final EdgeInsetsGeometry? scrollPadding;
 
+  /// {@template ShadDialog.header}
+  /// The custom header widget displayed below the title and description.
+  /// Overrides the default title and description if provided.
+  /// {@endtemplate}
+  final Widget? header;
+
+  /// {@template ShadDialog.isHeaderPinned}
+  /// Whether the header (title, description) is pinned to the top of the
+  /// dialog. If true, it remains fixed when scrolling with the content.
+  ///
+  /// Defaults to true if not specified.
+  /// {@endtemplate}
+  final bool? isHeaderPinned;
+
+  /// {@template ShadDialog.footer}
+  /// The custom footer widget displayed at the bottom of the dialog.
+  /// Overrides the default actions if provided.
+  /// {@endtemplate}
+  final Widget? footer;
+
+  /// {@template ShadDialog.isFooterPinned}
+  /// Whether the footer (action buttons) is pinned to the bottom of the
+  /// dialog. If true, it remains fixed when scrolling with the content.
+  ///
+  /// Defaults to true if not specified.
+  /// {@endtemplate}
+  final bool? isFooterPinned;
+
   /// {@template ShadDialog.actionsGap}
   /// The gap between action buttons.
 
@@ -512,6 +550,17 @@ class ShadDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    assert(
+      !(header != null && (title != null || description != null)),
+      'Cannot provide both header and title/description. Use either header or '
+      'title/description.',
+    );
+
+    assert(
+      !(footer != null && actions.isNotEmpty),
+      'Cannot provide both footer and actions. Use either footer or actions.',
+    );
+
     final theme = ShadTheme.of(context);
     final effectiveDialogTheme = switch (variant) {
       ShadDialogVariant.primary => theme.primaryDialogTheme,
@@ -580,6 +629,7 @@ class ShadDialog extends StatelessWidget {
         removeBorderRadiusWhenTiny ??
         effectiveDialogTheme.removeBorderRadiusWhenTiny ??
         true;
+
     final effectivePadding =
         padding ?? effectiveDialogTheme.padding ?? const EdgeInsets.all(24);
 
@@ -658,16 +708,24 @@ class ShadDialog extends StatelessWidget {
               effectiveDialogTheme.descriptionTextAlign ??
               (sm ? TextAlign.start : TextAlign.center);
 
-          Widget effectiveActions = Flex(
-            direction: effectiveActionsAxis,
-            mainAxisSize: effectiveActionsMainAxisSize,
-            mainAxisAlignment: effectiveActionsMainAxisAlignment,
-            verticalDirection: effectiveActionsVerticalDirection,
-            spacing: effectiveActionsGap,
-            children: actions,
-          );
+          final isHeaderPinned = this.isHeaderPinned ?? true;
 
-          if (!sm && effectiveExpandActionsWhenTiny) {
+          final isFooterPinned = this.isFooterPinned ?? true;
+
+          final hasActions = actions.isNotEmpty;
+
+          Widget? effectiveActions = hasActions
+              ? Flex(
+                  direction: effectiveActionsAxis,
+                  mainAxisSize: effectiveActionsMainAxisSize,
+                  mainAxisAlignment: effectiveActionsMainAxisAlignment,
+                  verticalDirection: effectiveActionsVerticalDirection,
+                  spacing: effectiveActionsGap,
+                  children: actions,
+                )
+              : null;
+
+          if (!sm && effectiveExpandActionsWhenTiny && hasActions) {
             effectiveActions = ShadTheme(
               data: theme.copyWith(
                 primaryButtonTheme: theme.primaryButtonTheme.copyWith(
@@ -686,25 +744,9 @@ class ShadDialog extends StatelessWidget {
                   width: double.infinity,
                 ),
               ),
-              child: effectiveActions,
+              child: effectiveActions!,
             );
           }
-
-          final effectiveTitle = title != null
-              ? DefaultTextStyle(
-                  style: effectiveTitleStyle,
-                  textAlign: effectiveTitleTextAlign,
-                  child: title!,
-                )
-              : null;
-
-          final effectiveDescription = description != null
-              ? DefaultTextStyle(
-                  style: effectiveDescriptionStyle,
-                  textAlign: effectiveDescriptionTextAlign,
-                  child: description!,
-                )
-              : null;
 
           final effectiveChild = child != null
               ? DefaultTextStyle(
@@ -713,47 +755,74 @@ class ShadDialog extends StatelessWidget {
                 )
               : null;
 
-          List<Widget> columnChildren;
-          if (effectiveScrollable) {
-            columnChildren = [
-              if (title != null || child != null || description != null)
-                Flexible(
-                  child: SingleChildScrollView(
-                    padding: effectiveScrollPadding,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: effectiveMainAxisAlignment,
-                      crossAxisAlignment: effectiveCrossAxisAlignment,
-                      children: [
-                        ?effectiveTitle,
-                        ?effectiveDescription,
-                        ?effectiveChild,
-                      ].separatedBy(SizedBox(height: effectiveGap)),
-                    ),
-                  ),
+          final titleSection = [
+            if (title != null)
+              DefaultTextStyle(
+                style: effectiveTitleStyle,
+                textAlign: effectiveTitleTextAlign,
+                child: title!,
+              ),
+            if (description != null)
+              DefaultTextStyle(
+                style: effectiveDescriptionStyle,
+                textAlign: effectiveDescriptionTextAlign,
+                child: description!,
+              ),
+          ];
+
+          Widget? buildScrollableContent() {
+            final contentChildren = [
+              if (!isHeaderPinned) ...titleSection,
+              if (!isHeaderPinned) ?header,
+              ?effectiveChild,
+              if (!isFooterPinned) ?footer,
+              if (!isFooterPinned) ?effectiveActions,
+            ];
+
+            if (contentChildren.isEmpty) {
+              return null;
+            }
+
+            return Flexible(
+              child: SingleChildScrollView(
+                padding: effectiveScrollPadding,
+                child: Column(
+                  spacing: effectiveGap,
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: effectiveMainAxisAlignment,
+                  crossAxisAlignment: effectiveCrossAxisAlignment,
+                  children: contentChildren,
                 ),
-              effectiveActions,
-            ];
-          } else {
-            columnChildren = [
-              ?effectiveTitle,
-              ?effectiveDescription,
-              if (effectiveChild != null) Flexible(child: effectiveChild),
-              effectiveActions,
-            ];
+              ),
+            );
           }
+
+          final columnChildren = [
+            if (!effectiveScrollable) ...[
+              ...titleSection,
+              ?header,
+              ?effectiveChild,
+              ?effectiveActions,
+              ?footer,
+            ] else ...[
+              if (isHeaderPinned) ...titleSection,
+              if (isHeaderPinned) ?header,
+              ?buildScrollableContent(),
+              if (isFooterPinned) ?footer,
+              if (isFooterPinned) ?effectiveActions,
+            ],
+          ];
 
           Widget widget = Stack(
             children: [
               Padding(
                 padding: effectivePadding,
                 child: Column(
+                  spacing: effectiveGap,
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: effectiveMainAxisAlignment,
                   crossAxisAlignment: effectiveCrossAxisAlignment,
-                  children: columnChildren.separatedBy(
-                    SizedBox(height: effectiveGap),
-                  ),
+                  children: columnChildren,
                 ),
               ),
               if (effectiveCloseIcon != null)
@@ -780,7 +849,7 @@ class ShadDialog extends StatelessWidget {
       ),
     );
 
-    // Get the current view padding
+    // Handle view insets (e.g., keyboard)
     final viewPadding = MediaQuery.viewInsetsOf(context);
 
     return Align(
