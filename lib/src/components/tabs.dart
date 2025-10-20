@@ -171,7 +171,7 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
   final ValueChanged<T>? onChanged;
 
   /// {@template ShadTabs.maintainState}
-  /// Whether to mantain the state of the tabs when switching between them.
+  /// Whether to maintain the state of the tabs when switching between them.
   /// Defaults to true.
   /// {@endtemplate}
   final bool? maintainState;
