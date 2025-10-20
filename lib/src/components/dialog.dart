@@ -506,8 +506,9 @@ class ShadDialog extends StatelessWidget {
   final EdgeInsetsGeometry? scrollPadding;
 
   /// {@template ShadDialog.header}
-  /// The custom header widget displayed below the title and description.
-  /// Overrides the default title and description if provided.
+  /// The custom header widget displayed at the top of the dialog,
+  /// replacing the default title/description area when provided.
+  /// Mutually exclusive with [title] and [description].
   /// {@endtemplate}
   final Widget? header;
 
