@@ -1,3 +1,7 @@
+## 0.38.4
+
+- **REFACTOR**: Remove required parameters from `ShadThemeData`, use default values instead.
+
 ## 0.38.3
 
 - **FEAT**: Add `maintainState` to `ShadTabs` to control whether to maintain the state of the tabs when switching between them. Defaults to `true`.
