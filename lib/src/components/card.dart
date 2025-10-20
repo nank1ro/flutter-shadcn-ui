@@ -161,11 +161,13 @@ class ShadCard extends StatelessWidget {
 
     final effectivePadding =
         padding ?? theme.cardTheme.padding ?? const EdgeInsets.all(24);
-    final effectiveBackgroundColor = backgroundColor ??
+    final effectiveBackgroundColor =
+        backgroundColor ??
         theme.cardTheme.backgroundColor ??
         theme.colorScheme.card;
     final effectiveRadius = radius ?? theme.cardTheme.radius ?? theme.radius;
-    final effectiveBorder = border ??
+    final effectiveBorder =
+        border ??
         theme.cardTheme.border ??
         ShadBorder.all(color: theme.colorScheme.border, width: 1);
     final effectiveShadows = shadows ?? theme.cardTheme.shadows;
@@ -173,23 +175,28 @@ class ShadCard extends StatelessWidget {
     final effectiveRowMainAxisSize =
         rowMainAxisSize ?? theme.cardTheme.rowMainAxisSize ?? MainAxisSize.min;
 
-    final effectiveRowMainAxisAlignment = rowMainAxisAlignment ??
+    final effectiveRowMainAxisAlignment =
+        rowMainAxisAlignment ??
         theme.cardTheme.rowMainAxisAlignment ??
         MainAxisAlignment.spaceBetween;
 
-    final effectiveRowCrossAxisAlignment = rowCrossAxisAlignment ??
+    final effectiveRowCrossAxisAlignment =
+        rowCrossAxisAlignment ??
         theme.cardTheme.rowCrossAxisAlignment ??
         CrossAxisAlignment.start;
 
-    final effectiveColumnMainAxisSize = columnMainAxisSize ??
+    final effectiveColumnMainAxisSize =
+        columnMainAxisSize ??
         theme.cardTheme.columnMainAxisSize ??
         MainAxisSize.min;
 
-    final effectiveColumnMainAxisAlignment = columnMainAxisAlignment ??
+    final effectiveColumnMainAxisAlignment =
+        columnMainAxisAlignment ??
         theme.cardTheme.columnMainAxisAlignment ??
         MainAxisAlignment.start;
 
-    final effectiveColumnCrossAxisAlignment = columnCrossAxisAlignment ??
+    final effectiveColumnCrossAxisAlignment =
+        columnCrossAxisAlignment ??
         theme.cardTheme.columnCrossAxisAlignment ??
         CrossAxisAlignment.start;
 
@@ -221,14 +228,16 @@ class ShadCard extends StatelessWidget {
               children: [
                 if (title != null)
                   DefaultTextStyle(
-                    style: theme.textTheme.h3
-                        .copyWith(color: theme.colorScheme.cardForeground),
+                    style: theme.textTheme.h3.copyWith(
+                      color: theme.colorScheme.cardForeground,
+                    ),
                     child: title!,
                   ),
                 if (description != null)
                   DefaultTextStyle(
-                    style: theme.textTheme.muted
-                        .fallback(color: theme.colorScheme.mutedForeground),
+                    style: theme.textTheme.muted.fallback(
+                      color: theme.colorScheme.mutedForeground,
+                    ),
                     child: description!,
                   ),
                 if (child != null) Flexible(child: child!),

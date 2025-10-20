@@ -8,8 +8,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.title,
     this.titleWidget,
-  }) : assert((title != null) ^ (titleWidget != null),
-            'Must provide either title or titleWidget');
+  }) : assert(
+         (title != null) ^ (titleWidget != null),
+         'Must provide either title or titleWidget',
+       );
 
   final String? title;
   final Widget? titleWidget;
@@ -23,8 +25,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         ShadButton.ghost(
           onPressed: () {
-            themeModeProvider.of(context).updateValue((value) =>
-                value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light);
+            themeModeProvider
+                .of(context)
+                .updateValue(
+                  (value) => value == ThemeMode.light
+                      ? ThemeMode.dark
+                      : ThemeMode.light,
+                );
           },
           leading: SignalBuilder(
             builder: (context, child) {
@@ -42,10 +49,13 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         ShadButton.ghost(
           onPressed: () {
-            directionalityProvider.of(context).updateValue((value) =>
-                value == TextDirection.ltr
-                    ? TextDirection.rtl
-                    : TextDirection.ltr);
+            directionalityProvider
+                .of(context)
+                .updateValue(
+                  (value) => value == TextDirection.ltr
+                      ? TextDirection.rtl
+                      : TextDirection.ltr,
+                );
           },
           leading: SignalBuilder(
             builder: (context, child) {

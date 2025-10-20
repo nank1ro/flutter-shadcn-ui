@@ -55,10 +55,12 @@ class _IconButtonPageState extends State<IconButtonPage> {
           ),
           ShadIconButton(
             enabled: enabled,
-            gradient: const LinearGradient(colors: [
-              Colors.cyan,
-              Colors.indigo,
-            ]),
+            gradient: const LinearGradient(
+              colors: [
+                Colors.cyan,
+                Colors.indigo,
+              ],
+            ),
             shadows: [
               BoxShadow(
                 color: Colors.blue.withValues(alpha: .4),

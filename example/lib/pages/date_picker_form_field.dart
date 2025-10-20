@@ -61,7 +61,8 @@ class _DatePickerFormFieldPageState extends State<DatePickerFormFieldPage> {
                   label: const Text('Date of birth'),
                   onChanged: print,
                   description: const Text(
-                      'Your date of birth is used to calculate your age.'),
+                    'Your date of birth is used to calculate your age.',
+                  ),
                   validator: (v) {
                     if (v == null) {
                       return 'A date of birth is required.';
@@ -76,7 +77,8 @@ class _DatePickerFormFieldPageState extends State<DatePickerFormFieldPage> {
                   label: const Text('Range of dates'),
                   onChanged: print,
                   description: const Text(
-                      'Select the range of dates you want to search between.'),
+                    'Select the range of dates you want to search between.',
+                  ),
                   validator: (v) {
                     if (v == null) return 'A range of dates is required.';
                     if (v.start == null) return 'The start date is required.';

@@ -15,8 +15,9 @@ void main() {
   }
 
   group('ShadBadge', () {
-    testWidgets('renders primary variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders primary variant correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadBadge(
@@ -37,8 +38,9 @@ void main() {
       expect(columnFinder, findsOneWidget);
     });
 
-    testWidgets('renders secondary variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders secondary variant correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadBadge.secondary(
@@ -55,8 +57,9 @@ void main() {
       expect(containerFinder, findsOneWidget);
     });
 
-    testWidgets('renders outline variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders outline variant correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadBadge.outline(
@@ -73,8 +76,9 @@ void main() {
       expect(containerFinder, findsOneWidget);
     });
 
-    testWidgets('renders destructive variant correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders destructive variant correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadBadge.destructive(
@@ -112,8 +116,9 @@ void main() {
       expect(decoration?.shape, customShape);
     });
 
-    testWidgets('applies custom background and foreground colors correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom background and foreground colors correctly', (
+      WidgetTester tester,
+    ) async {
       const customBackgroundColor = Colors.blue;
       const customForegroundColor = Colors.yellow;
       await tester.pumpWidget(
@@ -139,13 +144,15 @@ void main() {
         matching: find.byType(DefaultTextStyle),
       );
       expect(defaultTextStyleFinder, findsOneWidget);
-      final defaultTextStyle =
-          tester.widget<DefaultTextStyle>(defaultTextStyleFinder);
+      final defaultTextStyle = tester.widget<DefaultTextStyle>(
+        defaultTextStyleFinder,
+      );
       expect(defaultTextStyle.style.color, customForegroundColor);
     });
 
-    testWidgets('applies custom padding correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom padding correctly', (
+      WidgetTester tester,
+    ) async {
       const customPadding = EdgeInsets.all(10);
       await tester.pumpWidget(
         createTestWidget(
@@ -163,8 +170,9 @@ void main() {
       expect(container.padding, customPadding);
     });
 
-    testWidgets('changes background color on hover',
-        (WidgetTester tester) async {
+    testWidgets('changes background color on hover', (
+      WidgetTester tester,
+    ) async {
       const customHoverBackgroundColor = Colors.red;
       await tester.pumpWidget(
         createTestWidget(
@@ -195,8 +203,9 @@ void main() {
       expect(decoration?.color, customHoverBackgroundColor);
     });
 
-    testWidgets('executes onPressed callback on tap',
-        (WidgetTester tester) async {
+    testWidgets('executes onPressed callback on tap', (
+      WidgetTester tester,
+    ) async {
       var pressed = false;
       await tester.pumpWidget(
         createTestWidget(
@@ -215,8 +224,9 @@ void main() {
       expect(pressed, true);
     });
 
-    testWidgets('uses default shape when not specified',
-        (WidgetTester tester) async {
+    testWidgets('uses default shape when not specified', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadBadge(

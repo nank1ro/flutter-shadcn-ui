@@ -37,7 +37,7 @@ class _SonnerPageState extends State<SonnerPage>
               ),
             );
           },
-        )
+        ),
       ],
     );
   }

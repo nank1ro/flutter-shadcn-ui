@@ -24,7 +24,8 @@ class DialogPage extends StatelessWidget {
               builder: (context) => ShadDialog(
                 title: const Text('Edit Profile'),
                 description: const Text(
-                    "Make changes to your profile here. Click save when you're done"),
+                  "Make changes to your profile here. Click save when you're done",
+                ),
                 actions: const [ShadButton(child: Text('Save changes'))],
                 child: Container(
                   width: 375,

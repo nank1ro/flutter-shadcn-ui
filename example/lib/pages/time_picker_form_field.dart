@@ -80,8 +80,9 @@ class _TimePickerFormFieldPageState extends State<TimePickerFormFieldPage> {
                   showSeconds: showSeconds,
                   label: const Text('Pick a time'),
                   onChanged: print,
-                  description:
-                      const Text('The time of the day you want to pick'),
+                  description: const Text(
+                    'The time of the day you want to pick',
+                  ),
                   validator: (v) => v == null ? 'A time is required' : null,
                 ),
                 const SizedBox(height: 16),

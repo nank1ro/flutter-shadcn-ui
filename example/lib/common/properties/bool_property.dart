@@ -24,7 +24,7 @@ class MyBoolProperty extends StatelessWidget {
           style: const TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 8),
-        ShadSwitch(value: value, onChanged: onChanged, enabled: enabled)
+        ShadSwitch(value: value, onChanged: onChanged, enabled: enabled),
       ],
     );
   }

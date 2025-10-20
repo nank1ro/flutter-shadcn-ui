@@ -16,8 +16,9 @@ void main() {
   }
 
   group('ShadCheckbox', () {
-    testWidgets('renders unchecked state correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders unchecked state correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadCheckbox(
@@ -81,8 +82,10 @@ void main() {
       // Check layout includes checkbox, label, and sublabel in a Row and Column
       final rowFinder = find.byType(Row);
       expect(rowFinder, findsOneWidget);
-      final columnFinder =
-          find.descendant(of: rowFinder, matching: find.byType(Column));
+      final columnFinder = find.descendant(
+        of: rowFinder,
+        matching: find.byType(Column),
+      );
       expect(columnFinder, findsOneWidget);
       expect(
         find.descendant(of: columnFinder, matching: find.byType(Text)),
@@ -170,8 +173,9 @@ void main() {
       );
     });
 
-    testWidgets('handles disabled state correctly',
-        (WidgetTester tester) async {
+    testWidgets('handles disabled state correctly', (
+      WidgetTester tester,
+    ) async {
       var value = false;
       await tester.pumpWidget(
         createTestWidget(
@@ -250,8 +254,9 @@ void main() {
       expect(decorator.decoration?.color, customColor);
     });
 
-    testWidgets('applies custom padding correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom padding correctly', (
+      WidgetTester tester,
+    ) async {
       const customPadding = EdgeInsets.all(16);
       await tester.pumpWidget(
         createTestWidget(
@@ -301,8 +306,9 @@ void main() {
       expect(decorator.focused, true);
     });
 
-    testWidgets('renders without label and sublabel',
-        (WidgetTester tester) async {
+    testWidgets('renders without label and sublabel', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadCheckbox(

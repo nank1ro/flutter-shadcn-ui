@@ -46,7 +46,6 @@ import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
-import 'package:shadcn_ui/src/utils/position.dart';
 
 class ShadDefaultThemeVariant extends ShadThemeVariant {
   ShadDefaultThemeVariant({
@@ -66,8 +65,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       hoverBackgroundColor: colorScheme.primary.withValues(alpha: .9),
       foregroundColor: colorScheme.primaryForeground,
       hoverForegroundColor: colorScheme.primaryForeground,
-      decoration:
-          ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
+      decoration: ShadDecoration(
+        border: ShadBorder.all(radius: radius, width: 0),
+      ),
       gap: 8,
       expands: false,
     );
@@ -80,8 +80,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       hoverBackgroundColor: colorScheme.secondary.withValues(alpha: .8),
       foregroundColor: colorScheme.secondaryForeground,
       hoverForegroundColor: colorScheme.secondaryForeground,
-      decoration:
-          ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
+      decoration: ShadDecoration(
+        border: ShadBorder.all(radius: radius, width: 0),
+      ),
       gap: 8,
       expands: false,
     );
@@ -94,8 +95,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       hoverBackgroundColor: colorScheme.destructive.withValues(alpha: .9),
       foregroundColor: colorScheme.destructiveForeground,
       hoverForegroundColor: colorScheme.destructiveForeground,
-      decoration:
-          ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
+      decoration: ShadDecoration(
+        border: ShadBorder.all(radius: radius, width: 0),
+      ),
       gap: 8,
       expands: false,
     );
@@ -125,8 +127,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       hoverBackgroundColor: colorScheme.accent,
       foregroundColor: colorScheme.primary,
       hoverForegroundColor: colorScheme.accentForeground,
-      decoration:
-          ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
+      decoration: ShadDecoration(
+        border: ShadBorder.all(radius: radius, width: 0),
+      ),
       gap: 8,
       expands: false,
     );
@@ -227,8 +230,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ],
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: ShadDecoration(
-        border:
-            ShadBorder.all(radius: radius, color: colorScheme.border, width: 0),
+        border: ShadBorder.all(
+          radius: radius,
+          color: colorScheme.border,
+          width: 0,
+        ),
         color: colorScheme.popover,
         shadows: ShadShadows.md,
       ),
@@ -404,8 +410,10 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       padding: const EdgeInsetsDirectional.only(start: 8),
       decoration: ShadDecoration(
         border: ShadBorder.all(radius: radius.add(radius / 2), width: 0),
-        secondaryFocusedBorder:
-            ShadBorder.all(radius: radius.add(radius / 2), width: 2),
+        secondaryFocusedBorder: ShadBorder.all(
+          radius: radius.add(radius / 2),
+          width: 2,
+        ),
       ),
     );
   }
@@ -494,7 +502,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       backgroundColor: colorScheme.background,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsetsGeometry.fromSTEB(24, 24, 32, 24),
       mainAxisSize: MainAxisSize.max,
@@ -519,7 +526,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       backgroundColor: colorScheme.destructive,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       showCloseIconOnlyWhenHovered: true,
       padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24),
       mainAxisSize: MainAxisSize.max,
@@ -582,7 +588,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       backgroundColor: colorScheme.background,
       removeBorderRadiusWhenTiny: true,
       expandActionsWhenTiny: true,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       animateIn: const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
@@ -611,7 +616,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       radius: const BorderRadius.all(Radius.circular(8)),
       removeBorderRadiusWhenTiny: true,
       expandActionsWhenTiny: true,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       animateIn: const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
@@ -706,8 +710,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       cellPadding: const EdgeInsets.symmetric(horizontal: 16),
       cellStyle: effectiveTextTheme.muted,
       cellHeaderStyle: effectiveTextTheme.muted,
-      cellFooterStyle:
-          effectiveTextTheme.muted.fallback(fontWeight: FontWeight.w500),
+      cellFooterStyle: effectiveTextTheme.muted.fallback(
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 
@@ -794,96 +799,98 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
 
   @override
   ShadContextMenuTheme contextMenuTheme() => ShadContextMenuTheme(
-        constraints: const BoxConstraints(minWidth: 128),
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        itemPadding: const EdgeInsets.symmetric(horizontal: 4),
-        leadingPadding: const EdgeInsetsDirectional.only(end: 8),
-        trailingPadding: const EdgeInsetsDirectional.only(start: 8),
-        showDelay: const Duration(milliseconds: 100),
-        height: 32,
-        buttonVariant: ShadButtonVariant.ghost,
-        itemDecoration: const ShadDecoration(
-          secondaryBorder: ShadBorder.none,
-          secondaryFocusedBorder: ShadBorder.none,
-        ),
-        textStyle:
-            effectiveTextTheme.small.copyWith(fontWeight: FontWeight.normal),
-        trailingTextStyle:
-            effectiveTextTheme.muted.copyWith(fontSize: 12, height: 1),
-        selectedBackgroundColor: colorScheme.accent,
-      );
+    constraints: const BoxConstraints(minWidth: 128),
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    itemPadding: const EdgeInsets.symmetric(horizontal: 4),
+    leadingPadding: const EdgeInsetsDirectional.only(end: 8),
+    trailingPadding: const EdgeInsetsDirectional.only(start: 8),
+    showDelay: const Duration(milliseconds: 100),
+    height: 32,
+    buttonVariant: ShadButtonVariant.ghost,
+    itemDecoration: const ShadDecoration(
+      secondaryBorder: ShadBorder.none,
+      secondaryFocusedBorder: ShadBorder.none,
+    ),
+    textStyle: effectiveTextTheme.small.copyWith(fontWeight: FontWeight.normal),
+    trailingTextStyle: effectiveTextTheme.muted.copyWith(
+      fontSize: 12,
+      height: 1,
+    ),
+    selectedBackgroundColor: colorScheme.accent,
+  );
 
   @override
   ShadCalendarTheme calendarTheme() => ShadCalendarTheme(
-        dayButtonDecoration: ShadDecoration(
-          secondaryFocusedBorder: ShadBorder.all(
-            offset: 2,
-            color: colorScheme.ring.withValues(alpha: .5),
-          ),
-        ),
-        hideNavigation: false,
-        yearSelectorMinWidth: 64,
-        monthSelectorMinWidth: 64,
-        yearSelectorPadding:
-            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        monthSelectorPadding:
-            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        navigationButtonSize: 28,
-        navigationButtonIconSize: 16,
-        backNavigationButtonIconData: LucideIcons.chevronLeft,
-        forwardNavigationButtonIconData: LucideIcons.chevronRight,
-        navigationButtonPadding: EdgeInsets.zero,
-        navigationButtonDisabledOpacity: .5,
-        decoration: ShadDecoration(
-          border: ShadBorder.all(
-            radius: radius,
-            padding: const EdgeInsets.all(12),
-            color: colorScheme.border,
-            width: 1,
-          ),
-        ),
-        spacingBetweenMonths: 16,
-        runSpacingBetweenMonths: 16,
-        headerHeight: 38,
-        headerPadding: const EdgeInsets.only(bottom: 16),
-        captionLayoutGap: 8,
-        headerTextStyle: effectiveTextTheme.small,
-        weekdaysPadding: const EdgeInsets.only(bottom: 8),
-        weekNumbersHeaderText: '#',
-        weekNumbersHeaderTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
-        weekNumbersTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
-        dayButtonSize: 36,
-        dayButtonOutsideMonthOpacity: .5,
-        dayButtonPadding: EdgeInsets.zero,
-        selectedDayButtonTextStyle: textTheme().small.copyWith(
-              fontWeight: FontWeight.normal,
-              color: colorScheme.primaryForeground,
-            ),
-        insideRangeDayButtonTextStyle: textTheme().small.copyWith(
-              color: colorScheme.foreground,
-            ),
-        dayButtonTextStyle: textTheme().small.copyWith(
-              fontWeight: FontWeight.normal,
-              color: colorScheme.foreground,
-            ),
-        dayButtonOutsideMonthVariant: ShadButtonVariant.ghost,
-        dayButtonOutsideMonthTextStyle: textTheme().muted,
-        dayButtonVariant: ShadButtonVariant.ghost,
-        todayButtonVariant: ShadButtonVariant.secondary,
-        selectedDayButtonVariant: ShadButtonVariant.primary,
-        selectedDayButtonOusideMonthVariant: ShadButtonVariant.secondary,
-        insideRangeDayButtonVariant: ShadButtonVariant.secondary,
-        weekdaysTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
-        weekdaysTextAlign: TextAlign.center,
-        gridMainAxisSpacing: 8,
-        gridCrossAxisSpacing: 0,
-        hideWeekdayNames: false,
-        showOutsideDays: true,
-        showWeekNumbers: false,
-        weekStartsOn: 1,
-        fixedWeeks: false,
-        allowDeselection: false,
-      );
+    dayButtonDecoration: ShadDecoration(
+      secondaryFocusedBorder: ShadBorder.all(
+        offset: 2,
+        color: colorScheme.ring.withValues(alpha: .5),
+      ),
+    ),
+    hideNavigation: false,
+    yearSelectorMinWidth: 64,
+    monthSelectorMinWidth: 64,
+    yearSelectorPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    monthSelectorPadding: const EdgeInsets.symmetric(
+      horizontal: 8,
+      vertical: 4,
+    ),
+    navigationButtonSize: 28,
+    navigationButtonIconSize: 16,
+    backNavigationButtonIconData: LucideIcons.chevronLeft,
+    forwardNavigationButtonIconData: LucideIcons.chevronRight,
+    navigationButtonPadding: EdgeInsets.zero,
+    navigationButtonDisabledOpacity: .5,
+    decoration: ShadDecoration(
+      border: ShadBorder.all(
+        radius: radius,
+        padding: const EdgeInsets.all(12),
+        color: colorScheme.border,
+        width: 1,
+      ),
+    ),
+    spacingBetweenMonths: 16,
+    runSpacingBetweenMonths: 16,
+    headerHeight: 38,
+    headerPadding: const EdgeInsets.only(bottom: 16),
+    captionLayoutGap: 8,
+    headerTextStyle: effectiveTextTheme.small,
+    weekdaysPadding: const EdgeInsets.only(bottom: 8),
+    weekNumbersHeaderText: '#',
+    weekNumbersHeaderTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+    weekNumbersTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+    dayButtonSize: 36,
+    dayButtonOutsideMonthOpacity: .5,
+    dayButtonPadding: EdgeInsets.zero,
+    selectedDayButtonTextStyle: textTheme().small.copyWith(
+      fontWeight: FontWeight.normal,
+      color: colorScheme.primaryForeground,
+    ),
+    insideRangeDayButtonTextStyle: textTheme().small.copyWith(
+      color: colorScheme.foreground,
+    ),
+    dayButtonTextStyle: textTheme().small.copyWith(
+      fontWeight: FontWeight.normal,
+      color: colorScheme.foreground,
+    ),
+    dayButtonOutsideMonthVariant: ShadButtonVariant.ghost,
+    dayButtonOutsideMonthTextStyle: textTheme().muted,
+    dayButtonVariant: ShadButtonVariant.ghost,
+    todayButtonVariant: ShadButtonVariant.secondary,
+    selectedDayButtonVariant: ShadButtonVariant.primary,
+    selectedDayButtonOusideMonthVariant: ShadButtonVariant.secondary,
+    insideRangeDayButtonVariant: ShadButtonVariant.secondary,
+    weekdaysTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+    weekdaysTextAlign: TextAlign.center,
+    gridMainAxisSpacing: 8,
+    gridCrossAxisSpacing: 0,
+    hideWeekdayNames: false,
+    showOutsideDays: true,
+    showWeekNumbers: false,
+    weekStartsOn: 1,
+    fixedWeeks: false,
+    allowDeselection: false,
+  );
 
   @override
   ShadDatePickerTheme datePickerTheme() {

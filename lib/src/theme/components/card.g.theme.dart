@@ -25,17 +25,22 @@ mixin _$ShadCardTheme {
       shadows: t < 0.5 ? a?.shadows : b?.shadows,
       width: lerpDouble$(a?.width, b?.width, t),
       height: lerpDouble$(a?.height, b?.height, t),
-      rowMainAxisAlignment:
-          t < 0.5 ? a?.rowMainAxisAlignment : b?.rowMainAxisAlignment,
-      rowCrossAxisAlignment:
-          t < 0.5 ? a?.rowCrossAxisAlignment : b?.rowCrossAxisAlignment,
-      columnMainAxisAlignment:
-          t < 0.5 ? a?.columnMainAxisAlignment : b?.columnMainAxisAlignment,
-      columnCrossAxisAlignment:
-          t < 0.5 ? a?.columnCrossAxisAlignment : b?.columnCrossAxisAlignment,
+      rowMainAxisAlignment: t < 0.5
+          ? a?.rowMainAxisAlignment
+          : b?.rowMainAxisAlignment,
+      rowCrossAxisAlignment: t < 0.5
+          ? a?.rowCrossAxisAlignment
+          : b?.rowCrossAxisAlignment,
+      columnMainAxisAlignment: t < 0.5
+          ? a?.columnMainAxisAlignment
+          : b?.columnMainAxisAlignment,
+      columnCrossAxisAlignment: t < 0.5
+          ? a?.columnCrossAxisAlignment
+          : b?.columnCrossAxisAlignment,
       rowMainAxisSize: t < 0.5 ? a?.rowMainAxisSize : b?.rowMainAxisSize,
-      columnMainAxisSize:
-          t < 0.5 ? a?.columnMainAxisSize : b?.columnMainAxisSize,
+      columnMainAxisSize: t < 0.5
+          ? a?.columnMainAxisSize
+          : b?.columnMainAxisSize,
       clipBehavior: t < 0.5 ? a?.clipBehavior : b?.clipBehavior,
     );
   }

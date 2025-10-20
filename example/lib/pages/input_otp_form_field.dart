@@ -123,8 +123,9 @@ class _InputOTPFormFieldPageState extends State<InputOTPFormFieldPage> {
                         Text('FormValue', style: theme.textTheme.p),
                         const SizedBox(height: 4),
                         SelectableText(
-                          const JsonEncoder.withIndent('    ')
-                              .convert(formValue),
+                          const JsonEncoder.withIndent(
+                            '    ',
+                          ).convert(formValue),
                           style: theme.textTheme.small,
                         ),
                       ],

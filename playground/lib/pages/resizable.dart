@@ -72,13 +72,15 @@ class BasicResizable extends StatelessWidget {
                       id: 0,
                       defaultSize: .3,
                       child: Center(
-                          child: Text('Two', style: theme.textTheme.large)),
+                        child: Text('Two', style: theme.textTheme.large),
+                      ),
                     ),
                     ShadResizablePanel(
                       id: 1,
                       defaultSize: .7,
                       child: Align(
-                          child: Text('Three', style: theme.textTheme.large)),
+                        child: Text('Three', style: theme.textTheme.large),
+                      ),
                     ),
                   ],
                 ),

@@ -112,8 +112,9 @@ mixin _$ShadCalendarTheme {
         t,
       ),
       weekdaysTextAlign: t < 0.5 ? a?.weekdaysTextAlign : b?.weekdaysTextAlign,
-      weekNumbersHeaderText:
-          t < 0.5 ? a?.weekNumbersHeaderText : b?.weekNumbersHeaderText,
+      weekNumbersHeaderText: t < 0.5
+          ? a?.weekNumbersHeaderText
+          : b?.weekNumbersHeaderText,
       weekNumbersHeaderTextStyle: TextStyle.lerp(
         a?.weekNumbersHeaderTextStyle,
         b?.weekNumbersHeaderTextStyle,
@@ -124,8 +125,9 @@ mixin _$ShadCalendarTheme {
         b?.weekNumbersTextStyle,
         t,
       ),
-      weekNumbersTextAlign:
-          t < 0.5 ? a?.weekNumbersTextAlign : b?.weekNumbersTextAlign,
+      weekNumbersTextAlign: t < 0.5
+          ? a?.weekNumbersTextAlign
+          : b?.weekNumbersTextAlign,
       dayButtonSize: lerpDouble$(a?.dayButtonSize, b?.dayButtonSize, t),
       dayButtonOutsideMonthOpacity: lerpDouble$(
         a?.dayButtonOutsideMonthOpacity,
@@ -158,13 +160,15 @@ mixin _$ShadCalendarTheme {
         t,
       ),
       dayButtonVariant: t < 0.5 ? a?.dayButtonVariant : b?.dayButtonVariant,
-      selectedDayButtonVariant:
-          t < 0.5 ? a?.selectedDayButtonVariant : b?.selectedDayButtonVariant,
+      selectedDayButtonVariant: t < 0.5
+          ? a?.selectedDayButtonVariant
+          : b?.selectedDayButtonVariant,
       insideRangeDayButtonVariant: t < 0.5
           ? a?.insideRangeDayButtonVariant
           : b?.insideRangeDayButtonVariant,
-      todayButtonVariant:
-          t < 0.5 ? a?.todayButtonVariant : b?.todayButtonVariant,
+      todayButtonVariant: t < 0.5
+          ? a?.todayButtonVariant
+          : b?.todayButtonVariant,
       gridMainAxisSpacing: lerpDouble$(
         a?.gridMainAxisSpacing,
         b?.gridMainAxisSpacing,
@@ -193,10 +197,12 @@ mixin _$ShadCalendarTheme {
       formatMonth: t < 0.5 ? a?.formatMonth : b?.formatMonth,
       formatYear: t < 0.5 ? a?.formatYear : b?.formatYear,
       formatWeekday: t < 0.5 ? a?.formatWeekday : b?.formatWeekday,
-      dropdownFormatMonth:
-          t < 0.5 ? a?.dropdownFormatMonth : b?.dropdownFormatMonth,
-      dropdownFormatYear:
-          t < 0.5 ? a?.dropdownFormatYear : b?.dropdownFormatYear,
+      dropdownFormatMonth: t < 0.5
+          ? a?.dropdownFormatMonth
+          : b?.dropdownFormatMonth,
+      dropdownFormatYear: t < 0.5
+          ? a?.dropdownFormatYear
+          : b?.dropdownFormatYear,
       showWeekNumbers: t < 0.5 ? a?.showWeekNumbers : b?.showWeekNumbers,
       weekStartsOn: t < 0.5 ? a?.weekStartsOn : b?.weekStartsOn,
       fixedWeeks: t < 0.5 ? a?.fixedWeeks : b?.fixedWeeks,
@@ -321,7 +327,7 @@ mixin _$ShadCalendarTheme {
           dayButtonOutsideMonthVariant ?? a.dayButtonOutsideMonthVariant,
       selectedDayButtonOusideMonthVariant:
           selectedDayButtonOusideMonthVariant ??
-              a.selectedDayButtonOusideMonthVariant,
+          a.selectedDayButtonOusideMonthVariant,
       captionLayout: captionLayout ?? a.captionLayout,
       hideWeekdayNames: hideWeekdayNames ?? a.hideWeekdayNames,
       showOutsideDays: showOutsideDays ?? a.showOutsideDays,
@@ -368,38 +374,41 @@ mixin _$ShadCalendarTheme {
       headerHeight: other.headerHeight,
       headerPadding: other.headerPadding,
       captionLayoutGap: other.captionLayoutGap,
-      headerTextStyle: current.headerTextStyle?.merge(other.headerTextStyle) ??
+      headerTextStyle:
+          current.headerTextStyle?.merge(other.headerTextStyle) ??
           other.headerTextStyle,
       weekdaysPadding: other.weekdaysPadding,
       weekdaysTextStyle:
           current.weekdaysTextStyle?.merge(other.weekdaysTextStyle) ??
-              other.weekdaysTextStyle,
+          other.weekdaysTextStyle,
       weekdaysTextAlign: other.weekdaysTextAlign,
       weekNumbersHeaderText: other.weekNumbersHeaderText,
-      weekNumbersHeaderTextStyle: current.weekNumbersHeaderTextStyle?.merge(
+      weekNumbersHeaderTextStyle:
+          current.weekNumbersHeaderTextStyle?.merge(
             other.weekNumbersHeaderTextStyle,
           ) ??
           other.weekNumbersHeaderTextStyle,
       weekNumbersTextStyle:
           current.weekNumbersTextStyle?.merge(other.weekNumbersTextStyle) ??
-              other.weekNumbersTextStyle,
+          other.weekNumbersTextStyle,
       weekNumbersTextAlign: other.weekNumbersTextAlign,
       dayButtonSize: other.dayButtonSize,
       dayButtonOutsideMonthOpacity: other.dayButtonOutsideMonthOpacity,
       dayButtonPadding: other.dayButtonPadding,
       dayButtonDecoration: other.dayButtonDecoration,
-      selectedDayButtonTextStyle: current.selectedDayButtonTextStyle?.merge(
+      selectedDayButtonTextStyle:
+          current.selectedDayButtonTextStyle?.merge(
             other.selectedDayButtonTextStyle,
           ) ??
           other.selectedDayButtonTextStyle,
       insideRangeDayButtonTextStyle:
           current.insideRangeDayButtonTextStyle?.merge(
-                other.insideRangeDayButtonTextStyle,
-              ) ??
-              other.insideRangeDayButtonTextStyle,
+            other.insideRangeDayButtonTextStyle,
+          ) ??
+          other.insideRangeDayButtonTextStyle,
       dayButtonTextStyle:
           current.dayButtonTextStyle?.merge(other.dayButtonTextStyle) ??
-              other.dayButtonTextStyle,
+          other.dayButtonTextStyle,
       dayButtonVariant: other.dayButtonVariant,
       selectedDayButtonVariant: other.selectedDayButtonVariant,
       insideRangeDayButtonVariant: other.insideRangeDayButtonVariant,
@@ -408,9 +417,9 @@ mixin _$ShadCalendarTheme {
       gridCrossAxisSpacing: other.gridCrossAxisSpacing,
       dayButtonOutsideMonthTextStyle:
           current.dayButtonOutsideMonthTextStyle?.merge(
-                other.dayButtonOutsideMonthTextStyle,
-              ) ??
-              other.dayButtonOutsideMonthTextStyle,
+            other.dayButtonOutsideMonthTextStyle,
+          ) ??
+          other.dayButtonOutsideMonthTextStyle,
       dayButtonOutsideMonthVariant: other.dayButtonOutsideMonthVariant,
       selectedDayButtonOusideMonthVariant:
           other.selectedDayButtonOusideMonthVariant,

@@ -29,8 +29,9 @@ mixin _$ShadRadioTheme {
       runSpacing: lerpDouble$(a?.runSpacing, b?.runSpacing, t),
       alignment: t < 0.5 ? a?.alignment : b?.alignment,
       runAlignment: t < 0.5 ? a?.runAlignment : b?.runAlignment,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
+      crossAxisAlignment: t < 0.5
+          ? a?.crossAxisAlignment
+          : b?.crossAxisAlignment,
       radioPadding: EdgeInsetsGeometry.lerp(
         a?.radioPadding,
         b?.radioPadding,

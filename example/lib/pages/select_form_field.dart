@@ -90,8 +90,9 @@ class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
                   initialValue: initialValue,
                   onChanged: print,
                   options: verifiedEmails
-                      .map((email) =>
-                          ShadOption(value: email, child: Text(email)))
+                      .map(
+                        (email) => ShadOption(value: email, child: Text(email)),
+                      )
                       .toList(),
                   selectedOptionBuilder: (context, value) => value == 'none'
                       ? const Text('Select a verified email to display')
@@ -127,8 +128,9 @@ class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
                         Text('FormValue', style: theme.textTheme.p),
                         const SizedBox(height: 4),
                         SelectableText(
-                          const JsonEncoder.withIndent('    ')
-                              .convert(formValue),
+                          const JsonEncoder.withIndent(
+                            '    ',
+                          ).convert(formValue),
                           style: theme.textTheme.small,
                         ),
                       ],
