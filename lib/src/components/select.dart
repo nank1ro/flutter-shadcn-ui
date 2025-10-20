@@ -1185,14 +1185,14 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                             child: widget.header,
                           ),
                         ),
-                      if (scrollToTopChild != null) scrollToTopChild,
+                      ?scrollToTopChild,
                       Flexible(
                         child: ConstrainedBox(
                           constraints: effectiveConstraints,
                           child: effectiveChild,
                         ),
                       ),
-                      if (scrollToBottomChild != null) scrollToBottomChild,
+                      ?scrollToBottomChild,
                       if (widget.footer != null)
                         Flexible(
                           child: ConstrainedBox(
