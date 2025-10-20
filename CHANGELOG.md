@@ -1,3 +1,9 @@
+## 0.38.3
+
+- **FEAT**: Add `maintainState` to `ShadTabs` to control whether to maintain the state of the tabs when switching between them. Defaults to `true`.
+- **FEAT**: Add `canRequestFocus` to `ShadButton`.
+- **FIX**: Unselected `ShadTab` which was focusable.
+
 ## 0.38.2
 
 - **FEAT**: Add `searchFocusNode` to `ShadSelect` and `ShadSelectFormField` to provide a custom focus node for the search input.
