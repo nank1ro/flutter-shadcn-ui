@@ -583,10 +583,11 @@ class ShadInput extends StatefulWidget {
 class ShadInputState extends State<ShadInput>
     with RestorationMixin
     implements TextSelectionGestureDetectorBuilderDelegate {
-  // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
 
-  FocusNode get effectiveFocusNode => widget.focusNode ?? _focusNode!;
+  FocusNode get effectiveFocusNode =>
+      widget.focusNode ??
+      (_focusNode ??= FocusNode(canRequestFocus: !widget.readOnly));
   final hasFocus = ValueNotifier(false);
   RestorableTextEditingController? _controller;
 
@@ -610,9 +611,6 @@ class ShadInputState extends State<ShadInput>
   @override
   void initState() {
     super.initState();
-    if (widget.focusNode == null) {
-      _focusNode = FocusNode(canRequestFocus: !widget.readOnly);
-    }
     effectiveFocusNode.addListener(onFocusChange);
 
     if (widget.controller == null) {
