@@ -1,7 +1,4 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
-
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
@@ -97,6 +94,7 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
                     }
                   },
                 ),
+
                 if (formValue.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.only(top: 24, left: 12),
