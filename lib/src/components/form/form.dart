@@ -157,6 +157,11 @@ class ShadFormState extends State<ShadForm> {
     _value[id] = value;
   }
 
+  /// Sets forced internal error for a form field
+  void setInternalFieldError(Object id, String? error) {
+    _fields[id]!.setInternalError(error);
+  }
+
   /// Removes internal field value
   void removeInternalFieldValue(Object id) {
     _value.remove(id);

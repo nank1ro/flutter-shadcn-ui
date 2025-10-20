@@ -24,7 +24,6 @@ class ShadFormBuilderField<T> extends FormField<T> {
     super.key,
     required Widget Function(FormFieldState<T>) builder,
     super.onSaved,
-    super.forceErrorText,
     super.validator,
     super.initialValue,
     super.enabled,
@@ -40,6 +39,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.valueTransformer,
     this.onReset,
     this.decorationBuilder,
+    this.forceErrorText,
   }) : super(
          builder: (field) {
            final state =
@@ -124,6 +124,14 @@ class ShadFormBuilderField<T> extends FormField<T> {
   /// {@endtemplate}
   final bool readOnly;
 
+  /// {@template ShadFormBuilderField.forceErrorText}
+  /// An optional forced error text that overrides validation errors.
+  /// If provided, this text is displayed as the error message.
+  /// {@endtemplate}
+  @override
+  // ignore: overridden_fields
+  final String? forceErrorText;
+
   @override
   ShadFormBuilderFieldState<ShadFormBuilderField<T>, T> createState() =>
       ShadFormBuilderFieldState<ShadFormBuilderField<T>, T>();
@@ -148,6 +156,22 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   ShadDecoration get decoration =>
       (widget.decorationBuilder?.call(context) ?? const ShadDecoration())
           .copyWith(hasError: hasError);
+
+  String? _forceErrorText;
+
+  String? get forceErrorText => widget.forceErrorText ?? _forceErrorText;
+
+  @override
+  String? get errorText => forceErrorText ?? super.errorText;
+
+  @override
+  bool get hasError => forceErrorText != null || super.hasError;
+
+  /// Sets an internal error message that overrides validation errors.
+  void setInternalError(String? error) {
+    _forceErrorText = error;
+    didChange(value);
+  }
 
   @override
   F get widget => super.widget as F;
