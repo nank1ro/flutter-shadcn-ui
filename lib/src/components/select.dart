@@ -954,7 +954,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
           children: [
             widget.search ??
                 ShadInput(
-                  focusNode: widget.searchFocusNode,
+                  focusNode: searchFocusNode,
                   leading: Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: Icon(
