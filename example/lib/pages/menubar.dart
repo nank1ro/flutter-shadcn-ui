@@ -107,7 +107,9 @@ class _MenubarPageState extends State<MenubarPage> {
                 divider,
                 const ShadContextMenuItem.inset(child: Text('Reload')),
                 const ShadContextMenuItem.inset(
-                    enabled: false, child: Text('Force Reload')),
+                  enabled: false,
+                  child: Text('Force Reload'),
+                ),
                 divider,
                 const ShadContextMenuItem.inset(
                   child: Text('Toggle Full Screen'),
@@ -117,15 +119,21 @@ class _MenubarPageState extends State<MenubarPage> {
               ],
               child: const Text('View'),
             ),
-            ShadMenubarItem(items: [
-              const ShadContextMenuItem.inset(child: Text('Andy')),
-              ShadContextMenuItem(leading: square, child: const Text('Benoit')),
-              const ShadContextMenuItem.inset(child: Text('Luis')),
-              divider,
-              const ShadContextMenuItem.inset(child: Text('Edit...')),
-              divider,
-              const ShadContextMenuItem.inset(child: Text('Add Profile...')),
-            ], child: const Text('Profiles')),
+            ShadMenubarItem(
+              items: [
+                const ShadContextMenuItem.inset(child: Text('Andy')),
+                ShadContextMenuItem(
+                  leading: square,
+                  child: const Text('Benoit'),
+                ),
+                const ShadContextMenuItem.inset(child: Text('Luis')),
+                divider,
+                const ShadContextMenuItem.inset(child: Text('Edit...')),
+                divider,
+                const ShadContextMenuItem.inset(child: Text('Add Profile...')),
+              ],
+              child: const Text('Profiles'),
+            ),
           ],
         ),
       ],

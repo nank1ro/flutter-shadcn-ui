@@ -42,8 +42,9 @@ void main() {
       expect(columnFinder, findsOneWidget);
     });
 
-    testWidgets('renders with leading and trailing widgets',
-        (WidgetTester tester) async {
+    testWidgets('renders with leading and trailing widgets', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
@@ -72,8 +73,9 @@ void main() {
       );
     });
 
-    testWidgets('applies custom padding correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom padding correctly', (
+      WidgetTester tester,
+    ) async {
       const customPadding = EdgeInsets.all(40);
       await tester.pumpWidget(
         createTestWidget(
@@ -91,8 +93,9 @@ void main() {
       expect(container.padding, customPadding);
     });
 
-    testWidgets('applies custom background color and radius correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom background color and radius correctly', (
+      WidgetTester tester,
+    ) async {
       const customBackgroundColor = Colors.blue;
       const customRadius = BorderRadius.all(Radius.circular(12));
       await tester.pumpWidget(
@@ -114,8 +117,9 @@ void main() {
       expect(decoration?.borderRadius, customRadius);
     });
 
-    testWidgets('applies custom width and height correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom width and height correctly', (
+      WidgetTester tester,
+    ) async {
       const customWidth = 300.0;
       const customHeight = 200.0;
       await tester.pumpWidget(
@@ -157,8 +161,9 @@ void main() {
       expect(row.crossAxisAlignment, CrossAxisAlignment.center);
     });
 
-    testWidgets('handles column alignment correctly',
-        (WidgetTester tester) async {
+    testWidgets('handles column alignment correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
@@ -178,8 +183,9 @@ void main() {
       expect(column.crossAxisAlignment, CrossAxisAlignment.center);
     });
 
-    testWidgets('renders without optional content',
-        (WidgetTester tester) async {
+    testWidgets('renders without optional content', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
@@ -193,8 +199,9 @@ void main() {
       expect(find.text('Footer'), findsNothing); // No footer
     });
 
-    testWidgets('applies default theme styles when not specified',
-        (WidgetTester tester) async {
+    testWidgets('applies default theme styles when not specified', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadCard(

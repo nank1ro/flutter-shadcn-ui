@@ -16,8 +16,9 @@ void main() {
   }
 
   group('ShadRadioGroup and ShadRadio', () {
-    testWidgets('renders with no initial selection correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders with no initial selection correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadRadioGroup<String>(
@@ -59,8 +60,9 @@ void main() {
       expect(wrapFinder, findsOneWidget);
     });
 
-    testWidgets('renders with initial selection correctly',
-        (WidgetTester tester) async {
+    testWidgets('renders with initial selection correctly', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadRadioGroup<String>(
@@ -133,8 +135,9 @@ void main() {
       expect(selectedValue, 'option2');
     });
 
-    testWidgets('handles disabled state correctly',
-        (WidgetTester tester) async {
+    testWidgets('handles disabled state correctly', (
+      WidgetTester tester,
+    ) async {
       String? selectedValue;
       await tester.pumpWidget(
         createTestWidget(
@@ -268,14 +271,15 @@ void main() {
         matching: find.byType(DecoratedBox),
       );
       expect(decoratedBoxFinder, findsOneWidget);
-      final decoratedBox = tester
-          .widget<DecoratedBox>(decoratedBoxFinder)
-          .decoration as BoxDecoration;
+      final decoratedBox =
+          tester.widget<DecoratedBox>(decoratedBoxFinder).decoration
+              as BoxDecoration;
       expect(decoratedBox.color, customColor);
     });
 
-    testWidgets('applies custom spacing correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom spacing correctly', (
+      WidgetTester tester,
+    ) async {
       const customSpacing = 16.0;
       await tester.pumpWidget(
         createTestWidget(
@@ -348,8 +352,10 @@ void main() {
       // Check layout includes radio, label, and sublabel
       final rowFinder = find.byType(Row);
       expect(rowFinder, findsOneWidget);
-      final columnFinder =
-          find.descendant(of: rowFinder, matching: find.byType(Column));
+      final columnFinder = find.descendant(
+        of: rowFinder,
+        matching: find.byType(Column),
+      );
       expect(columnFinder, findsOneWidget);
     });
 

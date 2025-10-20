@@ -293,8 +293,9 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
 
     void setHover(ShadHoverStrategy strategy) {
       final presentInHover = effectiveHoverStrategies.hover.contains(strategy);
-      final presentInUnhover =
-          effectiveHoverStrategies.unhover.contains(strategy);
+      final presentInUnhover = effectiveHoverStrategies.unhover.contains(
+        strategy,
+      );
 
       // Toggle the hover state if the strategy is present in both hover and
       // unhover sets.
@@ -318,10 +319,13 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
 
     void effectiveOnTapDown(TapDownDetails d) {
       setHover(ShadHoverStrategy.onTapDown);
-      final correctedGlobalPosition =
-          correctGlobalPosition(context, d.globalPosition);
-      widget.onTapDown
-          ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
+      final correctedGlobalPosition = correctGlobalPosition(
+        context,
+        d.globalPosition,
+      );
+      widget.onTapDown?.call(
+        d.copyWith(globalPosition: correctedGlobalPosition),
+      );
     }
 
     void effectiveOnTap() {
@@ -335,18 +339,23 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
     }
 
     void effectiveOnSecondaryTapDown(TapDownDetails d) {
-      final correctedGlobalPosition =
-          correctGlobalPosition(context, d.globalPosition);
+      final correctedGlobalPosition = correctGlobalPosition(
+        context,
+        d.globalPosition,
+      );
       widget.onSecondaryTapDown?.call(
         d.copyWith(globalPosition: correctedGlobalPosition),
       );
     }
 
     void effectiveOnSecondaryTapUp(TapUpDetails d) {
-      final correctedGlobalPosition =
-          correctGlobalPosition(context, d.globalPosition);
-      widget.onSecondaryTapUp
-          ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
+      final correctedGlobalPosition = correctGlobalPosition(
+        context,
+        d.globalPosition,
+      );
+      widget.onSecondaryTapUp?.call(
+        d.copyWith(globalPosition: correctedGlobalPosition),
+      );
     }
 
     void effectiveOnSecondaryTapCancel() {
@@ -359,8 +368,10 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
 
     void effectiveOnTapUp(TapUpDetails d) {
       setHover(ShadHoverStrategy.onTapUp);
-      final correctedGlobalPosition =
-          correctGlobalPosition(context, d.globalPosition);
+      final correctedGlobalPosition = correctGlobalPosition(
+        context,
+        d.globalPosition,
+      );
       widget.onTapUp?.call(d.copyWith(globalPosition: correctedGlobalPosition));
     }
 
@@ -371,10 +382,13 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
 
     void effectiveOnDoubleTapDown(TapDownDetails d) {
       setHover(ShadHoverStrategy.onDoubleTapDown);
-      final correctedGlobalPosition =
-          correctGlobalPosition(context, d.globalPosition);
-      widget.onDoubleTapDown
-          ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
+      final correctedGlobalPosition = correctGlobalPosition(
+        context,
+        d.globalPosition,
+      );
+      widget.onDoubleTapDown?.call(
+        d.copyWith(globalPosition: correctedGlobalPosition),
+      );
     }
 
     void effectiveOnDoubleTapCancel() {
@@ -384,10 +398,13 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
 
     void effectiveOnLongPressStart(LongPressStartDetails d) {
       setHover(ShadHoverStrategy.onLongPressStart);
-      final correctedGlobalPosition =
-          correctGlobalPosition(context, d.globalPosition);
-      widget.onLongPressStart
-          ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
+      final correctedGlobalPosition = correctGlobalPosition(
+        context,
+        d.globalPosition,
+      );
+      widget.onLongPressStart?.call(
+        d.copyWith(globalPosition: correctedGlobalPosition),
+      );
     }
 
     void effectiveOnLongPressCancel() {
@@ -402,59 +419,65 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
 
     void effectiveOnLongPressDown(LongPressDownDetails d) {
       setHover(ShadHoverStrategy.onLongPressDown);
-      final correctedGlobalPosition =
-          correctGlobalPosition(context, d.globalPosition);
-      widget.onLongPressDown
-          ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
+      final correctedGlobalPosition = correctGlobalPosition(
+        context,
+        d.globalPosition,
+      );
+      widget.onLongPressDown?.call(
+        d.copyWith(globalPosition: correctedGlobalPosition),
+      );
     }
 
     void effectiveOnLongPressEnd(LongPressEndDetails d) {
       setHover(ShadHoverStrategy.onLongPressEnd);
-      final correctedGlobalPosition =
-          correctGlobalPosition(context, d.globalPosition);
-      widget.onLongPressEnd
-          ?.call(d.copyWith(globalPosition: correctedGlobalPosition));
+      final correctedGlobalPosition = correctGlobalPosition(
+        context,
+        d.globalPosition,
+      );
+      widget.onLongPressEnd?.call(
+        d.copyWith(globalPosition: correctedGlobalPosition),
+      );
     }
 
     gestures[TapGestureRecognizer] =
         GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
-      () => TapGestureRecognizer(
-        debugOwner: this,
-        supportedDevices: widget.supportedDevices,
-      ),
-      (TapGestureRecognizer instance) {
-        instance
-          ..onTapDown = effectiveOnTapDown
-          ..onTapUp = effectiveOnTapUp
-          ..onTap = effectiveOnTap
-          ..onTapCancel = effectiveOnTapCancel
-          ..onSecondaryTapDown = effectiveOnSecondaryTapDown
-          ..onSecondaryTapUp = effectiveOnSecondaryTapUp
-          ..onSecondaryTap = effectiveOnSecondaryTap
-          ..onSecondaryTapCancel = effectiveOnSecondaryTapCancel
-          ..gestureSettings = gestureSettings
-          ..supportedDevices = widget.supportedDevices;
-      },
-    );
+          () => TapGestureRecognizer(
+            debugOwner: this,
+            supportedDevices: widget.supportedDevices,
+          ),
+          (TapGestureRecognizer instance) {
+            instance
+              ..onTapDown = effectiveOnTapDown
+              ..onTapUp = effectiveOnTapUp
+              ..onTap = effectiveOnTap
+              ..onTapCancel = effectiveOnTapCancel
+              ..onSecondaryTapDown = effectiveOnSecondaryTapDown
+              ..onSecondaryTapUp = effectiveOnSecondaryTapUp
+              ..onSecondaryTap = effectiveOnSecondaryTap
+              ..onSecondaryTapCancel = effectiveOnSecondaryTapCancel
+              ..gestureSettings = gestureSettings
+              ..supportedDevices = widget.supportedDevices;
+          },
+        );
 
     if (widget.onDoubleTap != null ||
         widget.onDoubleTapDown != null ||
         widget.onDoubleTapCancel != null) {
       gestures[DoubleTapGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<DoubleTapGestureRecognizer>(
-        () => DoubleTapGestureRecognizer(
-          debugOwner: this,
-          supportedDevices: widget.supportedDevices,
-        ),
-        (DoubleTapGestureRecognizer instance) {
-          instance
-            ..onDoubleTapDown = effectiveOnDoubleTapDown
-            ..onDoubleTap = widget.onDoubleTap
-            ..onDoubleTapCancel = effectiveOnDoubleTapCancel
-            ..gestureSettings = gestureSettings
-            ..supportedDevices = widget.supportedDevices;
-        },
-      );
+            () => DoubleTapGestureRecognizer(
+              debugOwner: this,
+              supportedDevices: widget.supportedDevices,
+            ),
+            (DoubleTapGestureRecognizer instance) {
+              instance
+                ..onDoubleTapDown = effectiveOnDoubleTapDown
+                ..onDoubleTap = widget.onDoubleTap
+                ..onDoubleTapCancel = effectiveOnDoubleTapCancel
+                ..gestureSettings = gestureSettings
+                ..supportedDevices = widget.supportedDevices;
+            },
+          );
     }
 
     if (widget.onLongPressDown != null ||
@@ -466,26 +489,27 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
         widget.onLongPressEnd != null) {
       gestures[LongPressGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<LongPressGestureRecognizer>(
-        () => LongPressGestureRecognizer(
-          duration: widget.longPressDuration ??
-              effectiveHoverStrategies.longPressDuration ??
-              kLongPressTimeout,
-          debugOwner: this,
-          supportedDevices: widget.supportedDevices,
-        ),
-        (LongPressGestureRecognizer instance) {
-          instance
-            ..onLongPressDown = effectiveOnLongPressDown
-            ..onLongPressCancel = effectiveOnLongPressCancel
-            ..onLongPress = widget.onLongPress
-            ..onLongPressStart = effectiveOnLongPressStart
-            ..onLongPressMoveUpdate = widget.onLongPressMoveUpdate
-            ..onLongPressUp = effectiveOnLongPressUp
-            ..onLongPressEnd = effectiveOnLongPressEnd
-            ..gestureSettings = gestureSettings
-            ..supportedDevices = widget.supportedDevices;
-        },
-      );
+            () => LongPressGestureRecognizer(
+              duration:
+                  widget.longPressDuration ??
+                  effectiveHoverStrategies.longPressDuration ??
+                  kLongPressTimeout,
+              debugOwner: this,
+              supportedDevices: widget.supportedDevices,
+            ),
+            (LongPressGestureRecognizer instance) {
+              instance
+                ..onLongPressDown = effectiveOnLongPressDown
+                ..onLongPressCancel = effectiveOnLongPressCancel
+                ..onLongPress = widget.onLongPress
+                ..onLongPressStart = effectiveOnLongPressStart
+                ..onLongPressMoveUpdate = widget.onLongPressMoveUpdate
+                ..onLongPressUp = effectiveOnLongPressUp
+                ..onLongPressEnd = effectiveOnLongPressEnd
+                ..gestureSettings = gestureSettings
+                ..supportedDevices = widget.supportedDevices;
+            },
+          );
     }
 
     if (widget.onForcePressStart != null ||
@@ -494,22 +518,22 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
         widget.onForcePressEnd != null) {
       gestures[ForcePressGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<ForcePressGestureRecognizer>(
-        () => ForcePressGestureRecognizer(
-          debugOwner: this,
-          supportedDevices: widget.supportedDevices,
-          startPressure: widget.forceStartPressure,
-          peakPressure: widget.forcePeakPressure,
-        ),
-        (ForcePressGestureRecognizer instance) {
-          instance
-            ..onStart = widget.onForcePressStart
-            ..onPeak = widget.onForcePressPeak
-            ..onUpdate = widget.onForcePressUpdate
-            ..onEnd = widget.onForcePressEnd
-            ..gestureSettings = gestureSettings
-            ..supportedDevices = widget.supportedDevices;
-        },
-      );
+            () => ForcePressGestureRecognizer(
+              debugOwner: this,
+              supportedDevices: widget.supportedDevices,
+              startPressure: widget.forceStartPressure,
+              peakPressure: widget.forcePeakPressure,
+            ),
+            (ForcePressGestureRecognizer instance) {
+              instance
+                ..onStart = widget.onForcePressStart
+                ..onPeak = widget.onForcePressPeak
+                ..onUpdate = widget.onForcePressUpdate
+                ..onEnd = widget.onForcePressEnd
+                ..gestureSettings = gestureSettings
+                ..supportedDevices = widget.supportedDevices;
+            },
+          );
     }
 
     if (widget.onPanDown != null ||
@@ -519,24 +543,24 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
         widget.onPanCancel != null) {
       gestures[PanGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<PanGestureRecognizer>(
-        () => PanGestureRecognizer(
-          debugOwner: this,
-          supportedDevices: widget.supportedDevices,
-        ),
-        (PanGestureRecognizer instance) {
-          instance
-            ..onDown = widget.onPanDown
-            ..onStart = widget.onPanStart
-            ..onUpdate = widget.onPanUpdate
-            ..onEnd = widget.onPanEnd
-            ..onCancel = widget.onPanCancel
-            ..dragStartBehavior = widget.dragStartBehavior
-            ..multitouchDragStrategy =
-                configuration.getMultitouchDragStrategy(context)
-            ..gestureSettings = gestureSettings
-            ..supportedDevices = widget.supportedDevices;
-        },
-      );
+            () => PanGestureRecognizer(
+              debugOwner: this,
+              supportedDevices: widget.supportedDevices,
+            ),
+            (PanGestureRecognizer instance) {
+              instance
+                ..onDown = widget.onPanDown
+                ..onStart = widget.onPanStart
+                ..onUpdate = widget.onPanUpdate
+                ..onEnd = widget.onPanEnd
+                ..onCancel = widget.onPanCancel
+                ..dragStartBehavior = widget.dragStartBehavior
+                ..multitouchDragStrategy = configuration
+                    .getMultitouchDragStrategy(context)
+                ..gestureSettings = gestureSettings
+                ..supportedDevices = widget.supportedDevices;
+            },
+          );
     }
 
     return TapRegion(

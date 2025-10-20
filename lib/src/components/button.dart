@@ -90,6 +90,7 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.expands,
     this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.primary;
 
   /// Creates a button widget with a specified [variant], allowing full control
@@ -146,6 +147,7 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.expands,
     this.textStyle,
+    this.canRequestFocus,
   });
 
   /// Creates a destructive variant button widget, typically for warning or
@@ -201,6 +203,7 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.expands,
     this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.destructive;
 
   /// Creates an outline variant button widget, typically with a bordered
@@ -256,6 +259,7 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.expands,
     this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.outline;
 
   /// Creates a secondary variant button widget, typically for less prominent
@@ -311,6 +315,7 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.expands,
     this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.secondary;
 
   /// Creates a ghost variant button widget, typically with minimal styling.
@@ -365,6 +370,7 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.expands,
     this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.ghost;
 
   /// Creates a link variant button widget, styled like a hyperlink.
@@ -419,6 +425,7 @@ class ShadButton extends StatefulWidget {
     this.leading,
     this.trailing,
     this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.link;
 
   /// {@template ShadButton.onPressed}
@@ -731,6 +738,12 @@ class ShadButton extends StatefulWidget {
   /// {@endtemplate}
   final TextStyle? textStyle;
 
+  /// {@template ShadButton.canRequestFocus}
+  /// Whether the button can request focus.
+  /// Defaults to true if [enabled] is true, false otherwise.
+  /// {@endtemplate}
+  final bool? canRequestFocus;
+
   @override
   State<ShadButton> createState() => _ShadButtonState();
 }
@@ -885,8 +898,9 @@ class _ShadButtonState extends State<ShadButton> {
     if (widget.hoverForegroundColor != null) {
       return widget.hoverForegroundColor!;
     }
-    final btnThemeHoverForegroundColor =
-        buttonTheme(theme).hoverForegroundColor;
+    final btnThemeHoverForegroundColor = buttonTheme(
+      theme,
+    ).hoverForegroundColor;
     assert(
       btnThemeHoverForegroundColor != null,
       'Button hoverForegroundColor is null in ShadButtonTheme',
@@ -941,27 +955,33 @@ class _ShadButtonState extends State<ShadButton> {
     final theme = ShadTheme.of(context);
     final iconTheme = IconTheme.of(context);
 
-    final hasPressedBackgroundColor = widget.pressedBackgroundColor != null ||
+    final hasPressedBackgroundColor =
+        widget.pressedBackgroundColor != null ||
         buttonTheme(theme).pressedBackgroundColor != null;
-    final hasPressedForegroundColor = widget.pressedForegroundColor != null ||
+    final hasPressedForegroundColor =
+        widget.pressedForegroundColor != null ||
         buttonTheme(theme).pressedForegroundColor != null;
 
     final effectiveDecoration =
-        (buttonTheme(theme).decoration ?? const ShadDecoration())
-            .merge(widget.decoration);
+        (buttonTheme(theme).decoration ?? const ShadDecoration()).merge(
+          widget.decoration,
+        );
 
-    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
+    final effectiveMainAxisAlignment =
+        widget.mainAxisAlignment ??
         buttonTheme(theme).mainAxisAlignment ??
         MainAxisAlignment.center;
 
-    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+    final effectiveCrossAxisAlignment =
+        widget.crossAxisAlignment ??
         buttonTheme(theme).crossAxisAlignment ??
         CrossAxisAlignment.center;
 
     final effectiveLongPressDuration =
         widget.longPressDuration ?? buttonTheme(theme).longPressDuration;
 
-    final effectiveHoverStrategies = widget.hoverStrategies ??
+    final effectiveHoverStrategies =
+        widget.hoverStrategies ??
         buttonTheme(theme).hoverStrategies ??
         theme.hoverStrategies;
 
@@ -973,12 +993,15 @@ class _ShadButtonState extends State<ShadButton> {
     final effectiveExpands =
         widget.expands ?? buttonTheme(theme).expands ?? false;
 
+    final effectiveCanRequestFocus = widget.canRequestFocus ?? widget.enabled;
+
     final keyboardTriggers = <ShortcutActivator>[
       const SingleActivator(LogicalKeyboardKey.enter),
       const SingleActivator(LogicalKeyboardKey.space),
     ];
 
-    final effectiveTextStyle = widget.textStyle ??
+    final effectiveTextStyle =
+        widget.textStyle ??
         buttonTheme(theme).textStyle ??
         theme.textTheme.small;
 
@@ -1000,14 +1023,14 @@ class _ShadButtonState extends State<ShadButton> {
           final effectiveBackgroundColor = hasPressedBackgroundColor && pressed
               ? pressedBackgroundColor(theme)
               : hovered
-                  ? hoverBackground(theme)
-                  : background(theme);
+              ? hoverBackground(theme)
+              : background(theme);
 
           final effectiveForegroundColor = hasPressedForegroundColor && pressed
               ? pressedForegroundColor(theme)
               : hovered
-                  ? hoverForeground(theme)
-                  : foreground(theme);
+              ? hoverForeground(theme)
+              : foreground(theme);
 
           final updatedDecoration = effectiveDecoration.copyWith(
             color: effectiveBackgroundColor,
@@ -1044,7 +1067,7 @@ class _ShadButtonState extends State<ShadButton> {
                   child: AbsorbPointer(
                     absorbing: !enabled,
                     child: ShadFocusable(
-                      canRequestFocus: enabled,
+                      canRequestFocus: effectiveCanRequestFocus,
                       autofocus: widget.autofocus,
                       focusNode: focusNode,
                       onFocusChange: widget.onFocusChange,
@@ -1104,9 +1127,9 @@ class _ShadButtonState extends State<ShadButton> {
                               mainAxisAlignment: effectiveMainAxisAlignment,
                               textDirection: effectiveTextDirection,
                               children: [
-                                if (widget.leading != null) widget.leading!,
-                                if (child != null) child,
-                                if (widget.trailing != null) widget.trailing!,
+                                ?widget.leading,
+                                ?child,
+                                ?widget.trailing,
                               ].separatedBy(SizedBox(width: effectiveGap)),
                             ),
                           ),

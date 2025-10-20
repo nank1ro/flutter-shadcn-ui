@@ -89,10 +89,11 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
     this.contentConstraints,
     this.restorationId,
     this.onChanged,
+    this.maintainState,
   }) : assert(
-          (value != null) ^ (controller != null),
-          'Either value or controller must be provided',
-        );
+         (value != null) ^ (controller != null),
+         'Either value or controller must be provided',
+       );
 
   /// {@template ShadTabs.value}
   /// The currently selected tab.
@@ -168,6 +169,12 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
   /// The callback that is called when the value of the tabs changes.
   /// {@endtemplate}
   final ValueChanged<T>? onChanged;
+
+  /// {@template ShadTabs.maintainState}
+  /// Whether to maintain the state of the tabs when switching between them.
+  /// Defaults to true.
+  /// {@endtemplate}
+  final bool? maintainState;
 
   @override
   State<ShadTabs<T>> createState() => ShadTabsState<T>();
@@ -270,7 +277,8 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
     final theme = ShadTheme.of(context);
     final tabsTheme = theme.tabsTheme;
 
-    final effectiveDragStartBehavior = widget.dragStartBehavior ??
+    final effectiveDragStartBehavior =
+        widget.dragStartBehavior ??
         tabsTheme.dragStartBehavior ??
         DragStartBehavior.start;
 
@@ -289,6 +297,8 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
 
     final effectiveContentConstraints =
         widget.contentConstraints ?? tabsTheme.contentConstraints;
+
+    final effectiveMaintainState = widget.maintainState ?? true;
 
     Widget tabBar = Row(
       spacing: widget.tabsGap ?? tabsTheme.tabsGap ?? 0,
@@ -341,13 +351,18 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
               ...List<Widget>.generate(widget.tabs.length, (int index) {
                 final tab = widget.tabs[index];
                 final selected = tab.value == controller.selected;
-                if (!selected) return const SizedBox.shrink();
-                Widget content = FocusTraversalGroup(
-                  descendantsAreFocusable: selected,
-                  policy: WidgetOrderTraversalPolicy(),
-                  child: KeyedSubtree(
-                    key: _tabKeys[index],
-                    child: tab.content ?? const SizedBox.shrink(),
+                if (!selected && !effectiveMaintainState) {
+                  return const SizedBox.shrink();
+                }
+                Widget content = Offstage(
+                  offstage: !selected,
+                  child: FocusTraversalGroup(
+                    descendantsAreFocusable: selected,
+                    policy: WidgetOrderTraversalPolicy(),
+                    child: KeyedSubtree(
+                      key: _tabKeys[index],
+                      child: tab.content ?? const SizedBox.shrink(),
+                    ),
                   ),
                 );
 
@@ -764,37 +779,44 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
 
     final defaultWidth = inherited.scrollable ? null : double.infinity;
     final effectiveWidth = widget.width ?? tabsTheme.tabWidth ?? defaultWidth;
-    final effectiveBackgroundColor = widget.backgroundColor ??
+    final effectiveBackgroundColor =
+        widget.backgroundColor ??
         tabsTheme.tabBackgroundColor ??
         const Color(0x00000000);
 
-    final effectiveSelectedBackgroundColor = widget.selectedBackgroundColor ??
+    final effectiveSelectedBackgroundColor =
+        widget.selectedBackgroundColor ??
         tabsTheme.tabSelectedBackgroundColor ??
         theme.colorScheme.background;
 
-    final effectiveHoverBackgroundColor = widget.hoverBackgroundColor ??
+    final effectiveHoverBackgroundColor =
+        widget.hoverBackgroundColor ??
         tabsTheme.tabHoverBackgroundColor ??
         effectiveBackgroundColor;
 
     final effectiveSelectedHoverBackgroundColor =
         widget.selectedHoverBackgroundColor ??
-            tabsTheme.tabSelectedHoverBackgroundColor ??
-            effectiveSelectedBackgroundColor;
+        tabsTheme.tabSelectedHoverBackgroundColor ??
+        effectiveSelectedBackgroundColor;
 
-    final effectivePadding = widget.padding ??
+    final effectivePadding =
+        widget.padding ??
         tabsTheme.tabPadding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 6);
 
-    final effectiveForegroundColor = widget.foregroundColor ??
+    final effectiveForegroundColor =
+        widget.foregroundColor ??
         tabsTheme.tabForegroundColor ??
         theme.colorScheme.foreground;
 
-    final effectiveSelectedForegroundColor = widget.selectedForegroundColor ??
+    final effectiveSelectedForegroundColor =
+        widget.selectedForegroundColor ??
         tabsTheme.tabSelectedForegroundColor ??
         effectiveForegroundColor;
 
     final effectiveShadows = widget.shadows ?? tabsTheme.tabShadows;
-    final effectiveSelectedShadows = widget.selectedShadows ??
+    final effectiveSelectedShadows =
+        widget.selectedShadows ??
         tabsTheme.tabSelectedShadows ??
         ShadShadows.sm;
 
@@ -831,42 +853,41 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
 
         final defaultDecoration = switch (theme.disableSecondaryBorder) {
           true => ShadDecoration(
-              border: ShadBorder.all(
-                radius: BorderRadius.circular(2),
-                width: 0,
-                padding: const EdgeInsets.all(2),
-              ),
-              focusedBorder: ShadBorder.all(
-                width: 2,
-                radius: BorderRadius.circular(2),
-                color: theme.colorScheme.ring,
-              ),
+            border: ShadBorder.all(
+              radius: BorderRadius.circular(2),
+              width: 0,
+              padding: const EdgeInsets.all(2),
             ),
+            focusedBorder: ShadBorder.all(
+              width: 2,
+              radius: BorderRadius.circular(2),
+              color: theme.colorScheme.ring,
+            ),
+          ),
           false => ShadDecoration(
-              border:
-                  ShadBorder.all(radius: BorderRadius.circular(2), width: 0),
-              secondaryBorder: ShadBorder.all(
-                width: 0,
-                radius: BorderRadius.circular(2),
-                padding: EdgeInsetsDirectional.fromSTEB(
-                  isFirstTab ? 4 : 2,
-                  4,
-                  isLastTab ? 4 : 2,
-                  4,
-                ),
-              ),
-              secondaryFocusedBorder: ShadBorder.all(
-                width: 2,
-                radius: theme.radius,
-                padding: EdgeInsetsDirectional.fromSTEB(
-                  isFirstTab ? 2 : 0,
-                  2,
-                  isLastTab ? 2 : 0,
-                  2,
-                ),
-                color: theme.colorScheme.ring,
+            border: ShadBorder.all(radius: BorderRadius.circular(2), width: 0),
+            secondaryBorder: ShadBorder.all(
+              width: 0,
+              radius: BorderRadius.circular(2),
+              padding: EdgeInsetsDirectional.fromSTEB(
+                isFirstTab ? 4 : 2,
+                4,
+                isLastTab ? 4 : 2,
+                4,
               ),
             ),
+            secondaryFocusedBorder: ShadBorder.all(
+              width: 2,
+              radius: theme.radius,
+              padding: EdgeInsetsDirectional.fromSTEB(
+                isFirstTab ? 2 : 0,
+                2,
+                isLastTab ? 2 : 0,
+                2,
+              ),
+              color: theme.colorScheme.ring,
+            ),
+          ),
         };
 
         final effectiveDecoration = defaultDecoration
@@ -878,6 +899,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
             .merge(widget.decoration);
 
         return ShadButton.secondary(
+          canRequestFocus: selected,
           leading: widget.leading,
           trailing: widget.trailing,
           focusNode: focusNode,

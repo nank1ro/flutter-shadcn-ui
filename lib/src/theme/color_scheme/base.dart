@@ -52,42 +52,54 @@ class ShadColorScheme {
     Brightness brightness = Brightness.light,
   }) {
     return switch (name) {
-      'blue' => brightness == Brightness.light
-          ? const ShadBlueColorScheme.light()
-          : const ShadBlueColorScheme.dark(),
-      'gray' => brightness == Brightness.light
-          ? const ShadGrayColorScheme.light()
-          : const ShadGrayColorScheme.dark(),
-      'green' => brightness == Brightness.light
-          ? const ShadGreenColorScheme.light()
-          : const ShadGreenColorScheme.dark(),
-      'neutral' => brightness == Brightness.light
-          ? const ShadNeutralColorScheme.light()
-          : const ShadNeutralColorScheme.dark(),
-      'orange' => brightness == Brightness.light
-          ? const ShadOrangeColorScheme.light()
-          : const ShadOrangeColorScheme.dark(),
-      'red' => brightness == Brightness.light
-          ? const ShadRedColorScheme.light()
-          : const ShadRedColorScheme.dark(),
-      'rose' => brightness == Brightness.light
-          ? const ShadRoseColorScheme.light()
-          : const ShadRoseColorScheme.dark(),
-      'slate' => brightness == Brightness.light
-          ? const ShadSlateColorScheme.light()
-          : const ShadSlateColorScheme.dark(),
-      'stone' => brightness == Brightness.light
-          ? const ShadStoneColorScheme.light()
-          : const ShadStoneColorScheme.dark(),
-      'violet' => brightness == Brightness.light
-          ? const ShadVioletColorScheme.light()
-          : const ShadVioletColorScheme.dark(),
-      'yellow' => brightness == Brightness.light
-          ? const ShadYellowColorScheme.light()
-          : const ShadYellowColorScheme.dark(),
-      'zinc' => brightness == Brightness.light
-          ? const ShadZincColorScheme.light()
-          : const ShadZincColorScheme.dark(),
+      'blue' =>
+        brightness == Brightness.light
+            ? const ShadBlueColorScheme.light()
+            : const ShadBlueColorScheme.dark(),
+      'gray' =>
+        brightness == Brightness.light
+            ? const ShadGrayColorScheme.light()
+            : const ShadGrayColorScheme.dark(),
+      'green' =>
+        brightness == Brightness.light
+            ? const ShadGreenColorScheme.light()
+            : const ShadGreenColorScheme.dark(),
+      'neutral' =>
+        brightness == Brightness.light
+            ? const ShadNeutralColorScheme.light()
+            : const ShadNeutralColorScheme.dark(),
+      'orange' =>
+        brightness == Brightness.light
+            ? const ShadOrangeColorScheme.light()
+            : const ShadOrangeColorScheme.dark(),
+      'red' =>
+        brightness == Brightness.light
+            ? const ShadRedColorScheme.light()
+            : const ShadRedColorScheme.dark(),
+      'rose' =>
+        brightness == Brightness.light
+            ? const ShadRoseColorScheme.light()
+            : const ShadRoseColorScheme.dark(),
+      'slate' =>
+        brightness == Brightness.light
+            ? const ShadSlateColorScheme.light()
+            : const ShadSlateColorScheme.dark(),
+      'stone' =>
+        brightness == Brightness.light
+            ? const ShadStoneColorScheme.light()
+            : const ShadStoneColorScheme.dark(),
+      'violet' =>
+        brightness == Brightness.light
+            ? const ShadVioletColorScheme.light()
+            : const ShadVioletColorScheme.dark(),
+      'yellow' =>
+        brightness == Brightness.light
+            ? const ShadYellowColorScheme.light()
+            : const ShadYellowColorScheme.dark(),
+      'zinc' =>
+        brightness == Brightness.light
+            ? const ShadZincColorScheme.light()
+            : const ShadZincColorScheme.dark(),
       _ => throw Exception('Invalid color scheme name'),
     };
   }
@@ -133,21 +145,33 @@ class ShadColorScheme {
       card: Color.lerp(a.card, b.card, t)!,
       cardForeground: Color.lerp(a.cardForeground, b.cardForeground, t)!,
       popover: Color.lerp(a.popover, b.popover, t)!,
-      popoverForeground:
-          Color.lerp(a.popoverForeground, b.popoverForeground, t)!,
+      popoverForeground: Color.lerp(
+        a.popoverForeground,
+        b.popoverForeground,
+        t,
+      )!,
       primary: Color.lerp(a.primary, b.primary, t)!,
-      primaryForeground:
-          Color.lerp(a.primaryForeground, b.primaryForeground, t)!,
+      primaryForeground: Color.lerp(
+        a.primaryForeground,
+        b.primaryForeground,
+        t,
+      )!,
       secondary: Color.lerp(a.secondary, b.secondary, t)!,
-      secondaryForeground:
-          Color.lerp(a.secondaryForeground, b.secondaryForeground, t)!,
+      secondaryForeground: Color.lerp(
+        a.secondaryForeground,
+        b.secondaryForeground,
+        t,
+      )!,
       muted: Color.lerp(a.muted, b.muted, t)!,
       mutedForeground: Color.lerp(a.mutedForeground, b.mutedForeground, t)!,
       accent: Color.lerp(a.accent, b.accent, t)!,
       accentForeground: Color.lerp(a.accentForeground, b.accentForeground, t)!,
       destructive: Color.lerp(a.destructive, b.destructive, t)!,
-      destructiveForeground:
-          Color.lerp(a.destructiveForeground, b.destructiveForeground, t)!,
+      destructiveForeground: Color.lerp(
+        a.destructiveForeground,
+        b.destructiveForeground,
+        t,
+      )!,
       border: Color.lerp(a.border, b.border, t)!,
       input: Color.lerp(a.input, b.input, t)!,
       ring: Color.lerp(a.ring, b.ring, t)!,

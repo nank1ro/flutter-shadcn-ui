@@ -84,29 +84,35 @@ mixin _$ShadMenubarTheme {
       ),
       buttonShadows: t < 0.5 ? a?.buttonShadows : b?.buttonShadows,
       buttonGradient: Gradient.lerp(a?.buttonGradient, b?.buttonGradient, t),
-      buttonTextDecoration:
-          t < 0.5 ? a?.buttonTextDecoration : b?.buttonTextDecoration,
-      buttonHoverTextDecoration:
-          t < 0.5 ? a?.buttonHoverTextDecoration : b?.buttonHoverTextDecoration,
+      buttonTextDecoration: t < 0.5
+          ? a?.buttonTextDecoration
+          : b?.buttonTextDecoration,
+      buttonHoverTextDecoration: t < 0.5
+          ? a?.buttonHoverTextDecoration
+          : b?.buttonHoverTextDecoration,
       buttonDecoration: ShadDecoration.lerp(
         a?.buttonDecoration,
         b?.buttonDecoration,
         t,
       ),
       buttonGap: lerpDouble$(a?.buttonGap, b?.buttonGap, t),
-      buttonMainAxisAlignment:
-          t < 0.5 ? a?.buttonMainAxisAlignment : b?.buttonMainAxisAlignment,
-      buttonCrossAxisAlignment:
-          t < 0.5 ? a?.buttonCrossAxisAlignment : b?.buttonCrossAxisAlignment,
-      buttonHoverStrategies:
-          t < 0.5 ? a?.buttonHoverStrategies : b?.buttonHoverStrategies,
+      buttonMainAxisAlignment: t < 0.5
+          ? a?.buttonMainAxisAlignment
+          : b?.buttonMainAxisAlignment,
+      buttonCrossAxisAlignment: t < 0.5
+          ? a?.buttonCrossAxisAlignment
+          : b?.buttonCrossAxisAlignment,
+      buttonHoverStrategies: t < 0.5
+          ? a?.buttonHoverStrategies
+          : b?.buttonHoverStrategies,
       buttonLongPressDuration: lerpDuration$(
         a?.buttonLongPressDuration,
         b?.buttonLongPressDuration,
         t,
       ),
-      buttonTextDirection:
-          t < 0.5 ? a?.buttonTextDirection : b?.buttonTextDirection,
+      buttonTextDirection: t < 0.5
+          ? a?.buttonTextDirection
+          : b?.buttonTextDirection,
       buttonExpands: t < 0.5 ? a?.buttonExpands : b?.buttonExpands,
       selectOnHover: t < 0.5 ? a?.selectOnHover : b?.selectOnHover,
     );

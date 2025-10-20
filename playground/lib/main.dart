@@ -33,8 +33,9 @@ void setupInitialThemeFromURL() {
 
   final themeModeParam = uri.queryParameters['themeMode'];
   if (themeModeParam != null) {
-    themeSignal.value =
-        themeModeParam == 'dark' ? ThemeMode.dark : ThemeMode.light;
+    themeSignal.value = themeModeParam == 'dark'
+        ? ThemeMode.dark
+        : ThemeMode.light;
   }
 
   final themeColorParam = uri.queryParameters['themeColor'];
@@ -70,8 +71,9 @@ void setupWindowMessagesListener() {
 }
 
 void handleThemeEvent(Map data) {
-  final themeMode =
-      data['themeMode'] == 'dark' ? ThemeMode.dark : ThemeMode.light;
+  final themeMode = data['themeMode'] == 'dark'
+      ? ThemeMode.dark
+      : ThemeMode.light;
   final String? themeColor = data['themeColor'];
 
   themeSignal.value = themeMode;

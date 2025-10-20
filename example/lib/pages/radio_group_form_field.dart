@@ -126,8 +126,9 @@ class _RadioGroupFormFieldPageState extends State<RadioGroupFormFieldPage> {
                         Text('FormValue', style: theme.textTheme.p),
                         const SizedBox(height: 4),
                         SelectableText(
-                          const JsonEncoder.withIndent('    ')
-                              .convert(formValue),
+                          const JsonEncoder.withIndent(
+                            '    ',
+                          ).convert(formValue),
                           style: theme.textTheme.small,
                         ),
                       ],

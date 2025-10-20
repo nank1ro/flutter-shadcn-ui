@@ -16,8 +16,9 @@ class AlertPage extends StatelessWidget {
           child: const ShadAlert(
             icon: Icon(LucideIcons.terminal),
             title: Text('Heads up!'),
-            description:
-                Text('You can add components to your app using the cli.'),
+            description: Text(
+              'You can add components to your app using the cli.',
+            ),
           ),
         ),
         ConstrainedBox(

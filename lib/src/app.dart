@@ -57,14 +57,14 @@ class ShadApp extends StatefulWidget {
     this.themeCurve = Curves.linear,
     this.materialThemeBuilder,
     this.backgroundColor,
-  })  : routeInformationProvider = null,
-        routeInformationParser = null,
-        routerDelegate = null,
-        backButtonDispatcher = null,
-        routerConfig = null,
-        cupertinoThemeBuilder = null,
-        appBuilder = null,
-        type = ShadAppType.shadcn;
+  }) : routeInformationProvider = null,
+       routeInformationParser = null,
+       routerDelegate = null,
+       backButtonDispatcher = null,
+       routerConfig = null,
+       cupertinoThemeBuilder = null,
+       appBuilder = null,
+       type = ShadAppType.shadcn;
 
   /// Creates a [ShadApp] that uses the [Router] instead of a [Navigator].
   const ShadApp.router({
@@ -97,18 +97,18 @@ class ShadApp extends StatefulWidget {
     this.themeCurve = Curves.linear,
     this.materialThemeBuilder,
     this.backgroundColor,
-  })  : navigatorObservers = null,
-        navigatorKey = null,
-        onGenerateRoute = null,
-        home = null,
-        onGenerateInitialRoutes = null,
-        onUnknownRoute = null,
-        routes = null,
-        initialRoute = null,
-        pageRouteBuilder = null,
-        cupertinoThemeBuilder = null,
-        appBuilder = null,
-        type = ShadAppType.shadcn;
+  }) : navigatorObservers = null,
+       navigatorKey = null,
+       onGenerateRoute = null,
+       home = null,
+       onGenerateInitialRoutes = null,
+       onUnknownRoute = null,
+       routes = null,
+       initialRoute = null,
+       pageRouteBuilder = null,
+       cupertinoThemeBuilder = null,
+       appBuilder = null,
+       type = ShadAppType.shadcn;
 
   const ShadApp.custom({
     super.key,
@@ -116,42 +116,42 @@ class ShadApp extends StatefulWidget {
     this.theme,
     this.darkTheme,
     this.themeMode,
-  })  : actions = null,
-        backButtonDispatcher = null,
-        onNavigationNotification = null,
-        builder = null,
-        color = null,
-        cupertinoThemeBuilder = null,
-        debugShowCheckedModeBanner = false,
-        home = null,
-        initialRoute = null,
-        locale = null,
-        localeListResolutionCallback = null,
-        localeResolutionCallback = null,
-        localizationsDelegates = null,
-        materialThemeBuilder = null,
-        navigatorKey = null,
-        navigatorObservers = null,
-        onGenerateInitialRoutes = null,
-        onGenerateRoute = null,
-        onGenerateTitle = null,
-        onUnknownRoute = null,
-        pageRouteBuilder = null,
-        restorationScopeId = null,
-        routeInformationParser = null,
-        routeInformationProvider = null,
-        routerConfig = null,
-        routerDelegate = null,
-        routes = null,
-        backgroundColor = null,
-        scrollBehavior = const ShadScrollBehavior(),
-        shortcuts = null,
-        showPerformanceOverlay = false,
-        showSemanticsDebugger = false,
-        supportedLocales = const <Locale>[Locale('en', 'US')],
-        themeCurve = Curves.linear,
-        title = '',
-        type = ShadAppType.custom;
+  }) : actions = null,
+       backButtonDispatcher = null,
+       onNavigationNotification = null,
+       builder = null,
+       color = null,
+       cupertinoThemeBuilder = null,
+       debugShowCheckedModeBanner = false,
+       home = null,
+       initialRoute = null,
+       locale = null,
+       localeListResolutionCallback = null,
+       localeResolutionCallback = null,
+       localizationsDelegates = null,
+       materialThemeBuilder = null,
+       navigatorKey = null,
+       navigatorObservers = null,
+       onGenerateInitialRoutes = null,
+       onGenerateRoute = null,
+       onGenerateTitle = null,
+       onUnknownRoute = null,
+       pageRouteBuilder = null,
+       restorationScopeId = null,
+       routeInformationParser = null,
+       routeInformationProvider = null,
+       routerConfig = null,
+       routerDelegate = null,
+       routes = null,
+       backgroundColor = null,
+       scrollBehavior = const ShadScrollBehavior(),
+       shortcuts = null,
+       showPerformanceOverlay = false,
+       showSemanticsDebugger = false,
+       supportedLocales = const <Locale>[Locale('en', 'US')],
+       themeCurve = Curves.linear,
+       title = '',
+       type = ShadAppType.custom;
 
   /// The type of app to use.
   ///
@@ -235,7 +235,7 @@ class ShadApp extends StatefulWidget {
 
   /// {@macro flutter.widgets.widgetsApp.onNavigationNotification}
   final NotificationListenerCallback<NavigationNotification>?
-      onNavigationNotification;
+  onNavigationNotification;
 
   /// {@macro flutter.widgets.widgetsApp.navigatorObservers}
   final List<NavigatorObserver>? navigatorObservers;
@@ -413,12 +413,13 @@ class ShadApp extends StatefulWidget {
   final Color? backgroundColor;
 
   final ThemeData Function(BuildContext context, ThemeData theme)?
-      materialThemeBuilder;
+  materialThemeBuilder;
 
   final CupertinoThemeData Function(
     BuildContext context,
     CupertinoThemeData theme,
-  )? cupertinoThemeBuilder;
+  )?
+  cupertinoThemeBuilder;
 
   @override
   State<ShadApp> createState() => _ShadAppState();
@@ -488,7 +489,8 @@ class _ShadAppState extends State<ShadApp> {
   ShadThemeData theme(BuildContext context) {
     final mode = widget.themeMode ?? ThemeMode.system;
     final platformBrightness = MediaQuery.platformBrightnessOf(context);
-    final useDarkStyle = mode == ThemeMode.dark ||
+    final useDarkStyle =
+        mode == ThemeMode.dark ||
         (mode == ThemeMode.system && platformBrightness == Brightness.dark);
 
     final data = () {
@@ -644,7 +646,8 @@ class _ShadAppState extends State<ShadApp> {
             restorationScopeId: widget.restorationScopeId,
             localizationsDelegates: localizationsDelegates,
             textStyle: TextStyle(color: theme.colorScheme.foreground),
-            pageRouteBuilder: widget.pageRouteBuilder ??
+            pageRouteBuilder:
+                widget.pageRouteBuilder ??
                 <T>(RouteSettings settings, WidgetBuilder builder) {
                   return MaterialPageRoute<T>(
                     settings: settings,

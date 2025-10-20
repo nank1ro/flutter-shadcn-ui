@@ -23,16 +23,16 @@ class ShadPanelInfo {
     required this.defaultSize,
     this.minSize = 0,
     this.maxSize = 0,
-  })  : _size = defaultSize,
-        assert(
-          minSize >= 0 && minSize <= 1.0,
-          'minSize must be between 0 and 1',
-        ),
-        assert(
-          maxSize >= 0 && maxSize <= 1.0,
-          'maxSize must be between 0 and 1',
-        ),
-        assert(defaultSize >= 0 && defaultSize <= 1);
+  }) : _size = defaultSize,
+       assert(
+         minSize >= 0 && minSize <= 1.0,
+         'minSize must be between 0 and 1',
+       ),
+       assert(
+         maxSize >= 0 && maxSize <= 1.0,
+         'maxSize must be between 0 and 1',
+       ),
+       assert(defaultSize >= 0 && defaultSize <= 1);
 
   double get size => _size;
 
@@ -139,13 +139,14 @@ class ShadResizableController extends ChangeNotifier {
     final leadingPanelInfo = getPanelInfo(index);
     final trailingPanelInfo = getPanelInfo(index + 1);
     final newLeadingSize = size;
-    final offset = (-((leadingPanelInfo.size - newLeadingSize) *
-            (totalAvailableWidth * base)))
-        .asFixed(6);
+    final offset =
+        (-((leadingPanelInfo.size - newLeadingSize) *
+                (totalAvailableWidth * base)))
+            .asFixed(6);
     final newTrailingSize =
         (trailingPanelInfo.size * totalAvailableWidth - offset) /
-            totalAvailableWidth /
-            base;
+        totalAvailableWidth /
+        base;
 
     if (newLeadingSize < leadingPanelInfo.minSize ||
         newTrailingSize > trailingPanelInfo.maxSize) {
@@ -424,8 +425,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     required Offset offset,
   }) {
     final rtl = Directionality.of(context) == TextDirection.rtl;
-    var axisOffset =
-        (widget.axis == Axis.horizontal ? offset.dx : offset.dy).asFixed(6);
+    var axisOffset = (widget.axis == Axis.horizontal ? offset.dx : offset.dy)
+        .asFixed(6);
 
     // Invert the offset for RTL horizontal dragging
     if (rtl && widget.axis == Axis.horizontal) {
@@ -435,7 +436,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     final leadingPanelInfo = getPanelInfo(index);
     final newLeadingSize =
         (leadingPanelInfo.size * controller.totalAvailableWidth + axisOffset) /
-            controller.totalAvailableWidth;
+        controller.totalAvailableWidth;
 
     final result = controller.resize(
       index: index,
@@ -478,26 +479,30 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
     final effectiveDividerThickness =
         widget.dividerThickness ?? theme.resizableTheme.dividerThickness ?? 1.0;
-    final effectiveResetOnDoubleTap = widget.resetOnDoubleTap ??
+    final effectiveResetOnDoubleTap =
+        widget.resetOnDoubleTap ??
         theme.resizableTheme.resetOnDoubleTap ??
         true;
 
-    final effectiveDividerColor = widget.dividerColor ??
+    final effectiveDividerColor =
+        widget.dividerColor ??
         theme.resizableTheme.dividerColor ??
         theme.colorScheme.border;
 
-    final effectiveHandleDecoration = ShadDecoration(
-      color: theme.colorScheme.border,
-      border: ShadBorder.all(
-        radius: const BorderRadius.all(Radius.circular(4)),
-        width: 0,
-      ),
-      disableSecondaryBorder: true,
-    )
-        .merge(theme.resizableTheme.handleDecoration)
-        .merge(widget.handleDecoration);
+    final effectiveHandleDecoration =
+        ShadDecoration(
+              color: theme.colorScheme.border,
+              border: ShadBorder.all(
+                radius: const BorderRadius.all(Radius.circular(4)),
+                width: 0,
+              ),
+              disableSecondaryBorder: true,
+            )
+            .merge(theme.resizableTheme.handleDecoration)
+            .merge(widget.handleDecoration);
 
-    final effectiveHandlePadding = widget.handlePadding ??
+    final effectiveHandlePadding =
+        widget.handlePadding ??
         theme.resizableTheme.handlePadding ??
         EdgeInsets.symmetric(
           horizontal: widget.axis == Axis.vertical ? 3 : 1,
@@ -506,16 +511,20 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     final effectiveHandleSize =
         widget.handleSize ?? theme.resizableTheme.handleSize ?? 10;
 
-    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
+    final effectiveMainAxisAlignment =
+        widget.mainAxisAlignment ??
         theme.resizableTheme.mainAxisAlignment ??
         MainAxisAlignment.start;
-    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+    final effectiveCrossAxisAlignment =
+        widget.crossAxisAlignment ??
         theme.resizableTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
-    final effectiveMainAxisSize = widget.mainAxisSize ??
+    final effectiveMainAxisSize =
+        widget.mainAxisSize ??
         theme.resizableTheme.mainAxisSize ??
         MainAxisSize.max;
-    final effectiveVerticalDirection = widget.verticalDirection ??
+    final effectiveVerticalDirection =
+        widget.verticalDirection ??
         theme.resizableTheme.verticalDirection ??
         VerticalDirection.down;
     final effectiveTextDirection =
@@ -524,28 +533,27 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     return ListenableBuilder(
       listenable: controller,
       builder: (context, child) {
-        final effectivesSizes =
-            controller.panelsInfo.map((e) => e.size).toList();
+        final effectivesSizes = controller.panelsInfo
+            .map((e) => e.size)
+            .toList();
 
         final rtl = Directionality.of(context) == TextDirection.rtl;
 
         final divider = switch (widget.axis) {
           Axis.horizontal => ShadSeparator.vertical(
-              margin:
-                  EdgeInsets.symmetric(horizontal: effectiveDividerSize / 2),
+            margin: EdgeInsets.symmetric(horizontal: effectiveDividerSize / 2),
+            thickness: effectiveDividerThickness,
+            color: effectiveDividerColor,
+          ),
+          Axis.vertical => SizedBox(
+            // double.infinity doesn't work, just providing a big number
+            width: 50000,
+            child: ShadSeparator.horizontal(
+              margin: EdgeInsets.symmetric(vertical: effectiveDividerSize / 2),
               thickness: effectiveDividerThickness,
               color: effectiveDividerColor,
             ),
-          Axis.vertical => SizedBox(
-              // double.infinity doesn't work, just providing a big number
-              width: 50000,
-              child: ShadSeparator.horizontal(
-                margin:
-                    EdgeInsets.symmetric(vertical: effectiveDividerSize / 2),
-                thickness: effectiveDividerThickness,
-                color: effectiveDividerColor,
-              ),
-            ),
+          ),
         };
 
         return LayoutBuilder(
@@ -582,7 +590,8 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
             );
 
             // lazy, will be initialized when the handle is needed
-            late final handle = widget.handleIcon ??
+            late final handle =
+                widget.handleIcon ??
                 ShadDecorator(
                   decoration: effectiveHandleDecoration,
                   child: Padding(
@@ -599,11 +608,12 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
             final dividers = <Widget>[];
             for (var i = 0; i < dividersCount; i++) {
-              var leadingPosition =
-                  effectivesSizes.sublist(0, i + 1).fold<double>(
-                        0,
-                        (previousValue, element) => previousValue + element,
-                      );
+              var leadingPosition = effectivesSizes
+                  .sublist(0, i + 1)
+                  .fold<double>(
+                    0,
+                    (previousValue, element) => previousValue + element,
+                  );
 
               leadingPosition = isHorizontal
                   ? leadingPosition * constraints.maxWidth / controller.base
@@ -620,13 +630,15 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
                   right: isHorizontal && rtl ? leadingPosition : null,
                   bottom: isHorizontal ? 0 : null,
                   child: GestureDetector(
-                    onDoubleTap: widget.onDividerDoubleTap ??
+                    onDoubleTap:
+                        widget.onDividerDoubleTap ??
                         () {
                           if (!effectiveResetOnDoubleTap) return;
                           resetDefaultSizes(i, i + 1);
                         },
-                    onHorizontalDragStart:
-                        isHorizontal ? (_) => dragging.value = true : null,
+                    onHorizontalDragStart: isHorizontal
+                        ? (_) => dragging.value = true
+                        : null,
                     onHorizontalDragEnd: (_) =>
                         isHorizontal ? dragging.value = false : null,
                     onHorizontalDragCancel: () =>
@@ -637,8 +649,9 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
                             index: i,
                           )
                         : null,
-                    onVerticalDragStart:
-                        isVertical ? (_) => dragging.value = true : null,
+                    onVerticalDragStart: isVertical
+                        ? (_) => dragging.value = true
+                        : null,
                     onVerticalDragEnd: (_) =>
                         isVertical ? dragging.value = false : null,
                     onVerticalDragCancel: () =>
@@ -709,23 +722,23 @@ class ShadResizablePanel extends StatelessWidget {
     required this.defaultSize,
     this.minSize = 0.0,
     this.maxSize = 1.0,
-  })  : assert(
-          minSize >= 0,
-          'minSize must be greater than or equal to 0',
-        ),
-        assert(
-          maxSize >= 0,
-          'maxSize must be greater than or equal to 0',
-        ),
-        assert(
-          minSize <= maxSize,
-          'minSize must be less than or equal to maxSize',
-        ),
-        assert(
-          defaultSize >= minSize && defaultSize <= maxSize,
-          'defaultSize must be greater than or equal to minSize and less than'
-          ' or equal to maxSize',
-        );
+  }) : assert(
+         minSize >= 0,
+         'minSize must be greater than or equal to 0',
+       ),
+       assert(
+         maxSize >= 0,
+         'maxSize must be greater than or equal to 0',
+       ),
+       assert(
+         minSize <= maxSize,
+         'minSize must be less than or equal to maxSize',
+       ),
+       assert(
+         defaultSize >= minSize && defaultSize <= maxSize,
+         'defaultSize must be greater than or equal to minSize and less than'
+         ' or equal to maxSize',
+       );
 
   /// {@template ShadResizablePanel.id}
   /// The unique identifier for the panel.

@@ -5,7 +5,7 @@ class ShadTextEditingController extends TextEditingController {
   ShadTextEditingController({super.text});
 
   ShadTextEditingController.fromValue(TextEditingValue super.value)
-      : super.fromValue();
+    : super.fromValue();
 
   TextEditingValue? previousValue;
 

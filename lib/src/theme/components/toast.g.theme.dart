@@ -26,8 +26,9 @@ mixin _$ShadToastTheme {
       animateIn: t < 0.5 ? a?.animateIn : b?.animateIn,
       animateOut: t < 0.5 ? a?.animateOut : b?.animateOut,
       textDirection: t < 0.5 ? a?.textDirection : b?.textDirection,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
+      crossAxisAlignment: t < 0.5
+          ? a?.crossAxisAlignment
+          : b?.crossAxisAlignment,
       showCloseIconOnlyWhenHovered: t < 0.5
           ? a?.showCloseIconOnlyWhenHovered
           : b?.showCloseIconOnlyWhenHovered,
@@ -137,7 +138,7 @@ mixin _$ShadToastTheme {
           current.titleStyle?.merge(other.titleStyle) ?? other.titleStyle,
       descriptionStyle:
           current.descriptionStyle?.merge(other.descriptionStyle) ??
-              other.descriptionStyle,
+          other.descriptionStyle,
       actionPadding: other.actionPadding,
       border: current.border?.merge(other.border) ?? other.border,
       radius: other.radius,

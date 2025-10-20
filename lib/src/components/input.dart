@@ -101,18 +101,21 @@ class ShadInput extends StatefulWidget {
     this.groupId,
     this.scrollbarPadding,
     this.keyboardToolbarBuilder,
-  })  : smartDashesType = smartDashesType ??
-            (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
-        smartQuotesType = smartQuotesType ??
-            (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
-        keyboardType = keyboardType ??
-            (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
-        enableInteractiveSelection =
-            enableInteractiveSelection ?? (!readOnly || !obscureText),
-        assert(
-          initialValue == null || controller == null,
-          'Either initialValue or controller must be specified',
-        );
+  }) : smartDashesType =
+           smartDashesType ??
+           (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
+       smartQuotesType =
+           smartQuotesType ??
+           (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
+       keyboardType =
+           keyboardType ??
+           (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
+       enableInteractiveSelection =
+           enableInteractiveSelection ?? (!readOnly || !obscureText),
+       assert(
+         initialValue == null || controller == null,
+         'Either initialValue or controller must be specified',
+       );
 
   /// {@template ShadInput.initialValue}
   /// The initial text value of the input.
@@ -580,10 +583,11 @@ class ShadInput extends StatefulWidget {
 class ShadInputState extends State<ShadInput>
     with RestorationMixin
     implements TextSelectionGestureDetectorBuilderDelegate {
-  // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
 
-  FocusNode get effectiveFocusNode => widget.focusNode ?? _focusNode!;
+  FocusNode get effectiveFocusNode =>
+      widget.focusNode ??
+      (_focusNode ??= FocusNode(canRequestFocus: !widget.readOnly));
   final hasFocus = ValueNotifier(false);
   RestorableTextEditingController? _controller;
 
@@ -607,9 +611,6 @@ class ShadInputState extends State<ShadInput>
   @override
   void initState() {
     super.initState();
-    if (widget.focusNode == null) {
-      _focusNode = FocusNode(canRequestFocus: !widget.readOnly);
-    }
     effectiveFocusNode.addListener(onFocusChange);
 
     if (widget.controller == null) {
@@ -781,10 +782,12 @@ class ShadInputState extends State<ShadInput>
         .merge(widget.style);
 
     final effectiveDecoration =
-        (theme.inputTheme.decoration ?? const ShadDecoration())
-            .merge(widget.decoration);
+        (theme.inputTheme.decoration ?? const ShadDecoration()).merge(
+          widget.decoration,
+        );
 
-    final effectiveCursorColor = widget.cursorColor ??
+    final effectiveCursorColor =
+        widget.cursorColor ??
         theme.inputTheme.cursorColor ??
         theme.colorScheme.primary;
 
@@ -797,11 +800,13 @@ class ShadInputState extends State<ShadInput>
     final effectiveCursorRadius =
         widget.cursorRadius ?? theme.inputTheme.cursorRadius;
 
-    final effectiveCursorOpacityAnimates = widget.cursorOpacityAnimates ??
+    final effectiveCursorOpacityAnimates =
+        widget.cursorOpacityAnimates ??
         theme.inputTheme.cursorOpacityAnimates ??
         false;
 
-    final effectivePadding = widget.padding ??
+    final effectivePadding =
+        widget.padding ??
         theme.inputTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
@@ -817,18 +822,21 @@ class ShadInputState extends State<ShadInput>
         ? Alignment.topRight
         : Alignment.topLeft;
 
-    final effectivePlaceholderAlignment = widget.placeholderAlignment ??
+    final effectivePlaceholderAlignment =
+        widget.placeholderAlignment ??
         theme.inputTheme.placeholderAlignment ??
         defaultAlignment;
 
     final effectiveAlignemnt =
         widget.alignment ?? theme.inputTheme.alignment ?? defaultAlignment;
 
-    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
+    final effectiveMainAxisAlignment =
+        widget.mainAxisAlignment ??
         theme.inputTheme.mainAxisAlignment ??
         MainAxisAlignment.start;
 
-    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+    final effectiveCrossAxisAlignment =
+        widget.crossAxisAlignment ??
         theme.inputTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
     final effectiveMouseCursor =
@@ -836,7 +844,8 @@ class ShadInputState extends State<ShadInput>
 
     final effectiveGap = widget.gap ?? theme.inputTheme.gap ?? 8.0;
 
-    final effectiveMaxLengthEnforcement = widget.maxLengthEnforcement ??
+    final effectiveMaxLengthEnforcement =
+        widget.maxLengthEnforcement ??
         LengthLimitingTextInputFormatter.getDefaultMaxLengthEnforcement(
           defaultTargetPlatform,
         );
@@ -859,7 +868,8 @@ class ShadInputState extends State<ShadInput>
     );
     final maxFontSizeScaled = textScaler.scale(maxFontSize);
 
-    final effectiveConstraints = widget.constraints ??
+    final effectiveConstraints =
+        widget.constraints ??
         BoxConstraints(
           minHeight: maxFontSizeScaled,
         );
@@ -888,8 +898,9 @@ class ShadInputState extends State<ShadInput>
                     child: RawScrollbar(
                       thumbVisibility: isMultiline && isScrollable,
                       controller: effectiveScrollController,
-                      padding: effectiveScrollbarPadding
-                          ?.resolve(Directionality.of(context)),
+                      padding: effectiveScrollbarPadding?.resolve(
+                        Directionality.of(context),
+                      ),
                       child: SingleChildScrollView(
                         controller: effectiveScrollController,
                         padding: effectivePadding,
@@ -944,8 +955,9 @@ class ShadInputState extends State<ShadInput>
                                                     _handleSelectionChanged,
                                                 selectionColor: focused
                                                     ? widget.selectionColor ??
-                                                        theme.colorScheme
-                                                            .selection
+                                                          theme
+                                                              .colorScheme
+                                                              .selection
                                                     : null,
                                                 selectionHeightStyle:
                                                     widget.selectionHeightStyle,
@@ -979,7 +991,7 @@ class ShadInputState extends State<ShadInput>
                                                     widget.keyboardType,
                                                 keyboardAppearance:
                                                     widget.keyboardAppearance ??
-                                                        theme.brightness,
+                                                    theme.brightness,
                                                 textInputAction:
                                                     widget.textInputAction,
                                                 textCapitalization:
@@ -1017,11 +1029,11 @@ class ShadInputState extends State<ShadInput>
                                                 // Scrollbar above.
                                                 scrollBehavior:
                                                     ScrollConfiguration.of(
-                                                  context,
-                                                ).copyWith(
-                                                  scrollbars: false,
-                                                  overscroll: false,
-                                                ),
+                                                      context,
+                                                    ).copyWith(
+                                                      scrollbars: false,
+                                                      overscroll: false,
+                                                    ),
                                                 autofillHints:
                                                     widget.autofillHints,
                                                 clipBehavior:
@@ -1078,8 +1090,8 @@ class _InputSelectionGestureDetectorBuilder
     extends TextSelectionGestureDetectorBuilder {
   _InputSelectionGestureDetectorBuilder({
     required ShadInputState state,
-  })  : _state = state,
-        super(delegate: state);
+  }) : _state = state,
+       super(delegate: state);
 
   final ShadInputState _state;
 
