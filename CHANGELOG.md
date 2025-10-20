@@ -1,6 +1,6 @@
 ## 0.38.3
 
-- **FEAT**: Add `maintainState` to `ShadTabs` to control whether to mantain the state of the tabs when switching between them. Defaults to `true`.
+- **FEAT**: Add `maintainState` to `ShadTabs` to control whether to maintain the state of the tabs when switching between them. Defaults to `true`.
 - **FEAT**: Add `canRequestFocus` to `ShadButton`.
 - **FIX**: Unselected `ShadTab` which was focusable.
 
