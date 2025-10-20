@@ -742,7 +742,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
       showScrollToTop.value = scrollController.offset > 0;
     });
 
-    if (widget.variant == ShadSelectVariant.search) {
+    final hasSearch =
+        widget.variant == ShadSelectVariant.search ||
+        widget.variant == ShadSelectVariant.multipleWithSearch;
+    if (hasSearch) {
       popoverController.addListener(() {
         if (popoverController.isOpen) return;
         final effectiveClearSearchOnClose =
