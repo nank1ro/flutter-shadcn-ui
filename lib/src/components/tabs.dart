@@ -89,6 +89,7 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
     this.contentConstraints,
     this.restorationId,
     this.onChanged,
+    this.maintainState,
   }) : assert(
          (value != null) ^ (controller != null),
          'Either value or controller must be provided',
@@ -168,6 +169,12 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
   /// The callback that is called when the value of the tabs changes.
   /// {@endtemplate}
   final ValueChanged<T>? onChanged;
+
+  /// {@template ShadTabs.maintainState}
+  /// Whether to mantain the state of the tabs when switching between them.
+  /// Defaults to true.
+  /// {@endtemplate}
+  final bool? maintainState;
 
   @override
   State<ShadTabs<T>> createState() => ShadTabsState<T>();
@@ -291,6 +298,8 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
     final effectiveContentConstraints =
         widget.contentConstraints ?? tabsTheme.contentConstraints;
 
+    final effectiveMaintainState = widget.maintainState ?? true;
+
     Widget tabBar = Row(
       spacing: widget.tabsGap ?? tabsTheme.tabsGap ?? 0,
       children: widget.tabs,
@@ -342,13 +351,18 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
               ...List<Widget>.generate(widget.tabs.length, (int index) {
                 final tab = widget.tabs[index];
                 final selected = tab.value == controller.selected;
-                if (!selected) return const SizedBox.shrink();
-                Widget content = FocusTraversalGroup(
-                  descendantsAreFocusable: selected,
-                  policy: WidgetOrderTraversalPolicy(),
-                  child: KeyedSubtree(
-                    key: _tabKeys[index],
-                    child: tab.content ?? const SizedBox.shrink(),
+                if (!selected && !effectiveMaintainState) {
+                  return const SizedBox.shrink();
+                }
+                Widget content = Offstage(
+                  offstage: !selected,
+                  child: FocusTraversalGroup(
+                    descendantsAreFocusable: selected,
+                    policy: WidgetOrderTraversalPolicy(),
+                    child: KeyedSubtree(
+                      key: _tabKeys[index],
+                      child: tab.content ?? const SizedBox.shrink(),
+                    ),
                   ),
                 );
 
@@ -885,6 +899,7 @@ class _ShadTabState<T> extends State<ShadTab<T>> {
             .merge(widget.decoration);
 
         return ShadButton.secondary(
+          canRequestFocus: selected,
           leading: widget.leading,
           trailing: widget.trailing,
           focusNode: focusNode,
