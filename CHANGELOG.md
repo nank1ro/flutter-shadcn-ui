@@ -1,3 +1,12 @@
+## 0.38.5
+
+- **FIX**: `ShadTabs` consuming extra space when `expandContent` is true for unselected tabs.
+
+## 0.38.4
+
+- **REFACTOR**: Remove required parameters from `ShadThemeData`, use default values instead.
+- **FEAT**: Add `setInternalFieldError` to `ShadForm` to set a forced error text for a form field.
+
 ## 0.38.3
 
 - **FEAT**: Add `maintainState` to `ShadTabs` to control whether to maintain the state of the tabs when switching between them. Defaults to `true`.
