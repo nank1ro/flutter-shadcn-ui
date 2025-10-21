@@ -1,3 +1,7 @@
+## 0.38.5
+
+- **FIX**: `ShadTabs` consuming extra space when `expandContent` is true for unselected tabs.
+
 ## 0.38.4
 
 - **REFACTOR**: Remove required parameters from `ShadThemeData`, use default values instead.

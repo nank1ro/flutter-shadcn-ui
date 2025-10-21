@@ -375,7 +375,7 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
 
                 final effectiveExpandContent =
                     tab.expandContent ?? theme.tabsTheme.expandContent ?? false;
-                if (effectiveExpandContent) {
+                if (effectiveExpandContent && selected) {
                   content = Expanded(child: content);
                 }
 
