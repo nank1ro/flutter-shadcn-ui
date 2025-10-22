@@ -106,12 +106,12 @@ class _AlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShadDialog.alert(
       title: const Text('Are you absolutely sure?'),
-      // description: const Padding(
-      //   padding: EdgeInsets.only(bottom: 8),
-      //   child: Text(
-      //     'This action cannot be undone. This will permanently delete your account and remove your data from our servers.',
-      //   ),
-      // ),
+      description: const Padding(
+        padding: EdgeInsets.only(bottom: 8),
+        child: Text(
+          'This action cannot be undone. This will permanently delete your account and remove your data from our servers.',
+        ),
+      ),
       actions: [
         ShadButton.outline(
           child: const Text('Cancel'),
