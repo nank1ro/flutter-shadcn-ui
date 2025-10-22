@@ -37,6 +37,8 @@ class ShadDialogTheme with _$ShadDialogTheme {
     this.crossAxisAlignment,
     this.scrollable,
     this.scrollPadding,
+    this.isHeaderPinned,
+    this.isFooterPinned,
     this.actionsGap,
     this.useSafeArea,
   }) : _canMerge = canMerge;
@@ -124,6 +126,12 @@ class ShadDialogTheme with _$ShadDialogTheme {
 
   /// {@macro ShadDialog.scrollPadding}
   final EdgeInsetsGeometry? scrollPadding;
+
+  /// {@macro ShadDialog.isHeaderPinned}
+  final bool? isHeaderPinned;
+
+  /// {@macro ShadDialog.isFooterPinned}
+  final bool? isFooterPinned;
 
   /// {@macro ShadDialog.actionsGap}
   final double? actionsGap;

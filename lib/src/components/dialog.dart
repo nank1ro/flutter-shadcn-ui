@@ -708,8 +708,14 @@ class ShadDialog extends StatelessWidget {
               effectiveDialogTheme.descriptionTextAlign ??
               (sm ? TextAlign.start : TextAlign.center);
 
-          final isHeaderPinned = this.isHeaderPinned ?? true;
-          final isFooterPinned = this.isFooterPinned ?? true;
+          final isHeaderPinned =
+              this.isHeaderPinned ??
+              effectiveDialogTheme.isHeaderPinned ??
+              true;
+          final isFooterPinned =
+              this.isFooterPinned ??
+              effectiveDialogTheme.isFooterPinned ??
+              true;
 
           Widget? effectiveActions = actions.isNotEmpty
               ? Flex(
