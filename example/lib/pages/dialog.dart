@@ -2,39 +2,11 @@ import 'package:example/common/base_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-final profile = [
-  (title: 'Name', value: 'Alexandru'),
-  (title: 'Username', value: 'nank1ro'),
-];
-final terms = [
-  (
-    title: 'Acceptance of Terms',
-    description:
-        'By accessing and using this service, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.',
-  ),
-  (
-    title: 'Use License',
-    description:
-        'Permission is granted to temporarily download one copy of the materials (information or software) on our service for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.',
-  ),
-  (
-    title: 'Disclaimer',
-    description:
-        'The materials on our service are provided on an \'as is\' basis. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.',
-  ),
-  (
-    title: 'Limitations',
-    description:
-        'In no event shall we or our suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on our service, even if we or a ShadcnUi supplier has been advised of the possibility of such damages. Furthermore, you agree that ShadcnUi shall not be liable for direct, indirect, consequential, incidental, special, exemplary, or punitive damages.',
-  ),
-];
-
 class DialogPage extends StatelessWidget {
   const DialogPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
     return BaseScaffold(
       appBarTitle: 'Dialog',
       children: [
@@ -43,42 +15,7 @@ class DialogPage extends StatelessWidget {
           onPressed: () {
             showShadDialog(
               context: context,
-              builder: (context) => ShadDialog(
-                title: const Text('Edit Profile'),
-                description: const Text(
-                  "Make changes to your profile here. Click save when you're done",
-                ),
-                actions: const [ShadButton(child: Text('Save changes'))],
-                child: Container(
-                  width: 375,
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    spacing: 16,
-                    children: profile
-                        .map(
-                          (p) => Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  p.title,
-                                  textAlign: TextAlign.end,
-                                  style: theme.textTheme.small,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                flex: 3,
-                                child: ShadInput(initialValue: p.value),
-                              ),
-                            ],
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ),
+              builder: (context) => _EditProfileDialog(),
             );
           },
         ),
@@ -87,25 +24,7 @@ class DialogPage extends StatelessWidget {
           onPressed: () {
             showShadDialog(
               context: context,
-              builder: (context) => ShadDialog.alert(
-                title: const Text('Are you absolutely sure?'),
-                description: const Padding(
-                  padding: EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    'This action cannot be undone. This will permanently delete your account and remove your data from our servers.',
-                  ),
-                ),
-                actions: [
-                  ShadButton.outline(
-                    child: const Text('Cancel'),
-                    onPressed: () => Navigator.of(context).pop(false),
-                  ),
-                  ShadButton(
-                    child: const Text('Continue'),
-                    onPressed: () => Navigator.of(context).pop(true),
-                  ),
-                ],
-              ),
+              builder: (context) => const _AlertDialog(),
             );
           },
         ),
@@ -123,9 +42,84 @@ class DialogPage extends StatelessWidget {
           onPressed: () {
             showShadDialog(
               context: context,
-              builder: (context) => const _ComplexDialog(),
+              builder: (context) => _ComplexDialog(),
             );
           },
+        ),
+      ],
+    );
+  }
+}
+
+class _EditProfileDialog extends StatelessWidget {
+  _EditProfileDialog();
+
+  final profile = [
+    (title: 'Name', value: 'Alexandru'),
+    (title: 'Username', value: 'nank1ro'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadDialog(
+      title: const Text('Edit Profile'),
+      description: const Text(
+        "Make changes to your profile here. Click save when you're done",
+      ),
+      actions: const [ShadButton(child: Text('Save changes'))],
+      child: Container(
+        width: 375,
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          spacing: 16,
+          children: profile
+              .map(
+                (p) => Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        p.title,
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      flex: 3,
+                      child: ShadInput(initialValue: p.value),
+                    ),
+                  ],
+                ),
+              )
+              .toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class _AlertDialog extends StatelessWidget {
+  const _AlertDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadDialog.alert(
+      title: const Text('Are you absolutely sure?'),
+      // description: const Padding(
+      //   padding: EdgeInsets.only(bottom: 8),
+      //   child: Text(
+      //     'This action cannot be undone. This will permanently delete your account and remove your data from our servers.',
+      //   ),
+      // ),
+      actions: [
+        ShadButton.outline(
+          child: const Text('Cancel'),
+          onPressed: () => Navigator.of(context).pop(false),
+        ),
+        ShadButton(
+          child: const Text('Continue'),
+          onPressed: () => Navigator.of(context).pop(true),
         ),
       ],
     );
@@ -143,6 +137,29 @@ class _ScrollableDialogState extends State<_ScrollableDialog> {
   bool isActionsPinned = true;
   bool isHeaderPinned = true;
 
+  final terms = [
+    (
+      title: 'Acceptance of Terms',
+      description:
+          'By accessing and using this service, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.',
+    ),
+    (
+      title: 'Use License',
+      description:
+          'Permission is granted to temporarily download one copy of the materials (information or software) on our service for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.',
+    ),
+    (
+      title: 'Disclaimer',
+      description:
+          'The materials on our service are provided on an \'as is\' basis. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.',
+    ),
+    (
+      title: 'Limitations',
+      description:
+          'In no event shall we or our suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on our service, even if we or a ShadcnUi supplier has been advised of the possibility of such damages. Furthermore, you agree that ShadcnUi shall not be liable for direct, indirect, consequential, incidental, special, exemplary, or punitive damages.',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -151,6 +168,7 @@ class _ScrollableDialogState extends State<_ScrollableDialog> {
       isHeaderPinned: isHeaderPinned,
       isFooterPinned: isActionsPinned,
       constraints: BoxConstraints(maxWidth: 500, maxHeight: 500),
+      padding: EdgeInsets.all(20),
       title: const Text('Term of Service'),
       description: const Text('Please read our terms of service carefully.'),
       actionsMainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -173,7 +191,7 @@ class _ScrollableDialogState extends State<_ScrollableDialog> {
         ),
       ],
       child: Padding(
-        padding: const EdgeInsets.all(14.0),
+        padding: const EdgeInsets.all(12),
         child: Column(
           spacing: 15,
           children: List.generate(terms.length, (index) {
@@ -200,19 +218,14 @@ class _ScrollableDialogState extends State<_ScrollableDialog> {
   }
 }
 
-final headerItems = [
-  (title: 'Clients', icon: LucideIcons.user),
-  (title: 'Fleet', icon: LucideIcons.truck),
-  (title: 'Warehouse', icon: LucideIcons.warehouse),
-];
-final members = [
-  (name: 'Leslie Alexander', username: '@leslie.a'),
-  (name: 'Alexandru Alexandru', username: '@alexandru.a'),
-  (name: 'Esther Howard', username: '@esther.howard'),
-];
-
 class _ComplexDialog extends StatelessWidget {
-  const _ComplexDialog();
+  _ComplexDialog();
+
+  final headerItems = [
+    (title: 'Clients', icon: LucideIcons.user),
+    (title: 'Fleet', icon: LucideIcons.truck),
+    (title: 'Warehouse', icon: LucideIcons.warehouse),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -223,8 +236,11 @@ class _ComplexDialog extends StatelessWidget {
         maxWidth: 800,
         maxHeight: 600,
       ),
+      isHeaderPinned: true,
+      isFooterPinned: true,
       header: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -253,8 +269,10 @@ class _ComplexDialog extends StatelessWidget {
         ],
       ),
       actionsAxis: Axis.vertical,
-      isFooterPinned: false,
       footer: Column(
+        spacing: 8,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const ShadSeparator.horizontal(),
           const SectionTitle(title: 'Warehouse', badge: '4'),
@@ -291,9 +309,9 @@ class _ComplexDialog extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const MembersSection(),
+          MembersSection(),
           const ShadSeparator.horizontal(),
-          const MembersSection(),
+          MembersSection(),
         ],
       ),
     );
@@ -301,7 +319,13 @@ class _ComplexDialog extends StatelessWidget {
 }
 
 class MembersSection extends StatelessWidget {
-  const MembersSection({super.key});
+  MembersSection({super.key});
+
+  final members = [
+    (name: 'Leslie Alexander', username: '@leslie.a'),
+    (name: 'Alexandru Alexandru', username: '@alexandru.a'),
+    (name: 'Esther Howard', username: '@esther.howard'),
+  ];
 
   @override
   Widget build(BuildContext context) {

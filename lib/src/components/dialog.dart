@@ -620,9 +620,6 @@ class ShadDialog extends StatelessWidget {
         effectiveDialogTheme.removeBorderRadiusWhenTiny ??
         true;
 
-    final effectivePadding =
-        padding ?? effectiveDialogTheme.padding ?? const EdgeInsets.all(24);
-
     final effectiveGap = gap ?? effectiveDialogTheme.gap ?? 8;
 
     final effectiveTitleStyle =
@@ -653,8 +650,17 @@ class ShadDialog extends StatelessWidget {
     final effectiveScrollable =
         scrollable ?? effectiveDialogTheme.scrollable ?? true;
 
+    final effectivePadding =
+        (padding ?? effectiveDialogTheme.padding)?.resolve(
+          Directionality.of(context),
+        ) ??
+        const EdgeInsets.all(24);
+
     final effectiveScrollPadding =
-        scrollPadding ?? effectiveDialogTheme.scrollPadding;
+        (scrollPadding ?? effectiveDialogTheme.scrollPadding)?.resolve(
+          Directionality.of(context),
+        ) ??
+        EdgeInsets.zero;
 
     final effectiveActionsGap =
         actionsGap ?? effectiveDialogTheme.actionsGap ?? 8;
@@ -699,12 +705,9 @@ class ShadDialog extends StatelessWidget {
               (sm ? TextAlign.start : TextAlign.center);
 
           final isHeaderPinned = this.isHeaderPinned ?? true;
-
           final isFooterPinned = this.isFooterPinned ?? true;
 
-          final hasActions = actions.isNotEmpty;
-
-          Widget? effectiveActions = hasActions
+          Widget? effectiveActions = actions.isNotEmpty
               ? Flex(
                   direction: effectiveActionsAxis,
                   mainAxisSize: effectiveActionsMainAxisSize,
@@ -715,7 +718,7 @@ class ShadDialog extends StatelessWidget {
                 )
               : null;
 
-          if (!sm && effectiveExpandActionsWhenTiny && hasActions) {
+          if (!sm && effectiveExpandActionsWhenTiny && actions.isNotEmpty) {
             effectiveActions = ShadTheme(
               data: theme.copyWith(
                 primaryButtonTheme: theme.primaryButtonTheme.copyWith(
@@ -745,28 +748,80 @@ class ShadDialog extends StatelessWidget {
                 )
               : null;
 
-          final titleSection = [
-            if (title != null)
-              DefaultTextStyle(
-                style: effectiveTitleStyle,
-                textAlign: effectiveTitleTextAlign,
-                child: title!,
-              ),
-            if (description != null)
-              DefaultTextStyle(
-                style: effectiveDescriptionStyle,
-                textAlign: effectiveDescriptionTextAlign,
-                child: description!,
-              ),
-          ];
+          Widget buildColumn(List<Widget> children) {
+            return Column(
+              spacing: effectiveGap,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: effectiveMainAxisAlignment,
+              crossAxisAlignment: effectiveCrossAxisAlignment,
+              children: children,
+            );
+          }
 
-          Widget? buildScrollableContent() {
+          Widget? buildHeaderSection() {
+            if (header == null && title == null && description == null) {
+              return null;
+            }
+
+            final padding = EdgeInsets.only(
+              top: effectivePadding.top,
+              left: effectivePadding.left,
+              right: effectivePadding.right,
+            );
+
+            return Padding(
+              padding: padding,
+              child: buildColumn(
+                [
+                  if (title != null)
+                    DefaultTextStyle(
+                      style: effectiveTitleStyle,
+                      textAlign: effectiveTitleTextAlign,
+                      child: title!,
+                    ),
+                  if (description != null)
+                    DefaultTextStyle(
+                      style: effectiveDescriptionStyle,
+                      textAlign: effectiveDescriptionTextAlign,
+                      child: description!,
+                    ),
+                  ?header,
+                ],
+              ),
+            );
+          }
+
+          Widget? buildFooterSection() {
+            if (footer == null && actions.isEmpty) {
+              return null;
+            }
+
+            final padding = EdgeInsets.only(
+              left: effectivePadding.left,
+              right: effectivePadding.right,
+              bottom: effectivePadding.bottom,
+            );
+
+            return Padding(
+              padding: padding,
+              child: buildColumn(
+                [?footer, ?effectiveActions],
+              ),
+            );
+          }
+
+          Widget? buildContent() {
             final contentChildren = [
-              if (!isHeaderPinned) ...titleSection,
-              if (!isHeaderPinned) ?header,
-              ?effectiveChild,
-              if (!isFooterPinned) ?footer,
-              if (!isFooterPinned) ?effectiveActions,
+              if (!isHeaderPinned) ?buildHeaderSection(),
+              if (child != null)
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: effectivePadding.left,
+                    right: effectivePadding.right,
+                  ),
+                  child: effectiveChild,
+                ),
+              if (!isFooterPinned) ?buildFooterSection(),
             ];
 
             if (contentChildren.isEmpty) {
@@ -774,46 +829,27 @@ class ShadDialog extends StatelessWidget {
             }
 
             return Flexible(
-              child: SingleChildScrollView(
-                padding: effectiveScrollPadding,
-                child: Column(
-                  spacing: effectiveGap,
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: effectiveMainAxisAlignment,
-                  crossAxisAlignment: effectiveCrossAxisAlignment,
-                  children: contentChildren,
-                ),
-              ),
+              child: effectiveScrollable
+                  ? SingleChildScrollView(
+                      padding: effectiveScrollPadding,
+                      child: buildColumn(contentChildren),
+                    )
+                  : buildColumn(contentChildren),
             );
           }
 
-          final columnChildren = [
-            if (!effectiveScrollable) ...[
-              ...titleSection,
-              ?header,
-              ?effectiveChild,
-              ?effectiveActions,
-              ?footer,
-            ] else ...[
-              if (isHeaderPinned) ...titleSection,
-              if (isHeaderPinned) ?header,
-              ?buildScrollableContent(),
-              if (isFooterPinned) ?footer,
-              if (isFooterPinned) ?effectiveActions,
-            ],
-          ];
-
           Widget widget = Stack(
             children: [
-              Padding(
-                padding: effectivePadding,
-                child: Column(
-                  spacing: effectiveGap,
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: effectiveMainAxisAlignment,
-                  crossAxisAlignment: effectiveCrossAxisAlignment,
-                  children: columnChildren,
-                ),
+              Column(
+                spacing: effectiveGap,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: effectiveMainAxisAlignment,
+                crossAxisAlignment: effectiveCrossAxisAlignment,
+                children: [
+                  if (isHeaderPinned) ?buildHeaderSection(),
+                  ?buildContent(),
+                  if (isFooterPinned) ?buildFooterSection(),
+                ],
               ),
               if (effectiveCloseIcon != null)
                 effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),
@@ -844,10 +880,7 @@ class ShadDialog extends StatelessWidget {
 
     return Align(
       alignment: effectiveAlignment,
-      child: Padding(
-        padding: viewPadding,
-        child: dialog,
-      ),
+      child: Padding(padding: viewPadding, child: dialog),
     );
   }
 }
