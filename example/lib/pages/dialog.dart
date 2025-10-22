@@ -238,6 +238,8 @@ class _ComplexDialog extends StatelessWidget {
       ),
       isHeaderPinned: true,
       isFooterPinned: true,
+      title: const Text('Project Phoenix'),
+      description: const Text('Manage your project settings and members.'),
       header: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -268,7 +270,7 @@ class _ComplexDialog extends StatelessWidget {
           const ShadSeparator.horizontal(),
         ],
       ),
-      actionsAxis: Axis.vertical,
+
       footer: Column(
         spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,6 +308,14 @@ class _ComplexDialog extends StatelessWidget {
           ),
         ],
       ),
+      actions: [
+        ShadButton.destructive(
+          child: const Text('Cancel'),
+        ),
+        ShadButton(
+          child: const Text('Save changes'),
+        ),
+      ],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

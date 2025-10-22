@@ -283,6 +283,8 @@ class ShadDialog extends StatelessWidget {
   const ShadDialog.raw({
     super.key,
     required this.variant,
+    this.title,
+    this.description,
     this.child,
     this.actions = const [],
     this.closeIcon,
@@ -316,8 +318,7 @@ class ShadDialog extends StatelessWidget {
     this.footer,
     this.isHeaderPinned,
     this.isFooterPinned,
-  }) : title = null,
-       description = null;
+  });
 
   /// {@template ShadDialog.title}
   /// The title widget displayed at the top of the dialog.
@@ -506,9 +507,10 @@ class ShadDialog extends StatelessWidget {
   final EdgeInsetsGeometry? scrollPadding;
 
   /// {@template ShadDialog.header}
-  /// The custom header widget displayed at the top of the dialog,
-  /// replacing the default title/description area when provided.
-  /// Mutually exclusive with [title] and [description].
+  /// The custom header widget displayed **below the title and description**.
+  ///
+  /// Appears at the top of the dialog (before the main [child] content).
+  /// If [isHeaderPinned] is true, the header remains fixed when scrolling.
   /// {@endtemplate}
   final Widget? header;
 
@@ -521,8 +523,10 @@ class ShadDialog extends StatelessWidget {
   final bool? isHeaderPinned;
 
   /// {@template ShadDialog.footer}
-  /// The custom footer widget displayed at the bottom of the dialog.
-  /// Overrides the default actions if provided.
+  /// The custom footer widget displayed **above the actions section**.
+  ///
+  /// Appears at the bottom of the dialog (after the main [child] content).
+  /// If [isFooterPinned] is true, the footer remains fixed when scrolling.
   /// {@endtemplate}
   final Widget? footer;
 
