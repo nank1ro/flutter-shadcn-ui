@@ -551,17 +551,6 @@ class ShadDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    assert(
-      !(header != null && (title != null || description != null)),
-      'Cannot provide both header and title/description. Use either header or '
-      'title/description.',
-    );
-
-    assert(
-      !(footer != null && actions.isNotEmpty),
-      'Cannot provide both footer and actions. Use either footer or actions.',
-    );
-
     final theme = ShadTheme.of(context);
     final effectiveDialogTheme = switch (variant) {
       ShadDialogVariant.primary => theme.primaryDialogTheme,
