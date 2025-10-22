@@ -90,6 +90,7 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.expands,
     this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.primary;
 
   /// Creates a button widget with a specified [variant], allowing full control
@@ -146,6 +147,7 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.expands,
     this.textStyle,
+    this.canRequestFocus,
   });
 
   /// Creates a destructive variant button widget, typically for warning or
@@ -201,6 +203,7 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.expands,
     this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.destructive;
 
   /// Creates an outline variant button widget, typically with a bordered
@@ -256,6 +259,7 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.expands,
     this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.outline;
 
   /// Creates a secondary variant button widget, typically for less prominent
@@ -311,6 +315,7 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.expands,
     this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.secondary;
 
   /// Creates a ghost variant button widget, typically with minimal styling.
@@ -365,6 +370,7 @@ class ShadButton extends StatefulWidget {
     this.onFocusChange,
     this.expands,
     this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.ghost;
 
   /// Creates a link variant button widget, styled like a hyperlink.
@@ -419,6 +425,7 @@ class ShadButton extends StatefulWidget {
     this.leading,
     this.trailing,
     this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.link;
 
   /// {@template ShadButton.onPressed}
@@ -731,6 +738,12 @@ class ShadButton extends StatefulWidget {
   /// {@endtemplate}
   final TextStyle? textStyle;
 
+  /// {@template ShadButton.canRequestFocus}
+  /// Whether the button can request focus.
+  /// Defaults to true if [enabled] is true, false otherwise.
+  /// {@endtemplate}
+  final bool? canRequestFocus;
+
   @override
   State<ShadButton> createState() => _ShadButtonState();
 }
@@ -980,6 +993,8 @@ class _ShadButtonState extends State<ShadButton> {
     final effectiveExpands =
         widget.expands ?? buttonTheme(theme).expands ?? false;
 
+    final effectiveCanRequestFocus = widget.canRequestFocus ?? widget.enabled;
+
     final keyboardTriggers = <ShortcutActivator>[
       const SingleActivator(LogicalKeyboardKey.enter),
       const SingleActivator(LogicalKeyboardKey.space),
@@ -1052,7 +1067,7 @@ class _ShadButtonState extends State<ShadButton> {
                   child: AbsorbPointer(
                     absorbing: !enabled,
                     child: ShadFocusable(
-                      canRequestFocus: enabled,
+                      canRequestFocus: effectiveCanRequestFocus,
                       autofocus: widget.autofocus,
                       focusNode: focusNode,
                       onFocusChange: widget.onFocusChange,

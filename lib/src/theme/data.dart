@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
+import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
@@ -46,8 +47,12 @@ import 'package:shadcn_ui/src/utils/responsive.dart';
 @immutable
 class ShadThemeData extends ShadBaseTheme {
   factory ShadThemeData({
-    required ShadColorScheme colorScheme,
-    required Brightness brightness,
+    /// The color scheme to use for the theme.
+    /// Defaults to [ShadSlateColorScheme] based on the [brightness].
+    ShadColorScheme? colorScheme,
+
+    /// The overall brightness of the theme, defaults to [Brightness.light].
+    Brightness? brightness,
     ShadButtonTheme? primaryButtonTheme,
     ShadButtonTheme? secondaryButtonTheme,
     ShadButtonTheme? destructiveButtonTheme,
@@ -109,25 +114,32 @@ class ShadThemeData extends ShadBaseTheme {
     );
 
     final effectiveDisableSecondaryBorder = disableSecondaryBorder ?? false;
+    final effectiveBrightness = brightness ?? Brightness.light;
+    final effectiveColorScheme =
+        colorScheme ??
+        switch (effectiveBrightness) {
+          Brightness.light => const ShadSlateColorScheme.light(),
+          Brightness.dark => const ShadSlateColorScheme.dark(),
+        };
 
     final effectiveVariant =
         variant ??
         switch (effectiveDisableSecondaryBorder) {
           false => ShadDefaultThemeVariant(
-            colorScheme: colorScheme,
+            colorScheme: effectiveColorScheme,
             radius: effectiveRadius,
             effectiveTextTheme: effectiveTextTheme,
           ),
           true => ShadDefaultThemeNoSecondaryBorderVariant(
-            colorScheme: colorScheme,
+            colorScheme: effectiveColorScheme,
             radius: effectiveRadius,
             effectiveTextTheme: effectiveTextTheme,
           ),
         };
 
     return ShadThemeData._internal(
-      colorScheme: colorScheme,
-      brightness: brightness,
+      colorScheme: effectiveColorScheme,
+      brightness: effectiveBrightness,
       primaryButtonTheme: effectiveVariant.primaryButtonTheme().merge(
         primaryButtonTheme,
       ),

@@ -1,6 +1,27 @@
+## 0.38.5
+
+- **FIX**: `ShadTabs` consuming extra space when `expandContent` is true for unselected tabs.
+
+## 0.38.4
+
+- **REFACTOR**: Remove required parameters from `ShadThemeData`, use default values instead.
+- **FEAT**: Add `setInternalFieldError` to `ShadForm` to set a forced error text for a form field.
+
+## 0.38.3
+
+- **FEAT**: Add `maintainState` to `ShadTabs` to control whether to maintain the state of the tabs when switching between them. Defaults to `true`.
+- **FEAT**: Add `canRequestFocus` to `ShadButton`.
+- **FIX**: Unselected `ShadTab` which was focusable.
+
+## 0.38.2
+
+- **FEAT**: Add `searchFocusNode` to `ShadSelect` and `ShadSelectFormField` to provide a custom focus node for the search input.
+- **FEAT**: Add `onSearchSubmitted` to `ShadSelect` and `ShadSelectFormField` to handle the submission of the search input (e.g., when the user presses the Enter key).
+- **FIX**: `ShadInput` crash when removing the external `focusNode`.
+
 ## 0.38.1
 
-- **FIX**: FixShadTable doesn't support RTL (thanks to @DMouayad).
+- **FIX**: Fix ShadTable doesn't support RTL (thanks to @DMouayad).
 - **FIX**: ShadToast & ShadSonner doesn't react to text direction change (thanks to @DMouayad).
 - **FIX**: ShadSheet crash when tap outside the sheet (thanks to @pro100andrey).
 - **FIX**: Feat: direction-aware dialog and toast close buttons (thanks to @DMouayad).

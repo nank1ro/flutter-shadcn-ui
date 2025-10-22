@@ -3,7 +3,9 @@ analyzer:
     specify_nonobvious_property_types: ignore
     discarded_futures: ignore
     cascade_invocations: ignore
-include: package:very_good_analysis/analysis_options.yaml
+include: 
+  - package:very_good_analysis/analysis_options.yaml
+  - package:flutter_lints/flutter.yaml
 exclude:
   - "**/*.g.dart"
   - "**/*.g.theme.dart"
