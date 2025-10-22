@@ -212,7 +212,7 @@ final members = [
 ];
 
 class _ComplexDialog extends StatelessWidget {
-  const _ComplexDialog({super.key});
+  const _ComplexDialog();
 
   @override
   Widget build(BuildContext context) {
