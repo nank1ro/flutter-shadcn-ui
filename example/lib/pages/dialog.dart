@@ -226,25 +226,28 @@ class _ComplexDialog extends StatelessWidget {
       header: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            spacing: 6,
-            children: [
-              ...headerItems.map(
-                (e) => ShadButton.outline(
-                  size: ShadButtonSize.sm,
-                  leading: Icon(e.icon),
-                  child: Text(e.title),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 6,
+              children: [
+                ...headerItems.map(
+                  (e) => ShadButton.outline(
+                    size: ShadButtonSize.sm,
+                    leading: Icon(e.icon),
+                    child: Text(e.title),
+                  ),
                 ),
-              ),
-              ShadSelect<String>(
-                selectedOptionBuilder: (context, value) {
-                  return Text(value.toString());
-                },
-                placeholder: const Text('more'),
-                options: [],
-              ),
-            ],
+                ShadSelect<String>(
+                  selectedOptionBuilder: (context, value) {
+                    return Text(value.toString());
+                  },
+                  placeholder: const Text('more'),
+                  options: [],
+                ),
+              ],
+            ),
           ),
           const ShadSeparator.horizontal(),
         ],
@@ -255,30 +258,33 @@ class _ComplexDialog extends StatelessWidget {
         children: [
           const ShadSeparator.horizontal(),
           const SectionTitle(title: 'Warehouse', badge: '4'),
-          Row(
-            spacing: 8,
-            children: ['A', 'B', 'C', 'D'].map((e) {
-              return ShadButton.outline(
-                height: 55,
-                leading: SizedBox(
-                  height: 35,
-                  width: 35,
-                  child: ShadDecorator(
-                    decoration: ShadDecoration(
-                      color: theme.colorScheme.background,
-                      shadows: ShadShadows.sm,
-                      border: ShadBorder.all(
-                        color: theme.colorScheme.border,
-                        width: 1,
-                        radius: BorderRadius.circular(4),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              spacing: 8,
+              children: ['A', 'B', 'C', 'D'].map((e) {
+                return ShadButton.outline(
+                  height: 55,
+                  leading: SizedBox(
+                    height: 35,
+                    width: 35,
+                    child: ShadDecorator(
+                      decoration: ShadDecoration(
+                        color: theme.colorScheme.background,
+                        shadows: ShadShadows.sm,
+                        border: ShadBorder.all(
+                          color: theme.colorScheme.border,
+                          width: 1,
+                          radius: BorderRadius.circular(4),
+                        ),
                       ),
+                      child: Icon(LucideIcons.house400),
                     ),
-                    child: Icon(LucideIcons.house400),
                   ),
-                ),
-                child: Text('Warehouse $e'),
-              );
-            }).toList(),
+                  child: Text('Warehouse $e'),
+                );
+              }).toList(),
+            ),
           ),
         ],
       ),
@@ -334,7 +340,7 @@ class MembersSection extends StatelessWidget {
         ),
         width: 24,
       ),
-      child: Row(
+      child: Wrap(
         spacing: 8,
         children: [
           Text(m.name),
