@@ -14,7 +14,14 @@ class BaseScaffold extends StatelessWidget {
     this.wrapSingleChildInColumn = true,
     this.alignment,
     this.gap = 8,
-  });
+    this.editablePanelInitialWidth = .3,
+    this.editablePanelMinWidth = .2,
+    this.childrenPanelMinWidth = .5,
+    this.childrenPanelInitialWidth = .7,
+  }) : assert(
+         editablePanelInitialWidth >= editablePanelMinWidth,
+         "The editable panel's initial width must be greater than or equal to its minimum width.",
+       );
 
   final List<Widget> children;
   final String appBarTitle;
@@ -24,6 +31,10 @@ class BaseScaffold extends StatelessWidget {
   final bool wrapSingleChildInColumn;
   final Alignment? alignment;
   final double gap;
+  final double editablePanelInitialWidth;
+  final double editablePanelMinWidth;
+  final double childrenPanelMinWidth;
+  final double childrenPanelInitialWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -68,14 +79,14 @@ class BaseScaffold extends StatelessWidget {
                     children: [
                       ShadResizablePanel(
                         id: 0,
-                        defaultSize: .7,
-                        minSize: .5,
+                        defaultSize: childrenPanelInitialWidth,
+                        minSize: childrenPanelMinWidth,
                         child: left,
                       ),
                       ShadResizablePanel(
                         id: 1,
-                        defaultSize: .3,
-                        minSize: .2,
+                        defaultSize: editablePanelInitialWidth,
+                        minSize: editablePanelMinWidth,
                         child: right,
                       ),
                     ],
