@@ -1116,21 +1116,23 @@ class _ShadButtonState extends State<ShadButton> {
                         onLongPressDown: widget.onLongPressDown,
                         onLongPressStart: widget.onLongPressStart,
                         longPressDuration: effectiveLongPressDuration,
-                        child: SizedBox(
-                          height: height(theme),
-                          width: width(theme),
-                          child: Padding(
-                            padding: padding(theme),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: effectiveCrossAxisAlignment,
-                              mainAxisAlignment: effectiveMainAxisAlignment,
-                              textDirection: effectiveTextDirection,
-                              children: [
-                                ?widget.leading,
-                                ?child,
-                                ?widget.trailing,
-                              ].separatedBy(SizedBox(width: effectiveGap)),
+                        child: SelectionContainer.disabled(
+                          child: SizedBox(
+                            height: height(theme),
+                            width: width(theme),
+                            child: Padding(
+                              padding: padding(theme),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: effectiveCrossAxisAlignment,
+                                mainAxisAlignment: effectiveMainAxisAlignment,
+                                textDirection: effectiveTextDirection,
+                                children: [
+                                  ?widget.leading,
+                                  ?child,
+                                  ?widget.trailing,
+                                ].separatedBy(SizedBox(width: effectiveGap)),
+                              ),
                             ),
                           ),
                         ),
