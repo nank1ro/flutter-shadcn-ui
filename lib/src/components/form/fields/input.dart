@@ -241,6 +241,9 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadInput.onLineCountChange}
     ValueChanged<int>? onLineCountChange,
+
+    /// {@macro ShadInput.editableTextSize}
+    Size? editableTextSize,
   }) : super(
          initialValue: controller != null ? controller.text : initialValue,
          validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -328,6 +331,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
              top: top,
              bottom: bottom,
              onLineCountChange: onLineCountChange,
+             editableTextSize: editableTextSize,
            );
          },
        );
