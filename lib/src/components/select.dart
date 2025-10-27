@@ -747,6 +747,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         widget.variant == ShadSelectVariant.multipleWithSearch;
     if (hasSearch) {
       popoverController.addListener(() {
+        if (!context.mounted) return;
+
         if (popoverController.isOpen) {
           searchFocusNode.requestFocus();
         } else {
