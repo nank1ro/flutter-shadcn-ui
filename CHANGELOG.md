@@ -1,6 +1,6 @@
 ## 0.39.0
 
-- **FEAT**: Add `top`, `bottom` and `onLineCountChange` to `ShadInput` and `ShadInputFormField` to add widgets above or below the input field, and to get notified when the number of lines in the input changes.
+- **FEAT**: Add `top`, `bottom` and `onLineCountChange` to `ShadInput`, `ShadInputFormField`, `ShadTextArea` and `ShadTextAreaFormField` to add widgets above or below the input field, and to get notified when the number of lines in the input changes.
 
 ## 0.38.5
 
