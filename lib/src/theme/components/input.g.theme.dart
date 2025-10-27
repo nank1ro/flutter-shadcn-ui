@@ -55,8 +55,6 @@ mixin _$ShadInputTheme {
         b?.scrollbarPadding,
         t,
       ),
-      isTopPinned: t < 0.5 ? a?.isTopPinned : b?.isTopPinned,
-      isBottomPinned: t < 0.5 ? a?.isBottomPinned : b?.isBottomPinned,
       verticalGap: lerpDouble$(a?.verticalGap, b?.verticalGap, t),
     );
   }
@@ -79,8 +77,6 @@ mixin _$ShadInputTheme {
     double? gap,
     BoxConstraints? constraints,
     EdgeInsetsGeometry? scrollbarPadding,
-    bool? isTopPinned,
-    bool? isBottomPinned,
     double? verticalGap,
   }) {
     final a = (this as ShadInputTheme);
@@ -103,8 +99,6 @@ mixin _$ShadInputTheme {
       gap: gap ?? a.gap,
       constraints: constraints ?? a.constraints,
       scrollbarPadding: scrollbarPadding ?? a.scrollbarPadding,
-      isTopPinned: isTopPinned ?? a.isTopPinned,
-      isBottomPinned: isBottomPinned ?? a.isBottomPinned,
       verticalGap: verticalGap ?? a.verticalGap,
     );
   }
@@ -140,8 +134,6 @@ mixin _$ShadInputTheme {
       gap: other.gap,
       constraints: other.constraints,
       scrollbarPadding: other.scrollbarPadding,
-      isTopPinned: other.isTopPinned,
-      isBottomPinned: other.isBottomPinned,
       verticalGap: other.verticalGap,
     );
   }
@@ -176,8 +168,6 @@ mixin _$ShadInputTheme {
         other.gap == value.gap &&
         other.constraints == value.constraints &&
         other.scrollbarPadding == value.scrollbarPadding &&
-        other.isTopPinned == value.isTopPinned &&
-        other.isBottomPinned == value.isBottomPinned &&
         other.verticalGap == value.verticalGap;
   }
 
@@ -185,7 +175,7 @@ mixin _$ShadInputTheme {
   int get hashCode {
     final value = (this as ShadInputTheme);
 
-    return Object.hashAll([
+    return Object.hash(
       runtimeType,
       value.decoration,
       value.padding,
@@ -204,9 +194,7 @@ mixin _$ShadInputTheme {
       value.gap,
       value.constraints,
       value.scrollbarPadding,
-      value.isTopPinned,
-      value.isBottomPinned,
       value.verticalGap,
-    ]);
+    );
   }
 }
