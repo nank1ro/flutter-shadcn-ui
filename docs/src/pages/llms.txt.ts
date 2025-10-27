@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 
-export const GET: APIRoute = async ({ }) => {
+export const GET: APIRoute = async () => {
     const allDocs = await getCollection("docs");
     const posts = allDocs.map(doc => doc.body);
     
