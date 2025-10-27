@@ -692,6 +692,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
   ShadSelectController<T> get controller => widget.controller ?? _controller!;
 
+  VoidCallback? _popoverControllerListener;
+
   ShadPopoverController? _popoverController;
 
   ShadPopoverController get popoverController =>
@@ -746,7 +748,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         widget.variant == ShadSelectVariant.search ||
         widget.variant == ShadSelectVariant.multipleWithSearch;
     if (hasSearch) {
-      popoverController.addListener(() {
+      void popoverListener() {
         if (!context.mounted) return;
 
         if (popoverController.isOpen) {
@@ -765,7 +767,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             widget.onSearchChanged?.call('');
           }
         }
-      });
+      }
+
+      _popoverControllerListener = popoverListener;
+      popoverController.addListener(popoverListener);
     }
   }
 
@@ -788,6 +793,12 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
   @override
   void dispose() {
+    final popoverControllerListener = _popoverControllerListener;
+    if (popoverControllerListener != null) {
+      popoverController.removeListener(popoverControllerListener);
+      _popoverControllerListener = null;
+    }
+
     _internalSearchFocusNode?.dispose();
     _popoverController?.dispose();
     internalFocusNode?.dispose();
