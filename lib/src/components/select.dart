@@ -747,17 +747,21 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         widget.variant == ShadSelectVariant.multipleWithSearch;
     if (hasSearch) {
       popoverController.addListener(() {
-        if (popoverController.isOpen) return;
-        final effectiveClearSearchOnClose =
-            widget.clearSearchOnClose ??
-            ShadTheme.of(
-              context,
-              listen: false,
-            ).selectTheme.clearSearchOnClose ??
-            true;
+        if (popoverController.isOpen) {
+          searchFocusNode.requestFocus();
+        } else {
+          searchFocusNode.unfocus();
+          final effectiveClearSearchOnClose =
+              widget.clearSearchOnClose ??
+              ShadTheme.of(
+                context,
+                listen: false,
+              ).selectTheme.clearSearchOnClose ??
+              true;
 
-        if (effectiveClearSearchOnClose) {
-          widget.onSearchChanged?.call('');
+          if (effectiveClearSearchOnClose) {
+            widget.onSearchChanged?.call('');
+          }
         }
       });
     }
