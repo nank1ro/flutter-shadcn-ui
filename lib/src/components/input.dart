@@ -791,6 +791,8 @@ class ShadInputState extends State<ShadInput>
     return false;
   }
 
+  int? _previousLineCount;
+
   void fireOnLineCountChange(
     String text, {
     required BoxConstraints constraints,
@@ -825,9 +827,13 @@ class ShadInputState extends State<ShadInput>
       maxWidth: constraints.maxWidth - caretGap - effectiveCursorWidth,
     );
     final numLines = tp.computeLineMetrics().length;
-    widget.onLineCountChange!(
-      numLines,
-    );
+    // Only fire callback if line count changed
+    if (numLines != _previousLineCount) {
+      _previousLineCount = numLines;
+      widget.onLineCountChange!(
+        numLines,
+      );
+    }
   }
 
   @override
