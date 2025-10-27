@@ -27,6 +27,9 @@ class ShadInputTheme with _$ShadInputTheme {
     this.gap,
     this.constraints,
     this.scrollbarPadding,
+    this.isTopPinned,
+    this.isBottomPinned,
+    this.verticalGap,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -85,6 +88,15 @@ class ShadInputTheme with _$ShadInputTheme {
 
   /// {@macro ShadInput.scrollbarPadding}
   final EdgeInsetsGeometry? scrollbarPadding;
+
+  /// {@macro ShadInput.isTopPinned}
+  final bool? isTopPinned;
+
+  /// {@macro ShadInput.isBottomPinned}
+  final bool? isBottomPinned;
+
+  /// {@macro ShadInput.verticalGap}
+  final double? verticalGap;
 
   static ShadInputTheme? lerp(
     ShadInputTheme? a,
