@@ -13,6 +13,12 @@ This is the official documentation for Shadcn UI for Flutter.
 
 > The work is still in progress.
 
+:::tip[AI Editor Integration]
+If you want to consume the docs in a LLM that accepts markdown, you can use this link:
+
+https://flutter-shadcn-ui.mariuti.com/llms.txt
+:::
+
 ## Installation
 
 Run this command in your terminal from your project root directory:
