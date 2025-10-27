@@ -700,6 +700,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
       widget.popoverController ??
       (_popoverController ??= ShadPopoverController());
 
+  VoidCallback? _scrollControllerListener;
+
   ScrollController? _scrollController;
 
   final showScrollToBottom = ValueNotifier(false);
@@ -737,12 +739,17 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     if (widget.focusNode == null) internalFocusNode = FocusNode();
 
     // react to the scroll position
-    scrollController.addListener(() {
+    void scrollControllerListener() {
+      if (!context.mounted) return;
+
       if (!scrollController.hasClients) return;
       showScrollToBottom.value =
           scrollController.offset < scrollController.position.maxScrollExtent;
       showScrollToTop.value = scrollController.offset > 0;
-    });
+    }
+
+    _scrollControllerListener = scrollControllerListener;
+    scrollController.addListener(scrollControllerListener);
 
     final hasSearch =
         widget.variant == ShadSelectVariant.search ||
@@ -797,6 +804,12 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     if (popoverControllerListener != null) {
       popoverController.removeListener(popoverControllerListener);
       _popoverControllerListener = null;
+    }
+
+    final scrollControllerListener = _scrollControllerListener;
+    if (scrollControllerListener != null) {
+      scrollController.removeListener(scrollControllerListener);
+      _scrollControllerListener = null;
     }
 
     _internalSearchFocusNode?.dispose();
