@@ -585,7 +585,7 @@ class ShadInput extends StatefulWidget {
   /// The current line count is passed as an argument.
   ///
   /// **NOTE**: If the input doesn't get an higher height, this callback won't be called.
-  /// For example, if [maxLines] has been reached.
+  /// For example, if the [maxLines] limit has been reached.
   /// {@endtemplate}
   final ValueChanged<int>? onLineCountChange;
 
