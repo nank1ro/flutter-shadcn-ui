@@ -204,6 +204,9 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadInput.onLineCountChange}
     ValueChanged<int>? onLineCountChange,
+
+    /// {@macro ShadInput.verticalGap}
+    double? verticalGap,
   }) : super(
          initialValue: controller != null ? controller.text : initialValue,
          validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -279,6 +282,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
              leading: leading,
              trailing: trailing,
              onLineCountChange: onLineCountChange,
+             verticalGap: verticalGap,
            );
          },
        );

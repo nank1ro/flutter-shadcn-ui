@@ -94,6 +94,7 @@ class ShadTextarea extends StatefulWidget {
     this.leading,
     this.trailing,
     this.onLineCountChange,
+    this.verticalGap,
   }) : enableInteractiveSelection = enableInteractiveSelection ?? !readOnly,
        assert(
          initialValue == null || controller == null,
@@ -439,6 +440,9 @@ class ShadTextarea extends StatefulWidget {
   /// {@macro ShadInput.bottom}
   final Widget? bottom;
 
+  /// {@macro ShadInput.verticalGap}
+  final double? verticalGap;
+
   /// {@macro ShadInput.onLineCountChange}
   final ValueChanged<int>? onLineCountChange;
 
@@ -654,6 +658,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
             leading: widget.leading,
             trailing: widget.trailing,
             onLineCountChange: widget.onLineCountChange,
+            verticalGap: widget.verticalGap,
           ),
         ),
         if (widget.resizable)
