@@ -1044,18 +1044,20 @@ class ShadInputState extends State<ShadInput>
                                                           WidgetsBinding.instance.addPostFrameCallback((
                                                             _,
                                                           ) {
-                                                            fireOnLineCountChange(
-                                                              effectiveController
-                                                                  .text,
-                                                              textScaler:
-                                                                  textScaler,
-                                                              constraints:
-                                                                  constraints,
-                                                              effectiveTextStyle:
-                                                                  effectiveTextStyle,
-                                                              effectiveCursorWidth:
-                                                                  effectiveCursorWidth,
-                                                            );
+                                                            if (mounted) {
+                                                              fireOnLineCountChange(
+                                                                effectiveController
+                                                                    .text,
+                                                                textScaler:
+                                                                    textScaler,
+                                                                constraints:
+                                                                    constraints,
+                                                                effectiveTextStyle:
+                                                                    effectiveTextStyle,
+                                                                effectiveCursorWidth:
+                                                                    effectiveCursorWidth,
+                                                              );
+                                                            }
                                                           });
                                                           return SizedBox(
                                                             width: widget
