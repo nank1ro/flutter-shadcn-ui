@@ -189,6 +189,24 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadKeyboardToolbar.toolbarBuilder}
     WidgetBuilder? keyboardToolbarBuilder,
+
+    /// {@macro ShadInput.leading}
+    Widget? leading,
+
+    /// {@macro ShadInput.trailing}
+    Widget? trailing,
+
+    /// {@macro ShadInput.top}
+    Widget? top,
+
+    /// {@macro ShadInput.bottom}
+    Widget? bottom,
+
+    /// {@macro ShadInput.onLineCountChange}
+    ValueChanged<int>? onLineCountChange,
+
+    /// {@macro ShadInput.verticalGap}
+    double? verticalGap,
   }) : super(
          initialValue: controller != null ? controller.text : initialValue,
          validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -259,6 +277,12 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
              strutStyle: strutStyle,
              groupId: groupId,
              keyboardToolbarBuilder: keyboardToolbarBuilder,
+             top: top,
+             bottom: bottom,
+             leading: leading,
+             trailing: trailing,
+             onLineCountChange: onLineCountChange,
+             verticalGap: verticalGap,
            );
          },
        );

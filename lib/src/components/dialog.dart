@@ -1,3 +1,4 @@
+import 'package:boxy/flex.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -476,7 +477,7 @@ class ShadDialog extends StatelessWidget {
 
   /// {@template ShadDialog.crossAxisAlignment}
   /// The cross axis alignment of the dialog’s column content.
-  /// Defaults to [CrossAxisAlignment.stretch] if not specified.
+  /// Defaults to [CrossAxisAlignment.start] if not specified.
   /// {@endtemplate}
   final CrossAxisAlignment? crossAxisAlignment;
 
@@ -608,7 +609,7 @@ class ShadDialog extends StatelessWidget {
     final effectiveCrossAxisAlignment =
         crossAxisAlignment ??
         effectiveDialogTheme.crossAxisAlignment ??
-        CrossAxisAlignment.stretch;
+        CrossAxisAlignment.start;
 
     final effectiveScrollable =
         scrollable ?? effectiveDialogTheme.scrollable ?? true;
@@ -636,7 +637,7 @@ class ShadDialog extends StatelessWidget {
           final effectiveActionsMainAxisSize =
               actionsMainAxisSize ??
               effectiveDialogTheme.actionsMainAxisSize ??
-              MainAxisSize.max;
+              MainAxisSize.min;
 
           final effectiveActionsMainAxisAlignment =
               actionsMainAxisAlignment ??
@@ -658,13 +659,16 @@ class ShadDialog extends StatelessWidget {
               effectiveDialogTheme.descriptionTextAlign ??
               (sm ? TextAlign.start : TextAlign.center);
 
-          Widget effectiveActions = Flex(
-            direction: effectiveActionsAxis,
-            mainAxisSize: effectiveActionsMainAxisSize,
-            mainAxisAlignment: effectiveActionsMainAxisAlignment,
-            verticalDirection: effectiveActionsVerticalDirection,
-            spacing: effectiveActionsGap,
-            children: actions,
+          Widget effectiveActions = BoxyFlexible.align(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            child: Flex(
+              direction: effectiveActionsAxis,
+              mainAxisSize: effectiveActionsMainAxisSize,
+              mainAxisAlignment: effectiveActionsMainAxisAlignment,
+              verticalDirection: effectiveActionsVerticalDirection,
+              spacing: effectiveActionsGap,
+              children: actions,
+            ),
           );
 
           if (!sm && effectiveExpandActionsWhenTiny) {
@@ -747,7 +751,7 @@ class ShadDialog extends StatelessWidget {
             children: [
               Padding(
                 padding: effectivePadding,
-                child: Column(
+                child: BoxyColumn(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: effectiveMainAxisAlignment,
                   crossAxisAlignment: effectiveCrossAxisAlignment,
