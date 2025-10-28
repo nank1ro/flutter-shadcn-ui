@@ -1038,6 +1038,25 @@ class ShadInputState extends State<ShadInput>
                                                           context,
                                                           constraints,
                                                         ) {
+                                                          /// Fire onLineCountChange after the frame is rendered
+                                                          /// This ensures that the line count is accurate, even for
+                                                          /// resizes that happen outside of text changes.
+                                                          WidgetsBinding.instance.addPostFrameCallback((
+                                                            _,
+                                                          ) {
+                                                            fireOnLineCountChange(
+                                                              effectiveController
+                                                                  .text,
+                                                              textScaler:
+                                                                  textScaler,
+                                                              constraints:
+                                                                  constraints,
+                                                              effectiveTextStyle:
+                                                                  effectiveTextStyle,
+                                                              effectiveCursorWidth:
+                                                                  effectiveCursorWidth,
+                                                            );
+                                                          });
                                                           return SizedBox(
                                                             width: widget
                                                                 .editableTextSize
@@ -1148,17 +1167,6 @@ class ShadInputState extends State<ShadInput>
                                                                     ?.call(
                                                                       v,
                                                                     );
-                                                                fireOnLineCountChange(
-                                                                  v,
-                                                                  textScaler:
-                                                                      textScaler,
-                                                                  constraints:
-                                                                      constraints,
-                                                                  effectiveTextStyle:
-                                                                      effectiveTextStyle,
-                                                                  effectiveCursorWidth:
-                                                                      effectiveCursorWidth,
-                                                                );
                                                               },
                                                               onEditingComplete:
                                                                   widget
