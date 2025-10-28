@@ -752,10 +752,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     _scrollControllerListener = scrollControllerListener;
     scrollController.addListener(scrollControllerListener);
 
-    final hasSearch =
-        widget.variant == ShadSelectVariant.search ||
-        widget.variant == ShadSelectVariant.multipleWithSearch;
-    if (hasSearch) {
+    if (isSearchVariant()) {
       void popoverListener() {
         if (!context.mounted) return;
         if (popoverController.isOpen) return;
@@ -781,9 +778,14 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     }
   }
 
+  bool isSearchVariant() {
+    return widget.variant == ShadSelectVariant.search ||
+        widget.variant == ShadSelectVariant.multipleWithSearch;
+  }
+
   void desktopTogglePopover() {
     popoverController.toggle();
-    if (popoverController.isOpen) {
+    if (popoverController.isOpen && isSearchVariant()) {
       searchFocusNode.requestFocus();
     }
   }
