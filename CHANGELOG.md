@@ -4,6 +4,8 @@
 - **CHORE**: Export `boxy` package.
 - **FIX**: `ShadTextarea` double scrollbar.
 - **FEAT**: Add `editableTextSize` to `ShadInput` and `ShadInputFormField` to set a fixed size for the editable text area.
+- **FIX**: Disable text selection inside buttons (thanks to @Isakdl).
+- **FIX**: ShadDialog always expands to constraints.maxWidth (thanks to @DMouayad).
 
 ## 0.38.5
 
