@@ -89,6 +89,12 @@ class ShadTextarea extends StatefulWidget {
     this.resizeHandleBuilder,
     this.scrollbarPadding,
     this.keyboardToolbarBuilder,
+    this.top,
+    this.bottom,
+    this.leading,
+    this.trailing,
+    this.onLineCountChange,
+    this.verticalGap,
   }) : enableInteractiveSelection = enableInteractiveSelection ?? !readOnly,
        assert(
          initialValue == null || controller == null,
@@ -422,6 +428,24 @@ class ShadTextarea extends StatefulWidget {
   /// {@macro ShadKeyboardToolbar.toolbarBuilder}
   final WidgetBuilder? keyboardToolbarBuilder;
 
+  /// {@macro ShadInput.leading}
+  final Widget? leading;
+
+  /// {@macro ShadInput.trailing}
+  final Widget? trailing;
+
+  /// {@macro ShadInput.top}
+  final Widget? top;
+
+  /// {@macro ShadInput.bottom}
+  final Widget? bottom;
+
+  /// {@macro ShadInput.verticalGap}
+  final double? verticalGap;
+
+  /// {@macro ShadInput.onLineCountChange}
+  final ValueChanged<int>? onLineCountChange;
+
   @override
   State<ShadTextarea> createState() => _ShadTextareaState();
 }
@@ -562,76 +586,81 @@ class _ShadTextareaState extends State<ShadTextarea> {
         theme.textareaTheme.scrollbarPadding ??
         const EdgeInsets.only(bottom: 10);
 
-    final input = SizedBox(
-      height: _textareaHeight,
-      child: ShadInput(
-        initialValue: widget.initialValue,
-        controller: widget.controller,
-        focusNode: focusNode,
-        placeholder: widget.placeholder,
-        placeholderAlignment: effectivePlaceholderAlignment,
-        alignment: effectiveAlignment,
-        maxLines: lineCount,
-        minLines: lineCount,
-        keyboardType: TextInputType.multiline,
-        readOnly: widget.readOnly,
-        enabled: widget.enabled,
-        autofocus: widget.autofocus,
-        onChanged: widget.onChanged,
-        onEditingComplete: widget.onEditingComplete,
-        onSubmitted: widget.onSubmitted,
-        onAppPrivateCommand: widget.onAppPrivateCommand,
-        style: effectiveTextStyle,
-        strutStyle: widget.strutStyle,
-        textAlign: widget.textAlign,
-        textDirection: widget.textDirection,
-        showCursor: widget.showCursor,
-        cursorWidth: widget.cursorWidth,
-        cursorHeight: widget.cursorHeight,
-        cursorRadius: widget.cursorRadius,
-        cursorOpacityAnimates: widget.cursorOpacityAnimates,
-        cursorColor: widget.cursorColor,
-        selectionHeightStyle: widget.selectionHeightStyle,
-        selectionWidthStyle: widget.selectionWidthStyle,
-        keyboardAppearance: widget.keyboardAppearance,
-        scrollPadding: widget.scrollPadding,
-        dragStartBehavior: widget.dragStartBehavior,
-        enableInteractiveSelection: widget.enableInteractiveSelection,
-        selectionControls: widget.selectionControls,
-        onPressed: widget.onPressed,
-        onPressedAlwaysCalled: widget.onPressedAlwaysCalled,
-        onPressedOutside: widget.onPressedOutside,
-        mouseCursor: effectiveMouseCursor,
-        scrollController: widget.scrollController,
-        scrollPhysics: widget.scrollPhysics,
-        contentInsertionConfiguration: widget.contentInsertionConfiguration,
-        clipBehavior: widget.clipBehavior,
-        restorationId: widget.restorationId,
-        scribbleEnabled: widget.scribbleEnabled,
-        stylusHandwritingEnabled: widget.stylusHandwritingEnabled,
-        enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
-        contextMenuBuilder: widget.contextMenuBuilder,
-        spellCheckConfiguration: widget.spellCheckConfiguration,
-        magnifierConfiguration: widget.magnifierConfiguration,
-        selectionColor: widget.selectionColor,
-        padding: effectivePadding,
-        decoration: effectiveDecoration,
-        mainAxisAlignment: effectiveMainAxisAlignment,
-        crossAxisAlignment: effectiveCrossAxisAlignment,
-        placeholderStyle: effectivePlaceholderStyle,
-        inputPadding: effectiveInputPadding,
-        gap: effectiveGap,
-        constraints: effectiveConstraints,
-        groupId: widget.groupId,
-        undoController: widget.undoController,
-        scrollbarPadding: effectiveScrollbarPadding,
-        keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
-      ),
-    );
-
     return Stack(
       children: [
-        input,
+        ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+          child: ShadInput(
+            editableTextSize: Size(double.infinity, _textareaHeight),
+            initialValue: widget.initialValue,
+            controller: widget.controller,
+            focusNode: focusNode,
+            placeholder: widget.placeholder,
+            placeholderAlignment: effectivePlaceholderAlignment,
+            alignment: effectiveAlignment,
+            maxLines: lineCount,
+            minLines: lineCount,
+            keyboardType: TextInputType.multiline,
+            readOnly: widget.readOnly,
+            enabled: widget.enabled,
+            autofocus: widget.autofocus,
+            onChanged: widget.onChanged,
+            onEditingComplete: widget.onEditingComplete,
+            onSubmitted: widget.onSubmitted,
+            onAppPrivateCommand: widget.onAppPrivateCommand,
+            style: effectiveTextStyle,
+            strutStyle: widget.strutStyle,
+            textAlign: widget.textAlign,
+            textDirection: widget.textDirection,
+            showCursor: widget.showCursor,
+            cursorWidth: widget.cursorWidth,
+            cursorHeight: widget.cursorHeight,
+            cursorRadius: widget.cursorRadius,
+            cursorOpacityAnimates: widget.cursorOpacityAnimates,
+            cursorColor: widget.cursorColor,
+            selectionHeightStyle: widget.selectionHeightStyle,
+            selectionWidthStyle: widget.selectionWidthStyle,
+            keyboardAppearance: widget.keyboardAppearance,
+            scrollPadding: widget.scrollPadding,
+            dragStartBehavior: widget.dragStartBehavior,
+            enableInteractiveSelection: widget.enableInteractiveSelection,
+            selectionControls: widget.selectionControls,
+            onPressed: widget.onPressed,
+            onPressedAlwaysCalled: widget.onPressedAlwaysCalled,
+            onPressedOutside: widget.onPressedOutside,
+            mouseCursor: effectiveMouseCursor,
+            scrollController: widget.scrollController,
+            scrollPhysics: widget.scrollPhysics,
+            contentInsertionConfiguration: widget.contentInsertionConfiguration,
+            clipBehavior: widget.clipBehavior,
+            restorationId: widget.restorationId,
+            scribbleEnabled: widget.scribbleEnabled,
+            stylusHandwritingEnabled: widget.stylusHandwritingEnabled,
+            enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
+            contextMenuBuilder: widget.contextMenuBuilder,
+            spellCheckConfiguration: widget.spellCheckConfiguration,
+            magnifierConfiguration: widget.magnifierConfiguration,
+            selectionColor: widget.selectionColor,
+            padding: effectivePadding,
+            decoration: effectiveDecoration,
+            mainAxisAlignment: effectiveMainAxisAlignment,
+            crossAxisAlignment: effectiveCrossAxisAlignment,
+            placeholderStyle: effectivePlaceholderStyle,
+            inputPadding: effectiveInputPadding,
+            gap: effectiveGap,
+            constraints: effectiveConstraints,
+            groupId: widget.groupId,
+            undoController: widget.undoController,
+            scrollbarPadding: effectiveScrollbarPadding,
+            keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
+            top: widget.top,
+            bottom: widget.bottom,
+            leading: widget.leading,
+            trailing: widget.trailing,
+            onLineCountChange: widget.onLineCountChange,
+            verticalGap: widget.verticalGap,
+          ),
+        ),
         if (widget.resizable)
           Positioned(
             bottom: 2,

@@ -1,0 +1,63 @@
+name: Publish to pub.dev
+
+## Caller of this workflow should use it as follows:
+## jobs:
+##   publish:
+##     uses: nank1ro/flutter-shadcn-ui/.github/workflows/cached-publish.yaml@main [or a recent commit hash / version tag]
+##     # with:
+##     #   install_flutter: true
+##     #   environment: pub.dev
+##     #   working-directory: path/to/sub/directory
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: If specified, the workflow is required to be run in this environment (with additional approvals).
+        required: false
+        type: string
+      working-directory:
+        description: The directory within the repository where the package is located (if not in the repository root).
+        required: false
+        type: string
+      install_flutter:
+        description: Whether the package needs Flutter SDK to publish.
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  publish:
+    name: "Publish to pub.dev"
+    environment: ${{ inputs.environment }}
+    permissions:
+      id-token: write # This is required for requesting the JWT
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout repository
+      - uses: actions/checkout@v5
+      # Set up the Dart SDK and provision the OIDC token used for publishing.
+      # The `dart` command from this step will be shadowed by the one from the
+      # Flutter SDK below.
+      - uses: dart-lang/setup-dart@e51d8e571e22473a2ddebf0ef8a2123f0ab2c02c
+      # Download flutter SDK - needed for publishing Flutter packages. Can also
+      # publish pure Dart packages.
+      #
+      # The dart binary from a Flutter SDK facilitates publishing both Flutter
+      # and pure-dart packages.
+      - uses: subosito/flutter-action@v2.21.0
+        if: ${{ inputs.install_flutter == true }}
+        with:
+          channel: "stable"
+          cache: true
+      # Minimal package setup and dry run checks.
+      - name: Install dependencies
+        run: dart pub get
+        working-directory: ${{ inputs.working-directory }}
+      - name: Publish - dry run
+        run: dart pub publish --dry-run
+        working-directory: ${{ inputs.working-directory }}
+      # Publishing...
+      - name: Publish to pub.dev
+        run: dart pub publish -f
+        working-directory: ${{ inputs.working-directory }}
