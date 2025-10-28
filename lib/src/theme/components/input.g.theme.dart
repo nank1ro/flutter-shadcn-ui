@@ -55,6 +55,7 @@ mixin _$ShadInputTheme {
         b?.scrollbarPadding,
         t,
       ),
+      verticalGap: lerpDouble$(a?.verticalGap, b?.verticalGap, t),
     );
   }
 
@@ -76,6 +77,7 @@ mixin _$ShadInputTheme {
     double? gap,
     BoxConstraints? constraints,
     EdgeInsetsGeometry? scrollbarPadding,
+    double? verticalGap,
   }) {
     final a = (this as ShadInputTheme);
 
@@ -97,6 +99,7 @@ mixin _$ShadInputTheme {
       gap: gap ?? a.gap,
       constraints: constraints ?? a.constraints,
       scrollbarPadding: scrollbarPadding ?? a.scrollbarPadding,
+      verticalGap: verticalGap ?? a.verticalGap,
     );
   }
 
@@ -131,6 +134,7 @@ mixin _$ShadInputTheme {
       gap: other.gap,
       constraints: other.constraints,
       scrollbarPadding: other.scrollbarPadding,
+      verticalGap: other.verticalGap,
     );
   }
 
@@ -163,7 +167,8 @@ mixin _$ShadInputTheme {
         other.crossAxisAlignment == value.crossAxisAlignment &&
         other.gap == value.gap &&
         other.constraints == value.constraints &&
-        other.scrollbarPadding == value.scrollbarPadding;
+        other.scrollbarPadding == value.scrollbarPadding &&
+        other.verticalGap == value.verticalGap;
   }
 
   @override
@@ -189,6 +194,7 @@ mixin _$ShadInputTheme {
       value.gap,
       value.constraints,
       value.scrollbarPadding,
+      value.verticalGap,
     );
   }
 }
