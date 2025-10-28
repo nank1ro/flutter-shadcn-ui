@@ -4,14 +4,15 @@ on:
   workflow_dispatch: # Allows manual triggering of the workflow
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'          # Matches v1.2.3
-      - 'v[0-9]+.[0-9]+.[0-9]+\+[0-9]+'  # Matches v1.2.3+1
+      - "v[0-9]+.[0-9]+.[0-9]+" # Matches v1.2.3
+      - 'v[0-9]+.[0-9]+.[0-9]+\+[0-9]+' # Matches v1.2.3+1
 
 # Publish using the reusable workflow from dart-lang.
 jobs:
   publish:
     permissions:
       id-token: write # Required for authentication using OIDC
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    uses: nank1ro/flutter-shadcn-ui/.github/workflows/cached-publish.yaml@main
     with:
       environment: pub.dev
+      install_flutter: true
