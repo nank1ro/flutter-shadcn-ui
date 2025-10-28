@@ -15,7 +15,7 @@ environment:
   flutter: ">=3.35.0"
 
 dependencies:
-  boxy: ">=2.0.0 <3.0.0"
+  boxy: ">=2.0.2 <3.0.0"
   collection: ">=1.0.0 <2.0.0"
   flutter:
     sdk: flutter
