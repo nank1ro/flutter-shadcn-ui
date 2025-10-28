@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -757,27 +758,33 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     if (hasSearch) {
       void popoverListener() {
         if (!context.mounted) return;
+        if (popoverController.isOpen) return;
 
-        if (popoverController.isOpen) {
-          searchFocusNode.requestFocus();
-        } else {
+        if (searchFocusNode.hasFocus) {
           searchFocusNode.unfocus();
-          final effectiveClearSearchOnClose =
-              widget.clearSearchOnClose ??
-              ShadTheme.of(
-                context,
-                listen: false,
-              ).selectTheme.clearSearchOnClose ??
-              true;
+        }
+        final effectiveClearSearchOnClose =
+            widget.clearSearchOnClose ??
+            ShadTheme.of(
+              context,
+              listen: false,
+            ).selectTheme.clearSearchOnClose ??
+            true;
 
-          if (effectiveClearSearchOnClose) {
-            widget.onSearchChanged?.call('');
-          }
+        if (effectiveClearSearchOnClose) {
+          widget.onSearchChanged?.call('');
         }
       }
 
       _popoverControllerListener = popoverListener;
       popoverController.addListener(popoverListener);
+    }
+  }
+
+  void desktopTogglePopover() {
+    popoverController.toggle();
+    if (popoverController.isOpen) {
+      searchFocusNode.requestFocus();
     }
   }
 
@@ -1030,9 +1037,9 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
               ? const {}
               : {
                   const SingleActivator(LogicalKeyboardKey.enter):
-                      popoverController.toggle,
+                      desktopTogglePopover,
                   const SingleActivator(LogicalKeyboardKey.space):
-                      popoverController.toggle,
+                      desktopTogglePopover,
                   const SingleActivator(LogicalKeyboardKey.escape):
                       popoverController.hide,
                 },
@@ -1091,9 +1098,13 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                 child: ShadGestureDetector(
                   cursor: SystemMouseCursors.click,
                   behavior: HitTestBehavior.opaque,
-                  onTap: () {
+                  onTapDown: (details) {
                     FocusScope.of(context).unfocus();
-                    popoverController.toggle();
+                    if (details.kind == PointerDeviceKind.touch) {
+                      popoverController.toggle();
+                    } else {
+                      desktopTogglePopover();
+                    }
                   },
                   child: ConstrainedBox(
                     constraints: effectiveConstraints,
