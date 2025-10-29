@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -692,11 +693,15 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
   ShadSelectController<T> get controller => widget.controller ?? _controller!;
 
+  VoidCallback? _popoverControllerListener;
+
   ShadPopoverController? _popoverController;
 
   ShadPopoverController get popoverController =>
       widget.popoverController ??
       (_popoverController ??= ShadPopoverController());
+
+  VoidCallback? _scrollControllerListener;
 
   ScrollController? _scrollController;
 
@@ -735,19 +740,26 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     if (widget.focusNode == null) internalFocusNode = FocusNode();
 
     // react to the scroll position
-    scrollController.addListener(() {
+    void scrollControllerListener() {
+      if (!context.mounted) return;
+
       if (!scrollController.hasClients) return;
       showScrollToBottom.value =
           scrollController.offset < scrollController.position.maxScrollExtent;
       showScrollToTop.value = scrollController.offset > 0;
-    });
+    }
 
-    final hasSearch =
-        widget.variant == ShadSelectVariant.search ||
-        widget.variant == ShadSelectVariant.multipleWithSearch;
-    if (hasSearch) {
-      popoverController.addListener(() {
+    _scrollControllerListener = scrollControllerListener;
+    scrollController.addListener(scrollControllerListener);
+
+    if (isSearchVariant()) {
+      void popoverListener() {
+        if (!context.mounted) return;
         if (popoverController.isOpen) return;
+
+        if (searchFocusNode.hasFocus) {
+          searchFocusNode.unfocus();
+        }
         final effectiveClearSearchOnClose =
             widget.clearSearchOnClose ??
             ShadTheme.of(
@@ -759,7 +771,22 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         if (effectiveClearSearchOnClose) {
           widget.onSearchChanged?.call('');
         }
-      });
+      }
+
+      _popoverControllerListener = popoverListener;
+      popoverController.addListener(popoverListener);
+    }
+  }
+
+  bool isSearchVariant() {
+    return widget.variant == ShadSelectVariant.search ||
+        widget.variant == ShadSelectVariant.multipleWithSearch;
+  }
+
+  void desktopTogglePopover() {
+    popoverController.toggle();
+    if (popoverController.isOpen && isSearchVariant()) {
+      searchFocusNode.requestFocus();
     }
   }
 
@@ -782,6 +809,18 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
   @override
   void dispose() {
+    final popoverControllerListener = _popoverControllerListener;
+    if (popoverControllerListener != null) {
+      popoverController.removeListener(popoverControllerListener);
+      _popoverControllerListener = null;
+    }
+
+    final scrollControllerListener = _scrollControllerListener;
+    if (scrollControllerListener != null) {
+      scrollController.removeListener(scrollControllerListener);
+      _scrollControllerListener = null;
+    }
+
     _internalSearchFocusNode?.dispose();
     _popoverController?.dispose();
     internalFocusNode?.dispose();
@@ -1000,9 +1039,9 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
               ? const {}
               : {
                   const SingleActivator(LogicalKeyboardKey.enter):
-                      popoverController.toggle,
+                      desktopTogglePopover,
                   const SingleActivator(LogicalKeyboardKey.space):
-                      popoverController.toggle,
+                      desktopTogglePopover,
                   const SingleActivator(LogicalKeyboardKey.escape):
                       popoverController.hide,
                 },
@@ -1061,9 +1100,13 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                 child: ShadGestureDetector(
                   cursor: SystemMouseCursors.click,
                   behavior: HitTestBehavior.opaque,
-                  onTap: () {
+                  onTapDown: (details) {
                     FocusScope.of(context).unfocus();
-                    popoverController.toggle();
+                    if (details.kind == PointerDeviceKind.touch) {
+                      popoverController.toggle();
+                    } else {
+                      desktopTogglePopover();
+                    }
                   },
                   child: ConstrainedBox(
                     constraints: effectiveConstraints,
