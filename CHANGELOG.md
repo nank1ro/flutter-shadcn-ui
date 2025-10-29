@@ -1,3 +1,7 @@
+## 0.39.2
+
+- **FEAT**: Add `buttonTextStyle` to `ShadDateRangePickerFormField`.
+
 ## 0.39.1
 
 - **FEAT**: Add `buttonTextStyle` to `ShadDatePicker`, `ShadDatePickerTheme` and `ShadDatePickerFormField` to customize the text style of the button that triggers the date picker popover.
