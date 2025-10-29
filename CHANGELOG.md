@@ -1,3 +1,7 @@
+## 0.39.1
+
+- **FEAT**: Add `buttonTextStyle` to `ShadDatePicker`, `ShadDatePickerTheme` and `ShadDatePickerFormField` to customize the text style of the button that triggers the date picker popover.
+
 ## 0.39.0
 
 - **FEAT**: Add `top`, `bottom`, `verticalGap` and `onLineCountChange` to `ShadInput`, `ShadInputFormField`, `ShadTextArea` and `ShadTextAreaFormField` to add widgets above or below the input field, and to get notified when the number of lines in the input changes.

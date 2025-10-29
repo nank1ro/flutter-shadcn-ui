@@ -166,6 +166,7 @@ class ShadDatePicker extends StatefulWidget {
     this.iconData,
     this.expands,
     this.popoverReverseDuration,
+    this.buttonTextStyle,
   }) : variant = ShadDatePickerVariant.single,
        formatDateRange = null,
        selectedRange = null;
@@ -308,6 +309,7 @@ class ShadDatePicker extends StatefulWidget {
     this.iconData,
     this.expands,
     this.popoverReverseDuration,
+    this.buttonTextStyle,
   }) : variant = ShadDatePickerVariant.range,
        selected = null,
        formatDate = null,
@@ -455,6 +457,7 @@ class ShadDatePicker extends StatefulWidget {
     this.placeholder,
     this.expands,
     this.popoverReverseDuration,
+    this.buttonTextStyle,
   });
 
   /// {@template ShadDatePicker.placeholder}
@@ -907,6 +910,9 @@ class ShadDatePicker extends StatefulWidget {
   /// {@macro ShadButton.expands}
   final bool? expands;
 
+  /// {@macro ShadButton.textStyle}
+  final TextStyle? buttonTextStyle;
+
   @override
   State<ShadDatePicker> createState() => _ShadDatePickerState();
 }
@@ -1010,6 +1016,9 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
         widget.expands ?? theme.datePickerTheme.expands ?? false;
 
     final effectiveGroupId = widget.groupId ?? _groupId;
+
+    final effectiveButtonTextStyle =
+        widget.buttonTextStyle ?? theme.datePickerTheme.buttonTextStyle;
 
     return ShadPopover(
       controller: popoverController,
@@ -1301,6 +1310,7 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
             widget.hoverStrategies ?? theme.datePickerTheme.hoverStrategies,
         textDirection: widget.textDirection,
         expands: effectiveExpands,
+        textStyle: effectiveButtonTextStyle,
         child:
             widget.buttonChild ??
             (isSelected
@@ -1313,6 +1323,7 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
                         selectedRange!,
                       ),
                     },
+                    style: effectiveButtonTextStyle,
                   )
                 : DefaultTextStyle(
                     style: theme.textTheme.muted.fallback(
