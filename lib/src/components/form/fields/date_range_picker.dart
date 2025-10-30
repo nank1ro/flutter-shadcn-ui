@@ -428,6 +428,9 @@ class ShadDateRangePickerFormField
 
     /// {@macro ShadButton.expands}
     bool? expands,
+
+    /// {@macro ShadButton.textStyle}
+    TextStyle? buttonTextStyle,
   }) : super(
          builder: (field) {
            final state = field as _ShadFormBuilderDateRangePickerState;
@@ -566,6 +569,7 @@ class ShadDateRangePickerFormField
              onFocusChange: onFocusChange,
              placeholder: placeholder,
              expands: expands,
+             buttonTextStyle: buttonTextStyle,
            );
          },
        );

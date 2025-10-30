@@ -1,0 +1,58 @@
+name: Auto Add App to Documentation
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  auto-add-app:
+    if: contains(github.event.issue.body, 'Site URL') && contains(github.event.issue.body, 'Site Name')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run automation script
+        id: add-app
+        run: node .github/scripts/add-app-to-docs.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+
+      - name: Comment on issue
+        if: steps.add-app.outputs.pr_url
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: ${{ github.event.issue.number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🎉 Thank you for submitting your app! A pull request has been automatically created: ${{ steps.add-app.outputs.pr_url }}\n\nOnce the PR is merged, your app will appear in the documentation sidebar.`
+            });
+
+      - name: Close issue
+        if: steps.add-app.outputs.pr_url
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.update({
+              issue_number: ${{ github.event.issue.number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed'
+            });

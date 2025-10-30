@@ -622,7 +622,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       descriptionStyle: effectiveTextTheme.muted,
       alignment: Alignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
     );
   }
 
@@ -649,7 +649,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       descriptionStyle: effectiveTextTheme.muted,
       alignment: Alignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
     );
   }
 

@@ -232,6 +232,18 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadKeyboardToolbar.toolbarBuilder}
     WidgetBuilder? keyboardToolbarBuilder,
+
+    /// {@macro ShadInput.top}
+    Widget? top,
+
+    /// {@macro ShadInput.bottom}
+    Widget? bottom,
+
+    /// {@macro ShadInput.onLineCountChange}
+    ValueChanged<int>? onLineCountChange,
+
+    /// {@macro ShadInput.editableTextSize}
+    Size? editableTextSize,
   }) : super(
          initialValue: controller != null ? controller.text : initialValue,
          validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -316,6 +328,10 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
              constraints: constraints,
              groupId: groupId,
              keyboardToolbarBuilder: keyboardToolbarBuilder,
+             top: top,
+             bottom: bottom,
+             onLineCountChange: onLineCountChange,
+             editableTextSize: editableTextSize,
            );
          },
        );

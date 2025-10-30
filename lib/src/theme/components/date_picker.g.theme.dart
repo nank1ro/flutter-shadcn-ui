@@ -293,6 +293,11 @@ mixin _$ShadDatePickerTheme {
         t,
       ),
       expands: t < 0.5 ? a?.expands : b?.expands,
+      buttonTextStyle: TextStyle.lerp(
+        a?.buttonTextStyle,
+        b?.buttonTextStyle,
+        t,
+      ),
     );
   }
 
@@ -386,6 +391,7 @@ mixin _$ShadDatePickerTheme {
     double? gap,
     EdgeInsetsGeometry? buttonPadding,
     bool? expands,
+    TextStyle? buttonTextStyle,
   }) {
     final a = (this as ShadDatePickerTheme);
 
@@ -500,6 +506,7 @@ mixin _$ShadDatePickerTheme {
       gap: gap ?? a.gap,
       buttonPadding: buttonPadding ?? a.buttonPadding,
       expands: expands ?? a.expands,
+      buttonTextStyle: buttonTextStyle ?? a.buttonTextStyle,
     );
   }
 
@@ -631,6 +638,9 @@ mixin _$ShadDatePickerTheme {
       gap: other.gap,
       buttonPadding: other.buttonPadding,
       expands: other.expands,
+      buttonTextStyle:
+          current.buttonTextStyle?.merge(other.buttonTextStyle) ??
+          other.buttonTextStyle,
     );
   }
 
@@ -744,7 +754,8 @@ mixin _$ShadDatePickerTheme {
         other.textDirection == value.textDirection &&
         other.gap == value.gap &&
         other.buttonPadding == value.buttonPadding &&
-        other.expands == value.expands;
+        other.expands == value.expands &&
+        other.buttonTextStyle == value.buttonTextStyle;
   }
 
   @override
@@ -842,6 +853,7 @@ mixin _$ShadDatePickerTheme {
       value.gap,
       value.buttonPadding,
       value.expands,
+      value.buttonTextStyle,
     ]);
   }
 }
