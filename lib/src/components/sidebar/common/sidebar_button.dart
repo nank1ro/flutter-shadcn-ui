@@ -1,8 +1,12 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 
-/// An internal component used in [ShadSidebarMenuItem]
+/// An internal component used in `ShadSidebarMenuItem`
 ///  and `SidebarCollapsible`.
 class SidebarButton extends StatelessWidget {
   const SidebarButton({
