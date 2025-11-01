@@ -309,11 +309,10 @@ class _ResizeHandleState extends State<_ResizeHandle> {
         onTap: () {
           ShadSidebarController.maybeOf(context)?.toggle(context);
         },
-        child: Container(
-          alignment: widget.side.isRight
-              ? Alignment.centerLeft
-              : Alignment.centerRight,
+        child: Align(
+          alignment: AlignmentDirectional.centerEnd,
           child: ShadSeparator.vertical(
+            margin: EdgeInsetsGeometry.zero,
             thickness: _isHovered ? 2 : 0,
             color: widget.borderColor,
           ),
