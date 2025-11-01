@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/sidebar/common/enums.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
@@ -30,6 +31,8 @@ import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar_scaffold.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -1069,5 +1072,24 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       showNextButton: true,
       showPreviousButton: true,
     );
+  }
+
+  @override
+  ShadSidebarTheme sidebarTheme() {
+    return const ShadSidebarTheme(
+      initiallyExtended: true,
+      animationDuration: Duration(milliseconds: 200),
+      animationCurve: Curves.linear,
+      collapseMode: ShadSidebarCollapseMode.offScreen,
+      collapsedToIconsWidth: 48,
+      extendedWidth: 256,
+      mobileWidth: 288,
+      mobileBreakPoint: 768,
+    );
+  }
+
+  @override
+  ShadSidebarScaffoldTheme sidebarScaffoldTheme() {
+    return const ShadSidebarScaffoldTheme();
   }
 }
