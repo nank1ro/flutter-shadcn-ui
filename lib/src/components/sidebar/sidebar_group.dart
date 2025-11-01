@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import 'package:shadcn_ui/src/components/sidebar/common/sidebar_collapsible.dart';
 import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar_item.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar_menu.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadSidebarGroup extends StatelessWidget {
@@ -16,6 +18,46 @@ class ShadSidebarGroup extends StatelessWidget {
     this.hiddenWhenCollapsedToIcons = true,
     this.flex = 0,
   }) : collapsible = false;
+
+  /// Create a sidebar group of items.
+  ShadSidebarGroup.items({
+    super.key,
+    this.action,
+    List<ShadSidebarItem> items = const [],
+    this.padding = const EdgeInsets.all(8),
+    this.labelPadding = const EdgeInsets.symmetric(horizontal: 8),
+    this.labelText,
+    this.label,
+    this.hiddenWhenCollapsedToIcons = true,
+    this.flex = 0,
+  }) : content = ShadSidebarMenu(items: items),
+       collapsible = false;
+
+  const factory ShadSidebarGroup.collapsible({
+    Key? key,
+    Widget? content,
+    EdgeInsetsGeometry padding,
+    EdgeInsetsGeometry labelPadding,
+    String? labelText,
+    Widget? label,
+    bool initiallyCollapsed,
+    int flex,
+    Widget Function(bool collapsed)? trailingIconBuilder,
+    bool hiddenWhenCollapsedToIcons,
+  }) = _CollapsibleSidebarGroup;
+
+  factory ShadSidebarGroup.collapsibleItems({
+    Key? key,
+    EdgeInsetsGeometry padding,
+    EdgeInsetsGeometry labelPadding,
+    String? labelText,
+    Widget? label,
+    bool initiallyCollapsed,
+    int flex,
+    Widget Function(bool collapsed)? trailingIconBuilder,
+    bool hiddenWhenCollapsedToIcons,
+    List<ShadSidebarItem> items,
+  }) = _CollapsibleSidebarGroup.menu;
 
   const ShadSidebarGroup._({
     super.key,
@@ -33,23 +75,10 @@ class ShadSidebarGroup extends StatelessWidget {
          'Either labelText or label can be provided',
        );
 
-  const factory ShadSidebarGroup.collapsible({
-    Key? key,
-    Widget? content,
-    EdgeInsetsGeometry padding,
-    EdgeInsetsGeometry labelPadding,
-    String? labelText,
-    Widget? label,
-    bool initiallyCollapsed,
-    int flex,
-    Widget Function(bool collapsed)? trailingIconBuilder,
-    bool hiddenWhenCollapsedToIcons,
-  }) = _CollapsibleSidebarGroup;
-
   final String? labelText;
   final Widget? label;
 
-  /// Usually a [ShadIconButton].
+  /// Usually a `ShadIconButton`.
   final Widget? action;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry labelPadding;
@@ -86,6 +115,7 @@ class ShadSidebarGroup extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _labelBuilder(
+                    context,
                     padding: labelPadding,
                     label: label,
                     labelText: labelText,
@@ -106,7 +136,8 @@ class ShadSidebarGroup extends StatelessWidget {
   }
 }
 
-Widget _labelBuilder({
+Widget _labelBuilder(
+  BuildContext context, {
   String? labelText,
   Widget? label,
   required EdgeInsetsGeometry padding,
@@ -116,7 +147,21 @@ Widget _labelBuilder({
     effectiveLabel = label;
   }
   if (labelText != null) {
-    effectiveLabel = _SidebarGroupLabelText(labelText);
+    final colorScheme = ShadTheme.of(context).colorScheme;
+    final fColor = colorScheme.sidebarForeground;
+    effectiveLabel = Text(
+      labelText,
+      style: TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 12,
+        color: Color.from(
+          alpha: (fColor.a * 70) / 100,
+          red: fColor.r,
+          green: fColor.g,
+          blue: fColor.b,
+        ),
+      ),
+    );
   }
   return effectiveLabel == null
       ? const SizedBox.shrink()
@@ -141,6 +186,19 @@ class _CollapsibleSidebarGroup extends ShadSidebarGroup {
     this.trailingIconBuilder,
   }) : super._(collapsible: true);
 
+  _CollapsibleSidebarGroup.menu({
+    super.key,
+    super.padding,
+    super.label,
+    super.labelText,
+    super.labelPadding,
+    super.flex,
+    super.hiddenWhenCollapsedToIcons = true,
+    this.initiallyCollapsed = false,
+    this.trailingIconBuilder,
+    List<ShadSidebarItem> items = const [],
+  }) : super._(collapsible: true, content: ShadSidebarMenu(items: items));
+
   final bool initiallyCollapsed;
   final Widget Function(bool collapsed)? trailingIconBuilder;
 
@@ -157,30 +215,6 @@ class _CollapsibleSidebarGroup extends ShadSidebarGroup {
           label: label,
           labelText: labelText,
           iconBuilder: trailingIconBuilder,
-        ),
-      ),
-    );
-  }
-}
-
-class _SidebarGroupLabelText extends StatelessWidget {
-  const _SidebarGroupLabelText(this.label);
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = ShadTheme.of(context).colorScheme;
-    final fColor = colorScheme.sidebarForeground;
-    return Text(
-      label,
-      style: TextStyle(
-        fontWeight: FontWeight.w500,
-        fontSize: 12,
-        color: Color.from(
-          alpha: (fColor.a * 70) / 100,
-          red: fColor.r,
-          green: fColor.g,
-          blue: fColor.b,
         ),
       ),
     );

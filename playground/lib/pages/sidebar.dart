@@ -55,19 +55,19 @@ class SidebarWithMenu extends StatelessWidget {
               labelText: 'Application',
               content: ShadSidebarMenu(
                 items: [
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     labelText: 'Home',
                     leading: Icon(LucideIcons.house, size: 16),
                   ),
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     labelText: 'Profile',
                     leading: Icon(LucideIcons.user, size: 16),
                   ),
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     labelText: 'Search',
                     leading: Icon(LucideIcons.search, size: 16),
                   ),
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     labelText: 'Settings',
                     leading: Icon(LucideIcons.settings, size: 16),
                   ),
@@ -169,9 +169,9 @@ class SidebarWithGroups extends StatelessWidget {
               labelText: 'Analytics',
               content: ShadSidebarMenu(
                 items: [
-                  ShadSidebarMenuItem(labelText: 'Overview'),
-                  ShadSidebarMenuItem(labelText: 'Reports'),
-                  ShadSidebarMenuItem(labelText: 'Notifications'),
+                  ShadSidebarItem(labelText: 'Overview'),
+                  ShadSidebarItem(labelText: 'Reports'),
+                  ShadSidebarItem(labelText: 'Notifications'),
                 ],
               ),
             ),
@@ -192,8 +192,8 @@ class SidebarWithGroups extends StatelessWidget {
               ),
               content: const ShadSidebarMenu(
                 items: [
-                  ShadSidebarMenuItem(labelText: 'Profile'),
-                  ShadSidebarMenuItem(labelText: 'Billing'),
+                  ShadSidebarItem(labelText: 'Profile'),
+                  ShadSidebarItem(labelText: 'Billing'),
                 ],
               ),
             ),
@@ -219,9 +219,9 @@ class SidebarWithCollapsibleGroup extends StatelessWidget {
               labelText: 'Analytics',
               content: ShadSidebarMenu(
                 items: [
-                  ShadSidebarMenuItem(labelText: 'Overview'),
-                  ShadSidebarMenuItem(labelText: 'Reports'),
-                  ShadSidebarMenuItem(labelText: 'Notifications'),
+                  ShadSidebarItem(labelText: 'Overview'),
+                  ShadSidebarItem(labelText: 'Reports'),
+                  ShadSidebarItem(labelText: 'Notifications'),
                 ],
               ),
             ),
@@ -230,8 +230,8 @@ class SidebarWithCollapsibleGroup extends StatelessWidget {
               initiallyCollapsed: true,
               content: ShadSidebarMenu(
                 items: [
-                  ShadSidebarMenuItem(labelText: 'Profile'),
-                  ShadSidebarMenuItem(labelText: 'Settings'),
+                  ShadSidebarItem(labelText: 'Profile'),
+                  ShadSidebarItem(labelText: 'Settings'),
                 ],
               ),
             ),
@@ -257,15 +257,15 @@ class SidebarWithMenus extends StatelessWidget {
               labelText: 'Projects',
               content: ShadSidebarMenu(
                 items: [
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     labelText: 'Design Engineering',
                     leading: Icon(LucideIcons.frame400),
                   ),
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     labelText: 'Sales & Marketing',
                     leading: Icon(LucideIcons.chartPie400),
                   ),
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     labelText: 'Travel',
                     leading: Icon(LucideIcons.map400),
                   ),
@@ -293,58 +293,50 @@ class SidebarWithSubMenus extends StatelessWidget {
             ShadSidebarGroup(
               content: ShadSidebarMenu(
                 items: [
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     labelText: 'Getting Started',
-                    subMenu: ShadSidebarSubMenu(
-                      items: [
-                        ShadSidebarSubMenuItem(labelText: 'Installation'),
-                        ShadSidebarSubMenuItem(labelText: 'Project Setup'),
-                      ],
-                    ),
+                    subItems: [
+                      ShadSidebarItem(labelText: 'Installation'),
+                      ShadSidebarItem(labelText: 'Project Setup'),
+                    ],
                   ),
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     labelText: 'Building Your Application',
-                    subMenu: ShadSidebarSubMenu(
-                      items: [
-                        ShadSidebarSubMenuItem(labelText: 'Routing'),
-                        ShadSidebarSubMenuItem(labelText: 'Data fetching'),
-                        ShadSidebarSubMenuItem(labelText: 'Rendering'),
-                        ShadSidebarSubMenuItem(labelText: 'Caching'),
-                        ShadSidebarSubMenuItem(labelText: 'Authentication'),
-                        ShadSidebarSubMenuItem(labelText: 'State management'),
-                        ShadSidebarSubMenuItem(labelText: 'Navigation'),
-                        ShadSidebarSubMenuItem(labelText: 'Styling'),
-                        ShadSidebarSubMenuItem(labelText: 'Testing'),
-                        ShadSidebarSubMenuItem(labelText: 'Upgrading'),
-                        ShadSidebarSubMenuItem(labelText: 'Deployment'),
-                        ShadSidebarSubMenuItem(labelText: 'Examples'),
-                      ],
-                    ),
+                    subItems: [
+                      ShadSidebarItem(labelText: 'Routing'),
+                      ShadSidebarItem(labelText: 'Data fetching'),
+                      ShadSidebarItem(labelText: 'Rendering'),
+                      ShadSidebarItem(labelText: 'Caching'),
+                      ShadSidebarItem(labelText: 'Authentication'),
+                      ShadSidebarItem(labelText: 'State management'),
+                      ShadSidebarItem(labelText: 'Navigation'),
+                      ShadSidebarItem(labelText: 'Styling'),
+                      ShadSidebarItem(labelText: 'Testing'),
+                      ShadSidebarItem(labelText: 'Upgrading'),
+                      ShadSidebarItem(labelText: 'Deployment'),
+                      ShadSidebarItem(labelText: 'Examples'),
+                    ],
                   ),
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     labelText: 'API Reference',
-                    subMenu: ShadSidebarSubMenu(
-                      items: [
-                        ShadSidebarSubMenuItem(labelText: 'Components'),
-                        ShadSidebarSubMenuItem(labelText: 'File Conventions'),
-                        ShadSidebarSubMenuItem(labelText: 'Widgets'),
-                        ShadSidebarSubMenuItem(labelText: 'Functions'),
-                        ShadSidebarSubMenuItem(labelText: 'CLI'),
-                        ShadSidebarSubMenuItem(labelText: 'Edge Runtime'),
-                      ],
-                    ),
+                    subItems: [
+                      ShadSidebarItem(labelText: 'Components'),
+                      ShadSidebarItem(labelText: 'File Conventions'),
+                      ShadSidebarItem(labelText: 'Widgets'),
+                      ShadSidebarItem(labelText: 'Functions'),
+                      ShadSidebarItem(labelText: 'CLI'),
+                      ShadSidebarItem(labelText: 'Edge Runtime'),
+                    ],
                   ),
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     labelText: 'Architecture',
-                    subMenu: ShadSidebarSubMenu(
-                      items: [
-                        ShadSidebarSubMenuItem(labelText: 'Accessibility'),
-                        ShadSidebarSubMenuItem(labelText: 'Fast Refresh'),
-                        ShadSidebarSubMenuItem(labelText: 'Flutter for Web'),
-                        ShadSidebarSubMenuItem(labelText: 'Hot Reload'),
-                        ShadSidebarSubMenuItem(labelText: 'Plugins'),
-                      ],
-                    ),
+                    subItems: [
+                      ShadSidebarItem(labelText: 'Accessibility'),
+                      ShadSidebarItem(labelText: 'Fast Refresh'),
+                      ShadSidebarItem(labelText: 'Flutter for Web'),
+                      ShadSidebarItem(labelText: 'Hot Reload'),
+                      ShadSidebarItem(labelText: 'Plugins'),
+                    ],
                   ),
                 ],
               ),
@@ -372,54 +364,46 @@ class SidebarWithCollapsibleMenus extends StatelessWidget {
               hiddenWhenCollapsedToIcons: false,
               content: ShadSidebarMenu(
                 items: [
-                  ShadSidebarMenuItem.collapsible(
+                  ShadSidebarItem.collapsible(
                     labelText: 'Playground',
                     leading: Icon(LucideIcons.squareTerminal400),
-                    subMenu: ShadSidebarSubMenu(
-                      items: [
-                        ShadSidebarSubMenuItem(labelText: 'History'),
-                        ShadSidebarSubMenuItem(labelText: 'Starred'),
-                        ShadSidebarSubMenuItem(labelText: 'Settings'),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem(labelText: 'History'),
+                      ShadSidebarItem(labelText: 'Starred'),
+                      ShadSidebarItem(labelText: 'Settings'),
+                    ],
                   ),
-                  ShadSidebarMenuItem.collapsible(
+                  ShadSidebarItem.collapsible(
                     labelText: 'Models',
                     initiallyCollapsed: true,
                     leading: Icon(LucideIcons.bot400),
-                    subMenu: ShadSidebarSubMenu(
-                      items: [
-                        ShadSidebarSubMenuItem(labelText: 'Genesis'),
-                        ShadSidebarSubMenuItem(labelText: 'Explorer'),
-                        ShadSidebarSubMenuItem(labelText: 'Quantum'),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem(labelText: 'Genesis'),
+                      ShadSidebarItem(labelText: 'Explorer'),
+                      ShadSidebarItem(labelText: 'Quantum'),
+                    ],
                   ),
-                  ShadSidebarMenuItem.collapsible(
+                  ShadSidebarItem.collapsible(
                     labelText: 'Documentation',
                     initiallyCollapsed: true,
                     leading: Icon(LucideIcons.bookOpen400),
-                    subMenu: ShadSidebarSubMenu(
-                      items: [
-                        ShadSidebarSubMenuItem(labelText: 'Introduction'),
-                        ShadSidebarSubMenuItem(labelText: 'Get started'),
-                        ShadSidebarSubMenuItem(labelText: 'Tutorials'),
-                        ShadSidebarSubMenuItem(labelText: 'Examples'),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem(labelText: 'Introduction'),
+                      ShadSidebarItem(labelText: 'Get started'),
+                      ShadSidebarItem(labelText: 'Tutorials'),
+                      ShadSidebarItem(labelText: 'Examples'),
+                    ],
                   ),
-                  ShadSidebarMenuItem.collapsible(
+                  ShadSidebarItem.collapsible(
                     labelText: 'Settings',
                     initiallyCollapsed: true,
                     leading: Icon(LucideIcons.settings2400),
-                    subMenu: ShadSidebarSubMenu(
-                      items: [
-                        ShadSidebarSubMenuItem(labelText: 'General'),
-                        ShadSidebarSubMenuItem(labelText: 'Team'),
-                        ShadSidebarSubMenuItem(labelText: 'Billing'),
-                        ShadSidebarSubMenuItem(labelText: 'Limits'),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem(labelText: 'General'),
+                      ShadSidebarItem(labelText: 'Team'),
+                      ShadSidebarItem(labelText: 'Billing'),
+                      ShadSidebarItem(labelText: 'Limits'),
+                    ],
                   ),
                 ],
               ),
@@ -445,17 +429,17 @@ class SidebarWithLeadingAndTrailingMenuIcons extends StatelessWidget {
               labelText: 'Application',
               content: ShadSidebarMenu(
                 items: [
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     leading: Icon(LucideIcons.house, size: 16),
                     trailing: Text('⌘ H'),
                     labelText: 'Home',
                   ),
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     leading: Icon(LucideIcons.chartPie, size: 16),
                     trailing: Text('⌘ D'),
                     labelText: 'Dashboard',
                   ),
-                  ShadSidebarMenuItem(
+                  ShadSidebarItem(
                     leading: Icon(LucideIcons.inbox, size: 16),
                     trailing: Text('⌘ I'),
                     labelText: 'Inbox',
@@ -476,20 +460,24 @@ class SidebarWithCustomTrigger extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarScaffold(
-      body: Builder(builder: (context) {
-        var extended = ShadSidebarScaffold.of(context).isSidebarExtended();
-        return Center(
-          child: ShadButton.outline(
-            leading: Icon(
-              extended ? LucideIcons.panelLeftClose : LucideIcons.panelLeftOpen,
+      body: Builder(
+        builder: (context) {
+          var extended = ShadSidebarScaffold.of(context).isSidebarExtended();
+          return Center(
+            child: ShadButton.outline(
+              leading: Icon(
+                extended
+                    ? LucideIcons.panelLeftClose
+                    : LucideIcons.panelLeftOpen,
+              ),
+              child: Text(
+                extended ? 'Close sidebar' : 'Open sidebar',
+              ),
+              onPressed: () => ShadSidebarScaffold.of(context).toggleSidebar(),
             ),
-            child: Text(
-              extended ? 'Close sidebar' : 'Open sidebar',
-            ),
-            onPressed: () => ShadSidebarScaffold.of(context).toggleSidebar(),
-          ),
-        );
-      }),
+          );
+        },
+      ),
       sidebar: const ShadSidebar.normal(
         mobileBreakPoint: 400,
         content: ShadSidebarContent(
@@ -498,8 +486,8 @@ class SidebarWithCustomTrigger extends StatelessWidget {
               labelText: 'Analytics',
               content: ShadSidebarMenu(
                 items: [
-                  ShadSidebarMenuItem(labelText: 'Overview'),
-                  ShadSidebarMenuItem(labelText: 'Reports'),
+                  ShadSidebarItem(labelText: 'Overview'),
+                  ShadSidebarItem(labelText: 'Reports'),
                 ],
               ),
             ),
@@ -508,8 +496,8 @@ class SidebarWithCustomTrigger extends StatelessWidget {
               labelText: 'Account',
               content: ShadSidebarMenu(
                 items: [
-                  ShadSidebarMenuItem(labelText: 'Profile'),
-                  ShadSidebarMenuItem(labelText: 'Settings'),
+                  ShadSidebarItem(labelText: 'Profile'),
+                  ShadSidebarItem(labelText: 'Settings'),
                 ],
               ),
             ),
@@ -533,18 +521,18 @@ class ShadSidebarTile extends StatelessWidget {
     this.onPressed,
     this.padding = const EdgeInsets.all(8),
     this.minHeight = 48,
-  })  : assert(
-          (title != null) ^ (titleText != null),
-          'Either title or titleText must be provided',
-        ),
-        assert(
-          (subTitle == null) || (subTitleText == null),
-          'Either subTitle or subTitleText can be provided',
-        ),
-        assert(
-          (leadingIconData == null) || (leading == null),
-          'Either leadingIconData or leading can be provided',
-        );
+  }) : assert(
+         (title != null) ^ (titleText != null),
+         'Either title or titleText must be provided',
+       ),
+       assert(
+         (subTitle == null) || (subTitleText == null),
+         'Either subTitle or subTitleText can be provided',
+       ),
+       assert(
+         (leadingIconData == null) || (leading == null),
+         'Either leadingIconData or leading can be provided',
+       );
   final String? titleText;
   final Widget? title;
   final String? subTitleText;
@@ -571,8 +559,9 @@ class ShadSidebarTile extends StatelessWidget {
       foregroundColor: cs.sidebarAccentForeground,
       backgroundColor: Colors.transparent,
       pressedBackgroundColor: cs.sidebarAccent,
-      mainAxisAlignment:
-          state.collapsedToIcons ? MainAxisAlignment.center : null,
+      mainAxisAlignment: state.collapsedToIcons
+          ? MainAxisAlignment.center
+          : null,
       onPressed: onPressed,
       trailing: state.collapsedToIcons ? null : trailing,
       decoration: ShadDecoration(
@@ -596,7 +585,8 @@ class ShadSidebarTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
-              child: title ??
+              child:
+                  title ??
                   Text(
                     titleText!,
                     style: const TextStyle(
@@ -689,7 +679,8 @@ class ShadSidebarMenuTile extends StatelessWidget {
           decoration: menuDecoration,
           items: items,
           visible: opened,
-          constraints: menuConstraints ??
+          constraints:
+              menuConstraints ??
               BoxConstraints(
                 minWidth: ShadSidebarController.of(context).extendedWidth - 8,
               ),
@@ -799,8 +790,8 @@ class _ShadSidebarSelectTileState<T> extends State<ShadSidebarSelectTile<T>> {
   }
 }
 
-class ShadSidebarMenuItemCheckbox extends StatelessWidget {
-  const ShadSidebarMenuItemCheckbox({super.key, required this.value});
+class ShadSidebarItemCheckbox extends StatelessWidget {
+  const ShadSidebarItemCheckbox({super.key, required this.value});
   final bool value;
   @override
   Widget build(BuildContext context) {

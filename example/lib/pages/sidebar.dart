@@ -14,8 +14,9 @@ final wrapperWidthSignal = Signal<double>.lazy(autoDispose: true);
 
 final sideSignal = Signal<ShadSidebarSide>.lazy(autoDispose: true);
 
-final collapseModeSignal =
-    Signal<ShadSidebarCollapseMode>.lazy(autoDispose: true);
+final collapseModeSignal = Signal<ShadSidebarCollapseMode>.lazy(
+  autoDispose: true,
+);
 
 class SidebarPage extends StatefulWidget {
   const SidebarPage({super.key});
@@ -38,7 +39,7 @@ class _SidebarPageState extends State<SidebarPage>
     'stone',
     'violet',
     'yellow',
-    'zinc'
+    'zinc',
   ];
   String selectedTheme = 'neutral';
 
@@ -197,61 +198,53 @@ class _NormalVariant extends StatelessWidget {
               ),
               content: ShadSidebarContent(
                 children: [
-                  ShadSidebarGroup(
+                  ShadSidebarGroup.items(
                     labelText: 'Getting Started',
-                    content: ShadSidebarMenu(
-                      items: [
-                        ShadSidebarMenuItem(labelText: 'Installation'),
-                        ShadSidebarMenuItem(labelText: 'Project Setup'),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem(labelText: 'Installation'),
+                      ShadSidebarItem(labelText: 'Project Setup'),
+                    ],
                   ),
-                  ShadSidebarGroup(
+                  ShadSidebarGroup.items(
                     labelText: 'Building Your Application',
-                    content: ShadSidebarMenu(
-                      items: [
-                        ShadSidebarMenuItem(labelText: 'Routing'),
-                        ShadSidebarMenuItem(
-                          labelText: 'Data fetching',
-                          selected: true,
-                        ),
-                        ShadSidebarMenuItem(labelText: 'Rendering'),
-                        ShadSidebarMenuItem(labelText: 'Caching'),
-                        ShadSidebarMenuItem(labelText: 'Authentication'),
-                        ShadSidebarMenuItem(labelText: 'State management'),
-                        ShadSidebarMenuItem(labelText: 'Navigation'),
-                        ShadSidebarMenuItem(labelText: 'Styling'),
-                        ShadSidebarMenuItem(labelText: 'Testing'),
-                        ShadSidebarMenuItem(labelText: 'Upgrading'),
-                        ShadSidebarMenuItem(labelText: 'Deployment'),
-                        ShadSidebarMenuItem(labelText: 'Examples'),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem(labelText: 'Routing'),
+                      ShadSidebarItem(
+                        labelText: 'Data fetching',
+                        selected: true,
+                      ),
+                      ShadSidebarItem(labelText: 'Rendering'),
+                      ShadSidebarItem(labelText: 'Caching'),
+                      ShadSidebarItem(labelText: 'Authentication'),
+                      ShadSidebarItem(labelText: 'State management'),
+                      ShadSidebarItem(labelText: 'Navigation'),
+                      ShadSidebarItem(labelText: 'Styling'),
+                      ShadSidebarItem(labelText: 'Testing'),
+                      ShadSidebarItem(labelText: 'Upgrading'),
+                      ShadSidebarItem(labelText: 'Deployment'),
+                      ShadSidebarItem(labelText: 'Examples'),
+                    ],
                   ),
-                  ShadSidebarGroup(
+                  ShadSidebarGroup.items(
                     labelText: 'API Reference',
-                    content: ShadSidebarMenu(
-                      items: [
-                        ShadSidebarMenuItem(labelText: 'Components'),
-                        ShadSidebarMenuItem(labelText: 'File Conventions'),
-                        ShadSidebarMenuItem(labelText: 'Widgets'),
-                        ShadSidebarMenuItem(labelText: 'Functions'),
-                        ShadSidebarMenuItem(labelText: 'CLI'),
-                        ShadSidebarMenuItem(labelText: 'Edge Runtime'),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem(labelText: 'Components'),
+                      ShadSidebarItem(labelText: 'File Conventions'),
+                      ShadSidebarItem(labelText: 'Widgets'),
+                      ShadSidebarItem(labelText: 'Functions'),
+                      ShadSidebarItem(labelText: 'CLI'),
+                      ShadSidebarItem(labelText: 'Edge Runtime'),
+                    ],
                   ),
-                  ShadSidebarGroup(
+                  ShadSidebarGroup.items(
                     labelText: 'Architecture',
-                    content: ShadSidebarMenu(
-                      items: [
-                        ShadSidebarMenuItem(labelText: 'Accessibility'),
-                        ShadSidebarMenuItem(labelText: 'Fast Refresh'),
-                        ShadSidebarMenuItem(labelText: 'Flutter for Web'),
-                        ShadSidebarMenuItem(labelText: 'Hot Reload'),
-                        ShadSidebarMenuItem(labelText: 'Plugins'),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem(labelText: 'Accessibility'),
+                      ShadSidebarItem(labelText: 'Fast Refresh'),
+                      ShadSidebarItem(labelText: 'Flutter for Web'),
+                      ShadSidebarItem(labelText: 'Hot Reload'),
+                      ShadSidebarItem(labelText: 'Plugins'),
+                    ],
                   ),
                 ],
               ),
@@ -294,8 +287,9 @@ class _InsetVariant extends StatelessWidget {
               footer: ShadSidebarFooter(
                 children: [
                   ShadSidebarMenuTile(
-                    menuConstraints:
-                        BoxConstraints(minWidth: sidebarExtendedWidth),
+                    menuConstraints: BoxConstraints(
+                      minWidth: sidebarExtendedWidth,
+                    ),
                     titleText: 'Flutter Shadcn',
                     subTitleText: 'me@example.com',
                     trailingIcon: const Icon(LucideIcons.chevronsUpDown400),
@@ -307,13 +301,13 @@ class _InsetVariant extends StatelessWidget {
                         //       )
                         // :
                         ShadAnchor(
-                      overlayAlignment: side.isLeft
-                          ? Alignment.bottomRight
-                          : Alignment.bottomLeft,
-                      childAlignment: side.isLeft
-                          ? Alignment.bottomLeft
-                          : Alignment.bottomRight,
-                    ),
+                          overlayAlignment: side.isLeft
+                              ? Alignment.bottomRight
+                              : Alignment.bottomLeft,
+                          childAlignment: side.isLeft
+                              ? Alignment.bottomLeft
+                              : Alignment.bottomRight,
+                        ),
                     items: [
                       const ShadContextMenuItem(
                         leading: Icon(LucideIcons.user400),
@@ -334,150 +328,136 @@ class _InsetVariant extends StatelessWidget {
               ),
               content: ShadSidebarContent(
                 children: [
-                  ShadSidebarGroup(
+                  ShadSidebarGroup.items(
                     labelText: 'Platform',
                     hiddenWhenCollapsedToIcons: false,
-                    content: ShadSidebarMenu(
-                      items: [
-                        const ShadSidebarMenuItem.collapsible(
-                          labelText: 'Playground',
-                          leading: Icon(LucideIcons.squareTerminal400),
-                          subMenu: ShadSidebarSubMenu(
-                            items: [
-                              ShadSidebarSubMenuItem(labelText: 'History'),
-                              ShadSidebarSubMenuItem(labelText: 'Starred'),
-                              ShadSidebarSubMenuItem(labelText: 'Settings'),
-                            ],
-                          ),
-                        ),
-                        const ShadSidebarMenuItem.collapsible(
-                          labelText: 'Models',
-                          initiallyCollapsed: true,
-                          leading: Icon(LucideIcons.bot400),
-                          subMenu: ShadSidebarSubMenu(
-                            items: [
-                              ShadSidebarSubMenuItem(labelText: 'Genesis'),
-                              ShadSidebarSubMenuItem(labelText: 'Explorer'),
-                              ShadSidebarSubMenuItem(labelText: 'Quantum'),
-                            ],
-                          ),
-                        ),
-                        const ShadSidebarMenuItem.collapsible(
-                          labelText: 'Documentation',
-                          initiallyCollapsed: true,
-                          leading: Icon(LucideIcons.bookOpen400),
-                          subMenu: ShadSidebarSubMenu(
-                            items: [
-                              ShadSidebarSubMenuItem(labelText: 'Introduction'),
-                              ShadSidebarSubMenuItem(labelText: 'Get started'),
-                              ShadSidebarSubMenuItem(labelText: 'Tutorials'),
-                              ShadSidebarSubMenuItem(labelText: 'Examples'),
-                            ],
-                          ),
-                        ),
-                        const ShadSidebarMenuItem.collapsible(
-                          labelText: 'Settings',
-                          initiallyCollapsed: true,
-                          leading: Icon(LucideIcons.settings2400),
-                          subMenu: ShadSidebarSubMenu(
-                            items: [
-                              ShadSidebarSubMenuItem(labelText: 'General'),
-                              ShadSidebarSubMenuItem(labelText: 'Team'),
-                              ShadSidebarSubMenuItem(labelText: 'Billing'),
-                              ShadSidebarSubMenuItem(labelText: 'Limits'),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem.collapsible(
+                        labelText: 'Playground',
+                        leading: Icon(LucideIcons.squareTerminal400),
+                        items: [
+                          ShadSidebarItem(labelText: 'History'),
+                          ShadSidebarItem(labelText: 'Starred'),
+                          ShadSidebarItem(labelText: 'Settings'),
+                        ],
+                      ),
+                      ShadSidebarItem.collapsible(
+                        labelText: 'Models',
+                        initiallyCollapsed: true,
+                        leading: Icon(LucideIcons.bot400),
+                        items: [
+                          ShadSidebarItem(labelText: 'Genesis'),
+                          ShadSidebarItem(labelText: 'Explorer'),
+                          ShadSidebarItem(labelText: 'Quantum'),
+                        ],
+                      ),
+                      ShadSidebarItem.collapsible(
+                        labelText: 'Documentation',
+                        initiallyCollapsed: true,
+                        leading: Icon(LucideIcons.bookOpen400),
+                        items: [
+                          ShadSidebarItem(labelText: 'Introduction'),
+                          ShadSidebarItem(labelText: 'Get started'),
+                          ShadSidebarItem(labelText: 'Tutorials'),
+                          ShadSidebarItem(labelText: 'Examples'),
+                        ],
+                      ),
+                      ShadSidebarItem.collapsible(
+                        labelText: 'Settings',
+                        initiallyCollapsed: true,
+                        leading: Icon(LucideIcons.settings2400),
+                        items: [
+                          ShadSidebarItem(labelText: 'General'),
+                          ShadSidebarItem(labelText: 'Team'),
+                          ShadSidebarItem(labelText: 'Billing'),
+                          ShadSidebarItem(labelText: 'Limits'),
+                        ],
+                      ),
+                    ],
                   ),
-                  ShadSidebarGroup(
+                  ShadSidebarGroup.items(
                     labelText: 'Projects',
-                    content: ShadSidebarMenu(
-                      items: [
-                        ShadSidebarDropdownMenuItem(
-                          labelText: 'Design Engineering',
-                          leading: Icon(LucideIcons.frame400),
-                          items: [
-                            ShadContextMenuItem(
-                              leading: Icon(LucideIcons.folder400),
-                              child: Text('View Project'),
-                            ),
-                            ShadContextMenuItem(
-                              leading: Icon(LucideIcons.share400),
-                              child: Text('Share Project'),
-                            ),
-                            ShadSeparator.horizontal(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                            ),
-                            ShadContextMenuItem(
-                              leading: Icon(LucideIcons.trash400),
-                              child: Text('Delete Project'),
-                            ),
-                          ],
-                        ),
-                        ShadSidebarDropdownMenuItem(
-                          labelText: 'Sales & Marketing',
-                          leading: Icon(LucideIcons.chartPie400),
-                          items: [
-                            ShadContextMenuItem(
-                              leading: Icon(LucideIcons.folder400),
-                              child: Text('View Project'),
-                            ),
-                            ShadContextMenuItem(
-                              leading: Icon(LucideIcons.share400),
-                              child: Text('Share Project'),
-                            ),
-                            ShadSeparator.horizontal(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                            ),
-                            ShadContextMenuItem(
-                              leading: Icon(LucideIcons.trash400),
-                              child: Text('Delete Project'),
-                            ),
-                          ],
-                        ),
-                        ShadSidebarDropdownMenuItem(
-                          labelText: 'Travel',
-                          leading: Icon(LucideIcons.map400),
-                          items: [
-                            ShadContextMenuItem(
-                              leading: Icon(LucideIcons.folder400),
-                              child: Text('View Project'),
-                            ),
-                            ShadContextMenuItem(
-                              leading: Icon(LucideIcons.share400),
-                              child: Text('Share Project'),
-                            ),
-                            ShadSeparator.horizontal(
-                              margin: EdgeInsets.symmetric(vertical: 4),
-                            ),
-                            ShadContextMenuItem(
-                              leading: Icon(LucideIcons.trash400),
-                              child: Text('Delete Project'),
-                            ),
-                          ],
-                        ),
-                        ShadSidebarMenuItem(
-                          labelText: 'More',
-                        ),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem.contextMenu(
+                        labelText: 'Design Engineering',
+                        leading: Icon(LucideIcons.frame400),
+                        items: [
+                          ShadContextMenuItem(
+                            leading: Icon(LucideIcons.folder400),
+                            child: Text('View Project'),
+                          ),
+                          ShadContextMenuItem(
+                            leading: Icon(LucideIcons.share400),
+                            child: Text('Share Project'),
+                          ),
+                          ShadSeparator.horizontal(
+                            margin: EdgeInsets.symmetric(vertical: 4),
+                          ),
+                          ShadContextMenuItem(
+                            leading: Icon(LucideIcons.trash400),
+                            child: Text('Delete Project'),
+                          ),
+                        ],
+                      ),
+                      ShadSidebarItem.contextMenu(
+                        labelText: 'Sales & Marketing',
+                        leading: Icon(LucideIcons.chartPie400),
+                        items: [
+                          ShadContextMenuItem(
+                            leading: Icon(LucideIcons.folder400),
+                            child: Text('View Project'),
+                          ),
+                          ShadContextMenuItem(
+                            leading: Icon(LucideIcons.share400),
+                            child: Text('Share Project'),
+                          ),
+                          ShadSeparator.horizontal(
+                            margin: EdgeInsets.symmetric(vertical: 4),
+                          ),
+                          ShadContextMenuItem(
+                            leading: Icon(LucideIcons.trash400),
+                            child: Text('Delete Project'),
+                          ),
+                        ],
+                      ),
+                      ShadSidebarItem.contextMenu(
+                        labelText: 'Travel',
+                        leading: Icon(LucideIcons.map400),
+                        items: [
+                          ShadContextMenuItem(
+                            leading: Icon(LucideIcons.folder400),
+                            child: Text('View Project'),
+                          ),
+                          ShadContextMenuItem(
+                            leading: Icon(LucideIcons.share400),
+                            child: Text('Share Project'),
+                          ),
+                          ShadSeparator.horizontal(
+                            margin: EdgeInsets.symmetric(vertical: 4),
+                          ),
+                          ShadContextMenuItem(
+                            leading: Icon(LucideIcons.trash400),
+                            child: Text('Delete Project'),
+                          ),
+                        ],
+                      ),
+                      ShadSidebarItem(
+                        labelText: 'More',
+                      ),
+                    ],
                   ),
-                  ShadSidebarGroup(
+                  ShadSidebarGroup.items(
                     flex: 1,
-                    content: ShadSidebarMenu(
-                      items: [
-                        ShadSidebarMenuItem(
-                          labelText: 'Support',
-                          leading: Icon(LucideIcons.lifeBuoy400, size: 16),
-                        ),
-                        ShadSidebarMenuItem(
-                          labelText: 'Feedback',
-                          leading: Icon(LucideIcons.send400, size: 16),
-                        ),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem(
+                        labelText: 'Support',
+                        leading: Icon(LucideIcons.lifeBuoy400, size: 16),
+                      ),
+                      ShadSidebarItem(
+                        labelText: 'Feedback',
+                        leading: Icon(LucideIcons.send400, size: 16),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -511,13 +491,16 @@ class _FloatingVariant extends StatelessWidget {
                 children: [
                   ShadSidebarMenuTile(
                     menuAnchor: ShadAnchor(
-                      overlayAlignment:
-                          side.isLeft ? Alignment.topRight : Alignment.topLeft,
-                      childAlignment:
-                          side.isLeft ? Alignment.topLeft : Alignment.topRight,
+                      overlayAlignment: side.isLeft
+                          ? Alignment.topRight
+                          : Alignment.topLeft,
+                      childAlignment: side.isLeft
+                          ? Alignment.topLeft
+                          : Alignment.topRight,
                     ),
-                    menuConstraints:
-                        BoxConstraints(minWidth: sidebarExtendedWidth),
+                    menuConstraints: BoxConstraints(
+                      minWidth: sidebarExtendedWidth,
+                    ),
                     titleText: 'Flutter Shadcn',
                     subTitleText: 'me@example.com',
                     trailingIcon: Icon(LucideIcons.chevronsUpDown400),
@@ -561,58 +544,52 @@ class _FloatingVariant extends StatelessWidget {
                     ),
                   ),
                   const ShadSidebarSeparator(),
-                  ShadSidebarGroup.collapsible(
+                  ShadSidebarGroup.items(
                     labelText: 'My Calendars',
-                    content: ShadSidebarMenu(
-                      items: [
-                        ShadSidebarMenuItem(
-                          labelText: 'Personal',
-                          leading: ShadSidebarMenuItemCheckbox(value: true),
-                        ),
-                        ShadSidebarMenuItem(
-                          labelText: 'Work',
-                          leading: ShadSidebarMenuItemCheckbox(value: true),
-                        ),
-                        ShadSidebarMenuItem(
-                          labelText: 'Family',
-                          leading: ShadSidebarMenuItemCheckbox(value: false),
-                        ),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem(
+                        labelText: 'Personal',
+                        leading: ShadSidebarItemCheckbox(value: true),
+                      ),
+                      ShadSidebarItem(
+                        labelText: 'Work',
+                        leading: ShadSidebarItemCheckbox(value: true),
+                      ),
+                      ShadSidebarItem(
+                        labelText: 'Family',
+                        leading: ShadSidebarItemCheckbox(value: false),
+                      ),
+                    ],
                   ),
                   const ShadSidebarSeparator(),
-                  ShadSidebarGroup.collapsible(
+                  ShadSidebarGroup.collapsibleItems(
                     labelText: 'Favorites',
                     initiallyCollapsed: true,
-                    content: ShadSidebarMenu(
-                      items: [
-                        ShadSidebarMenuItem(
-                          labelText: 'Holidays',
-                          leading: ShadSidebarMenuItemCheckbox(value: true),
-                        ),
-                        ShadSidebarMenuItem(
-                          labelText: 'Birthdays',
-                          leading: ShadSidebarMenuItemCheckbox(value: true),
-                        ),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem(
+                        labelText: 'Holidays',
+                        leading: ShadSidebarItemCheckbox(value: true),
+                      ),
+                      ShadSidebarItem(
+                        labelText: 'Birthdays',
+                        leading: ShadSidebarItemCheckbox(value: true),
+                      ),
+                    ],
                   ),
                   const ShadSidebarSeparator(),
-                  ShadSidebarGroup.collapsible(
+                  ShadSidebarGroup.collapsibleItems(
                     labelText: 'Other',
                     initiallyCollapsed: true,
-                    content: ShadSidebarMenu(
-                      items: [
-                        ShadSidebarMenuItem(
-                          labelText: 'Reminders',
-                          leading: ShadSidebarMenuItemCheckbox(value: true),
-                        ),
-                        ShadSidebarMenuItem(
-                          labelText: 'Travel',
-                          leading: ShadSidebarMenuItemCheckbox(value: false),
-                        ),
-                      ],
-                    ),
+                    items: [
+                      ShadSidebarItem(
+                        labelText: 'Reminders',
+                        leading: ShadSidebarItemCheckbox(value: true),
+                      ),
+                      ShadSidebarItem(
+                        labelText: 'Travel',
+                        leading: ShadSidebarItemCheckbox(value: false),
+                      ),
+                    ],
                   ),
                   const ShadSidebarSeparator(),
                 ],
@@ -857,18 +834,18 @@ class ShadSidebarTile extends StatelessWidget {
     this.onPressed,
     this.padding = const EdgeInsets.all(8),
     this.minHeight = 48,
-  })  : assert(
-          (title != null) ^ (titleText != null),
-          'Either title or titleText must be provided',
-        ),
-        assert(
-          (subTitle == null) || (subTitleText == null),
-          'Either subTitle or subTitleText can be provided',
-        ),
-        assert(
-          (leadingIconData == null) || (leading == null),
-          'Either leadingIconData or leading can be provided',
-        );
+  }) : assert(
+         (title != null) ^ (titleText != null),
+         'Either title or titleText must be provided',
+       ),
+       assert(
+         (subTitle == null) || (subTitleText == null),
+         'Either subTitle or subTitleText can be provided',
+       ),
+       assert(
+         (leadingIconData == null) || (leading == null),
+         'Either leadingIconData or leading can be provided',
+       );
   final String? titleText;
   final Widget? title;
   final String? subTitleText;
@@ -919,7 +896,8 @@ class ShadSidebarTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Flexible(
-              child: title ??
+              child:
+                  title ??
                   Text(
                     titleText!,
                     style: const TextStyle(
@@ -1119,8 +1097,8 @@ class _ShadSidebarSelectTileState<T> extends State<ShadSidebarSelectTile<T>> {
   }
 }
 
-class ShadSidebarMenuItemCheckbox extends StatelessWidget {
-  const ShadSidebarMenuItemCheckbox({super.key, required this.value});
+class ShadSidebarItemCheckbox extends StatelessWidget {
+  const ShadSidebarItemCheckbox({super.key, required this.value});
   final bool value;
   @override
   Widget build(BuildContext context) {
