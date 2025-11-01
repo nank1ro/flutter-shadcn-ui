@@ -1,5 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+import 'package:shadcn_ui/src/components/icon_button.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar_scaffold.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 
 /// A button that toggles the sidebar.
 ///
@@ -20,7 +27,7 @@ class ShadSidebarTrigger extends StatelessWidget {
           radius: BorderRadius.circular(8),
         ),
       ),
-      backgroundColor: Colors.transparent,
+      backgroundColor: const Color(0x00000000),
       foregroundColor: cs.foreground,
       hoverBackgroundColor: cs.accent,
       hoverForegroundColor: cs.accentForeground,

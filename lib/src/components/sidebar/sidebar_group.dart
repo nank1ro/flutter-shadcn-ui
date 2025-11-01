@@ -1,6 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:flutter/widgets.dart';
+
 import 'package:shadcn_ui/src/components/sidebar/common/sidebar_collapsible.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadSidebarGroup extends StatelessWidget {
   const ShadSidebarGroup({
@@ -27,9 +29,9 @@ class ShadSidebarGroup extends StatelessWidget {
     this.hiddenWhenCollapsedToIcons = true,
     required this.collapsible,
   }) : assert(
-          (labelText == null || label == null),
-          'Either labelText or label can be provided',
-        );
+         (labelText == null || label == null),
+         'Either labelText or label can be provided',
+       );
 
   const factory ShadSidebarGroup.collapsible({
     Key? key,

@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show Scrollbar;
+import 'package:flutter/widgets.dart';
 
+import 'package:shadcn_ui/src/components/separator.dart';
 import 'package:shadcn_ui/src/components/sidebar/common/enums.dart';
 import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -212,8 +214,10 @@ class ShadSidebar extends StatelessWidget {
     }
     return switch (variant) {
       ShadSidebarVariant.normal => _buildNormalVariant(context, sidebarContent),
-      ShadSidebarVariant.floating =>
-        _buildFloatingVariant(context, sidebarContent),
+      ShadSidebarVariant.floating => _buildFloatingVariant(
+        context,
+        sidebarContent,
+      ),
       ShadSidebarVariant.inset => sidebarContent,
     };
   }
@@ -309,8 +313,7 @@ class _ResizeHandleState extends State<_ResizeHandle> {
           alignment: widget.side.isRight
               ? Alignment.centerLeft
               : Alignment.centerRight,
-          child: VerticalDivider(
-            width: 1,
+          child: ShadSeparator.vertical(
             thickness: _isHovered ? 2 : 0,
             color: widget.borderColor,
           ),

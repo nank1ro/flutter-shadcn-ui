@@ -1,7 +1,16 @@
-import 'package:flutter/cupertino.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+import 'package:shadcn_ui/src/components/context_menu.dart';
+import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/components/sidebar/common/sidebar_button.dart';
 import 'package:shadcn_ui/src/components/sidebar/common/sidebar_collapsible.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 class ShadSidebarMenu extends StatelessWidget {
   const ShadSidebarMenu({
@@ -37,8 +46,8 @@ class ShadSidebarMenuItem extends StatelessWidget {
     this.subMenu,
     this.labelPadding = const EdgeInsets.all(8),
     this.dense = false,
-  })  : collapsible = false,
-        isSubMenuItem = false;
+  }) : collapsible = false,
+       isSubMenuItem = false;
 
   const ShadSidebarMenuItem._({
     super.key,
@@ -55,9 +64,9 @@ class ShadSidebarMenuItem extends StatelessWidget {
     required this.collapsible,
     this.dense = false,
   }) : assert(
-          (label != null) ^ (labelText != null),
-          'Either label or labelText must be provided',
-        );
+         (label != null) ^ (labelText != null),
+         'Either label or labelText must be provided',
+       );
 
   const factory ShadSidebarMenuItem.collapsible({
     Key? key,
@@ -110,7 +119,8 @@ class ShadSidebarMenuItem extends StatelessWidget {
           labelText: labelText,
           leadingIcon: leading,
           selected: selected,
-          labelStyle: labelStyle ??
+          labelStyle:
+              labelStyle ??
               TextStyle(
                 fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
               ),
@@ -248,7 +258,8 @@ class _CollapsibleShadSidebarSubMenuItem extends ShadSidebarSubMenuItem {
       label: label,
       labelText: labelText,
       labelPadding: labelPadding,
-      labelStyle: labelStyle ??
+      labelStyle:
+          labelStyle ??
           TextStyle(
             fontWeight: selected ? FontWeight.w500 : FontWeight.w400,
           ),
@@ -367,10 +378,12 @@ class __DropdownMenuItemState extends State<_DropdownMenuItem> {
             ),
           ],
           anchor: ShadAnchor(
-            overlayAlignment:
-                side.isLeft ? Alignment.topRight : Alignment.topLeft,
-            childAlignment:
-                side.isLeft ? Alignment.topLeft : Alignment.topRight,
+            overlayAlignment: side.isLeft
+                ? Alignment.topRight
+                : Alignment.topLeft,
+            childAlignment: side.isLeft
+                ? Alignment.topLeft
+                : Alignment.topRight,
           ),
           child: SidebarButton(
             height: widget.dense ? 32 : null,
@@ -379,7 +392,8 @@ class __DropdownMenuItemState extends State<_DropdownMenuItem> {
             labelText: widget.labelText,
             leadingIcon: widget.leading,
             labelPadding: widget.labelPadding,
-            labelStyle: widget.labelStyle ??
+            labelStyle:
+                widget.labelStyle ??
                 const TextStyle(fontWeight: FontWeight.w400),
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             trailing: const Icon(LucideIcons.ellipsis, size: 16),

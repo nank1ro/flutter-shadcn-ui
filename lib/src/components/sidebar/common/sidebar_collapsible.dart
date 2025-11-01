@@ -1,7 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+
 import 'package:shadcn_ui/src/components/sidebar/common/sidebar_button.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
+import 'package:shadcn_ui/src/theme/data.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 class SidebarCollapsible extends StatefulWidget {
   const SidebarCollapsible({

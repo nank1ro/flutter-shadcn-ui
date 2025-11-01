@@ -1,8 +1,15 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:flutter_animate/flutter_animate.dart';
+
+import 'package:shadcn_ui/src/components/sheet.dart';
+import 'package:shadcn_ui/src/components/sidebar/common/enums.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar.dart';
 import 'package:shadcn_ui/src/theme/components/sidebar.dart';
+import 'package:shadcn_ui/src/theme/data.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 class SidebarControllerScope extends InheritedWidget {
   const SidebarControllerScope({
@@ -41,8 +48,8 @@ class ShadSidebarController extends StatefulWidget {
   final ValueChanged<bool>? onExtendedChange;
 
   static ShadSidebarControllerState of(BuildContext context) {
-    final result =
-        context.dependOnInheritedWidgetOfExactType<SidebarControllerScope>();
+    final result = context
+        .dependOnInheritedWidgetOfExactType<SidebarControllerScope>();
 
     assert(result != null, 'No ShadSidebarController found in context');
 
@@ -261,33 +268,36 @@ class ShadSidebarControllerState extends State<ShadSidebarController>
   Widget _buildByCollapseMode(Widget sidebar) {
     return switch (collapseMode) {
       ShadSidebarCollapseMode.icons => AnimatedBuilder(
-          animation: animationController,
-          builder: (context, child) {
-            return SizedBox(
-              width: lerpDouble(
-                collapsedToIconsWidth,
-                extendedWidth,
-                animationController.value,
-              ),
-              child: child,
-            );
-          },
-          child: sidebar,
-        ),
-      ShadSidebarCollapseMode.offScreen => SlideTransition(
-          position: Tween<Offset>(
-            begin: side.isLeft ? const Offset(-1, 0) : const Offset(1, 0),
-            end: Offset.zero,
-          ).animate(
-            CurvedAnimation(
-              parent: animationController,
-              curve: animationCurve,
+        animation: animationController,
+        builder: (context, child) {
+          return SizedBox(
+            width: lerpDouble(
+              collapsedToIconsWidth,
+              extendedWidth,
+              animationController.value,
             ),
-          ),
-          child: SizedBox(width: extendedWidth, child: sidebar),
-        ),
-      ShadSidebarCollapseMode.none =>
-        SizedBox(width: extendedWidth, child: sidebar),
+            child: child,
+          );
+        },
+        child: sidebar,
+      ),
+      ShadSidebarCollapseMode.offScreen => SlideTransition(
+        position:
+            Tween<Offset>(
+              begin: side.isLeft ? const Offset(-1, 0) : const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: animationController,
+                curve: animationCurve,
+              ),
+            ),
+        child: SizedBox(width: extendedWidth, child: sidebar),
+      ),
+      ShadSidebarCollapseMode.none => SizedBox(
+        width: extendedWidth,
+        child: sidebar,
+      ),
     };
   }
 }

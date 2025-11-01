@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show Colors;
+import 'package:flutter/widgets.dart';
 
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -40,12 +39,14 @@ class SidebarButton extends StatelessWidget {
     final foregroundColor = cs.sidebarForeground;
     final hoverBgColor = cs.sidebarAccent;
     final hoverFgColor = cs.sidebarAccentForeground;
-    final effectiveLabel = label ??
+    final effectiveLabel =
+        label ??
         (labelText != null ? Text(labelText!, style: labelStyle) : null);
 
     final controller = ShadSidebarController.maybeOf(context);
 
-    final collapsedToIcons = !(controller?.extended ?? true) &&
+    final collapsedToIcons =
+        !(controller?.extended ?? true) &&
         (controller?.collapseMode.isIcons ?? false);
 
     return ShadButton.ghost(
@@ -55,7 +56,7 @@ class SidebarButton extends StatelessWidget {
       enabled: enabled,
       decoration: ShadDecoration(
         border: ShadBorder.all(
-          color: Colors.transparent,
+          color: const Color(0x00000000),
           radius: BorderRadius.circular(8),
         ),
         focusedBorder: ShadBorder.all(
@@ -72,8 +73,9 @@ class SidebarButton extends StatelessWidget {
       foregroundColor: foregroundColor,
       hoverBackgroundColor: hoverBgColor,
       hoverForegroundColor: hoverFgColor,
-      mainAxisAlignment:
-          collapsedToIcons ? MainAxisAlignment.center : mainAxisAlignment,
+      mainAxisAlignment: collapsedToIcons
+          ? MainAxisAlignment.center
+          : mainAxisAlignment,
       onPressed: collapsedToIcons ? null : onPressed,
       trailing: collapsedToIcons
           ? null

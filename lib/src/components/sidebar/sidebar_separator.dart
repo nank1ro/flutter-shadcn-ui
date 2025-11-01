@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
 import 'package:shadcn_ui/src/components/separator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 

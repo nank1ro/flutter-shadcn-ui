@@ -1,7 +1,13 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:shadcn_ui/src/components/sidebar/common/enums.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
+import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
 /// A scaffold that arranges a sidebar, an end sidebar, and a body.
 ///
@@ -160,7 +166,8 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     final theme = ShadTheme.of(context);
     final colorScheme = theme.colorScheme;
 
-    final effectiveBodyColor = widget.bodyBackgroundColor ??
+    final effectiveBodyColor =
+        widget.bodyBackgroundColor ??
         theme.sidebarScaffoldTheme.bodyBackgroundColor ??
         theme.colorScheme.background;
 
@@ -176,10 +183,12 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
           _updateMobileBreakpoints(constraints);
         }
 
-        final isMobile = (_sidebarKey.currentState?.isMobile ?? false) ||
+        final isMobile =
+            (_sidebarKey.currentState?.isMobile ?? false) ||
             (_endSidebarKey.currentState?.isMobile ?? false);
 
-        final isInsetLayout = !isMobile &&
+        final isInsetLayout =
+            !isMobile &&
             (_sidebarKey.currentState?.variant == ShadSidebarVariant.inset ||
                 _endSidebarKey.currentState?.variant ==
                     ShadSidebarVariant.inset);
