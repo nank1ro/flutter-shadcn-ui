@@ -78,7 +78,7 @@ class SidebarButton extends StatelessWidget {
       mainAxisAlignment: collapsedToIcons
           ? MainAxisAlignment.center
           : mainAxisAlignment,
-      onPressed: collapsedToIcons ? null : onPressed,
+      onPressed: onPressed,
       trailing: collapsedToIcons
           ? null
           : Flexible(
