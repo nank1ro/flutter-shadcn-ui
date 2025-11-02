@@ -271,6 +271,7 @@ class ShadSidebarState extends State<ShadSidebar>
       vsync: this,
       duration: widget.animationDuration ?? const Duration(milliseconds: 200),
     );
+    _setEffectiveController(widget.controller);
   }
 
   @override
@@ -281,16 +282,7 @@ class ShadSidebarState extends State<ShadSidebar>
     final newController = _resolveController(scaffoldInfo);
 
     if (newController != _effectiveController) {
-      _effectiveController?.removeListener(_handleControllerChanged);
-      _effectiveController?.detach(this);
-
-      _effectiveController = newController;
-      _effectiveController?.addListener(_handleControllerChanged);
-      _effectiveController?.attach(this);
-
-      if (_effectiveController != null) {
-        _animationController.value = _effectiveController!.extended ? 1 : 0;
-      }
+      _setEffectiveController(newController);
     }
 
     _animationController.duration = animationDuration;
@@ -306,6 +298,19 @@ class ShadSidebarState extends State<ShadSidebar>
     isPhysicalLeft = side.isStart ? !isRtl : isRtl;
   }
 
+  void _setEffectiveController(ShadSidebarController? controller) {
+    _effectiveController?.removeListener(_handleControllerChanged);
+    _effectiveController?.detach(this);
+
+    _effectiveController = controller;
+    _effectiveController?.attach(this);
+    _effectiveController?.addListener(_handleControllerChanged);
+
+    if (_effectiveController != null) {
+      _animationController.value = _effectiveController!.extended ? 1 : 0;
+    }
+  }
+
   ShadSidebarController _resolveController(
     ShadSidebarScaffoldInheritedWidget? scaffoldInfo,
   ) {
@@ -313,7 +318,9 @@ class ShadSidebarState extends State<ShadSidebar>
     final scaffoldController = scaffoldInfo?.controller;
     if (scaffoldController != null) return scaffoldController;
     if (widget.controller != null) return widget.controller!;
-    _internalController ??= ShadSidebarController();
+    _internalController ??= ShadSidebarController(
+      initiallyExtended: widget.initiallyExtended ?? true,
+    );
     return _internalController!;
   }
 

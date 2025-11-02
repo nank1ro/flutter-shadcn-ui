@@ -16,6 +16,9 @@ class ShadSidebarController extends ChangeNotifier {
 
   void attach(ShadSidebarState state) {
     _state = state;
+    if (state.widget.initiallyExtended != null) {
+      _extended = state.widget.initiallyExtended!;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       notifyListeners();
     });
@@ -25,6 +28,10 @@ class ShadSidebarController extends ChangeNotifier {
     if (_state == state) {
       _state = null;
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notifyListeners();
+    });
   }
 
   bool _extended;

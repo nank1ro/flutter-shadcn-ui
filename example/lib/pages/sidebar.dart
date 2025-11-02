@@ -91,10 +91,11 @@ class _SidebarPageState extends State<SidebarPage>
                 onChanged: (v) => collapseModeSignal.value = v!,
               ),
             ],
-            children: [
+            children: const [
               _NormalVariant(),
               _InsetVariant(),
               _FloatingVariant(),
+              _NestedExample(),
             ],
           );
         },
@@ -250,6 +251,7 @@ class _NormalVariant extends StatelessWidget {
         },
         child: _MainContent(
           exampleTitle: 'A normal sidebar with navigation grouped by section',
+          triggerButton: const ShadSidebarTrigger(),
         ),
       ),
     );
@@ -462,7 +464,263 @@ class _InsetVariant extends StatelessWidget {
         child: _MainContent(
           exampleTitle: 'An inset end-sidebar',
           withBorders: false,
-          isEndSidebar: true,
+          triggerButton: const ShadSidebarTrigger.end(),
+        ),
+      ),
+    );
+  }
+}
+
+final messages = [
+  (
+    sender: 'James Martin',
+    subject: 'Re: Conference Registration',
+    date: '1 Week ago',
+    preview:
+        'Hi, I would like to register for the conference. Please let me know if you can help me with the registration.',
+  ),
+  (
+    sender: 'John Smith',
+    subject: 'Important Announcement',
+    date: '2 Weeks ago',
+    preview:
+        'Please join us for the conference. We are excited to announce the launch of our new product.',
+  ),
+  (
+    sender: 'Sarah Lee',
+    subject: 'Conference Registration',
+    date: '1 Weeks ago',
+    preview:
+        'Hi, I would like to register for the conference. Please let me know if you can help me with the registration.',
+  ),
+];
+
+class _NestedExample extends StatefulWidget {
+  const _NestedExample();
+
+  @override
+  State<_NestedExample> createState() => _NestedExampleState();
+}
+
+class _NestedExampleState extends State<_NestedExample> {
+  late final nestedSidebarController = ShadSidebarController();
+
+  @override
+  void dispose() {
+    nestedSidebarController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _SidebarExampleWrapper(
+      child: ShadSidebarScaffold(
+        body: ClipRRect(
+          child: Row(
+            children: [
+              ListenableBuilder(
+                listenable: nestedSidebarController,
+                builder: (context, _) {
+                  return ListenableBuilder(
+                    listenable:
+                        nestedSidebarController.state?.animation ??
+                        nestedSidebarController,
+                    builder: (context, child) {
+                      return Offstage(
+                        offstage:
+                            (nestedSidebarController
+                                    .state
+                                    ?.animation
+                                    .isDismissed ??
+                                false) ||
+                            nestedSidebarController.isMobile,
+                        child: child,
+                      );
+                    },
+                    child: ShadSidebar.normal(
+                      controller: nestedSidebarController,
+                      initiallyExtended: true,
+                      header: const ShadSidebarHeader(
+                        childrenSpacing: 0,
+                        padding: EdgeInsetsGeometry.all(16),
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Trash',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              ShadSwitch(
+                                value: false,
+                                label: Text('unread only'),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 14),
+                          _SearchInput(),
+                          ShadSeparator.horizontal(),
+                        ],
+                      ),
+                      content: ShadSidebarContent(
+                        childrenSpacing: 0,
+                        children: [
+                          ...messages.map(
+                            (m) => ShadButton.ghost(
+                              decoration: ShadDecoration(
+                                border: ShadBorder(
+                                  bottom: ShadBorderSide(
+                                    width: 1,
+                                    color: ShadTheme.of(
+                                      context,
+                                    ).colorScheme.border,
+                                  ),
+                                ),
+                              ),
+                              padding: const EdgeInsets.all(14.0),
+                              expands: true,
+                              height: 116,
+                              gap: 0,
+                              child: Column(
+                                spacing: 8,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(m.sender),
+                                      Text(
+                                        m.date,
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    m.subject,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    m.preview,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      height: 1.25,
+                                    ),
+
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+              Flexible(
+                child: _MainContent(
+                  exampleTitle: 'A nested sidebar',
+                  triggerButton: ShadIconButton.ghost(
+                    icon: const Icon(LucideIcons.panelLeft, size: 16),
+                    onPressed: () => nestedSidebarController.toggle(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        sidebar: ShadSidebar.normal(
+          extendedWidth: sidebarExtendedWidth,
+          initiallyExtended: false,
+          collapseMode: ShadSidebarCollapseMode.icons,
+          header: ShadSidebarHeader(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            childrenSpacing: 8,
+            children: [
+              ShadSidebarTile(
+                titleText: 'Ace Inc.',
+                subTitleText: 'Enterprise',
+                leadingIconData: LucideIcons.command400,
+              ),
+            ],
+          ),
+          footer: ShadSidebarFooter(
+            children: [
+              Builder(
+                builder: (context) {
+                  final state = ShadSidebar.of(context);
+                  return ShadSidebarMenuTile(
+                    menuConstraints: BoxConstraints(
+                      minWidth: sidebarExtendedWidth,
+                    ),
+                    titleText: 'Flutter Shadcn',
+                    subTitleText: 'me@example.com',
+                    trailingIcon: const Icon(LucideIcons.chevronsUpDown400),
+                    leadingIconData: LucideIcons.userRound,
+                    menuAnchor: ShadAnchor(
+                      overlayAlignment: state.side.isStart
+                          ? Alignment.bottomRight
+                          : Alignment.bottomLeft,
+                      childAlignment: state.side.isStart
+                          ? Alignment.bottomLeft
+                          : Alignment.bottomRight,
+                    ),
+                    items: [
+                      const ShadContextMenuItem(
+                        leading: Icon(LucideIcons.user400),
+                        child: Text('Account'),
+                      ),
+                      const ShadContextMenuItem(
+                        leading: Icon(LucideIcons.cog400),
+                        child: Text('Settings'),
+                      ),
+                      const ShadSidebarSeparator(),
+                      const ShadContextMenuItem(
+                        leading: Icon(LucideIcons.logOut400),
+                        child: Text('Sign out'),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
+          content: ShadSidebarContent(
+            children: [
+              ShadSidebarGroup.items(
+                labelText: 'Platform',
+                hiddenWhenCollapsedToIcons: false,
+                items: [
+                  ShadSidebarItem(
+                    labelText: 'Inbox',
+                    leading: Icon(LucideIcons.inbox),
+                  ),
+                  ShadSidebarItem(
+                    labelText: 'Drafts',
+                    leading: Icon(LucideIcons.file),
+                  ),
+                  ShadSidebarItem(
+                    labelText: 'Sent',
+                    leading: Icon(LucideIcons.send),
+                  ),
+                  ShadSidebarItem(
+                    labelText: 'Trash',
+                    selected: true,
+                    leading: Icon(LucideIcons.trash2),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -599,6 +857,7 @@ class _FloatingVariant extends StatelessWidget {
         },
         child: _MainContent(
           exampleTitle: 'A floating sidebar with a calendar',
+          triggerButton: const ShadSidebarTrigger(),
           withBorders: false,
         ),
       ),
@@ -614,7 +873,7 @@ class _SearchInput extends StatelessWidget {
     final colorScheme = ShadTheme.of(context).colorScheme;
     final state = ShadSidebar.of(context);
     return ShadInput(
-      placeholder: const Text('Search the docs...'),
+      placeholder: const Text('Search...'),
       maxLines: 1,
       mainAxisAlignment: MainAxisAlignment.center,
       style: TextStyle(
@@ -737,12 +996,13 @@ class _SidebarExampleWrapper extends StatelessWidget {
 class _MainContent extends StatelessWidget {
   const _MainContent({
     required this.exampleTitle,
-    this.isEndSidebar = false,
+    required this.triggerButton,
     this.withBorders = true,
   });
   final String exampleTitle;
   final bool withBorders;
-  final bool isEndSidebar;
+  final Widget triggerButton;
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = ShadTheme.of(context).colorScheme;
@@ -759,7 +1019,7 @@ class _MainContent extends StatelessWidget {
               : null,
           child: Row(
             children: [
-              isEndSidebar ? ShadSidebarTrigger.end() : ShadSidebarTrigger(),
+              triggerButton,
               if (withBorders)
                 VerticalDivider(
                   color: colorScheme.border,
