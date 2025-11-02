@@ -29,14 +29,14 @@ enum ShadSidebarCollapseMode {
 }
 
 enum ShadSidebarSide {
-  /// The sidebar is on the left side of the screen.
-  /// Regardless of the `TextDirection` of the app.
-  left,
+  /// The sidebar is on the start side of the screen.
+  /// It is on the left for LTR and on the right for RTL.
+  start,
 
-  /// The sidebar is on the right side of the screen.
-  /// Regardless of the `TextDirection` of the app.
-  right;
+  /// The sidebar is on the end side of the screen.
+  /// It is on the right for LTR and on the left for RTL.
+  end;
 
-  bool get isLeft => this == left;
-  bool get isRight => this == right;
+  bool get isStart => this == start;
+  bool get isEnd => this == end;
 }

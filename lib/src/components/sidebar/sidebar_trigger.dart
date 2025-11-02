@@ -13,14 +13,25 @@ import 'package:shadcn_ui/src/utils/border.dart';
 /// This widget is typically placed inside the
 /// [ShadSidebarScaffold.body].
 class ShadSidebarTrigger extends StatelessWidget {
-  /// Creates a [ShadSidebarTrigger].
-  const ShadSidebarTrigger({super.key});
+  const ShadSidebarTrigger({
+    super.key,
+  }) : isEndSidebar = false;
+
+  const ShadSidebarTrigger.end({
+    super.key,
+  }) : isEndSidebar = true;
+
+  final bool isEndSidebar;
 
   @override
   Widget build(BuildContext context) {
     final cs = ShadTheme.of(context).colorScheme;
     return ShadIconButton.ghost(
-      onPressed: () => ShadSidebarScaffold.of(context).toggleSidebar(),
+      onPressed: () {
+        isEndSidebar
+            ? ShadSidebarScaffold.of(context).toggleEndSidebar()
+            : ShadSidebarScaffold.of(context).toggleSidebar();
+      },
       icon: const Icon(LucideIcons.panelLeft, size: 16),
       decoration: ShadDecoration(
         border: ShadBorder.all(

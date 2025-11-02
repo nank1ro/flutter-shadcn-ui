@@ -9,6 +9,30 @@ import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
+class ShadSidebarScaffoldInheritedWidget extends InheritedWidget {
+  const ShadSidebarScaffoldInheritedWidget({
+    super.key,
+    required this.side,
+    required this.controller,
+    required super.child,
+  });
+
+  final ShadSidebarSide side;
+  final ShadSidebarController? controller;
+
+  @override
+  bool updateShouldNotify(ShadSidebarScaffoldInheritedWidget oldWidget) {
+    return (side != oldWidget.side) || (controller != oldWidget.controller);
+  }
+
+  static ShadSidebarScaffoldInheritedWidget? of(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<
+          ShadSidebarScaffoldInheritedWidget
+        >();
+  }
+}
+
 /// A scaffold that arranges a sidebar, an end sidebar, and a body.
 ///
 /// This widget is the main container for a layout that includes one or two
@@ -18,18 +42,12 @@ class ShadSidebarScaffold extends StatefulWidget {
   const ShadSidebarScaffold({
     super.key,
     this.bodyBackgroundColor,
-    this.onSidebarChange,
-    this.onEndSidebarChange,
     this.sidebar,
     this.endSidebar,
+    this.sidebarController,
+    this.endSidebarController,
     required this.body,
   });
-
-  /// A callback that is called when the sidebar's extended state changes.
-  final ValueChanged<bool>? onSidebarChange;
-
-  /// A callback that is called when the end sidebar's extended state changes.
-  final ValueChanged<bool>? onEndSidebarChange;
 
   /// The main content of the scaffold.
   final Widget body;
@@ -37,8 +55,16 @@ class ShadSidebarScaffold extends StatefulWidget {
   /// The sidebar to display on the start side of the screen.
   final ShadSidebar? sidebar;
 
+  // TODO(dmouayad): consider removing this if not needed
+  /// The sidebar controller to control the sidebar.
+  final ShadSidebarController? sidebarController;
+
   /// The sidebar to display on the end side of the screen.
   final ShadSidebar? endSidebar;
+
+  // TODO(dmouayad): consider removing this if not needed
+  /// The sidebar controller to control the sidebar.
+  final ShadSidebarController? endSidebarController;
 
   /// {@template ShadSidebarScaffold.backgroundColor}
   /// The background color of the [body].
@@ -81,84 +107,91 @@ class ShadSidebarScaffold extends StatefulWidget {
 
 class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     with TickerProviderStateMixin {
-  final _sidebarKey = GlobalKey<ShadSidebarControllerState>();
-  final _endSidebarKey = GlobalKey<ShadSidebarControllerState>();
+  double? _lastMaxWidth;
+
   ShadSidebarController? _sidebarController;
   ShadSidebarController? _endSidebarController;
-  double? _lastMaxWidth;
-  TextDirection? _direction;
+
+  ShadSidebarController? get _effectiveSidebarController =>
+      widget.sidebarController ?? _sidebarController;
+
+  ShadSidebarController? get _effectiveEndSidebarController =>
+      widget.endSidebarController ?? _endSidebarController;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final direction = Directionality.of(context);
-    if (direction != _direction) {
-      _direction = direction;
-      _initSidebarController();
-      _initEndSidebarController();
+  void initState() {
+    super.initState();
+
+    if (widget.sidebar != null && widget.sidebarController == null) {
+      _sidebarController = ShadSidebarController();
     }
+    if (widget.endSidebar != null && widget.endSidebarController == null) {
+      _endSidebarController = ShadSidebarController();
+    }
+    _effectiveSidebarController?.addListener(_rebuild);
+    _effectiveEndSidebarController?.addListener(_rebuild);
   }
 
   @override
   void didUpdateWidget(ShadSidebarScaffold oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.sidebar != oldWidget.sidebar) {
-      _initSidebarController();
-    }
-    if (widget.endSidebar != oldWidget.endSidebar) {
-      _initEndSidebarController();
-    }
-  }
 
-  void _initSidebarController() {
-    if (widget.sidebar != null) {
-      final isRtl = _direction == TextDirection.rtl;
-      _sidebarController = ShadSidebarController(
-        key: _sidebarKey,
-        onExtendedChange: widget.onSidebarChange,
-        sidebar: widget.sidebar!,
-        side: isRtl ? ShadSidebarSide.right : ShadSidebarSide.left,
-      );
-    } else {
+    if (widget.sidebarController != oldWidget.sidebarController) {
+      _effectiveSidebarController?.removeListener(_rebuild);
+      _sidebarController?.dispose();
       _sidebarController = null;
-    }
-    // Rebuild after the first frame to make `_sidebarKey.currentState`
-    // available for the body padding calculation.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) setState(() {});
-    });
-  }
 
-  void _initEndSidebarController() {
-    if (widget.endSidebar != null) {
-      final isRtl = _direction == TextDirection.rtl;
-      _endSidebarController = ShadSidebarController(
-        key: _endSidebarKey,
-        onExtendedChange: widget.onEndSidebarChange,
-        sidebar: widget.endSidebar!,
-        side: isRtl ? ShadSidebarSide.left : ShadSidebarSide.right,
-      );
-    } else {
+      if (widget.sidebar != null && widget.sidebarController == null) {
+        _sidebarController = ShadSidebarController();
+      }
+
+      _effectiveSidebarController?.addListener(_rebuild);
+    }
+
+    if (widget.endSidebarController != oldWidget.endSidebarController) {
+      _effectiveEndSidebarController?.removeListener(_rebuild);
+      _endSidebarController?.dispose();
       _endSidebarController = null;
+
+      if (widget.endSidebar != null && widget.endSidebarController == null) {
+        _endSidebarController = ShadSidebarController();
+      }
+
+      _effectiveEndSidebarController?.addListener(_rebuild);
     }
-    // Rebuild after the first frame to make `_endSidebarKey.currentState`
-    // available for the body padding calculation.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) setState(() {});
-    });
   }
 
-  /// Extends the sidebar.
-  void toggleSidebar() => _sidebarKey.currentState?.toggle(context);
+  @override
+  void dispose() {
+    _effectiveSidebarController?.removeListener(_rebuild);
+    _effectiveEndSidebarController?.removeListener(_rebuild);
+    _sidebarController?.dispose();
+    _endSidebarController?.dispose();
 
-  /// Extends the end sidebar.
-  void toggleEndSidebar() => _endSidebarKey.currentState?.toggle(context);
+    super.dispose();
+  }
+
+  void _rebuild() => setState(() {});
+
+  void toggleSidebar() => _effectiveSidebarController?.toggle();
+  void extendSidebar() => _effectiveSidebarController?.extend();
+  void collapseSidebar() => _effectiveSidebarController?.collapse();
+
+  void toggleEndSidebar() => _effectiveEndSidebarController?.toggle();
+  void extendEndSidebar() => _effectiveEndSidebarController?.extend();
+  void collapseEndSidebar() => _effectiveEndSidebarController?.collapse();
 
   /// Returns whether the sidebar is currently extended.
-  bool isSidebarExtended() => _sidebarKey.currentState?.extended ?? false;
+  bool isSidebarExtended() => _effectiveSidebarController?.extended ?? false;
 
   /// Returns whether the end sidebar is currently extended.
-  bool isEndSidebarExtended() => _endSidebarKey.currentState?.extended ?? false;
+  bool isEndSidebarExtended() =>
+      _effectiveEndSidebarController?.extended ?? false;
+
+  ShadSidebarState? get _sidebarState => _effectiveSidebarController?.state;
+
+  ShadSidebarState? get _endSidebarState =>
+      _effectiveEndSidebarController?.state;
 
   @override
   Widget build(BuildContext context) {
@@ -172,53 +205,62 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
         theme.colorScheme.background;
 
     final animation = Listenable.merge([
-      if (_sidebarKey.currentState != null)
-        _sidebarKey.currentState!.animationController,
-      if (_endSidebarKey.currentState != null)
-        _endSidebarKey.currentState!.animationController,
+      if (_sidebarState != null) _sidebarState!.animation,
+
+      if (_endSidebarState != null) _endSidebarState!.animation,
     ]);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         if (_lastMaxWidth != constraints.maxWidth) {
-          _updateMobileBreakpoints(constraints);
+          _updateIsMobile(constraints);
         }
 
         final isMobile =
-            (_sidebarKey.currentState?.isMobile ?? false) ||
-            (_endSidebarKey.currentState?.isMobile ?? false);
+            (_sidebarState?.isMobile ?? false) ||
+            (_endSidebarState?.isMobile ?? false);
 
         final isInsetLayout =
             !isMobile &&
-            (_sidebarKey.currentState?.variant == ShadSidebarVariant.inset ||
-                _endSidebarKey.currentState?.variant ==
-                    ShadSidebarVariant.inset);
+            (_sidebarState?.variant == ShadSidebarVariant.inset ||
+                _endSidebarState?.variant == ShadSidebarVariant.inset);
 
         return ColoredBox(
           color: (isInsetLayout ? colorScheme.sidebar : effectiveBodyColor),
           child: Stack(
             children: [
-              if (_sidebarController != null)
+              if (widget.sidebar != null)
                 Positioned(
                   left: isRtl ? null : 0,
                   right: isRtl ? 0 : null,
                   top: 0,
                   bottom: 0,
                   child: Offstage(
-                    offstage: _sidebarKey.currentState?.isMobile ?? false,
-                    child: _sidebarController,
+                    offstage: _sidebarState?.isMobile ?? false,
+                    child: ShadSidebarScaffoldInheritedWidget(
+                      side: ShadSidebarSide.start,
+                      controller: _effectiveSidebarController,
+                      child: widget.sidebar!,
+                    ),
                   ),
                 ),
-              if (_endSidebarController != null)
+
+              if (widget.endSidebar != null)
                 Positioned(
                   left: isRtl ? 0 : null,
                   right: isRtl ? null : 0,
                   top: 0,
                   bottom: 0,
                   child: Offstage(
-                    offstage: _endSidebarKey.currentState?.isMobile ?? false,
-                    child: _endSidebarController,
+                    offstage: _endSidebarState?.isMobile ?? false,
+                    child: ShadSidebarScaffoldInheritedWidget(
+                      side: ShadSidebarSide.end,
+                      controller: _effectiveEndSidebarController,
+                      child: widget.endSidebar!,
+                    ),
                   ),
                 ),
+
               AnimatedBuilder(
                 animation: animation,
                 builder: (context, child) {
@@ -241,18 +283,31 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     );
   }
 
-  void _updateMobileBreakpoints(BoxConstraints constraints) {
+  void _updateIsMobile(BoxConstraints constraints) {
     // Defer the update to avoid calling setState during build.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        _sidebarKey.currentState?.updateBreakpoint(constraints.maxWidth);
-        _endSidebarKey.currentState?.updateBreakpoint(constraints.maxWidth);
+        final sidebarTheme = ShadTheme.of(context).sidebarTheme;
+
+        _effectiveSidebarController?.updateIsMobile(
+          constraints.maxWidth,
+          _sidebarState?.widget.mobileBreakPoint ??
+              sidebarTheme.mobileBreakPoint ??
+              768,
+        );
+        _effectiveEndSidebarController?.updateIsMobile(
+          constraints.maxWidth,
+          _endSidebarState?.widget.mobileBreakPoint ??
+              sidebarTheme.mobileBreakPoint ??
+              768,
+        );
+
         setState(() => _lastMaxWidth = constraints.maxWidth);
       }
     });
   }
 
-  double _collapsedWidth(ShadSidebarControllerState state) {
+  double _collapsedWidth(ShadSidebarState state) {
     switch (state.collapseMode) {
       case ShadSidebarCollapseMode.icons:
         return state.collapsedToIconsWidth;
@@ -264,28 +319,28 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   }
 
   double get _leftBodyPadding {
-    final state = _sidebarKey.currentState;
+    final state = _sidebarState;
     if (state == null || state.isMobile) {
       return 0;
     }
     return lerpDouble(
           _collapsedWidth(state),
           state.extendedWidth,
-          state.animationController.value,
+          state.animation.value,
         ) ??
         0;
   }
 
   double get _rightBodyPadding {
-    final state = _endSidebarKey.currentState;
+    final state = _endSidebarState;
+
     if (state == null || state.isMobile) {
       return 0;
     }
-
     return lerpDouble(
           _collapsedWidth(state),
           state.extendedWidth,
-          state.animationController.value,
+          state.animation.value,
         ) ??
         0;
   }

@@ -7,7 +7,7 @@ import 'package:shadcn_ui/src/components/context_menu.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/components/sidebar/common/sidebar_button.dart';
 import 'package:shadcn_ui/src/components/sidebar/common/sidebar_collapsible.dart';
-import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar.dart';
 import 'package:shadcn_ui/src/components/sidebar/sidebar_menu.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -96,8 +96,8 @@ class ShadSidebarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = ShadSidebarController.of(context);
-    final collapsedToIcons = !c.extended && c.collapseMode.isIcons;
+    final c = ShadSidebar.of(context);
+    final collapsedToIcons = c.collapsedToIcons;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -239,7 +239,7 @@ class _PopoverMenuItemState extends State<_PopoverMenuItem> {
 
   @override
   Widget build(BuildContext context) {
-    final side = ShadSidebarController.of(context).side;
+    final sidebarState = ShadSidebar.of(context);
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) {
@@ -263,17 +263,19 @@ class _PopoverMenuItemState extends State<_PopoverMenuItem> {
               duration: Duration(milliseconds: 150),
             ),
             MoveEffect(
-              begin: side.isLeft ? const Offset(-8, 0) : const Offset(8, 0),
+              begin: sidebarState.isPhysicalLeft
+                  ? const Offset(-8, 0)
+                  : const Offset(8, 0),
               end: Offset.zero,
               curve: Curves.easeIn,
               duration: const Duration(milliseconds: 150),
             ),
           ],
           anchor: ShadAnchor(
-            overlayAlignment: side.isLeft
+            overlayAlignment: sidebarState.isPhysicalLeft
                 ? Alignment.topRight
                 : Alignment.topLeft,
-            childAlignment: side.isLeft
+            childAlignment: sidebarState.isPhysicalLeft
                 ? Alignment.topLeft
                 : Alignment.topRight,
           ),

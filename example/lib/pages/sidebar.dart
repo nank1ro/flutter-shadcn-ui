@@ -12,8 +12,6 @@ const kDesktopWrapperWidth = 1150.0;
 /// The width of each [_SidebarExampleWrapper]
 final wrapperWidthSignal = Signal<double>.lazy(autoDispose: true);
 
-final sideSignal = Signal<ShadSidebarSide>.lazy(autoDispose: true);
-
 final collapseModeSignal = Signal<ShadSidebarCollapseMode>.lazy(
   autoDispose: true,
 );
@@ -47,7 +45,6 @@ class _SidebarPageState extends State<SidebarPage>
   void initState() {
     super.initState();
     wrapperWidthSignal.value = kDesktopWrapperWidth;
-    sideSignal.value = ShadSidebarSide.left;
     collapseModeSignal.value = ShadSidebarCollapseMode.offScreen;
   }
 
@@ -267,10 +264,9 @@ class _InsetVariant extends StatelessWidget {
     return _SidebarExampleWrapper(
       child: SignalBuilder(
         builder: (context, mainContent) {
-          final side = sideSignal.value;
           return ShadSidebarScaffold(
             body: mainContent!,
-            sidebar: ShadSidebar.inset(
+            endSidebar: ShadSidebar.inset(
               extendedWidth: sidebarExtendedWidth,
               collapseMode: collapseModeSignal.value,
               header: ShadSidebarHeader(
@@ -286,43 +282,42 @@ class _InsetVariant extends StatelessWidget {
               ),
               footer: ShadSidebarFooter(
                 children: [
-                  ShadSidebarMenuTile(
-                    menuConstraints: BoxConstraints(
-                      minWidth: sidebarExtendedWidth,
-                    ),
-                    titleText: 'Flutter Shadcn',
-                    subTitleText: 'me@example.com',
-                    trailingIcon: const Icon(LucideIcons.chevronsUpDown400),
-                    leadingIconData: LucideIcons.userRound,
-                    menuAnchor:
-                        //  sidebar.isMobile
-                        //     ? const ShadAnchor(
-                        //         overlayAlignment: Alignment.topCenter,
-                        //       )
-                        // :
-                        ShadAnchor(
-                          overlayAlignment: side.isLeft
+                  Builder(
+                    builder: (context) {
+                      final state = ShadSidebar.of(context);
+                      return ShadSidebarMenuTile(
+                        menuConstraints: BoxConstraints(
+                          minWidth: sidebarExtendedWidth,
+                        ),
+                        titleText: 'Flutter Shadcn',
+                        subTitleText: 'me@example.com',
+                        trailingIcon: const Icon(LucideIcons.chevronsUpDown400),
+                        leadingIconData: LucideIcons.userRound,
+                        menuAnchor: ShadAnchor(
+                          overlayAlignment: state.side.isStart
                               ? Alignment.bottomRight
                               : Alignment.bottomLeft,
-                          childAlignment: side.isLeft
+                          childAlignment: state.side.isStart
                               ? Alignment.bottomLeft
                               : Alignment.bottomRight,
                         ),
-                    items: [
-                      const ShadContextMenuItem(
-                        leading: Icon(LucideIcons.user400),
-                        child: Text('Account'),
-                      ),
-                      const ShadContextMenuItem(
-                        leading: Icon(LucideIcons.cog400),
-                        child: Text('Settings'),
-                      ),
-                      const ShadSidebarSeparator(),
-                      const ShadContextMenuItem(
-                        leading: Icon(LucideIcons.logOut400),
-                        child: Text('Sign out'),
-                      ),
-                    ],
+                        items: [
+                          const ShadContextMenuItem(
+                            leading: Icon(LucideIcons.user400),
+                            child: Text('Account'),
+                          ),
+                          const ShadContextMenuItem(
+                            leading: Icon(LucideIcons.cog400),
+                            child: Text('Settings'),
+                          ),
+                          const ShadSidebarSeparator(),
+                          const ShadContextMenuItem(
+                            leading: Icon(LucideIcons.logOut400),
+                            child: Text('Sign out'),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),
@@ -465,8 +460,9 @@ class _InsetVariant extends StatelessWidget {
           );
         },
         child: _MainContent(
-          exampleTitle: 'An inset sidebar',
+          exampleTitle: 'An inset end-sidebar',
           withBorders: false,
+          isEndSidebar: true,
         ),
       ),
     );
@@ -481,7 +477,6 @@ class _FloatingVariant extends StatelessWidget {
     return _SidebarExampleWrapper(
       child: SignalBuilder(
         builder: (context, contentWidget) {
-          final side = sideSignal.value;
           return ShadSidebarScaffold(
             body: contentWidget!,
             sidebar: ShadSidebar.floating(
@@ -489,37 +484,42 @@ class _FloatingVariant extends StatelessWidget {
               collapseMode: collapseModeSignal.value,
               header: ShadSidebarHeader(
                 children: [
-                  ShadSidebarMenuTile(
-                    menuAnchor: ShadAnchor(
-                      overlayAlignment: side.isLeft
-                          ? Alignment.topRight
-                          : Alignment.topLeft,
-                      childAlignment: side.isLeft
-                          ? Alignment.topLeft
-                          : Alignment.topRight,
-                    ),
-                    menuConstraints: BoxConstraints(
-                      minWidth: sidebarExtendedWidth,
-                    ),
-                    titleText: 'Flutter Shadcn',
-                    subTitleText: 'me@example.com',
-                    trailingIcon: Icon(LucideIcons.chevronsUpDown400),
-                    leadingIconData: LucideIcons.userRound,
-                    items: [
-                      ShadContextMenuItem(
-                        leading: Icon(LucideIcons.user400),
-                        child: Text('Account'),
-                      ),
-                      ShadContextMenuItem(
-                        leading: Icon(LucideIcons.cog400),
-                        child: Text('Settings'),
-                      ),
-                      const ShadSidebarSeparator(),
-                      ShadContextMenuItem(
-                        leading: Icon(LucideIcons.logOut400),
-                        child: Text('Sign out'),
-                      ),
-                    ],
+                  Builder(
+                    builder: (context) {
+                      final side = ShadSidebar.of(context).side;
+                      return ShadSidebarMenuTile(
+                        menuAnchor: ShadAnchor(
+                          overlayAlignment: side.isStart
+                              ? Alignment.topRight
+                              : Alignment.topLeft,
+                          childAlignment: side.isStart
+                              ? Alignment.topLeft
+                              : Alignment.topRight,
+                        ),
+                        menuConstraints: BoxConstraints(
+                          minWidth: sidebarExtendedWidth,
+                        ),
+                        titleText: 'Flutter Shadcn',
+                        subTitleText: 'me@example.com',
+                        trailingIcon: Icon(LucideIcons.chevronsUpDown400),
+                        leadingIconData: LucideIcons.userRound,
+                        items: [
+                          ShadContextMenuItem(
+                            leading: Icon(LucideIcons.user400),
+                            child: Text('Account'),
+                          ),
+                          ShadContextMenuItem(
+                            leading: Icon(LucideIcons.cog400),
+                            child: Text('Settings'),
+                          ),
+                          const ShadSidebarSeparator(),
+                          ShadContextMenuItem(
+                            leading: Icon(LucideIcons.logOut400),
+                            child: Text('Sign out'),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),
@@ -612,7 +612,7 @@ class _SearchInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = ShadTheme.of(context).colorScheme;
-    final state = ShadSidebarController.of(context);
+    final state = ShadSidebar.of(context);
     return ShadInput(
       placeholder: const Text('Search the docs...'),
       maxLines: 1,
@@ -737,11 +737,12 @@ class _SidebarExampleWrapper extends StatelessWidget {
 class _MainContent extends StatelessWidget {
   const _MainContent({
     required this.exampleTitle,
+    this.isEndSidebar = false,
     this.withBorders = true,
   });
   final String exampleTitle;
   final bool withBorders;
-
+  final bool isEndSidebar;
   @override
   Widget build(BuildContext context) {
     final colorScheme = ShadTheme.of(context).colorScheme;
@@ -758,7 +759,7 @@ class _MainContent extends StatelessWidget {
               : null,
           child: Row(
             children: [
-              ShadSidebarTrigger(),
+              isEndSidebar ? ShadSidebarTrigger.end() : ShadSidebarTrigger(),
               if (withBorders)
                 VerticalDivider(
                   color: colorScheme.border,
@@ -860,8 +861,8 @@ class ShadSidebarTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = ShadTheme.of(context).colorScheme;
-    final state = ShadSidebarController.of(context);
-    final collapsedToIcons = state.collapseMode.isIcons && !state.extended;
+    final state = ShadSidebar.of(context);
+    final collapsedToIcons = state.collapsedToIcons;
     final leading = buildLeading(cs);
     return ShadButton.ghost(
       height: collapsedToIcons ? 32 : minHeight,
@@ -985,7 +986,7 @@ class ShadSidebarMenuTile extends StatelessWidget {
     var opened = false;
     return StatefulBuilder(
       builder: (context, mSetState) {
-        final side = ShadSidebarController.of(context).side;
+        final side = ShadSidebar.of(context).side;
         return ShadContextMenu(
           decoration: menuDecoration,
           items: items,
@@ -1005,7 +1006,7 @@ class ShadSidebarMenuTile extends StatelessWidget {
               duration: Duration(milliseconds: 150),
             ),
             MoveEffect(
-              begin: side.isLeft ? const Offset(-8, 0) : const Offset(8, 0),
+              begin: side.isStart ? const Offset(-8, 0) : const Offset(8, 0),
               end: Offset.zero,
               curve: Curves.easeIn,
               duration: const Duration(milliseconds: 150),

@@ -1,22 +1,62 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart' show Scrollbar;
 import 'package:flutter/widgets.dart';
 
+import 'package:flutter_animate/flutter_animate.dart';
+
 import 'package:shadcn_ui/src/components/separator.dart';
+import 'package:shadcn_ui/src/components/sheet.dart';
 import 'package:shadcn_ui/src/components/sidebar/common/enums.dart';
 import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar_scaffold.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
+class ShadSidebarScope extends InheritedWidget {
+  const ShadSidebarScope({
+    super.key,
+    required this.extended,
+    required this.isMobile,
+    required this.collapseMode,
+    required this.state,
+    required super.child,
+  });
+  final ShadSidebarCollapseMode collapseMode;
+  final bool extended;
+  final bool isMobile;
+  final ShadSidebarState state;
+
+  @override
+  bool updateShouldNotify(ShadSidebarScope oldWidget) {
+    return oldWidget.extended != extended ||
+        oldWidget.isMobile != isMobile ||
+        oldWidget.collapseMode != collapseMode ||
+        state != oldWidget.state;
+  }
+
+  static ShadSidebarScope? maybeOf(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<ShadSidebarScope>();
+  }
+
+  static ShadSidebarScope of(BuildContext context) {
+    final result = maybeOf(context);
+    assert(result != null, 'No ShadSidebar found in context');
+    return result!;
+  }
+}
+
 /// A widget that holds the configuration and content for a sidebar.
 ///
 /// This widget is used with `ShadSidebarScaffold` to define the appearance,
 /// content, and behavior of a sidebar.
-class ShadSidebar extends StatelessWidget {
+class ShadSidebar extends StatefulWidget {
   const ShadSidebar.variant({
     super.key,
+    this.controller,
     this.header,
     this.content,
     this.footer,
@@ -32,11 +72,13 @@ class ShadSidebar extends StatelessWidget {
     this.keyboardShortcut,
     this.initiallyExtended,
     required this.variant,
+    this.side,
   });
 
   /// Creates a sidebar with the `ShadSidebarVariant.normal` variant.
   const ShadSidebar.normal({
     super.key,
+    this.controller,
     this.header,
     this.content,
     this.footer,
@@ -51,11 +93,13 @@ class ShadSidebar extends StatelessWidget {
     this.mobileBreakPoint,
     this.keyboardShortcut,
     this.initiallyExtended,
+    this.side,
   }) : variant = ShadSidebarVariant.normal;
 
   /// Creates a sidebar with the `ShadSidebarVariant.floating` variant.
   const ShadSidebar.floating({
     super.key,
+    this.controller,
     this.header,
     this.content,
     this.footer,
@@ -70,11 +114,13 @@ class ShadSidebar extends StatelessWidget {
     this.mobileBreakPoint,
     this.keyboardShortcut,
     this.initiallyExtended,
+    this.side,
   }) : variant = ShadSidebarVariant.floating;
 
   /// Creates a sidebar with the `ShadSidebarVariant.inset` variant.
   const ShadSidebar.inset({
     super.key,
+    this.controller,
     this.header,
     this.content,
     this.footer,
@@ -89,7 +135,10 @@ class ShadSidebar extends StatelessWidget {
     this.mobileBreakPoint,
     this.keyboardShortcut,
     this.initiallyExtended,
+    this.side,
   }) : variant = ShadSidebarVariant.inset;
+
+  final ShadSidebarController? controller;
 
   /// {@template ShadSidebar.header}
   /// The header of the sidebar.
@@ -182,16 +231,329 @@ class ShadSidebar extends StatelessWidget {
   ///
   /// Defaults to `CTRL+b` on Windows and Linux, and `CMD+b` on macOS.
   ///
-  /// example:
+  /// example: -
   /// ```dart
   ///   keyboardShortcut: SingleActivator(LogicalKeyboardKey.keyB),
   /// ```
   /// {@endtemplate}
   final ShortcutActivator? keyboardShortcut;
 
+  final ShadSidebarSide? side;
+
+  static ShadSidebarState of(BuildContext context) {
+    return ShadSidebarScope.of(context).state;
+  }
+
+  static ShadSidebarState? maybeOf(BuildContext context) {
+    return ShadSidebarScope.maybeOf(context)?.state;
+  }
+
+  @override
+  State<ShadSidebar> createState() => ShadSidebarState();
+}
+
+class ShadSidebarState extends State<ShadSidebar>
+    with TickerProviderStateMixin {
+  ShadSidebarController? _internalController;
+  ShadSidebarController? _effectiveController;
+
+  late final AnimationController _animationController;
+
+  Animation<double> get animation => _animationController;
+
+  late ShadSidebarSide side;
+  late bool isPhysicalLeft;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: widget.animationDuration ?? const Duration(milliseconds: 200),
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final scaffoldInfo = ShadSidebarScaffoldInheritedWidget.of(context);
+
+    final newController = _resolveController(scaffoldInfo);
+
+    if (newController != _effectiveController) {
+      _effectiveController?.removeListener(_handleControllerChanged);
+      _effectiveController?.detach(this);
+
+      _effectiveController = newController;
+      _effectiveController?.addListener(_handleControllerChanged);
+      _effectiveController?.attach(this);
+
+      if (_effectiveController != null) {
+        _animationController.value = _effectiveController!.extended ? 1 : 0;
+      }
+    }
+
+    _animationController.duration = animationDuration;
+
+    if (widget.side != null) {
+      side = widget.side!;
+    } else if (scaffoldInfo != null) {
+      side = scaffoldInfo.side;
+    } else {
+      side = ShadSidebarSide.start;
+    }
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
+    isPhysicalLeft = side.isStart ? !isRtl : isRtl;
+  }
+
+  ShadSidebarController _resolveController(
+    ShadSidebarScaffoldInheritedWidget? scaffoldInfo,
+  ) {
+    // Priority: Scaffold -> Widget -> Internal
+    final scaffoldController = scaffoldInfo?.controller;
+    if (scaffoldController != null) return scaffoldController;
+    if (widget.controller != null) return widget.controller!;
+    _internalController ??= ShadSidebarController();
+    return _internalController!;
+  }
+
+  @override
+  void didUpdateWidget(ShadSidebar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != oldWidget.controller) {
+      didChangeDependencies();
+    }
+  }
+
+  @override
+  void dispose() {
+    _effectiveController?.removeListener(_handleControllerChanged);
+    _effectiveController?.detach(this);
+    _internalController?.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _handleControllerChanged() {
+    if (_effectiveController?.extended ?? false) {
+      _animationController.forward();
+    } else {
+      _animationController.reverse();
+    }
+    if (_effectiveController?.isMobile ?? false) {
+      if (_effectiveController?.extendedMobile ?? false) {
+        _openMobile();
+      } else {
+        _closeMobile();
+      }
+    }
+    setState(() {});
+  }
+
+  void _openMobile() {
+    final theme = ShadTheme.of(context);
+    final sidebarTheme = theme.sidebarTheme;
+    final effectiveBorderColor = widget.borderColor ?? theme.colorScheme.border;
+    final animateInEffect = SlideEffect(
+      begin: isPhysicalLeft ? const Offset(-1, 0) : const Offset(1, 0),
+      end: Offset.zero,
+      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 500),
+    );
+    final animateOutEffect = SlideEffect(
+      begin: Offset.zero,
+      end: isPhysicalLeft ? const Offset(-1, 0) : const Offset(1, 0),
+      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 300),
+    );
+
+    showShadSheet<void>(
+      context: context,
+      side: isPhysicalLeft ? ShadSheetSide.left : ShadSheetSide.right,
+      animateIn: [animateInEffect],
+      animateOut: [animateOutEffect],
+      builder: (context) {
+        return ShadSheet(
+          constraints: BoxConstraints(
+            maxWidth: widget.mobileWidth ?? sidebarTheme.mobileWidth ?? 288,
+          ),
+          padding: const EdgeInsetsDirectional.only(end: 1),
+          closeIcon: const SizedBox.shrink(),
+          scrollable: false,
+          radius: BorderRadius.circular(0),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              border: BorderDirectional(
+                end: BorderSide(color: effectiveBorderColor),
+              ),
+            ),
+            child: ShadSidebarScope(
+              state: this,
+              collapseMode: collapseMode,
+              extended: extended,
+              isMobile: isMobile,
+              child: _SidebarLayout(
+                header: widget.header,
+                content: widget.content,
+                footer: widget.footer,
+                backgroundColor: widget.backgroundColor,
+                borderColor: widget.borderColor,
+                variant: widget.variant,
+              ),
+            ),
+          ),
+        );
+      },
+    ).then((_) {
+      _effectiveController?.closeMobile();
+    });
+  }
+
+  void _closeMobile() {
+    if (_effectiveController != null) {
+      if (!_effectiveController!.extendedMobile) return;
+      Navigator.maybePop(context);
+    }
+  }
+
+  void toggle() => _effectiveController?.toggle();
+
+  bool get extended => _effectiveController?.extended ?? false;
+
+  bool get isMobile => _effectiveController?.isMobile ?? false;
+
+  bool get collapsedToIcons => !extended && collapseMode.isIcons;
+
+  ShadSidebarCollapseMode get collapseMode {
+    final sidebarTheme = ShadTheme.of(context).sidebarTheme;
+    return widget.collapseMode ??
+        sidebarTheme.collapseMode ??
+        ShadSidebarCollapseMode.offScreen;
+  }
+
+  double get extendedWidth {
+    final sidebarTheme = ShadTheme.of(context).sidebarTheme;
+    return widget.extendedWidth ?? sidebarTheme.extendedWidth ?? 256.0;
+  }
+
+  double get collapsedToIconsWidth {
+    final sidebarTheme = ShadTheme.of(context).sidebarTheme;
+    return widget.collapsedToIconsWidth ??
+        sidebarTheme.collapsedToIconsWidth ??
+        48.0;
+  }
+
+  ShadSidebarVariant get variant => widget.variant;
+
+  Curve get animationCurve {
+    final sidebarTheme = ShadTheme.of(context).sidebarTheme;
+    return widget.animationCurve ??
+        sidebarTheme.animationCurve ??
+        Curves.linear;
+  }
+
+  Duration get animationDuration {
+    final sidebarTheme = ShadTheme.of(context).sidebarTheme;
+    return widget.animationDuration ??
+        sidebarTheme.animationDuration ??
+        const Duration(milliseconds: 200);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadSidebarScope(
+      state: this,
+      collapseMode: collapseMode,
+      extended: extended,
+      isMobile: isMobile,
+      child: _SidebarAnimator(
+        state: this,
+        child: _SidebarLayout(
+          header: widget.header,
+          content: widget.content,
+          footer: widget.footer,
+          backgroundColor: widget.backgroundColor,
+          borderColor: widget.borderColor,
+          variant: widget.variant,
+        ),
+      ),
+    );
+  }
+}
+
+class _SidebarAnimator extends StatelessWidget {
+  const _SidebarAnimator({
+    required this.state,
+    required this.child,
+  });
+
+  final ShadSidebarState state;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (state.isMobile) {
+      return const SizedBox.shrink();
+    }
+    return switch (state.collapseMode) {
+      ShadSidebarCollapseMode.icons => AnimatedBuilder(
+        animation: state.animation,
+        builder: (context, child) {
+          return SizedBox(
+            width: lerpDouble(
+              state.collapsedToIconsWidth,
+              state.extendedWidth,
+              state.animation.value,
+            ),
+            child: child,
+          );
+        },
+        child: child,
+      ),
+      ShadSidebarCollapseMode.offScreen => SlideTransition(
+        position:
+            Tween<Offset>(
+              begin: state.isPhysicalLeft
+                  ? const Offset(-1, 0)
+                  : const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: state.animation,
+                curve: state.animationCurve,
+              ),
+            ),
+        child: SizedBox(width: state.extendedWidth, child: child),
+      ),
+      ShadSidebarCollapseMode.none => SizedBox(
+        width: state.extendedWidth,
+        child: child,
+      ),
+    };
+  }
+}
+
+class _SidebarLayout extends StatelessWidget {
+  const _SidebarLayout({
+    this.header,
+    this.content,
+    this.footer,
+    this.backgroundColor,
+    this.borderColor,
+    required this.variant,
+  });
+
+  final ShadSidebarHeader? header;
+  final ShadSidebarContent? content;
+  final ShadSidebarFooter? footer;
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final ShadSidebarVariant variant;
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final state = ShadSidebar.of(context);
 
     final effectiveBackgroundColor =
         backgroundColor ?? theme.colorScheme.sidebar;
@@ -207,9 +569,8 @@ class ShadSidebar extends StatelessWidget {
         ],
       ),
     );
-    final controller = ShadSidebarController.maybeOf(context);
 
-    if (controller?.isMobile ?? false) {
+    if (state.isMobile) {
       return sidebarContent;
     }
     return switch (variant) {
@@ -227,8 +588,6 @@ class ShadSidebar extends StatelessWidget {
     Widget sidebar,
   ) {
     final theme = ShadTheme.of(context);
-    final controller = ShadSidebarController.maybeOf(context);
-    final side = controller?.side ?? ShadSidebarSide.left;
 
     final effectiveBorderColor = borderColor ?? theme.colorScheme.border;
 
@@ -239,7 +598,6 @@ class ShadSidebar extends StatelessWidget {
             sidebar,
             _ResizeHandle(
               width: constraints.maxWidth,
-              side: side,
               borderColor: effectiveBorderColor,
             ),
           ],
@@ -279,12 +637,10 @@ class ShadSidebar extends StatelessWidget {
 class _ResizeHandle extends StatefulWidget {
   const _ResizeHandle({
     required this.width,
-    required this.side,
     required this.borderColor,
   });
 
   final double width;
-  final ShadSidebarSide side;
   final Color borderColor;
 
   @override
@@ -296,18 +652,19 @@ class _ResizeHandleState extends State<_ResizeHandle> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ShadSidebar.of(context);
     return Positioned(
       top: 0,
       bottom: 0,
-      left: widget.side.isRight ? null : (widget.width - 17),
-      right: widget.side.isRight ? (widget.width - 17) : null,
+      left: state.isPhysicalLeft ? (widget.width - 17) : null,
+      right: state.isPhysicalLeft ? null : (widget.width - 17),
       width: 16,
       child: ShadGestureDetector(
         behavior: HitTestBehavior.opaque,
         cursor: SystemMouseCursors.resizeColumn,
         onHoverChange: (value) => setState(() => _isHovered = value),
         onTap: () {
-          ShadSidebarController.maybeOf(context)?.toggle(context);
+          ShadSidebar.of(context).toggle();
         },
         child: Align(
           alignment: AlignmentDirectional.centerEnd,

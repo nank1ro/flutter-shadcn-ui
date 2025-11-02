@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:shadcn_ui/src/components/button.dart';
-import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
@@ -47,11 +47,9 @@ class SidebarButton extends StatelessWidget {
         label ??
         (labelText != null ? Text(labelText!, style: labelStyle) : null);
 
-    final controller = ShadSidebarController.maybeOf(context);
+    final state = ShadSidebar.of(context);
 
-    final collapsedToIcons =
-        !(controller?.extended ?? true) &&
-        (controller?.collapseMode.isIcons ?? false);
+    final collapsedToIcons = state.collapsedToIcons;
 
     return ShadButton.ghost(
       height: height,

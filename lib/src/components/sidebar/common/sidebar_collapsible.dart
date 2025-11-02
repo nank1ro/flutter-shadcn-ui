@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:shadcn_ui/src/components/sidebar/common/sidebar_button.dart';
-import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
@@ -40,8 +40,8 @@ class _SidebarCollapsibleState extends State<SidebarCollapsible> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final state = ShadSidebarController.of(context);
-    final collapsedToIcons = !state.extended && state.collapseMode.isIcons;
+    final state = ShadSidebar.of(context);
+    final collapsedToIcons = state.collapsedToIcons;
 
     return Column(
       mainAxisSize: MainAxisSize.min,

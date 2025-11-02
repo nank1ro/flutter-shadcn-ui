@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import 'package:shadcn_ui/src/components/sidebar/common/sidebar_collapsible.dart';
-import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
+import 'package:shadcn_ui/src/components/sidebar/sidebar.dart';
 import 'package:shadcn_ui/src/components/sidebar/sidebar_item.dart';
 import 'package:shadcn_ui/src/components/sidebar/sidebar_menu.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -93,10 +93,8 @@ class ShadSidebarGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = ShadSidebarController.of(
-      context,
-    );
-    final isCollapsedToIcons = !c.extended && c.collapseMode.isIcons;
+    final c = ShadSidebar.of(context);
+    final isCollapsedToIcons = c.collapsedToIcons;
     if (hiddenWhenCollapsedToIcons && isCollapsedToIcons) {
       return const SizedBox.shrink();
     }
