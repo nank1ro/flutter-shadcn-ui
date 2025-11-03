@@ -1,4 +1,5 @@
 import 'package:example/common/base_scaffold.dart';
+import 'package:example/common/properties/bool_property.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -7,14 +8,40 @@ final profile = [
   (title: 'Username', value: 'nank1ro'),
 ];
 
-class DialogPage extends StatelessWidget {
+class DialogPage extends StatefulWidget {
   const DialogPage({super.key});
+
+  @override
+  State<DialogPage> createState() => _DialogPageState();
+}
+
+class _DialogPageState extends State<DialogPage> {
+  var titlePinned = false;
+  var descriptionPinned = false;
+  var actionsPinned = true;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     return BaseScaffold(
       appBarTitle: 'Dialog',
+      editable: [
+        MyBoolProperty(
+          label: 'titlePinned',
+          value: titlePinned,
+          onChanged: (v) => setState(() => titlePinned = v),
+        ),
+        MyBoolProperty(
+          label: 'descriptionPinned',
+          value: descriptionPinned,
+          onChanged: (v) => setState(() => descriptionPinned = v),
+        ),
+        MyBoolProperty(
+          label: 'actionsPinned',
+          value: actionsPinned,
+          onChanged: (v) => setState(() => actionsPinned = v),
+        ),
+      ],
       children: [
         ShadButton.outline(
           child: const Text('Edit Profile'),
@@ -27,6 +54,10 @@ class DialogPage extends StatelessWidget {
                   "Make changes to your profile here. Click save when you're done",
                 ),
                 actions: const [ShadButton(child: Text('Save changes'))],
+                titlePinned: titlePinned,
+                descriptionPinned: descriptionPinned,
+                actionsPinned: actionsPinned,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 child: Container(
                   width: 375,
                   padding: const EdgeInsets.symmetric(vertical: 20),
@@ -67,6 +98,9 @@ class DialogPage extends StatelessWidget {
               context: context,
               builder: (context) => ShadDialog.alert(
                 title: const Text('Are you absolutely sure?'),
+                titlePinned: titlePinned,
+                descriptionPinned: descriptionPinned,
+                actionsPinned: actionsPinned,
                 description: const Padding(
                   padding: EdgeInsets.only(bottom: 8),
                   child: Text(

@@ -107,6 +107,7 @@ class ShadDatePickerTheme with _$ShadDatePickerTheme {
     this.iconData,
     this.expands,
     this.popoverReverseDuration,
+    this.buttonTextStyle,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -393,6 +394,9 @@ class ShadDatePickerTheme with _$ShadDatePickerTheme {
 
   /// {@macro ShadButton.expands}
   final bool? expands;
+
+  /// {@macro ShadButton.textStyle}
+  final TextStyle? buttonTextStyle;
 
   static ShadDatePickerTheme? lerp(
     ShadDatePickerTheme? a,

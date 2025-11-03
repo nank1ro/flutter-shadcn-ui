@@ -421,6 +421,9 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
 
     /// {@macro ShadButton.expands}
     bool? expands,
+
+    /// {@macro ShadButton.textStyle}
+    TextStyle? buttonTextStyle,
   }) : super(
          builder: (field) {
            final state = field as _ShadFormBuilderDatePickerState;
@@ -557,6 +560,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
              onFocusChange: onFocusChange,
              placeholder: placeholder,
              expands: expands,
+             buttonTextStyle: buttonTextStyle,
            );
          },
        );

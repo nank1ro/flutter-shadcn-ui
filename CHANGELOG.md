@@ -1,3 +1,16 @@
+## 0.39.3
+
+- **FIX**: Remove extra gap when `actions` is empty in `ShadDialog`.
+- **FEAT**: Add `titlePinned`, `descriptionPinned` and `actionsPinned` to `ShadDialog` and `ShadSheet` to control whether to pin the title, description and actions when scrolling the content.
+
+## 0.39.2
+
+- **FEAT**: Add `buttonTextStyle` to `ShadDateRangePickerFormField`.
+
+## 0.39.1
+
+- **FEAT**: Add `buttonTextStyle` to `ShadDatePicker`, `ShadDatePickerTheme` and `ShadDatePickerFormField` to customize the text style of the button that triggers the date picker popover.
+
 ## 0.39.0
 
 - **FEAT**: Add `top`, `bottom`, `verticalGap` and `onLineCountChange` to `ShadInput`, `ShadInputFormField`, `ShadTextArea` and `ShadTextAreaFormField` to add widgets above or below the input field, and to get notified when the number of lines in the input changes.
