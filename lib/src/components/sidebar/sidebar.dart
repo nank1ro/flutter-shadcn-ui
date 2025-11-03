@@ -16,6 +16,9 @@ import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 
+// TODO(dmouayad): verify ShadSidebarHeader, ShadSidebarFooter
+// are needed or we can remove them.
+
 class ShadSidebarScope extends InheritedWidget {
   const ShadSidebarScope({
     super.key,
@@ -149,8 +152,10 @@ class ShadSidebar extends StatefulWidget {
 
   /// {@template ShadSidebar.header}
   /// The header of the sidebar.
+  ///
+  /// Usually a [ShadSidebarHeader].
   /// {@endtemplate}
-  final ShadSidebarHeader? header;
+  final Widget? header;
 
   /// {@template ShadSidebar.content}
   /// The main content of the sidebar.
@@ -159,8 +164,10 @@ class ShadSidebar extends StatefulWidget {
 
   /// {@template ShadSidebar.footer}
   /// The footer of the sidebar.
+  ///
+  /// Usually a [ShadSidebarFooter].
   /// {@endtemplate}
-  final ShadSidebarFooter? footer;
+  final Widget? footer;
 
   /// The background color of the sidebar.
   final Color? backgroundColor;
@@ -566,9 +573,9 @@ class _SidebarLayout extends StatelessWidget {
     required this.variant,
   });
 
-  final ShadSidebarHeader? header;
+  final Widget? header;
   final ShadSidebarContent? content;
-  final ShadSidebarFooter? footer;
+  final Widget? footer;
   final Color? backgroundColor;
   final Color? borderColor;
   final ShadSidebarVariant variant;
@@ -778,8 +785,8 @@ class _WidgetListTemplateState extends State<_WidgetListTemplate> {
   // A scroll controller is created to ensure the [Scrollbar] and
   // [CustomScrollView] are always linked, especially on mobile, where the
   // sidebar is rendered in a [ShadSheet] that does not have a default
-  // [PrimaryScrollController]. This prevents a "ScrollController not attached"
-  // error.
+  // [PrimaryScrollController].
+  // This prevents a "ScrollController not attached" error.
   late final _scrollController = ScrollController();
 
   @override
@@ -804,6 +811,11 @@ class _WidgetListTemplateState extends State<_WidgetListTemplate> {
     return Scrollbar(
       controller: _scrollController,
       thumbVisibility: widget.alwaysShowScrollbar,
+      // We use [CustomScrollView] to avoid layout errors caused by any widget
+      // in [content] trying to take infinite size in the main axis,
+      // for example, an [Expanded] widget.
+      // [SliverFillRemaining] measures the viewport and provides its child with
+      // fixed, bounded height constraints.
       child: CustomScrollView(
         controller: _scrollController,
         primary: false,
