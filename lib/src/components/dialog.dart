@@ -765,13 +765,18 @@ class ShadDialog extends StatelessWidget {
             mainAxisAlignment: effectiveMainAxisAlignment,
             crossAxisAlignment: effectiveCrossAxisAlignment,
             children: [
+              // Only show title if not scrollable or scrollable but not pinned
               if (effectiveTitle != null &&
                   (!effectiveScrollable || !effectiveTitlePinned))
                 effectiveTitle,
+              // Only show description if not scrollable or scrollable but not
+              // pinned
               if (effectiveDescription != null &&
                   (!effectiveScrollable || !effectiveDescriptionPinned))
                 effectiveDescription,
               if (effectiveChild != null) Flexible(child: effectiveChild),
+              // Only show actions if not scrollable or scrollable but not
+              // pinned
               if (effectiveActions != null &&
                   (!effectiveScrollable || !effectiveActionsPinned))
                 effectiveActions,
@@ -784,8 +789,10 @@ class ShadDialog extends StatelessWidget {
               mainAxisAlignment: effectiveMainAxisAlignment,
               crossAxisAlignment: effectiveCrossAxisAlignment,
               children: [
+                // Pinned title
                 if (effectiveTitle != null && effectiveTitlePinned)
                   effectiveTitle,
+                // Pinned description
                 if (effectiveDescription != null && effectiveDescriptionPinned)
                   effectiveDescription,
                 Flexible(
@@ -794,6 +801,7 @@ class ShadDialog extends StatelessWidget {
                     child: widget,
                   ),
                 ),
+                // Pinned actions
                 if (effectiveActions != null && effectiveActionsPinned)
                   effectiveActions,
               ].separatedBy(SizedBox(height: effectiveGap)),
