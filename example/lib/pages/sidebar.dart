@@ -183,7 +183,7 @@ class _NormalVariant extends StatelessWidget {
               extendedWidth: sidebarExtendedWidth,
               collapseMode: collapseModeSignal.value,
               header: ShadSidebarHeader(
-                childrenSpacing: 8,
+                spacing: 8,
                 children: [
                   ShadSidebarSelectTile(
                     title: 'Documentation',
@@ -273,7 +273,7 @@ class _InsetVariant extends StatelessWidget {
               collapseMode: collapseModeSignal.value,
               header: ShadSidebarHeader(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                childrenSpacing: 8,
+                spacing: 8,
                 children: [
                   ShadSidebarTile(
                     titleText: 'Ace Inc.',
@@ -501,125 +501,163 @@ final inboxTabs = [
   (title: 'Archive', icon: LucideIcons.archive),
   (title: 'Trash', icon: LucideIcons.trash2),
 ];
-final selectedInboxTab = Signal<int>(0, autoDispose: true);
 
-class _NestedExample extends StatelessWidget {
+class _NestedExample extends StatefulWidget {
   const _NestedExample();
+
+  @override
+  State<_NestedExample> createState() => _NestedExampleState();
+}
+
+class _NestedExampleState extends State<_NestedExample> {
+  final selectedInboxTab = ValueNotifier<int>(0);
+
+  @override
+  void dispose() {
+    selectedInboxTab.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return _SidebarExampleWrapper(
       child: ShadSidebarScaffold(
-        body: ClipRRect(
-          child: ShadSidebarScaffold(
-            sidebar: ShadSidebar.normal(
-              initiallyExtended: true,
-              header: ShadSidebarHeader(
-                childrenSpacing: 0,
-                padding: EdgeInsetsGeometry.all(16),
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: Builder(
+          builder: (context) {
+            return ClipRRect(
+              child: ShadSidebarScaffold(
+                sidebar: ShadSidebar.normal(
+                  initiallyExtended: true,
+                  header: ShadSidebarHeader(
+                    spacing: 0,
+                    padding: EdgeInsetsGeometry.all(16),
                     children: [
-                      SignalBuilder(
-                        builder: (context, _) {
-                          return Text(
-                            inboxTabs.elementAt(selectedInboxTab.value).title,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          );
-                        },
-                      ),
-                      const ShadSwitch(
-                        value: false,
-                        label: Text('unread only'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 14),
-                  const _SearchInput(),
-                  const ShadSeparator.horizontal(),
-                ],
-              ),
-              content: ShadSidebarContent(
-                childrenSpacing: 0,
-                children: [
-                  ...messages.map(
-                    (m) => ShadButton.ghost(
-                      decoration: ShadDecoration(
-                        border: ShadBorder(
-                          bottom: ShadBorderSide(
-                            width: 1,
-                            color: ShadTheme.of(
-                              context,
-                            ).colorScheme.border,
-                          ),
-                        ),
-                      ),
-                      padding: const EdgeInsets.all(14.0),
-                      expands: true,
-                      height: 116,
-                      gap: 0,
-                      child: Column(
-                        spacing: 8,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(m.sender),
-                              Text(
-                                m.date,
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ],
+                          ValueListenableBuilder(
+                            valueListenable: selectedInboxTab,
+                            builder: (context, value, _) {
+                              return Text(
+                                inboxTabs.elementAt(value).title,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            },
                           ),
-                          Text(
-                            m.subject,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            m.preview,
-                            style: TextStyle(
-                              fontSize: 12,
-                              height: 1.25,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                          const ShadSwitch(
+                            value: false,
+                            label: Text('unread only'),
                           ),
                         ],
                       ),
-                    ),
+                      const SizedBox(height: 14),
+                      const _SearchInput(),
+                      const ShadSeparator.horizontal(),
+                    ],
                   ),
-                ],
+                  content: ShadSidebarContent(
+                    spacing: 0,
+                    children: [
+                      ...messages.map(
+                        (m) => ShadButton.ghost(
+                          textStyle: TextStyle(
+                            color: ShadTheme.of(
+                              context,
+                            ).colorScheme.sidebarForeground,
+                          ),
+                          decoration: ShadDecoration(
+                            shadows: [],
+                            border: ShadBorder(
+                              radius: BorderRadius.zero,
+                              bottom: ShadBorderSide(
+                                width: 1,
+                                color: ShadTheme.of(
+                                  context,
+                                ).colorScheme.border,
+                              ),
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(14.0),
+                          expands: true,
+                          height: 116,
+                          gap: 0,
+                          child: Column(
+                            spacing: 8,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(m.sender),
+                                  Text(
+                                    m.date,
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                m.subject,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text(
+                                m.preview,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  height: 1.25,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                body: _MainContent(
+                  exampleTitle: 'A nested Sidebar',
+                  triggerButton: Builder(
+                    builder: (nestedScaffoldContext) {
+                      return ShadIconButton.ghost(
+                        icon: const Icon(LucideIcons.panelLeft, size: 16),
+                        onPressed: () {
+                          final isMobile =
+                              ShadSidebarScaffold.of(
+                                context,
+                              ).sidebarState?.isMobile ??
+                              false;
+                          if (isMobile) {
+                            ShadSidebarScaffold.of(context).toggleSidebar();
+                          } else {
+                            ShadSidebarScaffold.of(
+                              nestedScaffoldContext,
+                            ).toggleSidebar();
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
-            body: _MainContent(
-              exampleTitle: 'A nested Sidebar',
-              triggerButton: Builder(
-                builder: (context) {
-                  return ShadIconButton.ghost(
-                    icon: const Icon(LucideIcons.panelLeft, size: 16),
-                    onPressed: () =>
-                        ShadSidebarScaffold.of(context).toggleSidebar(),
-                  );
-                },
-              ),
-            ),
-          ),
+            );
+          },
         ),
         sidebar: ShadSidebar.normal(
           extendedWidth: sidebarExtendedWidth,
           initiallyExtended: false,
+          triggerWithRail: false,
           collapseMode: ShadSidebarCollapseMode.icons,
           header: ShadSidebarHeader(
             crossAxisAlignment: CrossAxisAlignment.center,
-            childrenSpacing: 8,
+            spacing: 8,
             children: [
               ShadSidebarTile(
                 titleText: 'Ace Inc.',
@@ -671,17 +709,16 @@ class _NestedExample extends StatelessWidget {
           ),
           content: ShadSidebarContent(
             children: [
-              SignalBuilder(
-                builder: (context, _) {
-                  print(selectedInboxTab.value);
+              ValueListenableBuilder(
+                valueListenable: selectedInboxTab,
+                builder: (context, tabIndex, _) {
                   return ShadSidebarGroup.items(
                     labelText: 'Mailbox',
                     hiddenWhenCollapsedToIcons: false,
                     items: inboxTabs
                         .map(
                           (e) => ShadSidebarItem(
-                            selected:
-                                selectedInboxTab.value == inboxTabs.indexOf(e),
+                            selected: tabIndex == inboxTabs.indexOf(e),
                             labelText: e.title,
                             leading: Icon(e.icon),
                             onPressed: () {
@@ -767,7 +804,7 @@ class _FloatingVariant extends StatelessWidget {
                 ],
               ),
               content: ShadSidebarContent(
-                childrenSpacing: 0,
+                spacing: 0,
                 children: [
                   ShadSidebarGroup(
                     content: SizedBox(

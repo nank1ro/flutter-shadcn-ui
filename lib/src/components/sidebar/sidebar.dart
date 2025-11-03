@@ -51,8 +51,7 @@ class ShadSidebarScope extends InheritedWidget {
 
 /// A widget that holds the configuration and content for a sidebar.
 ///
-/// This widget is used with `ShadSidebarScaffold` to define the appearance,
-/// content, and behavior of a sidebar.
+/// Typically used in conjunction with [ShadSidebarScaffold].
 class ShadSidebar extends StatefulWidget {
   const ShadSidebar.variant({
     super.key,
@@ -71,8 +70,10 @@ class ShadSidebar extends StatefulWidget {
     this.mobileBreakPoint,
     this.keyboardShortcut,
     this.initiallyExtended,
-    required this.variant,
     this.side,
+    this.triggerWithRail = true,
+    this.showRail = false,
+    required this.variant,
   });
 
   /// Creates a sidebar with the `ShadSidebarVariant.normal` variant.
@@ -94,6 +95,8 @@ class ShadSidebar extends StatefulWidget {
     this.keyboardShortcut,
     this.initiallyExtended,
     this.side,
+    this.showRail = true,
+    this.triggerWithRail = true,
   }) : variant = ShadSidebarVariant.normal;
 
   /// Creates a sidebar with the `ShadSidebarVariant.floating` variant.
@@ -115,6 +118,8 @@ class ShadSidebar extends StatefulWidget {
     this.keyboardShortcut,
     this.initiallyExtended,
     this.side,
+    this.triggerWithRail = true,
+    this.showRail = false,
   }) : variant = ShadSidebarVariant.floating;
 
   /// Creates a sidebar with the `ShadSidebarVariant.inset` variant.
@@ -136,6 +141,8 @@ class ShadSidebar extends StatefulWidget {
     this.keyboardShortcut,
     this.initiallyExtended,
     this.side,
+    this.triggerWithRail = true,
+    this.showRail = false,
   }) : variant = ShadSidebarVariant.inset;
 
   final ShadSidebarController? controller;
@@ -239,6 +246,15 @@ class ShadSidebar extends StatefulWidget {
   final ShortcutActivator? keyboardShortcut;
 
   final ShadSidebarSide? side;
+
+  /// {@template ShadSidebar.showRail}
+  /// Whether to show the rail.
+  ///
+  /// Defaults to `true`.
+  /// {@endtemplate}
+  final bool showRail;
+
+  final bool triggerWithRail;
 
   static ShadSidebarState of(BuildContext context) {
     return ShadSidebarScope.of(context).state;
@@ -429,7 +445,7 @@ class ShadSidebarState extends State<ShadSidebar>
 
   bool get isMobile => _effectiveController?.isMobile ?? false;
 
-  bool get collapsedToIcons => !extended && collapseMode.isIcons;
+  bool get collapsedToIcons => !isMobile && !extended && collapseMode.isIcons;
 
   ShadSidebarCollapseMode get collapseMode {
     final sidebarTheme = ShadTheme.of(context).sidebarTheme;
@@ -580,17 +596,18 @@ class _SidebarLayout extends StatelessWidget {
     if (state.isMobile) {
       return sidebarContent;
     }
-    return switch (variant) {
-      ShadSidebarVariant.normal => _buildNormalVariant(context, sidebarContent),
-      ShadSidebarVariant.floating => _buildFloatingVariant(
-        context,
-        sidebarContent,
-      ),
-      ShadSidebarVariant.inset => sidebarContent,
-    };
+
+    var widget = variant.isFloating
+        ? _buildFloatingVariant(context, sidebarContent)
+        : sidebarContent;
+
+    if (state.widget.showRail) {
+      widget = _buildWithRail(context, widget);
+    }
+    return widget;
   }
 
-  Widget _buildNormalVariant(
+  Widget _buildWithRail(
     BuildContext context,
     Widget sidebar,
   ) {
@@ -603,7 +620,7 @@ class _SidebarLayout extends StatelessWidget {
         return Stack(
           children: [
             sidebar,
-            _ResizeHandle(
+            _Rail(
               width: constraints.maxWidth,
               borderColor: effectiveBorderColor,
             ),
@@ -641,8 +658,8 @@ class _SidebarLayout extends StatelessWidget {
   }
 }
 
-class _ResizeHandle extends StatefulWidget {
-  const _ResizeHandle({
+class _Rail extends StatefulWidget {
+  const _Rail({
     required this.width,
     required this.borderColor,
   });
@@ -651,37 +668,41 @@ class _ResizeHandle extends StatefulWidget {
   final Color borderColor;
 
   @override
-  State<_ResizeHandle> createState() => _ResizeHandleState();
+  State<_Rail> createState() => _RailState();
 }
 
-class _ResizeHandleState extends State<_ResizeHandle> {
+class _RailState extends State<_Rail> {
   bool _isHovered = false;
 
   @override
   Widget build(BuildContext context) {
     final state = ShadSidebar.of(context);
-    return Positioned(
-      top: 0,
-      bottom: 0,
-      left: state.isPhysicalLeft ? (widget.width - 17) : null,
-      right: state.isPhysicalLeft ? null : (widget.width - 17),
-      width: 16,
-      child: ShadGestureDetector(
+    Widget rail = Align(
+      alignment: AlignmentDirectional.centerEnd,
+      child: ShadSeparator.vertical(
+        margin: EdgeInsetsGeometry.zero,
+        thickness: _isHovered ? 2 : 0,
+        color: widget.borderColor,
+      ),
+    );
+    if (state.widget.triggerWithRail && !state.collapseMode.isNone) {
+      rail = ShadGestureDetector(
         behavior: HitTestBehavior.opaque,
         cursor: SystemMouseCursors.resizeColumn,
         onHoverChange: (value) => setState(() => _isHovered = value),
         onTap: () {
           ShadSidebar.of(context).toggle();
         },
-        child: Align(
-          alignment: AlignmentDirectional.centerEnd,
-          child: ShadSeparator.vertical(
-            margin: EdgeInsetsGeometry.zero,
-            thickness: _isHovered ? 2 : 0,
-            color: widget.borderColor,
-          ),
-        ),
-      ),
+        child: rail,
+      );
+    }
+    return Positioned(
+      top: 0,
+      bottom: 0,
+      left: state.isPhysicalLeft ? (widget.width - 17) : null,
+      right: state.isPhysicalLeft ? null : (widget.width - 17),
+      width: 16,
+      child: rail,
     );
   }
 }
@@ -692,7 +713,8 @@ class ShadSidebarHeader extends _WidgetListTemplate {
     super.key,
     super.padding = const EdgeInsets.all(8),
     super.children,
-    super.childrenSpacing,
+    super.spacing,
+    super.axis,
     super.mainAxisAlignment,
     super.crossAxisAlignment = CrossAxisAlignment.stretch,
   }) : super(scrollable: false);
@@ -706,9 +728,10 @@ class ShadSidebarContent extends _WidgetListTemplate {
     super.key,
     super.padding = EdgeInsets.zero,
     super.mainAxisAlignment = MainAxisAlignment.start,
-    super.childrenSpacing = 8,
+    super.spacing = 8,
     super.scrollable = true,
     super.children,
+    super.crossAxisAlignment,
     super.alwaysShowScrollbar,
   });
 }
@@ -718,8 +741,10 @@ class ShadSidebarFooter extends _WidgetListTemplate {
   const ShadSidebarFooter({
     super.key,
     super.children,
-    super.childrenSpacing,
+    super.spacing,
     super.mainAxisAlignment,
+    super.axis,
+    super.crossAxisAlignment,
     super.padding = const EdgeInsets.all(8),
   }) : super(scrollable: false);
 }
@@ -727,18 +752,20 @@ class ShadSidebarFooter extends _WidgetListTemplate {
 class _WidgetListTemplate extends StatefulWidget {
   const _WidgetListTemplate({
     super.key,
+    this.axis = Axis.vertical,
     this.padding = EdgeInsets.zero,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.crossAxisAlignment = CrossAxisAlignment.start,
-    this.childrenSpacing = 0,
+    this.spacing = 0,
     this.scrollable = true,
     this.alwaysShowScrollbar = true,
     this.children = const [],
   });
+  final Axis axis;
   final EdgeInsetsGeometry padding;
   final List<Widget> children;
   final bool scrollable;
-  final double childrenSpacing;
+  final double spacing;
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
   final bool alwaysShowScrollbar;
@@ -763,11 +790,12 @@ class _WidgetListTemplateState extends State<_WidgetListTemplate> {
 
   @override
   Widget build(BuildContext context) {
-    final content = Column(
+    final content = Flex(
+      direction: widget.axis,
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: widget.mainAxisAlignment,
       crossAxisAlignment: widget.crossAxisAlignment,
-      spacing: widget.childrenSpacing,
+      spacing: widget.spacing,
       children: widget.children,
     );
     if (!widget.scrollable) {

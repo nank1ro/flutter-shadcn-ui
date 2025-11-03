@@ -462,7 +462,7 @@ class SidebarWithCustomTrigger extends StatelessWidget {
     return ShadSidebarScaffold(
       body: Builder(
         builder: (context) {
-          var extended = ShadSidebarScaffold.of(context).isSidebarExtended();
+          var extended = ShadSidebarScaffold.of(context).isSidebarExtended;
           return Center(
             child: ShadButton.outline(
               leading: Icon(
@@ -547,7 +547,7 @@ class ShadSidebarTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = ShadTheme.of(context).colorScheme;
-    final state = ShadSidebarController.of(context);
+    final state = ShadSidebar.of(context);
     final leading = buildLeading(cs);
     return ShadButton.ghost(
       height: state.collapsedToIcons ? 32 : minHeight,
@@ -674,7 +674,7 @@ class ShadSidebarMenuTile extends StatelessWidget {
     var opened = false;
     return StatefulBuilder(
       builder: (context, mSetState) {
-        final side = ShadSidebarController.of(context).side;
+        final state = ShadSidebar.of(context);
         return ShadContextMenu(
           decoration: menuDecoration,
           items: items,
@@ -682,7 +682,7 @@ class ShadSidebarMenuTile extends StatelessWidget {
           constraints:
               menuConstraints ??
               BoxConstraints(
-                minWidth: ShadSidebarController.of(context).extendedWidth - 8,
+                minWidth: ShadSidebar.of(context).extendedWidth - 8,
               ),
           effects: [
             const FadeEffect(
@@ -698,7 +698,9 @@ class ShadSidebarMenuTile extends StatelessWidget {
               duration: Duration(milliseconds: 150),
             ),
             MoveEffect(
-              begin: side.isLeft ? const Offset(-8, 0) : const Offset(8, 0),
+              begin: state.isPhysicalLeft
+                  ? const Offset(-8, 0)
+                  : const Offset(8, 0),
               end: Offset.zero,
               curve: Curves.easeIn,
               duration: const Duration(milliseconds: 150),

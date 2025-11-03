@@ -55,15 +55,19 @@ class ShadSidebarScaffold extends StatefulWidget {
   /// The sidebar to display on the start side of the screen.
   final ShadSidebar? sidebar;
 
-  // TODO(dmouayad): consider removing this if not needed
-  /// The sidebar controller to control the sidebar.
+  /// A controller to control the sidebar.
+  ///
+  /// This's useful when you want to control the [sidebar] from outside the
+  /// scaffold scope.
   final ShadSidebarController? sidebarController;
 
   /// The sidebar to display on the end side of the screen.
   final ShadSidebar? endSidebar;
 
-  // TODO(dmouayad): consider removing this if not needed
-  /// The sidebar controller to control the sidebar.
+  /// A controller to control the sidebar.
+  ///
+  /// This's useful when you want to control the [endSidebar] from outside the
+  /// scaffold scope.
   final ShadSidebarController? endSidebarController;
 
   /// {@template ShadSidebarScaffold.backgroundColor}
@@ -182,15 +186,15 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   void collapseEndSidebar() => _effectiveEndSidebarController?.collapse();
 
   /// Returns whether the sidebar is currently extended.
-  bool isSidebarExtended() => _effectiveSidebarController?.extended ?? false;
+  bool get isSidebarExtended => _effectiveSidebarController?.extended ?? false;
 
   /// Returns whether the end sidebar is currently extended.
-  bool isEndSidebarExtended() =>
+  bool get isEndSidebarExtended =>
       _effectiveEndSidebarController?.extended ?? false;
 
-  ShadSidebarState? get _sidebarState => _effectiveSidebarController?.state;
+  ShadSidebarState? get sidebarState => _effectiveSidebarController?.state;
 
-  ShadSidebarState? get _endSidebarState =>
+  ShadSidebarState? get endSidebarState =>
       _effectiveEndSidebarController?.state;
 
   @override
@@ -205,9 +209,9 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
         theme.colorScheme.background;
 
     final animation = Listenable.merge([
-      if (_sidebarState != null) _sidebarState!.animation,
+      if (sidebarState != null) sidebarState!.animation,
 
-      if (_endSidebarState != null) _endSidebarState!.animation,
+      if (endSidebarState != null) endSidebarState!.animation,
     ]);
 
     return LayoutBuilder(
@@ -217,13 +221,13 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
         }
 
         final isMobile =
-            (_sidebarState?.isMobile ?? false) ||
-            (_endSidebarState?.isMobile ?? false);
+            (sidebarState?.isMobile ?? false) ||
+            (endSidebarState?.isMobile ?? false);
 
         final isInsetLayout =
             !isMobile &&
-            (_sidebarState?.variant == ShadSidebarVariant.inset ||
-                _endSidebarState?.variant == ShadSidebarVariant.inset);
+            (sidebarState?.variant == ShadSidebarVariant.inset ||
+                endSidebarState?.variant == ShadSidebarVariant.inset);
 
         return ColoredBox(
           color: (isInsetLayout ? colorScheme.sidebar : effectiveBodyColor),
@@ -236,7 +240,7 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
                   top: 0,
                   bottom: 0,
                   child: Offstage(
-                    offstage: _sidebarState?.isMobile ?? false,
+                    offstage: sidebarState?.isMobile ?? false,
                     child: ShadSidebarScaffoldInheritedWidget(
                       side: ShadSidebarSide.start,
                       controller: _effectiveSidebarController,
@@ -252,7 +256,7 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
                   top: 0,
                   bottom: 0,
                   child: Offstage(
-                    offstage: _endSidebarState?.isMobile ?? false,
+                    offstage: endSidebarState?.isMobile ?? false,
                     child: ShadSidebarScaffoldInheritedWidget(
                       side: ShadSidebarSide.end,
                       controller: _effectiveEndSidebarController,
@@ -291,13 +295,13 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
 
         _effectiveSidebarController?.updateIsMobile(
           constraints.maxWidth,
-          _sidebarState?.widget.mobileBreakPoint ??
+          sidebarState?.widget.mobileBreakPoint ??
               sidebarTheme.mobileBreakPoint ??
               768,
         );
         _effectiveEndSidebarController?.updateIsMobile(
           constraints.maxWidth,
-          _endSidebarState?.widget.mobileBreakPoint ??
+          endSidebarState?.widget.mobileBreakPoint ??
               sidebarTheme.mobileBreakPoint ??
               768,
         );
@@ -319,7 +323,7 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   }
 
   double get _leftBodyPadding {
-    final state = _sidebarState;
+    final state = sidebarState;
     if (state == null || state.isMobile) {
       return 0;
     }
@@ -332,7 +336,7 @@ class ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   }
 
   double get _rightBodyPadding {
-    final state = _endSidebarState;
+    final state = endSidebarState;
 
     if (state == null || state.isMobile) {
       return 0;
