@@ -76,6 +76,9 @@ mixin _$ShadDialogTheme {
       ),
       actionsGap: lerpDouble$(a?.actionsGap, b?.actionsGap, t),
       useSafeArea: t < 0.5 ? a?.useSafeArea : b?.useSafeArea,
+      titlePinned: t < 0.5 ? a?.titlePinned : b?.titlePinned,
+      descriptionPinned: t < 0.5 ? a?.descriptionPinned : b?.descriptionPinned,
+      actionsPinned: t < 0.5 ? a?.actionsPinned : b?.actionsPinned,
     );
   }
 
@@ -108,6 +111,9 @@ mixin _$ShadDialogTheme {
     EdgeInsetsGeometry? scrollPadding,
     double? actionsGap,
     bool? useSafeArea,
+    bool? titlePinned,
+    bool? descriptionPinned,
+    bool? actionsPinned,
   }) {
     final a = (this as ShadDialogTheme);
 
@@ -143,6 +149,9 @@ mixin _$ShadDialogTheme {
       scrollPadding: scrollPadding ?? a.scrollPadding,
       actionsGap: actionsGap ?? a.actionsGap,
       useSafeArea: useSafeArea ?? a.useSafeArea,
+      titlePinned: titlePinned ?? a.titlePinned,
+      descriptionPinned: descriptionPinned ?? a.descriptionPinned,
+      actionsPinned: actionsPinned ?? a.actionsPinned,
     );
   }
 
@@ -189,6 +198,9 @@ mixin _$ShadDialogTheme {
       scrollPadding: other.scrollPadding,
       actionsGap: other.actionsGap,
       useSafeArea: other.useSafeArea,
+      titlePinned: other.titlePinned,
+      descriptionPinned: other.descriptionPinned,
+      actionsPinned: other.actionsPinned,
     );
   }
 
@@ -232,7 +244,10 @@ mixin _$ShadDialogTheme {
         other.scrollable == value.scrollable &&
         other.scrollPadding == value.scrollPadding &&
         other.actionsGap == value.actionsGap &&
-        other.useSafeArea == value.useSafeArea;
+        other.useSafeArea == value.useSafeArea &&
+        other.titlePinned == value.titlePinned &&
+        other.descriptionPinned == value.descriptionPinned &&
+        other.actionsPinned == value.actionsPinned;
   }
 
   @override
@@ -269,6 +284,9 @@ mixin _$ShadDialogTheme {
       value.scrollPadding,
       value.actionsGap,
       value.useSafeArea,
+      value.titlePinned,
+      value.descriptionPinned,
+      value.actionsPinned,
     ]);
   }
 }

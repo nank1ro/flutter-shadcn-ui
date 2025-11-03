@@ -5,3 +5,12 @@ extension SetOnSignal<T> on Signal<T> {
     this.value = value;
   }
 }
+
+extension IterableMultipler<T> on Iterable<T> {
+  /// Multiplies the iterable by the given [times], repeating its elements.
+  Iterable<T> operator *(int times) sync* {
+    for (var i = 0; i < times; i++) {
+      yield* this;
+    }
+  }
+}

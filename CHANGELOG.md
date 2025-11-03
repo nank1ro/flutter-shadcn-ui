@@ -1,3 +1,8 @@
+## 0.39.3
+
+- **FIX**: Remove extra gap when `actions` is empty in `ShadDialog`.
+- **FEAT**: Add `titlePinned`, `descriptionPinned` and `actionsPinned` to `ShadDialog` and `ShadSheet` to control whether to pin the title, description and actions when scrolling the content.
+
 ## 0.39.2
 
 - **FEAT**: Add `buttonTextStyle` to `ShadDateRangePickerFormField`.

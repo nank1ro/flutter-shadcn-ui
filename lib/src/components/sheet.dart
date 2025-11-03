@@ -212,6 +212,9 @@ class ShadSheet extends StatefulWidget {
     this.exitDuration = const Duration(milliseconds: 200),
     this.disabledScrollControlMaxRatio,
     this.useSafeArea,
+    this.titlePinned,
+    this.descriptionPinned,
+    this.actionsPinned,
   });
 
   /// {@template ShadSheet.title}
@@ -447,6 +450,15 @@ class ShadSheet extends StatefulWidget {
   /// {@macro ShadDialog.useSafeArea}
   final bool? useSafeArea;
 
+  /// {@macro ShadDialog.titlePinned}
+  final bool? titlePinned;
+
+  /// {@macro ShadDialog.descriptionPinned}
+  final bool? descriptionPinned;
+
+  /// {@macro ShadDialog.actionsPinned}
+  final bool? actionsPinned;
+
   @override
   State<ShadSheet> createState() => _ShadSheetState();
 }
@@ -671,6 +683,15 @@ class _ShadSheetState extends State<ShadSheet>
     final effectiveUseSafeArea =
         widget.useSafeArea ?? theme.sheetTheme.useSafeArea ?? true;
 
+    final effectiveTitlePinned =
+        widget.titlePinned ?? theme.sheetTheme.titlePinned ?? false;
+
+    final effectiveDescriptionPinned =
+        widget.descriptionPinned ?? theme.sheetTheme.descriptionPinned ?? false;
+
+    final effectiveActionsPinned =
+        widget.actionsPinned ?? theme.sheetTheme.actionsPinned ?? true;
+
     Widget child = ShadDialog(
       key: childKey,
       title: widget.title,
@@ -702,6 +723,9 @@ class _ShadSheetState extends State<ShadSheet>
       scrollable: effectiveScrollable,
       scrollPadding: effectiveScrollPadding,
       useSafeArea: effectiveUseSafeArea,
+      titlePinned: effectiveTitlePinned,
+      descriptionPinned: effectiveDescriptionPinned,
+      actionsPinned: effectiveActionsPinned,
       child: widget.child,
     );
 
