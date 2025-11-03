@@ -88,6 +88,9 @@ mixin _$ShadSheetTheme {
       ),
       side: t < 0.5 ? a?.side : b?.side,
       useSafeArea: t < 0.5 ? a?.useSafeArea : b?.useSafeArea,
+      titlePinned: t < 0.5 ? a?.titlePinned : b?.titlePinned,
+      descriptionPinned: t < 0.5 ? a?.descriptionPinned : b?.descriptionPinned,
+      actionsPinned: t < 0.5 ? a?.actionsPinned : b?.actionsPinned,
     );
   }
 
@@ -124,6 +127,9 @@ mixin _$ShadSheetTheme {
     double? closeProgressThreshold,
     ShadSheetSide? side,
     bool? useSafeArea,
+    bool? titlePinned,
+    bool? descriptionPinned,
+    bool? actionsPinned,
   }) {
     final a = (this as ShadSheetTheme);
 
@@ -165,6 +171,9 @@ mixin _$ShadSheetTheme {
           closeProgressThreshold ?? a.closeProgressThreshold,
       side: side ?? a.side,
       useSafeArea: useSafeArea ?? a.useSafeArea,
+      titlePinned: titlePinned ?? a.titlePinned,
+      descriptionPinned: descriptionPinned ?? a.descriptionPinned,
+      actionsPinned: actionsPinned ?? a.actionsPinned,
     );
   }
 
@@ -215,6 +224,9 @@ mixin _$ShadSheetTheme {
       closeProgressThreshold: other.closeProgressThreshold,
       side: other.side,
       useSafeArea: other.useSafeArea,
+      titlePinned: other.titlePinned,
+      descriptionPinned: other.descriptionPinned,
+      actionsPinned: other.actionsPinned,
     );
   }
 
@@ -263,7 +275,10 @@ mixin _$ShadSheetTheme {
         other.minFlingVelocity == value.minFlingVelocity &&
         other.closeProgressThreshold == value.closeProgressThreshold &&
         other.side == value.side &&
-        other.useSafeArea == value.useSafeArea;
+        other.useSafeArea == value.useSafeArea &&
+        other.titlePinned == value.titlePinned &&
+        other.descriptionPinned == value.descriptionPinned &&
+        other.actionsPinned == value.actionsPinned;
   }
 
   @override
@@ -304,6 +319,9 @@ mixin _$ShadSheetTheme {
       value.closeProgressThreshold,
       value.side,
       value.useSafeArea,
+      value.titlePinned,
+      value.descriptionPinned,
+      value.actionsPinned,
     ]);
   }
 }

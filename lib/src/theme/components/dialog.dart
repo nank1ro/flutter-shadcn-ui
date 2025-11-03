@@ -39,6 +39,9 @@ class ShadDialogTheme with _$ShadDialogTheme {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.titlePinned,
+    this.descriptionPinned,
+    this.actionsPinned,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -130,6 +133,15 @@ class ShadDialogTheme with _$ShadDialogTheme {
 
   /// {@macro ShadDialog.useSafeArea}
   final bool? useSafeArea;
+
+  /// {@macro ShadDialog.titlePinned}
+  final bool? titlePinned;
+
+  /// {@macro ShadDialog.descriptionPinned}
+  final bool? descriptionPinned;
+
+  /// {@macro ShadDialog.actionsPinned}
+  final bool? actionsPinned;
 
   static ShadDialogTheme? lerp(
     ShadDialogTheme? a,
