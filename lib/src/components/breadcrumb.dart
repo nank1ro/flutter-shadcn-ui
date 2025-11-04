@@ -141,23 +141,24 @@ class _ShadBreadcrumbLinkedTextState extends State<ShadBreadcrumbLinkedText> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final fontStyle = Theme.of(context).textTheme.bodyMedium!;
 
     return MouseRegion(
-      cursor: widget.onPressed != null 
-          ? SystemMouseCursors.click 
+      cursor: widget.onPressed != null
+          ? SystemMouseCursors.click
           : SystemMouseCursors.basic,
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: ShadButton.raw(
         padding: EdgeInsets.zero,
-        height: widget.style?.fontSize ?? 20,
+        height: (widget.style?.fontSize ?? fontStyle.fontSize!) * 1.4,
         size: ShadButtonSize.sm,
         variant: ShadButtonVariant.link,
         onPressed: widget.onPressed,
         child: DefaultTextStyle(
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: _isHovered 
-                ? theme.colorScheme.foreground 
+            color: _isHovered
+                ? theme.colorScheme.foreground
                 : theme.colorScheme.mutedForeground,
             fontWeight: FontWeight.normal,
           ),
