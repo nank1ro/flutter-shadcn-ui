@@ -155,7 +155,7 @@ class _ShadBreadcrumbLinkedTextState extends State<ShadBreadcrumbLinkedText> {
         variant: ShadButtonVariant.link,
         onPressed: widget.onPressed,
         child: DefaultTextStyle(
-          style: theme.textTheme.small.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
             color: _isHovered 
                 ? theme.colorScheme.foreground 
                 : theme.colorScheme.mutedForeground,
@@ -190,9 +190,9 @@ class ShadBreadcrumbPage extends StatelessWidget {
     final theme = ShadTheme.of(context);
 
     return DefaultTextStyle(
-      style: theme.textTheme.small.copyWith(
+      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
         color: theme.colorScheme.foreground,
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.w500,
       ),
       child: child,
     );
