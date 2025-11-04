@@ -119,6 +119,8 @@ class ShadBreadcrumbLinkedText extends StatefulWidget {
     required this.text,
     this.onPressed,
     this.style,
+    this.color,
+    this.hoverColor,
   });
 
   /// The Text to display as the breadcrumb item content.
@@ -130,6 +132,13 @@ class ShadBreadcrumbLinkedText extends StatefulWidget {
   /// Optional style for the text
   final TextStyle? style;
 
+  /// Optional color for the text in normal state
+  final Color? color;
+
+  /// Optional color for the text in hover state
+  final Color? hoverColor;
+
+
   @override
   State<ShadBreadcrumbLinkedText> createState() =>
       _ShadBreadcrumbLinkedTextState();
@@ -140,8 +149,10 @@ class _ShadBreadcrumbLinkedTextState extends State<ShadBreadcrumbLinkedText> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
     final fontStyle = Theme.of(context).textTheme.bodyMedium!;
+    final hoverColor = _isHovered
+        ? widget.hoverColor ?? ShadTheme.of(context).colorScheme.foreground
+        : widget.color ?? ShadTheme.of(context).colorScheme.mutedForeground;
 
     return MouseRegion(
       cursor: widget.onPressed != null
@@ -155,14 +166,13 @@ class _ShadBreadcrumbLinkedTextState extends State<ShadBreadcrumbLinkedText> {
         size: ShadButtonSize.sm,
         variant: ShadButtonVariant.link,
         onPressed: widget.onPressed,
-        child: DefaultTextStyle(
-          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: _isHovered
-                ? theme.colorScheme.foreground
-                : theme.colorScheme.mutedForeground,
+        child: Text(
+          widget.text,
+          style: fontStyle.copyWith(
             fontWeight: FontWeight.normal,
+          ).merge(widget.style).copyWith(
+            color: hoverColor,
           ),
-          child: Text(widget.text, style: widget.style),
         ),
       ),
     );
