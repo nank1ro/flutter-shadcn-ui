@@ -241,27 +241,25 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
   const ShadBreadcrumbEllipsis({
     super.key,
     this.child,
+    this.size = 14,
   });
 
   /// The widget to display as the ellipsis.
   /// If null, uses the default more horizontal icon.
   final Widget? child;
 
+  /// The size of the ellipsis.
+  final double size;
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return SizedBox(
-      width: 36,
-      height: 36,
-      child: Center(
-        child: child ??
-            Icon(
-              LucideIcons.ellipsis,
-              size: 16,
-              color: theme.colorScheme.mutedForeground,
-            ),
-      ),
-    );
+    return child ??
+        Icon(
+          size: size,
+          LucideIcons.ellipsis,
+          color: theme.colorScheme.mutedForeground,
+        );
   }
 }
