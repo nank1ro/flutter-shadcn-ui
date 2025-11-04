@@ -74,12 +74,14 @@ class _SelectPageState extends State<SelectPage> {
   final focusNodes = [FocusNode(), FocusNode(), FocusNode(), FocusNode()];
   var searchValue = '';
   bool allowDeselection = false;
+  bool closeOnSelect = true;
+  bool ensureSelectedVisible = true;
 
   Map<String, String> get filteredFrameworks => {
-        for (final framework in frameworks.entries)
-          if (framework.value.toLowerCase().contains(searchValue.toLowerCase()))
-            framework.key: framework.value
-      };
+    for (final framework in frameworks.entries)
+      if (framework.value.toLowerCase().contains(searchValue.toLowerCase()))
+        framework.key: framework.value,
+  };
 
   @override
   void dispose() {
@@ -129,15 +131,27 @@ class _SelectPageState extends State<SelectPage> {
           value: allowDeselection,
           onChanged: (value) => setState(() => allowDeselection = value),
         ),
+        MyBoolProperty(
+          label: 'Close on select',
+          value: closeOnSelect,
+          onChanged: (value) => setState(() => closeOnSelect = value),
+        ),
+        MyBoolProperty(
+          label: 'Ensure selected visible',
+          value: ensureSelectedVisible,
+          onChanged: (value) => setState(() => ensureSelectedVisible = value),
+        ),
       ],
       children: [
         ShadSelect<String>(
           minWidth: 180,
           onChanged: print,
+          closeOnSelect: closeOnSelect,
           enabled: enabled,
           focusNode: focusNodes[0],
           placeholder: const Text('Select a fruit'),
           allowDeselection: allowDeselection,
+          ensureSelectedVisible: ensureSelectedVisible,
           options: [
             Padding(
               padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
@@ -161,7 +175,9 @@ class _SelectPageState extends State<SelectPage> {
           focusNode: focusNodes[1],
           onChanged: print,
           enabled: enabled,
+          closeOnSelect: closeOnSelect,
           placeholder: const Text('Select a timezone'),
+          ensureSelectedVisible: ensureSelectedVisible,
           options: timezones.entries.map(
             (zone) => Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -182,7 +198,7 @@ class _SelectPageState extends State<SelectPage> {
                     value: e.key,
                     child: Text(e.value),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -201,7 +217,9 @@ class _SelectPageState extends State<SelectPage> {
           maxWidth: 300,
           placeholder: const Text('Select framework...'),
           onSearchChanged: (value) => setState(() => searchValue = value),
+          closeOnSelect: closeOnSelect,
           searchPlaceholder: const Text('Search framework'),
+          ensureSelectedVisible: ensureSelectedVisible,
           options: [
             if (filteredFrameworks.isEmpty)
               const Padding(
@@ -220,7 +238,7 @@ class _SelectPageState extends State<SelectPage> {
                   ),
                 );
               },
-            )
+            ),
           ],
           selectedOptionBuilder: (context, value) => Text(frameworks[value]!),
           onChanged: print,
@@ -233,7 +251,8 @@ class _SelectPageState extends State<SelectPage> {
           focusNode: focusNodes[3],
           allowDeselection: allowDeselection,
           placeholder: const Text('Select multiple fruits'),
-          closeOnSelect: false,
+          closeOnSelect: closeOnSelect,
+          ensureSelectedVisible: ensureSelectedVisible,
           options: [
             Padding(
               padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),

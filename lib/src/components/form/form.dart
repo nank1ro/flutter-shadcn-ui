@@ -21,8 +21,11 @@ enum ShadAutovalidateMode {
 }
 
 /// A typedef representing a map of form field states with dynamic values.
-typedef ShadFormFields = Map<Object,
-    ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic>>;
+typedef ShadFormFields =
+    Map<
+      Object,
+      ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic>
+    >;
 
 /// A stateful widget that manages a form with validation and field management.
 class ShadForm extends StatefulWidget {
@@ -37,6 +40,7 @@ class ShadForm extends StatefulWidget {
     this.initialValue = const {},
     this.enabled = true,
     this.skipDisabled = false,
+    this.clearValueOnUnregister = false,
   });
 
   /// Callback when form value changes
@@ -65,6 +69,10 @@ class ShadForm extends StatefulWidget {
   /// Whether to skip disabled fields during validation
   final bool skipDisabled;
 
+  /// Whether to clear the value of fields when they are unregistered, defaults
+  /// to false;
+  final bool clearValueOnUnregister;
+
   @override
   State<ShadForm> createState() => ShadFormState();
 
@@ -80,8 +88,9 @@ class ShadForm extends StatefulWidget {
   /// found
   static ShadFormState? maybeOf(BuildContext context) {
     return (context
-            .getElementForInheritedWidgetOfExactType<ShadFormScope>()
-            ?.widget as ShadFormScope?)
+                .getElementForInheritedWidgetOfExactType<ShadFormScope>()
+                ?.widget
+            as ShadFormScope?)
         ?._formState;
   }
 }
@@ -106,12 +115,12 @@ class ShadFormState extends State<ShadForm> {
   /// Returns an unmodifiable view of the current form values with
   /// transformations applied
   Map<Object, dynamic> get value => Map<Object, dynamic>.unmodifiable(
-        _value.map(
-          (key, value) =>
-              // ignore: avoid_dynamic_calls
-              MapEntry(key, _transformers[key]?.call(value) ?? value),
-        ),
-      );
+    _value.map(
+      (key, value) =>
+          // ignore: avoid_dynamic_calls
+          MapEntry(key, _transformers[key]?.call(value) ?? value),
+    ),
+  );
 
   @override
   void initState() {
@@ -121,8 +130,7 @@ class ShadFormState extends State<ShadForm> {
       ShadAutovalidateMode.onUserInteraction =>
         AutovalidateMode.onUserInteraction,
       ShadAutovalidateMode.alwaysAfterFirstValidation ||
-      ShadAutovalidateMode.disabled =>
-        AutovalidateMode.disabled,
+      ShadAutovalidateMode.disabled => AutovalidateMode.disabled,
     };
     autovalidateMode = ValueNotifier(mode);
   }
@@ -138,18 +146,28 @@ class ShadFormState extends State<ShadForm> {
     Object id,
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
   ) {
-    final oldField = _fields[id];
     _fields[id] = field;
+    _value[id] = field.initialValue ?? initialValue[id];
     field
       ..registerTransformer(_transformers)
-      ..setValue(
-        oldField?.value ?? (_value[id] ??= field.initialValue),
-      );
+      ..setValue(_value[id]);
   }
 
   void setInternalFieldValue<T>(Object id, T? value) {
     _value[id] = value;
-    widget.onChanged?.call();
+  }
+
+  /// Sets forced internal error for a form field
+  /// Throws if the field with [id] is not registered with the form.
+  void setInternalFieldError(Object id, String? error) {
+    final field = _fields[id];
+    if (field == null) {
+      throw FlutterError(
+        'Field with id "$id" not found. '
+        'Make sure the field is registered with the form.',
+      );
+    }
+    field.setInternalError(error);
   }
 
   /// Removes internal field value
@@ -163,8 +181,10 @@ class ShadFormState extends State<ShadForm> {
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
   ) {
     _fields.remove(id);
-    _value.remove(id);
     _transformers.remove(id);
+    if (widget.clearValueOnUnregister) {
+      _value.remove(id);
+    }
   }
 
   /// Validates the form with optional focus and scroll behavior
@@ -178,8 +198,9 @@ class ShadFormState extends State<ShadForm> {
     }
     final hasError = !_formKey.currentState!.validate();
     if (hasError) {
-      final wrongFields =
-          _fields.values.where((element) => element.hasError).toList();
+      final wrongFields = _fields.values
+          .where((element) => element.hasError)
+          .toList();
       if (wrongFields.isNotEmpty) {
         if (focusOnInvalid) {
           wrongFields.first.focus();
@@ -211,8 +232,7 @@ class ShadFormState extends State<ShadForm> {
       ShadAutovalidateMode.onUserInteraction =>
         AutovalidateMode.onUserInteraction,
       ShadAutovalidateMode.alwaysAfterFirstValidation ||
-      ShadAutovalidateMode.disabled =>
-        AutovalidateMode.disabled,
+      ShadAutovalidateMode.disabled => AutovalidateMode.disabled,
     };
     _formKey.currentState?.reset();
   }
@@ -234,6 +254,7 @@ class ShadFormState extends State<ShadForm> {
           onPopInvoked: widget.onPopInvoked,
           onPopInvokedWithResult: widget.onPopInvokedWithResult,
           canPop: widget.canPop,
+          onChanged: widget.onChanged,
           child: child!,
         );
       },

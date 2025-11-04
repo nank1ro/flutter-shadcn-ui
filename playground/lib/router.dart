@@ -172,7 +172,8 @@ final router = GoRouter(
     GoRoute(
       path: '/dialog',
       builder: (context, state) {
-        final style = state.uri.queryParameters['style'] ??
+        final style =
+            state.uri.queryParameters['style'] ??
             ShadDialogVariant.primary.name;
         return DialogPage(
           style: ShadDialogVariant.values.byName(style),
@@ -196,7 +197,8 @@ final router = GoRouter(
     GoRoute(
       path: '/progress',
       builder: (context, state) {
-        final style = state.uri.queryParameters['style'] ??
+        final style =
+            state.uri.queryParameters['style'] ??
             ProgressStyle.determinate.name;
         return ProgressPage(style: ProgressStyle.values.byName(style));
       },
@@ -204,7 +206,8 @@ final router = GoRouter(
     GoRoute(
       path: '/accordion',
       builder: (context, state) {
-        final style = state.uri.queryParameters['style'] ??
+        final style =
+            state.uri.queryParameters['style'] ??
             ShadAccordionVariant.single.name;
         return AccordionPage(
           style: ShadAccordionVariant.values.byName(style),
@@ -236,7 +239,8 @@ final router = GoRouter(
     GoRoute(
       path: '/calendar',
       builder: (context, state) {
-        final style = state.uri.queryParameters['style'] ??
+        final style =
+            state.uri.queryParameters['style'] ??
             ShadCalendarVariant.single.name;
         final hideNavigation = state.getBoolFromArg('hideNavigation');
         final showWeekNumbers = state.getBoolFromArg('showWeekNumbers');
@@ -245,7 +249,8 @@ final router = GoRouter(
         final hideWeekdayNames = state.getBoolFromArg('hideWeekdayNames');
         final reverseMonths = state.getBoolFromArg('reverseMonths');
 
-        final captionLayout = state.uri.queryParameters['captionLayout'] ??
+        final captionLayout =
+            state.uri.queryParameters['captionLayout'] ??
             ShadCalendarCaptionLayout.label.name;
 
         return CalendarPage(
@@ -263,7 +268,8 @@ final router = GoRouter(
     GoRoute(
       path: '/date-picker',
       builder: (context, state) {
-        final style = state.uri.queryParameters['style'] ??
+        final style =
+            state.uri.queryParameters['style'] ??
             ShadDatePickerVariantPlayground.single.name;
         return DatePickerPage(
           style: ShadDatePickerVariantPlayground.values.byName(style),
@@ -273,7 +279,8 @@ final router = GoRouter(
     GoRoute(
       path: '/time-picker',
       builder: (context, state) {
-        final style = state.uri.queryParameters['style'] ??
+        final style =
+            state.uri.queryParameters['style'] ??
             ShadTimePickerVariant.primary.name;
         return TimePickerPage(
           style: ShadTimePickerVariant.values.byName(style),

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -13,9 +12,9 @@ class SizeEffect extends Effect<double> {
     double? begin,
     double? end,
   }) : super(
-          begin: begin ?? (end == null ? defaultValue : neutralValue),
-          end: end ?? neutralValue,
-        );
+         begin: begin ?? (end == null ? defaultValue : neutralValue),
+         end: end ?? neutralValue,
+       );
 
   @override
   Widget build(
@@ -44,9 +43,9 @@ class PaddingEffect extends Effect<double> {
     double? begin,
     double? end,
   }) : super(
-          begin: begin ?? (end == null ? defaultValue : neutralValue),
-          end: end ?? neutralValue,
-        );
+         begin: begin ?? (end == null ? defaultValue : neutralValue),
+         end: end ?? neutralValue,
+       );
 
   @override
   Widget build(
@@ -62,7 +61,7 @@ class PaddingEffect extends Effect<double> {
     );
   }
 
-  final EdgeInsets padding;
+  final EdgeInsetsGeometry padding;
 
   static const neutralValue = 1.0;
   static const defaultValue = 0.0;

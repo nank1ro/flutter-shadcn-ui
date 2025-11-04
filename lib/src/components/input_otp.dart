@@ -101,8 +101,9 @@ class ShadInputOTPState extends State<ShadInputOTP> {
   @override
   void initState() {
     super.initState();
-    result =
-        ValueNotifier((widget.initialValue ?? '').padRight(widget.maxLength));
+    result = ValueNotifier(
+      (widget.initialValue ?? '').padRight(widget.maxLength),
+    );
     result.addListener(() {
       widget.onChanged?.call(result.value);
     });
@@ -274,6 +275,7 @@ class ShadInputOTPSlot extends StatefulWidget {
     this.middleRadius,
     this.initialValue,
     this.textInputAction,
+    this.keyboardToolbarBuilder,
   });
 
   /// {@template ShadInputOTPSlot.focusNode}
@@ -320,7 +322,7 @@ class ShadInputOTPSlot extends StatefulWidget {
   /// {@template ShadInputOTPSlot.padding}
   /// The padding of the slot, defaults to `null`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadInputOTPSlot.decoration}
   /// The decoration of the slot
@@ -359,6 +361,9 @@ class ShadInputOTPSlot extends StatefulWidget {
   /// {@endtemplate}
   final TextInputAction? textInputAction;
 
+  /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+  final WidgetBuilder? keyboardToolbarBuilder;
+
   @override
   State<ShadInputOTPSlot> createState() => _ShadInputOTPSlotState();
 }
@@ -366,7 +371,6 @@ class ShadInputOTPSlot extends StatefulWidget {
 class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
   late final otpProvider = context.read<ShadInputOTPState>();
 
-  // ignore: use_late_for_private_fields_and_variables
   FocusNode? _focusNode;
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
   ShadTextEditingController? _controller;
@@ -418,21 +422,24 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     // Watching the OTP provider for changes
     final otpProvider = context.watch<ShadInputOTPState>();
 
-    final defaultStyle = widget.style ??
+    final defaultStyle =
+        widget.style ??
         theme.inputOTPTheme.style ??
         theme.textTheme.muted.copyWith(
           color: theme.colorScheme.foreground,
           fontFamily: kDefaultFontFamilyMono,
         );
 
-    final firstRadius = widget.firstRadius ??
+    final firstRadius =
+        widget.firstRadius ??
         theme.inputOTPTheme.firstRadius ??
         BorderRadius.only(
           topLeft: theme.radius.topLeft,
           bottomLeft: theme.radius.bottomLeft,
         );
 
-    final lastRadius = widget.lastRadius ??
+    final lastRadius =
+        widget.lastRadius ??
         theme.inputOTPTheme.lastRadius ??
         BorderRadius.only(
           topRight: theme.radius.topRight,
@@ -442,7 +449,8 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     final singleRadius =
         widget.singleRadius ?? theme.inputOTPTheme.singleRadius ?? theme.radius;
 
-    final middleRadius = widget.middleRadius ??
+    final middleRadius =
+        widget.middleRadius ??
         theme.inputOTPTheme.middleRadius ??
         BorderRadius.zero;
 
@@ -493,9 +501,9 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
       ),
     );
     final effectiveDecoration = defaultDecoration
-        .mergeWith(theme.inputOTPTheme.decoration)
-        .mergeWith(widget.decoration)
-        .mergeWith(
+        .merge(theme.inputOTPTheme.decoration)
+        .merge(widget.decoration)
+        .merge(
           ShadDecoration(
             border: ShadBorder(
               radius: effectiveRadius,
@@ -521,12 +529,12 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
             // sanitize the text and format it
             var sanitizedV = v.replaceAll(kInvisibleCharCode, '');
             final result = TextEditingValue(text: sanitizedV);
-            final formattedValue =
-                effectiveInputFormatters.fold<TextEditingValue>(
-              result,
-              (TextEditingValue newValue, TextInputFormatter formatter) =>
-                  formatter.formatEditUpdate(result, newValue),
-            );
+            final formattedValue = effectiveInputFormatters
+                .fold<TextEditingValue>(
+                  result,
+                  (TextEditingValue newValue, TextInputFormatter formatter) =>
+                      formatter.formatEditUpdate(result, newValue),
+                );
 
             final hasBeenFormatted = formattedValue.text != sanitizedV;
             sanitizedV = formattedValue.text;
@@ -571,6 +579,7 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
           padding: effectivePadding,
           style: defaultStyle,
           keyboardType: effectiveKeyboardType,
+          keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
         ),
       ),
     );

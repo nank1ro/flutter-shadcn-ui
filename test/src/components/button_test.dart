@@ -5,8 +5,6 @@ import 'package:shadcn_ui/src/components/button.dart'; // Adjust import path bas
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-import '../../extra/pump_async_widget.dart'; // Assuming this is available in your project
-
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
@@ -18,9 +16,10 @@ void main() {
   }
 
   group('ShadButton', () {
-    testWidgets('renders primary variant correctly',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders primary variant correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton(
             child: Text('Primary Button'),
@@ -41,9 +40,10 @@ void main() {
       expect(button.enabled, true);
     });
 
-    testWidgets('renders destructive variant correctly',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders destructive variant correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton.destructive(
             child: Text('Destructive Button'),
@@ -59,9 +59,10 @@ void main() {
       expect(rowFinder, findsOneWidget);
     });
 
-    testWidgets('renders outline variant correctly',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders outline variant correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton.outline(
             child: Text('Outline Button'),
@@ -77,9 +78,10 @@ void main() {
       expect(rowFinder, findsOneWidget);
     });
 
-    testWidgets('renders secondary variant correctly',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders secondary variant correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton.secondary(
             child: Text('Secondary Button'),
@@ -96,7 +98,7 @@ void main() {
     });
 
     testWidgets('renders ghost variant correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton.ghost(
             child: Text('Ghost Button'),
@@ -113,7 +115,7 @@ void main() {
     });
 
     testWidgets('renders link variant correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton.link(
             child: Text('Link Button'),
@@ -129,9 +131,10 @@ void main() {
       expect(rowFinder, findsOneWidget);
     });
 
-    testWidgets('renders with leading and trailing widgets',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders with leading and trailing widgets', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton(
             leading: Icon(Icons.star),
@@ -167,7 +170,7 @@ void main() {
       const customPadding = EdgeInsets.all(20);
       const customWidth = 200.0;
 
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton(
             backgroundColor: customBackgroundColor,
@@ -210,10 +213,11 @@ void main() {
       expect(decorator.decoration?.color, customBackgroundColor);
     });
 
-    testWidgets('handles disabled state correctly',
-        (WidgetTester tester) async {
+    testWidgets('handles disabled state correctly', (
+      WidgetTester tester,
+    ) async {
       var pressed = false;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadButton(
             enabled: false,
@@ -250,7 +254,7 @@ void main() {
 
     testWidgets('handles focus correctly', (WidgetTester tester) async {
       final focusNode = FocusNode();
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadButton(
             focusNode: focusNode,
@@ -276,9 +280,10 @@ void main() {
       expect(decorator.focused, true);
     });
 
-    testWidgets('handles text direction correctly',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('handles text direction correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton(
             textDirection: TextDirection.rtl,
@@ -302,9 +307,10 @@ void main() {
       expect(row.children.elementAt(4), isA<Icon>()); // leading
     });
 
-    testWidgets('handles size variations correctly',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('handles size variations correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton(
             size: ShadButtonSize.lg,
@@ -324,10 +330,11 @@ void main() {
       expect(sizedBox.height, theme.buttonSizesTheme.lg?.height);
     });
 
-    testWidgets('executes onPressed callback on tap',
-        (WidgetTester tester) async {
+    testWidgets('executes onPressed callback on tap', (
+      WidgetTester tester,
+    ) async {
       var pressed = false;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadButton(
             child: const Text('Press Me'),
@@ -345,7 +352,7 @@ void main() {
     });
 
     testWidgets('ShadButton matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton(
             leading: Icon(Icons.star),
@@ -362,7 +369,7 @@ void main() {
     });
 
     testWidgets('ShadButton.destructive matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton.destructive(
             leading: Icon(Icons.star),
@@ -379,7 +386,7 @@ void main() {
     });
 
     testWidgets('ShadButton.outline matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton.outline(
             leading: Icon(Icons.star),
@@ -396,7 +403,7 @@ void main() {
     });
 
     testWidgets('ShadButton.secondary matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton.secondary(
             leading: Icon(Icons.star),
@@ -413,7 +420,7 @@ void main() {
     });
 
     testWidgets('ShadButton.ghost matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton.ghost(
             leading: Icon(Icons.star),
@@ -430,7 +437,7 @@ void main() {
     });
 
     testWidgets('ShadButton.link matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadButton.link(
             leading: Icon(Icons.star),

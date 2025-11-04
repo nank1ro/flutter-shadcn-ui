@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 /// A customizable checkbox widget with optional label and sublabel.
 ///
@@ -103,7 +104,7 @@ class ShadCheckbox extends StatefulWidget {
 
   /// {@template ShadCheckbox.padding}
   /// The padding between the checkbox and its label/sublabel.
-  /// Defaults to `EdgeInsets.only(left: 8)` if not specified.
+  /// Defaults to `EdgeInsetsDirectional.only(start: 8)` if not specified.
   /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
@@ -165,14 +166,17 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
     final effectiveColor =
         widget.color ?? theme.checkboxTheme.color ?? theme.colorScheme.primary;
 
-    final effectiveDecoration = (theme.checkboxTheme.decoration ??
-            const ShadDecoration())
-        .mergeWith(widget.decoration)
-        .copyWith(color: widget.value ? effectiveColor : Colors.transparent);
+    final effectiveDecoration =
+        (theme.checkboxTheme.decoration ?? const ShadDecoration())
+            .merge(widget.decoration)
+            .copyWith(
+              color: widget.value ? effectiveColor : const Color(0x00000000),
+            );
 
     final effectiveSize = widget.size ?? theme.checkboxTheme.size ?? 16;
 
-    final effectiveIcon = widget.icon ??
+    final effectiveIcon =
+        widget.icon ??
         Icon(
           LucideIcons.check,
           color: theme.colorScheme.primaryForeground,
@@ -181,13 +185,20 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
 
     final effectiveDuration =
         widget.duration ?? theme.checkboxTheme.duration ?? 100.milliseconds;
-    final effectivePadding = widget.padding ??
+    final effectivePadding =
+        widget.padding ??
         theme.checkboxTheme.padding ??
-        const EdgeInsets.only(left: 8);
+        const EdgeInsetsDirectional.only(start: 8);
 
-    final effectiveCheckboxPadding = widget.checkboxPadding ??
+    final effectiveCheckboxPadding =
+        widget.checkboxPadding ??
         theme.checkboxTheme.checkboxPadding ??
         const EdgeInsets.only(top: 1);
+
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
 
     final checkbox = Semantics(
       checked: widget.value,
@@ -196,10 +207,11 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
         disabled: !widget.enabled,
         child: CallbackShortcuts(
           bindings: {
-            const SingleActivator(LogicalKeyboardKey.enter): () {
-              if (!widget.enabled) return;
-              onTap();
-            },
+            for (final trigger in keyboardTriggers)
+              trigger: () {
+                if (!widget.enabled) return;
+                onTap();
+              },
           },
           child: ShadFocusable(
             focusNode: focusNode,
@@ -230,10 +242,11 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
 
     final defaultCrossAxisAlignment =
         widget.label != null && widget.sublabel != null
-            ? CrossAxisAlignment.start
-            : CrossAxisAlignment.center;
+        ? CrossAxisAlignment.start
+        : CrossAxisAlignment.center;
 
-    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+    final effectiveCrossAxisAlignment =
+        widget.crossAxisAlignment ??
         theme.checkboxTheme.crossAxisAlignment ??
         defaultCrossAxisAlignment;
 
@@ -275,7 +288,9 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: DefaultTextStyle(
-                            style: theme.textTheme.muted,
+                            style: theme.textTheme.muted.fallback(
+                              color: theme.colorScheme.mutedForeground,
+                            ),
                             child: widget.sublabel!,
                           ),
                         ),

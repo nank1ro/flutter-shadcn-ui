@@ -1,12 +1,82 @@
-import 'package:flutter/material.dart';
+import 'package:boxy/flex.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/animate.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
+
+/// {@template ShadDialogRoute}
+/// A custom dialog route that allows specifying a `reverseTransitionDuration`.
+/// {@macro flutter.widgets.ModalRoute.barrierDismissible}
+///
+/// Used internally by [showShadDialog].
+/// {@endtemplate}
+class ShadDialogRoute<T> extends PopupRoute<T> {
+  /// {@macro ShadDialogRoute}
+  ShadDialogRoute({
+    required this.pageBuilder,
+    this.barrierDismissible = true,
+    this.barrierLabel,
+    this.barrierColor = const Color(0x80000000),
+    this.transitionDuration = const Duration(milliseconds: 200),
+    this.reverseTransitionDuration = const Duration(milliseconds: 200),
+    this.transitionBuilder,
+    this.anchorPoint,
+    super.settings,
+  });
+
+  final WidgetBuilder pageBuilder;
+
+  @override
+  final bool barrierDismissible;
+
+  @override
+  final String? barrierLabel;
+
+  @override
+  final Color? barrierColor;
+
+  @override
+  final Duration transitionDuration;
+
+  @override
+  final Duration reverseTransitionDuration;
+
+  final RouteTransitionsBuilder? transitionBuilder;
+
+  final Offset? anchorPoint;
+
+  @override
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
+    return Builder(builder: pageBuilder);
+  }
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    if (transitionBuilder != null) {
+      return transitionBuilder!(context, animation, secondaryAnimation, child);
+    }
+    return FadeTransition(
+      opacity: animation,
+      child: child,
+    );
+  }
+}
 
 /// Displays a [ShadDialog] as a modal dialog with animation.
 ///
@@ -59,46 +129,59 @@ Future<T?> showShadDialog<T>({
     ShadDialogVariant.alert => theme.alertDialogTheme,
   };
 
-  final effectiveAnimateIn = animateIn ??
+  final effectiveAnimateIn =
+      animateIn ??
       effectiveDialogTheme.animateIn ??
       const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
       ];
 
-  final effectiveAnimateOut = animateOut ??
+  final effectiveAnimateOut =
+      animateOut ??
       effectiveDialogTheme.animateOut ??
       const [
         FadeEffect(begin: 1, end: 0),
         ScaleEffect(begin: Offset(1, 1), end: Offset(.95, .95)),
       ];
 
-  var maxDuration = Animate.defaultDuration;
-  for (final e in [...effectiveAnimateIn, ...effectiveAnimateOut]) {
-    final duration = e.duration ?? Duration.zero;
-    maxDuration = maxDuration > duration ? maxDuration : duration;
+  /// Returns the maximum duration(including delay) from
+  /// the list of [Effect]s.
+  Duration maxCompletionDuration(List<Effect<dynamic>> effects) {
+    if (effects.isEmpty) return Duration.zero;
+
+    return effects.fold<Duration>(
+      Duration.zero, // start with zero
+      (max, effect) {
+        final effectTotal =
+            (effect.delay ?? Duration.zero) +
+            (effect.duration ?? Animate.defaultDuration);
+        return effectTotal > max ? effectTotal : max;
+      },
+    );
   }
 
-  return showGeneralDialog(
-    context: context,
-    pageBuilder: (context, animation, secondaryAnimation) => builder(context),
-    barrierColor: barrierColor,
-    barrierDismissible: barrierDismissible,
-    barrierLabel: barrierLabel,
-    useRootNavigator: useRootNavigator,
-    routeSettings: routeSettings,
-    anchorPoint: anchorPoint,
-    transitionDuration: maxDuration,
-    transitionBuilder: (context, animation, secondaryAnimation, child) {
-      if (animation.status == AnimationStatus.completed) {
-        return child;
-      }
-      final animateIn = animation.status == AnimationStatus.forward;
-      return Animate(
-        effects: animateIn ? effectiveAnimateIn : effectiveAnimateOut,
-        child: child,
-      );
-    },
+  return Navigator.of(context, rootNavigator: useRootNavigator).push(
+    ShadDialogRoute(
+      pageBuilder: builder,
+      barrierColor: barrierColor,
+      barrierDismissible: barrierDismissible,
+      barrierLabel: barrierLabel,
+      anchorPoint: anchorPoint,
+      settings: routeSettings,
+      transitionDuration: maxCompletionDuration(effectiveAnimateIn),
+      reverseTransitionDuration: maxCompletionDuration(effectiveAnimateOut),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        if (animation.status == AnimationStatus.completed) {
+          return child;
+        }
+        final animateIn = animation.status == AnimationStatus.forward;
+        return ShadAnimate(
+          effects: animateIn ? effectiveAnimateIn : effectiveAnimateOut,
+          child: child,
+        );
+      },
+    ),
   );
 }
 
@@ -149,6 +232,10 @@ class ShadDialog extends StatelessWidget {
     this.scrollable,
     this.scrollPadding,
     this.actionsGap,
+    this.useSafeArea,
+    this.titlePinned,
+    this.descriptionPinned,
+    this.actionsPinned,
   }) : variant = ShadDialogVariant.primary;
 
   /// Creates an alert variant dialog widget, typically for warnings or
@@ -185,6 +272,10 @@ class ShadDialog extends StatelessWidget {
     this.scrollable,
     this.scrollPadding,
     this.actionsGap,
+    this.useSafeArea,
+    this.titlePinned,
+    this.descriptionPinned,
+    this.actionsPinned,
   }) : variant = ShadDialogVariant.alert;
 
   /// Creates a dialog widget with a specified [variant], offering full
@@ -222,6 +313,10 @@ class ShadDialog extends StatelessWidget {
     this.scrollable,
     this.scrollPadding,
     this.actionsGap,
+    this.useSafeArea,
+    this.titlePinned,
+    this.descriptionPinned,
+    this.actionsPinned,
   });
 
   /// {@template ShadDialog.title}
@@ -271,7 +366,7 @@ class ShadDialog extends StatelessWidget {
 
   /// {@template ShadDialog.closeIconPosition}
   /// The position of the close icon within the dialog.
-  /// Defaults to top-right (8, 8) if not specified.
+  /// Defaults to top-end (8, 8) if not specified.
   /// {@endtemplate}
   final ShadPosition? closeIconPosition;
 
@@ -297,7 +392,7 @@ class ShadDialog extends StatelessWidget {
   /// The padding inside the dialog, surrounding all content.
   /// Defaults to EdgeInsets.all(24) if not specified.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadDialog.gap}
   /// The gap between content elements (title, description, child, actions).
@@ -391,7 +486,7 @@ class ShadDialog extends StatelessWidget {
 
   /// {@template ShadDialog.crossAxisAlignment}
   /// The cross axis alignment of the dialog’s column content.
-  /// Defaults to [CrossAxisAlignment.stretch] if not specified.
+  /// Defaults to [CrossAxisAlignment.start] if not specified.
   /// {@endtemplate}
   final CrossAxisAlignment? crossAxisAlignment;
 
@@ -404,10 +499,11 @@ class ShadDialog extends StatelessWidget {
 
   /// {@template ShadDialog.scrollPadding}
   /// The padding applied when the dialog content is scrollable.
-
-  /// Defaults to the keyboard’s view insets if not specified.
+  ///
+  /// If not specified, no additional padding is applied to the scrollable
+  /// content.
   /// {@endtemplate}
-  final EdgeInsets? scrollPadding;
+  final EdgeInsetsGeometry? scrollPadding;
 
   /// {@template ShadDialog.actionsGap}
   /// The gap between action buttons.
@@ -415,6 +511,35 @@ class ShadDialog extends StatelessWidget {
   /// Defaults to 8 if not specified.
   /// {@endtemplate}
   final double? actionsGap;
+
+  /// {@template ShadDialog.useSafeArea}
+  /// Whether to wrap the dialog in a SafeArea widget to avoid system UI
+  /// intrusions.
+  ///
+  /// Defaults to true if not specified.
+  /// {@endtemplate}
+  final bool? useSafeArea;
+
+  /// {@template ShadDialog.titlePinned}
+  /// Whether the title is pinned when scrolling and [scrollable] is true.
+  ///
+  /// Defaults to false if not specified.
+  /// {@endtemplate}
+  final bool? titlePinned;
+
+  /// {@template ShadDialog.descriptionPinned}
+  /// Whether the description is pinned when scrolling and [scrollable] is true.
+  ///
+  /// Defaults to false if not specified.
+  /// {@endtemplate}
+  final bool? descriptionPinned;
+
+  /// {@template ShadDialog.actionsPinned}
+  /// Whether the actions are pinned when scrolling and [scrollable] is true.
+  ///
+  /// Defaults to true if not specified.
+  /// {@endtemplate}
+  final bool? actionsPinned;
 
   @override
   Widget build(BuildContext context) {
@@ -424,11 +549,13 @@ class ShadDialog extends StatelessWidget {
       ShadDialogVariant.alert => theme.alertDialogTheme,
     };
 
-    final effectiveBackgroundColor = backgroundColor ??
+    final effectiveBackgroundColor =
+        backgroundColor ??
         effectiveDialogTheme.backgroundColor ??
         theme.colorScheme.background;
 
-    final effectiveCloseIcon = closeIcon ??
+    final effectiveCloseIcon =
+        closeIcon ??
         (closeIconData == null && effectiveDialogTheme.closeIconData == null
             ? null
             : ShadIconButton.ghost(
@@ -441,37 +568,47 @@ class ShadDialog extends StatelessWidget {
                 width: 20,
                 height: 20,
                 padding: EdgeInsets.zero,
-                foregroundColor:
-                    theme.colorScheme.foreground.withValues(alpha: .5),
-                hoverBackgroundColor: Colors.transparent,
+                foregroundColor: theme.colorScheme.foreground.withValues(
+                  alpha: .5,
+                ),
+                hoverBackgroundColor: const Color(0x00000000),
                 hoverForegroundColor: theme.colorScheme.foreground,
                 pressedForegroundColor: theme.colorScheme.foreground,
                 onPressed: () => Navigator.of(context).pop(),
               ));
 
-    final effectiveCloseIconPosition = closeIconPosition ??
+    final effectiveCloseIconPosition =
+        closeIconPosition ??
         effectiveDialogTheme.closeIconPosition ??
-        const ShadPosition(top: 8, right: 8);
+        ShadPosition.directional(
+          top: 8,
+          end: 8,
+          textDirection: Directionality.of(context),
+        );
 
     final effectiveRadius =
         radius ?? effectiveDialogTheme.radius ?? theme.radius;
 
-    final effectiveExpandActionsWhenTiny = expandActionsWhenTiny ??
+    final effectiveExpandActionsWhenTiny =
+        expandActionsWhenTiny ??
         effectiveDialogTheme.expandActionsWhenTiny ??
         true;
 
-    final effectiveConstraints = constraints ??
+    final effectiveConstraints =
+        constraints ??
         effectiveDialogTheme.constraints ??
         const BoxConstraints(maxWidth: 512);
 
-    final effectiveBorder = border ??
+    final effectiveBorder =
+        border ??
         effectiveDialogTheme.border ??
         Border.all(color: theme.colorScheme.border);
 
     final effectiveShadows =
         shadows ?? effectiveDialogTheme.shadows ?? ShadShadows.lg;
 
-    final effectiveRemoveBorderRadiusWhenTiny = removeBorderRadiusWhenTiny ??
+    final effectiveRemoveBorderRadiusWhenTiny =
+        removeBorderRadiusWhenTiny ??
         effectiveDialogTheme.removeBorderRadiusWhenTiny ??
         true;
     final effectivePadding =
@@ -480,89 +617,212 @@ class ShadDialog extends StatelessWidget {
     final effectiveGap = gap ?? effectiveDialogTheme.gap ?? 8;
 
     final effectiveTitleStyle =
-        titleStyle ?? effectiveDialogTheme.titleStyle ?? theme.textTheme.large;
+        (titleStyle ?? effectiveDialogTheme.titleStyle ?? theme.textTheme.large)
+            .fallback(color: theme.colorScheme.foreground);
 
-    final effectiveDescriptionStyle = descriptionStyle ??
-        effectiveDialogTheme.descriptionStyle ??
-        theme.textTheme.muted;
+    final effectiveDescriptionStyle =
+        (descriptionStyle ??
+                effectiveDialogTheme.descriptionStyle ??
+                theme.textTheme.muted)
+            .fallback(
+              color: theme.colorScheme.mutedForeground,
+            );
 
     final effectiveAlignment =
         alignment ?? effectiveDialogTheme.alignment ?? Alignment.center;
 
-    final effectiveMainAxisAlignment = mainAxisAlignment ??
+    final effectiveMainAxisAlignment =
+        mainAxisAlignment ??
         effectiveDialogTheme.mainAxisAlignment ??
         MainAxisAlignment.start;
 
-    final effectiveCrossAxisAlignment = crossAxisAlignment ??
+    final effectiveCrossAxisAlignment =
+        crossAxisAlignment ??
         effectiveDialogTheme.crossAxisAlignment ??
-        CrossAxisAlignment.stretch;
+        CrossAxisAlignment.start;
 
     final effectiveScrollable =
         scrollable ?? effectiveDialogTheme.scrollable ?? true;
 
-    final effectiveScrollPadding = scrollPadding ??
-        effectiveDialogTheme.scrollPadding ??
-        MediaQuery.viewInsetsOf(context);
+    final effectiveScrollPadding =
+        scrollPadding ?? effectiveDialogTheme.scrollPadding;
 
     final effectiveActionsGap =
         actionsGap ?? effectiveDialogTheme.actionsGap ?? 8;
 
-    Widget dialog = ConstrainedBox(
+    final effectiveUseSafeArea =
+        useSafeArea ?? effectiveDialogTheme.useSafeArea ?? true;
+
+    final effectiveTitlePinned =
+        titlePinned ?? effectiveDialogTheme.titlePinned ?? false;
+
+    final effectiveDescriptionPinned =
+        descriptionPinned ?? effectiveDialogTheme.descriptionPinned ?? false;
+
+    final effectiveActionsPinned =
+        actionsPinned ?? effectiveDialogTheme.actionsPinned ?? true;
+
+    final dialog = ConstrainedBox(
       constraints: effectiveConstraints,
       child: ShadResponsiveBuilder(
         builder: (context, breakpoint) {
           final sm = breakpoint >= theme.breakpoints.sm;
 
-          final effectiveActionsAxis = actionsAxis ??
+          final effectiveActionsAxis =
+              actionsAxis ??
               effectiveDialogTheme.actionsAxis ??
               (sm ? Axis.horizontal : Axis.vertical);
 
-          final effectiveActionsMainAxisSize = actionsMainAxisSize ??
+          final effectiveActionsMainAxisSize =
+              actionsMainAxisSize ??
               effectiveDialogTheme.actionsMainAxisSize ??
-              MainAxisSize.max;
+              MainAxisSize.min;
 
-          final effectiveActionsMainAxisAlignment = actionsMainAxisAlignment ??
+          final effectiveActionsMainAxisAlignment =
+              actionsMainAxisAlignment ??
               effectiveDialogTheme.actionsMainAxisAlignment ??
               MainAxisAlignment.end;
 
-          final effectiveActionsVerticalDirection = actionsVerticalDirection ??
+          final effectiveActionsVerticalDirection =
+              actionsVerticalDirection ??
               effectiveDialogTheme.actionsVerticalDirection ??
               (sm ? VerticalDirection.down : VerticalDirection.up);
 
-          final effectiveTitleTextAlign = titleTextAlign ??
+          final effectiveTitleTextAlign =
+              titleTextAlign ??
               effectiveDialogTheme.titleTextAlign ??
               (sm ? TextAlign.start : TextAlign.center);
 
-          final effectiveDescriptionTextAlign = descriptionTextAlign ??
+          final effectiveDescriptionTextAlign =
+              descriptionTextAlign ??
               effectiveDialogTheme.descriptionTextAlign ??
               (sm ? TextAlign.start : TextAlign.center);
 
-          Widget effectiveActions = Flex(
-            direction: effectiveActionsAxis,
-            mainAxisSize: effectiveActionsMainAxisSize,
-            mainAxisAlignment: effectiveActionsMainAxisAlignment,
-            verticalDirection: effectiveActionsVerticalDirection,
-            spacing: effectiveActionsGap,
-            children: actions,
-          );
+          Widget? effectiveActions = actions.isEmpty
+              ? null
+              : BoxyFlexible.align(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  child: Flex(
+                    direction: effectiveActionsAxis,
+                    mainAxisSize: effectiveActionsMainAxisSize,
+                    mainAxisAlignment: effectiveActionsMainAxisAlignment,
+                    verticalDirection: effectiveActionsVerticalDirection,
+                    spacing: effectiveActionsGap,
+                    children: actions,
+                  ),
+                );
 
-          if (!sm && effectiveExpandActionsWhenTiny) {
+          if (!sm &&
+              effectiveExpandActionsWhenTiny &&
+              effectiveActions != null) {
             effectiveActions = ShadTheme(
               data: theme.copyWith(
-                primaryButtonTheme:
-                    theme.primaryButtonTheme.copyWith(width: double.infinity),
-                secondaryButtonTheme:
-                    theme.secondaryButtonTheme.copyWith(width: double.infinity),
-                outlineButtonTheme:
-                    theme.outlineButtonTheme.copyWith(width: double.infinity),
-                ghostButtonTheme:
-                    theme.ghostButtonTheme.copyWith(width: double.infinity),
-                destructiveButtonTheme: theme.destructiveButtonTheme
-                    .copyWith(width: double.infinity),
+                primaryButtonTheme: theme.primaryButtonTheme.copyWith(
+                  width: double.infinity,
+                ),
+                secondaryButtonTheme: theme.secondaryButtonTheme.copyWith(
+                  width: double.infinity,
+                ),
+                outlineButtonTheme: theme.outlineButtonTheme.copyWith(
+                  width: double.infinity,
+                ),
+                ghostButtonTheme: theme.ghostButtonTheme.copyWith(
+                  width: double.infinity,
+                ),
+                destructiveButtonTheme: theme.destructiveButtonTheme.copyWith(
+                  width: double.infinity,
+                ),
               ),
               child: effectiveActions,
             );
           }
+
+          final effectiveTitle = title != null
+              ? DefaultTextStyle(
+                  style: effectiveTitleStyle,
+                  textAlign: effectiveTitleTextAlign,
+                  child: title!,
+                )
+              : null;
+
+          final effectiveDescription = description != null
+              ? DefaultTextStyle(
+                  style: effectiveDescriptionStyle,
+                  textAlign: effectiveDescriptionTextAlign,
+                  child: description!,
+                )
+              : null;
+
+          final effectiveChild = child != null
+              ? DefaultTextStyle(
+                  style: effectiveDescriptionStyle,
+                  child: child!,
+                )
+              : null;
+
+          Widget widget = BoxyColumn(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: effectiveMainAxisAlignment,
+            crossAxisAlignment: effectiveCrossAxisAlignment,
+            children: [
+              // Only show title if not scrollable or scrollable but not pinned
+              if (effectiveTitle != null &&
+                  (!effectiveScrollable || !effectiveTitlePinned))
+                effectiveTitle,
+              // Only show description if not scrollable or scrollable but not
+              // pinned
+              if (effectiveDescription != null &&
+                  (!effectiveScrollable || !effectiveDescriptionPinned))
+                effectiveDescription,
+              if (effectiveChild != null) Flexible(child: effectiveChild),
+              // Only show actions if not scrollable or scrollable but not
+              // pinned
+              if (effectiveActions != null &&
+                  (!effectiveScrollable || !effectiveActionsPinned))
+                effectiveActions,
+            ].separatedBy(SizedBox(height: effectiveGap)),
+          );
+
+          if (effectiveScrollable) {
+            widget = BoxyColumn(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: effectiveMainAxisAlignment,
+              crossAxisAlignment: effectiveCrossAxisAlignment,
+              children: [
+                // Pinned title
+                if (effectiveTitle != null && effectiveTitlePinned)
+                  effectiveTitle,
+                // Pinned description
+                if (effectiveDescription != null && effectiveDescriptionPinned)
+                  effectiveDescription,
+                Flexible(
+                  child: SingleChildScrollView(
+                    padding: effectiveScrollPadding,
+                    child: widget,
+                  ),
+                ),
+                // Pinned actions
+                if (effectiveActions != null && effectiveActionsPinned)
+                  effectiveActions,
+              ].separatedBy(SizedBox(height: effectiveGap)),
+            );
+          }
+
+          widget = Stack(
+            children: [
+              Padding(
+                padding: effectivePadding,
+                child: widget,
+              ),
+              if (effectiveCloseIcon != null)
+                effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),
+            ],
+          );
+
+          if (effectiveUseSafeArea) {
+            widget = SafeArea(child: widget);
+          }
+
           return DecoratedBox(
             decoration: BoxDecoration(
               color: effectiveBackgroundColor,
@@ -572,57 +832,21 @@ class ShadDialog extends StatelessWidget {
               border: effectiveBorder,
               boxShadow: effectiveShadows,
             ),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: effectivePadding,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: effectiveMainAxisAlignment,
-                    crossAxisAlignment: effectiveCrossAxisAlignment,
-                    children: [
-                      if (title != null)
-                        DefaultTextStyle(
-                          style: effectiveTitleStyle,
-                          textAlign: effectiveTitleTextAlign,
-                          child: title!,
-                        ),
-                      if (description != null)
-                        DefaultTextStyle(
-                          style: effectiveDescriptionStyle,
-                          textAlign: effectiveDescriptionTextAlign,
-                          child: description!,
-                        ),
-                      if (child != null)
-                        Flexible(
-                          child: DefaultTextStyle(
-                            style: effectiveDescriptionStyle,
-                            child: child!,
-                          ),
-                        ),
-                      if (actions.isNotEmpty) effectiveActions,
-                    ].separatedBy(SizedBox(height: effectiveGap)),
-                  ),
-                ),
-                if (effectiveCloseIcon != null)
-                  effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),
-              ],
-            ),
+            child: widget,
           );
         },
       ),
     );
 
-    if (effectiveScrollable) {
-      dialog = SingleChildScrollView(
-        padding: effectiveScrollPadding,
-        child: dialog,
-      );
-    }
+    // Get the current view padding
+    final viewPadding = MediaQuery.viewInsetsOf(context);
 
     return Align(
       alignment: effectiveAlignment,
-      child: dialog,
+      child: Padding(
+        padding: viewPadding,
+        child: dialog,
+      ),
     );
   }
 }

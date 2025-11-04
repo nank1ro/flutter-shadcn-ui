@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -12,6 +12,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
     super.key,
     super.id,
     super.onSaved,
+    super.forceErrorText,
     String? Function(String)? validator,
     String? initialValue,
     super.enabled,
@@ -35,14 +36,17 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
     /// {@macro ShadTextarea.placeholderStyle}
     TextStyle? placeholderStyle,
 
+    /// {@macro ShadTextarea.alignment}
+    AlignmentGeometry? alignment,
+
     /// {@macro ShadTextarea.placeholderAlignment}
-    Alignment? placeholderAlignment,
+    AlignmentGeometry? placeholderAlignment,
 
     /// {@macro ShadTextarea.padding}
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
 
     /// {@macro ShadTextarea.inputPadding}
-    EdgeInsets? inputPadding,
+    EdgeInsetsGeometry? inputPadding,
 
     /// {@macro ShadTextarea.gap}
     double? gap,
@@ -88,7 +92,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
         TextMagnifierConfiguration.disabled,
 
     /// {@macro ShadTextarea.cursorWidth}
-    double cursorWidth = 2.0,
+    double? cursorWidth,
 
     /// {@macro ShadTextarea.cursorHeight}
     double? cursorHeight,
@@ -182,79 +186,106 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadTextarea.groupId}
     Object? groupId,
+
+    /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+    WidgetBuilder? keyboardToolbarBuilder,
+
+    /// {@macro ShadInput.leading}
+    Widget? leading,
+
+    /// {@macro ShadInput.trailing}
+    Widget? trailing,
+
+    /// {@macro ShadInput.top}
+    Widget? top,
+
+    /// {@macro ShadInput.bottom}
+    Widget? bottom,
+
+    /// {@macro ShadInput.onLineCountChange}
+    ValueChanged<int>? onLineCountChange,
+
+    /// {@macro ShadInput.verticalGap}
+    double? verticalGap,
   }) : super(
-          initialValue: controller != null ? controller.text : initialValue,
-          validator: validator == null ? null : (v) => validator(v ?? ''),
-          onChanged: onChanged == null ? null : (v) => onChanged(v ?? ''),
-          decorationBuilder: (context) =>
-              (ShadTheme.of(context).inputTheme.decoration ??
-                      const ShadDecoration())
-                  .mergeWith(decoration),
-          builder: (field) {
-            final state = field as _ShadFormBuilderTextareaState;
-            return ShadTextarea(
-              key: state.textareaKey,
-              controller: state.controller,
-              restorationId: restorationId,
-              enabled: state.enabled,
-              focusNode: state.focusNode,
-              readOnly: readOnly,
-              decoration: state.decoration,
-              initialValue: initialValue,
-              style: style,
-              cursorColor: cursorColor,
-              selectionColor: selectionColor,
-              textAlign: textAlign,
-              textDirection: textDirection,
-              keyboardAppearance: keyboardAppearance,
-              autofocus: autofocus,
-              showCursor: showCursor,
-              placeholder: placeholder,
-              placeholderStyle: placeholderStyle,
-              placeholderAlignment: placeholderAlignment,
-              padding: padding,
-              inputPadding: inputPadding,
-              gap: gap,
-              constraints: constraints,
-              mainAxisAlignment: mainAxisAlignment,
-              crossAxisAlignment: crossAxisAlignment,
-              onChanged: onChanged,
-              onEditingComplete: onEditingComplete,
-              onSubmitted: onSubmitted,
-              onAppPrivateCommand: onAppPrivateCommand,
-              scrollController: scrollController,
-              scrollPhysics: scrollPhysics,
-              mouseCursor: mouseCursor,
-              magnifierConfiguration: magnifierConfiguration,
-              cursorWidth: cursorWidth,
-              cursorHeight: cursorHeight,
-              cursorRadius: cursorRadius,
-              cursorOpacityAnimates: cursorOpacityAnimates,
-              scribbleEnabled: scribbleEnabled,
-              stylusHandwritingEnabled: stylusHandwritingEnabled,
-              enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
-              contextMenuBuilder: contextMenuBuilder,
-              spellCheckConfiguration: spellCheckConfiguration,
-              contentInsertionConfiguration: contentInsertionConfiguration,
-              selectionControls: selectionControls,
-              enableInteractiveSelection: enableInteractiveSelection,
-              selectionHeightStyle: selectionHeightStyle,
-              selectionWidthStyle: selectionWidthStyle,
-              clipBehavior: clipBehavior,
-              dragStartBehavior: dragStartBehavior,
-              onPressed: onPressed,
-              onPressedAlwaysCalled: onPressedAlwaysCalled,
-              onPressedOutside: onPressedOutside,
-              minHeight: minHeight,
-              maxHeight: maxHeight,
-              resizable: resizable,
-              onHeightChanged: onHeightChanged,
-              resizeHandleBuilder: resizeHandleBuilder,
-              strutStyle: strutStyle,
-              groupId: groupId,
-            );
-          },
-        );
+         initialValue: controller != null ? controller.text : initialValue,
+         validator: validator == null ? null : (v) => validator(v ?? ''),
+         onChanged: onChanged == null ? null : (v) => onChanged(v ?? ''),
+         decorationBuilder: (context) =>
+             (ShadTheme.of(context).inputTheme.decoration ??
+                     const ShadDecoration())
+                 .merge(decoration),
+         builder: (field) {
+           final state = field as _ShadFormBuilderTextareaState;
+           return ShadTextarea(
+             key: state.textareaKey,
+             controller: state.controller,
+             restorationId: restorationId,
+             enabled: state.enabled,
+             focusNode: state.focusNode,
+             readOnly: readOnly,
+             decoration: state.decoration,
+             style: style,
+             cursorColor: cursorColor,
+             selectionColor: selectionColor,
+             textAlign: textAlign,
+             textDirection: textDirection,
+             keyboardAppearance: keyboardAppearance,
+             autofocus: autofocus,
+             showCursor: showCursor,
+             placeholder: placeholder,
+             placeholderStyle: placeholderStyle,
+             placeholderAlignment: placeholderAlignment,
+             alignment: alignment,
+             padding: padding,
+             inputPadding: inputPadding,
+             gap: gap,
+             constraints: constraints,
+             mainAxisAlignment: mainAxisAlignment,
+             crossAxisAlignment: crossAxisAlignment,
+             onEditingComplete: onEditingComplete,
+             onSubmitted: onSubmitted,
+             onAppPrivateCommand: onAppPrivateCommand,
+             scrollController: scrollController,
+             scrollPhysics: scrollPhysics,
+             mouseCursor: mouseCursor,
+             magnifierConfiguration: magnifierConfiguration,
+             cursorWidth: cursorWidth,
+             cursorHeight: cursorHeight,
+             cursorRadius: cursorRadius,
+             cursorOpacityAnimates: cursorOpacityAnimates,
+             scribbleEnabled: scribbleEnabled,
+             stylusHandwritingEnabled: stylusHandwritingEnabled,
+             enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
+             contextMenuBuilder: contextMenuBuilder,
+             spellCheckConfiguration: spellCheckConfiguration,
+             contentInsertionConfiguration: contentInsertionConfiguration,
+             selectionControls: selectionControls,
+             enableInteractiveSelection: enableInteractiveSelection,
+             selectionHeightStyle: selectionHeightStyle,
+             selectionWidthStyle: selectionWidthStyle,
+             clipBehavior: clipBehavior,
+             dragStartBehavior: dragStartBehavior,
+             onPressed: onPressed,
+             onPressedAlwaysCalled: onPressedAlwaysCalled,
+             onPressedOutside: onPressedOutside,
+             minHeight: minHeight,
+             maxHeight: maxHeight,
+             resizable: resizable,
+             onHeightChanged: onHeightChanged,
+             resizeHandleBuilder: resizeHandleBuilder,
+             strutStyle: strutStyle,
+             groupId: groupId,
+             keyboardToolbarBuilder: keyboardToolbarBuilder,
+             top: top,
+             bottom: bottom,
+             leading: leading,
+             trailing: trailing,
+             onLineCountChange: onLineCountChange,
+             verticalGap: verticalGap,
+           );
+         },
+       );
 
   final TextEditingController? controller;
 

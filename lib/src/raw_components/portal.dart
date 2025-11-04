@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// The position of the [ShadPortal] in the global coordinate system.
 sealed class ShadAnchorBase {
@@ -140,6 +140,8 @@ class _ShadPortalState extends State<ShadPortal> {
   final overlayPortalController = OverlayPortalController();
   final overlayKey = GlobalKey();
 
+  Offset? _calculatedTarget;
+
   @override
   void initState() {
     super.initState();
@@ -161,8 +163,16 @@ class _ShadPortalState extends State<ShadPortal> {
   void updateVisibility() {
     final shouldShow = widget.visible;
 
-    WidgetsBinding.instance.addPostFrameCallback((timer) {
-      shouldShow ? show() : hide();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (shouldShow) {
+        _calculatePosition();
+        show();
+      } else {
+        if (_calculatedTarget != null && mounted) {
+          setState(() => _calculatedTarget = null);
+        }
+        hide();
+      }
     });
   }
 
@@ -178,20 +188,32 @@ class _ShadPortalState extends State<ShadPortal> {
     }
   }
 
-  Widget buildAutoPosition(
-    BuildContext context,
-    ShadAnchorAuto anchor,
-  ) {
-    if (anchor.followTargetOnResize) {
-      MediaQuery.sizeOf(context);
-    }
+  void _calculatePosition() {
+    if (!mounted || widget.anchor is! ShadAnchorAuto) return;
+
+    final anchor = widget.anchor as ShadAnchorAuto;
+
+    final box = context.findRenderObject();
     final overlayState = Overlay.of(context, debugRequiredFor: widget);
-    final box = this.context.findRenderObject()! as RenderBox;
-    final overlayAncestor =
-        overlayState.context.findRenderObject()! as RenderBox;
+    final overlayAncestor = overlayState.context.findRenderObject();
+
+    final ready =
+        box is RenderBox &&
+        box.attached &&
+        box.hasSize &&
+        overlayAncestor is RenderBox &&
+        overlayAncestor.attached &&
+        overlayAncestor.hasSize;
+
+    if (!ready) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _calculatePosition();
+      });
+      return;
+    }
 
     final overlay = overlayKey.currentContext?.findRenderObject() as RenderBox?;
-    final overlaySize = overlay?.size ?? Size.zero;
+    final overlaySize = (true == overlay?.hasSize) ? overlay!.size : Size.zero;
 
     final targetOffset = switch (anchor.targetAnchor) {
       Alignment.topLeft => box.size.topLeft(Offset.zero),
@@ -204,25 +226,29 @@ class _ShadPortalState extends State<ShadPortal> {
       Alignment.bottomCenter => box.size.bottomCenter(Offset.zero),
       Alignment.bottomRight => box.size.bottomRight(Offset.zero),
       final alignment => throw Exception(
-          """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
-        ),
+        """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
+      ),
     };
 
     var followerOffset = switch (anchor.followerAnchor) {
       Alignment.topLeft => Offset(-overlaySize.width / 2, -overlaySize.height),
       Alignment.topCenter => Offset(0, -overlaySize.height),
       Alignment.topRight => Offset(overlaySize.width / 2, -overlaySize.height),
-      Alignment.centerLeft =>
-        Offset(-overlaySize.width / 2, -overlaySize.height / 2),
+      Alignment.centerLeft => Offset(
+        -overlaySize.width / 2,
+        -overlaySize.height / 2,
+      ),
       Alignment.center => Offset(0, -overlaySize.height / 2),
-      Alignment.centerRight =>
-        Offset(overlaySize.width / 2, -overlaySize.height / 2),
+      Alignment.centerRight => Offset(
+        overlaySize.width / 2,
+        -overlaySize.height / 2,
+      ),
       Alignment.bottomLeft => Offset(-overlaySize.width / 2, 0),
       Alignment.bottomCenter => Offset.zero,
       Alignment.bottomRight => Offset(overlaySize.width / 2, 0),
       final alignment => throw Exception(
-          """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
-        ),
+        """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
+      ),
     };
 
     followerOffset += targetOffset + anchor.offset;
@@ -232,11 +258,42 @@ class _ShadPortalState extends State<ShadPortal> {
       ancestor: overlayAncestor,
     );
 
-    if (overlay == null) {
+    if (target != _calculatedTarget) {
+      if (mounted) {
+        setState(() {
+          _calculatedTarget = target;
+        });
+      }
+    } else if (overlay == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {});
+        _calculatePosition();
       });
     }
+  }
+
+  Widget buildAutoPosition(
+    BuildContext context,
+    ShadAnchorAuto anchor,
+  ) {
+    if (anchor.followTargetOnResize) {
+      MediaQuery.sizeOf(context);
+    }
+
+    if (_calculatedTarget == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _calculatePosition());
+      return const SizedBox.shrink();
+    }
+
+    final target = _calculatedTarget!;
+
+    final overlay = overlayKey.currentContext?.findRenderObject() as RenderBox?;
+
+    if (overlay == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _calculatePosition();
+      });
+    }
+
     return CustomSingleChildLayout(
       delegate: ShadPositionDelegate(
         target: target,
@@ -292,19 +349,17 @@ class _ShadPortalState extends State<ShadPortal> {
       child: OverlayPortal(
         controller: overlayPortalController,
         overlayChildBuilder: (context) {
-          return Material(
-            type: MaterialType.transparency,
-            child: Center(
-              widthFactor: 1,
-              heightFactor: 1,
-              child: switch (widget.anchor) {
-                final ShadAnchorAuto anchor =>
-                  buildAutoPosition(context, anchor),
-                final ShadAnchor anchor => buildManualPosition(context, anchor),
-                final ShadGlobalAnchor anchor =>
-                  buildGlobalPosition(context, anchor),
-              },
-            ),
+          return Center(
+            widthFactor: 1,
+            heightFactor: 1,
+            child: switch (widget.anchor) {
+              final ShadAnchorAuto anchor => buildAutoPosition(context, anchor),
+              final ShadAnchor anchor => buildManualPosition(context, anchor),
+              final ShadGlobalAnchor anchor => buildGlobalPosition(
+                context,
+                anchor,
+              ),
+            },
           );
         },
         child: widget.child,

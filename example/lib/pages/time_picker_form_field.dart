@@ -19,6 +19,9 @@ class _TimePickerFormFieldPageState extends State<TimePickerFormFieldPage> {
   var autovalidateMode = ShadAutovalidateMode.alwaysAfterFirstValidation;
   Map<Object, dynamic> formValue = {};
   final formKey = GlobalKey<ShadFormState>();
+  bool showHours = true;
+  bool showMinutes = true;
+  bool showSeconds = true;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +48,24 @@ class _TimePickerFormFieldPageState extends State<TimePickerFormFieldPage> {
               }
             },
           ),
+          MyBoolProperty(
+            label: ' Show Hours',
+            value: showHours,
+            enabled: showMinutes || showSeconds,
+            onChanged: (v) => setState(() => showHours = v),
+          ),
+          MyBoolProperty(
+            label: ' Show Minutes',
+            value: showMinutes,
+            enabled: showHours || showSeconds,
+            onChanged: (v) => setState(() => showMinutes = v),
+          ),
+          MyBoolProperty(
+            label: ' Show Seconds',
+            enabled: showHours || showMinutes,
+            value: showSeconds,
+            onChanged: (v) => setState(() => showSeconds = v),
+          ),
         ],
         children: [
           ConstrainedBox(
@@ -54,10 +75,14 @@ class _TimePickerFormFieldPageState extends State<TimePickerFormFieldPage> {
               children: [
                 ShadTimePickerFormField(
                   id: 'time',
+                  showHours: showHours,
+                  showMinutes: showMinutes,
+                  showSeconds: showSeconds,
                   label: const Text('Pick a time'),
                   onChanged: print,
-                  description:
-                      const Text('The time of the day you want to pick'),
+                  description: const Text(
+                    'The time of the day you want to pick',
+                  ),
                   validator: (v) => v == null ? 'A time is required' : null,
                 ),
                 const SizedBox(height: 16),

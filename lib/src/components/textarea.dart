@@ -1,8 +1,10 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/components/input.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
 
 /// A customizable multiline textarea widget with
 /// adjustable height and optional resizing grip.
@@ -40,7 +42,7 @@ class ShadTextarea extends StatefulWidget {
     this.showCursor,
     this.autofocus = false,
     this.enabled = true,
-    this.cursorWidth = 2.0,
+    this.cursorWidth,
     this.cursorHeight,
     this.cursorRadius,
     this.cursorOpacityAnimates,
@@ -70,6 +72,7 @@ class ShadTextarea extends StatefulWidget {
     this.padding,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.alignment,
     this.placeholderStyle,
     this.placeholderAlignment,
     this.inputPadding,
@@ -85,11 +88,18 @@ class ShadTextarea extends StatefulWidget {
     this.onHeightChanged,
     this.resizeHandleBuilder,
     this.scrollbarPadding,
-  })  : enableInteractiveSelection = enableInteractiveSelection ?? !readOnly,
-        assert(
-          initialValue == null || controller == null,
-          'Either initialValue or controller must be specified',
-        );
+    this.keyboardToolbarBuilder,
+    this.top,
+    this.bottom,
+    this.leading,
+    this.trailing,
+    this.onLineCountChange,
+    this.verticalGap,
+  }) : enableInteractiveSelection = enableInteractiveSelection ?? !readOnly,
+       assert(
+         initialValue == null || controller == null,
+         'Either initialValue or controller must be specified',
+       );
 
   /// {@template ShadTextarea.initialValue}
   /// The initial text value of the textarea.
@@ -122,9 +132,17 @@ class ShadTextarea extends StatefulWidget {
 
   /// {@template ShadTextarea.placeholderAlignment}
   /// Alignment for the placeholder inside the field.
+  ///
+  /// Defaults to direction-aware top start:
+  /// [Alignment.topLeft] in LTR, [Alignment.topRight] in RTL.
+  /// {@endtemplate}
+  final AlignmentGeometry? placeholderAlignment;
+
+  /// {@template ShadTextarea.alignment}
+  /// Alignment for the input field.
   /// Defaults to [Alignment.topLeft].
   /// {@endtemplate}
-  final Alignment? placeholderAlignment;
+  final AlignmentGeometry? alignment;
 
   /// {@template ShadTextarea.decoration}
   /// Optional visual decoration for the textarea.
@@ -206,7 +224,7 @@ class ShadTextarea extends StatefulWidget {
   /// {@template ShadTextarea.cursorWidth}
   /// Width of the cursor.
   /// {@endtemplate}
-  final double cursorWidth;
+  final double? cursorWidth;
 
   /// {@template ShadTextarea.cursorHeight}
   /// Height of the cursor.
@@ -343,12 +361,12 @@ class ShadTextarea extends StatefulWidget {
   /// Padding around the field.
   /// This is outer padding including borders and input.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTextarea.inputPadding}
   /// Inner padding between text and decoration inside the textarea.
   /// {@endtemplate}
-  final EdgeInsets? inputPadding;
+  final EdgeInsetsGeometry? inputPadding;
 
   /// {@template ShadTextarea.gap}
   /// Horizontal spacing between text and any leading/trailing elements.
@@ -405,7 +423,28 @@ class ShadTextarea extends StatefulWidget {
   ///
   /// Defaults to `EdgeInsets.only(bottom: 10)`.
   /// {@endtemplate}
-  final EdgeInsets? scrollbarPadding;
+  final EdgeInsetsGeometry? scrollbarPadding;
+
+  /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+  final WidgetBuilder? keyboardToolbarBuilder;
+
+  /// {@macro ShadInput.leading}
+  final Widget? leading;
+
+  /// {@macro ShadInput.trailing}
+  final Widget? trailing;
+
+  /// {@macro ShadInput.top}
+  final Widget? top;
+
+  /// {@macro ShadInput.bottom}
+  final Widget? bottom;
+
+  /// {@macro ShadInput.verticalGap}
+  final double? verticalGap;
+
+  /// {@macro ShadInput.onLineCountChange}
+  final ValueChanged<int>? onLineCountChange;
 
   @override
   State<ShadTextarea> createState() => _ShadTextareaState();
@@ -448,8 +487,10 @@ class _ShadTextareaState extends State<ShadTextarea> {
   /// and clamps the result
   void _handleResize(DragUpdateDetails details) {
     focusNode.requestFocus();
-    final newHeight = (_textareaHeight + details.delta.dy)
-        .clamp(widget.minHeight, widget.maxHeight);
+    final newHeight = (_textareaHeight + details.delta.dy).clamp(
+      widget.minHeight,
+      widget.maxHeight,
+    );
     if (newHeight != _textareaHeight) {
       setState(() => _textareaHeight = newHeight);
       widget.onHeightChanged?.call(newHeight);
@@ -485,10 +526,12 @@ class _ShadTextareaState extends State<ShadTextarea> {
     final lineCount = _calculateLineCount(effectiveTextStyle);
 
     final effectiveDecoration =
-        (theme.textareaTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+        (theme.textareaTheme.decoration ?? const ShadDecoration()).merge(
+          widget.decoration,
+        );
 
-    final effectivePadding = widget.padding ??
+    final effectivePadding =
+        widget.padding ??
         theme.inputTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
@@ -499,15 +542,23 @@ class _ShadTextareaState extends State<ShadTextarea> {
         .merge(theme.inputTheme.placeholderStyle)
         .merge(widget.placeholderStyle);
 
-    final effectivePlaceholderAlignment = widget.placeholderAlignment ??
+    final effectivePlaceholderAlignment =
+        widget.placeholderAlignment ??
         theme.inputTheme.placeholderAlignment ??
-        Alignment.topLeft;
+        AlignmentDirectional.topStart;
 
-    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
+    final effectiveAlignment =
+        widget.alignment ??
+        theme.inputTheme.alignment ??
+        AlignmentDirectional.topStart;
+
+    final effectiveMainAxisAlignment =
+        widget.mainAxisAlignment ??
         theme.inputTheme.mainAxisAlignment ??
         MainAxisAlignment.start;
 
-    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+    final effectiveCrossAxisAlignment =
+        widget.crossAxisAlignment ??
         theme.inputTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
     final effectiveMouseCursor =
@@ -524,83 +575,92 @@ class _ShadTextareaState extends State<ShadTextarea> {
     );
     final maxFontSizeScaled = textScaler.scale(maxFontSize);
 
-    final effectiveConstraints = widget.constraints ??
+    final effectiveConstraints =
+        widget.constraints ??
         BoxConstraints(
           minHeight: maxFontSizeScaled,
         );
 
-    final effectiveScrollbarPadding = widget.scrollbarPadding ??
+    final effectiveScrollbarPadding =
+        widget.scrollbarPadding ??
         theme.textareaTheme.scrollbarPadding ??
         const EdgeInsets.only(bottom: 10);
 
-    final input = SizedBox(
-      height: _textareaHeight,
-      child: ShadInput(
-        initialValue: widget.initialValue,
-        controller: widget.controller,
-        focusNode: focusNode,
-        placeholder: widget.placeholder,
-        placeholderAlignment: effectivePlaceholderAlignment,
-        maxLines: lineCount,
-        minLines: lineCount,
-        keyboardType: TextInputType.multiline,
-        readOnly: widget.readOnly,
-        enabled: widget.enabled,
-        autofocus: widget.autofocus,
-        onChanged: widget.onChanged,
-        onEditingComplete: widget.onEditingComplete,
-        onSubmitted: widget.onSubmitted,
-        onAppPrivateCommand: widget.onAppPrivateCommand,
-        style: effectiveTextStyle,
-        strutStyle: widget.strutStyle,
-        textAlign: widget.textAlign,
-        textDirection: widget.textDirection,
-        showCursor: widget.showCursor,
-        cursorWidth: widget.cursorWidth,
-        cursorHeight: widget.cursorHeight,
-        cursorRadius: widget.cursorRadius,
-        cursorOpacityAnimates: widget.cursorOpacityAnimates,
-        cursorColor: widget.cursorColor,
-        selectionHeightStyle: widget.selectionHeightStyle,
-        selectionWidthStyle: widget.selectionWidthStyle,
-        keyboardAppearance: widget.keyboardAppearance,
-        scrollPadding: widget.scrollPadding,
-        dragStartBehavior: widget.dragStartBehavior,
-        enableInteractiveSelection: widget.enableInteractiveSelection,
-        selectionControls: widget.selectionControls,
-        onPressed: widget.onPressed,
-        onPressedAlwaysCalled: widget.onPressedAlwaysCalled,
-        onPressedOutside: widget.onPressedOutside,
-        mouseCursor: effectiveMouseCursor,
-        scrollController: widget.scrollController,
-        scrollPhysics: widget.scrollPhysics,
-        contentInsertionConfiguration: widget.contentInsertionConfiguration,
-        clipBehavior: widget.clipBehavior,
-        restorationId: widget.restorationId,
-        scribbleEnabled: widget.scribbleEnabled,
-        stylusHandwritingEnabled: widget.stylusHandwritingEnabled,
-        enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
-        contextMenuBuilder: widget.contextMenuBuilder,
-        spellCheckConfiguration: widget.spellCheckConfiguration,
-        magnifierConfiguration: widget.magnifierConfiguration,
-        selectionColor: widget.selectionColor,
-        padding: effectivePadding,
-        decoration: effectiveDecoration,
-        mainAxisAlignment: effectiveMainAxisAlignment,
-        crossAxisAlignment: effectiveCrossAxisAlignment,
-        placeholderStyle: effectivePlaceholderStyle,
-        inputPadding: effectiveInputPadding,
-        gap: effectiveGap,
-        constraints: effectiveConstraints,
-        groupId: widget.groupId,
-        undoController: widget.undoController,
-        scrollbarPadding: effectiveScrollbarPadding,
-      ),
-    );
-
     return Stack(
       children: [
-        input,
+        ScrollConfiguration(
+          behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+          child: ShadInput(
+            editableTextSize: Size(double.infinity, _textareaHeight),
+            initialValue: widget.initialValue,
+            controller: widget.controller,
+            focusNode: focusNode,
+            placeholder: widget.placeholder,
+            placeholderAlignment: effectivePlaceholderAlignment,
+            alignment: effectiveAlignment,
+            maxLines: lineCount,
+            minLines: lineCount,
+            keyboardType: TextInputType.multiline,
+            readOnly: widget.readOnly,
+            enabled: widget.enabled,
+            autofocus: widget.autofocus,
+            onChanged: widget.onChanged,
+            onEditingComplete: widget.onEditingComplete,
+            onSubmitted: widget.onSubmitted,
+            onAppPrivateCommand: widget.onAppPrivateCommand,
+            style: effectiveTextStyle,
+            strutStyle: widget.strutStyle,
+            textAlign: widget.textAlign,
+            textDirection: widget.textDirection,
+            showCursor: widget.showCursor,
+            cursorWidth: widget.cursorWidth,
+            cursorHeight: widget.cursorHeight,
+            cursorRadius: widget.cursorRadius,
+            cursorOpacityAnimates: widget.cursorOpacityAnimates,
+            cursorColor: widget.cursorColor,
+            selectionHeightStyle: widget.selectionHeightStyle,
+            selectionWidthStyle: widget.selectionWidthStyle,
+            keyboardAppearance: widget.keyboardAppearance,
+            scrollPadding: widget.scrollPadding,
+            dragStartBehavior: widget.dragStartBehavior,
+            enableInteractiveSelection: widget.enableInteractiveSelection,
+            selectionControls: widget.selectionControls,
+            onPressed: widget.onPressed,
+            onPressedAlwaysCalled: widget.onPressedAlwaysCalled,
+            onPressedOutside: widget.onPressedOutside,
+            mouseCursor: effectiveMouseCursor,
+            scrollController: widget.scrollController,
+            scrollPhysics: widget.scrollPhysics,
+            contentInsertionConfiguration: widget.contentInsertionConfiguration,
+            clipBehavior: widget.clipBehavior,
+            restorationId: widget.restorationId,
+            scribbleEnabled: widget.scribbleEnabled,
+            stylusHandwritingEnabled: widget.stylusHandwritingEnabled,
+            enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
+            contextMenuBuilder: widget.contextMenuBuilder,
+            spellCheckConfiguration: widget.spellCheckConfiguration,
+            magnifierConfiguration: widget.magnifierConfiguration,
+            selectionColor: widget.selectionColor,
+            padding: effectivePadding,
+            decoration: effectiveDecoration,
+            mainAxisAlignment: effectiveMainAxisAlignment,
+            crossAxisAlignment: effectiveCrossAxisAlignment,
+            placeholderStyle: effectivePlaceholderStyle,
+            inputPadding: effectiveInputPadding,
+            gap: effectiveGap,
+            constraints: effectiveConstraints,
+            groupId: widget.groupId,
+            undoController: widget.undoController,
+            scrollbarPadding: effectiveScrollbarPadding,
+            keyboardToolbarBuilder: widget.keyboardToolbarBuilder,
+            top: widget.top,
+            bottom: widget.bottom,
+            leading: widget.leading,
+            trailing: widget.trailing,
+            onLineCountChange: widget.onLineCountChange,
+            verticalGap: widget.verticalGap,
+          ),
+        ),
         if (widget.resizable)
           Positioned(
             bottom: 2,

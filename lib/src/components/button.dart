@@ -1,8 +1,9 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/button_sizes.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -88,6 +89,8 @@ class ShadButton extends StatefulWidget {
     this.gap,
     this.onFocusChange,
     this.expands,
+    this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.primary;
 
   /// Creates a button widget with a specified [variant], allowing full control
@@ -143,6 +146,8 @@ class ShadButton extends StatefulWidget {
     this.gap,
     this.onFocusChange,
     this.expands,
+    this.textStyle,
+    this.canRequestFocus,
   });
 
   /// Creates a destructive variant button widget, typically for warning or
@@ -197,6 +202,8 @@ class ShadButton extends StatefulWidget {
     this.gap,
     this.onFocusChange,
     this.expands,
+    this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.destructive;
 
   /// Creates an outline variant button widget, typically with a bordered
@@ -251,6 +258,8 @@ class ShadButton extends StatefulWidget {
     this.gap,
     this.onFocusChange,
     this.expands,
+    this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.outline;
 
   /// Creates a secondary variant button widget, typically for less prominent
@@ -305,6 +314,8 @@ class ShadButton extends StatefulWidget {
     this.gap,
     this.onFocusChange,
     this.expands,
+    this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.secondary;
 
   /// Creates a ghost variant button widget, typically with minimal styling.
@@ -358,6 +369,8 @@ class ShadButton extends StatefulWidget {
     this.gap,
     this.onFocusChange,
     this.expands,
+    this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.ghost;
 
   /// Creates a link variant button widget, styled like a hyperlink.
@@ -411,6 +424,8 @@ class ShadButton extends StatefulWidget {
     this.expands,
     this.leading,
     this.trailing,
+    this.textStyle,
+    this.canRequestFocus,
   }) : variant = ShadButtonVariant.link;
 
   /// {@template ShadButton.onPressed}
@@ -716,6 +731,19 @@ class ShadButton extends StatefulWidget {
   /// {@endtemplate}
   final bool? expands;
 
+  /// {@template ShadButton.textStyle}
+  /// The text style applied to the button's [child] when it is a [Text] widget,
+  /// overriding the theme default if provided.
+  /// Allows customization of font size, weight, and other text properties.
+  /// {@endtemplate}
+  final TextStyle? textStyle;
+
+  /// {@template ShadButton.canRequestFocus}
+  /// Whether the button can request focus.
+  /// Defaults to true if [enabled] is true, false otherwise.
+  /// {@endtemplate}
+  final bool? canRequestFocus;
+
   @override
   State<ShadButton> createState() => _ShadButtonState();
 }
@@ -870,8 +898,9 @@ class _ShadButtonState extends State<ShadButton> {
     if (widget.hoverForegroundColor != null) {
       return widget.hoverForegroundColor!;
     }
-    final btnThemeHoverForegroundColor =
-        buttonTheme(theme).hoverForegroundColor;
+    final btnThemeHoverForegroundColor = buttonTheme(
+      theme,
+    ).hoverForegroundColor;
     assert(
       btnThemeHoverForegroundColor != null,
       'Button hoverForegroundColor is null in ShadButtonTheme',
@@ -926,27 +955,33 @@ class _ShadButtonState extends State<ShadButton> {
     final theme = ShadTheme.of(context);
     final iconTheme = IconTheme.of(context);
 
-    final hasPressedBackgroundColor = widget.pressedBackgroundColor != null ||
+    final hasPressedBackgroundColor =
+        widget.pressedBackgroundColor != null ||
         buttonTheme(theme).pressedBackgroundColor != null;
-    final hasPressedForegroundColor = widget.pressedForegroundColor != null ||
+    final hasPressedForegroundColor =
+        widget.pressedForegroundColor != null ||
         buttonTheme(theme).pressedForegroundColor != null;
 
     final effectiveDecoration =
-        (buttonTheme(theme).decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration);
+        (buttonTheme(theme).decoration ?? const ShadDecoration()).merge(
+          widget.decoration,
+        );
 
-    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
+    final effectiveMainAxisAlignment =
+        widget.mainAxisAlignment ??
         buttonTheme(theme).mainAxisAlignment ??
         MainAxisAlignment.center;
 
-    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+    final effectiveCrossAxisAlignment =
+        widget.crossAxisAlignment ??
         buttonTheme(theme).crossAxisAlignment ??
         CrossAxisAlignment.center;
 
     final effectiveLongPressDuration =
         widget.longPressDuration ?? buttonTheme(theme).longPressDuration;
 
-    final effectiveHoverStrategies = widget.hoverStrategies ??
+    final effectiveHoverStrategies =
+        widget.hoverStrategies ??
         buttonTheme(theme).hoverStrategies ??
         theme.hoverStrategies;
 
@@ -958,9 +993,25 @@ class _ShadButtonState extends State<ShadButton> {
     final effectiveExpands =
         widget.expands ?? buttonTheme(theme).expands ?? false;
 
+    final effectiveCanRequestFocus = widget.canRequestFocus ?? widget.enabled;
+
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
+
+    final effectiveTextStyle =
+        widget.textStyle ??
+        buttonTheme(theme).textStyle ??
+        theme.textTheme.small;
+
     return CallbackShortcuts(
       bindings: {
-        const SingleActivator(LogicalKeyboardKey.enter): onTap,
+        for (final trigger in keyboardTriggers)
+          trigger: () {
+            if (!widget.enabled) return;
+            onTap();
+          },
       },
       child: ValueListenableBuilder(
         valueListenable: statesController,
@@ -972,14 +1023,14 @@ class _ShadButtonState extends State<ShadButton> {
           final effectiveBackgroundColor = hasPressedBackgroundColor && pressed
               ? pressedBackgroundColor(theme)
               : hovered
-                  ? hoverBackground(theme)
-                  : background(theme);
+              ? hoverBackground(theme)
+              : background(theme);
 
           final effectiveForegroundColor = hasPressedForegroundColor && pressed
               ? pressedForegroundColor(theme)
               : hovered
-                  ? hoverForeground(theme)
-                  : foreground(theme);
+              ? hoverForeground(theme)
+              : foreground(theme);
 
           final updatedDecoration = effectiveDecoration.copyWith(
             color: effectiveBackgroundColor,
@@ -994,11 +1045,9 @@ class _ShadButtonState extends State<ShadButton> {
           }
 
           return IconTheme(
-            data: iconTheme.copyWith(
-              color: effectiveForegroundColor,
-            ),
+            data: iconTheme.copyWith(color: effectiveForegroundColor),
             child: DefaultTextStyle(
-              style: theme.textTheme.small.copyWith(
+              style: effectiveTextStyle.copyWith(
                 color: effectiveForegroundColor,
                 decoration: textDecoration(
                   theme,
@@ -1018,7 +1067,7 @@ class _ShadButtonState extends State<ShadButton> {
                   child: AbsorbPointer(
                     absorbing: !enabled,
                     child: ShadFocusable(
-                      canRequestFocus: enabled,
+                      canRequestFocus: effectiveCanRequestFocus,
                       autofocus: widget.autofocus,
                       focusNode: focusNode,
                       onFocusChange: widget.onFocusChange,
@@ -1067,21 +1116,23 @@ class _ShadButtonState extends State<ShadButton> {
                         onLongPressDown: widget.onLongPressDown,
                         onLongPressStart: widget.onLongPressStart,
                         longPressDuration: effectiveLongPressDuration,
-                        child: SizedBox(
-                          height: height(theme),
-                          width: width(theme),
-                          child: Padding(
-                            padding: padding(theme),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: effectiveCrossAxisAlignment,
-                              mainAxisAlignment: effectiveMainAxisAlignment,
-                              textDirection: effectiveTextDirection,
-                              children: [
-                                if (widget.leading != null) widget.leading!,
-                                if (child != null) child,
-                                if (widget.trailing != null) widget.trailing!,
-                              ].separatedBy(SizedBox(width: effectiveGap)),
+                        child: SelectionContainer.disabled(
+                          child: SizedBox(
+                            height: height(theme),
+                            width: width(theme),
+                            child: Padding(
+                              padding: padding(theme),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: effectiveCrossAxisAlignment,
+                                mainAxisAlignment: effectiveMainAxisAlignment,
+                                textDirection: effectiveTextDirection,
+                                children: [
+                                  ?widget.leading,
+                                  ?child,
+                                  ?widget.trailing,
+                                ].separatedBy(SizedBox(width: effectiveGap)),
+                              ),
                             ),
                           ),
                         ),

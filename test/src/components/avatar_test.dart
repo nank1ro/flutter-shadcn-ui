@@ -5,8 +5,6 @@ import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/avatar.dart'; // Adjust import path based on your project structure
 import 'package:universal_image/universal_image.dart';
 
-import '../../extra/pump_async_widget.dart'; // Assuming this is available in your project
-
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
@@ -20,7 +18,7 @@ void main() {
   group('ShadAvatar', () {
     testWidgets('applies custom size correctly', (WidgetTester tester) async {
       const customSize = Size(60, 60);
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAvatar(
             'assets/test_image.png',
@@ -39,8 +37,9 @@ void main() {
       // Check UniversalImage uses the custom size
       final universalImageFinder = find.byType(UniversalImage);
       expect(universalImageFinder, findsOneWidget);
-      final universalImage =
-          tester.widget<UniversalImage>(universalImageFinder);
+      final universalImage = tester.widget<UniversalImage>(
+        universalImageFinder,
+      );
       expect(universalImage.width, customSize.width);
       expect(universalImage.height, customSize.height);
     });
@@ -49,7 +48,7 @@ void main() {
       const customShape = RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10)),
       );
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAvatar(
             'assets/test_image.png',
@@ -66,10 +65,11 @@ void main() {
       expect(decoration?.shape, customShape);
     });
 
-    testWidgets('applies custom background color correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom background color correctly', (
+      WidgetTester tester,
+    ) async {
       const customBackgroundColor = Colors.blue;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAvatar(
             'assets/test_image.png',
@@ -88,7 +88,7 @@ void main() {
 
     testWidgets('applies custom fit correctly', (WidgetTester tester) async {
       const customFit = BoxFit.cover;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAvatar(
             'assets/test_image.png',
@@ -100,14 +100,16 @@ void main() {
       // Check UniversalImage uses custom fit
       final universalImageFinder = find.byType(UniversalImage);
       expect(universalImageFinder, findsOneWidget);
-      final universalImage =
-          tester.widget<UniversalImage>(universalImageFinder);
+      final universalImage = tester.widget<UniversalImage>(
+        universalImageFinder,
+      );
       expect(universalImage.fit, customFit);
     });
 
-    testWidgets('renders with default size when not specified',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders with default size when not specified', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAvatar('assets/test_image.png'),
         ),
@@ -123,15 +125,17 @@ void main() {
       // Check UniversalImage uses default size
       final universalImageFinder = find.byType(UniversalImage);
       expect(universalImageFinder, findsOneWidget);
-      final universalImage =
-          tester.widget<UniversalImage>(universalImageFinder);
+      final universalImage = tester.widget<UniversalImage>(
+        universalImageFinder,
+      );
       expect(universalImage.width, 40.0);
       expect(universalImage.height, 40.0);
     });
 
-    testWidgets('renders with default circular shape when not specified',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders with default circular shape when not specified', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAvatar('assets/test_image.png'),
         ),
@@ -146,7 +150,7 @@ void main() {
     });
 
     testWidgets('ShadAvatar matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadAvatar(LucideIcons.mail),
         ),

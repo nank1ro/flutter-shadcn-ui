@@ -1,7 +1,7 @@
 import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:example/common/app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:multi_split_view/multi_split_view.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 class BaseScaffold extends StatelessWidget {
   const BaseScaffold({
@@ -27,9 +27,6 @@ class BaseScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final size = MediaQuery.sizeOf(context);
-
     Widget left = Align(
       alignment: alignment ?? Alignment.center,
       child: children.length == 1 && !wrapSingleChildInColumn
@@ -62,84 +59,31 @@ class BaseScaffold extends StatelessWidget {
     return Scaffold(
       appBar: MyAppBar(title: appBarTitle),
       body: right != null
-          ? MultiSplitViewTheme(
-              data: MultiSplitViewThemeData(
-                dividerPainter: _MyDividerPainter(
-                  backgroundColor: isDarkMode ? Colors.white10 : Colors.black12,
-                  highlightedBackgroundColor:
-                      isDarkMode ? Colors.white24 : Colors.black26,
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ShadResizablePanelGroup(
+                    showHandle: true,
+                    children: [
+                      ShadResizablePanel(
+                        id: 0,
+                        defaultSize: .7,
+                        minSize: .5,
+                        child: left,
+                      ),
+                      ShadResizablePanel(
+                        id: 1,
+                        defaultSize: .3,
+                        minSize: .2,
+                        child: right,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              child: ScrollConfiguration(
-                behavior:
-                    ScrollConfiguration.of(context).copyWith(scrollbars: false),
-                child: MultiSplitView(
-                  initialAreas: [
-                    Area(
-                      minimalSize: size.width / 2,
-                      size: size.width * .7,
-                    ),
-                    Area(
-                      minimalSize: size.width * .3,
-                    ),
-                  ],
-                  children: [
-                    left,
-                    right,
-                  ],
-                ),
-              ),
+              ],
             )
           : left,
-    );
-  }
-}
-
-class _MyDividerPainter extends DividerPainter {
-  _MyDividerPainter({
-    super.backgroundColor,
-    super.highlightedBackgroundColor,
-  });
-
-  static const int backgroundKey = 0;
-
-  /// Builds a tween map for animations.
-  @override
-  Map<int, Tween> buildTween() {
-    final map = <int, Tween>{};
-    if (animationEnabled &&
-        backgroundColor != null &&
-        highlightedBackgroundColor != null) {
-      map[DividerPainter.backgroundKey] =
-          ColorTween(begin: backgroundColor, end: highlightedBackgroundColor);
-    }
-    return map;
-  }
-
-  /// Paints the divider.
-  @override
-  void paint({
-    required Axis dividerAxis,
-    required bool resizable,
-    required bool highlighted,
-    required Canvas canvas,
-    required Size dividerSize,
-    required Map<int, dynamic> animatedValues,
-  }) {
-    var color = backgroundColor;
-    var size = dividerSize;
-    if (animationEnabled && animatedValues.containsKey(backgroundKey)) {
-      color = animatedValues[backgroundKey] as Color?;
-      size = Size(4, dividerSize.height);
-    }
-
-    final paint = Paint()
-      ..style = PaintingStyle.fill
-      ..color = color ?? Colors.transparent
-      ..isAntiAlias = true;
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width, size.height),
-      paint,
     );
   }
 }

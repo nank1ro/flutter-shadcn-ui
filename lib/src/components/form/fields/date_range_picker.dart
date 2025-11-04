@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/calendar.dart';
@@ -19,6 +19,7 @@ class ShadDateRangePickerFormField
     super.id,
     super.key,
     super.onSaved,
+    super.forceErrorText,
     super.label,
     super.error,
     super.description,
@@ -64,7 +65,7 @@ class ShadDateRangePickerFormField
     ShadDecoration? calendarDecoration,
 
     /// {@macro ShadPopover.padding}
-    EdgeInsets? popoverPadding,
+    EdgeInsetsGeometry? popoverPadding,
 
     /// {@macro ShadCalendar.multipleSelected}
     List<DateTime>? multipleSelected,
@@ -124,7 +125,7 @@ class ShadDateRangePickerFormField
     int? max,
 
     /// {@macro ShadCalendar.selectableDayPredicate}
-    SelectableDayPredicate? selectableDayPredicate,
+    bool Function(DateTime day)? selectableDayPredicate,
 
     /// {@macro ShadCalendar.captionLayout}
     ShadCalendarCaptionLayout? captionLayout,
@@ -139,10 +140,10 @@ class ShadDateRangePickerFormField
     double? monthSelectorMinWidth,
 
     /// {@macro ShadCalendar.yearSelectorPadding}
-    EdgeInsets? yearSelectorPadding,
+    EdgeInsetsGeometry? yearSelectorPadding,
 
     /// {@macro ShadCalendar.monthSelectorPadding}
-    EdgeInsets? monthSelectorPadding,
+    EdgeInsetsGeometry? monthSelectorPadding,
 
     /// {@macro ShadCalendar.navigationButtonSize}
     double? navigationButtonSize,
@@ -157,7 +158,7 @@ class ShadDateRangePickerFormField
     IconData? forwardNavigationButtonIconData,
 
     /// {@macro ShadCalendar.navigationButtonPadding}
-    EdgeInsets? navigationButtonPadding,
+    EdgeInsetsGeometry? navigationButtonPadding,
 
     /// {@macro ShadCalendar.navigationButtonDisabledOpacity}
     double? navigationButtonDisabledOpacity,
@@ -175,7 +176,7 @@ class ShadDateRangePickerFormField
     double? calendarHeaderHeight,
 
     /// {@macro ShadCalendar.headerPadding}
-    EdgeInsets? calendarHeaderPadding,
+    EdgeInsetsGeometry? calendarHeaderPadding,
 
     /// {@macro ShadCalendar.captionLayoutGap}
     double? captionLayoutGap,
@@ -184,7 +185,7 @@ class ShadDateRangePickerFormField
     TextStyle? calendarHeaderTextStyle,
 
     /// {@macro ShadCalendar.weekdaysPadding}
-    EdgeInsets? weekdaysPadding,
+    EdgeInsetsGeometry? weekdaysPadding,
 
     /// {@macro ShadCalendar.weekdaysTextStyle}
     TextStyle? weekdaysTextStyle,
@@ -211,7 +212,7 @@ class ShadDateRangePickerFormField
     double? dayButtonOutsideMonthOpacity,
 
     /// {@macro ShadCalendar.dayButtonPadding}
-    EdgeInsets? dayButtonPadding,
+    EdgeInsetsGeometry? dayButtonPadding,
 
     /// {@macro ShadCalendar.dayButtonDecoration}
     ShadDecoration? dayButtonDecoration,
@@ -427,152 +428,160 @@ class ShadDateRangePickerFormField
 
     /// {@macro ShadButton.expands}
     bool? expands,
+
+    /// {@macro ShadButton.textStyle}
+    TextStyle? buttonTextStyle,
   }) : super(
-          builder: (field) {
-            final state = field as _ShadFormBuilderDateRangePickerState;
-            return ShadDatePicker.range(
-              onRangeChanged: state.didChange,
-              enabled: state.enabled,
-              focusNode: state.focusNode,
-              icon: icon,
-              decoration: state.decoration,
-              selected: state.value,
-              popoverController: popoverController,
-              closeOnSelection: closeOnSelection,
-              formatDateRange: formatDateRange,
-              allowDeselection: allowDeselection,
-              header: header,
-              footer: footer,
-              groupId: groupId,
-              calendarDecoration: calendarDecoration,
-              popoverPadding: popoverPadding,
-              multipleSelected: multipleSelected,
-              onMultipleChanged: onMultipleChanged,
-              showOutsideDays: showOutsideDays,
-              initialMonth: initialMonth,
-              formatMonthYear: formatMonthYear,
-              formatMonth: formatMonth,
-              formatYear: formatYear,
-              formatWeekday: formatWeekday,
-              showWeekNumbers: showWeekNumbers,
-              weekStartsOn: weekStartsOn,
-              fixedWeeks: fixedWeeks,
-              hideWeekdayNames: hideWeekdayNames,
-              numberOfMonths: numberOfMonths,
-              fromMonth: fromMonth,
-              toMonth: toMonth,
-              onMonthChanged: onMonthChanged,
-              reverseMonths: reverseMonths,
-              min: min,
-              max: max,
-              selectableDayPredicate: selectableDayPredicate,
-              captionLayout: captionLayout,
-              hideNavigation: hideNavigation,
-              yearSelectorMinWidth: yearSelectorMinWidth,
-              monthSelectorMinWidth: monthSelectorMinWidth,
-              yearSelectorPadding: yearSelectorPadding,
-              monthSelectorPadding: monthSelectorPadding,
-              navigationButtonSize: navigationButtonSize,
-              navigationButtonIconSize: navigationButtonIconSize,
-              backNavigationButtonIconData: backNavigationButtonIconData,
-              forwardNavigationButtonIconData: forwardNavigationButtonIconData,
-              navigationButtonPadding: navigationButtonPadding,
-              navigationButtonDisabledOpacity: navigationButtonDisabledOpacity,
-              spacingBetweenMonths: spacingBetweenMonths,
-              runSpacingBetweenMonths: runSpacingBetweenMonths,
-              monthConstraints: monthConstraints,
-              calendarHeaderHeight: calendarHeaderHeight,
-              calendarHeaderPadding: calendarHeaderPadding,
-              captionLayoutGap: captionLayoutGap,
-              calendarHeaderTextStyle: calendarHeaderTextStyle,
-              weekdaysPadding: weekdaysPadding,
-              weekdaysTextStyle: weekdaysTextStyle,
-              weekdaysTextAlign: weekdaysTextAlign,
-              weekNumbersHeaderText: weekNumbersHeaderText,
-              weekNumbersHeaderTextStyle: weekNumbersHeaderTextStyle,
-              weekNumbersTextStyle: weekNumbersTextStyle,
-              weekNumbersTextAlign: weekNumbersTextAlign,
-              dayButtonSize: dayButtonSize,
-              dayButtonOutsideMonthOpacity: dayButtonOutsideMonthOpacity,
-              dayButtonPadding: dayButtonPadding,
-              dayButtonDecoration: dayButtonDecoration,
-              selectedDayButtonTextStyle: selectedDayButtonTextStyle,
-              insideRangeDayButtonTextStyle: insideRangeDayButtonTextStyle,
-              dayButtonTextStyle: dayButtonTextStyle,
-              dayButtonVariant: dayButtonVariant,
-              selectedDayButtonVariant: selectedDayButtonVariant,
-              insideRangeDayButtonVariant: insideRangeDayButtonVariant,
-              todayButtonVariant: todayButtonVariant,
-              gridMainAxisSpacing: gridMainAxisSpacing,
-              gridCrossAxisSpacing: gridCrossAxisSpacing,
-              dayButtonOutsideMonthTextStyle: dayButtonOutsideMonthTextStyle,
-              dayButtonOutsideMonthVariant: dayButtonOutsideMonthVariant,
-              selectedDayButtonOusideMonthVariant:
-                  selectedDayButtonOusideMonthVariant,
-              closeOnTapOutside: closeOnTapOutside,
-              anchor: anchor,
-              effects: effects,
-              shadows: shadows,
-              popoverDecoration: popoverDecoration,
-              filter: filter,
-              areaGroupId: areaGroupId,
-              useSameGroupIdForChild: useSameGroupIdForChild,
-              onPressed: onPressed,
-              onLongPress: onLongPress,
-              iconData: iconData,
-              buttonChild: buttonChild,
-              buttonVariant: buttonVariant,
-              size: size,
-              cursor: cursor,
-              width: width,
-              height: height,
-              buttonPadding: buttonPadding,
-              backgroundColor: backgroundColor,
-              hoverBackgroundColor: hoverBackgroundColor,
-              foregroundColor: foregroundColor,
-              hoverForegroundColor: hoverForegroundColor,
-              autofocus: autofocus,
-              buttonFocusNode: buttonFocusNode,
-              pressedBackgroundColor: pressedBackgroundColor,
-              pressedForegroundColor: pressedForegroundColor,
-              buttonShadows: buttonShadows,
-              gradient: gradient,
-              textDecoration: textDecoration,
-              hoverTextDecoration: hoverTextDecoration,
-              buttonDecoration: buttonDecoration,
-              statesController: statesController,
-              gap: gap,
-              mainAxisAlignment: mainAxisAlignment,
-              crossAxisAlignment: crossAxisAlignment,
-              hoverStrategies: hoverStrategies,
-              onHoverChange: onHoverChange,
-              onTapDown: onTapDown,
-              onTapUp: onTapUp,
-              onTapCancel: onTapCancel,
-              onSecondaryTapDown: onSecondaryTapDown,
-              onSecondaryTapUp: onSecondaryTapUp,
-              onSecondaryTapCancel: onSecondaryTapCancel,
-              onLongPressStart: onLongPressStart,
-              onLongPressCancel: onLongPressCancel,
-              onLongPressUp: onLongPressUp,
-              onLongPressDown: onLongPressDown,
-              onLongPressEnd: onLongPressEnd,
-              onDoubleTap: onDoubleTap,
-              onDoubleTapDown: onDoubleTapDown,
-              onDoubleTapCancel: onDoubleTapCancel,
-              longPressDuration: longPressDuration,
-              textDirection: textDirection,
-              onFocusChange: onFocusChange,
-              placeholder: placeholder,
-              expands: expands,
-            );
-          },
-        );
+         builder: (field) {
+           final state = field as _ShadFormBuilderDateRangePickerState;
+           return ShadDatePicker.range(
+             onRangeChanged: state.didChange,
+             enabled: state.enabled,
+             focusNode: state.focusNode,
+             icon: icon,
+             decoration: state.decoration,
+             selected: state.value,
+             popoverController: popoverController,
+             closeOnSelection: closeOnSelection,
+             formatDateRange: formatDateRange,
+             allowDeselection: allowDeselection,
+             header: header,
+             footer: footer,
+             groupId: groupId,
+             calendarDecoration: calendarDecoration,
+             popoverPadding: popoverPadding,
+             multipleSelected: multipleSelected,
+             onMultipleChanged: onMultipleChanged,
+             showOutsideDays: showOutsideDays,
+             initialMonth: initialMonth,
+             formatMonthYear: formatMonthYear,
+             formatMonth: formatMonth,
+             formatYear: formatYear,
+             formatWeekday: formatWeekday,
+             showWeekNumbers: showWeekNumbers,
+             weekStartsOn: weekStartsOn,
+             fixedWeeks: fixedWeeks,
+             hideWeekdayNames: hideWeekdayNames,
+             numberOfMonths: numberOfMonths,
+             fromMonth: fromMonth,
+             toMonth: toMonth,
+             onMonthChanged: onMonthChanged,
+             reverseMonths: reverseMonths,
+             min: min,
+             max: max,
+             selectableDayPredicate: selectableDayPredicate,
+             captionLayout: captionLayout,
+             hideNavigation: hideNavigation,
+             yearSelectorMinWidth: yearSelectorMinWidth,
+             monthSelectorMinWidth: monthSelectorMinWidth,
+             yearSelectorPadding: yearSelectorPadding,
+             monthSelectorPadding: monthSelectorPadding,
+             navigationButtonSize: navigationButtonSize,
+             navigationButtonIconSize: navigationButtonIconSize,
+             backNavigationButtonIconData: backNavigationButtonIconData,
+             forwardNavigationButtonIconData: forwardNavigationButtonIconData,
+             navigationButtonPadding: navigationButtonPadding,
+             navigationButtonDisabledOpacity: navigationButtonDisabledOpacity,
+             spacingBetweenMonths: spacingBetweenMonths,
+             runSpacingBetweenMonths: runSpacingBetweenMonths,
+             monthConstraints: monthConstraints,
+             calendarHeaderHeight: calendarHeaderHeight,
+             calendarHeaderPadding: calendarHeaderPadding,
+             captionLayoutGap: captionLayoutGap,
+             calendarHeaderTextStyle: calendarHeaderTextStyle,
+             weekdaysPadding: weekdaysPadding,
+             weekdaysTextStyle: weekdaysTextStyle,
+             weekdaysTextAlign: weekdaysTextAlign,
+             weekNumbersHeaderText: weekNumbersHeaderText,
+             weekNumbersHeaderTextStyle: weekNumbersHeaderTextStyle,
+             weekNumbersTextStyle: weekNumbersTextStyle,
+             weekNumbersTextAlign: weekNumbersTextAlign,
+             dayButtonSize: dayButtonSize,
+             dayButtonOutsideMonthOpacity: dayButtonOutsideMonthOpacity,
+             dayButtonPadding: dayButtonPadding,
+             dayButtonDecoration: dayButtonDecoration,
+             selectedDayButtonTextStyle: selectedDayButtonTextStyle,
+             insideRangeDayButtonTextStyle: insideRangeDayButtonTextStyle,
+             dayButtonTextStyle: dayButtonTextStyle,
+             dayButtonVariant: dayButtonVariant,
+             selectedDayButtonVariant: selectedDayButtonVariant,
+             insideRangeDayButtonVariant: insideRangeDayButtonVariant,
+             todayButtonVariant: todayButtonVariant,
+             gridMainAxisSpacing: gridMainAxisSpacing,
+             gridCrossAxisSpacing: gridCrossAxisSpacing,
+             dayButtonOutsideMonthTextStyle: dayButtonOutsideMonthTextStyle,
+             dayButtonOutsideMonthVariant: dayButtonOutsideMonthVariant,
+             selectedDayButtonOusideMonthVariant:
+                 selectedDayButtonOusideMonthVariant,
+             closeOnTapOutside: closeOnTapOutside,
+             anchor: anchor,
+             effects: effects,
+             shadows: shadows,
+             popoverDecoration: popoverDecoration,
+             filter: filter,
+             areaGroupId: areaGroupId,
+             useSameGroupIdForChild: useSameGroupIdForChild,
+             onPressed: onPressed,
+             onLongPress: onLongPress,
+             iconData: iconData,
+             buttonChild: buttonChild,
+             buttonVariant: buttonVariant,
+             size: size,
+             cursor: cursor,
+             width: width,
+             height: height,
+             buttonPadding: buttonPadding,
+             backgroundColor: backgroundColor,
+             hoverBackgroundColor: hoverBackgroundColor,
+             foregroundColor: foregroundColor,
+             hoverForegroundColor: hoverForegroundColor,
+             autofocus: autofocus,
+             buttonFocusNode: buttonFocusNode,
+             pressedBackgroundColor: pressedBackgroundColor,
+             pressedForegroundColor: pressedForegroundColor,
+             buttonShadows: buttonShadows,
+             gradient: gradient,
+             textDecoration: textDecoration,
+             hoverTextDecoration: hoverTextDecoration,
+             buttonDecoration: buttonDecoration,
+             statesController: statesController,
+             gap: gap,
+             mainAxisAlignment: mainAxisAlignment,
+             crossAxisAlignment: crossAxisAlignment,
+             hoverStrategies: hoverStrategies,
+             onHoverChange: onHoverChange,
+             onTapDown: onTapDown,
+             onTapUp: onTapUp,
+             onTapCancel: onTapCancel,
+             onSecondaryTapDown: onSecondaryTapDown,
+             onSecondaryTapUp: onSecondaryTapUp,
+             onSecondaryTapCancel: onSecondaryTapCancel,
+             onLongPressStart: onLongPressStart,
+             onLongPressCancel: onLongPressCancel,
+             onLongPressUp: onLongPressUp,
+             onLongPressDown: onLongPressDown,
+             onLongPressEnd: onLongPressEnd,
+             onDoubleTap: onDoubleTap,
+             onDoubleTapDown: onDoubleTapDown,
+             onDoubleTapCancel: onDoubleTapCancel,
+             longPressDuration: longPressDuration,
+             textDirection: textDirection,
+             onFocusChange: onFocusChange,
+             placeholder: placeholder,
+             expands: expands,
+             buttonTextStyle: buttonTextStyle,
+           );
+         },
+       );
 
   @override
   ShadFormBuilderFieldState<ShadDateRangePickerFormField, ShadDateTimeRange>
-      createState() => _ShadFormBuilderDateRangePickerState();
+  createState() => _ShadFormBuilderDateRangePickerState();
 }
 
-class _ShadFormBuilderDateRangePickerState extends ShadFormBuilderFieldState<
-    ShadDateRangePickerFormField, ShadDateTimeRange> {}
+class _ShadFormBuilderDateRangePickerState
+    extends
+        ShadFormBuilderFieldState<
+          ShadDateRangePickerFormField,
+          ShadDateTimeRange
+        > {}

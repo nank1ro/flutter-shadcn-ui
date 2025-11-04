@@ -3,10 +3,15 @@ import 'dart:math' as math;
 
 import 'package:boxy/boxy.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/components/toast.dart';
+import 'package:shadcn_ui/src/theme/components/sonner.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/animate.dart';
+import 'package:shadcn_ui/src/utils/mouse_area.dart';
+import 'package:shadcn_ui/src/utils/responsive.dart';
 
 ///
 /// Allows descendants to access the toaster state via [ShadSonner.of] or
@@ -310,7 +315,8 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    final effectiveAlignment = widget.alignment ??
+    final effectiveAlignment =
+        widget.alignment ??
         theme.sonnerTheme.alignment ??
         Alignment.bottomRight;
 
@@ -336,10 +342,10 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
             titleStyle: theme.primaryToastTheme.titleStyle?.copyWith(
               fontSize: 13,
             ),
-            descriptionStyle:
-                theme.primaryToastTheme.descriptionStyle?.copyWith(
-              fontSize: 13,
-            ),
+            descriptionStyle: theme.primaryToastTheme.descriptionStyle
+                ?.copyWith(
+                  fontSize: 13,
+                ),
           ),
           destructiveToastTheme: theme.destructiveToastTheme.copyWith(
             closeIcon: const SizedBox.shrink(),
@@ -347,10 +353,10 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
             titleStyle: theme.destructiveToastTheme.titleStyle?.copyWith(
               fontSize: 13,
             ),
-            descriptionStyle:
-                theme.destructiveToastTheme.descriptionStyle?.copyWith(
-              fontSize: 13,
-            ),
+            descriptionStyle: theme.destructiveToastTheme.descriptionStyle
+                ?.copyWith(
+                  fontSize: 13,
+                ),
           ),
         ),
         child: ValueListenableBuilder(
@@ -379,7 +385,7 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                           // This ColoredBox keeps the hover working even for
                           // the empty spaces
                           child: ColoredBox(
-                            color: Colors.transparent,
+                            color: const Color(0x00000000),
                             child: CustomBoxy(
                               delegate: SonnerBoxy(
                                 animation: animation,
@@ -387,129 +393,126 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                                 expandedGap: effectiveExpandedGap,
                               ),
                               children: _toasts.mapIndexed((index, toastInfo) {
-                                final x = effectiveScaleFactor *
+                                final x =
+                                    effectiveScaleFactor *
                                     (_toasts.length - 1 - index);
                                 final scaleX = 1.0 - x;
                                 final toast = toastInfo.toast;
 
                                 final effectiveToastTheme =
                                     switch (toast.variant) {
-                                  ShadToastVariant.primary =>
-                                    theme.primaryToastTheme,
-                                  ShadToastVariant.destructive =>
-                                    theme.destructiveToastTheme,
-                                };
+                                      ShadToastVariant.primary =>
+                                        theme.primaryToastTheme,
+                                      ShadToastVariant.destructive =>
+                                        theme.destructiveToastTheme,
+                                    };
 
                                 final effectiveToastAlignment =
                                     toast.alignment ??
-                                        effectiveToastTheme.alignment ??
-                                        Alignment.bottomRight;
+                                    effectiveToastTheme.alignment ??
+                                    Alignment.bottomRight;
                                 // ignore: omit_local_variable_types
                                 final List<Effect<dynamic>> defaultAnimateIn =
                                     switch (effectiveToastAlignment) {
-                                  Alignment.bottomRight ||
-                                  Alignment.bottomLeft ||
-                                  Alignment.bottomCenter =>
-                                    [
-                                      const FadeEffect(),
-                                      const SlideEffect(
-                                        begin: Offset(0, 1),
-                                        end: Offset.zero,
-                                      ),
-                                    ],
-                                  Alignment.topRight ||
-                                  Alignment.topLeft ||
-                                  Alignment.topCenter =>
-                                    [
-                                      const FadeEffect(),
-                                      const SlideEffect(
-                                        begin: Offset(0, -1),
-                                        end: Offset.zero,
-                                      ),
-                                    ],
-                                  Alignment.centerRight ||
-                                  Alignment.topRight ||
-                                  Alignment.bottomRight =>
-                                    [
-                                      const FadeEffect(),
-                                      const SlideEffect(
-                                        begin: Offset(1, 0),
-                                        end: Offset.zero,
-                                      ),
-                                    ],
-                                  Alignment.centerLeft ||
-                                  Alignment.topLeft ||
-                                  Alignment.bottomLeft =>
-                                    [
-                                      const FadeEffect(),
-                                      const SlideEffect(
-                                        begin: Offset(-1, 0),
-                                        end: Offset.zero,
-                                      ),
-                                    ],
-                                  Alignment.center || Alignment() => [
-                                      const FadeEffect(),
-                                      const ScaleEffect(
-                                        begin: Offset(.95, .95),
-                                        end: Offset(1, 1),
-                                      ),
-                                    ],
-                                };
+                                      Alignment.bottomRight ||
+                                      Alignment.bottomLeft ||
+                                      Alignment.bottomCenter => [
+                                        const FadeEffect(),
+                                        const SlideEffect(
+                                          begin: Offset(0, 1),
+                                          end: Offset.zero,
+                                        ),
+                                      ],
+                                      Alignment.topRight ||
+                                      Alignment.topLeft ||
+                                      Alignment.topCenter => [
+                                        const FadeEffect(),
+                                        const SlideEffect(
+                                          begin: Offset(0, -1),
+                                          end: Offset.zero,
+                                        ),
+                                      ],
+                                      Alignment.centerRight ||
+                                      Alignment.topRight ||
+                                      Alignment.bottomRight => [
+                                        const FadeEffect(),
+                                        const SlideEffect(
+                                          begin: Offset(1, 0),
+                                          end: Offset.zero,
+                                        ),
+                                      ],
+                                      Alignment.centerLeft ||
+                                      Alignment.topLeft ||
+                                      Alignment.bottomLeft => [
+                                        const FadeEffect(),
+                                        const SlideEffect(
+                                          begin: Offset(-1, 0),
+                                          end: Offset.zero,
+                                        ),
+                                      ],
+                                      Alignment.center || Alignment() => [
+                                        const FadeEffect(),
+                                        const ScaleEffect(
+                                          begin: Offset(.95, .95),
+                                          end: Offset(1, 1),
+                                        ),
+                                      ],
+                                    };
 
                                 // ignore: omit_local_variable_types
                                 final List<Effect<dynamic>> defaultAnimateOut =
                                     switch (effectiveToastAlignment) {
-                                  Alignment.bottomRight ||
-                                  Alignment.topRight ||
-                                  Alignment.centerRight =>
-                                    const [
-                                      SlideEffect(
-                                        begin: Offset.zero,
-                                        end: Offset(0, -0.10),
-                                      ),
-                                      FadeEffect(
-                                        begin: 1,
-                                        end: 0,
-                                      ),
-                                    ],
-                                  Alignment.topLeft ||
-                                  Alignment.centerLeft ||
-                                  Alignment.bottomLeft =>
-                                    const [
-                                      SlideEffect(
-                                        begin: Offset.zero,
-                                        end: Offset(-1, 0),
-                                      ),
-                                    ],
-                                  Alignment.topCenter => [
-                                      const SlideEffect(
-                                        begin: Offset.zero,
-                                        end: Offset(0, -1),
-                                      ),
-                                    ],
-                                  Alignment.bottomCenter => [
-                                      const SlideEffect(
-                                        begin: Offset.zero,
-                                        end: Offset(0, 1),
-                                      ),
-                                    ],
-                                  Alignment.center || Alignment() => [
-                                      const FadeEffect(begin: 1, end: 0),
-                                      const ScaleEffect(
-                                        begin: Offset(1, 1),
-                                        end: Offset(.95, .95),
-                                      ),
-                                    ],
-                                };
+                                      Alignment.bottomRight ||
+                                      Alignment.topRight ||
+                                      Alignment.centerRight => const [
+                                        SlideEffect(
+                                          begin: Offset.zero,
+                                          end: Offset(0, -0.10),
+                                        ),
+                                        FadeEffect(
+                                          begin: 1,
+                                          end: 0,
+                                        ),
+                                      ],
+                                      Alignment.topLeft ||
+                                      Alignment.centerLeft ||
+                                      Alignment.bottomLeft => const [
+                                        SlideEffect(
+                                          begin: Offset.zero,
+                                          end: Offset(-1, 0),
+                                        ),
+                                      ],
+                                      Alignment.topCenter => [
+                                        const SlideEffect(
+                                          begin: Offset.zero,
+                                          end: Offset(0, -1),
+                                        ),
+                                      ],
+                                      Alignment.bottomCenter => [
+                                        const SlideEffect(
+                                          begin: Offset.zero,
+                                          end: Offset(0, 1),
+                                        ),
+                                      ],
+                                      Alignment.center || Alignment() => [
+                                        const FadeEffect(begin: 1, end: 0),
+                                        const ScaleEffect(
+                                          begin: Offset(1, 1),
+                                          end: Offset(.95, .95),
+                                        ),
+                                      ],
+                                    };
 
-                                final effectiveAnimateIn = toast.animateIn ??
+                                final effectiveAnimateIn =
+                                    toast.animateIn ??
                                     effectiveToastTheme.animateIn ??
                                     defaultAnimateIn;
-                                final effectiveAnimateOut = toast.animateOut ??
+                                final effectiveAnimateOut =
+                                    toast.animateOut ??
                                     effectiveToastTheme.animateOut ??
                                     defaultAnimateOut;
 
-                                return Animate(
+                                return ShadAnimate(
                                   autoPlay: false,
                                   controller: animationController,
                                   effects: [
@@ -518,7 +521,7 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                                       end: const Offset(1, 1),
                                     ),
                                   ],
-                                  child: Animate(
+                                  child: ShadAnimate(
                                     autoPlay: false,
                                     controller: toastInfo.controller,
                                     effects: toastInfo.temporarelyHide
@@ -583,14 +586,16 @@ class SonnerBoxy extends BoxyDelegate {
       constraints.maxWidth,
     );
 
-    final totalHeightExpanded = heights.fold<double>(0, (a, b) => a + b) +
+    final totalHeightExpanded =
+        heights.fold<double>(0, (a, b) => a + b) +
         expandedGap * (heights.length - 1);
     // Calculate collapsed height (when all toasts are stacked)
     final totalHeightCollapsed =
         heights.last + (heights.length - 1) * collapsedGap;
 
     // Interpolate between collapsed and expanded height based on animation
-    final currentHeight = totalHeightCollapsed +
+    final currentHeight =
+        totalHeightCollapsed +
         (totalHeightExpanded - totalHeightCollapsed) * animation.value;
 
     // Step 3: Position the children based on the animation value
@@ -604,7 +609,7 @@ class SonnerBoxy extends BoxyDelegate {
       } else {
         final expandedY =
             heights.sublist(0, i).fold<double>(0, (a, b) => a + b) +
-                expandedGap * i;
+            expandedGap * i;
         final collapsedY =
             currentHeight - heights.last - (numChildren - 1 - i) * collapsedGap;
         targetY = collapsedY + (expandedY - collapsedY) * animation.value;

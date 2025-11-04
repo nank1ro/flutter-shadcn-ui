@@ -165,7 +165,7 @@ class _CardNotificationsState extends State<CardNotifications> {
                         Text(
                           'Send notifications to device.',
                           style: theme.textTheme.muted,
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -203,14 +203,16 @@ class _CardNotificationsState extends State<CardNotifications> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Your call has been confirmed.',
-                                style: theme.textTheme.small),
+                            Text(
+                              'Your call has been confirmed.',
+                              style: theme.textTheme.small,
+                            ),
                             const SizedBox(height: 4),
                             Text(n.description, style: theme.textTheme.muted),
                           ],
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               )

@@ -5,8 +5,6 @@ import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
-import '../../extra/pump_async_widget.dart'; // Assuming this is available in your project
-
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
@@ -18,9 +16,10 @@ void main() {
   }
 
   group('ShadRadioGroup and ShadRadio', () {
-    testWidgets('renders with no initial selection correctly',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders with no initial selection correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadRadioGroup<String>(
             items: [
@@ -61,9 +60,10 @@ void main() {
       expect(wrapFinder, findsOneWidget);
     });
 
-    testWidgets('renders with initial selection correctly',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders with initial selection correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadRadioGroup<String>(
             initialValue: 'option1',
@@ -89,7 +89,7 @@ void main() {
 
     testWidgets('toggles selection on tap', (WidgetTester tester) async {
       String? selectedValue;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadRadioGroup<String>(
             onChanged: (value) => selectedValue = value,
@@ -135,10 +135,11 @@ void main() {
       expect(selectedValue, 'option2');
     });
 
-    testWidgets('handles disabled state correctly',
-        (WidgetTester tester) async {
+    testWidgets('handles disabled state correctly', (
+      WidgetTester tester,
+    ) async {
       String? selectedValue;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadRadioGroup<String>(
             enabled: false,
@@ -196,7 +197,7 @@ void main() {
 
     testWidgets('applies custom size correctly', (WidgetTester tester) async {
       const customSize = 24.0;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadRadioGroup<String>(
             items: [
@@ -249,7 +250,7 @@ void main() {
 
     testWidgets('applies custom color correctly', (WidgetTester tester) async {
       const customColor = Colors.red;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadRadioGroup<String>(
             initialValue: 'option1',
@@ -270,16 +271,17 @@ void main() {
         matching: find.byType(DecoratedBox),
       );
       expect(decoratedBoxFinder, findsOneWidget);
-      final decoratedBox = tester
-          .widget<DecoratedBox>(decoratedBoxFinder)
-          .decoration as BoxDecoration;
+      final decoratedBox =
+          tester.widget<DecoratedBox>(decoratedBoxFinder).decoration
+              as BoxDecoration;
       expect(decoratedBox.color, customColor);
     });
 
-    testWidgets('applies custom spacing correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom spacing correctly', (
+      WidgetTester tester,
+    ) async {
       const customSpacing = 16.0;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadRadioGroup<String>(
             spacing: customSpacing,
@@ -300,7 +302,7 @@ void main() {
 
     testWidgets('handles focus correctly', (WidgetTester tester) async {
       final focusNode = FocusNode();
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadRadioGroup<String>(
             items: [
@@ -329,7 +331,7 @@ void main() {
     });
 
     testWidgets('renders with label and sublabel', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadRadioGroup<String>(
             items: [
@@ -350,13 +352,15 @@ void main() {
       // Check layout includes radio, label, and sublabel
       final rowFinder = find.byType(Row);
       expect(rowFinder, findsOneWidget);
-      final columnFinder =
-          find.descendant(of: rowFinder, matching: find.byType(Column));
+      final columnFinder = find.descendant(
+        of: rowFinder,
+        matching: find.byType(Column),
+      );
       expect(columnFinder, findsOneWidget);
     });
 
     testWidgets('updates initialValue correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadRadioGroup<String>(
             key: ValueKey('initial'),
@@ -379,7 +383,7 @@ void main() {
       );
 
       // Update with new initialValue
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadRadioGroup<String>(
             key: ValueKey('updated'),
@@ -402,7 +406,7 @@ void main() {
     });
 
     testWidgets('ShadRadio matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadRadioGroup<bool>(
             items: List.generate(

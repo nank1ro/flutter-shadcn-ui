@@ -1,3 +1,266 @@
+## 0.39.3
+
+- **FIX**: Remove extra gap when `actions` is empty in `ShadDialog`.
+- **FEAT**: Add `titlePinned`, `descriptionPinned` and `actionsPinned` to `ShadDialog` and `ShadSheet` to control whether to pin the title, description and actions when scrolling the content.
+
+## 0.39.2
+
+- **FEAT**: Add `buttonTextStyle` to `ShadDateRangePickerFormField`.
+
+## 0.39.1
+
+- **FEAT**: Add `buttonTextStyle` to `ShadDatePicker`, `ShadDatePickerTheme` and `ShadDatePickerFormField` to customize the text style of the button that triggers the date picker popover.
+
+## 0.39.0
+
+- **FEAT**: Add `top`, `bottom`, `verticalGap` and `onLineCountChange` to `ShadInput`, `ShadInputFormField`, `ShadTextArea` and `ShadTextAreaFormField` to add widgets above or below the input field, and to get notified when the number of lines in the input changes.
+- **CHORE**: Export `boxy` package.
+- **FIX**: `ShadTextarea` double scrollbar.
+- **FEAT**: Add `editableTextSize` to `ShadInput` and `ShadInputFormField` to set a fixed size for the editable text area.
+- **FIX**: Disable text selection inside buttons (thanks to @Isakdl).
+- **FIX**: ShadDialog always expands to constraints.maxWidth (thanks to @DMouayad).
+
+## 0.38.5
+
+- **FIX**: `ShadTabs` consuming extra space when `expandContent` is true for unselected tabs.
+
+## 0.38.4
+
+- **REFACTOR**: Remove required parameters from `ShadThemeData`, use default values instead.
+- **FEAT**: Add `setInternalFieldError` to `ShadForm` to set a forced error text for a form field.
+
+## 0.38.3
+
+- **FEAT**: Add `maintainState` to `ShadTabs` to control whether to maintain the state of the tabs when switching between them. Defaults to `true`.
+- **FEAT**: Add `canRequestFocus` to `ShadButton`.
+- **FIX**: Unselected `ShadTab` which was focusable.
+
+## 0.38.2
+
+- **FEAT**: Add `searchFocusNode` to `ShadSelect` and `ShadSelectFormField` to provide a custom focus node for the search input.
+- **FEAT**: Add `onSearchSubmitted` to `ShadSelect` and `ShadSelectFormField` to handle the submission of the search input (e.g., when the user presses the Enter key).
+- **FIX**: `ShadInput` crash when removing the external `focusNode`.
+
+## 0.38.1
+
+- **FIX**: Fix ShadTable doesn't support RTL (thanks to @DMouayad).
+- **FIX**: ShadToast & ShadSonner doesn't react to text direction change (thanks to @DMouayad).
+- **FIX**: ShadSheet crash when tap outside the sheet (thanks to @pro100andrey).
+- **FIX**: Feat: direction-aware dialog and toast close buttons (thanks to @DMouayad).
+- **FIX**: ShadDialog - scrolling doesn’t work when constraints are set (thanks to @pro100andrey).
+
+## 0.38.0
+
+- **BREAKING CHANGE**: `ShadTabs.expandContent` has been removed and added to `ShadTab.expandContent` to allow expanding only specific tabs.
+
+## 0.37.4
+
+- **FIX**: Export `Effect` from `flutter_animate` as `AnimateEffect` to avoid name conflicts.
+- **FIX**: Export `TextDirection` from `intl` as `IntlTextDirection` to avoid name conflicts.
+
+## 0.37.3
+
+- **FIX**: `ShadSelect` not updating the controller when the form field value changes.
+- **FIX**: Remove `initialValues` from `ShadSelectMultipleFormField`, use `controller` instead.
+- **FIX**: `ShadSelect.withSearch` keyboard shortcuts closing the popover when the search input is focused.
+
+## 0.37.2
+
+- **FEAT**: Add `backgroundColor`, `selectedBackgroundColor`, `textStyle` and `selectedTextStyle` to `ShadOptionTheme` and `ShadOption`, to customize the background color and text style of `ShadOption` (thanks to @9dan).
+
+## 0.37.1
+
+- **FIX**: Test fails due to pending Timer when using `Animate` and `Duration.zero`, which has been replaced with `ShadAnimate`.
+- **FEAT**: Add `ShadThemeData.merge` and `ShadTheme.merge` methods to easily merge two themes together. This is useful when you want to override only a few properties of the theme for a subtree of the widget tree.
+
+## 0.37.0
+
+- **FEAT**: Add `tabsGap` and `tabBarAlignment` to `ShadTabs` in order to customize the gaps between tabs and the alignment of the tab bar (thanks to @9dan).
+- **FIX**: Fix the resulting TextStyle applied to ShadTab (thanks to @9dan).
+- **FIX**: Fix the resulting decoration applied to ShadTab (thanks to @9dan).
+- **REFACTOR**: Before all text styles from `ShadTextTheme` had a color applied and `inherited` set to `false`, this prevented customizing the text styles easily. Now all text styles have `inherit` set to `true` and no color applied, so they can be customized more easily (thanks to @9dan)
+- **FEAT**: Expose `TextStyle.fallback` method to easily set a fallback property to a TextStyle if it is null; for example, `textStyle.fallback(color: Colors.red)` will set the color to red if it is null, and will keep the original color if it is not null (thanks to @9dan).
+- **FIX**: `ShadOption.selectedIcon` was always visible, even if the option was not selected (thanks to @DMouayad).
+- **FEAT**: Allow custom exit transition duration in `showShadDialog` (thanks to @DMouayad).
+- **FEAT**: Add `showHours`, `showMinutes` and `showSeconds` to `ShadTimePicker` and `ShadTimePickerFormField` to customize which fields are shown.
+
+## 0.36.1
+
+- **FIX**: Expose `ShadButtonSizesTheme`.
+- **FEAT**: Add `textStyle` to `ShadButton` and `ShadButtonTheme` to customize the text style of the button.
+
+## 0.36.0
+
+- **BREAKING CHANGE**: Remove `iconData` from `ShadAlert`, use `icon` instead.
+- **FEAT**: Add `iconSize` to `ShadAlert` and `ShadAlertTheme`, fallbacks to `16` from inherited `IconTheme`.
+
+## 0.35.1
+
+- **FIX**: The `lerp` method of themes was overriding null double values with 0.
+- **FIX**: Replaced `Border` with `ShadBorder` because `Border.merge` from Flutter is a mess (sums widths of a and b).
+
+## 0.35.0
+
+- **BREAKING CHANGE**: The `mergeWith` method has been renamed into `merge` and the `merge` boolean has been renamed into `canMerge` (ShadThemes).
+- **CHORE**: The theme generation has been automated by using the [theme_extensions_builder](https://pub.dev/packages/theme_extensions_builder) package (thanks to @pro100andrey).
+
+## 0.34.0
+
+- **FEAT**: Add `leading`, `trailing`, `top` and `bottom` parameters to `ShadAlert` to add widgets before, after, above or below the main content of the alert.
+
+## 0.33.1
+
+- **FIX**: `ShadSelect` always scrolling to the selected option when opening the popover which can now be disabled with `ensureSelectedVisible: false`.
+- **CHORE**: Remove `required` from `onSearchChanged` in `ShadSelect` and `ShadSelectFormField` to make it optional, as it is not required when a custom `search` widget is provided.
+
+## 0.33.0
+
+- **FEAT**: Allow extending `ShadTextTheme` with custom text styles through the `custom` parameter. [See docs](https://flutter-shadcn-ui.mariuti.com/typography#extend-with-custom-styles).
+- **FEAT**: Allow extending `ShadColorScheme` with custom colors through the `custom` parameter. [See docs](https://flutter-shadcn-ui.mariuti.com/theme/data/#extend-with-custom-colors).
+
+## 0.32.2
+
+- **FIX**: `ShadTooltip` not showing on hover.
+
+## 0.32.1
+
+- **FIX**: `ShadToast` constraints were not being used.
+- **FIX**: `ShadToast` text direction was not taken from theme.
+- **FEAT**: Add `mainAxisSize` and `mainAxisAlignment` to `ShadToast` and `ShadToastTheme`, defaults to `MainAxisSize.max` and `MainAxisAlignment.spaceBetween`.
+
+## 0.32.0
+
+- **REFACTOR**: Now all components are material-free. The only exception is `ShadApp` which provides platform adaptive routing and scroll behavior.
+
+## 0.31.9
+
+- **FIX**: `ShadSelect` not reacting to the controller and rebuilding `selectedOptionBuilder`.
+- **FIX**: `ShadSelectFormField` and `ShadSelectMultipleFormField` not resetting the value on form reset.
+
+## 0.31.8
+
+- **FEAT**: Add support for keyboard navigation in `ShadCalendar` (thanks to @pedromassango).
+
+## 0.31.7
+
+- **FEAT**: Add `controller` to `ShadRadioGroup` to manually control the selected value.
+
+## 0.31.6
+
+- **FIX**: `ShadSwitch` on RTL direction.
+
+## 0.31.5
+
+- **FEAT**: Add `useSafeArea` to `ShadDialog` and `ShadSheet` to wrap the content with a `SafeArea`. Defaults to `true`.
+
+## 0.31.4
+
+- **FIX**: `closeOnTapOutside` of `ShadDatePicker` which wasn't passed to `ShadPopover`.
+
+## 0.31.3
+
+- **FIX**: Convert all `EdgeInsets` to `EdgeInsetsGeometry` to better support RTL and fix many components.
+
+## 0.31.2
+
+- **FEAT**: Add `ShadAccordionController` to manually control the open/close state of the `ShadAccordionItem`s.
+- **FEAT**: Toggle `ShadAccordionItem` by pressing `Space` (before it worked only with `Enter`) when the header is focused.
+
+## 0.31.1
+
+- **FEAT**: Add `side` to `ShadSheetTheme` to set the default side of the sheet from the theme.
+
+## 0.31.0
+
+- **FEAT**: Modify the `ShadTooltip` component and its hover strategies to work on mobile on tap without a long press.
+- **FEAT**: Add `ShadHoverStrategy.onTapOutside` to trigger unhover when tapping outside the widget. 
+- **FEAT**: Add `ShadHoverStrategy.onTap` to trigger hover/unhover when tapping inside the widget.
+- **FEAT**: Now if an hover strategy is present in both `hoverStrategies.hover` and `hoverStrategies.unhover`, the hover will be toggled.
+
+## 0.30.5
+
+- **FIX**: change `ShadSeparator.margin` type to `EdgeInsetsGeometry`
+
+## 0.30.4
+
+- **FIX**: `ShadTextareaFormField` initial value assert due to controller being used internally.
+
+## 0.30.3
+
+- **FIX**: `onChanged` of `ShadInputFormField` and `ShadTextareaFormField` fired twice for any change.
+
+## 0.30.2
+
+- **FIX**: Expose `ShadDefaultKeyboardToolbarTheme`.
+
+## 0.30.1+1
+
+- **CHORE**: Remove useless import.
+
+## 0.30.1
+
+- **FIX**: Fix `ShadResizable` on RTL (for real this time).
+- **CHORE**: Bump min Flutter SDK version to `3.35.0` to support `FormField.onReset` and `Brightness` from `'package:flutter/widgets.dart'` 
+
+## 0.30.0
+
+- **FEAT**: Add `ShadKeyboardToolbar` and `ShadDefaultKeyboardToolbar` components to show a toolbar above the keyboard. Add `keyboardToolbarBuilder` to `ShadInput`, `ShadInputFormField`, `ShadTextArea`, `ShadTextAreaFormField`, `ShadInputOTP`, `ShadInputOTPFormField` to easily add a keyboard toolbar to these components.
+
+## 0.29.4
+
+- **FIX**: Fix `ShadTextTheme.copyWith` was always overwriting custom font with default `Geist` font. [#425]
+
+## 0.29.3
+
+- **FIX**: Ensure `ShadForm.onChanged` is called for both standard `Form` fields and `ShadFormField` widgets.
+- **FIX**: Add missing `forceErrorText` parameter to `ShadFormField` widgets.
+
+## 0.29.2
+
+- **FIX**: Fix `ShadResizable` on RTL. Remove useless `textDirection` parameter from `ShadResizable` and `ShadResizableTheme`.
+
+## 0.29.1
+
+- **FIX**: Add missing `alignment` parameter to `ShadInput`, `ShadInputFormField`, `ShadTextArea` and `ShadTextAreaFormField`.
+
+## 0.29.0
+
+- **FIX**: Add missing popover closing animation (thanks to @DMouayad).
+
+## 0.28.8
+
+- **CHORE**: Resolve lint issues.
+
+## 0.28.7
+
+- **FIX**: Updated `ShadPopover` filter logic to use effectiveFilter instead of widget.filter.
+
+## 0.28.6
+
+- **REFACTOR**: Add `cursor*` customizations through theme (thanks to @GuillaumeMCK).
+
+## 0.28.5
+
+- **FIX**: `ShadCalendar` back and forward buttons on RTL (thanks to @HarithHaroon).
+
+## 0.28.4
+
+- **FEAT**: Add `cursorColor` to `ShadInput` (thanks to @GuillaumeMCK).
+- **FIX**: Use `AlignmentGeometry` instead of `Alignment` inside `ShadInput`, `ShadTextarea` and their form fields (thanks to @omaralmgerbie)
+
+## 0.28.3
+
+- **FIX**: pass `backgroundColor` to `ShadAppBuilder` (thanks to @GuillaumeMCK)
+
+## 0.28.2
+
+- **FIX**: `ShadDialog` and `ShadSheet` now use `SafeArea` to prevent the content from being cut off by the system UI.
+
+## 0.28.1
+
+- **FIX**: Add `clearValueOnUnregister` to `ShadForm` (defaults to `false`) to prevent clearing a form field's value from the form state when the field is unregistered (aka disposed).
+- **FIX**: `ShadPopover` not closing when pressing ESC (thanks to @DMouayad)
+
 ## 0.28.0
 
 - **REFACTOR**: Update `ShadCalendar` `yearSelectorMinWidth` from `100` to `64` and `monthSelectorMinWidth` from `120` to `64`.
@@ -8,6 +271,7 @@
 - **DOCS**: Adjust sheet docs example, with some spacing between buttons.
 - **FIX**: Fix the hit test behavior of `ShadContextMenuRegion`.
 - **FEAT**: Expose `hitTestBehavior` from `ShadContextMenuRegion`, defaults to `HitTestBehavior.opaque` (thanks to @NonymousMorlock).
+- **REFACTOR**: Set default text align of `ShadTooltip` to `null` instead of `TextAlign.center`.
 
 ## 0.27.4
 

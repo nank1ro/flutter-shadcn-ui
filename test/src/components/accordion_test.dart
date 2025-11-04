@@ -4,8 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/accordion.dart';
 
-import '../../extra/pump_async_widget.dart';
-
 void main() {
   /// Wraps a widget with necessary providers and material app structure for
   /// testing.
@@ -18,9 +16,10 @@ void main() {
   }
 
   group('ShadAccordion', () {
-    testWidgets('renders single variant correctly',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders single variant correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           ShadAccordion<String>(
             initialValue: 'item1',
@@ -57,13 +56,14 @@ void main() {
       expect(find.text('Content 2'), findsOneWidget);
     });
 
-    testWidgets('renders multiple variant correctly',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders multiple variant correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
-          const ShadAccordion.multiple(
-            initialValue: ['item1'],
-            children: [
+          ShadAccordion.multiple(
+            initialValue: const ['item1'],
+            children: const [
               ShadAccordionItem(
                 value: 'item1',
                 title: Text('Item 1'),
@@ -235,7 +235,7 @@ void main() {
     });
 
     testWidgets('ShadAccordion matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadAccordion<String>(
             children: List.generate(2, (index) {

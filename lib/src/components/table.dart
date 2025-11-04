@@ -1,17 +1,15 @@
-// ignore_for_file: cascade_invocations
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 
 /// Builder function for creating [ShadTableCell] widgets.
-typedef ShadTableCellBuilder = ShadTableCell Function(
-  BuildContext context,
-  TableVicinity vicinity,
-);
+typedef ShadTableCellBuilder =
+    ShadTableCell Function(
+      BuildContext context,
+      TableVicinity vicinity,
+    );
 
 /// Enum representing different variants of [ShadTableCell].
 enum ShadTableCellVariant {
@@ -88,7 +86,7 @@ class ShadTableCell extends TableViewCell {
   /// {@template ShadTableCell.alignment}
   /// Alignment of the cell's content.
   /// {@endtemplate}
-  final Alignment? alignment;
+  final AlignmentGeometry? alignment;
 
   /// {@template ShadTableCell.height}
   /// Height of the table cell.
@@ -98,7 +96,7 @@ class ShadTableCell extends TableViewCell {
   /// {@template ShadTableCell.padding}
   /// Padding within the table cell.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadTableCell.style}
   /// Text style for the cell's content.
@@ -110,28 +108,32 @@ class ShadTableCell extends TableViewCell {
     final theme = ShadTheme.of(context);
 
     final effectiveAlignment =
-        alignment ?? theme.tableTheme.cellAlignment ?? Alignment.centerLeft;
+        alignment ??
+        theme.tableTheme.cellAlignment ??
+        AlignmentDirectional.centerStart;
 
     final effectiveHeight = height ?? theme.tableTheme.cellHeight ?? 48;
 
-    final effectivePadding = padding ??
+    final effectivePadding =
+        padding ??
         theme.tableTheme.cellPadding ??
         const EdgeInsets.symmetric(horizontal: 16);
 
-    final textStyle = style ??
+    final textStyle =
+        style ??
         switch (variant) {
-          ShadTableCellVariant.cell => theme.tableTheme.cellStyle ??
-              theme.textTheme.muted
-                  .copyWith(color: theme.colorScheme.foreground),
-          ShadTableCellVariant.header => theme.tableTheme.cellHeaderStyle ??
-              theme.textTheme.muted.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-          ShadTableCellVariant.footer => theme.tableTheme.cellFooterStyle ??
-              theme.textTheme.muted.copyWith(
-                fontWeight: FontWeight.w500,
-                color: theme.colorScheme.foreground,
-              ),
+          ShadTableCellVariant.cell =>
+            (theme.tableTheme.cellStyle ?? theme.textTheme.muted).fallback(
+              color: theme.colorScheme.foreground,
+            ),
+          ShadTableCellVariant.header =>
+            (theme.tableTheme.cellHeaderStyle ??
+                    theme.textTheme.muted.copyWith(fontWeight: FontWeight.w500))
+                .fallback(color: theme.colorScheme.foreground),
+          ShadTableCellVariant.footer =>
+            (theme.tableTheme.cellFooterStyle ??
+                    theme.textTheme.muted.copyWith(fontWeight: FontWeight.w500))
+                .fallback(color: theme.colorScheme.foreground),
         };
 
     return TableViewCell(
@@ -203,11 +205,11 @@ class ShadTable extends StatefulWidget {
     this.onColumnSecondaryTapDown,
     this.onColumnSecondaryTapUp,
     this.onColumnSecondaryTapCancel,
-  })  : children = null,
-        headerBuilder = header,
-        footerBuilder = footer,
-        header = null,
-        footer = null;
+  }) : children = null,
+       headerBuilder = header,
+       footerBuilder = footer,
+       header = null,
+       footer = null;
 
   /// Creates a [ShadTable] from an explicit two dimensional array of
   /// [children].
@@ -257,12 +259,12 @@ class ShadTable extends StatefulWidget {
     this.onColumnSecondaryTapDown,
     this.onColumnSecondaryTapUp,
     this.onColumnSecondaryTapCancel,
-  })  : builder = null,
-        assert(children.isNotEmpty, 'children cannot be empty'),
-        headerBuilder = null,
-        footerBuilder = null,
-        columnCount = children.elementAt(0).length,
-        rowCount = children.length;
+  }) : builder = null,
+       assert(children.isNotEmpty, 'children cannot be empty'),
+       headerBuilder = null,
+       footerBuilder = null,
+       columnCount = children.elementAt(0).length,
+       rowCount = children.length;
 
   /// {@template ShadTable.headerBuilder}
   /// Builder function for creating header cells.
@@ -338,13 +340,13 @@ class ShadTable extends StatefulWidget {
   /// Function to define background decoration for columns.
   /// {@endtemplate}
   final TableSpanDecoration? Function(int column)?
-      columnSpanBackgroundDecoration;
+  columnSpanBackgroundDecoration;
 
   /// {@template ShadTable.columnSpanForegroundDecoration}
   /// Function to define foreground decoration for columns.
   /// {@endtemplate}
   final TableSpanDecoration? Function(int column)?
-      columnSpanForegroundDecoration;
+  columnSpanForegroundDecoration;
 
   /// {@template ShadTable.onHoveredRowIndex}
   /// Callback for when a row is hovered, providing the row index.
@@ -532,45 +534,45 @@ class _ShadTableState extends State<ShadTable> {
       recognizerFactories: {
         TapGestureRecognizer:
             GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
-          () => TapGestureRecognizer(
-            debugOwner: this,
-            supportedDevices: widget.supportedDevices,
-          ),
-          (TapGestureRecognizer instance) {
-            if (widget.onColumnTap != null) {
-              instance.onTap = () => widget.onColumnTap!(index);
-            }
-            if (widget.onColumnTapDown != null) {
-              instance.onTapDown = (d) => widget.onColumnTapDown!(index);
-            }
-            if (widget.onColumnTapUp != null) {
-              instance.onTapUp = (d) => widget.onColumnTapUp!(index);
-            }
-            if (widget.onColumnTapCancel != null) {
-              instance.onTapCancel = () => widget.onColumnTapCancel!(index);
-            }
-            if (widget.onColumnSecondaryTap != null) {
-              instance.onSecondaryTap =
-                  () => widget.onColumnSecondaryTap!(index);
-            }
-            if (widget.onColumnSecondaryTapDown != null) {
-              instance.onSecondaryTapDown =
-                  (d) => widget.onColumnSecondaryTapDown!(index);
-            }
-            if (widget.onColumnSecondaryTapUp != null) {
-              instance.onSecondaryTapUp =
-                  (d) => widget.onColumnSecondaryTapUp!(index);
-            }
-            if (widget.onColumnSecondaryTapCancel != null) {
-              instance.onSecondaryTapCancel =
-                  () => widget.onColumnSecondaryTapCancel!(index);
-            }
+              () => TapGestureRecognizer(
+                debugOwner: this,
+                supportedDevices: widget.supportedDevices,
+              ),
+              (TapGestureRecognizer instance) {
+                if (widget.onColumnTap != null) {
+                  instance.onTap = () => widget.onColumnTap!(index);
+                }
+                if (widget.onColumnTapDown != null) {
+                  instance.onTapDown = (d) => widget.onColumnTapDown!(index);
+                }
+                if (widget.onColumnTapUp != null) {
+                  instance.onTapUp = (d) => widget.onColumnTapUp!(index);
+                }
+                if (widget.onColumnTapCancel != null) {
+                  instance.onTapCancel = () => widget.onColumnTapCancel!(index);
+                }
+                if (widget.onColumnSecondaryTap != null) {
+                  instance.onSecondaryTap = () =>
+                      widget.onColumnSecondaryTap!(index);
+                }
+                if (widget.onColumnSecondaryTapDown != null) {
+                  instance.onSecondaryTapDown = (d) =>
+                      widget.onColumnSecondaryTapDown!(index);
+                }
+                if (widget.onColumnSecondaryTapUp != null) {
+                  instance.onSecondaryTapUp = (d) =>
+                      widget.onColumnSecondaryTapUp!(index);
+                }
+                if (widget.onColumnSecondaryTapCancel != null) {
+                  instance.onSecondaryTapCancel = () =>
+                      widget.onColumnSecondaryTapCancel!(index);
+                }
 
-            instance
-              ..gestureSettings = gestureSettings
-              ..supportedDevices = widget.supportedDevices;
-          },
-        ),
+                instance
+                  ..gestureSettings = gestureSettings
+                  ..supportedDevices = widget.supportedDevices;
+              },
+            ),
       },
       cursor: widget.onColumnTap != null
           ? SystemMouseCursors.click
@@ -590,13 +592,14 @@ class _ShadTableState extends State<ShadTable> {
         requestedRowSpanExtent ?? const FixedTableSpanExtent(48);
 
     return TableSpan(
-      backgroundDecoration: widget.rowSpanBackgroundDecoration?.call(index) ??
+      backgroundDecoration:
+          widget.rowSpanBackgroundDecoration?.call(index) ??
           TableSpanDecoration(
             color: hoveredRowIndex.value == index
                 ? colorScheme.muted.withValues(alpha: isFooter ? 1 : .5)
                 : isFooter
-                    ? colorScheme.muted.withValues(alpha: .5)
-                    : null,
+                ? colorScheme.muted.withValues(alpha: .5)
+                : null,
             border: TableSpanBorder(
               trailing: isLast
                   ? BorderSide.none
@@ -617,44 +620,45 @@ class _ShadTableState extends State<ShadTable> {
       recognizerFactories: {
         TapGestureRecognizer:
             GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
-          () => TapGestureRecognizer(
-            debugOwner: this,
-            supportedDevices: widget.supportedDevices,
-          ),
-          (TapGestureRecognizer instance) {
-            if (widget.onRowTap != null) {
-              instance.onTap = () => widget.onRowTap!(index);
-            }
-            if (widget.onRowTapDown != null) {
-              instance.onTapDown = (d) => widget.onRowTapDown!(index);
-            }
-            if (widget.onRowTapUp != null) {
-              instance.onTapUp = (d) => widget.onRowTapUp!(index);
-            }
-            if (widget.onRowTapCancel != null) {
-              instance.onTapCancel = () => widget.onRowTapCancel!(index);
-            }
-            if (widget.onRowSecondaryTap != null) {
-              instance.onSecondaryTap = () => widget.onRowSecondaryTap!(index);
-            }
-            if (widget.onRowSecondaryTapDown != null) {
-              instance.onSecondaryTapDown =
-                  (d) => widget.onRowSecondaryTapDown!(index);
-            }
-            if (widget.onRowSecondaryTapUp != null) {
-              instance.onSecondaryTapUp =
-                  (d) => widget.onRowSecondaryTapUp!(index);
-            }
-            if (widget.onRowSecondaryTapCancel != null) {
-              instance.onSecondaryTapCancel =
-                  () => widget.onRowSecondaryTapCancel!(index);
-            }
+              () => TapGestureRecognizer(
+                debugOwner: this,
+                supportedDevices: widget.supportedDevices,
+              ),
+              (TapGestureRecognizer instance) {
+                if (widget.onRowTap != null) {
+                  instance.onTap = () => widget.onRowTap!(index);
+                }
+                if (widget.onRowTapDown != null) {
+                  instance.onTapDown = (d) => widget.onRowTapDown!(index);
+                }
+                if (widget.onRowTapUp != null) {
+                  instance.onTapUp = (d) => widget.onRowTapUp!(index);
+                }
+                if (widget.onRowTapCancel != null) {
+                  instance.onTapCancel = () => widget.onRowTapCancel!(index);
+                }
+                if (widget.onRowSecondaryTap != null) {
+                  instance.onSecondaryTap = () =>
+                      widget.onRowSecondaryTap!(index);
+                }
+                if (widget.onRowSecondaryTapDown != null) {
+                  instance.onSecondaryTapDown = (d) =>
+                      widget.onRowSecondaryTapDown!(index);
+                }
+                if (widget.onRowSecondaryTapUp != null) {
+                  instance.onSecondaryTapUp = (d) =>
+                      widget.onRowSecondaryTapUp!(index);
+                }
+                if (widget.onRowSecondaryTapCancel != null) {
+                  instance.onSecondaryTapCancel = () =>
+                      widget.onRowSecondaryTapCancel!(index);
+                }
 
-            instance
-              ..gestureSettings = gestureSettings
-              ..supportedDevices = widget.supportedDevices;
-          },
-        ),
+                instance
+                  ..gestureSettings = gestureSettings
+                  ..supportedDevices = widget.supportedDevices;
+              },
+            ),
       },
       cursor: widget.onRowTap != null
           ? SystemMouseCursors.click
@@ -666,11 +670,13 @@ class _ShadTableState extends State<ShadTable> {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    final effectiveRowBuilder = widget.rowBuilder ??
+    final effectiveRowBuilder =
+        widget.rowBuilder ??
         theme.tableTheme.rowBuilder ??
         (i) => _buildRowSpan(i, effectiveRowCount);
 
-    final effectiveColumnBuilder = widget.columnBuilder ??
+    final effectiveColumnBuilder =
+        widget.columnBuilder ??
         theme.tableTheme.columnBuilder ??
         _buildColumnSpan;
 
@@ -678,17 +684,22 @@ class _ShadTableState extends State<ShadTable> {
     final effectivePinnedColumnCount = widget.pinnedColumnCount ?? 0;
     final effectivePrimary = widget.primary;
 
-    final effectiveDiagonalDragBehavior = widget.diagonalDragBehavior ??
+    final effectiveDiagonalDragBehavior =
+        widget.diagonalDragBehavior ??
         theme.tableTheme.diagonalDragBehavior ??
         DiagonalDragBehavior.none;
 
-    final effectiveDragStartBehavior = widget.dragStartBehavior ??
+    final effectiveDragStartBehavior =
+        widget.dragStartBehavior ??
         theme.tableTheme.dragStartBehavior ??
         DragStartBehavior.start;
 
-    final effectiveKeyboardDismissBehavior = widget.keyboardDismissBehavior ??
+    final effectiveKeyboardDismissBehavior =
+        widget.keyboardDismissBehavior ??
         theme.tableTheme.keyboardDismissBehavior ??
         ScrollViewKeyboardDismissBehavior.manual;
+
+    final textDirection = Directionality.of(context);
 
     return ValueListenableBuilder(
       valueListenable: hoveredRowIndex,
@@ -708,6 +719,7 @@ class _ShadTableState extends State<ShadTable> {
             horizontalDetails: ScrollableDetails.horizontal(
               controller: widget.horizontalScrollController,
               physics: widget.horizontalScrollPhysics,
+              reverse: textDirection == TextDirection.rtl,
             ),
             cells: [
               if (widget.header != null) widget.header!.toList(),
@@ -730,6 +742,7 @@ class _ShadTableState extends State<ShadTable> {
           horizontalDetails: ScrollableDetails.horizontal(
             controller: widget.horizontalScrollController,
             physics: widget.horizontalScrollPhysics,
+            reverse: textDirection == TextDirection.rtl,
           ),
           cellBuilder: (context, index) {
             if (widget.headerBuilder != null && index.row == 0) {

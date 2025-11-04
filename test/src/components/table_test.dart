@@ -4,8 +4,6 @@ import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/table.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 
-import '../../extra/pump_async_widget.dart';
-
 const invoices = [
   (
     invoice: 'INV001',
@@ -58,7 +56,7 @@ void main() {
 
   group('ShadTable', () {
     testWidgets('ShadTable matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadTable.list(
             header: const [

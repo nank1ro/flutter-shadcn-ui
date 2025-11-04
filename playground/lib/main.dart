@@ -1,25 +1,86 @@
 import 'dart:js_interop';
-import 'package:flutter/material.dart';
-import 'package:playground/router.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
+
 import 'package:web/web.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
+
+import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:flutter_solidart/flutter_solidart.dart';
+
+import 'package:playground/router.dart';
+
+final themeSignal = Signal<ThemeMode>(ThemeMode.light);
+final themeColorSignal = Signal<String>('zinc');
+
+// For Dev ONLY: use your local Astro dev server
+// const kParentOrigin = "http://localhost:4321";
+const kParentOrigin = "https://flutter-shadcn-ui.mariuti.com";
 
 void main() {
   usePathUrlStrategy();
+
+  // Read theme from URL query parameters then update the signals.
+  setupInitialThemeFromURL();
+
+  // Listen for messages from the parent window (the Astro docs site).
+  setupWindowMessagesListener();
+
+  runApp(const MyApp());
+}
+
+void setupInitialThemeFromURL() {
+  final uri = Uri.base;
+
+  final themeModeParam = uri.queryParameters['themeMode'];
+  if (themeModeParam != null) {
+    themeSignal.value = themeModeParam == 'dark'
+        ? ThemeMode.dark
+        : ThemeMode.light;
+  }
+
+  final themeColorParam = uri.queryParameters['themeColor'];
+  if (themeColorParam != null) {
+    themeColorSignal.value = themeColorParam;
+  }
+}
+
+void setupWindowMessagesListener() {
   window.onMessage.listen((event) {
-    final data = event.data.dartify();
-    if (data is Map) {
+    // IMPORTANT: For security, always verify the origin of the message.
+    if (event.origin != kParentOrigin) {
+      return;
+    }
+
+    try {
+      final data = event.data.dartify();
+      if (data is! Map) return;
       final type = data['type'];
-      if (type == 'navigate') {
-        final route = data['route'];
-        if (route is String) {
+
+      // Check the type of the message.
+      if (type == 'theme-change') {
+        handleThemeEvent(data);
+      } else if (type == 'navigate') {
+        if (data['route'] case String route) {
           router.push(route);
         }
       }
+    } catch (e) {
+      print('Error processing message from docs site: $e');
     }
   });
-  runApp(const MyApp());
+}
+
+void handleThemeEvent(Map data) {
+  final themeMode = data['themeMode'] == 'dark'
+      ? ThemeMode.dark
+      : ThemeMode.light;
+  final String? themeColor = data['themeColor'];
+
+  themeSignal.value = themeMode;
+
+  if (themeColor != null) {
+    themeColorSignal.value = themeColor;
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -49,23 +110,25 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Uri.base.queryParameters['theme'] ?? 'light';
-    final themeColor = Uri.base.queryParameters['themeColor'] ??
-        'zinc'; // default theme color is zinc
-
-    return ShadApp.router(
-      title: 'shadcn-ui Flutter Playground',
-      routerConfig: router,
-      themeMode: theme == 'dark' ? ThemeMode.dark : ThemeMode.light,
-      debugShowCheckedModeBanner: false,
-      theme: ShadThemeData(
-        colorScheme: getShadColorScheme(themeColor, false),
-        brightness: Brightness.light,
-      ),
-      darkTheme: ShadThemeData(
-        colorScheme: getShadColorScheme(themeColor, true),
-        brightness: Brightness.dark,
-      ),
+    return SignalBuilder(
+      builder: (context, _) {
+        final themeMode = themeSignal.value;
+        final themeColor = themeColorSignal.value;
+        return ShadApp.router(
+          title: 'shadcn-ui Flutter Playground',
+          routerConfig: router,
+          themeMode: themeMode,
+          debugShowCheckedModeBanner: false,
+          theme: ShadThemeData(
+            colorScheme: getShadColorScheme(themeColor, false),
+            brightness: Brightness.light,
+          ),
+          darkTheme: ShadThemeData(
+            colorScheme: getShadColorScheme(themeColor, true),
+            brightness: Brightness.dark,
+          ),
+        );
+      },
     );
   }
 }

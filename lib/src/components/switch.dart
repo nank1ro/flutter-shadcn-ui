@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/raw_components/focusable.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/animate.dart';
 import 'package:shadcn_ui/src/utils/debug_check.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 /// {@template ShadSwitch}
 /// A customizable switch widget, styled according to the Shadcn UI design
@@ -149,9 +151,9 @@ class ShadSwitch extends StatefulWidget {
   /// {@template ShadSwitch.padding}
   /// Padding between the switch itself and its label.
   ///
-  /// Defaults to `EdgeInsets.only(left: 8)`.
+  /// Defaults to `EdgeInsetsDirectional.only(start: 8)`.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   @override
   State<ShadSwitch> createState() => _ShadSwitchState();
@@ -177,6 +179,14 @@ class _ShadSwitchState extends State<ShadSwitch>
     if (oldWidget.value != widget.value) {
       controller.animateTo(widget.value ? 1 : 0);
     }
+    if (oldWidget.focusNode != widget.focusNode) {
+      if (widget.focusNode == null) {
+        _focusNode = FocusNode();
+      } else {
+        _focusNode?.dispose();
+        _focusNode = null;
+      }
+    }
   }
 
   @override
@@ -197,13 +207,18 @@ class _ShadSwitchState extends State<ShadSwitch>
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
     final theme = ShadTheme.of(context);
-    final effectiveThumbColor = widget.thumbColor ??
+
+    final direction = widget.direction ?? Directionality.of(context);
+    final effectiveThumbColor =
+        widget.thumbColor ??
         theme.switchTheme.thumbColor ??
         theme.colorScheme.background;
-    final effectiveUncheckedTrackColor = widget.uncheckedTrackColor ??
+    final effectiveUncheckedTrackColor =
+        widget.uncheckedTrackColor ??
         theme.switchTheme.uncheckedTrackColor ??
         theme.colorScheme.input;
-    final effectiveCheckedTrackColor = widget.checkedTrackColor ??
+    final effectiveCheckedTrackColor =
+        widget.checkedTrackColor ??
         theme.switchTheme.checkedTrackColor ??
         theme.colorScheme.primary;
     final effectiveWidth = widget.width ?? theme.switchTheme.width ?? 44;
@@ -212,20 +227,42 @@ class _ShadSwitchState extends State<ShadSwitch>
     final effectiveThumbSize = effectiveHeight - effectiveMargin * 2;
     final transitionStep =
         effectiveWidth - effectiveMargin * 2 - effectiveThumbSize;
-    final effectiveDuration = widget.duration ?? 100.milliseconds;
+    final effectiveDuration =
+        widget.duration ?? theme.switchTheme.duration ?? 100.milliseconds;
 
     final effectiveDecoration =
         (theme.switchTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration)
+            .merge(widget.decoration)
             .copyWith(
               color: widget.value
                   ? effectiveCheckedTrackColor
                   : effectiveUncheckedTrackColor,
             );
 
-    final effectivePadding = widget.padding ??
+    final effectivePadding =
+        widget.padding ??
         theme.switchTheme.padding ??
-        const EdgeInsets.only(left: 8);
+        const EdgeInsetsDirectional.only(start: 8);
+
+    final effectiveEffects = [
+      switch (direction) {
+        TextDirection.ltr => MoveEffect(
+          begin: Offset.zero,
+          end: Offset(transitionStep, 0),
+          duration: effectiveDuration,
+        ),
+        TextDirection.rtl => MoveEffect(
+          begin: Offset.zero,
+          end: Offset(-transitionStep, 0),
+          duration: effectiveDuration,
+        ),
+      },
+    ];
+
+    final keyboardTriggers = <ShortcutActivator>[
+      const SingleActivator(LogicalKeyboardKey.enter),
+      const SingleActivator(LogicalKeyboardKey.space),
+    ];
 
     final switchWidget = Semantics(
       toggled: widget.value,
@@ -234,10 +271,11 @@ class _ShadSwitchState extends State<ShadSwitch>
         disabled: !widget.enabled,
         child: CallbackShortcuts(
           bindings: {
-            const SingleActivator(LogicalKeyboardKey.enter): () {
-              if (!widget.enabled) return;
-              onTap();
-            },
+            for (final trigger in keyboardTriggers)
+              trigger: () {
+                if (!widget.enabled) return;
+                onTap();
+              },
           },
           child: ShadFocusable(
             focusNode: focusNode,
@@ -257,26 +295,25 @@ class _ShadSwitchState extends State<ShadSwitch>
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: EdgeInsets.all(effectiveMargin),
-                    child: Animate(
+                    child: ShadAnimate(
                       controller: controller,
                       autoPlay: false,
-                      effects: [
-                        MoveEffect(
-                          begin: Offset.zero,
-                          end: Offset(transitionStep, 0),
-                          duration: effectiveDuration,
-                        ),
-                      ],
-                      child: SizedBox(
-                        width: effectiveThumbSize,
-                        height: effectiveThumbSize,
-                        child: ShadDecorator(
-                          decoration: ShadDecoration(
-                            color: effectiveThumbColor,
-                            shape: BoxShape.circle,
-                            merge: false,
+                      effects: effectiveEffects,
+                      child: Row(
+                        textDirection: direction,
+                        children: [
+                          SizedBox(
+                            width: effectiveThumbSize,
+                            height: effectiveThumbSize,
+                            child: ShadDecorator(
+                              decoration: ShadDecoration(
+                                color: effectiveThumbColor,
+                                shape: BoxShape.circle,
+                                canMerge: false,
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),
@@ -295,7 +332,7 @@ class _ShadSwitchState extends State<ShadSwitch>
       child: GestureDetector(
         onTap: widget.onChanged == null ? null : onTap,
         child: Row(
-          textDirection: widget.direction,
+          textDirection: direction,
           mainAxisSize: MainAxisSize.min,
           children: [
             switchWidget,
@@ -322,7 +359,9 @@ class _ShadSwitchState extends State<ShadSwitch>
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: DefaultTextStyle(
-                            style: theme.textTheme.muted,
+                            style: theme.textTheme.muted.fallback(
+                              color: theme.colorScheme.mutedForeground,
+                            ),
                             child: widget.sublabel!,
                           ),
                         ),

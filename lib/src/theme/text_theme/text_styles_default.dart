@@ -8,7 +8,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 48,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -25,7 +24,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 36,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -42,7 +40,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 30,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -59,7 +56,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 24,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -76,7 +72,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 20,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -93,7 +88,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 16,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -110,7 +104,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 16,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.italic,
@@ -127,7 +120,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 16,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -144,7 +136,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 16,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -161,7 +152,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 20,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -178,7 +168,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 18,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -195,7 +184,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 14,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,
@@ -212,7 +200,6 @@ abstract class ShadTextDefaultTheme {
     required String family,
   }) {
     return TextStyle(
-      inherit: false,
       fontSize: 14,
       decoration: TextDecoration.none,
       fontStyle: FontStyle.normal,

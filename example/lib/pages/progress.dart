@@ -17,6 +17,7 @@ class _ProgressPageState extends State<ProgressPage> {
     return BaseScaffold(
       appBarTitle: 'Progress',
       children: [
+        Text('Determinate Progress'),
         ShadProgress(
           value: value / 100,
         ),
@@ -34,7 +35,9 @@ class _ProgressPageState extends State<ProgressPage> {
               icon: const Icon(Icons.add),
             ),
           ],
-        )
+        ),
+        Text('Indeterminate Progress'),
+        ShadProgress(),
       ],
     );
   }

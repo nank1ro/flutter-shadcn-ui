@@ -1,8 +1,8 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -13,6 +13,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     super.id,
     super.key,
     super.onSaved,
+    super.forceErrorText,
     String? Function(String)? validator,
     String? initialValue,
     super.enabled,
@@ -113,7 +114,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     List<TextInputFormatter>? inputFormatters,
 
     /// {@macro ShadInput.cursorWidth}
-    double cursorWidth = 2.0,
+    double? cursorWidth,
 
     /// {@macro ShadInput.cursorHeight}
     double? cursorHeight,
@@ -194,7 +195,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     Color? selectionColor,
 
     /// {@macro ShadInput.padding}
-    EdgeInsets? padding,
+    EdgeInsetsGeometry? padding,
 
     /// {@macro ShadInput.leading}
     Widget? leading,
@@ -211,11 +212,14 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     /// {@macro ShadInput.placeholderStyle}
     TextStyle? placeholderStyle,
 
+    /// {@macro ShadInput.alignment}
+    AlignmentGeometry? alignment,
+
     /// {@macro ShadInput.placeholderAlignment}
-    Alignment? placeholderAlignment,
+    AlignmentGeometry? placeholderAlignment,
 
     /// {@macro ShadInput.inputPadding}
-    EdgeInsets? inputPadding,
+    EdgeInsetsGeometry? inputPadding,
 
     /// {@macro ShadInput.gap}
     double? gap,
@@ -225,92 +229,112 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
 
     /// {@macro flutter.widgets.editableText.groupId}
     Object? groupId,
+
+    /// {@macro ShadKeyboardToolbar.toolbarBuilder}
+    WidgetBuilder? keyboardToolbarBuilder,
+
+    /// {@macro ShadInput.top}
+    Widget? top,
+
+    /// {@macro ShadInput.bottom}
+    Widget? bottom,
+
+    /// {@macro ShadInput.onLineCountChange}
+    ValueChanged<int>? onLineCountChange,
+
+    /// {@macro ShadInput.editableTextSize}
+    Size? editableTextSize,
   }) : super(
-          initialValue: controller != null ? controller.text : initialValue,
-          validator: validator == null ? null : (v) => validator(v ?? ''),
-          onChanged: onChanged == null ? null : (v) => onChanged(v ?? ''),
-          decorationBuilder: (context) =>
-              (ShadTheme.of(context).inputTheme.decoration ??
-                      const ShadDecoration())
-                  .mergeWith(decoration),
-          builder: (field) {
-            final state = field as _ShadFormBuilderInputState;
-            return ShadInput(
-              key: state.inputKey,
-              controller: state.controller,
-              restorationId: restorationId,
-              enabled: state.enabled,
-              focusNode: state.focusNode,
-              decoration: state.decoration,
-              style: style,
-              cursorColor: cursorColor,
-              selectionColor: selectionColor,
-              keyboardType: keyboardType,
-              textInputAction: textInputAction,
-              textCapitalization: textCapitalization,
-              autofocus: autofocus,
-              obscureText: obscureText,
-              autocorrect: autocorrect,
-              magnifierConfiguration: magnifierConfiguration,
-              smartDashesType: smartDashesType,
-              smartQuotesType: smartQuotesType,
-              enableSuggestions: enableSuggestions,
-              maxLines: maxLines,
-              minLines: minLines,
-              expands: expands,
-              onChanged: onChanged,
-              onEditingComplete: onEditingComplete,
-              onSubmitted: onSubmitted,
-              onAppPrivateCommand: onAppPrivateCommand,
-              inputFormatters: inputFormatters,
-              cursorWidth: cursorWidth,
-              cursorHeight: cursorHeight,
-              cursorRadius: cursorRadius,
-              selectionHeightStyle: selectionHeightStyle,
-              selectionWidthStyle: selectionWidthStyle,
-              scrollPadding: scrollPadding,
-              dragStartBehavior: dragStartBehavior,
-              scrollController: scrollController,
-              scrollPhysics: scrollPhysics,
-              autofillHints: autofillHints,
-              clipBehavior: clipBehavior,
-              scribbleEnabled: scribbleEnabled,
-              enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
-              contentInsertionConfiguration: contentInsertionConfiguration,
-              contextMenuBuilder: contextMenuBuilder,
-              selectionControls: selectionControls,
-              mouseCursor: mouseCursor,
-              enableInteractiveSelection: enableInteractiveSelection,
-              undoController: undoController,
-              spellCheckConfiguration: spellCheckConfiguration,
-              placeholder: placeholder,
-              onPressed: onPressed,
-              onPressedAlwaysCalled: onPressedAlwaysCalled,
-              onPressedOutside: onPressedOutside,
-              keyboardAppearance: keyboardAppearance,
-              cursorOpacityAnimates: cursorOpacityAnimates,
-              readOnly: readOnly,
-              strutStyle: strutStyle,
-              textAlign: textAlign,
-              textDirection: textDirection,
-              obscuringCharacter: obscuringCharacter,
-              showCursor: showCursor,
-              maxLength: maxLength,
-              maxLengthEnforcement: maxLengthEnforcement,
-              padding: padding,
-              leading: leading,
-              trailing: trailing,
-              mainAxisAlignment: mainAxisAlignment,
-              crossAxisAlignment: crossAxisAlignment,
-              placeholderStyle: placeholderStyle,
-              placeholderAlignment: placeholderAlignment,
-              inputPadding: inputPadding,
-              gap: gap,
-              constraints: constraints,
-              groupId: groupId,
-            );
-          },
-        );
+         initialValue: controller != null ? controller.text : initialValue,
+         validator: validator == null ? null : (v) => validator(v ?? ''),
+         onChanged: onChanged == null ? null : (v) => onChanged(v ?? ''),
+         decorationBuilder: (context) =>
+             (ShadTheme.of(context).inputTheme.decoration ??
+                     const ShadDecoration())
+                 .merge(decoration),
+         builder: (field) {
+           final state = field as _ShadFormBuilderInputState;
+           return ShadInput(
+             key: state.inputKey,
+             controller: state.controller,
+             restorationId: restorationId,
+             enabled: state.enabled,
+             focusNode: state.focusNode,
+             decoration: state.decoration,
+             style: style,
+             cursorColor: cursorColor,
+             selectionColor: selectionColor,
+             keyboardType: keyboardType,
+             textInputAction: textInputAction,
+             textCapitalization: textCapitalization,
+             autofocus: autofocus,
+             obscureText: obscureText,
+             autocorrect: autocorrect,
+             magnifierConfiguration: magnifierConfiguration,
+             smartDashesType: smartDashesType,
+             smartQuotesType: smartQuotesType,
+             enableSuggestions: enableSuggestions,
+             maxLines: maxLines,
+             minLines: minLines,
+             expands: expands,
+             onEditingComplete: onEditingComplete,
+             onSubmitted: onSubmitted,
+             onAppPrivateCommand: onAppPrivateCommand,
+             inputFormatters: inputFormatters,
+             cursorWidth: cursorWidth,
+             cursorHeight: cursorHeight,
+             cursorRadius: cursorRadius,
+             selectionHeightStyle: selectionHeightStyle,
+             selectionWidthStyle: selectionWidthStyle,
+             scrollPadding: scrollPadding,
+             dragStartBehavior: dragStartBehavior,
+             scrollController: scrollController,
+             scrollPhysics: scrollPhysics,
+             autofillHints: autofillHints,
+             clipBehavior: clipBehavior,
+             scribbleEnabled: scribbleEnabled,
+             enableIMEPersonalizedLearning: enableIMEPersonalizedLearning,
+             contentInsertionConfiguration: contentInsertionConfiguration,
+             contextMenuBuilder: contextMenuBuilder,
+             selectionControls: selectionControls,
+             mouseCursor: mouseCursor,
+             enableInteractiveSelection: enableInteractiveSelection,
+             undoController: undoController,
+             spellCheckConfiguration: spellCheckConfiguration,
+             placeholder: placeholder,
+             onPressed: onPressed,
+             onPressedAlwaysCalled: onPressedAlwaysCalled,
+             onPressedOutside: onPressedOutside,
+             keyboardAppearance: keyboardAppearance,
+             cursorOpacityAnimates: cursorOpacityAnimates,
+             readOnly: readOnly,
+             strutStyle: strutStyle,
+             textAlign: textAlign,
+             textDirection: textDirection,
+             obscuringCharacter: obscuringCharacter,
+             showCursor: showCursor,
+             maxLength: maxLength,
+             maxLengthEnforcement: maxLengthEnforcement,
+             padding: padding,
+             leading: leading,
+             trailing: trailing,
+             mainAxisAlignment: mainAxisAlignment,
+             crossAxisAlignment: crossAxisAlignment,
+             alignment: alignment,
+             placeholderStyle: placeholderStyle,
+             placeholderAlignment: placeholderAlignment,
+             inputPadding: inputPadding,
+             gap: gap,
+             constraints: constraints,
+             groupId: groupId,
+             keyboardToolbarBuilder: keyboardToolbarBuilder,
+             top: top,
+             bottom: bottom,
+             onLineCountChange: onLineCountChange,
+             editableTextSize: editableTextSize,
+           );
+         },
+       );
 
   final TextEditingController? controller;
 

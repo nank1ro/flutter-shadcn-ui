@@ -43,7 +43,7 @@ class ShadSeparator extends StatelessWidget {
   ///
   /// This will override [ShadSeparatorTheme.verticalMargin] and
   /// [ShadSeparatorTheme.horizontalMargin].
-  final EdgeInsets? margin;
+  final EdgeInsetsGeometry? margin;
 
   /// {@template ShadSeparator.thickness}
   /// The thickness of the separator.
@@ -97,19 +97,19 @@ class ShadSeparator extends StatelessWidget {
       padding: effectiveMargin,
       child: switch (variant) {
         ShadSeparatorVariant.vertical => DecoratedBox(
-            decoration: BoxDecoration(
-              border: Border(left: borderSide),
-              borderRadius: radius,
-            ),
-            child: SizedBox(width: effectiveThickness, height: double.infinity),
+          decoration: BoxDecoration(
+            border: Border(left: borderSide),
+            borderRadius: radius,
           ),
+          child: SizedBox(width: effectiveThickness, height: double.infinity),
+        ),
         ShadSeparatorVariant.horizontal => DecoratedBox(
-            decoration: BoxDecoration(
-              border: Border(bottom: borderSide),
-              borderRadius: radius,
-            ),
-            child: SizedBox(height: effectiveThickness, width: double.infinity),
+          decoration: BoxDecoration(
+            border: Border(bottom: borderSide),
+            borderRadius: radius,
           ),
+          child: SizedBox(height: effectiveThickness, width: double.infinity),
+        ),
       },
     );
   }

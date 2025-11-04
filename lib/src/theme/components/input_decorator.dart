@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 class ShadInputDecorator extends StatelessWidget {
   const ShadInputDecorator({
@@ -20,7 +22,7 @@ class ShadInputDecorator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveDecoration = theme.decoration.mergeWith(decoration);
+    final effectiveDecoration = theme.decoration.merge(decoration);
     final hasError = effectiveDecoration.hasError ?? false;
 
     final effectiveFallbackToLabelStyle =
@@ -45,12 +47,17 @@ class ShadInputDecorator extends StatelessWidget {
     };
 
     if (effectiveFallbackToLabelStyle && effectiveLabelStyle == null) {
-      effectiveLabelStyle = effectiveDecoration.labelStyle ??
+      effectiveLabelStyle =
+          effectiveDecoration.labelStyle ??
           switch (hasError) {
             true => defaultErrorStyle,
             false => defaultLabelStyle,
           };
     }
+
+    final effectiveDescriptionStyle =
+        (effectiveDecoration.descriptionStyle ?? theme.textTheme.muted)
+            .fallback(color: theme.colorScheme.mutedForeground);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -58,7 +65,8 @@ class ShadInputDecorator extends StatelessWidget {
       children: [
         if (label != null)
           Padding(
-            padding: effectiveDecoration.labelPadding ??
+            padding:
+                effectiveDecoration.labelPadding ??
                 const EdgeInsets.only(bottom: 8),
             child: DefaultTextStyle(
               style: effectiveLabelStyle!,
@@ -68,17 +76,18 @@ class ShadInputDecorator extends StatelessWidget {
         if (child != null) child!,
         if (description != null)
           Padding(
-            padding: effectiveDecoration.descriptionPadding ??
+            padding:
+                effectiveDecoration.descriptionPadding ??
                 const EdgeInsets.only(top: 8),
             child: DefaultTextStyle(
-              style:
-                  effectiveDecoration.descriptionStyle ?? theme.textTheme.muted,
+              style: effectiveDescriptionStyle,
               child: description!,
             ),
           ),
         if (error != null)
           Padding(
-            padding: effectiveDecoration.errorPadding ??
+            padding:
+                effectiveDecoration.errorPadding ??
                 const EdgeInsets.only(top: 8),
             child: DefaultTextStyle(
               style: effectiveErrorStyle,

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/checkbox.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -9,6 +9,7 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
     super.id,
     super.key,
     super.onSaved,
+    super.forceErrorText,
     super.label,
     super.error,
     super.description,
@@ -57,34 +58,34 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
     /// {@macro ShadCheckbox.checkboxPadding}
     EdgeInsetsGeometry? checkboxPadding,
   }) : super(
-          initialValue: initialValue,
-          onChanged: onChanged == null ? null : (v) => onChanged(v ?? false),
-          validator: validator == null ? null : (v) => validator(v ?? false),
-          decorationBuilder: (context) =>
-              (ShadTheme.of(context).checkboxTheme.decoration ??
-                      const ShadDecoration())
-                  .mergeWith(decoration),
-          builder: (field) {
-            final state = field as _ShadFormBuilderCheckboxState;
-            return ShadCheckbox(
-              value: state.value!,
-              onChanged: state.didChange,
-              enabled: state.enabled,
-              focusNode: state.focusNode,
-              size: size,
-              duration: duration,
-              icon: icon,
-              color: color,
-              label: inputLabel,
-              sublabel: inputSublabel,
-              padding: padding,
-              direction: direction,
-              decoration: state.decoration,
-              crossAxisAlignment: crossAxisAlignment,
-              checkboxPadding: checkboxPadding,
-            );
-          },
-        );
+         initialValue: initialValue,
+         onChanged: onChanged == null ? null : (v) => onChanged(v ?? false),
+         validator: validator == null ? null : (v) => validator(v ?? false),
+         decorationBuilder: (context) =>
+             (ShadTheme.of(context).checkboxTheme.decoration ??
+                     const ShadDecoration())
+                 .merge(decoration),
+         builder: (field) {
+           final state = field as _ShadFormBuilderCheckboxState;
+           return ShadCheckbox(
+             value: state.value!,
+             onChanged: state.didChange,
+             enabled: state.enabled,
+             focusNode: state.focusNode,
+             size: size,
+             duration: duration,
+             icon: icon,
+             color: color,
+             label: inputLabel,
+             sublabel: inputSublabel,
+             padding: padding,
+             direction: direction,
+             decoration: state.decoration,
+             crossAxisAlignment: crossAxisAlignment,
+             checkboxPadding: checkboxPadding,
+           );
+         },
+       );
 
   @override
   ShadFormBuilderFieldState<ShadCheckboxFormField, bool> createState() =>

@@ -1,14 +1,25 @@
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
+
+part 'input.g.theme.dart';
+
+@themeGen
 @immutable
-class ShadInputTheme {
+class ShadInputTheme with _$ShadInputTheme {
   const ShadInputTheme({
-    this.merge = true,
+    bool canMerge = true,
     this.decoration,
     this.padding,
     this.style,
+    this.cursorColor,
+    this.cursorWidth,
+    this.cursorHeight,
+    this.cursorRadius,
+    this.cursorOpacityAnimates,
     this.placeholderStyle,
+    this.alignment,
     this.placeholderAlignment,
     this.inputPadding,
     this.mainAxisAlignment,
@@ -16,27 +27,50 @@ class ShadInputTheme {
     this.gap,
     this.constraints,
     this.scrollbarPadding,
-  });
+    this.verticalGap,
+  }) : _canMerge = canMerge;
 
-  final bool merge;
+  @ignore
+  final bool _canMerge;
+
+  @override
+  bool get canMerge => _canMerge;
 
   /// {@macro ShadInput.decoration}
   final ShadDecoration? decoration;
 
   /// {@macro ShadInput.padding}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@macro ShadInput.style}
   final TextStyle? style;
 
+  /// {@macro ShadInput.cursorColor}
+  final Color? cursorColor;
+
+  /// {@macro ShadInput.cursorWidth}
+  final double? cursorWidth;
+
+  /// {@macro ShadInput.cursorHeight}
+  final double? cursorHeight;
+
+  /// {@macro ShadInput.cursorRadius}
+  final Radius? cursorRadius;
+
+  /// {@macro ShadInput.cursorOpacityAnimates}
+  final bool? cursorOpacityAnimates;
+
   /// {@macro ShadInput.placeholderStyle}
   final TextStyle? placeholderStyle;
 
+  /// {@macro ShadInput.alignment}
+  final AlignmentGeometry? alignment;
+
   /// {@macro ShadInput.placeholderAlignment}
-  final Alignment? placeholderAlignment;
+  final AlignmentGeometry? placeholderAlignment;
 
   /// {@macro ShadInput.inputPadding}
-  final EdgeInsets? inputPadding;
+  final EdgeInsetsGeometry? inputPadding;
 
   /// {@macro ShadInput.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
@@ -51,109 +85,14 @@ class ShadInputTheme {
   final BoxConstraints? constraints;
 
   /// {@macro ShadInput.scrollbarPadding}
-  final EdgeInsets? scrollbarPadding;
+  final EdgeInsetsGeometry? scrollbarPadding;
 
-  static ShadInputTheme lerp(
-    ShadInputTheme a,
-    ShadInputTheme b,
+  /// {@macro ShadInput.verticalGap}
+  final double? verticalGap;
+
+  static ShadInputTheme? lerp(
+    ShadInputTheme? a,
+    ShadInputTheme? b,
     double t,
-  ) {
-    if (identical(a, b)) return a;
-    return ShadInputTheme(
-      merge: b.merge,
-      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
-      padding: EdgeInsets.lerp(a.padding, b.padding, t),
-      style: TextStyle.lerp(a.style, b.style, t),
-      placeholderStyle:
-          TextStyle.lerp(a.placeholderStyle, b.placeholderStyle, t),
-      inputPadding: EdgeInsets.lerp(a.inputPadding, b.inputPadding, t),
-      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
-      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
-      gap: t < 0.5 ? a.gap : b.gap,
-      constraints: BoxConstraints.lerp(a.constraints, b.constraints, t),
-      scrollbarPadding: EdgeInsets.lerp(
-        a.scrollbarPadding,
-        b.scrollbarPadding,
-        t,
-      ),
-    );
-  }
-
-  ShadInputTheme copyWith({
-    bool? merge,
-    ShadDecoration? decoration,
-    EdgeInsets? padding,
-    TextStyle? style,
-    TextStyle? placeholderStyle,
-    EdgeInsets? inputPadding,
-    MainAxisAlignment? mainAxisAlignment,
-    CrossAxisAlignment? crossAxisAlignment,
-    double? gap,
-    BoxConstraints? constraints,
-    EdgeInsets? scrollbarPadding,
-  }) {
-    return ShadInputTheme(
-      merge: merge ?? this.merge,
-      decoration: decoration ?? this.decoration,
-      padding: padding ?? this.padding,
-      style: style ?? this.style,
-      placeholderStyle: placeholderStyle ?? this.placeholderStyle,
-      inputPadding: inputPadding ?? this.inputPadding,
-      mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
-      gap: gap ?? this.gap,
-      constraints: constraints ?? this.constraints,
-      scrollbarPadding: scrollbarPadding ?? this.scrollbarPadding,
-    );
-  }
-
-  ShadInputTheme mergeWith(ShadInputTheme? other) {
-    if (other == null) return this;
-    if (!other.merge) return other;
-    return copyWith(
-      decoration: decoration?.mergeWith(other.decoration) ?? other.decoration,
-      padding: other.padding,
-      style: other.style,
-      placeholderStyle: other.placeholderStyle,
-      inputPadding: other.inputPadding,
-      mainAxisAlignment: other.mainAxisAlignment,
-      crossAxisAlignment: other.crossAxisAlignment,
-      gap: other.gap,
-      constraints: other.constraints,
-      scrollbarPadding: other.scrollbarPadding,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ShadInputTheme &&
-        other.merge == merge &&
-        other.decoration == decoration &&
-        other.padding == padding &&
-        other.style == style &&
-        other.placeholderStyle == placeholderStyle &&
-        other.inputPadding == inputPadding &&
-        other.mainAxisAlignment == mainAxisAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment &&
-        other.gap == gap &&
-        other.constraints == constraints &&
-        other.scrollbarPadding == scrollbarPadding;
-  }
-
-  @override
-  int get hashCode {
-    return merge.hashCode ^
-        decoration.hashCode ^
-        padding.hashCode ^
-        style.hashCode ^
-        placeholderStyle.hashCode ^
-        inputPadding.hashCode ^
-        mainAxisAlignment.hashCode ^
-        crossAxisAlignment.hashCode ^
-        gap.hashCode ^
-        constraints.hashCode ^
-        scrollbarPadding.hashCode;
-  }
+  ) => _$ShadInputTheme.lerp(a, b, t);
 }

@@ -1,12 +1,13 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/animate.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/mouse_area.dart';
 
@@ -54,6 +55,7 @@ class ShadPopover extends StatefulWidget {
     this.focusNode,
     this.anchor,
     this.effects,
+    this.reverseDuration,
     this.shadows,
     this.padding,
     this.decoration,
@@ -62,9 +64,9 @@ class ShadPopover extends StatefulWidget {
     this.areaGroupId,
     this.useSameGroupIdForChild = true,
   }) : assert(
-          (controller != null) ^ (visible != null),
-          'Either controller or visible must be provided',
-        );
+         (controller != null) ^ (visible != null),
+         'Either controller or visible must be provided',
+       );
 
   /// {@template ShadPopover.popover}
   /// The widget displayed as a popover.
@@ -129,7 +131,7 @@ class ShadPopover extends StatefulWidget {
   final ShadDecoration? decoration;
 
   /// {@template ShadPopover.filter}
-  /// The filter of the [popover], defaults to `null`.
+  /// The filter of the [popover]. If `null`, falls back to `ShadPopoverTheme`.
   /// {@endtemplate}
   final ImageFilter? filter;
 
@@ -150,16 +152,32 @@ class ShadPopover extends StatefulWidget {
   /// {@endtemplate}
   final bool useSameGroupIdForChild;
 
+  /// {@template ShadPopover.reverseDuration}
+  /// The duration of the popover's exit animation.
+  ///
+  /// Defaults to [Duration(milliseconds: 150)].
+  ///
+  /// To customize the opening animation duration,
+  /// use [Effect.duration] in specified [effects].
+  /// {@endtemplate}
+  final Duration? reverseDuration;
+
   @override
   State<ShadPopover> createState() => _ShadPopoverState();
 }
 
-class _ShadPopoverState extends State<ShadPopover> {
+class _ShadPopoverState extends State<ShadPopover>
+    with SingleTickerProviderStateMixin {
   ShadPopoverController? _controller;
   ShadPopoverController get controller => widget.controller ?? _controller!;
-  bool animating = false;
+
+  late final AnimationController animationController;
 
   late final _popoverKey = UniqueKey();
+
+  // The focus node of the popover.
+  // It's used to be able to focus the popover and receive key events.
+  final _popoverFocusNode = FocusNode();
 
   Object get groupId => widget.groupId ?? _popoverKey;
 
@@ -167,13 +185,28 @@ class _ShadPopoverState extends State<ShadPopover> {
   void initState() {
     super.initState();
     if (widget.controller == null) {
-      _controller = ShadPopoverController();
+      _controller = ShadPopoverController(isOpen: widget.visible ?? false);
     }
+    animationController = AnimationController(
+      vsync: this,
+      // This duration will be overridden later
+      // by the [Animate] widget based on the effects.
+      duration: Animate.defaultDuration,
+    );
+    controller.addListener(_onPopoverToggle);
+
+    _onPopoverToggle();
   }
 
   @override
   void didUpdateWidget(covariant ShadPopover oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.controller != null &&
+        widget.controller != oldWidget.controller) {
+      oldWidget.controller?.removeListener(_onPopoverToggle);
+      widget.controller!.addListener(_onPopoverToggle);
+    }
+
     if (widget.visible != null) {
       if (widget.visible! && !controller.isOpen) {
         controller.show();
@@ -185,35 +218,67 @@ class _ShadPopoverState extends State<ShadPopover> {
 
   @override
   void dispose() {
+    // Remove the listener from the provided `ShadPopoverController`
+    // or our internal controller.
+    controller.removeListener(_onPopoverToggle);
+
+    animationController.dispose();
+    _popoverFocusNode.dispose();
     _controller?.dispose();
     super.dispose();
+  }
+
+  void _onPopoverToggle() {
+    if (controller.isOpen) {
+      animationController.forward(from: 0);
+      // When the popover is opened, request focus
+      // to be able to receive key events.
+
+      _popoverFocusNode.requestFocus();
+    } else {
+      animationController.reverse();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
+    final effectiveReverseDuration =
+        widget.reverseDuration ?? theme.popoverTheme.reverseDuration;
+
+    animationController.reverseDuration = effectiveReverseDuration;
+
     final effectiveEffects = widget.effects ?? theme.popoverTheme.effects ?? [];
-    final effectivePadding = widget.padding ??
+
+    final effectivePadding =
+        widget.padding ??
         theme.popoverTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 6);
+
     final effectiveShadows = widget.shadows ?? theme.popoverTheme.shadows;
     var effectiveDecoration =
         (theme.popoverTheme.decoration ?? const ShadDecoration())
-            .mergeWith(widget.decoration)
+            .merge(widget.decoration)
             .copyWith(shadows: effectiveShadows);
     // remove the top padding of the popover
     effectiveDecoration = effectiveDecoration.copyWith(
       secondaryBorder: ShadBorder(
-        padding: theme.decoration.secondaryBorder?.padding?.copyWith(top: 0),
+        padding: theme.decoration.secondaryBorder?.padding
+            ?.resolve(Directionality.of(context))
+            .copyWith(top: 0),
       ),
     );
 
-    final effectiveAnchor = widget.anchor ??
+    final effectiveAnchor =
+        widget.anchor ??
         theme.popoverTheme.anchor ??
         const ShadAnchorAuto(offset: Offset(0, 4));
 
     final effectiveFilter = widget.filter ?? theme.popoverTheme.filter;
+
+    final effectiveFilterRadius =
+        effectiveDecoration.border?.radius ?? BorderRadius.zero;
 
     Widget popover = ShadMouseArea(
       groupId: widget.areaGroupId,
@@ -223,7 +288,7 @@ class _ShadPopoverState extends State<ShadPopover> {
           padding: effectivePadding,
           child: DefaultTextStyle(
             style: TextStyle(
-              color: theme.colorScheme.popoverForeground,
+              color: ShadTheme.of(context).colorScheme.popoverForeground,
             ),
             textAlign: TextAlign.center,
             child: Builder(
@@ -235,14 +300,18 @@ class _ShadPopoverState extends State<ShadPopover> {
     );
 
     if (effectiveFilter != null) {
-      popover = BackdropFilter(
-        filter: widget.filter!,
-        child: popover,
+      popover = ClipRRect(
+        borderRadius: effectiveFilterRadius,
+        child: BackdropFilter(
+          filter: effectiveFilter,
+          child: popover,
+        ),
       );
     }
 
     if (effectiveEffects.isNotEmpty) {
-      popover = Animate(
+      popover = ShadAnimate(
+        controller: animationController,
         effects: effectiveEffects,
         child: popover,
       );
@@ -257,23 +326,32 @@ class _ShadPopoverState extends State<ShadPopover> {
       );
     }
 
-    Widget child = ListenableBuilder(
-      listenable: controller,
-      builder: (context, _) {
-        return CallbackShortcuts(
-          bindings: {
-            const SingleActivator(LogicalKeyboardKey.escape): () {
-              controller.hide();
+    Widget child = CallbackShortcuts(
+      bindings: {
+        const SingleActivator(LogicalKeyboardKey.escape): () {
+          controller.hide();
+        },
+      },
+      child: AnimatedBuilder(
+        animation: animationController,
+        builder: (context, _) {
+          return ShadPortal(
+            portalBuilder: (_) {
+              // used to trap the focus inside the popover.
+              return FocusScope(
+                child: Focus(
+                  skipTraversal: true,
+                  focusNode: _popoverFocusNode,
+                  child: popover,
+                ),
+              );
             },
-          },
-          child: ShadPortal(
-            portalBuilder: (_) => popover,
-            visible: controller.isOpen,
+            visible: !animationController.isDismissed,
             anchor: effectiveAnchor,
             child: widget.child,
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
     if (widget.useSameGroupIdForChild) {
       child = TapRegion(

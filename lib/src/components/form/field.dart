@@ -39,25 +39,27 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.valueTransformer,
     this.onReset,
     this.decorationBuilder,
+    super.forceErrorText,
   }) : super(
-          builder: (field) {
-            final state =
-                field as ShadFormBuilderFieldState<ShadFormBuilderField<T>, T>;
-            final hasError = field.hasError;
+         builder: (field) {
+           final state =
+               field as ShadFormBuilderFieldState<ShadFormBuilderField<T>, T>;
+           final hasError = field.hasError;
 
-            final effectiveError = hasError
-                ? error?.call(field.errorText!) ?? Text(field.errorText!)
-                : null;
+           final effectiveError = hasError
+               ? error?.call(field.errorText!) ?? Text(field.errorText!)
+               : null;
 
-            return ShadInputDecorator(
-              label: label,
-              error: effectiveError,
-              description: description,
-              decoration: state.decoration,
-              child: builder(field),
-            );
-          },
-        );
+           return ShadInputDecorator(
+             label: label,
+             error: effectiveError,
+             description: description,
+             decoration: state.decoration,
+             child: builder(field),
+           );
+         },
+         onReset: onReset,
+       );
 
   /// {@template ShadFormBuilderField.id}
   /// An optional identifier used to reference the field within a [ShadForm].
@@ -106,6 +108,8 @@ class ShadFormBuilderField<T> extends FormField<T> {
   /// Callback invoked when the field is reset to its initial value.
   /// Allows additional reset logic; defaults to null.
   /// {@endtemplate}
+  @override
+  // ignore: overridden_fields
   final VoidCallback? onReset;
 
   /// {@template ShadFormBuilderField.decorationBuilder}
@@ -144,6 +148,23 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   ShadDecoration get decoration =>
       (widget.decorationBuilder?.call(context) ?? const ShadDecoration())
           .copyWith(hasError: hasError);
+
+  String? _forceErrorText;
+
+  String? get forceErrorText => widget.forceErrorText ?? _forceErrorText;
+
+  @override
+  String? get errorText => forceErrorText ?? super.errorText;
+
+  @override
+  bool get hasError => forceErrorText != null || super.hasError;
+
+  /// Sets an internal error message that overrides validation errors.
+  void setInternalError(String? error) {
+    setState(() {
+      _forceErrorText = error;
+    });
+  }
 
   @override
   F get widget => super.widget as F;

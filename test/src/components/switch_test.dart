@@ -3,8 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/switch.dart';
 
-import '../../extra/pump_async_widget.dart';
-
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
@@ -13,8 +11,7 @@ void main() {
 
   group('ShadSwitch', () {
     testWidgets('ShadSwitch true matches goldens', (tester) async {
-      await tester
-          .pumpAsyncWidget(createTestWidget(const ShadSwitch(value: true)));
+      await tester.pumpWidget(createTestWidget(const ShadSwitch(value: true)));
 
       expect(
         find.byType(ShadSwitch),
@@ -23,8 +20,7 @@ void main() {
     });
 
     testWidgets('ShadSwitch false matches goldens', (tester) async {
-      await tester
-          .pumpAsyncWidget(createTestWidget(const ShadSwitch(value: false)));
+      await tester.pumpWidget(createTestWidget(const ShadSwitch(value: false)));
 
       expect(
         find.byType(ShadSwitch),

@@ -80,7 +80,8 @@ class _CardPageState extends State<CardPage> {
                   placeholder: const Text('Select'),
                   options: frameworks.entries
                       .map(
-                          (e) => ShadOption(value: e.key, child: Text(e.value)))
+                        (e) => ShadOption(value: e.key, child: Text(e.value)),
+                      )
                       .toList(),
                   selectedOptionBuilder: (context, value) {
                     return Text(frameworks[value]!);
@@ -99,7 +100,7 @@ class _CardPageState extends State<CardPage> {
           footer: ShadButton(
             width: double.infinity,
             leading: const Padding(
-              padding: EdgeInsets.only(right: 8),
+              padding: EdgeInsetsDirectional.only(end: 8),
               child: Icon(LucideIcons.check),
             ),
             onPressed: () {},
@@ -124,7 +125,7 @@ class _CardPageState extends State<CardPage> {
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 16),
+                        padding: const EdgeInsetsDirectional.only(start: 16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -136,7 +137,7 @@ class _CardPageState extends State<CardPage> {
                             Text(
                               'Send notifications to device.',
                               style: theme.textTheme.muted,
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -170,19 +171,25 @@ class _CardPageState extends State<CardPage> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 16),
+                            padding: const EdgeInsetsDirectional.only(
+                              start: 16,
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Your call has been confirmed.',
-                                    style: theme.textTheme.small),
+                                Text(
+                                  'Your call has been confirmed.',
+                                  style: theme.textTheme.small,
+                                ),
                                 const SizedBox(height: 4),
-                                Text(n.description,
-                                    style: theme.textTheme.muted),
+                                Text(
+                                  n.description,
+                                  style: theme.textTheme.muted,
+                                ),
                               ],
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   )
@@ -190,7 +197,7 @@ class _CardPageState extends State<CardPage> {
               const SizedBox(height: 16),
             ],
           ),
-        )
+        ),
       ],
     );
   }

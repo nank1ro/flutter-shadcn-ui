@@ -4,8 +4,6 @@ import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/card.dart'; // Adjust import path based on your project structure
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-import '../../extra/pump_async_widget.dart'; // Assuming this is available in your project
-
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
@@ -18,7 +16,7 @@ void main() {
 
   group('ShadCard', () {
     testWidgets('renders basic content correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
             title: Text('Card Title'),
@@ -44,9 +42,10 @@ void main() {
       expect(columnFinder, findsOneWidget);
     });
 
-    testWidgets('renders with leading and trailing widgets',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders with leading and trailing widgets', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
             leading: Icon(Icons.star),
@@ -74,10 +73,11 @@ void main() {
       );
     });
 
-    testWidgets('applies custom padding correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom padding correctly', (
+      WidgetTester tester,
+    ) async {
       const customPadding = EdgeInsets.all(40);
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
             padding: customPadding,
@@ -93,11 +93,12 @@ void main() {
       expect(container.padding, customPadding);
     });
 
-    testWidgets('applies custom background color and radius correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom background color and radius correctly', (
+      WidgetTester tester,
+    ) async {
       const customBackgroundColor = Colors.blue;
       const customRadius = BorderRadius.all(Radius.circular(12));
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
             backgroundColor: customBackgroundColor,
@@ -116,11 +117,12 @@ void main() {
       expect(decoration?.borderRadius, customRadius);
     });
 
-    testWidgets('applies custom width and height correctly',
-        (WidgetTester tester) async {
+    testWidgets('applies custom width and height correctly', (
+      WidgetTester tester,
+    ) async {
       const customWidth = 300.0;
       const customHeight = 200.0;
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
             width: customWidth,
@@ -139,7 +141,7 @@ void main() {
     });
 
     testWidgets('handles row alignment correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
             leading: Icon(Icons.star),
@@ -159,9 +161,10 @@ void main() {
       expect(row.crossAxisAlignment, CrossAxisAlignment.center);
     });
 
-    testWidgets('handles column alignment correctly',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('handles column alignment correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
             title: Text('Title'),
@@ -180,9 +183,10 @@ void main() {
       expect(column.crossAxisAlignment, CrossAxisAlignment.center);
     });
 
-    testWidgets('renders without optional content',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders without optional content', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
             child: Text('Minimal Card'),
@@ -195,9 +199,10 @@ void main() {
       expect(find.text('Footer'), findsNothing); // No footer
     });
 
-    testWidgets('applies default theme styles when not specified',
-        (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('applies default theme styles when not specified', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
             child: Text('Default Styled Card'),
@@ -223,7 +228,7 @@ void main() {
     });
 
     testWidgets('ShadCard matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadCard(
             title: Text('title'),

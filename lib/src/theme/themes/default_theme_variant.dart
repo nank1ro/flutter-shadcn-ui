@@ -1,7 +1,5 @@
-// ignore_for_file: overridden_fields
-
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
@@ -13,12 +11,14 @@ import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
 import 'package:shadcn_ui/src/theme/components/breadcrumb.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/button_sizes.dart';
 import 'package:shadcn_ui/src/theme/components/calendar.dart';
 import 'package:shadcn_ui/src/theme/components/card.dart';
 import 'package:shadcn_ui/src/theme/components/checkbox.dart';
 import 'package:shadcn_ui/src/theme/components/context_menu.dart';
 import 'package:shadcn_ui/src/theme/components/date_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/default_keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
@@ -45,8 +45,8 @@ import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
-import 'package:shadcn_ui/src/utils/position.dart';
 
 class ShadDefaultThemeVariant extends ShadThemeVariant {
   ShadDefaultThemeVariant({
@@ -66,8 +66,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       hoverBackgroundColor: colorScheme.primary.withValues(alpha: .9),
       foregroundColor: colorScheme.primaryForeground,
       hoverForegroundColor: colorScheme.primaryForeground,
-      decoration:
-          ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
+      decoration: ShadDecoration(
+        border: ShadBorder.all(radius: radius, width: 0),
+      ),
       gap: 8,
       expands: false,
     );
@@ -80,8 +81,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       hoverBackgroundColor: colorScheme.secondary.withValues(alpha: .8),
       foregroundColor: colorScheme.secondaryForeground,
       hoverForegroundColor: colorScheme.secondaryForeground,
-      decoration:
-          ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
+      decoration: ShadDecoration(
+        border: ShadBorder.all(radius: radius, width: 0),
+      ),
       gap: 8,
       expands: false,
     );
@@ -94,8 +96,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       hoverBackgroundColor: colorScheme.destructive.withValues(alpha: .9),
       foregroundColor: colorScheme.destructiveForeground,
       hoverForegroundColor: colorScheme.destructiveForeground,
-      decoration:
-          ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
+      decoration: ShadDecoration(
+        border: ShadBorder.all(radius: radius, width: 0),
+      ),
       gap: 8,
       expands: false,
     );
@@ -125,8 +128,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       hoverBackgroundColor: colorScheme.accent,
       foregroundColor: colorScheme.primary,
       hoverForegroundColor: colorScheme.accentForeground,
-      decoration:
-          ShadDecoration(border: ShadBorder.all(radius: radius, width: 0)),
+      decoration: ShadDecoration(
+        border: ShadBorder.all(radius: radius, width: 0),
+      ),
       gap: 8,
       expands: false,
     );
@@ -261,8 +265,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ],
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: ShadDecoration(
-        border:
-            ShadBorder.all(radius: radius, color: colorScheme.border, width: 0),
+        border: ShadBorder.all(
+          radius: radius,
+          color: colorScheme.border,
+          width: 0,
+        ),
         color: colorScheme.popover,
         shadows: ShadShadows.md,
       ),
@@ -273,6 +280,21 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ),
       duration: Animate.defaultDuration,
       reverseDuration: Duration.zero,
+      hoverStrategies: const ShadHoverStrategies(
+        hover: {
+          ShadHoverStrategy.onTap,
+          ShadHoverStrategy.onLongPressDown,
+          ShadHoverStrategy.onLongPressStart,
+        },
+        unhover: {
+          ShadHoverStrategy.onTap,
+          ShadHoverStrategy.onTapOutside,
+          ShadHoverStrategy.onLongPressUp,
+          ShadHoverStrategy.onLongPressEnd,
+          ShadHoverStrategy.onLongPressCancel,
+        },
+        longPressDuration: kLongPressTimeout,
+      ),
     );
   }
 
@@ -280,18 +302,21 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   ShadPopoverTheme popoverTheme() {
     return ShadPopoverTheme(
       effects: const [
-        FadeEffect(duration: Duration(milliseconds: 100)),
+        FadeEffect(
+          duration: Duration(milliseconds: 150),
+        ),
         ScaleEffect(
           begin: Offset(.95, .95),
           end: Offset(1, 1),
-          duration: Duration(milliseconds: 100),
+          duration: Duration(milliseconds: 150),
         ),
         MoveEffect(
           begin: Offset(0, 2),
           end: Offset.zero,
-          duration: Duration(milliseconds: 100),
+          duration: Duration(milliseconds: 150),
         ),
       ],
+      reverseDuration: const Duration(milliseconds: 150),
       shadows: ShadShadows.md,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: ShadDecoration(
@@ -373,6 +398,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       optionsPadding: const EdgeInsets.all(4),
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
+      popoverReverseDuration: Duration.zero,
       anchor: const ShadAnchorAuto(offset: Offset(0, 4)),
       searchPadding: const EdgeInsets.all(12),
     );
@@ -391,7 +417,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
     return ShadCardTheme(
       backgroundColor: colorScheme.card,
       padding: const EdgeInsets.all(24),
-      border: Border.all(color: colorScheme.border),
+      border: ShadBorder.all(color: colorScheme.border, width: 1),
       radius: const BorderRadius.all(Radius.circular(8)),
       shadows: ShadShadows.sm,
       rowMainAxisSize: MainAxisSize.min,
@@ -416,11 +442,13 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       thumbColor: colorScheme.background,
       uncheckedTrackColor: colorScheme.input,
       checkedTrackColor: colorScheme.primary,
-      padding: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsetsDirectional.only(start: 8),
       decoration: ShadDecoration(
         border: ShadBorder.all(radius: radius.add(radius / 2), width: 0),
-        secondaryFocusedBorder:
-            ShadBorder.all(radius: radius.add(radius / 2), width: 2),
+        secondaryFocusedBorder: ShadBorder.all(
+          radius: radius.add(radius / 2),
+          width: 2,
+        ),
       ),
     );
   }
@@ -431,7 +459,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       size: 16,
       duration: 100.milliseconds,
       color: colorScheme.primary,
-      padding: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsetsDirectional.only(start: 8),
       checkboxPadding: const EdgeInsets.only(top: 1),
       decoration: ShadDecoration(
         border: ShadBorder.all(
@@ -446,9 +474,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   @override
   ShadInputTheme inputTheme() {
     return ShadInputTheme(
-      style: effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
+      style: effectiveTextTheme.muted,
       placeholderStyle: effectiveTextTheme.muted,
-      placeholderAlignment: Alignment.topLeft,
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
         border: ShadBorder.all(
@@ -471,7 +498,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       circleSize: circleSize,
       duration: 100.milliseconds,
       color: colorScheme.primary,
-      padding: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsetsDirectional.only(start: 8),
       decoration: ShadDecoration(
         shape: BoxShape.circle,
         border: ShadBorder.all(
@@ -504,14 +531,15 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       descriptionStyle: effectiveTextTheme.muted.copyWith(
         color: colorScheme.foreground.withValues(alpha: .9),
       ),
-      actionPadding: const EdgeInsets.only(left: 16),
-      border: Border.all(color: colorScheme.border),
+      actionPadding: const EdgeInsetsDirectional.only(start: 16),
+      border: ShadBorder.all(color: colorScheme.border, width: 1),
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.background,
       crossAxisAlignment: CrossAxisAlignment.center,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       showCloseIconOnlyWhenHovered: true,
-      padding: const EdgeInsets.fromLTRB(24, 24, 32, 24),
+      padding: const EdgeInsetsGeometry.fromSTEB(24, 24, 32, 24),
+      mainAxisSize: MainAxisSize.max,
     );
   }
 
@@ -527,21 +555,22 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       descriptionStyle: effectiveTextTheme.muted.copyWith(
         color: colorScheme.destructiveForeground.withValues(alpha: .9),
       ),
-      actionPadding: const EdgeInsets.only(left: 16),
-      border: Border.all(color: colorScheme.border),
+      actionPadding: const EdgeInsetsDirectional.only(start: 16),
+      border: ShadBorder.all(color: colorScheme.border, width: 1),
       shadows: ShadShadows.lg,
       backgroundColor: colorScheme.destructive,
       crossAxisAlignment: CrossAxisAlignment.center,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       showCloseIconOnlyWhenHovered: true,
-      padding: const EdgeInsets.fromLTRB(24, 24, 32, 24),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 32, 24),
+      mainAxisSize: MainAxisSize.max,
     );
   }
 
   @override
   ShadAlertTheme primaryAlertTheme() {
     return ShadAlertTheme(
-      iconPadding: const EdgeInsets.only(right: 12),
+      iconPadding: const EdgeInsetsDirectional.only(end: 12),
       decoration: ShadDecoration(
         border: ShadBorder.all(
           color: colorScheme.border,
@@ -565,7 +594,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   @override
   ShadAlertTheme destructiveAlertTheme() {
     return ShadAlertTheme(
-      iconPadding: const EdgeInsets.only(right: 12),
+      iconPadding: const EdgeInsetsDirectional.only(end: 12),
       decoration: ShadDecoration(
         border: ShadBorder.all(
           color: colorScheme.destructive,
@@ -594,7 +623,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       backgroundColor: colorScheme.background,
       removeBorderRadiusWhenTiny: true,
       expandActionsWhenTiny: true,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       animateIn: const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
@@ -611,7 +639,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       descriptionStyle: effectiveTextTheme.muted,
       alignment: Alignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
       actionsGap: 8,
     );
   }
@@ -623,7 +651,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       radius: const BorderRadius.all(Radius.circular(8)),
       removeBorderRadiusWhenTiny: true,
       expandActionsWhenTiny: true,
-      closeIconPosition: const ShadPosition(top: 8, right: 8),
       animateIn: const [
         FadeEffect(),
         ScaleEffect(begin: Offset(.95, .95), end: Offset(1, 1)),
@@ -640,7 +667,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       descriptionStyle: effectiveTextTheme.muted,
       alignment: Alignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
     );
   }
 
@@ -716,12 +743,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       cellAlignment: Alignment.centerLeft,
       cellHeight: 48,
       cellPadding: const EdgeInsets.symmetric(horizontal: 16),
-      cellStyle:
-          effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
-      cellHeaderStyle:
-          effectiveTextTheme.muted.copyWith(fontWeight: FontWeight.w500),
-      cellFooterStyle: effectiveTextTheme.muted
-          .copyWith(color: colorScheme.foreground, fontWeight: FontWeight.w500),
+      cellStyle: effectiveTextTheme.muted,
+      cellHeaderStyle: effectiveTextTheme.muted,
+      cellFooterStyle: effectiveTextTheme.muted.fallback(
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 
@@ -759,11 +785,13 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       },
       unhover: {
         ShadHoverStrategy.onTapUp,
+        ShadHoverStrategy.onTapOutside,
         ShadHoverStrategy.onTapCancel,
         ShadHoverStrategy.onLongPressUp,
         ShadHoverStrategy.onLongPressEnd,
         ShadHoverStrategy.onLongPressCancel,
       },
+      longPressDuration: kLongPressTimeout,
     );
   }
 
@@ -788,9 +816,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ),
       gap: 8,
       expandContent: false,
-      tabBackgroundColor: Colors.transparent,
+      tabBackgroundColor: const Color(0x00000000),
       tabSelectedBackgroundColor: colorScheme.background,
-      tabHoverBackgroundColor: Colors.transparent,
+      tabHoverBackgroundColor: const Color(0x00000000),
       tabSelectedHoverBackgroundColor: colorScheme.background,
       tabPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       tabForegroundColor: colorScheme.foreground,
@@ -806,96 +834,98 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
 
   @override
   ShadContextMenuTheme contextMenuTheme() => ShadContextMenuTheme(
-        constraints: const BoxConstraints(minWidth: 128),
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        itemPadding: const EdgeInsets.symmetric(horizontal: 4),
-        leadingPadding: const EdgeInsets.only(right: 8),
-        trailingPadding: const EdgeInsets.only(left: 8),
-        showDelay: const Duration(milliseconds: 100),
-        height: 32,
-        buttonVariant: ShadButtonVariant.ghost,
-        itemDecoration: const ShadDecoration(
-          secondaryBorder: ShadBorder.none,
-          secondaryFocusedBorder: ShadBorder.none,
-        ),
-        textStyle:
-            effectiveTextTheme.small.copyWith(fontWeight: FontWeight.normal),
-        trailingTextStyle:
-            effectiveTextTheme.muted.copyWith(fontSize: 12, height: 1),
-        selectedBackgroundColor: colorScheme.accent,
-      );
+    constraints: const BoxConstraints(minWidth: 128),
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    itemPadding: const EdgeInsets.symmetric(horizontal: 4),
+    leadingPadding: const EdgeInsetsDirectional.only(end: 8),
+    trailingPadding: const EdgeInsetsDirectional.only(start: 8),
+    showDelay: const Duration(milliseconds: 100),
+    height: 32,
+    buttonVariant: ShadButtonVariant.ghost,
+    itemDecoration: const ShadDecoration(
+      secondaryBorder: ShadBorder.none,
+      secondaryFocusedBorder: ShadBorder.none,
+    ),
+    textStyle: effectiveTextTheme.small.copyWith(fontWeight: FontWeight.normal),
+    trailingTextStyle: effectiveTextTheme.muted.copyWith(
+      fontSize: 12,
+      height: 1,
+    ),
+    selectedBackgroundColor: colorScheme.accent,
+  );
 
   @override
   ShadCalendarTheme calendarTheme() => ShadCalendarTheme(
-        dayButtonDecoration: ShadDecoration(
-          secondaryFocusedBorder: ShadBorder.all(
-            offset: 2,
-            color: colorScheme.ring.withValues(alpha: .5),
-          ),
-        ),
-        hideNavigation: false,
-        yearSelectorMinWidth: 64,
-        monthSelectorMinWidth: 64,
-        yearSelectorPadding:
-            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        monthSelectorPadding:
-            const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        navigationButtonSize: 28,
-        navigationButtonIconSize: 16,
-        backNavigationButtonIconData: LucideIcons.chevronLeft,
-        forwardNavigationButtonIconData: LucideIcons.chevronRight,
-        navigationButtonPadding: EdgeInsets.zero,
-        navigationButtonDisabledOpacity: .5,
-        decoration: ShadDecoration(
-          border: ShadBorder.all(
-            radius: radius,
-            padding: const EdgeInsets.all(12),
-            color: colorScheme.border,
-            width: 1,
-          ),
-        ),
-        spacingBetweenMonths: 16,
-        runSpacingBetweenMonths: 16,
-        headerHeight: 38,
-        headerPadding: const EdgeInsets.only(bottom: 16),
-        captionLayoutGap: 8,
-        headerTextStyle: effectiveTextTheme.small,
-        weekdaysPadding: const EdgeInsets.only(bottom: 8),
-        weekNumbersHeaderText: '#',
-        weekNumbersHeaderTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
-        weekNumbersTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
-        dayButtonSize: 36,
-        dayButtonOutsideMonthOpacity: .5,
-        dayButtonPadding: EdgeInsets.zero,
-        selectedDayButtonTextStyle: textTheme().small.copyWith(
-              fontWeight: FontWeight.normal,
-              color: colorScheme.primaryForeground,
-            ),
-        insideRangeDayButtonTextStyle: textTheme().small.copyWith(
-              color: colorScheme.foreground,
-            ),
-        dayButtonTextStyle: textTheme().small.copyWith(
-              fontWeight: FontWeight.normal,
-              color: colorScheme.foreground,
-            ),
-        dayButtonOutsideMonthVariant: ShadButtonVariant.ghost,
-        dayButtonOutsideMonthTextStyle: textTheme().muted,
-        dayButtonVariant: ShadButtonVariant.ghost,
-        todayButtonVariant: ShadButtonVariant.secondary,
-        selectedDayButtonVariant: ShadButtonVariant.primary,
-        selectedDayButtonOusideMonthVariant: ShadButtonVariant.secondary,
-        insideRangeDayButtonVariant: ShadButtonVariant.secondary,
-        weekdaysTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
-        weekdaysTextAlign: TextAlign.center,
-        gridMainAxisSpacing: 8,
-        gridCrossAxisSpacing: 0,
-        hideWeekdayNames: false,
-        showOutsideDays: true,
-        showWeekNumbers: false,
-        weekStartsOn: 1,
-        fixedWeeks: false,
-        allowDeselection: false,
-      );
+    dayButtonDecoration: ShadDecoration(
+      secondaryFocusedBorder: ShadBorder.all(
+        offset: 2,
+        color: colorScheme.ring.withValues(alpha: .5),
+      ),
+    ),
+    hideNavigation: false,
+    yearSelectorMinWidth: 64,
+    monthSelectorMinWidth: 64,
+    yearSelectorPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    monthSelectorPadding: const EdgeInsets.symmetric(
+      horizontal: 8,
+      vertical: 4,
+    ),
+    navigationButtonSize: 28,
+    navigationButtonIconSize: 16,
+    backNavigationButtonIconData: LucideIcons.chevronLeft,
+    forwardNavigationButtonIconData: LucideIcons.chevronRight,
+    navigationButtonPadding: EdgeInsets.zero,
+    navigationButtonDisabledOpacity: .5,
+    decoration: ShadDecoration(
+      border: ShadBorder.all(
+        radius: radius,
+        padding: const EdgeInsets.all(12),
+        color: colorScheme.border,
+        width: 1,
+      ),
+    ),
+    spacingBetweenMonths: 16,
+    runSpacingBetweenMonths: 16,
+    headerHeight: 38,
+    headerPadding: const EdgeInsets.only(bottom: 16),
+    captionLayoutGap: 8,
+    headerTextStyle: effectiveTextTheme.small,
+    weekdaysPadding: const EdgeInsets.only(bottom: 8),
+    weekNumbersHeaderText: '#',
+    weekNumbersHeaderTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+    weekNumbersTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+    dayButtonSize: 36,
+    dayButtonOutsideMonthOpacity: .5,
+    dayButtonPadding: EdgeInsets.zero,
+    selectedDayButtonTextStyle: textTheme().small.copyWith(
+      fontWeight: FontWeight.normal,
+      color: colorScheme.primaryForeground,
+    ),
+    insideRangeDayButtonTextStyle: textTheme().small.copyWith(
+      color: colorScheme.foreground,
+    ),
+    dayButtonTextStyle: textTheme().small.copyWith(
+      fontWeight: FontWeight.normal,
+      color: colorScheme.foreground,
+    ),
+    dayButtonOutsideMonthVariant: ShadButtonVariant.ghost,
+    dayButtonOutsideMonthTextStyle: textTheme().muted,
+    dayButtonVariant: ShadButtonVariant.ghost,
+    todayButtonVariant: ShadButtonVariant.secondary,
+    selectedDayButtonVariant: ShadButtonVariant.primary,
+    selectedDayButtonOusideMonthVariant: ShadButtonVariant.secondary,
+    insideRangeDayButtonVariant: ShadButtonVariant.secondary,
+    weekdaysTextStyle: textTheme().muted.copyWith(fontSize: 12.8),
+    weekdaysTextAlign: TextAlign.center,
+    gridMainAxisSpacing: 8,
+    gridCrossAxisSpacing: 0,
+    hideWeekdayNames: false,
+    showOutsideDays: true,
+    showWeekNumbers: false,
+    weekStartsOn: 1,
+    fixedWeeks: false,
+    allowDeselection: false,
+  );
 
   @override
   ShadDatePickerTheme datePickerTheme() {
@@ -1022,9 +1052,8 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   @override
   ShadTextareaTheme textareaTheme() {
     return ShadTextareaTheme(
-      style: effectiveTextTheme.muted.copyWith(color: colorScheme.foreground),
+      style: effectiveTextTheme.muted,
       placeholderStyle: effectiveTextTheme.muted,
-      placeholderAlignment: Alignment.topLeft,
       inputPadding: EdgeInsets.zero,
       decoration: ShadDecoration(
         border: ShadBorder.all(
@@ -1039,6 +1068,17 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       maxHeight: 500,
       resizable: true,
       scrollbarPadding: const EdgeInsets.only(bottom: 10),
+    );
+  }
+
+  @override
+  ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme() {
+    return ShadDefaultKeyboardToolbarTheme(
+      backgroundColor: colorScheme.accent,
+      doneText: 'Done',
+      showDoneButton: true,
+      showNextButton: true,
+      showPreviousButton: true,
     );
   }
 }

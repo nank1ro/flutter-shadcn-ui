@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 // A customizable card widget for displaying structured content.
 ///
@@ -61,7 +63,7 @@ class ShadCard extends StatelessWidget {
   /// The padding inside the card, surrounding all content.
   /// Defaults to EdgeInsets.all(24) if not specified.
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadCard.backgroundColor}
   /// The background color of the card.
@@ -79,7 +81,7 @@ class ShadCard extends StatelessWidget {
   /// The border surrounding the card.
   /// Defaults to a border with the theme’s border color if not specified.
   /// {@endtemplate}
-  final Border? border;
+  final ShadBorder? border;
 
   /// {@template ShadCard.shadows}
   /// The list of box shadows applied to the card for elevation.
@@ -159,35 +161,42 @@ class ShadCard extends StatelessWidget {
 
     final effectivePadding =
         padding ?? theme.cardTheme.padding ?? const EdgeInsets.all(24);
-    final effectiveBackgroundColor = backgroundColor ??
+    final effectiveBackgroundColor =
+        backgroundColor ??
         theme.cardTheme.backgroundColor ??
         theme.colorScheme.card;
     final effectiveRadius = radius ?? theme.cardTheme.radius ?? theme.radius;
-    final effectiveBorder = border ??
+    final effectiveBorder =
+        border ??
         theme.cardTheme.border ??
-        Border.all(color: theme.colorScheme.border);
+        ShadBorder.all(color: theme.colorScheme.border, width: 1);
     final effectiveShadows = shadows ?? theme.cardTheme.shadows;
 
     final effectiveRowMainAxisSize =
         rowMainAxisSize ?? theme.cardTheme.rowMainAxisSize ?? MainAxisSize.min;
 
-    final effectiveRowMainAxisAlignment = rowMainAxisAlignment ??
+    final effectiveRowMainAxisAlignment =
+        rowMainAxisAlignment ??
         theme.cardTheme.rowMainAxisAlignment ??
         MainAxisAlignment.spaceBetween;
 
-    final effectiveRowCrossAxisAlignment = rowCrossAxisAlignment ??
+    final effectiveRowCrossAxisAlignment =
+        rowCrossAxisAlignment ??
         theme.cardTheme.rowCrossAxisAlignment ??
         CrossAxisAlignment.start;
 
-    final effectiveColumnMainAxisSize = columnMainAxisSize ??
+    final effectiveColumnMainAxisSize =
+        columnMainAxisSize ??
         theme.cardTheme.columnMainAxisSize ??
         MainAxisSize.min;
 
-    final effectiveColumnMainAxisAlignment = columnMainAxisAlignment ??
+    final effectiveColumnMainAxisAlignment =
+        columnMainAxisAlignment ??
         theme.cardTheme.columnMainAxisAlignment ??
         MainAxisAlignment.start;
 
-    final effectiveColumnCrossAxisAlignment = columnCrossAxisAlignment ??
+    final effectiveColumnCrossAxisAlignment =
+        columnCrossAxisAlignment ??
         theme.cardTheme.columnCrossAxisAlignment ??
         CrossAxisAlignment.start;
 
@@ -202,7 +211,7 @@ class ShadCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: effectiveBackgroundColor,
         borderRadius: effectiveRadius,
-        border: effectiveBorder,
+        border: effectiveBorder.toBorder(),
         boxShadow: effectiveShadows,
       ),
       child: Row(
@@ -219,13 +228,16 @@ class ShadCard extends StatelessWidget {
               children: [
                 if (title != null)
                   DefaultTextStyle(
-                    style: theme.textTheme.h3
-                        .copyWith(color: theme.colorScheme.cardForeground),
+                    style: theme.textTheme.h3.copyWith(
+                      color: theme.colorScheme.cardForeground,
+                    ),
                     child: title!,
                   ),
                 if (description != null)
                   DefaultTextStyle(
-                    style: theme.textTheme.muted,
+                    style: theme.textTheme.muted.fallback(
+                      color: theme.colorScheme.mutedForeground,
+                    ),
                     child: description!,
                   ),
                 if (child != null) Flexible(child: child!),

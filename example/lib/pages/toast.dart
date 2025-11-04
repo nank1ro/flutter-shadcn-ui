@@ -45,16 +45,17 @@ class _ToastPageState extends State<ToastPage> {
       appBarTitle: 'Toast',
       editable: [
         MyEnumProperty<Alignm>(
-            label: 'Alignment',
-            value: alignment,
-            values: Alignm.values,
-            onChanged: (v) {
-              if (v != null) {
-                setState(() {
-                  alignment = v;
-                });
-              }
-            })
+          label: 'Alignment',
+          value: alignment,
+          values: Alignm.values,
+          onChanged: (v) {
+            if (v != null) {
+              setState(() {
+                alignment = v;
+              });
+            }
+          },
+        ),
       ],
       children: [
         ShadButton.outline(
@@ -73,7 +74,7 @@ class _ToastPageState extends State<ToastPage> {
               ),
             );
           },
-        )
+        ),
       ],
     );
   }

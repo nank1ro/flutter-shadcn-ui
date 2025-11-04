@@ -15,6 +15,8 @@ Thanks for filing a pull request!
 - [ ] I added new tests to check the change I am making.
 - [ ] I followed the [Data Driven Fixes] where supported.
 - [ ] All existing and new tests are passing.
+- [ ] I bumped the package version following the [Semantic Versioning](https://semver.org/) guidelines (For now the major is the second number and the minor the third, because the package is not feature complete). For example, if the package is at version `0.18.0` and you introduced a breaking change or a new feature, bump it to `0.19.0`, if you just added a fix or a chore bump it to `0.18.1`.
+- [ ] I updated the `CHANGELOG.md` file with a summary of changes made following the format already used.
 
 If you need help, consider asking for advice on [Discord].
 

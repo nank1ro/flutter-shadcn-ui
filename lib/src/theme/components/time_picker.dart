@@ -1,12 +1,15 @@
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
 
+part 'time_picker.g.theme.dart';
+
+@themeGen
 @immutable
-class ShadTimePickerTheme {
+class ShadTimePickerTheme with _$ShadTimePickerTheme {
   const ShadTimePickerTheme({
-    this.merge = true,
+    bool canMerge = true,
     this.axis,
     this.spacing,
     this.runSpacing,
@@ -33,9 +36,13 @@ class ShadTimePickerTheme {
     this.secondPlaceholder,
     this.periodLabel,
     this.periodPlaceholder,
-  });
+  }) : _canMerge = canMerge;
 
-  final bool merge;
+  @ignore
+  final bool _canMerge;
+
+  @override
+  bool get canMerge => _canMerge;
 
   /// {@macro ShadTimePicker.axis}
   final Axis? axis;
@@ -59,7 +66,7 @@ class ShadTimePickerTheme {
   final WrapCrossAlignment? crossAxisAlignment;
 
   /// {@macro ShadTimePicker.initialDayPeriod}
-  final DayPeriod? initialDayPeriod;
+  final ShadDayPeriod? initialDayPeriod;
 
   /// {@macro ShadTimePicker.periodHeight}
   final double? periodHeight;
@@ -83,7 +90,7 @@ class ShadTimePickerTheme {
   final double? fieldWidth;
 
   /// {@macro ShadTimePicker.fieldPadding}
-  final EdgeInsets? fieldPadding;
+  final EdgeInsetsGeometry? fieldPadding;
 
   /// {@macro ShadTimePicker.fieldDecoration}
   final ShadDecoration? fieldDecoration;
@@ -115,203 +122,9 @@ class ShadTimePickerTheme {
   /// {@macro ShadTimePicker.periodPlaceholder}
   final Widget? periodPlaceholder;
 
-  static ShadTimePickerTheme lerp(
-    ShadTimePickerTheme a,
-    ShadTimePickerTheme b,
+  static ShadTimePickerTheme? lerp(
+    ShadTimePickerTheme? a,
+    ShadTimePickerTheme? b,
     double t,
-  ) {
-    if (identical(a, b)) return a;
-    return ShadTimePickerTheme(
-      merge: b.merge,
-      axis: t < 0.5 ? a.axis : b.axis,
-      spacing: lerpDouble(a.spacing, b.spacing, t),
-      runSpacing: lerpDouble(a.runSpacing, b.runSpacing, t),
-      jumpToNextFieldWhenFilled:
-          t < 0.5 ? a.jumpToNextFieldWhenFilled : b.jumpToNextFieldWhenFilled,
-      alignment: t < .5 ? a.alignment : b.alignment,
-      runAlignment: t < .5 ? a.runAlignment : b.runAlignment,
-      crossAxisAlignment: t < .5 ? a.crossAxisAlignment : b.crossAxisAlignment,
-      initialDayPeriod: t < .5 ? a.initialDayPeriod : b.initialDayPeriod,
-      periodHeight: lerpDouble(a.periodHeight, b.periodHeight, t),
-      periodMinWidth: lerpDouble(a.periodMinWidth, b.periodMinWidth, t),
-      gap: lerpDouble(a.gap, b.gap, t),
-      style: TextStyle.lerp(a.style, b.style, t),
-      placeholderStyle:
-          TextStyle.lerp(a.placeholderStyle, b.placeholderStyle, t),
-      labelStyle: TextStyle.lerp(a.labelStyle, b.labelStyle, t),
-      fieldWidth: t < .5 ? a.fieldWidth : b.fieldWidth,
-      fieldPadding: EdgeInsets.lerp(a.fieldPadding, b.fieldPadding, t),
-      fieldDecoration:
-          ShadDecoration.lerp(a.fieldDecoration, b.fieldDecoration, t),
-      periodDecoration:
-          ShadDecoration.lerp(a.periodDecoration, b.periodDecoration, t),
-      hourLabel: t < .5 ? a.hourLabel : b.hourLabel,
-      minuteLabel: t < .5 ? a.minuteLabel : b.minuteLabel,
-      secondLabel: t < .5 ? a.secondLabel : b.secondLabel,
-      periodLabel: t < .5 ? a.periodLabel : b.periodLabel,
-      hourPlaceholder: t < .5 ? a.hourPlaceholder : b.hourPlaceholder,
-      minutePlaceholder: t < .5 ? a.minutePlaceholder : b.minutePlaceholder,
-      secondPlaceholder: t < .5 ? a.secondPlaceholder : b.secondPlaceholder,
-      periodPlaceholder: t < .5 ? a.periodPlaceholder : b.periodPlaceholder,
-    );
-  }
-
-  ShadTimePickerTheme copyWith({
-    bool? merge,
-    Axis? axis,
-    double? spacing,
-    double? runSpacing,
-    bool? jumpToNextFieldWhenFilled,
-    WrapAlignment? alignment,
-    WrapAlignment? runAlignment,
-    WrapCrossAlignment? crossAxisAlignment,
-    DayPeriod? initialDayPeriod,
-    double? periodHeight,
-    double? periodMinWidth,
-    double? gap,
-    TextStyle? style,
-    TextStyle? placeholderStyle,
-    TextStyle? labelStyle,
-    double? fieldWidth,
-    EdgeInsets? fieldPadding,
-    ShadDecoration? fieldDecoration,
-    ShadDecoration? periodDecoration,
-    Widget? hourLabel,
-    Widget? minuteLabel,
-    Widget? secondLabel,
-    Widget? periodLabel,
-    Widget? hourPlaceholder,
-    Widget? minutePlaceholder,
-    Widget? secondPlaceholder,
-    Widget? periodPlaceholder,
-  }) {
-    return ShadTimePickerTheme(
-      merge: merge ?? this.merge,
-      axis: axis ?? this.axis,
-      spacing: spacing ?? this.spacing,
-      runSpacing: runSpacing ?? this.runSpacing,
-      jumpToNextFieldWhenFilled:
-          jumpToNextFieldWhenFilled ?? this.jumpToNextFieldWhenFilled,
-      alignment: alignment ?? this.alignment,
-      runAlignment: runAlignment ?? this.runAlignment,
-      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
-      initialDayPeriod: initialDayPeriod ?? this.initialDayPeriod,
-      periodHeight: periodHeight ?? this.periodHeight,
-      periodMinWidth: periodMinWidth ?? this.periodMinWidth,
-      gap: gap ?? this.gap,
-      style: style ?? this.style,
-      placeholderStyle: placeholderStyle ?? this.placeholderStyle,
-      labelStyle: labelStyle ?? this.labelStyle,
-      fieldWidth: fieldWidth ?? this.fieldWidth,
-      fieldPadding: fieldPadding ?? this.fieldPadding,
-      fieldDecoration: fieldDecoration ?? this.fieldDecoration,
-      periodDecoration: periodDecoration ?? this.periodDecoration,
-      hourLabel: hourLabel ?? this.hourLabel,
-      minuteLabel: minuteLabel ?? this.minuteLabel,
-      secondLabel: secondLabel ?? this.secondLabel,
-      periodLabel: periodLabel ?? this.periodLabel,
-      hourPlaceholder: hourPlaceholder ?? this.hourPlaceholder,
-      minutePlaceholder: minutePlaceholder ?? this.minutePlaceholder,
-      secondPlaceholder: secondPlaceholder ?? this.secondPlaceholder,
-      periodPlaceholder: periodPlaceholder ?? this.periodPlaceholder,
-    );
-  }
-
-  ShadTimePickerTheme mergeWith(ShadTimePickerTheme? other) {
-    if (other == null) return this;
-    if (!other.merge) return other;
-    return copyWith(
-      axis: other.axis,
-      spacing: other.spacing,
-      runSpacing: other.runSpacing,
-      jumpToNextFieldWhenFilled: other.jumpToNextFieldWhenFilled,
-      alignment: other.alignment,
-      runAlignment: other.runAlignment,
-      crossAxisAlignment: other.crossAxisAlignment,
-      initialDayPeriod: other.initialDayPeriod,
-      periodHeight: other.periodHeight,
-      periodMinWidth: other.periodMinWidth,
-      gap: other.gap,
-      style: other.style,
-      placeholderStyle: other.placeholderStyle,
-      labelStyle: other.labelStyle,
-      fieldWidth: other.fieldWidth,
-      fieldPadding: other.fieldPadding,
-      fieldDecoration: other.fieldDecoration,
-      periodDecoration: other.periodDecoration,
-      hourLabel: other.hourLabel,
-      minuteLabel: other.minuteLabel,
-      secondLabel: other.secondLabel,
-      periodLabel: other.periodLabel,
-      hourPlaceholder: other.hourPlaceholder,
-      minutePlaceholder: other.minutePlaceholder,
-      secondPlaceholder: other.secondPlaceholder,
-      periodPlaceholder: other.periodPlaceholder,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ShadTimePickerTheme &&
-        other.merge == merge &&
-        other.axis == axis &&
-        other.spacing == spacing &&
-        other.runSpacing == runSpacing &&
-        other.jumpToNextFieldWhenFilled == jumpToNextFieldWhenFilled &&
-        other.alignment == alignment &&
-        other.runAlignment == runAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment &&
-        other.initialDayPeriod == initialDayPeriod &&
-        other.periodHeight == periodHeight &&
-        other.periodMinWidth == periodMinWidth &&
-        other.gap == gap &&
-        other.style == style &&
-        other.placeholderStyle == placeholderStyle &&
-        other.labelStyle == labelStyle &&
-        other.fieldWidth == fieldWidth &&
-        other.fieldPadding == fieldPadding &&
-        other.fieldDecoration == fieldDecoration &&
-        other.periodDecoration == periodDecoration &&
-        other.hourLabel == hourLabel &&
-        other.minuteLabel == minuteLabel &&
-        other.secondLabel == secondLabel &&
-        other.periodLabel == periodLabel &&
-        other.hourPlaceholder == hourPlaceholder &&
-        other.minutePlaceholder == minutePlaceholder &&
-        other.secondPlaceholder == secondPlaceholder &&
-        other.periodPlaceholder == periodPlaceholder;
-  }
-
-  @override
-  int get hashCode {
-    return merge.hashCode ^
-        axis.hashCode ^
-        spacing.hashCode ^
-        runSpacing.hashCode ^
-        jumpToNextFieldWhenFilled.hashCode ^
-        alignment.hashCode ^
-        runAlignment.hashCode ^
-        crossAxisAlignment.hashCode ^
-        initialDayPeriod.hashCode ^
-        periodHeight.hashCode ^
-        periodMinWidth.hashCode ^
-        gap.hashCode ^
-        style.hashCode ^
-        placeholderStyle.hashCode ^
-        labelStyle.hashCode ^
-        fieldWidth.hashCode ^
-        fieldPadding.hashCode ^
-        fieldDecoration.hashCode ^
-        periodDecoration.hashCode ^
-        hourLabel.hashCode ^
-        minuteLabel.hashCode ^
-        secondLabel.hashCode ^
-        periodLabel.hashCode ^
-        hourPlaceholder.hashCode ^
-        minutePlaceholder.hashCode ^
-        secondPlaceholder.hashCode ^
-        periodPlaceholder.hashCode;
-  }
+  ) => _$ShadTimePickerTheme.lerp(a, b, t);
 }

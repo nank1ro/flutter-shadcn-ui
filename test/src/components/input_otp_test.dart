@@ -4,8 +4,6 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/input_otp.dart';
 
-import '../../extra/pump_async_widget.dart';
-
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
@@ -14,7 +12,7 @@ void main() {
 
   group('ShadInputOTP', () {
     testWidgets('ShadInputOTP matches goldens', (tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadInputOTP(
             maxLength: 6,

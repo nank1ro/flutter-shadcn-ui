@@ -1,3 +1,4 @@
+import 'package:example/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -7,8 +8,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.title,
     this.titleWidget,
-  }) : assert((title != null) ^ (titleWidget != null),
-            'Must provide either title or titleWidget');
+  }) : assert(
+         (title != null) ^ (titleWidget != null),
+         'Must provide either title or titleWidget',
+       );
 
   final String? title;
   final Widget? titleWidget;
@@ -18,26 +21,54 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: titleWidget ?? Text(title!),
       centerTitle: true,
+      actionsPadding: EdgeInsetsDirectional.only(start: 8),
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 8),
-          child: ShadButton.ghost(
-            onPressed: () {
-              context.update<ThemeMode>(
-                (value) =>
-                    value == ThemeMode.light ? ThemeMode.dark : ThemeMode.light,
+        ShadButton.ghost(
+          onPressed: () {
+            themeModeProvider
+                .of(context)
+                .updateValue(
+                  (value) => value == ThemeMode.light
+                      ? ThemeMode.dark
+                      : ThemeMode.light,
+                );
+          },
+          leading: SignalBuilder(
+            builder: (context, child) {
+              final themeMode = themeModeProvider.of(context).value;
+              return Icon(
+                themeMode == ThemeMode.light
+                    ? Icons.light_mode
+                    : Icons.dark_mode,
+                semanticLabel: themeMode == ThemeMode.light
+                    ? 'Switch to dark mode'
+                    : 'Switch to light mode',
               );
             },
-            leading: SignalBuilder(
-              signal: context.get<Signal<ThemeMode>>(),
-              builder: (context, themeMode, child) {
-                return Icon(
-                  themeMode == ThemeMode.light
-                      ? Icons.light_mode
-                      : Icons.dark_mode,
+          ),
+        ),
+        ShadButton.ghost(
+          onPressed: () {
+            directionalityProvider
+                .of(context)
+                .updateValue(
+                  (value) => value == TextDirection.ltr
+                      ? TextDirection.rtl
+                      : TextDirection.ltr,
                 );
-              },
-            ),
+          },
+          leading: SignalBuilder(
+            builder: (context, child) {
+              final directionality = directionalityProvider.of(context).value;
+              return Icon(
+                directionality == TextDirection.ltr
+                    ? Icons.format_textdirection_r_to_l
+                    : Icons.format_textdirection_l_to_r,
+                semanticLabel: directionality == TextDirection.ltr
+                    ? 'Switch to RTL'
+                    : 'Switch to LTR',
+              );
+            },
           ),
         ),
       ],
