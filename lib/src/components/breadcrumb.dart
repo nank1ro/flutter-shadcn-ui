@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
@@ -106,31 +107,35 @@ class ShadBreadcrumbItem extends StatelessWidget {
   }
 }
 
-/// {@template ShadBreadcrumbLink}
+/// {@template ShadBreadcrumbLinkedText}
 /// A clickable breadcrumb item that navigates when tapped.
 ///
-/// This widget wraps content in a clickable area and applies appropriate
-/// hover and focus styling for interactive breadcrumb items.
+/// This widget represents an interactive text element.
 /// {@endtemplate}
-class ShadBreadcrumbLink extends StatefulWidget {
-  /// {@macro ShadBreadcrumbLink}
-  const ShadBreadcrumbLink({
+class ShadBreadcrumbLinkedText extends StatefulWidget {
+  /// {@macro ShadBreadcrumbLinkedText}
+  const ShadBreadcrumbLinkedText({
     super.key,
-    required this.child,
+    required this.text,
     this.onPressed,
+    this.style,
   });
 
-  /// The widget to display as the link content.
-  final Widget child;
+  /// The Text to display as the breadcrumb item content.
+  final String text;
 
-  /// Called when the breadcrumb link is tapped.
+  /// Called when the Widget is tapped.
   final VoidCallback? onPressed;
 
+  /// Optional style for the text
+  final TextStyle? style;
+
   @override
-  State<ShadBreadcrumbLink> createState() => _ShadBreadcrumbLinkState();
+  State<ShadBreadcrumbLinkedText> createState() =>
+      _ShadBreadcrumbLinkedTextState();
 }
 
-class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
+class _ShadBreadcrumbLinkedTextState extends State<ShadBreadcrumbLinkedText> {
   bool _isHovered = false;
 
   @override
@@ -143,8 +148,12 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
           : SystemMouseCursors.basic,
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      child: GestureDetector(
-        onTap: widget.onPressed,
+      child: ShadButton.raw(
+        padding: EdgeInsets.zero,
+        height: widget.style?.fontSize ?? 20,
+        size: ShadButtonSize.sm,
+        variant: ShadButtonVariant.link,
+        onPressed: widget.onPressed,
         child: DefaultTextStyle(
           style: theme.textTheme.small.copyWith(
             color: _isHovered 
@@ -152,7 +161,7 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
                 : theme.colorScheme.mutedForeground,
             fontWeight: FontWeight.normal,
           ),
-          child: widget.child,
+          child: Text(widget.text, style: widget.style),
         ),
       ),
     );
@@ -215,7 +224,6 @@ class ShadBreadcrumbSeparator extends StatelessWidget {
     return child ??
         Icon(
           LucideIcons.chevronRight,
-          size: 14,
           color: theme.colorScheme.mutedForeground,
         );
   }
