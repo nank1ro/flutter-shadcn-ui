@@ -37,23 +37,20 @@ class BreadcrumbExample extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 20,),
         const Text(
           'Breadcrumb with Links',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         ShadBreadcrumb(
           children: [
-            ShadBreadcrumbItem(
-              child: ShadBreadcrumbLink(
-                onPressed: _navigateToHome,
-                child: Text('Home'),
-              ),
+            ShadBreadcrumbLink(
+              onPressed: _navigateToHome,
+              child: Text('Home'),
             ),
-            ShadBreadcrumbItem(
-              child: ShadBreadcrumbLink(
-                onPressed: _navigateToComponents,
-                child: Text('Components'),
-              ),
+            ShadBreadcrumbLink(
+              onPressed: _navigateToComponents,
+              child: Text('Components'),
             ),
             ShadBreadcrumbItem(
               isLastItem: true,
@@ -61,34 +58,28 @@ class BreadcrumbExample extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 20,),
         const Text(
           'Breadcrumb with Ellipsis',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         ShadBreadcrumb(
           children: [
+            ShadBreadcrumbLink(
+              onPressed: _navigateToHome,
+              child: Text('Home'),
+            ),
+            ShadBreadcrumbEllipsis(),
+            ShadBreadcrumbLink(
+              onPressed: _navigateToComponents,
+              child: Text('Components'),
+            ),
             ShadBreadcrumbItem(
-              child: ShadBreadcrumbLink(
-                onPressed: _navigateToHome,
-                child: Text('Home'),
-              ),
-            ),
-            const ShadBreadcrumbItem(
-              child: ShadBreadcrumbEllipsis(),
-            ),
-            ShadBreadcrumbItem(
-              child: ShadBreadcrumbLink(
-                onPressed: _navigateToComponents,
-                child: Text('Components'),
-              ),
-            ),
-            const ShadBreadcrumbItem(
-              child: ShadBreadcrumbItem(
-                child: Text('Breadcrumb'),
-              ),
+              child: Text('Breadcrumb'),
             ),
           ],
         ),
+        const SizedBox(height: 20,),
         const Text(
           'Custom Separator',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -114,6 +105,7 @@ class BreadcrumbExample extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 20,),
         const Text(
           'Breadcrumb with Dropdown',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -146,6 +138,39 @@ class BreadcrumbExample extends StatelessWidget {
               ),
             ),
             const ShadBreadcrumbItem(
+              isLastItem: true,
+              child: Text('Breadcrumb'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20,),
+        const Text(
+          'Long Breadcrumb',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        ShadBreadcrumb(
+          children: [
+            ShadBreadcrumbLink(
+              onPressed: _navigateToHome,
+              child: Text('Home'),
+            ),
+            ShadBreadcrumbLink(
+              onPressed: _navigateToComponents,
+              child: Text('Component 1'),
+            ),
+            ShadBreadcrumbLink(
+              onPressed: _navigateToComponents,
+              child: Text('Component 2'),
+            ),
+            ShadBreadcrumbLink(
+              onPressed: _navigateToComponents,
+              child: Text('Component 3'),
+            ),
+            ShadBreadcrumbLink(
+              onPressed: _navigateToComponents,
+              child: Text('Component 4'),
+            ),
+            ShadBreadcrumbItem(
               isLastItem: true,
               child: Text('Breadcrumb'),
             ),
