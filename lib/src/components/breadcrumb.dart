@@ -67,6 +67,7 @@ class ShadBreadcrumb extends StatelessWidget {
         breadcrumbTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
 
+    // Separator padding is 2.5x the base spacing for visual balance
     final effectiveSpacing = breadcrumbTheme.spacing ?? 4.0;
 
     return Row(
@@ -159,6 +160,7 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
       onExit: (_) => setState(() => _isHovered = false),
       child: ShadButton.raw(
         padding: EdgeInsets.zero,
+        // Use zero dimensions to allow button to size to content via minWidth/minHeight constraints
         height: 0,
         width: 0,
         variant: ShadButtonVariant.link,

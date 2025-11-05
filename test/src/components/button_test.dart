@@ -185,7 +185,7 @@ void main() {
       final buttonFinder = find.byType(ShadButton);
       expect(buttonFinder, findsOneWidget);
 
-      // Find the ConstrainedBox that applies width and padding
+      // Find the ConstrainedBox that applies width constraints
       final constrainedBoxFinder = find.descendant(
         of: buttonFinder,
         matching: find.byType(ConstrainedBox),
