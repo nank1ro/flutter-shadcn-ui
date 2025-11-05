@@ -149,10 +149,11 @@ class _ShadBreadcrumbLinkedTextState extends State<ShadBreadcrumbLinkedText> {
 
   @override
   Widget build(BuildContext context) {
-    final fontStyle = Theme.of(context).textTheme.bodyMedium!;
+    final theme = ShadTheme.of(context);
+    final fontStyle = Theme.of(context).textTheme.bodyMedium?? theme.textTheme.small;
     final hoverColor = _isHovered
-        ? widget.hoverColor ?? ShadTheme.of(context).colorScheme.foreground
-        : widget.color ?? ShadTheme.of(context).colorScheme.mutedForeground;
+        ? widget.hoverColor ?? theme.colorScheme.foreground
+        : widget.color ?? theme.colorScheme.mutedForeground;
 
     return MouseRegion(
       cursor: widget.onPressed != null
@@ -162,7 +163,7 @@ class _ShadBreadcrumbLinkedTextState extends State<ShadBreadcrumbLinkedText> {
       onExit: (_) => setState(() => _isHovered = false),
       child: ShadButton.raw(
         padding: EdgeInsets.zero,
-        height: (widget.style?.fontSize ?? fontStyle.fontSize!) * 1.4,
+        height: (widget.style?.fontSize ?? fontStyle.fontSize ?? 14) * 1.4,
         size: ShadButtonSize.sm,
         variant: ShadButtonVariant.link,
         onPressed: widget.onPressed,
@@ -199,9 +200,10 @@ class ShadBreadcrumbPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final baseStyle = Theme.of(context).textTheme.bodyMedium ?? theme.textTheme.small;
 
     return DefaultTextStyle(
-      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+      style: baseStyle.copyWith(
         color: theme.colorScheme.foreground,
         fontWeight: FontWeight.w500,
       ),
