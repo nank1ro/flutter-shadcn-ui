@@ -25,6 +25,7 @@ class ShadBreadcrumb extends StatelessWidget {
     this.textDirection,
     this.verticalDirection,
     this.textBaseline,
+    this.spacing = 10.0,
   });
 
   /// The list of breadcrumb items to display.
@@ -49,6 +50,9 @@ class ShadBreadcrumb extends StatelessWidget {
   /// The text baseline to use for the breadcrumb.
   final TextBaseline? textBaseline;
 
+  /// default separator spacing, defaults to 10.0
+  final double spacing;
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -66,9 +70,6 @@ class ShadBreadcrumb extends StatelessWidget {
         breadcrumbTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
 
-    // Separator padding is 2.5x the base spacing for visual balance
-    final effectiveSpacing = breadcrumbTheme.spacing ?? 4.0;
-
     return Row(
       mainAxisAlignment: effectiveMainAxisAlignment,
       crossAxisAlignment: effectiveCrossAxisAlignment,
@@ -77,7 +78,7 @@ class ShadBreadcrumb extends StatelessWidget {
       verticalDirection: verticalDirection ?? VerticalDirection.down,
       children: children.separatedBy(
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: effectiveSpacing * 2.5),
+          padding: EdgeInsets.symmetric(horizontal: spacing),
           child: effectiveSeparator,
         ),
       ),
