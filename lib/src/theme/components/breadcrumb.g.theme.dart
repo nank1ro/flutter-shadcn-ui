@@ -68,8 +68,8 @@ mixin _$ShadBreadcrumbTheme {
     TextStyle? currentPageTextStyle,
     EdgeInsets? itemPadding,
     EdgeInsets? pagePadding,
-    MainAxisAlignment? mainAxisAlignment,
-    CrossAxisAlignment? crossAxisAlignment,
+    WrapAlignment? mainAxisAlignment,
+    WrapCrossAlignment? crossAxisAlignment,
     TextStyle? dropdownTextStyle,
     TextStyle? dropdownTriggerStyle,
   }) {

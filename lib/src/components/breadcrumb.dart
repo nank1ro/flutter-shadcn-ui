@@ -35,11 +35,11 @@ class ShadBreadcrumb extends StatelessWidget {
   /// If null, uses the default chevron right icon.
   final Widget? separator;
 
-  /// How the children should be placed along the main axis.
-  final MainAxisAlignment? mainAxisAlignment;
+  /// How the children should be placed along the wraps main axis.
+  final WrapAlignment? mainAxisAlignment;
 
-  /// How the children should be placed along the cross axis.
-  final CrossAxisAlignment? crossAxisAlignment;
+  /// How the children should be placed along the wraps cross axis.
+  final WrapCrossAlignment? crossAxisAlignment;
 
   /// The text direction to use for the breadcrumb.
   final TextDirection? textDirection;
@@ -65,16 +65,16 @@ class ShadBreadcrumb extends StatelessWidget {
 
     final effectiveMainAxisAlignment = mainAxisAlignment ??
         breadcrumbTheme.mainAxisAlignment ??
-        MainAxisAlignment.start;
+        WrapAlignment.start;
 
     final effectiveCrossAxisAlignment = crossAxisAlignment ??
         breadcrumbTheme.crossAxisAlignment ??
-        CrossAxisAlignment.center;
+        WrapCrossAlignment.center;
 
-    return Row(
-      mainAxisAlignment: effectiveMainAxisAlignment,
+    return Wrap(
+      alignment: effectiveMainAxisAlignment,
       crossAxisAlignment: effectiveCrossAxisAlignment,
-      mainAxisSize: MainAxisSize.min,
+      runSpacing: spacing,
       textDirection: textDirection,
       verticalDirection: verticalDirection ?? VerticalDirection.down,
       children: children.separatedBy(

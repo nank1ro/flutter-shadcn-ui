@@ -61,10 +61,10 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
   final EdgeInsets? pagePadding;
 
   /// {@macro ShadBreadcrumb.mainAxisAlignment}
-  final MainAxisAlignment? mainAxisAlignment;
+  final WrapAlignment? mainAxisAlignment;
 
   /// {@macro ShadBreadcrumb.crossAxisAlignment}
-  final CrossAxisAlignment? crossAxisAlignment;
+  final WrapCrossAlignment? crossAxisAlignment;
 
   /// The text style for dropdown menu items.
   final TextStyle? dropdownTextStyle;

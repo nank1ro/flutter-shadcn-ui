@@ -267,8 +267,8 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       ),
       itemPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       pagePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: WrapAlignment.start,
+      crossAxisAlignment: WrapCrossAlignment.center,
     );
   }
 
