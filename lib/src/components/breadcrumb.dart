@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
@@ -97,14 +97,27 @@ class ShadBreadcrumbItem extends StatelessWidget {
   const ShadBreadcrumbItem({
     super.key,
     required this.child,
+    this.isLastItem = false,
   });
 
   /// The widget to display as the breadcrumb item content.
   final Widget child;
 
+  /// Make the last item in the breadcrumb a little heavier, defaults to false
+  /// [default weight is FontWeight.normal, if true it is FontWeight.w500]
+  final bool isLastItem;
+
   @override
   Widget build(BuildContext context) {
-    return child;
+    final theme = ShadTheme.of(context);
+
+    return DefaultTextStyle(
+      style: ShadTheme.of(context).textTheme.small.copyWith(
+        color: theme.colorScheme.foreground,
+        fontWeight: isLastItem ? FontWeight.w500 : FontWeight.normal,
+      ),
+      child: child,
+    );
   }
 }
 
@@ -141,14 +154,12 @@ class ShadBreadcrumbLink extends StatefulWidget {
 }
 
 class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
-  bool _isHovered = false;
+  bool isHovered = false;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final fontStyle =
-        Theme.of(context).textTheme.bodyMedium?? theme.textTheme.small;
-    final hoverColor = _isHovered
+    final hoverColor = isHovered
         ? widget.hoverColor ?? theme.colorScheme.foreground
         : widget.color ?? theme.colorScheme.mutedForeground;
 
@@ -156,8 +167,8 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
       cursor: widget.onPressed != null
           ? SystemMouseCursors.click
           : SystemMouseCursors.basic,
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
       child: ShadButton.raw(
         padding: EdgeInsets.zero,
         // Use zero dimensions to allow button to size to content via minWidth/minHeight constraints
@@ -166,45 +177,12 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
         variant: ShadButtonVariant.link,
         onPressed: widget.onPressed,
         child: DefaultTextStyle(
-          style: fontStyle.copyWith(
+          style: theme.textTheme.small.copyWith(
             color: hoverColor,
           ),
           child: widget.child,
         ),
       ),
-    );
-  }
-}
-
-/// {@template ShadBreadcrumbPage}
-/// A breadcrumb item representing the current page.
-///
-/// This widget is used for the final item in the breadcrumb navigation
-/// to indicate the current page. It's typically not clickable and has
-/// distinct styling from other breadcrumb items.
-/// {@endtemplate}
-class ShadBreadcrumbPage extends StatelessWidget {
-  /// {@macro ShadBreadcrumbPage}
-  const ShadBreadcrumbPage({
-    super.key,
-    required this.child,
-  });
-
-  /// The widget to display as the current page content.
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-    final baseStyle =
-        Theme.of(context).textTheme.bodyMedium ?? theme.textTheme.small;
-
-    return DefaultTextStyle(
-      style: baseStyle.copyWith(
-        color: theme.colorScheme.foreground,
-        fontWeight: FontWeight.w500,
-      ),
-      child: child,
     );
   }
 }
@@ -300,11 +278,11 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
 }
 
 class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
-  final _controller = ShadPopoverController();
+  final controller = ShadPopoverController();
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -319,7 +297,7 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
       decoration: ShadDecoration(
         color: theme.colorScheme.popover,
       ),
-      controller: _controller,
+      controller: controller,
       padding: EdgeInsets.all(breadcrumbTheme.spacing ?? 4.0),
       popover: (context) => IntrinsicWidth(
         child: Column(
@@ -329,7 +307,7 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
         ),
       ),
       child: ShadBreadcrumbLink(
-        onPressed: _controller.toggle,
+        onPressed: controller.toggle,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -374,9 +352,7 @@ class ShadBreadcrumbDropMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final baseStyle =
-        Theme.of(context).textTheme.bodyMedium ??
-            ShadTheme.of(context).textTheme.small;
+    final theme = ShadTheme.of(context);
 
     return ShadButton.raw(
       variant: ShadButtonVariant.ghost,
@@ -385,7 +361,10 @@ class ShadBreadcrumbDropMenuItem extends StatelessWidget {
       padding: padding,
       mainAxisAlignment: MainAxisAlignment.start,
       onPressed: onPressed,
-      child: DefaultTextStyle(style: baseStyle, child: child),
+      child: DefaultTextStyle(
+        style: theme.textTheme.small,
+        child: child,
+      ),
     );
   }
 }

@@ -47,7 +47,8 @@ class BreadcrumbsPage extends StatelessWidget {
                 ShadBreadcrumbItem(
                   child: Text('Library'),
                 ),
-                ShadBreadcrumbPage(
+                ShadBreadcrumbItem(
+                  isLastItem: true,
                   child: Text('Data'),
                 ),
               ],
@@ -74,7 +75,8 @@ class BreadcrumbsPage extends StatelessWidget {
                     child: const Text('Components'),
                   ),
                 ),
-                const ShadBreadcrumbPage(
+                const ShadBreadcrumbItem(
+                  isLastItem: true,
                   child: Text('Breadcrumb'),
                 ),
               ],
@@ -104,7 +106,8 @@ class BreadcrumbsPage extends StatelessWidget {
                     child: const Text('Components'),
                   ),
                 ),
-                const ShadBreadcrumbPage(
+                const ShadBreadcrumbItem(
+                  isLastItem: true,
                   child: Text('Breadcrumb'),
                 ),
               ],
@@ -132,7 +135,8 @@ class BreadcrumbsPage extends StatelessWidget {
                     child: const Text('Components'),
                   ),
                 ),
-                const ShadBreadcrumbPage(
+                const ShadBreadcrumbItem(
+                  isLastItem: true,
                   child: Text('Breadcrumb'),
                 ),
               ],
@@ -154,7 +158,8 @@ class BreadcrumbsPage extends StatelessWidget {
                 ShadBreadcrumbItem(
                   child: Text('Library'),
                 ),
-                ShadBreadcrumbPage(
+                ShadBreadcrumbItem(
+                  isLastItem: true,
                   child: Text('Data'),
                 ),
               ],
@@ -194,7 +199,8 @@ class BreadcrumbsPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const ShadBreadcrumbPage(
+                const ShadBreadcrumbItem(
+                  isLastItem: true,
                   child: Text('Breadcrumb'),
                 ),
               ],
