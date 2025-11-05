@@ -1,14 +1,13 @@
-import 'dart:ui';
+import 'package:flutter/widgets.dart';
+import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
 
-import 'package:flutter/material.dart';
+part 'breadcrumb.g.theme.dart';
 
-/// The theme for breadcrumb components.
-///
-/// Use this class to override properties for all breadcrumb components.
+@themeGen
 @immutable
-class ShadBreadcrumbTheme {
+class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
   const ShadBreadcrumbTheme({
-    this.merge = true,
+    bool canMerge = true,
     this.separator,
     this.ellipsis,
     this.ellipsisSize,
@@ -21,167 +20,53 @@ class ShadBreadcrumbTheme {
     this.pagePadding,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
-  });
+  }): _canMerge = canMerge;
 
-  final bool merge;
+  @ignore
+  final bool _canMerge;
 
-  /// The widget to use as separator between breadcrumb items.
+  @override
+  bool get canMerge => _canMerge;
+
+  /// {@macro ShadBreadcrumb.separator}
   final Widget? separator;
 
-  /// The widget to use as ellipsis indicator.
+  /// {@macro ShadBreadcrumb.ellipsis}
   final Widget? ellipsis;
 
-  /// The maximum size of the ellipsis widget.
+  /// {@macro ShadBreadcrumb.ellipsisSize}
   final Size? ellipsisSize;
 
-  /// The spacing around separators between breadcrumb items.
+  /// {@macro ShadBreadcrumb.spacing}
   final double? spacing;
 
-  /// The text style for breadcrumb items.
+  /// {@macro ShadBreadcrumb.itemTextStyle}
   final TextStyle? itemTextStyle;
 
-  /// The text style for breadcrumb links.
+  /// {@macro ShadBreadcrumb.linkTextStyle}
   final TextStyle? linkTextStyle;
 
-  /// The text style for breadcrumb links when hovered.
+  /// {@macro ShadBreadcrumb.linkHoverTextStyle}
   final TextStyle? linkHoverTextStyle;
 
-  /// The text style for the current page breadcrumb item.
+  /// {@macro ShadBreadcrumb.currentPageTextStyle}
   final TextStyle? currentPageTextStyle;
 
-  /// The padding for breadcrumb items that are not links.
+  /// {@macro ShadBreadcrumb.itemPadding}
   final EdgeInsets? itemPadding;
 
-  /// The padding for breadcrumb page items (current page).
+  /// {@macro ShadBreadcrumb.pagePadding}
   final EdgeInsets? pagePadding;
 
-  /// How the breadcrumb children should be aligned along the main axis.
+  /// {@macro ShadBreadcrumb.mainAxisAlignment}
   final MainAxisAlignment? mainAxisAlignment;
 
-  /// How the breadcrumb children should be aligned along the cross axis.
+  /// {@macro ShadBreadcrumb.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
 
-  /// Creates a copy of this theme but with the given fields replaced with
-  /// the new values.
-  ShadBreadcrumbTheme copyWith({
-    bool? merge,
-    Widget? separator,
-    Widget? ellipsis,
-    Size? ellipsisSize,
-    double? spacing,
-    TextStyle? itemTextStyle,
-    TextStyle? linkTextStyle,
-    TextStyle? linkHoverTextStyle,
-    TextStyle? currentPageTextStyle,
-    EdgeInsets? itemPadding,
-    EdgeInsets? pagePadding,
-    MainAxisAlignment? mainAxisAlignment,
-    CrossAxisAlignment? crossAxisAlignment,
-  }) {
-    return ShadBreadcrumbTheme(
-      merge: merge ?? this.merge,
-      separator: separator ?? this.separator,
-      ellipsis: ellipsis ?? this.ellipsis,
-      ellipsisSize: ellipsisSize ?? this.ellipsisSize,
-      spacing: spacing ?? this.spacing,
-      itemTextStyle: itemTextStyle ?? this.itemTextStyle,
-      linkTextStyle: linkTextStyle ?? this.linkTextStyle,
-      linkHoverTextStyle: linkHoverTextStyle ?? this.linkHoverTextStyle,
-      currentPageTextStyle: currentPageTextStyle ?? this.currentPageTextStyle,
-      itemPadding: itemPadding ?? this.itemPadding,
-      pagePadding: pagePadding ?? this.pagePadding,
-      mainAxisAlignment: mainAxisAlignment ?? this.mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment ?? this.crossAxisAlignment,
-    );
-  }
-
-  /// Merges this theme with another [ShadBreadcrumbTheme].
-  ShadBreadcrumbTheme mergeWith(ShadBreadcrumbTheme? other) {
-    if (other == null) return this;
-    if (!other.merge) return other;
-    return copyWith(
-      separator: other.separator,
-      ellipsis: other.ellipsis,
-      ellipsisSize: other.ellipsisSize,
-      spacing: other.spacing,
-      itemTextStyle: other.itemTextStyle,
-      linkTextStyle: other.linkTextStyle,
-      linkHoverTextStyle: other.linkHoverTextStyle,
-      currentPageTextStyle: other.currentPageTextStyle,
-      itemPadding: other.itemPadding,
-      pagePadding: other.pagePadding,
-      mainAxisAlignment: other.mainAxisAlignment,
-      crossAxisAlignment: other.crossAxisAlignment,
-    );
-  }
-
-  /// Linearly interpolates between two [ShadBreadcrumbTheme].
-  static ShadBreadcrumbTheme lerp(
-    ShadBreadcrumbTheme a,
-    ShadBreadcrumbTheme b,
-    double t,
-  ) {
-    if (identical(a, b)) return a;
-    return ShadBreadcrumbTheme(
-      merge: t < 0.5 ? a.merge : b.merge,
-      separator: t < 0.5 ? a.separator : b.separator,
-      ellipsis: t < 0.5 ? a.ellipsis : b.ellipsis,
-      ellipsisSize: Size.lerp(a.ellipsisSize, b.ellipsisSize, t),
-      spacing: lerpDouble(a.spacing, b.spacing, t),
-      itemTextStyle: TextStyle.lerp(a.itemTextStyle, b.itemTextStyle, t),
-      linkTextStyle: TextStyle.lerp(a.linkTextStyle, b.linkTextStyle, t),
-      linkHoverTextStyle: TextStyle.lerp(
-        a.linkHoverTextStyle, 
-        b.linkHoverTextStyle, 
-        t,
-      ),
-      currentPageTextStyle: TextStyle.lerp(
-        a.currentPageTextStyle, 
-        b.currentPageTextStyle, 
-        t,
-      ),
-      itemPadding: EdgeInsets.lerp(a.itemPadding, b.itemPadding, t),
-      pagePadding: EdgeInsets.lerp(a.pagePadding, b.pagePadding, t),
-      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
-      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is ShadBreadcrumbTheme &&
-        other.merge == merge &&
-        other.separator == separator &&
-        other.ellipsis == ellipsis &&
-        other.ellipsisSize == ellipsisSize &&
-        other.spacing == spacing &&
-        other.itemTextStyle == itemTextStyle &&
-        other.linkTextStyle == linkTextStyle &&
-        other.linkHoverTextStyle == linkHoverTextStyle &&
-        other.currentPageTextStyle == currentPageTextStyle &&
-        other.itemPadding == itemPadding &&
-        other.pagePadding == pagePadding &&
-        other.mainAxisAlignment == mainAxisAlignment &&
-        other.crossAxisAlignment == crossAxisAlignment;
-  }
-
-  @override
-  int get hashCode {
-    return Object.hash(
-      merge,
-      separator,
-      ellipsis,
-      ellipsisSize,
-      spacing,
-      itemTextStyle,
-      linkTextStyle,
-      linkHoverTextStyle,
-      currentPageTextStyle,
-      itemPadding,
-      pagePadding,
-      mainAxisAlignment,
-      crossAxisAlignment,
-    );
-  }
+  static ShadBreadcrumbTheme? lerp(
+      ShadBreadcrumbTheme a,
+      ShadBreadcrumbTheme b,
+      double t,
+      )  => _$ShadBreadcrumbTheme.lerp(a, b, t);
 }

@@ -170,7 +170,7 @@ class ShadThemeData extends ShadBaseTheme {
       outlineBadgeTheme: effectiveVariant.outlineBadgeTheme().merge(
             outlineBadgeTheme,
           ),
-      breadcrumbTheme: effectiveVariant.breadcrumbTheme().mergeWith(
+      breadcrumbTheme: effectiveVariant.breadcrumbTheme().merge(
           breadcrumbTheme),
       buttonSizesTheme: effectiveVariant.buttonSizesTheme().merge(
             buttonSizesTheme,
