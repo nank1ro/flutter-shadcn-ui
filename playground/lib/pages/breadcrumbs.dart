@@ -63,15 +63,15 @@ class BreadcrumbsPage extends StatelessWidget {
             ShadBreadcrumb(
               children: [
                 ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLinkedText(
+                  child: ShadBreadcrumbLink(
                     onPressed: _navigateToHome,
-                    text: 'Home',
+                    child: const Text('Home'),
                   ),
                 ),
                 ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLinkedText(
+                  child: ShadBreadcrumbLink(
                     onPressed: _navigateToComponents,
-                    text: 'Components',
+                    child: const Text('Components'),
                   ),
                 ),
                 const ShadBreadcrumbPage(
@@ -90,18 +90,18 @@ class BreadcrumbsPage extends StatelessWidget {
             ShadBreadcrumb(
               children: [
                 ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLinkedText(
+                  child: ShadBreadcrumbLink(
                     onPressed: _navigateToHome,
-                    text:'Home',
+                    child: const Text('Home'),
                   ),
                 ),
                 const ShadBreadcrumbItem(
                   child: ShadBreadcrumbEllipsis(),
                 ),
                 ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLinkedText(
+                  child: ShadBreadcrumbLink(
                     onPressed: _navigateToComponents,
-                      text:'Components',
+                    child: const Text('Components'),
                   ),
                 ),
                 const ShadBreadcrumbPage(
@@ -121,15 +121,15 @@ class BreadcrumbsPage extends StatelessWidget {
               separator: const Icon(Icons.arrow_forward_ios, size: 14),
               children: [
                 ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLinkedText(
+                  child: ShadBreadcrumbLink(
                     onPressed: _navigateToHome,
-                    text: 'Home',
+                    child: const Text('Home'),
                   ),
                 ),
                 ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLinkedText(
+                  child: ShadBreadcrumbLink(
                     onPressed: _navigateToComponents,
-                    text: 'Components',
+                    child: const Text('Components'),
                   ),
                 ),
                 const ShadBreadcrumbPage(

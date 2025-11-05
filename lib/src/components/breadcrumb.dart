@@ -107,30 +107,27 @@ class ShadBreadcrumbItem extends StatelessWidget {
   }
 }
 
-/// {@template ShadBreadcrumbLinkedText}
+/// {@template ShadBreadcrumbLink}
 /// A clickable breadcrumb item that navigates when tapped.
 ///
-/// This widget represents an interactive text element.
+/// This widget wraps content in a clickable area and applies appropriate
+/// hover and focus styling for interactive breadcrumb items.
 /// {@endtemplate}
-class ShadBreadcrumbLinkedText extends StatefulWidget {
-  /// {@macro ShadBreadcrumbLinkedText}
-  const ShadBreadcrumbLinkedText({
+class ShadBreadcrumbLink extends StatefulWidget {
+  /// {@macro ShadBreadcrumbLink}
+  const ShadBreadcrumbLink({
     super.key,
-    required this.text,
+    required this.child,
     this.onPressed,
-    this.style,
     this.color,
     this.hoverColor,
   });
 
-  /// The Text to display as the breadcrumb item content.
-  final String text;
+  /// The widget to display as the link content.
+  final Widget child;
 
-  /// Called when the Widget is tapped.
+  /// Called when the breadcrumb link is tapped.
   final VoidCallback? onPressed;
-
-  /// Optional style for the text
-  final TextStyle? style;
 
   /// Optional color for the text in normal state
   final Color? color;
@@ -138,19 +135,18 @@ class ShadBreadcrumbLinkedText extends StatefulWidget {
   /// Optional color for the text in hover state
   final Color? hoverColor;
 
-
   @override
-  State<ShadBreadcrumbLinkedText> createState() =>
-      _ShadBreadcrumbLinkedTextState();
+  State<ShadBreadcrumbLink> createState() => _ShadBreadcrumbLinkState();
 }
 
-class _ShadBreadcrumbLinkedTextState extends State<ShadBreadcrumbLinkedText> {
+class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
   bool _isHovered = false;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final fontStyle = Theme.of(context).textTheme.bodyMedium?? theme.textTheme.small;
+    final fontStyle =
+        Theme.of(context).textTheme.bodyMedium?? theme.textTheme.small;
     final hoverColor = _isHovered
         ? widget.hoverColor ?? theme.colorScheme.foreground
         : widget.color ?? theme.colorScheme.mutedForeground;
@@ -163,17 +159,15 @@ class _ShadBreadcrumbLinkedTextState extends State<ShadBreadcrumbLinkedText> {
       onExit: (_) => setState(() => _isHovered = false),
       child: ShadButton.raw(
         padding: EdgeInsets.zero,
-        height: (widget.style?.fontSize ?? fontStyle.fontSize ?? 14) * 1.4,
-        size: ShadButtonSize.sm,
+        height: 0,
+        width: 0,
         variant: ShadButtonVariant.link,
         onPressed: widget.onPressed,
-        child: Text(
-          widget.text,
+        child: DefaultTextStyle(
           style: fontStyle.copyWith(
-            fontWeight: FontWeight.normal,
-          ).merge(widget.style).copyWith(
             color: hoverColor,
           ),
+          child: widget.child,
         ),
       ),
     );
@@ -200,7 +194,8 @@ class ShadBreadcrumbPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final baseStyle = Theme.of(context).textTheme.bodyMedium ?? theme.textTheme.small;
+    final baseStyle =
+        Theme.of(context).textTheme.bodyMedium ?? theme.textTheme.small;
 
     return DefaultTextStyle(
       style: baseStyle.copyWith(

@@ -86,15 +86,15 @@ void main() {
           ShadBreadcrumb(
             children: [
               ShadBreadcrumbItem(
-                child: ShadBreadcrumbLinkedText(
+                child: ShadBreadcrumbLink(
                   onPressed: () => homeTapped = true,
-                  text: 'Home',
+                  child: const Text('Home'),
                 ),
               ),
               ShadBreadcrumbItem(
-                child: ShadBreadcrumbLinkedText(
+                child: ShadBreadcrumbLink(
                   onPressed: () => libraryTapped = true,
-                  text: 'Library',
+                  child: const Text('Library'),
                 ),
               ),
               const ShadBreadcrumbItem(
@@ -193,9 +193,9 @@ void main() {
 
       await tester.pumpWidget(
         createTestWidget(
-          ShadBreadcrumbLinkedText(
+          ShadBreadcrumbLink(
             onPressed: () => wasTapped = true,
-            text: 'Clickable',
+            child: const Text('Clickable'),
           ),
         ),
       );
@@ -211,9 +211,9 @@ void main() {
     testWidgets('handles hover correctly', (WidgetTester tester) async {
       await tester.pumpWidget(
         createTestWidget(
-          ShadBreadcrumbLinkedText(
+          ShadBreadcrumbLink(
             onPressed: () {},
-            text: 'Hoverable',
+            child: const Text('Hoverable'),
           ),
         ),
       );
