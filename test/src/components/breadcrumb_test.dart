@@ -4,6 +4,8 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/breadcrumb.dart';
 import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/theme/components/breadcrumb.dart';
+import 'package:shadcn_ui/src/theme/data.dart';
 
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
@@ -302,5 +304,376 @@ void main() {
     });
   });
 
-  //TODO add tests for the dropdown menu after refactoring
+  group('ShadBreadcrumbDropdown', () {
+    testWidgets('renders child widget', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropdown(
+                child: Text('Dropdown'),
+                children: [
+                  ShadBreadcrumbDropMenuItem(child: Text('Item 1')),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Dropdown'), findsOneWidget);
+    });
+
+    testWidgets('displays chevron down icon', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropdown(
+                child: Text('Dropdown'),
+                children: [
+                  ShadBreadcrumbDropMenuItem(child: Text('Item 1')),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(LucideIcons.chevronDown), findsOneWidget);
+    });
+
+    testWidgets('shows popover when clicked', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropdown(
+                child: Text('Dropdown'),
+                children: [
+                  ShadBreadcrumbDropMenuItem(child: Text('Item 1')),
+                  ShadBreadcrumbDropMenuItem(child: Text('Item 2')),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Initially, dropdown items should not be visible
+      expect(find.text('Item 1'), findsNothing);
+      expect(find.text('Item 2'), findsNothing);
+
+      // Tap to open dropdown
+      await tester.tap(find.text('Dropdown'));
+      await tester.pumpAndSettle();
+
+      // Dropdown items should now be visible
+      expect(find.text('Item 1'), findsOneWidget);
+      expect(find.text('Item 2'), findsOneWidget);
+    });
+
+    testWidgets('hides popover when clicked again', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropdown(
+                child: Text('Dropdown'),
+                children: [
+                  ShadBreadcrumbDropMenuItem(child: Text('Item 1')),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Open dropdown
+      await tester.tap(find.text('Dropdown'));
+      await tester.pumpAndSettle();
+      expect(find.text('Item 1'), findsOneWidget);
+
+      // Close dropdown
+      await tester.tap(find.text('Dropdown'));
+      await tester.pumpAndSettle();
+      expect(find.text('Item 1'), findsNothing);
+    });
+
+    testWidgets('displays multiple dropdown items', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropdown(
+                child: Text('More'),
+                children: [
+                  ShadBreadcrumbDropMenuItem(child: Text('Components')),
+                  ShadBreadcrumbDropMenuItem(child: Text('Documentation')),
+                  ShadBreadcrumbDropMenuItem(child: Text('Themes')),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('More'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Components'), findsOneWidget);
+      expect(find.text('Documentation'), findsOneWidget);
+      expect(find.text('Themes'), findsOneWidget);
+    });
+
+    testWidgets('respects theme spacing', (tester) async {
+      const testSpacing = 10.0;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: ShadApp(
+            theme: ShadThemeData(
+              brightness: Brightness.light,
+              breadcrumbTheme: const ShadBreadcrumbTheme(
+                spacing: testSpacing,
+              ),
+            ),
+            home: const Scaffold(
+              body: ShadBreadcrumbDropdown(
+                child: Text('Dropdown'),
+                children: [
+                  ShadBreadcrumbDropMenuItem(child: Text('Item 1')),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Verify the widget builds without error
+      expect(find.text('Dropdown'), findsOneWidget);
+    });
+
+    testWidgets('controller is disposed properly', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropdown(
+                child: Text('Dropdown'),
+                children: [
+                  ShadBreadcrumbDropMenuItem(child: Text('Item 1')),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Remove the widget
+      await tester.pumpWidget(const MaterialApp(home: Scaffold()));
+
+      // If we get here without errors, disposal worked correctly
+      expect(find.byType(ShadBreadcrumbDropdown), findsNothing);
+    });
+  });
+
+  group('ShadBreadcrumbDropMenuItem', () {
+    testWidgets('renders child widget', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropMenuItem(
+                child: Text('Menu Item'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Menu Item'), findsOneWidget);
+    });
+
+    testWidgets('calls onPressed when tapped', (tester) async {
+      var wasPressed = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropMenuItem(
+                onPressed: () => wasPressed = true,
+                child: const Text('Clickable Item'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Clickable Item'));
+      await tester.pumpAndSettle();
+
+      expect(wasPressed, isTrue);
+    });
+
+    testWidgets('does not call onPressed when null', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropMenuItem(
+                child: Text('Non-clickable Item'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Should not throw error when tapped with null onPressed
+      await tester.tap(find.text('Non-clickable Item'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Non-clickable Item'), findsOneWidget);
+    });
+
+    testWidgets('applies default padding', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropMenuItem(
+                child: Text('Item'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final button = tester.widget<ShadButton>(find.byType(ShadButton));
+      expect(
+        button.padding,
+        const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      );
+    });
+
+    testWidgets('applies custom padding', (tester) async {
+      const customPadding = EdgeInsets.all(12);
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropMenuItem(
+                padding: customPadding,
+                child: Text('Item'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final button = tester.widget<ShadButton>(find.byType(ShadButton));
+      expect(button.padding, customPadding);
+    });
+
+    testWidgets('uses ghost button variant', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropMenuItem(
+                child: Text('Item'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final button = tester.widget<ShadButton>(find.byType(ShadButton));
+      expect(button.variant, ShadButtonVariant.ghost);
+    });
+
+    testWidgets('renders complex child widget', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropMenuItem(
+                child: Row(
+                  children: [
+                    Icon(Icons.home),
+                    SizedBox(width: 8),
+                    Text('Home'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.home), findsOneWidget);
+      expect(find.text('Home'), findsOneWidget);
+    });
+  });
+
+  group('ShadBreadcrumbDropdown integration', () {
+    testWidgets('dropdown items respond to tap', (tester) async {
+      var selectedItem = '';
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropdown(
+                child: const Text('Select'),
+                children: [
+                  ShadBreadcrumbDropMenuItem(
+                    onPressed: () => selectedItem = 'Item 1',
+                    child: const Text('Item 1'),
+                  ),
+                  ShadBreadcrumbDropMenuItem(
+                    onPressed: () => selectedItem = 'Item 2',
+                    child: const Text('Item 2'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Open dropdown
+      await tester.tap(find.text('Select'));
+      await tester.pumpAndSettle();
+
+      // Tap an item
+      await tester.tap(find.text('Item 2'));
+      await tester.pumpAndSettle();
+
+      expect(selectedItem, 'Item 2');
+    });
+
+    testWidgets('works with empty children list', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ShadApp(
+            home: Scaffold(
+              body: ShadBreadcrumbDropdown(
+                child: Text('Empty'),
+                children: [],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Empty'), findsOneWidget);
+
+      // Should be able to toggle even with no items
+      await tester.tap(find.text('Empty'));
+      await tester.pumpAndSettle();
+    });
+  });
 }
