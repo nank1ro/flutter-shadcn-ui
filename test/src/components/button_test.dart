@@ -185,18 +185,18 @@ void main() {
       final buttonFinder = find.byType(ShadButton);
       expect(buttonFinder, findsOneWidget);
 
-      // Find the SizedBox that applies width and padding
-      final sizedBoxFinder = find.descendant(
+      // Find the ConstrainedBox that applies width and padding
+      final constrainedBoxFinder = find.descendant(
         of: buttonFinder,
-        matching: find.byType(SizedBox),
+        matching: find.byType(ConstrainedBox),
       );
-      expect(sizedBoxFinder, findsOneWidget);
-      final sizedBox = tester.widget<SizedBox>(sizedBoxFinder);
-      expect(sizedBox.width, customWidth);
+      expect(constrainedBoxFinder, findsOneWidget);
+      final constrainedBox = tester.widget<ConstrainedBox>(constrainedBoxFinder);
+      expect(constrainedBox.constraints.minWidth, customWidth);
 
       // Find the Padding widget
       final paddingFinder = find.descendant(
-        of: sizedBoxFinder,
+        of: constrainedBoxFinder,
         matching: find.byType(Padding),
       );
       expect(paddingFinder, findsOneWidget);
@@ -320,14 +320,15 @@ void main() {
       );
 
       // Verify the button renders with large size
-      final sizedBoxFinder = find.descendant(
+      final constrainedBoxFinder = find.descendant(
         of: find.byType(ShadButton),
-        matching: find.byType(SizedBox),
+        matching: find.byType(ConstrainedBox),
       );
-      expect(sizedBoxFinder, findsOneWidget);
-      final sizedBox = tester.widget<SizedBox>(sizedBoxFinder);
+      expect(constrainedBoxFinder, findsOneWidget);
+      final constrainedBox = tester.widget<ConstrainedBox>(constrainedBoxFinder);
       final theme = ShadTheme.of(tester.element(find.byType(ShadButton)));
-      expect(sizedBox.height, theme.buttonSizesTheme.lg?.height);
+      expect(constrainedBox.constraints.minHeight,
+          theme.buttonSizesTheme.lg?.height);
     });
 
     testWidgets('executes onPressed callback on tap', (
