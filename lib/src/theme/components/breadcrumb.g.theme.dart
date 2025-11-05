@@ -24,34 +24,43 @@ mixin _$ShadBreadcrumbTheme {
     return ShadBreadcrumbTheme(
       separator: t < 0.5 ? a?.separator : b?.separator,
       ellipsis: t < 0.5 ? a?.ellipsis : b?.ellipsis,
-      ellipsisSize: Size.lerp(a?.ellipsisSize, b?.ellipsisSize, t),
+      separatorSize: lerpDouble$(a?.separatorSize, b?.separatorSize, t),
+      ellipsisSize: lerpDouble$(a?.ellipsisSize, b?.ellipsisSize, t),
       spacing: lerpDouble$(a?.spacing, b?.spacing, t),
       itemTextStyle: TextStyle.lerp(a?.itemTextStyle, b?.itemTextStyle, t),
       linkTextStyle: TextStyle.lerp(a?.linkTextStyle, b?.linkTextStyle, t),
-      linkHoverTextStyle: TextStyle.lerp(
-        a?.linkHoverTextStyle,
-        b?.linkHoverTextStyle,
+      linkNormalTextColor: Color.lerp(
+        a?.linkNormalTextColor,
+        b?.linkNormalTextColor,
         t,
       ),
-      currentPageTextStyle: TextStyle.lerp(
-        a?.currentPageTextStyle,
-        b?.currentPageTextStyle,
+      linkHoverTextColor: Color.lerp(
+        a?.linkHoverTextColor,
+        b?.linkHoverTextColor,
         t,
       ),
-      itemPadding: EdgeInsets.lerp(a?.itemPadding, b?.itemPadding, t),
-      pagePadding: EdgeInsets.lerp(a?.pagePadding, b?.pagePadding, t),
       mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
       crossAxisAlignment: t < 0.5
           ? a?.crossAxisAlignment
           : b?.crossAxisAlignment,
+      dropdownMenuBackgroundColor: Color.lerp(
+        a?.dropdownMenuBackgroundColor,
+        b?.dropdownMenuBackgroundColor,
+        t,
+      ),
+      dropdownMenuPadding: EdgeInsets.lerp(
+        a?.dropdownMenuPadding,
+        b?.dropdownMenuPadding,
+        t,
+      ),
       dropdownTextStyle: TextStyle.lerp(
         a?.dropdownTextStyle,
         b?.dropdownTextStyle,
         t,
       ),
-      dropdownTriggerStyle: TextStyle.lerp(
-        a?.dropdownTriggerStyle,
-        b?.dropdownTriggerStyle,
+      dropdownItemPadding: EdgeInsets.lerp(
+        a?.dropdownItemPadding,
+        b?.dropdownItemPadding,
         t,
       ),
     );
@@ -60,36 +69,39 @@ mixin _$ShadBreadcrumbTheme {
   ShadBreadcrumbTheme copyWith({
     Widget? separator,
     Widget? ellipsis,
-    Size? ellipsisSize,
+    double? separatorSize,
+    double? ellipsisSize,
     double? spacing,
     TextStyle? itemTextStyle,
     TextStyle? linkTextStyle,
-    TextStyle? linkHoverTextStyle,
-    TextStyle? currentPageTextStyle,
-    EdgeInsets? itemPadding,
-    EdgeInsets? pagePadding,
+    Color? linkNormalTextColor,
+    Color? linkHoverTextColor,
     WrapAlignment? mainAxisAlignment,
     WrapCrossAlignment? crossAxisAlignment,
+    Color? dropdownMenuBackgroundColor,
+    EdgeInsets? dropdownMenuPadding,
     TextStyle? dropdownTextStyle,
-    TextStyle? dropdownTriggerStyle,
+    EdgeInsets? dropdownItemPadding,
   }) {
     final a = (this as ShadBreadcrumbTheme);
 
     return ShadBreadcrumbTheme(
       separator: separator ?? a.separator,
       ellipsis: ellipsis ?? a.ellipsis,
+      separatorSize: separatorSize ?? a.separatorSize,
       ellipsisSize: ellipsisSize ?? a.ellipsisSize,
       spacing: spacing ?? a.spacing,
       itemTextStyle: itemTextStyle ?? a.itemTextStyle,
       linkTextStyle: linkTextStyle ?? a.linkTextStyle,
-      linkHoverTextStyle: linkHoverTextStyle ?? a.linkHoverTextStyle,
-      currentPageTextStyle: currentPageTextStyle ?? a.currentPageTextStyle,
-      itemPadding: itemPadding ?? a.itemPadding,
-      pagePadding: pagePadding ?? a.pagePadding,
+      linkNormalTextColor: linkNormalTextColor ?? a.linkNormalTextColor,
+      linkHoverTextColor: linkHoverTextColor ?? a.linkHoverTextColor,
       mainAxisAlignment: mainAxisAlignment ?? a.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
+      dropdownMenuBackgroundColor:
+          dropdownMenuBackgroundColor ?? a.dropdownMenuBackgroundColor,
+      dropdownMenuPadding: dropdownMenuPadding ?? a.dropdownMenuPadding,
       dropdownTextStyle: dropdownTextStyle ?? a.dropdownTextStyle,
-      dropdownTriggerStyle: dropdownTriggerStyle ?? a.dropdownTriggerStyle,
+      dropdownItemPadding: dropdownItemPadding ?? a.dropdownItemPadding,
     );
   }
 
@@ -107,6 +119,7 @@ mixin _$ShadBreadcrumbTheme {
     return copyWith(
       separator: other.separator,
       ellipsis: other.ellipsis,
+      separatorSize: other.separatorSize,
       ellipsisSize: other.ellipsisSize,
       spacing: other.spacing,
       itemTextStyle:
@@ -115,22 +128,16 @@ mixin _$ShadBreadcrumbTheme {
       linkTextStyle:
           current.linkTextStyle?.merge(other.linkTextStyle) ??
           other.linkTextStyle,
-      linkHoverTextStyle:
-          current.linkHoverTextStyle?.merge(other.linkHoverTextStyle) ??
-          other.linkHoverTextStyle,
-      currentPageTextStyle:
-          current.currentPageTextStyle?.merge(other.currentPageTextStyle) ??
-          other.currentPageTextStyle,
-      itemPadding: other.itemPadding,
-      pagePadding: other.pagePadding,
+      linkNormalTextColor: other.linkNormalTextColor,
+      linkHoverTextColor: other.linkHoverTextColor,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
+      dropdownMenuBackgroundColor: other.dropdownMenuBackgroundColor,
+      dropdownMenuPadding: other.dropdownMenuPadding,
       dropdownTextStyle:
           current.dropdownTextStyle?.merge(other.dropdownTextStyle) ??
           other.dropdownTextStyle,
-      dropdownTriggerStyle:
-          current.dropdownTriggerStyle?.merge(other.dropdownTriggerStyle) ??
-          other.dropdownTriggerStyle,
+      dropdownItemPadding: other.dropdownItemPadding,
     );
   }
 
@@ -149,18 +156,20 @@ mixin _$ShadBreadcrumbTheme {
     return other is ShadBreadcrumbTheme &&
         other.separator == value.separator &&
         other.ellipsis == value.ellipsis &&
+        other.separatorSize == value.separatorSize &&
         other.ellipsisSize == value.ellipsisSize &&
         other.spacing == value.spacing &&
         other.itemTextStyle == value.itemTextStyle &&
         other.linkTextStyle == value.linkTextStyle &&
-        other.linkHoverTextStyle == value.linkHoverTextStyle &&
-        other.currentPageTextStyle == value.currentPageTextStyle &&
-        other.itemPadding == value.itemPadding &&
-        other.pagePadding == value.pagePadding &&
+        other.linkNormalTextColor == value.linkNormalTextColor &&
+        other.linkHoverTextColor == value.linkHoverTextColor &&
         other.mainAxisAlignment == value.mainAxisAlignment &&
         other.crossAxisAlignment == value.crossAxisAlignment &&
+        other.dropdownMenuBackgroundColor ==
+            value.dropdownMenuBackgroundColor &&
+        other.dropdownMenuPadding == value.dropdownMenuPadding &&
         other.dropdownTextStyle == value.dropdownTextStyle &&
-        other.dropdownTriggerStyle == value.dropdownTriggerStyle;
+        other.dropdownItemPadding == value.dropdownItemPadding;
   }
 
   @override
@@ -171,18 +180,19 @@ mixin _$ShadBreadcrumbTheme {
       runtimeType,
       value.separator,
       value.ellipsis,
+      value.separatorSize,
       value.ellipsisSize,
       value.spacing,
       value.itemTextStyle,
       value.linkTextStyle,
-      value.linkHoverTextStyle,
-      value.currentPageTextStyle,
-      value.itemPadding,
-      value.pagePadding,
+      value.linkNormalTextColor,
+      value.linkHoverTextColor,
       value.mainAxisAlignment,
       value.crossAxisAlignment,
+      value.dropdownMenuBackgroundColor,
+      value.dropdownMenuPadding,
       value.dropdownTextStyle,
-      value.dropdownTriggerStyle,
+      value.dropdownItemPadding,
     );
   }
 }

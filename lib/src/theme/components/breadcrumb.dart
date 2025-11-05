@@ -10,18 +10,19 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
     bool canMerge = true,
     this.separator,
     this.ellipsis,
+    this.separatorSize,
     this.ellipsisSize,
     this.spacing,
     this.itemTextStyle,
     this.linkTextStyle,
-    this.linkHoverTextStyle,
-    this.currentPageTextStyle,
-    this.itemPadding,
-    this.pagePadding,
+    this.linkNormalTextColor,
+    this.linkHoverTextColor,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.dropdownMenuBackgroundColor,
+    this.dropdownMenuPadding,
     this.dropdownTextStyle,
-    this.dropdownTriggerStyle,
+    this.dropdownItemPadding,
   }): _canMerge = canMerge;
 
   @ignore
@@ -36,8 +37,11 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
   /// {@macro ShadBreadcrumb.ellipsis}
   final Widget? ellipsis;
 
+  /// {@macro ShadBreadcrumb.separatorSize}
+  final double? separatorSize;
+
   /// {@macro ShadBreadcrumb.ellipsisSize}
-  final Size? ellipsisSize;
+  final double? ellipsisSize;
 
   /// {@macro ShadBreadcrumb.spacing}
   final double? spacing;
@@ -48,29 +52,29 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
   /// {@macro ShadBreadcrumb.linkTextStyle}
   final TextStyle? linkTextStyle;
 
-  /// {@macro ShadBreadcrumb.linkHoverTextStyle}
-  final TextStyle? linkHoverTextStyle;
+  /// {@macro ShadBreadcrumb.linkNormalTextColor}
+  final Color? linkNormalTextColor;
 
-  /// {@macro ShadBreadcrumb.currentPageTextStyle}
-  final TextStyle? currentPageTextStyle;
+  /// {@macro ShadBreadcrumb.linkHoverTextColor}
+  final Color? linkHoverTextColor;
 
-  /// {@macro ShadBreadcrumb.itemPadding}
-  final EdgeInsets? itemPadding;
-
-  /// {@macro ShadBreadcrumb.pagePadding}
-  final EdgeInsets? pagePadding;
-
-  /// {@macro ShadBreadcrumb.mainAxisAlignment}
+  /// {@macro ShadBreadcrumb.wrapAlignment}
   final WrapAlignment? mainAxisAlignment;
 
-  /// {@macro ShadBreadcrumb.crossAxisAlignment}
+  /// {@macro ShadBreadcrumb.wrapCrossAxisAlignment}
   final WrapCrossAlignment? crossAxisAlignment;
 
-  /// The text style for dropdown menu items.
+  /// {@macro ShadBreadcrumb.dropdownMenuBackgroundColor}
+  final Color? dropdownMenuBackgroundColor;
+
+  /// {@macro ShadBreadcrumb.dropdownMenuPadding}
+  final EdgeInsets? dropdownMenuPadding;
+
+  /// {@macro ShadBreadcrumb.dropdownTextStyle}
   final TextStyle? dropdownTextStyle;
 
-  /// The text style for dropdown trigger buttons.
-  final TextStyle? dropdownTriggerStyle;
+  /// {@macro ShadBreadcrumb.dropdownItemPadding}
+  final EdgeInsets? dropdownItemPadding;
 
   static ShadBreadcrumbTheme? lerp(
       ShadBreadcrumbTheme? a,

@@ -234,24 +234,24 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         size: 14,
         color: colorScheme.mutedForeground,
       ),
-      ellipsisSize: const Size(36, 36),
-      spacing: 4.0,
-      itemTextStyle: effectiveTextTheme.small,
-      linkTextStyle: effectiveTextTheme.small.copyWith(
+      spacing: 10,
+      ellipsisSize: 14,
+      separatorSize: 14,
+      itemTextStyle: effectiveTextTheme.small.copyWith(
         color: colorScheme.foreground,
       ),
-      linkHoverTextStyle: effectiveTextTheme.small.copyWith(
-        color: colorScheme.foreground,
-        decoration: TextDecoration.underline,
-      ),
-      currentPageTextStyle: effectiveTextTheme.small.copyWith(
-        color: colorScheme.foreground,
-        fontWeight: FontWeight.w500,
-      ),
-      itemPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      pagePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      linkTextStyle: effectiveTextTheme.small,
+      linkNormalTextColor: colorScheme.mutedForeground,
+      linkHoverTextColor: colorScheme.foreground,
       mainAxisAlignment: WrapAlignment.start,
       crossAxisAlignment: WrapCrossAlignment.center,
+      dropdownMenuBackgroundColor: colorScheme.popover,
+      dropdownMenuPadding: const EdgeInsets.all(4),
+      dropdownTextStyle: effectiveTextTheme.small,
+      dropdownItemPadding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 6,
+      ),
     );
   }
 
