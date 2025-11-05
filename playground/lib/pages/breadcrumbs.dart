@@ -177,26 +177,21 @@ class BreadcrumbsPage extends StatelessWidget {
                 ),
                 ShadBreadcrumbItem(
                   child: ShadBreadcrumbDropdown(
-                    items: [
-                      ShadBreadcrumbLink(
+                    child: Text('Components'),
+                    children: [
+                      ShadBreadcrumbDropMenuItem(
                         onPressed: () => print('Navigating to Documentation'),
-                        child: const Text('Documentation'),
+                        child: Text('Documentation'),
                       ),
-                      ShadBreadcrumbLink(
-                        onPressed: () => print('Navigating to Tutorials'),
-                        child: const Text('Tutorials'),
+                      ShadBreadcrumbDropMenuItem(
+                        onPressed: () => print('Navigating to Themes'),
+                        child: Text('Themes'),
                       ),
-                      ShadBreadcrumbLink(
-                        onPressed: () => print('Navigating to Building UI'),
-                        child: const Text('Building UI'),
+                      ShadBreadcrumbDropMenuItem(
+                        onPressed: () => print('Navigating to Github'),
+                        child: Text('Github'),
                       ),
                     ],
-                  ),
-                ),
-                ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLink(
-                    onPressed: _navigateToComponents,
-                    child: const Text('Components'),
                   ),
                 ),
                 const ShadBreadcrumbPage(

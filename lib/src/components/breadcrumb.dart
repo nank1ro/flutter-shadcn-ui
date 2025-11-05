@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
@@ -259,7 +261,7 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
   /// If null, uses the default more horizontal icon.
   final Widget? child;
 
-  /// The size of the ellipsis.
+  /// The size of the ellipsis, defaults to 14.
   final double size;
 
   @override
@@ -286,16 +288,15 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
   /// {@macro ShadBreadcrumbDropdown}
   const ShadBreadcrumbDropdown({
     super.key,
-    required this.items,
-    this.trigger,
+    required this.child,
+    required this.children,
   });
 
-  /// The list of dropdown menu items to display.
-  final List<Widget> items;
+  /// The widget that triggers the dropdown.
+  final Widget child;
 
-  /// Custom trigger widget for the dropdown.
-  /// If null, uses an ellipsis button.
-  final Widget? trigger;
+  /// The list of dropdown menu items to display.
+  final List<ShadBreadcrumbDropMenuItem> children;
 
   @override
   State<ShadBreadcrumbDropdown> createState() => _ShadBreadcrumbDropdownState();
@@ -315,46 +316,79 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
     final theme = ShadTheme.of(context);
     final breadcrumbTheme = theme.breadcrumbTheme;
 
-    Widget effectiveTrigger;
-    if (widget.trigger != null) {
-      // If a custom trigger is provided, wrap it in a GestureDetector to handle taps
-      effectiveTrigger = GestureDetector(
-        onTap: _controller.toggle,
-        child: widget.trigger,
-      );
-    } else {
-      // Use default ellipsis button
-      effectiveTrigger = ShadButton.ghost(
-        size: ShadButtonSize.sm,
-        onPressed: _controller.toggle,
-        child: Icon(
-          LucideIcons.ellipsis,
-          size: 14,
-          color: theme.colorScheme.mutedForeground,
-        ),
-      );
-    }
-
     return ShadPopover(
+      // not sure how to calculate the x offset here but i think it won't change
+      anchor: const ShadAnchorAuto(offset: Offset(20, 4)),
+      decoration: ShadDecoration(
+        color: theme.colorScheme.popover,
+      ),
       controller: _controller,
+      padding: EdgeInsets.all(breadcrumbTheme.spacing ?? 4.0),
       popover: (context) => IntrinsicWidth(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: widget.children,
+        ),
+      ),
+      child: ShadBreadcrumbLink(
+        onPressed: _controller.toggle,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            for (int i = 0; i < widget.items.length; i++) ...[
-              DefaultTextStyle(
-                style: breadcrumbTheme.dropdownTextStyle ??
-                    theme.textTheme.small,
-                child: widget.items[i],
-              ),
-              if (i < widget.items.length - 1)
-                const SizedBox(height: 4),
-            ],
+            widget.child,
+            SizedBox(width: breadcrumbTheme.spacing ?? 4.0),
+            Icon(
+              size: 14,
+              LucideIcons.chevronDown,
+              color: theme.colorScheme.mutedForeground,
+            ),
           ],
         ),
       ),
-      child: effectiveTrigger,
+    );
+  }
+}
+
+/// {@template ShadBreadcrumbDropMenuItem}
+/// A single item in a breadcrumb dropdown.
+///
+/// This widget represents a child in a dropdown menu and can
+/// contain text, links, or other interactive elements.
+/// {@endtemplate}
+class ShadBreadcrumbDropMenuItem extends StatelessWidget {
+  /// {@macro ShadBreadcrumbDropMenuItem}
+  const ShadBreadcrumbDropMenuItem({
+    super.key,
+    required this.child,
+    this.onPressed,
+    this.padding = const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+  });
+
+  /// The widget to display as the breadcrumb item content.
+  final Widget child;
+
+  /// Called when the Widget is tapped.
+  final VoidCallback? onPressed;
+
+  /// Optional padding value,
+  /// defaults to [EdgeInsets.symmetric(horizontal: 8, vertical: 6)]
+  final EdgeInsets padding;
+
+  @override
+  Widget build(BuildContext context) {
+    final baseStyle =
+        Theme.of(context).textTheme.bodyMedium ??
+            ShadTheme.of(context).textTheme.small;
+
+    return ShadButton.raw(
+      variant: ShadButtonVariant.ghost,
+      height: 0,
+      width: 0,
+      padding: padding,
+      mainAxisAlignment: MainAxisAlignment.start,
+      onPressed: onPressed,
+      child: DefaultTextStyle(style: baseStyle, child: child),
     );
   }
 }
