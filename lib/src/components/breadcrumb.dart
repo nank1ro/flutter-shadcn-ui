@@ -164,25 +164,19 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
         ? widget.hoverColor ?? theme.colorScheme.foreground
         : widget.color ?? theme.colorScheme.mutedForeground;
 
-    return MouseRegion(
-      cursor: widget.onPressed != null
-          ? SystemMouseCursors.click
-          : SystemMouseCursors.basic,
-      onEnter: (_) => setState(() => isHovered = true),
-      onExit: (_) => setState(() => isHovered = false),
-      child: ShadButton.raw(
-        padding: EdgeInsets.zero,
-        // Use zero dimensions to allow button to size to content via minWidth/minHeight constraints
-        height: 0,
-        width: 0,
-        variant: ShadButtonVariant.link,
-        onPressed: widget.onPressed,
-        child: DefaultTextStyle(
-          style: theme.textTheme.small.copyWith(
-            color: hoverColor,
-          ),
-          child: widget.child,
+    return ShadButton.raw(
+      variant: ShadButtonVariant.link,
+      onHoverChange: (isHovered) => setState(() => this.isHovered = isHovered),
+      padding: EdgeInsets.zero,
+      // Use zero dimensions to allow button to size to content via minWidth/minHeight constraints
+      height: 0,
+      width: 0,
+      onPressed: widget.onPressed,
+      child: DefaultTextStyle(
+        style: theme.textTheme.small.copyWith(
+          color: hoverColor,
         ),
+        child: widget.child,
       ),
     );
   }
