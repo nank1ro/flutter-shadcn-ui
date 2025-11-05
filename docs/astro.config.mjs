@@ -140,6 +140,11 @@ export default defineConfig({
               link: 'https://zuzu.dev',
               attrs: { target: '_blank', rel: 'noopener noreferrer' },
             },
+            {
+              label: 'Human Design - Joy',
+              link: 'https://getjoy.app/',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
           ],
         }
       ],
