@@ -5,7 +5,7 @@ import 'package:example/pages/accordion.dart';
 import 'package:example/pages/alert.dart';
 import 'package:example/pages/avatar.dart';
 import 'package:example/pages/badge.dart';
-import 'package:example/pages/breadcrumb_example.dart';
+import 'package:example/pages/breadcrumb.dart';
 import 'package:example/pages/button.dart';
 import 'package:example/pages/calendar.dart';
 import 'package:example/pages/card.dart';
