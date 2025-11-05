@@ -1117,9 +1117,11 @@ class _ShadButtonState extends State<ShadButton> {
                         onLongPressStart: widget.onLongPressStart,
                         longPressDuration: effectiveLongPressDuration,
                         child: SelectionContainer.disabled(
-                          child: SizedBox(
-                            height: height(theme),
-                            width: width(theme),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minWidth: width(theme) ?? 0,
+                              minHeight: height(theme),
+                            ),
                             child: Padding(
                               padding: padding(theme),
                               child: Row(
