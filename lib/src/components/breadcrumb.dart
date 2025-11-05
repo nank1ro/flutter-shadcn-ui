@@ -58,9 +58,10 @@ class ShadBreadcrumb extends StatelessWidget {
     final theme = ShadTheme.of(context);
     final breadcrumbTheme = theme.breadcrumbTheme;
 
-    final effectiveSeparator = ShadBreadcrumbSeparator(
-      child: separator ?? breadcrumbTheme.separator,
-    );
+    final effectiveSeparator =
+        separator ??
+        breadcrumbTheme.separator ??
+        const ShadBreadcrumbSeparator();
 
     final effectiveMainAxisAlignment = mainAxisAlignment ??
         breadcrumbTheme.mainAxisAlignment ??
@@ -191,29 +192,22 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
 /// A separator widget used between breadcrumb items.
 ///
 /// This widget provides a visual separator between breadcrumb items.
-/// By default, it displays a chevron right icon, but can be customized
-/// with any widget.
+/// By default, it displays a chevron right icon.
 /// {@endtemplate}
 class ShadBreadcrumbSeparator extends StatelessWidget {
   /// {@macro ShadBreadcrumbSeparator}
   const ShadBreadcrumbSeparator({
     super.key,
-    this.child,
   });
-
-  /// The widget to display as the separator.
-  /// If null, uses the default chevron right icon.
-  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return child ??
-        Icon(
-          LucideIcons.chevronRight,
-          color: theme.colorScheme.mutedForeground,
-        );
+    return Icon(
+      LucideIcons.chevronRight,
+      color: theme.colorScheme.mutedForeground,
+    );
   }
 }
 
@@ -228,13 +222,8 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
   /// {@macro ShadBreadcrumbEllipsis}
   const ShadBreadcrumbEllipsis({
     super.key,
-    this.child,
     this.size = 14,
   });
-
-  /// The widget to display as the ellipsis.
-  /// If null, uses the default more horizontal icon.
-  final Widget? child;
 
   /// The size of the ellipsis, defaults to 14.
   final double size;
@@ -243,12 +232,11 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return child ??
-        Icon(
-          size: size,
-          LucideIcons.ellipsis,
-          color: theme.colorScheme.mutedForeground,
-        );
+    return Icon(
+      size: size,
+      LucideIcons.ellipsis,
+      color: theme.colorScheme.mutedForeground,
+    );
   }
 }
 

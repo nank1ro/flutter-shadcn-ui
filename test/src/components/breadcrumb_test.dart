@@ -281,21 +281,6 @@ void main() {
       expect(find.byType(ShadBreadcrumbSeparator), findsOneWidget);
       expect(find.byIcon(LucideIcons.chevronRight), findsOneWidget);
     });
-
-    testWidgets('renders custom separator content', (
-      WidgetTester tester,
-    ) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadBreadcrumbSeparator(
-            child: Text(' / '),
-          ),
-        ),
-      );
-
-      expect(find.text(' / '), findsOneWidget);
-      expect(find.byIcon(LucideIcons.chevronRight), findsNothing);
-    });
   });
 
   group('ShadBreadcrumbEllipsis', () {
@@ -310,19 +295,6 @@ void main() {
 
       expect(find.byType(ShadBreadcrumbEllipsis), findsOneWidget);
       expect(find.byIcon(LucideIcons.ellipsis), findsOneWidget);
-    });
-
-    testWidgets('renders custom ellipsis content', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadBreadcrumbEllipsis(
-            child: Text('...'),
-          ),
-        ),
-      );
-
-      expect(find.text('...'), findsOneWidget);
-      expect(find.byIcon(LucideIcons.ellipsis), findsNothing);
     });
   });
 
