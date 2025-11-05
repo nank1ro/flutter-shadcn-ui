@@ -44,6 +44,16 @@ mixin _$ShadBreadcrumbTheme {
       crossAxisAlignment: t < 0.5
           ? a?.crossAxisAlignment
           : b?.crossAxisAlignment,
+      dropdownTextStyle: TextStyle.lerp(
+        a?.dropdownTextStyle,
+        b?.dropdownTextStyle,
+        t,
+      ),
+      dropdownTriggerStyle: TextStyle.lerp(
+        a?.dropdownTriggerStyle,
+        b?.dropdownTriggerStyle,
+        t,
+      ),
     );
   }
 
@@ -60,6 +70,8 @@ mixin _$ShadBreadcrumbTheme {
     EdgeInsets? pagePadding,
     MainAxisAlignment? mainAxisAlignment,
     CrossAxisAlignment? crossAxisAlignment,
+    TextStyle? dropdownTextStyle,
+    TextStyle? dropdownTriggerStyle,
   }) {
     final a = (this as ShadBreadcrumbTheme);
 
@@ -76,6 +88,8 @@ mixin _$ShadBreadcrumbTheme {
       pagePadding: pagePadding ?? a.pagePadding,
       mainAxisAlignment: mainAxisAlignment ?? a.mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
+      dropdownTextStyle: dropdownTextStyle ?? a.dropdownTextStyle,
+      dropdownTriggerStyle: dropdownTriggerStyle ?? a.dropdownTriggerStyle,
     );
   }
 
@@ -111,6 +125,12 @@ mixin _$ShadBreadcrumbTheme {
       pagePadding: other.pagePadding,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,
+      dropdownTextStyle:
+          current.dropdownTextStyle?.merge(other.dropdownTextStyle) ??
+          other.dropdownTextStyle,
+      dropdownTriggerStyle:
+          current.dropdownTriggerStyle?.merge(other.dropdownTriggerStyle) ??
+          other.dropdownTriggerStyle,
     );
   }
 
@@ -138,7 +158,9 @@ mixin _$ShadBreadcrumbTheme {
         other.itemPadding == value.itemPadding &&
         other.pagePadding == value.pagePadding &&
         other.mainAxisAlignment == value.mainAxisAlignment &&
-        other.crossAxisAlignment == value.crossAxisAlignment;
+        other.crossAxisAlignment == value.crossAxisAlignment &&
+        other.dropdownTextStyle == value.dropdownTextStyle &&
+        other.dropdownTriggerStyle == value.dropdownTriggerStyle;
   }
 
   @override
@@ -159,6 +181,8 @@ mixin _$ShadBreadcrumbTheme {
       value.pagePadding,
       value.mainAxisAlignment,
       value.crossAxisAlignment,
+      value.dropdownTextStyle,
+      value.dropdownTriggerStyle,
     );
   }
 }

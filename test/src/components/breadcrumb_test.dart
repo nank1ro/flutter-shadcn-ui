@@ -301,4 +301,6 @@ void main() {
       expect(find.byIcon(LucideIcons.ellipsis), findsNothing);
     });
   });
+
+  //TODO add tests for the dropdown menu after refactoring
 }

@@ -20,6 +20,8 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
     this.pagePadding,
     this.mainAxisAlignment,
     this.crossAxisAlignment,
+    this.dropdownTextStyle,
+    this.dropdownTriggerStyle,
   }): _canMerge = canMerge;
 
   @ignore
@@ -64,9 +66,15 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
   /// {@macro ShadBreadcrumb.crossAxisAlignment}
   final CrossAxisAlignment? crossAxisAlignment;
 
+  /// The text style for dropdown menu items.
+  final TextStyle? dropdownTextStyle;
+
+  /// The text style for dropdown trigger buttons.
+  final TextStyle? dropdownTriggerStyle;
+
   static ShadBreadcrumbTheme? lerp(
-      ShadBreadcrumbTheme a,
-      ShadBreadcrumbTheme b,
+      ShadBreadcrumbTheme? a,
+      ShadBreadcrumbTheme? b,
       double t,
-      )  => _$ShadBreadcrumbTheme.lerp(a, b, t);
+      ) => _$ShadBreadcrumbTheme.lerp(a, b, t);
 }

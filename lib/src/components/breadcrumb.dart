@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
@@ -271,5 +272,89 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
           LucideIcons.ellipsis,
           color: theme.colorScheme.mutedForeground,
         );
+  }
+}
+
+/// {@template ShadBreadcrumbDropdown}
+/// A dropdown breadcrumb item that displays a menu when clicked.
+///
+/// This widget is used to show collapsed breadcrumb items in a dropdown menu,
+/// typically represented by an ellipsis. It follows the shadcn/ui pattern of
+/// using a popover to show hidden navigation levels.
+/// {@endtemplate}
+class ShadBreadcrumbDropdown extends StatefulWidget {
+  /// {@macro ShadBreadcrumbDropdown}
+  const ShadBreadcrumbDropdown({
+    super.key,
+    required this.items,
+    this.trigger,
+  });
+
+  /// The list of dropdown menu items to display.
+  final List<Widget> items;
+
+  /// Custom trigger widget for the dropdown.
+  /// If null, uses an ellipsis button.
+  final Widget? trigger;
+
+  @override
+  State<ShadBreadcrumbDropdown> createState() => _ShadBreadcrumbDropdownState();
+}
+
+class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
+  final _controller = ShadPopoverController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final breadcrumbTheme = theme.breadcrumbTheme;
+
+    Widget effectiveTrigger;
+    if (widget.trigger != null) {
+      // If a custom trigger is provided, wrap it in a GestureDetector to handle taps
+      effectiveTrigger = GestureDetector(
+        onTap: _controller.toggle,
+        child: widget.trigger,
+      );
+    } else {
+      // Use default ellipsis button
+      effectiveTrigger = ShadButton.ghost(
+        size: ShadButtonSize.sm,
+        onPressed: _controller.toggle,
+        child: Icon(
+          LucideIcons.ellipsis,
+          size: 14,
+          color: theme.colorScheme.mutedForeground,
+        ),
+      );
+    }
+
+    return ShadPopover(
+      controller: _controller,
+      popover: (context) => IntrinsicWidth(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (int i = 0; i < widget.items.length; i++) ...[
+              DefaultTextStyle(
+                style: breadcrumbTheme.dropdownTextStyle ??
+                    theme.textTheme.small,
+                child: widget.items[i],
+              ),
+              if (i < widget.items.length - 1)
+                const SizedBox(height: 4),
+            ],
+          ],
+        ),
+      ),
+      child: effectiveTrigger,
+    );
   }
 }

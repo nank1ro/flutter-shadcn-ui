@@ -160,6 +160,50 @@ class BreadcrumbsPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 32),
+
+            // With Dropdown
+            const Text(
+              'With Dropdown',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 16),
+            ShadBreadcrumb(
+              children: [
+                ShadBreadcrumbItem(
+                  child: ShadBreadcrumbLink(
+                    onPressed: _navigateToHome,
+                    child: const Text('Home'),
+                  ),
+                ),
+                ShadBreadcrumbItem(
+                  child: ShadBreadcrumbDropdown(
+                    items: [
+                      ShadBreadcrumbLink(
+                        onPressed: () => print('Navigating to Documentation'),
+                        child: const Text('Documentation'),
+                      ),
+                      ShadBreadcrumbLink(
+                        onPressed: () => print('Navigating to Tutorials'),
+                        child: const Text('Tutorials'),
+                      ),
+                      ShadBreadcrumbLink(
+                        onPressed: () => print('Navigating to Building UI'),
+                        child: const Text('Building UI'),
+                      ),
+                    ],
+                  ),
+                ),
+                ShadBreadcrumbItem(
+                  child: ShadBreadcrumbLink(
+                    onPressed: _navigateToComponents,
+                    child: const Text('Components'),
+                  ),
+                ),
+                const ShadBreadcrumbPage(
+                  child: Text('Breadcrumb'),
+                ),
+              ],
+            ),
             
         
           ],
