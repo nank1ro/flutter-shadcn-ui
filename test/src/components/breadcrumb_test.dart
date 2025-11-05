@@ -3,8 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/breadcrumb.dart';
-
-import '../../extra/pump_async_widget.dart';
+import 'package:shadcn_ui/src/components/button.dart';
 
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
@@ -17,8 +16,10 @@ void main() {
   }
 
   group('ShadBreadcrumb', () {
-    testWidgets('renders basic breadcrumb correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders basic breadcrumb correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadBreadcrumb(
             children: [
@@ -53,7 +54,7 @@ void main() {
     });
 
     testWidgets('renders with custom separator', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadBreadcrumb(
             separator: Icon(Icons.arrow_forward_ios),
@@ -74,11 +75,13 @@ void main() {
       expect(find.byIcon(LucideIcons.chevronRight), findsNothing);
     });
 
-    testWidgets('renders breadcrumb links correctly', (WidgetTester tester) async {
-      bool homeTapped = false;
-      bool libraryTapped = false;
+    testWidgets('renders breadcrumb links correctly', (
+      WidgetTester tester,
+    ) async {
+      var homeTapped = false;
+      var libraryTapped = false;
 
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadBreadcrumb(
             children: [
@@ -115,7 +118,7 @@ void main() {
     });
 
     testWidgets('renders ellipsis correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadBreadcrumb(
             children: [
@@ -142,8 +145,10 @@ void main() {
       expect(find.byIcon(LucideIcons.ellipsis), findsOneWidget);
     });
 
-    testWidgets('handles text direction correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('handles text direction correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadBreadcrumb(
             textDirection: TextDirection.rtl,
@@ -169,7 +174,7 @@ void main() {
 
   group('ShadBreadcrumbItem', () {
     testWidgets('renders child content correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadBreadcrumbItem(
             child: Text('Test Item'),
@@ -184,9 +189,9 @@ void main() {
 
   group('ShadBreadcrumbLink', () {
     testWidgets('calls onPressed when tapped', (WidgetTester tester) async {
-      bool wasTapped = false;
+      var wasTapped = false;
 
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadBreadcrumbLinkedText(
             onPressed: () => wasTapped = true,
@@ -204,7 +209,7 @@ void main() {
     });
 
     testWidgets('handles hover correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           ShadBreadcrumbLinkedText(
             onPressed: () {},
@@ -214,14 +219,19 @@ void main() {
       );
 
       expect(find.text('Hoverable'), findsOneWidget);
-      // Check that ShadBreadcrumbLink contains a MouseRegion (there may be others in the widget tree)
-      expect(find.byType(ShadBreadcrumbLinkedText), findsOneWidget);
+      final button = find.widgetWithText(ShadButton, 'Hoverable');
+      expect(
+        find.descendant(of: button, matching: find.byType(MouseRegion)),
+        findsOneWidget,
+      );
     });
   });
 
   group('ShadBreadcrumbPage', () {
-    testWidgets('renders current page content correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders current page content correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadBreadcrumbPage(
             child: Text('Current Page'),
@@ -235,8 +245,10 @@ void main() {
   });
 
   group('ShadBreadcrumbSeparator', () {
-    testWidgets('renders default separator correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders default separator correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadBreadcrumbSeparator(),
         ),
@@ -246,8 +258,10 @@ void main() {
       expect(find.byIcon(LucideIcons.chevronRight), findsOneWidget);
     });
 
-    testWidgets('renders custom separator content', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders custom separator content', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadBreadcrumbSeparator(
             child: Text(' / '),
@@ -261,8 +275,10 @@ void main() {
   });
 
   group('ShadBreadcrumbEllipsis', () {
-    testWidgets('renders default ellipsis correctly', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+    testWidgets('renders default ellipsis correctly', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
         createTestWidget(
           const ShadBreadcrumbEllipsis(),
         ),
@@ -273,7 +289,7 @@ void main() {
     });
 
     testWidgets('renders custom ellipsis content', (WidgetTester tester) async {
-      await tester.pumpAsyncWidget(
+      await tester.pumpWidget(
         createTestWidget(
           const ShadBreadcrumbEllipsis(
             child: Text('...'),
