@@ -54,13 +54,9 @@ class ShadBreadcrumb extends StatelessWidget {
     final theme = ShadTheme.of(context);
     final breadcrumbTheme = theme.breadcrumbTheme;
 
-    final effectiveSeparator = separator ??
-        breadcrumbTheme.separator ??
-        Icon(
-          LucideIcons.chevronRight,
-          size: 14,
-          color: theme.colorScheme.mutedForeground,
-        );
+    final effectiveSeparator = ShadBreadcrumbSeparator(
+      child: separator ?? breadcrumbTheme.separator,
+    );
 
     final effectiveMainAxisAlignment = mainAxisAlignment ??
         breadcrumbTheme.mainAxisAlignment ??
