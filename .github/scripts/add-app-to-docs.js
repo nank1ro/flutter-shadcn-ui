@@ -123,15 +123,22 @@ This PR was created automatically from issue #${issueNumber}.
 
 Closes #${issueNumber}`;
 
-    const prResult = execSync(`gh pr create --title "${prTitle}" --body "${prBody}" --head ${branchName} --base main`, { encoding: 'utf8' });
-    const prUrl = prResult.trim();
+    const tempBodyFile = `pr-body-${Date.now()}.md`;
+    fs.writeFileSync(tempBodyFile, prBody, 'utf8');
 
-    console.log(`✅ Created PR: ${prUrl}`);
-
-    // Set output for GitHub Actions
-    execSync(`echo "pr_url=${prUrl}" >> $GITHUB_OUTPUT`);
-
-    return prUrl;
+    try {
+      const prResult = execSync(
+        `gh pr create --title "${prTitle}" --body-file "${tempBodyFile}" --head "${branchName}" --base main`,
+        { encoding: 'utf8' }
+      );
+      const prUrl = prResult.trim();
+      console.log(`✅ Created PR: ${prUrl}`);
+      fs.unlinkSync(tempBodyFile); // Clean up
+      // Set output...
+      return prUrl;
+    } finally {
+      if (fs.existsSync(tempBodyFile)) fs.unlinkSync(tempBodyFile);
+    }
   } catch (error) {
     console.error('Error creating PR:', error.message);
     throw error;
