@@ -252,8 +252,8 @@ class ShadBreadcrumbSeparator extends StatelessWidget {
         separatorSize ?? theme.breadcrumbTheme.separatorSize ?? 14.0;
 
     return Icon(
-      size: effectiveSeparatorSize,
       LucideIcons.chevronRight,
+      size: effectiveSeparatorSize,
       color: theme.colorScheme.mutedForeground,
     );
   }
@@ -285,8 +285,8 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
     final effectiveSize = size ?? theme.breadcrumbTheme.ellipsisSize ?? 14.0;
 
     return Icon(
-      size: effectiveSize,
       LucideIcons.ellipsis,
+      size: effectiveSize,
       color: theme.colorScheme.mutedForeground,
     );
   }
@@ -376,8 +376,8 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
             widget.child,
             const SizedBox(width: 4),
             Icon(
-              size: theme.breadcrumbTheme.separatorSize ?? 14,
               LucideIcons.chevronDown,
+              size: theme.breadcrumbTheme.separatorSize ?? 14,
               color: theme.colorScheme.mutedForeground,
             ),
           ],
