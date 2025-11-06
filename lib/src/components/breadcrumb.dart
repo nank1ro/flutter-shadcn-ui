@@ -126,7 +126,9 @@ class ShadBreadcrumbItem extends StatelessWidget {
     final theme = ShadTheme.of(context);
     final effectiveTextStyle = textStyle ??
         theme.breadcrumbTheme.itemTextStyle ??
-        theme.textTheme.small;
+        theme.textTheme.small.copyWith(
+          color: theme.colorScheme.foreground,
+        );
 
     return DefaultTextStyle(
       style: effectiveTextStyle.copyWith(
@@ -202,7 +204,9 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
     final effectiveTextStyle =
         widget.textStyle ??
             theme.breadcrumbTheme.linkTextStyle ??
-            theme.textTheme.small;
+            theme.textTheme.small.copyWith(
+              color: theme.colorScheme.foreground,
+            );
 
     return ShadButton.raw(
       variant: ShadButtonVariant.link,
@@ -424,7 +428,9 @@ class ShadBreadcrumbDropMenuItem extends StatelessWidget {
     final effectiveDropDownTextStyle =
         dropDownTextStyle ??
         theme.breadcrumbTheme.dropdownTextStyle ??
-        theme.textTheme.small;
+        theme.textTheme.small.copyWith(
+          color: theme.colorScheme.foreground,
+        );
     final effectiveDropdownItemPadding =
         dropdownItemPadding ??
         theme.breadcrumbTheme.dropdownItemPadding ??

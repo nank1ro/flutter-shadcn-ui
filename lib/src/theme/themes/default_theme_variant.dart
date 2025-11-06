@@ -240,14 +240,18 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       itemTextStyle: effectiveTextTheme.small.copyWith(
         color: colorScheme.foreground,
       ),
-      linkTextStyle: effectiveTextTheme.small,
+      linkTextStyle: effectiveTextTheme.small.copyWith(
+        color: colorScheme.foreground,
+      ),
       linkNormalTextColor: colorScheme.mutedForeground,
       linkHoverTextColor: colorScheme.foreground,
       mainAxisAlignment: WrapAlignment.start,
       crossAxisAlignment: WrapCrossAlignment.center,
       dropdownMenuBackgroundColor: colorScheme.popover,
       dropdownMenuPadding: const EdgeInsets.all(4),
-      dropdownTextStyle: effectiveTextTheme.small,
+      dropdownTextStyle: effectiveTextTheme.small.copyWith(
+        color: colorScheme.foreground,
+      ),
       dropdownItemPadding: const EdgeInsets.symmetric(
         horizontal: 8,
         vertical: 6,
