@@ -5,7 +5,6 @@ import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
-import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
 /// {@template ShadBreadcrumb}
 /// A breadcrumb navigation component that displays the current page location
@@ -83,10 +82,18 @@ class ShadBreadcrumb extends StatelessWidget {
       runSpacing: effectiveSpacing,
       textDirection: textDirection,
       verticalDirection: verticalDirection ?? VerticalDirection.down,
-      children: children.separatedBy(
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: effectiveSpacing),
-          child: effectiveSeparator,
+      children: List.generate(
+        children.length,
+            (int index) => Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            children[index],
+            if (index < children.length - 1)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: effectiveSpacing),
+                child: effectiveSeparator,
+              ),
+          ],
         ),
       ),
     );
