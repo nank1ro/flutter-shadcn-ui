@@ -222,7 +222,8 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
       variant: ShadButtonVariant.link,
       onHoverChange: (isHovered) => setState(() => this.isHovered = isHovered),
       padding: EdgeInsets.zero,
-      // Use zero dimensions to allow button to size to content via minWidth/minHeight constraints
+      // Use zero dimensions; ShadButton's minWidth/minHeight constraints
+      // allow the button to size to its child content
       height: 0,
       width: 0,
       onPressed: widget.onPressed,
@@ -317,6 +318,7 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
     required this.children,
     this.dropdownMenuBackgroundColor,
     this.dropdownMenuPadding,
+    this.anchor,
   });
 
   /// The widget that triggers the dropdown.
@@ -336,6 +338,10 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
   /// [EdgeInsets.all(4)]
   /// {@endtemplate}
   final EdgeInsets? dropdownMenuPadding;
+
+  /// The anchor configuration for the dropdown popover.
+  /// Defaults to ShadAnchorAuto with offset (20, 4).
+  final ShadAnchor? anchor;
 
   @override
   State<ShadBreadcrumbDropdown> createState() => _ShadBreadcrumbDropdownState();
@@ -363,8 +369,7 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
         const EdgeInsets.all(4);
 
     return ShadPopover(
-      // not sure how to calculate the x offset here but i think it won't change
-      anchor: const ShadAnchorAuto(offset: Offset(20, 4)),
+      anchor: widget.anchor ?? const ShadAnchorAuto(offset: Offset(20, 4)),
       decoration: ShadDecoration(
         color: effectiveDropdownMenuBackgroundColor,
       ),
