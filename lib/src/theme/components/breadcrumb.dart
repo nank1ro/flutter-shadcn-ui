@@ -23,7 +23,7 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
     this.dropdownMenuPadding,
     this.dropdownTextStyle,
     this.dropdownItemPadding,
-  }): _canMerge = canMerge;
+  }) : _canMerge = canMerge;
 
   @ignore
   final bool _canMerge;
@@ -77,8 +77,8 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
   final EdgeInsets? dropdownItemPadding;
 
   static ShadBreadcrumbTheme? lerp(
-      ShadBreadcrumbTheme? a,
-      ShadBreadcrumbTheme? b,
-      double t,
-      ) => _$ShadBreadcrumbTheme.lerp(a, b, t);
+    ShadBreadcrumbTheme? a,
+    ShadBreadcrumbTheme? b,
+    double t,
+  ) => _$ShadBreadcrumbTheme.lerp(a, b, t);
 }

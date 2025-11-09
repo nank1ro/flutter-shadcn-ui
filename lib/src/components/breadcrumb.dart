@@ -66,11 +66,13 @@ class ShadBreadcrumb extends StatelessWidget {
         breadcrumbTheme.separator ??
         const ShadBreadcrumbSeparator();
 
-    final effectiveMainAxisAlignment = mainAxisAlignment ??
+    final effectiveMainAxisAlignment =
+        mainAxisAlignment ??
         breadcrumbTheme.mainAxisAlignment ??
         WrapAlignment.start;
 
-    final effectiveCrossAxisAlignment = crossAxisAlignment ??
+    final effectiveCrossAxisAlignment =
+        crossAxisAlignment ??
         breadcrumbTheme.crossAxisAlignment ??
         WrapCrossAlignment.center;
 
@@ -84,7 +86,7 @@ class ShadBreadcrumb extends StatelessWidget {
       verticalDirection: verticalDirection ?? VerticalDirection.down,
       children: List.generate(
         children.length,
-            (int index) => Row(
+        (int index) => Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             children[index],
@@ -131,7 +133,8 @@ class ShadBreadcrumbItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveTextStyle = textStyle ??
+    final effectiveTextStyle =
+        textStyle ??
         theme.breadcrumbTheme.itemTextStyle ??
         theme.textTheme.small.copyWith(
           color: theme.colorScheme.foreground,
@@ -210,10 +213,10 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
 
     final effectiveTextStyle =
         widget.textStyle ??
-            theme.breadcrumbTheme.linkTextStyle ??
-            theme.textTheme.small.copyWith(
-              color: theme.colorScheme.foreground,
-            );
+        theme.breadcrumbTheme.linkTextStyle ??
+        theme.textTheme.small.copyWith(
+          color: theme.colorScheme.foreground,
+        );
 
     return ShadButton.raw(
       variant: ShadButtonVariant.link,
@@ -322,7 +325,6 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
   /// The list of dropdown menu items to display.
   final List<ShadBreadcrumbDropMenuItem> children;
 
-
   /// {@template ShadBreadcrumb.dropdownMenuBackgroundColor}
   /// The color for dropdown menu. defaults to
   /// [ShadTheme.of(context).colorScheme.popover]
@@ -353,12 +355,12 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
     final theme = ShadTheme.of(context);
     final effectiveDropdownMenuBackgroundColor =
         widget.dropdownMenuBackgroundColor ??
-            ShadTheme.of(context).breadcrumbTheme.dropdownMenuBackgroundColor ??
-            theme.colorScheme.popover;
+        ShadTheme.of(context).breadcrumbTheme.dropdownMenuBackgroundColor ??
+        theme.colorScheme.popover;
     final effectiveDropdownMenuPadding =
         widget.dropdownMenuPadding ??
-            ShadTheme.of(context).breadcrumbTheme.dropdownMenuPadding ??
-            const EdgeInsets.all(4);
+        ShadTheme.of(context).breadcrumbTheme.dropdownMenuPadding ??
+        const EdgeInsets.all(4);
 
     return ShadPopover(
       // not sure how to calculate the x offset here but i think it won't change
@@ -427,7 +429,6 @@ class ShadBreadcrumbDropMenuItem extends StatelessWidget {
   /// defaults to [EdgeInsets.symmetric(horizontal: 8, vertical: 6)]
   /// {@endtemplate}
   final EdgeInsets? dropdownItemPadding;
-
 
   @override
   Widget build(BuildContext context) {
