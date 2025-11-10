@@ -254,10 +254,10 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       spacing: 10,
       ellipsisSize: 14,
       separatorSize: 14,
-      itemTextStyle: effectiveTextTheme.small.copyWith(
+      itemTextStyle: effectiveTextTheme.small.fallback(
         color: colorScheme.foreground,
       ),
-      linkTextStyle: effectiveTextTheme.small.copyWith(
+      linkTextStyle: effectiveTextTheme.small.fallback(
         color: colorScheme.foreground,
       ),
       linkNormalTextColor: colorScheme.mutedForeground,
@@ -266,13 +266,15 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       crossAxisAlignment: WrapCrossAlignment.center,
       dropdownMenuBackgroundColor: colorScheme.popover,
       dropdownMenuPadding: const EdgeInsets.all(4),
-      dropdownTextStyle: effectiveTextTheme.small.copyWith(
+      dropdownTextStyle: effectiveTextTheme.small.fallback(
         color: colorScheme.foreground,
       ),
       dropdownItemPadding: const EdgeInsets.symmetric(
         horizontal: 8,
         vertical: 6,
       ),
+      dropdownMenuAnchor: const ShadAnchorAuto(offset: Offset(20, 4)),
+      dropdownArrowGap: 4,
     );
   }
 

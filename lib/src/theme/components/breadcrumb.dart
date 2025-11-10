@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:theme_extensions_builder_annotation/theme_extensions_builder_annotation.dart';
 
 part 'breadcrumb.g.theme.dart';
@@ -23,6 +24,8 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
     this.dropdownMenuPadding,
     this.dropdownTextStyle,
     this.dropdownItemPadding,
+    this.dropdownMenuAnchor,
+    this.dropdownArrowGap,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -75,6 +78,12 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
 
   /// {@macro ShadBreadcrumb.dropdownItemPadding}
   final EdgeInsets? dropdownItemPadding;
+
+  /// {@macro ShadBreadcrumb.dropdownMenuAnchor}
+  final ShadAnchorBase? dropdownMenuAnchor;
+
+  /// {@macro ShadBreadcrumb.dropdownArrowGap}
+  final double? dropdownArrowGap;
 
   static ShadBreadcrumbTheme? lerp(
     ShadBreadcrumbTheme? a,

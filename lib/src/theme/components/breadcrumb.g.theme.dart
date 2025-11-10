@@ -63,6 +63,14 @@ mixin _$ShadBreadcrumbTheme {
         b?.dropdownItemPadding,
         t,
       ),
+      dropdownMenuAnchor: t < 0.5
+          ? a?.dropdownMenuAnchor
+          : b?.dropdownMenuAnchor,
+      dropdownArrowGap: lerpDouble$(
+        a?.dropdownArrowGap,
+        b?.dropdownArrowGap,
+        t,
+      ),
     );
   }
 
@@ -82,6 +90,8 @@ mixin _$ShadBreadcrumbTheme {
     EdgeInsets? dropdownMenuPadding,
     TextStyle? dropdownTextStyle,
     EdgeInsets? dropdownItemPadding,
+    ShadAnchorBase? dropdownMenuAnchor,
+    double? dropdownArrowGap,
   }) {
     final a = (this as ShadBreadcrumbTheme);
 
@@ -102,6 +112,8 @@ mixin _$ShadBreadcrumbTheme {
       dropdownMenuPadding: dropdownMenuPadding ?? a.dropdownMenuPadding,
       dropdownTextStyle: dropdownTextStyle ?? a.dropdownTextStyle,
       dropdownItemPadding: dropdownItemPadding ?? a.dropdownItemPadding,
+      dropdownMenuAnchor: dropdownMenuAnchor ?? a.dropdownMenuAnchor,
+      dropdownArrowGap: dropdownArrowGap ?? a.dropdownArrowGap,
     );
   }
 
@@ -138,6 +150,8 @@ mixin _$ShadBreadcrumbTheme {
           current.dropdownTextStyle?.merge(other.dropdownTextStyle) ??
           other.dropdownTextStyle,
       dropdownItemPadding: other.dropdownItemPadding,
+      dropdownMenuAnchor: other.dropdownMenuAnchor,
+      dropdownArrowGap: other.dropdownArrowGap,
     );
   }
 
@@ -169,7 +183,9 @@ mixin _$ShadBreadcrumbTheme {
             value.dropdownMenuBackgroundColor &&
         other.dropdownMenuPadding == value.dropdownMenuPadding &&
         other.dropdownTextStyle == value.dropdownTextStyle &&
-        other.dropdownItemPadding == value.dropdownItemPadding;
+        other.dropdownItemPadding == value.dropdownItemPadding &&
+        other.dropdownMenuAnchor == value.dropdownMenuAnchor &&
+        other.dropdownArrowGap == value.dropdownArrowGap;
   }
 
   @override
@@ -193,6 +209,8 @@ mixin _$ShadBreadcrumbTheme {
       value.dropdownMenuPadding,
       value.dropdownTextStyle,
       value.dropdownItemPadding,
+      value.dropdownMenuAnchor,
+      value.dropdownArrowGap,
     );
   }
 }

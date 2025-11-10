@@ -536,7 +536,7 @@ void main() {
         const ShadApp(
           home: Scaffold(
             body: ShadBreadcrumbDropMenuItem(
-              dropdownItemPadding: customPadding,
+              itemPadding: customPadding,
               child: Text('Item'),
             ),
           ),

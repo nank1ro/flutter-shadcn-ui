@@ -5,6 +5,7 @@ import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 /// {@template ShadBreadcrumb}
 /// A breadcrumb navigation component that displays the current page location
@@ -121,7 +122,7 @@ class ShadBreadcrumbItem extends StatelessWidget {
   final Widget child;
 
   /// Make the last item in the breadcrumb a little heavier, defaults to false
-  /// [default weight is FontWeight.normal, if true it is FontWeight.w500]
+  /// default weight is FontWeight.normal, if true it is FontWeight.w500
   final bool isLastItem;
 
   /// {@template ShadBreadcrumb.itemTextStyle}
@@ -136,7 +137,7 @@ class ShadBreadcrumbItem extends StatelessWidget {
     final effectiveTextStyle =
         textStyle ??
         theme.breadcrumbTheme.itemTextStyle ??
-        theme.textTheme.small.copyWith(
+        theme.textTheme.small.fallback(
           color: theme.colorScheme.foreground,
         );
 
@@ -316,9 +317,10 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
     super.key,
     required this.child,
     required this.children,
-    this.dropdownMenuBackgroundColor,
-    this.dropdownMenuPadding,
+    this.backgroundColor,
+    this.padding,
     this.anchor,
+    this.arrowGap,
   });
 
   /// The widget that triggers the dropdown.
@@ -331,17 +333,25 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
   /// The color for dropdown menu. defaults to
   /// [ShadTheme.of(context).colorScheme.popover]
   /// {@endtemplate}
-  final Color? dropdownMenuBackgroundColor;
+  final Color? backgroundColor;
 
   /// {@template ShadBreadcrumb.dropdownMenuPadding}
   /// The padding value for dropdown menu. defaults to
   /// [EdgeInsets.all(4)]
   /// {@endtemplate}
-  final EdgeInsets? dropdownMenuPadding;
+  final EdgeInsets? padding;
 
+  /// {@template ShadBreadcrumb.dropdownMenuAnchor}
   /// The anchor configuration for the dropdown popover.
   /// Defaults to ShadAnchorAuto with offset (20, 4).
-  final ShadAnchor? anchor;
+  /// {@endtemplate}
+  final ShadAnchorBase? anchor;
+
+  /// {@template ShadBreadcrumb.dropdownArrowGap}
+  /// The gap between the child and dropdown icon.
+  /// defaults to 4
+  /// {@endtemplate}
+  final double? arrowGap;
 
   @override
   State<ShadBreadcrumbDropdown> createState() => _ShadBreadcrumbDropdownState();
@@ -360,16 +370,22 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final effectiveDropdownMenuBackgroundColor =
-        widget.dropdownMenuBackgroundColor ??
-        ShadTheme.of(context).breadcrumbTheme.dropdownMenuBackgroundColor ??
+        widget.backgroundColor ??
+        theme.breadcrumbTheme.dropdownMenuBackgroundColor ??
         theme.colorScheme.popover;
     final effectiveDropdownMenuPadding =
-        widget.dropdownMenuPadding ??
-        ShadTheme.of(context).breadcrumbTheme.dropdownMenuPadding ??
+        widget.padding ??
+        theme.breadcrumbTheme.dropdownMenuPadding ??
         const EdgeInsets.all(4);
+    final effectiveAnchor =
+        widget.anchor ??
+        theme.breadcrumbTheme.dropdownMenuAnchor ??
+        const ShadAnchorAuto(offset: Offset(20, 4));
+    final effectiveArrowGap =
+        widget.arrowGap ?? theme.breadcrumbTheme.dropdownArrowGap ?? 4;
 
     return ShadPopover(
-      anchor: widget.anchor ?? const ShadAnchorAuto(offset: Offset(20, 4)),
+      anchor: effectiveAnchor,
       decoration: ShadDecoration(
         color: effectiveDropdownMenuBackgroundColor,
       ),
@@ -388,7 +404,7 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
           mainAxisSize: MainAxisSize.min,
           children: [
             widget.child,
-            const SizedBox(width: 4),
+            SizedBox(width: effectiveArrowGap),
             Icon(
               LucideIcons.chevronDown,
               size: theme.breadcrumbTheme.separatorSize ?? 14,
@@ -413,8 +429,8 @@ class ShadBreadcrumbDropMenuItem extends StatelessWidget {
     super.key,
     required this.child,
     this.onPressed,
-    this.dropDownTextStyle,
-    this.dropdownItemPadding,
+    this.textStyle,
+    this.itemPadding,
   });
 
   /// The widget to display as the breadcrumb item content.
@@ -427,25 +443,25 @@ class ShadBreadcrumbDropMenuItem extends StatelessWidget {
   /// The text style for dropdown menu items.
   /// defaults to [ShadTheme.of(context).textTheme.small]
   /// {@endtemplate}
-  final TextStyle? dropDownTextStyle;
+  final TextStyle? textStyle;
 
   /// {@template ShadBreadcrumb.dropdownItemPadding}
   /// The padding value for dropdown menu items.
   /// defaults to [EdgeInsets.symmetric(horizontal: 8, vertical: 6)]
   /// {@endtemplate}
-  final EdgeInsets? dropdownItemPadding;
+  final EdgeInsets? itemPadding;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveDropDownTextStyle =
-        dropDownTextStyle ??
+    final effectiveTextStyle =
+        textStyle ??
         theme.breadcrumbTheme.dropdownTextStyle ??
-        theme.textTheme.small.copyWith(
+        theme.textTheme.small.fallback(
           color: theme.colorScheme.foreground,
         );
-    final effectiveDropdownItemPadding =
-        dropdownItemPadding ??
+    final effectiveItemPadding =
+        itemPadding ??
         theme.breadcrumbTheme.dropdownItemPadding ??
         const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
 
@@ -453,11 +469,11 @@ class ShadBreadcrumbDropMenuItem extends StatelessWidget {
       variant: ShadButtonVariant.ghost,
       height: 0,
       width: 0,
-      padding: effectiveDropdownItemPadding,
+      padding: effectiveItemPadding,
       mainAxisAlignment: MainAxisAlignment.start,
       onPressed: onPressed,
       child: DefaultTextStyle(
-        style: effectiveDropDownTextStyle,
+        style: effectiveTextStyle,
         child: child,
       ),
     );
