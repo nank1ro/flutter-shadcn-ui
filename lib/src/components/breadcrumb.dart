@@ -24,7 +24,6 @@ class ShadBreadcrumb extends StatelessWidget {
     this.crossAxisAlignment,
     this.textDirection,
     this.verticalDirection,
-    this.textBaseline,
     this.spacing,
   });
 
@@ -50,9 +49,6 @@ class ShadBreadcrumb extends StatelessWidget {
 
   /// The vertical direction to use for the breadcrumb.
   final VerticalDirection? verticalDirection;
-
-  /// The text baseline to use for the breadcrumb.
-  final TextBaseline? textBaseline;
 
   /// default separator spacing, defaults to 10.0
   final double? spacing;
