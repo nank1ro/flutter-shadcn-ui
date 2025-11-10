@@ -1,6 +1,7 @@
 ## 0.40.0
-- **FEAT**: Add new component `ShadBreadcrumb` and all of it's related components.
-- **FIX**: Update `ShadButton` to allow for more flexibility with height and width properties.
+
+- **FEAT**: Add new component `ShadBreadcrumb` and all of its related components (thanks to @MoazSalem).
+- **FIX**: Update `ShadButton` to allow for more flexibility with height and width properties (thanks to @MoazSalem).
 
 ## 0.39.3
 
