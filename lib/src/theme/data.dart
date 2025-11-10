@@ -117,64 +117,67 @@ class ShadThemeData extends ShadBaseTheme {
 
     final effectiveDisableSecondaryBorder = disableSecondaryBorder ?? false;
     final effectiveBrightness = brightness ?? Brightness.light;
-    final effectiveColorScheme = colorScheme ??
+    final effectiveColorScheme =
+        colorScheme ??
         switch (effectiveBrightness) {
           Brightness.light => const ShadSlateColorScheme.light(),
           Brightness.dark => const ShadSlateColorScheme.dark(),
         };
 
-    final effectiveVariant = variant ??
+    final effectiveVariant =
+        variant ??
         switch (effectiveDisableSecondaryBorder) {
           false => ShadDefaultThemeVariant(
-              colorScheme: effectiveColorScheme,
-              radius: effectiveRadius,
-              effectiveTextTheme: effectiveTextTheme,
-            ),
+            colorScheme: effectiveColorScheme,
+            radius: effectiveRadius,
+            effectiveTextTheme: effectiveTextTheme,
+          ),
           true => ShadDefaultThemeNoSecondaryBorderVariant(
-              colorScheme: effectiveColorScheme,
-              radius: effectiveRadius,
-              effectiveTextTheme: effectiveTextTheme,
-            ),
+            colorScheme: effectiveColorScheme,
+            radius: effectiveRadius,
+            effectiveTextTheme: effectiveTextTheme,
+          ),
         };
 
     return ShadThemeData._internal(
       colorScheme: effectiveColorScheme,
       brightness: effectiveBrightness,
       primaryButtonTheme: effectiveVariant.primaryButtonTheme().merge(
-            primaryButtonTheme,
-          ),
+        primaryButtonTheme,
+      ),
       secondaryButtonTheme: effectiveVariant.secondaryButtonTheme().merge(
-            secondaryButtonTheme,
-          ),
+        secondaryButtonTheme,
+      ),
       destructiveButtonTheme: effectiveVariant.destructiveButtonTheme().merge(
-            destructiveButtonTheme,
-          ),
+        destructiveButtonTheme,
+      ),
       outlineButtonTheme: effectiveVariant.outlineButtonTheme().merge(
-            outlineButtonTheme,
-          ),
+        outlineButtonTheme,
+      ),
       ghostButtonTheme: effectiveVariant.ghostButtonTheme().merge(
-            ghostButtonTheme,
-          ),
+        ghostButtonTheme,
+      ),
       linkButtonTheme: effectiveVariant.linkButtonTheme().merge(
-            linkButtonTheme,
-          ),
+        linkButtonTheme,
+      ),
       primaryBadgeTheme: effectiveVariant.primaryBadgeTheme().merge(
-            primaryBadgeTheme,
-          ),
+        primaryBadgeTheme,
+      ),
       secondaryBadgeTheme: effectiveVariant.secondaryBadgeTheme().merge(
-            secondaryBadgeTheme,
-          ),
+        secondaryBadgeTheme,
+      ),
       destructiveBadgeTheme: effectiveVariant.destructiveBadgeTheme().merge(
-            destructiveBadgeTheme,
-          ),
+        destructiveBadgeTheme,
+      ),
       outlineBadgeTheme: effectiveVariant.outlineBadgeTheme().merge(
-            outlineBadgeTheme,
-          ),
+        outlineBadgeTheme,
+      ),
       breadcrumbTheme: effectiveVariant.breadcrumbTheme().merge(
-          breadcrumbTheme),
+        breadcrumbTheme,
+      ),
       buttonSizesTheme: effectiveVariant.buttonSizesTheme().merge(
-            buttonSizesTheme,
-          ),
+        buttonSizesTheme,
+      ),
       radius: effectiveRadius,
       avatarTheme: effectiveVariant.avatarTheme().merge(avatarTheme),
       tooltipTheme: effectiveVariant.tooltipTheme().merge(tooltipTheme),
@@ -190,24 +193,24 @@ class ShadThemeData extends ShadBaseTheme {
       inputTheme: effectiveVariant.inputTheme().merge(inputTheme),
       radioTheme: effectiveVariant.radioTheme().merge(radioTheme),
       primaryToastTheme: effectiveVariant.primaryToastTheme().merge(
-            primaryToastTheme,
-          ),
+        primaryToastTheme,
+      ),
       destructiveToastTheme: effectiveVariant.destructiveToastTheme().merge(
-            destructiveToastTheme,
-          ),
+        destructiveToastTheme,
+      ),
       breakpoints: breakpoints ?? ShadBreakpoints(),
       primaryAlertTheme: effectiveVariant.primaryAlertTheme().merge(
-            primaryAlertTheme,
-          ),
+        primaryAlertTheme,
+      ),
       destructiveAlertTheme: effectiveVariant.destructiveAlertTheme().merge(
-            destructiveAlertTheme,
-          ),
+        destructiveAlertTheme,
+      ),
       primaryDialogTheme: effectiveVariant.primaryDialogTheme().merge(
-            primaryDialogTheme,
-          ),
+        primaryDialogTheme,
+      ),
       alertDialogTheme: effectiveVariant.alertDialogTheme().merge(
-            alertDialogTheme,
-          ),
+        alertDialogTheme,
+      ),
       sliderTheme: effectiveVariant.sliderTheme().merge(sliderTheme),
       sheetTheme: effectiveVariant.sheetTheme().merge(sheetTheme),
       progressTheme: effectiveVariant.progressTheme().merge(progressTheme),
@@ -218,15 +221,15 @@ class ShadThemeData extends ShadBaseTheme {
       disableSecondaryBorder: effectiveDisableSecondaryBorder,
       tabsTheme: effectiveVariant.tabsTheme().merge(tabsTheme),
       contextMenuTheme: effectiveVariant.contextMenuTheme().merge(
-            contextMenuTheme,
-          ),
+        contextMenuTheme,
+      ),
       calendarTheme: effectiveVariant.calendarTheme().merge(calendarTheme),
       datePickerTheme: effectiveVariant.datePickerTheme().merge(
-            datePickerTheme,
-          ),
+        datePickerTheme,
+      ),
       timePickerTheme: effectiveVariant.timePickerTheme().merge(
-            timePickerTheme,
-          ),
+        timePickerTheme,
+      ),
       inputOTPTheme: effectiveVariant.inputOTPTheme().merge(inputOTPTheme),
       menubarTheme: effectiveVariant.menubarTheme().merge(menubarTheme),
       separatorTheme: effectiveVariant.separatorTheme().merge(separatorTheme),
@@ -429,8 +432,9 @@ class ShadThemeData extends ShadBaseTheme {
         t,
       ),
       hoverStrategies: t < .5 ? a.hoverStrategies : b.hoverStrategies,
-      disableSecondaryBorder:
-          t < .5 ? a.disableSecondaryBorder : b.disableSecondaryBorder,
+      disableSecondaryBorder: t < .5
+          ? a.disableSecondaryBorder
+          : b.disableSecondaryBorder,
       tabsTheme: ShadTabsTheme.lerp(a.tabsTheme, b.tabsTheme, t),
       contextMenuTheme: ShadContextMenuTheme.lerp(
         a.contextMenuTheme,
