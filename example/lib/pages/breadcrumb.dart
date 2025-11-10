@@ -37,7 +37,9 @@ class BreadcrumbExample extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
         const Text(
           'Breadcrumb with Links',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -58,7 +60,9 @@ class BreadcrumbExample extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
         const Text(
           'Breadcrumb with Ellipsis',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -79,7 +83,9 @@ class BreadcrumbExample extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
         const Text(
           'Custom Separator',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -105,7 +111,9 @@ class BreadcrumbExample extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
         const Text(
           'Breadcrumb with Dropdown',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -143,7 +151,9 @@ class BreadcrumbExample extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
         const Text(
           'Long Breadcrumb',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
