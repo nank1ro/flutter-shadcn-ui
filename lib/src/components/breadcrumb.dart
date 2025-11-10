@@ -142,7 +142,7 @@ class ShadBreadcrumbItem extends StatelessWidget {
         );
 
     return DefaultTextStyle(
-      style: effectiveTextStyle.copyWith(
+      style: effectiveTextStyle.fallback(
         fontWeight: isLastItem ? FontWeight.w500 : FontWeight.normal,
       ),
       child: child,
@@ -215,7 +215,7 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
     final effectiveTextStyle =
         widget.textStyle ??
         theme.breadcrumbTheme.linkTextStyle ??
-        theme.textTheme.small.copyWith(
+        theme.textTheme.small.fallback(
           color: theme.colorScheme.foreground,
         );
 
@@ -229,7 +229,7 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
       width: 0,
       onPressed: widget.onPressed,
       child: DefaultTextStyle(
-        style: effectiveTextStyle.copyWith(
+        style: effectiveTextStyle.fallback(
           color: textColor,
         ),
         child: widget.child,
