@@ -95,24 +95,6 @@ void main() {
       expect(copied.breakpoints, theme.breakpoints);
     });
 
-    test('copyWith should allow explicit component theme overrides', () {
-      final theme = ShadThemeData(
-        colorScheme: const ShadSlateColorScheme.light(),
-        brightness: Brightness.light,
-      );
-
-      final customButtonTheme = ShadButtonTheme(
-        padding: const EdgeInsets.all(20),
-      );
-
-      final copied = theme.copyWith(
-        primaryButtonTheme: customButtonTheme,
-      );
-
-      // Explicitly provided theme should be used
-      expect(copied.primaryButtonTheme.padding, const EdgeInsets.all(20));
-    });
-
     test('copyWith with only component themes should not regenerate other themes', () {
       final theme = ShadThemeData(
         colorScheme: const ShadSlateColorScheme.light(),
@@ -135,20 +117,67 @@ void main() {
       expect(copied.secondaryButtonTheme, theme.secondaryButtonTheme);
     });
 
-    test('copyWith should handle null values correctly', () {
+    test('copyWith without parameters should preserve colorScheme and structural properties', () {
       final theme = ShadThemeData(
         colorScheme: const ShadSlateColorScheme.light(),
         brightness: Brightness.light,
         radius: const BorderRadius.all(Radius.circular(10)),
       );
 
-      // Calling copyWith without parameters should preserve everything
+      // Calling copyWith without parameters should preserve colorScheme, brightness, and structural properties
+      // Component themes will be regenerated from the same variant, so they should still match
       final copied = theme.copyWith();
 
       expect(copied.colorScheme, theme.colorScheme);
       expect(copied.brightness, theme.brightness);
       expect(copied.radius, theme.radius);
+      // Since colorScheme/brightness didn't change, component themes should be regenerated
+      // from the same variant, resulting in the same values
       expect(copied.primaryButtonTheme, theme.primaryButtonTheme);
+    });
+
+    test('copyWith with explicit component themes should preserve those themes', () {
+      final theme = ShadThemeData(
+        colorScheme: const ShadSlateColorScheme.light(),
+        brightness: Brightness.light,
+      );
+
+      final customButtonTheme = ShadButtonTheme(
+        padding: const EdgeInsets.all(20),
+      );
+
+      // When explicitly providing a component theme to copyWith, it should be used
+      final copied = theme.copyWith(
+        primaryButtonTheme: customButtonTheme,
+      );
+
+      expect(copied.primaryButtonTheme.padding, const EdgeInsets.all(20));
+    });
+
+    test('copyWith preserves explicit component themes when changing only colorScheme', () {
+      // Note: This test documents that when you change colorScheme/brightness,
+      // explicitly provided component themes are preserved, but themes not provided
+      // are regenerated from the new variant
+      final customButtonTheme = ShadButtonTheme(
+        padding: const EdgeInsets.all(20),
+      );
+
+      final theme = ShadThemeData(
+        colorScheme: const ShadSlateColorScheme.light(),
+        brightness: Brightness.light,
+      );
+
+      final copied = theme.copyWith(
+        colorScheme: const ShadSlateColorScheme.dark(),
+        brightness: Brightness.dark,
+        primaryButtonTheme: customButtonTheme,  // Explicitly preserve this
+      );
+
+      // Explicitly provided theme is preserved
+      expect(copied.primaryButtonTheme.padding, const EdgeInsets.all(20));
+      
+      // Other themes are regenerated from the new dark variant
+      expect(copied.brightness, Brightness.dark);
     });
   });
 }
