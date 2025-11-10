@@ -582,6 +582,35 @@ class ShadThemeData extends ShadBaseTheme {
         defaultKeyboardToolbarTheme.hashCode;
   }
 
+  /// Creates a copy of this theme with the given fields replaced with new values.
+  ///
+  /// When [colorScheme] or [brightness] are changed, component themes
+  /// (like [primaryButtonTheme], [cardTheme], etc.) are regenerated from the
+  /// new theme variant unless explicitly provided. This ensures that changing
+  /// from light to dark theme (or vice versa) produces correct component styles.
+  ///
+  /// Structural properties ([radius], [textTheme], [disabledOpacity],
+  /// [breakpoints], [hoverStrategies], [disableSecondaryBorder]) preserve their
+  /// values from the current theme unless explicitly provided.
+  ///
+  /// Example:
+  /// ```dart
+  /// final lightTheme = ShadThemeData(
+  ///   colorScheme: ShadColorScheme.fromName('slate'),
+  ///   brightness: Brightness.light,
+  /// );
+  ///
+  /// // Create a dark theme - component themes are regenerated for dark mode
+  /// final darkTheme = lightTheme.copyWith(
+  ///   colorScheme: ShadColorScheme.fromName('slate', brightness: Brightness.dark),
+  ///   brightness: Brightness.dark,
+  /// );
+  ///
+  /// // Explicitly override a component theme
+  /// final customTheme = darkTheme.copyWith(
+  ///   primaryButtonTheme: ShadButtonTheme(width: 200),
+  /// );
+  /// ```
   ShadThemeData copyWith({
     ShadColorScheme? colorScheme,
     ShadButtonTheme? primaryButtonTheme,
