@@ -46,9 +46,9 @@ void main() {
       expect(find.text('Library'), findsOneWidget);
       expect(find.text('Data'), findsOneWidget);
 
-      // Check basic layout (Row should contain the children and separators)
-      final rowFinder = find.byType(Row);
-      expect(rowFinder, findsOneWidget);
+      // Check basic layout (Wrap should contain the children and separators)
+      final wrapFinder = find.byType(Wrap);
+      expect(wrapFinder, findsOneWidget);
 
       // Should have 2 separators between 3 items (chevron icons)
       final iconFinder = find.byIcon(LucideIcons.chevronRight);
@@ -170,11 +170,11 @@ void main() {
         ),
       );
 
-      // Check Row reflects RTL text direction
-      final rowFinder = find.byType(Row);
-      expect(rowFinder, findsOneWidget);
-      final row = tester.widget<Row>(rowFinder);
-      expect(row.textDirection, TextDirection.rtl);
+      // Check Wrap reflects RTL text direction
+      final wrapFinder = find.byType(Wrap);
+      expect(wrapFinder, findsOneWidget);
+      final wrap = tester.widget<Wrap>(wrapFinder);
+      expect(wrap.textDirection, TextDirection.rtl);
     });
   });
 
