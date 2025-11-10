@@ -191,7 +191,9 @@ void main() {
         matching: find.byType(ConstrainedBox),
       );
       expect(constrainedBoxFinder, findsOneWidget);
-      final constrainedBox = tester.widget<ConstrainedBox>(constrainedBoxFinder);
+      final constrainedBox = tester.widget<ConstrainedBox>(
+        constrainedBoxFinder,
+      );
       expect(constrainedBox.constraints.minWidth, customWidth);
 
       // Find the Padding widget
@@ -325,10 +327,14 @@ void main() {
         matching: find.byType(ConstrainedBox),
       );
       expect(constrainedBoxFinder, findsOneWidget);
-      final constrainedBox = tester.widget<ConstrainedBox>(constrainedBoxFinder);
+      final constrainedBox = tester.widget<ConstrainedBox>(
+        constrainedBoxFinder,
+      );
       final theme = ShadTheme.of(tester.element(find.byType(ShadButton)));
-      expect(constrainedBox.constraints.minHeight,
-          theme.buttonSizesTheme.lg?.height);
+      expect(
+        constrainedBox.constraints.minHeight,
+        theme.buttonSizesTheme.lg?.height,
+      );
     });
 
     testWidgets('executes onPressed callback on tap', (

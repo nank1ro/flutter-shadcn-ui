@@ -261,8 +261,8 @@ void main() {
         matching: find.byType(RichText),
       );
 
-      final RichText richText = tester.widget(richTextFinder);
-      final TextStyle? style = richText.text.style;
+      final richText = tester.widget(richTextFinder) as RichText;
+      final style = richText.text.style;
 
       expect(style?.fontWeight, FontWeight.w500);
     });
