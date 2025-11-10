@@ -211,7 +211,7 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
     final effectiveTextStyle =
         widget.textStyle ??
         theme.breadcrumbTheme.linkTextStyle ??
-        theme.textTheme.small.fallback(
+        theme.textTheme.small.copyWith(
           color: theme.colorScheme.foreground,
         );
 
@@ -225,7 +225,7 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
       width: 0,
       onPressed: widget.onPressed,
       child: DefaultTextStyle(
-        style: effectiveTextStyle.fallback(
+        style: effectiveTextStyle.copyWith(
           color: textColor,
         ),
         child: widget.child,
