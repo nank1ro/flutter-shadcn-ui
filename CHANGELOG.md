@@ -3,6 +3,14 @@
 - **FEAT**: Add new component `ShadBreadcrumb` and all of its related components (thanks to @MoazSalem).
 - **FIX**: Update `ShadButton` to allow for more flexibility with height and width properties (thanks to @MoazSalem).
 
+## 0.39.5
+
+- **FEAT**: Add `onPressed` to `ShadSelect` and its form fields to provide a custom callback when the select input is pressed, instead of toggling the popover.
+
+## 0.39.4
+
+- **FIX**: `ShadDatePicker` selected range not updated inside `didUpdateWidget`.
+
 ## 0.39.3
 
 - **FIX**: Remove extra gap when `actions` is empty in `ShadDialog`.

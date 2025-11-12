@@ -941,6 +941,9 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
     if (widget.selected != null) {
       selected = widget.selected;
     }
+    if (widget.selectedRange != null) {
+      selectedRange = widget.selectedRange;
+    }
   }
 
   @override
