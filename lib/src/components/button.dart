@@ -480,7 +480,7 @@ class ShadButton extends StatefulWidget {
   /// {@template ShadButton.width}
   /// The explicit minimum width of the button, overriding size-based defaults.
   /// If null, it falls back to theme or size-specific minimums. When set to 0,
-  /// or a value smaller than the child's width the button's width will be 
+  /// or a value smaller than the child's width the button's width will be
   /// determined by its child.
   /// {@endtemplate}
   final double? width;
@@ -488,7 +488,7 @@ class ShadButton extends StatefulWidget {
   /// {@template ShadButton.height}
   /// The explicit minimum height of the button, overriding size-based defaults.
   /// If null, it falls back to theme or size-specific minimums. When set to 0,
-  /// or a value smaller than the child's height the button's width will be
+  /// or a value smaller than the child's height the button's height will be
   /// determined by its child.
   /// {@endtemplate}
   final double? height;

@@ -224,11 +224,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
   @override
   ShadBreadcrumbTheme breadcrumbTheme() {
     return ShadBreadcrumbTheme(
-      separator: Icon(
-        LucideIcons.chevronRight,
-        size: 14,
-        color: colorScheme.mutedForeground,
-      ),
       ellipsis: Icon(
         LucideIcons.ellipsis,
         size: 14,
@@ -238,10 +233,10 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ellipsisSize: 14,
       separatorSize: 14,
       itemTextStyle: effectiveTextTheme.small.fallback(
-        color: colorScheme.foreground,
+        color: colorScheme.mutedForeground,
       ),
       linkTextStyle: effectiveTextTheme.small.fallback(
-        color: colorScheme.foreground,
+        color: colorScheme.mutedForeground,
       ),
       linkNormalTextColor: colorScheme.mutedForeground,
       linkHoverTextColor: colorScheme.foreground,
