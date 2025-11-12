@@ -262,9 +262,8 @@ class ShadBreadcrumbSeparator extends StatelessWidget {
     final effectiveSeparatorSize =
         separatorSize ?? theme.breadcrumbTheme.separatorSize ?? 14.0;
 
-    final isRTL = Directionality.of(context) == TextDirection.rtl;
     return Icon(
-      isRTL ? LucideIcons.chevronLeft : LucideIcons.chevronRight,
+      LucideIcons.chevronRight,
       size: effectiveSeparatorSize,
       color: theme.colorScheme.mutedForeground,
     );
