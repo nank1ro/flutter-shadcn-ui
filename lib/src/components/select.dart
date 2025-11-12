@@ -81,6 +81,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.controller,
     this.popoverReverseDuration,
     this.ensureSelectedVisible,
+    this.onPressed,
   }) : variant = ShadSelectVariant.primary,
        initialValues = const {},
        onSearchChanged = null,
@@ -146,6 +147,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.ensureSelectedVisible,
     this.searchFocusNode,
     this.onSearchSubmitted,
+    this.onPressed,
   }) : variant = ShadSelectVariant.search,
        selectedOptionsBuilder = null,
        onMultipleChanged = null,
@@ -197,6 +199,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.controller,
     this.popoverReverseDuration,
     this.ensureSelectedVisible,
+    this.onPressed,
   }) : variant = ShadSelectVariant.multiple,
        onSearchChanged = null,
        initialValue = null,
@@ -263,6 +266,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.ensureSelectedVisible,
     this.searchFocusNode,
     this.onSearchSubmitted,
+    this.onPressed,
   }) : variant = ShadSelectVariant.multipleWithSearch,
        selectedOptionBuilder = null,
        onChanged = null,
@@ -328,6 +332,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.ensureSelectedVisible,
     this.searchFocusNode,
     this.onSearchSubmitted,
+    this.onPressed,
   }) : assert(
          variant == ShadSelectVariant.primary || onSearchChanged != null,
          'onSearchChanged must be provided when variant is search',
@@ -678,6 +683,14 @@ class ShadSelect<T> extends StatefulWidget {
   /// Provides the current search string as an argument.
   /// {@endtemplate}
   final ValueChanged<String>? onSearchSubmitted;
+
+  /// {@template ShadSelect.onPressed}
+  /// Callback function invoked when the select input is pressed.
+  ///
+  /// If provided, this callback will be called instead of toggling the
+  /// popover.
+  /// {@endtemplate}
+  final VoidCallback? onPressed;
 
   @override
   ShadSelectState<T> createState() => ShadSelectState();
@@ -1062,6 +1075,10 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                   cursor: SystemMouseCursors.click,
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
+                    if (widget.onPressed != null) {
+                      widget.onPressed!();
+                      return;
+                    }
                     FocusScope.of(context).unfocus();
                     popoverController.toggle();
                   },
