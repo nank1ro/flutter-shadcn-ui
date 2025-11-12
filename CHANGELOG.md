@@ -1,3 +1,7 @@
+## 0.39.4
+
+- **FIX**: `ShadDatePicker` selected range not updated inside `didUpdateWidget`.
+
 ## 0.39.3
 
 - **FIX**: Remove extra gap when `actions` is empty in `ShadDialog`.
