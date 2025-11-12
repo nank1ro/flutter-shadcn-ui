@@ -71,6 +71,11 @@ mixin _$ShadBreadcrumbTheme {
         b?.dropdownArrowGap,
         t,
       ),
+      lastItemTextColor: Color.lerp(
+        a?.lastItemTextColor,
+        b?.lastItemTextColor,
+        t,
+      ),
     );
   }
 
@@ -92,6 +97,7 @@ mixin _$ShadBreadcrumbTheme {
     EdgeInsets? dropdownItemPadding,
     ShadAnchorBase? dropdownMenuAnchor,
     double? dropdownArrowGap,
+    Color? lastItemTextColor,
   }) {
     final a = (this as ShadBreadcrumbTheme);
 
@@ -114,6 +120,7 @@ mixin _$ShadBreadcrumbTheme {
       dropdownItemPadding: dropdownItemPadding ?? a.dropdownItemPadding,
       dropdownMenuAnchor: dropdownMenuAnchor ?? a.dropdownMenuAnchor,
       dropdownArrowGap: dropdownArrowGap ?? a.dropdownArrowGap,
+      lastItemTextColor: lastItemTextColor ?? a.lastItemTextColor,
     );
   }
 
@@ -152,6 +159,7 @@ mixin _$ShadBreadcrumbTheme {
       dropdownItemPadding: other.dropdownItemPadding,
       dropdownMenuAnchor: other.dropdownMenuAnchor,
       dropdownArrowGap: other.dropdownArrowGap,
+      lastItemTextColor: other.lastItemTextColor,
     );
   }
 
@@ -185,7 +193,8 @@ mixin _$ShadBreadcrumbTheme {
         other.dropdownTextStyle == value.dropdownTextStyle &&
         other.dropdownItemPadding == value.dropdownItemPadding &&
         other.dropdownMenuAnchor == value.dropdownMenuAnchor &&
-        other.dropdownArrowGap == value.dropdownArrowGap;
+        other.dropdownArrowGap == value.dropdownArrowGap &&
+        other.lastItemTextColor == value.lastItemTextColor;
   }
 
   @override
@@ -211,6 +220,7 @@ mixin _$ShadBreadcrumbTheme {
       value.dropdownItemPadding,
       value.dropdownMenuAnchor,
       value.dropdownArrowGap,
+      value.lastItemTextColor,
     );
   }
 }

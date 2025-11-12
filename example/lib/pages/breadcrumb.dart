@@ -32,7 +32,6 @@ class BreadcrumbExample extends StatelessWidget {
               child: Text('Library'),
             ),
             ShadBreadcrumbItem(
-              isLastItem: true,
               child: Text('Data'),
             ),
           ],
@@ -55,7 +54,6 @@ class BreadcrumbExample extends StatelessWidget {
               child: Text('Components'),
             ),
             ShadBreadcrumbItem(
-              isLastItem: true,
               child: Text('Breadcrumb'),
             ),
           ],
@@ -106,7 +104,6 @@ class BreadcrumbExample extends StatelessWidget {
               ),
             ),
             const ShadBreadcrumbItem(
-              isLastItem: true,
               child: Text('Breadcrumb'),
             ),
           ],
@@ -146,7 +143,6 @@ class BreadcrumbExample extends StatelessWidget {
               ),
             ),
             const ShadBreadcrumbItem(
-              isLastItem: true,
               child: Text('Breadcrumb'),
             ),
           ],
@@ -181,7 +177,6 @@ class BreadcrumbExample extends StatelessWidget {
               child: Text('Component 4'),
             ),
             ShadBreadcrumbItem(
-              isLastItem: true,
               child: Text('Breadcrumb'),
             ),
           ],

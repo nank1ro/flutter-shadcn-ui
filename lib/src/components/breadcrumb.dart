@@ -25,6 +25,8 @@ class ShadBreadcrumb extends StatelessWidget {
     this.textDirection,
     this.verticalDirection,
     this.spacing,
+    this.textStyle,
+    this.lastItemTextColor,
   });
 
   /// The list of breadcrumb items to display.
@@ -53,6 +55,18 @@ class ShadBreadcrumb extends StatelessWidget {
   /// default separator spacing, defaults to 10.0
   final double? spacing;
 
+  /// {@template ShadBreadcrumb.itemTextStyle}
+  /// The style for the breadcrumb link text.
+  /// defaults to [ShadTheme.of(context).textTheme.small]
+  /// {@endtemplate}
+  final TextStyle? textStyle;
+
+  /// {@template ShadBreadcrumb.lastItemTextColor}
+  /// The color for the last breadcrumb items text.
+  /// defaults to [ShadTheme.of(context).colorScheme.foreground]
+  /// {@endtemplate}
+  final Color? lastItemTextColor;
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -75,6 +89,18 @@ class ShadBreadcrumb extends StatelessWidget {
 
     final effectiveSpacing = spacing ?? breadcrumbTheme.spacing ?? 10.0;
 
+    final effectiveTextStyle =
+        textStyle ??
+        breadcrumbTheme.itemTextStyle ??
+        theme.textTheme.small.fallback(
+          color: theme.colorScheme.mutedForeground,
+        );
+
+    final effectiveLastItemColor =
+        lastItemTextColor ??
+        breadcrumbTheme.lastItemTextColor ??
+        theme.colorScheme.foreground;
+
     return Wrap(
       alignment: effectiveMainAxisAlignment,
       crossAxisAlignment: effectiveCrossAxisAlignment,
@@ -86,7 +112,14 @@ class ShadBreadcrumb extends StatelessWidget {
         (int index) => Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            children[index],
+            DefaultTextStyle(
+              style: effectiveTextStyle.copyWith(
+                color: index == children.length - 1
+                    ? effectiveLastItemColor
+                    : effectiveTextStyle.color,
+              ),
+              child: children[index],
+            ),
             if (index < children.length - 1)
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: effectiveSpacing),
@@ -103,49 +136,21 @@ class ShadBreadcrumb extends StatelessWidget {
 /// A single item in a breadcrumb navigation.
 ///
 /// This widget represents one level in the breadcrumb hierarchy and can
-/// contain text, links, or other interactive elements.
+/// a simple widget wrapper with no real functionality.
 /// {@endtemplate}
 class ShadBreadcrumbItem extends StatelessWidget {
   /// {@macro ShadBreadcrumbItem}
   const ShadBreadcrumbItem({
     super.key,
     required this.child,
-    this.isLastItem = false,
-    this.textStyle,
   });
 
   /// The widget to display as the breadcrumb item content.
   final Widget child;
 
-  /// Make the last item in the breadcrumb a little heavier, defaults to false
-  /// default weight is FontWeight.normal, if true it is FontWeight.w500
-  final bool isLastItem;
-
-  /// {@template ShadBreadcrumb.itemTextStyle}
-  /// The style for the breadcrumb link text.
-  /// defaults to [ShadTheme.of(context).textTheme.small]
-  /// {@endtemplate}
-  final TextStyle? textStyle;
-
   @override
   Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-    final effectiveTextStyle =
-        textStyle ??
-        theme.breadcrumbTheme.itemTextStyle ??
-        theme.textTheme.small.fallback(
-          color: theme.colorScheme.mutedForeground,
-        );
-
-    return DefaultTextStyle(
-      style: effectiveTextStyle.copyWith(
-        // will be changed
-        color: isLastItem
-            ? theme.colorScheme.foreground
-            : theme.colorScheme.mutedForeground,
-      ),
-      child: child,
-    );
+    return child;
   }
 }
 

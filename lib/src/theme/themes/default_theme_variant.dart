@@ -235,6 +235,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       itemTextStyle: effectiveTextTheme.small.fallback(
         color: colorScheme.mutedForeground,
       ),
+      lastItemTextColor: colorScheme.foreground,
       linkTextStyle: effectiveTextTheme.small.fallback(
         color: colorScheme.mutedForeground,
       ),

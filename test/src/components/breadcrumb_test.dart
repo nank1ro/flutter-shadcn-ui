@@ -239,35 +239,6 @@ void main() {
     });
   });
 
-  group('ShadBreadcrumbItem', () {
-    testWidgets('Text widget should have font weight 500', (
-      WidgetTester tester,
-    ) async {
-      // Build the widget
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadApp(
-            home: ShadBreadcrumbItem(
-              isLastItem: true,
-              child: Text('Current Page'),
-            ),
-          ),
-        ),
-      );
-
-      // Find the RichText widget (which is what Text renders as)
-      final richTextFinder = find.descendant(
-        of: find.byType(Text),
-        matching: find.byType(RichText),
-      );
-
-      final richText = tester.widget(richTextFinder) as RichText;
-      final style = richText.text.style;
-
-      expect(style?.fontWeight, FontWeight.w500);
-    });
-  });
-
   group('ShadBreadcrumbSeparator', () {
     testWidgets('renders default separator correctly', (
       WidgetTester tester,

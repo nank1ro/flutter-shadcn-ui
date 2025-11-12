@@ -32,7 +32,6 @@ class BreadcrumbsPage extends StatelessWidget {
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 32),
-            
             // Simple Breadcrumb
             const Text(
               'Simple Breadcrumb',
@@ -48,13 +47,11 @@ class BreadcrumbsPage extends StatelessWidget {
                   child: Text('Library'),
                 ),
                 ShadBreadcrumbItem(
-                  isLastItem: true,
                   child: Text('Data'),
                 ),
               ],
             ),
             const SizedBox(height: 32),
-            
             // Breadcrumb with Links
             const Text(
               'Breadcrumb with Links',
@@ -72,13 +69,11 @@ class BreadcrumbsPage extends StatelessWidget {
                   child: const Text('Components'),
                 ),
                 const ShadBreadcrumbItem(
-                  isLastItem: true,
                   child: Text('Breadcrumb'),
                 ),
               ],
             ),
             const SizedBox(height: 32),
-            
             // Breadcrumb with Ellipsis
             const Text(
               'Breadcrumb with Ellipsis',
@@ -97,13 +92,11 @@ class BreadcrumbsPage extends StatelessWidget {
                   child: const Text('Components'),
                 ),
                 const ShadBreadcrumbItem(
-                  isLastItem: true,
                   child: Text('Breadcrumb'),
                 ),
               ],
             ),
             const SizedBox(height: 32),
-            
             // Custom Separator
             const Text(
               'Custom Separator',
@@ -122,13 +115,11 @@ class BreadcrumbsPage extends StatelessWidget {
                   child: const Text('Components'),
                 ),
                 const ShadBreadcrumbItem(
-                  isLastItem: true,
                   child: Text('Breadcrumb'),
                 ),
               ],
             ),
             const SizedBox(height: 32),
-            
             // With Different Alignment
             const Text(
               'Center Aligned',
@@ -145,13 +136,11 @@ class BreadcrumbsPage extends StatelessWidget {
                   child: Text('Library'),
                 ),
                 ShadBreadcrumbItem(
-                  isLastItem: true,
                   child: Text('Data'),
                 ),
               ],
             ),
             const SizedBox(height: 32),
-
             // With Dropdown
             const Text(
               'With Dropdown',
@@ -182,7 +171,6 @@ class BreadcrumbsPage extends StatelessWidget {
                   ],
                 ),
                 const ShadBreadcrumbItem(
-                  isLastItem: true,
                   child: Text('Breadcrumb'),
                 ),
               ],
@@ -216,7 +204,6 @@ class BreadcrumbsPage extends StatelessWidget {
                   child: Text('Component 4'),
                 ),
                 ShadBreadcrumbItem(
-                  isLastItem: true,
                   child: Text('Breadcrumb'),
                 ),
               ],

@@ -26,6 +26,7 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
     this.dropdownItemPadding,
     this.dropdownMenuAnchor,
     this.dropdownArrowGap,
+    this.lastItemTextColor,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -84,6 +85,9 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
 
   /// {@macro ShadBreadcrumb.dropdownArrowGap}
   final double? dropdownArrowGap;
+
+  /// {@macro ShadBreadcrumb.lastItemTextColor}
+  final Color? lastItemTextColor;
 
   static ShadBreadcrumbTheme? lerp(
     ShadBreadcrumbTheme? a,
