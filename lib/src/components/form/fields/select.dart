@@ -105,6 +105,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
+
+    /// {@macro ShadSelect.onPressed}
+    VoidCallback? onPressed,
   }) : super(
          decorationBuilder: (context) =>
              (ShadTheme.of(context).selectTheme.decoration ??
@@ -145,6 +148,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
              shrinkWrap: shrinkWrap,
              controller: state.controller,
              ensureSelectedVisible: ensureSelectedVisible,
+             onPressed: onPressed,
            );
          },
        );
@@ -221,6 +225,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.onSearchSubmitted}
     ValueChanged<String>? onSearchSubmitted,
+
+    /// {@macro ShadSelect.onPressed}
+    VoidCallback? onPressed,
   }) : super(
          decorationBuilder: (context) =>
              (ShadTheme.of(context).selectTheme.decoration ??
@@ -270,6 +277,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
              ensureSelectedVisible: ensureSelectedVisible,
              searchFocusNode: searchFocusNode,
              onSearchSubmitted: onSearchSubmitted,
+             onPressed: onPressed,
            );
          },
        );
@@ -346,6 +354,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.onSearchSubmitted}
     ValueChanged<String>? onSearchSubmitted,
+
+    /// {@macro ShadSelect.onPressed}
+    VoidCallback? onPressed,
   }) : assert(
          variant == ShadSelectVariant.primary ||
              variant == ShadSelectVariant.search,
@@ -400,6 +411,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
              ensureSelectedVisible: ensureSelectedVisible,
              searchFocusNode: searchFocusNode,
              onSearchSubmitted: onSearchSubmitted,
+             onPressed: onPressed,
            );
          },
        );
