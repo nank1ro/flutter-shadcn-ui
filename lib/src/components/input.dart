@@ -984,6 +984,7 @@ class ShadInputState extends State<ShadInput>
                     focused: focused,
                     child: BoxyColumn(
                       mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (widget.top != null) widget.top!,
                         RawScrollbar(
@@ -1038,6 +1039,10 @@ class ShadInputState extends State<ShadInput>
                                                           context,
                                                           constraints,
                                                         ) {
+                                                          print(
+                                                            'constraints: $constraints',
+                                                          );
+
                                                           /// Fire onLineCountChange after the frame is rendered
                                                           /// This ensures that the line count is accurate, even for
                                                           /// resizes that happen outside of text changes.

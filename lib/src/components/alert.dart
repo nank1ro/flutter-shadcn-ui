@@ -269,7 +269,7 @@ class ShadAlert extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (top != null) top!,
+          ?top,
           Row(
             crossAxisAlignment: effectiveCrossAxisAlignment,
             mainAxisAlignment: effectiveMainAxisAlignment,
@@ -298,7 +298,7 @@ class ShadAlert extends StatelessWidget {
               ?trailing,
             ],
           ),
-          if (bottom != null) bottom!,
+          ?bottom,
         ],
       ),
     );

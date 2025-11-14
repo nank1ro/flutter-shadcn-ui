@@ -1,3 +1,7 @@
+## 0.39.6
+
+- **FIX**: Assertion error when using `ShadSelect.withSearch`.
+
 ## 0.39.5
 
 - **FEAT**: Add `onPressed` to `ShadSelect` and its form fields to provide a custom callback when the select input is pressed, instead of toggling the popover.
