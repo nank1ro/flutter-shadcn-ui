@@ -277,7 +277,9 @@ void main() {
 
         for (var i = 0; i < maxTabs; i++) {
           final semantics = tester.getSemantics(finder);
-          if (semantics.flagsCollection.isFocused) return;
+          if (semantics.flagsCollection.isFocused.toBoolOrNull() ?? false) {
+            return;
+          }
           await tester.sendKeyEvent(LogicalKeyboardKey.tab);
           await tester.pumpAndSettle();
         }
@@ -301,7 +303,7 @@ void main() {
       bool isFocused(WidgetTester tester, String dayText) {
         final finder = find.text(dayText).first;
         final semantics = tester.getSemantics(finder);
-        return semantics.flagsCollection.isFocused;
+        return semantics.flagsCollection.isFocused.toBoolOrNull() ?? false;
       }
 
       testWidgets('GIVEN a day button is focused '
