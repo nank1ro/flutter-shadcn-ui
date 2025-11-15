@@ -1,3 +1,7 @@
+## 0.39.7
+
+-**FIX**: `ShadOption` selectedIcon position doesn't match original shadcn/ui (thanks to @DMouayad).
+
 ## 0.39.6
 
 - **FIX**: Assertion error when using `ShadSelect.withSearch`.
