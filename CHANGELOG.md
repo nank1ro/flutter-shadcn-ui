@@ -1,3 +1,7 @@
+## 0.39.7
+
+-**FIX**: `ShadOption` default selectedIcon is flipped in RTL (thanks to @DMouayad).
+
 ## 0.39.6
 
 - **FIX**: Assertion error when using `ShadSelect.withSearch`.

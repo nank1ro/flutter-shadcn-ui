@@ -1390,6 +1390,9 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
             padding: const EdgeInsets.only(right: 8),
             child: Icon(
               LucideIcons.check,
+              // Force LTR to avoid the icon being flipped(horizontally)
+              // when the text direction RTL
+              textDirection: TextDirection.ltr,
               size: 16,
               color: theme.colorScheme.popoverForeground,
             ),
