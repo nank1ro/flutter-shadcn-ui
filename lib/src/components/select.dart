@@ -1187,45 +1187,44 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                     }
                   });
 
-                  Widget effectiveColumn = Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (search != null)
+                  final effectiveColumn = SizedBox(
+                    width: calculatedMinWidth,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (search != null)
+                          Flexible(
+                            child: ConstrainedBox(
+                              constraints: effectiveConstraints,
+                              child: search,
+                            ),
+                          ),
+                        if (widget.header != null)
+                          Flexible(
+                            child: ConstrainedBox(
+                              constraints: effectiveConstraints,
+                              child: widget.header,
+                            ),
+                          ),
+                        ?scrollToTopChild,
                         Flexible(
                           child: ConstrainedBox(
                             constraints: effectiveConstraints,
-                            child: search,
+                            child: effectiveChild,
                           ),
                         ),
-                      if (widget.header != null)
-                        Flexible(
-                          child: ConstrainedBox(
-                            constraints: effectiveConstraints,
-                            child: widget.header,
+                        ?scrollToBottomChild,
+                        if (widget.footer != null)
+                          Flexible(
+                            child: ConstrainedBox(
+                              constraints: effectiveConstraints,
+                              child: widget.footer,
+                            ),
                           ),
-                        ),
-                      ?scrollToTopChild,
-                      Flexible(
-                        child: ConstrainedBox(
-                          constraints: effectiveConstraints,
-                          child: effectiveChild,
-                        ),
-                      ),
-                      ?scrollToBottomChild,
-                      if (widget.footer != null)
-                        Flexible(
-                          child: ConstrainedBox(
-                            constraints: effectiveConstraints,
-                            child: widget.footer,
-                          ),
-                        ),
-                    ],
+                      ],
+                    ),
                   );
-
-                  if (widget.optionsBuilder == null) {
-                    effectiveColumn = IntrinsicWidth(child: effectiveColumn);
-                  }
 
                   return ConstrainedBox(
                     constraints: BoxConstraints(
@@ -1433,7 +1432,6 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
             child: Row(
               textDirection: widget.direction,
               children: [
-                effectiveSelectedIcon,
                 Expanded(
                   child: DefaultTextStyle(
                     style: selected
@@ -1442,6 +1440,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
                     child: widget.child,
                   ),
                 ),
+                effectiveSelectedIcon,
               ],
             ),
           ),
