@@ -1432,7 +1432,6 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
             child: Row(
               textDirection: widget.direction,
               children: [
-                effectiveSelectedIcon,
                 Expanded(
                   child: DefaultTextStyle(
                     style: selected
@@ -1441,6 +1440,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
                     child: widget.child,
                   ),
                 ),
+                effectiveSelectedIcon,
               ],
             ),
           ),
