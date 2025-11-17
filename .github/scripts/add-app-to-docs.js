@@ -43,45 +43,88 @@ function addAppToConfig(siteUrl, siteName) {
   const configPath = 'docs/astro.config.mjs';
   const configContent = fs.readFileSync(configPath, 'utf8');
 
-  // Create the new app entry
-  const newAppEntry = `            {
-              label: '${siteName}',
-              link: '${siteUrl}',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },`;
+  // Create the new app entry object
+  const newApp = {
+    label: siteName,
+    link: siteUrl,
+    attrs: { target: '_blank', rel: 'noopener noreferrer' }
+  };
 
-  // Find the apps section and extract existing entries
-  const appsRegex = /(label: 'Apps created with Flutter Shadcn UI',[\s\S]*?items: \[[\s\S]*?)(            \{\s*label: 'Submit your app'[\s\S]*?\},\s*)([\s\S]*?)(          \],[\s\S]*?\})/;
-  const match = configContent.match(appsRegex);
+  // Find the apps section
+  const appsStartRegex = /label: 'Apps created with Flutter Shadcn UI',[\s\S]*?items: \[/;
+  const appsStartMatch = configContent.match(appsStartRegex);
 
-  if (!match) {
-    throw new Error('Could not find the apps section in astro.config.mjs');
+  if (!appsStartMatch) {
+    throw new Error('Could not find the apps section start in astro.config.mjs');
   }
 
-  const [, beforeSubmit, submitEntry, appsSection, afterApps] = match;
+  const appsStartIndex = appsStartMatch.index + appsStartMatch[0].length;
 
-  // Extract existing app entries (excluding Submit your app)
-  const appEntryRegex = /\{\s*label: '([^']+)',\s*link: '[^']+',[\s\S]*?\},/g;
-  const existingApps = [];
-  let appMatch;
+  // Find the end of the items array for the apps section
+  let braceCount = 1;
+  let currentIndex = appsStartIndex;
+  let appsEndIndex = -1;
 
-  while ((appMatch = appEntryRegex.exec(appsSection)) !== null) {
-    const fullEntry = appMatch[0];
-    const label = appMatch[1];
-    existingApps.push({ label, fullEntry });
+  while (currentIndex < configContent.length && braceCount > 0) {
+    const char = configContent[currentIndex];
+    if (char === '[') braceCount++;
+    if (char === ']') braceCount--;
+    if (braceCount === 0) {
+      appsEndIndex = currentIndex;
+      break;
+    }
+    currentIndex++;
   }
 
-  // Add the new app and sort alphabetically
-  existingApps.push({ label: siteName, fullEntry: newAppEntry });
-  existingApps.sort((a, b) => a.label.localeCompare(b.label));
+  if (appsEndIndex === -1) {
+    throw new Error('Could not find the apps section end in astro.config.mjs');
+  }
 
-  // Reconstruct the apps section
-  const sortedAppsSection = existingApps.map(app => app.fullEntry).join('\n');
+  // Extract the items array content
+  const itemsContent = configContent.substring(appsStartIndex, appsEndIndex).trim();
 
-  // Rebuild the config content
-  const newConfigContent = configContent.replace(appsRegex,
-    `$1${submitEntry}${sortedAppsSection}\n$4`
-  );
+  // Parse existing items by evaluating as JavaScript
+  let existingItems = [];
+  try {
+    // Safely extract the items array by wrapping it in brackets and evaluating
+    const itemsArray = eval(`[${itemsContent}]`);
+    existingItems = itemsArray;
+  } catch (error) {
+    throw new Error(`Failed to parse existing items: ${error.message}`);
+  }
+
+  // Check if the app already exists
+  const existingAppIndex = existingItems.findIndex(item => item.label === siteName);
+  if (existingAppIndex !== -1) {
+    throw new Error(`App "${siteName}" already exists in the documentation`);
+  }
+
+  // Simply append the new app to the existing items (preserving order)
+  const finalItems = [...existingItems, newApp];
+
+  // Format the items as proper JavaScript objects
+  const formattedItems = finalItems.map(item => {
+    const lines = ['            {'];
+    lines.push(`              label: '${item.label}',`);
+    lines.push(`              link: '${item.link}',`);
+    if (item.badge) {
+      lines.push(`              badge: { text: '${item.badge.text}' },`);
+    }
+    if (item.attrs) {
+      const attrsStr = Object.entries(item.attrs)
+        .map(([key, value]) => `${key}: '${value}'`)
+        .join(', ');
+      lines.push(`              attrs: { ${attrsStr} },`);
+    }
+    lines.push('            }');
+    return lines.join('\n');
+  }).join(',\n');
+
+  // Reconstruct the full config
+  const beforeItems = configContent.substring(0, appsStartIndex);
+  const afterItems = configContent.substring(appsEndIndex);
+
+  const newConfigContent = `${beforeItems}\n${formattedItems}\n          ${afterItems}`;
 
   fs.writeFileSync(configPath, newConfigContent, 'utf8');
   console.log(`✅ Added ${siteName} to astro.config.mjs`);
@@ -123,15 +166,22 @@ This PR was created automatically from issue #${issueNumber}.
 
 Closes #${issueNumber}`;
 
-    const prResult = execSync(`gh pr create --title "${prTitle}" --body "${prBody}" --head ${branchName} --base main`, { encoding: 'utf8' });
-    const prUrl = prResult.trim();
+    const tempBodyFile = `pr-body-${Date.now()}.md`;
+    fs.writeFileSync(tempBodyFile, prBody, 'utf8');
 
-    console.log(`✅ Created PR: ${prUrl}`);
-
-    // Set output for GitHub Actions
-    execSync(`echo "pr_url=${prUrl}" >> $GITHUB_OUTPUT`);
-
-    return prUrl;
+    try {
+      const prResult = execSync(
+        `gh pr create --title "${prTitle}" --body-file "${tempBodyFile}" --head "${branchName}" --base main`,
+        { encoding: 'utf8' }
+      );
+      const prUrl = prResult.trim();
+      console.log(`✅ Created PR: ${prUrl}`);
+      fs.unlinkSync(tempBodyFile); // Clean up
+      // Set output...
+      return prUrl;
+    } finally {
+      if (fs.existsSync(tempBodyFile)) fs.unlinkSync(tempBodyFile);
+    }
   } catch (error) {
     console.error('Error creating PR:', error.message);
     throw error;

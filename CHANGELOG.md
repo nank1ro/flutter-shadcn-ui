@@ -1,3 +1,19 @@
+## 0.39.7
+
+-**FIX**: `ShadOption` selectedIcon position doesn't match original shadcn/ui (thanks to @DMouayad).
+
+## 0.39.6
+
+- **FIX**: Assertion error when using `ShadSelect.withSearch`.
+
+## 0.39.5
+
+- **FEAT**: Add `onPressed` to `ShadSelect` and its form fields to provide a custom callback when the select input is pressed, instead of toggling the popover.
+
+## 0.39.4
+
+- **FIX**: `ShadDatePicker` selected range not updated inside `didUpdateWidget`.
+
 ## 0.39.3
 
 - **FIX**: Remove extra gap when `actions` is empty in `ShadDialog`.

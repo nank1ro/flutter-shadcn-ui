@@ -219,7 +219,7 @@ class ShadCard extends StatelessWidget {
         mainAxisAlignment: effectiveRowMainAxisAlignment,
         crossAxisAlignment: effectiveRowCrossAxisAlignment,
         children: [
-          if (leading != null) leading!,
+          ?leading,
           Flexible(
             child: Column(
               mainAxisSize: effectiveColumnMainAxisSize,
@@ -241,11 +241,11 @@ class ShadCard extends StatelessWidget {
                     child: description!,
                   ),
                 if (child != null) Flexible(child: child!),
-                if (footer != null) footer!,
+                ?footer,
               ],
             ),
           ),
-          if (trailing != null) trailing!,
+          ?trailing,
         ],
       ),
     );
