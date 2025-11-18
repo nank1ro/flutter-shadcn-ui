@@ -3,9 +3,13 @@
 - **FEAT**: Add new component `ShadBreadcrumb` and all of its related components (thanks to @MoazSalem).
 - **FIX**: Update `ShadButton` to allow for more flexibility with height and width properties (thanks to @MoazSalem).
 
+## 0.39.8
+
+- **FIX**: Autofocus search input in select dropdown (thanks @Isakdl).
+
 ## 0.39.7
 
--**FIX**: `ShadOption` selectedIcon position doesn't match original shadcn/ui (thanks to @DMouayad).
+- **FIX**: `ShadOption` selectedIcon position doesn't match original shadcn/ui (thanks to @DMouayad).
 
 ## 0.39.6
 
