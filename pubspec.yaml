@@ -36,6 +36,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
+  lean_builder: ^0.1.2
   mocktail: ^1.0.4
   theme_extensions_builder: ^6.0.1
   very_good_analysis: ^10.0.0
