@@ -455,10 +455,14 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
           children: [
             widget.child,
             SizedBox(width: effectiveArrowGap),
-            Icon(
-              LucideIcons.chevronDown,
-              size: theme.breadcrumbTheme.separatorSize ?? 14,
-              color: effectiveTextColor,
+            AnimatedRotation(
+              turns: controller.isOpen ? 0.5 : 0.0,
+              duration: const Duration(milliseconds: 200),
+              child: Icon(
+                LucideIcons.chevronDown,
+                size: theme.breadcrumbTheme.separatorSize ?? 14,
+                color: effectiveTextColor,
+              ),
             ),
           ],
         ),
