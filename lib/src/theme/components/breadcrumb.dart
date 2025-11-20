@@ -72,13 +72,13 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
   final Color? dropdownMenuBackgroundColor;
 
   /// {@macro ShadBreadcrumb.dropdownMenuPadding}
-  final EdgeInsets? dropdownMenuPadding;
+  final EdgeInsetsGeometry? dropdownMenuPadding;
 
   /// {@macro ShadBreadcrumb.dropdownTextStyle}
   final TextStyle? dropdownTextStyle;
 
   /// {@macro ShadBreadcrumb.dropdownItemPadding}
-  final EdgeInsets? dropdownItemPadding;
+  final EdgeInsetsGeometry? dropdownItemPadding;
 
   /// {@macro ShadBreadcrumb.dropdownMenuAnchor}
   final ShadAnchorBase? dropdownMenuAnchor;

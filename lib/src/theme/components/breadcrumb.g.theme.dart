@@ -48,7 +48,7 @@ mixin _$ShadBreadcrumbTheme {
         b?.dropdownMenuBackgroundColor,
         t,
       ),
-      dropdownMenuPadding: EdgeInsets.lerp(
+      dropdownMenuPadding: EdgeInsetsGeometry.lerp(
         a?.dropdownMenuPadding,
         b?.dropdownMenuPadding,
         t,
@@ -58,7 +58,7 @@ mixin _$ShadBreadcrumbTheme {
         b?.dropdownTextStyle,
         t,
       ),
-      dropdownItemPadding: EdgeInsets.lerp(
+      dropdownItemPadding: EdgeInsetsGeometry.lerp(
         a?.dropdownItemPadding,
         b?.dropdownItemPadding,
         t,
@@ -92,9 +92,9 @@ mixin _$ShadBreadcrumbTheme {
     WrapAlignment? mainAxisAlignment,
     WrapCrossAlignment? crossAxisAlignment,
     Color? dropdownMenuBackgroundColor,
-    EdgeInsets? dropdownMenuPadding,
+    EdgeInsetsGeometry? dropdownMenuPadding,
     TextStyle? dropdownTextStyle,
-    EdgeInsets? dropdownItemPadding,
+    EdgeInsetsGeometry? dropdownItemPadding,
     ShadAnchorBase? dropdownMenuAnchor,
     double? dropdownArrowGap,
     Color? lastItemTextColor,

@@ -355,7 +355,7 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
   /// The padding value for dropdown menu. defaults to
   /// [EdgeInsets.all(4)]
   /// {@endtemplate}
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// {@template ShadBreadcrumb.dropdownMenuAnchor}
   /// The anchor configuration for the dropdown popover.
@@ -503,7 +503,7 @@ class ShadBreadcrumbDropMenuItem extends StatelessWidget {
   /// The padding value for dropdown menu items.
   /// defaults to [EdgeInsets.symmetric(horizontal: 8, vertical: 6)]
   /// {@endtemplate}
-  final EdgeInsets? itemPadding;
+  final EdgeInsetsGeometry? itemPadding;
 
   @override
   Widget build(BuildContext context) {
