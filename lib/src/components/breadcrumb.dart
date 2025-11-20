@@ -169,6 +169,7 @@ class ShadBreadcrumbLink extends StatefulWidget {
     this.normalColor,
     this.hoverColor,
     this.textStyle,
+    this.onHoverChange,
   });
 
   /// The widget to display as the link content.
@@ -195,6 +196,9 @@ class ShadBreadcrumbLink extends StatefulWidget {
   /// {@endtemplate}
   final TextStyle? textStyle;
 
+  /// Called when the hover state changes.
+  final void Function(bool)? onHoverChange;
+
   @override
   State<ShadBreadcrumbLink> createState() => _ShadBreadcrumbLinkState();
 }
@@ -205,16 +209,20 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+
     final effectiveNormalColor =
         widget.normalColor ??
         theme.breadcrumbTheme.linkNormalTextColor ??
         theme.colorScheme.mutedForeground;
+
     final effectiveHoverColor =
         widget.hoverColor ??
         theme.breadcrumbTheme.linkHoverTextColor ??
         theme.colorScheme.foreground;
 
-    final textColor = isHovered ? effectiveHoverColor : effectiveNormalColor;
+    final effectiveTextColor = isHovered
+        ? effectiveHoverColor
+        : effectiveNormalColor;
 
     final effectiveTextStyle =
         widget.textStyle ??
@@ -225,7 +233,9 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
 
     return ShadButton.raw(
       variant: ShadButtonVariant.link,
-      onHoverChange: (isHovered) => setState(() => this.isHovered = isHovered),
+      onHoverChange:
+          widget.onHoverChange ??
+          (isHovered) => setState(() => this.isHovered = isHovered),
       padding: EdgeInsets.zero,
       // Use zero dimensions; ShadButton's minWidth/minHeight constraints
       // allow the button to size to its child content
@@ -234,7 +244,7 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
       onPressed: widget.onPressed,
       child: DefaultTextStyle(
         style: effectiveTextStyle.copyWith(
-          color: textColor,
+          color: effectiveTextColor,
         ),
         child: widget.child,
       ),
@@ -325,6 +335,8 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
     this.padding,
     this.anchor,
     this.arrowGap,
+    this.normalTextColor,
+    this.hoverTextColor,
   });
 
   /// The widget that triggers the dropdown.
@@ -357,12 +369,25 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
   /// {@endtemplate}
   final double? arrowGap;
 
+  /// {@template ShadBreadcrumb.linkNormalTextColor}
+  /// The color for the breadcrumb link text when not hovered.
+  /// defaults to [ShadTheme.of(context).colorScheme.mutedForeground]
+  /// {@endtemplate}
+  final Color? normalTextColor;
+
+  /// {@template ShadBreadcrumb.linkHoverTextColor}
+  /// The color for the breadcrumb link text when hovered.
+  /// defaults to [ShadTheme.of(context).colorScheme.foreground]
+  /// {@endtemplate}
+  final Color? hoverTextColor;
+
   @override
   State<ShadBreadcrumbDropdown> createState() => _ShadBreadcrumbDropdownState();
 }
 
 class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
   final controller = ShadPopoverController();
+  bool isHovered = false;
 
   @override
   void dispose() {
@@ -373,20 +398,38 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+
     final effectiveDropdownMenuBackgroundColor =
         widget.backgroundColor ??
         theme.breadcrumbTheme.dropdownMenuBackgroundColor ??
         theme.colorScheme.popover;
+
     final effectiveDropdownMenuPadding =
         widget.padding ??
         theme.breadcrumbTheme.dropdownMenuPadding ??
         const EdgeInsets.all(4);
+
     final effectiveAnchor =
         widget.anchor ??
         theme.breadcrumbTheme.dropdownMenuAnchor ??
         const ShadAnchorAuto(offset: Offset(20, 4));
+
     final effectiveArrowGap =
         widget.arrowGap ?? theme.breadcrumbTheme.dropdownArrowGap ?? 4;
+
+    final effectiveNormalTextColor =
+        widget.normalTextColor ??
+        theme.breadcrumbTheme.linkNormalTextColor ??
+        theme.colorScheme.mutedForeground;
+
+    final effectiveHoverTextColor =
+        widget.hoverTextColor ??
+        theme.breadcrumbTheme.linkHoverTextColor ??
+        theme.colorScheme.foreground;
+
+    final effectiveTextColor = isHovered || controller.isOpen
+        ? effectiveHoverTextColor
+        : effectiveNormalTextColor;
 
     return ShadPopover(
       anchor: effectiveAnchor,
@@ -403,6 +446,9 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
         ),
       ),
       child: ShadBreadcrumbLink(
+        normalColor: effectiveTextColor,
+        onHoverChange: (isHovered) =>
+            setState(() => this.isHovered = isHovered),
         onPressed: controller.toggle,
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -412,7 +458,7 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
             Icon(
               LucideIcons.chevronDown,
               size: theme.breadcrumbTheme.separatorSize ?? 14,
-              color: theme.colorScheme.mutedForeground,
+              color: effectiveTextColor,
             ),
           ],
         ),
