@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import '../common/base_scaffold.dart';
 
-class BreadcrumbExample extends StatelessWidget {
-  const BreadcrumbExample({super.key});
+class BreadcrumbPage extends StatelessWidget {
+  const BreadcrumbPage({super.key});
 
   void _navigateToHome() {
     print('Navigating to Home');
