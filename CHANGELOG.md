@@ -1,3 +1,7 @@
+## 0.39.9
+
+- **FIX**: Regression in `ShadSelect` that no longer expandend the width to the intrinsic width of the options.
+
 ## 0.39.8
 
 - **FIX**: Autofocus search input in select dropdown (thanks @Isakdl).
