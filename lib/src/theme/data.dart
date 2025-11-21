@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
+import 'package:shadcn_ui/src/theme/components/breadcrumb.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/button_sizes.dart';
 import 'package:shadcn_ui/src/theme/components/calendar.dart';
@@ -63,6 +64,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadBadgeTheme? secondaryBadgeTheme,
     ShadBadgeTheme? destructiveBadgeTheme,
     ShadBadgeTheme? outlineBadgeTheme,
+    ShadBreadcrumbTheme? breadcrumbTheme,
     BorderRadius? radius,
     ShadAvatarTheme? avatarTheme,
     ShadButtonSizesTheme? buttonSizesTheme,
@@ -170,6 +172,9 @@ class ShadThemeData extends ShadBaseTheme {
       outlineBadgeTheme: effectiveVariant.outlineBadgeTheme().merge(
         outlineBadgeTheme,
       ),
+      breadcrumbTheme: effectiveVariant.breadcrumbTheme().merge(
+        breadcrumbTheme,
+      ),
       buttonSizesTheme: effectiveVariant.buttonSizesTheme().merge(
         buttonSizesTheme,
       ),
@@ -249,6 +254,7 @@ class ShadThemeData extends ShadBaseTheme {
     required super.secondaryBadgeTheme,
     required super.destructiveBadgeTheme,
     required super.outlineBadgeTheme,
+    required super.breadcrumbTheme,
     required super.radius,
     required super.avatarTheme,
     required super.buttonSizesTheme,
@@ -347,6 +353,11 @@ class ShadThemeData extends ShadBaseTheme {
       outlineBadgeTheme: ShadBadgeTheme.lerp(
         a.outlineBadgeTheme,
         b.outlineBadgeTheme,
+        t,
+      ),
+      breadcrumbTheme: ShadBreadcrumbTheme.lerp(
+        a.breadcrumbTheme,
+        b.breadcrumbTheme,
         t,
       ),
       radius: BorderRadius.lerp(a.radius, b.radius, t),
@@ -482,6 +493,7 @@ class ShadThemeData extends ShadBaseTheme {
         other.secondaryBadgeTheme == secondaryBadgeTheme &&
         other.destructiveBadgeTheme == destructiveBadgeTheme &&
         other.outlineBadgeTheme == outlineBadgeTheme &&
+        other.breadcrumbTheme == breadcrumbTheme &&
         other.radius == radius &&
         other.avatarTheme == avatarTheme &&
         other.buttonSizesTheme == buttonSizesTheme &&
@@ -538,6 +550,7 @@ class ShadThemeData extends ShadBaseTheme {
         primaryBadgeTheme.hashCode ^
         secondaryBadgeTheme.hashCode ^
         outlineBadgeTheme.hashCode ^
+        breadcrumbTheme.hashCode ^
         destructiveBadgeTheme.hashCode ^
         radius.hashCode ^
         avatarTheme.hashCode ^
@@ -594,6 +607,7 @@ class ShadThemeData extends ShadBaseTheme {
     ShadBadgeTheme? secondaryBadgeTheme,
     ShadBadgeTheme? destructiveBadgeTheme,
     ShadBadgeTheme? outlineBadgeTheme,
+    ShadBreadcrumbTheme? breadcrumbTheme,
     Brightness? brightness,
     BorderRadius? radius,
     ShadAvatarTheme? avatarTheme,
@@ -652,6 +666,7 @@ class ShadThemeData extends ShadBaseTheme {
       destructiveBadgeTheme:
           destructiveBadgeTheme ?? this.destructiveBadgeTheme,
       outlineBadgeTheme: outlineBadgeTheme ?? this.outlineBadgeTheme,
+      breadcrumbTheme: breadcrumbTheme ?? this.breadcrumbTheme,
       radius: radius ?? this.radius,
       avatarTheme: avatarTheme ?? this.avatarTheme,
       buttonSizesTheme: buttonSizesTheme ?? this.buttonSizesTheme,
@@ -714,6 +729,7 @@ class ShadThemeData extends ShadBaseTheme {
       secondaryBadgeTheme: other.secondaryBadgeTheme,
       destructiveBadgeTheme: other.destructiveBadgeTheme,
       outlineBadgeTheme: other.outlineBadgeTheme,
+      breadcrumbTheme: other.breadcrumbTheme,
       brightness: other.brightness,
       radius: other.radius,
       avatarTheme: other.avatarTheme,
