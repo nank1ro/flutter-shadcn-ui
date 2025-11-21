@@ -140,7 +140,7 @@ class _ShadPortalState extends State<ShadPortal> {
   final overlayPortalController = OverlayPortalController();
   final overlayKey = GlobalKey();
   Offset? _calculatedTarget;
-  // When scrolling, recaculate the position
+  // When scrolling, recalculate the position
   ScrollNotificationObserverState? _scrollNotificationObserver;
 
   @override
