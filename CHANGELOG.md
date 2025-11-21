@@ -1,6 +1,6 @@
 ## 0.39.9
 
-- **FIX**: Regression in `ShadSelect` that no longer expandend the width to the intrinsic width of the options.
+- **FIX**: Regression in `ShadSelect` where the dropdown no longer expanded to the intrinsic width of its options.
 
 ## 0.39.8
 
