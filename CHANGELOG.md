@@ -2,6 +2,7 @@
 
 - **FIX**: Regression in `ShadSelect` where the dropdown no longer expanded to the intrinsic width of its options.
 - **FIX**: Select popover not respecting anchoring point when scrolling.
+- **CHORE**: Bump min Dart SDK version to `3.10.0`.
 
 ## 0.39.8
 
