@@ -36,6 +36,14 @@ class ShadColorScheme {
     required this.input,
     required this.ring,
     required this.selection,
+    required this.sidebar,
+    required this.sidebarForeground,
+    required this.sidebarBorder,
+    required this.sidebarRing,
+    required this.sidebarAccent,
+    required this.sidebarAccentForeground,
+    required this.sidebarPrimary,
+    required this.sidebarPrimaryForeground,
     this.custom = const {},
   });
 
@@ -116,6 +124,14 @@ class ShadColorScheme {
   final Color input;
   final Color ring;
   final Color selection;
+  final Color sidebar;
+  final Color sidebarForeground;
+  final Color sidebarBorder;
+  final Color sidebarRing;
+  final Color sidebarAccent;
+  final Color sidebarAccentForeground;
+  final Color sidebarPrimary;
+  final Color sidebarPrimaryForeground;
   final Map<String, Color> custom;
 
   static ShadColorScheme lerp(
@@ -160,6 +176,23 @@ class ShadColorScheme {
       input: Color.lerp(a.input, b.input, t)!,
       ring: Color.lerp(a.ring, b.ring, t)!,
       selection: Color.lerp(a.selection, b.selection, t)!,
+      sidebar: Color.lerp(a.sidebar, b.sidebar, t)!,
+      sidebarForeground:
+          Color.lerp(a.sidebarForeground, b.sidebarForeground, t)!,
+      sidebarBorder: Color.lerp(a.sidebarBorder, b.sidebarBorder, t)!,
+      sidebarRing: Color.lerp(a.sidebarRing, b.sidebarRing, t)!,
+      sidebarAccent: Color.lerp(a.sidebarAccent, b.sidebarAccent, t)!,
+      sidebarAccentForeground: Color.lerp(
+        a.sidebarAccentForeground,
+        b.sidebarAccentForeground,
+        t,
+      )!,
+      sidebarPrimary: Color.lerp(a.sidebarPrimary, b.sidebarPrimary, t)!,
+      sidebarPrimaryForeground: Color.lerp(
+        a.sidebarPrimaryForeground,
+        b.sidebarPrimaryForeground,
+        t,
+      )!,
       custom: {
         for (final key in {...a.custom.keys, ...b.custom.keys})
           key: Color.lerp(
@@ -194,6 +227,14 @@ class ShadColorScheme {
     Color? input,
     Color? ring,
     Color? selection,
+    Color? sidebar,
+    Color? sidebarForeground,
+    Color? sidebarBorder,
+    Color? sidebarRing,
+    Color? sidebarAccent,
+    Color? sidebarAccentForeground,
+    Color? sidebarPrimary,
+    Color? sidebarPrimaryForeground,
     Map<String, Color>? custom,
   }) {
     return ShadColorScheme(
@@ -218,6 +259,16 @@ class ShadColorScheme {
       input: input ?? this.input,
       ring: ring ?? this.ring,
       selection: selection ?? this.selection,
+      sidebar: sidebar ?? this.sidebar,
+      sidebarForeground: sidebarForeground ?? this.sidebarForeground,
+      sidebarBorder: sidebarBorder ?? this.sidebarBorder,
+      sidebarRing: sidebarRing ?? this.sidebarRing,
+      sidebarAccent: sidebarAccent ?? this.sidebarAccent,
+      sidebarAccentForeground:
+          sidebarAccentForeground ?? this.sidebarAccentForeground,
+      sidebarPrimary: sidebarPrimary ?? this.sidebarPrimary,
+      sidebarPrimaryForeground:
+          sidebarPrimaryForeground ?? this.sidebarPrimaryForeground,
       custom: custom ?? this.custom,
     );
   }
@@ -247,7 +298,15 @@ class ShadColorScheme {
         other.input == input &&
         other.ring == ring &&
         other.selection == selection &&
-        mapEquals(other.custom, custom);
+        mapEquals(other.custom, custom) &&
+        other.sidebar == sidebar &&
+        other.sidebarForeground == sidebarForeground &&
+        other.sidebarBorder == sidebarBorder &&
+        other.sidebarRing == sidebarRing &&
+        other.sidebarAccent == sidebarAccent &&
+        other.sidebarAccentForeground == sidebarAccentForeground &&
+        other.sidebarPrimary == sidebarPrimary &&
+        other.sidebarPrimaryForeground == sidebarPrimaryForeground;
   }
 
   @override
@@ -272,6 +331,14 @@ class ShadColorScheme {
         input.hashCode ^
         ring.hashCode ^
         selection.hashCode ^
-        Object.hashAllUnordered(custom.entries);
+        Object.hashAllUnordered(custom.entries) ^
+        sidebar.hashCode ^
+        sidebarForeground.hashCode ^
+        sidebarBorder.hashCode ^
+        sidebarRing.hashCode ^
+        sidebarAccent.hashCode ^
+        sidebarAccentForeground.hashCode ^
+        sidebarPrimary.hashCode ^
+        sidebarPrimaryForeground.hashCode;
   }
 }
