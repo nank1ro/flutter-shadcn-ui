@@ -165,6 +165,7 @@ class _ShadPortalState extends State<ShadPortal> {
 
   @override
   void dispose() {
+    _scrollNotificationObserver?.removeListener(_handleScrollNotification);
     hide();
     super.dispose();
   }
