@@ -440,6 +440,9 @@ class ShadSelect<T> extends StatefulWidget {
   ///
   /// The builder is called with the [BuildContext] and the index of the option
   /// to build. It should return a widget, typically a [ShadOption].
+  ///
+  /// NOTE: By using this builder, you must handle the width of the options
+  /// yourself, because no intrinsic width calculation is performed.
   /// {@endtemplate}
   final Widget? Function(BuildContext, int)? optionsBuilder;
 
@@ -1229,44 +1232,24 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                     }
                   });
 
-                  final effectiveColumn = SizedBox(
-                    width: calculatedMinWidth,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (search != null)
-                          Flexible(
-                            child: ConstrainedBox(
-                              constraints: effectiveConstraints,
-                              child: search,
-                            ),
-                          ),
-                        if (widget.header != null)
-                          Flexible(
-                            child: ConstrainedBox(
-                              constraints: effectiveConstraints,
-                              child: widget.header,
-                            ),
-                          ),
-                        ?scrollToTopChild,
-                        Flexible(
-                          child: ConstrainedBox(
-                            constraints: effectiveConstraints,
-                            child: effectiveChild,
-                          ),
-                        ),
-                        ?scrollToBottomChild,
-                        if (widget.footer != null)
-                          Flexible(
-                            child: ConstrainedBox(
-                              constraints: effectiveConstraints,
-                              child: widget.footer,
-                            ),
-                          ),
-                      ],
-                    ),
+                  Widget effectiveColumn = Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (search != null) Flexible(child: search),
+                      if (widget.header != null)
+                        Flexible(child: widget.header!),
+                      ?scrollToTopChild,
+                      Flexible(child: effectiveChild),
+                      ?scrollToBottomChild,
+                      if (widget.footer != null)
+                        Flexible(child: widget.footer!),
+                    ],
                   );
+
+                  if (widget.optionsBuilder == null) {
+                    effectiveColumn = IntrinsicWidth(child: effectiveColumn);
+                  }
 
                   return ConstrainedBox(
                     constraints: BoxConstraints(
