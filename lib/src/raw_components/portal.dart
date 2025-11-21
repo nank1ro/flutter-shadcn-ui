@@ -139,8 +139,9 @@ class _ShadPortalState extends State<ShadPortal> {
   final layerLink = LayerLink();
   final overlayPortalController = OverlayPortalController();
   final overlayKey = GlobalKey();
-
   Offset? _calculatedTarget;
+  // When scrolling, recaculate the position
+  ScrollNotificationObserverState? _scrollNotificationObserver;
 
   @override
   void initState() {
@@ -155,9 +156,29 @@ class _ShadPortalState extends State<ShadPortal> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scrollNotificationObserver?.removeListener(_handleScrollNotification);
+    _scrollNotificationObserver = ScrollNotificationObserver.maybeOf(context);
+    _scrollNotificationObserver?.addListener(_handleScrollNotification);
+  }
+
+  @override
   void dispose() {
     hide();
     super.dispose();
+  }
+
+  void _handleScrollNotification(ScrollNotification notification) {
+    // Check if the notification is a scroll update notification and if the
+    // `notification.depth` is 0. This way we only listen to the scroll
+    // notifications from the closest scrollable, instead of those that may be
+    // nested.
+    if (notification is ScrollUpdateNotification &&
+        defaultScrollNotificationPredicate(notification)) {
+      // Recalculate the position of the portal on scroll.
+      _calculatePosition();
+    }
   }
 
   void updateVisibility() {
@@ -192,7 +213,6 @@ class _ShadPortalState extends State<ShadPortal> {
     if (!mounted || widget.anchor is! ShadAnchorAuto) return;
 
     final anchor = widget.anchor as ShadAnchorAuto;
-
     final box = context.findRenderObject();
     final overlayState = Overlay.of(context, debugRequiredFor: widget);
     final overlayAncestor = overlayState.context.findRenderObject();
