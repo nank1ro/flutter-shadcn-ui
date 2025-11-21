@@ -1,6 +1,7 @@
 ## 0.39.9
 
 - **FIX**: Regression in `ShadSelect` where the dropdown no longer expanded to the intrinsic width of its options.
+- **FIX**: Select popover not respecting anchoring point when scrolling.
 
 ## 0.39.8
 
