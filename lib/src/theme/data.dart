@@ -141,7 +141,7 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
           ),
         };
 
-    return ShadThemeData.internal(
+    return ShadThemeData._internal(
       canMerge: canMerge,
       colorScheme: effectiveColorScheme,
       brightness: effectiveBrightness,
@@ -241,7 +241,7 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     );
   }
 
-  const ShadThemeData.internal({
+  const ShadThemeData._internal({
     bool canMerge = true,
     required super.colorScheme,
     required super.brightness,
