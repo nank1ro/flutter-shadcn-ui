@@ -80,7 +80,10 @@ class SelectPage extends StatelessWidget {
                 placeholder: const Text('Select a fruit'),
                 options: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 6,
+                    ),
                     child: Text(
                       'Fruits',
                       style: theme.textTheme.muted.copyWith(
@@ -107,7 +110,10 @@ class SelectPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 6,
+                        ),
                         child: Text(
                           zone.key,
                           style: theme.textTheme.muted.copyWith(
@@ -211,7 +217,7 @@ class SelectMultiple extends StatelessWidget {
       placeholder: const Text('Select multiple fruits'),
       options: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           child: Text(
             'Fruits',
             style: theme.textTheme.large,

@@ -154,7 +154,7 @@ class _SelectPageState extends State<SelectPage> {
           ensureSelectedVisible: ensureSelectedVisible,
           options: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               child: Text(
                 'Fruits',
                 style: theme.textTheme.large,
@@ -183,7 +183,10 @@ class _SelectPageState extends State<SelectPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 6,
+                  ),
                   child: Text(
                     zone.key,
                     style: theme.textTheme.muted.copyWith(
@@ -255,7 +258,7 @@ class _SelectPageState extends State<SelectPage> {
           ensureSelectedVisible: ensureSelectedVisible,
           options: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
               child: Text(
                 'Fruits',
                 style: theme.textTheme.large,
