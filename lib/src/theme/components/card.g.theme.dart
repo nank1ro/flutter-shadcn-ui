@@ -118,14 +118,13 @@ mixin _$ShadCardTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadCardTheme) {
       return false;
     }
 
     final value = (this as ShadCardTheme);
 
-    return other is ShadCardTheme &&
-        other.padding == value.padding &&
+    return other.padding == value.padding &&
         other.backgroundColor == value.backgroundColor &&
         other.radius == value.radius &&
         other.border == value.border &&

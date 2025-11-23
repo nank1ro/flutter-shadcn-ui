@@ -1,3 +1,7 @@
+## 0.39.10
+
+- **FIX**: Update `theme_extensions_builder` and fix merge issues in themes.
+
 ## 0.39.9
 
 - **FIX**: Regression in `ShadSelect` where the dropdown no longer expanded to the intrinsic width of its options.

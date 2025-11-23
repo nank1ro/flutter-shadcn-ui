@@ -80,7 +80,8 @@ mixin _$ShadInputOTPTheme {
       width: other.width,
       height: other.height,
       padding: other.padding,
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       firstRadius: other.firstRadius,
       lastRadius: other.lastRadius,
       singleRadius: other.singleRadius,
@@ -94,14 +95,13 @@ mixin _$ShadInputOTPTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadInputOTPTheme) {
       return false;
     }
 
     final value = (this as ShadInputOTPTheme);
 
-    return other is ShadInputOTPTheme &&
-        other.gap == value.gap &&
+    return other.gap == value.gap &&
         other.style == value.style &&
         other.width == value.width &&
         other.height == value.height &&

@@ -92,14 +92,13 @@ mixin _$ShadSonnerTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadSonnerTheme) {
       return false;
     }
 
     final value = (this as ShadSonnerTheme);
 
-    return other is ShadSonnerTheme &&
-        other.visibleToastsAmount == value.visibleToastsAmount &&
+    return other.visibleToastsAmount == value.visibleToastsAmount &&
         other.alignment == value.alignment &&
         other.padding == value.padding &&
         other.expandedGap == value.expandedGap &&

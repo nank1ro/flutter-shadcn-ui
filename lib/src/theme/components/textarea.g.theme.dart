@@ -110,7 +110,8 @@ mixin _$ShadTextareaTheme {
     }
 
     return copyWith(
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       padding: other.padding,
       style: current.style?.merge(other.style) ?? other.style,
       placeholderStyle:
@@ -136,14 +137,13 @@ mixin _$ShadTextareaTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadTextareaTheme) {
       return false;
     }
 
     final value = (this as ShadTextareaTheme);
 
-    return other is ShadTextareaTheme &&
-        other.decoration == value.decoration &&
+    return other.decoration == value.decoration &&
         other.padding == value.padding &&
         other.style == value.style &&
         other.placeholderStyle == value.placeholderStyle &&

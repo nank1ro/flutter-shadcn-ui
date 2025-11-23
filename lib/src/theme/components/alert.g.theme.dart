@@ -71,7 +71,8 @@ mixin _$ShadAlertTheme {
     }
 
     return copyWith(
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       iconPadding: other.iconPadding,
       iconColor: other.iconColor,
       titleStyle:
@@ -91,14 +92,13 @@ mixin _$ShadAlertTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadAlertTheme) {
       return false;
     }
 
     final value = (this as ShadAlertTheme);
 
-    return other is ShadAlertTheme &&
-        other.decoration == value.decoration &&
+    return other.decoration == value.decoration &&
         other.iconPadding == value.iconPadding &&
         other.iconColor == value.iconColor &&
         other.titleStyle == value.titleStyle &&

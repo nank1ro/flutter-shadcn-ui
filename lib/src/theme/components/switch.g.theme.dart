@@ -87,7 +87,8 @@ mixin _$ShadSwitchTheme {
       height: other.height,
       margin: other.margin,
       duration: other.duration,
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       padding: other.padding,
     );
   }
@@ -98,14 +99,13 @@ mixin _$ShadSwitchTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadSwitchTheme) {
       return false;
     }
 
     final value = (this as ShadSwitchTheme);
 
-    return other is ShadSwitchTheme &&
-        other.thumbColor == value.thumbColor &&
+    return other.thumbColor == value.thumbColor &&
         other.uncheckedTrackColor == value.uncheckedTrackColor &&
         other.checkedTrackColor == value.checkedTrackColor &&
         other.width == value.width &&

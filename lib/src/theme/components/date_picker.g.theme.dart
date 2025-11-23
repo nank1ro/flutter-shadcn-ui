@@ -536,7 +536,9 @@ mixin _$ShadDatePickerTheme {
       forwardNavigationButtonIconData: other.forwardNavigationButtonIconData,
       navigationButtonPadding: other.navigationButtonPadding,
       navigationButtonDisabledOpacity: other.navigationButtonDisabledOpacity,
-      calendarDecoration: other.calendarDecoration,
+      calendarDecoration:
+          current.calendarDecoration?.merge(other.calendarDecoration) ??
+          other.calendarDecoration,
       spacingBetweenMonths: other.spacingBetweenMonths,
       runSpacingBetweenMonths: other.runSpacingBetweenMonths,
       monthConstraints: other.monthConstraints,
@@ -566,7 +568,9 @@ mixin _$ShadDatePickerTheme {
       dayButtonSize: other.dayButtonSize,
       dayButtonOutsideMonthOpacity: other.dayButtonOutsideMonthOpacity,
       dayButtonPadding: other.dayButtonPadding,
-      dayButtonDecoration: other.dayButtonDecoration,
+      dayButtonDecoration:
+          current.dayButtonDecoration?.merge(other.dayButtonDecoration) ??
+          other.dayButtonDecoration,
       selectedDayButtonTextStyle:
           current.selectedDayButtonTextStyle?.merge(
             other.selectedDayButtonTextStyle,
@@ -608,13 +612,16 @@ mixin _$ShadDatePickerTheme {
       effects: other.effects,
       shadows: other.shadows,
       popoverPadding: other.popoverPadding,
-      popoverDecoration: other.popoverDecoration,
+      popoverDecoration:
+          current.popoverDecoration?.merge(other.popoverDecoration) ??
+          other.popoverDecoration,
       anchor: other.anchor,
       filter: other.filter,
       popoverReverseDuration: other.popoverReverseDuration,
       cursor: other.cursor,
       size: other.size,
-      sizesTheme: other.sizesTheme,
+      sizesTheme:
+          current.sizesTheme?.merge(other.sizesTheme) ?? other.sizesTheme,
       buttonVariant: other.buttonVariant,
       backgroundColor: other.backgroundColor,
       hoverBackgroundColor: other.hoverBackgroundColor,
@@ -627,7 +634,9 @@ mixin _$ShadDatePickerTheme {
       gradient: other.gradient,
       textDecoration: other.textDecoration,
       hoverTextDecoration: other.hoverTextDecoration,
-      buttonDecoration: other.buttonDecoration,
+      buttonDecoration:
+          current.buttonDecoration?.merge(other.buttonDecoration) ??
+          other.buttonDecoration,
       width: other.width,
       height: other.height,
       longPressDuration: other.longPressDuration,
@@ -650,14 +659,13 @@ mixin _$ShadDatePickerTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadDatePickerTheme) {
       return false;
     }
 
     final value = (this as ShadDatePickerTheme);
 
-    return other is ShadDatePickerTheme &&
-        other.formatDate == value.formatDate &&
+    return other.formatDate == value.formatDate &&
         other.formatDateRange == value.formatDateRange &&
         other.iconData == value.iconData &&
         other.hideNavigation == value.hideNavigation &&

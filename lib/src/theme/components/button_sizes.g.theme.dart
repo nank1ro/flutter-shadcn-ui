@@ -66,14 +66,13 @@ mixin _$ShadButtonSizeTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadButtonSizeTheme) {
       return false;
     }
 
     final value = (this as ShadButtonSizeTheme);
 
-    return other is ShadButtonSizeTheme &&
-        other.height == value.height &&
+    return other.height == value.height &&
         other.padding == value.padding &&
         other.width == value.width;
   }
@@ -134,10 +133,10 @@ mixin _$ShadButtonSizesTheme {
     }
 
     return copyWith(
-      regular: other.regular,
-      sm: other.sm,
-      lg: other.lg,
-      icon: other.icon,
+      regular: current.regular?.merge(other.regular) ?? other.regular,
+      sm: current.sm?.merge(other.sm) ?? other.sm,
+      lg: current.lg?.merge(other.lg) ?? other.lg,
+      icon: current.icon?.merge(other.icon) ?? other.icon,
     );
   }
 
@@ -147,14 +146,13 @@ mixin _$ShadButtonSizesTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadButtonSizesTheme) {
       return false;
     }
 
     final value = (this as ShadButtonSizesTheme);
 
-    return other is ShadButtonSizesTheme &&
-        other.regular == value.regular &&
+    return other.regular == value.regular &&
         other.sm == value.sm &&
         other.lg == value.lg &&
         other.icon == value.icon;

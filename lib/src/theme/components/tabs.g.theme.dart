@@ -226,7 +226,8 @@ mixin _$ShadTabsTheme {
       dragStartBehavior: other.dragStartBehavior,
       physics: other.physics,
       padding: other.padding,
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       tabBarConstraints: other.tabBarConstraints,
       contentConstraints: other.contentConstraints,
       expandContent: other.expandContent,
@@ -236,8 +237,12 @@ mixin _$ShadTabsTheme {
       tabHoverBackgroundColor: other.tabHoverBackgroundColor,
       tabSelectedHoverBackgroundColor: other.tabSelectedHoverBackgroundColor,
       tabPadding: other.tabPadding,
-      tabDecoration: other.tabDecoration,
-      tabSelectedDecoration: other.tabSelectedDecoration,
+      tabDecoration:
+          current.tabDecoration?.merge(other.tabDecoration) ??
+          other.tabDecoration,
+      tabSelectedDecoration:
+          current.tabSelectedDecoration?.merge(other.tabSelectedDecoration) ??
+          other.tabSelectedDecoration,
       tabForegroundColor: other.tabForegroundColor,
       tabSelectedForegroundColor: other.tabSelectedForegroundColor,
       tabTextStyle:
@@ -265,14 +270,13 @@ mixin _$ShadTabsTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadTabsTheme) {
       return false;
     }
 
     final value = (this as ShadTabsTheme);
 
-    return other is ShadTabsTheme &&
-        other.gap == value.gap &&
+    return other.gap == value.gap &&
         other.tabsGap == value.tabsGap &&
         other.tabBarAlignment == value.tabBarAlignment &&
         other.dragStartBehavior == value.dragStartBehavior &&

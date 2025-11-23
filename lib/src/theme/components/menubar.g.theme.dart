@@ -229,7 +229,8 @@ mixin _$ShadMenubarTheme {
       contextMenuPadding: other.contextMenuPadding,
       effects: other.effects,
       shadows: other.shadows,
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       filter: other.filter,
       anchor: other.anchor,
       buttonVariant: other.buttonVariant,
@@ -249,7 +250,9 @@ mixin _$ShadMenubarTheme {
       buttonGradient: other.buttonGradient,
       buttonTextDecoration: other.buttonTextDecoration,
       buttonHoverTextDecoration: other.buttonHoverTextDecoration,
-      buttonDecoration: other.buttonDecoration,
+      buttonDecoration:
+          current.buttonDecoration?.merge(other.buttonDecoration) ??
+          other.buttonDecoration,
       buttonGap: other.buttonGap,
       buttonMainAxisAlignment: other.buttonMainAxisAlignment,
       buttonCrossAxisAlignment: other.buttonCrossAxisAlignment,
@@ -267,14 +270,13 @@ mixin _$ShadMenubarTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadMenubarTheme) {
       return false;
     }
 
     final value = (this as ShadMenubarTheme);
 
-    return other is ShadMenubarTheme &&
-        other.radius == value.radius &&
+    return other.radius == value.radius &&
         other.padding == value.padding &&
         other.backgroundColor == value.backgroundColor &&
         other.border == value.border &&

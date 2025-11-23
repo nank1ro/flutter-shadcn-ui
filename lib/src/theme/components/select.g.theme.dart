@@ -119,7 +119,8 @@ mixin _$ShadSelectTheme {
 
     return copyWith(
       popoverReverseDuration: other.popoverReverseDuration,
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       placeholderStyle:
           current.placeholderStyle?.merge(other.placeholderStyle) ??
           other.placeholderStyle,
@@ -145,14 +146,13 @@ mixin _$ShadSelectTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadSelectTheme) {
       return false;
     }
 
     final value = (this as ShadSelectTheme);
 
-    return other is ShadSelectTheme &&
-        other.popoverReverseDuration == value.popoverReverseDuration &&
+    return other.popoverReverseDuration == value.popoverReverseDuration &&
         other.decoration == value.decoration &&
         other.placeholderStyle == value.placeholderStyle &&
         other.minWidth == value.minWidth &&

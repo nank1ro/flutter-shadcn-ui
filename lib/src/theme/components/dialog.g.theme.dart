@@ -210,14 +210,13 @@ mixin _$ShadDialogTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadDialogTheme) {
       return false;
     }
 
     final value = (this as ShadDialogTheme);
 
-    return other is ShadDialogTheme &&
-        other.closeIconData == value.closeIconData &&
+    return other.closeIconData == value.closeIconData &&
         other.closeIconPosition == value.closeIconPosition &&
         other.radius == value.radius &&
         other.backgroundColor == value.backgroundColor &&

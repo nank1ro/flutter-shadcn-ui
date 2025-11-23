@@ -111,14 +111,13 @@ mixin _$ShadTableTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadTableTheme) {
       return false;
     }
 
     final value = (this as ShadTableTheme);
 
-    return other is ShadTableTheme &&
-        other.diagonalDragBehavior == value.diagonalDragBehavior &&
+    return other.diagonalDragBehavior == value.diagonalDragBehavior &&
         other.dragStartBehavior == value.dragStartBehavior &&
         other.keyboardDismissBehavior == value.keyboardDismissBehavior &&
         other.columnBuilder == value.columnBuilder &&

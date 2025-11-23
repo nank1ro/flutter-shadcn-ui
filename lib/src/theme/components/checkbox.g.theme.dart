@@ -75,7 +75,8 @@ mixin _$ShadCheckboxTheme {
       color: other.color,
       size: other.size,
       duration: other.duration,
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       padding: other.padding,
       crossAxisAlignment: other.crossAxisAlignment,
       checkboxPadding: other.checkboxPadding,
@@ -88,14 +89,13 @@ mixin _$ShadCheckboxTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadCheckboxTheme) {
       return false;
     }
 
     final value = (this as ShadCheckboxTheme);
 
-    return other is ShadCheckboxTheme &&
-        other.color == value.color &&
+    return other.color == value.color &&
         other.size == value.size &&
         other.duration == value.duration &&
         other.decoration == value.decoration &&

@@ -82,14 +82,13 @@ mixin _$ShadSeparatorTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadSeparatorTheme) {
       return false;
     }
 
     final value = (this as ShadSeparatorTheme);
 
-    return other is ShadSeparatorTheme &&
-        other.color == value.color &&
+    return other.color == value.color &&
         other.thickness == value.thickness &&
         other.verticalMargin == value.verticalMargin &&
         other.horizontalMargin == value.horizontalMargin &&
