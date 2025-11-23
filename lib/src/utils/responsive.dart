@@ -34,7 +34,7 @@ class ShadBreakpoints {
     return xxl;
   }
 
-  static ShadBreakpoints lerp(
+  static ShadBreakpoints? lerp(
     ShadBreakpoints? a,
     ShadBreakpoints? b,
     double t,

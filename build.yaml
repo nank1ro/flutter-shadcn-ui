@@ -3,4 +3,4 @@ targets:
     builders:
       theme_extensions_builder:
         generate_for:
-          - lib/src/theme/components/**.dart
+          - lib/src/theme/**.dart
