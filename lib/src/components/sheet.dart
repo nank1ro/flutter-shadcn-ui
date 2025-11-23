@@ -134,7 +134,8 @@ enum ShadSheetSide {
   bottom,
 
   /// Sheet slides in from the left.
-  left;
+  left
+  ;
 
   /// Converts the [ShadSheetSide] to an [Alignment].
   Alignment toAlignment() {
