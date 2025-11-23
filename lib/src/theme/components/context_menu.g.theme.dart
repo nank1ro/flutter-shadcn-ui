@@ -163,7 +163,9 @@ mixin _$ShadContextMenuTheme {
       showDelay: other.showDelay,
       height: other.height,
       buttonVariant: other.buttonVariant,
-      itemDecoration: other.itemDecoration,
+      itemDecoration:
+          current.itemDecoration?.merge(other.itemDecoration) ??
+          other.itemDecoration,
       textStyle: current.textStyle?.merge(other.textStyle) ?? other.textStyle,
       trailingTextStyle:
           current.trailingTextStyle?.merge(other.trailingTextStyle) ??
@@ -175,7 +177,8 @@ mixin _$ShadContextMenuTheme {
       closeOnTap: other.closeOnTap,
       effects: other.effects,
       shadows: other.shadows,
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       filter: other.filter,
     );
   }
@@ -186,14 +189,13 @@ mixin _$ShadContextMenuTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadContextMenuTheme) {
       return false;
     }
 
     final value = (this as ShadContextMenuTheme);
 
-    return other is ShadContextMenuTheme &&
-        other.popoverReverseDuration == value.popoverReverseDuration &&
+    return other.popoverReverseDuration == value.popoverReverseDuration &&
         other.constraints == value.constraints &&
         other.padding == value.padding &&
         other.leadingPadding == value.leadingPadding &&

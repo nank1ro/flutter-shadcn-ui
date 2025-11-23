@@ -93,14 +93,13 @@ mixin _$ShadAccordionTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadAccordionTheme) {
       return false;
     }
 
     final value = (this as ShadAccordionTheme);
 
-    return other is ShadAccordionTheme &&
-        other.iconData == value.iconData &&
+    return other.iconData == value.iconData &&
         other.iconEffects == value.iconEffects &&
         other.padding == value.padding &&
         other.underlineTitleOnHover == value.underlineTitleOnHover &&

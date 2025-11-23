@@ -89,7 +89,8 @@ mixin _$ShadRadioTheme {
       color: other.color,
       size: other.size,
       duration: other.duration,
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       padding: other.padding,
       circleSize: other.circleSize,
       axis: other.axis,
@@ -108,14 +109,13 @@ mixin _$ShadRadioTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadRadioTheme) {
       return false;
     }
 
     final value = (this as ShadRadioTheme);
 
-    return other is ShadRadioTheme &&
-        other.color == value.color &&
+    return other.color == value.color &&
         other.size == value.size &&
         other.duration == value.duration &&
         other.decoration == value.decoration &&

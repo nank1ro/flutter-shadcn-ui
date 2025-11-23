@@ -78,14 +78,13 @@ mixin _$ShadBadgeTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadBadgeTheme) {
       return false;
     }
 
     final value = (this as ShadBadgeTheme);
 
-    return other is ShadBadgeTheme &&
-        other.shape == value.shape &&
+    return other.shape == value.shape &&
         other.backgroundColor == value.backgroundColor &&
         other.hoverBackgroundColor == value.hoverBackgroundColor &&
         other.foregroundColor == value.foregroundColor &&

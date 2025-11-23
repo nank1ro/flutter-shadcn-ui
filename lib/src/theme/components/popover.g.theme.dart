@@ -69,7 +69,8 @@ mixin _$ShadPopoverTheme {
       effects: other.effects,
       shadows: other.shadows,
       padding: other.padding,
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       anchor: other.anchor,
       filter: other.filter,
       reverseDuration: other.reverseDuration,
@@ -82,14 +83,13 @@ mixin _$ShadPopoverTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadPopoverTheme) {
       return false;
     }
 
     final value = (this as ShadPopoverTheme);
 
-    return other is ShadPopoverTheme &&
-        other.effects == value.effects &&
+    return other.effects == value.effects &&
         other.shadows == value.shadows &&
         other.padding == value.padding &&
         other.decoration == value.decoration &&

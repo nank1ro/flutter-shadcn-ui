@@ -594,7 +594,7 @@ class ShadTextTheme {
     );
   }
 
-  static ShadTextTheme lerp(
+  static ShadTextTheme? lerp(
     ShadTextTheme? a,
     ShadTextTheme? b,
     double t,

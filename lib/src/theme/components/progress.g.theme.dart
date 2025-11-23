@@ -78,14 +78,13 @@ mixin _$ShadProgressTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadProgressTheme) {
       return false;
     }
 
     final value = (this as ShadProgressTheme);
 
-    return other is ShadProgressTheme &&
-        other.backgroundColor == value.backgroundColor &&
+    return other.backgroundColor == value.backgroundColor &&
         other.color == value.color &&
         other.borderRadius == value.borderRadius &&
         other.innerBorderRadius == value.innerBorderRadius &&

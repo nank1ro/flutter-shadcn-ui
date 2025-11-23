@@ -367,7 +367,8 @@ mixin _$ShadCalendarTheme {
       forwardNavigationButtonIconData: other.forwardNavigationButtonIconData,
       navigationButtonPadding: other.navigationButtonPadding,
       navigationButtonDisabledOpacity: other.navigationButtonDisabledOpacity,
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       spacingBetweenMonths: other.spacingBetweenMonths,
       runSpacingBetweenMonths: other.runSpacingBetweenMonths,
       monthConstraints: other.monthConstraints,
@@ -395,7 +396,9 @@ mixin _$ShadCalendarTheme {
       dayButtonSize: other.dayButtonSize,
       dayButtonOutsideMonthOpacity: other.dayButtonOutsideMonthOpacity,
       dayButtonPadding: other.dayButtonPadding,
-      dayButtonDecoration: other.dayButtonDecoration,
+      dayButtonDecoration:
+          current.dayButtonDecoration?.merge(other.dayButtonDecoration) ??
+          other.dayButtonDecoration,
       selectedDayButtonTextStyle:
           current.selectedDayButtonTextStyle?.merge(
             other.selectedDayButtonTextStyle,
@@ -445,14 +448,13 @@ mixin _$ShadCalendarTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadCalendarTheme) {
       return false;
     }
 
     final value = (this as ShadCalendarTheme);
 
-    return other is ShadCalendarTheme &&
-        other.hideNavigation == value.hideNavigation &&
+    return other.hideNavigation == value.hideNavigation &&
         other.yearSelectorMinWidth == value.yearSelectorMinWidth &&
         other.monthSelectorMinWidth == value.monthSelectorMinWidth &&
         other.yearSelectorPadding == value.yearSelectorPadding &&

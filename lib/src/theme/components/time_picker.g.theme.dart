@@ -163,8 +163,12 @@ mixin _$ShadTimePickerTheme {
           current.labelStyle?.merge(other.labelStyle) ?? other.labelStyle,
       fieldWidth: other.fieldWidth,
       fieldPadding: other.fieldPadding,
-      fieldDecoration: other.fieldDecoration,
-      periodDecoration: other.periodDecoration,
+      fieldDecoration:
+          current.fieldDecoration?.merge(other.fieldDecoration) ??
+          other.fieldDecoration,
+      periodDecoration:
+          current.periodDecoration?.merge(other.periodDecoration) ??
+          other.periodDecoration,
       hourLabel: other.hourLabel,
       minuteLabel: other.minuteLabel,
       secondLabel: other.secondLabel,
@@ -182,14 +186,13 @@ mixin _$ShadTimePickerTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadTimePickerTheme) {
       return false;
     }
 
     final value = (this as ShadTimePickerTheme);
 
-    return other is ShadTimePickerTheme &&
-        other.axis == value.axis &&
+    return other.axis == value.axis &&
         other.spacing == value.spacing &&
         other.runSpacing == value.runSpacing &&
         other.jumpToNextFieldWhenFilled == value.jumpToNextFieldWhenFilled &&

@@ -135,14 +135,13 @@ mixin _$ShadSliderTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadSliderTheme) {
       return false;
     }
 
     final value = (this as ShadSliderTheme);
 
-    return other is ShadSliderTheme &&
-        other.min == value.min &&
+    return other.min == value.min &&
         other.max == value.max &&
         other.mouseCursor == value.mouseCursor &&
         other.disabledMouseCursor == value.disabledMouseCursor &&

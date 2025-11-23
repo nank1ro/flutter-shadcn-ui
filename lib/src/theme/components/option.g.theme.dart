@@ -98,14 +98,13 @@ mixin _$ShadOptionTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadOptionTheme) {
       return false;
     }
 
     final value = (this as ShadOptionTheme);
 
-    return other is ShadOptionTheme &&
-        other.hoveredBackgroundColor == value.hoveredBackgroundColor &&
+    return other.hoveredBackgroundColor == value.hoveredBackgroundColor &&
         other.padding == value.padding &&
         other.radius == value.radius &&
         other.backgroundColor == value.backgroundColor &&

@@ -115,7 +115,8 @@ mixin _$ShadInputTheme {
     }
 
     return copyWith(
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       padding: other.padding,
       style: current.style?.merge(other.style) ?? other.style,
       cursorColor: other.cursorColor,
@@ -144,14 +145,13 @@ mixin _$ShadInputTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadInputTheme) {
       return false;
     }
 
     final value = (this as ShadInputTheme);
 
-    return other is ShadInputTheme &&
-        other.decoration == value.decoration &&
+    return other.decoration == value.decoration &&
         other.padding == value.padding &&
         other.style == value.style &&
         other.cursorColor == value.cursorColor &&

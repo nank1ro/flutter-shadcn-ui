@@ -82,14 +82,13 @@ mixin _$ShadDefaultKeyboardToolbarTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadDefaultKeyboardToolbarTheme) {
       return false;
     }
 
     final value = (this as ShadDefaultKeyboardToolbarTheme);
 
-    return other is ShadDefaultKeyboardToolbarTheme &&
-        other.backgroundColor == value.backgroundColor &&
+    return other.backgroundColor == value.backgroundColor &&
         other.doneText == value.doneText &&
         other.showPreviousButton == value.showPreviousButton &&
         other.showNextButton == value.showNextButton &&

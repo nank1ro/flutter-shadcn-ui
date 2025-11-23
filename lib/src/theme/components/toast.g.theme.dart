@@ -158,14 +158,13 @@ mixin _$ShadToastTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadToastTheme) {
       return false;
     }
 
     final value = (this as ShadToastTheme);
 
-    return other is ShadToastTheme &&
-        other.backgroundColor == value.backgroundColor &&
+    return other.backgroundColor == value.backgroundColor &&
         other.closeIconData == value.closeIconData &&
         other.alignment == value.alignment &&
         other.offset == value.offset &&

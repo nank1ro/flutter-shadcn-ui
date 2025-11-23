@@ -84,7 +84,8 @@ mixin _$ShadTooltipTheme {
       effects: other.effects,
       anchor: other.anchor,
       padding: other.padding,
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       hoverStrategies: other.hoverStrategies,
       longPressDuration: other.longPressDuration,
       duration: other.duration,
@@ -98,14 +99,13 @@ mixin _$ShadTooltipTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadTooltipTheme) {
       return false;
     }
 
     final value = (this as ShadTooltipTheme);
 
-    return other is ShadTooltipTheme &&
-        other.waitDuration == value.waitDuration &&
+    return other.waitDuration == value.waitDuration &&
         other.showDuration == value.showDuration &&
         other.effects == value.effects &&
         other.anchor == value.anchor &&

@@ -197,14 +197,13 @@ mixin _$ShadDecoration {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadDecoration) {
       return false;
     }
 
     final value = (this as ShadDecoration);
 
-    return other is ShadDecoration &&
-        other.labelStyle == value.labelStyle &&
+    return other.labelStyle == value.labelStyle &&
         other.errorLabelStyle == value.errorLabelStyle &&
         other.border == value.border &&
         other.focusedBorder == value.focusedBorder &&

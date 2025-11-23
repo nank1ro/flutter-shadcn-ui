@@ -110,7 +110,9 @@ mixin _$ShadResizableTheme {
       handleIconData: other.handleIconData,
       dividerSize: other.dividerSize,
       resetOnDoubleTap: other.resetOnDoubleTap,
-      handleDecoration: other.handleDecoration,
+      handleDecoration:
+          current.handleDecoration?.merge(other.handleDecoration) ??
+          other.handleDecoration,
       handlePadding: other.handlePadding,
       handleSize: other.handleSize,
       dividerThickness: other.dividerThickness,
@@ -124,14 +126,13 @@ mixin _$ShadResizableTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadResizableTheme) {
       return false;
     }
 
     final value = (this as ShadResizableTheme);
 
-    return other is ShadResizableTheme &&
-        other.mainAxisAlignment == value.mainAxisAlignment &&
+    return other.mainAxisAlignment == value.mainAxisAlignment &&
         other.crossAxisAlignment == value.crossAxisAlignment &&
         other.mainAxisSize == value.mainAxisSize &&
         other.textDirection == value.textDirection &&

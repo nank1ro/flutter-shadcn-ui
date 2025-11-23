@@ -145,7 +145,8 @@ mixin _$ShadButtonTheme {
     return copyWith(
       cursor: other.cursor,
       size: other.size,
-      sizesTheme: other.sizesTheme,
+      sizesTheme:
+          current.sizesTheme?.merge(other.sizesTheme) ?? other.sizesTheme,
       backgroundColor: other.backgroundColor,
       hoverBackgroundColor: other.hoverBackgroundColor,
       foregroundColor: other.foregroundColor,
@@ -156,7 +157,8 @@ mixin _$ShadButtonTheme {
       gradient: other.gradient,
       textDecoration: other.textDecoration,
       hoverTextDecoration: other.hoverTextDecoration,
-      decoration: other.decoration,
+      decoration:
+          current.decoration?.merge(other.decoration) ?? other.decoration,
       width: other.width,
       height: other.height,
       longPressDuration: other.longPressDuration,
@@ -176,14 +178,13 @@ mixin _$ShadButtonTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadButtonTheme) {
       return false;
     }
 
     final value = (this as ShadButtonTheme);
 
-    return other is ShadButtonTheme &&
-        other.cursor == value.cursor &&
+    return other.cursor == value.cursor &&
         other.size == value.size &&
         other.sizesTheme == value.sizesTheme &&
         other.backgroundColor == value.backgroundColor &&

@@ -70,14 +70,13 @@ mixin _$ShadAvatarTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadAvatarTheme) {
       return false;
     }
 
     final value = (this as ShadAvatarTheme);
 
-    return other is ShadAvatarTheme &&
-        other.size == value.size &&
+    return other.size == value.size &&
         other.shape == value.shape &&
         other.backgroundColor == value.backgroundColor &&
         other.fit == value.fit;

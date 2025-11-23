@@ -236,14 +236,13 @@ mixin _$ShadSheetTheme {
       return true;
     }
 
-    if (other.runtimeType != runtimeType) {
+    if (other is! ShadSheetTheme) {
       return false;
     }
 
     final value = (this as ShadSheetTheme);
 
-    return other is ShadSheetTheme &&
-        other.constraints == value.constraints &&
+    return other.constraints == value.constraints &&
         other.expandCrossSide == value.expandCrossSide &&
         other.closeIcon == value.closeIcon &&
         other.closeIconData == value.closeIconData &&
