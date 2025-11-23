@@ -330,7 +330,7 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
   const ShadBreadcrumbDropdown({
     super.key,
     required this.child,
-    required this.children,
+    required this.items,
     this.backgroundColor,
     this.padding,
     this.anchor,
@@ -343,7 +343,7 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
   final Widget child;
 
   /// The list of dropdown menu items to display.
-  final List<ShadBreadcrumbDropMenuItem> children;
+  final List<ShadBreadcrumbDropMenuItem> items;
 
   /// {@template ShadBreadcrumb.dropdownMenuBackgroundColor}
   /// The color for dropdown menu. defaults to
@@ -442,7 +442,7 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: widget.children,
+          children: widget.items,
         ),
       ),
       child: ShadBreadcrumbLink(

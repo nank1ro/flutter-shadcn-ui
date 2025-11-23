@@ -276,7 +276,7 @@ void main() {
           home: Scaffold(
             body: ShadBreadcrumbDropdown(
               child: Text('Dropdown'),
-              children: [
+              items: [
                 ShadBreadcrumbDropMenuItem(child: Text('Item 1')),
               ],
             ),
@@ -293,7 +293,7 @@ void main() {
           home: Scaffold(
             body: ShadBreadcrumbDropdown(
               child: Text('Dropdown'),
-              children: [
+              items: [
                 ShadBreadcrumbDropMenuItem(child: Text('Item 1')),
               ],
             ),
@@ -310,7 +310,7 @@ void main() {
           home: Scaffold(
             body: ShadBreadcrumbDropdown(
               child: Text('Dropdown'),
-              children: [
+              items: [
                 ShadBreadcrumbDropMenuItem(child: Text('Item 1')),
                 ShadBreadcrumbDropMenuItem(child: Text('Item 2')),
               ],
@@ -338,7 +338,7 @@ void main() {
           home: Scaffold(
             body: ShadBreadcrumbDropdown(
               child: Text('Dropdown'),
-              children: [
+              items: [
                 ShadBreadcrumbDropMenuItem(child: Text('Item 1')),
               ],
             ),
@@ -363,7 +363,7 @@ void main() {
           home: Scaffold(
             body: ShadBreadcrumbDropdown(
               child: Text('More'),
-              children: [
+              items: [
                 ShadBreadcrumbDropMenuItem(child: Text('Components')),
                 ShadBreadcrumbDropMenuItem(child: Text('Documentation')),
                 ShadBreadcrumbDropMenuItem(child: Text('Themes')),
@@ -395,7 +395,7 @@ void main() {
           home: const Scaffold(
             body: ShadBreadcrumbDropdown(
               child: Text('Dropdown'),
-              children: [
+              items: [
                 ShadBreadcrumbDropMenuItem(child: Text('Item 1')),
               ],
             ),
@@ -413,7 +413,7 @@ void main() {
           home: Scaffold(
             body: ShadBreadcrumbDropdown(
               child: Text('Dropdown'),
-              children: [
+              items: [
                 ShadBreadcrumbDropMenuItem(child: Text('Item 1')),
               ],
             ),
@@ -564,7 +564,7 @@ void main() {
           home: Scaffold(
             body: ShadBreadcrumbDropdown(
               child: const Text('Select'),
-              children: [
+              items: [
                 ShadBreadcrumbDropMenuItem(
                   onPressed: () => selectedItem = 'Item 1',
                   child: const Text('Item 1'),
@@ -596,7 +596,7 @@ void main() {
           home: Scaffold(
             body: ShadBreadcrumbDropdown(
               child: Text('Empty'),
-              children: [],
+              items: [],
             ),
           ),
         ),
