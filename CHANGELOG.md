@@ -1,3 +1,7 @@
+## 0.39.12
+
+- **FIX**: `weekNumbersHeaderTextStyle` in `ShadCalendar` not having a default color.
+
 ## 0.39.11
 
 - **FIX**: `ShadAvatar` with null source.

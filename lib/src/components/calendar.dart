@@ -11,6 +11,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/extensions/date_time.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 /// Encapsulates a start and end [DateTime] that represent the range of dates.
 ///
@@ -1291,9 +1292,10 @@ class _ShadCalendarState extends State<ShadCalendar> {
         '#';
 
     final effectiveWeekNumbersHeaderTextStyle =
-        widget.weekNumbersHeaderTextStyle ??
-        theme.calendarTheme.weekNumbersHeaderTextStyle ??
-        theme.textTheme.muted.copyWith(fontSize: 12.8);
+        (widget.weekNumbersHeaderTextStyle ??
+                theme.calendarTheme.weekNumbersHeaderTextStyle ??
+                theme.textTheme.muted.copyWith(fontSize: 12.8))
+            .fallback(color: theme.colorScheme.mutedForeground);
 
     final effectiveGridMainAxisSpacing =
         widget.gridMainAxisSpacing ??
