@@ -249,73 +249,76 @@ mixin _$ShadThemeData {
     ShadTextareaTheme? textareaTheme,
     ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
   }) {
-    final a = (this as ShadThemeData);
+    final _this = (this as ShadThemeData);
 
     return ShadThemeData(
-      colorScheme: colorScheme ?? a.colorScheme,
-      brightness: brightness ?? a.brightness,
-      primaryButtonTheme: primaryButtonTheme ?? a.primaryButtonTheme,
-      secondaryButtonTheme: secondaryButtonTheme ?? a.secondaryButtonTheme,
+      colorScheme: colorScheme ?? _this.colorScheme,
+      brightness: brightness ?? _this.brightness,
+      primaryButtonTheme: primaryButtonTheme ?? _this.primaryButtonTheme,
+      secondaryButtonTheme: secondaryButtonTheme ?? _this.secondaryButtonTheme,
       destructiveButtonTheme:
-          destructiveButtonTheme ?? a.destructiveButtonTheme,
-      outlineButtonTheme: outlineButtonTheme ?? a.outlineButtonTheme,
-      ghostButtonTheme: ghostButtonTheme ?? a.ghostButtonTheme,
-      linkButtonTheme: linkButtonTheme ?? a.linkButtonTheme,
-      primaryBadgeTheme: primaryBadgeTheme ?? a.primaryBadgeTheme,
-      secondaryBadgeTheme: secondaryBadgeTheme ?? a.secondaryBadgeTheme,
-      destructiveBadgeTheme: destructiveBadgeTheme ?? a.destructiveBadgeTheme,
-      outlineBadgeTheme: outlineBadgeTheme ?? a.outlineBadgeTheme,
-      radius: radius ?? a.radius,
-      avatarTheme: avatarTheme ?? a.avatarTheme,
-      buttonSizesTheme: buttonSizesTheme ?? a.buttonSizesTheme,
-      tooltipTheme: tooltipTheme ?? a.tooltipTheme,
-      popoverTheme: popoverTheme ?? a.popoverTheme,
-      decoration: decoration ?? a.decoration,
-      textTheme: textTheme ?? a.textTheme,
-      disabledOpacity: disabledOpacity ?? a.disabledOpacity,
-      selectTheme: selectTheme ?? a.selectTheme,
-      optionTheme: optionTheme ?? a.optionTheme,
-      cardTheme: cardTheme ?? a.cardTheme,
-      switchTheme: switchTheme ?? a.switchTheme,
-      checkboxTheme: checkboxTheme ?? a.checkboxTheme,
-      inputTheme: inputTheme ?? a.inputTheme,
-      radioTheme: radioTheme ?? a.radioTheme,
-      primaryToastTheme: primaryToastTheme ?? a.primaryToastTheme,
-      destructiveToastTheme: destructiveToastTheme ?? a.destructiveToastTheme,
-      breakpoints: breakpoints ?? a.breakpoints,
-      primaryAlertTheme: primaryAlertTheme ?? a.primaryAlertTheme,
-      destructiveAlertTheme: destructiveAlertTheme ?? a.destructiveAlertTheme,
-      primaryDialogTheme: primaryDialogTheme ?? a.primaryDialogTheme,
-      alertDialogTheme: alertDialogTheme ?? a.alertDialogTheme,
-      sliderTheme: sliderTheme ?? a.sliderTheme,
-      sheetTheme: sheetTheme ?? a.sheetTheme,
-      progressTheme: progressTheme ?? a.progressTheme,
-      accordionTheme: accordionTheme ?? a.accordionTheme,
-      tableTheme: tableTheme ?? a.tableTheme,
-      resizableTheme: resizableTheme ?? a.resizableTheme,
-      hoverStrategies: hoverStrategies ?? a.hoverStrategies,
+          destructiveButtonTheme ?? _this.destructiveButtonTheme,
+      outlineButtonTheme: outlineButtonTheme ?? _this.outlineButtonTheme,
+      ghostButtonTheme: ghostButtonTheme ?? _this.ghostButtonTheme,
+      linkButtonTheme: linkButtonTheme ?? _this.linkButtonTheme,
+      primaryBadgeTheme: primaryBadgeTheme ?? _this.primaryBadgeTheme,
+      secondaryBadgeTheme: secondaryBadgeTheme ?? _this.secondaryBadgeTheme,
+      destructiveBadgeTheme:
+          destructiveBadgeTheme ?? _this.destructiveBadgeTheme,
+      outlineBadgeTheme: outlineBadgeTheme ?? _this.outlineBadgeTheme,
+      radius: radius ?? _this.radius,
+      avatarTheme: avatarTheme ?? _this.avatarTheme,
+      buttonSizesTheme: buttonSizesTheme ?? _this.buttonSizesTheme,
+      tooltipTheme: tooltipTheme ?? _this.tooltipTheme,
+      popoverTheme: popoverTheme ?? _this.popoverTheme,
+      decoration: decoration ?? _this.decoration,
+      textTheme: textTheme ?? _this.textTheme,
+      disabledOpacity: disabledOpacity ?? _this.disabledOpacity,
+      selectTheme: selectTheme ?? _this.selectTheme,
+      optionTheme: optionTheme ?? _this.optionTheme,
+      cardTheme: cardTheme ?? _this.cardTheme,
+      switchTheme: switchTheme ?? _this.switchTheme,
+      checkboxTheme: checkboxTheme ?? _this.checkboxTheme,
+      inputTheme: inputTheme ?? _this.inputTheme,
+      radioTheme: radioTheme ?? _this.radioTheme,
+      primaryToastTheme: primaryToastTheme ?? _this.primaryToastTheme,
+      destructiveToastTheme:
+          destructiveToastTheme ?? _this.destructiveToastTheme,
+      breakpoints: breakpoints ?? _this.breakpoints,
+      primaryAlertTheme: primaryAlertTheme ?? _this.primaryAlertTheme,
+      destructiveAlertTheme:
+          destructiveAlertTheme ?? _this.destructiveAlertTheme,
+      primaryDialogTheme: primaryDialogTheme ?? _this.primaryDialogTheme,
+      alertDialogTheme: alertDialogTheme ?? _this.alertDialogTheme,
+      sliderTheme: sliderTheme ?? _this.sliderTheme,
+      sheetTheme: sheetTheme ?? _this.sheetTheme,
+      progressTheme: progressTheme ?? _this.progressTheme,
+      accordionTheme: accordionTheme ?? _this.accordionTheme,
+      tableTheme: tableTheme ?? _this.tableTheme,
+      resizableTheme: resizableTheme ?? _this.resizableTheme,
+      hoverStrategies: hoverStrategies ?? _this.hoverStrategies,
       disableSecondaryBorder:
-          disableSecondaryBorder ?? a.disableSecondaryBorder,
-      tabsTheme: tabsTheme ?? a.tabsTheme,
-      contextMenuTheme: contextMenuTheme ?? a.contextMenuTheme,
-      calendarTheme: calendarTheme ?? a.calendarTheme,
-      datePickerTheme: datePickerTheme ?? a.datePickerTheme,
-      timePickerTheme: timePickerTheme ?? a.timePickerTheme,
-      inputOTPTheme: inputOTPTheme ?? a.inputOTPTheme,
-      menubarTheme: menubarTheme ?? a.menubarTheme,
-      separatorTheme: separatorTheme ?? a.separatorTheme,
-      sonnerTheme: sonnerTheme ?? a.sonnerTheme,
-      textareaTheme: textareaTheme ?? a.textareaTheme,
+          disableSecondaryBorder ?? _this.disableSecondaryBorder,
+      tabsTheme: tabsTheme ?? _this.tabsTheme,
+      contextMenuTheme: contextMenuTheme ?? _this.contextMenuTheme,
+      calendarTheme: calendarTheme ?? _this.calendarTheme,
+      datePickerTheme: datePickerTheme ?? _this.datePickerTheme,
+      timePickerTheme: timePickerTheme ?? _this.timePickerTheme,
+      inputOTPTheme: inputOTPTheme ?? _this.inputOTPTheme,
+      menubarTheme: menubarTheme ?? _this.menubarTheme,
+      separatorTheme: separatorTheme ?? _this.separatorTheme,
+      sonnerTheme: sonnerTheme ?? _this.sonnerTheme,
+      textareaTheme: textareaTheme ?? _this.textareaTheme,
       defaultKeyboardToolbarTheme:
-          defaultKeyboardToolbarTheme ?? a.defaultKeyboardToolbarTheme,
+          defaultKeyboardToolbarTheme ?? _this.defaultKeyboardToolbarTheme,
     );
   }
 
   ShadThemeData merge(ShadThemeData? other) {
-    final current = (this as ShadThemeData);
+    final _this = (this as ShadThemeData);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -325,85 +328,57 @@ mixin _$ShadThemeData {
     return copyWith(
       colorScheme: other.colorScheme,
       brightness: other.brightness,
-      primaryButtonTheme: current.primaryButtonTheme.merge(
-        other.primaryButtonTheme,
-      ),
-      secondaryButtonTheme: current.secondaryButtonTheme.merge(
-        other.secondaryButtonTheme,
-      ),
-      destructiveButtonTheme: current.destructiveButtonTheme.merge(
-        other.destructiveButtonTheme,
-      ),
-      outlineButtonTheme: current.outlineButtonTheme.merge(
-        other.outlineButtonTheme,
-      ),
-      ghostButtonTheme: current.ghostButtonTheme.merge(other.ghostButtonTheme),
-      linkButtonTheme: current.linkButtonTheme.merge(other.linkButtonTheme),
-      primaryBadgeTheme: current.primaryBadgeTheme.merge(
-        other.primaryBadgeTheme,
-      ),
-      secondaryBadgeTheme: current.secondaryBadgeTheme.merge(
-        other.secondaryBadgeTheme,
-      ),
-      destructiveBadgeTheme: current.destructiveBadgeTheme.merge(
-        other.destructiveBadgeTheme,
-      ),
-      outlineBadgeTheme: current.outlineBadgeTheme.merge(
-        other.outlineBadgeTheme,
-      ),
+      primaryButtonTheme: other.primaryButtonTheme,
+      secondaryButtonTheme: other.secondaryButtonTheme,
+      destructiveButtonTheme: other.destructiveButtonTheme,
+      outlineButtonTheme: other.outlineButtonTheme,
+      ghostButtonTheme: other.ghostButtonTheme,
+      linkButtonTheme: other.linkButtonTheme,
+      primaryBadgeTheme: other.primaryBadgeTheme,
+      secondaryBadgeTheme: other.secondaryBadgeTheme,
+      destructiveBadgeTheme: other.destructiveBadgeTheme,
+      outlineBadgeTheme: other.outlineBadgeTheme,
       radius: other.radius,
-      avatarTheme: current.avatarTheme.merge(other.avatarTheme),
-      buttonSizesTheme: current.buttonSizesTheme.merge(other.buttonSizesTheme),
-      tooltipTheme: current.tooltipTheme.merge(other.tooltipTheme),
-      popoverTheme: current.popoverTheme.merge(other.popoverTheme),
-      decoration: current.decoration.merge(other.decoration),
-      textTheme: current.textTheme.merge(other.textTheme),
+      avatarTheme: other.avatarTheme,
+      buttonSizesTheme: other.buttonSizesTheme,
+      tooltipTheme: other.tooltipTheme,
+      popoverTheme: other.popoverTheme,
+      decoration: other.decoration,
+      textTheme: _this.textTheme.merge(other.textTheme),
       disabledOpacity: other.disabledOpacity,
-      selectTheme: current.selectTheme.merge(other.selectTheme),
-      optionTheme: current.optionTheme.merge(other.optionTheme),
-      cardTheme: current.cardTheme.merge(other.cardTheme),
-      switchTheme: current.switchTheme.merge(other.switchTheme),
-      checkboxTheme: current.checkboxTheme.merge(other.checkboxTheme),
-      inputTheme: current.inputTheme.merge(other.inputTheme),
-      radioTheme: current.radioTheme.merge(other.radioTheme),
-      primaryToastTheme: current.primaryToastTheme.merge(
-        other.primaryToastTheme,
-      ),
-      destructiveToastTheme: current.destructiveToastTheme.merge(
-        other.destructiveToastTheme,
-      ),
+      selectTheme: other.selectTheme,
+      optionTheme: other.optionTheme,
+      cardTheme: other.cardTheme,
+      switchTheme: other.switchTheme,
+      checkboxTheme: other.checkboxTheme,
+      inputTheme: other.inputTheme,
+      radioTheme: other.radioTheme,
+      primaryToastTheme: other.primaryToastTheme,
+      destructiveToastTheme: other.destructiveToastTheme,
       breakpoints: other.breakpoints,
-      primaryAlertTheme: current.primaryAlertTheme.merge(
-        other.primaryAlertTheme,
-      ),
-      destructiveAlertTheme: current.destructiveAlertTheme.merge(
-        other.destructiveAlertTheme,
-      ),
-      primaryDialogTheme: current.primaryDialogTheme.merge(
-        other.primaryDialogTheme,
-      ),
-      alertDialogTheme: current.alertDialogTheme.merge(other.alertDialogTheme),
-      sliderTheme: current.sliderTheme.merge(other.sliderTheme),
-      sheetTheme: current.sheetTheme.merge(other.sheetTheme),
-      progressTheme: current.progressTheme.merge(other.progressTheme),
-      accordionTheme: current.accordionTheme.merge(other.accordionTheme),
-      tableTheme: current.tableTheme.merge(other.tableTheme),
-      resizableTheme: current.resizableTheme.merge(other.resizableTheme),
+      primaryAlertTheme: other.primaryAlertTheme,
+      destructiveAlertTheme: other.destructiveAlertTheme,
+      primaryDialogTheme: other.primaryDialogTheme,
+      alertDialogTheme: other.alertDialogTheme,
+      sliderTheme: other.sliderTheme,
+      sheetTheme: other.sheetTheme,
+      progressTheme: other.progressTheme,
+      accordionTheme: other.accordionTheme,
+      tableTheme: other.tableTheme,
+      resizableTheme: other.resizableTheme,
       hoverStrategies: other.hoverStrategies,
       disableSecondaryBorder: other.disableSecondaryBorder,
-      tabsTheme: current.tabsTheme.merge(other.tabsTheme),
-      contextMenuTheme: current.contextMenuTheme.merge(other.contextMenuTheme),
-      calendarTheme: current.calendarTheme.merge(other.calendarTheme),
-      datePickerTheme: current.datePickerTheme.merge(other.datePickerTheme),
-      timePickerTheme: current.timePickerTheme.merge(other.timePickerTheme),
-      inputOTPTheme: current.inputOTPTheme.merge(other.inputOTPTheme),
-      menubarTheme: current.menubarTheme.merge(other.menubarTheme),
-      separatorTheme: current.separatorTheme.merge(other.separatorTheme),
-      sonnerTheme: current.sonnerTheme.merge(other.sonnerTheme),
-      textareaTheme: current.textareaTheme.merge(other.textareaTheme),
-      defaultKeyboardToolbarTheme: current.defaultKeyboardToolbarTheme.merge(
-        other.defaultKeyboardToolbarTheme,
-      ),
+      tabsTheme: other.tabsTheme,
+      contextMenuTheme: other.contextMenuTheme,
+      calendarTheme: other.calendarTheme,
+      datePickerTheme: other.datePickerTheme,
+      timePickerTheme: other.timePickerTheme,
+      inputOTPTheme: other.inputOTPTheme,
+      menubarTheme: other.menubarTheme,
+      separatorTheme: other.separatorTheme,
+      sonnerTheme: other.sonnerTheme,
+      textareaTheme: other.textareaTheme,
+      defaultKeyboardToolbarTheme: other.defaultKeyboardToolbarTheme,
     );
   }
 
@@ -413,126 +388,127 @@ mixin _$ShadThemeData {
       return true;
     }
 
-    if (other is! ShadThemeData) {
+    if (other.runtimeType != runtimeType) {
       return false;
     }
 
-    final value = (this as ShadThemeData);
+    final _this = (this as ShadThemeData);
+    final _other = (other as ShadThemeData);
 
-    return other.colorScheme == value.colorScheme &&
-        other.brightness == value.brightness &&
-        other.primaryButtonTheme == value.primaryButtonTheme &&
-        other.secondaryButtonTheme == value.secondaryButtonTheme &&
-        other.destructiveButtonTheme == value.destructiveButtonTheme &&
-        other.outlineButtonTheme == value.outlineButtonTheme &&
-        other.ghostButtonTheme == value.ghostButtonTheme &&
-        other.linkButtonTheme == value.linkButtonTheme &&
-        other.primaryBadgeTheme == value.primaryBadgeTheme &&
-        other.secondaryBadgeTheme == value.secondaryBadgeTheme &&
-        other.destructiveBadgeTheme == value.destructiveBadgeTheme &&
-        other.outlineBadgeTheme == value.outlineBadgeTheme &&
-        other.radius == value.radius &&
-        other.avatarTheme == value.avatarTheme &&
-        other.buttonSizesTheme == value.buttonSizesTheme &&
-        other.tooltipTheme == value.tooltipTheme &&
-        other.popoverTheme == value.popoverTheme &&
-        other.decoration == value.decoration &&
-        other.textTheme == value.textTheme &&
-        other.disabledOpacity == value.disabledOpacity &&
-        other.selectTheme == value.selectTheme &&
-        other.optionTheme == value.optionTheme &&
-        other.cardTheme == value.cardTheme &&
-        other.switchTheme == value.switchTheme &&
-        other.checkboxTheme == value.checkboxTheme &&
-        other.inputTheme == value.inputTheme &&
-        other.radioTheme == value.radioTheme &&
-        other.primaryToastTheme == value.primaryToastTheme &&
-        other.destructiveToastTheme == value.destructiveToastTheme &&
-        other.breakpoints == value.breakpoints &&
-        other.primaryAlertTheme == value.primaryAlertTheme &&
-        other.destructiveAlertTheme == value.destructiveAlertTheme &&
-        other.primaryDialogTheme == value.primaryDialogTheme &&
-        other.alertDialogTheme == value.alertDialogTheme &&
-        other.sliderTheme == value.sliderTheme &&
-        other.sheetTheme == value.sheetTheme &&
-        other.progressTheme == value.progressTheme &&
-        other.accordionTheme == value.accordionTheme &&
-        other.tableTheme == value.tableTheme &&
-        other.resizableTheme == value.resizableTheme &&
-        other.hoverStrategies == value.hoverStrategies &&
-        other.disableSecondaryBorder == value.disableSecondaryBorder &&
-        other.tabsTheme == value.tabsTheme &&
-        other.contextMenuTheme == value.contextMenuTheme &&
-        other.calendarTheme == value.calendarTheme &&
-        other.datePickerTheme == value.datePickerTheme &&
-        other.timePickerTheme == value.timePickerTheme &&
-        other.inputOTPTheme == value.inputOTPTheme &&
-        other.menubarTheme == value.menubarTheme &&
-        other.separatorTheme == value.separatorTheme &&
-        other.sonnerTheme == value.sonnerTheme &&
-        other.textareaTheme == value.textareaTheme &&
-        other.defaultKeyboardToolbarTheme == value.defaultKeyboardToolbarTheme;
+    return _other.colorScheme == _this.colorScheme &&
+        _other.brightness == _this.brightness &&
+        _other.primaryButtonTheme == _this.primaryButtonTheme &&
+        _other.secondaryButtonTheme == _this.secondaryButtonTheme &&
+        _other.destructiveButtonTheme == _this.destructiveButtonTheme &&
+        _other.outlineButtonTheme == _this.outlineButtonTheme &&
+        _other.ghostButtonTheme == _this.ghostButtonTheme &&
+        _other.linkButtonTheme == _this.linkButtonTheme &&
+        _other.primaryBadgeTheme == _this.primaryBadgeTheme &&
+        _other.secondaryBadgeTheme == _this.secondaryBadgeTheme &&
+        _other.destructiveBadgeTheme == _this.destructiveBadgeTheme &&
+        _other.outlineBadgeTheme == _this.outlineBadgeTheme &&
+        _other.radius == _this.radius &&
+        _other.avatarTheme == _this.avatarTheme &&
+        _other.buttonSizesTheme == _this.buttonSizesTheme &&
+        _other.tooltipTheme == _this.tooltipTheme &&
+        _other.popoverTheme == _this.popoverTheme &&
+        _other.decoration == _this.decoration &&
+        _other.textTheme == _this.textTheme &&
+        _other.disabledOpacity == _this.disabledOpacity &&
+        _other.selectTheme == _this.selectTheme &&
+        _other.optionTheme == _this.optionTheme &&
+        _other.cardTheme == _this.cardTheme &&
+        _other.switchTheme == _this.switchTheme &&
+        _other.checkboxTheme == _this.checkboxTheme &&
+        _other.inputTheme == _this.inputTheme &&
+        _other.radioTheme == _this.radioTheme &&
+        _other.primaryToastTheme == _this.primaryToastTheme &&
+        _other.destructiveToastTheme == _this.destructiveToastTheme &&
+        _other.breakpoints == _this.breakpoints &&
+        _other.primaryAlertTheme == _this.primaryAlertTheme &&
+        _other.destructiveAlertTheme == _this.destructiveAlertTheme &&
+        _other.primaryDialogTheme == _this.primaryDialogTheme &&
+        _other.alertDialogTheme == _this.alertDialogTheme &&
+        _other.sliderTheme == _this.sliderTheme &&
+        _other.sheetTheme == _this.sheetTheme &&
+        _other.progressTheme == _this.progressTheme &&
+        _other.accordionTheme == _this.accordionTheme &&
+        _other.tableTheme == _this.tableTheme &&
+        _other.resizableTheme == _this.resizableTheme &&
+        _other.hoverStrategies == _this.hoverStrategies &&
+        _other.disableSecondaryBorder == _this.disableSecondaryBorder &&
+        _other.tabsTheme == _this.tabsTheme &&
+        _other.contextMenuTheme == _this.contextMenuTheme &&
+        _other.calendarTheme == _this.calendarTheme &&
+        _other.datePickerTheme == _this.datePickerTheme &&
+        _other.timePickerTheme == _this.timePickerTheme &&
+        _other.inputOTPTheme == _this.inputOTPTheme &&
+        _other.menubarTheme == _this.menubarTheme &&
+        _other.separatorTheme == _this.separatorTheme &&
+        _other.sonnerTheme == _this.sonnerTheme &&
+        _other.textareaTheme == _this.textareaTheme &&
+        _other.defaultKeyboardToolbarTheme == _this.defaultKeyboardToolbarTheme;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadThemeData);
+    final _this = (this as ShadThemeData);
 
     return Object.hashAll([
       runtimeType,
-      value.colorScheme,
-      value.brightness,
-      value.primaryButtonTheme,
-      value.secondaryButtonTheme,
-      value.destructiveButtonTheme,
-      value.outlineButtonTheme,
-      value.ghostButtonTheme,
-      value.linkButtonTheme,
-      value.primaryBadgeTheme,
-      value.secondaryBadgeTheme,
-      value.destructiveBadgeTheme,
-      value.outlineBadgeTheme,
-      value.radius,
-      value.avatarTheme,
-      value.buttonSizesTheme,
-      value.tooltipTheme,
-      value.popoverTheme,
-      value.decoration,
-      value.textTheme,
-      value.disabledOpacity,
-      value.selectTheme,
-      value.optionTheme,
-      value.cardTheme,
-      value.switchTheme,
-      value.checkboxTheme,
-      value.inputTheme,
-      value.radioTheme,
-      value.primaryToastTheme,
-      value.destructiveToastTheme,
-      value.breakpoints,
-      value.primaryAlertTheme,
-      value.destructiveAlertTheme,
-      value.primaryDialogTheme,
-      value.alertDialogTheme,
-      value.sliderTheme,
-      value.sheetTheme,
-      value.progressTheme,
-      value.accordionTheme,
-      value.tableTheme,
-      value.resizableTheme,
-      value.hoverStrategies,
-      value.disableSecondaryBorder,
-      value.tabsTheme,
-      value.contextMenuTheme,
-      value.calendarTheme,
-      value.datePickerTheme,
-      value.timePickerTheme,
-      value.inputOTPTheme,
-      value.menubarTheme,
-      value.separatorTheme,
-      value.sonnerTheme,
-      value.textareaTheme,
-      value.defaultKeyboardToolbarTheme,
+      _this.colorScheme,
+      _this.brightness,
+      _this.primaryButtonTheme,
+      _this.secondaryButtonTheme,
+      _this.destructiveButtonTheme,
+      _this.outlineButtonTheme,
+      _this.ghostButtonTheme,
+      _this.linkButtonTheme,
+      _this.primaryBadgeTheme,
+      _this.secondaryBadgeTheme,
+      _this.destructiveBadgeTheme,
+      _this.outlineBadgeTheme,
+      _this.radius,
+      _this.avatarTheme,
+      _this.buttonSizesTheme,
+      _this.tooltipTheme,
+      _this.popoverTheme,
+      _this.decoration,
+      _this.textTheme,
+      _this.disabledOpacity,
+      _this.selectTheme,
+      _this.optionTheme,
+      _this.cardTheme,
+      _this.switchTheme,
+      _this.checkboxTheme,
+      _this.inputTheme,
+      _this.radioTheme,
+      _this.primaryToastTheme,
+      _this.destructiveToastTheme,
+      _this.breakpoints,
+      _this.primaryAlertTheme,
+      _this.destructiveAlertTheme,
+      _this.primaryDialogTheme,
+      _this.alertDialogTheme,
+      _this.sliderTheme,
+      _this.sheetTheme,
+      _this.progressTheme,
+      _this.accordionTheme,
+      _this.tableTheme,
+      _this.resizableTheme,
+      _this.hoverStrategies,
+      _this.disableSecondaryBorder,
+      _this.tabsTheme,
+      _this.contextMenuTheme,
+      _this.calendarTheme,
+      _this.datePickerTheme,
+      _this.timePickerTheme,
+      _this.inputOTPTheme,
+      _this.menubarTheme,
+      _this.separatorTheme,
+      _this.sonnerTheme,
+      _this.textareaTheme,
+      _this.defaultKeyboardToolbarTheme,
     ]);
   }
 }

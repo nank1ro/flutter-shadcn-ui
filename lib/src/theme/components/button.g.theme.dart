@@ -99,43 +99,43 @@ mixin _$ShadButtonTheme {
     bool? expands,
     TextStyle? textStyle,
   }) {
-    final a = (this as ShadButtonTheme);
+    final _this = (this as ShadButtonTheme);
 
     return ShadButtonTheme(
-      cursor: cursor ?? a.cursor,
-      size: size ?? a.size,
-      sizesTheme: sizesTheme ?? a.sizesTheme,
-      backgroundColor: backgroundColor ?? a.backgroundColor,
-      hoverBackgroundColor: hoverBackgroundColor ?? a.hoverBackgroundColor,
-      foregroundColor: foregroundColor ?? a.foregroundColor,
-      hoverForegroundColor: hoverForegroundColor ?? a.hoverForegroundColor,
+      cursor: cursor ?? _this.cursor,
+      size: size ?? _this.size,
+      sizesTheme: sizesTheme ?? _this.sizesTheme,
+      backgroundColor: backgroundColor ?? _this.backgroundColor,
+      hoverBackgroundColor: hoverBackgroundColor ?? _this.hoverBackgroundColor,
+      foregroundColor: foregroundColor ?? _this.foregroundColor,
+      hoverForegroundColor: hoverForegroundColor ?? _this.hoverForegroundColor,
       pressedBackgroundColor:
-          pressedBackgroundColor ?? a.pressedBackgroundColor,
+          pressedBackgroundColor ?? _this.pressedBackgroundColor,
       pressedForegroundColor:
-          pressedForegroundColor ?? a.pressedForegroundColor,
-      shadows: shadows ?? a.shadows,
-      gradient: gradient ?? a.gradient,
-      textDecoration: textDecoration ?? a.textDecoration,
-      hoverTextDecoration: hoverTextDecoration ?? a.hoverTextDecoration,
-      decoration: decoration ?? a.decoration,
-      width: width ?? a.width,
-      height: height ?? a.height,
-      longPressDuration: longPressDuration ?? a.longPressDuration,
-      hoverStrategies: hoverStrategies ?? a.hoverStrategies,
-      mainAxisAlignment: mainAxisAlignment ?? a.mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
-      textDirection: textDirection ?? a.textDirection,
-      gap: gap ?? a.gap,
-      expands: expands ?? a.expands,
-      textStyle: textStyle ?? a.textStyle,
+          pressedForegroundColor ?? _this.pressedForegroundColor,
+      shadows: shadows ?? _this.shadows,
+      gradient: gradient ?? _this.gradient,
+      textDecoration: textDecoration ?? _this.textDecoration,
+      hoverTextDecoration: hoverTextDecoration ?? _this.hoverTextDecoration,
+      decoration: decoration ?? _this.decoration,
+      width: width ?? _this.width,
+      height: height ?? _this.height,
+      longPressDuration: longPressDuration ?? _this.longPressDuration,
+      hoverStrategies: hoverStrategies ?? _this.hoverStrategies,
+      mainAxisAlignment: mainAxisAlignment ?? _this.mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? _this.crossAxisAlignment,
+      textDirection: textDirection ?? _this.textDirection,
+      gap: gap ?? _this.gap,
+      expands: expands ?? _this.expands,
+      textStyle: textStyle ?? _this.textStyle,
     );
   }
 
   ShadButtonTheme merge(ShadButtonTheme? other) {
-    final current = (this as ShadButtonTheme);
+    final _this = (this as ShadButtonTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -145,8 +145,7 @@ mixin _$ShadButtonTheme {
     return copyWith(
       cursor: other.cursor,
       size: other.size,
-      sizesTheme:
-          current.sizesTheme?.merge(other.sizesTheme) ?? other.sizesTheme,
+      sizesTheme: other.sizesTheme,
       backgroundColor: other.backgroundColor,
       hoverBackgroundColor: other.hoverBackgroundColor,
       foregroundColor: other.foregroundColor,
@@ -157,8 +156,7 @@ mixin _$ShadButtonTheme {
       gradient: other.gradient,
       textDecoration: other.textDecoration,
       hoverTextDecoration: other.hoverTextDecoration,
-      decoration:
-          current.decoration?.merge(other.decoration) ?? other.decoration,
+      decoration: other.decoration,
       width: other.width,
       height: other.height,
       longPressDuration: other.longPressDuration,
@@ -168,7 +166,7 @@ mixin _$ShadButtonTheme {
       textDirection: other.textDirection,
       gap: other.gap,
       expands: other.expands,
-      textStyle: current.textStyle?.merge(other.textStyle) ?? other.textStyle,
+      textStyle: _this.textStyle?.merge(other.textStyle) ?? other.textStyle,
     );
   }
 
@@ -178,68 +176,69 @@ mixin _$ShadButtonTheme {
       return true;
     }
 
-    if (other is! ShadButtonTheme) {
+    if (other.runtimeType != runtimeType) {
       return false;
     }
 
-    final value = (this as ShadButtonTheme);
+    final _this = (this as ShadButtonTheme);
+    final _other = (other as ShadButtonTheme);
 
-    return other.cursor == value.cursor &&
-        other.size == value.size &&
-        other.sizesTheme == value.sizesTheme &&
-        other.backgroundColor == value.backgroundColor &&
-        other.hoverBackgroundColor == value.hoverBackgroundColor &&
-        other.foregroundColor == value.foregroundColor &&
-        other.hoverForegroundColor == value.hoverForegroundColor &&
-        other.pressedBackgroundColor == value.pressedBackgroundColor &&
-        other.pressedForegroundColor == value.pressedForegroundColor &&
-        other.shadows == value.shadows &&
-        other.gradient == value.gradient &&
-        other.textDecoration == value.textDecoration &&
-        other.hoverTextDecoration == value.hoverTextDecoration &&
-        other.decoration == value.decoration &&
-        other.width == value.width &&
-        other.height == value.height &&
-        other.longPressDuration == value.longPressDuration &&
-        other.hoverStrategies == value.hoverStrategies &&
-        other.mainAxisAlignment == value.mainAxisAlignment &&
-        other.crossAxisAlignment == value.crossAxisAlignment &&
-        other.textDirection == value.textDirection &&
-        other.gap == value.gap &&
-        other.expands == value.expands &&
-        other.textStyle == value.textStyle;
+    return _other.cursor == _this.cursor &&
+        _other.size == _this.size &&
+        _other.sizesTheme == _this.sizesTheme &&
+        _other.backgroundColor == _this.backgroundColor &&
+        _other.hoverBackgroundColor == _this.hoverBackgroundColor &&
+        _other.foregroundColor == _this.foregroundColor &&
+        _other.hoverForegroundColor == _this.hoverForegroundColor &&
+        _other.pressedBackgroundColor == _this.pressedBackgroundColor &&
+        _other.pressedForegroundColor == _this.pressedForegroundColor &&
+        _other.shadows == _this.shadows &&
+        _other.gradient == _this.gradient &&
+        _other.textDecoration == _this.textDecoration &&
+        _other.hoverTextDecoration == _this.hoverTextDecoration &&
+        _other.decoration == _this.decoration &&
+        _other.width == _this.width &&
+        _other.height == _this.height &&
+        _other.longPressDuration == _this.longPressDuration &&
+        _other.hoverStrategies == _this.hoverStrategies &&
+        _other.mainAxisAlignment == _this.mainAxisAlignment &&
+        _other.crossAxisAlignment == _this.crossAxisAlignment &&
+        _other.textDirection == _this.textDirection &&
+        _other.gap == _this.gap &&
+        _other.expands == _this.expands &&
+        _other.textStyle == _this.textStyle;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadButtonTheme);
+    final _this = (this as ShadButtonTheme);
 
     return Object.hashAll([
       runtimeType,
-      value.cursor,
-      value.size,
-      value.sizesTheme,
-      value.backgroundColor,
-      value.hoverBackgroundColor,
-      value.foregroundColor,
-      value.hoverForegroundColor,
-      value.pressedBackgroundColor,
-      value.pressedForegroundColor,
-      value.shadows,
-      value.gradient,
-      value.textDecoration,
-      value.hoverTextDecoration,
-      value.decoration,
-      value.width,
-      value.height,
-      value.longPressDuration,
-      value.hoverStrategies,
-      value.mainAxisAlignment,
-      value.crossAxisAlignment,
-      value.textDirection,
-      value.gap,
-      value.expands,
-      value.textStyle,
+      _this.cursor,
+      _this.size,
+      _this.sizesTheme,
+      _this.backgroundColor,
+      _this.hoverBackgroundColor,
+      _this.foregroundColor,
+      _this.hoverForegroundColor,
+      _this.pressedBackgroundColor,
+      _this.pressedForegroundColor,
+      _this.shadows,
+      _this.gradient,
+      _this.textDecoration,
+      _this.hoverTextDecoration,
+      _this.decoration,
+      _this.width,
+      _this.height,
+      _this.longPressDuration,
+      _this.hoverStrategies,
+      _this.mainAxisAlignment,
+      _this.crossAxisAlignment,
+      _this.textDirection,
+      _this.gap,
+      _this.expands,
+      _this.textStyle,
     ]);
   }
 }

@@ -53,26 +53,26 @@ mixin _$ShadSwitchTheme {
     ShadDecoration? decoration,
     EdgeInsetsGeometry? padding,
   }) {
-    final a = (this as ShadSwitchTheme);
+    final _this = (this as ShadSwitchTheme);
 
     return ShadSwitchTheme(
-      thumbColor: thumbColor ?? a.thumbColor,
-      uncheckedTrackColor: uncheckedTrackColor ?? a.uncheckedTrackColor,
-      checkedTrackColor: checkedTrackColor ?? a.checkedTrackColor,
-      width: width ?? a.width,
-      height: height ?? a.height,
-      margin: margin ?? a.margin,
-      duration: duration ?? a.duration,
-      decoration: decoration ?? a.decoration,
-      padding: padding ?? a.padding,
+      thumbColor: thumbColor ?? _this.thumbColor,
+      uncheckedTrackColor: uncheckedTrackColor ?? _this.uncheckedTrackColor,
+      checkedTrackColor: checkedTrackColor ?? _this.checkedTrackColor,
+      width: width ?? _this.width,
+      height: height ?? _this.height,
+      margin: margin ?? _this.margin,
+      duration: duration ?? _this.duration,
+      decoration: decoration ?? _this.decoration,
+      padding: padding ?? _this.padding,
     );
   }
 
   ShadSwitchTheme merge(ShadSwitchTheme? other) {
-    final current = (this as ShadSwitchTheme);
+    final _this = (this as ShadSwitchTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -87,8 +87,7 @@ mixin _$ShadSwitchTheme {
       height: other.height,
       margin: other.margin,
       duration: other.duration,
-      decoration:
-          current.decoration?.merge(other.decoration) ?? other.decoration,
+      decoration: other.decoration,
       padding: other.padding,
     );
   }
@@ -99,38 +98,39 @@ mixin _$ShadSwitchTheme {
       return true;
     }
 
-    if (other is! ShadSwitchTheme) {
+    if (other.runtimeType != runtimeType) {
       return false;
     }
 
-    final value = (this as ShadSwitchTheme);
+    final _this = (this as ShadSwitchTheme);
+    final _other = (other as ShadSwitchTheme);
 
-    return other.thumbColor == value.thumbColor &&
-        other.uncheckedTrackColor == value.uncheckedTrackColor &&
-        other.checkedTrackColor == value.checkedTrackColor &&
-        other.width == value.width &&
-        other.height == value.height &&
-        other.margin == value.margin &&
-        other.duration == value.duration &&
-        other.decoration == value.decoration &&
-        other.padding == value.padding;
+    return _other.thumbColor == _this.thumbColor &&
+        _other.uncheckedTrackColor == _this.uncheckedTrackColor &&
+        _other.checkedTrackColor == _this.checkedTrackColor &&
+        _other.width == _this.width &&
+        _other.height == _this.height &&
+        _other.margin == _this.margin &&
+        _other.duration == _this.duration &&
+        _other.decoration == _this.decoration &&
+        _other.padding == _this.padding;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadSwitchTheme);
+    final _this = (this as ShadSwitchTheme);
 
     return Object.hash(
       runtimeType,
-      value.thumbColor,
-      value.uncheckedTrackColor,
-      value.checkedTrackColor,
-      value.width,
-      value.height,
-      value.margin,
-      value.duration,
-      value.decoration,
-      value.padding,
+      _this.thumbColor,
+      _this.uncheckedTrackColor,
+      _this.checkedTrackColor,
+      _this.width,
+      _this.height,
+      _this.margin,
+      _this.duration,
+      _this.decoration,
+      _this.padding,
     );
   }
 }

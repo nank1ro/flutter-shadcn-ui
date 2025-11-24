@@ -99,44 +99,44 @@ mixin _$ShadTimePickerTheme {
     Widget? secondPlaceholder,
     Widget? periodPlaceholder,
   }) {
-    final a = (this as ShadTimePickerTheme);
+    final _this = (this as ShadTimePickerTheme);
 
     return ShadTimePickerTheme(
-      axis: axis ?? a.axis,
-      spacing: spacing ?? a.spacing,
-      runSpacing: runSpacing ?? a.runSpacing,
+      axis: axis ?? _this.axis,
+      spacing: spacing ?? _this.spacing,
+      runSpacing: runSpacing ?? _this.runSpacing,
       jumpToNextFieldWhenFilled:
-          jumpToNextFieldWhenFilled ?? a.jumpToNextFieldWhenFilled,
-      alignment: alignment ?? a.alignment,
-      runAlignment: runAlignment ?? a.runAlignment,
-      crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
-      initialDayPeriod: initialDayPeriod ?? a.initialDayPeriod,
-      periodHeight: periodHeight ?? a.periodHeight,
-      periodMinWidth: periodMinWidth ?? a.periodMinWidth,
-      gap: gap ?? a.gap,
-      style: style ?? a.style,
-      placeholderStyle: placeholderStyle ?? a.placeholderStyle,
-      labelStyle: labelStyle ?? a.labelStyle,
-      fieldWidth: fieldWidth ?? a.fieldWidth,
-      fieldPadding: fieldPadding ?? a.fieldPadding,
-      fieldDecoration: fieldDecoration ?? a.fieldDecoration,
-      periodDecoration: periodDecoration ?? a.periodDecoration,
-      hourLabel: hourLabel ?? a.hourLabel,
-      minuteLabel: minuteLabel ?? a.minuteLabel,
-      secondLabel: secondLabel ?? a.secondLabel,
-      periodLabel: periodLabel ?? a.periodLabel,
-      hourPlaceholder: hourPlaceholder ?? a.hourPlaceholder,
-      minutePlaceholder: minutePlaceholder ?? a.minutePlaceholder,
-      secondPlaceholder: secondPlaceholder ?? a.secondPlaceholder,
-      periodPlaceholder: periodPlaceholder ?? a.periodPlaceholder,
+          jumpToNextFieldWhenFilled ?? _this.jumpToNextFieldWhenFilled,
+      alignment: alignment ?? _this.alignment,
+      runAlignment: runAlignment ?? _this.runAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? _this.crossAxisAlignment,
+      initialDayPeriod: initialDayPeriod ?? _this.initialDayPeriod,
+      periodHeight: periodHeight ?? _this.periodHeight,
+      periodMinWidth: periodMinWidth ?? _this.periodMinWidth,
+      gap: gap ?? _this.gap,
+      style: style ?? _this.style,
+      placeholderStyle: placeholderStyle ?? _this.placeholderStyle,
+      labelStyle: labelStyle ?? _this.labelStyle,
+      fieldWidth: fieldWidth ?? _this.fieldWidth,
+      fieldPadding: fieldPadding ?? _this.fieldPadding,
+      fieldDecoration: fieldDecoration ?? _this.fieldDecoration,
+      periodDecoration: periodDecoration ?? _this.periodDecoration,
+      hourLabel: hourLabel ?? _this.hourLabel,
+      minuteLabel: minuteLabel ?? _this.minuteLabel,
+      secondLabel: secondLabel ?? _this.secondLabel,
+      periodLabel: periodLabel ?? _this.periodLabel,
+      hourPlaceholder: hourPlaceholder ?? _this.hourPlaceholder,
+      minutePlaceholder: minutePlaceholder ?? _this.minutePlaceholder,
+      secondPlaceholder: secondPlaceholder ?? _this.secondPlaceholder,
+      periodPlaceholder: periodPlaceholder ?? _this.periodPlaceholder,
     );
   }
 
   ShadTimePickerTheme merge(ShadTimePickerTheme? other) {
-    final current = (this as ShadTimePickerTheme);
+    final _this = (this as ShadTimePickerTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -155,20 +155,15 @@ mixin _$ShadTimePickerTheme {
       periodHeight: other.periodHeight,
       periodMinWidth: other.periodMinWidth,
       gap: other.gap,
-      style: current.style?.merge(other.style) ?? other.style,
+      style: _this.style?.merge(other.style) ?? other.style,
       placeholderStyle:
-          current.placeholderStyle?.merge(other.placeholderStyle) ??
+          _this.placeholderStyle?.merge(other.placeholderStyle) ??
           other.placeholderStyle,
-      labelStyle:
-          current.labelStyle?.merge(other.labelStyle) ?? other.labelStyle,
+      labelStyle: _this.labelStyle?.merge(other.labelStyle) ?? other.labelStyle,
       fieldWidth: other.fieldWidth,
       fieldPadding: other.fieldPadding,
-      fieldDecoration:
-          current.fieldDecoration?.merge(other.fieldDecoration) ??
-          other.fieldDecoration,
-      periodDecoration:
-          current.periodDecoration?.merge(other.periodDecoration) ??
-          other.periodDecoration,
+      fieldDecoration: other.fieldDecoration,
+      periodDecoration: other.periodDecoration,
       hourLabel: other.hourLabel,
       minuteLabel: other.minuteLabel,
       secondLabel: other.secondLabel,
@@ -186,72 +181,73 @@ mixin _$ShadTimePickerTheme {
       return true;
     }
 
-    if (other is! ShadTimePickerTheme) {
+    if (other.runtimeType != runtimeType) {
       return false;
     }
 
-    final value = (this as ShadTimePickerTheme);
+    final _this = (this as ShadTimePickerTheme);
+    final _other = (other as ShadTimePickerTheme);
 
-    return other.axis == value.axis &&
-        other.spacing == value.spacing &&
-        other.runSpacing == value.runSpacing &&
-        other.jumpToNextFieldWhenFilled == value.jumpToNextFieldWhenFilled &&
-        other.alignment == value.alignment &&
-        other.runAlignment == value.runAlignment &&
-        other.crossAxisAlignment == value.crossAxisAlignment &&
-        other.initialDayPeriod == value.initialDayPeriod &&
-        other.periodHeight == value.periodHeight &&
-        other.periodMinWidth == value.periodMinWidth &&
-        other.gap == value.gap &&
-        other.style == value.style &&
-        other.placeholderStyle == value.placeholderStyle &&
-        other.labelStyle == value.labelStyle &&
-        other.fieldWidth == value.fieldWidth &&
-        other.fieldPadding == value.fieldPadding &&
-        other.fieldDecoration == value.fieldDecoration &&
-        other.periodDecoration == value.periodDecoration &&
-        other.hourLabel == value.hourLabel &&
-        other.minuteLabel == value.minuteLabel &&
-        other.secondLabel == value.secondLabel &&
-        other.periodLabel == value.periodLabel &&
-        other.hourPlaceholder == value.hourPlaceholder &&
-        other.minutePlaceholder == value.minutePlaceholder &&
-        other.secondPlaceholder == value.secondPlaceholder &&
-        other.periodPlaceholder == value.periodPlaceholder;
+    return _other.axis == _this.axis &&
+        _other.spacing == _this.spacing &&
+        _other.runSpacing == _this.runSpacing &&
+        _other.jumpToNextFieldWhenFilled == _this.jumpToNextFieldWhenFilled &&
+        _other.alignment == _this.alignment &&
+        _other.runAlignment == _this.runAlignment &&
+        _other.crossAxisAlignment == _this.crossAxisAlignment &&
+        _other.initialDayPeriod == _this.initialDayPeriod &&
+        _other.periodHeight == _this.periodHeight &&
+        _other.periodMinWidth == _this.periodMinWidth &&
+        _other.gap == _this.gap &&
+        _other.style == _this.style &&
+        _other.placeholderStyle == _this.placeholderStyle &&
+        _other.labelStyle == _this.labelStyle &&
+        _other.fieldWidth == _this.fieldWidth &&
+        _other.fieldPadding == _this.fieldPadding &&
+        _other.fieldDecoration == _this.fieldDecoration &&
+        _other.periodDecoration == _this.periodDecoration &&
+        _other.hourLabel == _this.hourLabel &&
+        _other.minuteLabel == _this.minuteLabel &&
+        _other.secondLabel == _this.secondLabel &&
+        _other.periodLabel == _this.periodLabel &&
+        _other.hourPlaceholder == _this.hourPlaceholder &&
+        _other.minutePlaceholder == _this.minutePlaceholder &&
+        _other.secondPlaceholder == _this.secondPlaceholder &&
+        _other.periodPlaceholder == _this.periodPlaceholder;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadTimePickerTheme);
+    final _this = (this as ShadTimePickerTheme);
 
     return Object.hashAll([
       runtimeType,
-      value.axis,
-      value.spacing,
-      value.runSpacing,
-      value.jumpToNextFieldWhenFilled,
-      value.alignment,
-      value.runAlignment,
-      value.crossAxisAlignment,
-      value.initialDayPeriod,
-      value.periodHeight,
-      value.periodMinWidth,
-      value.gap,
-      value.style,
-      value.placeholderStyle,
-      value.labelStyle,
-      value.fieldWidth,
-      value.fieldPadding,
-      value.fieldDecoration,
-      value.periodDecoration,
-      value.hourLabel,
-      value.minuteLabel,
-      value.secondLabel,
-      value.periodLabel,
-      value.hourPlaceholder,
-      value.minutePlaceholder,
-      value.secondPlaceholder,
-      value.periodPlaceholder,
+      _this.axis,
+      _this.spacing,
+      _this.runSpacing,
+      _this.jumpToNextFieldWhenFilled,
+      _this.alignment,
+      _this.runAlignment,
+      _this.crossAxisAlignment,
+      _this.initialDayPeriod,
+      _this.periodHeight,
+      _this.periodMinWidth,
+      _this.gap,
+      _this.style,
+      _this.placeholderStyle,
+      _this.labelStyle,
+      _this.fieldWidth,
+      _this.fieldPadding,
+      _this.fieldDecoration,
+      _this.periodDecoration,
+      _this.hourLabel,
+      _this.minuteLabel,
+      _this.secondLabel,
+      _this.periodLabel,
+      _this.hourPlaceholder,
+      _this.minutePlaceholder,
+      _this.secondPlaceholder,
+      _this.periodPlaceholder,
     ]);
   }
 }

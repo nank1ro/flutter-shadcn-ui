@@ -157,63 +157,66 @@ mixin _$ShadMenubarTheme {
     bool? buttonExpands,
     bool? selectOnHover,
   }) {
-    final a = (this as ShadMenubarTheme);
+    final _this = (this as ShadMenubarTheme);
 
     return ShadMenubarTheme(
-      radius: radius ?? a.radius,
-      padding: padding ?? a.padding,
-      backgroundColor: backgroundColor ?? a.backgroundColor,
-      border: border ?? a.border,
-      constraints: constraints ?? a.constraints,
-      contextMenuPadding: contextMenuPadding ?? a.contextMenuPadding,
-      effects: effects ?? a.effects,
-      shadows: shadows ?? a.shadows,
-      decoration: decoration ?? a.decoration,
-      filter: filter ?? a.filter,
-      anchor: anchor ?? a.anchor,
-      buttonVariant: buttonVariant ?? a.buttonVariant,
-      buttonSize: buttonSize ?? a.buttonSize,
-      buttonCursor: buttonCursor ?? a.buttonCursor,
-      buttonWidth: buttonWidth ?? a.buttonWidth,
-      buttonHeight: buttonHeight ?? a.buttonHeight,
-      buttonPadding: buttonPadding ?? a.buttonPadding,
-      buttonBackgroundColor: buttonBackgroundColor ?? a.buttonBackgroundColor,
+      radius: radius ?? _this.radius,
+      padding: padding ?? _this.padding,
+      backgroundColor: backgroundColor ?? _this.backgroundColor,
+      border: border ?? _this.border,
+      constraints: constraints ?? _this.constraints,
+      contextMenuPadding: contextMenuPadding ?? _this.contextMenuPadding,
+      effects: effects ?? _this.effects,
+      shadows: shadows ?? _this.shadows,
+      decoration: decoration ?? _this.decoration,
+      filter: filter ?? _this.filter,
+      anchor: anchor ?? _this.anchor,
+      buttonVariant: buttonVariant ?? _this.buttonVariant,
+      buttonSize: buttonSize ?? _this.buttonSize,
+      buttonCursor: buttonCursor ?? _this.buttonCursor,
+      buttonWidth: buttonWidth ?? _this.buttonWidth,
+      buttonHeight: buttonHeight ?? _this.buttonHeight,
+      buttonPadding: buttonPadding ?? _this.buttonPadding,
+      buttonBackgroundColor:
+          buttonBackgroundColor ?? _this.buttonBackgroundColor,
       buttonSelectedBackgroundColor:
-          buttonSelectedBackgroundColor ?? a.buttonSelectedBackgroundColor,
+          buttonSelectedBackgroundColor ?? _this.buttonSelectedBackgroundColor,
       buttonHoverBackgroundColor:
-          buttonHoverBackgroundColor ?? a.buttonHoverBackgroundColor,
-      buttonForegroundColor: buttonForegroundColor ?? a.buttonForegroundColor,
+          buttonHoverBackgroundColor ?? _this.buttonHoverBackgroundColor,
+      buttonForegroundColor:
+          buttonForegroundColor ?? _this.buttonForegroundColor,
       buttonHoverForegroundColor:
-          buttonHoverForegroundColor ?? a.buttonHoverForegroundColor,
+          buttonHoverForegroundColor ?? _this.buttonHoverForegroundColor,
       buttonPressedBackgroundColor:
-          buttonPressedBackgroundColor ?? a.buttonPressedBackgroundColor,
+          buttonPressedBackgroundColor ?? _this.buttonPressedBackgroundColor,
       buttonPressedForegroundColor:
-          buttonPressedForegroundColor ?? a.buttonPressedForegroundColor,
-      buttonShadows: buttonShadows ?? a.buttonShadows,
-      buttonGradient: buttonGradient ?? a.buttonGradient,
-      buttonTextDecoration: buttonTextDecoration ?? a.buttonTextDecoration,
+          buttonPressedForegroundColor ?? _this.buttonPressedForegroundColor,
+      buttonShadows: buttonShadows ?? _this.buttonShadows,
+      buttonGradient: buttonGradient ?? _this.buttonGradient,
+      buttonTextDecoration: buttonTextDecoration ?? _this.buttonTextDecoration,
       buttonHoverTextDecoration:
-          buttonHoverTextDecoration ?? a.buttonHoverTextDecoration,
-      buttonDecoration: buttonDecoration ?? a.buttonDecoration,
-      buttonGap: buttonGap ?? a.buttonGap,
+          buttonHoverTextDecoration ?? _this.buttonHoverTextDecoration,
+      buttonDecoration: buttonDecoration ?? _this.buttonDecoration,
+      buttonGap: buttonGap ?? _this.buttonGap,
       buttonMainAxisAlignment:
-          buttonMainAxisAlignment ?? a.buttonMainAxisAlignment,
+          buttonMainAxisAlignment ?? _this.buttonMainAxisAlignment,
       buttonCrossAxisAlignment:
-          buttonCrossAxisAlignment ?? a.buttonCrossAxisAlignment,
-      buttonHoverStrategies: buttonHoverStrategies ?? a.buttonHoverStrategies,
+          buttonCrossAxisAlignment ?? _this.buttonCrossAxisAlignment,
+      buttonHoverStrategies:
+          buttonHoverStrategies ?? _this.buttonHoverStrategies,
       buttonLongPressDuration:
-          buttonLongPressDuration ?? a.buttonLongPressDuration,
-      buttonTextDirection: buttonTextDirection ?? a.buttonTextDirection,
-      buttonExpands: buttonExpands ?? a.buttonExpands,
-      selectOnHover: selectOnHover ?? a.selectOnHover,
+          buttonLongPressDuration ?? _this.buttonLongPressDuration,
+      buttonTextDirection: buttonTextDirection ?? _this.buttonTextDirection,
+      buttonExpands: buttonExpands ?? _this.buttonExpands,
+      selectOnHover: selectOnHover ?? _this.selectOnHover,
     );
   }
 
   ShadMenubarTheme merge(ShadMenubarTheme? other) {
-    final current = (this as ShadMenubarTheme);
+    final _this = (this as ShadMenubarTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -224,13 +227,12 @@ mixin _$ShadMenubarTheme {
       radius: other.radius,
       padding: other.padding,
       backgroundColor: other.backgroundColor,
-      border: current.border?.merge(other.border) ?? other.border,
+      border: _this.border?.merge(other.border) ?? other.border,
       constraints: other.constraints,
       contextMenuPadding: other.contextMenuPadding,
       effects: other.effects,
       shadows: other.shadows,
-      decoration:
-          current.decoration?.merge(other.decoration) ?? other.decoration,
+      decoration: other.decoration,
       filter: other.filter,
       anchor: other.anchor,
       buttonVariant: other.buttonVariant,
@@ -250,9 +252,7 @@ mixin _$ShadMenubarTheme {
       buttonGradient: other.buttonGradient,
       buttonTextDecoration: other.buttonTextDecoration,
       buttonHoverTextDecoration: other.buttonHoverTextDecoration,
-      buttonDecoration:
-          current.buttonDecoration?.merge(other.buttonDecoration) ??
-          other.buttonDecoration,
+      buttonDecoration: other.buttonDecoration,
       buttonGap: other.buttonGap,
       buttonMainAxisAlignment: other.buttonMainAxisAlignment,
       buttonCrossAxisAlignment: other.buttonCrossAxisAlignment,
@@ -270,97 +270,98 @@ mixin _$ShadMenubarTheme {
       return true;
     }
 
-    if (other is! ShadMenubarTheme) {
+    if (other.runtimeType != runtimeType) {
       return false;
     }
 
-    final value = (this as ShadMenubarTheme);
+    final _this = (this as ShadMenubarTheme);
+    final _other = (other as ShadMenubarTheme);
 
-    return other.radius == value.radius &&
-        other.padding == value.padding &&
-        other.backgroundColor == value.backgroundColor &&
-        other.border == value.border &&
-        other.constraints == value.constraints &&
-        other.contextMenuPadding == value.contextMenuPadding &&
-        other.effects == value.effects &&
-        other.shadows == value.shadows &&
-        other.decoration == value.decoration &&
-        other.filter == value.filter &&
-        other.anchor == value.anchor &&
-        other.buttonVariant == value.buttonVariant &&
-        other.buttonSize == value.buttonSize &&
-        other.buttonCursor == value.buttonCursor &&
-        other.buttonWidth == value.buttonWidth &&
-        other.buttonHeight == value.buttonHeight &&
-        other.buttonPadding == value.buttonPadding &&
-        other.buttonBackgroundColor == value.buttonBackgroundColor &&
-        other.buttonSelectedBackgroundColor ==
-            value.buttonSelectedBackgroundColor &&
-        other.buttonHoverBackgroundColor == value.buttonHoverBackgroundColor &&
-        other.buttonForegroundColor == value.buttonForegroundColor &&
-        other.buttonHoverForegroundColor == value.buttonHoverForegroundColor &&
-        other.buttonPressedBackgroundColor ==
-            value.buttonPressedBackgroundColor &&
-        other.buttonPressedForegroundColor ==
-            value.buttonPressedForegroundColor &&
-        other.buttonShadows == value.buttonShadows &&
-        other.buttonGradient == value.buttonGradient &&
-        other.buttonTextDecoration == value.buttonTextDecoration &&
-        other.buttonHoverTextDecoration == value.buttonHoverTextDecoration &&
-        other.buttonDecoration == value.buttonDecoration &&
-        other.buttonGap == value.buttonGap &&
-        other.buttonMainAxisAlignment == value.buttonMainAxisAlignment &&
-        other.buttonCrossAxisAlignment == value.buttonCrossAxisAlignment &&
-        other.buttonHoverStrategies == value.buttonHoverStrategies &&
-        other.buttonLongPressDuration == value.buttonLongPressDuration &&
-        other.buttonTextDirection == value.buttonTextDirection &&
-        other.buttonExpands == value.buttonExpands &&
-        other.selectOnHover == value.selectOnHover;
+    return _other.radius == _this.radius &&
+        _other.padding == _this.padding &&
+        _other.backgroundColor == _this.backgroundColor &&
+        _other.border == _this.border &&
+        _other.constraints == _this.constraints &&
+        _other.contextMenuPadding == _this.contextMenuPadding &&
+        _other.effects == _this.effects &&
+        _other.shadows == _this.shadows &&
+        _other.decoration == _this.decoration &&
+        _other.filter == _this.filter &&
+        _other.anchor == _this.anchor &&
+        _other.buttonVariant == _this.buttonVariant &&
+        _other.buttonSize == _this.buttonSize &&
+        _other.buttonCursor == _this.buttonCursor &&
+        _other.buttonWidth == _this.buttonWidth &&
+        _other.buttonHeight == _this.buttonHeight &&
+        _other.buttonPadding == _this.buttonPadding &&
+        _other.buttonBackgroundColor == _this.buttonBackgroundColor &&
+        _other.buttonSelectedBackgroundColor ==
+            _this.buttonSelectedBackgroundColor &&
+        _other.buttonHoverBackgroundColor == _this.buttonHoverBackgroundColor &&
+        _other.buttonForegroundColor == _this.buttonForegroundColor &&
+        _other.buttonHoverForegroundColor == _this.buttonHoverForegroundColor &&
+        _other.buttonPressedBackgroundColor ==
+            _this.buttonPressedBackgroundColor &&
+        _other.buttonPressedForegroundColor ==
+            _this.buttonPressedForegroundColor &&
+        _other.buttonShadows == _this.buttonShadows &&
+        _other.buttonGradient == _this.buttonGradient &&
+        _other.buttonTextDecoration == _this.buttonTextDecoration &&
+        _other.buttonHoverTextDecoration == _this.buttonHoverTextDecoration &&
+        _other.buttonDecoration == _this.buttonDecoration &&
+        _other.buttonGap == _this.buttonGap &&
+        _other.buttonMainAxisAlignment == _this.buttonMainAxisAlignment &&
+        _other.buttonCrossAxisAlignment == _this.buttonCrossAxisAlignment &&
+        _other.buttonHoverStrategies == _this.buttonHoverStrategies &&
+        _other.buttonLongPressDuration == _this.buttonLongPressDuration &&
+        _other.buttonTextDirection == _this.buttonTextDirection &&
+        _other.buttonExpands == _this.buttonExpands &&
+        _other.selectOnHover == _this.selectOnHover;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadMenubarTheme);
+    final _this = (this as ShadMenubarTheme);
 
     return Object.hashAll([
       runtimeType,
-      value.radius,
-      value.padding,
-      value.backgroundColor,
-      value.border,
-      value.constraints,
-      value.contextMenuPadding,
-      value.effects,
-      value.shadows,
-      value.decoration,
-      value.filter,
-      value.anchor,
-      value.buttonVariant,
-      value.buttonSize,
-      value.buttonCursor,
-      value.buttonWidth,
-      value.buttonHeight,
-      value.buttonPadding,
-      value.buttonBackgroundColor,
-      value.buttonSelectedBackgroundColor,
-      value.buttonHoverBackgroundColor,
-      value.buttonForegroundColor,
-      value.buttonHoverForegroundColor,
-      value.buttonPressedBackgroundColor,
-      value.buttonPressedForegroundColor,
-      value.buttonShadows,
-      value.buttonGradient,
-      value.buttonTextDecoration,
-      value.buttonHoverTextDecoration,
-      value.buttonDecoration,
-      value.buttonGap,
-      value.buttonMainAxisAlignment,
-      value.buttonCrossAxisAlignment,
-      value.buttonHoverStrategies,
-      value.buttonLongPressDuration,
-      value.buttonTextDirection,
-      value.buttonExpands,
-      value.selectOnHover,
+      _this.radius,
+      _this.padding,
+      _this.backgroundColor,
+      _this.border,
+      _this.constraints,
+      _this.contextMenuPadding,
+      _this.effects,
+      _this.shadows,
+      _this.decoration,
+      _this.filter,
+      _this.anchor,
+      _this.buttonVariant,
+      _this.buttonSize,
+      _this.buttonCursor,
+      _this.buttonWidth,
+      _this.buttonHeight,
+      _this.buttonPadding,
+      _this.buttonBackgroundColor,
+      _this.buttonSelectedBackgroundColor,
+      _this.buttonHoverBackgroundColor,
+      _this.buttonForegroundColor,
+      _this.buttonHoverForegroundColor,
+      _this.buttonPressedBackgroundColor,
+      _this.buttonPressedForegroundColor,
+      _this.buttonShadows,
+      _this.buttonGradient,
+      _this.buttonTextDecoration,
+      _this.buttonHoverTextDecoration,
+      _this.buttonDecoration,
+      _this.buttonGap,
+      _this.buttonMainAxisAlignment,
+      _this.buttonCrossAxisAlignment,
+      _this.buttonHoverStrategies,
+      _this.buttonLongPressDuration,
+      _this.buttonTextDirection,
+      _this.buttonExpands,
+      _this.selectOnHover,
     ]);
   }
 }
