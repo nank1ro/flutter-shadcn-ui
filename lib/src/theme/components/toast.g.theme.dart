@@ -83,40 +83,40 @@ mixin _$ShadToastTheme {
     MainAxisAlignment? mainAxisAlignment,
     MainAxisSize? mainAxisSize,
   }) {
-    final a = (this as ShadToastTheme);
+    final _this = (this as ShadToastTheme);
 
     return ShadToastTheme(
-      backgroundColor: backgroundColor ?? a.backgroundColor,
-      closeIconData: closeIconData ?? a.closeIconData,
-      alignment: alignment ?? a.alignment,
-      offset: offset ?? a.offset,
-      duration: duration ?? a.duration,
-      animateIn: animateIn ?? a.animateIn,
-      animateOut: animateOut ?? a.animateOut,
-      textDirection: textDirection ?? a.textDirection,
-      crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
+      backgroundColor: backgroundColor ?? _this.backgroundColor,
+      closeIconData: closeIconData ?? _this.closeIconData,
+      alignment: alignment ?? _this.alignment,
+      offset: offset ?? _this.offset,
+      duration: duration ?? _this.duration,
+      animateIn: animateIn ?? _this.animateIn,
+      animateOut: animateOut ?? _this.animateOut,
+      textDirection: textDirection ?? _this.textDirection,
+      crossAxisAlignment: crossAxisAlignment ?? _this.crossAxisAlignment,
       showCloseIconOnlyWhenHovered:
-          showCloseIconOnlyWhenHovered ?? a.showCloseIconOnlyWhenHovered,
-      titleStyle: titleStyle ?? a.titleStyle,
-      descriptionStyle: descriptionStyle ?? a.descriptionStyle,
-      actionPadding: actionPadding ?? a.actionPadding,
-      border: border ?? a.border,
-      radius: radius ?? a.radius,
-      shadows: shadows ?? a.shadows,
-      padding: padding ?? a.padding,
-      closeIconPosition: closeIconPosition ?? a.closeIconPosition,
-      constraints: constraints ?? a.constraints,
-      closeIcon: closeIcon ?? a.closeIcon,
-      mainAxisAlignment: mainAxisAlignment ?? a.mainAxisAlignment,
-      mainAxisSize: mainAxisSize ?? a.mainAxisSize,
+          showCloseIconOnlyWhenHovered ?? _this.showCloseIconOnlyWhenHovered,
+      titleStyle: titleStyle ?? _this.titleStyle,
+      descriptionStyle: descriptionStyle ?? _this.descriptionStyle,
+      actionPadding: actionPadding ?? _this.actionPadding,
+      border: border ?? _this.border,
+      radius: radius ?? _this.radius,
+      shadows: shadows ?? _this.shadows,
+      padding: padding ?? _this.padding,
+      closeIconPosition: closeIconPosition ?? _this.closeIconPosition,
+      constraints: constraints ?? _this.constraints,
+      closeIcon: closeIcon ?? _this.closeIcon,
+      mainAxisAlignment: mainAxisAlignment ?? _this.mainAxisAlignment,
+      mainAxisSize: mainAxisSize ?? _this.mainAxisSize,
     );
   }
 
   ShadToastTheme merge(ShadToastTheme? other) {
-    final current = (this as ShadToastTheme);
+    final _this = (this as ShadToastTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -134,13 +134,12 @@ mixin _$ShadToastTheme {
       textDirection: other.textDirection,
       crossAxisAlignment: other.crossAxisAlignment,
       showCloseIconOnlyWhenHovered: other.showCloseIconOnlyWhenHovered,
-      titleStyle:
-          current.titleStyle?.merge(other.titleStyle) ?? other.titleStyle,
+      titleStyle: _this.titleStyle?.merge(other.titleStyle) ?? other.titleStyle,
       descriptionStyle:
-          current.descriptionStyle?.merge(other.descriptionStyle) ??
+          _this.descriptionStyle?.merge(other.descriptionStyle) ??
           other.descriptionStyle,
       actionPadding: other.actionPadding,
-      border: current.border?.merge(other.border) ?? other.border,
+      border: _this.border?.merge(other.border) ?? other.border,
       radius: other.radius,
       shadows: other.shadows,
       padding: other.padding,
@@ -158,65 +157,66 @@ mixin _$ShadToastTheme {
       return true;
     }
 
-    if (other is! ShadToastTheme) {
+    if (other.runtimeType != runtimeType) {
       return false;
     }
 
-    final value = (this as ShadToastTheme);
+    final _this = (this as ShadToastTheme);
+    final _other = (other as ShadToastTheme);
 
-    return other.backgroundColor == value.backgroundColor &&
-        other.closeIconData == value.closeIconData &&
-        other.alignment == value.alignment &&
-        other.offset == value.offset &&
-        other.duration == value.duration &&
-        other.animateIn == value.animateIn &&
-        other.animateOut == value.animateOut &&
-        other.textDirection == value.textDirection &&
-        other.crossAxisAlignment == value.crossAxisAlignment &&
-        other.showCloseIconOnlyWhenHovered ==
-            value.showCloseIconOnlyWhenHovered &&
-        other.titleStyle == value.titleStyle &&
-        other.descriptionStyle == value.descriptionStyle &&
-        other.actionPadding == value.actionPadding &&
-        other.border == value.border &&
-        other.radius == value.radius &&
-        other.shadows == value.shadows &&
-        other.padding == value.padding &&
-        other.closeIconPosition == value.closeIconPosition &&
-        other.constraints == value.constraints &&
-        other.closeIcon == value.closeIcon &&
-        other.mainAxisAlignment == value.mainAxisAlignment &&
-        other.mainAxisSize == value.mainAxisSize;
+    return _other.backgroundColor == _this.backgroundColor &&
+        _other.closeIconData == _this.closeIconData &&
+        _other.alignment == _this.alignment &&
+        _other.offset == _this.offset &&
+        _other.duration == _this.duration &&
+        _other.animateIn == _this.animateIn &&
+        _other.animateOut == _this.animateOut &&
+        _other.textDirection == _this.textDirection &&
+        _other.crossAxisAlignment == _this.crossAxisAlignment &&
+        _other.showCloseIconOnlyWhenHovered ==
+            _this.showCloseIconOnlyWhenHovered &&
+        _other.titleStyle == _this.titleStyle &&
+        _other.descriptionStyle == _this.descriptionStyle &&
+        _other.actionPadding == _this.actionPadding &&
+        _other.border == _this.border &&
+        _other.radius == _this.radius &&
+        _other.shadows == _this.shadows &&
+        _other.padding == _this.padding &&
+        _other.closeIconPosition == _this.closeIconPosition &&
+        _other.constraints == _this.constraints &&
+        _other.closeIcon == _this.closeIcon &&
+        _other.mainAxisAlignment == _this.mainAxisAlignment &&
+        _other.mainAxisSize == _this.mainAxisSize;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadToastTheme);
+    final _this = (this as ShadToastTheme);
 
     return Object.hashAll([
       runtimeType,
-      value.backgroundColor,
-      value.closeIconData,
-      value.alignment,
-      value.offset,
-      value.duration,
-      value.animateIn,
-      value.animateOut,
-      value.textDirection,
-      value.crossAxisAlignment,
-      value.showCloseIconOnlyWhenHovered,
-      value.titleStyle,
-      value.descriptionStyle,
-      value.actionPadding,
-      value.border,
-      value.radius,
-      value.shadows,
-      value.padding,
-      value.closeIconPosition,
-      value.constraints,
-      value.closeIcon,
-      value.mainAxisAlignment,
-      value.mainAxisSize,
+      _this.backgroundColor,
+      _this.closeIconData,
+      _this.alignment,
+      _this.offset,
+      _this.duration,
+      _this.animateIn,
+      _this.animateOut,
+      _this.textDirection,
+      _this.crossAxisAlignment,
+      _this.showCloseIconOnlyWhenHovered,
+      _this.titleStyle,
+      _this.descriptionStyle,
+      _this.actionPadding,
+      _this.border,
+      _this.radius,
+      _this.shadows,
+      _this.padding,
+      _this.closeIconPosition,
+      _this.constraints,
+      _this.closeIcon,
+      _this.mainAxisAlignment,
+      _this.mainAxisSize,
     ]);
   }
 }

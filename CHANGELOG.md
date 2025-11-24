@@ -1,3 +1,7 @@
+## 0.39.11
+
+- **FIX**: `ShadAvatar` with null source.
+
 ## 0.39.10
 
 - **FIX**: Update `theme_extensions_builder` and fix merge issues in themes.

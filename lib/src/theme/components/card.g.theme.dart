@@ -61,33 +61,34 @@ mixin _$ShadCardTheme {
     MainAxisSize? columnMainAxisSize,
     Clip? clipBehavior,
   }) {
-    final a = (this as ShadCardTheme);
+    final _this = (this as ShadCardTheme);
 
     return ShadCardTheme(
-      padding: padding ?? a.padding,
-      backgroundColor: backgroundColor ?? a.backgroundColor,
-      radius: radius ?? a.radius,
-      border: border ?? a.border,
-      shadows: shadows ?? a.shadows,
-      width: width ?? a.width,
-      height: height ?? a.height,
-      rowMainAxisAlignment: rowMainAxisAlignment ?? a.rowMainAxisAlignment,
-      rowCrossAxisAlignment: rowCrossAxisAlignment ?? a.rowCrossAxisAlignment,
+      padding: padding ?? _this.padding,
+      backgroundColor: backgroundColor ?? _this.backgroundColor,
+      radius: radius ?? _this.radius,
+      border: border ?? _this.border,
+      shadows: shadows ?? _this.shadows,
+      width: width ?? _this.width,
+      height: height ?? _this.height,
+      rowMainAxisAlignment: rowMainAxisAlignment ?? _this.rowMainAxisAlignment,
+      rowCrossAxisAlignment:
+          rowCrossAxisAlignment ?? _this.rowCrossAxisAlignment,
       columnMainAxisAlignment:
-          columnMainAxisAlignment ?? a.columnMainAxisAlignment,
+          columnMainAxisAlignment ?? _this.columnMainAxisAlignment,
       columnCrossAxisAlignment:
-          columnCrossAxisAlignment ?? a.columnCrossAxisAlignment,
-      rowMainAxisSize: rowMainAxisSize ?? a.rowMainAxisSize,
-      columnMainAxisSize: columnMainAxisSize ?? a.columnMainAxisSize,
-      clipBehavior: clipBehavior ?? a.clipBehavior,
+          columnCrossAxisAlignment ?? _this.columnCrossAxisAlignment,
+      rowMainAxisSize: rowMainAxisSize ?? _this.rowMainAxisSize,
+      columnMainAxisSize: columnMainAxisSize ?? _this.columnMainAxisSize,
+      clipBehavior: clipBehavior ?? _this.clipBehavior,
     );
   }
 
   ShadCardTheme merge(ShadCardTheme? other) {
-    final current = (this as ShadCardTheme);
+    final _this = (this as ShadCardTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -98,7 +99,7 @@ mixin _$ShadCardTheme {
       padding: other.padding,
       backgroundColor: other.backgroundColor,
       radius: other.radius,
-      border: current.border?.merge(other.border) ?? other.border,
+      border: _this.border?.merge(other.border) ?? other.border,
       shadows: other.shadows,
       width: other.width,
       height: other.height,
@@ -118,48 +119,49 @@ mixin _$ShadCardTheme {
       return true;
     }
 
-    if (other is! ShadCardTheme) {
+    if (other.runtimeType != runtimeType) {
       return false;
     }
 
-    final value = (this as ShadCardTheme);
+    final _this = (this as ShadCardTheme);
+    final _other = (other as ShadCardTheme);
 
-    return other.padding == value.padding &&
-        other.backgroundColor == value.backgroundColor &&
-        other.radius == value.radius &&
-        other.border == value.border &&
-        other.shadows == value.shadows &&
-        other.width == value.width &&
-        other.height == value.height &&
-        other.rowMainAxisAlignment == value.rowMainAxisAlignment &&
-        other.rowCrossAxisAlignment == value.rowCrossAxisAlignment &&
-        other.columnMainAxisAlignment == value.columnMainAxisAlignment &&
-        other.columnCrossAxisAlignment == value.columnCrossAxisAlignment &&
-        other.rowMainAxisSize == value.rowMainAxisSize &&
-        other.columnMainAxisSize == value.columnMainAxisSize &&
-        other.clipBehavior == value.clipBehavior;
+    return _other.padding == _this.padding &&
+        _other.backgroundColor == _this.backgroundColor &&
+        _other.radius == _this.radius &&
+        _other.border == _this.border &&
+        _other.shadows == _this.shadows &&
+        _other.width == _this.width &&
+        _other.height == _this.height &&
+        _other.rowMainAxisAlignment == _this.rowMainAxisAlignment &&
+        _other.rowCrossAxisAlignment == _this.rowCrossAxisAlignment &&
+        _other.columnMainAxisAlignment == _this.columnMainAxisAlignment &&
+        _other.columnCrossAxisAlignment == _this.columnCrossAxisAlignment &&
+        _other.rowMainAxisSize == _this.rowMainAxisSize &&
+        _other.columnMainAxisSize == _this.columnMainAxisSize &&
+        _other.clipBehavior == _this.clipBehavior;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadCardTheme);
+    final _this = (this as ShadCardTheme);
 
     return Object.hash(
       runtimeType,
-      value.padding,
-      value.backgroundColor,
-      value.radius,
-      value.border,
-      value.shadows,
-      value.width,
-      value.height,
-      value.rowMainAxisAlignment,
-      value.rowCrossAxisAlignment,
-      value.columnMainAxisAlignment,
-      value.columnCrossAxisAlignment,
-      value.rowMainAxisSize,
-      value.columnMainAxisSize,
-      value.clipBehavior,
+      _this.padding,
+      _this.backgroundColor,
+      _this.radius,
+      _this.border,
+      _this.shadows,
+      _this.width,
+      _this.height,
+      _this.rowMainAxisAlignment,
+      _this.rowCrossAxisAlignment,
+      _this.columnMainAxisAlignment,
+      _this.columnCrossAxisAlignment,
+      _this.rowMainAxisSize,
+      _this.columnMainAxisSize,
+      _this.clipBehavior,
     );
   }
 }

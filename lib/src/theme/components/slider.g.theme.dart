@@ -77,34 +77,34 @@ mixin _$ShadSliderTheme {
     double? trackHeight,
     double? thumbRadius,
   }) {
-    final a = (this as ShadSliderTheme);
+    final _this = (this as ShadSliderTheme);
 
     return ShadSliderTheme(
-      min: min ?? a.min,
-      max: max ?? a.max,
-      mouseCursor: mouseCursor ?? a.mouseCursor,
-      disabledMouseCursor: disabledMouseCursor ?? a.disabledMouseCursor,
-      thumbColor: thumbColor ?? a.thumbColor,
-      disabledThumbColor: disabledThumbColor ?? a.disabledThumbColor,
-      thumbBorderColor: thumbBorderColor ?? a.thumbBorderColor,
+      min: min ?? _this.min,
+      max: max ?? _this.max,
+      mouseCursor: mouseCursor ?? _this.mouseCursor,
+      disabledMouseCursor: disabledMouseCursor ?? _this.disabledMouseCursor,
+      thumbColor: thumbColor ?? _this.thumbColor,
+      disabledThumbColor: disabledThumbColor ?? _this.disabledThumbColor,
+      thumbBorderColor: thumbBorderColor ?? _this.thumbBorderColor,
       disabledThumbBorderColor:
-          disabledThumbBorderColor ?? a.disabledThumbBorderColor,
-      activeTrackColor: activeTrackColor ?? a.activeTrackColor,
-      inactiveTrackColor: inactiveTrackColor ?? a.inactiveTrackColor,
+          disabledThumbBorderColor ?? _this.disabledThumbBorderColor,
+      activeTrackColor: activeTrackColor ?? _this.activeTrackColor,
+      inactiveTrackColor: inactiveTrackColor ?? _this.inactiveTrackColor,
       disabledActiveTrackColor:
-          disabledActiveTrackColor ?? a.disabledActiveTrackColor,
+          disabledActiveTrackColor ?? _this.disabledActiveTrackColor,
       disabledInactiveTrackColor:
-          disabledInactiveTrackColor ?? a.disabledInactiveTrackColor,
-      trackHeight: trackHeight ?? a.trackHeight,
-      thumbRadius: thumbRadius ?? a.thumbRadius,
+          disabledInactiveTrackColor ?? _this.disabledInactiveTrackColor,
+      trackHeight: trackHeight ?? _this.trackHeight,
+      thumbRadius: thumbRadius ?? _this.thumbRadius,
     );
   }
 
   ShadSliderTheme merge(ShadSliderTheme? other) {
-    final current = (this as ShadSliderTheme);
+    final _this = (this as ShadSliderTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -135,48 +135,49 @@ mixin _$ShadSliderTheme {
       return true;
     }
 
-    if (other is! ShadSliderTheme) {
+    if (other.runtimeType != runtimeType) {
       return false;
     }
 
-    final value = (this as ShadSliderTheme);
+    final _this = (this as ShadSliderTheme);
+    final _other = (other as ShadSliderTheme);
 
-    return other.min == value.min &&
-        other.max == value.max &&
-        other.mouseCursor == value.mouseCursor &&
-        other.disabledMouseCursor == value.disabledMouseCursor &&
-        other.thumbColor == value.thumbColor &&
-        other.disabledThumbColor == value.disabledThumbColor &&
-        other.thumbBorderColor == value.thumbBorderColor &&
-        other.disabledThumbBorderColor == value.disabledThumbBorderColor &&
-        other.activeTrackColor == value.activeTrackColor &&
-        other.inactiveTrackColor == value.inactiveTrackColor &&
-        other.disabledActiveTrackColor == value.disabledActiveTrackColor &&
-        other.disabledInactiveTrackColor == value.disabledInactiveTrackColor &&
-        other.trackHeight == value.trackHeight &&
-        other.thumbRadius == value.thumbRadius;
+    return _other.min == _this.min &&
+        _other.max == _this.max &&
+        _other.mouseCursor == _this.mouseCursor &&
+        _other.disabledMouseCursor == _this.disabledMouseCursor &&
+        _other.thumbColor == _this.thumbColor &&
+        _other.disabledThumbColor == _this.disabledThumbColor &&
+        _other.thumbBorderColor == _this.thumbBorderColor &&
+        _other.disabledThumbBorderColor == _this.disabledThumbBorderColor &&
+        _other.activeTrackColor == _this.activeTrackColor &&
+        _other.inactiveTrackColor == _this.inactiveTrackColor &&
+        _other.disabledActiveTrackColor == _this.disabledActiveTrackColor &&
+        _other.disabledInactiveTrackColor == _this.disabledInactiveTrackColor &&
+        _other.trackHeight == _this.trackHeight &&
+        _other.thumbRadius == _this.thumbRadius;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadSliderTheme);
+    final _this = (this as ShadSliderTheme);
 
     return Object.hash(
       runtimeType,
-      value.min,
-      value.max,
-      value.mouseCursor,
-      value.disabledMouseCursor,
-      value.thumbColor,
-      value.disabledThumbColor,
-      value.thumbBorderColor,
-      value.disabledThumbBorderColor,
-      value.activeTrackColor,
-      value.inactiveTrackColor,
-      value.disabledActiveTrackColor,
-      value.disabledInactiveTrackColor,
-      value.trackHeight,
-      value.thumbRadius,
+      _this.min,
+      _this.max,
+      _this.mouseCursor,
+      _this.disabledMouseCursor,
+      _this.thumbColor,
+      _this.disabledThumbColor,
+      _this.thumbBorderColor,
+      _this.disabledThumbBorderColor,
+      _this.activeTrackColor,
+      _this.inactiveTrackColor,
+      _this.disabledActiveTrackColor,
+      _this.disabledInactiveTrackColor,
+      _this.trackHeight,
+      _this.thumbRadius,
     );
   }
 }
