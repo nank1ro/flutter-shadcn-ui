@@ -1267,9 +1267,12 @@ class _ShadCalendarState extends State<ShadCalendar> {
         widget.captionLayoutGap ?? theme.calendarTheme.captionLayoutGap ?? 8;
 
     final effectiveHeaderTextStyle =
-        widget.headerTextStyle ??
-        theme.calendarTheme.headerTextStyle ??
-        theme.textTheme.small;
+        (widget.headerTextStyle ??
+                theme.calendarTheme.headerTextStyle ??
+                theme.textTheme.small)
+            .fallback(
+              color: theme.colorScheme.foreground,
+            );
 
     final effectiveWeekdaysPadding =
         widget.weekdaysPadding ??
@@ -1277,9 +1280,12 @@ class _ShadCalendarState extends State<ShadCalendar> {
         const EdgeInsets.only(bottom: 8);
 
     final effectiveWeekdaysTextStyle =
-        widget.weekdaysTextStyle ??
-        theme.calendarTheme.weekdaysTextStyle ??
-        theme.textTheme.muted.copyWith(fontSize: 12.8);
+        (widget.weekdaysTextStyle ??
+                theme.calendarTheme.weekdaysTextStyle ??
+                theme.textTheme.muted.copyWith(fontSize: 12.8))
+            .fallback(
+              color: theme.colorScheme.mutedForeground,
+            );
 
     final effectiveWeekdaysTextAlign =
         widget.weekdaysTextAlign ??
@@ -1308,37 +1314,46 @@ class _ShadCalendarState extends State<ShadCalendar> {
         0;
 
     final effectiveInsideRangeDayButtonTextStyle =
-        widget.insideRangeDayButtonTextStyle ??
-        theme.calendarTheme.insideRangeDayButtonTextStyle ??
-        theme.textTheme.small.copyWith(
-          color: theme.colorScheme.foreground,
-        );
+        (widget.insideRangeDayButtonTextStyle ??
+                theme.calendarTheme.insideRangeDayButtonTextStyle ??
+                theme.textTheme.small)
+            .fallback(
+              color: theme.colorScheme.foreground,
+            );
 
     final effectiveSelectedDayButtonTextStyle =
-        widget.selectedDayButtonTextStyle ??
-        theme.calendarTheme.selectedDayButtonTextStyle ??
-        theme.textTheme.small.copyWith(
-          fontWeight: FontWeight.normal,
-          color: theme.colorScheme.primaryForeground,
-        );
+        (widget.selectedDayButtonTextStyle ??
+                theme.calendarTheme.selectedDayButtonTextStyle ??
+                theme.textTheme.small.copyWith(
+                  fontWeight: FontWeight.normal,
+                ))
+            .fallback(color: theme.colorScheme.primaryForeground);
 
     final effectiveDayButtonTextStyle =
-        widget.dayButtonTextStyle ??
-        theme.calendarTheme.dayButtonTextStyle ??
-        theme.textTheme.small.copyWith(
-          fontWeight: FontWeight.normal,
-          color: theme.colorScheme.foreground,
-        );
+        (widget.dayButtonTextStyle ??
+                theme.calendarTheme.dayButtonTextStyle ??
+                theme.textTheme.small.copyWith(
+                  fontWeight: FontWeight.normal,
+                ))
+            .fallback(
+              color: theme.colorScheme.foreground,
+            );
 
     final effectiveDayButtonOutsideMonthTextStyle =
-        widget.dayButtonOutsideMonthTextStyle ??
-        theme.calendarTheme.dayButtonOutsideMonthTextStyle ??
-        theme.textTheme.muted;
+        (widget.dayButtonOutsideMonthTextStyle ??
+                theme.calendarTheme.dayButtonOutsideMonthTextStyle ??
+                theme.textTheme.muted)
+            .fallback(
+              color: theme.colorScheme.mutedForeground,
+            );
 
     final effectiveWeekNumbersTextStyle =
-        widget.weekNumbersTextStyle ??
-        theme.calendarTheme.weekNumbersTextStyle ??
-        theme.textTheme.muted.copyWith(fontSize: 12.8);
+        (widget.weekNumbersTextStyle ??
+                theme.calendarTheme.weekNumbersTextStyle ??
+                theme.textTheme.muted.copyWith(fontSize: 12.8))
+            .fallback(
+              color: theme.colorScheme.mutedForeground,
+            );
 
     final effectiveDayButtonSize =
         widget.dayButtonSize ?? theme.calendarTheme.dayButtonSize ?? 36;

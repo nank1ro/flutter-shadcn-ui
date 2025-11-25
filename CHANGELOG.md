@@ -1,3 +1,7 @@
+## 0.39.13
+
+- **FIX**: Provide more fallback colors to `ShadCalendar`.
+
 ## 0.39.12
 
 - **FIX**: `weekNumbersHeaderTextStyle` in `ShadCalendar` not having a default color.
