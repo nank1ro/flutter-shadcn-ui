@@ -9,7 +9,7 @@ class ShadAnimationBuilder extends StatefulWidget {
 
   final Duration duration;
   final Widget Function(BuildContext context, AnimationController controller)
-  builder;
+      builder;
 
   @override
   State<ShadAnimationBuilder> createState() => _ShadAnimationBuilderState();

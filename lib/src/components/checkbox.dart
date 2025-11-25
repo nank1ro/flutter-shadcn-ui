@@ -175,8 +175,7 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
 
     final effectiveSize = widget.size ?? theme.checkboxTheme.size ?? 16;
 
-    final effectiveIcon =
-        widget.icon ??
+    final effectiveIcon = widget.icon ??
         Icon(
           LucideIcons.check,
           color: theme.colorScheme.primaryForeground,
@@ -185,13 +184,11 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
 
     final effectiveDuration =
         widget.duration ?? theme.checkboxTheme.duration ?? 100.milliseconds;
-    final effectivePadding =
-        widget.padding ??
+    final effectivePadding = widget.padding ??
         theme.checkboxTheme.padding ??
         const EdgeInsetsDirectional.only(start: 8);
 
-    final effectiveCheckboxPadding =
-        widget.checkboxPadding ??
+    final effectiveCheckboxPadding = widget.checkboxPadding ??
         theme.checkboxTheme.checkboxPadding ??
         const EdgeInsets.only(top: 1);
 
@@ -242,11 +239,10 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
 
     final defaultCrossAxisAlignment =
         widget.label != null && widget.sublabel != null
-        ? CrossAxisAlignment.start
-        : CrossAxisAlignment.center;
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.center;
 
-    final effectiveCrossAxisAlignment =
-        widget.crossAxisAlignment ??
+    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
         theme.checkboxTheme.crossAxisAlignment ??
         defaultCrossAxisAlignment;
 

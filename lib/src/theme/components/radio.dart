@@ -74,5 +74,6 @@ class ShadRadioTheme with _$ShadRadioTheme {
     ShadRadioTheme? a,
     ShadRadioTheme? b,
     double t,
-  ) => _$ShadRadioTheme.lerp(a, b, t);
+  ) =>
+      _$ShadRadioTheme.lerp(a, b, t);
 }

@@ -25,9 +25,8 @@ mixin _$ShadAccordionTheme {
       iconData: t < 0.5 ? a?.iconData : b?.iconData,
       iconEffects: t < 0.5 ? a?.iconEffects : b?.iconEffects,
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      underlineTitleOnHover: t < 0.5
-          ? a?.underlineTitleOnHover
-          : b?.underlineTitleOnHover,
+      underlineTitleOnHover:
+          t < 0.5 ? a?.underlineTitleOnHover : b?.underlineTitleOnHover,
       titleStyle: TextStyle.lerp(a?.titleStyle, b?.titleStyle, t),
       curve: t < 0.5 ? a?.curve : b?.curve,
       duration: lerpDuration$(a?.duration, b?.duration, t),

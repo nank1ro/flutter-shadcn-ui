@@ -167,7 +167,7 @@ mixin _$ShadContextMenuTheme {
       textStyle: _this.textStyle?.merge(other.textStyle) ?? other.textStyle,
       trailingTextStyle:
           _this.trailingTextStyle?.merge(other.trailingTextStyle) ??
-          other.trailingTextStyle,
+              other.trailingTextStyle,
       itemConstraints: other.itemConstraints,
       subMenuPadding: other.subMenuPadding,
       backgroundColor: other.backgroundColor,

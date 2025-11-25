@@ -107,9 +107,9 @@ class ShadIconButton extends StatelessWidget {
     this.onDoubleTapCancel,
     this.longPressDuration,
   }) : assert(
-         variant != ShadButtonVariant.link,
-         "ShadIconButton doesn't support the link variant",
-       );
+          variant != ShadButtonVariant.link,
+          "ShadIconButton doesn't support the link variant",
+        );
 
   /// Creates a destructive variant icon button widget, typically for warning or
   /// error actions.

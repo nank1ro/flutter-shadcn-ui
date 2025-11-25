@@ -218,8 +218,7 @@ class _ShadPortalState extends State<ShadPortal> {
     final overlayState = Overlay.of(context, debugRequiredFor: widget);
     final overlayAncestor = overlayState.context.findRenderObject();
 
-    final ready =
-        box is RenderBox &&
+    final ready = box is RenderBox &&
         box.attached &&
         box.hasSize &&
         overlayAncestor is RenderBox &&
@@ -247,8 +246,8 @@ class _ShadPortalState extends State<ShadPortal> {
       Alignment.bottomCenter => box.size.bottomCenter(Offset.zero),
       Alignment.bottomRight => box.size.bottomRight(Offset.zero),
       final alignment => throw Exception(
-        """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
-      ),
+          """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
+        ),
     };
 
     var followerOffset = switch (anchor.followerAnchor) {
@@ -256,20 +255,20 @@ class _ShadPortalState extends State<ShadPortal> {
       Alignment.topCenter => Offset(0, -overlaySize.height),
       Alignment.topRight => Offset(overlaySize.width / 2, -overlaySize.height),
       Alignment.centerLeft => Offset(
-        -overlaySize.width / 2,
-        -overlaySize.height / 2,
-      ),
+          -overlaySize.width / 2,
+          -overlaySize.height / 2,
+        ),
       Alignment.center => Offset(0, -overlaySize.height / 2),
       Alignment.centerRight => Offset(
-        overlaySize.width / 2,
-        -overlaySize.height / 2,
-      ),
+          overlaySize.width / 2,
+          -overlaySize.height / 2,
+        ),
       Alignment.bottomLeft => Offset(-overlaySize.width / 2, 0),
       Alignment.bottomCenter => Offset.zero,
       Alignment.bottomRight => Offset(overlaySize.width / 2, 0),
       final alignment => throw Exception(
-        """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
-      ),
+          """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
+        ),
     };
 
     followerOffset += targetOffset + anchor.offset;
@@ -377,9 +376,9 @@ class _ShadPortalState extends State<ShadPortal> {
               final ShadAnchorAuto anchor => buildAutoPosition(context, anchor),
               final ShadAnchor anchor => buildManualPosition(context, anchor),
               final ShadGlobalAnchor anchor => buildGlobalPosition(
-                context,
-                anchor,
-              ),
+                  context,
+                  anchor,
+                ),
             },
           );
         },

@@ -164,5 +164,6 @@ class ShadSheetTheme with _$ShadSheetTheme {
     ShadSheetTheme? a,
     ShadSheetTheme? b,
     double t,
-  ) => _$ShadSheetTheme.lerp(a, b, t);
+  ) =>
+      _$ShadSheetTheme.lerp(a, b, t);
 }

@@ -80,9 +80,8 @@ mixin _$ShadTabsTheme {
       ),
       tabTextStyle: TextStyle.lerp(a?.tabTextStyle, b?.tabTextStyle, t),
       tabShadows: t < 0.5 ? a?.tabShadows : b?.tabShadows,
-      tabSelectedShadows: t < 0.5
-          ? a?.tabSelectedShadows
-          : b?.tabSelectedShadows,
+      tabSelectedShadows:
+          t < 0.5 ? a?.tabSelectedShadows : b?.tabSelectedShadows,
       tabSize: t < 0.5 ? a?.tabSize : b?.tabSize,
       tabCursor: t < 0.5 ? a?.tabCursor : b?.tabCursor,
       tabHoverForegroundColor: Color.lerp(
@@ -102,18 +101,14 @@ mixin _$ShadTabsTheme {
       ),
       tabGradient: Gradient.lerp(a?.tabGradient, b?.tabGradient, t),
       tabTextDecoration: t < 0.5 ? a?.tabTextDecoration : b?.tabTextDecoration,
-      tabHoverTextDecoration: t < 0.5
-          ? a?.tabHoverTextDecoration
-          : b?.tabHoverTextDecoration,
-      tabMainAxisAlignment: t < 0.5
-          ? a?.tabMainAxisAlignment
-          : b?.tabMainAxisAlignment,
-      tabCrossAxisAlignment: t < 0.5
-          ? a?.tabCrossAxisAlignment
-          : b?.tabCrossAxisAlignment,
-      tabHoverStrategies: t < 0.5
-          ? a?.tabHoverStrategies
-          : b?.tabHoverStrategies,
+      tabHoverTextDecoration:
+          t < 0.5 ? a?.tabHoverTextDecoration : b?.tabHoverTextDecoration,
+      tabMainAxisAlignment:
+          t < 0.5 ? a?.tabMainAxisAlignment : b?.tabMainAxisAlignment,
+      tabCrossAxisAlignment:
+          t < 0.5 ? a?.tabCrossAxisAlignment : b?.tabCrossAxisAlignment,
+      tabHoverStrategies:
+          t < 0.5 ? a?.tabHoverStrategies : b?.tabHoverStrategies,
       longPressDuration: lerpDuration$(
         a?.longPressDuration,
         b?.longPressDuration,
@@ -178,8 +173,7 @@ mixin _$ShadTabsTheme {
           tabSelectedBackgroundColor ?? _this.tabSelectedBackgroundColor,
       tabHoverBackgroundColor:
           tabHoverBackgroundColor ?? _this.tabHoverBackgroundColor,
-      tabSelectedHoverBackgroundColor:
-          tabSelectedHoverBackgroundColor ??
+      tabSelectedHoverBackgroundColor: tabSelectedHoverBackgroundColor ??
           _this.tabSelectedHoverBackgroundColor,
       tabPadding: tabPadding ?? _this.tabPadding,
       tabDecoration: tabDecoration ?? _this.tabDecoration,

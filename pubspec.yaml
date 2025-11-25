@@ -1,6 +1,6 @@
 name: shadcn_ui
 description: shadcn/ui ported in Flutter. Awesome UI components for Flutter, fully customizable.
-version: 0.39.13
+version: 0.39.14
 homepage: https://flutter-shadcn-ui.mariuti.com
 repository: https://github.com/nank1ro/flutter-shadcn-ui
 documentation: https://flutter-shadcn-ui.mariuti.com
@@ -11,7 +11,7 @@ topics:
   - material-alternative
 
 environment:
-  sdk: ">=3.10.0 <4.0.0"
+  sdk: ">=3.6.0 <4.0.0"
   flutter: ">=3.35.0"
 
 dependencies:

@@ -173,7 +173,8 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('ShadTab applies the correct color to the button when provided '
+    testWidgets(
+        'ShadTab applies the correct color to the button when provided '
         'from ShadTab', (tester) async {
       const redColor = Color(0xFFFF0000);
       const blueColor = Color(0xFF0000FF);
@@ -196,7 +197,8 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('ShadTab applies the correct color to the button when provided '
+    testWidgets(
+        'ShadTab applies the correct color to the button when provided '
         'from ShadTheme', (tester) async {
       const redColor = Color(0xFFFF0000);
       const blueColor = Color(0xFF0000FF);

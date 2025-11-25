@@ -64,5 +64,6 @@ class ShadTooltipTheme with _$ShadTooltipTheme {
     ShadTooltipTheme? a,
     ShadTooltipTheme? b,
     double t,
-  ) => _$ShadTooltipTheme.lerp(a, b, t);
+  ) =>
+      _$ShadTooltipTheme.lerp(a, b, t);
 }

@@ -11,12 +11,12 @@ class ShadBreakpoints {
     double lg = 1024,
     double xl = 1280,
     double xxl = 1536,
-  }) : tn = ShadBreakpointTN(tn),
-       sm = ShadBreakpointSM(sm),
-       md = ShadBreakpointMD(md),
-       lg = ShadBreakpointLG(lg),
-       xl = ShadBreakpointXL(xl),
-       xxl = ShadBreakpointXXL(xxl);
+  })  : tn = ShadBreakpointTN(tn),
+        sm = ShadBreakpointSM(sm),
+        md = ShadBreakpointMD(md),
+        lg = ShadBreakpointLG(lg),
+        xl = ShadBreakpointXL(xl),
+        xxl = ShadBreakpointXXL(xxl);
 
   final ShadBreakpoint tn;
   final ShadBreakpoint sm;
@@ -100,11 +100,10 @@ class ShadBreakpointXXL extends ShadBreakpoint {
   const ShadBreakpointXXL(super.value);
 }
 
-typedef ResponsiveWidgetBuilder =
-    Widget Function(
-      BuildContext context,
-      ShadBreakpoint breakpoint,
-    );
+typedef ResponsiveWidgetBuilder = Widget Function(
+  BuildContext context,
+  ShadBreakpoint breakpoint,
+);
 
 class ShadResponsiveBuilder extends StatelessWidget {
   const ShadResponsiveBuilder({

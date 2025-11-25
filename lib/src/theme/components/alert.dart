@@ -53,5 +53,6 @@ class ShadAlertTheme with _$ShadAlertTheme {
     ShadAlertTheme? a,
     ShadAlertTheme? b,
     double t,
-  ) => _$ShadAlertTheme.lerp(a, b, t);
+  ) =>
+      _$ShadAlertTheme.lerp(a, b, t);
 }

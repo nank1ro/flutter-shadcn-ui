@@ -18,13 +18,11 @@ mixin _$ShadTableTheme {
     }
 
     return ShadTableTheme(
-      diagonalDragBehavior: t < 0.5
-          ? a?.diagonalDragBehavior
-          : b?.diagonalDragBehavior,
+      diagonalDragBehavior:
+          t < 0.5 ? a?.diagonalDragBehavior : b?.diagonalDragBehavior,
       dragStartBehavior: t < 0.5 ? a?.dragStartBehavior : b?.dragStartBehavior,
-      keyboardDismissBehavior: t < 0.5
-          ? a?.keyboardDismissBehavior
-          : b?.keyboardDismissBehavior,
+      keyboardDismissBehavior:
+          t < 0.5 ? a?.keyboardDismissBehavior : b?.keyboardDismissBehavior,
       columnBuilder: t < 0.5 ? a?.columnBuilder : b?.columnBuilder,
       rowBuilder: t < 0.5 ? a?.rowBuilder : b?.rowBuilder,
       cellAlignment: Alignment.lerp(a?.cellAlignment, b?.cellAlignment, t),
@@ -95,12 +93,10 @@ mixin _$ShadTableTheme {
       cellAlignment: other.cellAlignment,
       cellHeight: other.cellHeight,
       cellPadding: other.cellPadding,
-      cellHeaderStyle:
-          _this.cellHeaderStyle?.merge(other.cellHeaderStyle) ??
+      cellHeaderStyle: _this.cellHeaderStyle?.merge(other.cellHeaderStyle) ??
           other.cellHeaderStyle,
       cellStyle: _this.cellStyle?.merge(other.cellStyle) ?? other.cellStyle,
-      cellFooterStyle:
-          _this.cellFooterStyle?.merge(other.cellFooterStyle) ??
+      cellFooterStyle: _this.cellFooterStyle?.merge(other.cellFooterStyle) ??
           other.cellFooterStyle,
     );
   }

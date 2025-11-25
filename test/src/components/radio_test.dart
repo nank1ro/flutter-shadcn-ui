@@ -271,9 +271,9 @@ void main() {
         matching: find.byType(DecoratedBox),
       );
       expect(decoratedBoxFinder, findsOneWidget);
-      final decoratedBox =
-          tester.widget<DecoratedBox>(decoratedBoxFinder).decoration
-              as BoxDecoration;
+      final decoratedBox = tester
+          .widget<DecoratedBox>(decoratedBoxFinder)
+          .decoration as BoxDecoration;
       expect(decoratedBox.color, customColor);
     });
 

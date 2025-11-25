@@ -1,3 +1,7 @@
+## 0.39.14
+
+- **CHORE**: Downgrade Dart SDK constraint to `3.6.0` to temporarely fix the pub dev score issue about the Dart formatter (see [#9091](https://github.com/dart-lang/pub-dev/issues/9091))
+
 ## 0.39.13
 
 - **FIX**: Provide more fallback colors to `ShadCalendar`.

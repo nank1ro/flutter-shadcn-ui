@@ -41,17 +41,15 @@ mixin _$ShadTextareaTheme {
         t,
       ),
       mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment: t < 0.5
-          ? a?.crossAxisAlignment
-          : b?.crossAxisAlignment,
+      crossAxisAlignment:
+          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
       gap: lerpDouble$(a?.gap, b?.gap, t),
       constraints: BoxConstraints.lerp(a?.constraints, b?.constraints, t),
       minHeight: lerpDouble$(a?.minHeight, b?.minHeight, t),
       maxHeight: lerpDouble$(a?.maxHeight, b?.maxHeight, t),
       resizable: t < 0.5 ? a?.resizable : b?.resizable,
-      resizeHandleBuilder: t < 0.5
-          ? a?.resizeHandleBuilder
-          : b?.resizeHandleBuilder,
+      resizeHandleBuilder:
+          t < 0.5 ? a?.resizeHandleBuilder : b?.resizeHandleBuilder,
       scrollbarPadding: EdgeInsetsGeometry.lerp(
         a?.scrollbarPadding,
         b?.scrollbarPadding,
@@ -113,8 +111,7 @@ mixin _$ShadTextareaTheme {
       decoration: other.decoration,
       padding: other.padding,
       style: _this.style?.merge(other.style) ?? other.style,
-      placeholderStyle:
-          _this.placeholderStyle?.merge(other.placeholderStyle) ??
+      placeholderStyle: _this.placeholderStyle?.merge(other.placeholderStyle) ??
           other.placeholderStyle,
       placeholderAlignment: other.placeholderAlignment,
       inputPadding: other.inputPadding,

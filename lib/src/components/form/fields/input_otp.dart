@@ -48,30 +48,26 @@ class ShadInputOTPFormField extends ShadFormBuilderField<String> {
     /// {@macro ShadInputOTP.keyboardType}
     TextInputType? keyboardType,
   }) : super(
-         validator: validator == null
-             ? null
-             : (v) => validator(v ?? ''.padRight(maxLength)),
-         onChanged: onChanged == null
-             ? null
-             : (v) => onChanged(v ?? ''.padRight(maxLength)),
-         builder: (field) {
-           final state =
-               field
-                   as ShadFormBuilderFieldState<
-                     ShadFormBuilderField<String>,
-                     String
-                   >;
-           return ShadInputOTP(
-             enabled: state.enabled,
-             keyboardType: keyboardType,
-             inputFormatters: inputFormatters,
-             gap: gap,
-             maxLength: maxLength,
-             jumpToNextWhenFilled: jumpToNextWhenFilled,
-             onChanged: state.didChange,
-             initialValue: state.initialValue,
-             children: children,
-           );
-         },
-       );
+          validator: validator == null
+              ? null
+              : (v) => validator(v ?? ''.padRight(maxLength)),
+          onChanged: onChanged == null
+              ? null
+              : (v) => onChanged(v ?? ''.padRight(maxLength)),
+          builder: (field) {
+            final state = field as ShadFormBuilderFieldState<
+                ShadFormBuilderField<String>, String>;
+            return ShadInputOTP(
+              enabled: state.enabled,
+              keyboardType: keyboardType,
+              inputFormatters: inputFormatters,
+              gap: gap,
+              maxLength: maxLength,
+              jumpToNextWhenFilled: jumpToNextWhenFilled,
+              onChanged: state.didChange,
+              initialValue: state.initialValue,
+              children: children,
+            );
+          },
+        );
 }

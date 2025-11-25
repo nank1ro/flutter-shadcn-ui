@@ -77,5 +77,6 @@ class ShadCardTheme with _$ShadCardTheme {
     ShadCardTheme? a,
     ShadCardTheme? b,
     double t,
-  ) => _$ShadCardTheme.lerp(a, b, t);
+  ) =>
+      _$ShadCardTheme.lerp(a, b, t);
 }

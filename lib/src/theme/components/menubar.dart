@@ -177,5 +177,6 @@ class ShadMenubarTheme with _$ShadMenubarTheme {
     ShadMenubarTheme? a,
     ShadMenubarTheme? b,
     double t,
-  ) => _$ShadMenubarTheme.lerp(a, b, t);
+  ) =>
+      _$ShadMenubarTheme.lerp(a, b, t);
 }

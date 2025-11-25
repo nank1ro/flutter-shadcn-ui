@@ -42,21 +42,18 @@ mixin _$ShadSelectTheme {
         b?.optionsPadding,
         t,
       ),
-      showScrollToTopChevron: t < 0.5
-          ? a?.showScrollToTopChevron
-          : b?.showScrollToTopChevron,
-      showScrollToBottomChevron: t < 0.5
-          ? a?.showScrollToBottomChevron
-          : b?.showScrollToBottomChevron,
+      showScrollToTopChevron:
+          t < 0.5 ? a?.showScrollToTopChevron : b?.showScrollToTopChevron,
+      showScrollToBottomChevron:
+          t < 0.5 ? a?.showScrollToBottomChevron : b?.showScrollToBottomChevron,
       anchor: t < 0.5 ? a?.anchor : b?.anchor,
       searchPadding: EdgeInsetsGeometry.lerp(
         a?.searchPadding,
         b?.searchPadding,
         t,
       ),
-      clearSearchOnClose: t < 0.5
-          ? a?.clearSearchOnClose
-          : b?.clearSearchOnClose,
+      clearSearchOnClose:
+          t < 0.5 ? a?.clearSearchOnClose : b?.clearSearchOnClose,
       filter: t < 0.5 ? a?.filter : b?.filter,
       effects: t < 0.5 ? a?.effects : b?.effects,
       shadows: t < 0.5 ? a?.shadows : b?.shadows,
@@ -120,8 +117,7 @@ mixin _$ShadSelectTheme {
     return copyWith(
       popoverReverseDuration: other.popoverReverseDuration,
       decoration: other.decoration,
-      placeholderStyle:
-          _this.placeholderStyle?.merge(other.placeholderStyle) ??
+      placeholderStyle: _this.placeholderStyle?.merge(other.placeholderStyle) ??
           other.placeholderStyle,
       minWidth: other.minWidth,
       maxWidth: other.maxWidth,

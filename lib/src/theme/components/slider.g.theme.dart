@@ -25,9 +25,8 @@ mixin _$ShadSliderTheme {
       min: lerpDouble$(a?.min, b?.min, t),
       max: lerpDouble$(a?.max, b?.max, t),
       mouseCursor: t < 0.5 ? a?.mouseCursor : b?.mouseCursor,
-      disabledMouseCursor: t < 0.5
-          ? a?.disabledMouseCursor
-          : b?.disabledMouseCursor,
+      disabledMouseCursor:
+          t < 0.5 ? a?.disabledMouseCursor : b?.disabledMouseCursor,
       thumbColor: Color.lerp(a?.thumbColor, b?.thumbColor, t),
       disabledThumbColor: Color.lerp(
         a?.disabledThumbColor,

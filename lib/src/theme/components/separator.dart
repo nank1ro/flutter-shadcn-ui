@@ -44,5 +44,6 @@ class ShadSeparatorTheme with _$ShadSeparatorTheme {
     ShadSeparatorTheme? a,
     ShadSeparatorTheme? b,
     double t,
-  ) => _$ShadSeparatorTheme.lerp(a, b, t);
+  ) =>
+      _$ShadSeparatorTheme.lerp(a, b, t);
 }

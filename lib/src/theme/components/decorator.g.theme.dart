@@ -67,18 +67,15 @@ mixin _$ShadDecoration {
       image: DecorationImage.lerp(a?.image, b?.image, t),
       shadows: t < 0.5 ? a?.shadows : b?.shadows,
       gradient: Gradient.lerp(a?.gradient, b?.gradient, t),
-      backgroundBlendMode: t < 0.5
-          ? a?.backgroundBlendMode
-          : b?.backgroundBlendMode,
+      backgroundBlendMode:
+          t < 0.5 ? a?.backgroundBlendMode : b?.backgroundBlendMode,
       shape: t < 0.5 ? a?.shape : b?.shape,
       hasError: t < 0.5 ? a?.hasError : b?.hasError,
-      disableSecondaryBorder: t < 0.5
-          ? a?.disableSecondaryBorder
-          : b?.disableSecondaryBorder,
+      disableSecondaryBorder:
+          t < 0.5 ? a?.disableSecondaryBorder : b?.disableSecondaryBorder,
       fallbackToBorder: t < 0.5 ? a?.fallbackToBorder : b?.fallbackToBorder,
-      fallbackToLabelStyle: t < 0.5
-          ? a?.fallbackToLabelStyle
-          : b?.fallbackToLabelStyle,
+      fallbackToLabelStyle:
+          t < 0.5 ? a?.fallbackToLabelStyle : b?.fallbackToLabelStyle,
     );
   }
 
@@ -151,27 +148,23 @@ mixin _$ShadDecoration {
 
     return copyWith(
       labelStyle: _this.labelStyle?.merge(other.labelStyle) ?? other.labelStyle,
-      errorLabelStyle:
-          _this.errorLabelStyle?.merge(other.errorLabelStyle) ??
+      errorLabelStyle: _this.errorLabelStyle?.merge(other.errorLabelStyle) ??
           other.errorLabelStyle,
       border: _this.border?.merge(other.border) ?? other.border,
-      focusedBorder:
-          _this.focusedBorder?.merge(other.focusedBorder) ??
+      focusedBorder: _this.focusedBorder?.merge(other.focusedBorder) ??
           other.focusedBorder,
       errorBorder:
           _this.errorBorder?.merge(other.errorBorder) ?? other.errorBorder,
-      secondaryBorder:
-          _this.secondaryBorder?.merge(other.secondaryBorder) ??
+      secondaryBorder: _this.secondaryBorder?.merge(other.secondaryBorder) ??
           other.secondaryBorder,
       secondaryFocusedBorder:
           _this.secondaryFocusedBorder?.merge(other.secondaryFocusedBorder) ??
-          other.secondaryFocusedBorder,
+              other.secondaryFocusedBorder,
       secondaryErrorBorder:
           _this.secondaryErrorBorder?.merge(other.secondaryErrorBorder) ??
-          other.secondaryErrorBorder,
+              other.secondaryErrorBorder,
       errorStyle: _this.errorStyle?.merge(other.errorStyle) ?? other.errorStyle,
-      descriptionStyle:
-          _this.descriptionStyle?.merge(other.descriptionStyle) ??
+      descriptionStyle: _this.descriptionStyle?.merge(other.descriptionStyle) ??
           other.descriptionStyle,
       labelPadding: other.labelPadding,
       descriptionPadding: other.descriptionPadding,

@@ -95,11 +95,11 @@ class ShadTextarea extends StatefulWidget {
     this.trailing,
     this.onLineCountChange,
     this.verticalGap,
-  }) : enableInteractiveSelection = enableInteractiveSelection ?? !readOnly,
-       assert(
-         initialValue == null || controller == null,
-         'Either initialValue or controller must be specified',
-       );
+  })  : enableInteractiveSelection = enableInteractiveSelection ?? !readOnly,
+        assert(
+          initialValue == null || controller == null,
+          'Either initialValue or controller must be specified',
+        );
 
   /// {@template ShadTextarea.initialValue}
   /// The initial text value of the textarea.
@@ -527,11 +527,10 @@ class _ShadTextareaState extends State<ShadTextarea> {
 
     final effectiveDecoration =
         (theme.textareaTheme.decoration ?? const ShadDecoration()).merge(
-          widget.decoration,
-        );
+      widget.decoration,
+    );
 
-    final effectivePadding =
-        widget.padding ??
+    final effectivePadding = widget.padding ??
         theme.inputTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
@@ -542,23 +541,19 @@ class _ShadTextareaState extends State<ShadTextarea> {
         .merge(theme.inputTheme.placeholderStyle)
         .merge(widget.placeholderStyle);
 
-    final effectivePlaceholderAlignment =
-        widget.placeholderAlignment ??
+    final effectivePlaceholderAlignment = widget.placeholderAlignment ??
         theme.inputTheme.placeholderAlignment ??
         AlignmentDirectional.topStart;
 
-    final effectiveAlignment =
-        widget.alignment ??
+    final effectiveAlignment = widget.alignment ??
         theme.inputTheme.alignment ??
         AlignmentDirectional.topStart;
 
-    final effectiveMainAxisAlignment =
-        widget.mainAxisAlignment ??
+    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
         theme.inputTheme.mainAxisAlignment ??
         MainAxisAlignment.start;
 
-    final effectiveCrossAxisAlignment =
-        widget.crossAxisAlignment ??
+    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
         theme.inputTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
     final effectiveMouseCursor =
@@ -575,14 +570,12 @@ class _ShadTextareaState extends State<ShadTextarea> {
     );
     final maxFontSizeScaled = textScaler.scale(maxFontSize);
 
-    final effectiveConstraints =
-        widget.constraints ??
+    final effectiveConstraints = widget.constraints ??
         BoxConstraints(
           minHeight: maxFontSizeScaled,
         );
 
-    final effectiveScrollbarPadding =
-        widget.scrollbarPadding ??
+    final effectiveScrollbarPadding = widget.scrollbarPadding ??
         theme.textareaTheme.scrollbarPadding ??
         const EdgeInsets.only(bottom: 10);
 

@@ -165,5 +165,6 @@ class ShadTabsTheme with _$ShadTabsTheme {
     ShadTabsTheme? a,
     ShadTabsTheme? b,
     double t,
-  ) => _$ShadTabsTheme.lerp(a, b, t);
+  ) =>
+      _$ShadTabsTheme.lerp(a, b, t);
 }

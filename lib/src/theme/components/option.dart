@@ -35,5 +35,6 @@ class ShadOptionTheme with _$ShadOptionTheme {
     ShadOptionTheme? a,
     ShadOptionTheme? b,
     double t,
-  ) => _$ShadOptionTheme.lerp(a, b, t);
+  ) =>
+      _$ShadOptionTheme.lerp(a, b, t);
 }

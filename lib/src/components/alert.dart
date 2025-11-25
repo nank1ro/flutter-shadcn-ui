@@ -202,8 +202,7 @@ class ShadAlert extends StatelessWidget {
         ? theme.primaryAlertTheme
         : theme.destructiveAlertTheme;
 
-    final effectiveIconPadding =
-        iconPadding ??
+    final effectiveIconPadding = iconPadding ??
         effectiveAlertTheme.iconPadding ??
         const EdgeInsetsDirectional.only(end: 12);
 
@@ -219,8 +218,7 @@ class ShadAlert extends StatelessWidget {
         .merge(effectiveAlertTheme.decoration)
         .merge(decoration);
 
-    final effectiveIconColor =
-        iconColor ??
+    final effectiveIconColor = iconColor ??
         effectiveAlertTheme.iconColor ??
         theme.colorScheme.foreground;
 
@@ -248,18 +246,15 @@ class ShadAlert extends StatelessWidget {
         .merge(effectiveAlertTheme.titleStyle)
         .merge(titleStyle);
 
-    final effectiveDescriptionStyle =
-        descriptionStyle ??
+    final effectiveDescriptionStyle = descriptionStyle ??
         effectiveAlertTheme.descriptionStyle ??
         theme.textTheme.muted.copyWith(color: theme.colorScheme.foreground);
 
-    final effectiveMainAxisAlignment =
-        mainAxisAlignment ??
+    final effectiveMainAxisAlignment = mainAxisAlignment ??
         effectiveAlertTheme.mainAxisAlignment ??
         MainAxisAlignment.start;
 
-    final effectiveCrossAxisAlignment =
-        crossAxisAlignment ??
+    final effectiveCrossAxisAlignment = crossAxisAlignment ??
         effectiveAlertTheme.crossAxisAlignment ??
         CrossAxisAlignment.start;
 
@@ -269,14 +264,14 @@ class ShadAlert extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          ?top,
+          if (top != null) top!,
           Row(
             crossAxisAlignment: effectiveCrossAxisAlignment,
             mainAxisAlignment: effectiveMainAxisAlignment,
             textDirection: textDirection,
             children: [
-              ?leading,
-              ?effectiveIcon,
+              if (leading != null) leading!,
+              if (effectiveIcon != null) effectiveIcon,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,10 +290,10 @@ class ShadAlert extends StatelessWidget {
                   ],
                 ),
               ),
-              ?trailing,
+              if (trailing != null) trailing!,
             ],
           ),
-          ?bottom,
+          if (bottom != null) bottom!,
         ],
       ),
     );

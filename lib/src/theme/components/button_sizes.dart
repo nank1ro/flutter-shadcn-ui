@@ -62,5 +62,6 @@ class ShadButtonSizesTheme with _$ShadButtonSizesTheme {
     ShadButtonSizesTheme? a,
     ShadButtonSizesTheme? b,
     double t,
-  ) => _$ShadButtonSizesTheme.lerp(a, b, t);
+  ) =>
+      _$ShadButtonSizesTheme.lerp(a, b, t);
 }

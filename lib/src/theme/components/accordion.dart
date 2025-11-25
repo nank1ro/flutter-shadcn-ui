@@ -57,5 +57,6 @@ class ShadAccordionTheme with _$ShadAccordionTheme {
     ShadAccordionTheme? a,
     ShadAccordionTheme? b,
     double t,
-  ) => _$ShadAccordionTheme.lerp(a, b, t);
+  ) =>
+      _$ShadAccordionTheme.lerp(a, b, t);
 }

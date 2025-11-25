@@ -50,9 +50,8 @@ mixin _$ShadButtonTheme {
       shadows: t < 0.5 ? a?.shadows : b?.shadows,
       gradient: Gradient.lerp(a?.gradient, b?.gradient, t),
       textDecoration: t < 0.5 ? a?.textDecoration : b?.textDecoration,
-      hoverTextDecoration: t < 0.5
-          ? a?.hoverTextDecoration
-          : b?.hoverTextDecoration,
+      hoverTextDecoration:
+          t < 0.5 ? a?.hoverTextDecoration : b?.hoverTextDecoration,
       decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
       width: lerpDouble$(a?.width, b?.width, t),
       height: lerpDouble$(a?.height, b?.height, t),
@@ -63,9 +62,8 @@ mixin _$ShadButtonTheme {
       ),
       hoverStrategies: t < 0.5 ? a?.hoverStrategies : b?.hoverStrategies,
       mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment: t < 0.5
-          ? a?.crossAxisAlignment
-          : b?.crossAxisAlignment,
+      crossAxisAlignment:
+          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
       textDirection: t < 0.5 ? a?.textDirection : b?.textDirection,
       gap: lerpDouble$(a?.gap, b?.gap, t),
       expands: t < 0.5 ? a?.expands : b?.expands,

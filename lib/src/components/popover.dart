@@ -64,9 +64,9 @@ class ShadPopover extends StatefulWidget {
     this.areaGroupId,
     this.useSameGroupIdForChild = true,
   }) : assert(
-         (controller != null) ^ (visible != null),
-         'Either controller or visible must be provided',
-       );
+          (controller != null) ^ (visible != null),
+          'Either controller or visible must be provided',
+        );
 
   /// {@template ShadPopover.popover}
   /// The widget displayed as a popover.
@@ -251,8 +251,7 @@ class _ShadPopoverState extends State<ShadPopover>
 
     final effectiveEffects = widget.effects ?? theme.popoverTheme.effects ?? [];
 
-    final effectivePadding =
-        widget.padding ??
+    final effectivePadding = widget.padding ??
         theme.popoverTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 6);
 
@@ -270,8 +269,7 @@ class _ShadPopoverState extends State<ShadPopover>
       ),
     );
 
-    final effectiveAnchor =
-        widget.anchor ??
+    final effectiveAnchor = widget.anchor ??
         theme.popoverTheme.anchor ??
         const ShadAnchorAuto(offset: Offset(0, 4));
 

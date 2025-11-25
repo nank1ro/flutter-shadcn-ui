@@ -145,9 +145,8 @@ mixin _$ShadThemeData {
         t,
       )!,
       hoverStrategies: t < 0.5 ? a?.hoverStrategies : b?.hoverStrategies,
-      disableSecondaryBorder: t < 0.5
-          ? a?.disableSecondaryBorder
-          : b?.disableSecondaryBorder,
+      disableSecondaryBorder:
+          t < 0.5 ? a?.disableSecondaryBorder : b?.disableSecondaryBorder,
       tabsTheme: ShadTabsTheme.lerp(a?.tabsTheme, b?.tabsTheme, t)!,
       contextMenuTheme: ShadContextMenuTheme.lerp(
         a?.contextMenuTheme,

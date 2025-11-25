@@ -28,9 +28,8 @@ mixin _$ShadAlertTheme {
         t,
       ),
       mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment: t < 0.5
-          ? a?.crossAxisAlignment
-          : b?.crossAxisAlignment,
+      crossAxisAlignment:
+          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
       iconSize: lerpDouble$(a?.iconSize, b?.iconSize, t),
     );
   }
@@ -75,8 +74,7 @@ mixin _$ShadAlertTheme {
       iconPadding: other.iconPadding,
       iconColor: other.iconColor,
       titleStyle: _this.titleStyle?.merge(other.titleStyle) ?? other.titleStyle,
-      descriptionStyle:
-          _this.descriptionStyle?.merge(other.descriptionStyle) ??
+      descriptionStyle: _this.descriptionStyle?.merge(other.descriptionStyle) ??
           other.descriptionStyle,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,

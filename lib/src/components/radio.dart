@@ -10,8 +10,8 @@ import 'package:shadcn_ui/src/utils/provider.dart';
 
 class ShadRadioController<T> extends ValueNotifier<T?> {
   ShadRadioController({T? value, bool enabled = true})
-    : _enabled = enabled,
-      super(value);
+      : _enabled = enabled,
+        super(value);
 
   late bool _enabled;
   bool get enabled => _enabled;
@@ -172,12 +172,10 @@ class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
         widget.runSpacing ?? theme.radioTheme.runSpacing ?? 0;
     final effectiveAlignment =
         widget.alignment ?? theme.radioTheme.alignment ?? WrapAlignment.start;
-    final effectiveRunAlignment =
-        widget.runAlignment ??
+    final effectiveRunAlignment = widget.runAlignment ??
         theme.radioTheme.runAlignment ??
         WrapAlignment.start;
-    final effectiveWrapCrossAlignment =
-        widget.crossAxisAlignment ??
+    final effectiveWrapCrossAlignment = widget.crossAxisAlignment ??
         theme.radioTheme.crossAxisAlignment ??
         WrapCrossAlignment.start;
 
@@ -331,8 +329,8 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
 
     final effectiveDecoration =
         (theme.radioTheme.decoration ?? const ShadDecoration()).merge(
-          widget.decoration,
-        );
+      widget.decoration,
+    );
 
     final effectiveSize = widget.size ?? theme.radioTheme.size ?? 16;
     final effectiveCircleSize =
@@ -341,13 +339,11 @@ class _ShadRadioState<T> extends State<ShadRadio<T>> {
         widget.color ?? theme.radioTheme.color ?? theme.colorScheme.primary;
     final effectiveDuration =
         widget.duration ?? theme.radioTheme.duration ?? 100.milliseconds;
-    final effectivePadding =
-        widget.padding ??
+    final effectivePadding = widget.padding ??
         theme.radioTheme.padding ??
         const EdgeInsetsDirectional.only(start: 8);
 
-    final effectiveRadioPadding =
-        widget.radioPadding ??
+    final effectiveRadioPadding = widget.radioPadding ??
         theme.radioTheme.radioPadding ??
         const EdgeInsets.only(top: 1);
 

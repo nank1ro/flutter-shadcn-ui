@@ -97,19 +97,19 @@ class ShadSeparator extends StatelessWidget {
       padding: effectiveMargin,
       child: switch (variant) {
         ShadSeparatorVariant.vertical => DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border(left: borderSide),
-            borderRadius: radius,
+            decoration: BoxDecoration(
+              border: Border(left: borderSide),
+              borderRadius: radius,
+            ),
+            child: SizedBox(width: effectiveThickness, height: double.infinity),
           ),
-          child: SizedBox(width: effectiveThickness, height: double.infinity),
-        ),
         ShadSeparatorVariant.horizontal => DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border(bottom: borderSide),
-            borderRadius: radius,
+            decoration: BoxDecoration(
+              border: Border(bottom: borderSide),
+              borderRadius: radius,
+            ),
+            child: SizedBox(height: effectiveThickness, width: double.infinity),
           ),
-          child: SizedBox(height: effectiveThickness, width: double.infinity),
-        ),
       },
     );
   }

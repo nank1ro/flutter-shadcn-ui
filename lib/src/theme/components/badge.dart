@@ -44,5 +44,6 @@ class ShadBadgeTheme with _$ShadBadgeTheme {
     ShadBadgeTheme? a,
     ShadBadgeTheme? b,
     double t,
-  ) => _$ShadBadgeTheme.lerp(a, b, t);
+  ) =>
+      _$ShadBadgeTheme.lerp(a, b, t);
 }

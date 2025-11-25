@@ -25,14 +25,12 @@ mixin _$ShadTimePickerTheme {
       axis: t < 0.5 ? a?.axis : b?.axis,
       spacing: lerpDouble$(a?.spacing, b?.spacing, t),
       runSpacing: lerpDouble$(a?.runSpacing, b?.runSpacing, t),
-      jumpToNextFieldWhenFilled: t < 0.5
-          ? a?.jumpToNextFieldWhenFilled
-          : b?.jumpToNextFieldWhenFilled,
+      jumpToNextFieldWhenFilled:
+          t < 0.5 ? a?.jumpToNextFieldWhenFilled : b?.jumpToNextFieldWhenFilled,
       alignment: t < 0.5 ? a?.alignment : b?.alignment,
       runAlignment: t < 0.5 ? a?.runAlignment : b?.runAlignment,
-      crossAxisAlignment: t < 0.5
-          ? a?.crossAxisAlignment
-          : b?.crossAxisAlignment,
+      crossAxisAlignment:
+          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
       initialDayPeriod: t < 0.5 ? a?.initialDayPeriod : b?.initialDayPeriod,
       periodHeight: lerpDouble$(a?.periodHeight, b?.periodHeight, t),
       periodMinWidth: lerpDouble$(a?.periodMinWidth, b?.periodMinWidth, t),
@@ -156,8 +154,7 @@ mixin _$ShadTimePickerTheme {
       periodMinWidth: other.periodMinWidth,
       gap: other.gap,
       style: _this.style?.merge(other.style) ?? other.style,
-      placeholderStyle:
-          _this.placeholderStyle?.merge(other.placeholderStyle) ??
+      placeholderStyle: _this.placeholderStyle?.merge(other.placeholderStyle) ??
           other.placeholderStyle,
       labelStyle: _this.labelStyle?.merge(other.labelStyle) ?? other.labelStyle,
       fieldWidth: other.fieldWidth,

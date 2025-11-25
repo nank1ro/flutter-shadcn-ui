@@ -76,5 +76,6 @@ class ShadSliderTheme with _$ShadSliderTheme {
     ShadSliderTheme? a,
     ShadSliderTheme? b,
     double t,
-  ) => _$ShadSliderTheme.lerp(a, b, t);
+  ) =>
+      _$ShadSliderTheme.lerp(a, b, t);
 }

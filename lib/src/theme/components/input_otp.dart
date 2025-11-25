@@ -62,5 +62,6 @@ class ShadInputOTPTheme with _$ShadInputOTPTheme {
     ShadInputOTPTheme? a,
     ShadInputOTPTheme? b,
     double t,
-  ) => _$ShadInputOTPTheme.lerp(a, b, t);
+  ) =>
+      _$ShadInputOTPTheme.lerp(a, b, t);
 }

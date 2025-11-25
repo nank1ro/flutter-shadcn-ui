@@ -12,9 +12,9 @@ class SizeEffect extends Effect<double> {
     double? begin,
     double? end,
   }) : super(
-         begin: begin ?? (end == null ? defaultValue : neutralValue),
-         end: end ?? neutralValue,
-       );
+          begin: begin ?? (end == null ? defaultValue : neutralValue),
+          end: end ?? neutralValue,
+        );
 
   @override
   Widget build(
@@ -43,9 +43,9 @@ class PaddingEffect extends Effect<double> {
     double? begin,
     double? end,
   }) : super(
-         begin: begin ?? (end == null ? defaultValue : neutralValue),
-         end: end ?? neutralValue,
-       );
+          begin: begin ?? (end == null ? defaultValue : neutralValue),
+          end: end ?? neutralValue,
+        );
 
   @override
   Widget build(

@@ -22,9 +22,8 @@ mixin _$ShadSonnerTheme {
     }
 
     return ShadSonnerTheme(
-      visibleToastsAmount: t < 0.5
-          ? a?.visibleToastsAmount
-          : b?.visibleToastsAmount,
+      visibleToastsAmount:
+          t < 0.5 ? a?.visibleToastsAmount : b?.visibleToastsAmount,
       alignment: AlignmentGeometry.lerp(a?.alignment, b?.alignment, t),
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
       expandedGap: lerpDouble$(a?.expandedGap, b?.expandedGap, t),

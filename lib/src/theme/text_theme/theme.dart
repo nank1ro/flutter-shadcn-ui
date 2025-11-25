@@ -35,28 +35,27 @@ extension OmitFamilyAndPackageExtension on TextStyle {
   }
 }
 
-typedef GoogleFontBuilder =
-    TextStyle Function({
-      TextStyle? textStyle,
-      Color? color,
-      Color? backgroundColor,
-      double? fontSize,
-      FontWeight? fontWeight,
-      FontStyle? fontStyle,
-      double? letterSpacing,
-      double? wordSpacing,
-      TextBaseline? textBaseline,
-      double? height,
-      Locale? locale,
-      Paint? foreground,
-      Paint? background,
-      List<ui.Shadow>? shadows,
-      List<ui.FontFeature>? fontFeatures,
-      TextDecoration? decoration,
-      Color? decorationColor,
-      TextDecorationStyle? decorationStyle,
-      double? decorationThickness,
-    });
+typedef GoogleFontBuilder = TextStyle Function({
+  TextStyle? textStyle,
+  Color? color,
+  Color? backgroundColor,
+  double? fontSize,
+  FontWeight? fontWeight,
+  FontStyle? fontStyle,
+  double? letterSpacing,
+  double? wordSpacing,
+  TextBaseline? textBaseline,
+  double? height,
+  Locale? locale,
+  Paint? foreground,
+  Paint? background,
+  List<ui.Shadow>? shadows,
+  List<ui.FontFeature>? fontFeatures,
+  TextDecoration? decoration,
+  Color? decorationColor,
+  TextDecorationStyle? decorationStyle,
+  double? decorationThickness,
+});
 
 // Workaround for google fonts, see https://github.com/material-foundation/flutter-packages/issues/35
 class GoogleFontTextStyle extends TextStyle {
@@ -65,44 +64,43 @@ class GoogleFontTextStyle extends TextStyle {
     required this.builder,
     this.overrideFamilyWithBuilder = false,
   }) : super(
-         inherit: textStyle.inherit,
-         color: textStyle.color,
-         backgroundColor: textStyle.backgroundColor,
-         fontSize: textStyle.fontSize,
-         fontWeight: textStyle.fontWeight,
-         fontStyle: textStyle.fontStyle,
-         letterSpacing: textStyle.letterSpacing,
-         wordSpacing: textStyle.wordSpacing,
-         textBaseline: textStyle.textBaseline,
-         height: textStyle.height,
-         leadingDistribution: textStyle.leadingDistribution,
-         locale: textStyle.locale,
-         foreground: textStyle.foreground,
-         background: textStyle.background,
-         shadows: textStyle.shadows,
-         fontFeatures: textStyle.fontFeatures,
-         fontVariations: textStyle.fontVariations,
-         decoration: textStyle.decoration,
-         decorationColor: textStyle.decorationColor,
-         decorationStyle: textStyle.decorationStyle,
-         decorationThickness: textStyle.decorationThickness,
-         debugLabel: textStyle.debugLabel,
-         fontFamily: overrideFamilyWithBuilder
-             ? builder(
-                 fontWeight: textStyle.fontWeight,
-                 fontStyle: textStyle.fontStyle,
-               ).fontFamily
-             : textStyle.fontFamily ??
-                   ((textStyle.fontWeight != null ||
-                           textStyle.fontStyle != null)
-                       ? builder(
-                           fontWeight: textStyle.fontWeight,
-                           fontStyle: textStyle.fontStyle,
-                         ).fontFamily
-                       : null),
-         fontFamilyFallback: textStyle.fontFamilyFallback,
-         overflow: textStyle.overflow,
-       );
+          inherit: textStyle.inherit,
+          color: textStyle.color,
+          backgroundColor: textStyle.backgroundColor,
+          fontSize: textStyle.fontSize,
+          fontWeight: textStyle.fontWeight,
+          fontStyle: textStyle.fontStyle,
+          letterSpacing: textStyle.letterSpacing,
+          wordSpacing: textStyle.wordSpacing,
+          textBaseline: textStyle.textBaseline,
+          height: textStyle.height,
+          leadingDistribution: textStyle.leadingDistribution,
+          locale: textStyle.locale,
+          foreground: textStyle.foreground,
+          background: textStyle.background,
+          shadows: textStyle.shadows,
+          fontFeatures: textStyle.fontFeatures,
+          fontVariations: textStyle.fontVariations,
+          decoration: textStyle.decoration,
+          decorationColor: textStyle.decorationColor,
+          decorationStyle: textStyle.decorationStyle,
+          decorationThickness: textStyle.decorationThickness,
+          debugLabel: textStyle.debugLabel,
+          fontFamily: overrideFamilyWithBuilder
+              ? builder(
+                  fontWeight: textStyle.fontWeight,
+                  fontStyle: textStyle.fontStyle,
+                ).fontFamily
+              : textStyle.fontFamily ??
+                  ((textStyle.fontWeight != null || textStyle.fontStyle != null)
+                      ? builder(
+                          fontWeight: textStyle.fontWeight,
+                          fontStyle: textStyle.fontStyle,
+                        ).fontFamily
+                      : null),
+          fontFamilyFallback: textStyle.fontFamilyFallback,
+          overflow: textStyle.overflow,
+        );
 
   final GoogleFontBuilder builder;
   final bool overrideFamilyWithBuilder;
@@ -136,8 +134,7 @@ class GoogleFontTextStyle extends TextStyle {
     String? package,
     TextOverflow? overflow,
   }) {
-    var family =
-        fontFamily ??
+    var family = fontFamily ??
         ((fontWeight != null || fontStyle != null)
             ? builder(fontWeight: fontWeight, fontStyle: fontStyle).fontFamily
             : null);
@@ -211,8 +208,7 @@ class ShadTextTheme {
       h3: h3 ?? ShadTextDefaultTheme.h3(family: effectiveFamily),
       h4: h4 ?? ShadTextDefaultTheme.h4(family: effectiveFamily),
       p: p ?? ShadTextDefaultTheme.p(family: effectiveFamily),
-      blockquote:
-          blockquote ??
+      blockquote: blockquote ??
           ShadTextDefaultTheme.blockquote(family: effectiveFamily),
       table: table ?? ShadTextDefaultTheme.table(family: effectiveFamily),
       list: list ?? ShadTextDefaultTheme.list(family: effectiveFamily),
@@ -365,8 +361,7 @@ class ShadTextTheme {
     late final String effectiveFamily;
     if (package != null && package.isNotEmpty) {
       final alreadyPrefixed = baseFamily.startsWith('packages/');
-      effectiveFamily =
-          !alreadyPrefixed //
+      effectiveFamily = !alreadyPrefixed //
           ? 'packages/$package/$baseFamily'
           : baseFamily;
     } else {

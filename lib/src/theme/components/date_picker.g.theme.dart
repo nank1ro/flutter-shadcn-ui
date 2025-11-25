@@ -123,9 +123,8 @@ mixin _$ShadDatePickerTheme {
         t,
       ),
       weekdaysTextAlign: t < 0.5 ? a?.weekdaysTextAlign : b?.weekdaysTextAlign,
-      weekNumbersHeaderText: t < 0.5
-          ? a?.weekNumbersHeaderText
-          : b?.weekNumbersHeaderText,
+      weekNumbersHeaderText:
+          t < 0.5 ? a?.weekNumbersHeaderText : b?.weekNumbersHeaderText,
       weekNumbersHeaderTextStyle: TextStyle.lerp(
         a?.weekNumbersHeaderTextStyle,
         b?.weekNumbersHeaderTextStyle,
@@ -136,9 +135,8 @@ mixin _$ShadDatePickerTheme {
         b?.weekNumbersTextStyle,
         t,
       ),
-      weekNumbersTextAlign: t < 0.5
-          ? a?.weekNumbersTextAlign
-          : b?.weekNumbersTextAlign,
+      weekNumbersTextAlign:
+          t < 0.5 ? a?.weekNumbersTextAlign : b?.weekNumbersTextAlign,
       dayButtonSize: lerpDouble$(a?.dayButtonSize, b?.dayButtonSize, t),
       dayButtonOutsideMonthOpacity: lerpDouble$(
         a?.dayButtonOutsideMonthOpacity,
@@ -171,15 +169,13 @@ mixin _$ShadDatePickerTheme {
         t,
       ),
       dayButtonVariant: t < 0.5 ? a?.dayButtonVariant : b?.dayButtonVariant,
-      selectedDayButtonVariant: t < 0.5
-          ? a?.selectedDayButtonVariant
-          : b?.selectedDayButtonVariant,
+      selectedDayButtonVariant:
+          t < 0.5 ? a?.selectedDayButtonVariant : b?.selectedDayButtonVariant,
       insideRangeDayButtonVariant: t < 0.5
           ? a?.insideRangeDayButtonVariant
           : b?.insideRangeDayButtonVariant,
-      todayButtonVariant: t < 0.5
-          ? a?.todayButtonVariant
-          : b?.todayButtonVariant,
+      todayButtonVariant:
+          t < 0.5 ? a?.todayButtonVariant : b?.todayButtonVariant,
       gridMainAxisSpacing: lerpDouble$(
         a?.gridMainAxisSpacing,
         b?.gridMainAxisSpacing,
@@ -265,9 +261,8 @@ mixin _$ShadDatePickerTheme {
       buttonShadows: t < 0.5 ? a?.buttonShadows : b?.buttonShadows,
       gradient: Gradient.lerp(a?.gradient, b?.gradient, t),
       textDecoration: t < 0.5 ? a?.textDecoration : b?.textDecoration,
-      hoverTextDecoration: t < 0.5
-          ? a?.hoverTextDecoration
-          : b?.hoverTextDecoration,
+      hoverTextDecoration:
+          t < 0.5 ? a?.hoverTextDecoration : b?.hoverTextDecoration,
       buttonDecoration: ShadDecoration.lerp(
         a?.buttonDecoration,
         b?.buttonDecoration,
@@ -282,9 +277,8 @@ mixin _$ShadDatePickerTheme {
       ),
       hoverStrategies: t < 0.5 ? a?.hoverStrategies : b?.hoverStrategies,
       mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment: t < 0.5
-          ? a?.crossAxisAlignment
-          : b?.crossAxisAlignment,
+      crossAxisAlignment:
+          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
       textDirection: t < 0.5 ? a?.textDirection : b?.textDirection,
       gap: lerpDouble$(a?.gap, b?.gap, t),
       buttonPadding: EdgeInsetsGeometry.lerp(
@@ -410,13 +404,11 @@ mixin _$ShadDatePickerTheme {
           navigationButtonIconSize ?? _this.navigationButtonIconSize,
       backNavigationButtonIconData:
           backNavigationButtonIconData ?? _this.backNavigationButtonIconData,
-      forwardNavigationButtonIconData:
-          forwardNavigationButtonIconData ??
+      forwardNavigationButtonIconData: forwardNavigationButtonIconData ??
           _this.forwardNavigationButtonIconData,
       navigationButtonPadding:
           navigationButtonPadding ?? _this.navigationButtonPadding,
-      navigationButtonDisabledOpacity:
-          navigationButtonDisabledOpacity ??
+      navigationButtonDisabledOpacity: navigationButtonDisabledOpacity ??
           _this.navigationButtonDisabledOpacity,
       calendarDecoration: calendarDecoration ?? _this.calendarDecoration,
       spacingBetweenMonths: spacingBetweenMonths ?? _this.spacingBetweenMonths,
@@ -456,14 +448,13 @@ mixin _$ShadDatePickerTheme {
       todayButtonVariant: todayButtonVariant ?? _this.todayButtonVariant,
       gridMainAxisSpacing: gridMainAxisSpacing ?? _this.gridMainAxisSpacing,
       gridCrossAxisSpacing: gridCrossAxisSpacing ?? _this.gridCrossAxisSpacing,
-      dayButtonOutsideMonthTextStyle:
-          dayButtonOutsideMonthTextStyle ??
+      dayButtonOutsideMonthTextStyle: dayButtonOutsideMonthTextStyle ??
           _this.dayButtonOutsideMonthTextStyle,
       dayButtonOutsideMonthVariant:
           dayButtonOutsideMonthVariant ?? _this.dayButtonOutsideMonthVariant,
       selectedDayButtonOusideMonthVariant:
           selectedDayButtonOusideMonthVariant ??
-          _this.selectedDayButtonOusideMonthVariant,
+              _this.selectedDayButtonOusideMonthVariant,
       captionLayout: captionLayout ?? _this.captionLayout,
       hideWeekdayNames: hideWeekdayNames ?? _this.hideWeekdayNames,
       showOutsideDays: showOutsideDays ?? _this.showOutsideDays,
@@ -551,39 +542,36 @@ mixin _$ShadDatePickerTheme {
       captionLayoutGap: other.captionLayoutGap,
       calendarHeaderTextStyle:
           _this.calendarHeaderTextStyle?.merge(other.calendarHeaderTextStyle) ??
-          other.calendarHeaderTextStyle,
+              other.calendarHeaderTextStyle,
       weekdaysPadding: other.weekdaysPadding,
       weekdaysTextStyle:
           _this.weekdaysTextStyle?.merge(other.weekdaysTextStyle) ??
-          other.weekdaysTextStyle,
+              other.weekdaysTextStyle,
       weekdaysTextAlign: other.weekdaysTextAlign,
       weekNumbersHeaderText: other.weekNumbersHeaderText,
-      weekNumbersHeaderTextStyle:
-          _this.weekNumbersHeaderTextStyle?.merge(
+      weekNumbersHeaderTextStyle: _this.weekNumbersHeaderTextStyle?.merge(
             other.weekNumbersHeaderTextStyle,
           ) ??
           other.weekNumbersHeaderTextStyle,
       weekNumbersTextStyle:
           _this.weekNumbersTextStyle?.merge(other.weekNumbersTextStyle) ??
-          other.weekNumbersTextStyle,
+              other.weekNumbersTextStyle,
       weekNumbersTextAlign: other.weekNumbersTextAlign,
       dayButtonSize: other.dayButtonSize,
       dayButtonOutsideMonthOpacity: other.dayButtonOutsideMonthOpacity,
       dayButtonPadding: other.dayButtonPadding,
       dayButtonDecoration: other.dayButtonDecoration,
-      selectedDayButtonTextStyle:
-          _this.selectedDayButtonTextStyle?.merge(
+      selectedDayButtonTextStyle: _this.selectedDayButtonTextStyle?.merge(
             other.selectedDayButtonTextStyle,
           ) ??
           other.selectedDayButtonTextStyle,
-      insideRangeDayButtonTextStyle:
-          _this.insideRangeDayButtonTextStyle?.merge(
+      insideRangeDayButtonTextStyle: _this.insideRangeDayButtonTextStyle?.merge(
             other.insideRangeDayButtonTextStyle,
           ) ??
           other.insideRangeDayButtonTextStyle,
       dayButtonTextStyle:
           _this.dayButtonTextStyle?.merge(other.dayButtonTextStyle) ??
-          other.dayButtonTextStyle,
+              other.dayButtonTextStyle,
       dayButtonVariant: other.dayButtonVariant,
       selectedDayButtonVariant: other.selectedDayButtonVariant,
       insideRangeDayButtonVariant: other.insideRangeDayButtonVariant,
@@ -592,9 +580,9 @@ mixin _$ShadDatePickerTheme {
       gridCrossAxisSpacing: other.gridCrossAxisSpacing,
       dayButtonOutsideMonthTextStyle:
           _this.dayButtonOutsideMonthTextStyle?.merge(
-            other.dayButtonOutsideMonthTextStyle,
-          ) ??
-          other.dayButtonOutsideMonthTextStyle,
+                other.dayButtonOutsideMonthTextStyle,
+              ) ??
+              other.dayButtonOutsideMonthTextStyle,
       dayButtonOutsideMonthVariant: other.dayButtonOutsideMonthVariant,
       selectedDayButtonOusideMonthVariant:
           other.selectedDayButtonOusideMonthVariant,
@@ -642,8 +630,7 @@ mixin _$ShadDatePickerTheme {
       gap: other.gap,
       buttonPadding: other.buttonPadding,
       expands: other.expands,
-      buttonTextStyle:
-          _this.buttonTextStyle?.merge(other.buttonTextStyle) ??
+      buttonTextStyle: _this.buttonTextStyle?.merge(other.buttonTextStyle) ??
           other.buttonTextStyle,
     );
   }

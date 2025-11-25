@@ -27,9 +27,8 @@ mixin _$ShadCheckboxTheme {
       duration: lerpDuration$(a?.duration, b?.duration, t),
       decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      crossAxisAlignment: t < 0.5
-          ? a?.crossAxisAlignment
-          : b?.crossAxisAlignment,
+      crossAxisAlignment:
+          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
       checkboxPadding: EdgeInsetsGeometry.lerp(
         a?.checkboxPadding,
         b?.checkboxPadding,
