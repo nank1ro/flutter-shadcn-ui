@@ -5,6 +5,7 @@ import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
+import 'package:shadcn_ui/src/theme/components/breadcrumb.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/button_sizes.dart';
 import 'package:shadcn_ui/src/theme/components/calendar.dart';
@@ -65,6 +66,7 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     ShadBadgeTheme? secondaryBadgeTheme,
     ShadBadgeTheme? destructiveBadgeTheme,
     ShadBadgeTheme? outlineBadgeTheme,
+    ShadBreadcrumbTheme? breadcrumbTheme,
     BorderRadius? radius,
     ShadAvatarTheme? avatarTheme,
     ShadButtonSizesTheme? buttonSizesTheme,
@@ -168,8 +170,11 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
             destructiveBadgeTheme,
           ),
       outlineBadgeTheme: effectiveVariant.outlineBadgeTheme().merge(
-            outlineBadgeTheme,
-          ),
+        outlineBadgeTheme,
+      ),
+      breadcrumbTheme: effectiveVariant.breadcrumbTheme().merge(
+        breadcrumbTheme,
+      ),
       buttonSizesTheme: effectiveVariant.buttonSizesTheme().merge(
             buttonSizesTheme,
           ),
@@ -249,6 +254,7 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     required super.secondaryBadgeTheme,
     required super.destructiveBadgeTheme,
     required super.outlineBadgeTheme,
+    required super.breadcrumbTheme,
     required super.radius,
     required super.avatarTheme,
     required super.buttonSizesTheme,

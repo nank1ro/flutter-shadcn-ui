@@ -478,14 +478,18 @@ class ShadButton extends StatefulWidget {
   final MouseCursor? cursor;
 
   /// {@template ShadButton.width}
-  /// The explicit width of the button, overriding size-based defaults if
-  /// specified. Falls back to theme or size-specific values if null.
+  /// The explicit minimum width of the button, overriding size-based defaults.
+  /// If null, it falls back to theme or size-specific minimums. When set to 0,
+  /// or a value smaller than the child's width the button's width will be
+  /// determined by its child.
   /// {@endtemplate}
   final double? width;
 
   /// {@template ShadButton.height}
-  /// The explicit height of the button, overriding size-based defaults if
-  /// specified. Falls back to theme or size-specific values if null.
+  /// The explicit minimum height of the button, overriding size-based defaults.
+  /// If null, it falls back to theme or size-specific minimums. When set to 0,
+  /// or a value smaller than the child's height the button's height will be
+  /// determined by its child.
   /// {@endtemplate}
   final double? height;
 
@@ -1111,9 +1115,11 @@ class _ShadButtonState extends State<ShadButton> {
                         onLongPressStart: widget.onLongPressStart,
                         longPressDuration: effectiveLongPressDuration,
                         child: SelectionContainer.disabled(
-                          child: SizedBox(
-                            height: height(theme),
-                            width: width(theme),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minWidth: width(theme) ?? 0,
+                              minHeight: height(theme),
+                            ),
                             child: Padding(
                               padding: padding(theme),
                               child: Row(
