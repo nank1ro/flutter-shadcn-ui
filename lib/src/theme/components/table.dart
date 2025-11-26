@@ -66,5 +66,6 @@ class ShadTableTheme with _$ShadTableTheme {
     ShadTableTheme? a,
     ShadTableTheme? b,
     double t,
-  ) => _$ShadTableTheme.lerp(a, b, t);
+  ) =>
+      _$ShadTableTheme.lerp(a, b, t);
 }

@@ -244,5 +244,6 @@ class ShadCalendarTheme with _$ShadCalendarTheme {
     ShadCalendarTheme? a,
     ShadCalendarTheme? b,
     double t,
-  ) => _$ShadCalendarTheme.lerp(a, b, t);
+  ) =>
+      _$ShadCalendarTheme.lerp(a, b, t);
 }

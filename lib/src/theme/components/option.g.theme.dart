@@ -53,26 +53,26 @@ mixin _$ShadOptionTheme {
     Color? selectedBackgroundColor,
     TextStyle? selectedTextStyle,
   }) {
-    final a = (this as ShadOptionTheme);
+    final _this = (this as ShadOptionTheme);
 
     return ShadOptionTheme(
       hoveredBackgroundColor:
-          hoveredBackgroundColor ?? a.hoveredBackgroundColor,
-      padding: padding ?? a.padding,
-      radius: radius ?? a.radius,
-      backgroundColor: backgroundColor ?? a.backgroundColor,
-      textStyle: textStyle ?? a.textStyle,
+          hoveredBackgroundColor ?? _this.hoveredBackgroundColor,
+      padding: padding ?? _this.padding,
+      radius: radius ?? _this.radius,
+      backgroundColor: backgroundColor ?? _this.backgroundColor,
+      textStyle: textStyle ?? _this.textStyle,
       selectedBackgroundColor:
-          selectedBackgroundColor ?? a.selectedBackgroundColor,
-      selectedTextStyle: selectedTextStyle ?? a.selectedTextStyle,
+          selectedBackgroundColor ?? _this.selectedBackgroundColor,
+      selectedTextStyle: selectedTextStyle ?? _this.selectedTextStyle,
     );
   }
 
   ShadOptionTheme merge(ShadOptionTheme? other) {
-    final current = (this as ShadOptionTheme);
+    final _this = (this as ShadOptionTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -84,11 +84,11 @@ mixin _$ShadOptionTheme {
       padding: other.padding,
       radius: other.radius,
       backgroundColor: other.backgroundColor,
-      textStyle: current.textStyle?.merge(other.textStyle) ?? other.textStyle,
+      textStyle: _this.textStyle?.merge(other.textStyle) ?? other.textStyle,
       selectedBackgroundColor: other.selectedBackgroundColor,
       selectedTextStyle:
-          current.selectedTextStyle?.merge(other.selectedTextStyle) ??
-          other.selectedTextStyle,
+          _this.selectedTextStyle?.merge(other.selectedTextStyle) ??
+              other.selectedTextStyle,
     );
   }
 
@@ -102,31 +102,31 @@ mixin _$ShadOptionTheme {
       return false;
     }
 
-    final value = (this as ShadOptionTheme);
+    final _this = (this as ShadOptionTheme);
+    final _other = (other as ShadOptionTheme);
 
-    return other is ShadOptionTheme &&
-        other.hoveredBackgroundColor == value.hoveredBackgroundColor &&
-        other.padding == value.padding &&
-        other.radius == value.radius &&
-        other.backgroundColor == value.backgroundColor &&
-        other.textStyle == value.textStyle &&
-        other.selectedBackgroundColor == value.selectedBackgroundColor &&
-        other.selectedTextStyle == value.selectedTextStyle;
+    return _other.hoveredBackgroundColor == _this.hoveredBackgroundColor &&
+        _other.padding == _this.padding &&
+        _other.radius == _this.radius &&
+        _other.backgroundColor == _this.backgroundColor &&
+        _other.textStyle == _this.textStyle &&
+        _other.selectedBackgroundColor == _this.selectedBackgroundColor &&
+        _other.selectedTextStyle == _this.selectedTextStyle;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadOptionTheme);
+    final _this = (this as ShadOptionTheme);
 
     return Object.hash(
       runtimeType,
-      value.hoveredBackgroundColor,
-      value.padding,
-      value.radius,
-      value.backgroundColor,
-      value.textStyle,
-      value.selectedBackgroundColor,
-      value.selectedTextStyle,
+      _this.hoveredBackgroundColor,
+      _this.padding,
+      _this.radius,
+      _this.backgroundColor,
+      _this.textStyle,
+      _this.selectedBackgroundColor,
+      _this.selectedTextStyle,
     );
   }
 }

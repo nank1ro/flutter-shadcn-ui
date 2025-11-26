@@ -23,9 +23,8 @@ mixin _$ShadResizableTheme {
 
     return ShadResizableTheme(
       mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment: t < 0.5
-          ? a?.crossAxisAlignment
-          : b?.crossAxisAlignment,
+      crossAxisAlignment:
+          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
       mainAxisSize: t < 0.5 ? a?.mainAxisSize : b?.mainAxisSize,
       textDirection: t < 0.5 ? a?.textDirection : b?.textDirection,
       verticalDirection: t < 0.5 ? a?.verticalDirection : b?.verticalDirection,
@@ -69,31 +68,31 @@ mixin _$ShadResizableTheme {
     double? dividerThickness,
     Color? dividerColor,
   }) {
-    final a = (this as ShadResizableTheme);
+    final _this = (this as ShadResizableTheme);
 
     return ShadResizableTheme(
-      mainAxisAlignment: mainAxisAlignment ?? a.mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
-      mainAxisSize: mainAxisSize ?? a.mainAxisSize,
-      textDirection: textDirection ?? a.textDirection,
-      verticalDirection: verticalDirection ?? a.verticalDirection,
-      showHandle: showHandle ?? a.showHandle,
-      handleIconData: handleIconData ?? a.handleIconData,
-      dividerSize: dividerSize ?? a.dividerSize,
-      resetOnDoubleTap: resetOnDoubleTap ?? a.resetOnDoubleTap,
-      handleDecoration: handleDecoration ?? a.handleDecoration,
-      handlePadding: handlePadding ?? a.handlePadding,
-      handleSize: handleSize ?? a.handleSize,
-      dividerThickness: dividerThickness ?? a.dividerThickness,
-      dividerColor: dividerColor ?? a.dividerColor,
+      mainAxisAlignment: mainAxisAlignment ?? _this.mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? _this.crossAxisAlignment,
+      mainAxisSize: mainAxisSize ?? _this.mainAxisSize,
+      textDirection: textDirection ?? _this.textDirection,
+      verticalDirection: verticalDirection ?? _this.verticalDirection,
+      showHandle: showHandle ?? _this.showHandle,
+      handleIconData: handleIconData ?? _this.handleIconData,
+      dividerSize: dividerSize ?? _this.dividerSize,
+      resetOnDoubleTap: resetOnDoubleTap ?? _this.resetOnDoubleTap,
+      handleDecoration: handleDecoration ?? _this.handleDecoration,
+      handlePadding: handlePadding ?? _this.handlePadding,
+      handleSize: handleSize ?? _this.handleSize,
+      dividerThickness: dividerThickness ?? _this.dividerThickness,
+      dividerColor: dividerColor ?? _this.dividerColor,
     );
   }
 
   ShadResizableTheme merge(ShadResizableTheme? other) {
-    final current = (this as ShadResizableTheme);
+    final _this = (this as ShadResizableTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -128,45 +127,45 @@ mixin _$ShadResizableTheme {
       return false;
     }
 
-    final value = (this as ShadResizableTheme);
+    final _this = (this as ShadResizableTheme);
+    final _other = (other as ShadResizableTheme);
 
-    return other is ShadResizableTheme &&
-        other.mainAxisAlignment == value.mainAxisAlignment &&
-        other.crossAxisAlignment == value.crossAxisAlignment &&
-        other.mainAxisSize == value.mainAxisSize &&
-        other.textDirection == value.textDirection &&
-        other.verticalDirection == value.verticalDirection &&
-        other.showHandle == value.showHandle &&
-        other.handleIconData == value.handleIconData &&
-        other.dividerSize == value.dividerSize &&
-        other.resetOnDoubleTap == value.resetOnDoubleTap &&
-        other.handleDecoration == value.handleDecoration &&
-        other.handlePadding == value.handlePadding &&
-        other.handleSize == value.handleSize &&
-        other.dividerThickness == value.dividerThickness &&
-        other.dividerColor == value.dividerColor;
+    return _other.mainAxisAlignment == _this.mainAxisAlignment &&
+        _other.crossAxisAlignment == _this.crossAxisAlignment &&
+        _other.mainAxisSize == _this.mainAxisSize &&
+        _other.textDirection == _this.textDirection &&
+        _other.verticalDirection == _this.verticalDirection &&
+        _other.showHandle == _this.showHandle &&
+        _other.handleIconData == _this.handleIconData &&
+        _other.dividerSize == _this.dividerSize &&
+        _other.resetOnDoubleTap == _this.resetOnDoubleTap &&
+        _other.handleDecoration == _this.handleDecoration &&
+        _other.handlePadding == _this.handlePadding &&
+        _other.handleSize == _this.handleSize &&
+        _other.dividerThickness == _this.dividerThickness &&
+        _other.dividerColor == _this.dividerColor;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadResizableTheme);
+    final _this = (this as ShadResizableTheme);
 
     return Object.hash(
       runtimeType,
-      value.mainAxisAlignment,
-      value.crossAxisAlignment,
-      value.mainAxisSize,
-      value.textDirection,
-      value.verticalDirection,
-      value.showHandle,
-      value.handleIconData,
-      value.dividerSize,
-      value.resetOnDoubleTap,
-      value.handleDecoration,
-      value.handlePadding,
-      value.handleSize,
-      value.dividerThickness,
-      value.dividerColor,
+      _this.mainAxisAlignment,
+      _this.crossAxisAlignment,
+      _this.mainAxisSize,
+      _this.textDirection,
+      _this.verticalDirection,
+      _this.showHandle,
+      _this.handleIconData,
+      _this.dividerSize,
+      _this.resetOnDoubleTap,
+      _this.handleDecoration,
+      _this.handlePadding,
+      _this.handleSize,
+      _this.dividerThickness,
+      _this.dividerColor,
     );
   }
 }

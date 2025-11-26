@@ -47,27 +47,27 @@ mixin _$ShadInputOTPTheme {
     BorderRadius? singleRadius,
     BorderRadius? middleRadius,
   }) {
-    final a = (this as ShadInputOTPTheme);
+    final _this = (this as ShadInputOTPTheme);
 
     return ShadInputOTPTheme(
-      gap: gap ?? a.gap,
-      style: style ?? a.style,
-      width: width ?? a.width,
-      height: height ?? a.height,
-      padding: padding ?? a.padding,
-      decoration: decoration ?? a.decoration,
-      firstRadius: firstRadius ?? a.firstRadius,
-      lastRadius: lastRadius ?? a.lastRadius,
-      singleRadius: singleRadius ?? a.singleRadius,
-      middleRadius: middleRadius ?? a.middleRadius,
+      gap: gap ?? _this.gap,
+      style: style ?? _this.style,
+      width: width ?? _this.width,
+      height: height ?? _this.height,
+      padding: padding ?? _this.padding,
+      decoration: decoration ?? _this.decoration,
+      firstRadius: firstRadius ?? _this.firstRadius,
+      lastRadius: lastRadius ?? _this.lastRadius,
+      singleRadius: singleRadius ?? _this.singleRadius,
+      middleRadius: middleRadius ?? _this.middleRadius,
     );
   }
 
   ShadInputOTPTheme merge(ShadInputOTPTheme? other) {
-    final current = (this as ShadInputOTPTheme);
+    final _this = (this as ShadInputOTPTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -76,7 +76,7 @@ mixin _$ShadInputOTPTheme {
 
     return copyWith(
       gap: other.gap,
-      style: current.style?.merge(other.style) ?? other.style,
+      style: _this.style?.merge(other.style) ?? other.style,
       width: other.width,
       height: other.height,
       padding: other.padding,
@@ -98,37 +98,37 @@ mixin _$ShadInputOTPTheme {
       return false;
     }
 
-    final value = (this as ShadInputOTPTheme);
+    final _this = (this as ShadInputOTPTheme);
+    final _other = (other as ShadInputOTPTheme);
 
-    return other is ShadInputOTPTheme &&
-        other.gap == value.gap &&
-        other.style == value.style &&
-        other.width == value.width &&
-        other.height == value.height &&
-        other.padding == value.padding &&
-        other.decoration == value.decoration &&
-        other.firstRadius == value.firstRadius &&
-        other.lastRadius == value.lastRadius &&
-        other.singleRadius == value.singleRadius &&
-        other.middleRadius == value.middleRadius;
+    return _other.gap == _this.gap &&
+        _other.style == _this.style &&
+        _other.width == _this.width &&
+        _other.height == _this.height &&
+        _other.padding == _this.padding &&
+        _other.decoration == _this.decoration &&
+        _other.firstRadius == _this.firstRadius &&
+        _other.lastRadius == _this.lastRadius &&
+        _other.singleRadius == _this.singleRadius &&
+        _other.middleRadius == _this.middleRadius;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadInputOTPTheme);
+    final _this = (this as ShadInputOTPTheme);
 
     return Object.hash(
       runtimeType,
-      value.gap,
-      value.style,
-      value.width,
-      value.height,
-      value.padding,
-      value.decoration,
-      value.firstRadius,
-      value.lastRadius,
-      value.singleRadius,
-      value.middleRadius,
+      _this.gap,
+      _this.style,
+      _this.width,
+      _this.height,
+      _this.padding,
+      _this.decoration,
+      _this.firstRadius,
+      _this.lastRadius,
+      _this.singleRadius,
+      _this.middleRadius,
     );
   }
 }

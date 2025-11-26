@@ -104,7 +104,7 @@ class ShadThemeDataTween extends Tween<ShadThemeData> {
   ShadThemeDataTween({super.begin, super.end});
 
   @override
-  ShadThemeData lerp(double t) => ShadThemeData.lerp(begin!, end!, t);
+  ShadThemeData lerp(double t) => ShadThemeData.lerp(begin, end, t)!;
 }
 
 /// Animated version of [ShadTheme] which automatically transitions the colors
@@ -139,14 +139,11 @@ class _ShadAnimatedThemeState
 
   @override
   void forEachTween(TweenVisitor<dynamic> visitor) {
-    _data =
-        visitor(
-              _data,
-              widget.data,
-              (dynamic value) =>
-                  ShadThemeDataTween(begin: value as ShadThemeData),
-            )!
-            as ShadThemeDataTween;
+    _data = visitor(
+      _data,
+      widget.data,
+      (dynamic value) => ShadThemeDataTween(begin: value as ShadThemeData),
+    )! as ShadThemeDataTween;
   }
 
   @override

@@ -199,9 +199,8 @@ class _ShadBadgeState extends State<ShadBadge> {
   }
 
   MouseCursor cursor(ShadThemeData theme) {
-    final defaultCursor = widget.onPressed != null
-        ? SystemMouseCursors.click
-        : MouseCursor.defer;
+    final defaultCursor =
+        widget.onPressed != null ? SystemMouseCursors.click : MouseCursor.defer;
     return widget.cursor ?? badgeTheme(theme).cursor ?? defaultCursor;
   }
 

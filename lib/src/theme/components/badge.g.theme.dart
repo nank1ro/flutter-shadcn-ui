@@ -39,23 +39,23 @@ mixin _$ShadBadgeTheme {
     EdgeInsetsGeometry? padding,
     MouseCursor? cursor,
   }) {
-    final a = (this as ShadBadgeTheme);
+    final _this = (this as ShadBadgeTheme);
 
     return ShadBadgeTheme(
-      shape: shape ?? a.shape,
-      backgroundColor: backgroundColor ?? a.backgroundColor,
-      hoverBackgroundColor: hoverBackgroundColor ?? a.hoverBackgroundColor,
-      foregroundColor: foregroundColor ?? a.foregroundColor,
-      padding: padding ?? a.padding,
-      cursor: cursor ?? a.cursor,
+      shape: shape ?? _this.shape,
+      backgroundColor: backgroundColor ?? _this.backgroundColor,
+      hoverBackgroundColor: hoverBackgroundColor ?? _this.hoverBackgroundColor,
+      foregroundColor: foregroundColor ?? _this.foregroundColor,
+      padding: padding ?? _this.padding,
+      cursor: cursor ?? _this.cursor,
     );
   }
 
   ShadBadgeTheme merge(ShadBadgeTheme? other) {
-    final current = (this as ShadBadgeTheme);
+    final _this = (this as ShadBadgeTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -82,29 +82,29 @@ mixin _$ShadBadgeTheme {
       return false;
     }
 
-    final value = (this as ShadBadgeTheme);
+    final _this = (this as ShadBadgeTheme);
+    final _other = (other as ShadBadgeTheme);
 
-    return other is ShadBadgeTheme &&
-        other.shape == value.shape &&
-        other.backgroundColor == value.backgroundColor &&
-        other.hoverBackgroundColor == value.hoverBackgroundColor &&
-        other.foregroundColor == value.foregroundColor &&
-        other.padding == value.padding &&
-        other.cursor == value.cursor;
+    return _other.shape == _this.shape &&
+        _other.backgroundColor == _this.backgroundColor &&
+        _other.hoverBackgroundColor == _this.hoverBackgroundColor &&
+        _other.foregroundColor == _this.foregroundColor &&
+        _other.padding == _this.padding &&
+        _other.cursor == _this.cursor;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadBadgeTheme);
+    final _this = (this as ShadBadgeTheme);
 
     return Object.hash(
       runtimeType,
-      value.shape,
-      value.backgroundColor,
-      value.hoverBackgroundColor,
-      value.foregroundColor,
-      value.padding,
-      value.cursor,
+      _this.shape,
+      _this.backgroundColor,
+      _this.hoverBackgroundColor,
+      _this.foregroundColor,
+      _this.padding,
+      _this.cursor,
     );
   }
 }

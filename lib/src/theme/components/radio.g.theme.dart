@@ -29,9 +29,8 @@ mixin _$ShadRadioTheme {
       runSpacing: lerpDouble$(a?.runSpacing, b?.runSpacing, t),
       alignment: t < 0.5 ? a?.alignment : b?.alignment,
       runAlignment: t < 0.5 ? a?.runAlignment : b?.runAlignment,
-      crossAxisAlignment: t < 0.5
-          ? a?.crossAxisAlignment
-          : b?.crossAxisAlignment,
+      crossAxisAlignment:
+          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
       radioPadding: EdgeInsetsGeometry.lerp(
         a?.radioPadding,
         b?.radioPadding,
@@ -55,30 +54,30 @@ mixin _$ShadRadioTheme {
     WrapCrossAlignment? crossAxisAlignment,
     EdgeInsetsGeometry? radioPadding,
   }) {
-    final a = (this as ShadRadioTheme);
+    final _this = (this as ShadRadioTheme);
 
     return ShadRadioTheme(
-      color: color ?? a.color,
-      size: size ?? a.size,
-      duration: duration ?? a.duration,
-      decoration: decoration ?? a.decoration,
-      padding: padding ?? a.padding,
-      circleSize: circleSize ?? a.circleSize,
-      axis: axis ?? a.axis,
-      spacing: spacing ?? a.spacing,
-      runSpacing: runSpacing ?? a.runSpacing,
-      alignment: alignment ?? a.alignment,
-      runAlignment: runAlignment ?? a.runAlignment,
-      crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
-      radioPadding: radioPadding ?? a.radioPadding,
+      color: color ?? _this.color,
+      size: size ?? _this.size,
+      duration: duration ?? _this.duration,
+      decoration: decoration ?? _this.decoration,
+      padding: padding ?? _this.padding,
+      circleSize: circleSize ?? _this.circleSize,
+      axis: axis ?? _this.axis,
+      spacing: spacing ?? _this.spacing,
+      runSpacing: runSpacing ?? _this.runSpacing,
+      alignment: alignment ?? _this.alignment,
+      runAlignment: runAlignment ?? _this.runAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? _this.crossAxisAlignment,
+      radioPadding: radioPadding ?? _this.radioPadding,
     );
   }
 
   ShadRadioTheme merge(ShadRadioTheme? other) {
-    final current = (this as ShadRadioTheme);
+    final _this = (this as ShadRadioTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -112,43 +111,43 @@ mixin _$ShadRadioTheme {
       return false;
     }
 
-    final value = (this as ShadRadioTheme);
+    final _this = (this as ShadRadioTheme);
+    final _other = (other as ShadRadioTheme);
 
-    return other is ShadRadioTheme &&
-        other.color == value.color &&
-        other.size == value.size &&
-        other.duration == value.duration &&
-        other.decoration == value.decoration &&
-        other.padding == value.padding &&
-        other.circleSize == value.circleSize &&
-        other.axis == value.axis &&
-        other.spacing == value.spacing &&
-        other.runSpacing == value.runSpacing &&
-        other.alignment == value.alignment &&
-        other.runAlignment == value.runAlignment &&
-        other.crossAxisAlignment == value.crossAxisAlignment &&
-        other.radioPadding == value.radioPadding;
+    return _other.color == _this.color &&
+        _other.size == _this.size &&
+        _other.duration == _this.duration &&
+        _other.decoration == _this.decoration &&
+        _other.padding == _this.padding &&
+        _other.circleSize == _this.circleSize &&
+        _other.axis == _this.axis &&
+        _other.spacing == _this.spacing &&
+        _other.runSpacing == _this.runSpacing &&
+        _other.alignment == _this.alignment &&
+        _other.runAlignment == _this.runAlignment &&
+        _other.crossAxisAlignment == _this.crossAxisAlignment &&
+        _other.radioPadding == _this.radioPadding;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadRadioTheme);
+    final _this = (this as ShadRadioTheme);
 
     return Object.hash(
       runtimeType,
-      value.color,
-      value.size,
-      value.duration,
-      value.decoration,
-      value.padding,
-      value.circleSize,
-      value.axis,
-      value.spacing,
-      value.runSpacing,
-      value.alignment,
-      value.runAlignment,
-      value.crossAxisAlignment,
-      value.radioPadding,
+      _this.color,
+      _this.size,
+      _this.duration,
+      _this.decoration,
+      _this.padding,
+      _this.circleSize,
+      _this.axis,
+      _this.spacing,
+      _this.runSpacing,
+      _this.alignment,
+      _this.runAlignment,
+      _this.crossAxisAlignment,
+      _this.radioPadding,
     );
   }
 }

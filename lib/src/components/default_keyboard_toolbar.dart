@@ -47,26 +47,22 @@ class ShadDefaultKeyboardToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    final effectiveBackgroundColor =
-        backgroundColor ??
+    final effectiveBackgroundColor = backgroundColor ??
         theme.defaultKeyboardToolbarTheme.backgroundColor ??
         theme.colorScheme.accent;
 
     final effectiveDoneText =
         doneText ?? theme.defaultKeyboardToolbarTheme.doneText ?? 'Done';
 
-    final effectiveShowPreviousButton =
-        showPreviousButton ??
+    final effectiveShowPreviousButton = showPreviousButton ??
         theme.defaultKeyboardToolbarTheme.showPreviousButton ??
         true;
 
-    final effectiveShowNextButton =
-        showNextButton ??
+    final effectiveShowNextButton = showNextButton ??
         theme.defaultKeyboardToolbarTheme.showNextButton ??
         true;
 
-    final effectiveShowDoneButton =
-        showDoneButton ??
+    final effectiveShowDoneButton = showDoneButton ??
         theme.defaultKeyboardToolbarTheme.showDoneButton ??
         true;
 

@@ -53,5 +53,6 @@ class ShadPopoverTheme with _$ShadPopoverTheme {
     ShadPopoverTheme? a,
     ShadPopoverTheme? b,
     double t,
-  ) => _$ShadPopoverTheme.lerp(a, b, t);
+  ) =>
+      _$ShadPopoverTheme.lerp(a, b, t);
 }

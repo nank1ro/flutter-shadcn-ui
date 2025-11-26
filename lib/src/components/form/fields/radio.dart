@@ -45,27 +45,27 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
     /// {@macro ShadRadioGroup.controller}
     this.controller,
   }) : super(
-         decorationBuilder: (context) =>
-             ShadTheme.of(context).radioTheme.decoration ??
-             const ShadDecoration(),
-         initialValue: controller?.value ?? initialValue,
-         builder: (field) {
-           final state = field as _ShadFormBuilderRadioGroupState;
-           return ShadRadioGroup(
-             items: items,
-             onChanged: state.didChange,
-             enabled: state.enabled,
-             initialValue: initialValue,
-             axis: axis,
-             spacing: spacing,
-             runSpacing: runSpacing,
-             alignment: alignment,
-             runAlignment: runAlignment,
-             crossAxisAlignment: crossAxisAlignment,
-             controller: state.controller,
-           );
-         },
-       );
+          decorationBuilder: (context) =>
+              ShadTheme.of(context).radioTheme.decoration ??
+              const ShadDecoration(),
+          initialValue: controller?.value ?? initialValue,
+          builder: (field) {
+            final state = field as _ShadFormBuilderRadioGroupState;
+            return ShadRadioGroup(
+              items: items,
+              onChanged: state.didChange,
+              enabled: state.enabled,
+              initialValue: initialValue,
+              axis: axis,
+              spacing: spacing,
+              runSpacing: runSpacing,
+              alignment: alignment,
+              runAlignment: runAlignment,
+              crossAxisAlignment: crossAxisAlignment,
+              controller: state.controller,
+            );
+          },
+        );
 
   final ShadRadioController<T>? controller;
 

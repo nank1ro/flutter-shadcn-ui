@@ -18,13 +18,11 @@ mixin _$ShadTableTheme {
     }
 
     return ShadTableTheme(
-      diagonalDragBehavior: t < 0.5
-          ? a?.diagonalDragBehavior
-          : b?.diagonalDragBehavior,
+      diagonalDragBehavior:
+          t < 0.5 ? a?.diagonalDragBehavior : b?.diagonalDragBehavior,
       dragStartBehavior: t < 0.5 ? a?.dragStartBehavior : b?.dragStartBehavior,
-      keyboardDismissBehavior: t < 0.5
-          ? a?.keyboardDismissBehavior
-          : b?.keyboardDismissBehavior,
+      keyboardDismissBehavior:
+          t < 0.5 ? a?.keyboardDismissBehavior : b?.keyboardDismissBehavior,
       columnBuilder: t < 0.5 ? a?.columnBuilder : b?.columnBuilder,
       rowBuilder: t < 0.5 ? a?.rowBuilder : b?.rowBuilder,
       cellAlignment: Alignment.lerp(a?.cellAlignment, b?.cellAlignment, t),
@@ -57,29 +55,29 @@ mixin _$ShadTableTheme {
     TextStyle? cellStyle,
     TextStyle? cellFooterStyle,
   }) {
-    final a = (this as ShadTableTheme);
+    final _this = (this as ShadTableTheme);
 
     return ShadTableTheme(
-      diagonalDragBehavior: diagonalDragBehavior ?? a.diagonalDragBehavior,
-      dragStartBehavior: dragStartBehavior ?? a.dragStartBehavior,
+      diagonalDragBehavior: diagonalDragBehavior ?? _this.diagonalDragBehavior,
+      dragStartBehavior: dragStartBehavior ?? _this.dragStartBehavior,
       keyboardDismissBehavior:
-          keyboardDismissBehavior ?? a.keyboardDismissBehavior,
-      columnBuilder: columnBuilder ?? a.columnBuilder,
-      rowBuilder: rowBuilder ?? a.rowBuilder,
-      cellAlignment: cellAlignment ?? a.cellAlignment,
-      cellHeight: cellHeight ?? a.cellHeight,
-      cellPadding: cellPadding ?? a.cellPadding,
-      cellHeaderStyle: cellHeaderStyle ?? a.cellHeaderStyle,
-      cellStyle: cellStyle ?? a.cellStyle,
-      cellFooterStyle: cellFooterStyle ?? a.cellFooterStyle,
+          keyboardDismissBehavior ?? _this.keyboardDismissBehavior,
+      columnBuilder: columnBuilder ?? _this.columnBuilder,
+      rowBuilder: rowBuilder ?? _this.rowBuilder,
+      cellAlignment: cellAlignment ?? _this.cellAlignment,
+      cellHeight: cellHeight ?? _this.cellHeight,
+      cellPadding: cellPadding ?? _this.cellPadding,
+      cellHeaderStyle: cellHeaderStyle ?? _this.cellHeaderStyle,
+      cellStyle: cellStyle ?? _this.cellStyle,
+      cellFooterStyle: cellFooterStyle ?? _this.cellFooterStyle,
     );
   }
 
   ShadTableTheme merge(ShadTableTheme? other) {
-    final current = (this as ShadTableTheme);
+    final _this = (this as ShadTableTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -95,12 +93,10 @@ mixin _$ShadTableTheme {
       cellAlignment: other.cellAlignment,
       cellHeight: other.cellHeight,
       cellPadding: other.cellPadding,
-      cellHeaderStyle:
-          current.cellHeaderStyle?.merge(other.cellHeaderStyle) ??
+      cellHeaderStyle: _this.cellHeaderStyle?.merge(other.cellHeaderStyle) ??
           other.cellHeaderStyle,
-      cellStyle: current.cellStyle?.merge(other.cellStyle) ?? other.cellStyle,
-      cellFooterStyle:
-          current.cellFooterStyle?.merge(other.cellFooterStyle) ??
+      cellStyle: _this.cellStyle?.merge(other.cellStyle) ?? other.cellStyle,
+      cellFooterStyle: _this.cellFooterStyle?.merge(other.cellFooterStyle) ??
           other.cellFooterStyle,
     );
   }
@@ -115,39 +111,39 @@ mixin _$ShadTableTheme {
       return false;
     }
 
-    final value = (this as ShadTableTheme);
+    final _this = (this as ShadTableTheme);
+    final _other = (other as ShadTableTheme);
 
-    return other is ShadTableTheme &&
-        other.diagonalDragBehavior == value.diagonalDragBehavior &&
-        other.dragStartBehavior == value.dragStartBehavior &&
-        other.keyboardDismissBehavior == value.keyboardDismissBehavior &&
-        other.columnBuilder == value.columnBuilder &&
-        other.rowBuilder == value.rowBuilder &&
-        other.cellAlignment == value.cellAlignment &&
-        other.cellHeight == value.cellHeight &&
-        other.cellPadding == value.cellPadding &&
-        other.cellHeaderStyle == value.cellHeaderStyle &&
-        other.cellStyle == value.cellStyle &&
-        other.cellFooterStyle == value.cellFooterStyle;
+    return _other.diagonalDragBehavior == _this.diagonalDragBehavior &&
+        _other.dragStartBehavior == _this.dragStartBehavior &&
+        _other.keyboardDismissBehavior == _this.keyboardDismissBehavior &&
+        _other.columnBuilder == _this.columnBuilder &&
+        _other.rowBuilder == _this.rowBuilder &&
+        _other.cellAlignment == _this.cellAlignment &&
+        _other.cellHeight == _this.cellHeight &&
+        _other.cellPadding == _this.cellPadding &&
+        _other.cellHeaderStyle == _this.cellHeaderStyle &&
+        _other.cellStyle == _this.cellStyle &&
+        _other.cellFooterStyle == _this.cellFooterStyle;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadTableTheme);
+    final _this = (this as ShadTableTheme);
 
     return Object.hash(
       runtimeType,
-      value.diagonalDragBehavior,
-      value.dragStartBehavior,
-      value.keyboardDismissBehavior,
-      value.columnBuilder,
-      value.rowBuilder,
-      value.cellAlignment,
-      value.cellHeight,
-      value.cellPadding,
-      value.cellHeaderStyle,
-      value.cellStyle,
-      value.cellFooterStyle,
+      _this.diagonalDragBehavior,
+      _this.dragStartBehavior,
+      _this.keyboardDismissBehavior,
+      _this.columnBuilder,
+      _this.rowBuilder,
+      _this.cellAlignment,
+      _this.cellHeight,
+      _this.cellPadding,
+      _this.cellHeaderStyle,
+      _this.cellStyle,
+      _this.cellFooterStyle,
     );
   }
 }

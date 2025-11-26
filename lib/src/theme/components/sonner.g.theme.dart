@@ -22,9 +22,8 @@ mixin _$ShadSonnerTheme {
     }
 
     return ShadSonnerTheme(
-      visibleToastsAmount: t < 0.5
-          ? a?.visibleToastsAmount
-          : b?.visibleToastsAmount,
+      visibleToastsAmount:
+          t < 0.5 ? a?.visibleToastsAmount : b?.visibleToastsAmount,
       alignment: AlignmentGeometry.lerp(a?.alignment, b?.alignment, t),
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
       expandedGap: lerpDouble$(a?.expandedGap, b?.expandedGap, t),
@@ -49,25 +48,25 @@ mixin _$ShadSonnerTheme {
     Duration? animationDuration,
     Curve? animationCurve,
   }) {
-    final a = (this as ShadSonnerTheme);
+    final _this = (this as ShadSonnerTheme);
 
     return ShadSonnerTheme(
-      visibleToastsAmount: visibleToastsAmount ?? a.visibleToastsAmount,
-      alignment: alignment ?? a.alignment,
-      padding: padding ?? a.padding,
-      expandedGap: expandedGap ?? a.expandedGap,
-      collapsedGap: collapsedGap ?? a.collapsedGap,
-      scaleFactor: scaleFactor ?? a.scaleFactor,
-      animationDuration: animationDuration ?? a.animationDuration,
-      animationCurve: animationCurve ?? a.animationCurve,
+      visibleToastsAmount: visibleToastsAmount ?? _this.visibleToastsAmount,
+      alignment: alignment ?? _this.alignment,
+      padding: padding ?? _this.padding,
+      expandedGap: expandedGap ?? _this.expandedGap,
+      collapsedGap: collapsedGap ?? _this.collapsedGap,
+      scaleFactor: scaleFactor ?? _this.scaleFactor,
+      animationDuration: animationDuration ?? _this.animationDuration,
+      animationCurve: animationCurve ?? _this.animationCurve,
     );
   }
 
   ShadSonnerTheme merge(ShadSonnerTheme? other) {
-    final current = (this as ShadSonnerTheme);
+    final _this = (this as ShadSonnerTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -96,33 +95,33 @@ mixin _$ShadSonnerTheme {
       return false;
     }
 
-    final value = (this as ShadSonnerTheme);
+    final _this = (this as ShadSonnerTheme);
+    final _other = (other as ShadSonnerTheme);
 
-    return other is ShadSonnerTheme &&
-        other.visibleToastsAmount == value.visibleToastsAmount &&
-        other.alignment == value.alignment &&
-        other.padding == value.padding &&
-        other.expandedGap == value.expandedGap &&
-        other.collapsedGap == value.collapsedGap &&
-        other.scaleFactor == value.scaleFactor &&
-        other.animationDuration == value.animationDuration &&
-        other.animationCurve == value.animationCurve;
+    return _other.visibleToastsAmount == _this.visibleToastsAmount &&
+        _other.alignment == _this.alignment &&
+        _other.padding == _this.padding &&
+        _other.expandedGap == _this.expandedGap &&
+        _other.collapsedGap == _this.collapsedGap &&
+        _other.scaleFactor == _this.scaleFactor &&
+        _other.animationDuration == _this.animationDuration &&
+        _other.animationCurve == _this.animationCurve;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadSonnerTheme);
+    final _this = (this as ShadSonnerTheme);
 
     return Object.hash(
       runtimeType,
-      value.visibleToastsAmount,
-      value.alignment,
-      value.padding,
-      value.expandedGap,
-      value.collapsedGap,
-      value.scaleFactor,
-      value.animationDuration,
-      value.animationCurve,
+      _this.visibleToastsAmount,
+      _this.alignment,
+      _this.padding,
+      _this.expandedGap,
+      _this.collapsedGap,
+      _this.scaleFactor,
+      _this.animationDuration,
+      _this.animationCurve,
     );
   }
 }

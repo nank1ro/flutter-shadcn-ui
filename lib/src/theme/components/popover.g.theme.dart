@@ -41,24 +41,24 @@ mixin _$ShadPopoverTheme {
     ImageFilter? filter,
     Duration? reverseDuration,
   }) {
-    final a = (this as ShadPopoverTheme);
+    final _this = (this as ShadPopoverTheme);
 
     return ShadPopoverTheme(
-      effects: effects ?? a.effects,
-      shadows: shadows ?? a.shadows,
-      padding: padding ?? a.padding,
-      decoration: decoration ?? a.decoration,
-      anchor: anchor ?? a.anchor,
-      filter: filter ?? a.filter,
-      reverseDuration: reverseDuration ?? a.reverseDuration,
+      effects: effects ?? _this.effects,
+      shadows: shadows ?? _this.shadows,
+      padding: padding ?? _this.padding,
+      decoration: decoration ?? _this.decoration,
+      anchor: anchor ?? _this.anchor,
+      filter: filter ?? _this.filter,
+      reverseDuration: reverseDuration ?? _this.reverseDuration,
     );
   }
 
   ShadPopoverTheme merge(ShadPopoverTheme? other) {
-    final current = (this as ShadPopoverTheme);
+    final _this = (this as ShadPopoverTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -86,31 +86,31 @@ mixin _$ShadPopoverTheme {
       return false;
     }
 
-    final value = (this as ShadPopoverTheme);
+    final _this = (this as ShadPopoverTheme);
+    final _other = (other as ShadPopoverTheme);
 
-    return other is ShadPopoverTheme &&
-        other.effects == value.effects &&
-        other.shadows == value.shadows &&
-        other.padding == value.padding &&
-        other.decoration == value.decoration &&
-        other.anchor == value.anchor &&
-        other.filter == value.filter &&
-        other.reverseDuration == value.reverseDuration;
+    return _other.effects == _this.effects &&
+        _other.shadows == _this.shadows &&
+        _other.padding == _this.padding &&
+        _other.decoration == _this.decoration &&
+        _other.anchor == _this.anchor &&
+        _other.filter == _this.filter &&
+        _other.reverseDuration == _this.reverseDuration;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadPopoverTheme);
+    final _this = (this as ShadPopoverTheme);
 
     return Object.hash(
       runtimeType,
-      value.effects,
-      value.shadows,
-      value.padding,
-      value.decoration,
-      value.anchor,
-      value.filter,
-      value.reverseDuration,
+      _this.effects,
+      _this.shadows,
+      _this.padding,
+      _this.decoration,
+      _this.anchor,
+      _this.filter,
+      _this.reverseDuration,
     );
   }
 }

@@ -41,22 +41,22 @@ mixin _$ShadProgressTheme {
     BorderRadius? innerBorderRadius,
     double? minHeight,
   }) {
-    final a = (this as ShadProgressTheme);
+    final _this = (this as ShadProgressTheme);
 
     return ShadProgressTheme(
-      backgroundColor: backgroundColor ?? a.backgroundColor,
-      color: color ?? a.color,
-      borderRadius: borderRadius ?? a.borderRadius,
-      innerBorderRadius: innerBorderRadius ?? a.innerBorderRadius,
-      minHeight: minHeight ?? a.minHeight,
+      backgroundColor: backgroundColor ?? _this.backgroundColor,
+      color: color ?? _this.color,
+      borderRadius: borderRadius ?? _this.borderRadius,
+      innerBorderRadius: innerBorderRadius ?? _this.innerBorderRadius,
+      minHeight: minHeight ?? _this.minHeight,
     );
   }
 
   ShadProgressTheme merge(ShadProgressTheme? other) {
-    final current = (this as ShadProgressTheme);
+    final _this = (this as ShadProgressTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -82,27 +82,27 @@ mixin _$ShadProgressTheme {
       return false;
     }
 
-    final value = (this as ShadProgressTheme);
+    final _this = (this as ShadProgressTheme);
+    final _other = (other as ShadProgressTheme);
 
-    return other is ShadProgressTheme &&
-        other.backgroundColor == value.backgroundColor &&
-        other.color == value.color &&
-        other.borderRadius == value.borderRadius &&
-        other.innerBorderRadius == value.innerBorderRadius &&
-        other.minHeight == value.minHeight;
+    return _other.backgroundColor == _this.backgroundColor &&
+        _other.color == _this.color &&
+        _other.borderRadius == _this.borderRadius &&
+        _other.innerBorderRadius == _this.innerBorderRadius &&
+        _other.minHeight == _this.minHeight;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadProgressTheme);
+    final _this = (this as ShadProgressTheme);
 
     return Object.hash(
       runtimeType,
-      value.backgroundColor,
-      value.color,
-      value.borderRadius,
-      value.innerBorderRadius,
-      value.minHeight,
+      _this.backgroundColor,
+      _this.color,
+      _this.borderRadius,
+      _this.innerBorderRadius,
+      _this.minHeight,
     );
   }
 }

@@ -60,41 +60,41 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
     /// {@macro ShadSwitch.direction}
     TextDirection? direction,
   }) : super(
-         initialValue: initialValue,
-         onChanged: (!enabled || onChanged == null)
-             ? null
-             : (v) => onChanged(v ?? false),
-         validator: validator == null
-             ? null
-             : (v) {
-                 return validator(v ?? false);
-               },
-         decorationBuilder: (context) =>
-             (ShadTheme.of(context).switchTheme.decoration ??
-                     const ShadDecoration())
-                 .merge(decoration),
-         builder: (field) {
-           final state = field as _ShadFormBuilderSwitchState;
+          initialValue: initialValue,
+          onChanged: (!enabled || onChanged == null)
+              ? null
+              : (v) => onChanged(v ?? false),
+          validator: validator == null
+              ? null
+              : (v) {
+                  return validator(v ?? false);
+                },
+          decorationBuilder: (context) =>
+              (ShadTheme.of(context).switchTheme.decoration ??
+                      const ShadDecoration())
+                  .merge(decoration),
+          builder: (field) {
+            final state = field as _ShadFormBuilderSwitchState;
 
-           return ShadSwitch(
-             value: state.value!,
-             onChanged: state.didChange,
-             enabled: state.enabled,
-             focusNode: state.focusNode,
-             decoration: state.decoration,
-             duration: duration,
-             label: inputLabel,
-             sublabel: inputSublabel,
-             padding: padding,
-             direction: direction,
-             width: width,
-             margin: margin,
-             thumbColor: thumbColor,
-             uncheckedTrackColor: uncheckedTrackColor,
-             checkedTrackColor: checkedTrackColor,
-           );
-         },
-       );
+            return ShadSwitch(
+              value: state.value!,
+              onChanged: state.didChange,
+              enabled: state.enabled,
+              focusNode: state.focusNode,
+              decoration: state.decoration,
+              duration: duration,
+              label: inputLabel,
+              sublabel: inputSublabel,
+              padding: padding,
+              direction: direction,
+              width: width,
+              margin: margin,
+              thumbColor: thumbColor,
+              uncheckedTrackColor: uncheckedTrackColor,
+              checkedTrackColor: checkedTrackColor,
+            );
+          },
+        );
 
   @override
   ShadFormBuilderFieldState<ShadSwitchFormField, bool> createState() =>

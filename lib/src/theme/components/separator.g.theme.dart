@@ -45,22 +45,22 @@ mixin _$ShadSeparatorTheme {
     EdgeInsetsGeometry? horizontalMargin,
     BorderRadiusGeometry? radius,
   }) {
-    final a = (this as ShadSeparatorTheme);
+    final _this = (this as ShadSeparatorTheme);
 
     return ShadSeparatorTheme(
-      color: color ?? a.color,
-      thickness: thickness ?? a.thickness,
-      verticalMargin: verticalMargin ?? a.verticalMargin,
-      horizontalMargin: horizontalMargin ?? a.horizontalMargin,
-      radius: radius ?? a.radius,
+      color: color ?? _this.color,
+      thickness: thickness ?? _this.thickness,
+      verticalMargin: verticalMargin ?? _this.verticalMargin,
+      horizontalMargin: horizontalMargin ?? _this.horizontalMargin,
+      radius: radius ?? _this.radius,
     );
   }
 
   ShadSeparatorTheme merge(ShadSeparatorTheme? other) {
-    final current = (this as ShadSeparatorTheme);
+    final _this = (this as ShadSeparatorTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -86,27 +86,27 @@ mixin _$ShadSeparatorTheme {
       return false;
     }
 
-    final value = (this as ShadSeparatorTheme);
+    final _this = (this as ShadSeparatorTheme);
+    final _other = (other as ShadSeparatorTheme);
 
-    return other is ShadSeparatorTheme &&
-        other.color == value.color &&
-        other.thickness == value.thickness &&
-        other.verticalMargin == value.verticalMargin &&
-        other.horizontalMargin == value.horizontalMargin &&
-        other.radius == value.radius;
+    return _other.color == _this.color &&
+        _other.thickness == _this.thickness &&
+        _other.verticalMargin == _this.verticalMargin &&
+        _other.horizontalMargin == _this.horizontalMargin &&
+        _other.radius == _this.radius;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadSeparatorTheme);
+    final _this = (this as ShadSeparatorTheme);
 
     return Object.hash(
       runtimeType,
-      value.color,
-      value.thickness,
-      value.verticalMargin,
-      value.horizontalMargin,
-      value.radius,
+      _this.color,
+      _this.thickness,
+      _this.verticalMargin,
+      _this.horizontalMargin,
+      _this.radius,
     );
   }
 }

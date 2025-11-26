@@ -3,6 +3,32 @@
 - **FEAT**: Add new component `ShadBreadcrumb` and all of its related components (thanks to @MoazSalem).
 - **FIX**: Update `ShadButton` to allow for more flexibility with height and width properties (thanks to @MoazSalem).
 
+## 0.39.14
+
+- **CHORE**: Downgrade Dart SDK constraint to `3.6.0` to temporarely fix the pub dev score issue about the Dart formatter (see [#9091](https://github.com/dart-lang/pub-dev/issues/9091))
+
+## 0.39.13
+
+- **FIX**: Provide more fallback colors to `ShadCalendar`.
+
+## 0.39.12
+
+- **FIX**: `weekNumbersHeaderTextStyle` in `ShadCalendar` not having a default color.
+
+## 0.39.11
+
+- **FIX**: `ShadAvatar` with null source.
+
+## 0.39.10
+
+- **FIX**: Update `theme_extensions_builder` and fix merge issues in themes.
+
+## 0.39.9
+
+- **FIX**: Regression in `ShadSelect` where the dropdown no longer expanded to the intrinsic width of its options.
+- **FIX**: Select popover not respecting anchoring point when scrolling.
+- **CHORE**: Bump min Dart SDK version to `3.10.0`.
+
 ## 0.39.8
 
 - **FIX**: Autofocus search input in select dropdown (thanks @Isakdl).

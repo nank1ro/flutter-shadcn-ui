@@ -41,17 +41,15 @@ mixin _$ShadTextareaTheme {
         t,
       ),
       mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment: t < 0.5
-          ? a?.crossAxisAlignment
-          : b?.crossAxisAlignment,
+      crossAxisAlignment:
+          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
       gap: lerpDouble$(a?.gap, b?.gap, t),
       constraints: BoxConstraints.lerp(a?.constraints, b?.constraints, t),
       minHeight: lerpDouble$(a?.minHeight, b?.minHeight, t),
       maxHeight: lerpDouble$(a?.maxHeight, b?.maxHeight, t),
       resizable: t < 0.5 ? a?.resizable : b?.resizable,
-      resizeHandleBuilder: t < 0.5
-          ? a?.resizeHandleBuilder
-          : b?.resizeHandleBuilder,
+      resizeHandleBuilder:
+          t < 0.5 ? a?.resizeHandleBuilder : b?.resizeHandleBuilder,
       scrollbarPadding: EdgeInsetsGeometry.lerp(
         a?.scrollbarPadding,
         b?.scrollbarPadding,
@@ -77,32 +75,32 @@ mixin _$ShadTextareaTheme {
     Widget Function(BuildContext)? resizeHandleBuilder,
     EdgeInsetsGeometry? scrollbarPadding,
   }) {
-    final a = (this as ShadTextareaTheme);
+    final _this = (this as ShadTextareaTheme);
 
     return ShadTextareaTheme(
-      decoration: decoration ?? a.decoration,
-      padding: padding ?? a.padding,
-      style: style ?? a.style,
-      placeholderStyle: placeholderStyle ?? a.placeholderStyle,
-      placeholderAlignment: placeholderAlignment ?? a.placeholderAlignment,
-      inputPadding: inputPadding ?? a.inputPadding,
-      mainAxisAlignment: mainAxisAlignment ?? a.mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
-      gap: gap ?? a.gap,
-      constraints: constraints ?? a.constraints,
-      minHeight: minHeight ?? a.minHeight,
-      maxHeight: maxHeight ?? a.maxHeight,
-      resizable: resizable ?? a.resizable,
-      resizeHandleBuilder: resizeHandleBuilder ?? a.resizeHandleBuilder,
-      scrollbarPadding: scrollbarPadding ?? a.scrollbarPadding,
+      decoration: decoration ?? _this.decoration,
+      padding: padding ?? _this.padding,
+      style: style ?? _this.style,
+      placeholderStyle: placeholderStyle ?? _this.placeholderStyle,
+      placeholderAlignment: placeholderAlignment ?? _this.placeholderAlignment,
+      inputPadding: inputPadding ?? _this.inputPadding,
+      mainAxisAlignment: mainAxisAlignment ?? _this.mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? _this.crossAxisAlignment,
+      gap: gap ?? _this.gap,
+      constraints: constraints ?? _this.constraints,
+      minHeight: minHeight ?? _this.minHeight,
+      maxHeight: maxHeight ?? _this.maxHeight,
+      resizable: resizable ?? _this.resizable,
+      resizeHandleBuilder: resizeHandleBuilder ?? _this.resizeHandleBuilder,
+      scrollbarPadding: scrollbarPadding ?? _this.scrollbarPadding,
     );
   }
 
   ShadTextareaTheme merge(ShadTextareaTheme? other) {
-    final current = (this as ShadTextareaTheme);
+    final _this = (this as ShadTextareaTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -112,9 +110,8 @@ mixin _$ShadTextareaTheme {
     return copyWith(
       decoration: other.decoration,
       padding: other.padding,
-      style: current.style?.merge(other.style) ?? other.style,
-      placeholderStyle:
-          current.placeholderStyle?.merge(other.placeholderStyle) ??
+      style: _this.style?.merge(other.style) ?? other.style,
+      placeholderStyle: _this.placeholderStyle?.merge(other.placeholderStyle) ??
           other.placeholderStyle,
       placeholderAlignment: other.placeholderAlignment,
       inputPadding: other.inputPadding,
@@ -140,47 +137,47 @@ mixin _$ShadTextareaTheme {
       return false;
     }
 
-    final value = (this as ShadTextareaTheme);
+    final _this = (this as ShadTextareaTheme);
+    final _other = (other as ShadTextareaTheme);
 
-    return other is ShadTextareaTheme &&
-        other.decoration == value.decoration &&
-        other.padding == value.padding &&
-        other.style == value.style &&
-        other.placeholderStyle == value.placeholderStyle &&
-        other.placeholderAlignment == value.placeholderAlignment &&
-        other.inputPadding == value.inputPadding &&
-        other.mainAxisAlignment == value.mainAxisAlignment &&
-        other.crossAxisAlignment == value.crossAxisAlignment &&
-        other.gap == value.gap &&
-        other.constraints == value.constraints &&
-        other.minHeight == value.minHeight &&
-        other.maxHeight == value.maxHeight &&
-        other.resizable == value.resizable &&
-        other.resizeHandleBuilder == value.resizeHandleBuilder &&
-        other.scrollbarPadding == value.scrollbarPadding;
+    return _other.decoration == _this.decoration &&
+        _other.padding == _this.padding &&
+        _other.style == _this.style &&
+        _other.placeholderStyle == _this.placeholderStyle &&
+        _other.placeholderAlignment == _this.placeholderAlignment &&
+        _other.inputPadding == _this.inputPadding &&
+        _other.mainAxisAlignment == _this.mainAxisAlignment &&
+        _other.crossAxisAlignment == _this.crossAxisAlignment &&
+        _other.gap == _this.gap &&
+        _other.constraints == _this.constraints &&
+        _other.minHeight == _this.minHeight &&
+        _other.maxHeight == _this.maxHeight &&
+        _other.resizable == _this.resizable &&
+        _other.resizeHandleBuilder == _this.resizeHandleBuilder &&
+        _other.scrollbarPadding == _this.scrollbarPadding;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadTextareaTheme);
+    final _this = (this as ShadTextareaTheme);
 
     return Object.hash(
       runtimeType,
-      value.decoration,
-      value.padding,
-      value.style,
-      value.placeholderStyle,
-      value.placeholderAlignment,
-      value.inputPadding,
-      value.mainAxisAlignment,
-      value.crossAxisAlignment,
-      value.gap,
-      value.constraints,
-      value.minHeight,
-      value.maxHeight,
-      value.resizable,
-      value.resizeHandleBuilder,
-      value.scrollbarPadding,
+      _this.decoration,
+      _this.padding,
+      _this.style,
+      _this.placeholderStyle,
+      _this.placeholderAlignment,
+      _this.inputPadding,
+      _this.mainAxisAlignment,
+      _this.crossAxisAlignment,
+      _this.gap,
+      _this.constraints,
+      _this.minHeight,
+      _this.maxHeight,
+      _this.resizable,
+      _this.resizeHandleBuilder,
+      _this.scrollbarPadding,
     );
   }
 }

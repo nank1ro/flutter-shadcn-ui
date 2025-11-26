@@ -441,43 +441,43 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
 
     gestures[TapGestureRecognizer] =
         GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
-          () => TapGestureRecognizer(
-            debugOwner: this,
-            supportedDevices: widget.supportedDevices,
-          ),
-          (TapGestureRecognizer instance) {
-            instance
-              ..onTapDown = effectiveOnTapDown
-              ..onTapUp = effectiveOnTapUp
-              ..onTap = effectiveOnTap
-              ..onTapCancel = effectiveOnTapCancel
-              ..onSecondaryTapDown = effectiveOnSecondaryTapDown
-              ..onSecondaryTapUp = effectiveOnSecondaryTapUp
-              ..onSecondaryTap = effectiveOnSecondaryTap
-              ..onSecondaryTapCancel = effectiveOnSecondaryTapCancel
-              ..gestureSettings = gestureSettings
-              ..supportedDevices = widget.supportedDevices;
-          },
-        );
+      () => TapGestureRecognizer(
+        debugOwner: this,
+        supportedDevices: widget.supportedDevices,
+      ),
+      (TapGestureRecognizer instance) {
+        instance
+          ..onTapDown = effectiveOnTapDown
+          ..onTapUp = effectiveOnTapUp
+          ..onTap = effectiveOnTap
+          ..onTapCancel = effectiveOnTapCancel
+          ..onSecondaryTapDown = effectiveOnSecondaryTapDown
+          ..onSecondaryTapUp = effectiveOnSecondaryTapUp
+          ..onSecondaryTap = effectiveOnSecondaryTap
+          ..onSecondaryTapCancel = effectiveOnSecondaryTapCancel
+          ..gestureSettings = gestureSettings
+          ..supportedDevices = widget.supportedDevices;
+      },
+    );
 
     if (widget.onDoubleTap != null ||
         widget.onDoubleTapDown != null ||
         widget.onDoubleTapCancel != null) {
       gestures[DoubleTapGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<DoubleTapGestureRecognizer>(
-            () => DoubleTapGestureRecognizer(
-              debugOwner: this,
-              supportedDevices: widget.supportedDevices,
-            ),
-            (DoubleTapGestureRecognizer instance) {
-              instance
-                ..onDoubleTapDown = effectiveOnDoubleTapDown
-                ..onDoubleTap = widget.onDoubleTap
-                ..onDoubleTapCancel = effectiveOnDoubleTapCancel
-                ..gestureSettings = gestureSettings
-                ..supportedDevices = widget.supportedDevices;
-            },
-          );
+        () => DoubleTapGestureRecognizer(
+          debugOwner: this,
+          supportedDevices: widget.supportedDevices,
+        ),
+        (DoubleTapGestureRecognizer instance) {
+          instance
+            ..onDoubleTapDown = effectiveOnDoubleTapDown
+            ..onDoubleTap = widget.onDoubleTap
+            ..onDoubleTapCancel = effectiveOnDoubleTapCancel
+            ..gestureSettings = gestureSettings
+            ..supportedDevices = widget.supportedDevices;
+        },
+      );
     }
 
     if (widget.onLongPressDown != null ||
@@ -489,27 +489,26 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
         widget.onLongPressEnd != null) {
       gestures[LongPressGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<LongPressGestureRecognizer>(
-            () => LongPressGestureRecognizer(
-              duration:
-                  widget.longPressDuration ??
-                  effectiveHoverStrategies.longPressDuration ??
-                  kLongPressTimeout,
-              debugOwner: this,
-              supportedDevices: widget.supportedDevices,
-            ),
-            (LongPressGestureRecognizer instance) {
-              instance
-                ..onLongPressDown = effectiveOnLongPressDown
-                ..onLongPressCancel = effectiveOnLongPressCancel
-                ..onLongPress = widget.onLongPress
-                ..onLongPressStart = effectiveOnLongPressStart
-                ..onLongPressMoveUpdate = widget.onLongPressMoveUpdate
-                ..onLongPressUp = effectiveOnLongPressUp
-                ..onLongPressEnd = effectiveOnLongPressEnd
-                ..gestureSettings = gestureSettings
-                ..supportedDevices = widget.supportedDevices;
-            },
-          );
+        () => LongPressGestureRecognizer(
+          duration: widget.longPressDuration ??
+              effectiveHoverStrategies.longPressDuration ??
+              kLongPressTimeout,
+          debugOwner: this,
+          supportedDevices: widget.supportedDevices,
+        ),
+        (LongPressGestureRecognizer instance) {
+          instance
+            ..onLongPressDown = effectiveOnLongPressDown
+            ..onLongPressCancel = effectiveOnLongPressCancel
+            ..onLongPress = widget.onLongPress
+            ..onLongPressStart = effectiveOnLongPressStart
+            ..onLongPressMoveUpdate = widget.onLongPressMoveUpdate
+            ..onLongPressUp = effectiveOnLongPressUp
+            ..onLongPressEnd = effectiveOnLongPressEnd
+            ..gestureSettings = gestureSettings
+            ..supportedDevices = widget.supportedDevices;
+        },
+      );
     }
 
     if (widget.onForcePressStart != null ||
@@ -518,22 +517,22 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
         widget.onForcePressEnd != null) {
       gestures[ForcePressGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<ForcePressGestureRecognizer>(
-            () => ForcePressGestureRecognizer(
-              debugOwner: this,
-              supportedDevices: widget.supportedDevices,
-              startPressure: widget.forceStartPressure,
-              peakPressure: widget.forcePeakPressure,
-            ),
-            (ForcePressGestureRecognizer instance) {
-              instance
-                ..onStart = widget.onForcePressStart
-                ..onPeak = widget.onForcePressPeak
-                ..onUpdate = widget.onForcePressUpdate
-                ..onEnd = widget.onForcePressEnd
-                ..gestureSettings = gestureSettings
-                ..supportedDevices = widget.supportedDevices;
-            },
-          );
+        () => ForcePressGestureRecognizer(
+          debugOwner: this,
+          supportedDevices: widget.supportedDevices,
+          startPressure: widget.forceStartPressure,
+          peakPressure: widget.forcePeakPressure,
+        ),
+        (ForcePressGestureRecognizer instance) {
+          instance
+            ..onStart = widget.onForcePressStart
+            ..onPeak = widget.onForcePressPeak
+            ..onUpdate = widget.onForcePressUpdate
+            ..onEnd = widget.onForcePressEnd
+            ..gestureSettings = gestureSettings
+            ..supportedDevices = widget.supportedDevices;
+        },
+      );
     }
 
     if (widget.onPanDown != null ||
@@ -543,24 +542,24 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
         widget.onPanCancel != null) {
       gestures[PanGestureRecognizer] =
           GestureRecognizerFactoryWithHandlers<PanGestureRecognizer>(
-            () => PanGestureRecognizer(
-              debugOwner: this,
-              supportedDevices: widget.supportedDevices,
-            ),
-            (PanGestureRecognizer instance) {
-              instance
-                ..onDown = widget.onPanDown
-                ..onStart = widget.onPanStart
-                ..onUpdate = widget.onPanUpdate
-                ..onEnd = widget.onPanEnd
-                ..onCancel = widget.onPanCancel
-                ..dragStartBehavior = widget.dragStartBehavior
-                ..multitouchDragStrategy = configuration
-                    .getMultitouchDragStrategy(context)
-                ..gestureSettings = gestureSettings
-                ..supportedDevices = widget.supportedDevices;
-            },
-          );
+        () => PanGestureRecognizer(
+          debugOwner: this,
+          supportedDevices: widget.supportedDevices,
+        ),
+        (PanGestureRecognizer instance) {
+          instance
+            ..onDown = widget.onPanDown
+            ..onStart = widget.onPanStart
+            ..onUpdate = widget.onPanUpdate
+            ..onEnd = widget.onPanEnd
+            ..onCancel = widget.onPanCancel
+            ..dragStartBehavior = widget.dragStartBehavior
+            ..multitouchDragStrategy =
+                configuration.getMultitouchDragStrategy(context)
+            ..gestureSettings = gestureSettings
+            ..supportedDevices = widget.supportedDevices;
+        },
+      );
     }
 
     return TapRegion(

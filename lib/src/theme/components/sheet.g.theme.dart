@@ -29,21 +29,17 @@ mixin _$ShadSheetTheme {
       ),
       radius: BorderRadius.lerp(a?.radius, b?.radius, t),
       backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      expandActionsWhenTiny: t < 0.5
-          ? a?.expandActionsWhenTiny
-          : b?.expandActionsWhenTiny,
+      expandActionsWhenTiny:
+          t < 0.5 ? a?.expandActionsWhenTiny : b?.expandActionsWhenTiny,
       padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
       gap: lerpDouble$(a?.gap, b?.gap, t),
       actionsAxis: t < 0.5 ? a?.actionsAxis : b?.actionsAxis,
-      actionsMainAxisSize: t < 0.5
-          ? a?.actionsMainAxisSize
-          : b?.actionsMainAxisSize,
-      actionsMainAxisAlignment: t < 0.5
-          ? a?.actionsMainAxisAlignment
-          : b?.actionsMainAxisAlignment,
-      actionsVerticalDirection: t < 0.5
-          ? a?.actionsVerticalDirection
-          : b?.actionsVerticalDirection,
+      actionsMainAxisSize:
+          t < 0.5 ? a?.actionsMainAxisSize : b?.actionsMainAxisSize,
+      actionsMainAxisAlignment:
+          t < 0.5 ? a?.actionsMainAxisAlignment : b?.actionsMainAxisAlignment,
+      actionsVerticalDirection:
+          t < 0.5 ? a?.actionsVerticalDirection : b?.actionsVerticalDirection,
       border: BoxBorder.lerp(a?.border, b?.border, t),
       shadows: t < 0.5 ? a?.shadows : b?.shadows,
       removeBorderRadiusWhenTiny: t < 0.5
@@ -56,15 +52,13 @@ mixin _$ShadSheetTheme {
         t,
       ),
       titleTextAlign: t < 0.5 ? a?.titleTextAlign : b?.titleTextAlign,
-      descriptionTextAlign: t < 0.5
-          ? a?.descriptionTextAlign
-          : b?.descriptionTextAlign,
+      descriptionTextAlign:
+          t < 0.5 ? a?.descriptionTextAlign : b?.descriptionTextAlign,
       animateIn: t < 0.5 ? a?.animateIn : b?.animateIn,
       animateOut: t < 0.5 ? a?.animateOut : b?.animateOut,
       mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment: t < 0.5
-          ? a?.crossAxisAlignment
-          : b?.crossAxisAlignment,
+      crossAxisAlignment:
+          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
       scrollable: t < 0.5 ? a?.scrollable : b?.scrollable,
       scrollPadding: EdgeInsetsGeometry.lerp(
         a?.scrollPadding,
@@ -131,57 +125,58 @@ mixin _$ShadSheetTheme {
     bool? descriptionPinned,
     bool? actionsPinned,
   }) {
-    final a = (this as ShadSheetTheme);
+    final _this = (this as ShadSheetTheme);
 
     return ShadSheetTheme(
-      constraints: constraints ?? a.constraints,
-      expandCrossSide: expandCrossSide ?? a.expandCrossSide,
-      closeIcon: closeIcon ?? a.closeIcon,
-      closeIconData: closeIconData ?? a.closeIconData,
-      closeIconPosition: closeIconPosition ?? a.closeIconPosition,
-      radius: radius ?? a.radius,
-      backgroundColor: backgroundColor ?? a.backgroundColor,
-      expandActionsWhenTiny: expandActionsWhenTiny ?? a.expandActionsWhenTiny,
-      padding: padding ?? a.padding,
-      gap: gap ?? a.gap,
-      actionsAxis: actionsAxis ?? a.actionsAxis,
-      actionsMainAxisSize: actionsMainAxisSize ?? a.actionsMainAxisSize,
+      constraints: constraints ?? _this.constraints,
+      expandCrossSide: expandCrossSide ?? _this.expandCrossSide,
+      closeIcon: closeIcon ?? _this.closeIcon,
+      closeIconData: closeIconData ?? _this.closeIconData,
+      closeIconPosition: closeIconPosition ?? _this.closeIconPosition,
+      radius: radius ?? _this.radius,
+      backgroundColor: backgroundColor ?? _this.backgroundColor,
+      expandActionsWhenTiny:
+          expandActionsWhenTiny ?? _this.expandActionsWhenTiny,
+      padding: padding ?? _this.padding,
+      gap: gap ?? _this.gap,
+      actionsAxis: actionsAxis ?? _this.actionsAxis,
+      actionsMainAxisSize: actionsMainAxisSize ?? _this.actionsMainAxisSize,
       actionsMainAxisAlignment:
-          actionsMainAxisAlignment ?? a.actionsMainAxisAlignment,
+          actionsMainAxisAlignment ?? _this.actionsMainAxisAlignment,
       actionsVerticalDirection:
-          actionsVerticalDirection ?? a.actionsVerticalDirection,
-      border: border ?? a.border,
-      shadows: shadows ?? a.shadows,
+          actionsVerticalDirection ?? _this.actionsVerticalDirection,
+      border: border ?? _this.border,
+      shadows: shadows ?? _this.shadows,
       removeBorderRadiusWhenTiny:
-          removeBorderRadiusWhenTiny ?? a.removeBorderRadiusWhenTiny,
-      titleStyle: titleStyle ?? a.titleStyle,
-      descriptionStyle: descriptionStyle ?? a.descriptionStyle,
-      titleTextAlign: titleTextAlign ?? a.titleTextAlign,
-      descriptionTextAlign: descriptionTextAlign ?? a.descriptionTextAlign,
-      animateIn: animateIn ?? a.animateIn,
-      animateOut: animateOut ?? a.animateOut,
-      mainAxisAlignment: mainAxisAlignment ?? a.mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
-      scrollable: scrollable ?? a.scrollable,
-      scrollPadding: scrollPadding ?? a.scrollPadding,
+          removeBorderRadiusWhenTiny ?? _this.removeBorderRadiusWhenTiny,
+      titleStyle: titleStyle ?? _this.titleStyle,
+      descriptionStyle: descriptionStyle ?? _this.descriptionStyle,
+      titleTextAlign: titleTextAlign ?? _this.titleTextAlign,
+      descriptionTextAlign: descriptionTextAlign ?? _this.descriptionTextAlign,
+      animateIn: animateIn ?? _this.animateIn,
+      animateOut: animateOut ?? _this.animateOut,
+      mainAxisAlignment: mainAxisAlignment ?? _this.mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? _this.crossAxisAlignment,
+      scrollable: scrollable ?? _this.scrollable,
+      scrollPadding: scrollPadding ?? _this.scrollPadding,
       disabledScrollControlMaxRatio:
-          disabledScrollControlMaxRatio ?? a.disabledScrollControlMaxRatio,
-      minFlingVelocity: minFlingVelocity ?? a.minFlingVelocity,
+          disabledScrollControlMaxRatio ?? _this.disabledScrollControlMaxRatio,
+      minFlingVelocity: minFlingVelocity ?? _this.minFlingVelocity,
       closeProgressThreshold:
-          closeProgressThreshold ?? a.closeProgressThreshold,
-      side: side ?? a.side,
-      useSafeArea: useSafeArea ?? a.useSafeArea,
-      titlePinned: titlePinned ?? a.titlePinned,
-      descriptionPinned: descriptionPinned ?? a.descriptionPinned,
-      actionsPinned: actionsPinned ?? a.actionsPinned,
+          closeProgressThreshold ?? _this.closeProgressThreshold,
+      side: side ?? _this.side,
+      useSafeArea: useSafeArea ?? _this.useSafeArea,
+      titlePinned: titlePinned ?? _this.titlePinned,
+      descriptionPinned: descriptionPinned ?? _this.descriptionPinned,
+      actionsPinned: actionsPinned ?? _this.actionsPinned,
     );
   }
 
   ShadSheetTheme merge(ShadSheetTheme? other) {
-    final current = (this as ShadSheetTheme);
+    final _this = (this as ShadSheetTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -206,10 +201,8 @@ mixin _$ShadSheetTheme {
       border: other.border,
       shadows: other.shadows,
       removeBorderRadiusWhenTiny: other.removeBorderRadiusWhenTiny,
-      titleStyle:
-          current.titleStyle?.merge(other.titleStyle) ?? other.titleStyle,
-      descriptionStyle:
-          current.descriptionStyle?.merge(other.descriptionStyle) ??
+      titleStyle: _this.titleStyle?.merge(other.titleStyle) ?? other.titleStyle,
+      descriptionStyle: _this.descriptionStyle?.merge(other.descriptionStyle) ??
           other.descriptionStyle,
       titleTextAlign: other.titleTextAlign,
       descriptionTextAlign: other.descriptionTextAlign,
@@ -240,88 +233,88 @@ mixin _$ShadSheetTheme {
       return false;
     }
 
-    final value = (this as ShadSheetTheme);
+    final _this = (this as ShadSheetTheme);
+    final _other = (other as ShadSheetTheme);
 
-    return other is ShadSheetTheme &&
-        other.constraints == value.constraints &&
-        other.expandCrossSide == value.expandCrossSide &&
-        other.closeIcon == value.closeIcon &&
-        other.closeIconData == value.closeIconData &&
-        other.closeIconPosition == value.closeIconPosition &&
-        other.radius == value.radius &&
-        other.backgroundColor == value.backgroundColor &&
-        other.expandActionsWhenTiny == value.expandActionsWhenTiny &&
-        other.padding == value.padding &&
-        other.gap == value.gap &&
-        other.actionsAxis == value.actionsAxis &&
-        other.actionsMainAxisSize == value.actionsMainAxisSize &&
-        other.actionsMainAxisAlignment == value.actionsMainAxisAlignment &&
-        other.actionsVerticalDirection == value.actionsVerticalDirection &&
-        other.border == value.border &&
-        other.shadows == value.shadows &&
-        other.removeBorderRadiusWhenTiny == value.removeBorderRadiusWhenTiny &&
-        other.titleStyle == value.titleStyle &&
-        other.descriptionStyle == value.descriptionStyle &&
-        other.titleTextAlign == value.titleTextAlign &&
-        other.descriptionTextAlign == value.descriptionTextAlign &&
-        other.animateIn == value.animateIn &&
-        other.animateOut == value.animateOut &&
-        other.mainAxisAlignment == value.mainAxisAlignment &&
-        other.crossAxisAlignment == value.crossAxisAlignment &&
-        other.scrollable == value.scrollable &&
-        other.scrollPadding == value.scrollPadding &&
-        other.disabledScrollControlMaxRatio ==
-            value.disabledScrollControlMaxRatio &&
-        other.minFlingVelocity == value.minFlingVelocity &&
-        other.closeProgressThreshold == value.closeProgressThreshold &&
-        other.side == value.side &&
-        other.useSafeArea == value.useSafeArea &&
-        other.titlePinned == value.titlePinned &&
-        other.descriptionPinned == value.descriptionPinned &&
-        other.actionsPinned == value.actionsPinned;
+    return _other.constraints == _this.constraints &&
+        _other.expandCrossSide == _this.expandCrossSide &&
+        _other.closeIcon == _this.closeIcon &&
+        _other.closeIconData == _this.closeIconData &&
+        _other.closeIconPosition == _this.closeIconPosition &&
+        _other.radius == _this.radius &&
+        _other.backgroundColor == _this.backgroundColor &&
+        _other.expandActionsWhenTiny == _this.expandActionsWhenTiny &&
+        _other.padding == _this.padding &&
+        _other.gap == _this.gap &&
+        _other.actionsAxis == _this.actionsAxis &&
+        _other.actionsMainAxisSize == _this.actionsMainAxisSize &&
+        _other.actionsMainAxisAlignment == _this.actionsMainAxisAlignment &&
+        _other.actionsVerticalDirection == _this.actionsVerticalDirection &&
+        _other.border == _this.border &&
+        _other.shadows == _this.shadows &&
+        _other.removeBorderRadiusWhenTiny == _this.removeBorderRadiusWhenTiny &&
+        _other.titleStyle == _this.titleStyle &&
+        _other.descriptionStyle == _this.descriptionStyle &&
+        _other.titleTextAlign == _this.titleTextAlign &&
+        _other.descriptionTextAlign == _this.descriptionTextAlign &&
+        _other.animateIn == _this.animateIn &&
+        _other.animateOut == _this.animateOut &&
+        _other.mainAxisAlignment == _this.mainAxisAlignment &&
+        _other.crossAxisAlignment == _this.crossAxisAlignment &&
+        _other.scrollable == _this.scrollable &&
+        _other.scrollPadding == _this.scrollPadding &&
+        _other.disabledScrollControlMaxRatio ==
+            _this.disabledScrollControlMaxRatio &&
+        _other.minFlingVelocity == _this.minFlingVelocity &&
+        _other.closeProgressThreshold == _this.closeProgressThreshold &&
+        _other.side == _this.side &&
+        _other.useSafeArea == _this.useSafeArea &&
+        _other.titlePinned == _this.titlePinned &&
+        _other.descriptionPinned == _this.descriptionPinned &&
+        _other.actionsPinned == _this.actionsPinned;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadSheetTheme);
+    final _this = (this as ShadSheetTheme);
 
     return Object.hashAll([
       runtimeType,
-      value.constraints,
-      value.expandCrossSide,
-      value.closeIcon,
-      value.closeIconData,
-      value.closeIconPosition,
-      value.radius,
-      value.backgroundColor,
-      value.expandActionsWhenTiny,
-      value.padding,
-      value.gap,
-      value.actionsAxis,
-      value.actionsMainAxisSize,
-      value.actionsMainAxisAlignment,
-      value.actionsVerticalDirection,
-      value.border,
-      value.shadows,
-      value.removeBorderRadiusWhenTiny,
-      value.titleStyle,
-      value.descriptionStyle,
-      value.titleTextAlign,
-      value.descriptionTextAlign,
-      value.animateIn,
-      value.animateOut,
-      value.mainAxisAlignment,
-      value.crossAxisAlignment,
-      value.scrollable,
-      value.scrollPadding,
-      value.disabledScrollControlMaxRatio,
-      value.minFlingVelocity,
-      value.closeProgressThreshold,
-      value.side,
-      value.useSafeArea,
-      value.titlePinned,
-      value.descriptionPinned,
-      value.actionsPinned,
+      _this.constraints,
+      _this.expandCrossSide,
+      _this.closeIcon,
+      _this.closeIconData,
+      _this.closeIconPosition,
+      _this.radius,
+      _this.backgroundColor,
+      _this.expandActionsWhenTiny,
+      _this.padding,
+      _this.gap,
+      _this.actionsAxis,
+      _this.actionsMainAxisSize,
+      _this.actionsMainAxisAlignment,
+      _this.actionsVerticalDirection,
+      _this.border,
+      _this.shadows,
+      _this.removeBorderRadiusWhenTiny,
+      _this.titleStyle,
+      _this.descriptionStyle,
+      _this.titleTextAlign,
+      _this.descriptionTextAlign,
+      _this.animateIn,
+      _this.animateOut,
+      _this.mainAxisAlignment,
+      _this.crossAxisAlignment,
+      _this.scrollable,
+      _this.scrollPadding,
+      _this.disabledScrollControlMaxRatio,
+      _this.minFlingVelocity,
+      _this.closeProgressThreshold,
+      _this.side,
+      _this.useSafeArea,
+      _this.titlePinned,
+      _this.descriptionPinned,
+      _this.actionsPinned,
     ]);
   }
 }

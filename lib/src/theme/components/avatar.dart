@@ -36,5 +36,6 @@ class ShadAvatarTheme with _$ShadAvatarTheme {
     ShadAvatarTheme? a,
     ShadAvatarTheme? b,
     double t,
-  ) => _$ShadAvatarTheme.lerp(a, b, t);
+  ) =>
+      _$ShadAvatarTheme.lerp(a, b, t);
 }

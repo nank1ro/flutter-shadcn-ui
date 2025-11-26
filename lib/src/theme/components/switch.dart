@@ -57,5 +57,6 @@ class ShadSwitchTheme with _$ShadSwitchTheme {
     ShadSwitchTheme? a,
     ShadSwitchTheme? b,
     double t,
-  ) => _$ShadSwitchTheme.lerp(a, b, t);
+  ) =>
+      _$ShadSwitchTheme.lerp(a, b, t);
 }

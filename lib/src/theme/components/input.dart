@@ -94,5 +94,6 @@ class ShadInputTheme with _$ShadInputTheme {
     ShadInputTheme? a,
     ShadInputTheme? b,
     double t,
-  ) => _$ShadInputTheme.lerp(a, b, t);
+  ) =>
+      _$ShadInputTheme.lerp(a, b, t);
 }

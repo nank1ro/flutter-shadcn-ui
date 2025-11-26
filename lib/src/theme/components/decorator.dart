@@ -87,7 +87,8 @@ class ShadDecoration with _$ShadDecoration {
     ShadDecoration? a,
     ShadDecoration? b,
     double t,
-  ) => _$ShadDecoration.lerp(a, b, t);
+  ) =>
+      _$ShadDecoration.lerp(a, b, t);
 
   @override
   String toString() {
@@ -124,7 +125,7 @@ class ShadDecorator extends StatelessWidget {
 
     final effectiveDisableSecondaryBorder =
         effectiveDecoration.disableSecondaryBorder ??
-        theme.disableSecondaryBorder;
+            theme.disableSecondaryBorder;
 
     final hasError = effectiveDecoration.hasError ?? false;
 
@@ -159,27 +160,27 @@ class ShadDecorator extends StatelessWidget {
 
     final primaryDecoration = switch (border) {
       final ShadRoundedSuperellipseBorder border => ShapeDecoration(
-        color: effectiveDecoration.color,
-        image: effectiveDecoration.image,
-        shadows: effectiveDecoration.shadows,
-        gradient: effectiveDecoration.gradient,
-        shape: border.toBorder(
-          textDirection: textDirection,
-          defaultRadius: theme.radius,
+          color: effectiveDecoration.color,
+          image: effectiveDecoration.image,
+          shadows: effectiveDecoration.shadows,
+          gradient: effectiveDecoration.gradient,
+          shape: border.toBorder(
+            textDirection: textDirection,
+            defaultRadius: theme.radius,
+          ),
         ),
-      ),
       final ShadBorder? border => BoxDecoration(
-        border: true == border?.hasBorder ? border?.toBorder() : null,
-        borderRadius: effectiveDecoration.shape == BoxShape.circle
-            ? null
-            : border?.radius,
-        color: effectiveDecoration.color,
-        shape: effectiveDecoration.shape ?? BoxShape.rectangle,
-        backgroundBlendMode: effectiveDecoration.backgroundBlendMode,
-        boxShadow: effectiveDecoration.shadows,
-        gradient: effectiveDecoration.gradient,
-        image: effectiveDecoration.image,
-      ),
+          border: true == border?.hasBorder ? border?.toBorder() : null,
+          borderRadius: effectiveDecoration.shape == BoxShape.circle
+              ? null
+              : border?.radius,
+          color: effectiveDecoration.color,
+          shape: effectiveDecoration.shape ?? BoxShape.rectangle,
+          backgroundBlendMode: effectiveDecoration.backgroundBlendMode,
+          boxShadow: effectiveDecoration.shadows,
+          gradient: effectiveDecoration.gradient,
+          image: effectiveDecoration.image,
+        ),
     };
 
     Widget decorated = Container(
@@ -195,8 +196,7 @@ class ShadDecorator extends StatelessWidget {
           foregroundPainter: ShadOutwardBorderPainter(
             border: secondaryBorder.toBorder(),
             offset: secondaryBorder.offset ?? 0,
-            radius:
-                secondaryBorder.radius?.resolve(textDirection) ??
+            radius: secondaryBorder.radius?.resolve(textDirection) ??
                 BorderRadius.zero,
             textDirection: textDirection,
           ),

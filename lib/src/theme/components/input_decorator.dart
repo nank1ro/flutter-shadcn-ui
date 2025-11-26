@@ -47,8 +47,7 @@ class ShadInputDecorator extends StatelessWidget {
     };
 
     if (effectiveFallbackToLabelStyle && effectiveLabelStyle == null) {
-      effectiveLabelStyle =
-          effectiveDecoration.labelStyle ??
+      effectiveLabelStyle = effectiveDecoration.labelStyle ??
           switch (hasError) {
             true => defaultErrorStyle,
             false => defaultLabelStyle,
@@ -65,19 +64,17 @@ class ShadInputDecorator extends StatelessWidget {
       children: [
         if (label != null)
           Padding(
-            padding:
-                effectiveDecoration.labelPadding ??
+            padding: effectiveDecoration.labelPadding ??
                 const EdgeInsets.only(bottom: 8),
             child: DefaultTextStyle(
               style: effectiveLabelStyle!,
               child: label!,
             ),
           ),
-        ?child,
+        if (child != null) child!,
         if (description != null)
           Padding(
-            padding:
-                effectiveDecoration.descriptionPadding ??
+            padding: effectiveDecoration.descriptionPadding ??
                 const EdgeInsets.only(top: 8),
             child: DefaultTextStyle(
               style: effectiveDescriptionStyle,
@@ -86,8 +83,7 @@ class ShadInputDecorator extends StatelessWidget {
           ),
         if (error != null)
           Padding(
-            padding:
-                effectiveDecoration.errorPadding ??
+            padding: effectiveDecoration.errorPadding ??
                 const EdgeInsets.only(top: 8),
             child: DefaultTextStyle(
               style: effectiveErrorStyle,

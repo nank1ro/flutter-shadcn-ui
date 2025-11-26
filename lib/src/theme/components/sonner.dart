@@ -52,5 +52,6 @@ class ShadSonnerTheme with _$ShadSonnerTheme {
     ShadSonnerTheme? a,
     ShadSonnerTheme? b,
     double t,
-  ) => _$ShadSonnerTheme.lerp(a, b, t);
+  ) =>
+      _$ShadSonnerTheme.lerp(a, b, t);
 }

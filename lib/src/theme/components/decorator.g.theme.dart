@@ -67,18 +67,15 @@ mixin _$ShadDecoration {
       image: DecorationImage.lerp(a?.image, b?.image, t),
       shadows: t < 0.5 ? a?.shadows : b?.shadows,
       gradient: Gradient.lerp(a?.gradient, b?.gradient, t),
-      backgroundBlendMode: t < 0.5
-          ? a?.backgroundBlendMode
-          : b?.backgroundBlendMode,
+      backgroundBlendMode:
+          t < 0.5 ? a?.backgroundBlendMode : b?.backgroundBlendMode,
       shape: t < 0.5 ? a?.shape : b?.shape,
       hasError: t < 0.5 ? a?.hasError : b?.hasError,
-      disableSecondaryBorder: t < 0.5
-          ? a?.disableSecondaryBorder
-          : b?.disableSecondaryBorder,
+      disableSecondaryBorder:
+          t < 0.5 ? a?.disableSecondaryBorder : b?.disableSecondaryBorder,
       fallbackToBorder: t < 0.5 ? a?.fallbackToBorder : b?.fallbackToBorder,
-      fallbackToLabelStyle: t < 0.5
-          ? a?.fallbackToLabelStyle
-          : b?.fallbackToLabelStyle,
+      fallbackToLabelStyle:
+          t < 0.5 ? a?.fallbackToLabelStyle : b?.fallbackToLabelStyle,
     );
   }
 
@@ -107,42 +104,42 @@ mixin _$ShadDecoration {
     bool? fallbackToBorder,
     bool? fallbackToLabelStyle,
   }) {
-    final a = (this as ShadDecoration);
+    final _this = (this as ShadDecoration);
 
     return ShadDecoration(
-      labelStyle: labelStyle ?? a.labelStyle,
-      errorLabelStyle: errorLabelStyle ?? a.errorLabelStyle,
-      border: border ?? a.border,
-      focusedBorder: focusedBorder ?? a.focusedBorder,
-      errorBorder: errorBorder ?? a.errorBorder,
-      secondaryBorder: secondaryBorder ?? a.secondaryBorder,
+      labelStyle: labelStyle ?? _this.labelStyle,
+      errorLabelStyle: errorLabelStyle ?? _this.errorLabelStyle,
+      border: border ?? _this.border,
+      focusedBorder: focusedBorder ?? _this.focusedBorder,
+      errorBorder: errorBorder ?? _this.errorBorder,
+      secondaryBorder: secondaryBorder ?? _this.secondaryBorder,
       secondaryFocusedBorder:
-          secondaryFocusedBorder ?? a.secondaryFocusedBorder,
-      secondaryErrorBorder: secondaryErrorBorder ?? a.secondaryErrorBorder,
-      errorStyle: errorStyle ?? a.errorStyle,
-      descriptionStyle: descriptionStyle ?? a.descriptionStyle,
-      labelPadding: labelPadding ?? a.labelPadding,
-      descriptionPadding: descriptionPadding ?? a.descriptionPadding,
-      errorPadding: errorPadding ?? a.errorPadding,
-      color: color ?? a.color,
-      image: image ?? a.image,
-      shadows: shadows ?? a.shadows,
-      gradient: gradient ?? a.gradient,
-      backgroundBlendMode: backgroundBlendMode ?? a.backgroundBlendMode,
-      shape: shape ?? a.shape,
-      hasError: hasError ?? a.hasError,
+          secondaryFocusedBorder ?? _this.secondaryFocusedBorder,
+      secondaryErrorBorder: secondaryErrorBorder ?? _this.secondaryErrorBorder,
+      errorStyle: errorStyle ?? _this.errorStyle,
+      descriptionStyle: descriptionStyle ?? _this.descriptionStyle,
+      labelPadding: labelPadding ?? _this.labelPadding,
+      descriptionPadding: descriptionPadding ?? _this.descriptionPadding,
+      errorPadding: errorPadding ?? _this.errorPadding,
+      color: color ?? _this.color,
+      image: image ?? _this.image,
+      shadows: shadows ?? _this.shadows,
+      gradient: gradient ?? _this.gradient,
+      backgroundBlendMode: backgroundBlendMode ?? _this.backgroundBlendMode,
+      shape: shape ?? _this.shape,
+      hasError: hasError ?? _this.hasError,
       disableSecondaryBorder:
-          disableSecondaryBorder ?? a.disableSecondaryBorder,
-      fallbackToBorder: fallbackToBorder ?? a.fallbackToBorder,
-      fallbackToLabelStyle: fallbackToLabelStyle ?? a.fallbackToLabelStyle,
+          disableSecondaryBorder ?? _this.disableSecondaryBorder,
+      fallbackToBorder: fallbackToBorder ?? _this.fallbackToBorder,
+      fallbackToLabelStyle: fallbackToLabelStyle ?? _this.fallbackToLabelStyle,
     );
   }
 
   ShadDecoration merge(ShadDecoration? other) {
-    final current = (this as ShadDecoration);
+    final _this = (this as ShadDecoration);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -150,30 +147,24 @@ mixin _$ShadDecoration {
     }
 
     return copyWith(
-      labelStyle:
-          current.labelStyle?.merge(other.labelStyle) ?? other.labelStyle,
-      errorLabelStyle:
-          current.errorLabelStyle?.merge(other.errorLabelStyle) ??
+      labelStyle: _this.labelStyle?.merge(other.labelStyle) ?? other.labelStyle,
+      errorLabelStyle: _this.errorLabelStyle?.merge(other.errorLabelStyle) ??
           other.errorLabelStyle,
-      border: current.border?.merge(other.border) ?? other.border,
-      focusedBorder:
-          current.focusedBorder?.merge(other.focusedBorder) ??
+      border: _this.border?.merge(other.border) ?? other.border,
+      focusedBorder: _this.focusedBorder?.merge(other.focusedBorder) ??
           other.focusedBorder,
       errorBorder:
-          current.errorBorder?.merge(other.errorBorder) ?? other.errorBorder,
-      secondaryBorder:
-          current.secondaryBorder?.merge(other.secondaryBorder) ??
+          _this.errorBorder?.merge(other.errorBorder) ?? other.errorBorder,
+      secondaryBorder: _this.secondaryBorder?.merge(other.secondaryBorder) ??
           other.secondaryBorder,
       secondaryFocusedBorder:
-          current.secondaryFocusedBorder?.merge(other.secondaryFocusedBorder) ??
-          other.secondaryFocusedBorder,
+          _this.secondaryFocusedBorder?.merge(other.secondaryFocusedBorder) ??
+              other.secondaryFocusedBorder,
       secondaryErrorBorder:
-          current.secondaryErrorBorder?.merge(other.secondaryErrorBorder) ??
-          other.secondaryErrorBorder,
-      errorStyle:
-          current.errorStyle?.merge(other.errorStyle) ?? other.errorStyle,
-      descriptionStyle:
-          current.descriptionStyle?.merge(other.descriptionStyle) ??
+          _this.secondaryErrorBorder?.merge(other.secondaryErrorBorder) ??
+              other.secondaryErrorBorder,
+      errorStyle: _this.errorStyle?.merge(other.errorStyle) ?? other.errorStyle,
+      descriptionStyle: _this.descriptionStyle?.merge(other.descriptionStyle) ??
           other.descriptionStyle,
       labelPadding: other.labelPadding,
       descriptionPadding: other.descriptionPadding,
@@ -201,63 +192,63 @@ mixin _$ShadDecoration {
       return false;
     }
 
-    final value = (this as ShadDecoration);
+    final _this = (this as ShadDecoration);
+    final _other = (other as ShadDecoration);
 
-    return other is ShadDecoration &&
-        other.labelStyle == value.labelStyle &&
-        other.errorLabelStyle == value.errorLabelStyle &&
-        other.border == value.border &&
-        other.focusedBorder == value.focusedBorder &&
-        other.errorBorder == value.errorBorder &&
-        other.secondaryBorder == value.secondaryBorder &&
-        other.secondaryFocusedBorder == value.secondaryFocusedBorder &&
-        other.secondaryErrorBorder == value.secondaryErrorBorder &&
-        other.errorStyle == value.errorStyle &&
-        other.descriptionStyle == value.descriptionStyle &&
-        other.labelPadding == value.labelPadding &&
-        other.descriptionPadding == value.descriptionPadding &&
-        other.errorPadding == value.errorPadding &&
-        other.color == value.color &&
-        other.image == value.image &&
-        other.shadows == value.shadows &&
-        other.gradient == value.gradient &&
-        other.backgroundBlendMode == value.backgroundBlendMode &&
-        other.shape == value.shape &&
-        other.hasError == value.hasError &&
-        other.disableSecondaryBorder == value.disableSecondaryBorder &&
-        other.fallbackToBorder == value.fallbackToBorder &&
-        other.fallbackToLabelStyle == value.fallbackToLabelStyle;
+    return _other.labelStyle == _this.labelStyle &&
+        _other.errorLabelStyle == _this.errorLabelStyle &&
+        _other.border == _this.border &&
+        _other.focusedBorder == _this.focusedBorder &&
+        _other.errorBorder == _this.errorBorder &&
+        _other.secondaryBorder == _this.secondaryBorder &&
+        _other.secondaryFocusedBorder == _this.secondaryFocusedBorder &&
+        _other.secondaryErrorBorder == _this.secondaryErrorBorder &&
+        _other.errorStyle == _this.errorStyle &&
+        _other.descriptionStyle == _this.descriptionStyle &&
+        _other.labelPadding == _this.labelPadding &&
+        _other.descriptionPadding == _this.descriptionPadding &&
+        _other.errorPadding == _this.errorPadding &&
+        _other.color == _this.color &&
+        _other.image == _this.image &&
+        _other.shadows == _this.shadows &&
+        _other.gradient == _this.gradient &&
+        _other.backgroundBlendMode == _this.backgroundBlendMode &&
+        _other.shape == _this.shape &&
+        _other.hasError == _this.hasError &&
+        _other.disableSecondaryBorder == _this.disableSecondaryBorder &&
+        _other.fallbackToBorder == _this.fallbackToBorder &&
+        _other.fallbackToLabelStyle == _this.fallbackToLabelStyle;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadDecoration);
+    final _this = (this as ShadDecoration);
 
     return Object.hashAll([
       runtimeType,
-      value.labelStyle,
-      value.errorLabelStyle,
-      value.border,
-      value.focusedBorder,
-      value.errorBorder,
-      value.secondaryBorder,
-      value.secondaryFocusedBorder,
-      value.secondaryErrorBorder,
-      value.errorStyle,
-      value.descriptionStyle,
-      value.labelPadding,
-      value.descriptionPadding,
-      value.errorPadding,
-      value.color,
-      value.image,
-      value.shadows,
-      value.gradient,
-      value.backgroundBlendMode,
-      value.shape,
-      value.hasError,
-      value.disableSecondaryBorder,
-      value.fallbackToBorder,
-      value.fallbackToLabelStyle,
+      _this.labelStyle,
+      _this.errorLabelStyle,
+      _this.border,
+      _this.focusedBorder,
+      _this.errorBorder,
+      _this.secondaryBorder,
+      _this.secondaryFocusedBorder,
+      _this.secondaryErrorBorder,
+      _this.errorStyle,
+      _this.descriptionStyle,
+      _this.labelPadding,
+      _this.descriptionPadding,
+      _this.errorPadding,
+      _this.color,
+      _this.image,
+      _this.shadows,
+      _this.gradient,
+      _this.backgroundBlendMode,
+      _this.shape,
+      _this.hasError,
+      _this.disableSecondaryBorder,
+      _this.fallbackToBorder,
+      _this.fallbackToLabelStyle,
     ]);
   }
 }

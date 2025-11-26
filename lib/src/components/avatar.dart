@@ -110,13 +110,16 @@ class ShadAvatar extends StatelessWidget {
         shape: effectiveShape(theme),
         color: effectiveBackgroundColor(theme),
       ),
-      child: UniversalImage(
-        src,
-        width: size.width,
-        height: size.height,
-        placeholder: placeholder != null ? Center(child: placeholder) : null,
-        fit: effectiveFit(theme),
-      ),
+      child: src == null
+          ? placeholder
+          : UniversalImage(
+              src,
+              width: size.width,
+              height: size.height,
+              placeholder:
+                  placeholder != null ? Center(child: placeholder) : null,
+              fit: effectiveFit(theme),
+            ),
     );
   }
 }

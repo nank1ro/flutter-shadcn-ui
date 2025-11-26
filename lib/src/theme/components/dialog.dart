@@ -147,5 +147,6 @@ class ShadDialogTheme with _$ShadDialogTheme {
     ShadDialogTheme? a,
     ShadDialogTheme? b,
     double t,
-  ) => _$ShadDialogTheme.lerp(a, b, t);
+  ) =>
+      _$ShadDialogTheme.lerp(a, b, t);
 }

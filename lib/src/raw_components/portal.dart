@@ -139,8 +139,9 @@ class _ShadPortalState extends State<ShadPortal> {
   final layerLink = LayerLink();
   final overlayPortalController = OverlayPortalController();
   final overlayKey = GlobalKey();
-
   Offset? _calculatedTarget;
+  // When scrolling, recalculate the position
+  ScrollNotificationObserverState? _scrollNotificationObserver;
 
   @override
   void initState() {
@@ -155,9 +156,30 @@ class _ShadPortalState extends State<ShadPortal> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scrollNotificationObserver?.removeListener(_handleScrollNotification);
+    _scrollNotificationObserver = ScrollNotificationObserver.maybeOf(context);
+    _scrollNotificationObserver?.addListener(_handleScrollNotification);
+  }
+
+  @override
   void dispose() {
+    _scrollNotificationObserver?.removeListener(_handleScrollNotification);
     hide();
     super.dispose();
+  }
+
+  void _handleScrollNotification(ScrollNotification notification) {
+    // Check if the notification is a scroll update notification and if the
+    // `notification.depth` is 0. This way we only listen to the scroll
+    // notifications from the closest scrollable, instead of those that may be
+    // nested.
+    if (notification is ScrollUpdateNotification &&
+        defaultScrollNotificationPredicate(notification)) {
+      // Recalculate the position of the portal on scroll.
+      _calculatePosition();
+    }
   }
 
   void updateVisibility() {
@@ -192,13 +214,11 @@ class _ShadPortalState extends State<ShadPortal> {
     if (!mounted || widget.anchor is! ShadAnchorAuto) return;
 
     final anchor = widget.anchor as ShadAnchorAuto;
-
     final box = context.findRenderObject();
     final overlayState = Overlay.of(context, debugRequiredFor: widget);
     final overlayAncestor = overlayState.context.findRenderObject();
 
-    final ready =
-        box is RenderBox &&
+    final ready = box is RenderBox &&
         box.attached &&
         box.hasSize &&
         overlayAncestor is RenderBox &&
@@ -226,8 +246,8 @@ class _ShadPortalState extends State<ShadPortal> {
       Alignment.bottomCenter => box.size.bottomCenter(Offset.zero),
       Alignment.bottomRight => box.size.bottomRight(Offset.zero),
       final alignment => throw Exception(
-        """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
-      ),
+          """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
+        ),
     };
 
     var followerOffset = switch (anchor.followerAnchor) {
@@ -235,20 +255,20 @@ class _ShadPortalState extends State<ShadPortal> {
       Alignment.topCenter => Offset(0, -overlaySize.height),
       Alignment.topRight => Offset(overlaySize.width / 2, -overlaySize.height),
       Alignment.centerLeft => Offset(
-        -overlaySize.width / 2,
-        -overlaySize.height / 2,
-      ),
+          -overlaySize.width / 2,
+          -overlaySize.height / 2,
+        ),
       Alignment.center => Offset(0, -overlaySize.height / 2),
       Alignment.centerRight => Offset(
-        overlaySize.width / 2,
-        -overlaySize.height / 2,
-      ),
+          overlaySize.width / 2,
+          -overlaySize.height / 2,
+        ),
       Alignment.bottomLeft => Offset(-overlaySize.width / 2, 0),
       Alignment.bottomCenter => Offset.zero,
       Alignment.bottomRight => Offset(overlaySize.width / 2, 0),
       final alignment => throw Exception(
-        """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
-      ),
+          """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
+        ),
     };
 
     followerOffset += targetOffset + anchor.offset;
@@ -356,9 +376,9 @@ class _ShadPortalState extends State<ShadPortal> {
               final ShadAnchorAuto anchor => buildAutoPosition(context, anchor),
               final ShadAnchor anchor => buildManualPosition(context, anchor),
               final ShadGlobalAnchor anchor => buildGlobalPosition(
-                context,
-                anchor,
-              ),
+                  context,
+                  anchor,
+                ),
             },
           );
         },

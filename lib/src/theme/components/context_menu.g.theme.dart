@@ -109,42 +109,42 @@ mixin _$ShadContextMenuTheme {
     ShadDecoration? decoration,
     ImageFilter? filter,
   }) {
-    final a = (this as ShadContextMenuTheme);
+    final _this = (this as ShadContextMenuTheme);
 
     return ShadContextMenuTheme(
       popoverReverseDuration:
-          popoverReverseDuration ?? a.popoverReverseDuration,
-      constraints: constraints ?? a.constraints,
-      padding: padding ?? a.padding,
-      leadingPadding: leadingPadding ?? a.leadingPadding,
-      trailingPadding: trailingPadding ?? a.trailingPadding,
-      itemPadding: itemPadding ?? a.itemPadding,
-      insetPadding: insetPadding ?? a.insetPadding,
-      anchor: anchor ?? a.anchor,
-      showDelay: showDelay ?? a.showDelay,
-      height: height ?? a.height,
-      buttonVariant: buttonVariant ?? a.buttonVariant,
-      itemDecoration: itemDecoration ?? a.itemDecoration,
-      textStyle: textStyle ?? a.textStyle,
-      trailingTextStyle: trailingTextStyle ?? a.trailingTextStyle,
-      itemConstraints: itemConstraints ?? a.itemConstraints,
-      subMenuPadding: subMenuPadding ?? a.subMenuPadding,
-      backgroundColor: backgroundColor ?? a.backgroundColor,
+          popoverReverseDuration ?? _this.popoverReverseDuration,
+      constraints: constraints ?? _this.constraints,
+      padding: padding ?? _this.padding,
+      leadingPadding: leadingPadding ?? _this.leadingPadding,
+      trailingPadding: trailingPadding ?? _this.trailingPadding,
+      itemPadding: itemPadding ?? _this.itemPadding,
+      insetPadding: insetPadding ?? _this.insetPadding,
+      anchor: anchor ?? _this.anchor,
+      showDelay: showDelay ?? _this.showDelay,
+      height: height ?? _this.height,
+      buttonVariant: buttonVariant ?? _this.buttonVariant,
+      itemDecoration: itemDecoration ?? _this.itemDecoration,
+      textStyle: textStyle ?? _this.textStyle,
+      trailingTextStyle: trailingTextStyle ?? _this.trailingTextStyle,
+      itemConstraints: itemConstraints ?? _this.itemConstraints,
+      subMenuPadding: subMenuPadding ?? _this.subMenuPadding,
+      backgroundColor: backgroundColor ?? _this.backgroundColor,
       selectedBackgroundColor:
-          selectedBackgroundColor ?? a.selectedBackgroundColor,
-      closeOnTap: closeOnTap ?? a.closeOnTap,
-      effects: effects ?? a.effects,
-      shadows: shadows ?? a.shadows,
-      decoration: decoration ?? a.decoration,
-      filter: filter ?? a.filter,
+          selectedBackgroundColor ?? _this.selectedBackgroundColor,
+      closeOnTap: closeOnTap ?? _this.closeOnTap,
+      effects: effects ?? _this.effects,
+      shadows: shadows ?? _this.shadows,
+      decoration: decoration ?? _this.decoration,
+      filter: filter ?? _this.filter,
     );
   }
 
   ShadContextMenuTheme merge(ShadContextMenuTheme? other) {
-    final current = (this as ShadContextMenuTheme);
+    final _this = (this as ShadContextMenuTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -164,10 +164,10 @@ mixin _$ShadContextMenuTheme {
       height: other.height,
       buttonVariant: other.buttonVariant,
       itemDecoration: other.itemDecoration,
-      textStyle: current.textStyle?.merge(other.textStyle) ?? other.textStyle,
+      textStyle: _this.textStyle?.merge(other.textStyle) ?? other.textStyle,
       trailingTextStyle:
-          current.trailingTextStyle?.merge(other.trailingTextStyle) ??
-          other.trailingTextStyle,
+          _this.trailingTextStyle?.merge(other.trailingTextStyle) ??
+              other.trailingTextStyle,
       itemConstraints: other.itemConstraints,
       subMenuPadding: other.subMenuPadding,
       backgroundColor: other.backgroundColor,
@@ -190,63 +190,63 @@ mixin _$ShadContextMenuTheme {
       return false;
     }
 
-    final value = (this as ShadContextMenuTheme);
+    final _this = (this as ShadContextMenuTheme);
+    final _other = (other as ShadContextMenuTheme);
 
-    return other is ShadContextMenuTheme &&
-        other.popoverReverseDuration == value.popoverReverseDuration &&
-        other.constraints == value.constraints &&
-        other.padding == value.padding &&
-        other.leadingPadding == value.leadingPadding &&
-        other.trailingPadding == value.trailingPadding &&
-        other.itemPadding == value.itemPadding &&
-        other.insetPadding == value.insetPadding &&
-        other.anchor == value.anchor &&
-        other.showDelay == value.showDelay &&
-        other.height == value.height &&
-        other.buttonVariant == value.buttonVariant &&
-        other.itemDecoration == value.itemDecoration &&
-        other.textStyle == value.textStyle &&
-        other.trailingTextStyle == value.trailingTextStyle &&
-        other.itemConstraints == value.itemConstraints &&
-        other.subMenuPadding == value.subMenuPadding &&
-        other.backgroundColor == value.backgroundColor &&
-        other.selectedBackgroundColor == value.selectedBackgroundColor &&
-        other.closeOnTap == value.closeOnTap &&
-        other.effects == value.effects &&
-        other.shadows == value.shadows &&
-        other.decoration == value.decoration &&
-        other.filter == value.filter;
+    return _other.popoverReverseDuration == _this.popoverReverseDuration &&
+        _other.constraints == _this.constraints &&
+        _other.padding == _this.padding &&
+        _other.leadingPadding == _this.leadingPadding &&
+        _other.trailingPadding == _this.trailingPadding &&
+        _other.itemPadding == _this.itemPadding &&
+        _other.insetPadding == _this.insetPadding &&
+        _other.anchor == _this.anchor &&
+        _other.showDelay == _this.showDelay &&
+        _other.height == _this.height &&
+        _other.buttonVariant == _this.buttonVariant &&
+        _other.itemDecoration == _this.itemDecoration &&
+        _other.textStyle == _this.textStyle &&
+        _other.trailingTextStyle == _this.trailingTextStyle &&
+        _other.itemConstraints == _this.itemConstraints &&
+        _other.subMenuPadding == _this.subMenuPadding &&
+        _other.backgroundColor == _this.backgroundColor &&
+        _other.selectedBackgroundColor == _this.selectedBackgroundColor &&
+        _other.closeOnTap == _this.closeOnTap &&
+        _other.effects == _this.effects &&
+        _other.shadows == _this.shadows &&
+        _other.decoration == _this.decoration &&
+        _other.filter == _this.filter;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadContextMenuTheme);
+    final _this = (this as ShadContextMenuTheme);
 
     return Object.hashAll([
       runtimeType,
-      value.popoverReverseDuration,
-      value.constraints,
-      value.padding,
-      value.leadingPadding,
-      value.trailingPadding,
-      value.itemPadding,
-      value.insetPadding,
-      value.anchor,
-      value.showDelay,
-      value.height,
-      value.buttonVariant,
-      value.itemDecoration,
-      value.textStyle,
-      value.trailingTextStyle,
-      value.itemConstraints,
-      value.subMenuPadding,
-      value.backgroundColor,
-      value.selectedBackgroundColor,
-      value.closeOnTap,
-      value.effects,
-      value.shadows,
-      value.decoration,
-      value.filter,
+      _this.popoverReverseDuration,
+      _this.constraints,
+      _this.padding,
+      _this.leadingPadding,
+      _this.trailingPadding,
+      _this.itemPadding,
+      _this.insetPadding,
+      _this.anchor,
+      _this.showDelay,
+      _this.height,
+      _this.buttonVariant,
+      _this.itemDecoration,
+      _this.textStyle,
+      _this.trailingTextStyle,
+      _this.itemConstraints,
+      _this.subMenuPadding,
+      _this.backgroundColor,
+      _this.selectedBackgroundColor,
+      _this.closeOnTap,
+      _this.effects,
+      _this.shadows,
+      _this.decoration,
+      _this.filter,
     ]);
   }
 }
