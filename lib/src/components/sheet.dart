@@ -637,6 +637,8 @@ class _ShadSheetState extends State<ShadSheet>
     final effectiveDescriptionStyle =
         widget.descriptionStyle ?? theme.sheetTheme.descriptionStyle;
 
+    final effectiveCloseIcon = widget.closeIcon ?? theme.sheetTheme.closeIcon;
+
     final effectiveCloseIconData =
         widget.closeIconData ?? theme.sheetTheme.closeIconData;
 
@@ -688,7 +690,7 @@ class _ShadSheetState extends State<ShadSheet>
       constraints: effectiveConstraints,
       actions: widget.actions,
       radius: effectiveRadius,
-      closeIcon: widget.closeIcon,
+      closeIcon: effectiveCloseIcon,
       closeIconData: effectiveCloseIconData,
       closeIconPosition: effectiveCloseIconPosition,
       backgroundColor: effectiveBackgroundColor,

@@ -40,9 +40,8 @@ mixin _$ShadBreadcrumbTheme {
         t,
       ),
       mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment: t < 0.5
-          ? a?.crossAxisAlignment
-          : b?.crossAxisAlignment,
+      crossAxisAlignment:
+          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
       dropdownMenuBackgroundColor: Color.lerp(
         a?.dropdownMenuBackgroundColor,
         b?.dropdownMenuBackgroundColor,
@@ -63,9 +62,8 @@ mixin _$ShadBreadcrumbTheme {
         b?.dropdownItemPadding,
         t,
       ),
-      dropdownMenuAnchor: t < 0.5
-          ? a?.dropdownMenuAnchor
-          : b?.dropdownMenuAnchor,
+      dropdownMenuAnchor:
+          t < 0.5 ? a?.dropdownMenuAnchor : b?.dropdownMenuAnchor,
       dropdownArrowGap: lerpDouble$(
         a?.dropdownArrowGap,
         b?.dropdownArrowGap,
@@ -99,36 +97,36 @@ mixin _$ShadBreadcrumbTheme {
     double? dropdownArrowGap,
     Color? lastItemTextColor,
   }) {
-    final a = (this as ShadBreadcrumbTheme);
+    final _this = (this as ShadBreadcrumbTheme);
 
     return ShadBreadcrumbTheme(
-      separator: separator ?? a.separator,
-      ellipsis: ellipsis ?? a.ellipsis,
-      separatorSize: separatorSize ?? a.separatorSize,
-      ellipsisSize: ellipsisSize ?? a.ellipsisSize,
-      spacing: spacing ?? a.spacing,
-      itemTextStyle: itemTextStyle ?? a.itemTextStyle,
-      linkTextStyle: linkTextStyle ?? a.linkTextStyle,
-      linkNormalTextColor: linkNormalTextColor ?? a.linkNormalTextColor,
-      linkHoverTextColor: linkHoverTextColor ?? a.linkHoverTextColor,
-      mainAxisAlignment: mainAxisAlignment ?? a.mainAxisAlignment,
-      crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
+      separator: separator ?? _this.separator,
+      ellipsis: ellipsis ?? _this.ellipsis,
+      separatorSize: separatorSize ?? _this.separatorSize,
+      ellipsisSize: ellipsisSize ?? _this.ellipsisSize,
+      spacing: spacing ?? _this.spacing,
+      itemTextStyle: itemTextStyle ?? _this.itemTextStyle,
+      linkTextStyle: linkTextStyle ?? _this.linkTextStyle,
+      linkNormalTextColor: linkNormalTextColor ?? _this.linkNormalTextColor,
+      linkHoverTextColor: linkHoverTextColor ?? _this.linkHoverTextColor,
+      mainAxisAlignment: mainAxisAlignment ?? _this.mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment ?? _this.crossAxisAlignment,
       dropdownMenuBackgroundColor:
-          dropdownMenuBackgroundColor ?? a.dropdownMenuBackgroundColor,
-      dropdownMenuPadding: dropdownMenuPadding ?? a.dropdownMenuPadding,
-      dropdownTextStyle: dropdownTextStyle ?? a.dropdownTextStyle,
-      dropdownItemPadding: dropdownItemPadding ?? a.dropdownItemPadding,
-      dropdownMenuAnchor: dropdownMenuAnchor ?? a.dropdownMenuAnchor,
-      dropdownArrowGap: dropdownArrowGap ?? a.dropdownArrowGap,
-      lastItemTextColor: lastItemTextColor ?? a.lastItemTextColor,
+          dropdownMenuBackgroundColor ?? _this.dropdownMenuBackgroundColor,
+      dropdownMenuPadding: dropdownMenuPadding ?? _this.dropdownMenuPadding,
+      dropdownTextStyle: dropdownTextStyle ?? _this.dropdownTextStyle,
+      dropdownItemPadding: dropdownItemPadding ?? _this.dropdownItemPadding,
+      dropdownMenuAnchor: dropdownMenuAnchor ?? _this.dropdownMenuAnchor,
+      dropdownArrowGap: dropdownArrowGap ?? _this.dropdownArrowGap,
+      lastItemTextColor: lastItemTextColor ?? _this.lastItemTextColor,
     );
   }
 
   ShadBreadcrumbTheme merge(ShadBreadcrumbTheme? other) {
-    final current = (this as ShadBreadcrumbTheme);
+    final _this = (this as ShadBreadcrumbTheme);
 
     if (other == null) {
-      return current;
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -141,11 +139,9 @@ mixin _$ShadBreadcrumbTheme {
       separatorSize: other.separatorSize,
       ellipsisSize: other.ellipsisSize,
       spacing: other.spacing,
-      itemTextStyle:
-          current.itemTextStyle?.merge(other.itemTextStyle) ??
+      itemTextStyle: _this.itemTextStyle?.merge(other.itemTextStyle) ??
           other.itemTextStyle,
-      linkTextStyle:
-          current.linkTextStyle?.merge(other.linkTextStyle) ??
+      linkTextStyle: _this.linkTextStyle?.merge(other.linkTextStyle) ??
           other.linkTextStyle,
       linkNormalTextColor: other.linkNormalTextColor,
       linkHoverTextColor: other.linkHoverTextColor,
@@ -154,8 +150,8 @@ mixin _$ShadBreadcrumbTheme {
       dropdownMenuBackgroundColor: other.dropdownMenuBackgroundColor,
       dropdownMenuPadding: other.dropdownMenuPadding,
       dropdownTextStyle:
-          current.dropdownTextStyle?.merge(other.dropdownTextStyle) ??
-          other.dropdownTextStyle,
+          _this.dropdownTextStyle?.merge(other.dropdownTextStyle) ??
+              other.dropdownTextStyle,
       dropdownItemPadding: other.dropdownItemPadding,
       dropdownMenuAnchor: other.dropdownMenuAnchor,
       dropdownArrowGap: other.dropdownArrowGap,
@@ -173,54 +169,54 @@ mixin _$ShadBreadcrumbTheme {
       return false;
     }
 
-    final value = (this as ShadBreadcrumbTheme);
+    final _this = (this as ShadBreadcrumbTheme);
+    final _other = (other as ShadBreadcrumbTheme);
 
-    return other is ShadBreadcrumbTheme &&
-        other.separator == value.separator &&
-        other.ellipsis == value.ellipsis &&
-        other.separatorSize == value.separatorSize &&
-        other.ellipsisSize == value.ellipsisSize &&
-        other.spacing == value.spacing &&
-        other.itemTextStyle == value.itemTextStyle &&
-        other.linkTextStyle == value.linkTextStyle &&
-        other.linkNormalTextColor == value.linkNormalTextColor &&
-        other.linkHoverTextColor == value.linkHoverTextColor &&
-        other.mainAxisAlignment == value.mainAxisAlignment &&
-        other.crossAxisAlignment == value.crossAxisAlignment &&
-        other.dropdownMenuBackgroundColor ==
-            value.dropdownMenuBackgroundColor &&
-        other.dropdownMenuPadding == value.dropdownMenuPadding &&
-        other.dropdownTextStyle == value.dropdownTextStyle &&
-        other.dropdownItemPadding == value.dropdownItemPadding &&
-        other.dropdownMenuAnchor == value.dropdownMenuAnchor &&
-        other.dropdownArrowGap == value.dropdownArrowGap &&
-        other.lastItemTextColor == value.lastItemTextColor;
+    return _other.separator == _this.separator &&
+        _other.ellipsis == _this.ellipsis &&
+        _other.separatorSize == _this.separatorSize &&
+        _other.ellipsisSize == _this.ellipsisSize &&
+        _other.spacing == _this.spacing &&
+        _other.itemTextStyle == _this.itemTextStyle &&
+        _other.linkTextStyle == _this.linkTextStyle &&
+        _other.linkNormalTextColor == _this.linkNormalTextColor &&
+        _other.linkHoverTextColor == _this.linkHoverTextColor &&
+        _other.mainAxisAlignment == _this.mainAxisAlignment &&
+        _other.crossAxisAlignment == _this.crossAxisAlignment &&
+        _other.dropdownMenuBackgroundColor ==
+            _this.dropdownMenuBackgroundColor &&
+        _other.dropdownMenuPadding == _this.dropdownMenuPadding &&
+        _other.dropdownTextStyle == _this.dropdownTextStyle &&
+        _other.dropdownItemPadding == _this.dropdownItemPadding &&
+        _other.dropdownMenuAnchor == _this.dropdownMenuAnchor &&
+        _other.dropdownArrowGap == _this.dropdownArrowGap &&
+        _other.lastItemTextColor == _this.lastItemTextColor;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadBreadcrumbTheme);
+    final _this = (this as ShadBreadcrumbTheme);
 
     return Object.hash(
       runtimeType,
-      value.separator,
-      value.ellipsis,
-      value.separatorSize,
-      value.ellipsisSize,
-      value.spacing,
-      value.itemTextStyle,
-      value.linkTextStyle,
-      value.linkNormalTextColor,
-      value.linkHoverTextColor,
-      value.mainAxisAlignment,
-      value.crossAxisAlignment,
-      value.dropdownMenuBackgroundColor,
-      value.dropdownMenuPadding,
-      value.dropdownTextStyle,
-      value.dropdownItemPadding,
-      value.dropdownMenuAnchor,
-      value.dropdownArrowGap,
-      value.lastItemTextColor,
+      _this.separator,
+      _this.ellipsis,
+      _this.separatorSize,
+      _this.ellipsisSize,
+      _this.spacing,
+      _this.itemTextStyle,
+      _this.linkTextStyle,
+      _this.linkNormalTextColor,
+      _this.linkHoverTextColor,
+      _this.mainAxisAlignment,
+      _this.crossAxisAlignment,
+      _this.dropdownMenuBackgroundColor,
+      _this.dropdownMenuPadding,
+      _this.dropdownTextStyle,
+      _this.dropdownItemPadding,
+      _this.dropdownMenuAnchor,
+      _this.dropdownArrowGap,
+      _this.lastItemTextColor,
     );
   }
 }

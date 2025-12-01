@@ -72,6 +72,11 @@ mixin _$ShadThemeData {
         b?.outlineBadgeTheme,
         t,
       )!,
+      breadcrumbTheme: ShadBreadcrumbTheme.lerp(
+        a?.breadcrumbTheme,
+        b?.breadcrumbTheme,
+        t,
+      )!,
       radius: BorderRadius.lerp(a?.radius, b?.radius, t)!,
       avatarTheme: ShadAvatarTheme.lerp(a?.avatarTheme, b?.avatarTheme, t)!,
       buttonSizesTheme: ShadButtonSizesTheme.lerp(
@@ -206,6 +211,7 @@ mixin _$ShadThemeData {
     ShadBadgeTheme? secondaryBadgeTheme,
     ShadBadgeTheme? destructiveBadgeTheme,
     ShadBadgeTheme? outlineBadgeTheme,
+    ShadBreadcrumbTheme? breadcrumbTheme,
     BorderRadius? radius,
     ShadAvatarTheme? avatarTheme,
     ShadButtonSizesTheme? buttonSizesTheme,
@@ -265,6 +271,7 @@ mixin _$ShadThemeData {
       destructiveBadgeTheme:
           destructiveBadgeTheme ?? _this.destructiveBadgeTheme,
       outlineBadgeTheme: outlineBadgeTheme ?? _this.outlineBadgeTheme,
+      breadcrumbTheme: breadcrumbTheme ?? _this.breadcrumbTheme,
       radius: radius ?? _this.radius,
       avatarTheme: avatarTheme ?? _this.avatarTheme,
       buttonSizesTheme: buttonSizesTheme ?? _this.buttonSizesTheme,
@@ -337,6 +344,7 @@ mixin _$ShadThemeData {
       secondaryBadgeTheme: other.secondaryBadgeTheme,
       destructiveBadgeTheme: other.destructiveBadgeTheme,
       outlineBadgeTheme: other.outlineBadgeTheme,
+      breadcrumbTheme: other.breadcrumbTheme,
       radius: other.radius,
       avatarTheme: other.avatarTheme,
       buttonSizesTheme: other.buttonSizesTheme,
@@ -406,6 +414,7 @@ mixin _$ShadThemeData {
         _other.secondaryBadgeTheme == _this.secondaryBadgeTheme &&
         _other.destructiveBadgeTheme == _this.destructiveBadgeTheme &&
         _other.outlineBadgeTheme == _this.outlineBadgeTheme &&
+        _other.breadcrumbTheme == _this.breadcrumbTheme &&
         _other.radius == _this.radius &&
         _other.avatarTheme == _this.avatarTheme &&
         _other.buttonSizesTheme == _this.buttonSizesTheme &&
@@ -467,6 +476,7 @@ mixin _$ShadThemeData {
       _this.secondaryBadgeTheme,
       _this.destructiveBadgeTheme,
       _this.outlineBadgeTheme,
+      _this.breadcrumbTheme,
       _this.radius,
       _this.avatarTheme,
       _this.buttonSizesTheme,
