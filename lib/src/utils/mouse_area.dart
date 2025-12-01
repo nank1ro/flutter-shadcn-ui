@@ -336,12 +336,12 @@ class ShadMouseAreaRenderBox extends RenderProxyBoxWithHitTestBehavior {
     Object? groupId,
     String? debugLabel,
     MouseCursor cursor = MouseCursor.defer,
-  })  : _registry = registry,
-        _cursor = cursor,
-        _validForMouseTracker = validForMouseTracker,
-        _enabled = enabled,
-        _groupId = groupId,
-        debugLabel = kReleaseMode ? null : debugLabel;
+  }) : _registry = registry,
+       _cursor = cursor,
+       _validForMouseTracker = validForMouseTracker,
+       _enabled = enabled,
+       _groupId = groupId,
+       debugLabel = kReleaseMode ? null : debugLabel;
 
   bool _isRegistered = false;
 

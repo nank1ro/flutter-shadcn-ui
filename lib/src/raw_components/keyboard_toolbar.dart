@@ -93,7 +93,8 @@ class _ShadKeyboardToolbarState extends State<ShadKeyboardToolbar>
 
     final theme = ShadTheme.of(context);
 
-    final effectiveHideThreshold = widget.hideThreshold ??
+    final effectiveHideThreshold =
+        widget.hideThreshold ??
         theme.defaultKeyboardToolbarTheme.hideThreshold ??
         20.0;
 

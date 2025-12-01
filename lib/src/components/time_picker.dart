@@ -36,10 +36,10 @@ class ShadTimeOfDay {
   /// The [hour] is set to the time's hour and the [minute] is set to the time's
   /// minute in the timezone of the given [DateTime].
   ShadTimeOfDay.fromDateTime(DateTime time)
-      : hour = time.hour,
-        minute = time.minute,
-        second = time.second,
-        _period = null;
+    : hour = time.hour,
+      minute = time.minute,
+      second = time.second,
+      _period = null;
 
   /// Creates a time of day based on the current time.
   ///
@@ -141,10 +141,10 @@ class ShadTimePickerController extends ChangeNotifier {
   /// Creates a [ShadTimePickerController] initialized with a [ShadTimeOfDay]
   /// object.
   ShadTimePickerController.fromTimeOfDay(ShadTimeOfDay? timeOfDay)
-      : hour = timeOfDay?.hour,
-        minute = timeOfDay?.minute,
-        second = timeOfDay?.second,
-        period = timeOfDay?.period;
+    : hour = timeOfDay?.hour,
+      minute = timeOfDay?.minute,
+      second = timeOfDay?.second,
+      period = timeOfDay?.period;
 
   /// {@template ShadTimePickerController.hour}
   /// The selected hour.
@@ -270,17 +270,17 @@ class ShadTimePicker extends StatefulWidget {
     this.showHours,
     this.showSeconds,
     this.showMinutes,
-  })  : variant = ShadTimePickerVariant.primary,
-        initialDayPeriod = null,
-        periodLabel = null,
-        periodPlaceholder = null,
-        periodHeight = null,
-        periodDecoration = null,
-        periodMinWidth = null,
-        assert(
-          false != showHours || false != showMinutes || false != showSeconds,
-          '''At least one of showHours, showMinutes, or showSeconds must not be false''',
-        );
+  }) : variant = ShadTimePickerVariant.primary,
+       initialDayPeriod = null,
+       periodLabel = null,
+       periodPlaceholder = null,
+       periodHeight = null,
+       periodDecoration = null,
+       periodMinWidth = null,
+       assert(
+         false != showHours || false != showMinutes || false != showSeconds,
+         '''At least one of showHours, showMinutes, or showSeconds must not be false''',
+       );
 
   /// Creates a [ShadTimePicker] with the period variant (12-hour format with AM/PM).
   const ShadTimePicker.period({
@@ -327,11 +327,11 @@ class ShadTimePicker extends StatefulWidget {
     this.showHours,
     this.showMinutes,
     this.showSeconds,
-  })  : variant = ShadTimePickerVariant.period,
-        assert(
-          false != showHours || false != showMinutes || false != showSeconds,
-          '''At least one of showHours, showMinutes, or showSeconds must not be false''',
-        );
+  }) : variant = ShadTimePickerVariant.period,
+       assert(
+         false != showHours || false != showMinutes || false != showSeconds,
+         '''At least one of showHours, showMinutes, or showSeconds must not be false''',
+       );
 
   /// Creates a [ShadTimePicker] with a raw variant, allowing explicit variant
   /// specification.
@@ -381,9 +381,9 @@ class ShadTimePicker extends StatefulWidget {
     this.showMinutes,
     this.showSeconds,
   }) : assert(
-          false != showHours || false != showMinutes || false != showSeconds,
-          '''At least one of showHours, showMinutes, or showSeconds must not be false''',
-        );
+         false != showHours || false != showMinutes || false != showSeconds,
+         '''At least one of showHours, showMinutes, or showSeconds must not be false''',
+       );
 
   /// {@template ShadTimePicker.axis}
   /// The axis along which the fields are laid out. Defaults to `horizontal`.
@@ -644,8 +644,8 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     text: widget.initialValue?.hour == null && widget.controller?.hour == null
         ? null
         : (widget.initialValue?.hour ?? widget.controller?.hour)
-            .toString()
-            .padLeft(2, '0'),
+              .toString()
+              .padLeft(2, '0'),
     placeholderStyle: widget.placeholderStyle,
   );
   late final minuteController = ShadTimePickerTextEditingController(
@@ -653,10 +653,10 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     min: widget.minMinute,
     text:
         widget.initialValue?.minute == null && widget.controller?.minute == null
-            ? null
-            : (widget.initialValue?.minute ?? widget.controller?.minute)
-                .toString()
-                .padLeft(2, '0'),
+        ? null
+        : (widget.initialValue?.minute ?? widget.controller?.minute)
+              .toString()
+              .padLeft(2, '0'),
     placeholderStyle: widget.placeholderStyle,
   );
   late final secondController = ShadTimePickerTextEditingController(
@@ -664,10 +664,10 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     min: widget.minSecond,
     text:
         widget.initialValue?.second == null && widget.controller?.second == null
-            ? null
-            : (widget.initialValue?.second ?? widget.controller?.second)
-                .toString()
-                .padLeft(2, '0'),
+        ? null
+        : (widget.initialValue?.second ?? widget.controller?.second)
+              .toString()
+              .padLeft(2, '0'),
     placeholderStyle: widget.placeholderStyle,
   );
 
@@ -752,43 +752,55 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         widget.spacing ?? theme.timePickerTheme.spacing ?? 8;
     final effectiveRunSpacing =
         widget.runSpacing ?? theme.timePickerTheme.runSpacing ?? 4;
-    final effectiveJumpToNextField = widget.jumpToNextFieldWhenFilled ??
+    final effectiveJumpToNextField =
+        widget.jumpToNextFieldWhenFilled ??
         theme.timePickerTheme.jumpToNextFieldWhenFilled ??
         true;
-    final effectiveHourLabel = widget.hourLabel ??
+    final effectiveHourLabel =
+        widget.hourLabel ??
         theme.timePickerTheme.hourLabel ??
         const Text('Hours');
-    final effectiveMinuteLabel = widget.minuteLabel ??
+    final effectiveMinuteLabel =
+        widget.minuteLabel ??
         theme.timePickerTheme.minuteLabel ??
         const Text('Minutes');
-    final effectiveSecondLabel = widget.secondLabel ??
+    final effectiveSecondLabel =
+        widget.secondLabel ??
         theme.timePickerTheme.secondLabel ??
         const Text('Seconds');
-    final effectivePeriodLabel = widget.periodLabel ??
+    final effectivePeriodLabel =
+        widget.periodLabel ??
         theme.timePickerTheme.periodLabel ??
         const Text('Period');
 
     const defaultPlaceholder = Text('00');
-    final effectiveHourPlaceholder = widget.hourPlaceholder ??
+    final effectiveHourPlaceholder =
+        widget.hourPlaceholder ??
         theme.timePickerTheme.hourPlaceholder ??
         defaultPlaceholder;
-    final effectiveMinutePlaceholder = widget.minutePlaceholder ??
+    final effectiveMinutePlaceholder =
+        widget.minutePlaceholder ??
         theme.timePickerTheme.minutePlaceholder ??
         defaultPlaceholder;
-    final effectiveSecondPlaceholder = widget.secondPlaceholder ??
+    final effectiveSecondPlaceholder =
+        widget.secondPlaceholder ??
         theme.timePickerTheme.secondPlaceholder ??
         defaultPlaceholder;
-    final effectivePeriodPlaceholder = widget.periodPlaceholder ??
+    final effectivePeriodPlaceholder =
+        widget.periodPlaceholder ??
         theme.timePickerTheme.periodPlaceholder ??
         Text('AM', style: theme.textTheme.muted);
 
-    final effectiveAlignment = widget.alignment ??
+    final effectiveAlignment =
+        widget.alignment ??
         theme.timePickerTheme.alignment ??
         WrapAlignment.center;
-    final effectiveRunAlignment = widget.runAlignment ??
+    final effectiveRunAlignment =
+        widget.runAlignment ??
         theme.timePickerTheme.runAlignment ??
         WrapAlignment.center;
-    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+    final effectiveCrossAxisAlignment =
+        widget.crossAxisAlignment ??
         theme.timePickerTheme.crossAxisAlignment ??
         WrapCrossAlignment.center;
 
@@ -799,7 +811,8 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     final effectiveGap = widget.gap ?? theme.timePickerTheme.gap ?? 4;
     final effectiveFieldWidth =
         widget.fieldWidth ?? theme.timePickerTheme.fieldWidth ?? 48;
-    final effectiveFieldPadding = widget.fieldPadding ??
+    final effectiveFieldPadding =
+        widget.fieldPadding ??
         theme.timePickerTheme.fieldPadding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
@@ -818,14 +831,15 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
         .merge(widget.labelStyle)
         .fallback(color: theme.colorScheme.foreground);
 
-    final effectiveFieldDecoration = ShadDecoration(
-      border: ShadBorder.all(
-        color: theme.colorScheme.border,
-        radius: theme.radius,
-      ),
-    )
-        .merge(theme.timePickerTheme.fieldDecoration)
-        .merge(widget.fieldDecoration);
+    final effectiveFieldDecoration =
+        ShadDecoration(
+              border: ShadBorder.all(
+                color: theme.colorScheme.border,
+                radius: theme.radius,
+              ),
+            )
+            .merge(theme.timePickerTheme.fieldDecoration)
+            .merge(widget.fieldDecoration);
 
     final effectivePeriodDecoration =
         (theme.timePickerTheme.periodDecoration ?? const ShadDecoration())
@@ -1115,7 +1129,8 @@ class _ShadTimePickerFieldState extends State<ShadTimePickerField> {
     final defaultLabelStyle = theme.textTheme.small.copyWith(fontSize: 12);
     final effectiveLabelStyle = defaultLabelStyle.merge(widget.labelStyle);
     final effectiveWidth = widget.width ?? 58;
-    final effectivePadding = widget.padding ??
+    final effectivePadding =
+        widget.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
     final effectiveDecoration = ShadDecoration(
@@ -1183,16 +1198,16 @@ class ShadTimePickerTextEditingController extends TextEditingController {
     this.placeholderStyle,
     this.min = 0,
     this.max = 59,
-  })  : assert(
-          value == null ||
-              !value.composing.isValid ||
-              value.isComposingRangeValid,
-          '''
+  }) : assert(
+         value == null ||
+             !value.composing.isValid ||
+             value.isComposingRangeValid,
+         '''
           New TextEditingValue $value has an invalid non-empty composing range
           ${value.composing}. It is recommended to use a valid composing range,
           even for readonly text fields.''',
-        ),
-        super.fromValue(value ?? TextEditingValue.empty);
+       ),
+       super.fromValue(value ?? TextEditingValue.empty);
 
   /// {@template ShadTimePickerTextEditingController.placeholderStyle}
   /// The style of the placeholder text.

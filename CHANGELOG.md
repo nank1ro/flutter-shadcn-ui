@@ -1,3 +1,8 @@
+## 0.40.1
+
+- **FIX**: `ShadInput` constraints are applied at the top of the widget and not to the inner editable text.
+- **CHORE**: Run the Dart formatter.
+
 ## 0.40.0
 
 - **FEAT**: Add new component `ShadBreadcrumb` and all of its related components (thanks to @MoazSalem).

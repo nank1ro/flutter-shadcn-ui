@@ -107,18 +107,21 @@ class ShadInput extends StatefulWidget {
     this.onLineCountChange,
     this.editableTextSize,
     this.verticalGap,
-  })  : smartDashesType = smartDashesType ??
-            (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
-        smartQuotesType = smartQuotesType ??
-            (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
-        keyboardType = keyboardType ??
-            (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
-        enableInteractiveSelection =
-            enableInteractiveSelection ?? (!readOnly || !obscureText),
-        assert(
-          initialValue == null || controller == null,
-          'Either initialValue or controller must be specified',
-        );
+  }) : smartDashesType =
+           smartDashesType ??
+           (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
+       smartQuotesType =
+           smartQuotesType ??
+           (obscureText ? SmartQuotesType.disabled : SmartQuotesType.enabled),
+       keyboardType =
+           keyboardType ??
+           (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
+       enableInteractiveSelection =
+           enableInteractiveSelection ?? (!readOnly || !obscureText),
+       assert(
+         initialValue == null || controller == null,
+         'Either initialValue or controller must be specified',
+       );
 
   /// {@template ShadInput.initialValue}
   /// The initial text value of the input.
@@ -832,8 +835,9 @@ class ShadInputState extends State<ShadInput>
       textScaler: textScaler,
       maxLines: widget.maxLines,
       textAlign: widget.textAlign,
-      textWidthBasis:
-          widget.expands ? TextWidthBasis.parent : TextWidthBasis.longestLine,
+      textWidthBasis: widget.expands
+          ? TextWidthBasis.parent
+          : TextWidthBasis.longestLine,
     );
     // The default caret gap is 1 pixel, so we need to account for that
     const caretGap = 1;
@@ -863,10 +867,11 @@ class ShadInputState extends State<ShadInput>
 
     final effectiveDecoration =
         (theme.inputTheme.decoration ?? const ShadDecoration()).merge(
-      widget.decoration,
-    );
+          widget.decoration,
+        );
 
-    final effectiveCursorColor = widget.cursorColor ??
+    final effectiveCursorColor =
+        widget.cursorColor ??
         theme.inputTheme.cursorColor ??
         theme.colorScheme.primary;
 
@@ -879,11 +884,13 @@ class ShadInputState extends State<ShadInput>
     final effectiveCursorRadius =
         widget.cursorRadius ?? theme.inputTheme.cursorRadius;
 
-    final effectiveCursorOpacityAnimates = widget.cursorOpacityAnimates ??
+    final effectiveCursorOpacityAnimates =
+        widget.cursorOpacityAnimates ??
         theme.inputTheme.cursorOpacityAnimates ??
         false;
 
-    final effectivePadding = widget.padding ??
+    final effectivePadding =
+        widget.padding ??
         theme.inputTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
@@ -899,18 +906,21 @@ class ShadInputState extends State<ShadInput>
         ? Alignment.topRight
         : Alignment.topLeft;
 
-    final effectivePlaceholderAlignment = widget.placeholderAlignment ??
+    final effectivePlaceholderAlignment =
+        widget.placeholderAlignment ??
         theme.inputTheme.placeholderAlignment ??
         defaultAlignment;
 
     final effectiveAlignemnt =
         widget.alignment ?? theme.inputTheme.alignment ?? defaultAlignment;
 
-    final effectiveMainAxisAlignment = widget.mainAxisAlignment ??
+    final effectiveMainAxisAlignment =
+        widget.mainAxisAlignment ??
         theme.inputTheme.mainAxisAlignment ??
         MainAxisAlignment.start;
 
-    final effectiveCrossAxisAlignment = widget.crossAxisAlignment ??
+    final effectiveCrossAxisAlignment =
+        widget.crossAxisAlignment ??
         theme.inputTheme.crossAxisAlignment ??
         CrossAxisAlignment.center;
     final effectiveMouseCursor =
@@ -918,7 +928,8 @@ class ShadInputState extends State<ShadInput>
 
     final effectiveGap = widget.gap ?? theme.inputTheme.gap ?? 8.0;
 
-    final effectiveMaxLengthEnforcement = widget.maxLengthEnforcement ??
+    final effectiveMaxLengthEnforcement =
+        widget.maxLengthEnforcement ??
         LengthLimitingTextInputFormatter.getDefaultMaxLengthEnforcement(
           defaultTargetPlatform,
         );
@@ -941,10 +952,10 @@ class ShadInputState extends State<ShadInput>
     );
     final maxFontSizeScaled = textScaler.scale(maxFontSize);
 
-    final effectiveConstraints = widget.constraints ??
-        BoxConstraints(
-          minHeight: maxFontSizeScaled,
-        );
+    final effectiveConstraints =
+        widget.constraints ??
+        theme.inputTheme.constraints ??
+        BoxConstraints(minHeight: maxFontSizeScaled);
 
     final effectiveGroupId = widget.groupId ?? _groupId;
 
@@ -954,160 +965,163 @@ class ShadInputState extends State<ShadInput>
     final effectiveVerticalGap =
         widget.verticalGap ?? theme.inputTheme.verticalGap ?? 0.0;
 
-    return ShadDisabled(
-      disabled: !widget.enabled,
-      child: _selectionGestureDetectorBuilder.buildGestureDetector(
-        behavior: HitTestBehavior.translucent,
-        child: ShadKeyboardToolbar(
-          focusNode: effectiveFocusNode,
-          toolbarBuilder: widget.keyboardToolbarBuilder,
-          child: ValueListenableBuilder(
-            valueListenable: hasFocus,
-            builder: (context, focused, _) {
-              return ValueListenableBuilder(
-                valueListenable: effectiveController,
-                builder: (context, textEditingValue, child) {
-                  final Widget editableText;
-                  final rawEditableText = SizedBox(
-                    width: widget.editableTextSize?.width,
-                    height: widget.editableTextSize?.height,
-                    child: EditableText(
-                      showSelectionHandles: _showSelectionHandles,
-                      key: editableTextKey,
-                      controller: effectiveController,
-                      obscuringCharacter: widget.obscuringCharacter,
-                      readOnly: widget.readOnly,
-                      focusNode: effectiveFocusNode,
-                      // ! Selection handler section here
-                      onSelectionChanged: _handleSelectionChanged,
-                      selectionColor: focused
-                          ? widget.selectionColor ?? theme.colorScheme.selection
-                          : null,
-                      selectionHeightStyle: widget.selectionHeightStyle,
-                      selectionWidthStyle: widget.selectionWidthStyle,
-                      contextMenuBuilder: widget.contextMenuBuilder,
-                      selectionControls: widget.selectionControls,
-                      // ! End of selection handler
-                      // ! section
-                      mouseCursor: effectiveMouseCursor,
-                      enableInteractiveSelection:
-                          widget.enableInteractiveSelection,
-                      style: effectiveTextStyle,
-                      strutStyle: widget.strutStyle,
-                      cursorColor: effectiveCursorColor,
-                      cursorWidth: effectiveCursorWidth,
-                      cursorHeight: effectiveCursorHeight,
-                      cursorRadius: effectiveCursorRadius,
-                      cursorOpacityAnimates: effectiveCursorOpacityAnimates,
-                      backgroundCursorColor: const Color(
-                        0xFF9E9E9E,
+    return ConstrainedBox(
+      constraints: effectiveConstraints,
+      child: ShadDisabled(
+        disabled: !widget.enabled,
+        child: _selectionGestureDetectorBuilder.buildGestureDetector(
+          behavior: HitTestBehavior.translucent,
+          child: ShadKeyboardToolbar(
+            focusNode: effectiveFocusNode,
+            toolbarBuilder: widget.keyboardToolbarBuilder,
+            child: ValueListenableBuilder(
+              valueListenable: hasFocus,
+              builder: (context, focused, _) {
+                return ValueListenableBuilder(
+                  valueListenable: effectiveController,
+                  builder: (context, textEditingValue, child) {
+                    final Widget editableText;
+                    final rawEditableText = SizedBox(
+                      width: widget.editableTextSize?.width,
+                      height: widget.editableTextSize?.height,
+                      child: EditableText(
+                        showSelectionHandles: _showSelectionHandles,
+                        key: editableTextKey,
+                        controller: effectiveController,
+                        obscuringCharacter: widget.obscuringCharacter,
+                        readOnly: widget.readOnly,
+                        focusNode: effectiveFocusNode,
+                        // ! Selection handler section here
+                        onSelectionChanged: _handleSelectionChanged,
+                        selectionColor: focused
+                            ? widget.selectionColor ??
+                                  theme.colorScheme.selection
+                            : null,
+                        selectionHeightStyle: widget.selectionHeightStyle,
+                        selectionWidthStyle: widget.selectionWidthStyle,
+                        contextMenuBuilder: widget.contextMenuBuilder,
+                        selectionControls: widget.selectionControls,
+                        // ! End of selection handler
+                        // ! section
+                        mouseCursor: effectiveMouseCursor,
+                        enableInteractiveSelection:
+                            widget.enableInteractiveSelection,
+                        style: effectiveTextStyle,
+                        strutStyle: widget.strutStyle,
+                        cursorColor: effectiveCursorColor,
+                        cursorWidth: effectiveCursorWidth,
+                        cursorHeight: effectiveCursorHeight,
+                        cursorRadius: effectiveCursorRadius,
+                        cursorOpacityAnimates: effectiveCursorOpacityAnimates,
+                        backgroundCursorColor: const Color(
+                          0xFF9E9E9E,
+                        ),
+                        keyboardType: widget.keyboardType,
+                        keyboardAppearance:
+                            widget.keyboardAppearance ?? theme.brightness,
+                        textInputAction: widget.textInputAction,
+                        textCapitalization: widget.textCapitalization,
+                        autofocus: widget.autofocus,
+                        obscureText: widget.obscureText,
+                        autocorrect: widget.autocorrect,
+                        magnifierConfiguration: widget.magnifierConfiguration,
+                        smartDashesType: widget.smartDashesType,
+                        smartQuotesType: widget.smartQuotesType,
+                        enableSuggestions: widget.enableSuggestions,
+                        maxLines: widget.maxLines,
+                        minLines: widget.minLines,
+                        expands: widget.expands,
+                        onChanged: (v) {
+                          widget.onChanged?.call(
+                            v,
+                          );
+                        },
+                        onEditingComplete: widget.onEditingComplete,
+                        onSubmitted: widget.onSubmitted,
+                        onAppPrivateCommand: widget.onAppPrivateCommand,
+                        inputFormatters: effectiveInputFormatters,
+                        scrollPadding: widget.scrollPadding,
+                        dragStartBehavior: widget.dragStartBehavior,
+                        scrollPhysics: widget.scrollPhysics,
+                        // Disable the internal scrollbars
+                        // because there is already a
+                        // Scrollbar above.
+                        scrollBehavior:
+                            ScrollConfiguration.of(
+                              context,
+                            ).copyWith(
+                              scrollbars: false,
+                              overscroll: false,
+                            ),
+                        autofillHints: widget.autofillHints,
+                        clipBehavior: widget.clipBehavior,
+                        restorationId: 'editable',
+                        // ignore: deprecated_member_use
+                        scribbleEnabled: widget.scribbleEnabled,
+                        stylusHandwritingEnabled:
+                            widget.stylusHandwritingEnabled,
+                        enableIMEPersonalizedLearning:
+                            widget.enableIMEPersonalizedLearning,
+                        contentInsertionConfiguration:
+                            widget.contentInsertionConfiguration,
+                        undoController: widget.undoController,
+                        spellCheckConfiguration: widget.spellCheckConfiguration,
+                        textAlign: widget.textAlign,
+                        onTapOutside: widget.onPressedOutside,
+                        rendererIgnoresPointer: true,
+                        showCursor: widget.showCursor,
+                        groupId: effectiveGroupId,
                       ),
-                      keyboardType: widget.keyboardType,
-                      keyboardAppearance:
-                          widget.keyboardAppearance ?? theme.brightness,
-                      textInputAction: widget.textInputAction,
-                      textCapitalization: widget.textCapitalization,
-                      autofocus: widget.autofocus,
-                      obscureText: widget.obscureText,
-                      autocorrect: widget.autocorrect,
-                      magnifierConfiguration: widget.magnifierConfiguration,
-                      smartDashesType: widget.smartDashesType,
-                      smartQuotesType: widget.smartQuotesType,
-                      enableSuggestions: widget.enableSuggestions,
-                      maxLines: widget.maxLines,
-                      minLines: widget.minLines,
-                      expands: widget.expands,
-                      onChanged: (v) {
-                        widget.onChanged?.call(
-                          v,
-                        );
-                      },
-                      onEditingComplete: widget.onEditingComplete,
-                      onSubmitted: widget.onSubmitted,
-                      onAppPrivateCommand: widget.onAppPrivateCommand,
-                      inputFormatters: effectiveInputFormatters,
-                      scrollPadding: widget.scrollPadding,
-                      dragStartBehavior: widget.dragStartBehavior,
-                      scrollPhysics: widget.scrollPhysics,
-                      // Disable the internal scrollbars
-                      // because there is already a
-                      // Scrollbar above.
-                      scrollBehavior: ScrollConfiguration.of(
-                        context,
-                      ).copyWith(
-                        scrollbars: false,
-                        overscroll: false,
-                      ),
-                      autofillHints: widget.autofillHints,
-                      clipBehavior: widget.clipBehavior,
-                      restorationId: 'editable',
-                      // ignore: deprecated_member_use
-                      scribbleEnabled: widget.scribbleEnabled,
-                      stylusHandwritingEnabled: widget.stylusHandwritingEnabled,
-                      enableIMEPersonalizedLearning:
-                          widget.enableIMEPersonalizedLearning,
-                      contentInsertionConfiguration:
-                          widget.contentInsertionConfiguration,
-                      undoController: widget.undoController,
-                      spellCheckConfiguration: widget.spellCheckConfiguration,
-                      textAlign: widget.textAlign,
-                      onTapOutside: widget.onPressedOutside,
-                      rendererIgnoresPointer: true,
-                      showCursor: widget.showCursor,
-                      groupId: effectiveGroupId,
-                    ),
-                  );
-
-                  if (widget.onLineCountChange != null) {
-                    editableText = LayoutBuilder(
-                      builder: (context, constraints) {
-                        /// Fire onLineCountChange after the frame is rendered
-                        /// This ensures that the line count is accurate, even for
-                        /// resizes that happen outside of text changes.
-                        WidgetsBinding.instance.addPostFrameCallback((
-                          _,
-                        ) {
-                          if (mounted) {
-                            fireOnLineCountChange(
-                              effectiveController.text,
-                              textScaler: textScaler,
-                              constraints: constraints,
-                              effectiveTextStyle: effectiveTextStyle,
-                              effectiveCursorWidth: effectiveCursorWidth,
-                            );
-                          }
-                        });
-                        return rawEditableText;
-                      },
                     );
-                  } else {
-                    editableText = rawEditableText;
-                  }
-                  return ShadDecorator(
-                    decoration: effectiveDecoration,
-                    focused: focused,
-                    child: BoxyColumn(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (widget.top != null) widget.top!,
-                        RawScrollbar(
-                          thumbVisibility: isMultiline && isScrollable,
-                          controller: effectiveScrollController,
-                          padding: effectiveScrollbarPadding?.resolve(
-                            Directionality.of(context),
-                          ),
-                          child: SingleChildScrollView(
+
+                    if (widget.onLineCountChange != null) {
+                      editableText = LayoutBuilder(
+                        builder: (context, constraints) {
+                          /// Fire onLineCountChange after the frame is rendered
+                          /// This ensures that the line count is accurate, even for
+                          /// resizes that happen outside of text changes.
+                          WidgetsBinding.instance.addPostFrameCallback((
+                            _,
+                          ) {
+                            if (mounted) {
+                              fireOnLineCountChange(
+                                effectiveController.text,
+                                textScaler: textScaler,
+                                constraints: constraints,
+                                effectiveTextStyle: effectiveTextStyle,
+                                effectiveCursorWidth: effectiveCursorWidth,
+                              );
+                            }
+                          });
+                          return rawEditableText;
+                        },
+                      );
+                    } else {
+                      editableText = rawEditableText;
+                    }
+                    return ShadDecorator(
+                      decoration: effectiveDecoration,
+                      focused: focused,
+                      child: BoxyColumn(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (widget.top != null) widget.top!,
+                          RawScrollbar(
+                            thumbVisibility: isMultiline && isScrollable,
                             controller: effectiveScrollController,
-                            padding: effectivePadding,
-                            physics: widget.scrollPhysics,
-                            child: Row(
-                              mainAxisAlignment: effectiveMainAxisAlignment,
-                              crossAxisAlignment: effectiveCrossAxisAlignment,
-                              children: [
-                                if (widget.leading != null) widget.leading!,
-                                Flexible(
-                                  child: ConstrainedBox(
-                                    constraints: effectiveConstraints,
+                            padding: effectiveScrollbarPadding?.resolve(
+                              Directionality.of(context),
+                            ),
+                            child: SingleChildScrollView(
+                              controller: effectiveScrollController,
+                              padding: effectivePadding,
+                              physics: widget.scrollPhysics,
+                              child: Row(
+                                mainAxisAlignment: effectiveMainAxisAlignment,
+                                crossAxisAlignment: effectiveCrossAxisAlignment,
+                                children: [
+                                  if (widget.leading != null) widget.leading!,
+                                  Flexible(
                                     child: AbsorbPointer(
                                       // AbsorbPointer is needed when the input is
                                       // readOnly so the onTap callback is fired on
@@ -1145,19 +1159,19 @@ class ShadInputState extends State<ShadInput>
                                       ),
                                     ),
                                   ),
-                                ),
-                                if (widget.trailing != null) widget.trailing!,
-                              ].separatedBy(SizedBox(width: effectiveGap)),
+                                  if (widget.trailing != null) widget.trailing!,
+                                ].separatedBy(SizedBox(width: effectiveGap)),
+                              ),
                             ),
                           ),
-                        ),
-                        if (widget.bottom != null) widget.bottom!,
-                      ].separatedBy(SizedBox(height: effectiveVerticalGap)),
-                    ),
-                  );
-                },
-              );
-            },
+                          if (widget.bottom != null) widget.bottom!,
+                        ].separatedBy(SizedBox(height: effectiveVerticalGap)),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -1169,8 +1183,8 @@ class _InputSelectionGestureDetectorBuilder
     extends TextSelectionGestureDetectorBuilder {
   _InputSelectionGestureDetectorBuilder({
     required ShadInputState state,
-  })  : _state = state,
-        super(delegate: state);
+  }) : _state = state,
+       super(delegate: state);
 
   final ShadInputState _state;
 

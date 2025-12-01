@@ -306,8 +306,7 @@ void main() {
         return semantics.flagsCollection.isFocused.toBoolOrNull() ?? false;
       }
 
-      testWidgets(
-          'GIVEN a day button is focused '
+      testWidgets('GIVEN a day button is focused '
           'AND right arrow key is pressed '
           'THEN focus moves to the next day', (WidgetTester tester) async {
         await tester.pumpWidget(
@@ -325,8 +324,7 @@ void main() {
         expect(isFocused(tester, '2'), isTrue);
       });
 
-      testWidgets(
-          'GIVEN a day button is focused '
+      testWidgets('GIVEN a day button is focused '
           'AND left arrow key is pressed '
           'THEN focus moves to the previous day', (WidgetTester tester) async {
         await tester.pumpWidget(
@@ -345,8 +343,7 @@ void main() {
         expect(isFocused(tester, '1'), isTrue);
       });
 
-      testWidgets(
-          'GIVEN a day button is focused '
+      testWidgets('GIVEN a day button is focused '
           'AND there is a day right above it '
           'AND arrow-up is pressed '
           'THEN focus moves to the day right above', (
@@ -367,8 +364,7 @@ void main() {
         expect(isFocused(tester, '1'), isTrue);
       });
 
-      testWidgets(
-          'GIVEN a day button is focused '
+      testWidgets('GIVEN a day button is focused '
           'AND there is a day right below it '
           'AND arrow-down is pressed '
           'THEN focus moves to the day below below', (

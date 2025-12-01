@@ -209,13 +209,16 @@ class _ShadSwitchState extends State<ShadSwitch>
     final theme = ShadTheme.of(context);
 
     final direction = widget.direction ?? Directionality.of(context);
-    final effectiveThumbColor = widget.thumbColor ??
+    final effectiveThumbColor =
+        widget.thumbColor ??
         theme.switchTheme.thumbColor ??
         theme.colorScheme.background;
-    final effectiveUncheckedTrackColor = widget.uncheckedTrackColor ??
+    final effectiveUncheckedTrackColor =
+        widget.uncheckedTrackColor ??
         theme.switchTheme.uncheckedTrackColor ??
         theme.colorScheme.input;
-    final effectiveCheckedTrackColor = widget.checkedTrackColor ??
+    final effectiveCheckedTrackColor =
+        widget.checkedTrackColor ??
         theme.switchTheme.checkedTrackColor ??
         theme.colorScheme.primary;
     final effectiveWidth = widget.width ?? theme.switchTheme.width ?? 44;
@@ -236,22 +239,23 @@ class _ShadSwitchState extends State<ShadSwitch>
                   : effectiveUncheckedTrackColor,
             );
 
-    final effectivePadding = widget.padding ??
+    final effectivePadding =
+        widget.padding ??
         theme.switchTheme.padding ??
         const EdgeInsetsDirectional.only(start: 8);
 
     final effectiveEffects = [
       switch (direction) {
         TextDirection.ltr => MoveEffect(
-            begin: Offset.zero,
-            end: Offset(transitionStep, 0),
-            duration: effectiveDuration,
-          ),
+          begin: Offset.zero,
+          end: Offset(transitionStep, 0),
+          duration: effectiveDuration,
+        ),
         TextDirection.rtl => MoveEffect(
-            begin: Offset.zero,
-            end: Offset(-transitionStep, 0),
-            duration: effectiveDuration,
-          ),
+          begin: Offset.zero,
+          end: Offset(-transitionStep, 0),
+          duration: effectiveDuration,
+        ),
       },
     ];
 

@@ -422,21 +422,24 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     // Watching the OTP provider for changes
     final otpProvider = context.watch<ShadInputOTPState>();
 
-    final defaultStyle = widget.style ??
+    final defaultStyle =
+        widget.style ??
         theme.inputOTPTheme.style ??
         theme.textTheme.muted.copyWith(
           color: theme.colorScheme.foreground,
           fontFamily: kDefaultFontFamilyMono,
         );
 
-    final firstRadius = widget.firstRadius ??
+    final firstRadius =
+        widget.firstRadius ??
         theme.inputOTPTheme.firstRadius ??
         BorderRadius.only(
           topLeft: theme.radius.topLeft,
           bottomLeft: theme.radius.bottomLeft,
         );
 
-    final lastRadius = widget.lastRadius ??
+    final lastRadius =
+        widget.lastRadius ??
         theme.inputOTPTheme.lastRadius ??
         BorderRadius.only(
           topRight: theme.radius.topRight,
@@ -446,7 +449,8 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     final singleRadius =
         widget.singleRadius ?? theme.inputOTPTheme.singleRadius ?? theme.radius;
 
-    final middleRadius = widget.middleRadius ??
+    final middleRadius =
+        widget.middleRadius ??
         theme.inputOTPTheme.middleRadius ??
         BorderRadius.zero;
 
@@ -525,12 +529,12 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
             // sanitize the text and format it
             var sanitizedV = v.replaceAll(kInvisibleCharCode, '');
             final result = TextEditingValue(text: sanitizedV);
-            final formattedValue =
-                effectiveInputFormatters.fold<TextEditingValue>(
-              result,
-              (TextEditingValue newValue, TextInputFormatter formatter) =>
-                  formatter.formatEditUpdate(result, newValue),
-            );
+            final formattedValue = effectiveInputFormatters
+                .fold<TextEditingValue>(
+                  result,
+                  (TextEditingValue newValue, TextInputFormatter formatter) =>
+                      formatter.formatEditUpdate(result, newValue),
+                );
 
             final hasBeenFormatted = formattedValue.text != sanitizedV;
             sanitizedV = formattedValue.text;

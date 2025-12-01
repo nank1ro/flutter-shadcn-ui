@@ -86,9 +86,9 @@ class ShadSlider extends StatefulWidget {
     this.allowedInteraction,
     this.controller,
   }) : assert(
-          (initialValue != null) ^ (controller != null),
-          'Either initialValue or controller must be specified',
-        );
+         (initialValue != null) ^ (controller != null),
+         'Either initialValue or controller must be specified',
+       );
 
   /// {@template ShadSlider.initialValue}
   /// The initial value of the slider.
@@ -270,7 +270,8 @@ class ShadSlider extends StatefulWidget {
 }
 
 class _ShadSliderState extends State<ShadSlider> {
-  late final controller = widget.controller ??
+  late final controller =
+      widget.controller ??
       ShadSliderController(
         initialValue: widget.initialValue!,
       );
@@ -335,7 +336,8 @@ class _ShadSliderState extends State<ShadSlider> {
   void _handleTrackTap(Offset localPosition, BoxConstraints constraints) {
     final effectiveMin = widget.min ?? 0;
     final effectiveMax = widget.max ?? 1;
-    final newValue = effectiveMin +
+    final newValue =
+        effectiveMin +
         (localPosition.dx / constraints.maxWidth) *
             (effectiveMax - effectiveMin);
     _updateSliderValue(newValue);
@@ -344,7 +346,8 @@ class _ShadSliderState extends State<ShadSlider> {
   void _handleTrackPan(Offset localPosition, BoxConstraints constraints) {
     final effectiveMin = widget.min ?? 0;
     final effectiveMax = widget.max ?? 1;
-    final newValue = effectiveMin +
+    final newValue =
+        effectiveMin +
         (localPosition.dx / constraints.maxWidth) *
             (effectiveMax - effectiveMin);
     _updateSliderValue(newValue);
@@ -385,48 +388,57 @@ class _ShadSliderState extends State<ShadSlider> {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    final effectiveMouseCursor = widget.mouseCursor ??
+    final effectiveMouseCursor =
+        widget.mouseCursor ??
         theme.sliderTheme.mouseCursor ??
         SystemMouseCursors.click;
-    final effectiveDisabledMouseCursor = widget.disabledMouseCursor ??
+    final effectiveDisabledMouseCursor =
+        widget.disabledMouseCursor ??
         theme.sliderTheme.disabledMouseCursor ??
         SystemMouseCursors.forbidden;
 
     final effectiveMin = widget.min ?? theme.sliderTheme.min ?? 0;
     final effectiveMax = widget.max ?? theme.sliderTheme.max ?? 1;
 
-    final effectiveThumbColor = widget.thumbColor ??
+    final effectiveThumbColor =
+        widget.thumbColor ??
         theme.sliderTheme.thumbColor ??
         theme.colorScheme.background;
 
-    final effectiveThumbBorderColor = widget.thumbBorderColor ??
+    final effectiveThumbBorderColor =
+        widget.thumbBorderColor ??
         theme.sliderTheme.thumbBorderColor ??
         theme.colorScheme.primary;
 
-    final effectiveDisabledThumbColor = widget.disabledThumbColor ??
+    final effectiveDisabledThumbColor =
+        widget.disabledThumbColor ??
         theme.sliderTheme.disabledThumbColor ??
         theme.colorScheme.background;
 
-    final effectiveDisabledThumbBorderColor = widget.disabledThumbBorderColor ??
+    final effectiveDisabledThumbBorderColor =
+        widget.disabledThumbBorderColor ??
         theme.sliderTheme.disabledThumbBorderColor ??
         theme.colorScheme.primary.withValues(alpha: .5);
 
-    final effectiveActiveTrackColor = widget.activeTrackColor ??
+    final effectiveActiveTrackColor =
+        widget.activeTrackColor ??
         theme.sliderTheme.activeTrackColor ??
         theme.colorScheme.primary;
 
-    final effectiveInactiveTrackColor = widget.inactiveTrackColor ??
+    final effectiveInactiveTrackColor =
+        widget.inactiveTrackColor ??
         theme.sliderTheme.inactiveTrackColor ??
         theme.colorScheme.secondary;
 
-    final effectiveDisabledActiveTrackColor = widget.disabledActiveTrackColor ??
+    final effectiveDisabledActiveTrackColor =
+        widget.disabledActiveTrackColor ??
         theme.sliderTheme.disabledActiveTrackColor ??
         theme.colorScheme.primary.withValues(alpha: .5);
 
     final effectiveDisabledInactiveTrackColor =
         widget.disabledInactiveTrackColor ??
-            theme.sliderTheme.disabledInactiveTrackColor ??
-            theme.colorScheme.secondary.withValues(alpha: .5);
+        theme.sliderTheme.disabledInactiveTrackColor ??
+        theme.colorScheme.secondary.withValues(alpha: .5);
 
     final effectiveTrackHeight =
         widget.trackHeight ?? theme.sliderTheme.trackHeight ?? 8;
@@ -482,7 +494,8 @@ class _ShadSliderState extends State<ShadSlider> {
                       cursor: widget.enabled
                           ? effectiveMouseCursor
                           : effectiveDisabledMouseCursor,
-                      onTapDown: widget.enabled &&
+                      onTapDown:
+                          widget.enabled &&
                               (effectiveAllowedInteraction ==
                                       ShadSliderInteraction.tapAndSlide ||
                                   effectiveAllowedInteraction ==
@@ -496,7 +509,8 @@ class _ShadSliderState extends State<ShadSlider> {
                               _handleTrackTap(localPosition, constraints);
                             }
                           : null,
-                      onPanUpdate: widget.enabled &&
+                      onPanUpdate:
+                          widget.enabled &&
                               (effectiveAllowedInteraction ==
                                       ShadSliderInteraction.tapAndSlide ||
                                   effectiveAllowedInteraction ==
@@ -512,11 +526,11 @@ class _ShadSliderState extends State<ShadSlider> {
                           : null,
                       onPanStart: widget.enabled
                           ? (details) =>
-                              widget.onChangeStart?.call(controller.value)
+                                widget.onChangeStart?.call(controller.value)
                           : null,
                       onPanEnd: widget.enabled
                           ? (details) =>
-                              widget.onChangeEnd?.call(controller.value)
+                                widget.onChangeEnd?.call(controller.value)
                           : null,
                       child: Stack(
                         children: [
@@ -535,11 +549,12 @@ class _ShadSliderState extends State<ShadSlider> {
                           ),
                           // active track
                           SizedBox(
-                            width: effectiveTrackWidth *
+                            width:
+                                effectiveTrackWidth *
                                 ((effectiveMax - effectiveMin) == 0
                                         ? 0.0
                                         : ((value - effectiveMin) /
-                                            (effectiveMax - effectiveMin)))
+                                              (effectiveMax - effectiveMin)))
                                     .clamp(0.0, 1.0),
                             height: effectiveTrackHeight,
                             child: DecoratedBox(
@@ -563,9 +578,11 @@ class _ShadSliderState extends State<ShadSlider> {
                             ...List.generate(widget.divisions! + 1, (index) {
                               final position = index / widget.divisions!;
                               return Positioned(
-                                left: position * effectiveTrackWidth -
+                                left:
+                                    position * effectiveTrackWidth -
                                     divisionMarkOffset,
-                                top: (effectiveTrackHeight -
+                                top:
+                                    (effectiveTrackHeight -
                                         divisionMarkHeight) /
                                     2,
                                 child: Container(
@@ -589,37 +606,43 @@ class _ShadSliderState extends State<ShadSlider> {
                     ),
                     // thumb
                     Positioned(
-                      left: (((effectiveMax - effectiveMin) == 0
-                                  ? 0.0
-                                  : ((value - effectiveMin) /
-                                          (effectiveMax - effectiveMin)) *
-                                      constraints.maxWidth) -
-                              effectiveThumbRadius -
-                              (focused ? focusRingTotalSpace / 2 : 0))
-                          .clamp(
-                        -(effectiveThumbRadius +
-                            (focused ? focusRingTotalSpace / 2 : 0)),
-                        constraints.maxWidth -
-                            effectiveThumbRadius -
-                            (focused ? focusRingTotalSpace / 2 : 0),
-                      ),
-                      top: (effectiveTrackHeight - effectiveThumbRadius * 2) /
+                      left:
+                          (((effectiveMax - effectiveMin) == 0
+                                      ? 0.0
+                                      : ((value - effectiveMin) /
+                                                (effectiveMax - effectiveMin)) *
+                                            constraints.maxWidth) -
+                                  effectiveThumbRadius -
+                                  (focused ? focusRingTotalSpace / 2 : 0))
+                              .clamp(
+                                -(effectiveThumbRadius +
+                                    (focused ? focusRingTotalSpace / 2 : 0)),
+                                constraints.maxWidth -
+                                    effectiveThumbRadius -
+                                    (focused ? focusRingTotalSpace / 2 : 0),
+                              ),
+                      top:
+                          (effectiveTrackHeight - effectiveThumbRadius * 2) /
                               2 -
                           (focused ? focusRingTotalSpace / 2 : 0),
                       child: Semantics(
                         slider: true,
-                        value: widget.semanticFormatterCallback?.call(value) ??
+                        value:
+                            widget.semanticFormatterCallback?.call(value) ??
                             value.toString(),
                         child: SizedBox(
-                          width: effectiveThumbRadius * 2 +
+                          width:
+                              effectiveThumbRadius * 2 +
                               (focused ? focusRingTotalSpace : 0),
-                          height: effectiveThumbRadius * 2 +
+                          height:
+                              effectiveThumbRadius * 2 +
                               (focused ? focusRingTotalSpace : 0),
                           child: ShadGestureDetector(
                             cursor: widget.enabled
                                 ? effectiveMouseCursor
                                 : effectiveDisabledMouseCursor,
-                            onPanUpdate: widget.enabled &&
+                            onPanUpdate:
+                                widget.enabled &&
                                     (effectiveAllowedInteraction ==
                                             ShadSliderInteraction.tapAndSlide ||
                                         effectiveAllowedInteraction ==
@@ -627,8 +650,9 @@ class _ShadSliderState extends State<ShadSlider> {
                                         effectiveAllowedInteraction ==
                                             ShadSliderInteraction.slideThumb)
                                 ? (details) {
-                                    final box = context.findRenderObject()!
-                                        as RenderBox;
+                                    final box =
+                                        context.findRenderObject()!
+                                            as RenderBox;
                                     final localPosition = box.globalToLocal(
                                       details.globalPosition,
                                     );
@@ -637,12 +661,12 @@ class _ShadSliderState extends State<ShadSlider> {
                                 : null,
                             onPanStart: widget.enabled
                                 ? (details) => widget.onChangeStart?.call(
-                                      controller.value,
-                                    )
+                                    controller.value,
+                                  )
                                 : null,
                             onPanEnd: widget.enabled
                                 ? (details) =>
-                                    widget.onChangeEnd?.call(controller.value)
+                                      widget.onChangeEnd?.call(controller.value)
                                 : null,
                             child: focused
                                 ? Container(

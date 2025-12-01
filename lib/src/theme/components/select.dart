@@ -91,6 +91,5 @@ class ShadSelectTheme with _$ShadSelectTheme {
     ShadSelectTheme? a,
     ShadSelectTheme? b,
     double t,
-  ) =>
-      _$ShadSelectTheme.lerp(a, b, t);
+  ) => _$ShadSelectTheme.lerp(a, b, t);
 }
