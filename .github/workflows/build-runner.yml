@@ -36,10 +36,10 @@ jobs:
           fi
 
       - name: Commit generated files
-        if: steps.verify-changed-files.outputs.changed == 'true' && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
+        if: steps.verify-changed-files.outputs.changed == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
           git commit -m "chore: regenerate build_runner output"
-          git push origin HEAD:${{ github.head_ref || github.ref_name }}
+          git push origin HEAD:${{ github.head_ref }}
