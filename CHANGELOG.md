@@ -3,7 +3,7 @@
 - **FEAT**: Add new component `ShadBreadcrumb` and all of its related components (thanks to @MoazSalem).
 - **FIX**: Update `ShadButton` to allow for more flexibility with height and width properties (thanks to @MoazSalem).
 - **FIX**: Get `closeIcon` from theme in `ShadTheme` (thanks to @DMouayad).
-- **FIX**: Merge of `ShadDecoration` in the components' themes.
+- **FIX**: Merge of `ShadDecoration` in the component themes.
 
 ## 0.39.14
 
