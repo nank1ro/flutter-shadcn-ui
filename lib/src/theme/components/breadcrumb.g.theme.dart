@@ -17,63 +17,67 @@ mixin _$ShadBreadcrumbTheme {
     ShadBreadcrumbTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadBreadcrumbTheme(
-      separator: t < 0.5 ? a?.separator : b?.separator,
-      ellipsis: t < 0.5 ? a?.ellipsis : b?.ellipsis,
-      separatorSize: lerpDouble$(a?.separatorSize, b?.separatorSize, t),
-      ellipsisSize: lerpDouble$(a?.ellipsisSize, b?.ellipsisSize, t),
-      spacing: lerpDouble$(a?.spacing, b?.spacing, t),
-      itemTextStyle: TextStyle.lerp(a?.itemTextStyle, b?.itemTextStyle, t),
-      linkTextStyle: TextStyle.lerp(a?.linkTextStyle, b?.linkTextStyle, t),
+      separator: t < 0.5 ? a.separator : b.separator,
+      ellipsis: t < 0.5 ? a.ellipsis : b.ellipsis,
+      separatorSize: lerpDouble$(a.separatorSize, b.separatorSize, t),
+      separatorColor: Color.lerp(a.separatorColor, b.separatorColor, t),
+      ellipsisSize: lerpDouble$(a.ellipsisSize, b.ellipsisSize, t),
+      spacing: lerpDouble$(a.spacing, b.spacing, t),
+      itemTextStyle: TextStyle.lerp(a.itemTextStyle, b.itemTextStyle, t),
+      linkTextStyle: TextStyle.lerp(a.linkTextStyle, b.linkTextStyle, t),
       linkNormalTextColor: Color.lerp(
-        a?.linkNormalTextColor,
-        b?.linkNormalTextColor,
+        a.linkNormalTextColor,
+        b.linkNormalTextColor,
         t,
       ),
       linkHoverTextColor: Color.lerp(
-        a?.linkHoverTextColor,
-        b?.linkHoverTextColor,
+        a.linkHoverTextColor,
+        b.linkHoverTextColor,
         t,
       ),
-      mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       dropdownMenuBackgroundColor: Color.lerp(
-        a?.dropdownMenuBackgroundColor,
-        b?.dropdownMenuBackgroundColor,
+        a.dropdownMenuBackgroundColor,
+        b.dropdownMenuBackgroundColor,
         t,
       ),
       dropdownMenuPadding: EdgeInsetsGeometry.lerp(
-        a?.dropdownMenuPadding,
-        b?.dropdownMenuPadding,
+        a.dropdownMenuPadding,
+        b.dropdownMenuPadding,
         t,
       ),
       dropdownTextStyle: TextStyle.lerp(
-        a?.dropdownTextStyle,
-        b?.dropdownTextStyle,
+        a.dropdownTextStyle,
+        b.dropdownTextStyle,
         t,
       ),
       dropdownItemPadding: EdgeInsetsGeometry.lerp(
-        a?.dropdownItemPadding,
-        b?.dropdownItemPadding,
+        a.dropdownItemPadding,
+        b.dropdownItemPadding,
         t,
       ),
-      dropdownMenuAnchor:
-          t < 0.5 ? a?.dropdownMenuAnchor : b?.dropdownMenuAnchor,
-      dropdownArrowGap: lerpDouble$(
-        a?.dropdownArrowGap,
-        b?.dropdownArrowGap,
-        t,
-      ),
+      dropdownMenuAnchor: t < 0.5 ? a.dropdownMenuAnchor : b.dropdownMenuAnchor,
+      dropdownArrowGap: lerpDouble$(a.dropdownArrowGap, b.dropdownArrowGap, t),
       lastItemTextColor: Color.lerp(
-        a?.lastItemTextColor,
-        b?.lastItemTextColor,
+        a.lastItemTextColor,
+        b.lastItemTextColor,
         t,
       ),
+      showDropdownArrow: t < 0.5 ? a.showDropdownArrow : b.showDropdownArrow,
     );
   }
 
@@ -81,6 +85,7 @@ mixin _$ShadBreadcrumbTheme {
     Widget? separator,
     Widget? ellipsis,
     double? separatorSize,
+    Color? separatorColor,
     double? ellipsisSize,
     double? spacing,
     TextStyle? itemTextStyle,
@@ -96,6 +101,7 @@ mixin _$ShadBreadcrumbTheme {
     ShadAnchorBase? dropdownMenuAnchor,
     double? dropdownArrowGap,
     Color? lastItemTextColor,
+    bool? showDropdownArrow,
   }) {
     final _this = (this as ShadBreadcrumbTheme);
 
@@ -103,6 +109,7 @@ mixin _$ShadBreadcrumbTheme {
       separator: separator ?? _this.separator,
       ellipsis: ellipsis ?? _this.ellipsis,
       separatorSize: separatorSize ?? _this.separatorSize,
+      separatorColor: separatorColor ?? _this.separatorColor,
       ellipsisSize: ellipsisSize ?? _this.ellipsisSize,
       spacing: spacing ?? _this.spacing,
       itemTextStyle: itemTextStyle ?? _this.itemTextStyle,
@@ -119,13 +126,14 @@ mixin _$ShadBreadcrumbTheme {
       dropdownMenuAnchor: dropdownMenuAnchor ?? _this.dropdownMenuAnchor,
       dropdownArrowGap: dropdownArrowGap ?? _this.dropdownArrowGap,
       lastItemTextColor: lastItemTextColor ?? _this.lastItemTextColor,
+      showDropdownArrow: showDropdownArrow ?? _this.showDropdownArrow,
     );
   }
 
   ShadBreadcrumbTheme merge(ShadBreadcrumbTheme? other) {
     final _this = (this as ShadBreadcrumbTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -137,11 +145,14 @@ mixin _$ShadBreadcrumbTheme {
       separator: other.separator,
       ellipsis: other.ellipsis,
       separatorSize: other.separatorSize,
+      separatorColor: other.separatorColor,
       ellipsisSize: other.ellipsisSize,
       spacing: other.spacing,
-      itemTextStyle: _this.itemTextStyle?.merge(other.itemTextStyle) ??
+      itemTextStyle:
+          _this.itemTextStyle?.merge(other.itemTextStyle) ??
           other.itemTextStyle,
-      linkTextStyle: _this.linkTextStyle?.merge(other.linkTextStyle) ??
+      linkTextStyle:
+          _this.linkTextStyle?.merge(other.linkTextStyle) ??
           other.linkTextStyle,
       linkNormalTextColor: other.linkNormalTextColor,
       linkHoverTextColor: other.linkHoverTextColor,
@@ -151,11 +162,12 @@ mixin _$ShadBreadcrumbTheme {
       dropdownMenuPadding: other.dropdownMenuPadding,
       dropdownTextStyle:
           _this.dropdownTextStyle?.merge(other.dropdownTextStyle) ??
-              other.dropdownTextStyle,
+          other.dropdownTextStyle,
       dropdownItemPadding: other.dropdownItemPadding,
       dropdownMenuAnchor: other.dropdownMenuAnchor,
       dropdownArrowGap: other.dropdownArrowGap,
       lastItemTextColor: other.lastItemTextColor,
+      showDropdownArrow: other.showDropdownArrow,
     );
   }
 
@@ -175,6 +187,7 @@ mixin _$ShadBreadcrumbTheme {
     return _other.separator == _this.separator &&
         _other.ellipsis == _this.ellipsis &&
         _other.separatorSize == _this.separatorSize &&
+        _other.separatorColor == _this.separatorColor &&
         _other.ellipsisSize == _this.ellipsisSize &&
         _other.spacing == _this.spacing &&
         _other.itemTextStyle == _this.itemTextStyle &&
@@ -190,18 +203,20 @@ mixin _$ShadBreadcrumbTheme {
         _other.dropdownItemPadding == _this.dropdownItemPadding &&
         _other.dropdownMenuAnchor == _this.dropdownMenuAnchor &&
         _other.dropdownArrowGap == _this.dropdownArrowGap &&
-        _other.lastItemTextColor == _this.lastItemTextColor;
+        _other.lastItemTextColor == _this.lastItemTextColor &&
+        _other.showDropdownArrow == _this.showDropdownArrow;
   }
 
   @override
   int get hashCode {
     final _this = (this as ShadBreadcrumbTheme);
 
-    return Object.hash(
+    return Object.hashAll([
       runtimeType,
       _this.separator,
       _this.ellipsis,
       _this.separatorSize,
+      _this.separatorColor,
       _this.ellipsisSize,
       _this.spacing,
       _this.itemTextStyle,
@@ -217,6 +232,7 @@ mixin _$ShadBreadcrumbTheme {
       _this.dropdownMenuAnchor,
       _this.dropdownArrowGap,
       _this.lastItemTextColor,
-    );
+      _this.showDropdownArrow,
+    ]);
   }
 }

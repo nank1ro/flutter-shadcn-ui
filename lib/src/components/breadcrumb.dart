@@ -46,13 +46,20 @@ class ShadBreadcrumb extends StatelessWidget {
   /// {@endtemplate}
   final WrapCrossAlignment? crossAxisAlignment;
 
+  /// {@template ShadBreadcrumb.textDirection}
   /// The text direction to use for the breadcrumb.
+  /// {@endtemplate}
   final TextDirection? textDirection;
 
+  /// {@template ShadBreadcrumb.verticalDirection}
   /// The vertical direction to use for the breadcrumb.
+  /// {@endtemplate}
   final VerticalDirection? verticalDirection;
 
-  /// default separator spacing, defaults to 10.0
+  /// {@template ShadBreadcrumb.spacing}
+  /// The spacing between breadcrumb items.
+  /// Defaults to 10.
+  /// {@endtemplate}
   final double? spacing;
 
   /// {@template ShadBreadcrumb.itemTextStyle}
@@ -87,14 +94,14 @@ class ShadBreadcrumb extends StatelessWidget {
         breadcrumbTheme.crossAxisAlignment ??
         WrapCrossAlignment.center;
 
-    final effectiveSpacing = spacing ?? breadcrumbTheme.spacing ?? 10.0;
+    final effectiveSpacing = spacing ?? breadcrumbTheme.spacing ?? 10;
 
     final effectiveTextStyle =
         textStyle ??
         breadcrumbTheme.itemTextStyle ??
-        theme.textTheme.small.fallback(
-          color: theme.colorScheme.mutedForeground,
-        );
+        theme.textTheme.small
+            .copyWith(fontWeight: FontWeight.normal)
+            .fallback(color: theme.colorScheme.mutedForeground);
 
     final effectiveLastItemColor =
         lastItemTextColor ??
@@ -123,34 +130,15 @@ class ShadBreadcrumb extends StatelessWidget {
             if (index < children.length - 1)
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: effectiveSpacing),
-                child: effectiveSeparator,
+                child: IconTheme.merge(
+                  data: IconThemeData(color: theme.colorScheme.mutedForeground),
+                  child: effectiveSeparator,
+                ),
               ),
           ],
         ),
       ),
     );
-  }
-}
-
-/// {@template ShadBreadcrumbItem}
-/// A single item in a breadcrumb navigation.
-///
-/// This widget represents one level in the breadcrumb hierarchy and can
-/// a simple widget wrapper with no real functionality.
-/// {@endtemplate}
-class ShadBreadcrumbItem extends StatelessWidget {
-  /// {@macro ShadBreadcrumbItem}
-  const ShadBreadcrumbItem({
-    super.key,
-    required this.child,
-  });
-
-  /// The widget to display as the breadcrumb item content.
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return child;
   }
 }
 
@@ -227,9 +215,9 @@ class _ShadBreadcrumbLinkState extends State<ShadBreadcrumbLink> {
     final effectiveTextStyle =
         widget.textStyle ??
         theme.breadcrumbTheme.linkTextStyle ??
-        theme.textTheme.small.copyWith(
-          color: theme.colorScheme.mutedForeground,
-        );
+        theme.textTheme.small
+            .copyWith(fontWeight: FontWeight.normal)
+            .fallback(color: theme.colorScheme.mutedForeground);
 
     return ShadButton.raw(
       variant: ShadButtonVariant.link,
@@ -262,25 +250,36 @@ class ShadBreadcrumbSeparator extends StatelessWidget {
   /// {@macro ShadBreadcrumbSeparator}
   const ShadBreadcrumbSeparator({
     super.key,
-    this.separatorSize,
+    this.size,
+    this.color,
   });
 
   /// {@template ShadBreadcrumb.separatorSize}
   /// The size of the separator.
   /// defaults value is 14.0
   /// {@endtemplate}
-  final double? separatorSize;
+  final double? size;
+
+  /// {@template ShadBreadcrumb.separatorColor}
+  /// The color of the separator.
+  /// defaults to `ShadColorScheme.mutedForeground`
+  /// {@endtemplate}
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final effectiveSeparatorSize =
-        separatorSize ?? theme.breadcrumbTheme.separatorSize ?? 14.0;
+        size ?? theme.breadcrumbTheme.separatorSize ?? 14.0;
+    final effectiveColor =
+        color ??
+        theme.breadcrumbTheme.separatorColor ??
+        theme.colorScheme.mutedForeground;
 
     return Icon(
       LucideIcons.chevronRight,
       size: effectiveSeparatorSize,
-      color: theme.colorScheme.mutedForeground,
+      color: effectiveColor,
     );
   }
 }
@@ -301,14 +300,14 @@ class ShadBreadcrumbEllipsis extends StatelessWidget {
 
   /// {@template ShadBreadcrumb.ellipsisSize}
   /// The size of the ellipsis indicator.
-  /// defaults value is 14.0
+  /// defaults value is 16.0
   /// {@endtemplate}
   final double? size;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveSize = size ?? theme.breadcrumbTheme.ellipsisSize ?? 14.0;
+    final effectiveSize = size ?? theme.breadcrumbTheme.ellipsisSize ?? 16.0;
 
     return Icon(
       LucideIcons.ellipsis,
@@ -337,6 +336,7 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
     this.arrowGap,
     this.normalTextColor,
     this.hoverTextColor,
+    this.showDropdownArrow,
   });
 
   /// The widget that triggers the dropdown.
@@ -359,7 +359,14 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
 
   /// {@template ShadBreadcrumb.dropdownMenuAnchor}
   /// The anchor configuration for the dropdown popover.
-  /// Defaults to ShadAnchorAuto with offset (20, 4).
+  /// Defaults to
+  /// ```dart
+  /// ShadAnchorAuto(
+  ///   offset: Offset(0, 4),
+  ///   targetAnchor: Alignment.bottomLeft,
+  ///   followerAnchor: Alignment.bottomRight,
+  /// ),
+  /// ```
   /// {@endtemplate}
   final ShadAnchorBase? anchor;
 
@@ -380,6 +387,12 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
   /// defaults to [ShadTheme.of(context).colorScheme.foreground]
   /// {@endtemplate}
   final Color? hoverTextColor;
+
+  /// {@template ShadBreadcrumb.showDropdownArrow}
+  /// Whether to show the dropdown arrow icon.
+  /// Defaults to false.
+  /// {@endtemplate}
+  final bool? showDropdownArrow;
 
   @override
   State<ShadBreadcrumbDropdown> createState() => _ShadBreadcrumbDropdownState();
@@ -412,7 +425,11 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
     final effectiveAnchor =
         widget.anchor ??
         theme.breadcrumbTheme.dropdownMenuAnchor ??
-        const ShadAnchorAuto(offset: Offset(20, 4));
+        const ShadAnchorAuto(
+          offset: Offset(0, 4),
+          targetAnchor: Alignment.bottomLeft,
+          followerAnchor: Alignment.bottomRight,
+        );
 
     final effectiveArrowGap =
         widget.arrowGap ?? theme.breadcrumbTheme.dropdownArrowGap ?? 4;
@@ -430,6 +447,11 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
     final effectiveTextColor = isHovered || controller.isOpen
         ? effectiveHoverTextColor
         : effectiveNormalTextColor;
+
+    final effectiveShowDropdownArrow =
+        widget.showDropdownArrow ??
+        theme.breadcrumbTheme.showDropdownArrow ??
+        true;
 
     return ShadPopover(
       anchor: effectiveAnchor,
@@ -452,18 +474,19 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
         onPressed: controller.toggle,
         child: Row(
           mainAxisSize: MainAxisSize.min,
+          spacing: effectiveArrowGap,
           children: [
             widget.child,
-            SizedBox(width: effectiveArrowGap),
-            AnimatedRotation(
-              turns: controller.isOpen ? 0.5 : 0.0,
-              duration: const Duration(milliseconds: 200),
-              child: Icon(
-                LucideIcons.chevronDown,
-                size: theme.breadcrumbTheme.separatorSize ?? 14,
-                color: effectiveTextColor,
+            if (effectiveShowDropdownArrow)
+              AnimatedRotation(
+                turns: controller.isOpen ? 0.5 : 0.0,
+                duration: const Duration(milliseconds: 200),
+                child: Icon(
+                  LucideIcons.chevronDown,
+                  size: theme.breadcrumbTheme.separatorSize ?? 14,
+                  color: effectiveTextColor,
+                ),
               ),
-            ),
           ],
         ),
       ),
@@ -501,7 +524,7 @@ class ShadBreadcrumbDropMenuItem extends StatelessWidget {
 
   /// {@template ShadBreadcrumb.dropdownItemPadding}
   /// The padding value for dropdown menu items.
-  /// defaults to [EdgeInsets.symmetric(horizontal: 8, vertical: 6)]
+  /// defaults to [EdgeInsets.symmetric(horizontal: 12, vertical: 10)]
   /// {@endtemplate}
   final EdgeInsetsGeometry? itemPadding;
 
@@ -517,7 +540,7 @@ class ShadBreadcrumbDropMenuItem extends StatelessWidget {
     final effectiveItemPadding =
         itemPadding ??
         theme.breadcrumbTheme.dropdownItemPadding ??
-        const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 10);
 
     return ShadButton.raw(
       variant: ShadButtonVariant.ghost,

@@ -25,15 +25,9 @@ class BreadcrumbPage extends StatelessWidget {
         ),
         const ShadBreadcrumb(
           children: [
-            ShadBreadcrumbItem(
-              child: Text('Home'),
-            ),
-            ShadBreadcrumbItem(
-              child: Text('Library'),
-            ),
-            ShadBreadcrumbItem(
-              child: Text('Data'),
-            ),
+            Text('Home'),
+            Text('Library'),
+            Text('Data'),
           ],
         ),
         const SizedBox(
@@ -53,9 +47,7 @@ class BreadcrumbPage extends StatelessWidget {
               onPressed: _navigateToComponents,
               child: const Text('Components'),
             ),
-            const ShadBreadcrumbItem(
-              child: Text('Breadcrumb'),
-            ),
+            const Text('Breadcrumb'),
           ],
         ),
         const SizedBox(
@@ -76,36 +68,26 @@ class BreadcrumbPage extends StatelessWidget {
               onPressed: _navigateToComponents,
               child: const Text('Components'),
             ),
-            const ShadBreadcrumbItem(
-              child: Text('Breadcrumb'),
-            ),
+            const Text('Breadcrumb'),
           ],
         ),
-        const SizedBox(
-          height: 20,
-        ),
+        const SizedBox(height: 20),
         const Text(
           'Custom Separator',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         ShadBreadcrumb(
-          separator: const Text(' / '),
+          separator: const Icon(LucideIcons.slash),
           children: [
-            ShadBreadcrumbItem(
-              child: ShadBreadcrumbLink(
-                onPressed: _navigateToHome,
-                child: const Text('Home'),
-              ),
+            ShadBreadcrumbLink(
+              onPressed: _navigateToHome,
+              child: const Text('Home'),
             ),
-            ShadBreadcrumbItem(
-              child: ShadBreadcrumbLink(
-                onPressed: _navigateToComponents,
-                child: const Text('Components'),
-              ),
+            ShadBreadcrumbLink(
+              onPressed: _navigateToComponents,
+              child: const Text('Components'),
             ),
-            const ShadBreadcrumbItem(
-              child: Text('Breadcrumb'),
-            ),
+            Text('Breadcrumb'),
           ],
         ),
         const SizedBox(
@@ -117,34 +99,28 @@ class BreadcrumbPage extends StatelessWidget {
         ),
         ShadBreadcrumb(
           children: [
-            ShadBreadcrumbItem(
-              child: ShadBreadcrumbLink(
-                onPressed: _navigateToHome,
-                child: const Text('Home'),
-              ),
+            ShadBreadcrumbLink(
+              onPressed: _navigateToHome,
+              child: const Text('Home'),
             ),
-            ShadBreadcrumbItem(
-              child: ShadBreadcrumbDropdown(
-                items: [
-                  ShadBreadcrumbDropMenuItem(
-                    onPressed: () => print('Navigating to Documentation'),
-                    child: const Text('Documentation'),
-                  ),
-                  ShadBreadcrumbDropMenuItem(
-                    onPressed: () => print('Navigating to Themes'),
-                    child: const Text('Themes'),
-                  ),
-                  ShadBreadcrumbDropMenuItem(
-                    onPressed: () => print('Navigating to Github'),
-                    child: const Text('Github'),
-                  ),
-                ],
-                child: const Text('Components'),
-              ),
+            ShadBreadcrumbDropdown(
+              items: [
+                ShadBreadcrumbDropMenuItem(
+                  onPressed: () => print('Navigating to Documentation'),
+                  child: const Text('Documentation'),
+                ),
+                ShadBreadcrumbDropMenuItem(
+                  onPressed: () => print('Navigating to Themes'),
+                  child: const Text('Themes'),
+                ),
+                ShadBreadcrumbDropMenuItem(
+                  onPressed: () => print('Navigating to Github'),
+                  child: const Text('Github'),
+                ),
+              ],
+              child: const Text('Components'),
             ),
-            const ShadBreadcrumbItem(
-              child: Text('Breadcrumb'),
-            ),
+            Text('Breadcrumb'),
           ],
         ),
         const SizedBox(
@@ -176,9 +152,7 @@ class BreadcrumbPage extends StatelessWidget {
               onPressed: _navigateToComponents,
               child: const Text('Component 4'),
             ),
-            const ShadBreadcrumbItem(
-              child: Text('Breadcrumb'),
-            ),
+            Text('Breadcrumb'),
           ],
         ),
       ],
