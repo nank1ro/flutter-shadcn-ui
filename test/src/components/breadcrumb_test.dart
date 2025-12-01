@@ -451,7 +451,7 @@ void main() {
       final button = tester.widget<ShadButton>(find.byType(ShadButton));
       expect(
         button.padding,
-        const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       );
     });
 
