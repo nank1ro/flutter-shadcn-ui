@@ -154,7 +154,6 @@ class BreadcrumbsPage extends StatelessWidget {
                   child: const Text('Home'),
                 ),
                 ShadBreadcrumbDropdown(
-                  child: const Text('Components'),
                   items: [
                     ShadBreadcrumbDropMenuItem(
                       onPressed: () => print('Navigating to Documentation'),
@@ -169,6 +168,7 @@ class BreadcrumbsPage extends StatelessWidget {
                       child: const Text('Github'),
                     ),
                   ],
+                  child: const Text('Components'),
                 ),
                 const ShadBreadcrumbItem(
                   child: Text('Breadcrumb'),
