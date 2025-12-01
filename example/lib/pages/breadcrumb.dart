@@ -87,7 +87,7 @@ class BreadcrumbPage extends StatelessWidget {
               onPressed: _navigateToComponents,
               child: const Text('Components'),
             ),
-            Text('Breadcrumb'),
+            const Text('Breadcrumb'),
           ],
         ),
         const SizedBox(

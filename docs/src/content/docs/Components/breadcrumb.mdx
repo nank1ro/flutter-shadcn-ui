@@ -1,38 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+---
+title: Breadcrumb
+sidebar:
+  order: 4
+---
 
-enum ShadBreadcrumbStyle {
-  primary,
-  customSeparator,
-  dropdown,
-}
+import Preview from "../../../components/Preview.astro";
 
-class BreadcrumbPage extends StatelessWidget {
-  const BreadcrumbPage({
-    super.key,
-    required this.style,
-  });
+Displays the path to the current resource using a hierarchy of links.
 
-  final ShadBreadcrumbStyle style;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Center(
-          child: switch (style) {
-            ShadBreadcrumbStyle.primary => const PrimaryBreadcrumb(),
-            ShadBreadcrumbStyle.customSeparator =>
-              const CustomSeparatorBreadcrumb(),
-            ShadBreadcrumbStyle.dropdown => const DropdownBreadcrumb(),
-          },
-        ),
-      ),
-    );
-  }
-}
+<Preview src="breadcrumb" minHeight="500px">
 
+```dart
 class PrimaryBreadcrumb extends StatelessWidget {
   const PrimaryBreadcrumb({super.key});
 
@@ -68,7 +47,17 @@ class PrimaryBreadcrumb extends StatelessWidget {
     );
   }
 }
+```
 
+</Preview>
+
+## Custom separator
+
+Use a custom `separator` to change the default `>` separator.
+
+<Preview src="breadcrumb?style=customSeparator"  minHeight="500px">
+
+```dart
 class CustomSeparatorBreadcrumb extends StatelessWidget {
   const CustomSeparatorBreadcrumb({super.key});
 
@@ -90,7 +79,18 @@ class CustomSeparatorBreadcrumb extends StatelessWidget {
     );
   }
 }
+```
 
+</Preview>
+
+
+## Dropdown
+
+You can use `ShadBreadcrumbDropdown` to create a dropdown in the breadcrumb.
+
+<Preview src="breadcrumb?style=dropdown"  minHeight="500px">
+
+```dart
 class DropdownBreadcrumb extends StatelessWidget {
   const DropdownBreadcrumb({super.key});
 
@@ -124,3 +124,6 @@ class DropdownBreadcrumb extends StatelessWidget {
     );
   }
 }
+```
+
+</Preview>

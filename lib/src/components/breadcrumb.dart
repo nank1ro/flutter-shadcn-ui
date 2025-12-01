@@ -390,7 +390,7 @@ class ShadBreadcrumbDropdown extends StatefulWidget {
 
   /// {@template ShadBreadcrumb.showDropdownArrow}
   /// Whether to show the dropdown arrow icon.
-  /// Defaults to false.
+  /// Defaults to true.
   /// {@endtemplate}
   final bool? showDropdownArrow;
 

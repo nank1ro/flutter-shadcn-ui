@@ -1,7 +1,7 @@
 ---
 interface Props {
-    src: string;
-    minHeight: string;
+  src: string;
+  minHeight: string;
 }
 
 const { src, minHeight = "200px" } = Astro.props;
@@ -21,108 +21,104 @@ const defaultPrefix = "https://shadcn-ui-playground.pages.dev/";
 ---
 
 <Tabs>
-    <TabItem label="Preview">
-        <iframe
-            id={id}
-            class="preview"
-            style={`min-height: ${minHeight}; width: 100%; border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 0.5rem; visibility: hidden;`}
-            loading="lazy"
-            data-astro-persist></iframe>
-    </TabItem>
-    <TabItem label="Code">
-        <slot />
-    </TabItem>
+  <TabItem label="Preview">
+    <iframe
+      id={id}
+      class="preview"
+      style={`min-height: ${minHeight}; width: 100%; border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 0.5rem; visibility: hidden;`}
+      loading="lazy"
+      data-astro-persist></iframe>
+  </TabItem>
+  <TabItem label="Code">
+    <slot />
+  </TabItem>
 </Tabs>
 
 <script is:inline define:vars={{ defaultPrefix, id, src }}>
-    const iframe = document.getElementById(id);
+  const iframe = document.getElementById(id);
 
-    // `isIframeLoaded` tracks if the iframe's HTML has loaded.
-    // This is set to true when the iframe's 'load' event fires.
-    let isIframeLoaded = iframe.dataset.isLoaded === "true";
+  // `isIframeLoaded` tracks if the iframe's HTML has loaded.
+  // This is set to true when the iframe's 'load' event fires.
+  let isIframeLoaded = iframe.dataset.isLoaded === "true";
 
-    // Fired when the iframe's initial HTML/resources are loaded.
-    if (!iframe.dataset.loadListenerAttached) {
-        iframe.addEventListener("load", () => {
-            iframe.style.visibility = "visible";
-            isIframeLoaded = true;
-            iframe.dataset.isLoaded = "true";
-        });
-        iframe.dataset.loadListenerAttached = "true";
+  // Fired when the iframe's initial HTML/resources are loaded.
+  if (!iframe.dataset.loadListenerAttached) {
+    iframe.addEventListener("load", () => {
+      iframe.style.visibility = "visible";
+      isIframeLoaded = true;
+      iframe.dataset.isLoaded = "true";
+    });
+    iframe.dataset.loadListenerAttached = "true";
+  }
+
+  // This function sends the current theme state to the iframe.
+  function sendThemeUpdate() {
+    // Only send the theme if the iframe is loaded.
+    if (!iframe || !iframe.contentWindow || !isIframeLoaded) {
+      return;
     }
 
-    // This function sends the current theme state to the iframe.
-    function sendThemeUpdate() {
-        // Only send the theme if the iframe is loaded.
-        if (!iframe || !iframe.contentWindow || !isIframeLoaded) {
-            return;
-        }
+    const themeMode = document.documentElement.getAttribute("data-theme");
+    const themeColor =
+      document.documentElement.getAttribute("data-theme-color");
 
-        const themeMode = document.documentElement.getAttribute("data-theme");
-        const themeColor =
-            document.documentElement.getAttribute("data-theme-color");
+    const message = {
+      type: "theme-change",
+      themeMode: themeMode,
+      themeColor: themeColor,
+    };
 
-        const message = {
-            type: "theme-change",
-            themeMode: themeMode,
-            themeColor: themeColor,
-        };
+    // Use postMessage for safe cross-origin communication.
+    iframe.contentWindow.postMessage(message, new URL(defaultPrefix).origin);
+  }
 
-        // Use postMessage for safe cross-origin communication.
-        iframe.contentWindow.postMessage(
-            message,
-            new URL(defaultPrefix).origin,
-        );
+  // Sets the iframe's src attribute to load the content.
+  function initializeIframe() {
+    if (!iframe) return;
+
+    // Set the src only if it's not already set (e.g., on initial page load).
+    if (!iframe.src) {
+      iframe.style.visibility = "hidden";
+      const themeMode = document.documentElement.getAttribute("data-theme");
+      const themeColor =
+        document.documentElement.getAttribute("data-theme-color");
+
+      const url = new URL(`${defaultPrefix}${src}`);
+      if (themeMode) {
+        url.searchParams.set("themeMode", themeMode);
+      }
+      if (themeColor) {
+        url.searchParams.set("themeColor", themeColor);
+      }
+      iframe.src = url.toString();
     }
 
-    // Sets the iframe's src attribute to load the content.
-    function initializeIframe() {
-        if (!iframe) return;
-
-        // Set the src only if it's not already set (e.g., on initial page load).
-        if (!iframe.src) {
-            iframe.style.visibility = "hidden";
-            const themeMode =
-                document.documentElement.getAttribute("data-theme");
-            const themeColor =
-                document.documentElement.getAttribute("data-theme-color");
-
-            const url = new URL(`${defaultPrefix}${src}`);
-            if (themeMode) {
-                url.searchParams.set("themeMode", themeMode);
-            }
-            if (themeColor) {
-                url.searchParams.set("themeColor", themeColor);
-            }
-            iframe.src = url.toString();
-        }
-
-        // If it's a persisted iframe (from Astro's View Transitions), it's already
-        // loaded. Make it visible.
-        if (isIframeLoaded) {
-            iframe.style.visibility = "visible";
-        }
+    // If it's a persisted iframe (from Astro's View Transitions), it's already
+    // loaded. Make it visible.
+    if (isIframeLoaded) {
+      iframe.style.visibility = "visible";
     }
+  }
 
-    // --- Initializations ---
+  // --- Initializations ---
 
-    // Set up the iframe when the page is loaded.
-    // This's to ensure that theme and themeColor attributes were set.
-    window.addEventListener("DOMContentLoaded", initializeIframe);
+  // Set up the iframe when the page is loaded.
+  // This's to ensure that theme and themeColor attributes were set.
+  window.addEventListener("DOMContentLoaded", initializeIframe);
 
-    // Use a MutationObserver to watch for live theme changes on the parent page.
-    if (!iframe.dataset.themeObserverAttached) {
-        const observer = new MutationObserver(() => {
-            // When the user changes the theme, send the update to the iframe
-            // (if it's ready).
-            sendThemeUpdate();
-        });
+  // Use a MutationObserver to watch for live theme changes on the parent page.
+  if (!iframe.dataset.themeObserverAttached) {
+    const observer = new MutationObserver(() => {
+      // When the user changes the theme, send the update to the iframe
+      // (if it's ready).
+      sendThemeUpdate();
+    });
 
-        // Observe the <html> element for changes to theme attributes.
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ["data-theme", "data-theme-color"],
-        });
-        iframe.dataset.themeObserverAttached = "true";
-    }
+    // Observe the <html> element for changes to theme attributes.
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme", "data-theme-color"],
+    });
+    iframe.dataset.themeObserverAttached = "true";
+  }
 </script>
