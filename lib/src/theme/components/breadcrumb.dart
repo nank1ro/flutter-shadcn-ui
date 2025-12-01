@@ -12,6 +12,7 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
     this.separator,
     this.ellipsis,
     this.separatorSize,
+    this.separatorColor,
     this.ellipsisSize,
     this.spacing,
     this.itemTextStyle,
@@ -27,6 +28,7 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
     this.dropdownMenuAnchor,
     this.dropdownArrowGap,
     this.lastItemTextColor,
+    this.showDropdownArrow,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -43,6 +45,9 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
 
   /// {@macro ShadBreadcrumb.separatorSize}
   final double? separatorSize;
+
+  /// {@macro ShadBreadcrumb.separatorColor}
+  final Color? separatorColor;
 
   /// {@macro ShadBreadcrumb.ellipsisSize}
   final double? ellipsisSize;
@@ -88,6 +93,9 @@ class ShadBreadcrumbTheme with _$ShadBreadcrumbTheme {
 
   /// {@macro ShadBreadcrumb.lastItemTextColor}
   final Color? lastItemTextColor;
+
+  /// {@macro ShadBreadcrumb.showDropdownArrow}
+  final bool? showDropdownArrow;
 
   static ShadBreadcrumbTheme? lerp(
     ShadBreadcrumbTheme? a,

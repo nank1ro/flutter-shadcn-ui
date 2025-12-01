@@ -8,6 +8,7 @@ class BadgePage extends StatelessWidget {
   });
 
   final ShadBadgeVariant variant;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

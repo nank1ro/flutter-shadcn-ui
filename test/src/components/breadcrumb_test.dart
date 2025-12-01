@@ -26,15 +26,9 @@ void main() {
           const ShadApp(
             home: ShadBreadcrumb(
               children: [
-                ShadBreadcrumbItem(
-                  child: Text('Home'),
-                ),
-                ShadBreadcrumbItem(
-                  child: Text('Library'),
-                ),
-                ShadBreadcrumbItem(
-                  child: Text('Data'),
-                ),
+                Text('Home'),
+                Text('Library'),
+                Text('Data'),
               ],
             ),
           ),
@@ -62,12 +56,8 @@ void main() {
             home: ShadBreadcrumb(
               separator: Icon(Icons.arrow_forward_ios),
               children: [
-                ShadBreadcrumbItem(
-                  child: Text('Home'),
-                ),
-                ShadBreadcrumbItem(
-                  child: Text('Library'),
-                ),
+                Text('Home'),
+                Text('Library'),
               ],
             ),
           ),
@@ -90,21 +80,15 @@ void main() {
           ShadApp(
             home: ShadBreadcrumb(
               children: [
-                ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLink(
-                    onPressed: () => homeTapped = true,
-                    child: const Text('Home'),
-                  ),
+                ShadBreadcrumbLink(
+                  onPressed: () => homeTapped = true,
+                  child: const Text('Home'),
                 ),
-                ShadBreadcrumbItem(
-                  child: ShadBreadcrumbLink(
-                    onPressed: () => libraryTapped = true,
-                    child: const Text('Library'),
-                  ),
+                ShadBreadcrumbLink(
+                  onPressed: () => libraryTapped = true,
+                  child: const Text('Library'),
                 ),
-                const ShadBreadcrumbItem(
-                  child: Text('Current'),
-                ),
+                const Text('Current'),
               ],
             ),
           ),
@@ -127,18 +111,10 @@ void main() {
           const ShadApp(
             home: ShadBreadcrumb(
               children: [
-                ShadBreadcrumbItem(
-                  child: Text('Home'),
-                ),
-                ShadBreadcrumbItem(
-                  child: ShadBreadcrumbEllipsis(),
-                ),
-                ShadBreadcrumbItem(
-                  child: Text('Library'),
-                ),
-                ShadBreadcrumbItem(
-                  child: Text('Current'),
-                ),
+                Text('Home'),
+                ShadBreadcrumbEllipsis(),
+                Text('Library'),
+                Text('Current'),
               ],
             ),
           ),
@@ -158,12 +134,8 @@ void main() {
             home: ShadBreadcrumb(
               textDirection: TextDirection.rtl,
               children: [
-                ShadBreadcrumbItem(
-                  child: Text('Home'),
-                ),
-                ShadBreadcrumbItem(
-                  child: Text('Library'),
-                ),
+                Text('Home'),
+                Text('Library'),
               ],
             ),
           ),
@@ -175,23 +147,6 @@ void main() {
       expect(wrapFinder, findsOneWidget);
       final wrap = tester.widget<Wrap>(wrapFinder);
       expect(wrap.textDirection, TextDirection.rtl);
-    });
-  });
-
-  group('ShadBreadcrumbItem', () {
-    testWidgets('renders child content correctly', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadApp(
-            home: ShadBreadcrumbItem(
-              child: Text('Test Item'),
-            ),
-          ),
-        ),
-      );
-
-      expect(find.text('Test Item'), findsOneWidget);
-      expect(find.byType(ShadBreadcrumbItem), findsOneWidget);
     });
   });
 
@@ -496,7 +451,7 @@ void main() {
       final button = tester.widget<ShadButton>(find.byType(ShadButton));
       expect(
         button.padding,
-        const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       );
     });
 
