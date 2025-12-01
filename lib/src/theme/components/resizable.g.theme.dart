@@ -17,38 +17,41 @@ mixin _$ShadResizableTheme {
     ShadResizableTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadResizableTheme(
-      mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
-      mainAxisSize: t < 0.5 ? a?.mainAxisSize : b?.mainAxisSize,
-      textDirection: t < 0.5 ? a?.textDirection : b?.textDirection,
-      verticalDirection: t < 0.5 ? a?.verticalDirection : b?.verticalDirection,
-      showHandle: t < 0.5 ? a?.showHandle : b?.showHandle,
-      handleIconData: t < 0.5 ? a?.handleIconData : b?.handleIconData,
-      dividerSize: lerpDouble$(a?.dividerSize, b?.dividerSize, t),
-      resetOnDoubleTap: t < 0.5 ? a?.resetOnDoubleTap : b?.resetOnDoubleTap,
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      mainAxisSize: t < 0.5 ? a.mainAxisSize : b.mainAxisSize,
+      textDirection: t < 0.5 ? a.textDirection : b.textDirection,
+      verticalDirection: t < 0.5 ? a.verticalDirection : b.verticalDirection,
+      showHandle: t < 0.5 ? a.showHandle : b.showHandle,
+      handleIconData: t < 0.5 ? a.handleIconData : b.handleIconData,
+      dividerSize: lerpDouble$(a.dividerSize, b.dividerSize, t),
+      resetOnDoubleTap: t < 0.5 ? a.resetOnDoubleTap : b.resetOnDoubleTap,
       handleDecoration: ShadDecoration.lerp(
-        a?.handleDecoration,
-        b?.handleDecoration,
+        a.handleDecoration,
+        b.handleDecoration,
         t,
       ),
       handlePadding: EdgeInsetsGeometry.lerp(
-        a?.handlePadding,
-        b?.handlePadding,
+        a.handlePadding,
+        b.handlePadding,
         t,
       ),
-      handleSize: lerpDouble$(a?.handleSize, b?.handleSize, t),
-      dividerThickness: lerpDouble$(
-        a?.dividerThickness,
-        b?.dividerThickness,
-        t,
-      ),
-      dividerColor: Color.lerp(a?.dividerColor, b?.dividerColor, t),
+      handleSize: lerpDouble$(a.handleSize, b.handleSize, t),
+      dividerThickness: lerpDouble$(a.dividerThickness, b.dividerThickness, t),
+      dividerColor: Color.lerp(a.dividerColor, b.dividerColor, t),
     );
   }
 
@@ -91,7 +94,7 @@ mixin _$ShadResizableTheme {
   ShadResizableTheme merge(ShadResizableTheme? other) {
     final _this = (this as ShadResizableTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -109,7 +112,9 @@ mixin _$ShadResizableTheme {
       handleIconData: other.handleIconData,
       dividerSize: other.dividerSize,
       resetOnDoubleTap: other.resetOnDoubleTap,
-      handleDecoration: other.handleDecoration,
+      handleDecoration:
+          _this.handleDecoration?.merge(other.handleDecoration) ??
+          other.handleDecoration,
       handlePadding: other.handlePadding,
       handleSize: other.handleSize,
       dividerThickness: other.dividerThickness,

@@ -13,29 +13,32 @@ mixin _$ShadRadioTheme {
   bool get canMerge => true;
 
   static ShadRadioTheme? lerp(ShadRadioTheme? a, ShadRadioTheme? b, double t) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadRadioTheme(
-      color: Color.lerp(a?.color, b?.color, t),
-      size: lerpDouble$(a?.size, b?.size, t),
-      duration: lerpDuration$(a?.duration, b?.duration, t),
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      circleSize: lerpDouble$(a?.circleSize, b?.circleSize, t),
-      axis: t < 0.5 ? a?.axis : b?.axis,
-      spacing: lerpDouble$(a?.spacing, b?.spacing, t),
-      runSpacing: lerpDouble$(a?.runSpacing, b?.runSpacing, t),
-      alignment: t < 0.5 ? a?.alignment : b?.alignment,
-      runAlignment: t < 0.5 ? a?.runAlignment : b?.runAlignment,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
-      radioPadding: EdgeInsetsGeometry.lerp(
-        a?.radioPadding,
-        b?.radioPadding,
-        t,
-      ),
+      color: Color.lerp(a.color, b.color, t),
+      size: lerpDouble$(a.size, b.size, t),
+      duration: lerpDuration$(a.duration, b.duration, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      circleSize: lerpDouble$(a.circleSize, b.circleSize, t),
+      axis: t < 0.5 ? a.axis : b.axis,
+      spacing: lerpDouble$(a.spacing, b.spacing, t),
+      runSpacing: lerpDouble$(a.runSpacing, b.runSpacing, t),
+      alignment: t < 0.5 ? a.alignment : b.alignment,
+      runAlignment: t < 0.5 ? a.runAlignment : b.runAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      radioPadding: EdgeInsetsGeometry.lerp(a.radioPadding, b.radioPadding, t),
     );
   }
 
@@ -76,7 +79,7 @@ mixin _$ShadRadioTheme {
   ShadRadioTheme merge(ShadRadioTheme? other) {
     final _this = (this as ShadRadioTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -88,7 +91,7 @@ mixin _$ShadRadioTheme {
       color: other.color,
       size: other.size,
       duration: other.duration,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       padding: other.padding,
       circleSize: other.circleSize,
       axis: other.axis,

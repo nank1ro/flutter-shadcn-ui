@@ -21,12 +21,12 @@ import 'package:shadcn_ui/src/utils/provider.dart';
 class ShadAccordionController<T> extends ValueNotifier<List<T>> {
   /// {@macro ShadAccordionController}
   ShadAccordionController([T? value])
-      : _variant = ShadAccordionVariant.single,
-        super(List<T>.unmodifiable([if (value != null) value]));
+    : _variant = ShadAccordionVariant.single,
+      super(List<T>.unmodifiable([?value]));
 
   ShadAccordionController.multiple([List<T>? value])
-      : _variant = ShadAccordionVariant.multiple,
-        super(List<T>.unmodifiable(value ?? <T>[]));
+    : _variant = ShadAccordionVariant.multiple,
+      super(List<T>.unmodifiable(value ?? <T>[]));
 
   @override
   set value(List<T> newValue) {
@@ -79,13 +79,13 @@ class ShadAccordion<T> extends StatefulWidget {
     T? initialValue,
     this.maintainState,
     this.controller,
-  })  : variant = ShadAccordionVariant.single,
-        initialValue = <T>[if (initialValue != null) initialValue],
-        assert(
-          controller == null ||
-              controller._variant == ShadAccordionVariant.single,
-          'Pass a single-mode ShadAccordionController to ShadAccordion(...)',
-        );
+  }) : variant = ShadAccordionVariant.single,
+       initialValue = <T>[?initialValue],
+       assert(
+         controller == null ||
+             controller._variant == ShadAccordionVariant.single,
+         'Pass a single-mode ShadAccordionController to ShadAccordion(...)',
+       );
 
   /// Creates a multiple-type accordion where multiple items can be expanded
   /// simultaneously.
@@ -95,13 +95,13 @@ class ShadAccordion<T> extends StatefulWidget {
     this.initialValue,
     this.maintainState,
     this.controller,
-  })  : variant = ShadAccordionVariant.multiple,
-        assert(
-          controller == null ||
-              controller._variant == ShadAccordionVariant.multiple,
-          'Pass a multiple-mode ShadAccordionController to '
-          'ShadAccordion.multiple(...)',
-        );
+  }) : variant = ShadAccordionVariant.multiple,
+       assert(
+         controller == null ||
+             controller._variant == ShadAccordionVariant.multiple,
+         'Pass a multiple-mode ShadAccordionController to '
+         'ShadAccordion.multiple(...)',
+       );
 
   /// {@template ShadAccordion.variant}
   /// The type of accordion, either [ShadAccordionVariant.single] or
@@ -145,12 +145,12 @@ class ShadAccordionState<T> extends State<ShadAccordion<T>> {
     if (_controller != null) return _controller!;
     return switch (widget.variant) {
       ShadAccordionVariant.single => _controller ??= ShadAccordionController<T>(
-          widget.initialValue != null && widget.initialValue!.isNotEmpty
-              ? widget.initialValue!.first
-              : null,
-        ),
-      ShadAccordionVariant.multiple => _controller ??=
-            ShadAccordionController<T>.multiple(
+        widget.initialValue != null && widget.initialValue!.isNotEmpty
+            ? widget.initialValue!.first
+            : null,
+      ),
+      ShadAccordionVariant.multiple =>
+        _controller ??= ShadAccordionController<T>.multiple(
           widget.initialValue,
         ),
     };
@@ -382,26 +382,31 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
         final effectiveSeparator =
             widget.separator ?? const ShadSeparator.horizontal();
 
-        final effectiveDuration = widget.duration ??
+        final effectiveDuration =
+            widget.duration ??
             theme.accordionTheme.duration ??
             300.milliseconds;
 
-        final effectiveCurve = widget.curve ??
+        final effectiveCurve =
+            widget.curve ??
             theme.accordionTheme.curve ??
             const Cubic(0.87, 0, 0.13, 1);
 
-        final effectiveTitleStyle = (widget.titleStyle ??
-                theme.accordionTheme.titleStyle ??
-                theme.textTheme.list.copyWith(
-                  fontWeight: FontWeight.w500,
-                ))
-            .fallback(color: theme.colorScheme.foreground);
+        final effectiveTitleStyle =
+            (widget.titleStyle ??
+                    theme.accordionTheme.titleStyle ??
+                    theme.textTheme.list.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ))
+                .fallback(color: theme.colorScheme.foreground);
 
-        final effectiveUnderlineTitleOnHover = widget.underlineTitleOnHover ??
+        final effectiveUnderlineTitleOnHover =
+            widget.underlineTitleOnHover ??
             theme.accordionTheme.underlineTitleOnHover ??
             true;
 
-        final effectiveIconEffects = widget.iconEffects ??
+        final effectiveIconEffects =
+            widget.iconEffects ??
             theme.accordionTheme.iconEffects ??
             [
               RotateEffect(
@@ -412,22 +417,26 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
               ),
             ];
 
-        final effectiveIconData = widget.iconData ??
+        final effectiveIconData =
+            widget.iconData ??
             theme.accordionTheme.iconData ??
             LucideIcons.chevronDown;
 
-        final effectiveIcon = widget.icon ??
+        final effectiveIcon =
+            widget.icon ??
             Icon(
               effectiveIconData,
               color: theme.colorScheme.foreground,
               size: 16,
             );
 
-        final effectivePadding = widget.padding ??
+        final effectivePadding =
+            widget.padding ??
             theme.accordionTheme.padding ??
             const EdgeInsets.symmetric(vertical: 16);
 
-        final effectiveEffects = widget.effects ??
+        final effectiveEffects =
+            widget.effects ??
             theme.accordionTheme.effects ??
             [
               PaddingEffect(
@@ -494,7 +503,8 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
                                   builder: (context, hovered, child) {
                                     return DefaultTextStyle(
                                       style: effectiveTitleStyle.copyWith(
-                                        decoration: hovered &&
+                                        decoration:
+                                            hovered &&
                                                 effectiveUnderlineTitleOnHover
                                             ? TextDecoration.underline
                                             : null,

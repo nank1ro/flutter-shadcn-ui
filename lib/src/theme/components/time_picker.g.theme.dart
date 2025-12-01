@@ -17,55 +17,59 @@ mixin _$ShadTimePickerTheme {
     ShadTimePickerTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadTimePickerTheme(
-      axis: t < 0.5 ? a?.axis : b?.axis,
-      spacing: lerpDouble$(a?.spacing, b?.spacing, t),
-      runSpacing: lerpDouble$(a?.runSpacing, b?.runSpacing, t),
-      jumpToNextFieldWhenFilled:
-          t < 0.5 ? a?.jumpToNextFieldWhenFilled : b?.jumpToNextFieldWhenFilled,
-      alignment: t < 0.5 ? a?.alignment : b?.alignment,
-      runAlignment: t < 0.5 ? a?.runAlignment : b?.runAlignment,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
-      initialDayPeriod: t < 0.5 ? a?.initialDayPeriod : b?.initialDayPeriod,
-      periodHeight: lerpDouble$(a?.periodHeight, b?.periodHeight, t),
-      periodMinWidth: lerpDouble$(a?.periodMinWidth, b?.periodMinWidth, t),
-      gap: lerpDouble$(a?.gap, b?.gap, t),
-      style: TextStyle.lerp(a?.style, b?.style, t),
+      axis: t < 0.5 ? a.axis : b.axis,
+      spacing: lerpDouble$(a.spacing, b.spacing, t),
+      runSpacing: lerpDouble$(a.runSpacing, b.runSpacing, t),
+      jumpToNextFieldWhenFilled: t < 0.5
+          ? a.jumpToNextFieldWhenFilled
+          : b.jumpToNextFieldWhenFilled,
+      alignment: t < 0.5 ? a.alignment : b.alignment,
+      runAlignment: t < 0.5 ? a.runAlignment : b.runAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      initialDayPeriod: t < 0.5 ? a.initialDayPeriod : b.initialDayPeriod,
+      periodHeight: lerpDouble$(a.periodHeight, b.periodHeight, t),
+      periodMinWidth: lerpDouble$(a.periodMinWidth, b.periodMinWidth, t),
+      gap: lerpDouble$(a.gap, b.gap, t),
+      style: TextStyle.lerp(a.style, b.style, t),
       placeholderStyle: TextStyle.lerp(
-        a?.placeholderStyle,
-        b?.placeholderStyle,
+        a.placeholderStyle,
+        b.placeholderStyle,
         t,
       ),
-      labelStyle: TextStyle.lerp(a?.labelStyle, b?.labelStyle, t),
-      fieldWidth: lerpDouble$(a?.fieldWidth, b?.fieldWidth, t),
-      fieldPadding: EdgeInsetsGeometry.lerp(
-        a?.fieldPadding,
-        b?.fieldPadding,
-        t,
-      ),
+      labelStyle: TextStyle.lerp(a.labelStyle, b.labelStyle, t),
+      fieldWidth: lerpDouble$(a.fieldWidth, b.fieldWidth, t),
+      fieldPadding: EdgeInsetsGeometry.lerp(a.fieldPadding, b.fieldPadding, t),
       fieldDecoration: ShadDecoration.lerp(
-        a?.fieldDecoration,
-        b?.fieldDecoration,
+        a.fieldDecoration,
+        b.fieldDecoration,
         t,
       ),
       periodDecoration: ShadDecoration.lerp(
-        a?.periodDecoration,
-        b?.periodDecoration,
+        a.periodDecoration,
+        b.periodDecoration,
         t,
       ),
-      hourLabel: t < 0.5 ? a?.hourLabel : b?.hourLabel,
-      minuteLabel: t < 0.5 ? a?.minuteLabel : b?.minuteLabel,
-      secondLabel: t < 0.5 ? a?.secondLabel : b?.secondLabel,
-      periodLabel: t < 0.5 ? a?.periodLabel : b?.periodLabel,
-      hourPlaceholder: t < 0.5 ? a?.hourPlaceholder : b?.hourPlaceholder,
-      minutePlaceholder: t < 0.5 ? a?.minutePlaceholder : b?.minutePlaceholder,
-      secondPlaceholder: t < 0.5 ? a?.secondPlaceholder : b?.secondPlaceholder,
-      periodPlaceholder: t < 0.5 ? a?.periodPlaceholder : b?.periodPlaceholder,
+      hourLabel: t < 0.5 ? a.hourLabel : b.hourLabel,
+      minuteLabel: t < 0.5 ? a.minuteLabel : b.minuteLabel,
+      secondLabel: t < 0.5 ? a.secondLabel : b.secondLabel,
+      periodLabel: t < 0.5 ? a.periodLabel : b.periodLabel,
+      hourPlaceholder: t < 0.5 ? a.hourPlaceholder : b.hourPlaceholder,
+      minutePlaceholder: t < 0.5 ? a.minutePlaceholder : b.minutePlaceholder,
+      secondPlaceholder: t < 0.5 ? a.secondPlaceholder : b.secondPlaceholder,
+      periodPlaceholder: t < 0.5 ? a.periodPlaceholder : b.periodPlaceholder,
     );
   }
 
@@ -133,7 +137,7 @@ mixin _$ShadTimePickerTheme {
   ShadTimePickerTheme merge(ShadTimePickerTheme? other) {
     final _this = (this as ShadTimePickerTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -154,13 +158,18 @@ mixin _$ShadTimePickerTheme {
       periodMinWidth: other.periodMinWidth,
       gap: other.gap,
       style: _this.style?.merge(other.style) ?? other.style,
-      placeholderStyle: _this.placeholderStyle?.merge(other.placeholderStyle) ??
+      placeholderStyle:
+          _this.placeholderStyle?.merge(other.placeholderStyle) ??
           other.placeholderStyle,
       labelStyle: _this.labelStyle?.merge(other.labelStyle) ?? other.labelStyle,
       fieldWidth: other.fieldWidth,
       fieldPadding: other.fieldPadding,
-      fieldDecoration: other.fieldDecoration,
-      periodDecoration: other.periodDecoration,
+      fieldDecoration:
+          _this.fieldDecoration?.merge(other.fieldDecoration) ??
+          other.fieldDecoration,
+      periodDecoration:
+          _this.periodDecoration?.merge(other.periodDecoration) ??
+          other.periodDecoration,
       hourLabel: other.hourLabel,
       minuteLabel: other.minuteLabel,
       secondLabel: other.secondLabel,

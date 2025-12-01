@@ -17,281 +17,283 @@ mixin _$ShadDatePickerTheme {
     ShadDatePickerTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadDatePickerTheme(
-      formatDate: t < 0.5 ? a?.formatDate : b?.formatDate,
-      formatDateRange: t < 0.5 ? a?.formatDateRange : b?.formatDateRange,
-      iconData: t < 0.5 ? a?.iconData : b?.iconData,
-      hideNavigation: t < 0.5 ? a?.hideNavigation : b?.hideNavigation,
+      formatDate: t < 0.5 ? a.formatDate : b.formatDate,
+      formatDateRange: t < 0.5 ? a.formatDateRange : b.formatDateRange,
+      iconData: t < 0.5 ? a.iconData : b.iconData,
+      hideNavigation: t < 0.5 ? a.hideNavigation : b.hideNavigation,
       yearSelectorMinWidth: lerpDouble$(
-        a?.yearSelectorMinWidth,
-        b?.yearSelectorMinWidth,
+        a.yearSelectorMinWidth,
+        b.yearSelectorMinWidth,
         t,
       ),
       monthSelectorMinWidth: lerpDouble$(
-        a?.monthSelectorMinWidth,
-        b?.monthSelectorMinWidth,
+        a.monthSelectorMinWidth,
+        b.monthSelectorMinWidth,
         t,
       ),
       yearSelectorPadding: EdgeInsetsGeometry.lerp(
-        a?.yearSelectorPadding,
-        b?.yearSelectorPadding,
+        a.yearSelectorPadding,
+        b.yearSelectorPadding,
         t,
       ),
       monthSelectorPadding: EdgeInsetsGeometry.lerp(
-        a?.monthSelectorPadding,
-        b?.monthSelectorPadding,
+        a.monthSelectorPadding,
+        b.monthSelectorPadding,
         t,
       ),
       navigationButtonSize: lerpDouble$(
-        a?.navigationButtonSize,
-        b?.navigationButtonSize,
+        a.navigationButtonSize,
+        b.navigationButtonSize,
         t,
       ),
       navigationButtonIconSize: lerpDouble$(
-        a?.navigationButtonIconSize,
-        b?.navigationButtonIconSize,
+        a.navigationButtonIconSize,
+        b.navigationButtonIconSize,
         t,
       ),
       backNavigationButtonIconData: t < 0.5
-          ? a?.backNavigationButtonIconData
-          : b?.backNavigationButtonIconData,
+          ? a.backNavigationButtonIconData
+          : b.backNavigationButtonIconData,
       forwardNavigationButtonIconData: t < 0.5
-          ? a?.forwardNavigationButtonIconData
-          : b?.forwardNavigationButtonIconData,
+          ? a.forwardNavigationButtonIconData
+          : b.forwardNavigationButtonIconData,
       navigationButtonPadding: EdgeInsetsGeometry.lerp(
-        a?.navigationButtonPadding,
-        b?.navigationButtonPadding,
+        a.navigationButtonPadding,
+        b.navigationButtonPadding,
         t,
       ),
       navigationButtonDisabledOpacity: lerpDouble$(
-        a?.navigationButtonDisabledOpacity,
-        b?.navigationButtonDisabledOpacity,
+        a.navigationButtonDisabledOpacity,
+        b.navigationButtonDisabledOpacity,
         t,
       ),
       calendarDecoration: ShadDecoration.lerp(
-        a?.calendarDecoration,
-        b?.calendarDecoration,
+        a.calendarDecoration,
+        b.calendarDecoration,
         t,
       ),
       spacingBetweenMonths: lerpDouble$(
-        a?.spacingBetweenMonths,
-        b?.spacingBetweenMonths,
+        a.spacingBetweenMonths,
+        b.spacingBetweenMonths,
         t,
       ),
       runSpacingBetweenMonths: lerpDouble$(
-        a?.runSpacingBetweenMonths,
-        b?.runSpacingBetweenMonths,
+        a.runSpacingBetweenMonths,
+        b.runSpacingBetweenMonths,
         t,
       ),
       monthConstraints: BoxConstraints.lerp(
-        a?.monthConstraints,
-        b?.monthConstraints,
+        a.monthConstraints,
+        b.monthConstraints,
         t,
       ),
       calendarHeaderHeight: lerpDouble$(
-        a?.calendarHeaderHeight,
-        b?.calendarHeaderHeight,
+        a.calendarHeaderHeight,
+        b.calendarHeaderHeight,
         t,
       ),
       calendarHeaderPadding: EdgeInsetsGeometry.lerp(
-        a?.calendarHeaderPadding,
-        b?.calendarHeaderPadding,
+        a.calendarHeaderPadding,
+        b.calendarHeaderPadding,
         t,
       ),
-      captionLayoutGap: lerpDouble$(
-        a?.captionLayoutGap,
-        b?.captionLayoutGap,
-        t,
-      ),
+      captionLayoutGap: lerpDouble$(a.captionLayoutGap, b.captionLayoutGap, t),
       calendarHeaderTextStyle: TextStyle.lerp(
-        a?.calendarHeaderTextStyle,
-        b?.calendarHeaderTextStyle,
+        a.calendarHeaderTextStyle,
+        b.calendarHeaderTextStyle,
         t,
       ),
       weekdaysPadding: EdgeInsetsGeometry.lerp(
-        a?.weekdaysPadding,
-        b?.weekdaysPadding,
+        a.weekdaysPadding,
+        b.weekdaysPadding,
         t,
       ),
       weekdaysTextStyle: TextStyle.lerp(
-        a?.weekdaysTextStyle,
-        b?.weekdaysTextStyle,
+        a.weekdaysTextStyle,
+        b.weekdaysTextStyle,
         t,
       ),
-      weekdaysTextAlign: t < 0.5 ? a?.weekdaysTextAlign : b?.weekdaysTextAlign,
-      weekNumbersHeaderText:
-          t < 0.5 ? a?.weekNumbersHeaderText : b?.weekNumbersHeaderText,
+      weekdaysTextAlign: t < 0.5 ? a.weekdaysTextAlign : b.weekdaysTextAlign,
+      weekNumbersHeaderText: t < 0.5
+          ? a.weekNumbersHeaderText
+          : b.weekNumbersHeaderText,
       weekNumbersHeaderTextStyle: TextStyle.lerp(
-        a?.weekNumbersHeaderTextStyle,
-        b?.weekNumbersHeaderTextStyle,
+        a.weekNumbersHeaderTextStyle,
+        b.weekNumbersHeaderTextStyle,
         t,
       ),
       weekNumbersTextStyle: TextStyle.lerp(
-        a?.weekNumbersTextStyle,
-        b?.weekNumbersTextStyle,
+        a.weekNumbersTextStyle,
+        b.weekNumbersTextStyle,
         t,
       ),
-      weekNumbersTextAlign:
-          t < 0.5 ? a?.weekNumbersTextAlign : b?.weekNumbersTextAlign,
-      dayButtonSize: lerpDouble$(a?.dayButtonSize, b?.dayButtonSize, t),
+      weekNumbersTextAlign: t < 0.5
+          ? a.weekNumbersTextAlign
+          : b.weekNumbersTextAlign,
+      dayButtonSize: lerpDouble$(a.dayButtonSize, b.dayButtonSize, t),
       dayButtonOutsideMonthOpacity: lerpDouble$(
-        a?.dayButtonOutsideMonthOpacity,
-        b?.dayButtonOutsideMonthOpacity,
+        a.dayButtonOutsideMonthOpacity,
+        b.dayButtonOutsideMonthOpacity,
         t,
       ),
       dayButtonPadding: EdgeInsetsGeometry.lerp(
-        a?.dayButtonPadding,
-        b?.dayButtonPadding,
+        a.dayButtonPadding,
+        b.dayButtonPadding,
         t,
       ),
       dayButtonDecoration: ShadDecoration.lerp(
-        a?.dayButtonDecoration,
-        b?.dayButtonDecoration,
+        a.dayButtonDecoration,
+        b.dayButtonDecoration,
         t,
       ),
       selectedDayButtonTextStyle: TextStyle.lerp(
-        a?.selectedDayButtonTextStyle,
-        b?.selectedDayButtonTextStyle,
+        a.selectedDayButtonTextStyle,
+        b.selectedDayButtonTextStyle,
         t,
       ),
       insideRangeDayButtonTextStyle: TextStyle.lerp(
-        a?.insideRangeDayButtonTextStyle,
-        b?.insideRangeDayButtonTextStyle,
+        a.insideRangeDayButtonTextStyle,
+        b.insideRangeDayButtonTextStyle,
         t,
       ),
       dayButtonTextStyle: TextStyle.lerp(
-        a?.dayButtonTextStyle,
-        b?.dayButtonTextStyle,
+        a.dayButtonTextStyle,
+        b.dayButtonTextStyle,
         t,
       ),
-      dayButtonVariant: t < 0.5 ? a?.dayButtonVariant : b?.dayButtonVariant,
-      selectedDayButtonVariant:
-          t < 0.5 ? a?.selectedDayButtonVariant : b?.selectedDayButtonVariant,
+      dayButtonVariant: t < 0.5 ? a.dayButtonVariant : b.dayButtonVariant,
+      selectedDayButtonVariant: t < 0.5
+          ? a.selectedDayButtonVariant
+          : b.selectedDayButtonVariant,
       insideRangeDayButtonVariant: t < 0.5
-          ? a?.insideRangeDayButtonVariant
-          : b?.insideRangeDayButtonVariant,
-      todayButtonVariant:
-          t < 0.5 ? a?.todayButtonVariant : b?.todayButtonVariant,
+          ? a.insideRangeDayButtonVariant
+          : b.insideRangeDayButtonVariant,
+      todayButtonVariant: t < 0.5 ? a.todayButtonVariant : b.todayButtonVariant,
       gridMainAxisSpacing: lerpDouble$(
-        a?.gridMainAxisSpacing,
-        b?.gridMainAxisSpacing,
+        a.gridMainAxisSpacing,
+        b.gridMainAxisSpacing,
         t,
       ),
       gridCrossAxisSpacing: lerpDouble$(
-        a?.gridCrossAxisSpacing,
-        b?.gridCrossAxisSpacing,
+        a.gridCrossAxisSpacing,
+        b.gridCrossAxisSpacing,
         t,
       ),
       dayButtonOutsideMonthTextStyle: TextStyle.lerp(
-        a?.dayButtonOutsideMonthTextStyle,
-        b?.dayButtonOutsideMonthTextStyle,
+        a.dayButtonOutsideMonthTextStyle,
+        b.dayButtonOutsideMonthTextStyle,
         t,
       ),
       dayButtonOutsideMonthVariant: t < 0.5
-          ? a?.dayButtonOutsideMonthVariant
-          : b?.dayButtonOutsideMonthVariant,
+          ? a.dayButtonOutsideMonthVariant
+          : b.dayButtonOutsideMonthVariant,
       selectedDayButtonOusideMonthVariant: t < 0.5
-          ? a?.selectedDayButtonOusideMonthVariant
-          : b?.selectedDayButtonOusideMonthVariant,
-      captionLayout: t < 0.5 ? a?.captionLayout : b?.captionLayout,
-      hideWeekdayNames: t < 0.5 ? a?.hideWeekdayNames : b?.hideWeekdayNames,
-      showOutsideDays: t < 0.5 ? a?.showOutsideDays : b?.showOutsideDays,
-      formatMonthYear: t < 0.5 ? a?.formatMonthYear : b?.formatMonthYear,
-      formatMonth: t < 0.5 ? a?.formatMonth : b?.formatMonth,
-      formatYear: t < 0.5 ? a?.formatYear : b?.formatYear,
-      formatWeekday: t < 0.5 ? a?.formatWeekday : b?.formatWeekday,
-      showWeekNumbers: t < 0.5 ? a?.showWeekNumbers : b?.showWeekNumbers,
-      weekStartsOn: t < 0.5 ? a?.weekStartsOn : b?.weekStartsOn,
-      fixedWeeks: t < 0.5 ? a?.fixedWeeks : b?.fixedWeeks,
-      allowDeselection: t < 0.5 ? a?.allowDeselection : b?.allowDeselection,
-      effects: t < 0.5 ? a?.effects : b?.effects,
-      shadows: t < 0.5 ? a?.shadows : b?.shadows,
+          ? a.selectedDayButtonOusideMonthVariant
+          : b.selectedDayButtonOusideMonthVariant,
+      captionLayout: t < 0.5 ? a.captionLayout : b.captionLayout,
+      hideWeekdayNames: t < 0.5 ? a.hideWeekdayNames : b.hideWeekdayNames,
+      showOutsideDays: t < 0.5 ? a.showOutsideDays : b.showOutsideDays,
+      formatMonthYear: t < 0.5 ? a.formatMonthYear : b.formatMonthYear,
+      formatMonth: t < 0.5 ? a.formatMonth : b.formatMonth,
+      formatYear: t < 0.5 ? a.formatYear : b.formatYear,
+      formatWeekday: t < 0.5 ? a.formatWeekday : b.formatWeekday,
+      showWeekNumbers: t < 0.5 ? a.showWeekNumbers : b.showWeekNumbers,
+      weekStartsOn: t < 0.5 ? a.weekStartsOn : b.weekStartsOn,
+      fixedWeeks: t < 0.5 ? a.fixedWeeks : b.fixedWeeks,
+      allowDeselection: t < 0.5 ? a.allowDeselection : b.allowDeselection,
+      effects: t < 0.5 ? a.effects : b.effects,
+      shadows: t < 0.5 ? a.shadows : b.shadows,
       popoverPadding: EdgeInsetsGeometry.lerp(
-        a?.popoverPadding,
-        b?.popoverPadding,
+        a.popoverPadding,
+        b.popoverPadding,
         t,
       ),
       popoverDecoration: ShadDecoration.lerp(
-        a?.popoverDecoration,
-        b?.popoverDecoration,
+        a.popoverDecoration,
+        b.popoverDecoration,
         t,
       ),
-      anchor: t < 0.5 ? a?.anchor : b?.anchor,
-      filter: t < 0.5 ? a?.filter : b?.filter,
+      anchor: t < 0.5 ? a.anchor : b.anchor,
+      filter: t < 0.5 ? a.filter : b.filter,
       popoverReverseDuration: lerpDuration$(
-        a?.popoverReverseDuration,
-        b?.popoverReverseDuration,
+        a.popoverReverseDuration,
+        b.popoverReverseDuration,
         t,
       ),
-      cursor: t < 0.5 ? a?.cursor : b?.cursor,
-      size: t < 0.5 ? a?.size : b?.size,
-      sizesTheme: ShadButtonSizesTheme.lerp(a?.sizesTheme, b?.sizesTheme, t),
-      buttonVariant: t < 0.5 ? a?.buttonVariant : b?.buttonVariant,
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      cursor: t < 0.5 ? a.cursor : b.cursor,
+      size: t < 0.5 ? a.size : b.size,
+      sizesTheme: ShadButtonSizesTheme.lerp(a.sizesTheme, b.sizesTheme, t),
+      buttonVariant: t < 0.5 ? a.buttonVariant : b.buttonVariant,
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       hoverBackgroundColor: Color.lerp(
-        a?.hoverBackgroundColor,
-        b?.hoverBackgroundColor,
+        a.hoverBackgroundColor,
+        b.hoverBackgroundColor,
         t,
       ),
-      foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
+      foregroundColor: Color.lerp(a.foregroundColor, b.foregroundColor, t),
       hoverForegroundColor: Color.lerp(
-        a?.hoverForegroundColor,
-        b?.hoverForegroundColor,
+        a.hoverForegroundColor,
+        b.hoverForegroundColor,
         t,
       ),
       pressedBackgroundColor: Color.lerp(
-        a?.pressedBackgroundColor,
-        b?.pressedBackgroundColor,
+        a.pressedBackgroundColor,
+        b.pressedBackgroundColor,
         t,
       ),
       pressedForegroundColor: Color.lerp(
-        a?.pressedForegroundColor,
-        b?.pressedForegroundColor,
+        a.pressedForegroundColor,
+        b.pressedForegroundColor,
         t,
       ),
       disabledBackgroundColor: Color.lerp(
-        a?.disabledBackgroundColor,
-        b?.disabledBackgroundColor,
+        a.disabledBackgroundColor,
+        b.disabledBackgroundColor,
         t,
       ),
-      buttonShadows: t < 0.5 ? a?.buttonShadows : b?.buttonShadows,
-      gradient: Gradient.lerp(a?.gradient, b?.gradient, t),
-      textDecoration: t < 0.5 ? a?.textDecoration : b?.textDecoration,
-      hoverTextDecoration:
-          t < 0.5 ? a?.hoverTextDecoration : b?.hoverTextDecoration,
+      buttonShadows: t < 0.5 ? a.buttonShadows : b.buttonShadows,
+      gradient: Gradient.lerp(a.gradient, b.gradient, t),
+      textDecoration: t < 0.5 ? a.textDecoration : b.textDecoration,
+      hoverTextDecoration: t < 0.5
+          ? a.hoverTextDecoration
+          : b.hoverTextDecoration,
       buttonDecoration: ShadDecoration.lerp(
-        a?.buttonDecoration,
-        b?.buttonDecoration,
+        a.buttonDecoration,
+        b.buttonDecoration,
         t,
       ),
-      width: lerpDouble$(a?.width, b?.width, t),
-      height: lerpDouble$(a?.height, b?.height, t),
+      width: lerpDouble$(a.width, b.width, t),
+      height: lerpDouble$(a.height, b.height, t),
       longPressDuration: lerpDuration$(
-        a?.longPressDuration,
-        b?.longPressDuration,
+        a.longPressDuration,
+        b.longPressDuration,
         t,
       ),
-      hoverStrategies: t < 0.5 ? a?.hoverStrategies : b?.hoverStrategies,
-      mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
-      textDirection: t < 0.5 ? a?.textDirection : b?.textDirection,
-      gap: lerpDouble$(a?.gap, b?.gap, t),
+      hoverStrategies: t < 0.5 ? a.hoverStrategies : b.hoverStrategies,
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      textDirection: t < 0.5 ? a.textDirection : b.textDirection,
+      gap: lerpDouble$(a.gap, b.gap, t),
       buttonPadding: EdgeInsetsGeometry.lerp(
-        a?.buttonPadding,
-        b?.buttonPadding,
+        a.buttonPadding,
+        b.buttonPadding,
         t,
       ),
-      expands: t < 0.5 ? a?.expands : b?.expands,
-      buttonTextStyle: TextStyle.lerp(
-        a?.buttonTextStyle,
-        b?.buttonTextStyle,
-        t,
-      ),
+      expands: t < 0.5 ? a.expands : b.expands,
+      buttonTextStyle: TextStyle.lerp(a.buttonTextStyle, b.buttonTextStyle, t),
     );
   }
 
@@ -404,11 +406,13 @@ mixin _$ShadDatePickerTheme {
           navigationButtonIconSize ?? _this.navigationButtonIconSize,
       backNavigationButtonIconData:
           backNavigationButtonIconData ?? _this.backNavigationButtonIconData,
-      forwardNavigationButtonIconData: forwardNavigationButtonIconData ??
+      forwardNavigationButtonIconData:
+          forwardNavigationButtonIconData ??
           _this.forwardNavigationButtonIconData,
       navigationButtonPadding:
           navigationButtonPadding ?? _this.navigationButtonPadding,
-      navigationButtonDisabledOpacity: navigationButtonDisabledOpacity ??
+      navigationButtonDisabledOpacity:
+          navigationButtonDisabledOpacity ??
           _this.navigationButtonDisabledOpacity,
       calendarDecoration: calendarDecoration ?? _this.calendarDecoration,
       spacingBetweenMonths: spacingBetweenMonths ?? _this.spacingBetweenMonths,
@@ -448,13 +452,14 @@ mixin _$ShadDatePickerTheme {
       todayButtonVariant: todayButtonVariant ?? _this.todayButtonVariant,
       gridMainAxisSpacing: gridMainAxisSpacing ?? _this.gridMainAxisSpacing,
       gridCrossAxisSpacing: gridCrossAxisSpacing ?? _this.gridCrossAxisSpacing,
-      dayButtonOutsideMonthTextStyle: dayButtonOutsideMonthTextStyle ??
+      dayButtonOutsideMonthTextStyle:
+          dayButtonOutsideMonthTextStyle ??
           _this.dayButtonOutsideMonthTextStyle,
       dayButtonOutsideMonthVariant:
           dayButtonOutsideMonthVariant ?? _this.dayButtonOutsideMonthVariant,
       selectedDayButtonOusideMonthVariant:
           selectedDayButtonOusideMonthVariant ??
-              _this.selectedDayButtonOusideMonthVariant,
+          _this.selectedDayButtonOusideMonthVariant,
       captionLayout: captionLayout ?? _this.captionLayout,
       hideWeekdayNames: hideWeekdayNames ?? _this.hideWeekdayNames,
       showOutsideDays: showOutsideDays ?? _this.showOutsideDays,
@@ -510,7 +515,7 @@ mixin _$ShadDatePickerTheme {
   ShadDatePickerTheme merge(ShadDatePickerTheme? other) {
     final _this = (this as ShadDatePickerTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -533,7 +538,9 @@ mixin _$ShadDatePickerTheme {
       forwardNavigationButtonIconData: other.forwardNavigationButtonIconData,
       navigationButtonPadding: other.navigationButtonPadding,
       navigationButtonDisabledOpacity: other.navigationButtonDisabledOpacity,
-      calendarDecoration: other.calendarDecoration,
+      calendarDecoration:
+          _this.calendarDecoration?.merge(other.calendarDecoration) ??
+          other.calendarDecoration,
       spacingBetweenMonths: other.spacingBetweenMonths,
       runSpacingBetweenMonths: other.runSpacingBetweenMonths,
       monthConstraints: other.monthConstraints,
@@ -542,36 +549,41 @@ mixin _$ShadDatePickerTheme {
       captionLayoutGap: other.captionLayoutGap,
       calendarHeaderTextStyle:
           _this.calendarHeaderTextStyle?.merge(other.calendarHeaderTextStyle) ??
-              other.calendarHeaderTextStyle,
+          other.calendarHeaderTextStyle,
       weekdaysPadding: other.weekdaysPadding,
       weekdaysTextStyle:
           _this.weekdaysTextStyle?.merge(other.weekdaysTextStyle) ??
-              other.weekdaysTextStyle,
+          other.weekdaysTextStyle,
       weekdaysTextAlign: other.weekdaysTextAlign,
       weekNumbersHeaderText: other.weekNumbersHeaderText,
-      weekNumbersHeaderTextStyle: _this.weekNumbersHeaderTextStyle?.merge(
+      weekNumbersHeaderTextStyle:
+          _this.weekNumbersHeaderTextStyle?.merge(
             other.weekNumbersHeaderTextStyle,
           ) ??
           other.weekNumbersHeaderTextStyle,
       weekNumbersTextStyle:
           _this.weekNumbersTextStyle?.merge(other.weekNumbersTextStyle) ??
-              other.weekNumbersTextStyle,
+          other.weekNumbersTextStyle,
       weekNumbersTextAlign: other.weekNumbersTextAlign,
       dayButtonSize: other.dayButtonSize,
       dayButtonOutsideMonthOpacity: other.dayButtonOutsideMonthOpacity,
       dayButtonPadding: other.dayButtonPadding,
-      dayButtonDecoration: other.dayButtonDecoration,
-      selectedDayButtonTextStyle: _this.selectedDayButtonTextStyle?.merge(
+      dayButtonDecoration:
+          _this.dayButtonDecoration?.merge(other.dayButtonDecoration) ??
+          other.dayButtonDecoration,
+      selectedDayButtonTextStyle:
+          _this.selectedDayButtonTextStyle?.merge(
             other.selectedDayButtonTextStyle,
           ) ??
           other.selectedDayButtonTextStyle,
-      insideRangeDayButtonTextStyle: _this.insideRangeDayButtonTextStyle?.merge(
+      insideRangeDayButtonTextStyle:
+          _this.insideRangeDayButtonTextStyle?.merge(
             other.insideRangeDayButtonTextStyle,
           ) ??
           other.insideRangeDayButtonTextStyle,
       dayButtonTextStyle:
           _this.dayButtonTextStyle?.merge(other.dayButtonTextStyle) ??
-              other.dayButtonTextStyle,
+          other.dayButtonTextStyle,
       dayButtonVariant: other.dayButtonVariant,
       selectedDayButtonVariant: other.selectedDayButtonVariant,
       insideRangeDayButtonVariant: other.insideRangeDayButtonVariant,
@@ -580,9 +592,9 @@ mixin _$ShadDatePickerTheme {
       gridCrossAxisSpacing: other.gridCrossAxisSpacing,
       dayButtonOutsideMonthTextStyle:
           _this.dayButtonOutsideMonthTextStyle?.merge(
-                other.dayButtonOutsideMonthTextStyle,
-              ) ??
-              other.dayButtonOutsideMonthTextStyle,
+            other.dayButtonOutsideMonthTextStyle,
+          ) ??
+          other.dayButtonOutsideMonthTextStyle,
       dayButtonOutsideMonthVariant: other.dayButtonOutsideMonthVariant,
       selectedDayButtonOusideMonthVariant:
           other.selectedDayButtonOusideMonthVariant,
@@ -600,13 +612,15 @@ mixin _$ShadDatePickerTheme {
       effects: other.effects,
       shadows: other.shadows,
       popoverPadding: other.popoverPadding,
-      popoverDecoration: other.popoverDecoration,
+      popoverDecoration:
+          _this.popoverDecoration?.merge(other.popoverDecoration) ??
+          other.popoverDecoration,
       anchor: other.anchor,
       filter: other.filter,
       popoverReverseDuration: other.popoverReverseDuration,
       cursor: other.cursor,
       size: other.size,
-      sizesTheme: other.sizesTheme,
+      sizesTheme: _this.sizesTheme?.merge(other.sizesTheme) ?? other.sizesTheme,
       buttonVariant: other.buttonVariant,
       backgroundColor: other.backgroundColor,
       hoverBackgroundColor: other.hoverBackgroundColor,
@@ -619,7 +633,9 @@ mixin _$ShadDatePickerTheme {
       gradient: other.gradient,
       textDecoration: other.textDecoration,
       hoverTextDecoration: other.hoverTextDecoration,
-      buttonDecoration: other.buttonDecoration,
+      buttonDecoration:
+          _this.buttonDecoration?.merge(other.buttonDecoration) ??
+          other.buttonDecoration,
       width: other.width,
       height: other.height,
       longPressDuration: other.longPressDuration,
@@ -630,7 +646,8 @@ mixin _$ShadDatePickerTheme {
       gap: other.gap,
       buttonPadding: other.buttonPadding,
       expands: other.expands,
-      buttonTextStyle: _this.buttonTextStyle?.merge(other.buttonTextStyle) ??
+      buttonTextStyle:
+          _this.buttonTextStyle?.merge(other.buttonTextStyle) ??
           other.buttonTextStyle,
     );
   }

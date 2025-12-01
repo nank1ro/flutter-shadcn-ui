@@ -17,62 +17,74 @@ mixin _$ShadDialogTheme {
     ShadDialogTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadDialogTheme(
-      closeIconData: t < 0.5 ? a?.closeIconData : b?.closeIconData,
+      closeIconData: t < 0.5 ? a.closeIconData : b.closeIconData,
       closeIconPosition: ShadPosition.lerp(
-        a?.closeIconPosition,
-        b?.closeIconPosition,
+        a.closeIconPosition,
+        b.closeIconPosition,
         t,
       ),
-      radius: BorderRadius.lerp(a?.radius, b?.radius, t),
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      expandActionsWhenTiny:
-          t < 0.5 ? a?.expandActionsWhenTiny : b?.expandActionsWhenTiny,
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      gap: lerpDouble$(a?.gap, b?.gap, t),
-      animateIn: t < 0.5 ? a?.animateIn : b?.animateIn,
-      animateOut: t < 0.5 ? a?.animateOut : b?.animateOut,
-      constraints: BoxConstraints.lerp(a?.constraints, b?.constraints, t),
-      actionsAxis: t < 0.5 ? a?.actionsAxis : b?.actionsAxis,
-      actionsMainAxisSize:
-          t < 0.5 ? a?.actionsMainAxisSize : b?.actionsMainAxisSize,
-      actionsMainAxisAlignment:
-          t < 0.5 ? a?.actionsMainAxisAlignment : b?.actionsMainAxisAlignment,
-      actionsVerticalDirection:
-          t < 0.5 ? a?.actionsVerticalDirection : b?.actionsVerticalDirection,
-      border: BoxBorder.lerp(a?.border, b?.border, t),
-      shadows: t < 0.5 ? a?.shadows : b?.shadows,
+      radius: BorderRadius.lerp(a.radius, b.radius, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      expandActionsWhenTiny: t < 0.5
+          ? a.expandActionsWhenTiny
+          : b.expandActionsWhenTiny,
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      gap: lerpDouble$(a.gap, b.gap, t),
+      animateIn: t < 0.5 ? a.animateIn : b.animateIn,
+      animateOut: t < 0.5 ? a.animateOut : b.animateOut,
+      constraints: BoxConstraints.lerp(a.constraints, b.constraints, t),
+      actionsAxis: t < 0.5 ? a.actionsAxis : b.actionsAxis,
+      actionsMainAxisSize: t < 0.5
+          ? a.actionsMainAxisSize
+          : b.actionsMainAxisSize,
+      actionsMainAxisAlignment: t < 0.5
+          ? a.actionsMainAxisAlignment
+          : b.actionsMainAxisAlignment,
+      actionsVerticalDirection: t < 0.5
+          ? a.actionsVerticalDirection
+          : b.actionsVerticalDirection,
+      border: BoxBorder.lerp(a.border, b.border, t),
+      shadows: t < 0.5 ? a.shadows : b.shadows,
       removeBorderRadiusWhenTiny: t < 0.5
-          ? a?.removeBorderRadiusWhenTiny
-          : b?.removeBorderRadiusWhenTiny,
-      titleStyle: TextStyle.lerp(a?.titleStyle, b?.titleStyle, t),
+          ? a.removeBorderRadiusWhenTiny
+          : b.removeBorderRadiusWhenTiny,
+      titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
       descriptionStyle: TextStyle.lerp(
-        a?.descriptionStyle,
-        b?.descriptionStyle,
+        a.descriptionStyle,
+        b.descriptionStyle,
         t,
       ),
-      titleTextAlign: t < 0.5 ? a?.titleTextAlign : b?.titleTextAlign,
-      descriptionTextAlign:
-          t < 0.5 ? a?.descriptionTextAlign : b?.descriptionTextAlign,
-      alignment: Alignment.lerp(a?.alignment, b?.alignment, t),
-      mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
-      scrollable: t < 0.5 ? a?.scrollable : b?.scrollable,
+      titleTextAlign: t < 0.5 ? a.titleTextAlign : b.titleTextAlign,
+      descriptionTextAlign: t < 0.5
+          ? a.descriptionTextAlign
+          : b.descriptionTextAlign,
+      alignment: Alignment.lerp(a.alignment, b.alignment, t),
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      scrollable: t < 0.5 ? a.scrollable : b.scrollable,
       scrollPadding: EdgeInsetsGeometry.lerp(
-        a?.scrollPadding,
-        b?.scrollPadding,
+        a.scrollPadding,
+        b.scrollPadding,
         t,
       ),
-      actionsGap: lerpDouble$(a?.actionsGap, b?.actionsGap, t),
-      useSafeArea: t < 0.5 ? a?.useSafeArea : b?.useSafeArea,
-      titlePinned: t < 0.5 ? a?.titlePinned : b?.titlePinned,
-      descriptionPinned: t < 0.5 ? a?.descriptionPinned : b?.descriptionPinned,
-      actionsPinned: t < 0.5 ? a?.actionsPinned : b?.actionsPinned,
+      actionsGap: lerpDouble$(a.actionsGap, b.actionsGap, t),
+      useSafeArea: t < 0.5 ? a.useSafeArea : b.useSafeArea,
+      titlePinned: t < 0.5 ? a.titlePinned : b.titlePinned,
+      descriptionPinned: t < 0.5 ? a.descriptionPinned : b.descriptionPinned,
+      actionsPinned: t < 0.5 ? a.actionsPinned : b.actionsPinned,
     );
   }
 
@@ -153,7 +165,7 @@ mixin _$ShadDialogTheme {
   ShadDialogTheme merge(ShadDialogTheme? other) {
     final _this = (this as ShadDialogTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -180,7 +192,8 @@ mixin _$ShadDialogTheme {
       shadows: other.shadows,
       removeBorderRadiusWhenTiny: other.removeBorderRadiusWhenTiny,
       titleStyle: _this.titleStyle?.merge(other.titleStyle) ?? other.titleStyle,
-      descriptionStyle: _this.descriptionStyle?.merge(other.descriptionStyle) ??
+      descriptionStyle:
+          _this.descriptionStyle?.merge(other.descriptionStyle) ??
           other.descriptionStyle,
       titleTextAlign: other.titleTextAlign,
       descriptionTextAlign: other.descriptionTextAlign,

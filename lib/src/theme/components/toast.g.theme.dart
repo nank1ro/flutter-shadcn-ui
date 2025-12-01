@@ -13,48 +13,55 @@ mixin _$ShadToastTheme {
   bool get canMerge => true;
 
   static ShadToastTheme? lerp(ShadToastTheme? a, ShadToastTheme? b, double t) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadToastTheme(
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      closeIconData: t < 0.5 ? a?.closeIconData : b?.closeIconData,
-      alignment: Alignment.lerp(a?.alignment, b?.alignment, t),
-      offset: Offset.lerp(a?.offset, b?.offset, t),
-      duration: lerpDuration$(a?.duration, b?.duration, t),
-      animateIn: t < 0.5 ? a?.animateIn : b?.animateIn,
-      animateOut: t < 0.5 ? a?.animateOut : b?.animateOut,
-      textDirection: t < 0.5 ? a?.textDirection : b?.textDirection,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      closeIconData: t < 0.5 ? a.closeIconData : b.closeIconData,
+      alignment: Alignment.lerp(a.alignment, b.alignment, t),
+      offset: Offset.lerp(a.offset, b.offset, t),
+      duration: lerpDuration$(a.duration, b.duration, t),
+      animateIn: t < 0.5 ? a.animateIn : b.animateIn,
+      animateOut: t < 0.5 ? a.animateOut : b.animateOut,
+      textDirection: t < 0.5 ? a.textDirection : b.textDirection,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       showCloseIconOnlyWhenHovered: t < 0.5
-          ? a?.showCloseIconOnlyWhenHovered
-          : b?.showCloseIconOnlyWhenHovered,
-      titleStyle: TextStyle.lerp(a?.titleStyle, b?.titleStyle, t),
+          ? a.showCloseIconOnlyWhenHovered
+          : b.showCloseIconOnlyWhenHovered,
+      titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
       descriptionStyle: TextStyle.lerp(
-        a?.descriptionStyle,
-        b?.descriptionStyle,
+        a.descriptionStyle,
+        b.descriptionStyle,
         t,
       ),
       actionPadding: EdgeInsetsGeometry.lerp(
-        a?.actionPadding,
-        b?.actionPadding,
+        a.actionPadding,
+        b.actionPadding,
         t,
       ),
-      border: ShadBorder.lerp(a?.border, b?.border, t),
-      radius: BorderRadius.lerp(a?.radius, b?.radius, t),
-      shadows: t < 0.5 ? a?.shadows : b?.shadows,
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
+      border: ShadBorder.lerp(a.border, b.border, t),
+      radius: BorderRadius.lerp(a.radius, b.radius, t),
+      shadows: t < 0.5 ? a.shadows : b.shadows,
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       closeIconPosition: ShadPosition.lerp(
-        a?.closeIconPosition,
-        b?.closeIconPosition,
+        a.closeIconPosition,
+        b.closeIconPosition,
         t,
       ),
-      constraints: BoxConstraints.lerp(a?.constraints, b?.constraints, t),
-      closeIcon: t < 0.5 ? a?.closeIcon : b?.closeIcon,
-      mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      mainAxisSize: t < 0.5 ? a?.mainAxisSize : b?.mainAxisSize,
+      constraints: BoxConstraints.lerp(a.constraints, b.constraints, t),
+      closeIcon: t < 0.5 ? a.closeIcon : b.closeIcon,
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      mainAxisSize: t < 0.5 ? a.mainAxisSize : b.mainAxisSize,
     );
   }
 
@@ -114,7 +121,7 @@ mixin _$ShadToastTheme {
   ShadToastTheme merge(ShadToastTheme? other) {
     final _this = (this as ShadToastTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -134,7 +141,8 @@ mixin _$ShadToastTheme {
       crossAxisAlignment: other.crossAxisAlignment,
       showCloseIconOnlyWhenHovered: other.showCloseIconOnlyWhenHovered,
       titleStyle: _this.titleStyle?.merge(other.titleStyle) ?? other.titleStyle,
-      descriptionStyle: _this.descriptionStyle?.merge(other.descriptionStyle) ??
+      descriptionStyle:
+          _this.descriptionStyle?.merge(other.descriptionStyle) ??
           other.descriptionStyle,
       actionPadding: other.actionPadding,
       border: _this.border?.merge(other.border) ?? other.border,

@@ -13,21 +13,29 @@ mixin _$ShadBadgeTheme {
   bool get canMerge => true;
 
   static ShadBadgeTheme? lerp(ShadBadgeTheme? a, ShadBadgeTheme? b, double t) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadBadgeTheme(
-      shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      shape: ShapeBorder.lerp(a.shape, b.shape, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       hoverBackgroundColor: Color.lerp(
-        a?.hoverBackgroundColor,
-        b?.hoverBackgroundColor,
+        a.hoverBackgroundColor,
+        b.hoverBackgroundColor,
         t,
       ),
-      foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      cursor: t < 0.5 ? a?.cursor : b?.cursor,
+      foregroundColor: Color.lerp(a.foregroundColor, b.foregroundColor, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      cursor: t < 0.5 ? a.cursor : b.cursor,
     );
   }
 
@@ -54,7 +62,7 @@ mixin _$ShadBadgeTheme {
   ShadBadgeTheme merge(ShadBadgeTheme? other) {
     final _this = (this as ShadBadgeTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 

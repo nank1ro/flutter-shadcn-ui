@@ -17,57 +17,65 @@ mixin _$ShadButtonTheme {
     ShadButtonTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadButtonTheme(
-      cursor: t < 0.5 ? a?.cursor : b?.cursor,
-      size: t < 0.5 ? a?.size : b?.size,
-      sizesTheme: ShadButtonSizesTheme.lerp(a?.sizesTheme, b?.sizesTheme, t),
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      cursor: t < 0.5 ? a.cursor : b.cursor,
+      size: t < 0.5 ? a.size : b.size,
+      sizesTheme: ShadButtonSizesTheme.lerp(a.sizesTheme, b.sizesTheme, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       hoverBackgroundColor: Color.lerp(
-        a?.hoverBackgroundColor,
-        b?.hoverBackgroundColor,
+        a.hoverBackgroundColor,
+        b.hoverBackgroundColor,
         t,
       ),
-      foregroundColor: Color.lerp(a?.foregroundColor, b?.foregroundColor, t),
+      foregroundColor: Color.lerp(a.foregroundColor, b.foregroundColor, t),
       hoverForegroundColor: Color.lerp(
-        a?.hoverForegroundColor,
-        b?.hoverForegroundColor,
+        a.hoverForegroundColor,
+        b.hoverForegroundColor,
         t,
       ),
       pressedBackgroundColor: Color.lerp(
-        a?.pressedBackgroundColor,
-        b?.pressedBackgroundColor,
+        a.pressedBackgroundColor,
+        b.pressedBackgroundColor,
         t,
       ),
       pressedForegroundColor: Color.lerp(
-        a?.pressedForegroundColor,
-        b?.pressedForegroundColor,
+        a.pressedForegroundColor,
+        b.pressedForegroundColor,
         t,
       ),
-      shadows: t < 0.5 ? a?.shadows : b?.shadows,
-      gradient: Gradient.lerp(a?.gradient, b?.gradient, t),
-      textDecoration: t < 0.5 ? a?.textDecoration : b?.textDecoration,
-      hoverTextDecoration:
-          t < 0.5 ? a?.hoverTextDecoration : b?.hoverTextDecoration,
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      width: lerpDouble$(a?.width, b?.width, t),
-      height: lerpDouble$(a?.height, b?.height, t),
+      shadows: t < 0.5 ? a.shadows : b.shadows,
+      gradient: Gradient.lerp(a.gradient, b.gradient, t),
+      textDecoration: t < 0.5 ? a.textDecoration : b.textDecoration,
+      hoverTextDecoration: t < 0.5
+          ? a.hoverTextDecoration
+          : b.hoverTextDecoration,
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      width: lerpDouble$(a.width, b.width, t),
+      height: lerpDouble$(a.height, b.height, t),
       longPressDuration: lerpDuration$(
-        a?.longPressDuration,
-        b?.longPressDuration,
+        a.longPressDuration,
+        b.longPressDuration,
         t,
       ),
-      hoverStrategies: t < 0.5 ? a?.hoverStrategies : b?.hoverStrategies,
-      mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
-      textDirection: t < 0.5 ? a?.textDirection : b?.textDirection,
-      gap: lerpDouble$(a?.gap, b?.gap, t),
-      expands: t < 0.5 ? a?.expands : b?.expands,
-      textStyle: TextStyle.lerp(a?.textStyle, b?.textStyle, t),
+      hoverStrategies: t < 0.5 ? a.hoverStrategies : b.hoverStrategies,
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      textDirection: t < 0.5 ? a.textDirection : b.textDirection,
+      gap: lerpDouble$(a.gap, b.gap, t),
+      expands: t < 0.5 ? a.expands : b.expands,
+      textStyle: TextStyle.lerp(a.textStyle, b.textStyle, t),
     );
   }
 
@@ -132,7 +140,7 @@ mixin _$ShadButtonTheme {
   ShadButtonTheme merge(ShadButtonTheme? other) {
     final _this = (this as ShadButtonTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -143,7 +151,7 @@ mixin _$ShadButtonTheme {
     return copyWith(
       cursor: other.cursor,
       size: other.size,
-      sizesTheme: other.sizesTheme,
+      sizesTheme: _this.sizesTheme?.merge(other.sizesTheme) ?? other.sizesTheme,
       backgroundColor: other.backgroundColor,
       hoverBackgroundColor: other.hoverBackgroundColor,
       foregroundColor: other.foregroundColor,
@@ -154,7 +162,7 @@ mixin _$ShadButtonTheme {
       gradient: other.gradient,
       textDecoration: other.textDecoration,
       hoverTextDecoration: other.hoverTextDecoration,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       width: other.width,
       height: other.height,
       longPressDuration: other.longPressDuration,

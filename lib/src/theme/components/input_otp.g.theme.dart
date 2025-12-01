@@ -17,21 +17,29 @@ mixin _$ShadInputOTPTheme {
     ShadInputOTPTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadInputOTPTheme(
-      gap: lerpDouble$(a?.gap, b?.gap, t),
-      style: TextStyle.lerp(a?.style, b?.style, t),
-      width: lerpDouble$(a?.width, b?.width, t),
-      height: lerpDouble$(a?.height, b?.height, t),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      firstRadius: BorderRadius.lerp(a?.firstRadius, b?.firstRadius, t),
-      lastRadius: BorderRadius.lerp(a?.lastRadius, b?.lastRadius, t),
-      singleRadius: BorderRadius.lerp(a?.singleRadius, b?.singleRadius, t),
-      middleRadius: BorderRadius.lerp(a?.middleRadius, b?.middleRadius, t),
+      gap: lerpDouble$(a.gap, b.gap, t),
+      style: TextStyle.lerp(a.style, b.style, t),
+      width: lerpDouble$(a.width, b.width, t),
+      height: lerpDouble$(a.height, b.height, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      firstRadius: BorderRadius.lerp(a.firstRadius, b.firstRadius, t),
+      lastRadius: BorderRadius.lerp(a.lastRadius, b.lastRadius, t),
+      singleRadius: BorderRadius.lerp(a.singleRadius, b.singleRadius, t),
+      middleRadius: BorderRadius.lerp(a.middleRadius, b.middleRadius, t),
     );
   }
 
@@ -66,7 +74,7 @@ mixin _$ShadInputOTPTheme {
   ShadInputOTPTheme merge(ShadInputOTPTheme? other) {
     final _this = (this as ShadInputOTPTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -80,7 +88,7 @@ mixin _$ShadInputOTPTheme {
       width: other.width,
       height: other.height,
       padding: other.padding,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       firstRadius: other.firstRadius,
       lastRadius: other.lastRadius,
       singleRadius: other.singleRadius,

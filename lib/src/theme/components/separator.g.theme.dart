@@ -17,24 +17,32 @@ mixin _$ShadSeparatorTheme {
     ShadSeparatorTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadSeparatorTheme(
-      color: Color.lerp(a?.color, b?.color, t),
-      thickness: lerpDouble$(a?.thickness, b?.thickness, t),
+      color: Color.lerp(a.color, b.color, t),
+      thickness: lerpDouble$(a.thickness, b.thickness, t),
       verticalMargin: EdgeInsetsGeometry.lerp(
-        a?.verticalMargin,
-        b?.verticalMargin,
+        a.verticalMargin,
+        b.verticalMargin,
         t,
       ),
       horizontalMargin: EdgeInsetsGeometry.lerp(
-        a?.horizontalMargin,
-        b?.horizontalMargin,
+        a.horizontalMargin,
+        b.horizontalMargin,
         t,
       ),
-      radius: BorderRadiusGeometry.lerp(a?.radius, b?.radius, t),
+      radius: BorderRadiusGeometry.lerp(a.radius, b.radius, t),
     );
   }
 
@@ -59,7 +67,7 @@ mixin _$ShadSeparatorTheme {
   ShadSeparatorTheme merge(ShadSeparatorTheme? other) {
     final _this = (this as ShadSeparatorTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 

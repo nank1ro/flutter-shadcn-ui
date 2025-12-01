@@ -13,69 +13,64 @@ mixin _$ShadDecoration {
   bool get canMerge => true;
 
   static ShadDecoration? lerp(ShadDecoration? a, ShadDecoration? b, double t) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadDecoration(
-      labelStyle: TextStyle.lerp(a?.labelStyle, b?.labelStyle, t),
-      errorLabelStyle: TextStyle.lerp(
-        a?.errorLabelStyle,
-        b?.errorLabelStyle,
-        t,
-      ),
-      border: ShadBorder.lerp(a?.border, b?.border, t),
-      focusedBorder: ShadBorder.lerp(a?.focusedBorder, b?.focusedBorder, t),
-      errorBorder: ShadBorder.lerp(a?.errorBorder, b?.errorBorder, t),
-      secondaryBorder: ShadBorder.lerp(
-        a?.secondaryBorder,
-        b?.secondaryBorder,
-        t,
-      ),
+      labelStyle: TextStyle.lerp(a.labelStyle, b.labelStyle, t),
+      errorLabelStyle: TextStyle.lerp(a.errorLabelStyle, b.errorLabelStyle, t),
+      border: ShadBorder.lerp(a.border, b.border, t),
+      focusedBorder: ShadBorder.lerp(a.focusedBorder, b.focusedBorder, t),
+      errorBorder: ShadBorder.lerp(a.errorBorder, b.errorBorder, t),
+      secondaryBorder: ShadBorder.lerp(a.secondaryBorder, b.secondaryBorder, t),
       secondaryFocusedBorder: ShadBorder.lerp(
-        a?.secondaryFocusedBorder,
-        b?.secondaryFocusedBorder,
+        a.secondaryFocusedBorder,
+        b.secondaryFocusedBorder,
         t,
       ),
       secondaryErrorBorder: ShadBorder.lerp(
-        a?.secondaryErrorBorder,
-        b?.secondaryErrorBorder,
+        a.secondaryErrorBorder,
+        b.secondaryErrorBorder,
         t,
       ),
-      errorStyle: TextStyle.lerp(a?.errorStyle, b?.errorStyle, t),
+      errorStyle: TextStyle.lerp(a.errorStyle, b.errorStyle, t),
       descriptionStyle: TextStyle.lerp(
-        a?.descriptionStyle,
-        b?.descriptionStyle,
+        a.descriptionStyle,
+        b.descriptionStyle,
         t,
       ),
-      labelPadding: EdgeInsetsGeometry.lerp(
-        a?.labelPadding,
-        b?.labelPadding,
-        t,
-      ),
+      labelPadding: EdgeInsetsGeometry.lerp(a.labelPadding, b.labelPadding, t),
       descriptionPadding: EdgeInsetsGeometry.lerp(
-        a?.descriptionPadding,
-        b?.descriptionPadding,
+        a.descriptionPadding,
+        b.descriptionPadding,
         t,
       ),
-      errorPadding: EdgeInsetsGeometry.lerp(
-        a?.errorPadding,
-        b?.errorPadding,
-        t,
-      ),
-      color: Color.lerp(a?.color, b?.color, t),
-      image: DecorationImage.lerp(a?.image, b?.image, t),
-      shadows: t < 0.5 ? a?.shadows : b?.shadows,
-      gradient: Gradient.lerp(a?.gradient, b?.gradient, t),
-      backgroundBlendMode:
-          t < 0.5 ? a?.backgroundBlendMode : b?.backgroundBlendMode,
-      shape: t < 0.5 ? a?.shape : b?.shape,
-      hasError: t < 0.5 ? a?.hasError : b?.hasError,
-      disableSecondaryBorder:
-          t < 0.5 ? a?.disableSecondaryBorder : b?.disableSecondaryBorder,
-      fallbackToBorder: t < 0.5 ? a?.fallbackToBorder : b?.fallbackToBorder,
-      fallbackToLabelStyle:
-          t < 0.5 ? a?.fallbackToLabelStyle : b?.fallbackToLabelStyle,
+      errorPadding: EdgeInsetsGeometry.lerp(a.errorPadding, b.errorPadding, t),
+      color: Color.lerp(a.color, b.color, t),
+      image: DecorationImage.lerp(a.image, b.image, t),
+      shadows: t < 0.5 ? a.shadows : b.shadows,
+      gradient: Gradient.lerp(a.gradient, b.gradient, t),
+      backgroundBlendMode: t < 0.5
+          ? a.backgroundBlendMode
+          : b.backgroundBlendMode,
+      shape: t < 0.5 ? a.shape : b.shape,
+      hasError: t < 0.5 ? a.hasError : b.hasError,
+      disableSecondaryBorder: t < 0.5
+          ? a.disableSecondaryBorder
+          : b.disableSecondaryBorder,
+      fallbackToBorder: t < 0.5 ? a.fallbackToBorder : b.fallbackToBorder,
+      fallbackToLabelStyle: t < 0.5
+          ? a.fallbackToLabelStyle
+          : b.fallbackToLabelStyle,
     );
   }
 
@@ -138,7 +133,7 @@ mixin _$ShadDecoration {
   ShadDecoration merge(ShadDecoration? other) {
     final _this = (this as ShadDecoration);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -148,23 +143,27 @@ mixin _$ShadDecoration {
 
     return copyWith(
       labelStyle: _this.labelStyle?.merge(other.labelStyle) ?? other.labelStyle,
-      errorLabelStyle: _this.errorLabelStyle?.merge(other.errorLabelStyle) ??
+      errorLabelStyle:
+          _this.errorLabelStyle?.merge(other.errorLabelStyle) ??
           other.errorLabelStyle,
       border: _this.border?.merge(other.border) ?? other.border,
-      focusedBorder: _this.focusedBorder?.merge(other.focusedBorder) ??
+      focusedBorder:
+          _this.focusedBorder?.merge(other.focusedBorder) ??
           other.focusedBorder,
       errorBorder:
           _this.errorBorder?.merge(other.errorBorder) ?? other.errorBorder,
-      secondaryBorder: _this.secondaryBorder?.merge(other.secondaryBorder) ??
+      secondaryBorder:
+          _this.secondaryBorder?.merge(other.secondaryBorder) ??
           other.secondaryBorder,
       secondaryFocusedBorder:
           _this.secondaryFocusedBorder?.merge(other.secondaryFocusedBorder) ??
-              other.secondaryFocusedBorder,
+          other.secondaryFocusedBorder,
       secondaryErrorBorder:
           _this.secondaryErrorBorder?.merge(other.secondaryErrorBorder) ??
-              other.secondaryErrorBorder,
+          other.secondaryErrorBorder,
       errorStyle: _this.errorStyle?.merge(other.errorStyle) ?? other.errorStyle,
-      descriptionStyle: _this.descriptionStyle?.merge(other.descriptionStyle) ??
+      descriptionStyle:
+          _this.descriptionStyle?.merge(other.descriptionStyle) ??
           other.descriptionStyle,
       labelPadding: other.labelPadding,
       descriptionPadding: other.descriptionPadding,

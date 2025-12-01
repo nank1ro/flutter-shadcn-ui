@@ -17,18 +17,25 @@ mixin _$ShadDefaultKeyboardToolbarTheme {
     ShadDefaultKeyboardToolbarTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadDefaultKeyboardToolbarTheme(
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      doneText: t < 0.5 ? a?.doneText : b?.doneText,
-      showPreviousButton:
-          t < 0.5 ? a?.showPreviousButton : b?.showPreviousButton,
-      showNextButton: t < 0.5 ? a?.showNextButton : b?.showNextButton,
-      showDoneButton: t < 0.5 ? a?.showDoneButton : b?.showDoneButton,
-      hideThreshold: lerpDouble$(a?.hideThreshold, b?.hideThreshold, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      doneText: t < 0.5 ? a.doneText : b.doneText,
+      showPreviousButton: t < 0.5 ? a.showPreviousButton : b.showPreviousButton,
+      showNextButton: t < 0.5 ? a.showNextButton : b.showNextButton,
+      showDoneButton: t < 0.5 ? a.showDoneButton : b.showDoneButton,
+      hideThreshold: lerpDouble$(a.hideThreshold, b.hideThreshold, t),
     );
   }
 
@@ -57,7 +64,7 @@ mixin _$ShadDefaultKeyboardToolbarTheme {
   ) {
     final _this = (this as ShadDefaultKeyboardToolbarTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 

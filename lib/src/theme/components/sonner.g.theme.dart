@@ -17,24 +17,33 @@ mixin _$ShadSonnerTheme {
     ShadSonnerTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadSonnerTheme(
-      visibleToastsAmount:
-          t < 0.5 ? a?.visibleToastsAmount : b?.visibleToastsAmount,
-      alignment: AlignmentGeometry.lerp(a?.alignment, b?.alignment, t),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      expandedGap: lerpDouble$(a?.expandedGap, b?.expandedGap, t),
-      collapsedGap: lerpDouble$(a?.collapsedGap, b?.collapsedGap, t),
-      scaleFactor: lerpDouble$(a?.scaleFactor, b?.scaleFactor, t),
+      visibleToastsAmount: t < 0.5
+          ? a.visibleToastsAmount
+          : b.visibleToastsAmount,
+      alignment: AlignmentGeometry.lerp(a.alignment, b.alignment, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      expandedGap: lerpDouble$(a.expandedGap, b.expandedGap, t),
+      collapsedGap: lerpDouble$(a.collapsedGap, b.collapsedGap, t),
+      scaleFactor: lerpDouble$(a.scaleFactor, b.scaleFactor, t),
       animationDuration: lerpDuration$(
-        a?.animationDuration,
-        b?.animationDuration,
+        a.animationDuration,
+        b.animationDuration,
         t,
       ),
-      animationCurve: t < 0.5 ? a?.animationCurve : b?.animationCurve,
+      animationCurve: t < 0.5 ? a.animationCurve : b.animationCurve,
     );
   }
 
@@ -65,7 +74,7 @@ mixin _$ShadSonnerTheme {
   ShadSonnerTheme merge(ShadSonnerTheme? other) {
     final _this = (this as ShadSonnerTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 

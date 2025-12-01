@@ -17,46 +17,55 @@ mixin _$ShadSliderTheme {
     ShadSliderTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadSliderTheme(
-      min: lerpDouble$(a?.min, b?.min, t),
-      max: lerpDouble$(a?.max, b?.max, t),
-      mouseCursor: t < 0.5 ? a?.mouseCursor : b?.mouseCursor,
-      disabledMouseCursor:
-          t < 0.5 ? a?.disabledMouseCursor : b?.disabledMouseCursor,
-      thumbColor: Color.lerp(a?.thumbColor, b?.thumbColor, t),
+      min: lerpDouble$(a.min, b.min, t),
+      max: lerpDouble$(a.max, b.max, t),
+      mouseCursor: t < 0.5 ? a.mouseCursor : b.mouseCursor,
+      disabledMouseCursor: t < 0.5
+          ? a.disabledMouseCursor
+          : b.disabledMouseCursor,
+      thumbColor: Color.lerp(a.thumbColor, b.thumbColor, t),
       disabledThumbColor: Color.lerp(
-        a?.disabledThumbColor,
-        b?.disabledThumbColor,
+        a.disabledThumbColor,
+        b.disabledThumbColor,
         t,
       ),
-      thumbBorderColor: Color.lerp(a?.thumbBorderColor, b?.thumbBorderColor, t),
+      thumbBorderColor: Color.lerp(a.thumbBorderColor, b.thumbBorderColor, t),
       disabledThumbBorderColor: Color.lerp(
-        a?.disabledThumbBorderColor,
-        b?.disabledThumbBorderColor,
+        a.disabledThumbBorderColor,
+        b.disabledThumbBorderColor,
         t,
       ),
-      activeTrackColor: Color.lerp(a?.activeTrackColor, b?.activeTrackColor, t),
+      activeTrackColor: Color.lerp(a.activeTrackColor, b.activeTrackColor, t),
       inactiveTrackColor: Color.lerp(
-        a?.inactiveTrackColor,
-        b?.inactiveTrackColor,
+        a.inactiveTrackColor,
+        b.inactiveTrackColor,
         t,
       ),
       disabledActiveTrackColor: Color.lerp(
-        a?.disabledActiveTrackColor,
-        b?.disabledActiveTrackColor,
+        a.disabledActiveTrackColor,
+        b.disabledActiveTrackColor,
         t,
       ),
       disabledInactiveTrackColor: Color.lerp(
-        a?.disabledInactiveTrackColor,
-        b?.disabledInactiveTrackColor,
+        a.disabledInactiveTrackColor,
+        b.disabledInactiveTrackColor,
         t,
       ),
-      trackHeight: lerpDouble$(a?.trackHeight, b?.trackHeight, t),
-      thumbRadius: lerpDouble$(a?.thumbRadius, b?.thumbRadius, t),
+      trackHeight: lerpDouble$(a.trackHeight, b.trackHeight, t),
+      thumbRadius: lerpDouble$(a.thumbRadius, b.thumbRadius, t),
     );
   }
 
@@ -102,7 +111,7 @@ mixin _$ShadSliderTheme {
   ShadSliderTheme merge(ShadSliderTheme? other) {
     final _this = (this as ShadSliderTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 

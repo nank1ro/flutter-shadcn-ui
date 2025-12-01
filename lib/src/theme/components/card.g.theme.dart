@@ -13,30 +13,41 @@ mixin _$ShadCardTheme {
   bool get canMerge => true;
 
   static ShadCardTheme? lerp(ShadCardTheme? a, ShadCardTheme? b, double t) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadCardTheme(
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      radius: BorderRadius.lerp(a?.radius, b?.radius, t),
-      border: ShadBorder.lerp(a?.border, b?.border, t),
-      shadows: t < 0.5 ? a?.shadows : b?.shadows,
-      width: lerpDouble$(a?.width, b?.width, t),
-      height: lerpDouble$(a?.height, b?.height, t),
-      rowMainAxisAlignment:
-          t < 0.5 ? a?.rowMainAxisAlignment : b?.rowMainAxisAlignment,
-      rowCrossAxisAlignment:
-          t < 0.5 ? a?.rowCrossAxisAlignment : b?.rowCrossAxisAlignment,
-      columnMainAxisAlignment:
-          t < 0.5 ? a?.columnMainAxisAlignment : b?.columnMainAxisAlignment,
-      columnCrossAxisAlignment:
-          t < 0.5 ? a?.columnCrossAxisAlignment : b?.columnCrossAxisAlignment,
-      rowMainAxisSize: t < 0.5 ? a?.rowMainAxisSize : b?.rowMainAxisSize,
-      columnMainAxisSize:
-          t < 0.5 ? a?.columnMainAxisSize : b?.columnMainAxisSize,
-      clipBehavior: t < 0.5 ? a?.clipBehavior : b?.clipBehavior,
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      radius: BorderRadius.lerp(a.radius, b.radius, t),
+      border: ShadBorder.lerp(a.border, b.border, t),
+      shadows: t < 0.5 ? a.shadows : b.shadows,
+      width: lerpDouble$(a.width, b.width, t),
+      height: lerpDouble$(a.height, b.height, t),
+      rowMainAxisAlignment: t < 0.5
+          ? a.rowMainAxisAlignment
+          : b.rowMainAxisAlignment,
+      rowCrossAxisAlignment: t < 0.5
+          ? a.rowCrossAxisAlignment
+          : b.rowCrossAxisAlignment,
+      columnMainAxisAlignment: t < 0.5
+          ? a.columnMainAxisAlignment
+          : b.columnMainAxisAlignment,
+      columnCrossAxisAlignment: t < 0.5
+          ? a.columnCrossAxisAlignment
+          : b.columnCrossAxisAlignment,
+      rowMainAxisSize: t < 0.5 ? a.rowMainAxisSize : b.rowMainAxisSize,
+      columnMainAxisSize: t < 0.5 ? a.columnMainAxisSize : b.columnMainAxisSize,
+      clipBehavior: t < 0.5 ? a.clipBehavior : b.clipBehavior,
     );
   }
 
@@ -82,7 +93,7 @@ mixin _$ShadCardTheme {
   ShadCardTheme merge(ShadCardTheme? other) {
     final _this = (this as ShadCardTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 

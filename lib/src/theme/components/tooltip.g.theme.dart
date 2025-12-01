@@ -17,25 +17,33 @@ mixin _$ShadTooltipTheme {
     ShadTooltipTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadTooltipTheme(
-      waitDuration: lerpDuration$(a?.waitDuration, b?.waitDuration, t),
-      showDuration: lerpDuration$(a?.showDuration, b?.showDuration, t),
-      effects: t < 0.5 ? a?.effects : b?.effects,
-      anchor: t < 0.5 ? a?.anchor : b?.anchor,
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      hoverStrategies: t < 0.5 ? a?.hoverStrategies : b?.hoverStrategies,
+      waitDuration: lerpDuration$(a.waitDuration, b.waitDuration, t),
+      showDuration: lerpDuration$(a.showDuration, b.showDuration, t),
+      effects: t < 0.5 ? a.effects : b.effects,
+      anchor: t < 0.5 ? a.anchor : b.anchor,
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      hoverStrategies: t < 0.5 ? a.hoverStrategies : b.hoverStrategies,
       longPressDuration: lerpDuration$(
-        a?.longPressDuration,
-        b?.longPressDuration,
+        a.longPressDuration,
+        b.longPressDuration,
         t,
       ),
-      duration: lerpDuration$(a?.duration, b?.duration, t),
-      reverseDuration: lerpDuration$(a?.reverseDuration, b?.reverseDuration, t),
+      duration: lerpDuration$(a.duration, b.duration, t),
+      reverseDuration: lerpDuration$(a.reverseDuration, b.reverseDuration, t),
     );
   }
 
@@ -70,7 +78,7 @@ mixin _$ShadTooltipTheme {
   ShadTooltipTheme merge(ShadTooltipTheme? other) {
     final _this = (this as ShadTooltipTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -84,7 +92,7 @@ mixin _$ShadTooltipTheme {
       effects: other.effects,
       anchor: other.anchor,
       padding: other.padding,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       hoverStrategies: other.hoverStrategies,
       longPressDuration: other.longPressDuration,
       duration: other.duration,

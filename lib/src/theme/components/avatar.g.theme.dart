@@ -17,15 +17,23 @@ mixin _$ShadAvatarTheme {
     ShadAvatarTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadAvatarTheme(
-      size: Size.lerp(a?.size, b?.size, t),
-      shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      fit: t < 0.5 ? a?.fit : b?.fit,
+      size: Size.lerp(a.size, b.size, t),
+      shape: ShapeBorder.lerp(a.shape, b.shape, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      fit: t < 0.5 ? a.fit : b.fit,
     );
   }
 
@@ -48,7 +56,7 @@ mixin _$ShadAvatarTheme {
   ShadAvatarTheme merge(ShadAvatarTheme? other) {
     final _this = (this as ShadAvatarTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 

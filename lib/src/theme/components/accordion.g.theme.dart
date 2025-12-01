@@ -17,21 +17,30 @@ mixin _$ShadAccordionTheme {
     ShadAccordionTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadAccordionTheme(
-      iconData: t < 0.5 ? a?.iconData : b?.iconData,
-      iconEffects: t < 0.5 ? a?.iconEffects : b?.iconEffects,
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      underlineTitleOnHover:
-          t < 0.5 ? a?.underlineTitleOnHover : b?.underlineTitleOnHover,
-      titleStyle: TextStyle.lerp(a?.titleStyle, b?.titleStyle, t),
-      curve: t < 0.5 ? a?.curve : b?.curve,
-      duration: lerpDuration$(a?.duration, b?.duration, t),
-      maintainState: t < 0.5 ? a?.maintainState : b?.maintainState,
-      effects: t < 0.5 ? a?.effects : b?.effects,
+      iconData: t < 0.5 ? a.iconData : b.iconData,
+      iconEffects: t < 0.5 ? a.iconEffects : b.iconEffects,
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      underlineTitleOnHover: t < 0.5
+          ? a.underlineTitleOnHover
+          : b.underlineTitleOnHover,
+      titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
+      curve: t < 0.5 ? a.curve : b.curve,
+      duration: lerpDuration$(a.duration, b.duration, t),
+      maintainState: t < 0.5 ? a.maintainState : b.maintainState,
+      effects: t < 0.5 ? a.effects : b.effects,
     );
   }
 
@@ -65,7 +74,7 @@ mixin _$ShadAccordionTheme {
   ShadAccordionTheme merge(ShadAccordionTheme? other) {
     final _this = (this as ShadAccordionTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 

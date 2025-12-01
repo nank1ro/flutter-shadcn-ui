@@ -17,70 +17,74 @@ mixin _$ShadContextMenuTheme {
     ShadContextMenuTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadContextMenuTheme(
       popoverReverseDuration: lerpDuration$(
-        a?.popoverReverseDuration,
-        b?.popoverReverseDuration,
+        a.popoverReverseDuration,
+        b.popoverReverseDuration,
         t,
       ),
-      constraints: BoxConstraints.lerp(a?.constraints, b?.constraints, t),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
+      constraints: BoxConstraints.lerp(a.constraints, b.constraints, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       leadingPadding: EdgeInsetsGeometry.lerp(
-        a?.leadingPadding,
-        b?.leadingPadding,
+        a.leadingPadding,
+        b.leadingPadding,
         t,
       ),
       trailingPadding: EdgeInsetsGeometry.lerp(
-        a?.trailingPadding,
-        b?.trailingPadding,
+        a.trailingPadding,
+        b.trailingPadding,
         t,
       ),
-      itemPadding: EdgeInsetsGeometry.lerp(a?.itemPadding, b?.itemPadding, t),
-      insetPadding: EdgeInsetsGeometry.lerp(
-        a?.insetPadding,
-        b?.insetPadding,
-        t,
-      ),
-      anchor: t < 0.5 ? a?.anchor : b?.anchor,
-      showDelay: lerpDuration$(a?.showDelay, b?.showDelay, t),
-      height: lerpDouble$(a?.height, b?.height, t),
-      buttonVariant: t < 0.5 ? a?.buttonVariant : b?.buttonVariant,
+      itemPadding: EdgeInsetsGeometry.lerp(a.itemPadding, b.itemPadding, t),
+      insetPadding: EdgeInsetsGeometry.lerp(a.insetPadding, b.insetPadding, t),
+      anchor: t < 0.5 ? a.anchor : b.anchor,
+      showDelay: lerpDuration$(a.showDelay, b.showDelay, t),
+      height: lerpDouble$(a.height, b.height, t),
+      buttonVariant: t < 0.5 ? a.buttonVariant : b.buttonVariant,
       itemDecoration: ShadDecoration.lerp(
-        a?.itemDecoration,
-        b?.itemDecoration,
+        a.itemDecoration,
+        b.itemDecoration,
         t,
       ),
-      textStyle: TextStyle.lerp(a?.textStyle, b?.textStyle, t),
+      textStyle: TextStyle.lerp(a.textStyle, b.textStyle, t),
       trailingTextStyle: TextStyle.lerp(
-        a?.trailingTextStyle,
-        b?.trailingTextStyle,
+        a.trailingTextStyle,
+        b.trailingTextStyle,
         t,
       ),
       itemConstraints: BoxConstraints.lerp(
-        a?.itemConstraints,
-        b?.itemConstraints,
+        a.itemConstraints,
+        b.itemConstraints,
         t,
       ),
       subMenuPadding: EdgeInsetsGeometry.lerp(
-        a?.subMenuPadding,
-        b?.subMenuPadding,
+        a.subMenuPadding,
+        b.subMenuPadding,
         t,
       ),
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       selectedBackgroundColor: Color.lerp(
-        a?.selectedBackgroundColor,
-        b?.selectedBackgroundColor,
+        a.selectedBackgroundColor,
+        b.selectedBackgroundColor,
         t,
       ),
-      closeOnTap: t < 0.5 ? a?.closeOnTap : b?.closeOnTap,
-      effects: t < 0.5 ? a?.effects : b?.effects,
-      shadows: t < 0.5 ? a?.shadows : b?.shadows,
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      filter: t < 0.5 ? a?.filter : b?.filter,
+      closeOnTap: t < 0.5 ? a.closeOnTap : b.closeOnTap,
+      effects: t < 0.5 ? a.effects : b.effects,
+      shadows: t < 0.5 ? a.shadows : b.shadows,
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      filter: t < 0.5 ? a.filter : b.filter,
     );
   }
 
@@ -143,7 +147,7 @@ mixin _$ShadContextMenuTheme {
   ShadContextMenuTheme merge(ShadContextMenuTheme? other) {
     final _this = (this as ShadContextMenuTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -163,11 +167,13 @@ mixin _$ShadContextMenuTheme {
       showDelay: other.showDelay,
       height: other.height,
       buttonVariant: other.buttonVariant,
-      itemDecoration: other.itemDecoration,
+      itemDecoration:
+          _this.itemDecoration?.merge(other.itemDecoration) ??
+          other.itemDecoration,
       textStyle: _this.textStyle?.merge(other.textStyle) ?? other.textStyle,
       trailingTextStyle:
           _this.trailingTextStyle?.merge(other.trailingTextStyle) ??
-              other.trailingTextStyle,
+          other.trailingTextStyle,
       itemConstraints: other.itemConstraints,
       subMenuPadding: other.subMenuPadding,
       backgroundColor: other.backgroundColor,
@@ -175,7 +181,7 @@ mixin _$ShadContextMenuTheme {
       closeOnTap: other.closeOnTap,
       effects: other.effects,
       shadows: other.shadows,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       filter: other.filter,
     );
   }

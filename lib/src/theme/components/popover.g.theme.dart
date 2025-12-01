@@ -17,18 +17,26 @@ mixin _$ShadPopoverTheme {
     ShadPopoverTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadPopoverTheme(
-      effects: t < 0.5 ? a?.effects : b?.effects,
-      shadows: t < 0.5 ? a?.shadows : b?.shadows,
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      anchor: t < 0.5 ? a?.anchor : b?.anchor,
-      filter: t < 0.5 ? a?.filter : b?.filter,
-      reverseDuration: lerpDuration$(a?.reverseDuration, b?.reverseDuration, t),
+      effects: t < 0.5 ? a.effects : b.effects,
+      shadows: t < 0.5 ? a.shadows : b.shadows,
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      anchor: t < 0.5 ? a.anchor : b.anchor,
+      filter: t < 0.5 ? a.filter : b.filter,
+      reverseDuration: lerpDuration$(a.reverseDuration, b.reverseDuration, t),
     );
   }
 
@@ -57,7 +65,7 @@ mixin _$ShadPopoverTheme {
   ShadPopoverTheme merge(ShadPopoverTheme? other) {
     final _this = (this as ShadPopoverTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -69,7 +77,7 @@ mixin _$ShadPopoverTheme {
       effects: other.effects,
       shadows: other.shadows,
       padding: other.padding,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       anchor: other.anchor,
       filter: other.filter,
       reverseDuration: other.reverseDuration,

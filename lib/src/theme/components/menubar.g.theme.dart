@@ -17,98 +17,112 @@ mixin _$ShadMenubarTheme {
     ShadMenubarTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadMenubarTheme(
-      radius: BorderRadiusGeometry.lerp(a?.radius, b?.radius, t),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      border: ShadBorder.lerp(a?.border, b?.border, t),
-      constraints: BoxConstraints.lerp(a?.constraints, b?.constraints, t),
+      radius: BorderRadiusGeometry.lerp(a.radius, b.radius, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      border: ShadBorder.lerp(a.border, b.border, t),
+      constraints: BoxConstraints.lerp(a.constraints, b.constraints, t),
       contextMenuPadding: EdgeInsetsGeometry.lerp(
-        a?.contextMenuPadding,
-        b?.contextMenuPadding,
+        a.contextMenuPadding,
+        b.contextMenuPadding,
         t,
       ),
-      effects: t < 0.5 ? a?.effects : b?.effects,
-      shadows: t < 0.5 ? a?.shadows : b?.shadows,
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      filter: t < 0.5 ? a?.filter : b?.filter,
-      anchor: t < 0.5 ? a?.anchor : b?.anchor,
-      buttonVariant: t < 0.5 ? a?.buttonVariant : b?.buttonVariant,
-      buttonSize: t < 0.5 ? a?.buttonSize : b?.buttonSize,
-      buttonCursor: t < 0.5 ? a?.buttonCursor : b?.buttonCursor,
-      buttonWidth: lerpDouble$(a?.buttonWidth, b?.buttonWidth, t),
-      buttonHeight: lerpDouble$(a?.buttonHeight, b?.buttonHeight, t),
+      effects: t < 0.5 ? a.effects : b.effects,
+      shadows: t < 0.5 ? a.shadows : b.shadows,
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      filter: t < 0.5 ? a.filter : b.filter,
+      anchor: t < 0.5 ? a.anchor : b.anchor,
+      buttonVariant: t < 0.5 ? a.buttonVariant : b.buttonVariant,
+      buttonSize: t < 0.5 ? a.buttonSize : b.buttonSize,
+      buttonCursor: t < 0.5 ? a.buttonCursor : b.buttonCursor,
+      buttonWidth: lerpDouble$(a.buttonWidth, b.buttonWidth, t),
+      buttonHeight: lerpDouble$(a.buttonHeight, b.buttonHeight, t),
       buttonPadding: EdgeInsetsGeometry.lerp(
-        a?.buttonPadding,
-        b?.buttonPadding,
+        a.buttonPadding,
+        b.buttonPadding,
         t,
       ),
       buttonBackgroundColor: Color.lerp(
-        a?.buttonBackgroundColor,
-        b?.buttonBackgroundColor,
+        a.buttonBackgroundColor,
+        b.buttonBackgroundColor,
         t,
       ),
       buttonSelectedBackgroundColor: Color.lerp(
-        a?.buttonSelectedBackgroundColor,
-        b?.buttonSelectedBackgroundColor,
+        a.buttonSelectedBackgroundColor,
+        b.buttonSelectedBackgroundColor,
         t,
       ),
       buttonHoverBackgroundColor: Color.lerp(
-        a?.buttonHoverBackgroundColor,
-        b?.buttonHoverBackgroundColor,
+        a.buttonHoverBackgroundColor,
+        b.buttonHoverBackgroundColor,
         t,
       ),
       buttonForegroundColor: Color.lerp(
-        a?.buttonForegroundColor,
-        b?.buttonForegroundColor,
+        a.buttonForegroundColor,
+        b.buttonForegroundColor,
         t,
       ),
       buttonHoverForegroundColor: Color.lerp(
-        a?.buttonHoverForegroundColor,
-        b?.buttonHoverForegroundColor,
+        a.buttonHoverForegroundColor,
+        b.buttonHoverForegroundColor,
         t,
       ),
       buttonPressedBackgroundColor: Color.lerp(
-        a?.buttonPressedBackgroundColor,
-        b?.buttonPressedBackgroundColor,
+        a.buttonPressedBackgroundColor,
+        b.buttonPressedBackgroundColor,
         t,
       ),
       buttonPressedForegroundColor: Color.lerp(
-        a?.buttonPressedForegroundColor,
-        b?.buttonPressedForegroundColor,
+        a.buttonPressedForegroundColor,
+        b.buttonPressedForegroundColor,
         t,
       ),
-      buttonShadows: t < 0.5 ? a?.buttonShadows : b?.buttonShadows,
-      buttonGradient: Gradient.lerp(a?.buttonGradient, b?.buttonGradient, t),
-      buttonTextDecoration:
-          t < 0.5 ? a?.buttonTextDecoration : b?.buttonTextDecoration,
-      buttonHoverTextDecoration:
-          t < 0.5 ? a?.buttonHoverTextDecoration : b?.buttonHoverTextDecoration,
+      buttonShadows: t < 0.5 ? a.buttonShadows : b.buttonShadows,
+      buttonGradient: Gradient.lerp(a.buttonGradient, b.buttonGradient, t),
+      buttonTextDecoration: t < 0.5
+          ? a.buttonTextDecoration
+          : b.buttonTextDecoration,
+      buttonHoverTextDecoration: t < 0.5
+          ? a.buttonHoverTextDecoration
+          : b.buttonHoverTextDecoration,
       buttonDecoration: ShadDecoration.lerp(
-        a?.buttonDecoration,
-        b?.buttonDecoration,
+        a.buttonDecoration,
+        b.buttonDecoration,
         t,
       ),
-      buttonGap: lerpDouble$(a?.buttonGap, b?.buttonGap, t),
-      buttonMainAxisAlignment:
-          t < 0.5 ? a?.buttonMainAxisAlignment : b?.buttonMainAxisAlignment,
-      buttonCrossAxisAlignment:
-          t < 0.5 ? a?.buttonCrossAxisAlignment : b?.buttonCrossAxisAlignment,
-      buttonHoverStrategies:
-          t < 0.5 ? a?.buttonHoverStrategies : b?.buttonHoverStrategies,
+      buttonGap: lerpDouble$(a.buttonGap, b.buttonGap, t),
+      buttonMainAxisAlignment: t < 0.5
+          ? a.buttonMainAxisAlignment
+          : b.buttonMainAxisAlignment,
+      buttonCrossAxisAlignment: t < 0.5
+          ? a.buttonCrossAxisAlignment
+          : b.buttonCrossAxisAlignment,
+      buttonHoverStrategies: t < 0.5
+          ? a.buttonHoverStrategies
+          : b.buttonHoverStrategies,
       buttonLongPressDuration: lerpDuration$(
-        a?.buttonLongPressDuration,
-        b?.buttonLongPressDuration,
+        a.buttonLongPressDuration,
+        b.buttonLongPressDuration,
         t,
       ),
-      buttonTextDirection:
-          t < 0.5 ? a?.buttonTextDirection : b?.buttonTextDirection,
-      buttonExpands: t < 0.5 ? a?.buttonExpands : b?.buttonExpands,
-      selectOnHover: t < 0.5 ? a?.selectOnHover : b?.selectOnHover,
+      buttonTextDirection: t < 0.5
+          ? a.buttonTextDirection
+          : b.buttonTextDirection,
+      buttonExpands: t < 0.5 ? a.buttonExpands : b.buttonExpands,
+      selectOnHover: t < 0.5 ? a.selectOnHover : b.selectOnHover,
     );
   }
 
@@ -209,7 +223,7 @@ mixin _$ShadMenubarTheme {
   ShadMenubarTheme merge(ShadMenubarTheme? other) {
     final _this = (this as ShadMenubarTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -226,7 +240,7 @@ mixin _$ShadMenubarTheme {
       contextMenuPadding: other.contextMenuPadding,
       effects: other.effects,
       shadows: other.shadows,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       filter: other.filter,
       anchor: other.anchor,
       buttonVariant: other.buttonVariant,
@@ -246,7 +260,9 @@ mixin _$ShadMenubarTheme {
       buttonGradient: other.buttonGradient,
       buttonTextDecoration: other.buttonTextDecoration,
       buttonHoverTextDecoration: other.buttonHoverTextDecoration,
-      buttonDecoration: other.buttonDecoration,
+      buttonDecoration:
+          _this.buttonDecoration?.merge(other.buttonDecoration) ??
+          other.buttonDecoration,
       buttonGap: other.buttonGap,
       buttonMainAxisAlignment: other.buttonMainAxisAlignment,
       buttonCrossAxisAlignment: other.buttonCrossAxisAlignment,

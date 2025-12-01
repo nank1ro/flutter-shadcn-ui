@@ -17,46 +17,55 @@ mixin _$ShadSelectTheme {
     ShadSelectTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadSelectTheme(
       popoverReverseDuration: lerpDuration$(
-        a?.popoverReverseDuration,
-        b?.popoverReverseDuration,
+        a.popoverReverseDuration,
+        b.popoverReverseDuration,
         t,
       ),
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       placeholderStyle: TextStyle.lerp(
-        a?.placeholderStyle,
-        b?.placeholderStyle,
+        a.placeholderStyle,
+        b.placeholderStyle,
         t,
       ),
-      minWidth: lerpDouble$(a?.minWidth, b?.minWidth, t),
-      maxWidth: lerpDouble$(a?.maxWidth, b?.maxWidth, t),
-      maxHeight: lerpDouble$(a?.maxHeight, b?.maxHeight, t),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
+      minWidth: lerpDouble$(a.minWidth, b.minWidth, t),
+      maxWidth: lerpDouble$(a.maxWidth, b.maxWidth, t),
+      maxHeight: lerpDouble$(a.maxHeight, b.maxHeight, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       optionsPadding: EdgeInsetsGeometry.lerp(
-        a?.optionsPadding,
-        b?.optionsPadding,
+        a.optionsPadding,
+        b.optionsPadding,
         t,
       ),
-      showScrollToTopChevron:
-          t < 0.5 ? a?.showScrollToTopChevron : b?.showScrollToTopChevron,
-      showScrollToBottomChevron:
-          t < 0.5 ? a?.showScrollToBottomChevron : b?.showScrollToBottomChevron,
-      anchor: t < 0.5 ? a?.anchor : b?.anchor,
+      showScrollToTopChevron: t < 0.5
+          ? a.showScrollToTopChevron
+          : b.showScrollToTopChevron,
+      showScrollToBottomChevron: t < 0.5
+          ? a.showScrollToBottomChevron
+          : b.showScrollToBottomChevron,
+      anchor: t < 0.5 ? a.anchor : b.anchor,
       searchPadding: EdgeInsetsGeometry.lerp(
-        a?.searchPadding,
-        b?.searchPadding,
+        a.searchPadding,
+        b.searchPadding,
         t,
       ),
-      clearSearchOnClose:
-          t < 0.5 ? a?.clearSearchOnClose : b?.clearSearchOnClose,
-      filter: t < 0.5 ? a?.filter : b?.filter,
-      effects: t < 0.5 ? a?.effects : b?.effects,
-      shadows: t < 0.5 ? a?.shadows : b?.shadows,
+      clearSearchOnClose: t < 0.5 ? a.clearSearchOnClose : b.clearSearchOnClose,
+      filter: t < 0.5 ? a.filter : b.filter,
+      effects: t < 0.5 ? a.effects : b.effects,
+      shadows: t < 0.5 ? a.shadows : b.shadows,
     );
   }
 
@@ -106,7 +115,7 @@ mixin _$ShadSelectTheme {
   ShadSelectTheme merge(ShadSelectTheme? other) {
     final _this = (this as ShadSelectTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -116,8 +125,9 @@ mixin _$ShadSelectTheme {
 
     return copyWith(
       popoverReverseDuration: other.popoverReverseDuration,
-      decoration: other.decoration,
-      placeholderStyle: _this.placeholderStyle?.merge(other.placeholderStyle) ??
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
+      placeholderStyle:
+          _this.placeholderStyle?.merge(other.placeholderStyle) ??
           other.placeholderStyle,
       minWidth: other.minWidth,
       maxWidth: other.maxWidth,

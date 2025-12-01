@@ -13,24 +13,31 @@ mixin _$ShadAlertTheme {
   bool get canMerge => true;
 
   static ShadAlertTheme? lerp(ShadAlertTheme? a, ShadAlertTheme? b, double t) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadAlertTheme(
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      iconPadding: EdgeInsetsGeometry.lerp(a?.iconPadding, b?.iconPadding, t),
-      iconColor: Color.lerp(a?.iconColor, b?.iconColor, t),
-      titleStyle: TextStyle.lerp(a?.titleStyle, b?.titleStyle, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      iconPadding: EdgeInsetsGeometry.lerp(a.iconPadding, b.iconPadding, t),
+      iconColor: Color.lerp(a.iconColor, b.iconColor, t),
+      titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
       descriptionStyle: TextStyle.lerp(
-        a?.descriptionStyle,
-        b?.descriptionStyle,
+        a.descriptionStyle,
+        b.descriptionStyle,
         t,
       ),
-      mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
-      iconSize: lerpDouble$(a?.iconSize, b?.iconSize, t),
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      iconSize: lerpDouble$(a.iconSize, b.iconSize, t),
     );
   }
 
@@ -61,7 +68,7 @@ mixin _$ShadAlertTheme {
   ShadAlertTheme merge(ShadAlertTheme? other) {
     final _this = (this as ShadAlertTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -70,11 +77,12 @@ mixin _$ShadAlertTheme {
     }
 
     return copyWith(
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       iconPadding: other.iconPadding,
       iconColor: other.iconColor,
       titleStyle: _this.titleStyle?.merge(other.titleStyle) ?? other.titleStyle,
-      descriptionStyle: _this.descriptionStyle?.merge(other.descriptionStyle) ??
+      descriptionStyle:
+          _this.descriptionStyle?.merge(other.descriptionStyle) ??
           other.descriptionStyle,
       mainAxisAlignment: other.mainAxisAlignment,
       crossAxisAlignment: other.crossAxisAlignment,

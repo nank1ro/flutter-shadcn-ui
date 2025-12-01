@@ -17,20 +17,28 @@ mixin _$ShadProgressTheme {
     ShadProgressTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadProgressTheme(
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      color: Color.lerp(a?.color, b?.color, t),
-      borderRadius: BorderRadius.lerp(a?.borderRadius, b?.borderRadius, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      color: Color.lerp(a.color, b.color, t),
+      borderRadius: BorderRadius.lerp(a.borderRadius, b.borderRadius, t),
       innerBorderRadius: BorderRadius.lerp(
-        a?.innerBorderRadius,
-        b?.innerBorderRadius,
+        a.innerBorderRadius,
+        b.innerBorderRadius,
         t,
       ),
-      minHeight: lerpDouble$(a?.minHeight, b?.minHeight, t),
+      minHeight: lerpDouble$(a.minHeight, b.minHeight, t),
     );
   }
 
@@ -55,7 +63,7 @@ mixin _$ShadProgressTheme {
   ShadProgressTheme merge(ShadProgressTheme? other) {
     final _this = (this as ShadProgressTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 

@@ -17,28 +17,36 @@ mixin _$ShadSwitchTheme {
     ShadSwitchTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadSwitchTheme(
-      thumbColor: Color.lerp(a?.thumbColor, b?.thumbColor, t),
+      thumbColor: Color.lerp(a.thumbColor, b.thumbColor, t),
       uncheckedTrackColor: Color.lerp(
-        a?.uncheckedTrackColor,
-        b?.uncheckedTrackColor,
+        a.uncheckedTrackColor,
+        b.uncheckedTrackColor,
         t,
       ),
       checkedTrackColor: Color.lerp(
-        a?.checkedTrackColor,
-        b?.checkedTrackColor,
+        a.checkedTrackColor,
+        b.checkedTrackColor,
         t,
       ),
-      width: lerpDouble$(a?.width, b?.width, t),
-      height: lerpDouble$(a?.height, b?.height, t),
-      margin: lerpDouble$(a?.margin, b?.margin, t),
-      duration: lerpDuration$(a?.duration, b?.duration, t),
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
+      width: lerpDouble$(a.width, b.width, t),
+      height: lerpDouble$(a.height, b.height, t),
+      margin: lerpDouble$(a.margin, b.margin, t),
+      duration: lerpDuration$(a.duration, b.duration, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
     );
   }
 
@@ -71,7 +79,7 @@ mixin _$ShadSwitchTheme {
   ShadSwitchTheme merge(ShadSwitchTheme? other) {
     final _this = (this as ShadSwitchTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -87,7 +95,7 @@ mixin _$ShadSwitchTheme {
       height: other.height,
       margin: other.margin,
       duration: other.duration,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       padding: other.padding,
     );
   }

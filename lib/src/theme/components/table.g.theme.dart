@@ -13,32 +13,34 @@ mixin _$ShadTableTheme {
   bool get canMerge => true;
 
   static ShadTableTheme? lerp(ShadTableTheme? a, ShadTableTheme? b, double t) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadTableTheme(
-      diagonalDragBehavior:
-          t < 0.5 ? a?.diagonalDragBehavior : b?.diagonalDragBehavior,
-      dragStartBehavior: t < 0.5 ? a?.dragStartBehavior : b?.dragStartBehavior,
-      keyboardDismissBehavior:
-          t < 0.5 ? a?.keyboardDismissBehavior : b?.keyboardDismissBehavior,
-      columnBuilder: t < 0.5 ? a?.columnBuilder : b?.columnBuilder,
-      rowBuilder: t < 0.5 ? a?.rowBuilder : b?.rowBuilder,
-      cellAlignment: Alignment.lerp(a?.cellAlignment, b?.cellAlignment, t),
-      cellHeight: lerpDouble$(a?.cellHeight, b?.cellHeight, t),
-      cellPadding: EdgeInsetsGeometry.lerp(a?.cellPadding, b?.cellPadding, t),
-      cellHeaderStyle: TextStyle.lerp(
-        a?.cellHeaderStyle,
-        b?.cellHeaderStyle,
-        t,
-      ),
-      cellStyle: TextStyle.lerp(a?.cellStyle, b?.cellStyle, t),
-      cellFooterStyle: TextStyle.lerp(
-        a?.cellFooterStyle,
-        b?.cellFooterStyle,
-        t,
-      ),
+      diagonalDragBehavior: t < 0.5
+          ? a.diagonalDragBehavior
+          : b.diagonalDragBehavior,
+      dragStartBehavior: t < 0.5 ? a.dragStartBehavior : b.dragStartBehavior,
+      keyboardDismissBehavior: t < 0.5
+          ? a.keyboardDismissBehavior
+          : b.keyboardDismissBehavior,
+      columnBuilder: t < 0.5 ? a.columnBuilder : b.columnBuilder,
+      rowBuilder: t < 0.5 ? a.rowBuilder : b.rowBuilder,
+      cellAlignment: Alignment.lerp(a.cellAlignment, b.cellAlignment, t),
+      cellHeight: lerpDouble$(a.cellHeight, b.cellHeight, t),
+      cellPadding: EdgeInsetsGeometry.lerp(a.cellPadding, b.cellPadding, t),
+      cellHeaderStyle: TextStyle.lerp(a.cellHeaderStyle, b.cellHeaderStyle, t),
+      cellStyle: TextStyle.lerp(a.cellStyle, b.cellStyle, t),
+      cellFooterStyle: TextStyle.lerp(a.cellFooterStyle, b.cellFooterStyle, t),
     );
   }
 
@@ -76,7 +78,7 @@ mixin _$ShadTableTheme {
   ShadTableTheme merge(ShadTableTheme? other) {
     final _this = (this as ShadTableTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -93,10 +95,12 @@ mixin _$ShadTableTheme {
       cellAlignment: other.cellAlignment,
       cellHeight: other.cellHeight,
       cellPadding: other.cellPadding,
-      cellHeaderStyle: _this.cellHeaderStyle?.merge(other.cellHeaderStyle) ??
+      cellHeaderStyle:
+          _this.cellHeaderStyle?.merge(other.cellHeaderStyle) ??
           other.cellHeaderStyle,
       cellStyle: _this.cellStyle?.merge(other.cellStyle) ?? other.cellStyle,
-      cellFooterStyle: _this.cellFooterStyle?.merge(other.cellFooterStyle) ??
+      cellFooterStyle:
+          _this.cellFooterStyle?.merge(other.cellFooterStyle) ??
           other.cellFooterStyle,
     );
   }

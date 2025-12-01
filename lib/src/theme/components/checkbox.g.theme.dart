@@ -17,21 +17,28 @@ mixin _$ShadCheckboxTheme {
     ShadCheckboxTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadCheckboxTheme(
-      color: Color.lerp(a?.color, b?.color, t),
-      size: lerpDouble$(a?.size, b?.size, t),
-      duration: lerpDuration$(a?.duration, b?.duration, t),
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
+      color: Color.lerp(a.color, b.color, t),
+      size: lerpDouble$(a.size, b.size, t),
+      duration: lerpDuration$(a.duration, b.duration, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       checkboxPadding: EdgeInsetsGeometry.lerp(
-        a?.checkboxPadding,
-        b?.checkboxPadding,
+        a.checkboxPadding,
+        b.checkboxPadding,
         t,
       ),
     );
@@ -62,7 +69,7 @@ mixin _$ShadCheckboxTheme {
   ShadCheckboxTheme merge(ShadCheckboxTheme? other) {
     final _this = (this as ShadCheckboxTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -74,7 +81,7 @@ mixin _$ShadCheckboxTheme {
       color: other.color,
       size: other.size,
       duration: other.duration,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       padding: other.padding,
       crossAxisAlignment: other.crossAxisAlignment,
       checkboxPadding: other.checkboxPadding,

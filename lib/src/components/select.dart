@@ -21,10 +21,11 @@ import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
 /// Builder for the selected option widget in [ShadSelect].
-typedef ShadSelectedOptionBuilder<T> = Widget Function(
-  BuildContext context,
-  T value,
-);
+typedef ShadSelectedOptionBuilder<T> =
+    Widget Function(
+      BuildContext context,
+      T value,
+    );
 
 /// Controls the selection state of a [ShadSelect] widget.
 ///
@@ -81,23 +82,23 @@ class ShadSelect<T> extends StatefulWidget {
     this.popoverReverseDuration,
     this.ensureSelectedVisible,
     this.onPressed,
-  })  : variant = ShadSelectVariant.primary,
-        initialValues = const {},
-        onSearchChanged = null,
-        searchDivider = null,
-        searchPlaceholder = null,
-        searchInputLeading = null,
-        onMultipleChanged = null,
-        searchPadding = null,
-        selectedOptionsBuilder = null,
-        search = null,
-        clearSearchOnClose = false,
-        searchFocusNode = null,
-        onSearchSubmitted = null,
-        assert(
-          options != null || optionsBuilder != null,
-          'Either options or optionsBuilder must be provided',
-        );
+  }) : variant = ShadSelectVariant.primary,
+       initialValues = const {},
+       onSearchChanged = null,
+       searchDivider = null,
+       searchPlaceholder = null,
+       searchInputLeading = null,
+       onMultipleChanged = null,
+       searchPadding = null,
+       selectedOptionsBuilder = null,
+       search = null,
+       clearSearchOnClose = false,
+       searchFocusNode = null,
+       onSearchSubmitted = null,
+       assert(
+         options != null || optionsBuilder != null,
+         'Either options or optionsBuilder must be provided',
+       );
 
   /// Creates a [ShadSelect] with the search variant.
   const ShadSelect.withSearch({
@@ -147,18 +148,18 @@ class ShadSelect<T> extends StatefulWidget {
     this.searchFocusNode,
     this.onSearchSubmitted,
     this.onPressed,
-  })  : variant = ShadSelectVariant.search,
-        selectedOptionsBuilder = null,
-        onMultipleChanged = null,
-        initialValues = const {},
-        assert(
-          options != null || optionsBuilder != null,
-          'Either options or optionsBuilder must be provided',
-        ),
-        assert(
-          search != null || onSearchChanged != null,
-          'Either search or onSearchChanged must be provided',
-        );
+  }) : variant = ShadSelectVariant.search,
+       selectedOptionsBuilder = null,
+       onMultipleChanged = null,
+       initialValues = const {},
+       assert(
+         options != null || optionsBuilder != null,
+         'Either options or optionsBuilder must be provided',
+       ),
+       assert(
+         search != null || onSearchChanged != null,
+         'Either search or onSearchChanged must be provided',
+       );
 
   /// Creates a [ShadSelect] with the multiple select variant.
   const ShadSelect.multiple({
@@ -199,24 +200,24 @@ class ShadSelect<T> extends StatefulWidget {
     this.popoverReverseDuration,
     this.ensureSelectedVisible,
     this.onPressed,
-  })  : variant = ShadSelectVariant.multiple,
-        onSearchChanged = null,
-        initialValue = null,
-        selectedOptionBuilder = null,
-        searchDivider = null,
-        searchPlaceholder = null,
-        searchInputLeading = null,
-        searchPadding = null,
-        search = null,
-        clearSearchOnClose = false,
-        onChanged = null,
-        onMultipleChanged = onChanged,
-        searchFocusNode = null,
-        onSearchSubmitted = null,
-        assert(
-          options != null || optionsBuilder != null,
-          'Either options or optionsBuilder must be provided',
-        );
+  }) : variant = ShadSelectVariant.multiple,
+       onSearchChanged = null,
+       initialValue = null,
+       selectedOptionBuilder = null,
+       searchDivider = null,
+       searchPlaceholder = null,
+       searchInputLeading = null,
+       searchPadding = null,
+       search = null,
+       clearSearchOnClose = false,
+       onChanged = null,
+       onMultipleChanged = onChanged,
+       searchFocusNode = null,
+       onSearchSubmitted = null,
+       assert(
+         options != null || optionsBuilder != null,
+         'Either options or optionsBuilder must be provided',
+       );
 
   /// Creates a [ShadSelect] with the multiple select and search variant.
   const ShadSelect.multipleWithSearch({
@@ -266,19 +267,19 @@ class ShadSelect<T> extends StatefulWidget {
     this.searchFocusNode,
     this.onSearchSubmitted,
     this.onPressed,
-  })  : variant = ShadSelectVariant.multipleWithSearch,
-        selectedOptionBuilder = null,
-        onChanged = null,
-        onMultipleChanged = onChanged,
-        initialValue = null,
-        assert(
-          options != null || optionsBuilder != null,
-          'Either options or optionsBuilder must be provided',
-        ),
-        assert(
-          search != null || onSearchChanged != null,
-          'Either search or onSearchChanged must be provided',
-        );
+  }) : variant = ShadSelectVariant.multipleWithSearch,
+       selectedOptionBuilder = null,
+       onChanged = null,
+       onMultipleChanged = onChanged,
+       initialValue = null,
+       assert(
+         options != null || optionsBuilder != null,
+         'Either options or optionsBuilder must be provided',
+       ),
+       assert(
+         search != null || onSearchChanged != null,
+         'Either search or onSearchChanged must be provided',
+       );
 
   /// Creates a [ShadSelect] with a raw variant, allowing full customization.
   const ShadSelect.raw({
@@ -332,18 +333,18 @@ class ShadSelect<T> extends StatefulWidget {
     this.searchFocusNode,
     this.onSearchSubmitted,
     this.onPressed,
-  })  : assert(
-          variant == ShadSelectVariant.primary || onSearchChanged != null,
-          'onSearchChanged must be provided when variant is search',
-        ),
-        assert(
-          options != null || optionsBuilder != null,
-          'Either options or optionsBuilder must be provided',
-        ),
-        assert(
-          (selectedOptionBuilder != null) ^ (selectedOptionsBuilder != null),
-          '''Either selectedOptionBuilder or selectedOptionsBuilder must be provided''',
-        );
+  }) : assert(
+         variant == ShadSelectVariant.primary || onSearchChanged != null,
+         'onSearchChanged must be provided when variant is search',
+       ),
+       assert(
+         options != null || optionsBuilder != null,
+         'Either options or optionsBuilder must be provided',
+       ),
+       assert(
+         (selectedOptionBuilder != null) ^ (selectedOptionsBuilder != null),
+         '''Either selectedOptionBuilder or selectedOptionsBuilder must be provided''',
+       );
 
   /// {@template ShadSelect.controller}
   /// The controller of the [ShadSelect].
@@ -774,7 +775,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         if (searchFocusNode.hasFocus) {
           searchFocusNode.unfocus();
         }
-        final effectiveClearSearchOnClose = widget.clearSearchOnClose ??
+        final effectiveClearSearchOnClose =
+            widget.clearSearchOnClose ??
             ShadTheme.of(
               context,
               listen: false,
@@ -872,7 +874,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
   }
 
   void select(T value) {
-    final isMultiSelection = widget.variant == ShadSelectVariant.multiple ||
+    final isMultiSelection =
+        widget.variant == ShadSelectVariant.multiple ||
         widget.variant == ShadSelectVariant.multipleWithSearch;
 
     final prevList = controller.value.toList(growable: false);
@@ -915,22 +918,25 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
     final decorationHorizontalPadding =
         (effectiveDecoration.border?.padding?.horizontal ?? 0.0) +
-            (effectiveDecoration.secondaryBorder?.padding?.horizontal ?? 0.0);
+        (effectiveDecoration.secondaryBorder?.padding?.horizontal ?? 0.0);
 
-    final effectivePadding = widget.padding ??
+    final effectivePadding =
+        widget.padding ??
         theme.selectTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
-    final effectiveShowScrollToTopChevron = widget.showScrollToTopChevron ??
+    final effectiveShowScrollToTopChevron =
+        widget.showScrollToTopChevron ??
         theme.selectTheme.showScrollToTopChevron ??
         true;
 
     final effectiveShowScrollToBottomChevron =
         widget.showScrollToBottomChevron ??
-            theme.selectTheme.showScrollToBottomChevron ??
-            true;
+        theme.selectTheme.showScrollToBottomChevron ??
+        true;
 
-    final effectivePopoverReverseDuration = widget.popoverReverseDuration ??
+    final effectivePopoverReverseDuration =
+        widget.popoverReverseDuration ??
         theme.selectTheme.popoverReverseDuration ??
         Duration.zero;
 
@@ -953,7 +959,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         final TextStyle resultDefaultTextStyle;
 
         if (controller.value.isNotEmpty) {
-          resultDefaultTextStyle = theme.optionTheme.selectedTextStyle ??
+          resultDefaultTextStyle =
+              theme.optionTheme.selectedTextStyle ??
               theme.textTheme.muted.fallback(
                 color: theme.colorScheme.foreground,
               );
@@ -974,7 +981,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
             widget.placeholder != null,
             'placeholder must not be null when value is null',
           );
-          resultDefaultTextStyle = widget.placeholderStyle ??
+          resultDefaultTextStyle =
+              widget.placeholderStyle ??
               theme.selectTheme.placeholderStyle ??
               theme.textTheme.muted.fallback(
                 color: theme.colorScheme.foreground,
@@ -985,7 +993,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
       },
     );
 
-    final effectiveTrailing = widget.trailing ??
+    final effectiveTrailing =
+        widget.trailing ??
         Icon(
           LucideIcons.chevronDown,
           size: 16,
@@ -996,43 +1005,45 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         widget.minWidth ?? theme.selectTheme.minWidth ?? kDefaultSelectMinWidth;
     final effectiveMaxWidth =
         widget.maxWidth ?? theme.selectTheme.maxWidth ?? double.infinity;
-    final effectiveMaxHeight = widget.maxHeight ??
+    final effectiveMaxHeight =
+        widget.maxHeight ??
         theme.selectTheme.maxHeight ??
         kDefaultSelectMaxHeight;
-    final effectiveOptionsPadding = widget.optionsPadding ??
+    final effectiveOptionsPadding =
+        widget.optionsPadding ??
         theme.selectTheme.optionsPadding ??
         const EdgeInsets.all(4);
 
     final search = switch (widget.variant) {
       ShadSelectVariant.primary || ShadSelectVariant.multiple => null,
       ShadSelectVariant.search ||
-      ShadSelectVariant.multipleWithSearch =>
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            widget.search ??
-                ShadInput(
-                  focusNode: searchFocusNode,
-                  leading: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Icon(
-                      LucideIcons.search,
-                      size: 16,
-                      color: theme.colorScheme.popoverForeground,
-                    ),
+      ShadSelectVariant.multipleWithSearch => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          widget.search ??
+              ShadInput(
+                focusNode: searchFocusNode,
+                leading: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Icon(
+                    LucideIcons.search,
+                    size: 16,
+                    color: theme.colorScheme.popoverForeground,
                   ),
-                  padding: widget.searchPadding ??
-                      theme.selectTheme.searchPadding ??
-                      const EdgeInsets.all(12),
-                  placeholder: widget.searchPlaceholder,
-                  decoration: ShadDecoration.none,
-                  onChanged: widget.onSearchChanged,
-                  onSubmitted: widget.onSearchSubmitted,
                 ),
-            widget.searchDivider ??
-                const ShadSeparator.horizontal(margin: EdgeInsets.zero),
-          ],
-        ),
+                padding:
+                    widget.searchPadding ??
+                    theme.selectTheme.searchPadding ??
+                    const EdgeInsets.all(12),
+                placeholder: widget.searchPlaceholder,
+                decoration: ShadDecoration.none,
+                onChanged: widget.onSearchChanged,
+                onSubmitted: widget.onSearchSubmitted,
+              ),
+          widget.searchDivider ??
+              const ShadSeparator.horizontal(margin: EdgeInsets.zero),
+        ],
+      ),
     };
 
     return ListenableBuilder(
@@ -1058,7 +1069,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
           builder: (context, constraints) {
             final calculatedMinWidth =
                 max(effectiveMinWidth, constraints.minWidth) -
-                    decorationHorizontalPadding;
+                decorationHorizontalPadding;
 
             final effectiveConstraints = BoxConstraints(
               minWidth: calculatedMinWidth,
@@ -1214,7 +1225,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                   // showScrollToTop, after the popover is rendered
                   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                     if (scrollController.hasClients) {
-                      showScrollToBottom.value = scrollController.offset <
+                      showScrollToBottom.value =
+                          scrollController.offset <
                           scrollController.position.maxScrollExtent;
                       showScrollToTop.value = scrollController.offset > 0;
                     }
@@ -1227,9 +1239,9 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                       if (search != null) Flexible(child: search),
                       if (widget.header != null)
                         Flexible(child: widget.header!),
-                      if (scrollToTopChild != null) scrollToTopChild,
+                      ?scrollToTopChild,
                       Flexible(child: effectiveChild),
-                      if (scrollToBottomChild != null) scrollToBottomChild,
+                      ?scrollToBottomChild,
                       if (widget.footer != null)
                         Flexible(child: widget.footer!),
                     ],
@@ -1366,23 +1378,27 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
     final effectiveHoveredBackgroundColor =
         theme.optionTheme.hoveredBackgroundColor ?? theme.colorScheme.accent;
 
-    final effectivePadding = widget.padding ??
+    final effectivePadding =
+        widget.padding ??
         theme.optionTheme.padding ??
         const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
 
-    final effectiveTextStyle = widget.textStyle ??
+    final effectiveTextStyle =
+        widget.textStyle ??
         theme.optionTheme.textStyle ??
         theme.textTheme.muted.fallback(
           color: theme.colorScheme.popoverForeground,
         );
 
-    final effectiveSelectedTextStyle = widget.selectedTextStyle ??
+    final effectiveSelectedTextStyle =
+        widget.selectedTextStyle ??
         theme.optionTheme.selectedTextStyle ??
         theme.textTheme.muted.fallback(
           color: theme.colorScheme.popoverForeground,
         );
 
-    final effectiveSelectedBackgroundColor = widget.selectedBackgroundColor ??
+    final effectiveSelectedBackgroundColor =
+        widget.selectedBackgroundColor ??
         theme.optionTheme.selectedBackgroundColor;
 
     final effectiveBackgroundColor =
@@ -1393,7 +1409,8 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
 
     final effectiveSelectedIcon = Visibility.maintain(
       visible: selected,
-      child: widget.selectedIcon ??
+      child:
+          widget.selectedIcon ??
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: Icon(
@@ -1425,8 +1442,8 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
               final resolvedBackgroundColor = hovered
                   ? effectiveHoveredBackgroundColor
                   : selected
-                      ? effectiveSelectedBackgroundColor
-                      : effectiveBackgroundColor;
+                  ? effectiveSelectedBackgroundColor
+                  : effectiveBackgroundColor;
 
               return Container(
                 padding: effectivePadding,

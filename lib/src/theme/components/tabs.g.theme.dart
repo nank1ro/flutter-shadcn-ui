@@ -13,105 +13,110 @@ mixin _$ShadTabsTheme {
   bool get canMerge => true;
 
   static ShadTabsTheme? lerp(ShadTabsTheme? a, ShadTabsTheme? b, double t) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadTabsTheme(
-      gap: lerpDouble$(a?.gap, b?.gap, t),
-      tabsGap: lerpDouble$(a?.tabsGap, b?.tabsGap, t),
-      tabBarAlignment: Alignment.lerp(
-        a?.tabBarAlignment,
-        b?.tabBarAlignment,
-        t,
-      ),
-      dragStartBehavior: t < 0.5 ? a?.dragStartBehavior : b?.dragStartBehavior,
-      physics: t < 0.5 ? a?.physics : b?.physics,
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
+      gap: lerpDouble$(a.gap, b.gap, t),
+      tabsGap: lerpDouble$(a.tabsGap, b.tabsGap, t),
+      tabBarAlignment: Alignment.lerp(a.tabBarAlignment, b.tabBarAlignment, t),
+      dragStartBehavior: t < 0.5 ? a.dragStartBehavior : b.dragStartBehavior,
+      physics: t < 0.5 ? a.physics : b.physics,
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       tabBarConstraints: BoxConstraints.lerp(
-        a?.tabBarConstraints,
-        b?.tabBarConstraints,
+        a.tabBarConstraints,
+        b.tabBarConstraints,
         t,
       ),
       contentConstraints: BoxConstraints.lerp(
-        a?.contentConstraints,
-        b?.contentConstraints,
+        a.contentConstraints,
+        b.contentConstraints,
         t,
       ),
-      expandContent: t < 0.5 ? a?.expandContent : b?.expandContent,
-      tabWidth: lerpDouble$(a?.tabWidth, b?.tabWidth, t),
+      expandContent: t < 0.5 ? a.expandContent : b.expandContent,
+      tabWidth: lerpDouble$(a.tabWidth, b.tabWidth, t),
       tabBackgroundColor: Color.lerp(
-        a?.tabBackgroundColor,
-        b?.tabBackgroundColor,
+        a.tabBackgroundColor,
+        b.tabBackgroundColor,
         t,
       ),
       tabSelectedBackgroundColor: Color.lerp(
-        a?.tabSelectedBackgroundColor,
-        b?.tabSelectedBackgroundColor,
+        a.tabSelectedBackgroundColor,
+        b.tabSelectedBackgroundColor,
         t,
       ),
       tabHoverBackgroundColor: Color.lerp(
-        a?.tabHoverBackgroundColor,
-        b?.tabHoverBackgroundColor,
+        a.tabHoverBackgroundColor,
+        b.tabHoverBackgroundColor,
         t,
       ),
       tabSelectedHoverBackgroundColor: Color.lerp(
-        a?.tabSelectedHoverBackgroundColor,
-        b?.tabSelectedHoverBackgroundColor,
+        a.tabSelectedHoverBackgroundColor,
+        b.tabSelectedHoverBackgroundColor,
         t,
       ),
-      tabPadding: EdgeInsetsGeometry.lerp(a?.tabPadding, b?.tabPadding, t),
-      tabDecoration: ShadDecoration.lerp(a?.tabDecoration, b?.tabDecoration, t),
+      tabPadding: EdgeInsetsGeometry.lerp(a.tabPadding, b.tabPadding, t),
+      tabDecoration: ShadDecoration.lerp(a.tabDecoration, b.tabDecoration, t),
       tabSelectedDecoration: ShadDecoration.lerp(
-        a?.tabSelectedDecoration,
-        b?.tabSelectedDecoration,
+        a.tabSelectedDecoration,
+        b.tabSelectedDecoration,
         t,
       ),
       tabForegroundColor: Color.lerp(
-        a?.tabForegroundColor,
-        b?.tabForegroundColor,
+        a.tabForegroundColor,
+        b.tabForegroundColor,
         t,
       ),
       tabSelectedForegroundColor: Color.lerp(
-        a?.tabSelectedForegroundColor,
-        b?.tabSelectedForegroundColor,
+        a.tabSelectedForegroundColor,
+        b.tabSelectedForegroundColor,
         t,
       ),
-      tabTextStyle: TextStyle.lerp(a?.tabTextStyle, b?.tabTextStyle, t),
-      tabShadows: t < 0.5 ? a?.tabShadows : b?.tabShadows,
-      tabSelectedShadows:
-          t < 0.5 ? a?.tabSelectedShadows : b?.tabSelectedShadows,
-      tabSize: t < 0.5 ? a?.tabSize : b?.tabSize,
-      tabCursor: t < 0.5 ? a?.tabCursor : b?.tabCursor,
+      tabTextStyle: TextStyle.lerp(a.tabTextStyle, b.tabTextStyle, t),
+      tabShadows: t < 0.5 ? a.tabShadows : b.tabShadows,
+      tabSelectedShadows: t < 0.5 ? a.tabSelectedShadows : b.tabSelectedShadows,
+      tabSize: t < 0.5 ? a.tabSize : b.tabSize,
+      tabCursor: t < 0.5 ? a.tabCursor : b.tabCursor,
       tabHoverForegroundColor: Color.lerp(
-        a?.tabHoverForegroundColor,
-        b?.tabHoverForegroundColor,
+        a.tabHoverForegroundColor,
+        b.tabHoverForegroundColor,
         t,
       ),
       tabPressedBackgroundColor: Color.lerp(
-        a?.tabPressedBackgroundColor,
-        b?.tabPressedBackgroundColor,
+        a.tabPressedBackgroundColor,
+        b.tabPressedBackgroundColor,
         t,
       ),
       tabPressedForegroundColor: Color.lerp(
-        a?.tabPressedForegroundColor,
-        b?.tabPressedForegroundColor,
+        a.tabPressedForegroundColor,
+        b.tabPressedForegroundColor,
         t,
       ),
-      tabGradient: Gradient.lerp(a?.tabGradient, b?.tabGradient, t),
-      tabTextDecoration: t < 0.5 ? a?.tabTextDecoration : b?.tabTextDecoration,
-      tabHoverTextDecoration:
-          t < 0.5 ? a?.tabHoverTextDecoration : b?.tabHoverTextDecoration,
-      tabMainAxisAlignment:
-          t < 0.5 ? a?.tabMainAxisAlignment : b?.tabMainAxisAlignment,
-      tabCrossAxisAlignment:
-          t < 0.5 ? a?.tabCrossAxisAlignment : b?.tabCrossAxisAlignment,
-      tabHoverStrategies:
-          t < 0.5 ? a?.tabHoverStrategies : b?.tabHoverStrategies,
+      tabGradient: Gradient.lerp(a.tabGradient, b.tabGradient, t),
+      tabTextDecoration: t < 0.5 ? a.tabTextDecoration : b.tabTextDecoration,
+      tabHoverTextDecoration: t < 0.5
+          ? a.tabHoverTextDecoration
+          : b.tabHoverTextDecoration,
+      tabMainAxisAlignment: t < 0.5
+          ? a.tabMainAxisAlignment
+          : b.tabMainAxisAlignment,
+      tabCrossAxisAlignment: t < 0.5
+          ? a.tabCrossAxisAlignment
+          : b.tabCrossAxisAlignment,
+      tabHoverStrategies: t < 0.5 ? a.tabHoverStrategies : b.tabHoverStrategies,
       longPressDuration: lerpDuration$(
-        a?.longPressDuration,
-        b?.longPressDuration,
+        a.longPressDuration,
+        b.longPressDuration,
         t,
       ),
     );
@@ -173,7 +178,8 @@ mixin _$ShadTabsTheme {
           tabSelectedBackgroundColor ?? _this.tabSelectedBackgroundColor,
       tabHoverBackgroundColor:
           tabHoverBackgroundColor ?? _this.tabHoverBackgroundColor,
-      tabSelectedHoverBackgroundColor: tabSelectedHoverBackgroundColor ??
+      tabSelectedHoverBackgroundColor:
+          tabSelectedHoverBackgroundColor ??
           _this.tabSelectedHoverBackgroundColor,
       tabPadding: tabPadding ?? _this.tabPadding,
       tabDecoration: tabDecoration ?? _this.tabDecoration,
@@ -208,7 +214,7 @@ mixin _$ShadTabsTheme {
   ShadTabsTheme merge(ShadTabsTheme? other) {
     final _this = (this as ShadTabsTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -223,7 +229,7 @@ mixin _$ShadTabsTheme {
       dragStartBehavior: other.dragStartBehavior,
       physics: other.physics,
       padding: other.padding,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       tabBarConstraints: other.tabBarConstraints,
       contentConstraints: other.contentConstraints,
       expandContent: other.expandContent,
@@ -233,8 +239,12 @@ mixin _$ShadTabsTheme {
       tabHoverBackgroundColor: other.tabHoverBackgroundColor,
       tabSelectedHoverBackgroundColor: other.tabSelectedHoverBackgroundColor,
       tabPadding: other.tabPadding,
-      tabDecoration: other.tabDecoration,
-      tabSelectedDecoration: other.tabSelectedDecoration,
+      tabDecoration:
+          _this.tabDecoration?.merge(other.tabDecoration) ??
+          other.tabDecoration,
+      tabSelectedDecoration:
+          _this.tabSelectedDecoration?.merge(other.tabSelectedDecoration) ??
+          other.tabSelectedDecoration,
       tabForegroundColor: other.tabForegroundColor,
       tabSelectedForegroundColor: other.tabSelectedForegroundColor,
       tabTextStyle:

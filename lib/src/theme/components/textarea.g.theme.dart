@@ -17,42 +17,46 @@ mixin _$ShadTextareaTheme {
     ShadTextareaTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadTextareaTheme(
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      style: TextStyle.lerp(a?.style, b?.style, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      style: TextStyle.lerp(a.style, b.style, t),
       placeholderStyle: TextStyle.lerp(
-        a?.placeholderStyle,
-        b?.placeholderStyle,
+        a.placeholderStyle,
+        b.placeholderStyle,
         t,
       ),
       placeholderAlignment: AlignmentGeometry.lerp(
-        a?.placeholderAlignment,
-        b?.placeholderAlignment,
+        a.placeholderAlignment,
+        b.placeholderAlignment,
         t,
       ),
-      inputPadding: EdgeInsetsGeometry.lerp(
-        a?.inputPadding,
-        b?.inputPadding,
-        t,
-      ),
-      mainAxisAlignment: t < 0.5 ? a?.mainAxisAlignment : b?.mainAxisAlignment,
-      crossAxisAlignment:
-          t < 0.5 ? a?.crossAxisAlignment : b?.crossAxisAlignment,
-      gap: lerpDouble$(a?.gap, b?.gap, t),
-      constraints: BoxConstraints.lerp(a?.constraints, b?.constraints, t),
-      minHeight: lerpDouble$(a?.minHeight, b?.minHeight, t),
-      maxHeight: lerpDouble$(a?.maxHeight, b?.maxHeight, t),
-      resizable: t < 0.5 ? a?.resizable : b?.resizable,
-      resizeHandleBuilder:
-          t < 0.5 ? a?.resizeHandleBuilder : b?.resizeHandleBuilder,
+      inputPadding: EdgeInsetsGeometry.lerp(a.inputPadding, b.inputPadding, t),
+      mainAxisAlignment: t < 0.5 ? a.mainAxisAlignment : b.mainAxisAlignment,
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
+      gap: lerpDouble$(a.gap, b.gap, t),
+      constraints: BoxConstraints.lerp(a.constraints, b.constraints, t),
+      minHeight: lerpDouble$(a.minHeight, b.minHeight, t),
+      maxHeight: lerpDouble$(a.maxHeight, b.maxHeight, t),
+      resizable: t < 0.5 ? a.resizable : b.resizable,
+      resizeHandleBuilder: t < 0.5
+          ? a.resizeHandleBuilder
+          : b.resizeHandleBuilder,
       scrollbarPadding: EdgeInsetsGeometry.lerp(
-        a?.scrollbarPadding,
-        b?.scrollbarPadding,
+        a.scrollbarPadding,
+        b.scrollbarPadding,
         t,
       ),
     );
@@ -99,7 +103,7 @@ mixin _$ShadTextareaTheme {
   ShadTextareaTheme merge(ShadTextareaTheme? other) {
     final _this = (this as ShadTextareaTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -108,10 +112,11 @@ mixin _$ShadTextareaTheme {
     }
 
     return copyWith(
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       padding: other.padding,
       style: _this.style?.merge(other.style) ?? other.style,
-      placeholderStyle: _this.placeholderStyle?.merge(other.placeholderStyle) ??
+      placeholderStyle:
+          _this.placeholderStyle?.merge(other.placeholderStyle) ??
           other.placeholderStyle,
       placeholderAlignment: other.placeholderAlignment,
       inputPadding: other.inputPadding,

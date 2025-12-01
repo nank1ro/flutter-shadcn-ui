@@ -17,28 +17,36 @@ mixin _$ShadOptionTheme {
     ShadOptionTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadOptionTheme(
       hoveredBackgroundColor: Color.lerp(
-        a?.hoveredBackgroundColor,
-        b?.hoveredBackgroundColor,
+        a.hoveredBackgroundColor,
+        b.hoveredBackgroundColor,
         t,
       ),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      radius: BorderRadius.lerp(a?.radius, b?.radius, t),
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      textStyle: TextStyle.lerp(a?.textStyle, b?.textStyle, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      radius: BorderRadius.lerp(a.radius, b.radius, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      textStyle: TextStyle.lerp(a.textStyle, b.textStyle, t),
       selectedBackgroundColor: Color.lerp(
-        a?.selectedBackgroundColor,
-        b?.selectedBackgroundColor,
+        a.selectedBackgroundColor,
+        b.selectedBackgroundColor,
         t,
       ),
       selectedTextStyle: TextStyle.lerp(
-        a?.selectedTextStyle,
-        b?.selectedTextStyle,
+        a.selectedTextStyle,
+        b.selectedTextStyle,
         t,
       ),
     );
@@ -71,7 +79,7 @@ mixin _$ShadOptionTheme {
   ShadOptionTheme merge(ShadOptionTheme? other) {
     final _this = (this as ShadOptionTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -88,7 +96,7 @@ mixin _$ShadOptionTheme {
       selectedBackgroundColor: other.selectedBackgroundColor,
       selectedTextStyle:
           _this.selectedTextStyle?.merge(other.selectedTextStyle) ??
-              other.selectedTextStyle,
+          other.selectedTextStyle,
     );
   }
 

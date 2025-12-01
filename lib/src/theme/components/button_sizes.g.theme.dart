@@ -17,14 +17,22 @@ mixin _$ShadButtonSizeTheme {
     ShadButtonSizeTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadButtonSizeTheme(
-      height: lerpDouble$(a?.height, b?.height, t)!,
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t)!,
-      width: lerpDouble$(a?.width, b?.width, t),
+      height: lerpDouble$(a.height, b.height, t)!,
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t)!,
+      width: lerpDouble$(a.width, b.width, t),
     );
   }
 
@@ -45,7 +53,7 @@ mixin _$ShadButtonSizeTheme {
   ShadButtonSizeTheme merge(ShadButtonSizeTheme? other) {
     final _this = (this as ShadButtonSizeTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -94,15 +102,23 @@ mixin _$ShadButtonSizesTheme {
     ShadButtonSizesTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadButtonSizesTheme(
-      regular: ShadButtonSizeTheme.lerp(a?.regular, b?.regular, t),
-      sm: ShadButtonSizeTheme.lerp(a?.sm, b?.sm, t),
-      lg: ShadButtonSizeTheme.lerp(a?.lg, b?.lg, t),
-      icon: ShadButtonSizeTheme.lerp(a?.icon, b?.icon, t),
+      regular: ShadButtonSizeTheme.lerp(a.regular, b.regular, t),
+      sm: ShadButtonSizeTheme.lerp(a.sm, b.sm, t),
+      lg: ShadButtonSizeTheme.lerp(a.lg, b.lg, t),
+      icon: ShadButtonSizeTheme.lerp(a.icon, b.icon, t),
     );
   }
 
@@ -125,7 +141,7 @@ mixin _$ShadButtonSizesTheme {
   ShadButtonSizesTheme merge(ShadButtonSizesTheme? other) {
     final _this = (this as ShadButtonSizesTheme);
 
-    if (other == null) {
+    if (other == null || identical(_this, other)) {
       return _this;
     }
 
@@ -134,10 +150,10 @@ mixin _$ShadButtonSizesTheme {
     }
 
     return copyWith(
-      regular: other.regular,
-      sm: other.sm,
-      lg: other.lg,
-      icon: other.icon,
+      regular: _this.regular?.merge(other.regular) ?? other.regular,
+      sm: _this.sm?.merge(other.sm) ?? other.sm,
+      lg: _this.lg?.merge(other.lg) ?? other.lg,
+      icon: _this.icon?.merge(other.icon) ?? other.icon,
     );
   }
 
