@@ -1,3 +1,7 @@
+## 0.40.2
+
+- **FIX**: `ShadSelectFormField` `onChanged` callback being fired twice when changing the value.
+
 ## 0.40.1
 
 - **FIX**: `ShadInput` constraints are applied at the top of the widget and not to the inner editable text.
