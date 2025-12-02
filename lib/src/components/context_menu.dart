@@ -366,6 +366,7 @@ class ShadContextMenuState extends State<ShadContextMenu> {
   @override
   void didUpdateWidget(covariant ShadContextMenu oldWidget) {
     super.didUpdateWidget(oldWidget);
+    print('Did update widget ShadContextMenu with visible=${widget.visible}');
     if (widget.visible != null) {
       controller.setOpen(widget.visible!);
     }
@@ -373,6 +374,8 @@ class ShadContextMenuState extends State<ShadContextMenu> {
 
   @override
   void dispose() {
+    print('setting context menu controller to closed');
+    controller.setOpen(false);
     _controller?.dispose();
     super.dispose();
   }
@@ -409,7 +412,9 @@ class ShadContextMenuState extends State<ShadContextMenu> {
 
     final effectiveShadows = widget.shadows ?? theme.contextMenuTheme.shadows;
 
+    print('context-menu-popover-${widget.key}');
     Widget child = ShadPopover(
+      key: ValueKey('context-menu-popover-${widget.key}'),
       controller: controller,
       padding: effectivePadding,
       areaGroupId: widget.groupId,
@@ -849,11 +854,13 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
       listenable: controller,
       builder: (context, child) {
         return ShadContextMenu(
+          key: ValueKey(itemKey),
           visible: controller.selected,
           anchor: effectiveAnchor,
           constraints: widget.constraints,
           padding: widget.subMenuPadding,
           groupId: effectiveGroupId,
+          effects: contextMenu.widget.effects,
           onHoverArea: controller.setHovered,
           items: widget.items,
           child: Padding(

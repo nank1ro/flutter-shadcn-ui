@@ -147,8 +147,8 @@ class ShadPopover extends StatefulWidget {
 
   /// {@template ShadPopover.useSameGroupIdForChild}
   /// Whether the [groupId] should be used for the child widget, defaults to
-  /// `true`. This teams that taps on the child widget will be handled as inside
-  /// the popover.
+  /// `true`. This means that taps on the child widget will be handled as it was
+  /// made inside the popover.
   /// {@endtemplate}
   final bool useSameGroupIdForChild;
 
@@ -184,6 +184,7 @@ class _ShadPopoverState extends State<ShadPopover>
   @override
   void initState() {
     super.initState();
+    print('Initializing ShadPopover($_popoverKey)');
     if (widget.controller == null) {
       _controller = ShadPopoverController(isOpen: widget.visible ?? false);
     }
@@ -201,6 +202,7 @@ class _ShadPopoverState extends State<ShadPopover>
   @override
   void didUpdateWidget(covariant ShadPopover oldWidget) {
     super.didUpdateWidget(oldWidget);
+    print('didUpdateWidget ShadPopover($_popoverKey)');
     if (widget.controller != null &&
         widget.controller != oldWidget.controller) {
       oldWidget.controller?.removeListener(_onPopoverToggle);
@@ -217,7 +219,17 @@ class _ShadPopoverState extends State<ShadPopover>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final theme = ShadTheme.of(context);
+    final effectiveReverseDuration =
+        widget.reverseDuration ?? theme.popoverTheme.reverseDuration;
+    animationController.reverseDuration = effectiveReverseDuration;
+  }
+
+  @override
   void dispose() {
+    print('Disposing ShadPopover($_popoverKey)');
     // Remove the listener from the provided `ShadPopoverController`
     // or our internal controller.
     controller.removeListener(_onPopoverToggle);
@@ -243,11 +255,6 @@ class _ShadPopoverState extends State<ShadPopover>
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-
-    final effectiveReverseDuration =
-        widget.reverseDuration ?? theme.popoverTheme.reverseDuration;
-
-    animationController.reverseDuration = effectiveReverseDuration;
 
     final effectiveEffects = widget.effects ?? theme.popoverTheme.effects ?? [];
 
@@ -308,6 +315,8 @@ class _ShadPopoverState extends State<ShadPopover>
         ),
       );
     }
+
+    print('effectiveEffects: ${effectiveEffects.length}');
 
     if (effectiveEffects.isNotEmpty) {
       popover = ShadAnimate(
