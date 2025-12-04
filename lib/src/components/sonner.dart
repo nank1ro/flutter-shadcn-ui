@@ -577,7 +577,6 @@ class SonnerBoxy extends BoxyDelegate {
       widths.add(width);
       final height = child.render.getMaxIntrinsicHeight(width);
       heights.add(height);
-      child.layout(constraints);
     }
 
     // Step 2: Determine the max width of the layout
@@ -586,39 +585,66 @@ class SonnerBoxy extends BoxyDelegate {
       constraints.maxWidth,
     );
 
+    final frontToastHeight = heights.last;
+
+    // Step 3: Layout children with height normalization in collapsed mode
+    // When collapsed, all toasts should match the front toast's height
+    // to create a uniform stacked appearance.
+    for (var i = 0; i < children.length; i++) {
+      final child = children[i];
+      final naturalHeight = heights[i];
+      final isFrontToast = i == children.length - 1;
+
+      // Interpolate height: collapsed uses front toast height, expanded uses
+      // natural height
+      final targetHeight = isFrontToast
+          ? naturalHeight
+          : frontToastHeight +
+                (naturalHeight - frontToastHeight) * animation.value;
+
+      child.layout(
+        constraints.copyWith(
+          minHeight: targetHeight,
+          maxHeight: targetHeight,
+        ),
+      );
+    }
+
     final totalHeightExpanded =
         heights.fold<double>(0, (a, b) => a + b) +
         expandedGap * (heights.length - 1);
     // Calculate collapsed height (when all toasts are stacked)
     final totalHeightCollapsed =
-        heights.last + (heights.length - 1) * collapsedGap;
+        frontToastHeight + (heights.length - 1) * collapsedGap;
 
     // Interpolate between collapsed and expanded height based on animation
     final currentHeight =
         totalHeightCollapsed +
         (totalHeightExpanded - totalHeightCollapsed) * animation.value;
 
-    // Step 3: Position the children based on the animation value
+    // Step 4: Position the children based on the animation value
     final numChildren = children.length;
 
     for (final (i, child) in children.indexed) {
       double targetY;
 
       if (i == numChildren - 1) {
-        targetY = currentHeight - heights.last;
+        targetY = currentHeight - frontToastHeight;
       } else {
         final expandedY =
             heights.sublist(0, i).fold<double>(0, (a, b) => a + b) +
             expandedGap * i;
         final collapsedY =
-            currentHeight - heights.last - (numChildren - 1 - i) * collapsedGap;
+            currentHeight -
+            frontToastHeight -
+            (numChildren - 1 - i) * collapsedGap;
         targetY = collapsedY + (expandedY - collapsedY) * animation.value;
       }
       targetY = math.max(0, targetY);
       child.position(Offset(0, targetY));
     }
 
-    // Step 4: Return the total size of the layout
+    // Step 5: Return the total size of the layout
     return Size(maxWidth, currentHeight);
   }
 }
