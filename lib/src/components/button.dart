@@ -1009,7 +1009,7 @@ class _ShadButtonState extends State<ShadButton> {
         buttonTheme(theme).textStyle ??
         theme.textTheme.small;
 
-    final effectiveWidth = width(theme);
+    final effectiveWidth = width(theme) ?? 0;
     final effectiveHeight = height(theme);
 
     return CallbackShortcuts(
@@ -1126,12 +1126,11 @@ class _ShadButtonState extends State<ShadButton> {
                         child: SelectionContainer.disabled(
                           child: ConstrainedBox(
                             constraints: BoxConstraints(
-                              minWidth: effectiveWidth ?? 0,
+                              minWidth: effectiveWidth,
                               // When the width is 0 or null, we set maxWidth to
                               // infinity to allow the button to size itself
                               // based on its child.
-                              maxWidth:
-                                  effectiveWidth == null || effectiveWidth == 0
+                              maxWidth: effectiveWidth == 0
                                   ? double.infinity
                                   : effectiveWidth,
                               minHeight: effectiveHeight,
