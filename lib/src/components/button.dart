@@ -1009,6 +1009,9 @@ class _ShadButtonState extends State<ShadButton> {
         buttonTheme(theme).textStyle ??
         theme.textTheme.small;
 
+    final effectiveWidth = width(theme) ?? 0;
+    final effectiveHeight = height(theme);
+
     return CallbackShortcuts(
       bindings: {
         for (final trigger in keyboardTriggers)
@@ -1123,8 +1126,20 @@ class _ShadButtonState extends State<ShadButton> {
                         child: SelectionContainer.disabled(
                           child: ConstrainedBox(
                             constraints: BoxConstraints(
-                              minWidth: width(theme) ?? 0,
-                              minHeight: height(theme),
+                              minWidth: effectiveWidth,
+                              // When the width is 0 or null, we set maxWidth to
+                              // infinity to allow the button to size itself
+                              // based on its child.
+                              maxWidth: effectiveWidth == 0
+                                  ? double.infinity
+                                  : effectiveWidth,
+                              minHeight: effectiveHeight,
+                              // When the height is 0, we set maxHeight to
+                              // infinity to allow the button to size itself
+                              // based on its child.
+                              maxHeight: effectiveHeight == 0
+                                  ? double.infinity
+                                  : effectiveHeight,
                             ),
                             child: Padding(
                               padding: padding(theme),
