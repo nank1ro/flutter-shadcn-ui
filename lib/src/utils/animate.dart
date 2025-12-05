@@ -192,7 +192,6 @@ class _ShadAnimateState extends State<ShadAnimate>
 
   @override
   void dispose() {
-    print('Disposing ShadAnimate');
     _adapter?.detach();
     _delayed?.ignore();
     _disposeController();

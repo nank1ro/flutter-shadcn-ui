@@ -27,7 +27,6 @@ class ShadMenubarController extends ChangeNotifier {
 
   /// Sets the selected index of the menubar
   set selectedIndex(int? value) {
-    print('selectedIndex: $_selectedIndex -> $value');
     if (_selectedIndex == value) return;
     _selectedIndex = value;
     notifyListeners();
@@ -444,7 +443,6 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
     super.didChangeDependencies();
     menubarController = context.watch<_ShadMenubarState>().controller;
     index = context.watch<ShadProviderIndex>().index;
-    print('didChangeDependencies: index=$index');
 
     menubarController.removeListener(onSelectedIndexChange);
     menubarController.addListener(onSelectedIndexChange);
@@ -504,11 +502,9 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
           decoration: widget.decoration ?? theme.menubarTheme.decoration,
           filter: widget.filter ?? theme.menubarTheme.filter,
           onTapUpInside: (_) {
-            print('onTapUpInside: setting selectedIndex to $index');
             menubarController.selectedIndex = index;
           },
           onTapOutside: (_) {
-            print('onTapOutside: setting selectedIndex to null');
             menubarController.selectedIndex = null;
           },
           child: ShadButton.raw(
@@ -523,7 +519,6 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
               widget.onFocusChange?.call(focused);
               // Set the selected index
               if (focused) {
-                print('onFocusChange: setting selectedIndex to $index');
                 menubarController.selectedIndex = index;
               }
             },
@@ -534,15 +529,7 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
               menubarController.selectedIndex = index;
             },
             onPressed: () {
-              print(
-                'selectedIndex pressed: ${menubarController.selectedIndex} => $index',
-              );
               menubarController.selectedIndex = index;
-              // if (!popoverController.isOpen && selected) {
-              //   popoverController.show();
-              // } else {
-              //   controller.selectedIndex = selected ? null : index;
-              // }
             },
             onLongPress: widget.onLongPress,
             leading: widget.leading,
