@@ -332,8 +332,8 @@ class _ShadPopoverState extends State<ShadPopover>
           controller.hide();
         },
       },
-      child: AnimatedBuilder(
-        animation: animationController,
+      child: ListenableBuilder(
+        listenable: controller,
         builder: (context, _) {
           return ShadPortal(
             portalBuilder: (_) {
@@ -346,7 +346,7 @@ class _ShadPopoverState extends State<ShadPopover>
                 ),
               );
             },
-            visible: !animationController.isDismissed,
+            visible: controller.isOpen,
             anchor: effectiveAnchor,
             child: widget.child,
           );

@@ -27,6 +27,7 @@ class ShadMenubarController extends ChangeNotifier {
 
   /// Sets the selected index of the menubar
   set selectedIndex(int? value) {
+    print('selectedIndex: $_selectedIndex -> $value');
     if (_selectedIndex == value) return;
     _selectedIndex = value;
     notifyListeners();
@@ -422,12 +423,31 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
   ShadPopoverController get popoverController =>
       widget.controller ?? _popoverController!;
 
+  late ShadMenubarController menubarController;
+  late int index;
+
   @override
   void initState() {
     super.initState();
     if (widget.controller == null) {
       _popoverController = ShadPopoverController();
     }
+  }
+
+  void onSelectedIndexChange() {
+    final selected = menubarController.selectedIndex == index;
+    popoverController.setOpen(selected);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    menubarController = context.watch<_ShadMenubarState>().controller;
+    index = context.watch<ShadProviderIndex>().index;
+    print('didChangeDependencies: index=$index');
+
+    menubarController.removeListener(onSelectedIndexChange);
+    menubarController.addListener(onSelectedIndexChange);
   }
 
   @override
@@ -439,9 +459,6 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
   @override
   Widget build(BuildContext context) {
     final inherited = context.watch<_ShadMenubarState>();
-    final controller = inherited.controller;
-    final index = context.watch<ShadProviderIndex>().index;
-
     final theme = ShadTheme.of(context);
     final effectiveAnchor =
         widget.anchor ??
@@ -471,10 +488,9 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
         true;
 
     return ListenableBuilder(
-      listenable: controller,
+      listenable: menubarController,
       builder: (context, child) {
-        final selected = controller.selectedIndex == index;
-        popoverController.setOpen(selected);
+        final selected = menubarController.selectedIndex == index;
         return ShadContextMenu(
           anchor: effectiveAnchor,
           controller: popoverController,
@@ -488,10 +504,12 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
           decoration: widget.decoration ?? theme.menubarTheme.decoration,
           filter: widget.filter ?? theme.menubarTheme.filter,
           onTapUpInside: (_) {
-            controller.selectedIndex = null;
+            print('onTapUpInside: setting selectedIndex to $index');
+            menubarController.selectedIndex = index;
           },
           onTapOutside: (_) {
-            controller.selectedIndex = null;
+            print('onTapOutside: setting selectedIndex to null');
+            menubarController.selectedIndex = null;
           },
           child: ShadButton.raw(
             variant: effectiveVariant,
@@ -505,21 +523,26 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
               widget.onFocusChange?.call(focused);
               // Set the selected index
               if (focused) {
-                controller.selectedIndex = index;
+                print('onFocusChange: setting selectedIndex to $index');
+                menubarController.selectedIndex = index;
               }
             },
             onHoverChange: (hovered) {
               widget.onHoverChange?.call(hovered);
               if (!hovered) return;
               if (!effectiveSelectOnHover) return;
-              controller.selectedIndex = index;
+              menubarController.selectedIndex = index;
             },
             onPressed: () {
-              if (!popoverController.isOpen && selected) {
-                popoverController.show();
-              } else {
-                controller.selectedIndex = selected ? null : index;
-              }
+              print(
+                'selectedIndex pressed: ${menubarController.selectedIndex} => $index',
+              );
+              menubarController.selectedIndex = index;
+              // if (!popoverController.isOpen && selected) {
+              //   popoverController.show();
+              // } else {
+              //   controller.selectedIndex = selected ? null : index;
+              // }
             },
             onLongPress: widget.onLongPress,
             leading: widget.leading,
