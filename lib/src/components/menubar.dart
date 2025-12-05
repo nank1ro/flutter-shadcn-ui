@@ -531,6 +531,10 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
             },
             onPressed: () {
               menubarController.selectedIndex = index;
+              // If selected and popover is not open, open it
+              if (selected && !popoverController.isOpen) {
+                popoverController.show();
+              }
             },
             onLongPress: widget.onLongPress,
             leading: widget.leading,
