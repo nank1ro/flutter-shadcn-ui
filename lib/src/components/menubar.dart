@@ -450,6 +450,7 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
 
   @override
   void dispose() {
+    menubarController.removeListener(onSelectedIndexChange);
     _popoverController?.dispose();
     super.dispose();
   }
