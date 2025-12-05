@@ -330,8 +330,8 @@ class _ShadPopoverState extends State<ShadPopover>
           controller.hide();
         },
       },
-      child: ListenableBuilder(
-        listenable: animationController,
+      child: AnimatedBuilder(
+        animation: animationController,
         builder: (context, _) {
           return ShadPortal(
             portalBuilder: (_) {
