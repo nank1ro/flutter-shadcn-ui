@@ -168,12 +168,11 @@ class ShadPopover extends StatefulWidget {
 
 class _ShadPopoverState extends State<ShadPopover>
     with SingleTickerProviderStateMixin {
+  final _popoverKey = UniqueKey();
   ShadPopoverController? _controller;
   ShadPopoverController get controller => widget.controller ?? _controller!;
 
   late final AnimationController animationController;
-
-  late final _popoverKey = UniqueKey();
 
   // The focus node of the popover.
   // It's used to be able to focus the popover and receive key events.
@@ -194,7 +193,6 @@ class _ShadPopoverState extends State<ShadPopover>
       duration: Animate.defaultDuration,
     );
     controller.addListener(_onPopoverToggle);
-
     _onPopoverToggle();
   }
 
@@ -233,7 +231,6 @@ class _ShadPopoverState extends State<ShadPopover>
       animationController.forward(from: 0);
       // When the popover is opened, request focus
       // to be able to receive key events.
-
       _popoverFocusNode.requestFocus();
     } else {
       animationController.reverse();
@@ -313,6 +310,7 @@ class _ShadPopoverState extends State<ShadPopover>
       popover = ShadAnimate(
         controller: animationController,
         effects: effectiveEffects,
+        autoPlay: false,
         child: popover,
       );
     }
@@ -333,7 +331,7 @@ class _ShadPopoverState extends State<ShadPopover>
         },
       },
       child: ListenableBuilder(
-        listenable: controller,
+        listenable: animationController,
         builder: (context, _) {
           return ShadPortal(
             portalBuilder: (_) {
@@ -346,7 +344,7 @@ class _ShadPopoverState extends State<ShadPopover>
                 ),
               );
             },
-            visible: controller.isOpen,
+            visible: !animationController.isDismissed,
             anchor: effectiveAnchor,
             child: widget.child,
           );
