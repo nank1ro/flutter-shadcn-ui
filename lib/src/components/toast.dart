@@ -675,18 +675,21 @@ class _ShadToastState extends State<ShadToast> {
               );
           return ConstrainedBox(
             constraints: effectiveConstraints,
-            child: ClipRRect(
-              borderRadius: effectiveBorderRadius,
-              child: OverflowBox(
-                alignment: AlignmentDirectional.topCenter,
-                maxHeight: double.infinity,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: effectiveBorder.toBorder(),
-                    borderRadius: effectiveBorderRadius,
-                    boxShadow: effectiveShadows,
-                    color: effectiveBackgroundColor,
-                  ),
+            // DecoratedBox is outside ClipRRect so shadows are not clipped
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: effectiveBorder.toBorder(),
+                borderRadius: effectiveBorderRadius,
+                boxShadow: effectiveShadows,
+                color: effectiveBackgroundColor,
+              ),
+              // ClipRRect clips inner content to border radius when height
+              // is constrained (e.g., in Sonner stacking)
+              child: ClipRRect(
+                borderRadius: effectiveBorderRadius,
+                child: OverflowBox(
+                  alignment: AlignmentDirectional.topCenter,
+                  maxHeight: double.infinity,
                   child: Stack(
                     children: [
                       Padding(
