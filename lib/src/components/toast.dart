@@ -675,7 +675,6 @@ class _ShadToastState extends State<ShadToast> {
               );
           return ConstrainedBox(
             constraints: effectiveConstraints,
-            // DecoratedBox is outside ClipRRect so shadows are not clipped
             child: DecoratedBox(
               decoration: BoxDecoration(
                 border: effectiveBorder.toBorder(),
@@ -683,65 +682,56 @@ class _ShadToastState extends State<ShadToast> {
                 boxShadow: effectiveShadows,
                 color: effectiveBackgroundColor,
               ),
-              // ClipRRect clips inner content to border radius when height
-              // is constrained (e.g., in Sonner stacking)
-              child: ClipRRect(
-                borderRadius: effectiveBorderRadius,
-                child: OverflowBox(
-                  alignment: AlignmentDirectional.topCenter,
-                  maxHeight: double.infinity,
-                  child: Stack(
-                    children: [
-                      Padding(
-                        padding: effectivePadding,
-                        child: Row(
-                          textDirection: effectiveTextDirection,
-                          mainAxisAlignment: effectiveMainAxisAlignment,
-                          mainAxisSize: effectiveMainAxisSize,
-                          crossAxisAlignment: effectiveCrossAxisAlignment,
-                          children: [
-                            Flexible(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  if (widget.title != null)
-                                    DefaultTextStyle(
-                                      style: effectiveTitleStyle,
-                                      child: widget.title!,
-                                    ),
-                                  if (widget.description != null)
-                                    DefaultTextStyle(
-                                      style: effectiveDescriptionStyle,
-                                      child: widget.description!,
-                                    ),
-                                ],
-                              ),
-                            ),
-                            if (widget.action != null)
-                              Padding(
-                                padding: effectiveActionPadding,
-                                child: widget.action,
-                              ),
-                          ],
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: effectivePadding,
+                    child: Row(
+                      textDirection: effectiveTextDirection,
+                      mainAxisAlignment: effectiveMainAxisAlignment,
+                      mainAxisSize: effectiveMainAxisSize,
+                      crossAxisAlignment: effectiveCrossAxisAlignment,
+                      children: [
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (widget.title != null)
+                                DefaultTextStyle(
+                                  style: effectiveTitleStyle,
+                                  child: widget.title!,
+                                ),
+                              if (widget.description != null)
+                                DefaultTextStyle(
+                                  style: effectiveDescriptionStyle,
+                                  child: widget.description!,
+                                ),
+                            ],
+                          ),
                         ),
-                      ),
-                      ValueListenableBuilder(
-                        valueListenable: hovered,
-                        builder: (context, hovered, child) {
-                          if (!effectiveShowCloseIconOnlyWhenHovered) {
-                            return child!;
-                          }
-                          return Visibility.maintain(
-                            visible: hovered,
-                            child: child!,
-                          );
-                        },
-                        child: effectiveCloseIcon,
-                      ).positionedWith(effectiveCloseIconPosition),
-                    ],
+                        if (widget.action != null)
+                          Padding(
+                            padding: effectiveActionPadding,
+                            child: widget.action,
+                          ),
+                      ],
+                    ),
                   ),
-                ),
+                  ValueListenableBuilder(
+                    valueListenable: hovered,
+                    builder: (context, hovered, child) {
+                      if (!effectiveShowCloseIconOnlyWhenHovered) {
+                        return child!;
+                      }
+                      return Visibility.maintain(
+                        visible: hovered,
+                        child: child!,
+                      );
+                    },
+                    child: effectiveCloseIcon,
+                  ).positionedWith(effectiveCloseIconPosition),
+                ],
               ),
             ),
           );

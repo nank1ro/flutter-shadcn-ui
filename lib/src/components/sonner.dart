@@ -527,7 +527,14 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
                                     effects: toastInfo.temporarelyHide
                                         ? effectiveAnimateOut
                                         : effectiveAnimateIn,
-                                    child: toast,
+                                    child: ClipRect(
+                                      child: OverflowBox(
+                                        alignment:
+                                            AlignmentDirectional.topStart,
+                                        maxHeight: double.infinity,
+                                        child: toast,
+                                      ),
+                                    ),
                                   ),
                                 );
                               }).toList(),
