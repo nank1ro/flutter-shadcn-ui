@@ -1,3 +1,8 @@
+## 0.40.4
+
+- **FIX**: `ShadPopover` dismissal animation when multiple popovers were opened quickly one after another. This affected components like `ShadContextMenu` and `ShadMenubar`.
+- **FIX**: `ShadMenubar` onPressed behavior, so mobile taps now open/close the menubar items correctly.
+
 ## 0.40.3
 
 - **FIX**: `ShadButton` constraints regression when using a `LayoutBuilder` as child.
