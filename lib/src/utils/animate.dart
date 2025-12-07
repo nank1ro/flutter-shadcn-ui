@@ -145,7 +145,6 @@ class _ShadAnimateState extends State<ShadAnimate>
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _play();
       });
-      // _play();
     } else {
       _delayed = Future.delayed(widget.delay, _play);
     }
