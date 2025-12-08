@@ -1,3 +1,7 @@
+## 0.40.5
+
+- **FIX**: `ShadSonner` height normalization for stacked toasts with different heights.
+
 ## 0.40.4
 
 - **FIX**: `ShadPopover` dismissal animation when multiple popovers were opened quickly one after another. This affected components like `ShadContextMenu` and `ShadMenubar`.
