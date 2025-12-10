@@ -1,6 +1,6 @@
 ## 0.40.6
 
-- **FIX**: Add `maxLength` Prop to `ShadTextarea` Component
+- **FIX**: Add `maxLength` parameter to `ShadTextarea` (thanks to @mickey35vn).
 
 ## 0.40.5
 
