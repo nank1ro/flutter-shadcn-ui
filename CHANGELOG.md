@@ -1,3 +1,7 @@
+## 0.40.6
+
+- **FIX**: Add `maxLength` parameter to `ShadTextarea` (thanks to @mickey35vn).
+
 ## 0.40.5
 
 - **FIX**: `ShadSonner` height normalization for stacked toasts with different heights.
