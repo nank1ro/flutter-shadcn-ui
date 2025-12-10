@@ -1,3 +1,7 @@
+## 0.40.6
+
+- **FIX**: Add `maxLength` Prop to `ShadTextarea` Component
+
 ## 0.40.5
 
 - **FIX**: `ShadSonner` height normalization for stacked toasts with different heights.
