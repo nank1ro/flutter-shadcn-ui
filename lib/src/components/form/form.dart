@@ -153,17 +153,15 @@ class ShadFormState extends State<ShadForm> {
       ..setValue(_value[id]);
   }
 
-  /// Sets the value for a form field with the specified id
+  /// Sets multiple form field values at once
   ///
-  /// The [value] parameter is the new value to set for the field.
-  /// This will call the `didChange` method of the field state to update its
-  /// value and all the side effects, like validation and notifying listeners.
+  /// The [values] parameter is a map of field ids to their new values.
+  /// This will update the internal form values map with the provided values.
   ///
-  /// If you don't want to trigger those side effects, but only want to change
-  /// the form's map value use [setInternalFieldValue] instead.
-  void setValue<T>(String id, T? value) {
-    setInternalFieldValue(id, value);
-    _fields[id]?.didChange(value);
+  /// If you want to update a single field and trigger validation and listeners,
+  /// use [setFieldValue] instead.
+  void setValue(Map<String, dynamic> values) {
+    _value.addAll(values);
   }
 
   /// Sets the value for a form field with the specified id
@@ -182,7 +180,7 @@ class ShadFormState extends State<ShadForm> {
   /// Sets internal value for a form field without calling didChange
   ///
   /// If you want to trigger all side effects like validation and notifying
-  /// listeners, use [setValue] instead.
+  /// listeners, use [setFieldValue] instead.
   void setInternalFieldValue<T>(String id, T? value) {
     _value[id] = value;
   }
