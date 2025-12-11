@@ -161,6 +161,11 @@ class ShadFormState extends State<ShadForm> {
   ///
   /// If you don't want to trigger those side effects, but only want to change
   /// the form's map value use [setInternalFieldValue] instead.
+  @Deprecated(
+    'Use setInternalFieldValue instead. '
+    'setValue triggers didChange which may cause unexpected side effects. '
+    'If you need to trigger validation and listeners, call didChange on the field directly.',
+  )
   void setValue<T>(String id, T? value) {
     setInternalFieldValue(id, value);
     _fields[id]?.didChange(value);
