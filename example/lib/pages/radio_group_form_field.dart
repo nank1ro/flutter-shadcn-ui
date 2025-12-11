@@ -68,13 +68,7 @@ class _RadioGroupFormFieldPageState extends State<RadioGroupFormFieldPage> {
             value: NotifyAbout.nothing,
             values: NotifyAbout.values,
             onChanged: (value) {
-              setState(() {
-                initialValue = value;
-              });
-              // Reset the form
-              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                formKey.currentState!.reset();
-              });
+              formKey.currentState!.setValue('notify', value);
             },
           ),
         ],

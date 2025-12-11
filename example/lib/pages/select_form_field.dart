@@ -61,11 +61,7 @@ class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
             initialValue: initialValue,
             placeholder: const Text('Form Initial Value'),
             onChanged: (v) {
-              setState(() => initialValue = v);
-              // Reset the form
-              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                formKey.currentState!.reset();
-              });
+              formKey.currentState!.setValue('email', v);
             },
             selectedOptionBuilder: (context, value) => Text(
               value.toString(),

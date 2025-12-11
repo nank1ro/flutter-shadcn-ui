@@ -1,3 +1,8 @@
+## 0.41.0
+
+- **FEAT**: Add `setValue` to `ShadForm` to manipulate the value of a form field programmatically.
+- **BREAKING CHANGE**: The map stored by `ShadForm` now uses `String` as a key instead of `Object`. Every form field `id` must be a `String` now. This change was made for convenience with JSON serialization.
+
 ## 0.40.6
 
 - **FIX**: Add `maxLength` parameter to `ShadTextarea` (thanks to @mickey35vn).

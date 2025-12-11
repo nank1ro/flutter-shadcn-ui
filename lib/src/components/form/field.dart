@@ -65,7 +65,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
   /// An optional identifier used to reference the field within a [ShadForm].
   /// Enables form data retrieval or field manipulation post-submission.
   /// {@endtemplate}
-  final Object? id;
+  final String? id;
 
   /// {@template ShadFormBuilderField.focusNode}
   /// The focus node for keyboard navigation and focus handling.
@@ -259,7 +259,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   }
 
   /// Registers the field’s value transformer with the provided map.
-  void registerTransformer(Map<Object, Function> map) {
+  void registerTransformer(Map<String, Function> map) {
     if (widget.id == null) return;
     final fun = widget.valueTransformer;
     if (fun != null) {

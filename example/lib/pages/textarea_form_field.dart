@@ -55,12 +55,7 @@ class _TextareaFormFieldPageState extends State<TextareaFormFieldPage> {
             initialValue: initialValue,
             placeholder: const Text('Enter your bio...'),
             onChanged: (value) {
-              setState(() {
-                value.isEmpty ? initialValue = null : initialValue = value;
-              });
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                formKey.currentState!.reset();
-              });
+              formKey.currentState!.setValue('bio', value);
             },
           ),
         ],

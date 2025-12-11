@@ -19,7 +19,7 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
     super.enabled,
     super.autovalidateMode,
     super.restorationId,
-    required bool initialValue,
+    required bool super.initialValue,
     super.focusNode,
 
     /// {@macro ShadCheckbox.decoration}
@@ -58,7 +58,6 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
     /// {@macro ShadCheckbox.checkboxPadding}
     EdgeInsetsGeometry? checkboxPadding,
   }) : super(
-         initialValue: initialValue,
          onChanged: onChanged == null ? null : (v) => onChanged(v ?? false),
          validator: validator == null ? null : (v) => validator(v ?? false),
          decorationBuilder: (context) =>
