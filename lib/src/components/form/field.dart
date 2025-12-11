@@ -203,7 +203,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     }
 
     if (widget.readOnly != oldWidget.readOnly) {
-      _focusNode?.canRequestFocus = widget.readOnly;
+      _focusNode?.canRequestFocus = !widget.readOnly;
     }
   }
 
