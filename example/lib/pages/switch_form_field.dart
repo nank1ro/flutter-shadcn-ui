@@ -52,7 +52,7 @@ class _SwitchFormFieldPageState extends State<SwitchFormFieldPage> {
             label: 'Form Initial Value',
             value: initialValue,
             onChanged: (value) {
-              formKey.currentState!.setInternalFieldValue('terms', value);
+              formKey.currentState!.setFieldValue('terms', value);
               setState(() {
                 initialValue = value;
               });

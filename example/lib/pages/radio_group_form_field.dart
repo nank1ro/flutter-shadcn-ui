@@ -68,7 +68,7 @@ class _RadioGroupFormFieldPageState extends State<RadioGroupFormFieldPage> {
             value: NotifyAbout.nothing,
             values: NotifyAbout.values,
             onChanged: (value) {
-              formKey.currentState!.setInternalFieldValue('notify', value);
+              formKey.currentState!.setFieldValue('notify', value);
             },
           ),
         ],
