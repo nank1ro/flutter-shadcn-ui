@@ -802,6 +802,12 @@ class _ShadFormBuilderSelectMultipleState<T>
   }
 
   @override
+  void didChange(Set<T>? value) {
+    super.didChange(value);
+    controller.value = value ?? {};
+  }
+
+  @override
   void dispose() {
     controller.removeListener(onControllerChange);
     _controller?.dispose();
@@ -809,7 +815,9 @@ class _ShadFormBuilderSelectMultipleState<T>
   }
 
   void onControllerChange() {
-    didChange(controller.value.toSet());
+    if (controller.value != value) {
+      didChange(controller.value.toSet());
+    }
   }
 
   @override
