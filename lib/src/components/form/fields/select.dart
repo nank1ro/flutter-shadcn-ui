@@ -438,6 +438,12 @@ class _ShadFormBuilderSelectState<T>
   }
 
   @override
+  void didChange(T? value) {
+    super.didChange(value);
+    controller.value = value is T ? <T>{value} : <T>{};
+  }
+
+  @override
   void dispose() {
     controller.removeListener(onControllerChange);
     _controller?.dispose();
@@ -445,7 +451,9 @@ class _ShadFormBuilderSelectState<T>
   }
 
   void onControllerChange() {
-    didChange(controller.value.firstOrNull);
+    if (controller.value.firstOrNull != value) {
+      didChange(controller.value.firstOrNull);
+    }
   }
 
   @override
@@ -794,6 +802,12 @@ class _ShadFormBuilderSelectMultipleState<T>
   }
 
   @override
+  void didChange(Set<T>? value) {
+    super.didChange(value);
+    controller.value = value ?? {};
+  }
+
+  @override
   void dispose() {
     controller.removeListener(onControllerChange);
     _controller?.dispose();
@@ -801,7 +815,9 @@ class _ShadFormBuilderSelectMultipleState<T>
   }
 
   void onControllerChange() {
-    didChange(controller.value.toSet());
+    if (controller.value != value) {
+      didChange(controller.value.toSet());
+    }
   }
 
   @override

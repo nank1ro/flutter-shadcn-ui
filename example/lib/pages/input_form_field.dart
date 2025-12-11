@@ -51,13 +51,7 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
             initialValue: initialValue,
             placeholder: const Text('Name'),
             onChanged: (value) {
-              setState(() {
-                value.isEmpty ? initialValue = null : initialValue = value;
-              });
-              // Reset the form
-              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                formKey.currentState!.reset();
-              });
+              formKey.currentState!.setValue('username', value);
             },
           ),
         ],
