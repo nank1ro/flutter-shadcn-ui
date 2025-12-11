@@ -52,9 +52,6 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
             placeholder: const Text('Name'),
             onChanged: (value) {
               formKey.currentState!.setValue('username', value);
-              // setState(() {
-              //   value.isEmpty ? initialValue = null : initialValue = value;
-              // });
             },
           ),
         ],
