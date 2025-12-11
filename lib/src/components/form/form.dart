@@ -155,8 +155,6 @@ class ShadFormState extends State<ShadForm> {
 
   /// Sets the value for a form field with the specified id
   ///
-  /// Throws if the field with [id] is not registered with the form.
-  ///
   /// The [value] parameter is the new value to set for the field.
   /// This will call the `didChange` method of the field state to update its
   /// value and all the side effects, like validation and notifying listeners.
@@ -169,8 +167,6 @@ class ShadFormState extends State<ShadForm> {
   }
 
   /// Sets internal value for a form field without calling didChange
-  ///
-  /// Throws if the field with [id] is not registered with the form.
   ///
   /// If you want to trigger all side effects like validation and notifying
   /// listeners, use [setValue] instead.
