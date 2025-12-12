@@ -1,6 +1,5 @@
 ## 0.42.0
 
-- **BREAKING CHANGE**: Remove `removeInternalFieldValue` from `ShadFormState`.
 - **BREAKING CHANGE**: The old `setValue` has been renamed into `setFieldValue` to better reflect its purpose, and now accepts a `notifyField` boolean parameter (defaults to `true`) to control whether to notify the form field of the value change.
 - **BREAKING CHANGE**: The method `setInternalFieldError` has been renamed into `setFieldError` for consistency.
 - **BREAKING CHANGE**: The method `setInternalError` in `ShadFormBuilderFieldState` has been renamed into `setError` for consistency.
