@@ -182,13 +182,18 @@ class ShadFormState extends State<ShadForm> {
 
     /// When true, removes keys from the form value that are not present in
     /// the provided [value] map.
-    bool clearMissing = false,
+    bool removeMissing = false,
+
+    /// When true, notifies the removed form fields of the value changes
+    bool notifyRemovedFields = false,
   }) {
-    if (clearMissing) {
+    if (removeMissing) {
       final keysToRemove = _value.keys
           .where((key) => !value.containsKey(key))
           .toList();
-      keysToRemove.forEach(_value.remove);
+      for (final id in keysToRemove) {
+        removeFieldValue(id, notifyField: notifyRemovedFields);
+      }
     }
     for (final entry in value.entries) {
       if (notifyFields) {
@@ -215,8 +220,14 @@ class ShadFormState extends State<ShadForm> {
   }
 
   /// Removes internal field value
-  void removeFieldValue(String id) {
+  void removeFieldValue(String id, {bool notifyField = false}) {
     _value.remove(id);
+    if (notifyField) {
+      final field = _fields[id];
+      if (field != null) {
+        field.didChange(null);
+      }
+    }
   }
 
   /// Unregisters a form field
