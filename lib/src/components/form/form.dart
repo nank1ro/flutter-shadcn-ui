@@ -225,7 +225,7 @@ class ShadFormState extends State<ShadForm> {
     if (notifyField) {
       final field = _fields[id];
       if (field != null) {
-        field.didChange(field.initialValue);
+        field.didChange(field.initialValue ?? initialValue[id]);
       }
     }
   }
