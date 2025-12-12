@@ -167,7 +167,8 @@ class ShadFormState extends State<ShadForm> {
     if (notifyField) _fields[id]?.didChange(value);
   }
 
-  /// Sets the form value, and optionally clears missing keys.
+  /// Merges the provided entries into the form value; optionally removes keys
+  /// missing from the provided map.
   ///
   /// If [notifyFields] is true (the default), this will call the `didChange`
   /// method of each field state to update its value and all the side effects,
@@ -184,7 +185,7 @@ class ShadFormState extends State<ShadForm> {
     /// the provided [value] map.
     bool removeMissing = false,
 
-    /// When true, notifies the removed form fields of the value changes
+    /// When true (and `removeMissing` is true), notifies removed fields.
     bool notifyRemovedFields = false,
   }) {
     if (removeMissing) {
