@@ -156,27 +156,59 @@ class ShadFormState extends State<ShadForm> {
   /// Sets the value for a form field with the specified id
   ///
   /// The [value] parameter is the new value to set for the field.
-  /// This will call the `didChange` method of the field state to update its
-  /// value and all the side effects, like validation and notifying listeners.
+  /// If [notifyField] is true (the default), this will call the `didChange`
+  /// method of the field state to update its value and all the side effects,
+  /// like validation and notifying listeners.
   ///
   /// If you don't want to trigger those side effects, but only want to change
-  /// the form's map value use [setInternalFieldValue] instead.
-  void setValue<T>(String id, T? value) {
-    setInternalFieldValue(id, value);
-    _fields[id]?.didChange(value);
+  /// the form's map value set [notifyField] to false.
+  void setFieldValue<T>(String id, T? value, {bool notifyField = true}) {
+    _value[id] = value;
+    if (notifyField) _fields[id]?.didChange(value);
   }
 
-  /// Sets internal value for a form field without calling didChange
+  /// Merges the provided entries into the form value; optionally removes keys
+  /// missing from the provided map.
   ///
-  /// If you want to trigger all side effects like validation and notifying
-  /// listeners, use [setValue] instead.
-  void setInternalFieldValue<T>(String id, T? value) {
-    _value[id] = value;
+  /// If [notifyFields] is true (the default), this will call the `didChange`
+  /// method of each field state to update its value and all the side effects,
+  /// like validation and notifying listeners.
+  ///
+  /// Only the fields with an updated value will be notified.
+  void setValue(
+    Map<String, dynamic> value, {
+
+    /// When true, notifies the changed form fields of the value changes
+    bool notifyFields = true,
+
+    /// When true, removes keys from the form value that are not present in
+    /// the provided [value] map.
+    bool removeMissing = false,
+
+    /// When true (and `removeMissing` is true), notifies removed fields.
+    bool notifyRemovedFields = false,
+  }) {
+    if (removeMissing) {
+      final keysToRemove = _value.keys
+          .where((key) => !value.containsKey(key))
+          .toList();
+      for (final id in keysToRemove) {
+        removeFieldValue(id, notifyField: notifyRemovedFields);
+      }
+    }
+    for (final entry in value.entries) {
+      final field = _fields[entry.key];
+      final oldValue = _value[entry.key];
+      _value[entry.key] = entry.value;
+      if (notifyFields && field != null && oldValue != entry.value) {
+        field.didChange(entry.value);
+      }
+    }
   }
 
   /// Sets forced internal error for a form field
   /// Throws if the field with [id] is not registered with the form.
-  void setInternalFieldError(String id, String? error) {
+  void setFieldError(String id, String? error) {
     final field = _fields[id];
     if (field == null) {
       throw FlutterError(
@@ -184,12 +216,19 @@ class ShadFormState extends State<ShadForm> {
         'Make sure the field is registered with the form.',
       );
     }
-    field.setInternalError(error);
+    field.setError(error);
   }
 
   /// Removes internal field value
-  void removeInternalFieldValue(String id) {
+  ///
+  /// If [notifyField] is true, this will call the form field `didChange` method
+  /// with a `null` value
+  void removeFieldValue(String id, {bool notifyField = false}) {
     _value.remove(id);
+    if (notifyField) {
+      final field = _fields[id];
+      if (field != null) field.didChange(null);
+    }
   }
 
   /// Unregisters a form field
@@ -200,7 +239,7 @@ class ShadFormState extends State<ShadForm> {
     _fields.remove(id);
     _transformers.remove(id);
     if (widget.clearValueOnUnregister) {
-      _value.remove(id);
+      removeFieldValue(id);
     }
   }
 

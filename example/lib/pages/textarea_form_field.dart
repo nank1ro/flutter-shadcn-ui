@@ -55,7 +55,7 @@ class _TextareaFormFieldPageState extends State<TextareaFormFieldPage> {
             initialValue: initialValue,
             placeholder: const Text('Enter your bio...'),
             onChanged: (value) {
-              formKey.currentState!.setValue('bio', value);
+              formKey.currentState!.setFieldValue('bio', value);
             },
           ),
         ],
@@ -83,10 +83,10 @@ class _TextareaFormFieldPageState extends State<TextareaFormFieldPage> {
                 ShadButton(
                   child: const Text('Submit'),
                   onPressed: () {
-                    ShadToaster.of(context).show(
-                      ShadToast(title: Text('Form submitted successfylly')),
-                    );
                     if (formKey.currentState!.saveAndValidate()) {
+                      ShadToaster.of(context).show(
+                        ShadToast(title: Text('Form submitted successfully')),
+                      );
                       setState(() {
                         formValue = formKey.currentState!.value;
                       });

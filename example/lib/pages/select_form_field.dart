@@ -61,7 +61,7 @@ class _SelectFormFieldPageState extends State<SelectFormFieldPage> {
             initialValue: initialValue,
             placeholder: const Text('Form Initial Value'),
             onChanged: (v) {
-              formKey.currentState!.setValue('email', v);
+              formKey.currentState!.setFieldValue('email', v);
             },
             selectedOptionBuilder: (context, value) => Text(
               value.toString(),

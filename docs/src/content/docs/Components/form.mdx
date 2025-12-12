@@ -8,6 +8,11 @@ import Preview from "../../../components/Preview.astro";
 
 Builds a form with validation and easy access to form fields values.
 
+The benefits of using `ShadForm` over managing form fields individually are:
+- Centralized form state management.
+- Easy access to all form field values as a single `Map<String, dynamic>`.
+- No need to manage individual controllers for each form field.
+
 <Preview src="form" minHeight="300px">
 
 ```dart
@@ -70,6 +75,94 @@ class _FormPageState extends State<FormPage> {
 ```
 
 </Preview>
+
+## Initial form value
+
+You can set the initial form value by passing a `Map<String, dynamic>` to the `initialValue` property of the `ShadForm` widget.
+
+```dart {2-5}
+ShadForm(
+  initialValue: {
+    'username': 'john_doe',
+    'email': 'john_doe@example.com'
+  },
+  child: // Your form fields here
+)
+```
+
+All form fields with matching `id`s will be initialized with the corresponding values from the `initialValue` map.
+Unless they have their own `initialValue` set.
+
+## Get the form value
+
+You can get the current form value by accessing the `value` property of `ShadFormState` using a `GlobalKey`.
+
+```dart {8-10}
+final formKey = GlobalKey<ShadFormState>();
+
+// Your Form widget
+ShadForm(
+  key: formKey,
+),
+
+// To get the form value
+final formValue = formKey.currentState!.value; // Returns a Map<String, dynamic> with the form field values
+```
+
+You typically need this after getting a successful value from the `saveAndValidate` method, for example:
+```dart {4-8}
+ShadButton(
+  child: const Text('Submit'),
+  onPressed: () {
+    final formState = formKey.currentState!;
+    // The form is not valid, return early
+    if (!formState.saveAndValidate()) return;
+    // The form is valid, print the form value
+    print('Form value: ${formState.value}');
+  },
+),
+```
+
+## Manipulate single form field value
+
+You can set or update the value of specific form fields using the `setFieldValue` method of `ShadFormState`.
+
+```dart {8-10}
+final formKey = GlobalKey<ShadFormState>();
+
+// Your Form widget
+ShadForm(
+  key: formKey,
+),
+
+// To set or update a specific field value
+formKey.currentState!.setFieldValue('username', 'new_username');
+```
+
+If you don't want to notify the field about the value change, you can pass `notifyField: false` as argument.
+This would only update the form value without updating the field UI.
+
+## Manipulate entire form value
+
+You can set or update the entire form value using the `setValue` method of `ShadFormState`.
+
+```dart {8-12}
+final formKey = GlobalKey<ShadFormState>();
+
+// Your Form widget
+ShadForm(
+  key: formKey,
+),
+
+// To set or update the entire form value
+formKey.currentState!.setValue({
+  'username': 'new_username',
+  'email': 'example@email.com'
+});
+```
+
+If you don't want to notify the fields about the value change, you can pass `notifyFields: false` as argument.
+This would only update the form value without updating the fields UI.
 
 ## Examples
 

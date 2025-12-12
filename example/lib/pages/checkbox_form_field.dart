@@ -52,7 +52,7 @@ class _CheckboxFormFieldPageState extends State<CheckboxFormFieldPage> {
             label: 'Form Initial Value',
             value: initialValue,
             onChanged: (value) {
-              formKey.currentState!.setValue('terms', value);
+              formKey.currentState!.setFieldValue('terms', value);
               setState(() {
                 initialValue = value;
               });
