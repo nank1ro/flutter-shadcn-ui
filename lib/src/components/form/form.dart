@@ -219,13 +219,14 @@ class ShadFormState extends State<ShadForm> {
   }
 
   /// Removes internal field value
+  ///
+  /// If [notifyField] is true, this will call the form field `didChange` method
+  /// with a `null` value
   void removeFieldValue(String id, {bool notifyField = false}) {
     _value.remove(id);
     if (notifyField) {
       final field = _fields[id];
-      if (field != null) {
-        field.didChange(field.initialValue ?? initialValue[id]);
-      }
+      if (field != null) field.didChange(null);
     }
   }
 
