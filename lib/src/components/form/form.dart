@@ -196,13 +196,12 @@ class ShadFormState extends State<ShadForm> {
       }
     }
     for (final entry in value.entries) {
-      if (notifyFields) {
-        final field = _fields[entry.key];
-        if (field != null && field.value != entry.value) {
-          field.didChange(entry.value);
-        }
-      }
+      final field = _fields[entry.key];
+      final oldValue = _value[entry.key];
       _value[entry.key] = entry.value;
+      if (notifyFields && field != null && oldValue != entry.value) {
+        field.didChange(entry.value);
+      }
     }
   }
 
