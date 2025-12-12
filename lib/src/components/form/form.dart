@@ -156,27 +156,39 @@ class ShadFormState extends State<ShadForm> {
   /// Sets the value for a form field with the specified id
   ///
   /// The [value] parameter is the new value to set for the field.
-  /// This will call the `didChange` method of the field state to update its
-  /// value and all the side effects, like validation and notifying listeners.
+  /// If [notifyField] is true (the default), this will call the `didChange`
+  /// method of the field state to update its value and all the side effects,
+  /// like validation and notifying listeners.
   ///
   /// If you don't want to trigger those side effects, but only want to change
-  /// the form's map value use [setInternalFieldValue] instead.
-  void setValue<T>(String id, T? value) {
-    setInternalFieldValue(id, value);
-    _fields[id]?.didChange(value);
+  /// the form's map value set [notifyField] to false.
+  void setFieldValue<T>(String id, T? value, {bool notifyField = true}) {
+    _value[id] = value;
+    if (notifyField) _fields[id]?.didChange(value);
   }
 
-  /// Sets internal value for a form field without calling didChange
+  /// Sets the form value, replacing all existing field values
   ///
-  /// If you want to trigger all side effects like validation and notifying
-  /// listeners, use [setValue] instead.
-  void setInternalFieldValue<T>(String id, T? value) {
-    _value[id] = value;
+  /// If [notifyFields] is true (the default), this will call the `didChange`
+  /// method of each field state to update its value and all the side effects,
+  /// like validation and notifying listeners.
+  ///
+  /// Only the fields with an updated value will be notified.
+  void setValue(Map<String, dynamic> value, {bool notifyFields = true}) {
+    for (final entry in value.entries) {
+      if (notifyFields) {
+        final field = _fields[entry.key];
+        if (field != null && field.value != entry.value) {
+          field.didChange(entry.value);
+        }
+      }
+      _value[entry.key] = entry.value;
+    }
   }
 
   /// Sets forced internal error for a form field
   /// Throws if the field with [id] is not registered with the form.
-  void setInternalFieldError(String id, String? error) {
+  void setFieldError(String id, String? error) {
     final field = _fields[id];
     if (field == null) {
       throw FlutterError(
@@ -184,11 +196,11 @@ class ShadFormState extends State<ShadForm> {
         'Make sure the field is registered with the form.',
       );
     }
-    field.setInternalError(error);
+    field.setError(error);
   }
 
   /// Removes internal field value
-  void removeInternalFieldValue(String id) {
+  void removeFieldValue(String id) {
     _value.remove(id);
   }
 
@@ -200,7 +212,7 @@ class ShadFormState extends State<ShadForm> {
     _fields.remove(id);
     _transformers.remove(id);
     if (widget.clearValueOnUnregister) {
-      _value.remove(id);
+      removeFieldValue(id);
     }
   }
 

@@ -160,7 +160,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   bool get hasError => forceErrorText != null || super.hasError;
 
   /// Sets an internal error message that overrides validation errors.
-  void setInternalError(String? error) {
+  void setError(String? error) {
     setState(() {
       _forceErrorText = error;
     });
@@ -250,11 +250,11 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     if (_parentForm != null) {
       if (enabled) {
         if (widget.id != null) {
-          _parentForm!.setInternalFieldValue<T>(widget.id!, value);
+          _parentForm!.setFieldValue<T>(widget.id!, value, notifyField: false);
         }
         return;
       }
-      if (widget.id != null) _parentForm!.removeInternalFieldValue(widget.id!);
+      if (widget.id != null) _parentForm!.removeFieldValue(widget.id!);
     }
   }
 

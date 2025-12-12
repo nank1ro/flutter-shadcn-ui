@@ -55,7 +55,7 @@ class _TextareaFormFieldPageState extends State<TextareaFormFieldPage> {
             initialValue: initialValue,
             placeholder: const Text('Enter your bio...'),
             onChanged: (value) {
-              formKey.currentState!.setValue('bio', value);
+              formKey.currentState!.setFieldValue('bio', value);
             },
           ),
         ],
