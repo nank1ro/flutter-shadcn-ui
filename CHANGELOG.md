@@ -1,8 +1,8 @@
 ## 0.42.0
 
 - **BREAKING CHANGE**: The old `setValue` has been renamed into `setFieldValue` to better reflect its purpose, and now accepts a `notifyField` boolean parameter (defaults to `true`) to control whether to notify the form field of the value change.
-- **BREAKING CHANGE**: The method `setInternalFieldError` has been renamed into `setFieldError` for consistency.
-- **BREAKING CHANGE**: The method `setInternalError` in `ShadFormBuilderFieldState` has been renamed into `setError` for consistency.
+- **BREAKING CHANGE**: `ShadFormBuilderFieldState.setInternalError` has been renamed into `setError` for consistency.
+- **BREAKING CHANGE**: `ShadFormState.removeInternalFieldValue` has been renamed into `removeFieldValue` for consistency.
 - **BREAKING CHANGE**: The method `removeInternalFieldValue` in `ShadFormState` has been renamed into `removeFieldValue` for consistency.
 - **BREAKING CHANGE**: Now `setValue` takes a `Map<String, dynamic>` as value and updates the entire form value. It also accepts a `notifyFields` boolean parameter (defaults to `true`) to control whether to notify the changed form fields of the value changes.
 
