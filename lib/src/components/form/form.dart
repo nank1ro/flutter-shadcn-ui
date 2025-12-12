@@ -167,14 +167,29 @@ class ShadFormState extends State<ShadForm> {
     if (notifyField) _fields[id]?.didChange(value);
   }
 
-  /// Sets the form value, replacing all existing field values
+  /// Sets the form value, and optionally clears missing keys.
   ///
   /// If [notifyFields] is true (the default), this will call the `didChange`
   /// method of each field state to update its value and all the side effects,
   /// like validation and notifying listeners.
   ///
   /// Only the fields with an updated value will be notified.
-  void setValue(Map<String, dynamic> value, {bool notifyFields = true}) {
+  void setValue(
+    Map<String, dynamic> value, {
+
+    /// When true, notifies the changed form fields of the value changes
+    bool notifyFields = true,
+
+    /// When true, removes keys from the form value that are not present in
+    /// the provided [value] map.
+    bool clearMissing = false,
+  }) {
+    if (clearMissing) {
+      final keysToRemove = _value.keys
+          .where((key) => !value.containsKey(key))
+          .toList();
+      keysToRemove.forEach(_value.remove);
+    }
     for (final entry in value.entries) {
       if (notifyFields) {
         final field = _fields[entry.key];

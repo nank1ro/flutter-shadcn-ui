@@ -84,7 +84,7 @@ class _TextareaFormFieldPageState extends State<TextareaFormFieldPage> {
                   child: const Text('Submit'),
                   onPressed: () {
                     ShadToaster.of(context).show(
-                      ShadToast(title: Text('Form submitted successfylly')),
+                      ShadToast(title: Text('Form submitted successfully')),
                     );
                     if (formKey.currentState!.saveAndValidate()) {
                       setState(() {
