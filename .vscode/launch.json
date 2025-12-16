@@ -1,24 +1,21 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Example",
-            "cwd": "example",
-            "request": "launch",
-            "type": "dart",
-        },
-        {
-            "name": "Playground",
-            "cwd": "playground",
-            "request": "launch",
-            "type": "dart",
-            "args": [
-                "-d",
-                "chrome",
-            ]
-        },
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Example",
+      "cwd": "example",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "Playground",
+      "cwd": "playground",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "-d",
+        "chrome"
+      ]
+    }
+  ]
 }
