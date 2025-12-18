@@ -291,8 +291,11 @@ class ShadDateRangePickerFormField
     /// {@macro ShadButton.onLongPress}
     VoidCallback? onLongPress,
 
-    /// {@macro ShadButton.icon}
-    Widget? icon,
+    /// {@macro ShadButton.leading}
+    Widget? leading,
+
+    /// {@macro ShadButton.trailing}
+    Widget? trailing,
 
     /// {@macro ShadDatePicker.iconData}
     IconData? iconData,
@@ -438,7 +441,8 @@ class ShadDateRangePickerFormField
              onRangeChanged: state.didChange,
              enabled: state.enabled,
              focusNode: state.focusNode,
-             icon: icon,
+             leading: leading,
+             trailing: trailing,
              decoration: state.decoration,
              selected: state.value,
              popoverController: popoverController,

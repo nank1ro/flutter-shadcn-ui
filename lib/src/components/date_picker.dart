@@ -118,7 +118,7 @@ class ShadDatePicker extends StatefulWidget {
     this.useSameGroupIdForChild = true,
     this.onPressed,
     this.onLongPress,
-    this.icon,
+    this.leading,
     this.buttonChild,
     this.buttonVariant,
     this.size,
@@ -167,6 +167,7 @@ class ShadDatePicker extends StatefulWidget {
     this.expands,
     this.popoverReverseDuration,
     this.buttonTextStyle,
+    this.trailing,
   }) : variant = ShadDatePickerVariant.single,
        formatDateRange = null,
        selectedRange = null;
@@ -261,7 +262,7 @@ class ShadDatePicker extends StatefulWidget {
     this.useSameGroupIdForChild = true,
     this.onPressed,
     this.onLongPress,
-    this.icon,
+    this.leading,
     this.buttonChild,
     this.buttonVariant,
     this.size,
@@ -310,6 +311,7 @@ class ShadDatePicker extends StatefulWidget {
     this.expands,
     this.popoverReverseDuration,
     this.buttonTextStyle,
+    this.trailing,
   }) : variant = ShadDatePickerVariant.range,
        selected = null,
        formatDate = null,
@@ -407,7 +409,7 @@ class ShadDatePicker extends StatefulWidget {
     this.useSameGroupIdForChild = true,
     this.onPressed,
     this.onLongPress,
-    this.icon,
+    this.leading,
     this.buttonChild,
     this.buttonVariant,
     this.size,
@@ -458,6 +460,7 @@ class ShadDatePicker extends StatefulWidget {
     this.expands,
     this.popoverReverseDuration,
     this.buttonTextStyle,
+    this.trailing,
   });
 
   /// {@template ShadDatePicker.placeholder}
@@ -767,8 +770,11 @@ class ShadDatePicker extends StatefulWidget {
   /// {@macro ShadButton.onLongPress}
   final VoidCallback? onLongPress;
 
-  /// {@macro ShadButton.icon}
-  final Widget? icon;
+  /// {@macro ShadButton.leading}
+  final Widget? leading;
+
+  /// {@macro ShadButton.trailing}
+  final Widget? trailing;
 
   /// {@template ShadDatePicker.iconData}
   /// The icon of the date picker button, defaults to [LucideIcons.calendar].
@@ -1023,6 +1029,32 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
     final effectiveButtonTextStyle =
         widget.buttonTextStyle ?? theme.datePickerTheme.buttonTextStyle;
 
+    final defaultIcon = Icon(
+      widget.iconData ?? theme.datePickerTheme.iconData ?? LucideIcons.calendar,
+    );
+    final effectiveLeading = widget.trailing == null || widget.leading != null
+        ? IconTheme.merge(
+            data: IconThemeData(
+              size: 16,
+              color: isSelected
+                  ? theme.colorScheme.foreground
+                  : theme.colorScheme.mutedForeground,
+            ),
+            child: widget.leading ?? defaultIcon,
+          )
+        : null;
+    final effectiveTrailing = widget.trailing != null
+        ? IconTheme.merge(
+            data: IconThemeData(
+              size: 16,
+              color: isSelected
+                  ? theme.colorScheme.foreground
+                  : theme.colorScheme.mutedForeground,
+            ),
+            child: widget.trailing!,
+          )
+        : null;
+
     return ShadPopover(
       controller: popoverController,
       groupId: effectiveGroupId,
@@ -1240,17 +1272,8 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
             widget.mainAxisAlignment ??
             theme.datePickerTheme.mainAxisAlignment ??
             MainAxisAlignment.start,
-        leading:
-            widget.icon ??
-            Icon(
-              widget.iconData ??
-                  theme.datePickerTheme.iconData ??
-                  LucideIcons.calendar,
-              size: 16,
-              color: isSelected
-                  ? theme.colorScheme.foreground
-                  : theme.colorScheme.mutedForeground,
-            ),
+        leading: effectiveLeading,
+        trailing: effectiveTrailing,
         onPressed:
             widget.onPressed ??
             () {

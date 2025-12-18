@@ -1,3 +1,7 @@
+## 0.43.0
+
+- **BREAKING CHANGE**: Rename `icon` into `leading` in `ShadDatePicker` and `ShadDatePickerFormField` and add `trailing`.
+
 ## 0.42.1
 
 - **CHORE**: Add `selectedIconColor` to `ShadOptionTheme` to allow customizing the color of the selected icon.
