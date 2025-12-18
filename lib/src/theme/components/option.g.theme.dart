@@ -49,6 +49,11 @@ mixin _$ShadOptionTheme {
         b.selectedTextStyle,
         t,
       ),
+      selectedIconColor: Color.lerp(
+        a.selectedIconColor,
+        b.selectedIconColor,
+        t,
+      ),
     );
   }
 
@@ -60,6 +65,7 @@ mixin _$ShadOptionTheme {
     TextStyle? textStyle,
     Color? selectedBackgroundColor,
     TextStyle? selectedTextStyle,
+    Color? selectedIconColor,
   }) {
     final _this = (this as ShadOptionTheme);
 
@@ -73,6 +79,7 @@ mixin _$ShadOptionTheme {
       selectedBackgroundColor:
           selectedBackgroundColor ?? _this.selectedBackgroundColor,
       selectedTextStyle: selectedTextStyle ?? _this.selectedTextStyle,
+      selectedIconColor: selectedIconColor ?? _this.selectedIconColor,
     );
   }
 
@@ -97,6 +104,7 @@ mixin _$ShadOptionTheme {
       selectedTextStyle:
           _this.selectedTextStyle?.merge(other.selectedTextStyle) ??
           other.selectedTextStyle,
+      selectedIconColor: other.selectedIconColor,
     );
   }
 
@@ -119,7 +127,8 @@ mixin _$ShadOptionTheme {
         _other.backgroundColor == _this.backgroundColor &&
         _other.textStyle == _this.textStyle &&
         _other.selectedBackgroundColor == _this.selectedBackgroundColor &&
-        _other.selectedTextStyle == _this.selectedTextStyle;
+        _other.selectedTextStyle == _this.selectedTextStyle &&
+        _other.selectedIconColor == _this.selectedIconColor;
   }
 
   @override
@@ -135,6 +144,7 @@ mixin _$ShadOptionTheme {
       _this.textStyle,
       _this.selectedBackgroundColor,
       _this.selectedTextStyle,
+      _this.selectedIconColor,
     );
   }
 }
