@@ -25,6 +25,7 @@ import 'package:playground/pages/select.dart';
 import 'package:playground/pages/sheet.dart';
 import 'package:playground/pages/slider.dart';
 import 'package:playground/pages/sonner.dart';
+import 'package:playground/pages/sonner_new.dart';
 import 'package:playground/pages/switch.dart';
 import 'package:playground/pages/table.dart';
 import 'package:playground/pages/tabs.dart';
@@ -33,6 +34,7 @@ import 'package:playground/pages/time_picker.dart';
 import 'package:playground/pages/toast.dart';
 import 'package:playground/pages/tooltip.dart';
 import 'package:playground/pages/typography.dart';
+import 'package:playground/pages/motor_playground.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 extension on GoRouterState {
@@ -297,9 +299,21 @@ final router = GoRouter(
       },
     ),
     GoRoute(
+      path: '/sonner-new',
+      builder: (context, state) {
+        return const SonnerNewPage();
+      },
+    ),
+    GoRoute(
       path: '/textarea',
       builder: (context, state) {
         return const TextareaPage();
+      },
+    ),
+    GoRoute(
+      path: '/motor-playground',
+      builder: (context, state) {
+        return const MotorPlaygroundPage();
       },
     ),
   ],
