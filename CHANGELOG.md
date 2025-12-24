@@ -1,3 +1,7 @@
+## 0.43.1
+
+- **FIX**: Improve `ShadPortal` scroll and resize handling.
+
 ## 0.43.0
 
 - **BREAKING CHANGE**: Rename `icon` into `leading` in `ShadDatePicker` and `ShadDatePickerFormField` and add `trailing`.

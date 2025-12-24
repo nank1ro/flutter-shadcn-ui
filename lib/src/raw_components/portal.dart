@@ -142,6 +142,7 @@ class _ShadPortalState extends State<ShadPortal> {
   Offset? _calculatedTarget;
   // When scrolling, recalculate the position
   ScrollNotificationObserverState? _scrollNotificationObserver;
+  bool _autoPositionUpdateScheduled = false;
 
   @override
   void initState() {
@@ -152,25 +153,73 @@ class _ShadPortalState extends State<ShadPortal> {
   @override
   void didUpdateWidget(covariant ShadPortal oldWidget) {
     super.didUpdateWidget(oldWidget);
-    updateVisibility();
+    // Avoid scheduling a post-frame visibility update on every rebuild.
+    final visibilityChanged = widget.visible != oldWidget.visible;
+    final anchorChanged = widget.anchor != oldWidget.anchor;
+    if (visibilityChanged || (widget.visible && anchorChanged)) {
+      updateVisibility();
+    }
+
+    // Avoid subscribing hidden portals to scroll notifications.
+    _syncScrollNotificationObserver();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _scrollNotificationObserver?.removeListener(_handleScrollNotification);
-    _scrollNotificationObserver = ScrollNotificationObserver.maybeOf(context);
-    _scrollNotificationObserver?.addListener(_handleScrollNotification);
+    _syncScrollNotificationObserver();
+
+    if (widget.visible && widget.anchor is ShadAnchorAuto) {
+      final anchor = widget.anchor as ShadAnchorAuto;
+      if (anchor.followTargetOnResize) {
+        _scheduleAutoPositionUpdate();
+      }
+    }
   }
 
   @override
   void dispose() {
-    _scrollNotificationObserver?.removeListener(_handleScrollNotification);
+    _unsubscribeScrollNotificationObserver();
     hide();
     super.dispose();
   }
 
+  bool get _isAutoAnchor => widget.anchor is ShadAnchorAuto;
+
+  bool get _shouldListenToScrollNotifications =>
+      widget.visible && _isAutoAnchor;
+
+  void _unsubscribeScrollNotificationObserver() {
+    _scrollNotificationObserver?.removeListener(_handleScrollNotification);
+    _scrollNotificationObserver = null;
+  }
+
+  void _syncScrollNotificationObserver() {
+    if (!_shouldListenToScrollNotifications) {
+      _unsubscribeScrollNotificationObserver();
+      return;
+    }
+
+    final observer = ScrollNotificationObserver.maybeOf(context);
+    if (identical(observer, _scrollNotificationObserver)) return;
+
+    _unsubscribeScrollNotificationObserver();
+    _scrollNotificationObserver = observer;
+    _scrollNotificationObserver?.addListener(_handleScrollNotification);
+  }
+
+  void _scheduleAutoPositionUpdate() {
+    if (_autoPositionUpdateScheduled) return;
+    _autoPositionUpdateScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _autoPositionUpdateScheduled = false;
+      _calculatePosition();
+    });
+  }
+
   void _handleScrollNotification(ScrollNotification notification) {
+    if (!widget.visible || !_isAutoAnchor) return;
+
     // Check if the notification is a scroll update notification and if the
     // `notification.depth` is 0. This way we only listen to the scroll
     // notifications from the closest scrollable, instead of those that may be
@@ -178,23 +227,26 @@ class _ShadPortalState extends State<ShadPortal> {
     if (notification is ScrollUpdateNotification &&
         defaultScrollNotificationPredicate(notification)) {
       // Recalculate the position of the portal on scroll.
-      _calculatePosition();
+      _scheduleAutoPositionUpdate();
     }
   }
 
   void updateVisibility() {
-    final shouldShow = widget.visible;
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final shouldShow = widget.visible;
       if (shouldShow) {
         _calculatePosition();
         show();
       } else {
-        if (_calculatedTarget != null && mounted) {
+        if (_calculatedTarget != null) {
           setState(() => _calculatedTarget = null);
         }
         hide();
       }
+
+      // Keep scroll listener registration in sync with the actual visibility.
+      _syncScrollNotificationObserver();
     });
   }
 
@@ -211,7 +263,8 @@ class _ShadPortalState extends State<ShadPortal> {
   }
 
   void _calculatePosition() {
-    if (!mounted || widget.anchor is! ShadAnchorAuto) return;
+    // Only auto-position when the overlay is visible.
+    if (!mounted || !widget.visible || widget.anchor is! ShadAnchorAuto) return;
 
     final anchor = widget.anchor as ShadAnchorAuto;
     final box = context.findRenderObject();
