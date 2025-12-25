@@ -121,7 +121,8 @@ class ShadPagination extends StatefulWidget {
   final bool showFirstLastButtons;
 
   /// {@template ShadPagination.showEllipsis}
-  /// Whether to show ellipsis (...) in the pagination when there are many pages.
+  /// Whether to show ellipsis (...) in the pagination
+  /// when there are many pages.
   /// {@endtemplate}
   final bool showEllipsis;
 
