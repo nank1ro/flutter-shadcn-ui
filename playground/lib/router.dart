@@ -17,6 +17,7 @@ import 'package:playground/pages/icon_button.dart';
 import 'package:playground/pages/input.dart';
 import 'package:playground/pages/input_otp.dart';
 import 'package:playground/pages/menubar.dart';
+import 'package:playground/pages/pagination.dart';
 import 'package:playground/pages/popover.dart';
 import 'package:playground/pages/progress.dart';
 import 'package:playground/pages/radio_group.dart';
@@ -300,6 +301,12 @@ final router = GoRouter(
       path: '/textarea',
       builder: (context, state) {
         return const TextareaPage();
+      },
+    ),
+    GoRoute(
+      path: '/pagination',
+      builder: (context, state) {
+        return const PaginationPage();
       },
     ),
   ],
