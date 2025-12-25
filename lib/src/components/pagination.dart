@@ -205,15 +205,17 @@ class _ShadPaginationState extends State<ShadPagination> {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final effectiveRadius =
-        widget.radius ?? theme.menubarTheme.radius ?? theme.radius;
+        widget.radius ?? theme.shadPaginationTheme.radius ?? theme.radius;
     final effectivePadding =
-        widget.padding ?? theme.menubarTheme.padding ?? const EdgeInsets.all(4);
+        widget.padding ??
+        theme.shadPaginationTheme.padding ??
+        const EdgeInsets.all(4);
     final effectiveBackgroundColor =
-        widget.backgroundColor ?? theme.menubarTheme.backgroundColor;
+        widget.backgroundColor ?? theme.shadPaginationTheme.backgroundColor;
     final effectiveBorder = ShadBorder.all(
       color: theme.colorScheme.border,
       width: 1,
-    ).merge(theme.menubarTheme.border).merge(widget.border);
+    ).merge(theme.shadPaginationTheme.border).merge(widget.border);
 
     return ListenableBuilder(
       listenable: controller,
