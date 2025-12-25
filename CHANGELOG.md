@@ -1,3 +1,7 @@
+## 0.44.0
+
+- **FEAT**: Add new component `ShadPagination` and all of its related components
+
 ## 0.43.0
 
 - **BREAKING CHANGE**: Rename `icon` into `leading` in `ShadDatePicker` and `ShadDatePickerFormField` and add `trailing`.
@@ -272,7 +276,7 @@
 ## 0.31.0
 
 - **FEAT**: Modify the `ShadTooltip` component and its hover strategies to work on mobile on tap without a long press.
-- **FEAT**: Add `ShadHoverStrategy.onTapOutside` to trigger unhover when tapping outside the widget. 
+- **FEAT**: Add `ShadHoverStrategy.onTapOutside` to trigger unhover when tapping outside the widget.
 - **FEAT**: Add `ShadHoverStrategy.onTap` to trigger hover/unhover when tapping inside the widget.
 - **FEAT**: Now if an hover strategy is present in both `hoverStrategies.hover` and `hoverStrategies.unhover`, the hover will be toggled.
 
@@ -299,7 +303,7 @@
 ## 0.30.1
 
 - **FIX**: Fix `ShadResizable` on RTL (for real this time).
-- **CHORE**: Bump min Flutter SDK version to `3.35.0` to support `FormField.onReset` and `Brightness` from `'package:flutter/widgets.dart'` 
+- **CHORE**: Bump min Flutter SDK version to `3.35.0` to support `FormField.onReset` and `Brightness` from `'package:flutter/widgets.dart'`
 
 ## 0.30.0
 
@@ -743,7 +747,7 @@
 
 ## 0.10.0
 
-- __BREAKING CHANGE__: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.
+- **BREAKING CHANGE**: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.
 
 ## 0.9.8
 
