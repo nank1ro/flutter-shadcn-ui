@@ -1,3 +1,7 @@
+## 0.44.0
+
+- **FEAT**: Add new `ShadCarousel` component with smooth scrolling, item snapping, customizable navigation buttons, and programmatic control via `ShadCarouselController`.
+
 ## 0.43.0
 
 - **BREAKING CHANGE**: Rename `icon` into `leading` in `ShadDatePicker` and `ShadDatePickerFormField` and add `trailing`.
