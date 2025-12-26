@@ -197,8 +197,14 @@ class _ShadPaginationState extends State<ShadPagination> {
     super.initState();
     if (widget.controller == null) {
       _controller = ShadPaginationController();
+      _controller.selectedIndex = widget.initialPage;
+    } else {
+      // Respect the provided controller's state, but apply initialPage
+      //if it's at default
+      if (_controller.selectedIndex == 0 && widget.initialPage != 0) {
+        _controller.selectedIndex = widget.initialPage;
+      }
     }
-    _controller.selectedIndex = widget.initialPage;
   }
 
   @override
