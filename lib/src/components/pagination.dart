@@ -69,7 +69,14 @@ class ShadPagination extends StatefulWidget {
     this.selectedButtonBackgroundColor,
     this.buttonGap = 4.0,
     this.showPreviousNextLabels = false,
-  });
+  }) : assert(totalPages > 0, 'totalPages must be greater than 0'),
+       assert(initialPage >= 0, 'initialPage must be non-negative'),
+       assert(
+         initialPage < totalPages,
+         'initialPage must be less than totalPages',
+       ),
+       assert(siblingCount >= 0, 'siblingCount must be non-negative'),
+       assert(boundaryCount >= 0, 'boundaryCount must be non-negative');
 
   /// {@macro ShadPaginationController}
   final ShadPaginationController? controller;
