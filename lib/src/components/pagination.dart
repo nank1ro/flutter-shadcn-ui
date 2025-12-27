@@ -68,7 +68,6 @@ class ShadPagination extends StatefulWidget {
     this.selectedButtonVariant,
     this.selectedButtonBackgroundColor,
     this.buttonGap = 4.0,
-    this.showPreviousNextLabels = false,
     this.buttonHeight = 40.0,
     this.compactBreakpoint = 768.0,
     this.compactButtonVariant = ShadButtonVariant.ghost,
@@ -78,6 +77,8 @@ class ShadPagination extends StatefulWidget {
     this.selectedButtonForegroundColor,
     this.width,
     this.margin = const EdgeInsets.symmetric(horizontal: 16),
+    this.previousButtonLabel = 'Previous',
+    this.nextButtonLabel = 'Next',
     this.constraints,
   }) : assert(totalPages > 0, 'totalPages must be greater than 0'),
        assert(initialPage >= 0, 'initialPage must be non-negative'),
@@ -196,19 +197,14 @@ class ShadPagination extends StatefulWidget {
   /// {@endtemplate}
   final double buttonGap;
 
-  /// {@template ShadPagination.showPreviousNextLabels}
-  /// Whether to show "Previous" and "Next" text labels with icons.
-  /// If false, only icons are shown.
-  /// {@endtemplate}
-  final bool showPreviousNextLabels;
-
   /// {@template ShadPagination.buttonHeight}
   /// The height for the pagination buttons.
   /// {@endtemplate}
   final double? buttonHeight;
 
   /// {@template ShadPagination.compactBreakpoint}
-  /// The breakpoint width below which the pagination switches to a compact style.
+  /// The breakpoint width below which the pagination
+  /// switches to a compact style.
   /// {@endtemplate}
   final double? compactBreakpoint;
 
@@ -253,6 +249,16 @@ class ShadPagination extends StatefulWidget {
   /// Additional constraints for the pagination widget.
   /// {@endtemplate}
   final BoxConstraints? constraints;
+
+  /// {@template ShadPagination.previousButtonLabel}
+  /// The label for the previous button.
+  /// {@endtemplate}
+  final String? previousButtonLabel;
+
+  /// {@template ShadPagination.nextButtonLabel}
+  /// The label for the next button.
+  /// {@endtemplate}
+  final String? nextButtonLabel;
 
   @override
   State<ShadPagination> createState() => _ShadPaginationState();
@@ -320,10 +326,8 @@ class _ShadPaginationState extends State<ShadPagination> {
           final horizontalMargin = effectiveMargin.horizontal;
           effectiveWidth = screenWidth - horizontalMargin;
         }
-
         // Create container with constraints
         Widget paginationContent = Container(
-          // TODO(joasare019): width should take into account mininmum size of buttons and gaps and number of buttons to be shown to avoid overflow
           width: effectiveWidth,
           padding: effectivePadding,
           child: SingleChildScrollView(
@@ -362,32 +366,13 @@ class _ShadPaginationState extends State<ShadPagination> {
     final items = <Widget>[];
     final currentPage = controller.selectedIndex;
 
-    // Add First button if enabled
-    // TODO(joasare019): Re-enable First button if needed
-    // if (widget.showFirstLastButtons && currentPage > 0) {
-    //   items.add(
-    //     _buildNavigationButton(
-    //       icon: Icons.first_page,
-    //       label: widget.showPreviousNextLabels && !isCompact ? 'First' : null,
-    //       onPressed: () {
-    //         controller.firstPage();
-    //         widget.onPageChanged?.call(controller.selectedIndex);
-    //       },
-    //       tooltip: 'First page',
-    //     ),
-    //   );
-    //   if (widget.buttonGap > 0) {
-    //     items.add(SizedBox(width: widget.buttonGap));
-    //   }
-    // }
-
     // Add Previous button
     final canGoPrevious = currentPage > 0;
 
     items.add(
       _buildNavigationButton(
         icon: Icons.chevron_left,
-        label: widget.showPreviousNextLabels && !isCompact ? 'Previous' : null,
+        label: widget.showFirstLastButtons ? widget.previousButtonLabel : null,
         onPressed: canGoPrevious
             ? () {
                 controller.previousPage();
@@ -455,7 +440,7 @@ class _ShadPaginationState extends State<ShadPagination> {
     items.add(
       _buildNavigationButton(
         icon: Icons.chevron_right,
-        label: widget.showPreviousNextLabels && !isCompact ? 'Next' : null,
+        label: widget.showFirstLastButtons ? widget.nextButtonLabel : null,
         onPressed: canGoNext
             ? () {
                 controller.nextPage(widget.totalPages);
@@ -465,25 +450,6 @@ class _ShadPaginationState extends State<ShadPagination> {
         tooltip: 'Next page',
       ),
     );
-
-    // // Add Last button if enabled
-    // TODO(joasare019): Re-enable Last button if needed
-    // if (widget.showFirstLastButtons && canGoNext) {
-    //   if (widget.buttonGap > 0) {
-    //     items.add(SizedBox(width: widget.buttonGap));
-    //   }
-    //   items.add(
-    //     _buildNavigationButton(
-    //       icon: Icons.last_page,
-    //       label: widget.showPreviousNextLabels && !isCompact ? 'Last' : null,
-    //       onPressed: () {
-    //         controller.lastPage(widget.totalPages);
-    //         widget.onPageChanged?.call(controller.selectedIndex);
-    //       },
-    //       tooltip: 'Last page',
-    //     ),
-    //   );
-    // }
 
     return items;
   }
@@ -563,29 +529,50 @@ class _ShadPaginationState extends State<ShadPagination> {
         widget.navigationButtonVariant ?? effectiveVariant;
     final navigationSize = widget.navigationButtonSize ?? effectiveSize;
 
+    // Automatically determine icon position based on icon type
+    final bool isRightIcon =
+        icon == Icons.chevron_right ||
+        icon == Icons.arrow_forward ||
+        icon == Icons.navigate_next;
+
     final children = <Widget>[];
 
     if (label != null) {
       // Button with icon and label
-      children.addAll([
-        Icon(
-          icon,
-          size: 16,
+      final iconWidget = Icon(
+        icon,
+        size: 16,
+        color: onPressed == null
+            ? theme.colorScheme.mutedForeground
+            : theme.colorScheme.foreground,
+      );
+
+      final textWidget = Text(
+        label,
+        style: TextStyle(
+          fontSize: 14,
           color: onPressed == null
               ? theme.colorScheme.mutedForeground
               : theme.colorScheme.foreground,
         ),
-        const SizedBox(width: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 14,
-            color: onPressed == null
-                ? theme.colorScheme.mutedForeground
-                : theme.colorScheme.foreground,
-          ),
-        ),
-      ]);
+      );
+
+      // Auto-arrange: left icons on left, right icons on right
+      if (isRightIcon) {
+        // For "Next" type icons: Text on left, Icon on right
+        children.addAll([
+          textWidget,
+          const SizedBox(width: 4),
+          iconWidget,
+        ]);
+      } else {
+        // For "Previous" type icons: Icon on left, Text on right
+        children.addAll([
+          iconWidget,
+          const SizedBox(width: 4),
+          textWidget,
+        ]);
+      }
     } else {
       // Button with icon only
       children.add(
@@ -604,7 +591,6 @@ class _ShadPaginationState extends State<ShadPagination> {
       size: navigationSize,
       padding: effectivePadding,
       onPressed: onPressed,
-
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: children,
