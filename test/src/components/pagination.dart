@@ -170,8 +170,6 @@ void main() {
           home: Scaffold(
             body: ShadPagination(
               totalPages: 10,
-              siblingCount: 1,
-              boundaryCount: 1,
             ),
           ),
         ),
@@ -245,7 +243,8 @@ void main() {
         ),
       );
 
-      // In compact mode, only current page and navigation buttons should be visible
+      // In compact mode, only current page and navigation buttons
+      //should be visible
       expect(find.byType(ShadButton), findsAtLeast(3));
     });
 
@@ -257,7 +256,6 @@ void main() {
           home: Scaffold(
             body: ShadPagination(
               totalPages: 5,
-              initialPage: 0, // First page
             ),
           ),
         ),
@@ -354,7 +352,7 @@ void main() {
           home: Scaffold(
             body: ShadPagination(
               totalPages: 10,
-              compactBreakpoint: 700.0,
+              compactBreakpoint: 700,
             ),
           ),
         ),
@@ -386,8 +384,6 @@ void main() {
           home: Scaffold(
             body: ShadPagination(
               totalPages: 100,
-              siblingCount: 1,
-              boundaryCount: 1,
             ),
           ),
         ),
@@ -398,7 +394,7 @@ void main() {
     });
 
     testWidgets('updates when totalPages changes', (tester) async {
-      int totalPages = 5;
+      var totalPages = 5;
 
       await tester.pumpWidget(
         MaterialApp(
