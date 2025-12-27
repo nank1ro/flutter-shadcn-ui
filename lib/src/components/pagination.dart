@@ -361,7 +361,58 @@ class _ShadPaginationState extends State<ShadPagination> {
   }
 
   List<Widget> _buildPaginationItems(bool isCompact) {
-    if (widget.totalPages <= 1) return [];
+    final items = <Widget>[];
+    final currentPage = controller.selectedIndex;
+
+    // Add Previous button
+    final canGoPrevious = widget.totalPages > 1 && currentPage > 0;
+
+    items.add(
+      _buildNavigationButton(
+        icon: Icons.chevron_left,
+        label: widget.showFirstLastButtons ? widget.previousButtonLabel : null,
+        onPressed: canGoPrevious
+            ? () {
+                controller.previousPage();
+                widget.onPageChanged?.call(controller.selectedIndex);
+              }
+            : null,
+        tooltip: 'Previous page',
+      ),
+    );
+
+    if (widget.buttonGap > 0) {
+      items.add(SizedBox(width: widget.buttonGap));
+    }
+
+    // Build page numbers
+    if (widget.showPageNumbers && widget.totalPages > 1) {
+      final pageNumbers = _generatePageNumbers();
+      // ... rest of page number logic
+    }
+
+    if (widget.buttonGap > 0) {
+      items.add(SizedBox(width: widget.buttonGap));
+    }
+
+    // Add Next button
+    final canGoNext = widget.totalPages > 1 && currentPage < widget.totalPages - 1;
+    items.add(
+      _buildNavigationButton(
+        icon: Icons.chevron_right,
+        label: widget.showFirstLastButtons ? widget.nextButtonLabel : null,
+        onPressed: canGoNext
+            ? () {
+                controller.nextPage(widget.totalPages);
+                widget.onPageChanged?.call(controller.selectedIndex);
+              }
+            : null,
+        tooltip: 'Next page',
+      ),
+    );
+
+    return items;
+  }
 
     final items = <Widget>[];
     final currentPage = controller.selectedIndex;
