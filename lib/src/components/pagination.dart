@@ -69,6 +69,16 @@ class ShadPagination extends StatefulWidget {
     this.selectedButtonBackgroundColor,
     this.buttonGap = 4.0,
     this.showPreviousNextLabels = false,
+    this.buttonHeight = 40.0,
+    this.compactBreakpoint = 768.0,
+    this.compactButtonVariant = ShadButtonVariant.ghost,
+    this.ellipsisColor,
+    this.navigationButtonSize,
+    this.navigationButtonVariant,
+    this.selectedButtonForegroundColor,
+    this.width,
+    this.margin = const EdgeInsets.symmetric(horizontal: 16),
+    this.constraints,
   }) : assert(totalPages > 0, 'totalPages must be greater than 0'),
        assert(initialPage >= 0, 'initialPage must be non-negative'),
        assert(
@@ -76,7 +86,15 @@ class ShadPagination extends StatefulWidget {
          'initialPage must be less than totalPages',
        ),
        assert(siblingCount >= 0, 'siblingCount must be non-negative'),
-       assert(boundaryCount >= 0, 'boundaryCount must be non-negative');
+       assert(boundaryCount >= 0, 'boundaryCount must be non-negative'),
+       assert(
+         buttonHeight == null || buttonHeight > 0,
+         'buttonHeight must be greater than 0',
+       ),
+       assert(
+         compactBreakpoint == null || compactBreakpoint > 0,
+         'compactBreakpoint must be greater than 0',
+       );
 
   /// {@macro ShadPaginationController}
   final ShadPaginationController? controller;
@@ -184,6 +202,58 @@ class ShadPagination extends StatefulWidget {
   /// {@endtemplate}
   final bool showPreviousNextLabels;
 
+  /// {@template ShadPagination.buttonHeight}
+  /// The height for the pagination buttons.
+  /// {@endtemplate}
+  final double? buttonHeight;
+
+  /// {@template ShadPagination.compactBreakpoint}
+  /// The breakpoint width below which the pagination switches to a compact style.
+  /// {@endtemplate}
+  final double? compactBreakpoint;
+
+  /// {@template ShadPagination.compactButtonVariant}
+  /// The variant for the pagination buttons in compact style.
+  /// {@endtemplate}
+  final ShadButtonVariant? compactButtonVariant;
+
+  /// {@template ShadPagination.ellipsisColor}
+  /// The color for the ellipsis (...) in the pagination.
+  /// {@endtemplate}
+  final Color? ellipsisColor;
+
+  /// {@template ShadPagination.navigationButtonSize}
+  /// The size for the navigation buttons (first, previous, next, last).
+  /// {@endtemplate}
+  final ShadButtonSize? navigationButtonSize;
+
+  /// {@template ShadPagination.navigationButtonVariant}
+  /// The variant for the navigation buttons (first, previous, next, last).
+  /// {@endtemplate}
+  final ShadButtonVariant? navigationButtonVariant;
+
+  /// {@template ShadPagination.selectedButtonForegroundColor}
+  /// The foreground color for the selected page button.
+  /// {@endtemplate}
+  final Color? selectedButtonForegroundColor;
+
+  /// {@template ShadPagination.width}
+  /// The width of the pagination widget.
+  /// If null, it will take the screen width minus [margin].
+  /// {@endtemplate}
+  final double? width;
+
+  /// {@template ShadPagination.margin}
+  /// The margin around the pagination widget when using automatic width.
+  /// Defaults to `EdgeInsets.symmetric(horizontal: 16.0)`.
+  /// {@endtemplate}
+  final EdgeInsetsGeometry? margin;
+
+  /// {@template ShadPagination.constraints}
+  /// Additional constraints for the pagination widget.
+  /// {@endtemplate}
+  final BoxConstraints? constraints;
+
   @override
   State<ShadPagination> createState() => _ShadPaginationState();
 }
@@ -200,9 +270,9 @@ class _ShadPaginationState extends State<ShadPagination> {
       _controller.selectedIndex = widget.initialPage;
     } else {
       // Respect the provided controller's state, but apply initialPage
-      //if it's at default
-      if (_controller.selectedIndex == 0 && widget.initialPage != 0) {
-        _controller.selectedIndex = widget.initialPage;
+      // if it's at default
+      if (widget.controller!.selectedIndex == 0 && widget.initialPage != 0) {
+        widget.controller!.selectedIndex = widget.initialPage;
       }
     }
   }
@@ -218,73 +288,106 @@ class _ShadPaginationState extends State<ShadPagination> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveRadius =
-        widget.radius ?? theme.shadPaginationTheme.radius ?? theme.radius;
+
     final effectivePadding =
         widget.padding ??
         theme.shadPaginationTheme.padding ??
         const EdgeInsets.all(4);
-    final effectiveBackgroundColor =
-        widget.backgroundColor ?? theme.shadPaginationTheme.backgroundColor;
-    final effectiveBorder = ShadBorder.all(
-      color: theme.colorScheme.border,
-      width: 1,
-    ).merge(theme.shadPaginationTheme.border).merge(widget.border);
+
+    final effectiveMargin =
+        widget.margin ?? const EdgeInsets.symmetric(horizontal: 16);
 
     return ListenableBuilder(
       listenable: controller,
       builder: (context, child) {
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            color: effectiveBackgroundColor,
-            border: effectiveBorder.toBorder(),
-            borderRadius: effectiveRadius,
-          ),
-          child: Padding(
-            padding: effectivePadding,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: _buildPaginationItems(),
-              ),
+        final screenWidth = MediaQuery.of(context).size.width;
+
+        final effectiveCompactBreakpoint =
+            widget.compactBreakpoint ??
+            theme.shadPaginationTheme.compactBreakpoint;
+
+        final isCompactBasedOnBreakpoint =
+            widget.isCompact || screenWidth < effectiveCompactBreakpoint;
+
+        // Calculate the effective width
+        double effectiveWidth;
+
+        if (widget.width != null) {
+          // Use user-specified width
+          effectiveWidth = widget.width!;
+        } else {
+          // Use screen width minus margin
+          final horizontalMargin = effectiveMargin.horizontal;
+          effectiveWidth = screenWidth - horizontalMargin;
+        }
+
+        // Create container with constraints
+        Widget paginationContent = Container(
+          // TODO(joasare019): width should take into account mininmum size of buttons and gaps and number of buttons to be shown to avoid overflow
+          width: effectiveWidth,
+          padding: effectivePadding,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: _buildPaginationItems(isCompactBasedOnBreakpoint),
             ),
           ),
         );
+
+        // Apply constraints if provided
+        if (widget.constraints != null) {
+          paginationContent = ConstrainedBox(
+            constraints: widget.constraints!,
+            child: paginationContent,
+          );
+        }
+
+        // Apply margin
+        if (effectiveMargin != EdgeInsets.zero) {
+          paginationContent = Padding(
+            padding: effectiveMargin,
+            child: paginationContent,
+          );
+        }
+
+        return paginationContent;
       },
     );
   }
 
-  List<Widget> _buildPaginationItems() {
-    if (widget.totalPages <= 0) return [];
+  List<Widget> _buildPaginationItems(bool isCompact) {
+    if (widget.totalPages <= 1) return [];
 
     final items = <Widget>[];
     final currentPage = controller.selectedIndex;
 
     // Add First button if enabled
-    if (widget.showFirstLastButtons && currentPage > 0) {
-      items.add(
-        _buildNavigationButton(
-          icon: Icons.first_page,
-          label: widget.showPreviousNextLabels ? 'First' : null,
-          onPressed: () {
-            controller.firstPage();
-            widget.onPageChanged?.call(controller.selectedIndex);
-          },
-          tooltip: 'First page',
-        ),
-      );
-      if (widget.buttonGap > 0) {
-        items.add(SizedBox(width: widget.buttonGap));
-      }
-    }
+    // TODO(joasare019): Re-enable First button if needed
+    // if (widget.showFirstLastButtons && currentPage > 0) {
+    //   items.add(
+    //     _buildNavigationButton(
+    //       icon: Icons.first_page,
+    //       label: widget.showPreviousNextLabels && !isCompact ? 'First' : null,
+    //       onPressed: () {
+    //         controller.firstPage();
+    //         widget.onPageChanged?.call(controller.selectedIndex);
+    //       },
+    //       tooltip: 'First page',
+    //     ),
+    //   );
+    //   if (widget.buttonGap > 0) {
+    //     items.add(SizedBox(width: widget.buttonGap));
+    //   }
+    // }
 
     // Add Previous button
     final canGoPrevious = currentPage > 0;
+
     items.add(
       _buildNavigationButton(
         icon: Icons.chevron_left,
-        label: widget.showPreviousNextLabels ? 'Previous' : null,
+        label: widget.showPreviousNextLabels && !isCompact ? 'Previous' : null,
         onPressed: canGoPrevious
             ? () {
                 controller.previousPage();
@@ -307,6 +410,12 @@ class _ShadPaginationState extends State<ShadPagination> {
 
         if (page == null) {
           // Ellipsis
+          final theme = ShadTheme.of(context);
+          final effectiveEllipsisColor =
+              widget.ellipsisColor ??
+              theme.shadPaginationTheme.ellipsisColor ??
+              theme.colorScheme.mutedForeground;
+
           items.add(
             Container(
               alignment: Alignment.center,
@@ -314,7 +423,7 @@ class _ShadPaginationState extends State<ShadPagination> {
               child: Text(
                 '...',
                 style: TextStyle(
-                  color: ShadTheme.of(context).colorScheme.mutedForeground,
+                  color: effectiveEllipsisColor,
                   fontSize: 14,
                 ),
               ),
@@ -322,7 +431,13 @@ class _ShadPaginationState extends State<ShadPagination> {
           );
         } else {
           final isSelected = page - 1 == currentPage;
-          items.add(_buildPageButton(page: page, isSelected: isSelected));
+          items.add(
+            _buildPageButton(
+              page: page,
+              isSelected: isSelected,
+              isCompact: isCompact,
+            ),
+          );
         }
 
         if (i < pageNumbers.length - 1 && widget.buttonGap > 0) {
@@ -340,7 +455,7 @@ class _ShadPaginationState extends State<ShadPagination> {
     items.add(
       _buildNavigationButton(
         icon: Icons.chevron_right,
-        label: widget.showPreviousNextLabels ? 'Next' : null,
+        label: widget.showPreviousNextLabels && !isCompact ? 'Next' : null,
         onPressed: canGoNext
             ? () {
                 controller.nextPage(widget.totalPages);
@@ -351,23 +466,24 @@ class _ShadPaginationState extends State<ShadPagination> {
       ),
     );
 
-    // Add Last button if enabled
-    if (widget.showFirstLastButtons && canGoNext) {
-      if (widget.buttonGap > 0) {
-        items.add(SizedBox(width: widget.buttonGap));
-      }
-      items.add(
-        _buildNavigationButton(
-          icon: Icons.last_page,
-          label: widget.showPreviousNextLabels ? 'Last' : null,
-          onPressed: () {
-            controller.lastPage(widget.totalPages);
-            widget.onPageChanged?.call(controller.selectedIndex);
-          },
-          tooltip: 'Last page',
-        ),
-      );
-    }
+    // // Add Last button if enabled
+    // TODO(joasare019): Re-enable Last button if needed
+    // if (widget.showFirstLastButtons && canGoNext) {
+    //   if (widget.buttonGap > 0) {
+    //     items.add(SizedBox(width: widget.buttonGap));
+    //   }
+    //   items.add(
+    //     _buildNavigationButton(
+    //       icon: Icons.last_page,
+    //       label: widget.showPreviousNextLabels && !isCompact ? 'Last' : null,
+    //       onPressed: () {
+    //         controller.lastPage(widget.totalPages);
+    //         widget.onPageChanged?.call(controller.selectedIndex);
+    //       },
+    //       tooltip: 'Last page',
+    //     ),
+    //   );
+    // }
 
     return items;
   }
@@ -395,7 +511,7 @@ class _ShadPaginationState extends State<ShadPagination> {
       pages.add(i);
     }
 
-    // Add ellipsis if needed before current page range
+    // // Add ellipsis if needed before current page range
     if (currentPage - siblingCount > boundaryCount + 1 && widget.showEllipsis) {
       pages.add(null); // null represents ellipsis
     }
@@ -442,6 +558,11 @@ class _ShadPaginationState extends State<ShadPagination> {
         widget.buttonPadding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 6);
 
+    // Use navigation-specific properties if provided
+    final navigationVariant =
+        widget.navigationButtonVariant ?? effectiveVariant;
+    final navigationSize = widget.navigationButtonSize ?? effectiveSize;
+
     final children = <Widget>[];
 
     if (label != null) {
@@ -479,10 +600,11 @@ class _ShadPaginationState extends State<ShadPagination> {
     }
 
     return ShadButton.raw(
-      variant: effectiveVariant,
-      size: effectiveSize,
+      variant: navigationVariant,
+      size: navigationSize,
       padding: effectivePadding,
       onPressed: onPressed,
+
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: children,
@@ -490,19 +612,35 @@ class _ShadPaginationState extends State<ShadPagination> {
     );
   }
 
-  Widget _buildPageButton({required int page, required bool isSelected}) {
+  Widget _buildPageButton({
+    required int page,
+    required bool isSelected,
+    required bool isCompact,
+  }) {
     final theme = ShadTheme.of(context);
+
+    // Determine which variant to use based on compact mode
     final effectiveVariant = isSelected
         ? (widget.selectedButtonVariant ?? ShadButtonVariant.secondary)
-        : (widget.buttonVariant ?? ShadButtonVariant.outline);
+        : (isCompact
+              ? (widget.compactButtonVariant ??
+                    widget.buttonVariant ??
+                    ShadButtonVariant.ghost)
+              : (widget.buttonVariant ?? ShadButtonVariant.outline));
 
     final effectiveBackgroundColor = isSelected
         ? (widget.selectedButtonBackgroundColor ?? theme.colorScheme.accent)
         : null;
 
+    final effectiveForegroundColor = isSelected
+        ? (widget.selectedButtonForegroundColor ??
+              theme.colorScheme.accentForeground)
+        : null;
+
     return ShadButton.raw(
       variant: effectiveVariant,
       size: widget.buttonSize ?? ShadButtonSize.sm,
+
       padding:
           widget.buttonPadding ??
           const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -513,11 +651,15 @@ class _ShadPaginationState extends State<ShadPagination> {
           widget.onPageChanged?.call(controller.selectedIndex);
         }
       },
-      child: Text(
-        page.toString(),
-        style: TextStyle(
-          fontSize: 14,
-          color: isSelected ? theme.colorScheme.accentForeground : null,
+      child: Container(
+        height: widget.buttonHeight,
+        alignment: Alignment.center,
+        child: Text(
+          page.toString(),
+          style: TextStyle(
+            fontSize: 14,
+            color: isSelected ? effectiveForegroundColor : null,
+          ),
         ),
       ),
     );
