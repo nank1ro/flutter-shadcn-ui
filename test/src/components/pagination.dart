@@ -394,42 +394,44 @@ void main() {
     });
 
     testWidgets('updates when totalPages changes', (tester) async {
-      var totalPages = 5;
-
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: StatefulBuilder(
-              builder: (context, setState) {
-                return ShadPagination(
-                  totalPages: totalPages,
-                );
-              },
-            ),
-          ),
+          home: _TestPageUpdater(),
         ),
       );
 
       expect(find.text('5'), findsOneWidget);
 
-      // Update totalPages
-      totalPages = 3;
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: StatefulBuilder(
-              builder: (context, setState) {
-                return ShadPagination(
-                  totalPages: totalPages,
-                );
-              },
-            ),
-          ),
-        ),
-      );
+      // Tap button to update totalPages
+      await tester.tap(find.byType(ElevatedButton));
+      await tester.pump();
 
       expect(find.text('5'), findsNothing);
       expect(find.text('3'), findsOneWidget);
     });
+
+    class _TestPageUpdater extends StatefulWidget {
+      @override
+      State<_TestPageUpdater> createState() => _TestPageUpdaterState();
+    }
+
+    class _TestPageUpdaterState extends State<_TestPageUpdater> {
+      int totalPages = 5;
+
+      @override
+      Widget build(BuildContext context) {
+        return Scaffold(
+          body: Column(
+            children: [
+              ShadPagination(totalPages: totalPages),
+              ElevatedButton(
+                onPressed: () => setState(() => totalPages = 3),
+                child: Text('Update'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
   });
 }
