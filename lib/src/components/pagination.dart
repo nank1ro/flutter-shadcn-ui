@@ -530,7 +530,7 @@ class _ShadPaginationState extends State<ShadPagination> {
     final navigationSize = widget.navigationButtonSize ?? effectiveSize;
 
     // Automatically determine icon position based on icon type
-    final bool isRightIcon =
+    final isRightIcon =
         icon == Icons.chevron_right ||
         icon == Icons.arrow_forward ||
         icon == Icons.navigate_next;
