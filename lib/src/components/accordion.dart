@@ -223,6 +223,7 @@ class ShadAccordionItem<T> extends StatefulWidget {
     this.duration,
     this.focusNode,
     this.effects,
+    this.clipBehavior,
   });
 
   /// {@template ShadAccordionItem.value}
@@ -314,6 +315,13 @@ class ShadAccordionItem<T> extends StatefulWidget {
   /// Defaults to padding, slide, and size effects if not specified.
   /// {@endtemplate}
   final List<Effect<dynamic>>? effects;
+
+  /// {@template ShadAccordionItem.clipBehavior}
+  /// The clip behavior of the size transition animation.
+  /// Defaults to [Clip.none] to prevent clipping of focus rings and other
+  /// content that extends beyond the widget's boundary.
+  /// {@endtemplate}
+  final Clip? clipBehavior;
 
   @override
   State<ShadAccordionItem<T>> createState() => _ShadAccordionItemState<T>();
@@ -435,6 +443,9 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
             theme.accordionTheme.padding ??
             const EdgeInsets.symmetric(vertical: 16);
 
+        final effectiveClipBehavior =
+            widget.clipBehavior ?? theme.accordionTheme.clipBehavior ?? Clip.none;
+
         final effectiveEffects =
             widget.effects ??
             theme.accordionTheme.effects ??
@@ -453,6 +464,7 @@ class _ShadAccordionItemState<T> extends State<ShadAccordionItem<T>>
               SizeEffect(
                 curve: effectiveCurve,
                 duration: effectiveDuration,
+                clipBehavior: effectiveClipBehavior,
               ),
             ];
 
