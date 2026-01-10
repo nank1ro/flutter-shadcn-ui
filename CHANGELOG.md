@@ -1,6 +1,6 @@
 ## 0.44.0
 
-- **FEAT**: Add new component `ShadPagination` and all of its related components
+- **FEAT**: Add new component `ShadPagination` and all of its related components (thanks to @asare-21).
 
 ## 0.43.0
 
