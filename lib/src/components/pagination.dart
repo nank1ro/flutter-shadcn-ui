@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/theme/data.dart' show ShadThemeData;
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 
@@ -337,7 +338,10 @@ class _ShadPaginationState extends State<ShadPagination> {
             scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              children: _buildPaginationItems(isCompactBasedOnBreakpoint),
+              children: _buildPaginationItems(
+                isCompactBasedOnBreakpoint,
+                theme,
+              ),
             ),
           ),
         );
@@ -363,7 +367,7 @@ class _ShadPaginationState extends State<ShadPagination> {
     );
   }
 
-  List<Widget> _buildPaginationItems(bool isCompact) {
+  List<Widget> _buildPaginationItems(bool isCompact, ShadThemeData theme) {
     if (widget.totalPages <= 1) return [];
 
     final items = <Widget>[];
@@ -398,7 +402,6 @@ class _ShadPaginationState extends State<ShadPagination> {
 
         if (page == null) {
           // Ellipsis
-          final theme = ShadTheme.of(context);
           final effectiveEllipsisColor =
               widget.ellipsisColor ??
               theme.shadPaginationTheme.ellipsisColor ??
