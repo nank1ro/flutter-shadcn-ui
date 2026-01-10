@@ -1124,7 +1124,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           padding: const EdgeInsets.all(2),
         ),
       ),
-
       buttonForegroundColor: colorScheme.foreground,
       buttonSelectedForegroundColor: colorScheme.accentForeground,
     );
