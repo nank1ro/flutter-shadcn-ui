@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class ShadPaginationController extends ChangeNotifier {
@@ -371,7 +371,7 @@ class _ShadPaginationState extends State<ShadPagination> {
 
     items.add(
       _buildNavigationButton(
-        icon: Icons.chevron_left,
+        icon: LucideIcons.chevronLeft,
         label: widget.showFirstLastButtons ? widget.previousButtonLabel : null,
         onPressed: canGoPrevious
             ? () {
@@ -439,7 +439,7 @@ class _ShadPaginationState extends State<ShadPagination> {
     final canGoNext = currentPage < widget.totalPages - 1;
     items.add(
       _buildNavigationButton(
-        icon: Icons.chevron_right,
+        icon: LucideIcons.chevronRight,
         label: widget.showFirstLastButtons ? widget.nextButtonLabel : null,
         onPressed: canGoNext
             ? () {
@@ -530,10 +530,7 @@ class _ShadPaginationState extends State<ShadPagination> {
     final navigationSize = widget.navigationButtonSize ?? effectiveSize;
 
     // Automatically determine icon position based on icon type
-    final isRightIcon =
-        icon == Icons.chevron_right ||
-        icon == Icons.arrow_forward ||
-        icon == Icons.navigate_next;
+    final isRightIcon = icon == LucideIcons.chevronRight;
 
     final children = <Widget>[];
 
