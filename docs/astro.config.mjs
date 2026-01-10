@@ -151,6 +151,11 @@ export default defineConfig({
               link: 'https://zuzu.dev',
               attrs: { target: '_blank', rel: 'noopener noreferrer' },
             },
+            {
+              label: 'GrantWeave',
+              link: 'https://grantweave.com',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            }
           ],
         }
       ],
