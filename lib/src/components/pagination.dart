@@ -420,6 +420,26 @@ class _ShadPaginationState extends State<ShadPagination> {
               ),
             ),
           );
+          items.add(
+            DecoratedBox(
+              position: DecorationPosition.foreground,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.background,
+              ),
+              child: SizedBox(
+                width: 32,
+                child: Align(
+                  child: Text(
+                    '...',
+                    style: TextStyle(
+                      color: effectiveEllipsisColor,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
         } else {
           final isSelected = page - 1 == currentPage;
           items.add(
