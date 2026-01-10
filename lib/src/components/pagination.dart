@@ -48,7 +48,6 @@ class ShadPaginationController extends ChangeNotifier {
   }
 }
 
-/// A pagination that allows navigation through multiple pages of content.
 class ShadPagination extends StatefulWidget {
   const ShadPagination({
     super.key,
