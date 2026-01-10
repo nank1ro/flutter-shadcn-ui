@@ -242,7 +242,6 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
       defaultKeyboardToolbarTheme: effectiveVariant
           .defaultKeyboardToolbarTheme()
           .merge(defaultKeyboardToolbarTheme),
-
       shadPaginationTheme: effectiveVariant.paginationTheme().merge(
         paginationTheme,
       ),
