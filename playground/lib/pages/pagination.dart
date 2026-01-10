@@ -31,12 +31,12 @@ class _PaginationExampleState extends State<PaginationExample> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 20,
       children: [
         Text(
           'Pagination Example',
           style: ShadTheme.of(context).textTheme.h2,
         ),
-        const SizedBox(height: 20),
         // Add your pagination widget implementation here
         ShadPagination(
           totalPages: 10,
