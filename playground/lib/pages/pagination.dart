@@ -18,7 +18,7 @@ class PaginationExample extends StatefulWidget {
 }
 
 class _PaginationExampleState extends State<PaginationExample> {
-  final ShadPaginationController _controller = ShadPaginationController();
+  final _controller = ShadPaginationController();
 
   @override
   void dispose() {
