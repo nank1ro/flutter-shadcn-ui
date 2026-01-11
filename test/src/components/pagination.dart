@@ -326,6 +326,7 @@ void main() {
   group('Responsive Behavior', () {
     testWidgets('switches to compact mode below breakpoint', (tester) async {
       // Set screen width below default breakpoint (768)
+      addTearDown(tester.view.reset);
       tester.view.physicalSize = const Size(500, 800);
       tester.view.devicePixelRatio = 1.0;
 
@@ -344,6 +345,7 @@ void main() {
     });
 
     testWidgets('respects custom compactBreakpoint', (tester) async {
+      addTearDown(tester.view.reset);
       tester.view.physicalSize = const Size(600, 800);
       tester.view.devicePixelRatio = 1.0;
 
