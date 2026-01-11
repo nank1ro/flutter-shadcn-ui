@@ -416,6 +416,22 @@ void main() {
       expect(find.text('3'), findsOneWidget);
     });
   });
+
+  testWidgets('next button is disabled at last page', (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: ShadPagination(
+            totalPages: 5,
+            initialPage: 4, // Last page (0-based)
+          ),
+        ),
+      ),
+    );
+
+    final nextButton = find.byIcon(Icons.chevron_right).first;
+    expect(tester.widget<ShadButton>(nextButton).onPressed, isNull);
+  });
 }
 
 class _TestPageUpdater extends StatefulWidget {
