@@ -402,16 +402,18 @@ class _ShadPaginationState extends State<ShadPagination> {
           final effectiveEllipsisColor =
               widget.ellipsisColor ??
               theme.shadPaginationTheme.ellipsisColor ??
-              theme.colorScheme.mutedForeground;
+              theme.colorScheme.foreground;
 
           items.add(
             DecoratedBox(
-              position: DecorationPosition.foreground,
+              // position: DecorationPosition.foreground,
               decoration: BoxDecoration(
                 color: theme.colorScheme.background,
               ),
               child: SizedBox(
                 width: 32,
+                height: widget.buttonHeight,
+
                 child: Align(
                   child: Text(
                     '...',
