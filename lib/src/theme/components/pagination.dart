@@ -20,7 +20,7 @@ class ShadPaginationTheme with _$ShadPaginationTheme {
     this.buttonSize,
     this.buttonCursor,
     this.buttonWidth,
-    this.buttonHeight,
+    this.buttonHeight = 40.0,
     this.buttonPadding,
     this.buttonBackgroundColor,
     this.buttonSelectedBackgroundColor,
@@ -35,7 +35,7 @@ class ShadPaginationTheme with _$ShadPaginationTheme {
     this.buttonTextDecoration,
     this.buttonHoverTextDecoration,
     this.buttonDecoration,
-    this.buttonGap,
+    this.buttonGap = 4.0,
     this.buttonMainAxisAlignment,
     this.buttonCrossAxisAlignment,
     this.buttonHoverStrategies,
@@ -45,11 +45,12 @@ class ShadPaginationTheme with _$ShadPaginationTheme {
     this.ellipsisColor,
     this.navigationButtonVariant,
     this.navigationButtonSize,
-    this.compactButtonVariant,
+    this.compactButtonVariant = ShadButtonVariant.ghost,
     this.showPreviousNextLabels = false,
     this.compactBreakpoint = 768.0,
     this.siblingCount = 1,
     this.boundaryCount = 1,
+    this.margin = const EdgeInsets.symmetric(horizontal: 16),
   }) : _canMerge = canMerge;
 
   @ignore
@@ -171,6 +172,9 @@ class ShadPaginationTheme with _$ShadPaginationTheme {
 
   /// {@macro ShadPagination.boundaryCount}
   final int boundaryCount;
+
+  /// {@macro ShadPagination.margin}
+  final EdgeInsetsGeometry? margin;
 
   static ShadPaginationTheme? lerp(
     ShadPaginationTheme? a,

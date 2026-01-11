@@ -70,16 +70,16 @@ class ShadPagination extends StatefulWidget {
     this.buttonPadding,
     this.selectedButtonVariant,
     this.selectedButtonBackgroundColor,
-    this.buttonGap = 4.0,
-    this.buttonHeight = 40.0,
-    this.compactBreakpoint = 768.0,
-    this.compactButtonVariant = ShadButtonVariant.ghost,
+    this.buttonGap,
+    this.buttonHeight,
+    this.compactBreakpoint,
+    this.compactButtonVariant,
     this.ellipsisColor,
     this.navigationButtonSize,
     this.navigationButtonVariant,
     this.selectedButtonForegroundColor,
     this.width,
-    this.margin = const EdgeInsets.symmetric(horizontal: 16),
+    this.margin,
     this.previousButtonLabel = 'Previous',
     this.nextButtonLabel = 'Next',
     this.constraints,
@@ -200,7 +200,7 @@ class ShadPagination extends StatefulWidget {
   /// {@template ShadPagination.buttonGap}
   /// The gap between pagination buttons.
   /// {@endtemplate}
-  final double buttonGap;
+  final double? buttonGap;
 
   /// {@template ShadPagination.buttonHeight}
   /// The height for the pagination buttons.
@@ -301,8 +301,7 @@ class _ShadPaginationState extends State<ShadPagination> {
         theme.shadPaginationTheme.padding ??
         const EdgeInsets.all(4);
 
-    final effectiveMargin =
-        widget.margin ?? const EdgeInsets.symmetric(horizontal: 16);
+    final effectiveMargin = widget.margin ?? theme.shadPaginationTheme.margin;
 
     return ListenableBuilder(
       listenable: controller,
@@ -324,7 +323,7 @@ class _ShadPaginationState extends State<ShadPagination> {
           effectiveWidth = widget.width!;
         } else {
           // Use screen width minus margin
-          final horizontalMargin = effectiveMargin.horizontal;
+          final horizontalMargin = effectiveMargin!.horizontal;
           effectiveWidth = screenWidth - horizontalMargin;
         }
         // Create container with constraints
@@ -354,7 +353,7 @@ class _ShadPaginationState extends State<ShadPagination> {
         // Apply margin
         if (effectiveMargin != EdgeInsets.zero) {
           paginationContent = Padding(
-            padding: effectiveMargin,
+            padding: effectivePadding,
             child: paginationContent,
           );
         }
@@ -387,7 +386,7 @@ class _ShadPaginationState extends State<ShadPagination> {
       ),
     );
 
-    if (widget.buttonGap > 0) {
+    if (widget.buttonGap != null && widget.buttonGap! > 0) {
       items.add(SizedBox(width: widget.buttonGap));
     }
 
@@ -437,12 +436,16 @@ class _ShadPaginationState extends State<ShadPagination> {
           );
         }
 
-        if (i < pageNumbers.length - 1 && widget.buttonGap > 0) {
+        if (i < pageNumbers.length - 1 &&
+            widget.buttonGap != null &&
+            widget.buttonGap! > 0) {
           items.add(SizedBox(width: widget.buttonGap));
         }
       }
 
-      if (pageNumbers.isNotEmpty && widget.buttonGap > 0) {
+      if (pageNumbers.isNotEmpty &&
+          widget.buttonGap != null &&
+          widget.buttonGap! > 0) {
         items.add(SizedBox(width: widget.buttonGap));
       }
     }
