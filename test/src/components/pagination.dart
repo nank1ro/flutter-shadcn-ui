@@ -426,9 +426,9 @@ class _TestPageUpdaterState extends State<_TestPageUpdater> {
       body: Column(
         children: [
           ShadPagination(totalPages: totalPages),
-          ElevatedButton(
+          ShadButton(
             onPressed: () => setState(() => totalPages = 3),
-            child: Text('Update'),
+            child: const Text('Update'),
           ),
         ],
       ),

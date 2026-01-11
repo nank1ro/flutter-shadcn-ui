@@ -407,19 +407,6 @@ class _ShadPaginationState extends State<ShadPagination> {
               theme.colorScheme.mutedForeground;
 
           items.add(
-            Container(
-              alignment: Alignment.center,
-              width: 32,
-              child: Text(
-                '...',
-                style: TextStyle(
-                  color: effectiveEllipsisColor,
-                  fontSize: 14,
-                ),
-              ),
-            ),
-          );
-          items.add(
             DecoratedBox(
               position: DecorationPosition.foreground,
               decoration: BoxDecoration(
