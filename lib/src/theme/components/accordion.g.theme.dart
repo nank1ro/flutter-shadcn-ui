@@ -41,6 +41,7 @@ mixin _$ShadAccordionTheme {
       duration: lerpDuration$(a.duration, b.duration, t),
       maintainState: t < 0.5 ? a.maintainState : b.maintainState,
       effects: t < 0.5 ? a.effects : b.effects,
+      clipBehavior: t < 0.5 ? a.clipBehavior : b.clipBehavior,
     );
   }
 
@@ -54,6 +55,7 @@ mixin _$ShadAccordionTheme {
     Duration? duration,
     bool? maintainState,
     List<Effect<dynamic>>? effects,
+    Clip? clipBehavior,
   }) {
     final _this = (this as ShadAccordionTheme);
 
@@ -68,6 +70,7 @@ mixin _$ShadAccordionTheme {
       duration: duration ?? _this.duration,
       maintainState: maintainState ?? _this.maintainState,
       effects: effects ?? _this.effects,
+      clipBehavior: clipBehavior ?? _this.clipBehavior,
     );
   }
 
@@ -92,6 +95,7 @@ mixin _$ShadAccordionTheme {
       duration: other.duration,
       maintainState: other.maintainState,
       effects: other.effects,
+      clipBehavior: other.clipBehavior,
     );
   }
 
@@ -116,7 +120,8 @@ mixin _$ShadAccordionTheme {
         _other.curve == _this.curve &&
         _other.duration == _this.duration &&
         _other.maintainState == _this.maintainState &&
-        _other.effects == _this.effects;
+        _other.effects == _this.effects &&
+        _other.clipBehavior == _this.clipBehavior;
   }
 
   @override
@@ -134,6 +139,7 @@ mixin _$ShadAccordionTheme {
       _this.duration,
       _this.maintainState,
       _this.effects,
+      _this.clipBehavior,
     );
   }
 }

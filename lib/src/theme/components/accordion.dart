@@ -18,6 +18,7 @@ class ShadAccordionTheme with _$ShadAccordionTheme {
     this.duration,
     this.maintainState,
     this.effects,
+    this.clipBehavior,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -52,6 +53,9 @@ class ShadAccordionTheme with _$ShadAccordionTheme {
 
   /// {@macro ShadAccordionItem.effects}
   final List<Effect<dynamic>>? effects;
+
+  /// {@macro ShadAccordionItem.clipBehavior}
+  final Clip? clipBehavior;
 
   static ShadAccordionTheme? lerp(
     ShadAccordionTheme? a,

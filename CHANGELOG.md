@@ -1,3 +1,8 @@
+## 0.43.2
+
+- **FIX**: Prevent accordion from clipping focus rings by adding `clipBehavior` parameter to `ShadAccordionItem` and `ShadAccordionTheme`.
+- **CHORE**: Make `ShadSizeTransition` public to allow custom size transitions with configurable clip behavior.
+
 ## 0.43.1
 
 - **FIX**: Improve `ShadPortal` scroll and resize handling.
