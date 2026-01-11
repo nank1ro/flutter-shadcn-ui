@@ -284,6 +284,7 @@ void main() {
       expect(find.text('5'), findsOneWidget);
       expect(find.text('6'), findsOneWidget);
       expect(find.text('7'), findsOneWidget);
+      expect(find.text('8'), findsOneWidget);
     });
 
     testWidgets('boundaryCount controls boundary pages', (tester) async {
