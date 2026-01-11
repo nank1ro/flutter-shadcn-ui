@@ -51,7 +51,12 @@ class ShadPaginationTheme with _$ShadPaginationTheme {
     this.siblingCount = 1,
     this.boundaryCount = 1,
     this.margin = const EdgeInsets.symmetric(horizontal: 16),
-  }) : _canMerge = canMerge;
+  }) : assert(siblingCount >= 0),
+       assert(boundaryCount >= 0),
+       assert(compactBreakpoint > 0),
+       assert(buttonHeight == null || buttonHeight > 0),
+       assert(buttonGap == null || buttonGap >= 0),
+       _canMerge = canMerge;
 
   @ignore
   final bool _canMerge;
