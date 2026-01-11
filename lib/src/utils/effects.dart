@@ -32,7 +32,7 @@ class SizeEffect extends Effect<double> {
     AnimationController controller,
     EffectEntry entry,
   ) {
-    return _ShadSizeTransition(
+    return ShadSizeTransition(
       sizeFactor: buildAnimation(controller, entry),
       clipBehavior: clipBehavior,
       child: child,
@@ -43,13 +43,17 @@ class SizeEffect extends Effect<double> {
   static const defaultValue = 0.0;
 }
 
+/// {@template ShadSizeTransition}
 /// A custom size transition widget that supports [clipBehavior].
 ///
 /// This is similar to Flutter's [SizeTransition] but with configurable
 /// clip behavior to allow focus rings and other content to extend beyond
 /// the widget's boundary during animation.
-class _ShadSizeTransition extends AnimatedWidget {
-  const _ShadSizeTransition({
+/// {@endtemplate}
+class ShadSizeTransition extends AnimatedWidget {
+  /// {@macro ShadSizeTransition}
+  const ShadSizeTransition({
+    super.key,
     required Animation<double> sizeFactor,
     this.clipBehavior = Clip.hardEdge,
     this.child,
