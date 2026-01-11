@@ -105,6 +105,8 @@ class ShadPagination extends StatefulWidget {
 
   /// {@template ShadPagination.initialPage}
   /// The initial page index.
+  /// Only applies when no external [controller] is provided.
+  /// When using an external controller, set its selectedIndex before passing it.
   /// {@endtemplate}
   final int initialPage;
 
@@ -277,13 +279,9 @@ class _ShadPaginationState extends State<ShadPagination> {
     if (widget.controller == null) {
       _controller = ShadPaginationController();
       _controller.selectedIndex = widget.initialPage;
-    } else {
-      // Respect the provided controller's state, but apply initialPage
-      // if it's at default
-      if (widget.controller!.selectedIndex == 0 && widget.initialPage != 0) {
-        widget.controller!.selectedIndex = widget.initialPage;
-      }
     }
+    // When an external controller is provided, respect its current state
+    // and ignore initialPage
   }
 
   @override
