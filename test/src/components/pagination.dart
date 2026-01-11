@@ -301,6 +301,9 @@ void main() {
       // With boundaryCount=2, should always see pages 1 and 2 at start
       expect(find.text('1'), findsOneWidget);
       expect(find.text('2'), findsOneWidget);
+      // And pages 9 and 10 at end
+      expect(find.text('9'), findsOneWidget);
+      expect(find.text('10'), findsOneWidget);
     });
 
     testWidgets('throws assertion for invalid totalPages', (tester) async {
