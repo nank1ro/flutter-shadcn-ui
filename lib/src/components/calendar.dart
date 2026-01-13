@@ -1034,10 +1034,12 @@ class _ShadCalendarState extends State<ShadCalendar> {
 
     isFirstMonthDisplayed =
         widget.fromMonth != null &&
-        datesModels.first.month.isAtSameMomentAs(widget.fromMonth!);
+        datesModels.first.month.startOfMonth.millisecondsSinceEpoch <=
+            widget.fromMonth!.startOfMonth.millisecondsSinceEpoch;
     isLastMonthDisplayed =
         widget.toMonth != null &&
-        datesModels.last.month.isAtSameMomentAs(widget.toMonth!);
+        datesModels.last.month.startOfMonth.millisecondsSinceEpoch >=
+            widget.toMonth!.startOfMonth.millisecondsSinceEpoch;
   }
 
   void generateDatesForMonth(DateTime month) {
