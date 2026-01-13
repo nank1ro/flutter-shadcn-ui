@@ -1,3 +1,7 @@
+## 0.44.0
+
+- **FEAT**: Add new `ShadCarousel` component with smooth scrolling, item snapping and customizable navigation buttons (thanks to @koukibadr).
+
 ## 0.43.1
 
 - **FIX**: Improve `ShadPortal` scroll and resize handling.

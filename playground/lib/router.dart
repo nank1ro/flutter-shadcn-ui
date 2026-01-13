@@ -7,6 +7,7 @@ import 'package:playground/pages/breadcrumb.dart';
 import 'package:playground/pages/button.dart';
 import 'package:playground/pages/calendar.dart';
 import 'package:playground/pages/card.dart';
+import 'package:playground/pages/carousel.dart';
 import 'package:playground/pages/checkbox.dart';
 import 'package:playground/pages/context_menu.dart';
 import 'package:playground/pages/date_picker.dart';
@@ -300,6 +301,12 @@ final router = GoRouter(
       path: '/textarea',
       builder: (context, state) {
         return const TextareaPage();
+      },
+    ),
+    GoRoute(
+      path: '/carousel',
+      builder: (context, state) {
+        return const CarouselPage();
       },
     ),
   ],
