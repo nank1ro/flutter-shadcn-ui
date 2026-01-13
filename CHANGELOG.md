@@ -1,3 +1,7 @@
+## 0.43.2
+
+- **FIX**: Correctly disable back and forth buttons in `ShadCalendar` when reaching min/max date.
+
 ## 0.43.1
 
 - **FIX**: Improve `ShadPortal` scroll and resize handling.
