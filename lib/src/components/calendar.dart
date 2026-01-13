@@ -874,8 +874,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
   List<ShadCalendarModel> datesModels = [];
   // The first date shown in the calendar, used to render the week days
   late DateTime firstDateShown;
-  bool isFirstMonthDisplayed = false;
-  bool isLastMonthDisplayed = false;
+  bool isPreviousMonthButtonDisabled = false;
+  bool isNextMonthButtonDisabled = false;
   late final selectedDays = <DateTime>{
     if (widget.selected != null) widget.selected!.startOfDay,
     if (widget.multipleSelected != null)
@@ -1032,11 +1032,11 @@ class _ShadCalendarState extends State<ShadCalendar> {
       month = effectiveMonth;
     }
 
-    isFirstMonthDisplayed =
+    isPreviousMonthButtonDisabled =
         widget.fromMonth != null &&
         datesModels.first.month.startOfMonth.millisecondsSinceEpoch <=
             widget.fromMonth!.startOfMonth.millisecondsSinceEpoch;
-    isLastMonthDisplayed =
+    isNextMonthButtonDisabled =
         widget.toMonth != null &&
         datesModels.last.month.startOfMonth.millisecondsSinceEpoch >=
             widget.toMonth!.startOfMonth.millisecondsSinceEpoch;
@@ -1474,7 +1474,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
             width: effectiveNavigationButtonSize,
             height: effectiveNavigationButtonSize,
             padding: effectiveNavigationButtonPadding,
-            enabled: !isFirstMonthDisplayed,
+            enabled: !isPreviousMonthButtonDisabled,
             onHoverChange: (hovered) => backMonthButtonHovered.value = hovered,
             icon: Icon(
               effectiveBackNavigationButtonSrc,
@@ -1495,7 +1495,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
             width: effectiveNavigationButtonSize,
             height: effectiveNavigationButtonSize,
             padding: effectiveNavigationButtonPadding,
-            enabled: !isLastMonthDisplayed,
+            enabled: !isNextMonthButtonDisabled,
             onHoverChange: (hovered) =>
                 forwardMonthButtonHovered.value = hovered,
             onPressed: () => goToMonth(currentMonth.nextMonth),
