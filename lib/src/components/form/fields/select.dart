@@ -514,6 +514,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
+
+    /// {@macro ShadSelect.onPressed}
+    VoidCallback? onPressed,
   }) : super(
          decorationBuilder: (context) =>
              (ShadTheme.of(context).selectTheme.decoration ??
@@ -549,6 +552,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
              allowDeselection: allowDeselection,
              controller: state.controller,
              ensureSelectedVisible: ensureSelectedVisible,
+             onPressed: onPressed,
            );
          },
        );
@@ -616,6 +620,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.onSearchSubmitted}
     ValueChanged<String>? onSearchSubmitted,
+
+    /// {@macro ShadSelect.onPressed}
+    VoidCallback? onPressed,
   }) : super(
          decorationBuilder: (context) =>
              (ShadTheme.of(context).selectTheme.decoration ??
@@ -660,6 +667,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
              ensureSelectedVisible: ensureSelectedVisible,
              searchFocusNode: searchFocusNode,
              onSearchSubmitted: onSearchSubmitted,
+             onPressed: onPressed,
            );
          },
        );
@@ -725,6 +733,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.onSearchSubmitted}
     ValueChanged<String>? onSearchSubmitted,
+
+    /// {@macro ShadSelect.onPressed}
+    VoidCallback? onPressed,
   }) : assert(
          variant == ShadSelectVariant.multiple ||
              variant == ShadSelectVariant.multipleWithSearch,
@@ -775,6 +786,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
              ensureSelectedVisible: ensureSelectedVisible,
              searchFocusNode: searchFocusNode,
              onSearchSubmitted: onSearchSubmitted,
+             onPressed: onPressed,
            );
          },
        );
