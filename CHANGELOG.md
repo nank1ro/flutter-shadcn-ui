@@ -1,6 +1,14 @@
 ## 0.44.0
 
 - **FEAT**: Add new component `ShadPagination` and all of its related components (thanks to @asare-21).
+## 0.43.3
+
+- **FIX**: Add `onPressed` to `ShadSelectMultipleFormField`.
+
+## 0.43.2
+
+- **FIX**: Correctly disable back and forth buttons in `ShadCalendar` when reaching min/max date.
+
 ## 0.43.1
 
 - **FIX**: Improve `ShadPortal` scroll and resize handling.
