@@ -1,3 +1,7 @@
+## 0.43.3
+
+- **FIX**: Add `onPressed` to `ShadSelectMultipleFormField`.
+
 ## 0.43.2
 
 - **FIX**: Correctly disable back and forth buttons in `ShadCalendar` when reaching min/max date.
