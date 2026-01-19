@@ -138,6 +138,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
 /// form.
 class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     extends FormFieldState<T> {
+  final String _internalId = UniqueKey().toString();
   FocusNode? _focusNode;
   ShadFormState? _parentForm;
 
@@ -177,6 +178,10 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   /// Whether the field is enabled, factoring in parent form state.
   bool get enabled => widget.enabled && (_parentForm?.enabled ?? true);
 
+  /// The effective identifier for the field, using the provided ID or an
+  /// auto-generated one.
+  String get effectiveId => widget.id ?? _internalId;
+
   @override
   void initState() {
     super.initState();
@@ -185,7 +190,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     }
     // Register this field when there is a parent ShadForm
     _parentForm = ShadForm.maybeOf(context);
-    if (widget.id != null) _parentForm?.registerField(widget.id!, this);
+    _parentForm?.registerField(effectiveId, this);
   }
 
   @override
@@ -194,8 +199,14 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     if (widget.id != oldWidget.id) {
       if (oldWidget.id != null) {
         _parentForm?.unregisterField(oldWidget.id!, this);
+      } else {
+        _parentForm?.unregisterField(_internalId, this);
       }
-      if (widget.id != null) _parentForm?.registerField(widget.id!, this);
+      if (widget.id != null) {
+        _parentForm?.registerField(widget.id!, this);
+      } else {
+        _parentForm?.registerField(_internalId, this);
+      }
     }
 
     if (oldWidget.focusNode != null && widget.focusNode == null) {
@@ -223,7 +234,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
 
   @override
   void dispose() {
-    if (widget.id != null) _parentForm?.unregisterField(widget.id!, this);
+    _parentForm?.unregisterField(effectiveId, this);
     _focusNode?.dispose();
     super.dispose();
   }
@@ -249,21 +260,18 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   void _informFormForFieldChange() {
     if (_parentForm != null) {
       if (enabled) {
-        if (widget.id != null) {
-          _parentForm!.setFieldValue<T>(widget.id!, value, notifyField: false);
-        }
+        _parentForm!.setFieldValue<T>(effectiveId, value, notifyField: false);
         return;
       }
-      if (widget.id != null) _parentForm!.removeFieldValue(widget.id!);
+      _parentForm!.removeFieldValue(effectiveId);
     }
   }
 
   /// Registers the field’s value transformer with the provided map.
   void registerTransformer(Map<String, Function> map) {
-    if (widget.id == null) return;
     final fun = widget.valueTransformer;
     if (fun != null) {
-      map[widget.id!] = fun;
+      map[effectiveId] = fun;
     }
   }
 }

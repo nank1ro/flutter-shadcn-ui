@@ -1,3 +1,7 @@
+## 0.43.4
+
+- **FIX**: `ShadForm` scroll to form fields without an associated `id`.
+
 ## 0.43.3
 
 - **FIX**: Add `onPressed` to `ShadSelectMultipleFormField`.
