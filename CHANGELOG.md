@@ -1,6 +1,10 @@
 ## 0.44.0
 
 - **FEAT**: Add new component `ShadPagination` and all of its related components (thanks to @asare-21).
+## 0.43.4
+
+- **FIX**: `ShadForm` scroll to form fields without an associated `id`.
+
 ## 0.43.3
 
 - **FIX**: Add `onPressed` to `ShadSelectMultipleFormField`.
