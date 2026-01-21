@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 const kDefaultFontFamily = 'Geist';
 
