@@ -155,6 +155,11 @@ export default defineConfig({
               label: 'GrantWeave',
               link: 'https://grantweave.com',
               attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
+              label: 'Brew Better',
+              link: 'https://brew-better.2ndbeststud.io',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
             }
           ],
         }
