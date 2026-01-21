@@ -255,6 +255,7 @@ class ShadTextTheme {
   }) {
     final effectiveTextTheme =
         textTheme ?? ShadDefaultThemeVariant.defaultTextTheme;
+    final fontFamily = fontBuilder().fontFamily;
 
     final p = GoogleFontTextStyle(
       effectiveTextTheme.p.omitFamilyAndPackage,
@@ -265,60 +266,60 @@ class ShadTextTheme {
       h1Large: GoogleFontTextStyle(
         effectiveTextTheme.h1Large.omitFamilyAndPackage,
         builder: fontBuilder,
-      ).copyWith(fontFamily: p.fontFamily),
+      ).copyWith(fontFamily: fontFamily),
       h1: GoogleFontTextStyle(
         effectiveTextTheme.h1.omitFamilyAndPackage,
         builder: fontBuilder,
-      ).copyWith(fontFamily: p.fontFamily),
+      ).copyWith(fontFamily: fontFamily),
       h2: GoogleFontTextStyle(
         effectiveTextTheme.h2.omitFamilyAndPackage,
         builder: fontBuilder,
-      ).copyWith(fontFamily: p.fontFamily),
+      ).copyWith(fontFamily: fontFamily),
       h3: GoogleFontTextStyle(
         effectiveTextTheme.h3.omitFamilyAndPackage,
         builder: fontBuilder,
-      ).copyWith(fontFamily: p.fontFamily),
+      ).copyWith(fontFamily: fontFamily),
       h4: GoogleFontTextStyle(
         effectiveTextTheme.h4.omitFamilyAndPackage,
         builder: fontBuilder,
-      ).copyWith(fontFamily: p.fontFamily),
+      ).copyWith(fontFamily: fontFamily),
       p: p,
       blockquote: GoogleFontTextStyle(
         effectiveTextTheme.blockquote.omitFamilyAndPackage,
         builder: fontBuilder,
-      ).copyWith(fontFamily: p.fontFamily),
+      ).copyWith(fontFamily: fontFamily),
       table: GoogleFontTextStyle(
         effectiveTextTheme.table.omitFamilyAndPackage,
         builder: fontBuilder,
-      ).copyWith(fontFamily: p.fontFamily),
+      ).copyWith(fontFamily: fontFamily),
       list: GoogleFontTextStyle(
         effectiveTextTheme.list.omitFamilyAndPackage,
         builder: fontBuilder,
-      ).copyWith(fontFamily: p.fontFamily),
+      ).copyWith(fontFamily: fontFamily),
       lead: GoogleFontTextStyle(
         effectiveTextTheme.lead.omitFamilyAndPackage,
         builder: fontBuilder,
-      ).copyWith(fontFamily: p.fontFamily),
+      ).copyWith(fontFamily: fontFamily),
       large: GoogleFontTextStyle(
         effectiveTextTheme.large.omitFamilyAndPackage,
         builder: fontBuilder,
-      ).copyWith(fontFamily: p.fontFamily),
+      ).copyWith(fontFamily: fontFamily),
       small: GoogleFontTextStyle(
         effectiveTextTheme.small.omitFamilyAndPackage,
         builder: fontBuilder,
-      ).copyWith(fontFamily: p.fontFamily),
+      ).copyWith(fontFamily: fontFamily),
       muted: GoogleFontTextStyle(
         effectiveTextTheme.muted.omitFamilyAndPackage,
         builder: fontBuilder,
-      ).copyWith(fontFamily: p.fontFamily),
-      family: p.fontFamily,
+      ).copyWith(fontFamily: fontFamily),
+      family: fontFamily,
       googleFontBuilder: fontBuilder,
       custom: {
         for (final e in effectiveTextTheme.custom.entries)
           e.key: GoogleFontTextStyle(
             e.value.omitFamilyAndPackage,
             builder: fontBuilder,
-          ).copyWith(fontFamily: p.fontFamily),
+          ).copyWith(fontFamily: fontFamily),
       },
     );
   }
