@@ -7,7 +7,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 // Example of extension on ShadTextTheme with a custom style.
 // which can be retrieved with `ShadTheme.of(context).textTheme.myCustomStyle`.
 extension CustomStyleExtension on ShadTextTheme {
-  TextStyle get myCustomStyle => custom['myCustomStyle']!;
+  TextStyle? get myCustomStyle => custom['myCustomStyle'];
 }
 
 class TypographyPage extends StatelessWidget {
@@ -15,6 +15,7 @@ class TypographyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(ShadTheme.of(context).textTheme.h1.fontFamily);
     return BaseScaffold(
       appBarTitle: 'Typography',
       children: [

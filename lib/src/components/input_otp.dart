@@ -1,9 +1,10 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
-import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
+import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
@@ -299,13 +300,7 @@ class ShadInputOTPSlot extends StatefulWidget {
   final TextInputType? keyboardType;
 
   /// {@template ShadInputOTPSlot.style}
-  /// The style for the input of the slot, defaults to
-  /// ```dart
-  /// textTheme.muted.copyWith(
-  ///    color: theme.colorScheme.foreground,
-  ///    fontFamily: kDefaultFontFamilyMono,
-  ///  )
-  /// ```
+  /// The style for the input of the slot.
   /// {@endtemplate}
   final TextStyle? style;
 
@@ -425,10 +420,11 @@ class _ShadInputOTPSlotState extends State<ShadInputOTPSlot> {
     final defaultStyle =
         widget.style ??
         theme.inputOTPTheme.style ??
-        theme.textTheme.muted.copyWith(
-          color: theme.colorScheme.foreground,
-          fontFamily: kDefaultFontFamilyMono,
-        );
+        GoogleFonts.geistMono()
+            .merge(theme.textTheme.muted.omitFamilyAndPackage)
+            .copyWith(
+              color: theme.colorScheme.foreground,
+            );
 
     final firstRadius =
         widget.firstRadius ??
