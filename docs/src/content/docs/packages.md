@@ -33,6 +33,6 @@ The intl package provides internationalization and localization facilities, incl
 
 Support multiple image formats. Used by the [ShadAvatar](../components/avatar) component.
 
-## [google_fonts](https://pub.dev/packages/google_fonts)
+### [google_fonts](https://pub.dev/packages/google_fonts)
 
 The google_fonts package allows you to easily use any of the fonts from fonts.google.com in your Flutter app.

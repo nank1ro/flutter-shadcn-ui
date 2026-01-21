@@ -205,7 +205,7 @@ class ShadTextTheme {
       googleFontBuilder = null;
     }
     var effectiveFamily = family;
-    if (package != null && package != '') {
+    if (package != null && effectiveFamily != '') {
       effectiveFamily = 'packages/$package/$effectiveFamily';
     }
 
