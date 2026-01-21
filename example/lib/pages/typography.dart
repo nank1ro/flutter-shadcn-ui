@@ -15,7 +15,6 @@ class TypographyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(ShadTheme.of(context).textTheme.h1.fontFamily);
     return BaseScaffold(
       appBarTitle: 'Typography',
       children: [
