@@ -1,4 +1,4 @@
-## 0.43.5
+## 0.44.0
 
 - **REFACTOR**: Deprecated `valueTransformer` in favor of `toValueTransformer`.
 - **FEAT**: Add `fromValueTransformer` to form fields to easily transform the form initial value to the field value.
