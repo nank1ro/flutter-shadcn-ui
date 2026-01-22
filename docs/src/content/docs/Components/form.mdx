@@ -190,6 +190,103 @@ ShadDatePickerFormField(
 
 In this way, the form field can work with `DateTime` objects while the form value remains a `String` both as initial value (input) and when getting the form value (output).
 
+## Dot notation for nested values
+
+By default, `ShadForm` supports dot notation in field IDs to automatically create nested map structures. This makes it easier to work with complex, hierarchical form data.
+
+### How it works
+
+When you use field IDs with dots (like `user.email` or `profile.settings.theme`), the form automatically converts them into nested maps:
+
+```dart
+ShadForm(
+  child: Column(
+    children: [
+      ShadInputFormField(
+        id: 'user.name',
+        label: const Text('Name'),
+      ),
+      ShadInputFormField(
+        id: 'user.email',
+        label: const Text('Email'),
+      ),
+      ShadInputFormField(
+        id: 'user.age',
+        label: const Text('Age'),
+      ),
+    ],
+  ),
+)
+```
+
+When you retrieve the form value, it will be structured as:
+```dart
+{
+  'user': {
+    'name': 'John Doe',
+    'email': 'john@example.com',
+    'age': '30'
+  }
+}
+```
+
+### Initial values with dot notation
+
+You can also use dot notation in the `initialValue` map:
+
+```dart
+ShadForm(
+  initialValue: {
+    'user.name': 'John Doe',
+    'user.email': 'john@example.com',
+  },
+  child: // Your form fields with the same dot notation IDs
+)
+```
+
+### Customizing the separator
+
+If you prefer a different separator, you can customize it using the `dotNotationSeparator` parameter:
+
+```dart {2}
+ShadForm(
+  dotNotationSeparator: '/',
+  child: Column(
+    children: [
+      ShadInputFormField(
+        id: 'user/name', // Using '/' instead of '.'
+        label: const Text('Name'),
+      ),
+    ],
+  ),
+)
+```
+
+### Disabling dot notation
+
+If you want to use dots in your field IDs without creating nested structures, you can disable the feature:
+
+```dart {2}
+ShadForm(
+  enableDotNotation: false,
+  child: Column(
+    children: [
+      ShadInputFormField(
+        id: 'user.email', // This will remain as a flat key
+        label: const Text('Email'),
+      ),
+    ],
+  ),
+)
+```
+
+With `enableDotNotation: false`, the form value will be:
+```dart
+{
+  'user.email': 'john@example.com' // Flat structure
+}
+```
+
 ## Examples
 
 See the following links for more examples on how to use the `ShadForm` component with other components:

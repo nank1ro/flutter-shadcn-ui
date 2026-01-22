@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
+import 'package:shadcn_ui/src/utils/extensions/map.dart';
 
 /// Used to configure the auto validation of [FormField and [ShadForm]
 /// widgets.
@@ -41,6 +42,8 @@ class ShadForm extends StatefulWidget {
     this.enabled = true,
     this.skipDisabled = false,
     this.clearValueOnUnregister = false,
+    this.enableDotNotation = true,
+    this.dotNotationSeparator = '.',
   });
 
   /// Callback when form value changes
@@ -72,6 +75,17 @@ class ShadForm extends StatefulWidget {
   /// Whether to clear the value of fields when they are unregistered, defaults
   /// to false;
   final bool clearValueOnUnregister;
+
+  /// Whether to enable dot notation support for nested form values.
+  ///
+  /// When enabled, field IDs like 'user.email' will be converted to nested
+  /// maps like {'user': {'email': value}}. Defaults to true.
+  final bool enableDotNotation;
+
+  /// The separator to use for dot notation.
+  ///
+  /// Defaults to '.', but can be customized to any string (e.g., '/', ':').
+  final String dotNotationSeparator;
 
   @override
   State<ShadForm> createState() => ShadFormState();
@@ -114,8 +128,8 @@ class ShadFormState extends State<ShadForm> {
 
   /// Returns an unmodifiable view of the current form values with
   /// transformations applied
-  Map<String, dynamic> get value => Map<String, dynamic>.unmodifiable(
-    {
+  Map<String, dynamic> get value {
+    final flatMap = {
       // Include all initial values
       ...initialValue,
       // Override with actual values (transformed)
@@ -124,8 +138,14 @@ class ShadFormState extends State<ShadForm> {
             // ignore: avoid_dynamic_calls
             MapEntry(key, _transformers[key]?.call(value) ?? value),
       ),
-    },
-  );
+    };
+
+    return Map<String, dynamic>.unmodifiable(
+      widget.enableDotNotation
+          ? flatMap.toNestedMap(separator: widget.dotNotationSeparator)
+          : flatMap,
+    );
+  }
 
   @override
   void initState() {
