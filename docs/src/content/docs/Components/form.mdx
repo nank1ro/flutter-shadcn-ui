@@ -164,6 +164,32 @@ formKey.currentState!.setValue({
 If you don't want to notify the fields about the value change, you can pass `notifyFields: false` as argument.
 This would only update the form value without updating the fields UI.
 
+## Value transformers
+
+You can use value transformers to convert the initial value from the form to the field value and vice versa.
+
+### fromValueTransformer
+
+If your `ShadForm` has an initial value like this one `{'date': '2024-02-01'}` you need to convert the string value to a `DateTime` object for the `ShadDatePickerFormField`.
+```dart {3}
+ShadDatePickerFormField(
+  id: 'date',
+  fromValueTransformer: (value) => DateTime.tryParse(value ?? ''),
+),
+```
+
+Vice versa, you can use the `toValueTransformer` parameter to convert the field value back to the form value.
+```dart {3-5}
+ShadDatePickerFormField(
+  id: 'date',
+  toValueTransformer: (date) => date == null
+      ? null
+      : DateFormat('yyyy-MM-dd').format(date),
+),
+```
+
+In this way, the form field can work with `DateTime` objects while the form value remains a `String` both as initial value (input) and when getting the form value (output).
+
 ## Examples
 
 See the following links for more examples on how to use the `ShadForm` component with other components:
