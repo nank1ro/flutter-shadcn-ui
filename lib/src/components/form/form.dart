@@ -115,11 +115,16 @@ class ShadFormState extends State<ShadForm> {
   /// Returns an unmodifiable view of the current form values with
   /// transformations applied
   Map<String, dynamic> get value => Map<String, dynamic>.unmodifiable(
-    _value.map(
-      (key, value) =>
-          // ignore: avoid_dynamic_calls
-          MapEntry(key, _transformers[key]?.call(value) ?? value),
-    ),
+    {
+      // Include all initial values
+      ...initialValue,
+      // Override with actual values (transformed)
+      ..._value.map(
+        (key, value) =>
+            // ignore: avoid_dynamic_calls
+            MapEntry(key, _transformers[key]?.call(value) ?? value),
+      ),
+    },
   );
 
   @override
