@@ -199,8 +199,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     if (widget.initialValue != null) return widget.initialValue;
 
     final value = _parentForm?.widget.initialValue[widget.id];
-    if (value == null) return null;
-    if (widget.fromValueTransformer != null) {
+    if (widget.fromValueTransformer != null && value is T) {
       return widget.fromValueTransformer!(value);
     }
     return value as T?;
