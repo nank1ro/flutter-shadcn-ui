@@ -15,6 +15,8 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
     super.description,
     super.onChanged,
     super.valueTransformer,
+    super.toValueTransformer,
+    super.fromValueTransformer,
     super.onReset,
     super.enabled,
     super.autovalidateMode,

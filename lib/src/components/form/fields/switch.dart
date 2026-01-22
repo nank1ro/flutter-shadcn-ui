@@ -15,6 +15,8 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
     super.description,
     void Function(bool)? onChanged,
     super.valueTransformer,
+    super.toValueTransformer,
+    super.fromValueTransformer,
     super.onReset,
     super.enabled,
     super.autovalidateMode,

@@ -23,6 +23,8 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
     super.error,
     super.description,
     super.valueTransformer,
+    super.toValueTransformer,
+    super.fromValueTransformer,
     super.onReset,
     super.focusNode,
     void Function(String)? onChanged,

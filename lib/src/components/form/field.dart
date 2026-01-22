@@ -8,7 +8,14 @@ import 'package:shadcn_ui/src/theme/components/input_decorator.dart';
 ///
 /// Takes a value of type [T] and returns a transformed value of any type.
 /// Used to convert field values before saving or processing
-typedef ValueTransformer<T> = dynamic Function(T value);
+typedef ToValueTransformer<T> = dynamic Function(T value);
+
+/// A function that transforms a value from a different format into the form
+/// field's expected type.
+///
+/// Takes a value of any type and returns a transformed value of type [T].
+/// Used to convert values before populating the form field.
+typedef FromValueTransformer<T> = T Function(dynamic value);
 
 /// A customizable form field widget with built-in decoration and state
 /// management.
@@ -36,7 +43,9 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.error,
     this.description,
     this.onChanged,
-    this.valueTransformer,
+    @Deprecated('Use toValueTransformer instead') this.valueTransformer,
+    this.toValueTransformer,
+    this.fromValueTransformer,
     this.onReset,
     this.decorationBuilder,
     super.forceErrorText,
@@ -102,7 +111,22 @@ class ShadFormBuilderField<T> extends FormField<T> {
   /// Useful for formatting or converting data; defaults to null
   /// (no transformation).
   /// {@endtemplate}
-  final ValueTransformer<T?>? valueTransformer;
+  @Deprecated('Use toValueTransformer instead')
+  final ToValueTransformer<T?>? valueTransformer;
+
+  /// {@template ShadFormBuilderField.toValueTransformer}
+  /// A function to transform the field’s value before saving or processing.
+  /// Useful for formatting or converting data; defaults to null
+  /// (no transformation).
+  /// {@endtemplate}
+  final ToValueTransformer<T?>? toValueTransformer;
+
+  /// {@template ShadFormBuilderField.fromValueTransformer}
+  /// A function to transform a value into the field’s expected type.
+  /// Useful for converting data before populating the field; defaults to null
+  /// (no transformation).
+  /// {@endtemplate}
+  final FromValueTransformer<T?>? fromValueTransformer;
 
   /// {@template ShadFormBuilderField.onReset}
   /// Callback invoked when the field is reset to its initial value.
@@ -171,9 +195,15 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   F get widget => super.widget as F;
 
   /// The initial value of the field, sourced from widget or parent form.
-  T? get initialValue =>
-      widget.initialValue ??
-      (_parentForm?.widget.initialValue[widget.id] as T?);
+  T? get initialValue {
+    if (widget.initialValue != null) return widget.initialValue;
+
+    final value = _parentForm?.widget.initialValue[widget.id];
+    if (widget.fromValueTransformer != null) {
+      return widget.fromValueTransformer!(value);
+    }
+    return value as T?;
+  }
 
   /// Whether the field is enabled, factoring in parent form state.
   bool get enabled => widget.enabled && (_parentForm?.enabled ?? true);
@@ -268,10 +298,9 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   }
 
   /// Registers the field’s value transformer with the provided map.
-  void registerTransformer(Map<String, Function> map) {
-    final fun = widget.valueTransformer;
-    if (fun != null) {
-      map[effectiveId] = fun;
-    }
+  void registerToValueTransformer(Map<String, Function> map) {
+    // ignore: deprecated_member_use_from_same_package
+    final fun = widget.valueTransformer ?? widget.toValueTransformer;
+    if (fun != null) map[effectiveId] = fun;
   }
 }

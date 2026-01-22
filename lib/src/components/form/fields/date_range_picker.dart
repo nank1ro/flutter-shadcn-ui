@@ -27,6 +27,8 @@ class ShadDateRangePickerFormField
     /// {@macro ShadCalendar.onChanged}
     super.onChanged,
     super.valueTransformer,
+    super.toValueTransformer,
+    super.fromValueTransformer,
     super.onReset,
     super.enabled,
     super.autovalidateMode,

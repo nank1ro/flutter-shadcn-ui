@@ -1,3 +1,7 @@
+## 0.43.5
+
+- **REFACTOR**: Deprecated `valueTransformer` in favor of `toValueTransformer` and add `fromValueTransformer` in `ShadFormBuilderField` to easily transform values to/from the form field value.
+
 ## 0.43.4
 
 - **FIX**: `ShadForm` scroll to form fields without an associated `id`.
