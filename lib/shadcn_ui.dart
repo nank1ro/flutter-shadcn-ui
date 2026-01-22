@@ -16,6 +16,7 @@ export 'package:boxy/utils.dart';
 export 'package:flutter_animate/flutter_animate.dart' hide Effect;
 // External libraries
 export 'package:flutter_svg/flutter_svg.dart';
+export 'package:google_fonts/google_fonts.dart';
 export 'package:intl/intl.dart' hide TextDirection;
 export 'package:lucide_icons_flutter/lucide_icons.dart';
 export 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';

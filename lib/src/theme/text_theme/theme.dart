@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/themes/default_theme_variant.dart';
 
@@ -196,30 +197,32 @@ class ShadTextTheme {
     TextStyle? muted,
     String? family,
     String? package,
-    GoogleFontBuilder? googleFontBuilder,
+    GoogleFontBuilder? googleFontBuilder = GoogleFonts.geist,
     Map<String, TextStyle> custom = const {},
   }) {
-    var effectiveFamily = family ?? kDefaultFontFamily;
-    if (package != null && package != '') {
+    // If a custom family is provided, we nullify the googleFontBuilder
+    if (family != null && googleFontBuilder == GoogleFonts.geist) {
+      googleFontBuilder = null;
+    }
+    var effectiveFamily = family;
+    if (package != null && effectiveFamily != '') {
       effectiveFamily = 'packages/$package/$effectiveFamily';
     }
 
     return ShadTextTheme.custom(
-      h1Large: h1Large ?? ShadTextDefaultTheme.h1Large(family: effectiveFamily),
-      h1: h1 ?? ShadTextDefaultTheme.h1(family: effectiveFamily),
-      h2: h2 ?? ShadTextDefaultTheme.h2(family: effectiveFamily),
-      h3: h3 ?? ShadTextDefaultTheme.h3(family: effectiveFamily),
-      h4: h4 ?? ShadTextDefaultTheme.h4(family: effectiveFamily),
-      p: p ?? ShadTextDefaultTheme.p(family: effectiveFamily),
-      blockquote:
-          blockquote ??
-          ShadTextDefaultTheme.blockquote(family: effectiveFamily),
-      table: table ?? ShadTextDefaultTheme.table(family: effectiveFamily),
-      list: list ?? ShadTextDefaultTheme.list(family: effectiveFamily),
-      lead: lead ?? ShadTextDefaultTheme.lead(family: effectiveFamily),
-      large: large ?? ShadTextDefaultTheme.large(family: effectiveFamily),
-      small: small ?? ShadTextDefaultTheme.small(family: effectiveFamily),
-      muted: muted ?? ShadTextDefaultTheme.muted(family: effectiveFamily),
+      h1Large: h1Large ?? ShadTextDefaultTheme.h1Large(),
+      h1: h1 ?? ShadTextDefaultTheme.h1(),
+      h2: h2 ?? ShadTextDefaultTheme.h2(),
+      h3: h3 ?? ShadTextDefaultTheme.h3(),
+      h4: h4 ?? ShadTextDefaultTheme.h4(),
+      p: p ?? ShadTextDefaultTheme.p(),
+      blockquote: blockquote ?? ShadTextDefaultTheme.blockquote(),
+      table: table ?? ShadTextDefaultTheme.table(),
+      list: list ?? ShadTextDefaultTheme.list(),
+      lead: lead ?? ShadTextDefaultTheme.lead(),
+      large: large ?? ShadTextDefaultTheme.large(),
+      small: small ?? ShadTextDefaultTheme.small(),
+      muted: muted ?? ShadTextDefaultTheme.muted(),
       family: effectiveFamily,
       googleFontBuilder: googleFontBuilder,
       custom: custom,
@@ -241,7 +244,7 @@ class ShadTextTheme {
     required this.large,
     required this.small,
     required this.muted,
-    required this.family,
+    this.family,
     this.custom = const {},
     this.googleFontBuilder,
   });
@@ -252,6 +255,7 @@ class ShadTextTheme {
   }) {
     final effectiveTextTheme =
         textTheme ?? ShadDefaultThemeVariant.defaultTextTheme;
+    final fontFamily = fontBuilder().fontFamily;
 
     final p = GoogleFontTextStyle(
       effectiveTextTheme.p.omitFamilyAndPackage,
@@ -262,60 +266,60 @@ class ShadTextTheme {
       h1Large: GoogleFontTextStyle(
         effectiveTextTheme.h1Large.omitFamilyAndPackage,
         builder: fontBuilder,
-      ),
+      ).copyWith(fontFamily: fontFamily),
       h1: GoogleFontTextStyle(
         effectiveTextTheme.h1.omitFamilyAndPackage,
         builder: fontBuilder,
-      ),
+      ).copyWith(fontFamily: fontFamily),
       h2: GoogleFontTextStyle(
         effectiveTextTheme.h2.omitFamilyAndPackage,
         builder: fontBuilder,
-      ),
+      ).copyWith(fontFamily: fontFamily),
       h3: GoogleFontTextStyle(
         effectiveTextTheme.h3.omitFamilyAndPackage,
         builder: fontBuilder,
-      ),
+      ).copyWith(fontFamily: fontFamily),
       h4: GoogleFontTextStyle(
         effectiveTextTheme.h4.omitFamilyAndPackage,
         builder: fontBuilder,
-      ),
+      ).copyWith(fontFamily: fontFamily),
       p: p,
       blockquote: GoogleFontTextStyle(
         effectiveTextTheme.blockquote.omitFamilyAndPackage,
         builder: fontBuilder,
-      ),
+      ).copyWith(fontFamily: fontFamily),
       table: GoogleFontTextStyle(
         effectiveTextTheme.table.omitFamilyAndPackage,
         builder: fontBuilder,
-      ),
+      ).copyWith(fontFamily: fontFamily),
       list: GoogleFontTextStyle(
         effectiveTextTheme.list.omitFamilyAndPackage,
         builder: fontBuilder,
-      ),
+      ).copyWith(fontFamily: fontFamily),
       lead: GoogleFontTextStyle(
         effectiveTextTheme.lead.omitFamilyAndPackage,
         builder: fontBuilder,
-      ),
+      ).copyWith(fontFamily: fontFamily),
       large: GoogleFontTextStyle(
         effectiveTextTheme.large.omitFamilyAndPackage,
         builder: fontBuilder,
-      ),
+      ).copyWith(fontFamily: fontFamily),
       small: GoogleFontTextStyle(
         effectiveTextTheme.small.omitFamilyAndPackage,
         builder: fontBuilder,
-      ),
+      ).copyWith(fontFamily: fontFamily),
       muted: GoogleFontTextStyle(
         effectiveTextTheme.muted.omitFamilyAndPackage,
         builder: fontBuilder,
-      ),
-      family: p.fontFamily,
+      ).copyWith(fontFamily: fontFamily),
+      family: fontFamily,
       googleFontBuilder: fontBuilder,
       custom: {
         for (final e in effectiveTextTheme.custom.entries)
           e.key: GoogleFontTextStyle(
             e.value.omitFamilyAndPackage,
             builder: fontBuilder,
-          ),
+          ).copyWith(fontFamily: fontFamily),
       },
     );
   }
@@ -336,7 +340,7 @@ class ShadTextTheme {
   final Map<String, TextStyle> custom;
 
   /// The font family of the theme.
-  final String family;
+  final String? family;
 
   final bool canMerge;
 
@@ -362,8 +366,8 @@ class ShadTextTheme {
     Map<String, TextStyle>? custom,
   }) {
     final baseFamily = family ?? this.family;
-    late final String effectiveFamily;
-    if (package != null && package.isNotEmpty) {
+    late final String? effectiveFamily;
+    if (package != null && package.isNotEmpty && baseFamily != null) {
       final alreadyPrefixed = baseFamily.startsWith('packages/');
       effectiveFamily =
           !alreadyPrefixed //

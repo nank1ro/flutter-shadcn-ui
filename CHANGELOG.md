@@ -1,3 +1,8 @@
+## 0.44.0
+
+- **BREAKING CHANGE**: Remove `Geist` and `GeistMono` fonts from the package, now the font is retrieved at runtime using the `google_fonts` package. If your app doesn't have internet access, consider bundling it from your app.
+- **CHORE**: Bump min Dart SDK version to `3.9.0` to support `google_fonts` properly.
+
 ## 0.43.4
 
 - **FIX**: `ShadForm` scroll to form fields without an associated `id`.

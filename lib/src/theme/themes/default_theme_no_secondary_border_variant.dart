@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
@@ -382,19 +383,19 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
 
   static ShadTextTheme get defaultTextTheme {
     return ShadTextTheme.custom(
-      h1Large: ShadTextDefaultTheme.h1Large(family: kDefaultFontFamily),
-      h1: ShadTextDefaultTheme.h1(family: kDefaultFontFamily),
-      h2: ShadTextDefaultTheme.h2(family: kDefaultFontFamily),
-      h3: ShadTextDefaultTheme.h3(family: kDefaultFontFamily),
-      h4: ShadTextDefaultTheme.h4(family: kDefaultFontFamily),
-      p: ShadTextDefaultTheme.p(family: kDefaultFontFamily),
-      blockquote: ShadTextDefaultTheme.blockquote(family: kDefaultFontFamily),
-      table: ShadTextDefaultTheme.table(family: kDefaultFontFamily),
-      list: ShadTextDefaultTheme.list(family: kDefaultFontFamily),
-      lead: ShadTextDefaultTheme.lead(family: kDefaultFontFamily),
-      large: ShadTextDefaultTheme.large(family: kDefaultFontFamily),
-      small: ShadTextDefaultTheme.small(family: kDefaultFontFamily),
-      muted: ShadTextDefaultTheme.muted(family: kDefaultFontFamily),
+      h1Large: ShadTextDefaultTheme.h1Large(),
+      h1: ShadTextDefaultTheme.h1(),
+      h2: ShadTextDefaultTheme.h2(),
+      h3: ShadTextDefaultTheme.h3(),
+      h4: ShadTextDefaultTheme.h4(),
+      p: ShadTextDefaultTheme.p(),
+      blockquote: ShadTextDefaultTheme.blockquote(),
+      table: ShadTextDefaultTheme.table(),
+      list: ShadTextDefaultTheme.list(),
+      lead: ShadTextDefaultTheme.lead(),
+      large: ShadTextDefaultTheme.large(),
+      small: ShadTextDefaultTheme.small(),
+      muted: ShadTextDefaultTheme.muted(),
       family: kDefaultFontFamily,
     );
   }
@@ -1006,10 +1007,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
     return ShadInputOTPTheme(
       width: 40,
       height: 40,
-      style: effectiveTextTheme.muted.copyWith(
-        color: colorScheme.foreground,
-        fontFamily: kDefaultFontFamilyMono,
-      ),
+      style: GoogleFonts.geistMono()
+          .merge(effectiveTextTheme.muted.omitFamilyAndPackage)
+          .copyWith(
+            color: colorScheme.foreground,
+          ),
       firstRadius: BorderRadius.only(
         topLeft: radius.topLeft,
         bottomLeft: radius.bottomLeft,
