@@ -82,7 +82,7 @@ class _RadioGroupFormFieldPageState extends State<RadioGroupFormFieldPage> {
                   id: 'notify',
                   enabled: enabled,
                   initialValue: initialValue,
-                  valueTransformer: (value) => value?.name,
+                  toValueTransformer: (value) => value?.name,
                   items: NotifyAbout.values.map(
                     (e) => ShadRadio(
                       value: e,

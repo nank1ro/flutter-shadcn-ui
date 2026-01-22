@@ -1,6 +1,16 @@
-## 0.44.0
+## 0.45.0
 
 - **FEAT**: Add new component `ShadPagination` and all of its related components (thanks to @asare-21).
+## 0.44.1
+
+- **FIX**: `ShadForm` initial values were not considered when getting the form value for form fields that were not registered with the same `id`. Now, even custom values are returned, even if there is no form field associated with that `id`.
+
+## 0.44.0
+
+- **REFACTOR**: Deprecated `valueTransformer` in favor of `toValueTransformer`.
+- **FEAT**: Add `fromValueTransformer` to form fields to easily transform the form initial value to the field value.
+- **DOCS**: Add documentation about `fromValueTransformer` and `toValueTransformer` in form.
+
 ## 0.43.4
 
 - **FIX**: `ShadForm` scroll to form fields without an associated `id`.

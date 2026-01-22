@@ -25,7 +25,6 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
 
     /// {@macro ShadCalendar.onChanged}
     super.onChanged,
-    super.valueTransformer,
     super.onReset,
     super.enabled,
     super.autovalidateMode,
@@ -35,6 +34,9 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     super.focusNode,
     super.validator,
     super.initialValue,
+    @Deprecated('Use toValueTransformer instead') super.valueTransformer,
+    super.toValueTransformer,
+    super.fromValueTransformer,
 
     /// {@macro ShadDatePicker.placeholder}
     Widget? placeholder,
