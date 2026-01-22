@@ -1,3 +1,9 @@
+## 0.45.0
+
+- **FEAT**: Add dot notation support for nested form values in `ShadForm`. Field IDs like `user.email` are automatically converted to nested maps like `{'user': {'email': value}}`. This feature is enabled by default and can be disabled with `enableDotNotation: false`.
+- **FEAT**: Add `dotNotationSeparator` parameter to `ShadForm` to customize the separator used for dot notation (defaults to `.`). You can use any string as a separator (e.g., `/`, `:`).
+- **FEAT**: Add `toNestedMap` extension method on `Map<String, dynamic>` to convert flat maps with separator-based keys to nested map structures. This extension is publicly available for general use.
+
 ## 0.44.1
 
 - **FIX**: `ShadForm` initial values were not considered when getting the form value for form fields that were not registered with the same `id`. Now, even custom values are returned, even if there is no form field associated with that `id`.
