@@ -1,6 +1,8 @@
 ## 0.43.5
 
-- **REFACTOR**: Deprecated `valueTransformer` in favor of `toValueTransformer` and add `fromValueTransformer` in `ShadFormBuilderField` to easily transform values to/from the form field value.
+- **REFACTOR**: Deprecated `valueTransformer` in favor of `toValueTransformer`.
+- **FEAT**: Add `fromValueTransformer` to form fields to easily transform the form initial value to the field value.
+- **DOCS**: Add documentation about `fromValueTransformer` and `toValueTransformer` in form.
 
 ## 0.43.4
 
