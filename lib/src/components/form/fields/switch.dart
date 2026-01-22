@@ -14,7 +14,7 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
     super.error,
     super.description,
     void Function(bool)? onChanged,
-    super.valueTransformer,
+    @Deprecated('Use toValueTransformer instead') super.valueTransformer,
     super.toValueTransformer,
     super.fromValueTransformer,
     super.onReset,

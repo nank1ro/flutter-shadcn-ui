@@ -34,7 +34,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     super.focusNode,
     super.validator,
     super.initialValue,
-    super.valueTransformer,
+    @Deprecated('Use toValueTransformer instead') super.valueTransformer,
     super.toValueTransformer,
     super.fromValueTransformer,
 

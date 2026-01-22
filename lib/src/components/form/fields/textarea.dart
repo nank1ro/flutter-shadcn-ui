@@ -22,7 +22,7 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
     super.label,
     super.error,
     super.description,
-    super.valueTransformer,
+    @Deprecated('Use toValueTransformer instead') super.valueTransformer,
     super.toValueTransformer,
     super.fromValueTransformer,
     super.onReset,

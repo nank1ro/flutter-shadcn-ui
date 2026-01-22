@@ -26,7 +26,7 @@ class ShadInputOTPFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadInputOTP.onChanged}
     void Function(String)? onChanged,
-    super.valueTransformer,
+    @Deprecated('Use toValueTransformer instead') super.valueTransformer,
     super.toValueTransformer,
     super.fromValueTransformer,
     super.onReset,
