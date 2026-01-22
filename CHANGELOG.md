@@ -1,3 +1,7 @@
+## 0.44.1
+
+- **FIX**: `ShadForm` initial values were not considered when getting the form value for form fields that were not registered with the same `id`. Now, even custom values are returned, even if there is no form field associated with that `id`.
+
 ## 0.44.0
 
 - **REFACTOR**: Deprecated `valueTransformer` in favor of `toValueTransformer`.
