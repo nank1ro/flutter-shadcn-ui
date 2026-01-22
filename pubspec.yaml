@@ -40,5 +40,48 @@ dev_dependencies:
   theme_extensions_builder: ^7.1.0
   very_good_analysis: ^10.0.0
 
-flutter: 
+flutter:
   uses-material-design: true
+  assets:
+    - test/fonts/
+  fonts:
+    - family: Geist
+      fonts:
+        - asset: test/fonts/Geist-Thin.otf
+          weight: 100
+        - asset: test/fonts/Geist-UltraLight.otf
+          weight: 200
+        - asset: test/fonts/Geist-Light.otf
+          weight: 300
+        - asset: test/fonts/Geist-Regular.otf
+          weight: 400
+        - asset: test/fonts/Geist-Medium.otf
+          weight: 500
+        - asset: test/fonts/Geist-SemiBold.otf
+          weight: 600
+        - asset: test/fonts/Geist-Bold.otf
+          weight: 700
+        - asset: test/fonts/Geist-Black.otf
+          weight: 800
+        - asset: test/fonts/Geist-UltraBlack.otf
+          weight: 900
+    - family: GeistMono
+      fonts:
+        - asset: test/fonts/GeistMono-Thin.otf
+          weight: 100
+        - asset: test/fonts/GeistMono-UltraLight.otf
+          weight: 200
+        - asset: test/fonts/GeistMono-Light.otf
+          weight: 300
+        - asset: test/fonts/GeistMono-Regular.otf
+          weight: 400
+        - asset: test/fonts/GeistMono-Medium.otf
+          weight: 500
+        - asset: test/fonts/GeistMono-SemiBold.otf
+          weight: 600
+        - asset: test/fonts/GeistMono-Bold.otf
+          weight: 700
+        - asset: test/fonts/GeistMono-Black.otf
+          weight: 800
+        - asset: test/fonts/GeistMono-UltraBlack.otf
+          weight: 900
