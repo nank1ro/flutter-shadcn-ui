@@ -149,7 +149,7 @@ class ShadFormState extends State<ShadForm> {
     _fields[id] = field;
     _value[id] = field.initialValue ?? initialValue[id];
     field
-      ..registerTransformer(_transformers)
+      ..registerToValueTransformer(_transformers)
       ..setValue(_value[id]);
   }
 

@@ -1,3 +1,9 @@
+## 0.43.5
+
+- **REFACTOR**: Deprecated `valueTransformer` in favor of `toValueTransformer`.
+- **FEAT**: Add `fromValueTransformer` to form fields to easily transform the form initial value to the field value.
+- **DOCS**: Add documentation about `fromValueTransformer` and `toValueTransformer` in form.
+
 ## 0.43.4
 
 - **FIX**: `ShadForm` scroll to form fields without an associated `id`.

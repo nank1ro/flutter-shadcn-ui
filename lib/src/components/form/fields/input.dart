@@ -24,7 +24,9 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
     super.error,
     super.description,
     void Function(String)? onChanged,
-    super.valueTransformer,
+    @Deprecated('Use toValueTransformer instead') super.valueTransformer,
+    super.toValueTransformer,
+    super.fromValueTransformer,
     super.onReset,
     super.focusNode,
 
