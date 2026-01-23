@@ -42,8 +42,7 @@ class ShadForm extends StatefulWidget {
     this.enabled = true,
     this.skipDisabled = false,
     this.clearValueOnUnregister = false,
-    this.enableDotNotation = true,
-    this.dotNotationSeparator = '.',
+    this.fieldIdSeparator = '.',
   });
 
   /// Callback when form value changes
@@ -76,16 +75,12 @@ class ShadForm extends StatefulWidget {
   /// to false;
   final bool clearValueOnUnregister;
 
-  /// Whether to enable dot notation support for nested form values.
-  ///
-  /// When enabled, field IDs like 'user.email' will be converted to nested
-  /// maps like {'user': {'email': value}}. Defaults to true.
-  final bool enableDotNotation;
-
-  /// The separator to use for dot notation.
+  /// The separator to use for nested maps in the resulting form
+  /// [ShadFormState.value].
   ///
   /// Defaults to '.', but can be customized to any string (e.g., '/', ':').
-  final String dotNotationSeparator;
+  /// Pass `null` to disable dot notation support.
+  final String? fieldIdSeparator;
 
   @override
   State<ShadForm> createState() => ShadFormState();
@@ -114,7 +109,8 @@ class ShadFormState extends State<ShadForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ShadFormFields _fields = {};
   final Map<String, dynamic> _value = {};
-  final Map<String, Function> _transformers = {};
+  final Map<String, Function> _toValueTransformers = {};
+  final Map<String, Function> _fromValueTransformers = {};
   late final ValueNotifier<AutovalidateMode> autovalidateMode;
 
   /// Returns the registered form fields
@@ -129,22 +125,21 @@ class ShadFormState extends State<ShadForm> {
   /// Returns an unmodifiable view of the current form values with
   /// transformations applied
   Map<String, dynamic> get value {
-    final flatMap = {
-      // Include all initial values
-      ...initialValue,
-      // Override with actual values (transformed)
-      ..._value.map(
-        (key, value) =>
-            // ignore: avoid_dynamic_calls
-            MapEntry(key, _transformers[key]?.call(value) ?? value),
-      ),
-    };
+    final base = Map<String, dynamic>.from(initialValue.deepCopy());
 
-    return Map<String, dynamic>.unmodifiable(
-      widget.enableDotNotation
-          ? flatMap.toNestedMap(separator: widget.dotNotationSeparator)
-          : flatMap,
+    final transformedValue = _value.map(
+      (key, value) =>
+          // ignore: avoid_dynamic_calls
+          MapEntry(key, _toValueTransformers[key]?.call(value) ?? value),
     );
+
+    final result = widget.fieldIdSeparator != null
+        ? base.deepMerge(
+            transformedValue.toNestedMap(separator: widget.fieldIdSeparator!),
+          )
+        : base.deepMerge(transformedValue);
+
+    return Map<String, dynamic>.unmodifiable(result);
   }
 
   @override
@@ -172,10 +167,26 @@ class ShadFormState extends State<ShadForm> {
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
   ) {
     _fields[id] = field;
-    _value[id] = field.initialValue ?? initialValue[id];
+
+    // The field.initialValue already applies fromValueTransformer
+    // We just need to provide the nested value or use field's initialValue
+    _value[id] = field.initialValue ?? getInitialValue(id);
+
     field
-      ..registerToValueTransformer(_transformers)
+      ..registerToValueTransformer(_toValueTransformers)
+      ..registerFromValueTransformer(_fromValueTransformers)
       ..setValue(_value[id]);
+  }
+
+  /// Gets a value from the nested initial value map using `fieldIdSeparator`.
+  ///
+  /// This method is public so that form fields can access it to get their
+  /// initial values from the nested structure.
+  dynamic getInitialValue(String id) {
+    // If no separator, just use the ID directly
+    if (widget.fieldIdSeparator == null) return initialValue[id];
+    // Otherwise, use getByPath to navigate the nested structure
+    return initialValue.getByPath(id, separator: widget.fieldIdSeparator!);
   }
 
   /// Sets the value for a form field with the specified id
@@ -189,7 +200,10 @@ class ShadFormState extends State<ShadForm> {
   /// the form's map value set [notifyField] to false.
   void setFieldValue<T>(String id, T? value, {bool notifyField = true}) {
     _value[id] = value;
-    if (notifyField) _fields[id]?.didChange(value);
+    if (notifyField) {
+      // ignore: avoid_dynamic_calls
+      _fields[id]?.didChange(_fromValueTransformers[id]?.call(value) ?? value);
+    }
   }
 
   /// Merges the provided entries into the form value; optionally removes keys
@@ -262,7 +276,9 @@ class ShadFormState extends State<ShadForm> {
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
   ) {
     _fields.remove(id);
-    _transformers.remove(id);
+    _toValueTransformers.remove(id);
+    _fromValueTransformers.remove(id);
+
     if (widget.clearValueOnUnregister) {
       removeFieldValue(id);
     }

@@ -12,8 +12,9 @@ void main() {
   }
 
   group('ShadForm - Dot Notation', () {
-    testWidgets('converts dot notation field IDs to nested map by default',
-        (tester) async {
+    testWidgets('converts dot notation field IDs to nested map by default', (
+      tester,
+    ) async {
       final formKey = GlobalKey<ShadFormState>();
 
       await tester.pumpWidget(
@@ -49,20 +50,24 @@ void main() {
           'name': 'John',
           'email': 'john@example.com',
           'age': '30',
-        }
+        },
       });
     });
 
-    testWidgets('supports initial values with dot notation', (tester) async {
+    testWidgets('supports initial values with nested structure', (
+      tester,
+    ) async {
       final formKey = GlobalKey<ShadFormState>();
 
       await tester.pumpWidget(
         createTestWidget(
           ShadForm(
             key: formKey,
-            initialValue: {
-              'user.name': 'Jane',
-              'user.email': 'jane@example.com',
+            initialValue: const {
+              'user': {
+                'name': 'Jane',
+                'email': 'jane@example.com',
+              },
             },
             child: Column(
               children: [
@@ -82,7 +87,7 @@ void main() {
         'user': {
           'name': 'Jane',
           'email': 'jane@example.com',
-        }
+        },
       });
     });
 
@@ -123,8 +128,8 @@ void main() {
           'email': 'john@example.com',
           'profile': {
             'bio': 'Developer',
-          }
-        }
+          },
+        },
       });
     });
 
@@ -135,7 +140,7 @@ void main() {
         createTestWidget(
           ShadForm(
             key: formKey,
-            dotNotationSeparator: '/',
+            fieldIdSeparator: '/',
             child: Column(
               children: [
                 ShadInputFormField(
@@ -160,19 +165,20 @@ void main() {
         'user': {
           'name': 'John',
           'email': 'john@example.com',
-        }
+        },
       });
     });
 
-    testWidgets('disables dot notation when enableDotNotation is false',
-        (tester) async {
+    testWidgets('disables dot notation when fieldIdSeparator is null', (
+      tester,
+    ) async {
       final formKey = GlobalKey<ShadFormState>();
 
       await tester.pumpWidget(
         createTestWidget(
           ShadForm(
             key: formKey,
-            enableDotNotation: false,
+            fieldIdSeparator: null,
             child: Column(
               children: [
                 ShadInputFormField(
@@ -200,16 +206,20 @@ void main() {
       });
     });
 
-    testWidgets('preserves custom initial values with dot notation',
-        (tester) async {
+    testWidgets('preserves custom initial values in nested structure', (
+      tester,
+    ) async {
       final formKey = GlobalKey<ShadFormState>();
 
       await tester.pumpWidget(
         createTestWidget(
           ShadForm(
             key: formKey,
-            initialValue: {
-              'user.name': 'Initial Name',
+            initialValue: const {
+              'user': {
+                'name': 'Initial Name',
+                'country': 'Italy', // No field for this
+              },
               'custom_field': 'custom_value',
             },
             child: Column(
@@ -228,6 +238,7 @@ void main() {
       expect(formValue, {
         'user': {
           'name': 'Initial Name',
+          'country': 'Italy', // Preserved from initial value
         },
         'custom_field': 'custom_value',
       });
@@ -262,10 +273,10 @@ void main() {
             'team': {
               'member': {
                 'name': 'Alice',
-              }
-            }
-          }
-        }
+              },
+            },
+          },
+        },
       });
     });
 
@@ -299,7 +310,7 @@ void main() {
       expect(formValue, {
         'user': {
           'name': 'Jane',
-        }
+        },
       });
     });
 
@@ -341,7 +352,7 @@ void main() {
           'name': 'John',
           'active': true,
           'verified': false,
-        }
+        },
       });
     });
   });
@@ -355,7 +366,9 @@ void main() {
           ShadForm(
             key: formKey,
             initialValue: const {
-              'user.age': '30',
+              'user': {
+                'age': '30',
+              },
             },
             child: Column(
               children: [
@@ -376,7 +389,7 @@ void main() {
       expect(formValue, const {
         'user': {
           'age': '30',
-        }
+        },
       });
     });
   });

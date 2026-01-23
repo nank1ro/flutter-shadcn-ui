@@ -27,7 +27,10 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
       key: formKey,
       enabled: enabled,
       autovalidateMode: autovalidateMode,
-      initialValue: {if (initialValue != null) 'username': initialValue},
+      initialValue: {
+        if (initialValue != null) 'username': initialValue,
+        'profile': {'age': 18},
+      },
       child: BaseScaffold(
         appBarTitle: 'InputFormField',
         editable: [
@@ -60,6 +63,7 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
             constraints: const BoxConstraints(maxWidth: 350),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 16,
               children: [
                 ShadInputFormField(
                   id: 'username',
@@ -74,7 +78,17 @@ class _InputFormFieldPageState extends State<InputFormFieldPage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                ShadInputFormField(
+                  id: 'profile.age',
+                  fromValueTransformer: (v) => v?.toString(),
+                  toValueTransformer: (String? v) => int.tryParse(v ?? ''),
+                  keyboardType: TextInputType.number,
+                  label: const Text('Age (dot notation)'),
+                  placeholder: const Text('Enter your age'),
+                  description: const Text(
+                    'This field uses dot notation: profile.age',
+                  ),
+                ),
                 ShadButton(
                   child: const Text('Submit'),
                   onPressed: () {

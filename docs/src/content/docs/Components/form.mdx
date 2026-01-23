@@ -230,27 +230,31 @@ When you retrieve the form value, it will be structured as:
 }
 ```
 
-### Initial values with dot notation
+### Initial values with nested structure
 
-You can also use dot notation in the `initialValue` map:
+The `initialValue` should be provided as a nested map structure (not using dot notation):
 
 ```dart
 ShadForm(
   initialValue: {
-    'user.name': 'John Doe',
-    'user.email': 'john@example.com',
+    'user': {
+      'name': 'John Doe',
+      'email': 'john@example.com',
+    },
   },
-  child: // Your form fields with the same dot notation IDs
+  child: // Your form fields with dot notation IDs
 )
 ```
 
+The form will automatically extract values from the nested structure based on the field IDs. For example, a field with `id: 'user.name'` will get the value from `initialValue['user']['name']`.
+
 ### Customizing the separator
 
-If you prefer a different separator, you can customize it using the `dotNotationSeparator` parameter:
+If you prefer a different separator, you can customize it using the `fieldIdSeparator` parameter:
 
 ```dart {2}
 ShadForm(
-  dotNotationSeparator: '/',
+  fieldIdSeparator: '/',
   child: Column(
     children: [
       ShadInputFormField(
@@ -264,11 +268,11 @@ ShadForm(
 
 ### Disabling dot notation
 
-If you want to use dots in your field IDs without creating nested structures, you can disable the feature:
+If you want to use dots in your field IDs without creating nested structures, you can disable the feature by setting `fieldIdSeparator` to `null`:
 
 ```dart {2}
 ShadForm(
-  enableDotNotation: false,
+  fieldIdSeparator: null,
   child: Column(
     children: [
       ShadInputFormField(
@@ -278,13 +282,6 @@ ShadForm(
     ],
   ),
 )
-```
-
-With `enableDotNotation: false`, the form value will be:
-```dart
-{
-  'user.email': 'john@example.com' // Flat structure
-}
 ```
 
 ## Examples

@@ -1,8 +1,9 @@
 ## 0.45.0
 
-- **FEAT**: Add dot notation support for nested form values in `ShadForm`. Field IDs like `user.email` are automatically converted to nested maps like `{'user': {'email': value}}`. This feature is enabled by default and can be disabled with `enableDotNotation: false`.
-- **FEAT**: Add `dotNotationSeparator` parameter to `ShadForm` to customize the separator used for dot notation (defaults to `.`). You can use any string as a separator (e.g., `/`, `:`).
-- **FEAT**: Add `toNestedMap` extension method on `Map<String, dynamic>` to convert flat maps with separator-based keys to nested map structures. This extension is publicly available for general use.
+- **FEAT**: Add dot notation support for nested form values in `ShadForm`. Field IDs like `user.email` are automatically converted to nested maps like `{'user': {'email': value}}`. The `initialValue` should be provided as a nested map structure, and the form will automatically extract values based on field IDs.
+- **FEAT**: Add `fieldIdSeparator` parameter to `ShadForm` to customize the separator used for nested form values (defaults to `.`). You can use any string as a separator (e.g. `/`, `:`), or set it to `null` to disable dot notation support entirely.
+- **FEAT**: Add `toNestedMap`, `getByPath` and `deepMerge` extension methods on `Map<String, dynamic>`.
+- **FEAT**: Add `deepCopy` extension method to `Map`, `List` and `Set` to create deep copies of collections.
 
 ## 0.44.1
 
