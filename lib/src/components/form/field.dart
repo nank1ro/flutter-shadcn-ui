@@ -198,7 +198,10 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   T? get initialValue {
     if (widget.initialValue != null) return widget.initialValue;
 
-    final value = _parentForm?.widget.initialValue[widget.id];
+    // Use getInitialValue to support nested initial values with dot notation
+    if (widget.id == null || _parentForm == null) return null;
+
+    final value = _parentForm!.getInitialValue(widget.id!);
     if (widget.fromValueTransformer != null) {
       return widget.fromValueTransformer!(value);
     }
@@ -301,6 +304,12 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   void registerToValueTransformer(Map<String, Function> map) {
     // ignore: deprecated_member_use_from_same_package
     final fun = widget.valueTransformer ?? widget.toValueTransformer;
+    if (fun != null) map[effectiveId] = fun;
+  }
+
+  /// Registers the field’s from value transformer with the provided map.
+  void registerFromValueTransformer(Map<String, Function> map) {
+    final fun = widget.fromValueTransformer;
     if (fun != null) map[effectiveId] = fun;
   }
 }
