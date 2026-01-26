@@ -170,7 +170,7 @@ class ShadFormState extends State<ShadForm> {
 
     // The field.initialValue already applies fromValueTransformer
     // We just need to provide the nested value or use field's initialValue
-    _value[id] = field.initialValue ?? getInitialValue(id);
+    _value[id] = field.initialValue ?? getFieldValue(id);
 
     field
       ..registerToValueTransformer(_toValueTransformers)
@@ -178,15 +178,15 @@ class ShadFormState extends State<ShadForm> {
       ..setValue(_value[id]);
   }
 
-  /// Gets a value from the nested initial value map using `fieldIdSeparator`.
+  /// Gets a value from the nested map value map using `fieldIdSeparator`.
   ///
   /// This method is public so that form fields can access it to get their
-  /// initial values from the nested structure.
-  dynamic getInitialValue(String id) {
+  /// values from the nested structure.
+  dynamic getFieldValue(String id) {
     // If no separator, just use the ID directly
-    if (widget.fieldIdSeparator == null) return initialValue[id];
+    if (widget.fieldIdSeparator == null) return value[id];
     // Otherwise, use getByPath to navigate the nested structure
-    return initialValue.getByPath(id, separator: widget.fieldIdSeparator!);
+    return value.getByPath(id, separator: widget.fieldIdSeparator!);
   }
 
   /// Sets the value for a form field with the specified id
