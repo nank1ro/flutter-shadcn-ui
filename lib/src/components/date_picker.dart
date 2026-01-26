@@ -32,6 +32,7 @@ class ShadDatePicker extends StatefulWidget {
   const ShadDatePicker({
     super.key,
     this.placeholder,
+    this.controller,
     this.popoverController,
     this.selected,
     this.closeOnSelection,
@@ -175,6 +176,7 @@ class ShadDatePicker extends StatefulWidget {
   /// Creates a date range picker widget with a button and popover calendar.
   const ShadDatePicker.range({
     super.key,
+    this.controller,
     this.popoverController,
     this.placeholder,
     ShadDateTimeRange? selected,
@@ -322,6 +324,7 @@ class ShadDatePicker extends StatefulWidget {
   const ShadDatePicker.raw({
     super.key,
     required this.variant,
+    this.controller,
     this.popoverController,
     this.selected,
     this.closeOnSelection,
@@ -508,6 +511,11 @@ class ShadDatePicker extends StatefulWidget {
   /// The variant of the date picker.
   /// {@endtemplate}
   final ShadDatePickerVariant variant;
+
+  /// {@template ShadDatePicker.controller}
+  /// The controller of the date picker, defaults to `null`.
+  /// {@endtemplate}
+  final ShadCalendarController? controller;
 
   /// {@template ShadDatePicker.header}
   /// The header of the date picker.
@@ -924,9 +932,13 @@ class ShadDatePicker extends StatefulWidget {
 }
 
 class _ShadDatePickerState extends State<ShadDatePicker> {
-  late DateTime? selected = widget.selected;
-  late ShadDateTimeRange? selectedRange = widget.selectedRange;
+  DateTime? selected;
+  ShadDateTimeRange? selectedRange;
   final _groupId = UniqueKey();
+
+  ShadCalendarController? _controller;
+  ShadCalendarController get controller => widget.controller ?? _controller!;
+  bool _suppressControllerCallback = false;
 
   ShadPopoverController? _popoverController;
 
@@ -939,23 +951,83 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
     if (widget.popoverController == null) {
       _popoverController = ShadPopoverController();
     }
+    if (widget.controller == null) {
+      _controller = ShadCalendarController(
+        selected: widget.selected,
+        selectedRange: widget.selectedRange,
+      );
+    }
+    controller.addListener(_handleControllerChanged);
+    _syncFromController(force: true);
   }
 
   @override
   void didUpdateWidget(covariant ShadDatePicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.selected != null) {
-      selected = widget.selected;
-    }
-    if (widget.selectedRange != null) {
-      selectedRange = widget.selectedRange;
+    if (oldWidget.controller != widget.controller) {
+      (oldWidget.controller ?? _controller)?.removeListener(
+        _handleControllerChanged,
+      );
+      if (oldWidget.controller == null) {
+        _controller?.dispose();
+        _controller = null;
+      }
+      if (widget.controller == null) {
+        _controller = ShadCalendarController(
+          selected: widget.selected,
+          selectedRange: widget.selectedRange,
+          multipleSelected: widget.multipleSelected,
+        );
+      }
+      controller.addListener(_handleControllerChanged);
+      _syncFromController(force: true);
+    } else if (widget.controller == null) {
+      if (widget.selected != oldWidget.selected) {
+        controller.selected = widget.selected;
+      }
+      if (widget.selectedRange != oldWidget.selectedRange) {
+        controller.selectedRange = widget.selectedRange;
+      }
+      if (widget.multipleSelected != oldWidget.multipleSelected &&
+          widget.multipleSelected != null) {
+        controller.multipleSelected = widget.multipleSelected!;
+      }
     }
   }
 
   @override
   void dispose() {
+    controller.removeListener(_handleControllerChanged);
+    _controller?.dispose();
     _popoverController?.dispose();
     super.dispose();
+  }
+
+  void _handleControllerChanged() {
+    final newSelected = controller.selected;
+    final newRange = controller.selectedRange;
+    if (newSelected == selected && newRange == selectedRange) return;
+    setState(() {
+      selected = newSelected;
+      selectedRange = newRange;
+    });
+    if (_suppressControllerCallback) return;
+    switch (widget.variant) {
+      case ShadDatePickerVariant.single:
+        widget.onChanged?.call(newSelected);
+      case ShadDatePickerVariant.range:
+        widget.onRangeChanged?.call(newRange);
+    }
+  }
+
+  void _syncFromController({bool force = false}) {
+    if (!force &&
+        controller.selected == selected &&
+        controller.selectedRange == selectedRange) {
+      return;
+    }
+    selected = controller.selected;
+    selectedRange = controller.selectedRange;
   }
 
   String defaultDateFormat(DateTime date, Locale locale) {
@@ -1240,14 +1312,18 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
                   widget.gridCrossAxisSpacing ??
                   theme.datePickerTheme.gridCrossAxisSpacing,
               onChanged: (selected) {
-                setState(() => this.selected = selected);
+                _suppressControllerCallback = true;
+                controller.selected = selected;
+                _suppressControllerCallback = false;
                 if (true == widget.closeOnSelection) {
                   popoverController.hide();
                 }
                 widget.onChanged?.call(selected);
               },
               onRangeChanged: (range) {
-                setState(() => selectedRange = range);
+                _suppressControllerCallback = true;
+                controller.selectedRange = range;
+                _suppressControllerCallback = false;
                 if (true == widget.closeOnSelection &&
                     range?.start != null &&
                     range?.end != null) {

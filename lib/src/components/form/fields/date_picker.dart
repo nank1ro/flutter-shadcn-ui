@@ -38,6 +38,9 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     super.toValueTransformer,
     super.fromValueTransformer,
 
+    /// {@macro ShadDatePicker.controller}
+    this.controller,
+
     /// {@macro ShadDatePicker.placeholder}
     Widget? placeholder,
 
@@ -439,7 +442,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
              leading: leading,
              trailing: trailing,
              decoration: state.decoration,
-             selected: state.value,
+             controller: state.controller,
              popoverController: popoverController,
              closeOnSelection: closeOnSelection,
              formatDate: formatDate,
@@ -571,10 +574,58 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
          },
        );
 
+  final ShadCalendarController? controller;
+
   @override
   ShadFormBuilderFieldState<ShadDatePickerFormField, DateTime> createState() =>
       _ShadFormBuilderDatePickerState();
 }
 
 class _ShadFormBuilderDatePickerState
-    extends ShadFormBuilderFieldState<ShadDatePickerFormField, DateTime> {}
+    extends ShadFormBuilderFieldState<ShadDatePickerFormField, DateTime> {
+  late ShadCalendarController? _controller;
+
+  ShadCalendarController get controller => widget.controller ?? _controller!;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller == null) {
+      _controller = ShadCalendarController(selected: initialValue);
+    } else if (initialValue != null && widget.controller!.selected == null) {
+      widget.controller!.selected = initialValue;
+    } else if (widget.controller!.selected != null && initialValue == null) {
+      didChange(widget.controller!.selected);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadDatePickerFormField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      if (oldWidget.controller == null) {
+        _controller?.dispose();
+        _controller = null;
+      }
+      if (widget.controller == null) {
+        _controller = ShadCalendarController(selected: value);
+      }
+      final controllerSelected = widget.controller?.selected;
+      if (widget.controller != null && controllerSelected != value) {
+        didChange(controllerSelected);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  void reset() {
+    super.reset();
+    controller.selected = initialValue;
+  }
+}
