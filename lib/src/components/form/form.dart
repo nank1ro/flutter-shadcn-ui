@@ -331,6 +331,7 @@ class ShadFormState extends State<ShadForm> {
       ShadAutovalidateMode.alwaysAfterFirstValidation ||
       ShadAutovalidateMode.disabled => AutovalidateMode.disabled,
     };
+    _value.clear();
     _formKey.currentState?.reset();
   }
 
