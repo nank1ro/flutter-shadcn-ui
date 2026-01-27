@@ -88,7 +88,7 @@ extension MapExtensions on Map<String, dynamic> {
     dynamic current = this;
 
     for (final key in keys) {
-      if (current is Map<String, dynamic> && current.containsKey(key)) {
+      if (current is Map && current.containsKey(key)) {
         current = current[key];
       } else {
         return null;
