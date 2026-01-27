@@ -1,5 +1,6 @@
 ## 0.45.1
 
+- **FEAT**: Add `rawValue` method to `ShadForm` to get the raw form value without considering transformations.
 - **FIX**: Form Fields now correctly retrieve the latest value from `ShadForm` as initial value.
 - **FIX**: `ShadForm` now correctly resets to `initialValue`s when calling `reset()`.
 - **REFACTOR**: Rename ShadForm `getInitialValue` method into `getFieldValue`.
