@@ -122,23 +122,32 @@ class ShadFormState extends State<ShadForm> {
   /// Whether the form is enabled
   bool get enabled => widget.enabled;
 
+  /// Returns an unmodifiable view of the current form values without
+  /// transformations applied
+  Map<String, dynamic> get rawValue {
+    final base = Map<String, dynamic>.from(initialValue.deepCopy());
+    final result = widget.fieldIdSeparator != null
+        ? base.deepMerge(
+            _value.toNestedMap(separator: widget.fieldIdSeparator!),
+          )
+        : base.deepMerge(_value);
+    return Map<String, dynamic>.unmodifiable(result);
+  }
+
   /// Returns an unmodifiable view of the current form values with
   /// transformations applied
   Map<String, dynamic> get value {
     final base = Map<String, dynamic>.from(initialValue.deepCopy());
-
     final transformedValue = _value.map(
       (key, value) =>
           // ignore: avoid_dynamic_calls
           MapEntry(key, _toValueTransformers[key]?.call(value) ?? value),
     );
-
     final result = widget.fieldIdSeparator != null
         ? base.deepMerge(
             transformedValue.toNestedMap(separator: widget.fieldIdSeparator!),
           )
         : base.deepMerge(transformedValue);
-
     return Map<String, dynamic>.unmodifiable(result);
   }
 
@@ -170,7 +179,7 @@ class ShadFormState extends State<ShadForm> {
 
     // The field.initialValue already applies fromValueTransformer
     // We just need to provide the nested value or use field's initialValue
-    _value[id] = field.initialValue ?? getInitialValue(id);
+    _value[id] = field.initialValue ?? getFieldValue(id);
 
     field
       ..registerToValueTransformer(_toValueTransformers)
@@ -178,15 +187,15 @@ class ShadFormState extends State<ShadForm> {
       ..setValue(_value[id]);
   }
 
-  /// Gets a value from the nested initial value map using `fieldIdSeparator`.
+  /// Gets a value from the nested map value map using `fieldIdSeparator`.
   ///
   /// This method is public so that form fields can access it to get their
-  /// initial values from the nested structure.
-  dynamic getInitialValue(String id) {
+  /// values from the nested structure.
+  dynamic getFieldValue(String id) {
     // If no separator, just use the ID directly
-    if (widget.fieldIdSeparator == null) return initialValue[id];
+    if (widget.fieldIdSeparator == null) return rawValue[id];
     // Otherwise, use getByPath to navigate the nested structure
-    return initialValue.getByPath(id, separator: widget.fieldIdSeparator!);
+    return rawValue.getByPath(id, separator: widget.fieldIdSeparator!);
   }
 
   /// Sets the value for a form field with the specified id
@@ -331,6 +340,7 @@ class ShadFormState extends State<ShadForm> {
       ShadAutovalidateMode.alwaysAfterFirstValidation ||
       ShadAutovalidateMode.disabled => AutovalidateMode.disabled,
     };
+    _value.clear();
     _formKey.currentState?.reset();
   }
 
