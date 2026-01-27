@@ -137,12 +137,18 @@ class ShadFormState extends State<ShadForm> {
   /// Returns an unmodifiable view of the current form values with
   /// transformations applied
   Map<String, dynamic> get value {
-    final transformedValue = rawValue.map(
+    final base = Map<String, dynamic>.from(initialValue.deepCopy());
+    final transformedValue = _value.map(
       (key, value) =>
           // ignore: avoid_dynamic_calls
           MapEntry(key, _toValueTransformers[key]?.call(value) ?? value),
     );
-    return Map<String, dynamic>.unmodifiable(transformedValue);
+    final result = widget.fieldIdSeparator != null
+        ? base.deepMerge(
+            transformedValue.toNestedMap(separator: widget.fieldIdSeparator!),
+          )
+        : base.deepMerge(transformedValue);
+    return Map<String, dynamic>.unmodifiable(result);
   }
 
   @override
