@@ -1,3 +1,7 @@
+## 0.46.0
+
+- **FEAT**: Add `ShadCalendarController` for managing date selections in `ShadCalendar`, `ShadDatePicker` & `ShadDatePickerFormField` components.
+
 ## 0.45.0
 
 - **FEAT**: Add dot notation support for nested form values in `ShadForm`. Field IDs like `user.email` are automatically converted to nested maps like `{'user': {'email': value}}`. The `initialValue` should be provided as a nested map structure, and the form will automatically extract values based on field IDs.

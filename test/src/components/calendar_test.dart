@@ -141,9 +141,11 @@ void main() {
 
     testWidgets('selects date in single variant', (WidgetTester tester) async {
       DateTime? selectedDate;
+      final controller = ShadCalendarController();
       await tester.pumpWidget(
         createTestWidget(
           ShadCalendar(
+            controller: controller,
             initialMonth: DateTime(2024),
             onChanged: (date) => selectedDate = date,
           ),
@@ -157,6 +159,8 @@ void main() {
       // Verify onChanged was called with the selected date
       expect(selectedDate, isNotNull);
       expect(selectedDate!.day, 15);
+      expect(controller.selected, isNotNull);
+      expect(controller.selected!.day, 15);
 
       // Check the selected day button has the primary variant
       final selectedButtonFinder = find.ancestor(
@@ -170,10 +174,12 @@ void main() {
     testWidgets('selects multiple dates in multiple variant', (
       WidgetTester tester,
     ) async {
+      final controller = ShadCalendarController();
       var selectedDates = <DateTime>[];
       await tester.pumpWidget(
         createTestWidget(
           ShadCalendar.multiple(
+            controller: controller,
             initialMonth: DateTime(2024),
             onChanged: (dates) => selectedDates = dates,
           ),
@@ -190,15 +196,20 @@ void main() {
       expect(selectedDates.length, 2);
       expect(selectedDates.any((d) => d.day == 15), true);
       expect(selectedDates.any((d) => d.day == 16), true);
+      expect(controller.multipleSelected.length, 2);
+      expect(controller.multipleSelected.any((d) => d.day == 15), true);
+      expect(controller.multipleSelected.any((d) => d.day == 16), true);
     });
 
     testWidgets('selects date range in range variant', (
       WidgetTester tester,
     ) async {
       ShadDateTimeRange? selectedRange;
+      final controller = ShadCalendarController();
       await tester.pumpWidget(
         createTestWidget(
           ShadCalendar.range(
+            controller: controller,
             initialMonth: DateTime(2024),
             onChanged: (range) => selectedRange = range,
           ),
@@ -215,6 +226,9 @@ void main() {
       expect(selectedRange, isNotNull);
       expect(selectedRange!.start!.day, 10);
       expect(selectedRange!.end!.day, 15);
+      expect(controller.selectedRange, isNotNull);
+      expect(controller.selectedRange!.start!.day, 10);
+      expect(controller.selectedRange!.end!.day, 15);
 
       // Check start and end buttons have the selected variant
       final startButtonFinder = find.ancestor(
@@ -243,6 +257,40 @@ void main() {
         createTestWidget(
           ShadCalendar(
             initialMonth: initialMonth,
+          ),
+        ),
+      );
+
+      // Check initial month
+      expect(find.text('October 2023'), findsOneWidget);
+
+      // Tap forward navigation button
+      final forwardButtonFinder = find.byIcon(LucideIcons.chevronRight);
+      await tester.tap(forwardButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Check next month
+      expect(find.text('November 2023'), findsOneWidget);
+
+      // Tap back navigation button
+      final backButtonFinder = find.byIcon(LucideIcons.chevronLeft);
+      await tester.tap(backButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Check previous month
+      expect(find.text('October 2023'), findsOneWidget);
+    });
+
+    testWidgets('navigates to previous and next months via controller', (
+      WidgetTester tester,
+    ) async {
+      final controller = ShadCalendarController(
+        selected: DateTime(2023, 10),
+      );
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadCalendar(
+            controller: controller,
           ),
         ),
       );
