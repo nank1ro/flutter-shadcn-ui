@@ -2,6 +2,7 @@
 
 - **FIX**: Form Fields now correctly retrieve the latest value from `ShadForm` as initial value.
 - **FIX**: `ShadForm` now correctly resets to `initialValue`s when calling `reset()`.
+- **REFACTOR**: Rename ShadForm `getInitialValue` method into `getFieldValue`.
 
 ## 0.45.0
 
