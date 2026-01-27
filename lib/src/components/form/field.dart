@@ -198,7 +198,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   T? get initialValue {
     if (widget.initialValue != null) return widget.initialValue;
 
-    // Use getInitialValue to support nested initial values with dot notation
+    // Use getFieldValue to support nested initial values with dot notation
     if (widget.id == null || _parentForm == null) return null;
 
     final value = _parentForm!.getFieldValue(widget.id!);
