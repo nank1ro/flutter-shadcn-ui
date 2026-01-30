@@ -166,6 +166,10 @@ export default defineConfig({
       ],
     }),
   ],
-  site: 'https://flutter-shadcn-ui.mariuti.com',
+  site: 'https://mariuti.com/flutter-shadcn-ui',
   output: "static",
+  build: {
+    format: 'directory',
+  },
+  outDir: './dist',
 });

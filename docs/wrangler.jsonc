@@ -1,0 +1,25 @@
+{
+  "name": "shadcn-ui-docs",
+  "compatibility_date": "2026-01-30",
+  "assets": {
+    "directory": "./dist"
+  },
+  "routes": [
+    {
+      "pattern": "mariuti.com/flutter-shadcn-ui/*",
+      "zone_name": "mariuti.com"
+    },
+    {
+      "pattern": "mariuti.com/flutter-shadcn-ui",
+      "zone_name": "mariuti.com"
+    },
+    {
+      "pattern": "mariuti.com/shadcn-ui/*",
+      "zone_name": "mariuti.com"
+    },
+    {
+      "pattern": "mariuti.com/shadcn-ui",
+      "zone_name": "mariuti.com"
+    }
+  ]
+}
