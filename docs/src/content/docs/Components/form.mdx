@@ -230,6 +230,76 @@ When you retrieve the form value, it will be structured as:
 }
 ```
 
+### Array notation
+
+You can also use bracket notation to create array structures. Use `.[index]` to specify array indices:
+
+```dart
+ShadForm(
+  child: Column(
+    children: [
+      ShadInputFormField(
+        id: 'users.[0].name',
+        label: const Text('First User Name'),
+      ),
+      ShadInputFormField(
+        id: 'users.[0].email',
+        label: const Text('First User Email'),
+      ),
+      ShadInputFormField(
+        id: 'users.[1].name',
+        label: const Text('Second User Name'),
+      ),
+      ShadInputFormField(
+        id: 'users.[1].email',
+        label: const Text('Second User Email'),
+      ),
+    ],
+  ),
+)
+```
+
+This creates the following structure:
+```dart
+{
+  'users': [
+    {'name': 'John', 'email': 'john@example.com'},
+    {'name': 'Jane', 'email': 'jane@example.com'}
+  ]
+}
+```
+
+You can also create nested arrays:
+
+```dart
+ShadForm(
+  child: Column(
+    children: [
+      ShadInputFormField(
+        id: 'matrix.[0].[0].value',
+        initialValue: 'a',
+      ),
+      ShadInputFormField(
+        id: 'matrix.[0].[1].value',
+        initialValue: 'b',
+      ),
+    ],
+  ),
+)
+```
+
+Results in:
+```dart
+{
+  'matrix': [
+    [
+      {'value': 'a'},
+      {'value': 'b'}
+    ]
+  ]
+}
+```
+
 ### Initial values with nested structure
 
 The `initialValue` should be provided as a nested map structure (not using dot notation):
@@ -246,7 +316,21 @@ ShadForm(
 )
 ```
 
-The form will automatically extract values from the nested structure based on the field IDs. For example, a field with `id: 'user.name'` will get the value from `initialValue['user']['name']`.
+For arrays, provide the array structure directly:
+
+```dart
+ShadForm(
+  initialValue: {
+    'users': [
+      {'name': 'John', 'email': 'john@example.com'},
+      {'name': 'Jane'},
+    ],
+  },
+  child: // Your form fields with array notation IDs
+)
+```
+
+The form will automatically extract values from the nested structure based on the field IDs. For example, a field with `id: 'user.name'` will get the value from `initialValue['user']['name']`, and `id: 'users.[0].name'` will get the value from `initialValue['users'][0]['name']`.
 
 ### Customizing the separator
 
@@ -259,6 +343,22 @@ ShadForm(
     children: [
       ShadInputFormField(
         id: 'user/name', // Using '/' instead of '.'
+        label: const Text('Name'),
+      ),
+    ],
+  ),
+)
+```
+
+Array notation also works with custom separators:
+
+```dart
+ShadForm(
+  fieldIdSeparator: '/',
+  child: Column(
+    children: [
+      ShadInputFormField(
+        id: 'users/[0]/name',
         label: const Text('Name'),
       ),
     ],

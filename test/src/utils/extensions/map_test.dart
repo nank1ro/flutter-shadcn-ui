@@ -211,6 +211,149 @@ void main() {
         final userMap = result['user'] as Map<String, dynamic>;
         expect(userMap.keys, ['z', 'a', 'm']);
       });
+
+      // toNestedMap with array indices
+      test('converts simple array notation', () {
+        final flatMap = {
+          'users.[0].name': 'John',
+        };
+
+        final result = flatMap.toNestedMap();
+
+        expect(result, {
+          'users': [
+            {'name': 'John'},
+          ],
+        });
+      });
+
+      test('converts multiple array indices', () {
+        final flatMap = {
+          'users.[0].name': 'John',
+          'users.[0].email': 'john@example.com',
+          'users.[1].name': 'Jane',
+          'users.[1].email': 'jane@example.com',
+        };
+
+        final result = flatMap.toNestedMap();
+
+        expect(result, {
+          'users': [
+            {'name': 'John', 'email': 'john@example.com'},
+            {'name': 'Jane', 'email': 'jane@example.com'},
+          ],
+        });
+      });
+
+      test('handles sparse arrays', () {
+        final flatMap = {
+          'users.[0].name': 'John',
+          'users.[5].name': 'Jane',
+        };
+
+        final result = flatMap.toNestedMap();
+
+        expect(result['users'], isA<List>());
+        final users = result['users'] as List;
+        expect(users.length, 6);
+        expect(users[0], {'name': 'John'});
+        expect(users[1], null);
+        expect(users[2], null);
+        expect(users[3], null);
+        expect(users[4], null);
+        expect(users[5], {'name': 'Jane'});
+      });
+
+      test('handles mixed nesting with arrays', () {
+        final flatMap = {
+          'users.[0].profile.settings.theme': 'dark',
+          'users.[0].profile.settings.language': 'en',
+        };
+
+        final result = flatMap.toNestedMap();
+
+        expect(result, {
+          'users': [
+            {
+              'profile': {
+                'settings': {
+                  'theme': 'dark',
+                  'language': 'en',
+                },
+              },
+            },
+          ],
+        });
+      });
+
+      test('handles nested arrays', () {
+        final flatMap = {
+          'matrix.[0].[0].value': 'a',
+          'matrix.[0].[1].value': 'b',
+          'matrix.[1].[0].value': 'c',
+        };
+
+        final result = flatMap.toNestedMap();
+
+        expect(result['matrix'], isA<List>());
+        final matrix = result['matrix'] as List;
+        expect(matrix.length, 2);
+        expect(matrix[0], isA<List>());
+        expect((matrix[0] as List)[0], {'value': 'a'});
+        expect((matrix[0] as List)[1], {'value': 'b'});
+        expect(matrix[1], isA<List>());
+        expect((matrix[1] as List)[0], {'value': 'c'});
+      });
+
+      test('handles array notation with custom separator', () {
+        final flatMap = {
+          'users/[0]/name': 'John',
+          'users/[1]/name': 'Jane',
+        };
+
+        final result = flatMap.toNestedMap(separator: '/');
+
+        expect(result, {
+          'users': [
+            {'name': 'John'},
+            {'name': 'Jane'},
+          ],
+        });
+      });
+
+      test('handles mixed flat keys and array notation', () {
+        final flatMap = {
+          'username': 'admin',
+          'users.[0].name': 'John',
+          'users.[1].name': 'Jane',
+          'active': true,
+        };
+
+        final result = flatMap.toNestedMap();
+
+        expect(result, {
+          'username': 'admin',
+          'users': [
+            {'name': 'John'},
+            {'name': 'Jane'},
+          ],
+          'active': true,
+        });
+      });
+
+      test('ignores invalid array indices', () {
+        final flatMap = {
+          'users.[abc].name': 'John', // Invalid index
+          'users.[-1].name': 'Jane', // Negative index
+        };
+
+        final result = flatMap.toNestedMap();
+
+        // Invalid indices should be treated as regular keys
+        expect(result, contains('users'));
+        final users = result['users'];
+        expect(users, isA<Map<String, dynamic>>());
+      });
     });
 
     group('getByPath', () {
@@ -394,6 +537,153 @@ void main() {
         expect(nestedMap.getByPath('user.profile.name'), 'John');
         expect(nestedMap.getByPath('user.profile.age'), 30);
         expect(nestedMap.getByPath('user.email'), 'john@example.com');
+      });
+
+      // getByPath with array indices
+      test('retrieves value from simple array notation', () {
+        final map = {
+          'users': [
+            {'name': 'John'},
+            {'name': 'Jane'},
+          ],
+        };
+
+        expect(map.getByPath('users.[0].name'), 'John');
+        expect(map.getByPath('users.[1].name'), 'Jane');
+      });
+
+      test('retrieves value from nested array structure', () {
+        final map = {
+          'users': [
+            {
+              'profile': {
+                'settings': {
+                  'theme': 'dark',
+                },
+              },
+            },
+          ],
+        };
+
+        expect(map.getByPath('users.[0].profile.settings.theme'), 'dark');
+      });
+
+      test('retrieves value from nested arrays', () {
+        final map = {
+          'matrix': [
+            [
+              {'value': 'a'},
+              {'value': 'b'},
+            ],
+            [
+              {'value': 'c'},
+              {'value': 'd'},
+            ],
+          ],
+        };
+
+        expect(map.getByPath('matrix.[0].[0].value'), 'a');
+        expect(map.getByPath('matrix.[0].[1].value'), 'b');
+        expect(map.getByPath('matrix.[1].[0].value'), 'c');
+        expect(map.getByPath('matrix.[1].[1].value'), 'd');
+      });
+
+      test('returns null for out of bounds array index', () {
+        final map = {
+          'users': [
+            {'name': 'John'},
+          ],
+        };
+
+        expect(map.getByPath('users.[5].name'), null);
+        expect(map.getByPath('users.[1].name'), null);
+      });
+
+      test('returns null for invalid array index', () {
+        final map = {
+          'users': [
+            {'name': 'John'},
+          ],
+        };
+
+        expect(map.getByPath('users.[abc].name'), null);
+        expect(map.getByPath('users.[-1].name'), null);
+      });
+
+      test('returns null when trying to access map as array', () {
+        final map = {
+          'user': {
+            'name': 'John',
+          },
+        };
+
+        expect(map.getByPath('user.[0].name'), null);
+      });
+
+      test('returns null when trying to access array as map', () {
+        final map = {
+          'users': [
+            {'name': 'John'},
+          ],
+        };
+
+        expect(map.getByPath('users.name'), null);
+      });
+
+      test('handles null values in sparse arrays', () {
+        final map = {
+          'users': [
+            {'name': 'John'},
+            null,
+            null,
+            {'name': 'Jane'},
+          ],
+        };
+
+        expect(map.getByPath('users.[0].name'), 'John');
+        expect(map.getByPath('users.[1].name'), null);
+        expect(map.getByPath('users.[3].name'), 'Jane');
+      });
+
+      test('retrieves entire array element', () {
+        final map = {
+          'users': [
+            {'name': 'John', 'email': 'john@example.com'},
+            {'name': 'Jane', 'email': 'jane@example.com'},
+          ],
+        };
+
+        final user0 = map.getByPath('users.[0]');
+        expect(user0, {'name': 'John', 'email': 'john@example.com'});
+
+        final user1 = map.getByPath('users.[1]');
+        expect(user1, {'name': 'Jane', 'email': 'jane@example.com'});
+      });
+
+      test('handles array notation with custom separator', () {
+        final map = {
+          'users': [
+            {'name': 'John'},
+            {'name': 'Jane'},
+          ],
+        };
+
+        expect(map.getByPath('users/[0]/name', separator: '/'), 'John');
+        expect(map.getByPath('users/[1]/name', separator: '/'), 'Jane');
+      });
+
+      test('works correctly with array notation from toNestedMap', () {
+        final flatMap = {
+          'users.[0].name': 'John',
+          'users.[0].email': 'john@example.com',
+          'users.[1].name': 'Jane',
+        };
+
+        final nestedMap = flatMap.toNestedMap();
+
+        expect(nestedMap.getByPath('users.[0].name'), 'John');
+        expect(nestedMap.getByPath('users.[0].email'), 'john@example.com');
+        expect(nestedMap.getByPath('users.[1].name'), 'Jane');
       });
     });
 

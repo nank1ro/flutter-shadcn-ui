@@ -1,9 +1,188 @@
 import 'package:shadcn_ui/src/utils/extensions/list.dart';
 import 'package:shadcn_ui/src/utils/extensions/set.dart';
 
+/// Represents a segment in a path, either a map key or a list index.
+class _PathSegment {
+  const _PathSegment({
+    this.key,
+    this.index,
+  }) : assert(key != null || index != null);
+
+  /// The map key (if this is a map segment).
+  final String? key;
+
+  /// The list index (if this is a list segment).
+  final int? index;
+
+  /// Whether this segment is a list index.
+  bool get isIndex => index != null;
+
+  @override
+  String toString() {
+    if (isIndex) {
+      return '[${index}]';
+    }
+    return key!;
+  }
+}
+
+/// Parses a path string into segments, handling both keys and array indices.
+///
+/// For example:
+/// - `user.name` -> `[_PathSegment(key: 'user'), _PathSegment(key: 'name')]`
+/// - `users.[0].name` -> `[_PathSegment(key: 'users'), _PathSegment(index: 0), _PathSegment(key: 'name')]`
+List<_PathSegment> _parsePathSegments(String path, String separator) {
+  final parts = path.split(separator);
+  final segments = <_PathSegment>[];
+
+  for (final part in parts) {
+    // Check if this part is an array index like [0], [1], etc.
+    if (part.startsWith('[') && part.endsWith(']')) {
+      final indexStr = part.substring(1, part.length - 1);
+      final index = int.tryParse(indexStr);
+      if (index != null && index >= 0) {
+        segments.add(_PathSegment(index: index));
+        continue;
+      }
+    }
+    // Regular key (including empty strings, which will cause lookup to fail)
+    segments.add(_PathSegment(key: part));
+  }
+
+  return segments;
+}
+
+/// Ensures a list has at least the specified size, filling with null if needed.
+void _ensureListSize(List<dynamic> list, int requiredSize) {
+  while (list.length <= requiredSize) {
+    list.add(null);
+  }
+}
+
+/// Sets a nested value in a map, traversing through both maps and lists.
+void _setNestedValue(
+  Map<String, dynamic> root,
+  List<_PathSegment> segments,
+  dynamic value,
+) {
+  if (segments.isEmpty) return;
+
+  // Use a list to track the path of containers and their keys/indices
+  final containers = <dynamic>[root];
+  final keys = <dynamic>[];
+
+  // Build the path
+  for (var i = 0; i < segments.length - 1; i++) {
+    final segment = segments[i];
+    final current = containers.last;
+
+    if (segment.isIndex) {
+      // This is a list index
+      final index = segment.index!;
+      if (current is! List) {
+        // Need to create a list at this position
+        final newList = <dynamic>[];
+        if (keys.isEmpty) {
+          // This is the root - shouldn't happen for array notation
+          return;
+        }
+        final parentKey = keys.last;
+        if (parentKey is int) {
+          // Parent is a list
+          final parent = containers[containers.length - 2] as List;
+          _ensureListSize(parent, parentKey);
+          parent[parentKey] = newList;
+        } else {
+          // Parent is a map
+          final parent = containers[containers.length - 2] as Map<String, dynamic>;
+          parent[parentKey as String] = newList;
+        }
+        containers.removeLast();
+        containers.add(newList);
+        keys.removeLast();
+      }
+      final list = containers.last as List;
+      _ensureListSize(list, index);
+      if (list[index] == null) {
+        // Check if next segment is also an index
+        if (i + 1 < segments.length && segments[i + 1].isIndex) {
+          list[index] = <dynamic>[];
+        } else {
+          list[index] = <String, dynamic>{};
+        }
+      }
+      containers.add(list[index]);
+      keys.add(index);
+    } else {
+      // This is a map key
+      final key = segment.key!;
+      if (current is! Map) {
+        // Current should be a map but isn't - this is an error case
+        return;
+      }
+      final map = current as Map<String, dynamic>;
+      if (!map.containsKey(key)) {
+        // Check if the next segment is an index
+        if (i + 1 < segments.length && segments[i + 1].isIndex) {
+          map[key] = <dynamic>[];
+        } else {
+          map[key] = <String, dynamic>{};
+        }
+      } else if (i + 1 < segments.length) {
+        // Key exists, check if we need to convert it
+        final nextSegment = segments[i + 1];
+        if (nextSegment.isIndex && map[key] is! List) {
+          // Need to convert to a list
+          map[key] = <dynamic>[];
+        } else if (!nextSegment.isIndex && map[key] is! Map) {
+          // Need to convert to a map
+          map[key] = <String, dynamic>{};
+        }
+      }
+      containers.add(map[key]);
+      keys.add(key);
+    }
+  }
+
+  // Set the final value
+  final lastSegment = segments.last;
+  final parent = containers.last;
+  final finalKey = lastSegment.isIndex ? lastSegment.index! : lastSegment.key!;
+
+  if (lastSegment.isIndex) {
+    if (parent is! List) {
+      // Need to convert parent to a list
+      final newList = <dynamic>[];
+      if (containers.length > 1) {
+        final grandParent = containers[containers.length - 2];
+        final parentKey = keys.last;
+        if (parentKey is int) {
+          final grandParentList = grandParent as List;
+          _ensureListSize(grandParentList, parentKey);
+          grandParentList[parentKey] = newList;
+        } else {
+          final grandParentMap = grandParent as Map<String, dynamic>;
+          grandParentMap[parentKey as String] = newList;
+        }
+      }
+      _ensureListSize(newList, finalKey as int);
+      newList[finalKey as int] = value;
+    } else {
+      _ensureListSize(parent, finalKey as int);
+      parent[finalKey as int] = value;
+    }
+  } else {
+    if (parent is Map) {
+      parent[finalKey as String] = value;
+    }
+  }
+}
+
 /// Extensions for Map operations with String keys and dynamic values.
 extension MapExtensions on Map<String, dynamic> {
   /// Converts a flat map with separator-based keys into a nested map structure.
+  ///
+  /// Supports both dot notation for nested maps and bracket notation for array indices.
   ///
   /// For example:
   /// ```dart
@@ -27,6 +206,24 @@ extension MapExtensions on Map<String, dynamic> {
   /// }
   /// ```
   ///
+  /// With array indices:
+  /// ```dart
+  /// {
+  ///   'users.[0].name': 'John',
+  ///   'users.[1].name': 'Jane'
+  /// }.toNestedMap()
+  /// ```
+  ///
+  /// Results in:
+  /// ```dart
+  /// {
+  ///   'users': [
+  ///     {'name': 'John'},
+  ///     {'name': 'Jane'}
+  ///   ]
+  /// }
+  /// ```
+  ///
   /// The [separator] parameter allows customizing the separator used for
   /// splitting keys. Defaults to `.`.
   Map<String, dynamic> toNestedMap({String separator = '.'}) {
@@ -34,26 +231,13 @@ extension MapExtensions on Map<String, dynamic> {
     final result = <String, dynamic>{};
 
     for (final entry in entries) {
-      final keys = entry.key.split(separator);
-      if (keys.length == 1) {
-        // No separator, just add directly
+      final segments = _parsePathSegments(entry.key, separator);
+      if (segments.length == 1 && !segments.first.isIndex) {
+        // No separator or array notation, just add directly
         result[entry.key] = entry.value;
       } else {
-        // Navigate/create nested structure
-        var current = result;
-        for (var i = 0; i < keys.length - 1; i++) {
-          final key = keys[i];
-          if (!current.containsKey(key)) {
-            current[key] = <String, dynamic>{};
-          }
-          // If the existing value is not a Map, we need to convert it
-          if (current[key] is! Map<String, dynamic>) {
-            current[key] = <String, dynamic>{};
-          }
-          current = current[key] as Map<String, dynamic>;
-        }
-        // Set the final value
-        current[keys.last] = entry.value;
+        // Use the new nested value setter that handles arrays
+        _setNestedValue(result, segments, entry.value);
       }
     }
 
@@ -61,6 +245,8 @@ extension MapExtensions on Map<String, dynamic> {
   }
 
   /// Gets a value from a nested map using dot notation.
+  ///
+  /// Supports both dot notation for nested maps and bracket notation for array indices.
   ///
   /// For example:
   /// ```dart
@@ -76,22 +262,45 @@ extension MapExtensions on Map<String, dynamic> {
   ///
   /// Returns `30`.
   ///
+  /// With array indices:
+  /// ```dart
+  /// {
+  ///   'users': [
+  ///     {'name': 'John'},
+  ///     {'name': 'Jane'}
+  ///   ]
+  /// }.getByPath('users.[0].name')
+  /// ```
+  ///
+  /// Returns `'John'`.
+  ///
   /// The [separator] parameter allows customizing the separator used for
   /// splitting the path. Defaults to `.`.
   ///
-  /// Returns `null` if the path doesn't exist or any intermediate value
-  /// is not a Map.
+  /// Returns `null` if the path doesn't exist, any intermediate value
+  /// is not the expected type, or an array index is out of bounds.
   dynamic getByPath(String path, {String separator = '.'}) {
     assert(separator.isNotEmpty, 'Separator cannot be empty');
 
-    final keys = path.split(separator);
+    final segments = _parsePathSegments(path, separator);
     dynamic current = this;
 
-    for (final key in keys) {
-      if (current is Map && current.containsKey(key)) {
-        current = current[key];
+    for (final segment in segments) {
+      if (segment.isIndex) {
+        final index = segment.index!;
+        if (current is List && index < current.length) {
+          current = current[index];
+        } else {
+          return null;
+        }
       } else {
-        return null;
+        final key = segment.key!;
+        // Use a general Map check to handle const maps and different Map types
+        if (current is Map && current.containsKey(key)) {
+          current = current[key];
+        } else {
+          return null;
+        }
       }
     }
 

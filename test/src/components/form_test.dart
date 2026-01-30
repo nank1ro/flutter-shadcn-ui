@@ -357,6 +357,382 @@ void main() {
     });
   });
 
+  group('ShadForm - Array Notation', () {
+    testWidgets('converts array notation field IDs to nested lists', (
+      tester,
+    ) async {
+      final formKey = GlobalKey<ShadFormState>();
+
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadForm(
+            key: formKey,
+            child: Column(
+              children: [
+                ShadInputFormField(
+                  id: 'users.[0].name',
+                  initialValue: 'John',
+                ),
+                ShadInputFormField(
+                  id: 'users.[0].email',
+                  initialValue: 'john@example.com',
+                ),
+                ShadInputFormField(
+                  id: 'users.[1].name',
+                  initialValue: 'Jane',
+                ),
+                ShadInputFormField(
+                  id: 'users.[1].email',
+                  initialValue: 'jane@example.com',
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final formValue = formKey.currentState!.value;
+
+      expect(formValue, {
+        'users': [
+          {'name': 'John', 'email': 'john@example.com'},
+          {'name': 'Jane', 'email': 'jane@example.com'},
+        ],
+      });
+    });
+
+    testWidgets('creates array structure from field IDs', (tester) async {
+      final formKey = GlobalKey<ShadFormState>();
+
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadForm(
+            key: formKey,
+            child: Column(
+              children: [
+                ShadInputFormField(
+                  id: 'users.[0].name',
+                  initialValue: 'Alice',
+                ),
+                ShadInputFormField(
+                  id: 'users.[0].email',
+                  initialValue: 'alice@example.com',
+                ),
+                ShadInputFormField(
+                  id: 'users.[1].name',
+                  initialValue: 'Bob',
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final formValue = formKey.currentState!.value;
+
+      expect(formValue, {
+        'users': [
+          {'name': 'Alice', 'email': 'alice@example.com'},
+          {'name': 'Bob'},
+        ],
+      });
+    });
+
+    testWidgets('handles mixed flat, nested, and array field IDs', (
+      tester,
+    ) async {
+      final formKey = GlobalKey<ShadFormState>();
+
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadForm(
+            key: formKey,
+            child: Column(
+              children: [
+                ShadInputFormField(
+                  id: 'username',
+                  initialValue: 'admin',
+                ),
+                ShadInputFormField(
+                  id: 'user.email',
+                  initialValue: 'admin@example.com',
+                ),
+                ShadInputFormField(
+                  id: 'users.[0].name',
+                  initialValue: 'John',
+                ),
+                ShadInputFormField(
+                  id: 'users.[1].name',
+                  initialValue: 'Jane',
+                ),
+                ShadInputFormField(
+                  id: 'active',
+                  initialValue: 'true',
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final formValue = formKey.currentState!.value;
+
+      expect(formValue, {
+        'username': 'admin',
+        'user': {'email': 'admin@example.com'},
+        'users': [
+          {'name': 'John'},
+          {'name': 'Jane'},
+        ],
+        'active': 'true',
+      });
+    });
+
+    testWidgets('uses array notation with custom separator', (
+      tester,
+    ) async {
+      final formKey = GlobalKey<ShadFormState>();
+
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadForm(
+            key: formKey,
+            fieldIdSeparator: '/',
+            child: Column(
+              children: [
+                ShadInputFormField(
+                  id: 'users/[0]/name',
+                  initialValue: 'John',
+                ),
+                ShadInputFormField(
+                  id: 'users/[1]/name',
+                  initialValue: 'Jane',
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final formValue = formKey.currentState!.value;
+
+      expect(formValue, {
+        'users': [
+          {'name': 'John'},
+          {'name': 'Jane'},
+        ],
+      });
+    });
+
+    testWidgets('updates array field values correctly', (tester) async {
+      final formKey = GlobalKey<ShadFormState>();
+
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadForm(
+            key: formKey,
+            child: Column(
+              children: [
+                ShadInputFormField(
+                  id: 'users.[0].name',
+                  initialValue: 'John',
+                ),
+                ShadInputFormField(
+                  id: 'users.[1].name',
+                  initialValue: 'Jane',
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Update array field values
+      formKey.currentState!.setFieldValue('users.[0].name', 'Alice');
+      formKey.currentState!.setFieldValue('users.[1].name', 'Bob');
+      await tester.pumpAndSettle();
+
+      final formValue = formKey.currentState!.value;
+
+      expect(formValue, {
+        'users': [
+          {'name': 'Alice'},
+          {'name': 'Bob'},
+        ],
+      });
+    });
+
+    testWidgets('handles deeply nested array notation', (tester) async {
+      final formKey = GlobalKey<ShadFormState>();
+
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadForm(
+            key: formKey,
+            child: Column(
+              children: [
+                ShadInputFormField(
+                  id: 'company.team.[0].members.[0].name',
+                  initialValue: 'Alice',
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final formValue = formKey.currentState!.value;
+
+      expect(formValue, const {
+        'company': {
+          'team': [
+            {
+              'members': [
+                {'name': 'Alice'},
+              ],
+            },
+          ],
+        },
+      });
+    });
+
+    testWidgets('works with different form field types and array notation', (
+      tester,
+    ) async {
+      final formKey = GlobalKey<ShadFormState>();
+
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadForm(
+            key: formKey,
+            child: Column(
+              children: [
+                ShadInputFormField(
+                  id: 'users.[0].name',
+                  initialValue: 'John',
+                ),
+                ShadCheckboxFormField(
+                  id: 'users.[0].active',
+                  initialValue: true,
+                  label: const Text('Active'),
+                ),
+                ShadSwitchFormField(
+                  id: 'users.[0].verified',
+                  initialValue: false,
+                  label: const Text('Verified'),
+                ),
+                ShadInputFormField(
+                  id: 'users.[1].name',
+                  initialValue: 'Jane',
+                ),
+                ShadCheckboxFormField(
+                  id: 'users.[1].active',
+                  initialValue: false,
+                  label: const Text('Active'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final formValue = formKey.currentState!.value;
+
+      expect(formValue, {
+        'users': [
+          {'name': 'John', 'active': true, 'verified': false},
+          {'name': 'Jane', 'active': false},
+        ],
+      });
+    });
+
+    testWidgets('creates array structure from field IDs with initial values', (
+      tester,
+    ) async {
+      final formKey = GlobalKey<ShadFormState>();
+
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadForm(
+            key: formKey,
+            child: Column(
+              children: [
+                ShadInputFormField(
+                  id: 'users.[0].name',
+                  initialValue: 'Initial Name',
+                ),
+                ShadInputFormField(
+                  id: 'users.[1].name',
+                  initialValue: 'Second User',
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final formValue = formKey.currentState!.value;
+
+      // The form correctly creates array structure from field IDs
+      expect(formValue, containsPair('users', isA<List>()));
+      expect((formValue['users'] as List)[0], containsPair('name', 'Initial Name'));
+      expect((formValue['users'] as List)[1], containsPair('name', 'Second User'));
+    });
+
+    testWidgets('backward compatibility - existing dot notation still works', (
+      tester,
+    ) async {
+      final formKey = GlobalKey<ShadFormState>();
+
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadForm(
+            key: formKey,
+            child: Column(
+              children: [
+                ShadInputFormField(
+                  id: 'user.name',
+                  initialValue: 'John',
+                ),
+                ShadInputFormField(
+                  id: 'user.email',
+                  initialValue: 'john@example.com',
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      final formValue = formKey.currentState!.value;
+
+      expect(formValue, {
+        'user': {
+          'name': 'John',
+          'email': 'john@example.com',
+        },
+      });
+    });
+  });
+
   group('ShadForm - Value Transformers with Dot Notation', () {
     testWidgets('applies transformers to nested values', (tester) async {
       final formKey = GlobalKey<ShadFormState>();
