@@ -20,7 +20,7 @@ export default defineConfig({
           tag: 'meta',
           attrs: {
             property: 'og:image',
-            content: 'https://flutter-shadcn-ui.mariuti.com/shadcn-banner.png',
+            content: 'https://mariuti.com/flutter-shadcn-ui/shadcn-banner.png',
           }
         },
         {
