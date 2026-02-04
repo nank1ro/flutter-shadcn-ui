@@ -38,6 +38,7 @@ class ShadDateRangePickerFormField
     super.focusNode,
     super.validator,
     super.initialValue,
+    super.readOnly,
 
     /// {@macro ShadDatePicker.placeholder}
     Widget? placeholder,

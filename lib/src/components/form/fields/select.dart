@@ -28,6 +28,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.initialValue,
     super.focusNode,
     super.validator,
+    super.readOnly,
 
     /// {@macro ShadSelect.selectedOptionBuilder}
     required ShadSelectedOptionBuilder<T> selectedOptionBuilder,
@@ -172,6 +173,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.initialValue,
     super.focusNode,
     super.validator,
+    super.readOnly,
     required ShadSelectedOptionBuilder<T> selectedOptionBuilder,
     Iterable<Widget>? options,
 
@@ -302,6 +304,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.initialValue,
     super.focusNode,
     super.validator,
+    super.readOnly,
     required ShadSelectVariant variant,
     required ShadSelectedOptionBuilder<T> selectedOptionBuilder,
     Iterable<Widget>? options,
@@ -488,6 +491,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     super.initialValue,
     super.focusNode,
     super.validator,
+    super.readOnly,
     required ShadSelectedOptionBuilder<List<T>> selectedOptionsBuilder,
     Iterable<Widget>? options,
 
@@ -583,6 +587,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     super.initialValue,
     super.focusNode,
     super.validator,
+    super.readOnly,
     required ShadSelectedOptionBuilder<List<T>> selectedOptionsBuilder,
     Iterable<Widget>? options,
 
@@ -700,6 +705,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     super.initialValue,
     super.focusNode,
     super.validator,
+    super.readOnly,
     required ShadSelectVariant variant,
     required ShadSelectedOptionBuilder<List<T>> selectedOptionsBuilder,
     Iterable<Widget>? options,
