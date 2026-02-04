@@ -37,6 +37,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     @Deprecated('Use toValueTransformer instead') super.valueTransformer,
     super.toValueTransformer,
     super.fromValueTransformer,
+    super.readOnly,
 
     /// {@macro ShadDatePicker.placeholder}
     Widget? placeholder,

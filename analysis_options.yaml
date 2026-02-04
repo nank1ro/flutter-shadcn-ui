@@ -19,3 +19,4 @@ linter:
     prefer_constructors_over_static_methods: false
     avoid_positional_boolean_parameters: false
     document_ignores: false
+    avoid_types_on_closure_parameters: false

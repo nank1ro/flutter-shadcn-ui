@@ -14,7 +14,7 @@ final themeColorSignal = Signal<String>('zinc');
 
 // For Dev ONLY: use your local Astro dev server
 // const kParentOrigin = "http://localhost:4321";
-const kParentOrigin = "https://flutter-shadcn-ui.mariuti.com";
+const kParentOrigin = "https://mariuti.com";
 
 void main() {
   usePathUrlStrategy();

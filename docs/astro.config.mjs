@@ -20,7 +20,7 @@ export default defineConfig({
           tag: 'meta',
           attrs: {
             property: 'og:image',
-            content: 'https://flutter-shadcn-ui.mariuti.com/shadcn-banner.png',
+            content: 'https://mariuti.com/flutter-shadcn-ui/shadcn-banner.png',
           }
         },
         {
@@ -166,6 +166,11 @@ export default defineConfig({
       ],
     }),
   ],
-  site: 'https://flutter-shadcn-ui.mariuti.com',
+  site: 'https://mariuti.com/flutter-shadcn-ui',
+  base: 'flutter-shadcn-ui/',
   output: "static",
+  build: {
+    format: 'directory',
+  },
+  outDir: './dist/flutter-shadcn-ui',
 });
