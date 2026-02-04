@@ -28,6 +28,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.initialValue,
     super.focusNode,
     super.validator,
+    super.readOnly,
 
     /// {@macro ShadSelect.selectedOptionBuilder}
     required ShadSelectedOptionBuilder<T> selectedOptionBuilder,

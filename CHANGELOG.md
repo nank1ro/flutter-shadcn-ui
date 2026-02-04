@@ -1,3 +1,7 @@
+## 0.45.2
+
+- **FIX**: Add missing `readOnly` parameter to form fields.
+
 ## 0.45.1
 
 - **FEAT**: Add `rawValue` method to `ShadForm` to get the raw form value without considering transformations.

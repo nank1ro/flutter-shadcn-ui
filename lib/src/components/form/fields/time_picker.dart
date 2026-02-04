@@ -21,6 +21,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     super.restorationId,
     super.validator,
     super.focusNode,
+    super.readOnly,
 
     /// {@macro ShadTimePicker.onChanged}
     super.onChanged,
