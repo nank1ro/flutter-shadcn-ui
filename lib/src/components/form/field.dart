@@ -291,13 +291,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   }
 
   void _informFormForFieldChange() {
-    if (_parentForm != null) {
-      if (enabled) {
-        _parentForm!.setFieldValue<T>(effectiveId, value, notifyField: false);
-        return;
-      }
-      _parentForm!.removeFieldValue(effectiveId);
-    }
+    _parentForm?.setFieldValue<T>(effectiveId, value, notifyField: false);
   }
 
   /// Registers the field’s value transformer with the provided map.
