@@ -1,3 +1,12 @@
+## 0.46.0
+
+- **FIX**: Do not remove form field value when the form field is disabled.
+- **FIX**: Revert last change about `readOnly` parameter.
+
+## 0.45.2
+
+- **FIX**: Add missing `readOnly` parameter to form fields.
+
 ## 0.45.1
 
 - **FEAT**: Add `rawValue` method to `ShadForm` to get the raw form value without considering transformations.
