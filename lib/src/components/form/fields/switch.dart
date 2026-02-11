@@ -21,14 +21,13 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
     super.enabled,
     super.autovalidateMode,
     super.restorationId,
-    super.focusNode,
-    super.readOnly,
 
     /// {@macro ShadFormBuilderField.initialValue}
     required bool initialValue,
 
     /// {@macro ShadSwitch.decoration}
     ShadDecoration? decoration,
+    super.focusNode,
 
     /// {@macro ShadFormBuilderField.validator}
     String? Function(bool)? validator,
