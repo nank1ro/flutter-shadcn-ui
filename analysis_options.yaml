@@ -20,3 +20,4 @@ linter:
     avoid_positional_boolean_parameters: false
     document_ignores: false
     avoid_types_on_closure_parameters: false
+    remove_deprecations_in_breaking_versions: false
