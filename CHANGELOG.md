@@ -1,3 +1,6 @@
+## 0.47.0
+- **FEAT**: Add new `ShadCarousel` component with smooth scrolling, item snapping, customizable navigation buttons, and programmatic control via `ShadCarouselController`.
+
 ## 0.46.0
 
 - **FIX**: Do not remove form field value when the form field is disabled.
