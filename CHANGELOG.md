@@ -1,3 +1,7 @@
+## 0.46.1
+
+- **FIX**: Add `forceErrorText` to `ShadSelectMultipleFormField`, `ShadSelectFormField` and `ShadTimePickerFormField` in constructors where it was missing.
+
 ## 0.46.0
 
 - **FIX**: Do not remove form field value when the form field is disabled.
