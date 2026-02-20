@@ -31,6 +31,19 @@ class _TooltipPageState extends State<TooltipPage> {
             child: const Text('Hover/Focus'),
           ),
         ),
+        ShadTooltip(
+          focusNode: focusNode,
+          anchor: ShadAnchorAuto(
+            offset: Offset(0, 4),
+            followerAnchor: Alignment.bottomCenter,
+            targetAnchor: Alignment.bottomCenter,
+          ),
+          builder: (context) => const Text('Add to library'),
+          child: ShadButton.outline(
+            focusNode: focusNode,
+            child: const Text('Hover/Focus'),
+          ),
+        ),
       ],
     );
   }
