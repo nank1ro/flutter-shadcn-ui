@@ -342,6 +342,14 @@ class _ShadPortalState extends State<ShadPortal> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _calculatePosition();
       });
+    } else {
+      // The target is unchanged but the overlay render object now exists.
+      // Force a rebuild so that the overlay becomes visible (it was initially
+      // built with Visibility.maintain(visible: false) while the render
+      // object was being created).
+      if (mounted) {
+        setState(() {});
+      }
     }
   }
 
