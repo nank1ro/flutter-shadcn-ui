@@ -197,6 +197,11 @@ mixin _$ShadThemeData {
         b.textareaTheme,
         t,
       )!,
+      typeAheadTheme: ShadTypeAheadTheme.lerp(
+        a.typeAheadTheme,
+        b.typeAheadTheme,
+        t,
+      )!,
       defaultKeyboardToolbarTheme: ShadDefaultKeyboardToolbarTheme.lerp(
         a.defaultKeyboardToolbarTheme,
         b.defaultKeyboardToolbarTheme,
@@ -259,6 +264,7 @@ mixin _$ShadThemeData {
     ShadSeparatorTheme? separatorTheme,
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
+    ShadTypeAheadTheme? typeAheadTheme,
     ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
   }) {
     final _this = (this as ShadThemeData);
@@ -322,6 +328,7 @@ mixin _$ShadThemeData {
       separatorTheme: separatorTheme ?? _this.separatorTheme,
       sonnerTheme: sonnerTheme ?? _this.sonnerTheme,
       textareaTheme: textareaTheme ?? _this.textareaTheme,
+      typeAheadTheme: typeAheadTheme ?? _this.typeAheadTheme,
       defaultKeyboardToolbarTheme:
           defaultKeyboardToolbarTheme ?? _this.defaultKeyboardToolbarTheme,
     );
@@ -410,6 +417,7 @@ mixin _$ShadThemeData {
       separatorTheme: _this.separatorTheme.merge(other.separatorTheme),
       sonnerTheme: _this.sonnerTheme.merge(other.sonnerTheme),
       textareaTheme: _this.textareaTheme.merge(other.textareaTheme),
+      typeAheadTheme: _this.typeAheadTheme.merge(other.typeAheadTheme),
       defaultKeyboardToolbarTheme: _this.defaultKeyboardToolbarTheme.merge(
         other.defaultKeyboardToolbarTheme,
       ),
@@ -482,6 +490,7 @@ mixin _$ShadThemeData {
         _other.separatorTheme == _this.separatorTheme &&
         _other.sonnerTheme == _this.sonnerTheme &&
         _other.textareaTheme == _this.textareaTheme &&
+        _other.typeAheadTheme == _this.typeAheadTheme &&
         _other.defaultKeyboardToolbarTheme == _this.defaultKeyboardToolbarTheme;
   }
 
@@ -544,6 +553,7 @@ mixin _$ShadThemeData {
       _this.separatorTheme,
       _this.sonnerTheme,
       _this.textareaTheme,
+      _this.typeAheadTheme,
       _this.defaultKeyboardToolbarTheme,
     ]);
   }

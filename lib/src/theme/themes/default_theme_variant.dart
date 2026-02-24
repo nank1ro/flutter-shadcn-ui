@@ -40,6 +40,7 @@ import 'package:shadcn_ui/src/theme/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
+import 'package:shadcn_ui/src/theme/components/type_ahead.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
@@ -1085,6 +1086,28 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       showDoneButton: true,
       showNextButton: true,
       showPreviousButton: true,
+    );
+  }
+
+  @override
+  ShadTypeAheadTheme typeAheadTheme() {
+    return ShadTypeAheadTheme(
+      minWidth: kDefaultTypeAheadMinWidth,
+      maxHeight: kDefaultTypeAheadMaxHeight,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: ShadDecoration(
+        border: ShadBorder.all(
+          radius: radius,
+          color: colorScheme.input,
+          width: 1,
+        ),
+      ),
+      optionsPadding: const EdgeInsets.all(4),
+      showScrollToTopChevron: true,
+      showScrollToBottomChevron: true,
+      popoverReverseDuration: Duration.zero,
+      anchor: const ShadAnchorAuto(offset: Offset(0, 4)),
+      debounceDuration: kDefaultTypeAheadDebounceDuration,
     );
   }
 }

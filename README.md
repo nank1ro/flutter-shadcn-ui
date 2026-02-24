@@ -66,6 +66,7 @@ See the [documentation](https://mariuti.com/flutter-shadcn-ui/) to interact with
 - [x] [TextArea](https://mariuti.com/flutter-shadcn-ui/components/text-area/)
 - [x] [Time Picker](https://mariuti.com/flutter-shadcn-ui/components/time-picker/)
 - [x] [Toast](https://mariuti.com/flutter-shadcn-ui/components/toast/)
+- [x] [TypeAhead](https://mariuti.com/flutter-shadcn-ui/components/type-ahead/)
 - [ ] Toggle
 - [ ] ToggleGroup
 - [x] [Tooltip](https://mariuti.com/flutter-shadcn-ui/components/tooltip/)
@@ -80,6 +81,7 @@ It's an open source project, I'd love to have contributions.
 Each widget I make takes some time because I try to solve problems in a simple way, making each widget extremely customizable.
 
 Another library could probably come first with more widgets, but in the long run it's the quality the most important thing.
+
 </details>
 
 ## Star History

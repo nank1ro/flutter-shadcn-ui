@@ -15,6 +15,7 @@ enum FormStyle {
   periodTimePickerField,
   inputOTPField,
   textareaField,
+  typeAheadField,
 }
 
 enum NotifyAbout {
@@ -238,6 +239,48 @@ class _FormPageState extends State<FormPage> {
                         return 'Bio must be at least 10 characters.';
                       }
                       return null;
+                    },
+                  ),
+                  FormStyle.typeAheadField => ShadTypeAheadFormField<String>(
+                    id: 'fruit',
+                    label: const Text('Favorite Fruit'),
+                    placeholder: const Text('Search a fruit...'),
+                    description: const Text(
+                      'Select your favorite fruit.',
+                    ),
+                    validator: (v) {
+                      if (v == null || v.isEmpty) {
+                        return 'Please select a fruit';
+                      }
+                      return null;
+                    },
+                    suggestionsCallback: (query) async {
+                      await Future<void>.delayed(
+                        const Duration(milliseconds: 300),
+                      );
+                      const fruits = [
+                        'Apple',
+                        'Banana',
+                        'Blueberry',
+                        'Cherry',
+                        'Grapes',
+                        'Mango',
+                        'Orange',
+                        'Pineapple',
+                        'Strawberry',
+                        'Watermelon',
+                      ];
+                      if (query.isEmpty) return fruits;
+                      return fruits
+                          .where(
+                            (f) => f.toLowerCase().contains(
+                              query.toLowerCase(),
+                            ),
+                          )
+                          .toList();
+                    },
+                    itemBuilder: (context, fruit) {
+                      return Text(fruit);
                     },
                   ),
                 },
