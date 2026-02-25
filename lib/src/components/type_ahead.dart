@@ -668,19 +668,19 @@ class ShadTypeAheadState<T> extends State<ShadTypeAhead<T>>
       _notifyEpoch();
     } finally {
       _isFetching = false;
-    }
 
-    // If another query was queued while we were fetching, run it only when
-    // the current input still matches the queued query and meets the minimum
-    // character threshold — otherwise the fetch would reopen the popover for
-    // text the user has already deleted past.
-    if (mounted && _queuedQuery != null) {
-      final next = _queuedQuery!;
-      _queuedQuery = null;
-      final currentText = textController.text;
-      if (currentText == next &&
-          currentText.length >= widget.minCharsForSuggestions) {
-        await _fetchSuggestions(next);
+      // If another query was queued while we were fetching, run it only when
+      // the current input still matches the queued query and meets the minimum
+      // character threshold — otherwise the fetch would reopen the popover for
+      // text the user has already deleted past.
+      if (mounted && _queuedQuery != null) {
+        final next = _queuedQuery!;
+        _queuedQuery = null;
+        final currentText = textController.text;
+        if (currentText == next &&
+            currentText.length >= widget.minCharsForSuggestions) {
+          unawaited(_fetchSuggestions(next));
+        }
       }
     }
   }
