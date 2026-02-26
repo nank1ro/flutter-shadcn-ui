@@ -36,6 +36,7 @@ import 'package:shadcn_ui/src/theme/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
+import 'package:shadcn_ui/src/theme/components/type_ahead.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
 import 'package:shadcn_ui/src/theme/themes/default_theme_no_secondary_border_variant.dart';
@@ -108,6 +109,7 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     ShadSeparatorTheme? separatorTheme,
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
+    ShadTypeAheadTheme? typeAheadTheme,
     ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
   }) {
     final effectiveRadius =
@@ -237,6 +239,7 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
       separatorTheme: effectiveVariant.separatorTheme().merge(separatorTheme),
       sonnerTheme: effectiveVariant.sonnerTheme().merge(sonnerTheme),
       textareaTheme: effectiveVariant.textareaTheme().merge(textareaTheme),
+      typeAheadTheme: effectiveVariant.typeAheadTheme().merge(typeAheadTheme),
       defaultKeyboardToolbarTheme: effectiveVariant
           .defaultKeyboardToolbarTheme()
           .merge(defaultKeyboardToolbarTheme),
@@ -297,6 +300,7 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     required super.separatorTheme,
     required super.sonnerTheme,
     required super.textareaTheme,
+    required super.typeAheadTheme,
     required super.defaultKeyboardToolbarTheme,
   });
 

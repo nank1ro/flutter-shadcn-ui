@@ -1,0 +1,123 @@
+---
+title: Type Ahead
+sidebar:
+  order: 4
+---
+
+import Preview from "../../../components/Preview.astro";
+
+A typeahead (autocomplete) input that asynchronously fetches and displays suggestions as the user types.
+
+<Preview src="type-ahead" minHeight="400px">
+
+```dart
+const fruits = [
+  'Apple',
+  'Banana',
+  'Blueberry',
+  'Cherry',
+  'Grapes',
+  'Lemon',
+  'Mango',
+  'Orange',
+  'Peach',
+  'Pear',
+  'Pineapple',
+  'Plum',
+  'Raspberry',
+  'Strawberry',
+  'Watermelon',
+];
+
+class TypeAheadExample extends StatelessWidget {
+  const TypeAheadExample({super.key});
+
+  Future<List<String>> suggestFruits(String query) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    if (query.isEmpty) return fruits;
+    return fruits
+        .where((f) => f.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 300),
+      child: ShadTypeAhead<String>(
+        placeholder: const Text('Search a fruit...'),
+        suggestionsCallback: suggestFruits,
+        itemBuilder: (context, fruit) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            child: Text(fruit),
+          );
+        },
+      ),
+    );
+  }
+}
+```
+
+</Preview>
+
+## Form
+
+<Preview src="form?style=typeAheadField" minHeight="400px">
+
+```dart
+const fruits = [
+  'Apple',
+  'Banana',
+  'Blueberry',
+  'Cherry',
+  'Grapes',
+  'Lemon',
+  'Mango',
+  'Orange',
+  'Peach',
+  'Pear',
+  'Pineapple',
+  'Plum',
+  'Raspberry',
+  'Strawberry',
+  'Watermelon',
+];
+
+class TypeAheadFormFieldExample extends StatelessWidget {
+  const TypeAheadFormFieldExample({super.key});
+
+  Future<List<String>> suggestFruits(String query) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    if (query.isEmpty) return fruits;
+    return fruits
+        .where((f) => f.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadTypeAheadFormField<String>(
+      id: 'fruit',
+      label: const Text('Favorite Fruit'),
+      placeholder: const Text('Search a fruit...'),
+      description: const Text('Select your favorite fruit.'),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please select a fruit';
+        }
+        return null;
+      },
+      suggestionsCallback: suggestFruits,
+      itemBuilder: (context, fruit) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          child: Text(fruit),
+        );
+      },
+    );
+  }
+}
+```
+
+</Preview>
