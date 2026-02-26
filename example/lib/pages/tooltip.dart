@@ -10,11 +10,9 @@ class TooltipPage extends StatefulWidget {
 }
 
 class _TooltipPageState extends State<TooltipPage> {
-  final focusNode = FocusNode();
 
   @override
   void dispose() {
-    focusNode.dispose();
     super.dispose();
   }
 
@@ -24,10 +22,19 @@ class _TooltipPageState extends State<TooltipPage> {
       appBarTitle: 'Tooltip',
       children: [
         ShadTooltip(
-          focusNode: focusNode,
           builder: (context) => const Text('Add to library'),
           child: ShadButton.outline(
-            focusNode: focusNode,
+            child: const Text('Hover/Focus'),
+          ),
+        ),
+        ShadTooltip(
+          anchor: ShadAnchorAuto(
+            offset: Offset(0, 4),
+            followerAnchor: Alignment.bottomCenter,
+            targetAnchor: Alignment.bottomCenter,
+          ),
+          builder: (context) => const Text('Add to library'),
+          child: ShadButton.outline(
             child: const Text('Hover/Focus'),
           ),
         ),

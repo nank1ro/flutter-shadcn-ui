@@ -1,3 +1,7 @@
+## 0.46.2
+
+- **FIX**: `ShadAnchorAuto` with followerAnchor: bottomCenter breaks tooltip visibility #575
+
 ## 0.46.1
 
 - **FIX**: Add `forceErrorText` to `ShadSelectMultipleFormField`, `ShadSelectFormField` and `ShadTimePickerFormField` in constructors where it was missing.
