@@ -61,6 +61,7 @@ export 'src/components/separator.dart';
 export 'src/components/sheet.dart';
 export 'src/components/slider.dart';
 export 'src/components/sonner.dart';
+export 'src/components/sonner_new.dart';
 export 'src/components/switch.dart';
 export 'src/components/table.dart';
 export 'src/components/tabs.dart';
