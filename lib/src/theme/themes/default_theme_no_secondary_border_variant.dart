@@ -24,6 +24,7 @@ import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
 import 'package:shadcn_ui/src/theme/components/menubar.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
+import 'package:shadcn_ui/src/theme/components/pagination.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/progress.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
@@ -1109,6 +1110,22 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       showDoneButton: true,
       showNextButton: true,
       showPreviousButton: true,
+    );
+  }
+
+  @override
+  ShadPaginationTheme paginationTheme() {
+    return ShadPaginationTheme(
+      buttonPadding: const EdgeInsets.symmetric(horizontal: 12),
+      buttonDecoration: ShadDecoration(
+        border: ShadBorder.all(
+          radius: radius,
+          width: 0,
+          padding: const EdgeInsets.all(2),
+        ),
+      ),
+      buttonForegroundColor: colorScheme.foreground,
+      buttonSelectedForegroundColor: colorScheme.accentForeground,
     );
   }
 }

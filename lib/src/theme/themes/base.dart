@@ -19,6 +19,7 @@ import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
 import 'package:shadcn_ui/src/theme/components/menubar.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
+import 'package:shadcn_ui/src/theme/components/pagination.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
 import 'package:shadcn_ui/src/theme/components/progress.dart';
 import 'package:shadcn_ui/src/theme/components/radio.dart';
@@ -95,6 +96,7 @@ abstract class ShadBaseTheme {
     required this.separatorTheme,
     required this.sonnerTheme,
     required this.textareaTheme,
+    required this.shadPaginationTheme,
     required this.defaultKeyboardToolbarTheme,
   });
 
@@ -148,6 +150,7 @@ abstract class ShadBaseTheme {
   final ShadTimePickerTheme timePickerTheme;
   final ShadInputOTPTheme inputOTPTheme;
   final ShadMenubarTheme menubarTheme;
+  final ShadPaginationTheme shadPaginationTheme;
   final ShadSeparatorTheme separatorTheme;
   final ShadSonnerTheme sonnerTheme;
   final ShadTextareaTheme textareaTheme;
@@ -204,4 +207,5 @@ abstract class ShadThemeVariant {
   ShadSonnerTheme sonnerTheme();
   ShadTextareaTheme textareaTheme();
   ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme();
+  ShadPaginationTheme paginationTheme();
 }

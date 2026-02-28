@@ -24,6 +24,7 @@
 
 ## 0.45.0
 
+- **FEAT**: Add new component `ShadPagination` and all of its related components (thanks to @asare-21).
 - **FEAT**: Add dot notation support for nested form values in `ShadForm`. Field IDs like `user.email` are automatically converted to nested maps like `{'user': {'email': value}}`. The `initialValue` should be provided as a nested map structure, and the form will automatically extract values based on field IDs.
 - **FEAT**: Add `fieldIdSeparator` parameter to `ShadForm` to customize the separator used for nested form values (defaults to `.`). You can use any string as a separator (e.g. `/`, `:`), or set it to `null` to disable dot notation support entirely.
 - **FEAT**: Add `toNestedMap`, `getByPath` and `deepMerge` extension methods on `Map<String, dynamic>`.
@@ -329,7 +330,7 @@
 ## 0.31.0
 
 - **FEAT**: Modify the `ShadTooltip` component and its hover strategies to work on mobile on tap without a long press.
-- **FEAT**: Add `ShadHoverStrategy.onTapOutside` to trigger unhover when tapping outside the widget. 
+- **FEAT**: Add `ShadHoverStrategy.onTapOutside` to trigger unhover when tapping outside the widget.
 - **FEAT**: Add `ShadHoverStrategy.onTap` to trigger hover/unhover when tapping inside the widget.
 - **FEAT**: Now if an hover strategy is present in both `hoverStrategies.hover` and `hoverStrategies.unhover`, the hover will be toggled.
 
@@ -356,7 +357,7 @@
 ## 0.30.1
 
 - **FIX**: Fix `ShadResizable` on RTL (for real this time).
-- **CHORE**: Bump min Flutter SDK version to `3.35.0` to support `FormField.onReset` and `Brightness` from `'package:flutter/widgets.dart'` 
+- **CHORE**: Bump min Flutter SDK version to `3.35.0` to support `FormField.onReset` and `Brightness` from `'package:flutter/widgets.dart'`
 
 ## 0.30.0
 
@@ -800,7 +801,7 @@
 
 ## 0.10.0
 
-- __BREAKING CHANGE__: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.
+- **BREAKING CHANGE**: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.
 
 ## 0.9.8
 
