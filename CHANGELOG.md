@@ -1,7 +1,10 @@
+## 0.46.3
+
+- **FIX**: `ShadSelectMultipleFormField` `onChanged` not firing after first selection due to in-place Set mutation.
+
 ## 0.46.2
 
 - **FIX**: `ShadAnchorAuto` with followerAnchor: bottomCenter breaks tooltip visibility #575
-- **FIX**: `ShadSelectMultipleFormField` `onChanged` not firing after first selection due to in-place Set mutation.
 
 ## 0.46.1
 
