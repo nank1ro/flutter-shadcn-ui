@@ -473,7 +473,7 @@ class ShadInput extends StatefulWidget {
 
   /// {@template ShadInput.contextMenuBuilder}
   /// Custom builder for the context menu (e.g., copy/paste).
-  /// Defaults to an adaptive toolbar if not specified.
+  /// Defaults to [AdaptiveTextSelectionToolbar.editableText].
   /// {@endtemplate}
   final EditableTextContextMenuBuilder? contextMenuBuilder;
 
@@ -855,6 +855,15 @@ class ShadInputState extends State<ShadInput>
     }
   }
 
+  static Widget _defaultContextMenuBuilder(
+    BuildContext context,
+    EditableTextState editableTextState,
+  ) {
+    return AdaptiveTextSelectionToolbar.editableText(
+      editableTextState: editableTextState,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -999,7 +1008,8 @@ class ShadInputState extends State<ShadInput>
                             : null,
                         selectionHeightStyle: widget.selectionHeightStyle,
                         selectionWidthStyle: widget.selectionWidthStyle,
-                        contextMenuBuilder: widget.contextMenuBuilder,
+                        contextMenuBuilder: widget.contextMenuBuilder ??
+                            _defaultContextMenuBuilder,
                         selectionControls: widget.selectionControls,
                         // ! End of selection handler
                         // ! section
