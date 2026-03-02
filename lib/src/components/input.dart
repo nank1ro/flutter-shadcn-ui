@@ -12,6 +12,7 @@ import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/raw_components/keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
@@ -473,7 +474,8 @@ class ShadInput extends StatefulWidget {
 
   /// {@template ShadInput.contextMenuBuilder}
   /// Custom builder for the context menu (e.g., copy/paste).
-  /// Defaults to [AdaptiveTextSelectionToolbar.editableText].
+  /// Defaults to a simple toolbar with copy/cut/paste buttons styled with
+  /// [ShadTheme].
   /// {@endtemplate}
   final EditableTextContextMenuBuilder? contextMenuBuilder;
 
@@ -859,8 +861,11 @@ class ShadInputState extends State<ShadInput>
     BuildContext context,
     EditableTextState editableTextState,
   ) {
-    return AdaptiveTextSelectionToolbar.editableText(
-      editableTextState: editableTextState,
+    final buttonItems = editableTextState.contextMenuButtonItems;
+    if (buttonItems.isEmpty) return const SizedBox.shrink();
+    return _ShadTextSelectionToolbar(
+      anchor: editableTextState.contextMenuAnchors.primaryAnchor,
+      buttonItems: buttonItems,
     );
   }
 
@@ -1234,5 +1239,108 @@ class _InputSelectionGestureDetectorBuilder
           Feedback.forLongPress(_state.context);
       }
     }
+  }
+}
+
+/// A simple text-selection toolbar that shows copy/cut/paste buttons styled
+/// with [ShadTheme]. Used as the default [ShadInput.contextMenuBuilder].
+class _ShadTextSelectionToolbar extends StatelessWidget {
+  const _ShadTextSelectionToolbar({
+    required this.anchor,
+    required this.buttonItems,
+  });
+
+  final Offset anchor;
+  final List<ContextMenuButtonItem> buttonItems;
+
+  static String _labelForType(ContextMenuButtonType type) {
+    return switch (type) {
+      ContextMenuButtonType.cut => 'Cut',
+      ContextMenuButtonType.copy => 'Copy',
+      ContextMenuButtonType.paste => 'Paste',
+      ContextMenuButtonType.selectAll => 'Select All',
+      _ => '',
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    // Only show items that have a displayable label.
+    final visibleItems = buttonItems
+        .where((item) => (item.label ?? _labelForType(item.type)).isNotEmpty)
+        .toList();
+    if (visibleItems.isEmpty) return const SizedBox.shrink();
+
+    return CustomSingleChildLayout(
+      delegate: DesktopTextSelectionToolbarLayoutDelegate(anchor: anchor),
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: theme.colorScheme.popover,
+          border: Border.all(color: theme.colorScheme.border),
+          borderRadius: theme.radius,
+          boxShadow: ShadShadows.md,
+        ),
+        child: IntrinsicWidth(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: visibleItems
+                .map(
+                  (item) => _ShadToolbarButton(
+                    label: item.label ?? _labelForType(item.type),
+                    onPressed: item.onPressed,
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ShadToolbarButton extends StatefulWidget {
+  const _ShadToolbarButton({
+    required this.label,
+    required this.onPressed,
+  });
+
+  final String label;
+  final VoidCallback? onPressed;
+
+  @override
+  State<_ShadToolbarButton> createState() => _ShadToolbarButtonState();
+}
+
+class _ShadToolbarButtonState extends State<_ShadToolbarButton> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        onTap: () {
+          widget.onPressed?.call();
+          ContextMenuController.removeAny();
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          color: _hovered ? theme.colorScheme.accent : null,
+          child: Text(
+            widget.label,
+            style: theme.textTheme.small.copyWith(
+              fontWeight: FontWeight.normal,
+              color: theme.colorScheme.foreground,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
