@@ -863,7 +863,14 @@ class ShadInputState extends State<ShadInput>
     BuildContext context,
     EditableTextState editableTextState,
   ) {
-    final buttonItems = editableTextState.contextMenuButtonItems;
+    final buttonItems = editableTextState.contextMenuButtonItems
+        .where(
+          (item) =>
+              (item.label ??
+                      ShadTextSelectionToolbar.labelForType(item.type))
+                  .isNotEmpty,
+        )
+        .toList();
     if (buttonItems.isEmpty) return const SizedBox.shrink();
     return ShadTextSelectionToolbar(
       anchor: editableTextState.contextMenuAnchors.primaryAnchor,
@@ -1308,11 +1315,10 @@ class ShadTextSelectionToolbar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               for (final item in buttonItems)
-                if ((item.label ?? labelForType(item.type)).isNotEmpty)
-                  ShadToolbarButton(
-                    label: item.label ?? labelForType(item.type),
-                    onPressed: item.onPressed,
-                  ),
+                ShadToolbarButton(
+                  label: item.label ?? labelForType(item.type),
+                  onPressed: item.onPressed,
+                ),
             ],
           ),
         ),
