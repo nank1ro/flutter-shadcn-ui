@@ -1,3 +1,7 @@
+## 0.47.0
+
+- **FEAT**: `ShadAnchor` and `ShadAnchorAuto` now accept `AlignmentGeometry` instead of `Alignment`.
+
 ## 0.46.4
 
 - **FIX**: `ShadForm.onChanged` now fires with the updated value already present in `formKey.currentState!.value`.
