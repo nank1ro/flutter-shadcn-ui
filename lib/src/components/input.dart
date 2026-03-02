@@ -10,8 +10,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/raw_components/keyboard_toolbar.dart';
+import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/data.dart';
+import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
@@ -473,7 +477,8 @@ class ShadInput extends StatefulWidget {
 
   /// {@template ShadInput.contextMenuBuilder}
   /// Custom builder for the context menu (e.g., copy/paste).
-  /// Defaults to an adaptive toolbar if not specified.
+  /// Defaults to a simple toolbar with copy/cut/paste buttons styled with
+  /// [ShadTheme].
   /// {@endtemplate}
   final EditableTextContextMenuBuilder? contextMenuBuilder;
 
@@ -855,6 +860,33 @@ class ShadInputState extends State<ShadInput>
     }
   }
 
+  static Widget defaultContextMenuBuilder(
+    BuildContext context,
+    EditableTextState editableTextState,
+  ) {
+    final selection = editableTextState.textEditingValue.selection;
+    final hasSelection = selection.isValid && !selection.isCollapsed;
+    final buttonItems = editableTextState.contextMenuButtonItems
+        .where(
+          (item) {
+            // Cut and Copy require text to be selected.
+            if (item.type == ContextMenuButtonType.cut ||
+                item.type == ContextMenuButtonType.copy) {
+              return hasSelection;
+            }
+            return (item.label ??
+                    ShadTextSelectionToolbar.labelForType(item.type))
+                .isNotEmpty;
+          },
+        )
+        .toList();
+    if (buttonItems.isEmpty) return const SizedBox.shrink();
+    return ShadTextSelectionToolbar(
+      anchor: editableTextState.contextMenuAnchors.primaryAnchor,
+      buttonItems: buttonItems,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -999,7 +1031,9 @@ class ShadInputState extends State<ShadInput>
                             : null,
                         selectionHeightStyle: widget.selectionHeightStyle,
                         selectionWidthStyle: widget.selectionWidthStyle,
-                        contextMenuBuilder: widget.contextMenuBuilder,
+                        contextMenuBuilder:
+                            widget.contextMenuBuilder ??
+                            defaultContextMenuBuilder,
                         selectionControls: widget.selectionControls,
                         // ! End of selection handler
                         // ! section
@@ -1224,5 +1258,159 @@ class _InputSelectionGestureDetectorBuilder
           Feedback.forLongPress(_state.context);
       }
     }
+  }
+}
+
+/// A simple text-selection toolbar that shows copy/cut/paste buttons styled
+/// with [ShadTheme]. Used as the default [ShadInput.contextMenuBuilder].
+class ShadTextSelectionToolbar extends StatelessWidget {
+  const ShadTextSelectionToolbar({
+    super.key,
+    required this.anchor,
+    required this.buttonItems,
+    this.backgroundColor,
+    this.border,
+    this.borderRadius,
+    this.shadows,
+  });
+
+  final Offset anchor;
+  final List<ContextMenuButtonItem> buttonItems;
+
+  /// Background color of the toolbar. Defaults to [ShadColorScheme.popover].
+  final Color? backgroundColor;
+
+  /// Border of the toolbar. Defaults to a 1-px border using [ShadColorScheme.border].
+  final BoxBorder? border;
+
+  /// Border radius of the toolbar. Defaults to [ShadThemeData.radius].
+  final BorderRadiusGeometry? borderRadius;
+
+  /// Shadows of the toolbar. Defaults to [ShadShadows.md].
+  final List<BoxShadow>? shadows;
+
+  static String labelForType(ContextMenuButtonType type) {
+    return switch (type) {
+      ContextMenuButtonType.cut => 'Cut',
+      ContextMenuButtonType.copy => 'Copy',
+      ContextMenuButtonType.paste => 'Paste',
+      _ => '',
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+
+    final effectiveBackgroundColor =
+        backgroundColor ?? theme.colorScheme.popover;
+    final effectiveBorder =
+        border ?? Border.all(color: theme.colorScheme.border);
+    final effectiveBorderRadius = borderRadius ?? theme.radius;
+    final effectiveShadows = shadows ?? ShadShadows.md;
+
+    return CustomSingleChildLayout(
+      delegate: DesktopTextSelectionToolbarLayoutDelegate(anchor: anchor),
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: effectiveBackgroundColor,
+          border: effectiveBorder,
+          borderRadius: effectiveBorderRadius,
+          boxShadow: effectiveShadows,
+        ),
+        child: IntrinsicWidth(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (final item in buttonItems)
+                ShadToolbarButton(
+                  label: Text(item.label ?? labelForType(item.type)),
+                  onPressed: item.onPressed,
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A button used inside [ShadTextSelectionToolbar].
+///
+/// Displays a [label] widget with an optional hover highlight and
+/// custom styling. The [label] is wrapped in a [DefaultTextStyle] so
+/// plain [Text] widgets pick up the effective style automatically.
+class ShadToolbarButton extends StatefulWidget {
+  const ShadToolbarButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.padding,
+    this.color,
+    this.hoverColor,
+    this.textStyle,
+  });
+
+  /// The content of the button.
+  final Widget label;
+
+  /// Called when the button is pressed.
+  final VoidCallback? onPressed;
+
+  /// Padding around the button content.
+  /// Defaults to `EdgeInsets.symmetric(horizontal: 8, vertical: 6)`.
+  final EdgeInsetsGeometry? padding;
+
+  /// Background color of the button. Defaults to transparent.
+  final Color? color;
+
+  /// Background color of the button when hovered.
+  /// Defaults to [ShadColorScheme.accent].
+  final Color? hoverColor;
+
+  /// Text style applied to the [label] via [DefaultTextStyle].
+  /// Defaults to [ShadTextTheme.small] with normal weight and
+  /// [ShadColorScheme.foreground] color.
+  final TextStyle? textStyle;
+
+  @override
+  State<ShadToolbarButton> createState() => _ShadToolbarButtonState();
+}
+
+class _ShadToolbarButtonState extends State<ShadToolbarButton> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final effectiveTextStyle = widget.textStyle ??
+        theme.textTheme.small.copyWith(
+          fontWeight: FontWeight.normal,
+          color: theme.colorScheme.foreground,
+        );
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTapDown: (_) {
+          widget.onPressed?.call();
+        },
+        child: Container(
+          padding: widget.padding ??
+              const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          color: _hovered
+              ? (widget.hoverColor ?? theme.colorScheme.accent)
+              : widget.color,
+          child: DefaultTextStyle(
+            style: effectiveTextStyle,
+            child: widget.label,
+          ),
+        ),
+      ),
+    );
   }
 }
