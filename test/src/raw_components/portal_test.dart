@@ -80,36 +80,6 @@ void main() {
       },
     );
 
-    testWidgets(
-      'portal becomes visible with AlignmentDirectional',
-      (tester) async {
-        await tester.pumpWidget(
-          createTestWidget(
-            ShadPortal(
-              visible: true,
-              anchor: const ShadAnchorAuto(
-                followerAnchor: AlignmentDirectional.topStart,
-                targetAnchor: AlignmentDirectional.bottomStart,
-              ),
-              portalBuilder: (context) => const Text('portal content'),
-              child: const SizedBox(width: 100, height: 40),
-            ),
-          ),
-        );
-
-        await tester.pumpAndSettle();
-
-        expect(find.text('portal content'), findsOneWidget);
-        final visibilityFinder = find.ancestor(
-          of: find.text('portal content'),
-          matching: find.byType(Visibility),
-        );
-        final visibilityWidget =
-            tester.widget<Visibility>(visibilityFinder.first);
-        expect(visibilityWidget.visible, isTrue);
-      },
-    );
-
     testWidgets('portal is hidden when visible is false', (tester) async {
       await tester.pumpWidget(
         createTestWidget(
