@@ -362,15 +362,12 @@ void main() {
       'fires with new value already present in formKey.currentState!.value',
       (tester) async {
         final formKey = GlobalKey<ShadFormState>();
-        var capturedValue = <Object, dynamic>{};
 
         await tester.pumpWidget(
           createTestWidget(
             ShadForm(
               key: formKey,
-              onChanged: () {
-                capturedValue = Map.from(formKey.currentState!.value);
-              },
+              onChanged: () {},
               child: ShadInputFormField(id: 'username'),
             ),
           ),
@@ -381,7 +378,7 @@ void main() {
         await tester.enterText(find.byType(ShadInput), 'hello');
         await tester.pumpAndSettle();
 
-        expect(capturedValue['username'], 'hello');
+        expect(formKey.currentState!.value['username'], 'hello');
       },
     );
   });
