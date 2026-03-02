@@ -863,13 +863,20 @@ class ShadInputState extends State<ShadInput>
     BuildContext context,
     EditableTextState editableTextState,
   ) {
+    final selection = editableTextState.textEditingValue.selection;
+    final hasSelection = selection.isValid && !selection.isCollapsed;
     final buttonItems = editableTextState.contextMenuButtonItems
         .where(
-          (item) =>
-              item.onPressed != null &&
-              (item.label ??
-                      ShadTextSelectionToolbar.labelForType(item.type))
-                  .isNotEmpty,
+          (item) {
+            // Cut and Copy require text to be selected.
+            if (item.type == ContextMenuButtonType.cut ||
+                item.type == ContextMenuButtonType.copy) {
+              return hasSelection;
+            }
+            return (item.label ??
+                    ShadTextSelectionToolbar.labelForType(item.type))
+                .isNotEmpty;
+          },
         )
         .toList();
     if (buttonItems.isEmpty) return const SizedBox.shrink();
