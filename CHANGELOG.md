@@ -1,3 +1,7 @@
+## 0.48.1
+
+- **FIX**: Cascade resize behavior in ShadResizable now properly propagates remaining drag delta when a panel collapses to minSize.
+
 ## 0.48.0
 
 - **FEAT**: Add `defaultContextMenuBuilder` implementation for `ShadInput` to show Cut/Copy and Paste buttons. This introduces the following new widgets: `ShadTextSelectionToolbar` and `ShadToolbarButton`.
