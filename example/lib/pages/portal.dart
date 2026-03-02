@@ -18,10 +18,10 @@ class _ShadPortalPageState extends State<ShadPortalPage> {
     AlignmentGeometry.topStart,
     AlignmentGeometry.topCenter,
     AlignmentGeometry.topEnd,
-    AlignmentGeometry.centerLeft,
+    AlignmentGeometry.centerStart,
     AlignmentGeometry.center,
     AlignmentGeometry.centerEnd,
-    AlignmentGeometry.bottomLeft,
+    AlignmentGeometry.bottomStart,
     AlignmentGeometry.bottomCenter,
     AlignmentGeometry.bottomEnd,
   ];
