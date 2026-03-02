@@ -1030,8 +1030,9 @@ class ShadInputState extends State<ShadInput>
                             : null,
                         selectionHeightStyle: widget.selectionHeightStyle,
                         selectionWidthStyle: widget.selectionWidthStyle,
-                        contextMenuBuilder: widget.contextMenuBuilder ??
-                            ShadInputState.defaultContextMenuBuilder,
+                        contextMenuBuilder:
+                            widget.contextMenuBuilder ??
+                            defaultContextMenuBuilder,
                         selectionControls: widget.selectionControls,
                         // ! End of selection handler
                         // ! section
