@@ -60,8 +60,8 @@ class ShadAnchor extends ShadAnchorBase {
     this.offset = Offset.zero,
   });
 
-  final Alignment childAlignment;
-  final Alignment overlayAlignment;
+  final AlignmentGeometry childAlignment;
+  final AlignmentGeometry overlayAlignment;
   final Offset offset;
 
   static const center = ShadAnchor(
@@ -70,8 +70,8 @@ class ShadAnchor extends ShadAnchorBase {
   );
 
   ShadAnchor copyWith({
-    Alignment? childAlignment,
-    Alignment? overlayAlignment,
+    AlignmentGeometry? childAlignment,
+    AlignmentGeometry? overlayAlignment,
     Offset? offset,
   }) {
     return ShadAnchor(
@@ -386,11 +386,12 @@ class _ShadPortalState extends State<ShadPortal> {
     BuildContext context,
     ShadAnchor anchor,
   ) {
+    final textDirection = Directionality.maybeOf(context);
     return CompositedTransformFollower(
       link: layerLink,
       offset: anchor.offset,
-      followerAnchor: anchor.childAlignment,
-      targetAnchor: anchor.overlayAlignment,
+      followerAnchor: anchor.childAlignment.resolve(textDirection),
+      targetAnchor: anchor.overlayAlignment.resolve(textDirection),
       child: widget.portalBuilder(context),
     );
   }
