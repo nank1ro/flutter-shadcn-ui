@@ -87,6 +87,7 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
     this.decoration,
     this.tabBarConstraints,
     this.contentConstraints,
+    this.expandContent,
     this.restorationId,
     this.onChanged,
     this.maintainState,
@@ -159,6 +160,20 @@ class ShadTabs<T> extends StatefulWidget implements PreferredSizeWidget {
   /// The constraints of the content, defaults to `null`.
   /// {@endtemplate}
   final BoxConstraints? contentConstraints;
+
+  /// {@template ShadTabs.expandContent}
+  /// Whether the tab content should be expanded to fill available space,
+  /// defaults to `null`.
+  ///
+  /// When set to `true`, the selected tab's content is wrapped in an
+  /// [Expanded] widget, allowing it to fill the remaining space in the
+  /// parent [Column]. This is useful when placing scrollable widgets (such
+  /// as [ListView]) inside a tab, and the [ShadTabs] is placed in a
+  /// finite-height container.
+  ///
+  /// Individual [ShadTab.expandContent] values take precedence over this.
+  /// {@endtemplate}
+  final bool? expandContent;
 
   /// {@template ShadTabs.restorationId}
   /// The restoration id, defaults to `null`.
@@ -374,7 +389,10 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
                 }
 
                 final effectiveExpandContent =
-                    tab.expandContent ?? theme.tabsTheme.expandContent ?? false;
+                    tab.expandContent ??
+                    widget.expandContent ??
+                    theme.tabsTheme.expandContent ??
+                    false;
                 if (effectiveExpandContent && selected) {
                   content = Expanded(child: content);
                 }
