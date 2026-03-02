@@ -1,3 +1,7 @@
+## 0.48.0
+
+- **FEAT**: Add `defaultContextMenuBuilder` implementation for `ShadInput` to show Cut/Copy and Paste buttons. This introduces the following new widgets: `ShadTextSelectionToolbar` and `ShadToolbarButton`.
+
 ## 0.47.0
 
 - **FEAT**: `ShadAnchor` and `ShadAnchorAuto` now accept `AlignmentGeometry` instead of `Alignment`.
