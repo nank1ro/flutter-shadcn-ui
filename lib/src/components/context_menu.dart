@@ -22,6 +22,9 @@ const kContextMenuGroupId = ValueKey('context-menu');
 /// A widget that shows the context menu when the user right clicks the [child]
 /// or long presses it (only on android and ios), unless a value to
 /// [longPressEnabled] is provided.
+///
+/// On mobile, you can also use [tapEnabled] to show the context menu when the
+/// user taps the [child].
 /// {@endtemplate}
 class ShadContextMenuRegion extends StatefulWidget {
   /// {@macro ShadContextMenuRegion}
@@ -41,6 +44,7 @@ class ShadContextMenuRegion extends StatefulWidget {
     this.controller,
     this.supportedDevices,
     this.longPressEnabled,
+    this.tapEnabled,
     this.hitTestBehavior = HitTestBehavior.opaque,
     this.popoverReverseDuration,
   });
@@ -105,6 +109,15 @@ class ShadContextMenuRegion extends StatefulWidget {
   /// {@endtemplate}
   final bool? longPressEnabled;
 
+  /// {@template ShadContextMenuRegion.tapEnabled}
+  /// Whether the context menu should be shown when the user taps/left-clicks
+  /// the child.
+  ///
+  /// This is useful on mobile where right-click is not available.
+  /// Defaults to false.
+  /// {@endtemplate}
+  final bool? tapEnabled;
+
   @override
   State<ShadContextMenuRegion> createState() => _ShadContextMenuRegionState();
 }
@@ -160,6 +173,8 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
         (defaultTargetPlatform == TargetPlatform.android ||
             defaultTargetPlatform == TargetPlatform.iOS);
 
+    final effectiveTapEnabled = widget.tapEnabled ?? false;
+
     final isWindows = defaultTargetPlatform == TargetPlatform.windows;
 
     return ShadContextMenu(
@@ -178,7 +193,17 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
       child: ShadGestureDetector(
         behavior: widget.hitTestBehavior,
         supportedDevices: widget.supportedDevices,
-        onTapDown: (_) => hide(),
+        onTapDown: (d) {
+          if (effectiveTapEnabled) {
+            if (controller.isOpen) {
+              hide();
+            } else {
+              show(d.globalPosition);
+            }
+          } else {
+            hide();
+          }
+        },
         onSecondaryTapDown: (d) async {
           if (kIsWeb && !isContextMenuAlreadyDisabled) {
             await BrowserContextMenu.disableContextMenu();
