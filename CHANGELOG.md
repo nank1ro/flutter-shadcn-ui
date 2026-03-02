@@ -1,3 +1,7 @@
+## 0.46.4
+
+- **FIX**: `ShadForm.onChanged` now fires with the updated value already present in `formKey.currentState!.value`.
+
 ## 0.46.3
 
 - **FIX**: `ShadSelectMultipleFormField` `onChanged` not firing after first selection due to in-place Set mutation.
