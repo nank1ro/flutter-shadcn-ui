@@ -139,5 +139,41 @@ void main() {
         expect(find.text('portal content'), findsNothing);
       },
     );
+
+    testWidgets(
+      'portal with fallback anchor becomes visible',
+      (tester) async {
+        // Verify that a ShadAnchorAuto with a fallback renders the portal
+        // correctly when the primary anchor fits.
+        await tester.pumpWidget(
+          createTestWidget(
+            ShadPortal(
+              visible: true,
+              anchor: const ShadAnchorAuto(
+                followerAnchor: Alignment.bottomCenter,
+                targetAnchor: Alignment.bottomCenter,
+                fallback: ShadAnchorAuto(
+                  followerAnchor: Alignment.topCenter,
+                  targetAnchor: Alignment.topCenter,
+                ),
+              ),
+              portalBuilder: (context) => const Text('portal content'),
+              child: const SizedBox(width: 100, height: 40),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(find.text('portal content'), findsOneWidget);
+        final visibilityFinder = find.ancestor(
+          of: find.text('portal content'),
+          matching: find.byType(Visibility),
+        );
+        final visibilityWidget =
+            tester.widget<Visibility>(visibilityFinder.first);
+        expect(visibilityWidget.visible, isTrue);
+      },
+    );
   });
 }

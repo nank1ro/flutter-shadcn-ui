@@ -466,6 +466,11 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
           offset: Offset(-4, 8),
           followerAnchor: Alignment.bottomRight,
           targetAnchor: Alignment.bottomLeft,
+          fallback: ShadAnchorAuto(
+            offset: Offset(-4, -8),
+            followerAnchor: Alignment.topRight,
+            targetAnchor: Alignment.topLeft,
+          ),
         );
 
     final effectiveHeight =

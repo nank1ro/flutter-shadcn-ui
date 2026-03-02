@@ -15,6 +15,7 @@ class ShadAnchorAuto extends ShadAnchorBase {
     this.followTargetOnResize = true,
     this.followerAnchor = Alignment.bottomCenter,
     this.targetAnchor = Alignment.bottomCenter,
+    this.fallback,
   });
 
   /// The offset of the overlay from the target widget.
@@ -31,6 +32,15 @@ class ShadAnchorAuto extends ShadAnchorBase {
   /// The coordinates of the target from which the overlay starts.
   final AlignmentGeometry targetAnchor;
 
+  /// The fallback anchor to use when the primary position does not fit
+  /// within the screen bounds vertically.
+  ///
+  /// When the overlay computed from this anchor overflows the top or bottom
+  /// of the screen, the [fallback] anchor is used instead. Only
+  /// [ShadAnchorAuto] supports a fallback; [ShadAnchor] is based on global
+  /// coordinates and does not need one.
+  final ShadAnchorAuto? fallback;
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -39,7 +49,8 @@ class ShadAnchorAuto extends ShadAnchorBase {
         other.offset == offset &&
         other.followTargetOnResize == followTargetOnResize &&
         other.followerAnchor == followerAnchor &&
-        other.targetAnchor == targetAnchor;
+        other.targetAnchor == targetAnchor &&
+        other.fallback == fallback;
   }
 
   @override
@@ -47,7 +58,8 @@ class ShadAnchorAuto extends ShadAnchorBase {
       offset.hashCode ^
       followTargetOnResize.hashCode ^
       followerAnchor.hashCode ^
-      targetAnchor.hashCode;
+      targetAnchor.hashCode ^
+      fallback.hashCode;
 }
 
 /// Manually specifies the position of the [ShadPortal] in the global
@@ -262,6 +274,44 @@ class _ShadPortalState extends State<ShadPortal> {
     }
   }
 
+  /// Computes the target offset for the given [anchor] configuration.
+  ///
+  /// The returned [Offset] is the point in the overlay ancestor's coordinate
+  /// system that [ShadPositionDelegate] uses as the top anchor for the
+  /// overlay widget (i.e. the overlay's top-left corner is placed at this
+  /// point when [ShadPositionDelegate.preferBelow] is `true`).
+  Offset _computeTargetForAnchor({
+    required RenderBox box,
+    required RenderBox overlayAncestor,
+    required Size overlaySize,
+    required ShadAnchorAuto anchor,
+    required TextDirection? textDirection,
+  }) {
+    final resolvedTargetAnchor = anchor.targetAnchor.resolve(textDirection);
+    final resolvedFollowerAnchor = anchor.followerAnchor.resolve(textDirection);
+
+    // Maps alignment coordinates (-1..1) to a position within the box.
+    // Formula: (1 + coord) / 2 * size gives 0 at -1, size/2 at 0, size at 1.
+    final targetOffset = Offset(
+      (1 + resolvedTargetAnchor.x) / 2 * box.size.width,
+      (1 + resolvedTargetAnchor.y) / 2 * box.size.height,
+    );
+
+    // Compute how much to shift the overlay so that the follower anchor point
+    // aligns with the target anchor.
+    // x: center the overlay horizontally around the anchor (x/2 * width).
+    // y: (y-1)/2 * height shifts the overlay so its follower anchor is at 0;
+    //    e.g. y=1 (bottom) → 0, y=0 (center) → -height/2, y=-1 (top) → -height.
+    var followerOffset = Offset(
+      resolvedFollowerAnchor.x / 2 * overlaySize.width,
+      (resolvedFollowerAnchor.y - 1) / 2 * overlaySize.height,
+    );
+
+    followerOffset += targetOffset + anchor.offset;
+
+    return box.localToGlobal(followerOffset, ancestor: overlayAncestor);
+  }
+
   void _calculatePosition() {
     // Only auto-position when the overlay is visible.
     if (!mounted || !widget.visible || widget.anchor is! ShadAnchorAuto) return;
@@ -290,32 +340,32 @@ class _ShadPortalState extends State<ShadPortal> {
     final overlaySize = (true == overlay?.hasSize) ? overlay!.size : Size.zero;
 
     final textDirection = Directionality.maybeOf(context);
-    final resolvedTargetAnchor = anchor.targetAnchor.resolve(textDirection);
-    final resolvedFollowerAnchor = anchor.followerAnchor.resolve(textDirection);
 
-    // Maps alignment coordinates (-1..1) to a position within the box.
-    // Formula: (1 + coord) / 2 * size gives 0 at -1, size/2 at 0, size at 1.
-    final targetOffset = Offset(
-      (1 + resolvedTargetAnchor.x) / 2 * box.size.width,
-      (1 + resolvedTargetAnchor.y) / 2 * box.size.height,
+    var target = _computeTargetForAnchor(
+      box: box,
+      overlayAncestor: overlayAncestor,
+      overlaySize: overlaySize,
+      anchor: anchor,
+      textDirection: textDirection,
     );
 
-    // Compute how much to shift the overlay so that the follower anchor point
-    // aligns with the target anchor.
-    // x: center the overlay horizontally around the anchor (x/2 * width).
-    // y: (y-1)/2 * height shifts the overlay so its follower anchor is at 0;
-    //    e.g. y=1 (bottom) → 0, y=0 (center) → -height/2, y=-1 (top) → -height.
-    var followerOffset = Offset(
-      resolvedFollowerAnchor.x / 2 * overlaySize.width,
-      (resolvedFollowerAnchor.y - 1) / 2 * overlaySize.height,
-    );
-
-    followerOffset += targetOffset + anchor.offset;
-
-    final target = box.localToGlobal(
-      followerOffset,
-      ancestor: overlayAncestor,
-    );
+    // When the overlay size is known, check if the primary position fits
+    // vertically within the screen. If it overflows and a fallback is
+    // provided, use the fallback anchor instead.
+    if (anchor.fallback != null && overlay != null && overlay.hasSize) {
+      final screenHeight = overlayAncestor.size.height;
+      final fitsVertically =
+          target.dy >= 0 && target.dy + overlaySize.height <= screenHeight;
+      if (!fitsVertically) {
+        target = _computeTargetForAnchor(
+          box: box,
+          overlayAncestor: overlayAncestor,
+          overlaySize: overlaySize,
+          anchor: anchor.fallback!,
+          textDirection: textDirection,
+        );
+      }
+    }
 
     if (target != _calculatedTarget) {
       if (mounted) {

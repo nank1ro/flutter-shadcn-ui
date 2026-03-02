@@ -235,6 +235,11 @@ class _ShadTooltipState extends State<ShadTooltip>
           offset: Offset(0, -4),
           followerAnchor: Alignment.topCenter,
           targetAnchor: Alignment.topCenter,
+          fallback: ShadAnchorAuto(
+            offset: Offset(0, 4),
+            followerAnchor: Alignment.bottomCenter,
+            targetAnchor: Alignment.bottomCenter,
+          ),
         );
 
     final hoverStrategies =

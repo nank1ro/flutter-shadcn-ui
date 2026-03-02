@@ -273,6 +273,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         offset: Offset(0, 4),
         targetAnchor: Alignment.bottomLeft,
         followerAnchor: Alignment.bottomRight,
+        fallback: ShadAnchorAuto(
+          offset: Offset(0, -4),
+          targetAnchor: Alignment.topLeft,
+          followerAnchor: Alignment.topRight,
+        ),
       ),
       dropdownArrowGap: 4,
     );
@@ -299,6 +304,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       anchor: const ShadAnchorAuto(
         followerAnchor: Alignment.topCenter,
         targetAnchor: Alignment.topCenter,
+        fallback: ShadAnchorAuto(
+          offset: Offset(0, 4),
+          followerAnchor: Alignment.bottomCenter,
+          targetAnchor: Alignment.bottomCenter,
+        ),
       ),
       duration: Animate.defaultDuration,
       reverseDuration: Duration.zero,
@@ -348,7 +358,14 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           width: 1,
         ),
       ),
-      anchor: const ShadAnchorAuto(),
+      anchor: const ShadAnchorAuto(
+        offset: Offset(0, 4),
+        fallback: ShadAnchorAuto(
+          offset: Offset(0, -4),
+          followerAnchor: Alignment.topCenter,
+          targetAnchor: Alignment.topCenter,
+        ),
+      ),
     );
   }
 
@@ -417,7 +434,14 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
       popoverReverseDuration: Duration.zero,
-      anchor: const ShadAnchorAuto(offset: Offset(1, 4)),
+      anchor: const ShadAnchorAuto(
+        offset: Offset(1, 4),
+        fallback: ShadAnchorAuto(
+          offset: Offset(1, -4),
+          followerAnchor: Alignment.topCenter,
+          targetAnchor: Alignment.topCenter,
+        ),
+      ),
       searchPadding: const EdgeInsets.all(12),
     );
   }
@@ -1047,6 +1071,11 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         offset: Offset(-8, 8),
         followerAnchor: Alignment.bottomRight,
         targetAnchor: Alignment.bottomLeft,
+        fallback: ShadAnchorAuto(
+          offset: Offset(-8, -8),
+          followerAnchor: Alignment.topRight,
+          targetAnchor: Alignment.topLeft,
+        ),
       ),
       buttonHeight: 32,
       buttonVariant: ShadButtonVariant.ghost,

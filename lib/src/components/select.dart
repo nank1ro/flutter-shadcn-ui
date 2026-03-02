@@ -943,7 +943,16 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         Duration.zero;
 
     final effectiveAnchor =
-        widget.anchor ?? theme.selectTheme.anchor ?? const ShadAnchorAuto();
+        widget.anchor ??
+        theme.selectTheme.anchor ??
+        const ShadAnchorAuto(
+          offset: Offset(0, 4),
+          fallback: ShadAnchorAuto(
+            offset: Offset(0, -4),
+            followerAnchor: Alignment.topCenter,
+            targetAnchor: Alignment.topCenter,
+          ),
+        );
 
     final effectiveEffects = widget.effects ?? theme.selectTheme.effects;
 

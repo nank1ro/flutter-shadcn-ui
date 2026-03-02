@@ -429,6 +429,11 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
           offset: Offset(0, 4),
           targetAnchor: Alignment.bottomLeft,
           followerAnchor: Alignment.bottomRight,
+          fallback: ShadAnchorAuto(
+            offset: Offset(0, -4),
+            targetAnchor: Alignment.topLeft,
+            followerAnchor: Alignment.topRight,
+          ),
         );
 
     final effectiveArrowGap =
