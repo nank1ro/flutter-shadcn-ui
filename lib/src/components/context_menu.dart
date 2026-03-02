@@ -23,8 +23,8 @@ const kContextMenuGroupId = ValueKey('context-menu');
 /// or long presses it (only on android and ios), unless a value to
 /// [longPressEnabled] is provided.
 ///
-/// On mobile, you can also use [tapEnabled] to show the context menu when the
-/// user taps the [child].
+/// On Android and iOS, tapping the [child] also shows the context menu by
+/// default. This can be overridden using [tapEnabled].
 /// {@endtemplate}
 class ShadContextMenuRegion extends StatefulWidget {
   /// {@macro ShadContextMenuRegion}
@@ -113,8 +113,7 @@ class ShadContextMenuRegion extends StatefulWidget {
   /// Whether the context menu should be shown when the user taps/left-clicks
   /// the child.
   ///
-  /// This is useful on mobile where right-click is not available.
-  /// Defaults to false.
+  /// Defaults to true on Android and iOS, false on other platforms.
   /// {@endtemplate}
   final bool? tapEnabled;
 
@@ -173,7 +172,10 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
         (defaultTargetPlatform == TargetPlatform.android ||
             defaultTargetPlatform == TargetPlatform.iOS);
 
-    final effectiveTapEnabled = widget.tapEnabled ?? false;
+    final effectiveTapEnabled =
+        widget.tapEnabled ??
+        (defaultTargetPlatform == TargetPlatform.android ||
+            defaultTargetPlatform == TargetPlatform.iOS);
 
     final isWindows = defaultTargetPlatform == TargetPlatform.windows;
 
