@@ -11,6 +11,8 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/raw_components/keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
+import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
@@ -1330,10 +1332,10 @@ class ShadToolbarButton extends StatefulWidget {
   final VoidCallback? onPressed;
 
   @override
-  State<ShadToolbarButton> createState() => ShadToolbarButtonState();
+  State<ShadToolbarButton> createState() => _ShadToolbarButtonState();
 }
 
-class ShadToolbarButtonState extends State<ShadToolbarButton> {
+class _ShadToolbarButtonState extends State<ShadToolbarButton> {
   bool _hovered = false;
 
   @override
@@ -1344,7 +1346,8 @@ class ShadToolbarButtonState extends State<ShadToolbarButton> {
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
-        onTap: () {
+        behavior: HitTestBehavior.opaque,
+        onTapDown: (_) {
           widget.onPressed?.call();
         },
         child: Container(
