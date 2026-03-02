@@ -866,6 +866,7 @@ class ShadInputState extends State<ShadInput>
     final buttonItems = editableTextState.contextMenuButtonItems
         .where(
           (item) =>
+              item.onPressed != null &&
               (item.label ??
                       ShadTextSelectionToolbar.labelForType(item.type))
                   .isNotEmpty,
