@@ -253,8 +253,8 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
 
   @override
   void didChange(T? value) {
+    _parentForm?.setFieldValue<T>(effectiveId, value, notifyField: false);
     super.didChange(value);
-    _informFormForFieldChange();
     widget.onChanged?.call(value);
   }
 
@@ -291,7 +291,11 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   }
 
   void _informFormForFieldChange() {
-    _parentForm?.setFieldValue<T>(effectiveId, value, notifyField: false);
+    _parentForm?.setFieldValue<T>(
+      effectiveId,
+      value,
+      notifyField: false,
+    );
   }
 
   /// Registers the field’s value transformer with the provided map.
