@@ -464,12 +464,12 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
         theme.menubarTheme.anchor ??
         const ShadAnchorAuto(
           offset: Offset(-4, 8),
-          followerAnchor: Alignment.bottomRight,
-          targetAnchor: Alignment.bottomLeft,
+          followerAnchor: AlignmentDirectional.bottomEnd,
+          targetAnchor: AlignmentDirectional.bottomStart,
           fallback: ShadAnchorAuto(
             offset: Offset(-4, -8),
-            followerAnchor: Alignment.topRight,
-            targetAnchor: Alignment.topLeft,
+            followerAnchor: AlignmentDirectional.topEnd,
+            targetAnchor: AlignmentDirectional.topStart,
           ),
         );
 

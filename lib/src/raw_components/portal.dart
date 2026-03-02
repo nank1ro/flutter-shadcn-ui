@@ -351,19 +351,27 @@ class _ShadPortalState extends State<ShadPortal> {
 
     // When the overlay size is known, check if the primary position fits
     // vertically within the screen. If it overflows and a fallback is
-    // provided, use the fallback anchor instead.
+    // provided, try using the fallback anchor instead. The fallback is only
+    // applied if it actually fits better (i.e. fits within the screen
+    // vertically); if neither fits, the original target is kept.
     if (anchor.fallback != null && overlay != null && overlay.hasSize) {
       final screenHeight = overlayAncestor.size.height;
       final fitsVertically =
           target.dy >= 0 && target.dy + overlaySize.height <= screenHeight;
       if (!fitsVertically) {
-        target = _computeTargetForAnchor(
+        final fallbackTarget = _computeTargetForAnchor(
           box: box,
           overlayAncestor: overlayAncestor,
           overlaySize: overlaySize,
           anchor: anchor.fallback!,
           textDirection: textDirection,
         );
+        final fallbackFitsVertically =
+            fallbackTarget.dy >= 0 &&
+            fallbackTarget.dy + overlaySize.height <= screenHeight;
+        if (fallbackFitsVertically) {
+          target = fallbackTarget;
+        }
       }
     }
 

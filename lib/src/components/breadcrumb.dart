@@ -427,12 +427,12 @@ class _ShadBreadcrumbDropdownState extends State<ShadBreadcrumbDropdown> {
         theme.breadcrumbTheme.dropdownMenuAnchor ??
         const ShadAnchorAuto(
           offset: Offset(0, 4),
-          targetAnchor: Alignment.bottomLeft,
-          followerAnchor: Alignment.bottomRight,
+          targetAnchor: AlignmentDirectional.bottomStart,
+          followerAnchor: AlignmentDirectional.bottomEnd,
           fallback: ShadAnchorAuto(
             offset: Offset(0, -4),
-            targetAnchor: Alignment.topLeft,
-            followerAnchor: Alignment.topRight,
+            targetAnchor: AlignmentDirectional.topStart,
+            followerAnchor: AlignmentDirectional.topEnd,
           ),
         );
 
