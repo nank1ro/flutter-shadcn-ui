@@ -1325,7 +1325,7 @@ class ShadTextSelectionToolbar extends StatelessWidget {
             children: [
               for (final item in buttonItems)
                 ShadToolbarButton(
-                  label: item.label ?? labelForType(item.type),
+                  label: Text(item.label ?? labelForType(item.type)),
                   onPressed: item.onPressed,
                 ),
             ],
@@ -1336,15 +1336,43 @@ class ShadTextSelectionToolbar extends StatelessWidget {
   }
 }
 
+/// A button used inside [ShadTextSelectionToolbar].
+///
+/// Displays a [label] widget with an optional hover highlight and
+/// custom styling. The [label] is wrapped in a [DefaultTextStyle] so
+/// plain [Text] widgets pick up the effective style automatically.
 class ShadToolbarButton extends StatefulWidget {
   const ShadToolbarButton({
     super.key,
     required this.label,
     required this.onPressed,
+    this.padding,
+    this.color,
+    this.hoverColor,
+    this.textStyle,
   });
 
-  final String label;
+  /// The content of the button.
+  final Widget label;
+
+  /// Called when the button is pressed.
   final VoidCallback? onPressed;
+
+  /// Padding around the button content.
+  /// Defaults to `EdgeInsets.symmetric(horizontal: 8, vertical: 6)`.
+  final EdgeInsetsGeometry? padding;
+
+  /// Background color of the button. Defaults to transparent.
+  final Color? color;
+
+  /// Background color of the button when hovered.
+  /// Defaults to [ShadColorScheme.accent].
+  final Color? hoverColor;
+
+  /// Text style applied to the [label] via [DefaultTextStyle].
+  /// Defaults to [ShadTextTheme.small] with normal weight and
+  /// [ShadColorScheme.foreground] color.
+  final TextStyle? textStyle;
 
   @override
   State<ShadToolbarButton> createState() => _ShadToolbarButtonState();
@@ -1356,6 +1384,11 @@ class _ShadToolbarButtonState extends State<ShadToolbarButton> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final effectiveTextStyle = widget.textStyle ??
+        theme.textTheme.small.copyWith(
+          fontWeight: FontWeight.normal,
+          color: theme.colorScheme.foreground,
+        );
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hovered = true),
@@ -1366,14 +1399,14 @@ class _ShadToolbarButtonState extends State<ShadToolbarButton> {
           widget.onPressed?.call();
         },
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-          color: _hovered ? theme.colorScheme.accent : null,
-          child: Text(
-            widget.label,
-            style: theme.textTheme.small.copyWith(
-              fontWeight: FontWeight.normal,
-              color: theme.colorScheme.foreground,
-            ),
+          padding: widget.padding ??
+              const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          color: _hovered
+              ? (widget.hoverColor ?? theme.colorScheme.accent)
+              : widget.color,
+          child: DefaultTextStyle(
+            style: effectiveTextStyle,
+            child: widget.label,
           ),
         ),
       ),
