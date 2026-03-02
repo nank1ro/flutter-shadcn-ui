@@ -881,12 +881,14 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     final prevList = controller.value.toList(growable: false);
     if (widget.closeOnSelect) popoverController.hide();
     setState(() {
-      if (!isMultiSelection) controller.value.clear();
+      final newSet =
+          isMultiSelection ? Set<T>.from(controller.value) : <T>{};
       if (widget.allowDeselection && prevList.contains(value)) {
-        controller.value.remove(value);
+        newSet.remove(value);
       } else {
-        controller.value.add(value);
+        newSet.add(value);
       }
+      controller.value = newSet;
     });
 
     final newList = controller.value.toList(growable: false);
