@@ -17,13 +17,13 @@ class _ShadPortalPageState extends State<ShadPortalPage> {
   final alignments = [
     AlignmentGeometry.topStart,
     AlignmentGeometry.topCenter,
-    AlignmentGeometry.topRight,
+    AlignmentGeometry.topEnd,
     AlignmentGeometry.centerLeft,
     AlignmentGeometry.center,
-    AlignmentGeometry.centerRight,
+    AlignmentGeometry.centerEnd,
     AlignmentGeometry.bottomLeft,
     AlignmentGeometry.bottomCenter,
-    AlignmentGeometry.bottomRight,
+    AlignmentGeometry.bottomEnd,
   ];
 
   @override
