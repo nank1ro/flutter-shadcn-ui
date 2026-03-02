@@ -121,7 +121,6 @@ void main() {
         createTestWidget(
           ShadSelectMultipleFormField<String>(
             onChanged: changes.add,
-            allowDeselection: true,
             placeholder: const Text('Select fruits'),
             selectedOptionsBuilder: (context, values) =>
                 Text(values.join(', ')),
