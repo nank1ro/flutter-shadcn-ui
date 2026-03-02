@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -9,6 +10,110 @@ void main() {
   Widget createTestWidget(Widget child) {
     return ShadApp(home: Scaffold(body: child));
   }
+
+  group('ShadContextMenuRegion tapEnabled', () {
+    Widget buildRegion({ShadContextMenuController? controller, bool? tapEnabled}) {
+      return ShadApp(
+        home: Scaffold(
+          body: ShadContextMenuRegion(
+            controller: controller,
+            tapEnabled: tapEnabled,
+            items: const [ShadContextMenuItem(child: Text('Item'))],
+            child: const SizedBox(width: 200, height: 200, key: Key('target')),
+          ),
+        ),
+      );
+    }
+
+    testWidgets('tap opens menu on Android by default', (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+      final controller = ShadContextMenuController();
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(buildRegion(controller: controller));
+
+      expect(controller.isOpen, false);
+      await tester.tap(find.byKey(const Key('target')));
+      await tester.pump();
+      expect(controller.isOpen, true);
+    });
+
+    testWidgets('tap opens menu on iOS by default', (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+      final controller = ShadContextMenuController();
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(buildRegion(controller: controller));
+
+      expect(controller.isOpen, false);
+      await tester.tap(find.byKey(const Key('target')));
+      await tester.pump();
+      expect(controller.isOpen, true);
+    });
+
+    testWidgets('tap does not open menu on macOS by default', (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+      final controller = ShadContextMenuController();
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(buildRegion(controller: controller));
+
+      expect(controller.isOpen, false);
+      await tester.tap(find.byKey(const Key('target')));
+      await tester.pump();
+      expect(controller.isOpen, false);
+    });
+
+    testWidgets('tapEnabled: true opens menu on desktop', (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+      final controller = ShadContextMenuController();
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(buildRegion(controller: controller, tapEnabled: true));
+
+      expect(controller.isOpen, false);
+      await tester.tap(find.byKey(const Key('target')));
+      await tester.pump();
+      expect(controller.isOpen, true);
+    });
+
+    testWidgets('tapEnabled: false prevents tap from opening menu on mobile', (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+      final controller = ShadContextMenuController();
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(buildRegion(controller: controller, tapEnabled: false));
+
+      expect(controller.isOpen, false);
+      await tester.tap(find.byKey(const Key('target')));
+      await tester.pump();
+      expect(controller.isOpen, false);
+    });
+
+    testWidgets('tap toggles menu closed when already open on mobile', (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+      final controller = ShadContextMenuController();
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(buildRegion(controller: controller));
+
+      // Open via tap
+      await tester.tap(find.byKey(const Key('target')));
+      await tester.pump();
+      expect(controller.isOpen, true);
+
+      // Tap again to close
+      await tester.tap(find.byKey(const Key('target')));
+      await tester.pump();
+      expect(controller.isOpen, false);
+    });
+  });
 
   group('ShadContextMenu', () {
     testWidgets('ShadContextMenu matches goldens', (tester) async {

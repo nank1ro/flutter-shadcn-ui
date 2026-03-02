@@ -1,3 +1,7 @@
+## 0.49.0
+
+- **FEAT**: `ShadContextMenuRegion` now automatically supports tap to open the context menu on Android and iOS. Added `tapEnabled` parameter to override the default behavior on any platform.
+
 ## 0.48.0
 
 - **FEAT**: Add `defaultContextMenuBuilder` implementation for `ShadInput` to show Cut/Copy and Paste buttons. This introduces the following new widgets: `ShadTextSelectionToolbar` and `ShadToolbarButton`.
