@@ -857,13 +857,13 @@ class ShadInputState extends State<ShadInput>
     }
   }
 
-  static Widget _defaultContextMenuBuilder(
+  static Widget defaultContextMenuBuilder(
     BuildContext context,
     EditableTextState editableTextState,
   ) {
     final buttonItems = editableTextState.contextMenuButtonItems;
     if (buttonItems.isEmpty) return const SizedBox.shrink();
-    return _ShadTextSelectionToolbar(
+    return ShadTextSelectionToolbar(
       anchor: editableTextState.contextMenuAnchors.primaryAnchor,
       buttonItems: buttonItems,
     );
@@ -1014,7 +1014,7 @@ class ShadInputState extends State<ShadInput>
                         selectionHeightStyle: widget.selectionHeightStyle,
                         selectionWidthStyle: widget.selectionWidthStyle,
                         contextMenuBuilder: widget.contextMenuBuilder ??
-                            _defaultContextMenuBuilder,
+                            ShadInputState.defaultContextMenuBuilder,
                         selectionControls: widget.selectionControls,
                         // ! End of selection handler
                         // ! section
@@ -1244,21 +1244,37 @@ class _InputSelectionGestureDetectorBuilder
 
 /// A simple text-selection toolbar that shows copy/cut/paste buttons styled
 /// with [ShadTheme]. Used as the default [ShadInput.contextMenuBuilder].
-class _ShadTextSelectionToolbar extends StatelessWidget {
-  const _ShadTextSelectionToolbar({
+class ShadTextSelectionToolbar extends StatelessWidget {
+  const ShadTextSelectionToolbar({
+    super.key,
     required this.anchor,
     required this.buttonItems,
+    this.backgroundColor,
+    this.border,
+    this.borderRadius,
+    this.shadows,
   });
 
   final Offset anchor;
   final List<ContextMenuButtonItem> buttonItems;
 
-  static String _labelForType(ContextMenuButtonType type) {
+  /// Background color of the toolbar. Defaults to [ShadColorScheme.popover].
+  final Color? backgroundColor;
+
+  /// Border of the toolbar. Defaults to a 1-px border using [ShadColorScheme.border].
+  final BoxBorder? border;
+
+  /// Border radius of the toolbar. Defaults to [ShadThemeData.radius].
+  final BorderRadiusGeometry? borderRadius;
+
+  /// Shadows of the toolbar. Defaults to [ShadShadows.md].
+  final List<BoxShadow>? shadows;
+
+  static String labelForType(ContextMenuButtonType type) {
     return switch (type) {
       ContextMenuButtonType.cut => 'Cut',
       ContextMenuButtonType.copy => 'Copy',
       ContextMenuButtonType.paste => 'Paste',
-      ContextMenuButtonType.selectAll => 'Select All',
       _ => '',
     };
   }
@@ -1266,34 +1282,36 @@ class _ShadTextSelectionToolbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    // Only show items that have a displayable label.
-    final visibleItems = buttonItems
-        .where((item) => (item.label ?? _labelForType(item.type)).isNotEmpty)
-        .toList();
-    if (visibleItems.isEmpty) return const SizedBox.shrink();
+
+    final effectiveBackgroundColor =
+        backgroundColor ?? theme.colorScheme.popover;
+    final effectiveBorder =
+        border ?? Border.all(color: theme.colorScheme.border);
+    final effectiveBorderRadius = borderRadius ?? theme.radius;
+    final effectiveShadows = shadows ?? ShadShadows.md;
 
     return CustomSingleChildLayout(
       delegate: DesktopTextSelectionToolbarLayoutDelegate(anchor: anchor),
       child: Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          color: theme.colorScheme.popover,
-          border: Border.all(color: theme.colorScheme.border),
-          borderRadius: theme.radius,
-          boxShadow: ShadShadows.md,
+          color: effectiveBackgroundColor,
+          border: effectiveBorder,
+          borderRadius: effectiveBorderRadius,
+          boxShadow: effectiveShadows,
         ),
         child: IntrinsicWidth(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: visibleItems
-                .map(
-                  (item) => _ShadToolbarButton(
-                    label: item.label ?? _labelForType(item.type),
+            children: [
+              for (final item in buttonItems)
+                if ((item.label ?? labelForType(item.type)).isNotEmpty)
+                  ShadToolbarButton(
+                    label: item.label ?? labelForType(item.type),
                     onPressed: item.onPressed,
                   ),
-                )
-                .toList(),
+            ],
           ),
         ),
       ),
@@ -1301,8 +1319,9 @@ class _ShadTextSelectionToolbar extends StatelessWidget {
   }
 }
 
-class _ShadToolbarButton extends StatefulWidget {
-  const _ShadToolbarButton({
+class ShadToolbarButton extends StatefulWidget {
+  const ShadToolbarButton({
+    super.key,
     required this.label,
     required this.onPressed,
   });
@@ -1311,10 +1330,10 @@ class _ShadToolbarButton extends StatefulWidget {
   final VoidCallback? onPressed;
 
   @override
-  State<_ShadToolbarButton> createState() => _ShadToolbarButtonState();
+  State<ShadToolbarButton> createState() => ShadToolbarButtonState();
 }
 
-class _ShadToolbarButtonState extends State<_ShadToolbarButton> {
+class ShadToolbarButtonState extends State<ShadToolbarButton> {
   bool _hovered = false;
 
   @override
@@ -1327,7 +1346,6 @@ class _ShadToolbarButtonState extends State<_ShadToolbarButton> {
       child: GestureDetector(
         onTap: () {
           widget.onPressed?.call();
-          ContextMenuController.removeAny();
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
