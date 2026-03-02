@@ -362,7 +362,7 @@ void main() {
       'fires with new value already present in formKey.currentState!.value',
       (tester) async {
         final formKey = GlobalKey<ShadFormState>();
-        Map<Object, dynamic> capturedValue = {};
+        var capturedValue = <Object, dynamic>{};
 
         await tester.pumpWidget(
           createTestWidget(
