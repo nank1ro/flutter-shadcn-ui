@@ -357,6 +357,35 @@ void main() {
     });
   });
 
+  group('ShadForm - onChanged', () {
+    testWidgets(
+      'fires with new value already present in formKey.currentState!.value',
+      (tester) async {
+        final formKey = GlobalKey<ShadFormState>();
+        Map<Object, dynamic> capturedValue = {};
+
+        await tester.pumpWidget(
+          createTestWidget(
+            ShadForm(
+              key: formKey,
+              onChanged: () {
+                capturedValue = Map.from(formKey.currentState!.value);
+              },
+              child: ShadInputFormField(id: 'username'),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        await tester.enterText(find.byType(ShadInput), 'hello');
+        await tester.pumpAndSettle();
+
+        expect(capturedValue['username'], 'hello');
+      },
+    );
+  });
+
   group('ShadForm - Value Transformers with Dot Notation', () {
     testWidgets('applies transformers to nested values', (tester) async {
       final formKey = GlobalKey<ShadFormState>();

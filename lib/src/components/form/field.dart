@@ -253,8 +253,8 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
 
   @override
   void didChange(T? value) {
+    _parentForm?.setFieldValue<T>(effectiveId, value, notifyField: false);
     super.didChange(value);
-    _informFormForFieldChange();
     widget.onChanged?.call(value);
   }
 
