@@ -33,13 +33,14 @@ void main() {
         final controller = ShadContextMenuController();
         addTearDown(controller.dispose);
         await tester.pumpWidget(buildRegion(controller: controller));
+        await tester.pumpAndSettle();
 
         expect(controller.isOpen, false);
         await tester.tap(
           find.byKey(const Key('target')),
           warnIfMissed: false,
         );
-        await tester.pump();
+        await tester.pumpAndSettle();
         expect(controller.isOpen, true);
       },
       variant: const TargetPlatformVariant({
@@ -54,13 +55,14 @@ void main() {
         final controller = ShadContextMenuController();
         addTearDown(controller.dispose);
         await tester.pumpWidget(buildRegion(controller: controller));
+        await tester.pumpAndSettle();
 
         expect(controller.isOpen, false);
         await tester.tap(
           find.byKey(const Key('target')),
           warnIfMissed: false,
         );
-        await tester.pump();
+        await tester.pumpAndSettle();
         expect(controller.isOpen, false);
       },
       variant: const TargetPlatformVariant({
@@ -78,13 +80,14 @@ void main() {
         await tester.pumpWidget(
           buildRegion(controller: controller, tapEnabled: true),
         );
+        await tester.pumpAndSettle();
 
         expect(controller.isOpen, false);
         await tester.tap(
           find.byKey(const Key('target')),
           warnIfMissed: false,
         );
-        await tester.pump();
+        await tester.pumpAndSettle();
         expect(controller.isOpen, true);
       },
       variant: const TargetPlatformVariant({
@@ -102,13 +105,14 @@ void main() {
         await tester.pumpWidget(
           buildRegion(controller: controller, tapEnabled: false),
         );
+        await tester.pumpAndSettle();
 
         expect(controller.isOpen, false);
         await tester.tap(
           find.byKey(const Key('target')),
           warnIfMissed: false,
         );
-        await tester.pump();
+        await tester.pumpAndSettle();
         expect(controller.isOpen, false);
       },
       variant: const TargetPlatformVariant({
@@ -123,13 +127,14 @@ void main() {
         final controller = ShadContextMenuController();
         addTearDown(controller.dispose);
         await tester.pumpWidget(buildRegion(controller: controller));
+        await tester.pumpAndSettle();
 
         // Open via tap
         await tester.tap(
           find.byKey(const Key('target')),
           warnIfMissed: false,
         );
-        await tester.pump();
+        await tester.pumpAndSettle();
         expect(controller.isOpen, true);
 
         // Tap again to close
@@ -137,7 +142,7 @@ void main() {
           find.byKey(const Key('target')),
           warnIfMissed: false,
         );
-        await tester.pump();
+        await tester.pumpAndSettle();
         expect(controller.isOpen, false);
       },
       variant: const TargetPlatformVariant({
