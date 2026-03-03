@@ -1065,16 +1065,13 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       radius: radius,
       padding: const EdgeInsets.all(4),
       border: ShadBorder.all(color: colorScheme.border, width: 1),
-      anchor: const ShadAnchorAuto(
+      anchor: 
+      anchor: const ShadAnchor(
         offset: Offset(-8, 8),
-        followerAnchor: AlignmentDirectional.bottomEnd,
-        targetAnchor: AlignmentDirectional.bottomStart,
-        fallback: ShadAnchorAuto(
-          offset: Offset(-8, -8),
-          followerAnchor: AlignmentDirectional.topEnd,
-          targetAnchor: AlignmentDirectional.topStart,
-        ),
+        childAlignment: AlignmentDirectional.topStart,
+        overlayAlignment: AlignmentDirectional.bottomStart,
       ),
+,
       buttonHeight: 32,
       buttonVariant: ShadButtonVariant.ghost,
       buttonSelectedBackgroundColor: colorScheme.accent,
