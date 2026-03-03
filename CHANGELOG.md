@@ -1,3 +1,7 @@
+## 0.50.1
+
+- **FIX**: Cascade resize behavior in ShadResizable now properly propagates remaining drag delta when a panel collapses to minSize.
+
 ## 0.50.0
 
 - **FEAT**: Add `fallback` to `ShadAnchorAuto` to have another optimal position as fallback.
