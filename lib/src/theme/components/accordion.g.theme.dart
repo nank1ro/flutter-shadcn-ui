@@ -17,22 +17,30 @@ mixin _$ShadAccordionTheme {
     ShadAccordionTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadAccordionTheme(
-      iconData: t < 0.5 ? a?.iconData : b?.iconData,
-      iconEffects: t < 0.5 ? a?.iconEffects : b?.iconEffects,
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
+      iconData: t < 0.5 ? a.iconData : b.iconData,
+      iconEffects: t < 0.5 ? a.iconEffects : b.iconEffects,
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       underlineTitleOnHover: t < 0.5
-          ? a?.underlineTitleOnHover
-          : b?.underlineTitleOnHover,
-      titleStyle: TextStyle.lerp(a?.titleStyle, b?.titleStyle, t),
-      curve: t < 0.5 ? a?.curve : b?.curve,
-      duration: lerpDuration$(a?.duration, b?.duration, t),
-      maintainState: t < 0.5 ? a?.maintainState : b?.maintainState,
-      effects: t < 0.5 ? a?.effects : b?.effects,
+          ? a.underlineTitleOnHover
+          : b.underlineTitleOnHover,
+      titleStyle: TextStyle.lerp(a.titleStyle, b.titleStyle, t),
+      curve: t < 0.5 ? a.curve : b.curve,
+      duration: lerpDuration$(a.duration, b.duration, t),
+      maintainState: t < 0.5 ? a.maintainState : b.maintainState,
+      effects: t < 0.5 ? a.effects : b.effects,
     );
   }
 
@@ -47,26 +55,27 @@ mixin _$ShadAccordionTheme {
     bool? maintainState,
     List<Effect<dynamic>>? effects,
   }) {
-    final a = (this as ShadAccordionTheme);
+    final _this = (this as ShadAccordionTheme);
 
     return ShadAccordionTheme(
-      iconData: iconData ?? a.iconData,
-      iconEffects: iconEffects ?? a.iconEffects,
-      padding: padding ?? a.padding,
-      underlineTitleOnHover: underlineTitleOnHover ?? a.underlineTitleOnHover,
-      titleStyle: titleStyle ?? a.titleStyle,
-      curve: curve ?? a.curve,
-      duration: duration ?? a.duration,
-      maintainState: maintainState ?? a.maintainState,
-      effects: effects ?? a.effects,
+      iconData: iconData ?? _this.iconData,
+      iconEffects: iconEffects ?? _this.iconEffects,
+      padding: padding ?? _this.padding,
+      underlineTitleOnHover:
+          underlineTitleOnHover ?? _this.underlineTitleOnHover,
+      titleStyle: titleStyle ?? _this.titleStyle,
+      curve: curve ?? _this.curve,
+      duration: duration ?? _this.duration,
+      maintainState: maintainState ?? _this.maintainState,
+      effects: effects ?? _this.effects,
     );
   }
 
   ShadAccordionTheme merge(ShadAccordionTheme? other) {
-    final current = (this as ShadAccordionTheme);
+    final _this = (this as ShadAccordionTheme);
 
-    if (other == null) {
-      return current;
+    if (other == null || identical(_this, other)) {
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -78,8 +87,7 @@ mixin _$ShadAccordionTheme {
       iconEffects: other.iconEffects,
       padding: other.padding,
       underlineTitleOnHover: other.underlineTitleOnHover,
-      titleStyle:
-          current.titleStyle?.merge(other.titleStyle) ?? other.titleStyle,
+      titleStyle: _this.titleStyle?.merge(other.titleStyle) ?? other.titleStyle,
       curve: other.curve,
       duration: other.duration,
       maintainState: other.maintainState,
@@ -97,35 +105,35 @@ mixin _$ShadAccordionTheme {
       return false;
     }
 
-    final value = (this as ShadAccordionTheme);
+    final _this = (this as ShadAccordionTheme);
+    final _other = (other as ShadAccordionTheme);
 
-    return other is ShadAccordionTheme &&
-        other.iconData == value.iconData &&
-        other.iconEffects == value.iconEffects &&
-        other.padding == value.padding &&
-        other.underlineTitleOnHover == value.underlineTitleOnHover &&
-        other.titleStyle == value.titleStyle &&
-        other.curve == value.curve &&
-        other.duration == value.duration &&
-        other.maintainState == value.maintainState &&
-        other.effects == value.effects;
+    return _other.iconData == _this.iconData &&
+        _other.iconEffects == _this.iconEffects &&
+        _other.padding == _this.padding &&
+        _other.underlineTitleOnHover == _this.underlineTitleOnHover &&
+        _other.titleStyle == _this.titleStyle &&
+        _other.curve == _this.curve &&
+        _other.duration == _this.duration &&
+        _other.maintainState == _this.maintainState &&
+        _other.effects == _this.effects;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadAccordionTheme);
+    final _this = (this as ShadAccordionTheme);
 
     return Object.hash(
       runtimeType,
-      value.iconData,
-      value.iconEffects,
-      value.padding,
-      value.underlineTitleOnHover,
-      value.titleStyle,
-      value.curve,
-      value.duration,
-      value.maintainState,
-      value.effects,
+      _this.iconData,
+      _this.iconEffects,
+      _this.padding,
+      _this.underlineTitleOnHover,
+      _this.titleStyle,
+      _this.curve,
+      _this.duration,
+      _this.maintainState,
+      _this.effects,
     );
   }
 }

@@ -15,6 +15,7 @@ class ShadOptionTheme with _$ShadOptionTheme {
     this.selectedTextStyle,
     this.padding,
     this.radius,
+    this.selectedIconColor,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -30,6 +31,7 @@ class ShadOptionTheme with _$ShadOptionTheme {
   final TextStyle? textStyle;
   final Color? selectedBackgroundColor;
   final TextStyle? selectedTextStyle;
+  final Color? selectedIconColor;
 
   static ShadOptionTheme? lerp(
     ShadOptionTheme? a,

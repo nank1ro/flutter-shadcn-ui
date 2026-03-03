@@ -1,4 +1,5 @@
 import 'package:example/common/base_scaffold.dart';
+import 'package:example/common/extensions.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,9 @@ class SheetPage extends StatefulWidget {
 class _SheetPageState extends State<SheetPage> {
   var side = ShadSheetSide.bottom;
   var draggable = false;
+  var titlePinned = false;
+  var descriptionPinned = false;
+  var actionsPinned = true;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +47,21 @@ class _SheetPageState extends State<SheetPage> {
           value: draggable,
           onChanged: (value) => setState(() => draggable = value),
         ),
+        MyBoolProperty(
+          label: 'titlePinned',
+          value: titlePinned,
+          onChanged: (v) => setState(() => titlePinned = v),
+        ),
+        MyBoolProperty(
+          label: 'descriptionPinned',
+          value: descriptionPinned,
+          onChanged: (v) => setState(() => descriptionPinned = v),
+        ),
+        MyBoolProperty(
+          label: 'actionsPinned',
+          value: actionsPinned,
+          onChanged: (v) => setState(() => actionsPinned = v),
+        ),
       ],
       children: [
         ShadButton.outline(
@@ -63,31 +82,37 @@ class _SheetPageState extends State<SheetPage> {
                     "Make changes to your profile here. Click save when you're done",
                   ),
                   actions: const [ShadButton(child: Text('Save changes'))],
+                  titlePinned: titlePinned,
+                  descriptionPinned: descriptionPinned,
+                  actionsPinned: actionsPinned,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       spacing: 16,
-                      children: profile
-                          .map(
-                            (p) => Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    p.title,
-                                    textAlign: TextAlign.end,
-                                    style: theme.textTheme.small,
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  flex: 5,
-                                  child: ShadInput(initialValue: p.value),
-                                ),
-                              ],
-                            ),
-                          )
-                          .toList(),
+                      children:
+                          (profile.map(
+                                    (p) => Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            p.title,
+                                            textAlign: TextAlign.end,
+                                            style: theme.textTheme.small,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Expanded(
+                                          flex: 5,
+                                          child: ShadInput(
+                                            initialValue: p.value,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ) *
+                                  20)
+                              .toList(),
                     ),
                   ),
                 );

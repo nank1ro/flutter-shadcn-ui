@@ -17,70 +17,74 @@ mixin _$ShadContextMenuTheme {
     ShadContextMenuTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadContextMenuTheme(
       popoverReverseDuration: lerpDuration$(
-        a?.popoverReverseDuration,
-        b?.popoverReverseDuration,
+        a.popoverReverseDuration,
+        b.popoverReverseDuration,
         t,
       ),
-      constraints: BoxConstraints.lerp(a?.constraints, b?.constraints, t),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
+      constraints: BoxConstraints.lerp(a.constraints, b.constraints, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       leadingPadding: EdgeInsetsGeometry.lerp(
-        a?.leadingPadding,
-        b?.leadingPadding,
+        a.leadingPadding,
+        b.leadingPadding,
         t,
       ),
       trailingPadding: EdgeInsetsGeometry.lerp(
-        a?.trailingPadding,
-        b?.trailingPadding,
+        a.trailingPadding,
+        b.trailingPadding,
         t,
       ),
-      itemPadding: EdgeInsetsGeometry.lerp(a?.itemPadding, b?.itemPadding, t),
-      insetPadding: EdgeInsetsGeometry.lerp(
-        a?.insetPadding,
-        b?.insetPadding,
-        t,
-      ),
-      anchor: t < 0.5 ? a?.anchor : b?.anchor,
-      showDelay: lerpDuration$(a?.showDelay, b?.showDelay, t),
-      height: lerpDouble$(a?.height, b?.height, t),
-      buttonVariant: t < 0.5 ? a?.buttonVariant : b?.buttonVariant,
+      itemPadding: EdgeInsetsGeometry.lerp(a.itemPadding, b.itemPadding, t),
+      insetPadding: EdgeInsetsGeometry.lerp(a.insetPadding, b.insetPadding, t),
+      anchor: t < 0.5 ? a.anchor : b.anchor,
+      showDelay: lerpDuration$(a.showDelay, b.showDelay, t),
+      height: lerpDouble$(a.height, b.height, t),
+      buttonVariant: t < 0.5 ? a.buttonVariant : b.buttonVariant,
       itemDecoration: ShadDecoration.lerp(
-        a?.itemDecoration,
-        b?.itemDecoration,
+        a.itemDecoration,
+        b.itemDecoration,
         t,
       ),
-      textStyle: TextStyle.lerp(a?.textStyle, b?.textStyle, t),
+      textStyle: TextStyle.lerp(a.textStyle, b.textStyle, t),
       trailingTextStyle: TextStyle.lerp(
-        a?.trailingTextStyle,
-        b?.trailingTextStyle,
+        a.trailingTextStyle,
+        b.trailingTextStyle,
         t,
       ),
       itemConstraints: BoxConstraints.lerp(
-        a?.itemConstraints,
-        b?.itemConstraints,
+        a.itemConstraints,
+        b.itemConstraints,
         t,
       ),
       subMenuPadding: EdgeInsetsGeometry.lerp(
-        a?.subMenuPadding,
-        b?.subMenuPadding,
+        a.subMenuPadding,
+        b.subMenuPadding,
         t,
       ),
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
       selectedBackgroundColor: Color.lerp(
-        a?.selectedBackgroundColor,
-        b?.selectedBackgroundColor,
+        a.selectedBackgroundColor,
+        b.selectedBackgroundColor,
         t,
       ),
-      closeOnTap: t < 0.5 ? a?.closeOnTap : b?.closeOnTap,
-      effects: t < 0.5 ? a?.effects : b?.effects,
-      shadows: t < 0.5 ? a?.shadows : b?.shadows,
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      filter: t < 0.5 ? a?.filter : b?.filter,
+      closeOnTap: t < 0.5 ? a.closeOnTap : b.closeOnTap,
+      effects: t < 0.5 ? a.effects : b.effects,
+      shadows: t < 0.5 ? a.shadows : b.shadows,
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      filter: t < 0.5 ? a.filter : b.filter,
     );
   }
 
@@ -109,42 +113,42 @@ mixin _$ShadContextMenuTheme {
     ShadDecoration? decoration,
     ImageFilter? filter,
   }) {
-    final a = (this as ShadContextMenuTheme);
+    final _this = (this as ShadContextMenuTheme);
 
     return ShadContextMenuTheme(
       popoverReverseDuration:
-          popoverReverseDuration ?? a.popoverReverseDuration,
-      constraints: constraints ?? a.constraints,
-      padding: padding ?? a.padding,
-      leadingPadding: leadingPadding ?? a.leadingPadding,
-      trailingPadding: trailingPadding ?? a.trailingPadding,
-      itemPadding: itemPadding ?? a.itemPadding,
-      insetPadding: insetPadding ?? a.insetPadding,
-      anchor: anchor ?? a.anchor,
-      showDelay: showDelay ?? a.showDelay,
-      height: height ?? a.height,
-      buttonVariant: buttonVariant ?? a.buttonVariant,
-      itemDecoration: itemDecoration ?? a.itemDecoration,
-      textStyle: textStyle ?? a.textStyle,
-      trailingTextStyle: trailingTextStyle ?? a.trailingTextStyle,
-      itemConstraints: itemConstraints ?? a.itemConstraints,
-      subMenuPadding: subMenuPadding ?? a.subMenuPadding,
-      backgroundColor: backgroundColor ?? a.backgroundColor,
+          popoverReverseDuration ?? _this.popoverReverseDuration,
+      constraints: constraints ?? _this.constraints,
+      padding: padding ?? _this.padding,
+      leadingPadding: leadingPadding ?? _this.leadingPadding,
+      trailingPadding: trailingPadding ?? _this.trailingPadding,
+      itemPadding: itemPadding ?? _this.itemPadding,
+      insetPadding: insetPadding ?? _this.insetPadding,
+      anchor: anchor ?? _this.anchor,
+      showDelay: showDelay ?? _this.showDelay,
+      height: height ?? _this.height,
+      buttonVariant: buttonVariant ?? _this.buttonVariant,
+      itemDecoration: itemDecoration ?? _this.itemDecoration,
+      textStyle: textStyle ?? _this.textStyle,
+      trailingTextStyle: trailingTextStyle ?? _this.trailingTextStyle,
+      itemConstraints: itemConstraints ?? _this.itemConstraints,
+      subMenuPadding: subMenuPadding ?? _this.subMenuPadding,
+      backgroundColor: backgroundColor ?? _this.backgroundColor,
       selectedBackgroundColor:
-          selectedBackgroundColor ?? a.selectedBackgroundColor,
-      closeOnTap: closeOnTap ?? a.closeOnTap,
-      effects: effects ?? a.effects,
-      shadows: shadows ?? a.shadows,
-      decoration: decoration ?? a.decoration,
-      filter: filter ?? a.filter,
+          selectedBackgroundColor ?? _this.selectedBackgroundColor,
+      closeOnTap: closeOnTap ?? _this.closeOnTap,
+      effects: effects ?? _this.effects,
+      shadows: shadows ?? _this.shadows,
+      decoration: decoration ?? _this.decoration,
+      filter: filter ?? _this.filter,
     );
   }
 
   ShadContextMenuTheme merge(ShadContextMenuTheme? other) {
-    final current = (this as ShadContextMenuTheme);
+    final _this = (this as ShadContextMenuTheme);
 
-    if (other == null) {
-      return current;
+    if (other == null || identical(_this, other)) {
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -163,10 +167,12 @@ mixin _$ShadContextMenuTheme {
       showDelay: other.showDelay,
       height: other.height,
       buttonVariant: other.buttonVariant,
-      itemDecoration: other.itemDecoration,
-      textStyle: current.textStyle?.merge(other.textStyle) ?? other.textStyle,
+      itemDecoration:
+          _this.itemDecoration?.merge(other.itemDecoration) ??
+          other.itemDecoration,
+      textStyle: _this.textStyle?.merge(other.textStyle) ?? other.textStyle,
       trailingTextStyle:
-          current.trailingTextStyle?.merge(other.trailingTextStyle) ??
+          _this.trailingTextStyle?.merge(other.trailingTextStyle) ??
           other.trailingTextStyle,
       itemConstraints: other.itemConstraints,
       subMenuPadding: other.subMenuPadding,
@@ -175,7 +181,7 @@ mixin _$ShadContextMenuTheme {
       closeOnTap: other.closeOnTap,
       effects: other.effects,
       shadows: other.shadows,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       filter: other.filter,
     );
   }
@@ -190,63 +196,63 @@ mixin _$ShadContextMenuTheme {
       return false;
     }
 
-    final value = (this as ShadContextMenuTheme);
+    final _this = (this as ShadContextMenuTheme);
+    final _other = (other as ShadContextMenuTheme);
 
-    return other is ShadContextMenuTheme &&
-        other.popoverReverseDuration == value.popoverReverseDuration &&
-        other.constraints == value.constraints &&
-        other.padding == value.padding &&
-        other.leadingPadding == value.leadingPadding &&
-        other.trailingPadding == value.trailingPadding &&
-        other.itemPadding == value.itemPadding &&
-        other.insetPadding == value.insetPadding &&
-        other.anchor == value.anchor &&
-        other.showDelay == value.showDelay &&
-        other.height == value.height &&
-        other.buttonVariant == value.buttonVariant &&
-        other.itemDecoration == value.itemDecoration &&
-        other.textStyle == value.textStyle &&
-        other.trailingTextStyle == value.trailingTextStyle &&
-        other.itemConstraints == value.itemConstraints &&
-        other.subMenuPadding == value.subMenuPadding &&
-        other.backgroundColor == value.backgroundColor &&
-        other.selectedBackgroundColor == value.selectedBackgroundColor &&
-        other.closeOnTap == value.closeOnTap &&
-        other.effects == value.effects &&
-        other.shadows == value.shadows &&
-        other.decoration == value.decoration &&
-        other.filter == value.filter;
+    return _other.popoverReverseDuration == _this.popoverReverseDuration &&
+        _other.constraints == _this.constraints &&
+        _other.padding == _this.padding &&
+        _other.leadingPadding == _this.leadingPadding &&
+        _other.trailingPadding == _this.trailingPadding &&
+        _other.itemPadding == _this.itemPadding &&
+        _other.insetPadding == _this.insetPadding &&
+        _other.anchor == _this.anchor &&
+        _other.showDelay == _this.showDelay &&
+        _other.height == _this.height &&
+        _other.buttonVariant == _this.buttonVariant &&
+        _other.itemDecoration == _this.itemDecoration &&
+        _other.textStyle == _this.textStyle &&
+        _other.trailingTextStyle == _this.trailingTextStyle &&
+        _other.itemConstraints == _this.itemConstraints &&
+        _other.subMenuPadding == _this.subMenuPadding &&
+        _other.backgroundColor == _this.backgroundColor &&
+        _other.selectedBackgroundColor == _this.selectedBackgroundColor &&
+        _other.closeOnTap == _this.closeOnTap &&
+        _other.effects == _this.effects &&
+        _other.shadows == _this.shadows &&
+        _other.decoration == _this.decoration &&
+        _other.filter == _this.filter;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadContextMenuTheme);
+    final _this = (this as ShadContextMenuTheme);
 
     return Object.hashAll([
       runtimeType,
-      value.popoverReverseDuration,
-      value.constraints,
-      value.padding,
-      value.leadingPadding,
-      value.trailingPadding,
-      value.itemPadding,
-      value.insetPadding,
-      value.anchor,
-      value.showDelay,
-      value.height,
-      value.buttonVariant,
-      value.itemDecoration,
-      value.textStyle,
-      value.trailingTextStyle,
-      value.itemConstraints,
-      value.subMenuPadding,
-      value.backgroundColor,
-      value.selectedBackgroundColor,
-      value.closeOnTap,
-      value.effects,
-      value.shadows,
-      value.decoration,
-      value.filter,
+      _this.popoverReverseDuration,
+      _this.constraints,
+      _this.padding,
+      _this.leadingPadding,
+      _this.trailingPadding,
+      _this.itemPadding,
+      _this.insetPadding,
+      _this.anchor,
+      _this.showDelay,
+      _this.height,
+      _this.buttonVariant,
+      _this.itemDecoration,
+      _this.textStyle,
+      _this.trailingTextStyle,
+      _this.itemConstraints,
+      _this.subMenuPadding,
+      _this.backgroundColor,
+      _this.selectedBackgroundColor,
+      _this.closeOnTap,
+      _this.effects,
+      _this.shadows,
+      _this.decoration,
+      _this.filter,
     ]);
   }
 }

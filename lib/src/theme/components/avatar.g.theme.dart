@@ -17,15 +17,23 @@ mixin _$ShadAvatarTheme {
     ShadAvatarTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadAvatarTheme(
-      size: Size.lerp(a?.size, b?.size, t),
-      shape: ShapeBorder.lerp(a?.shape, b?.shape, t),
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      fit: t < 0.5 ? a?.fit : b?.fit,
+      size: Size.lerp(a.size, b.size, t),
+      shape: ShapeBorder.lerp(a.shape, b.shape, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      fit: t < 0.5 ? a.fit : b.fit,
     );
   }
 
@@ -35,21 +43,21 @@ mixin _$ShadAvatarTheme {
     Color? backgroundColor,
     BoxFit? fit,
   }) {
-    final a = (this as ShadAvatarTheme);
+    final _this = (this as ShadAvatarTheme);
 
     return ShadAvatarTheme(
-      size: size ?? a.size,
-      shape: shape ?? a.shape,
-      backgroundColor: backgroundColor ?? a.backgroundColor,
-      fit: fit ?? a.fit,
+      size: size ?? _this.size,
+      shape: shape ?? _this.shape,
+      backgroundColor: backgroundColor ?? _this.backgroundColor,
+      fit: fit ?? _this.fit,
     );
   }
 
   ShadAvatarTheme merge(ShadAvatarTheme? other) {
-    final current = (this as ShadAvatarTheme);
+    final _this = (this as ShadAvatarTheme);
 
-    if (other == null) {
-      return current;
+    if (other == null || identical(_this, other)) {
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -74,25 +82,25 @@ mixin _$ShadAvatarTheme {
       return false;
     }
 
-    final value = (this as ShadAvatarTheme);
+    final _this = (this as ShadAvatarTheme);
+    final _other = (other as ShadAvatarTheme);
 
-    return other is ShadAvatarTheme &&
-        other.size == value.size &&
-        other.shape == value.shape &&
-        other.backgroundColor == value.backgroundColor &&
-        other.fit == value.fit;
+    return _other.size == _this.size &&
+        _other.shape == _this.shape &&
+        _other.backgroundColor == _this.backgroundColor &&
+        _other.fit == _this.fit;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadAvatarTheme);
+    final _this = (this as ShadAvatarTheme);
 
     return Object.hash(
       runtimeType,
-      value.size,
-      value.shape,
-      value.backgroundColor,
-      value.fit,
+      _this.size,
+      _this.shape,
+      _this.backgroundColor,
+      _this.fit,
     );
   }
 }

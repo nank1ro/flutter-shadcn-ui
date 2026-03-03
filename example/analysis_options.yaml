@@ -1,8 +1,7 @@
 include: package:flutter_lints/flutter.yaml
 
-analyzer:
-  plugins:
-    - custom_lint
+plugins:
+  solidart_lint: ^3.0.0
 
 formatter:
   trailing_commas: preserve

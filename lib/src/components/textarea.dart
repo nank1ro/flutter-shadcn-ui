@@ -82,6 +82,7 @@ class ShadTextarea extends StatefulWidget {
         EditableText.defaultStylusHandwritingEnabled,
     this.groupId,
     this.readOnly = false,
+    this.maxLength,
     this.minHeight = 80,
     this.maxHeight = 500,
     this.resizable = true,
@@ -393,6 +394,12 @@ class ShadTextarea extends StatefulWidget {
   /// {@endtemplate}
   final Object? groupId;
 
+  /// {@template ShadTextarea.maxLength}
+  /// The maximum length of the textarea.
+  /// Defaults to null (no limit).
+  /// {@endtemplate}
+  final int? maxLength;
+
   /// {@template ShadTextarea.minHeight}
   /// The minimum height of the textarea (default is 80).
   /// {@endtemplate}
@@ -598,6 +605,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
             placeholder: widget.placeholder,
             placeholderAlignment: effectivePlaceholderAlignment,
             alignment: effectiveAlignment,
+            maxLength: widget.maxLength,
             maxLines: lineCount,
             minLines: lineCount,
             keyboardType: TextInputType.multiline,

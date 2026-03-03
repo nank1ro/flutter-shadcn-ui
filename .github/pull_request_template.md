@@ -6,6 +6,20 @@ Thanks for filing a pull request!
 
 *List which issues are fixed by this PR. You must list at least one issue. An issue is not required if the PR fixes something trivial like a typo.*
 
+## Testing this PR
+
+<!--
+Update the `ref` below with your branch name, then users can test your changes by adding this to their `pubspec.yaml`:
+-->
+To try this branch, add the following to your `pubspec.yaml`:
+
+```yaml
+shadcn_ui:
+    git:
+      url: https://github.com/nank1ro/flutter-shadcn-ui
+      ref: your-branch-name-here
+```
+
 ## Pre-launch Checklist
 
 - [ ] I read the [Contributor Guide] and followed the process outlined there for submitting PRs.

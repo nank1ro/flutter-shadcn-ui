@@ -17,196 +17,192 @@ mixin _$ShadCalendarTheme {
     ShadCalendarTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadCalendarTheme(
-      hideNavigation: t < 0.5 ? a?.hideNavigation : b?.hideNavigation,
+      hideNavigation: t < 0.5 ? a.hideNavigation : b.hideNavigation,
       yearSelectorMinWidth: lerpDouble$(
-        a?.yearSelectorMinWidth,
-        b?.yearSelectorMinWidth,
+        a.yearSelectorMinWidth,
+        b.yearSelectorMinWidth,
         t,
       ),
       monthSelectorMinWidth: lerpDouble$(
-        a?.monthSelectorMinWidth,
-        b?.monthSelectorMinWidth,
+        a.monthSelectorMinWidth,
+        b.monthSelectorMinWidth,
         t,
       ),
       yearSelectorPadding: EdgeInsetsGeometry.lerp(
-        a?.yearSelectorPadding,
-        b?.yearSelectorPadding,
+        a.yearSelectorPadding,
+        b.yearSelectorPadding,
         t,
       ),
       monthSelectorPadding: EdgeInsetsGeometry.lerp(
-        a?.monthSelectorPadding,
-        b?.monthSelectorPadding,
+        a.monthSelectorPadding,
+        b.monthSelectorPadding,
         t,
       ),
       navigationButtonSize: lerpDouble$(
-        a?.navigationButtonSize,
-        b?.navigationButtonSize,
+        a.navigationButtonSize,
+        b.navigationButtonSize,
         t,
       ),
       navigationButtonIconSize: lerpDouble$(
-        a?.navigationButtonIconSize,
-        b?.navigationButtonIconSize,
+        a.navigationButtonIconSize,
+        b.navigationButtonIconSize,
         t,
       ),
       backNavigationButtonIconData: t < 0.5
-          ? a?.backNavigationButtonIconData
-          : b?.backNavigationButtonIconData,
+          ? a.backNavigationButtonIconData
+          : b.backNavigationButtonIconData,
       forwardNavigationButtonIconData: t < 0.5
-          ? a?.forwardNavigationButtonIconData
-          : b?.forwardNavigationButtonIconData,
+          ? a.forwardNavigationButtonIconData
+          : b.forwardNavigationButtonIconData,
       navigationButtonPadding: EdgeInsetsGeometry.lerp(
-        a?.navigationButtonPadding,
-        b?.navigationButtonPadding,
+        a.navigationButtonPadding,
+        b.navigationButtonPadding,
         t,
       ),
       navigationButtonDisabledOpacity: lerpDouble$(
-        a?.navigationButtonDisabledOpacity,
-        b?.navigationButtonDisabledOpacity,
+        a.navigationButtonDisabledOpacity,
+        b.navigationButtonDisabledOpacity,
         t,
       ),
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
       spacingBetweenMonths: lerpDouble$(
-        a?.spacingBetweenMonths,
-        b?.spacingBetweenMonths,
+        a.spacingBetweenMonths,
+        b.spacingBetweenMonths,
         t,
       ),
       runSpacingBetweenMonths: lerpDouble$(
-        a?.runSpacingBetweenMonths,
-        b?.runSpacingBetweenMonths,
+        a.runSpacingBetweenMonths,
+        b.runSpacingBetweenMonths,
         t,
       ),
       monthConstraints: BoxConstraints.lerp(
-        a?.monthConstraints,
-        b?.monthConstraints,
+        a.monthConstraints,
+        b.monthConstraints,
         t,
       ),
-      headerHeight: lerpDouble$(a?.headerHeight, b?.headerHeight, t),
+      headerHeight: lerpDouble$(a.headerHeight, b.headerHeight, t),
       headerPadding: EdgeInsetsGeometry.lerp(
-        a?.headerPadding,
-        b?.headerPadding,
+        a.headerPadding,
+        b.headerPadding,
         t,
       ),
-      captionLayoutGap: lerpDouble$(
-        a?.captionLayoutGap,
-        b?.captionLayoutGap,
-        t,
-      ),
-      headerTextStyle: TextStyle.lerp(
-        a?.headerTextStyle,
-        b?.headerTextStyle,
-        t,
-      ),
+      captionLayoutGap: lerpDouble$(a.captionLayoutGap, b.captionLayoutGap, t),
+      headerTextStyle: TextStyle.lerp(a.headerTextStyle, b.headerTextStyle, t),
       weekdaysPadding: EdgeInsetsGeometry.lerp(
-        a?.weekdaysPadding,
-        b?.weekdaysPadding,
+        a.weekdaysPadding,
+        b.weekdaysPadding,
         t,
       ),
       weekdaysTextStyle: TextStyle.lerp(
-        a?.weekdaysTextStyle,
-        b?.weekdaysTextStyle,
+        a.weekdaysTextStyle,
+        b.weekdaysTextStyle,
         t,
       ),
-      weekdaysTextAlign: t < 0.5 ? a?.weekdaysTextAlign : b?.weekdaysTextAlign,
+      weekdaysTextAlign: t < 0.5 ? a.weekdaysTextAlign : b.weekdaysTextAlign,
       weekNumbersHeaderText: t < 0.5
-          ? a?.weekNumbersHeaderText
-          : b?.weekNumbersHeaderText,
+          ? a.weekNumbersHeaderText
+          : b.weekNumbersHeaderText,
       weekNumbersHeaderTextStyle: TextStyle.lerp(
-        a?.weekNumbersHeaderTextStyle,
-        b?.weekNumbersHeaderTextStyle,
+        a.weekNumbersHeaderTextStyle,
+        b.weekNumbersHeaderTextStyle,
         t,
       ),
       weekNumbersTextStyle: TextStyle.lerp(
-        a?.weekNumbersTextStyle,
-        b?.weekNumbersTextStyle,
+        a.weekNumbersTextStyle,
+        b.weekNumbersTextStyle,
         t,
       ),
       weekNumbersTextAlign: t < 0.5
-          ? a?.weekNumbersTextAlign
-          : b?.weekNumbersTextAlign,
-      dayButtonSize: lerpDouble$(a?.dayButtonSize, b?.dayButtonSize, t),
+          ? a.weekNumbersTextAlign
+          : b.weekNumbersTextAlign,
+      dayButtonSize: lerpDouble$(a.dayButtonSize, b.dayButtonSize, t),
       dayButtonOutsideMonthOpacity: lerpDouble$(
-        a?.dayButtonOutsideMonthOpacity,
-        b?.dayButtonOutsideMonthOpacity,
+        a.dayButtonOutsideMonthOpacity,
+        b.dayButtonOutsideMonthOpacity,
         t,
       ),
       dayButtonPadding: EdgeInsetsGeometry.lerp(
-        a?.dayButtonPadding,
-        b?.dayButtonPadding,
+        a.dayButtonPadding,
+        b.dayButtonPadding,
         t,
       ),
       dayButtonDecoration: ShadDecoration.lerp(
-        a?.dayButtonDecoration,
-        b?.dayButtonDecoration,
+        a.dayButtonDecoration,
+        b.dayButtonDecoration,
         t,
       ),
       selectedDayButtonTextStyle: TextStyle.lerp(
-        a?.selectedDayButtonTextStyle,
-        b?.selectedDayButtonTextStyle,
+        a.selectedDayButtonTextStyle,
+        b.selectedDayButtonTextStyle,
         t,
       ),
       insideRangeDayButtonTextStyle: TextStyle.lerp(
-        a?.insideRangeDayButtonTextStyle,
-        b?.insideRangeDayButtonTextStyle,
+        a.insideRangeDayButtonTextStyle,
+        b.insideRangeDayButtonTextStyle,
         t,
       ),
       dayButtonTextStyle: TextStyle.lerp(
-        a?.dayButtonTextStyle,
-        b?.dayButtonTextStyle,
+        a.dayButtonTextStyle,
+        b.dayButtonTextStyle,
         t,
       ),
-      dayButtonVariant: t < 0.5 ? a?.dayButtonVariant : b?.dayButtonVariant,
+      dayButtonVariant: t < 0.5 ? a.dayButtonVariant : b.dayButtonVariant,
       selectedDayButtonVariant: t < 0.5
-          ? a?.selectedDayButtonVariant
-          : b?.selectedDayButtonVariant,
+          ? a.selectedDayButtonVariant
+          : b.selectedDayButtonVariant,
       insideRangeDayButtonVariant: t < 0.5
-          ? a?.insideRangeDayButtonVariant
-          : b?.insideRangeDayButtonVariant,
-      todayButtonVariant: t < 0.5
-          ? a?.todayButtonVariant
-          : b?.todayButtonVariant,
+          ? a.insideRangeDayButtonVariant
+          : b.insideRangeDayButtonVariant,
+      todayButtonVariant: t < 0.5 ? a.todayButtonVariant : b.todayButtonVariant,
       gridMainAxisSpacing: lerpDouble$(
-        a?.gridMainAxisSpacing,
-        b?.gridMainAxisSpacing,
+        a.gridMainAxisSpacing,
+        b.gridMainAxisSpacing,
         t,
       ),
       gridCrossAxisSpacing: lerpDouble$(
-        a?.gridCrossAxisSpacing,
-        b?.gridCrossAxisSpacing,
+        a.gridCrossAxisSpacing,
+        b.gridCrossAxisSpacing,
         t,
       ),
       dayButtonOutsideMonthTextStyle: TextStyle.lerp(
-        a?.dayButtonOutsideMonthTextStyle,
-        b?.dayButtonOutsideMonthTextStyle,
+        a.dayButtonOutsideMonthTextStyle,
+        b.dayButtonOutsideMonthTextStyle,
         t,
       ),
       dayButtonOutsideMonthVariant: t < 0.5
-          ? a?.dayButtonOutsideMonthVariant
-          : b?.dayButtonOutsideMonthVariant,
+          ? a.dayButtonOutsideMonthVariant
+          : b.dayButtonOutsideMonthVariant,
       selectedDayButtonOusideMonthVariant: t < 0.5
-          ? a?.selectedDayButtonOusideMonthVariant
-          : b?.selectedDayButtonOusideMonthVariant,
-      captionLayout: t < 0.5 ? a?.captionLayout : b?.captionLayout,
-      hideWeekdayNames: t < 0.5 ? a?.hideWeekdayNames : b?.hideWeekdayNames,
-      showOutsideDays: t < 0.5 ? a?.showOutsideDays : b?.showOutsideDays,
-      formatMonthYear: t < 0.5 ? a?.formatMonthYear : b?.formatMonthYear,
-      formatMonth: t < 0.5 ? a?.formatMonth : b?.formatMonth,
-      formatYear: t < 0.5 ? a?.formatYear : b?.formatYear,
-      formatWeekday: t < 0.5 ? a?.formatWeekday : b?.formatWeekday,
+          ? a.selectedDayButtonOusideMonthVariant
+          : b.selectedDayButtonOusideMonthVariant,
+      captionLayout: t < 0.5 ? a.captionLayout : b.captionLayout,
+      hideWeekdayNames: t < 0.5 ? a.hideWeekdayNames : b.hideWeekdayNames,
+      showOutsideDays: t < 0.5 ? a.showOutsideDays : b.showOutsideDays,
+      formatMonthYear: t < 0.5 ? a.formatMonthYear : b.formatMonthYear,
+      formatMonth: t < 0.5 ? a.formatMonth : b.formatMonth,
+      formatYear: t < 0.5 ? a.formatYear : b.formatYear,
+      formatWeekday: t < 0.5 ? a.formatWeekday : b.formatWeekday,
       dropdownFormatMonth: t < 0.5
-          ? a?.dropdownFormatMonth
-          : b?.dropdownFormatMonth,
-      dropdownFormatYear: t < 0.5
-          ? a?.dropdownFormatYear
-          : b?.dropdownFormatYear,
-      showWeekNumbers: t < 0.5 ? a?.showWeekNumbers : b?.showWeekNumbers,
-      weekStartsOn: t < 0.5 ? a?.weekStartsOn : b?.weekStartsOn,
-      fixedWeeks: t < 0.5 ? a?.fixedWeeks : b?.fixedWeeks,
-      allowDeselection: t < 0.5 ? a?.allowDeselection : b?.allowDeselection,
+          ? a.dropdownFormatMonth
+          : b.dropdownFormatMonth,
+      dropdownFormatYear: t < 0.5 ? a.dropdownFormatYear : b.dropdownFormatYear,
+      showWeekNumbers: t < 0.5 ? a.showWeekNumbers : b.showWeekNumbers,
+      weekStartsOn: t < 0.5 ? a.weekStartsOn : b.weekStartsOn,
+      fixedWeeks: t < 0.5 ? a.fixedWeeks : b.fixedWeeks,
+      allowDeselection: t < 0.5 ? a.allowDeselection : b.allowDeselection,
     );
   }
 
@@ -267,88 +263,93 @@ mixin _$ShadCalendarTheme {
     bool? fixedWeeks,
     bool? allowDeselection,
   }) {
-    final a = (this as ShadCalendarTheme);
+    final _this = (this as ShadCalendarTheme);
 
     return ShadCalendarTheme(
-      hideNavigation: hideNavigation ?? a.hideNavigation,
-      yearSelectorMinWidth: yearSelectorMinWidth ?? a.yearSelectorMinWidth,
-      monthSelectorMinWidth: monthSelectorMinWidth ?? a.monthSelectorMinWidth,
-      yearSelectorPadding: yearSelectorPadding ?? a.yearSelectorPadding,
-      monthSelectorPadding: monthSelectorPadding ?? a.monthSelectorPadding,
-      navigationButtonSize: navigationButtonSize ?? a.navigationButtonSize,
+      hideNavigation: hideNavigation ?? _this.hideNavigation,
+      yearSelectorMinWidth: yearSelectorMinWidth ?? _this.yearSelectorMinWidth,
+      monthSelectorMinWidth:
+          monthSelectorMinWidth ?? _this.monthSelectorMinWidth,
+      yearSelectorPadding: yearSelectorPadding ?? _this.yearSelectorPadding,
+      monthSelectorPadding: monthSelectorPadding ?? _this.monthSelectorPadding,
+      navigationButtonSize: navigationButtonSize ?? _this.navigationButtonSize,
       navigationButtonIconSize:
-          navigationButtonIconSize ?? a.navigationButtonIconSize,
+          navigationButtonIconSize ?? _this.navigationButtonIconSize,
       backNavigationButtonIconData:
-          backNavigationButtonIconData ?? a.backNavigationButtonIconData,
+          backNavigationButtonIconData ?? _this.backNavigationButtonIconData,
       forwardNavigationButtonIconData:
-          forwardNavigationButtonIconData ?? a.forwardNavigationButtonIconData,
+          forwardNavigationButtonIconData ??
+          _this.forwardNavigationButtonIconData,
       navigationButtonPadding:
-          navigationButtonPadding ?? a.navigationButtonPadding,
+          navigationButtonPadding ?? _this.navigationButtonPadding,
       navigationButtonDisabledOpacity:
-          navigationButtonDisabledOpacity ?? a.navigationButtonDisabledOpacity,
-      decoration: decoration ?? a.decoration,
-      spacingBetweenMonths: spacingBetweenMonths ?? a.spacingBetweenMonths,
+          navigationButtonDisabledOpacity ??
+          _this.navigationButtonDisabledOpacity,
+      decoration: decoration ?? _this.decoration,
+      spacingBetweenMonths: spacingBetweenMonths ?? _this.spacingBetweenMonths,
       runSpacingBetweenMonths:
-          runSpacingBetweenMonths ?? a.runSpacingBetweenMonths,
-      monthConstraints: monthConstraints ?? a.monthConstraints,
-      headerHeight: headerHeight ?? a.headerHeight,
-      headerPadding: headerPadding ?? a.headerPadding,
-      captionLayoutGap: captionLayoutGap ?? a.captionLayoutGap,
-      headerTextStyle: headerTextStyle ?? a.headerTextStyle,
-      weekdaysPadding: weekdaysPadding ?? a.weekdaysPadding,
-      weekdaysTextStyle: weekdaysTextStyle ?? a.weekdaysTextStyle,
-      weekdaysTextAlign: weekdaysTextAlign ?? a.weekdaysTextAlign,
-      weekNumbersHeaderText: weekNumbersHeaderText ?? a.weekNumbersHeaderText,
+          runSpacingBetweenMonths ?? _this.runSpacingBetweenMonths,
+      monthConstraints: monthConstraints ?? _this.monthConstraints,
+      headerHeight: headerHeight ?? _this.headerHeight,
+      headerPadding: headerPadding ?? _this.headerPadding,
+      captionLayoutGap: captionLayoutGap ?? _this.captionLayoutGap,
+      headerTextStyle: headerTextStyle ?? _this.headerTextStyle,
+      weekdaysPadding: weekdaysPadding ?? _this.weekdaysPadding,
+      weekdaysTextStyle: weekdaysTextStyle ?? _this.weekdaysTextStyle,
+      weekdaysTextAlign: weekdaysTextAlign ?? _this.weekdaysTextAlign,
+      weekNumbersHeaderText:
+          weekNumbersHeaderText ?? _this.weekNumbersHeaderText,
       weekNumbersHeaderTextStyle:
-          weekNumbersHeaderTextStyle ?? a.weekNumbersHeaderTextStyle,
-      weekNumbersTextStyle: weekNumbersTextStyle ?? a.weekNumbersTextStyle,
-      weekNumbersTextAlign: weekNumbersTextAlign ?? a.weekNumbersTextAlign,
-      dayButtonSize: dayButtonSize ?? a.dayButtonSize,
+          weekNumbersHeaderTextStyle ?? _this.weekNumbersHeaderTextStyle,
+      weekNumbersTextStyle: weekNumbersTextStyle ?? _this.weekNumbersTextStyle,
+      weekNumbersTextAlign: weekNumbersTextAlign ?? _this.weekNumbersTextAlign,
+      dayButtonSize: dayButtonSize ?? _this.dayButtonSize,
       dayButtonOutsideMonthOpacity:
-          dayButtonOutsideMonthOpacity ?? a.dayButtonOutsideMonthOpacity,
-      dayButtonPadding: dayButtonPadding ?? a.dayButtonPadding,
-      dayButtonDecoration: dayButtonDecoration ?? a.dayButtonDecoration,
+          dayButtonOutsideMonthOpacity ?? _this.dayButtonOutsideMonthOpacity,
+      dayButtonPadding: dayButtonPadding ?? _this.dayButtonPadding,
+      dayButtonDecoration: dayButtonDecoration ?? _this.dayButtonDecoration,
       selectedDayButtonTextStyle:
-          selectedDayButtonTextStyle ?? a.selectedDayButtonTextStyle,
+          selectedDayButtonTextStyle ?? _this.selectedDayButtonTextStyle,
       insideRangeDayButtonTextStyle:
-          insideRangeDayButtonTextStyle ?? a.insideRangeDayButtonTextStyle,
-      dayButtonTextStyle: dayButtonTextStyle ?? a.dayButtonTextStyle,
-      dayButtonVariant: dayButtonVariant ?? a.dayButtonVariant,
+          insideRangeDayButtonTextStyle ?? _this.insideRangeDayButtonTextStyle,
+      dayButtonTextStyle: dayButtonTextStyle ?? _this.dayButtonTextStyle,
+      dayButtonVariant: dayButtonVariant ?? _this.dayButtonVariant,
       selectedDayButtonVariant:
-          selectedDayButtonVariant ?? a.selectedDayButtonVariant,
+          selectedDayButtonVariant ?? _this.selectedDayButtonVariant,
       insideRangeDayButtonVariant:
-          insideRangeDayButtonVariant ?? a.insideRangeDayButtonVariant,
-      todayButtonVariant: todayButtonVariant ?? a.todayButtonVariant,
-      gridMainAxisSpacing: gridMainAxisSpacing ?? a.gridMainAxisSpacing,
-      gridCrossAxisSpacing: gridCrossAxisSpacing ?? a.gridCrossAxisSpacing,
+          insideRangeDayButtonVariant ?? _this.insideRangeDayButtonVariant,
+      todayButtonVariant: todayButtonVariant ?? _this.todayButtonVariant,
+      gridMainAxisSpacing: gridMainAxisSpacing ?? _this.gridMainAxisSpacing,
+      gridCrossAxisSpacing: gridCrossAxisSpacing ?? _this.gridCrossAxisSpacing,
       dayButtonOutsideMonthTextStyle:
-          dayButtonOutsideMonthTextStyle ?? a.dayButtonOutsideMonthTextStyle,
+          dayButtonOutsideMonthTextStyle ??
+          _this.dayButtonOutsideMonthTextStyle,
       dayButtonOutsideMonthVariant:
-          dayButtonOutsideMonthVariant ?? a.dayButtonOutsideMonthVariant,
+          dayButtonOutsideMonthVariant ?? _this.dayButtonOutsideMonthVariant,
       selectedDayButtonOusideMonthVariant:
           selectedDayButtonOusideMonthVariant ??
-          a.selectedDayButtonOusideMonthVariant,
-      captionLayout: captionLayout ?? a.captionLayout,
-      hideWeekdayNames: hideWeekdayNames ?? a.hideWeekdayNames,
-      showOutsideDays: showOutsideDays ?? a.showOutsideDays,
-      formatMonthYear: formatMonthYear ?? a.formatMonthYear,
-      formatMonth: formatMonth ?? a.formatMonth,
-      formatYear: formatYear ?? a.formatYear,
-      formatWeekday: formatWeekday ?? a.formatWeekday,
-      dropdownFormatMonth: dropdownFormatMonth ?? a.dropdownFormatMonth,
-      dropdownFormatYear: dropdownFormatYear ?? a.dropdownFormatYear,
-      showWeekNumbers: showWeekNumbers ?? a.showWeekNumbers,
-      weekStartsOn: weekStartsOn ?? a.weekStartsOn,
-      fixedWeeks: fixedWeeks ?? a.fixedWeeks,
-      allowDeselection: allowDeselection ?? a.allowDeselection,
+          _this.selectedDayButtonOusideMonthVariant,
+      captionLayout: captionLayout ?? _this.captionLayout,
+      hideWeekdayNames: hideWeekdayNames ?? _this.hideWeekdayNames,
+      showOutsideDays: showOutsideDays ?? _this.showOutsideDays,
+      formatMonthYear: formatMonthYear ?? _this.formatMonthYear,
+      formatMonth: formatMonth ?? _this.formatMonth,
+      formatYear: formatYear ?? _this.formatYear,
+      formatWeekday: formatWeekday ?? _this.formatWeekday,
+      dropdownFormatMonth: dropdownFormatMonth ?? _this.dropdownFormatMonth,
+      dropdownFormatYear: dropdownFormatYear ?? _this.dropdownFormatYear,
+      showWeekNumbers: showWeekNumbers ?? _this.showWeekNumbers,
+      weekStartsOn: weekStartsOn ?? _this.weekStartsOn,
+      fixedWeeks: fixedWeeks ?? _this.fixedWeeks,
+      allowDeselection: allowDeselection ?? _this.allowDeselection,
     );
   }
 
   ShadCalendarTheme merge(ShadCalendarTheme? other) {
-    final current = (this as ShadCalendarTheme);
+    final _this = (this as ShadCalendarTheme);
 
-    if (other == null) {
-      return current;
+    if (other == null || identical(_this, other)) {
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -367,7 +368,7 @@ mixin _$ShadCalendarTheme {
       forwardNavigationButtonIconData: other.forwardNavigationButtonIconData,
       navigationButtonPadding: other.navigationButtonPadding,
       navigationButtonDisabledOpacity: other.navigationButtonDisabledOpacity,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       spacingBetweenMonths: other.spacingBetweenMonths,
       runSpacingBetweenMonths: other.runSpacingBetweenMonths,
       monthConstraints: other.monthConstraints,
@@ -375,39 +376,41 @@ mixin _$ShadCalendarTheme {
       headerPadding: other.headerPadding,
       captionLayoutGap: other.captionLayoutGap,
       headerTextStyle:
-          current.headerTextStyle?.merge(other.headerTextStyle) ??
+          _this.headerTextStyle?.merge(other.headerTextStyle) ??
           other.headerTextStyle,
       weekdaysPadding: other.weekdaysPadding,
       weekdaysTextStyle:
-          current.weekdaysTextStyle?.merge(other.weekdaysTextStyle) ??
+          _this.weekdaysTextStyle?.merge(other.weekdaysTextStyle) ??
           other.weekdaysTextStyle,
       weekdaysTextAlign: other.weekdaysTextAlign,
       weekNumbersHeaderText: other.weekNumbersHeaderText,
       weekNumbersHeaderTextStyle:
-          current.weekNumbersHeaderTextStyle?.merge(
+          _this.weekNumbersHeaderTextStyle?.merge(
             other.weekNumbersHeaderTextStyle,
           ) ??
           other.weekNumbersHeaderTextStyle,
       weekNumbersTextStyle:
-          current.weekNumbersTextStyle?.merge(other.weekNumbersTextStyle) ??
+          _this.weekNumbersTextStyle?.merge(other.weekNumbersTextStyle) ??
           other.weekNumbersTextStyle,
       weekNumbersTextAlign: other.weekNumbersTextAlign,
       dayButtonSize: other.dayButtonSize,
       dayButtonOutsideMonthOpacity: other.dayButtonOutsideMonthOpacity,
       dayButtonPadding: other.dayButtonPadding,
-      dayButtonDecoration: other.dayButtonDecoration,
+      dayButtonDecoration:
+          _this.dayButtonDecoration?.merge(other.dayButtonDecoration) ??
+          other.dayButtonDecoration,
       selectedDayButtonTextStyle:
-          current.selectedDayButtonTextStyle?.merge(
+          _this.selectedDayButtonTextStyle?.merge(
             other.selectedDayButtonTextStyle,
           ) ??
           other.selectedDayButtonTextStyle,
       insideRangeDayButtonTextStyle:
-          current.insideRangeDayButtonTextStyle?.merge(
+          _this.insideRangeDayButtonTextStyle?.merge(
             other.insideRangeDayButtonTextStyle,
           ) ??
           other.insideRangeDayButtonTextStyle,
       dayButtonTextStyle:
-          current.dayButtonTextStyle?.merge(other.dayButtonTextStyle) ??
+          _this.dayButtonTextStyle?.merge(other.dayButtonTextStyle) ??
           other.dayButtonTextStyle,
       dayButtonVariant: other.dayButtonVariant,
       selectedDayButtonVariant: other.selectedDayButtonVariant,
@@ -416,7 +419,7 @@ mixin _$ShadCalendarTheme {
       gridMainAxisSpacing: other.gridMainAxisSpacing,
       gridCrossAxisSpacing: other.gridCrossAxisSpacing,
       dayButtonOutsideMonthTextStyle:
-          current.dayButtonOutsideMonthTextStyle?.merge(
+          _this.dayButtonOutsideMonthTextStyle?.merge(
             other.dayButtonOutsideMonthTextStyle,
           ) ??
           other.dayButtonOutsideMonthTextStyle,
@@ -449,136 +452,136 @@ mixin _$ShadCalendarTheme {
       return false;
     }
 
-    final value = (this as ShadCalendarTheme);
+    final _this = (this as ShadCalendarTheme);
+    final _other = (other as ShadCalendarTheme);
 
-    return other is ShadCalendarTheme &&
-        other.hideNavigation == value.hideNavigation &&
-        other.yearSelectorMinWidth == value.yearSelectorMinWidth &&
-        other.monthSelectorMinWidth == value.monthSelectorMinWidth &&
-        other.yearSelectorPadding == value.yearSelectorPadding &&
-        other.monthSelectorPadding == value.monthSelectorPadding &&
-        other.navigationButtonSize == value.navigationButtonSize &&
-        other.navigationButtonIconSize == value.navigationButtonIconSize &&
-        other.backNavigationButtonIconData ==
-            value.backNavigationButtonIconData &&
-        other.forwardNavigationButtonIconData ==
-            value.forwardNavigationButtonIconData &&
-        other.navigationButtonPadding == value.navigationButtonPadding &&
-        other.navigationButtonDisabledOpacity ==
-            value.navigationButtonDisabledOpacity &&
-        other.decoration == value.decoration &&
-        other.spacingBetweenMonths == value.spacingBetweenMonths &&
-        other.runSpacingBetweenMonths == value.runSpacingBetweenMonths &&
-        other.monthConstraints == value.monthConstraints &&
-        other.headerHeight == value.headerHeight &&
-        other.headerPadding == value.headerPadding &&
-        other.captionLayoutGap == value.captionLayoutGap &&
-        other.headerTextStyle == value.headerTextStyle &&
-        other.weekdaysPadding == value.weekdaysPadding &&
-        other.weekdaysTextStyle == value.weekdaysTextStyle &&
-        other.weekdaysTextAlign == value.weekdaysTextAlign &&
-        other.weekNumbersHeaderText == value.weekNumbersHeaderText &&
-        other.weekNumbersHeaderTextStyle == value.weekNumbersHeaderTextStyle &&
-        other.weekNumbersTextStyle == value.weekNumbersTextStyle &&
-        other.weekNumbersTextAlign == value.weekNumbersTextAlign &&
-        other.dayButtonSize == value.dayButtonSize &&
-        other.dayButtonOutsideMonthOpacity ==
-            value.dayButtonOutsideMonthOpacity &&
-        other.dayButtonPadding == value.dayButtonPadding &&
-        other.dayButtonDecoration == value.dayButtonDecoration &&
-        other.selectedDayButtonTextStyle == value.selectedDayButtonTextStyle &&
-        other.insideRangeDayButtonTextStyle ==
-            value.insideRangeDayButtonTextStyle &&
-        other.dayButtonTextStyle == value.dayButtonTextStyle &&
-        other.dayButtonVariant == value.dayButtonVariant &&
-        other.selectedDayButtonVariant == value.selectedDayButtonVariant &&
-        other.insideRangeDayButtonVariant ==
-            value.insideRangeDayButtonVariant &&
-        other.todayButtonVariant == value.todayButtonVariant &&
-        other.gridMainAxisSpacing == value.gridMainAxisSpacing &&
-        other.gridCrossAxisSpacing == value.gridCrossAxisSpacing &&
-        other.dayButtonOutsideMonthTextStyle ==
-            value.dayButtonOutsideMonthTextStyle &&
-        other.dayButtonOutsideMonthVariant ==
-            value.dayButtonOutsideMonthVariant &&
-        other.selectedDayButtonOusideMonthVariant ==
-            value.selectedDayButtonOusideMonthVariant &&
-        other.captionLayout == value.captionLayout &&
-        other.hideWeekdayNames == value.hideWeekdayNames &&
-        other.showOutsideDays == value.showOutsideDays &&
-        other.formatMonthYear == value.formatMonthYear &&
-        other.formatMonth == value.formatMonth &&
-        other.formatYear == value.formatYear &&
-        other.formatWeekday == value.formatWeekday &&
-        other.dropdownFormatMonth == value.dropdownFormatMonth &&
-        other.dropdownFormatYear == value.dropdownFormatYear &&
-        other.showWeekNumbers == value.showWeekNumbers &&
-        other.weekStartsOn == value.weekStartsOn &&
-        other.fixedWeeks == value.fixedWeeks &&
-        other.allowDeselection == value.allowDeselection;
+    return _other.hideNavigation == _this.hideNavigation &&
+        _other.yearSelectorMinWidth == _this.yearSelectorMinWidth &&
+        _other.monthSelectorMinWidth == _this.monthSelectorMinWidth &&
+        _other.yearSelectorPadding == _this.yearSelectorPadding &&
+        _other.monthSelectorPadding == _this.monthSelectorPadding &&
+        _other.navigationButtonSize == _this.navigationButtonSize &&
+        _other.navigationButtonIconSize == _this.navigationButtonIconSize &&
+        _other.backNavigationButtonIconData ==
+            _this.backNavigationButtonIconData &&
+        _other.forwardNavigationButtonIconData ==
+            _this.forwardNavigationButtonIconData &&
+        _other.navigationButtonPadding == _this.navigationButtonPadding &&
+        _other.navigationButtonDisabledOpacity ==
+            _this.navigationButtonDisabledOpacity &&
+        _other.decoration == _this.decoration &&
+        _other.spacingBetweenMonths == _this.spacingBetweenMonths &&
+        _other.runSpacingBetweenMonths == _this.runSpacingBetweenMonths &&
+        _other.monthConstraints == _this.monthConstraints &&
+        _other.headerHeight == _this.headerHeight &&
+        _other.headerPadding == _this.headerPadding &&
+        _other.captionLayoutGap == _this.captionLayoutGap &&
+        _other.headerTextStyle == _this.headerTextStyle &&
+        _other.weekdaysPadding == _this.weekdaysPadding &&
+        _other.weekdaysTextStyle == _this.weekdaysTextStyle &&
+        _other.weekdaysTextAlign == _this.weekdaysTextAlign &&
+        _other.weekNumbersHeaderText == _this.weekNumbersHeaderText &&
+        _other.weekNumbersHeaderTextStyle == _this.weekNumbersHeaderTextStyle &&
+        _other.weekNumbersTextStyle == _this.weekNumbersTextStyle &&
+        _other.weekNumbersTextAlign == _this.weekNumbersTextAlign &&
+        _other.dayButtonSize == _this.dayButtonSize &&
+        _other.dayButtonOutsideMonthOpacity ==
+            _this.dayButtonOutsideMonthOpacity &&
+        _other.dayButtonPadding == _this.dayButtonPadding &&
+        _other.dayButtonDecoration == _this.dayButtonDecoration &&
+        _other.selectedDayButtonTextStyle == _this.selectedDayButtonTextStyle &&
+        _other.insideRangeDayButtonTextStyle ==
+            _this.insideRangeDayButtonTextStyle &&
+        _other.dayButtonTextStyle == _this.dayButtonTextStyle &&
+        _other.dayButtonVariant == _this.dayButtonVariant &&
+        _other.selectedDayButtonVariant == _this.selectedDayButtonVariant &&
+        _other.insideRangeDayButtonVariant ==
+            _this.insideRangeDayButtonVariant &&
+        _other.todayButtonVariant == _this.todayButtonVariant &&
+        _other.gridMainAxisSpacing == _this.gridMainAxisSpacing &&
+        _other.gridCrossAxisSpacing == _this.gridCrossAxisSpacing &&
+        _other.dayButtonOutsideMonthTextStyle ==
+            _this.dayButtonOutsideMonthTextStyle &&
+        _other.dayButtonOutsideMonthVariant ==
+            _this.dayButtonOutsideMonthVariant &&
+        _other.selectedDayButtonOusideMonthVariant ==
+            _this.selectedDayButtonOusideMonthVariant &&
+        _other.captionLayout == _this.captionLayout &&
+        _other.hideWeekdayNames == _this.hideWeekdayNames &&
+        _other.showOutsideDays == _this.showOutsideDays &&
+        _other.formatMonthYear == _this.formatMonthYear &&
+        _other.formatMonth == _this.formatMonth &&
+        _other.formatYear == _this.formatYear &&
+        _other.formatWeekday == _this.formatWeekday &&
+        _other.dropdownFormatMonth == _this.dropdownFormatMonth &&
+        _other.dropdownFormatYear == _this.dropdownFormatYear &&
+        _other.showWeekNumbers == _this.showWeekNumbers &&
+        _other.weekStartsOn == _this.weekStartsOn &&
+        _other.fixedWeeks == _this.fixedWeeks &&
+        _other.allowDeselection == _this.allowDeselection;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadCalendarTheme);
+    final _this = (this as ShadCalendarTheme);
 
     return Object.hashAll([
       runtimeType,
-      value.hideNavigation,
-      value.yearSelectorMinWidth,
-      value.monthSelectorMinWidth,
-      value.yearSelectorPadding,
-      value.monthSelectorPadding,
-      value.navigationButtonSize,
-      value.navigationButtonIconSize,
-      value.backNavigationButtonIconData,
-      value.forwardNavigationButtonIconData,
-      value.navigationButtonPadding,
-      value.navigationButtonDisabledOpacity,
-      value.decoration,
-      value.spacingBetweenMonths,
-      value.runSpacingBetweenMonths,
-      value.monthConstraints,
-      value.headerHeight,
-      value.headerPadding,
-      value.captionLayoutGap,
-      value.headerTextStyle,
-      value.weekdaysPadding,
-      value.weekdaysTextStyle,
-      value.weekdaysTextAlign,
-      value.weekNumbersHeaderText,
-      value.weekNumbersHeaderTextStyle,
-      value.weekNumbersTextStyle,
-      value.weekNumbersTextAlign,
-      value.dayButtonSize,
-      value.dayButtonOutsideMonthOpacity,
-      value.dayButtonPadding,
-      value.dayButtonDecoration,
-      value.selectedDayButtonTextStyle,
-      value.insideRangeDayButtonTextStyle,
-      value.dayButtonTextStyle,
-      value.dayButtonVariant,
-      value.selectedDayButtonVariant,
-      value.insideRangeDayButtonVariant,
-      value.todayButtonVariant,
-      value.gridMainAxisSpacing,
-      value.gridCrossAxisSpacing,
-      value.dayButtonOutsideMonthTextStyle,
-      value.dayButtonOutsideMonthVariant,
-      value.selectedDayButtonOusideMonthVariant,
-      value.captionLayout,
-      value.hideWeekdayNames,
-      value.showOutsideDays,
-      value.formatMonthYear,
-      value.formatMonth,
-      value.formatYear,
-      value.formatWeekday,
-      value.dropdownFormatMonth,
-      value.dropdownFormatYear,
-      value.showWeekNumbers,
-      value.weekStartsOn,
-      value.fixedWeeks,
-      value.allowDeselection,
+      _this.hideNavigation,
+      _this.yearSelectorMinWidth,
+      _this.monthSelectorMinWidth,
+      _this.yearSelectorPadding,
+      _this.monthSelectorPadding,
+      _this.navigationButtonSize,
+      _this.navigationButtonIconSize,
+      _this.backNavigationButtonIconData,
+      _this.forwardNavigationButtonIconData,
+      _this.navigationButtonPadding,
+      _this.navigationButtonDisabledOpacity,
+      _this.decoration,
+      _this.spacingBetweenMonths,
+      _this.runSpacingBetweenMonths,
+      _this.monthConstraints,
+      _this.headerHeight,
+      _this.headerPadding,
+      _this.captionLayoutGap,
+      _this.headerTextStyle,
+      _this.weekdaysPadding,
+      _this.weekdaysTextStyle,
+      _this.weekdaysTextAlign,
+      _this.weekNumbersHeaderText,
+      _this.weekNumbersHeaderTextStyle,
+      _this.weekNumbersTextStyle,
+      _this.weekNumbersTextAlign,
+      _this.dayButtonSize,
+      _this.dayButtonOutsideMonthOpacity,
+      _this.dayButtonPadding,
+      _this.dayButtonDecoration,
+      _this.selectedDayButtonTextStyle,
+      _this.insideRangeDayButtonTextStyle,
+      _this.dayButtonTextStyle,
+      _this.dayButtonVariant,
+      _this.selectedDayButtonVariant,
+      _this.insideRangeDayButtonVariant,
+      _this.todayButtonVariant,
+      _this.gridMainAxisSpacing,
+      _this.gridCrossAxisSpacing,
+      _this.dayButtonOutsideMonthTextStyle,
+      _this.dayButtonOutsideMonthVariant,
+      _this.selectedDayButtonOusideMonthVariant,
+      _this.captionLayout,
+      _this.hideWeekdayNames,
+      _this.showOutsideDays,
+      _this.formatMonthYear,
+      _this.formatMonth,
+      _this.formatYear,
+      _this.formatWeekday,
+      _this.dropdownFormatMonth,
+      _this.dropdownFormatYear,
+      _this.showWeekNumbers,
+      _this.weekStartsOn,
+      _this.fixedWeeks,
+      _this.allowDeselection,
     ]);
   }
 }

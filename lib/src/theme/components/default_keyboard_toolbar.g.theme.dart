@@ -17,19 +17,25 @@ mixin _$ShadDefaultKeyboardToolbarTheme {
     ShadDefaultKeyboardToolbarTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadDefaultKeyboardToolbarTheme(
-      backgroundColor: Color.lerp(a?.backgroundColor, b?.backgroundColor, t),
-      doneText: t < 0.5 ? a?.doneText : b?.doneText,
-      showPreviousButton: t < 0.5
-          ? a?.showPreviousButton
-          : b?.showPreviousButton,
-      showNextButton: t < 0.5 ? a?.showNextButton : b?.showNextButton,
-      showDoneButton: t < 0.5 ? a?.showDoneButton : b?.showDoneButton,
-      hideThreshold: lerpDouble$(a?.hideThreshold, b?.hideThreshold, t),
+      backgroundColor: Color.lerp(a.backgroundColor, b.backgroundColor, t),
+      doneText: t < 0.5 ? a.doneText : b.doneText,
+      showPreviousButton: t < 0.5 ? a.showPreviousButton : b.showPreviousButton,
+      showNextButton: t < 0.5 ? a.showNextButton : b.showNextButton,
+      showDoneButton: t < 0.5 ? a.showDoneButton : b.showDoneButton,
+      hideThreshold: lerpDouble$(a.hideThreshold, b.hideThreshold, t),
     );
   }
 
@@ -41,25 +47,25 @@ mixin _$ShadDefaultKeyboardToolbarTheme {
     bool? showDoneButton,
     double? hideThreshold,
   }) {
-    final a = (this as ShadDefaultKeyboardToolbarTheme);
+    final _this = (this as ShadDefaultKeyboardToolbarTheme);
 
     return ShadDefaultKeyboardToolbarTheme(
-      backgroundColor: backgroundColor ?? a.backgroundColor,
-      doneText: doneText ?? a.doneText,
-      showPreviousButton: showPreviousButton ?? a.showPreviousButton,
-      showNextButton: showNextButton ?? a.showNextButton,
-      showDoneButton: showDoneButton ?? a.showDoneButton,
-      hideThreshold: hideThreshold ?? a.hideThreshold,
+      backgroundColor: backgroundColor ?? _this.backgroundColor,
+      doneText: doneText ?? _this.doneText,
+      showPreviousButton: showPreviousButton ?? _this.showPreviousButton,
+      showNextButton: showNextButton ?? _this.showNextButton,
+      showDoneButton: showDoneButton ?? _this.showDoneButton,
+      hideThreshold: hideThreshold ?? _this.hideThreshold,
     );
   }
 
   ShadDefaultKeyboardToolbarTheme merge(
     ShadDefaultKeyboardToolbarTheme? other,
   ) {
-    final current = (this as ShadDefaultKeyboardToolbarTheme);
+    final _this = (this as ShadDefaultKeyboardToolbarTheme);
 
-    if (other == null) {
-      return current;
+    if (other == null || identical(_this, other)) {
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -86,29 +92,29 @@ mixin _$ShadDefaultKeyboardToolbarTheme {
       return false;
     }
 
-    final value = (this as ShadDefaultKeyboardToolbarTheme);
+    final _this = (this as ShadDefaultKeyboardToolbarTheme);
+    final _other = (other as ShadDefaultKeyboardToolbarTheme);
 
-    return other is ShadDefaultKeyboardToolbarTheme &&
-        other.backgroundColor == value.backgroundColor &&
-        other.doneText == value.doneText &&
-        other.showPreviousButton == value.showPreviousButton &&
-        other.showNextButton == value.showNextButton &&
-        other.showDoneButton == value.showDoneButton &&
-        other.hideThreshold == value.hideThreshold;
+    return _other.backgroundColor == _this.backgroundColor &&
+        _other.doneText == _this.doneText &&
+        _other.showPreviousButton == _this.showPreviousButton &&
+        _other.showNextButton == _this.showNextButton &&
+        _other.showDoneButton == _this.showDoneButton &&
+        _other.hideThreshold == _this.hideThreshold;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadDefaultKeyboardToolbarTheme);
+    final _this = (this as ShadDefaultKeyboardToolbarTheme);
 
     return Object.hash(
       runtimeType,
-      value.backgroundColor,
-      value.doneText,
-      value.showPreviousButton,
-      value.showNextButton,
-      value.showDoneButton,
-      value.hideThreshold,
+      _this.backgroundColor,
+      _this.doneText,
+      _this.showPreviousButton,
+      _this.showNextButton,
+      _this.showDoneButton,
+      _this.hideThreshold,
     );
   }
 }

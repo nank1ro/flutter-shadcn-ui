@@ -17,25 +17,33 @@ mixin _$ShadTooltipTheme {
     ShadTooltipTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadTooltipTheme(
-      waitDuration: lerpDuration$(a?.waitDuration, b?.waitDuration, t),
-      showDuration: lerpDuration$(a?.showDuration, b?.showDuration, t),
-      effects: t < 0.5 ? a?.effects : b?.effects,
-      anchor: t < 0.5 ? a?.anchor : b?.anchor,
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      hoverStrategies: t < 0.5 ? a?.hoverStrategies : b?.hoverStrategies,
+      waitDuration: lerpDuration$(a.waitDuration, b.waitDuration, t),
+      showDuration: lerpDuration$(a.showDuration, b.showDuration, t),
+      effects: t < 0.5 ? a.effects : b.effects,
+      anchor: t < 0.5 ? a.anchor : b.anchor,
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      hoverStrategies: t < 0.5 ? a.hoverStrategies : b.hoverStrategies,
       longPressDuration: lerpDuration$(
-        a?.longPressDuration,
-        b?.longPressDuration,
+        a.longPressDuration,
+        b.longPressDuration,
         t,
       ),
-      duration: lerpDuration$(a?.duration, b?.duration, t),
-      reverseDuration: lerpDuration$(a?.reverseDuration, b?.reverseDuration, t),
+      duration: lerpDuration$(a.duration, b.duration, t),
+      reverseDuration: lerpDuration$(a.reverseDuration, b.reverseDuration, t),
     );
   }
 
@@ -51,27 +59,27 @@ mixin _$ShadTooltipTheme {
     Duration? duration,
     Duration? reverseDuration,
   }) {
-    final a = (this as ShadTooltipTheme);
+    final _this = (this as ShadTooltipTheme);
 
     return ShadTooltipTheme(
-      waitDuration: waitDuration ?? a.waitDuration,
-      showDuration: showDuration ?? a.showDuration,
-      effects: effects ?? a.effects,
-      anchor: anchor ?? a.anchor,
-      padding: padding ?? a.padding,
-      decoration: decoration ?? a.decoration,
-      hoverStrategies: hoverStrategies ?? a.hoverStrategies,
-      longPressDuration: longPressDuration ?? a.longPressDuration,
-      duration: duration ?? a.duration,
-      reverseDuration: reverseDuration ?? a.reverseDuration,
+      waitDuration: waitDuration ?? _this.waitDuration,
+      showDuration: showDuration ?? _this.showDuration,
+      effects: effects ?? _this.effects,
+      anchor: anchor ?? _this.anchor,
+      padding: padding ?? _this.padding,
+      decoration: decoration ?? _this.decoration,
+      hoverStrategies: hoverStrategies ?? _this.hoverStrategies,
+      longPressDuration: longPressDuration ?? _this.longPressDuration,
+      duration: duration ?? _this.duration,
+      reverseDuration: reverseDuration ?? _this.reverseDuration,
     );
   }
 
   ShadTooltipTheme merge(ShadTooltipTheme? other) {
-    final current = (this as ShadTooltipTheme);
+    final _this = (this as ShadTooltipTheme);
 
-    if (other == null) {
-      return current;
+    if (other == null || identical(_this, other)) {
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -84,7 +92,7 @@ mixin _$ShadTooltipTheme {
       effects: other.effects,
       anchor: other.anchor,
       padding: other.padding,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       hoverStrategies: other.hoverStrategies,
       longPressDuration: other.longPressDuration,
       duration: other.duration,
@@ -102,37 +110,37 @@ mixin _$ShadTooltipTheme {
       return false;
     }
 
-    final value = (this as ShadTooltipTheme);
+    final _this = (this as ShadTooltipTheme);
+    final _other = (other as ShadTooltipTheme);
 
-    return other is ShadTooltipTheme &&
-        other.waitDuration == value.waitDuration &&
-        other.showDuration == value.showDuration &&
-        other.effects == value.effects &&
-        other.anchor == value.anchor &&
-        other.padding == value.padding &&
-        other.decoration == value.decoration &&
-        other.hoverStrategies == value.hoverStrategies &&
-        other.longPressDuration == value.longPressDuration &&
-        other.duration == value.duration &&
-        other.reverseDuration == value.reverseDuration;
+    return _other.waitDuration == _this.waitDuration &&
+        _other.showDuration == _this.showDuration &&
+        _other.effects == _this.effects &&
+        _other.anchor == _this.anchor &&
+        _other.padding == _this.padding &&
+        _other.decoration == _this.decoration &&
+        _other.hoverStrategies == _this.hoverStrategies &&
+        _other.longPressDuration == _this.longPressDuration &&
+        _other.duration == _this.duration &&
+        _other.reverseDuration == _this.reverseDuration;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadTooltipTheme);
+    final _this = (this as ShadTooltipTheme);
 
     return Object.hash(
       runtimeType,
-      value.waitDuration,
-      value.showDuration,
-      value.effects,
-      value.anchor,
-      value.padding,
-      value.decoration,
-      value.hoverStrategies,
-      value.longPressDuration,
-      value.duration,
-      value.reverseDuration,
+      _this.waitDuration,
+      _this.showDuration,
+      _this.effects,
+      _this.anchor,
+      _this.padding,
+      _this.decoration,
+      _this.hoverStrategies,
+      _this.longPressDuration,
+      _this.duration,
+      _this.reverseDuration,
     );
   }
 }

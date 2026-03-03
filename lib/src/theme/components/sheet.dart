@@ -44,6 +44,9 @@ class ShadSheetTheme with _$ShadSheetTheme {
     this.closeProgressThreshold,
     this.side,
     this.useSafeArea,
+    this.titlePinned,
+    this.descriptionPinned,
+    this.actionsPinned,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -147,6 +150,15 @@ class ShadSheetTheme with _$ShadSheetTheme {
 
   /// {@macro ShadDialog.useSafeArea}
   final bool? useSafeArea;
+
+  /// {@macro ShadDialog.titlePinned}
+  final bool? titlePinned;
+
+  /// {@macro ShadDialog.descriptionPinned}
+  final bool? descriptionPinned;
+
+  /// {@macro ShadDialog.actionsPinned}
+  final bool? actionsPinned;
 
   static ShadSheetTheme? lerp(
     ShadSheetTheme? a,

@@ -10,6 +10,7 @@ import 'package:shadcn_ui/src/theme/components/accordion.dart';
 import 'package:shadcn_ui/src/theme/components/alert.dart';
 import 'package:shadcn_ui/src/theme/components/avatar.dart';
 import 'package:shadcn_ui/src/theme/components/badge.dart';
+import 'package:shadcn_ui/src/theme/components/breadcrumb.dart';
 import 'package:shadcn_ui/src/theme/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/button_sizes.dart';
 import 'package:shadcn_ui/src/theme/components/calendar.dart';
@@ -220,6 +221,46 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       size: const Size.square(40),
       shape: const CircleBorder(),
       backgroundColor: colorScheme.muted,
+    );
+  }
+
+  @override
+  ShadBreadcrumbTheme breadcrumbTheme() {
+    return ShadBreadcrumbTheme(
+      ellipsis: Icon(
+        LucideIcons.ellipsis,
+        size: 14,
+        color: colorScheme.mutedForeground,
+      ),
+      spacing: 10,
+      ellipsisSize: 16,
+      separatorSize: 14,
+      itemTextStyle: effectiveTextTheme.small
+          .copyWith(fontWeight: FontWeight.normal)
+          .fallback(color: colorScheme.mutedForeground),
+      lastItemTextColor: colorScheme.foreground,
+      linkTextStyle: effectiveTextTheme.small
+          .copyWith(fontWeight: FontWeight.normal)
+          .fallback(color: colorScheme.mutedForeground),
+      linkNormalTextColor: colorScheme.mutedForeground,
+      linkHoverTextColor: colorScheme.foreground,
+      mainAxisAlignment: WrapAlignment.start,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      dropdownMenuBackgroundColor: colorScheme.popover,
+      dropdownMenuPadding: const EdgeInsets.all(4),
+      dropdownTextStyle: effectiveTextTheme.small.fallback(
+        color: colorScheme.foreground,
+      ),
+      dropdownItemPadding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 10,
+      ),
+      dropdownMenuAnchor: const ShadAnchorAuto(
+        offset: Offset(0, 4),
+        targetAnchor: Alignment.bottomLeft,
+        followerAnchor: Alignment.bottomRight,
+      ),
+      dropdownArrowGap: 4,
     );
   }
 

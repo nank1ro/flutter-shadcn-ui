@@ -18,7 +18,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.error,
     super.description,
     super.onChanged,
-    super.valueTransformer,
+    @Deprecated('Use toValueTransformer instead') super.valueTransformer,
+    super.toValueTransformer,
+    super.fromValueTransformer,
     super.onReset,
     super.enabled,
     super.autovalidateMode,
@@ -105,6 +107,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
+
+    /// {@macro ShadSelect.onPressed}
+    VoidCallback? onPressed,
   }) : super(
          decorationBuilder: (context) =>
              (ShadTheme.of(context).selectTheme.decoration ??
@@ -122,7 +127,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
              placeholder: placeholder,
              initialValue: state.initialValue,
              enabled: state.enabled,
-             onChanged: state.didChange,
              closeOnTapOutside: closeOnTapOutside,
              anchor: anchor,
              minWidth: minWidth,
@@ -145,6 +149,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
              shrinkWrap: shrinkWrap,
              controller: state.controller,
              ensureSelectedVisible: ensureSelectedVisible,
+             onPressed: onPressed,
            );
          },
        );
@@ -157,7 +162,10 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.error,
     super.description,
     super.onChanged,
-    super.valueTransformer,
+    super.forceErrorText,
+    @Deprecated('Use toValueTransformer instead') super.valueTransformer,
+    super.toValueTransformer,
+    super.fromValueTransformer,
     super.onReset,
     super.enabled,
     super.autovalidateMode,
@@ -221,6 +229,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.onSearchSubmitted}
     ValueChanged<String>? onSearchSubmitted,
+
+    /// {@macro ShadSelect.onPressed}
+    VoidCallback? onPressed,
   }) : super(
          decorationBuilder: (context) =>
              (ShadTheme.of(context).selectTheme.decoration ??
@@ -238,7 +249,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
              placeholder: placeholder,
              initialValue: state.initialValue,
              enabled: state.enabled,
-             onChanged: state.didChange,
              closeOnTapOutside: closeOnTapOutside,
              anchor: anchor,
              minWidth: minWidth,
@@ -270,6 +280,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
              ensureSelectedVisible: ensureSelectedVisible,
              searchFocusNode: searchFocusNode,
              onSearchSubmitted: onSearchSubmitted,
+             onPressed: onPressed,
            );
          },
        );
@@ -282,7 +293,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.error,
     super.description,
     super.onChanged,
-    super.valueTransformer,
+    @Deprecated('Use toValueTransformer instead') super.valueTransformer,
+    super.toValueTransformer,
+    super.fromValueTransformer,
     super.onReset,
     super.enabled,
     super.autovalidateMode,
@@ -290,6 +303,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
     super.initialValue,
     super.focusNode,
     super.validator,
+    super.forceErrorText,
     required ShadSelectVariant variant,
     required ShadSelectedOptionBuilder<T> selectedOptionBuilder,
     Iterable<Widget>? options,
@@ -346,6 +360,9 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
 
     /// {@macro ShadSelect.onSearchSubmitted}
     ValueChanged<String>? onSearchSubmitted,
+
+    /// {@macro ShadSelect.onPressed}
+    VoidCallback? onPressed,
   }) : assert(
          variant == ShadSelectVariant.primary ||
              variant == ShadSelectVariant.search,
@@ -368,7 +385,6 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
              placeholder: placeholder,
              initialValue: state.initialValue,
              enabled: state.enabled,
-             onChanged: state.didChange,
              closeOnTapOutside: closeOnTapOutside,
              anchor: anchor,
              minWidth: minWidth,
@@ -400,6 +416,7 @@ class ShadSelectFormField<T> extends ShadFormBuilderField<T> {
              ensureSelectedVisible: ensureSelectedVisible,
              searchFocusNode: searchFocusNode,
              onSearchSubmitted: onSearchSubmitted,
+             onPressed: onPressed,
            );
          },
        );
@@ -429,6 +446,12 @@ class _ShadFormBuilderSelectState<T>
   }
 
   @override
+  void didChange(T? value) {
+    super.didChange(value);
+    controller.value = value is T ? <T>{value} : <T>{};
+  }
+
+  @override
   void dispose() {
     controller.removeListener(onControllerChange);
     _controller?.dispose();
@@ -436,7 +459,9 @@ class _ShadFormBuilderSelectState<T>
   }
 
   void onControllerChange() {
-    didChange(controller.value.firstOrNull);
+    if (controller.value.firstOrNull != value) {
+      didChange(controller.value.firstOrNull);
+    }
   }
 
   @override
@@ -455,7 +480,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     super.error,
     super.description,
     super.onChanged,
-    super.valueTransformer,
+    @Deprecated('Use toValueTransformer instead') super.valueTransformer,
+    super.toValueTransformer,
+    super.fromValueTransformer,
     super.onReset,
     super.enabled,
     super.autovalidateMode,
@@ -463,6 +490,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     super.initialValue,
     super.focusNode,
     super.validator,
+    super.forceErrorText,
     required ShadSelectedOptionBuilder<List<T>> selectedOptionsBuilder,
     Iterable<Widget>? options,
 
@@ -497,6 +525,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.ensureSelectedVisible}
     bool? ensureSelectedVisible,
+
+    /// {@macro ShadSelect.onPressed}
+    VoidCallback? onPressed,
   }) : super(
          decorationBuilder: (context) =>
              (ShadTheme.of(context).selectTheme.decoration ??
@@ -512,7 +543,6 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
              focusNode: state.focusNode,
              placeholder: placeholder,
              enabled: state.enabled,
-             onChanged: state.didChange,
              closeOnTapOutside: closeOnTapOutside,
              anchor: anchor,
              minWidth: minWidth,
@@ -533,6 +563,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
              allowDeselection: allowDeselection,
              controller: state.controller,
              ensureSelectedVisible: ensureSelectedVisible,
+             onPressed: onPressed,
            );
          },
        );
@@ -545,7 +576,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     super.error,
     super.description,
     super.onChanged,
-    super.valueTransformer,
+    @Deprecated('Use toValueTransformer instead') super.valueTransformer,
+    super.toValueTransformer,
+    super.fromValueTransformer,
     super.onReset,
     super.enabled,
     super.autovalidateMode,
@@ -553,6 +586,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     super.initialValue,
     super.focusNode,
     super.validator,
+    super.forceErrorText,
     required ShadSelectedOptionBuilder<List<T>> selectedOptionsBuilder,
     Iterable<Widget>? options,
 
@@ -600,6 +634,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.onSearchSubmitted}
     ValueChanged<String>? onSearchSubmitted,
+
+    /// {@macro ShadSelect.onPressed}
+    VoidCallback? onPressed,
   }) : super(
          decorationBuilder: (context) =>
              (ShadTheme.of(context).selectTheme.decoration ??
@@ -615,7 +652,6 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
              focusNode: state.focusNode,
              placeholder: placeholder,
              enabled: state.enabled,
-             onChanged: state.didChange,
              closeOnTapOutside: closeOnTapOutside,
              anchor: anchor,
              minWidth: minWidth,
@@ -645,6 +681,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
              ensureSelectedVisible: ensureSelectedVisible,
              searchFocusNode: searchFocusNode,
              onSearchSubmitted: onSearchSubmitted,
+             onPressed: onPressed,
            );
          },
        );
@@ -657,7 +694,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     super.error,
     super.description,
     super.onChanged,
-    super.valueTransformer,
+    @Deprecated('Use toValueTransformer instead') super.valueTransformer,
+    super.toValueTransformer,
+    super.fromValueTransformer,
     super.onReset,
     super.enabled,
     super.autovalidateMode,
@@ -665,6 +704,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
     super.initialValue,
     super.focusNode,
     super.validator,
+    super.forceErrorText,
     required ShadSelectVariant variant,
     required ShadSelectedOptionBuilder<List<T>> selectedOptionsBuilder,
     Iterable<Widget>? options,
@@ -710,6 +750,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.onSearchSubmitted}
     ValueChanged<String>? onSearchSubmitted,
+
+    /// {@macro ShadSelect.onPressed}
+    VoidCallback? onPressed,
   }) : assert(
          variant == ShadSelectVariant.multiple ||
              variant == ShadSelectVariant.multipleWithSearch,
@@ -760,6 +803,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
              ensureSelectedVisible: ensureSelectedVisible,
              searchFocusNode: searchFocusNode,
              onSearchSubmitted: onSearchSubmitted,
+             onPressed: onPressed,
            );
          },
        );
@@ -787,6 +831,12 @@ class _ShadFormBuilderSelectMultipleState<T>
   }
 
   @override
+  void didChange(Set<T>? value) {
+    super.didChange(value);
+    controller.value = value ?? {};
+  }
+
+  @override
   void dispose() {
     controller.removeListener(onControllerChange);
     _controller?.dispose();
@@ -794,7 +844,9 @@ class _ShadFormBuilderSelectMultipleState<T>
   }
 
   void onControllerChange() {
-    didChange(controller.value.toSet());
+    if (controller.value != value) {
+      didChange(controller.value.toSet());
+    }
   }
 
   @override

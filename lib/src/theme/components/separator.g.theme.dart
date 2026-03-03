@@ -17,24 +17,32 @@ mixin _$ShadSeparatorTheme {
     ShadSeparatorTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadSeparatorTheme(
-      color: Color.lerp(a?.color, b?.color, t),
-      thickness: lerpDouble$(a?.thickness, b?.thickness, t),
+      color: Color.lerp(a.color, b.color, t),
+      thickness: lerpDouble$(a.thickness, b.thickness, t),
       verticalMargin: EdgeInsetsGeometry.lerp(
-        a?.verticalMargin,
-        b?.verticalMargin,
+        a.verticalMargin,
+        b.verticalMargin,
         t,
       ),
       horizontalMargin: EdgeInsetsGeometry.lerp(
-        a?.horizontalMargin,
-        b?.horizontalMargin,
+        a.horizontalMargin,
+        b.horizontalMargin,
         t,
       ),
-      radius: BorderRadiusGeometry.lerp(a?.radius, b?.radius, t),
+      radius: BorderRadiusGeometry.lerp(a.radius, b.radius, t),
     );
   }
 
@@ -45,22 +53,22 @@ mixin _$ShadSeparatorTheme {
     EdgeInsetsGeometry? horizontalMargin,
     BorderRadiusGeometry? radius,
   }) {
-    final a = (this as ShadSeparatorTheme);
+    final _this = (this as ShadSeparatorTheme);
 
     return ShadSeparatorTheme(
-      color: color ?? a.color,
-      thickness: thickness ?? a.thickness,
-      verticalMargin: verticalMargin ?? a.verticalMargin,
-      horizontalMargin: horizontalMargin ?? a.horizontalMargin,
-      radius: radius ?? a.radius,
+      color: color ?? _this.color,
+      thickness: thickness ?? _this.thickness,
+      verticalMargin: verticalMargin ?? _this.verticalMargin,
+      horizontalMargin: horizontalMargin ?? _this.horizontalMargin,
+      radius: radius ?? _this.radius,
     );
   }
 
   ShadSeparatorTheme merge(ShadSeparatorTheme? other) {
-    final current = (this as ShadSeparatorTheme);
+    final _this = (this as ShadSeparatorTheme);
 
-    if (other == null) {
-      return current;
+    if (other == null || identical(_this, other)) {
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -86,27 +94,27 @@ mixin _$ShadSeparatorTheme {
       return false;
     }
 
-    final value = (this as ShadSeparatorTheme);
+    final _this = (this as ShadSeparatorTheme);
+    final _other = (other as ShadSeparatorTheme);
 
-    return other is ShadSeparatorTheme &&
-        other.color == value.color &&
-        other.thickness == value.thickness &&
-        other.verticalMargin == value.verticalMargin &&
-        other.horizontalMargin == value.horizontalMargin &&
-        other.radius == value.radius;
+    return _other.color == _this.color &&
+        _other.thickness == _this.thickness &&
+        _other.verticalMargin == _this.verticalMargin &&
+        _other.horizontalMargin == _this.horizontalMargin &&
+        _other.radius == _this.radius;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadSeparatorTheme);
+    final _this = (this as ShadSeparatorTheme);
 
     return Object.hash(
       runtimeType,
-      value.color,
-      value.thickness,
-      value.verticalMargin,
-      value.horizontalMargin,
-      value.radius,
+      _this.color,
+      _this.thickness,
+      _this.verticalMargin,
+      _this.horizontalMargin,
+      _this.radius,
     );
   }
 }

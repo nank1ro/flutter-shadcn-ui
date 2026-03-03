@@ -451,7 +451,7 @@ class ShadContextMenuState extends State<ShadContextMenu> {
         groupId: widget.groupId,
         onEnter: (_) => widget.onHoverArea?.call(true),
         onExit: (_) => widget.onHoverArea?.call(false),
-        child: widget.child,
+        child: TapRegion(groupId: kContextMenuGroupId, child: widget.child),
       ),
     );
 

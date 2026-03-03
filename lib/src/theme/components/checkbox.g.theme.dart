@@ -17,22 +17,28 @@ mixin _$ShadCheckboxTheme {
     ShadCheckboxTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadCheckboxTheme(
-      color: Color.lerp(a?.color, b?.color, t),
-      size: lerpDouble$(a?.size, b?.size, t),
-      duration: lerpDuration$(a?.duration, b?.duration, t),
-      decoration: ShadDecoration.lerp(a?.decoration, b?.decoration, t),
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t),
-      crossAxisAlignment: t < 0.5
-          ? a?.crossAxisAlignment
-          : b?.crossAxisAlignment,
+      color: Color.lerp(a.color, b.color, t),
+      size: lerpDouble$(a.size, b.size, t),
+      duration: lerpDuration$(a.duration, b.duration, t),
+      decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
+      crossAxisAlignment: t < 0.5 ? a.crossAxisAlignment : b.crossAxisAlignment,
       checkboxPadding: EdgeInsetsGeometry.lerp(
-        a?.checkboxPadding,
-        b?.checkboxPadding,
+        a.checkboxPadding,
+        b.checkboxPadding,
         t,
       ),
     );
@@ -47,24 +53,24 @@ mixin _$ShadCheckboxTheme {
     CrossAxisAlignment? crossAxisAlignment,
     EdgeInsetsGeometry? checkboxPadding,
   }) {
-    final a = (this as ShadCheckboxTheme);
+    final _this = (this as ShadCheckboxTheme);
 
     return ShadCheckboxTheme(
-      color: color ?? a.color,
-      size: size ?? a.size,
-      duration: duration ?? a.duration,
-      decoration: decoration ?? a.decoration,
-      padding: padding ?? a.padding,
-      crossAxisAlignment: crossAxisAlignment ?? a.crossAxisAlignment,
-      checkboxPadding: checkboxPadding ?? a.checkboxPadding,
+      color: color ?? _this.color,
+      size: size ?? _this.size,
+      duration: duration ?? _this.duration,
+      decoration: decoration ?? _this.decoration,
+      padding: padding ?? _this.padding,
+      crossAxisAlignment: crossAxisAlignment ?? _this.crossAxisAlignment,
+      checkboxPadding: checkboxPadding ?? _this.checkboxPadding,
     );
   }
 
   ShadCheckboxTheme merge(ShadCheckboxTheme? other) {
-    final current = (this as ShadCheckboxTheme);
+    final _this = (this as ShadCheckboxTheme);
 
-    if (other == null) {
-      return current;
+    if (other == null || identical(_this, other)) {
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -75,7 +81,7 @@ mixin _$ShadCheckboxTheme {
       color: other.color,
       size: other.size,
       duration: other.duration,
-      decoration: other.decoration,
+      decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
       padding: other.padding,
       crossAxisAlignment: other.crossAxisAlignment,
       checkboxPadding: other.checkboxPadding,
@@ -92,31 +98,31 @@ mixin _$ShadCheckboxTheme {
       return false;
     }
 
-    final value = (this as ShadCheckboxTheme);
+    final _this = (this as ShadCheckboxTheme);
+    final _other = (other as ShadCheckboxTheme);
 
-    return other is ShadCheckboxTheme &&
-        other.color == value.color &&
-        other.size == value.size &&
-        other.duration == value.duration &&
-        other.decoration == value.decoration &&
-        other.padding == value.padding &&
-        other.crossAxisAlignment == value.crossAxisAlignment &&
-        other.checkboxPadding == value.checkboxPadding;
+    return _other.color == _this.color &&
+        _other.size == _this.size &&
+        _other.duration == _this.duration &&
+        _other.decoration == _this.decoration &&
+        _other.padding == _this.padding &&
+        _other.crossAxisAlignment == _this.crossAxisAlignment &&
+        _other.checkboxPadding == _this.checkboxPadding;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadCheckboxTheme);
+    final _this = (this as ShadCheckboxTheme);
 
     return Object.hash(
       runtimeType,
-      value.color,
-      value.size,
-      value.duration,
-      value.decoration,
-      value.padding,
-      value.crossAxisAlignment,
-      value.checkboxPadding,
+      _this.color,
+      _this.size,
+      _this.duration,
+      _this.decoration,
+      _this.padding,
+      _this.crossAxisAlignment,
+      _this.checkboxPadding,
     );
   }
 }

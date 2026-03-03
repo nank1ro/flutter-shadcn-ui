@@ -73,7 +73,7 @@ class ShadInputDecorator extends StatelessWidget {
               child: label!,
             ),
           ),
-        if (child != null) child!,
+        ?child,
         if (description != null)
           Padding(
             padding:

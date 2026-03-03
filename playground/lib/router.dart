@@ -3,6 +3,7 @@ import 'package:playground/pages/accordion.dart';
 import 'package:playground/pages/alert.dart';
 import 'package:playground/pages/avatar.dart';
 import 'package:playground/pages/badge.dart';
+import 'package:playground/pages/breadcrumb.dart';
 import 'package:playground/pages/button.dart';
 import 'package:playground/pages/calendar.dart';
 import 'package:playground/pages/card.dart';
@@ -54,9 +55,7 @@ final router = GoRouter(
       path: '/button',
       builder: (context, state) {
         final style = state.uri.queryParameters['style'] ?? 'primary';
-        return ButtonPage(
-          style: PlagroundButtonStyle.values.byName(style),
-        );
+        return ButtonPage(style: PlagroundButtonStyle.values.byName(style));
       },
     ),
     GoRoute(
@@ -72,9 +71,14 @@ final router = GoRouter(
       path: '/badge',
       builder: (context, state) {
         final style = state.uri.queryParameters['style'] ?? 'primary';
-        return BadgePage(
-          variant: ShadBadgeVariant.values.byName(style),
-        );
+        return BadgePage(variant: ShadBadgeVariant.values.byName(style));
+      },
+    ),
+    GoRoute(
+      path: '/breadcrumb',
+      builder: (context, state) {
+        final style = state.uri.queryParameters['style'] ?? 'primary';
+        return BreadcrumbPage(style: ShadBreadcrumbStyle.values.byName(style));
       },
     ),
     GoRoute(
@@ -90,9 +94,7 @@ final router = GoRouter(
       builder: (context, state) {
         final style =
             state.uri.queryParameters['style'] ?? InputStyle.email.name;
-        return InputPage(
-          style: InputStyle.values.byName(style),
-        );
+        return InputPage(style: InputStyle.values.byName(style));
       },
     ),
     GoRoute(
@@ -103,18 +105,14 @@ final router = GoRouter(
       path: '/typography',
       builder: (context, state) {
         final style = state.uri.queryParameters['style'] ?? 'h1Large';
-        return TypographyPage(
-          style: TypographyStyle.values.byName(style),
-        );
+        return TypographyPage(style: TypographyStyle.values.byName(style));
       },
     ),
     GoRoute(
       path: '/select',
       builder: (context, state) {
         final style = state.uri.queryParameters['style'] ?? 'fruits';
-        return SelectPage(
-          variant: SelectVariant.values.byName(style),
-        );
+        return SelectPage(variant: SelectVariant.values.byName(style));
       },
     ),
     GoRoute(
@@ -160,9 +158,7 @@ final router = GoRouter(
       builder: (context, state) {
         final style =
             state.uri.queryParameters['style'] ?? ShadAlertVariant.primary.name;
-        return AlertPage(
-          style: ShadAlertVariant.values.byName(style),
-        );
+        return AlertPage(style: ShadAlertVariant.values.byName(style));
       },
     ),
     GoRoute(
@@ -171,9 +167,7 @@ final router = GoRouter(
         final style =
             state.uri.queryParameters['style'] ??
             ShadDialogVariant.primary.name;
-        return DialogPage(
-          style: ShadDialogVariant.values.byName(style),
-        );
+        return DialogPage(style: ShadDialogVariant.values.byName(style));
       },
     ),
     GoRoute(
@@ -185,9 +179,7 @@ final router = GoRouter(
       builder: (context, state) {
         final style =
             state.uri.queryParameters['style'] ?? SheetStyle.primary.name;
-        return SheetPage(
-          style: SheetStyle.values.byName(style),
-        );
+        return SheetPage(style: SheetStyle.values.byName(style));
       },
     ),
     GoRoute(
@@ -205,9 +197,7 @@ final router = GoRouter(
         final style =
             state.uri.queryParameters['style'] ??
             ShadAccordionVariant.single.name;
-        return AccordionPage(
-          style: ShadAccordionVariant.values.byName(style),
-        );
+        return AccordionPage(style: ShadAccordionVariant.values.byName(style));
       },
     ),
     GoRoute(
@@ -219,9 +209,7 @@ final router = GoRouter(
       builder: (context, state) {
         final style =
             state.uri.queryParameters['style'] ?? ShadResizableStyle.basic.name;
-        return ResizablePage(
-          style: ShadResizableStyle.values.byName(style),
-        );
+        return ResizablePage(style: ShadResizableStyle.values.byName(style));
       },
     ),
     GoRoute(
@@ -287,18 +275,14 @@ final router = GoRouter(
       path: '/input-otp',
       builder: (context, state) {
         final style = state.uri.queryParameters['style'] ?? 'primary';
-        return InputOTPPage(
-          style: ShadInputOTPVariant.values.byName(style),
-        );
+        return InputOTPPage(style: ShadInputOTPVariant.values.byName(style));
       },
     ),
     GoRoute(
       path: '/separator',
       builder: (context, state) {
         final style = state.uri.queryParameters['style'] ?? 'horizontal';
-        return SeparatorPage(
-          style: ShadSeparatorVariant.values.byName(style),
-        );
+        return SeparatorPage(style: ShadSeparatorVariant.values.byName(style));
       },
     ),
     GoRoute(

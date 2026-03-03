@@ -11,6 +11,7 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/extensions/date_time.dart';
+import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 
 /// Encapsulates a start and end [DateTime] that represent the range of dates.
 ///
@@ -873,8 +874,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
   List<ShadCalendarModel> datesModels = [];
   // The first date shown in the calendar, used to render the week days
   late DateTime firstDateShown;
-  bool isFirstMonthDisplayed = false;
-  bool isLastMonthDisplayed = false;
+  bool isPreviousMonthButtonDisabled = false;
+  bool isNextMonthButtonDisabled = false;
   late final selectedDays = <DateTime>{
     if (widget.selected != null) widget.selected!.startOfDay,
     if (widget.multipleSelected != null)
@@ -1031,12 +1032,14 @@ class _ShadCalendarState extends State<ShadCalendar> {
       month = effectiveMonth;
     }
 
-    isFirstMonthDisplayed =
+    isPreviousMonthButtonDisabled =
         widget.fromMonth != null &&
-        datesModels.first.month.isAtSameMomentAs(widget.fromMonth!);
-    isLastMonthDisplayed =
+        datesModels.first.month.startOfMonth.millisecondsSinceEpoch <=
+            widget.fromMonth!.startOfMonth.millisecondsSinceEpoch;
+    isNextMonthButtonDisabled =
         widget.toMonth != null &&
-        datesModels.last.month.isAtSameMomentAs(widget.toMonth!);
+        datesModels.last.month.startOfMonth.millisecondsSinceEpoch >=
+            widget.toMonth!.startOfMonth.millisecondsSinceEpoch;
   }
 
   void generateDatesForMonth(DateTime month) {
@@ -1266,9 +1269,12 @@ class _ShadCalendarState extends State<ShadCalendar> {
         widget.captionLayoutGap ?? theme.calendarTheme.captionLayoutGap ?? 8;
 
     final effectiveHeaderTextStyle =
-        widget.headerTextStyle ??
-        theme.calendarTheme.headerTextStyle ??
-        theme.textTheme.small;
+        (widget.headerTextStyle ??
+                theme.calendarTheme.headerTextStyle ??
+                theme.textTheme.small)
+            .fallback(
+              color: theme.colorScheme.foreground,
+            );
 
     final effectiveWeekdaysPadding =
         widget.weekdaysPadding ??
@@ -1276,9 +1282,12 @@ class _ShadCalendarState extends State<ShadCalendar> {
         const EdgeInsets.only(bottom: 8);
 
     final effectiveWeekdaysTextStyle =
-        widget.weekdaysTextStyle ??
-        theme.calendarTheme.weekdaysTextStyle ??
-        theme.textTheme.muted.copyWith(fontSize: 12.8);
+        (widget.weekdaysTextStyle ??
+                theme.calendarTheme.weekdaysTextStyle ??
+                theme.textTheme.muted.copyWith(fontSize: 12.8))
+            .fallback(
+              color: theme.colorScheme.mutedForeground,
+            );
 
     final effectiveWeekdaysTextAlign =
         widget.weekdaysTextAlign ??
@@ -1291,9 +1300,10 @@ class _ShadCalendarState extends State<ShadCalendar> {
         '#';
 
     final effectiveWeekNumbersHeaderTextStyle =
-        widget.weekNumbersHeaderTextStyle ??
-        theme.calendarTheme.weekNumbersHeaderTextStyle ??
-        theme.textTheme.muted.copyWith(fontSize: 12.8);
+        (widget.weekNumbersHeaderTextStyle ??
+                theme.calendarTheme.weekNumbersHeaderTextStyle ??
+                theme.textTheme.muted.copyWith(fontSize: 12.8))
+            .fallback(color: theme.colorScheme.mutedForeground);
 
     final effectiveGridMainAxisSpacing =
         widget.gridMainAxisSpacing ??
@@ -1306,37 +1316,46 @@ class _ShadCalendarState extends State<ShadCalendar> {
         0;
 
     final effectiveInsideRangeDayButtonTextStyle =
-        widget.insideRangeDayButtonTextStyle ??
-        theme.calendarTheme.insideRangeDayButtonTextStyle ??
-        theme.textTheme.small.copyWith(
-          color: theme.colorScheme.foreground,
-        );
+        (widget.insideRangeDayButtonTextStyle ??
+                theme.calendarTheme.insideRangeDayButtonTextStyle ??
+                theme.textTheme.small)
+            .fallback(
+              color: theme.colorScheme.foreground,
+            );
 
     final effectiveSelectedDayButtonTextStyle =
-        widget.selectedDayButtonTextStyle ??
-        theme.calendarTheme.selectedDayButtonTextStyle ??
-        theme.textTheme.small.copyWith(
-          fontWeight: FontWeight.normal,
-          color: theme.colorScheme.primaryForeground,
-        );
+        (widget.selectedDayButtonTextStyle ??
+                theme.calendarTheme.selectedDayButtonTextStyle ??
+                theme.textTheme.small.copyWith(
+                  fontWeight: FontWeight.normal,
+                ))
+            .fallback(color: theme.colorScheme.primaryForeground);
 
     final effectiveDayButtonTextStyle =
-        widget.dayButtonTextStyle ??
-        theme.calendarTheme.dayButtonTextStyle ??
-        theme.textTheme.small.copyWith(
-          fontWeight: FontWeight.normal,
-          color: theme.colorScheme.foreground,
-        );
+        (widget.dayButtonTextStyle ??
+                theme.calendarTheme.dayButtonTextStyle ??
+                theme.textTheme.small.copyWith(
+                  fontWeight: FontWeight.normal,
+                ))
+            .fallback(
+              color: theme.colorScheme.foreground,
+            );
 
     final effectiveDayButtonOutsideMonthTextStyle =
-        widget.dayButtonOutsideMonthTextStyle ??
-        theme.calendarTheme.dayButtonOutsideMonthTextStyle ??
-        theme.textTheme.muted;
+        (widget.dayButtonOutsideMonthTextStyle ??
+                theme.calendarTheme.dayButtonOutsideMonthTextStyle ??
+                theme.textTheme.muted)
+            .fallback(
+              color: theme.colorScheme.mutedForeground,
+            );
 
     final effectiveWeekNumbersTextStyle =
-        widget.weekNumbersTextStyle ??
-        theme.calendarTheme.weekNumbersTextStyle ??
-        theme.textTheme.muted.copyWith(fontSize: 12.8);
+        (widget.weekNumbersTextStyle ??
+                theme.calendarTheme.weekNumbersTextStyle ??
+                theme.textTheme.muted.copyWith(fontSize: 12.8))
+            .fallback(
+              color: theme.colorScheme.mutedForeground,
+            );
 
     final effectiveDayButtonSize =
         widget.dayButtonSize ?? theme.calendarTheme.dayButtonSize ?? 36;
@@ -1455,7 +1474,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
             width: effectiveNavigationButtonSize,
             height: effectiveNavigationButtonSize,
             padding: effectiveNavigationButtonPadding,
-            enabled: !isFirstMonthDisplayed,
+            enabled: !isPreviousMonthButtonDisabled,
             onHoverChange: (hovered) => backMonthButtonHovered.value = hovered,
             icon: Icon(
               effectiveBackNavigationButtonSrc,
@@ -1476,7 +1495,7 @@ class _ShadCalendarState extends State<ShadCalendar> {
             width: effectiveNavigationButtonSize,
             height: effectiveNavigationButtonSize,
             padding: effectiveNavigationButtonPadding,
-            enabled: !isLastMonthDisplayed,
+            enabled: !isNextMonthButtonDisabled,
             onHoverChange: (hovered) =>
                 forwardMonthButtonHovered.value = hovered,
             onPressed: () => goToMonth(currentMonth.nextMonth),

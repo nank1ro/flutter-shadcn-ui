@@ -9,13 +9,13 @@ sidebar:
 Welcome to Shadcn UI for Flutter.
 This is the official documentation for Shadcn UI for Flutter.
 
-![Shadcn UI](/shadcn-banner.png)
+![Shadcn UI](/flutter-shadcn-ui/shadcn-banner.png)
 
 > The work is still in progress.
 
 :::tip[AI Editor Integration]
 If you want to consume the docs in a LLM that accepts markdown, you can use this link:
-<https://flutter-shadcn-ui.mariuti.com/llms.txt>
+<https://mariuti.com/flutter-shadcn-ui/llms.txt>
 :::
 
 ## Installation

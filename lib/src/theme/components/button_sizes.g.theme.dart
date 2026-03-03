@@ -17,14 +17,22 @@ mixin _$ShadButtonSizeTheme {
     ShadButtonSizeTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadButtonSizeTheme(
-      height: lerpDouble$(a?.height, b?.height, t)!,
-      padding: EdgeInsetsGeometry.lerp(a?.padding, b?.padding, t)!,
-      width: lerpDouble$(a?.width, b?.width, t),
+      height: lerpDouble$(a.height, b.height, t)!,
+      padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t)!,
+      width: lerpDouble$(a.width, b.width, t),
     );
   }
 
@@ -33,20 +41,20 @@ mixin _$ShadButtonSizeTheme {
     EdgeInsetsGeometry? padding,
     double? width,
   }) {
-    final a = (this as ShadButtonSizeTheme);
+    final _this = (this as ShadButtonSizeTheme);
 
     return ShadButtonSizeTheme(
-      height: height ?? a.height,
-      padding: padding ?? a.padding,
-      width: width ?? a.width,
+      height: height ?? _this.height,
+      padding: padding ?? _this.padding,
+      width: width ?? _this.width,
     );
   }
 
   ShadButtonSizeTheme merge(ShadButtonSizeTheme? other) {
-    final current = (this as ShadButtonSizeTheme);
+    final _this = (this as ShadButtonSizeTheme);
 
-    if (other == null) {
-      return current;
+    if (other == null || identical(_this, other)) {
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -70,19 +78,19 @@ mixin _$ShadButtonSizeTheme {
       return false;
     }
 
-    final value = (this as ShadButtonSizeTheme);
+    final _this = (this as ShadButtonSizeTheme);
+    final _other = (other as ShadButtonSizeTheme);
 
-    return other is ShadButtonSizeTheme &&
-        other.height == value.height &&
-        other.padding == value.padding &&
-        other.width == value.width;
+    return _other.height == _this.height &&
+        _other.padding == _this.padding &&
+        _other.width == _this.width;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadButtonSizeTheme);
+    final _this = (this as ShadButtonSizeTheme);
 
-    return Object.hash(runtimeType, value.height, value.padding, value.width);
+    return Object.hash(runtimeType, _this.height, _this.padding, _this.width);
   }
 }
 
@@ -94,15 +102,23 @@ mixin _$ShadButtonSizesTheme {
     ShadButtonSizesTheme? b,
     double t,
   ) {
-    if (a == null && b == null) {
-      return null;
+    if (identical(a, b)) {
+      return a;
+    }
+
+    if (a == null) {
+      return t == 1.0 ? b : null;
+    }
+
+    if (b == null) {
+      return t == 0.0 ? a : null;
     }
 
     return ShadButtonSizesTheme(
-      regular: ShadButtonSizeTheme.lerp(a?.regular, b?.regular, t),
-      sm: ShadButtonSizeTheme.lerp(a?.sm, b?.sm, t),
-      lg: ShadButtonSizeTheme.lerp(a?.lg, b?.lg, t),
-      icon: ShadButtonSizeTheme.lerp(a?.icon, b?.icon, t),
+      regular: ShadButtonSizeTheme.lerp(a.regular, b.regular, t),
+      sm: ShadButtonSizeTheme.lerp(a.sm, b.sm, t),
+      lg: ShadButtonSizeTheme.lerp(a.lg, b.lg, t),
+      icon: ShadButtonSizeTheme.lerp(a.icon, b.icon, t),
     );
   }
 
@@ -112,21 +128,21 @@ mixin _$ShadButtonSizesTheme {
     ShadButtonSizeTheme? lg,
     ShadButtonSizeTheme? icon,
   }) {
-    final a = (this as ShadButtonSizesTheme);
+    final _this = (this as ShadButtonSizesTheme);
 
     return ShadButtonSizesTheme(
-      regular: regular ?? a.regular,
-      sm: sm ?? a.sm,
-      lg: lg ?? a.lg,
-      icon: icon ?? a.icon,
+      regular: regular ?? _this.regular,
+      sm: sm ?? _this.sm,
+      lg: lg ?? _this.lg,
+      icon: icon ?? _this.icon,
     );
   }
 
   ShadButtonSizesTheme merge(ShadButtonSizesTheme? other) {
-    final current = (this as ShadButtonSizesTheme);
+    final _this = (this as ShadButtonSizesTheme);
 
-    if (other == null) {
-      return current;
+    if (other == null || identical(_this, other)) {
+      return _this;
     }
 
     if (!other.canMerge) {
@@ -134,10 +150,10 @@ mixin _$ShadButtonSizesTheme {
     }
 
     return copyWith(
-      regular: other.regular,
-      sm: other.sm,
-      lg: other.lg,
-      icon: other.icon,
+      regular: _this.regular?.merge(other.regular) ?? other.regular,
+      sm: _this.sm?.merge(other.sm) ?? other.sm,
+      lg: _this.lg?.merge(other.lg) ?? other.lg,
+      icon: _this.icon?.merge(other.icon) ?? other.icon,
     );
   }
 
@@ -151,25 +167,25 @@ mixin _$ShadButtonSizesTheme {
       return false;
     }
 
-    final value = (this as ShadButtonSizesTheme);
+    final _this = (this as ShadButtonSizesTheme);
+    final _other = (other as ShadButtonSizesTheme);
 
-    return other is ShadButtonSizesTheme &&
-        other.regular == value.regular &&
-        other.sm == value.sm &&
-        other.lg == value.lg &&
-        other.icon == value.icon;
+    return _other.regular == _this.regular &&
+        _other.sm == _this.sm &&
+        _other.lg == _this.lg &&
+        _other.icon == _this.icon;
   }
 
   @override
   int get hashCode {
-    final value = (this as ShadButtonSizesTheme);
+    final _this = (this as ShadButtonSizesTheme);
 
     return Object.hash(
       runtimeType,
-      value.regular,
-      value.sm,
-      value.lg,
-      value.icon,
+      _this.regular,
+      _this.sm,
+      _this.lg,
+      _this.icon,
     );
   }
 }

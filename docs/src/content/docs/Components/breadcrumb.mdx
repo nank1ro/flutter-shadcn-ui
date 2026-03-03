@@ -1,0 +1,129 @@
+---
+title: Breadcrumb
+sidebar:
+  order: 4
+---
+
+import Preview from "../../../components/Preview.astro";
+
+Displays the path to the current resource using a hierarchy of links.
+
+
+<Preview src="breadcrumb" minHeight="500px">
+
+```dart
+class PrimaryBreadcrumb extends StatelessWidget {
+  const PrimaryBreadcrumb({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadBreadcrumb(
+      children: [
+        ShadBreadcrumbLink(
+          onPressed: () => print('Navigating to Home'),
+          child: const Text('Home'),
+        ),
+        ShadBreadcrumbDropdown(
+          items: [
+            ShadBreadcrumbDropMenuItem(
+              onPressed: () => print('Navigating to Documentation'),
+              child: const Text('Documentation'),
+            ),
+            ShadBreadcrumbDropMenuItem(
+              onPressed: () => print('Navigating to Themes'),
+              child: const Text('Themes'),
+            ),
+            ShadBreadcrumbDropMenuItem(
+              onPressed: () => print('Navigating to Github'),
+              child: const Text('Github'),
+            ),
+          ],
+          showDropdownArrow: false,
+          child: ShadBreadcrumbEllipsis(),
+        ),
+        Text('Components'),
+        Text('Breadcrumb'),
+      ],
+    );
+  }
+}
+```
+
+</Preview>
+
+## Custom separator
+
+Use a custom `separator` to change the default `>` separator.
+
+<Preview src="breadcrumb?style=customSeparator"  minHeight="500px">
+
+```dart
+class CustomSeparatorBreadcrumb extends StatelessWidget {
+  const CustomSeparatorBreadcrumb({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadBreadcrumb(
+      separator: const Icon(LucideIcons.slash),
+      children: [
+        ShadBreadcrumbLink(
+          onPressed: () => print('Navigating to Home'),
+          child: const Text('Home'),
+        ),
+        ShadBreadcrumbLink(
+          onPressed: () => print('Navigating to Components'),
+          child: const Text('Components'),
+        ),
+        Text('Breadcrumb'),
+      ],
+    );
+  }
+}
+```
+
+</Preview>
+
+
+## Dropdown
+
+You can use `ShadBreadcrumbDropdown` to create a dropdown in the breadcrumb.
+
+<Preview src="breadcrumb?style=dropdown"  minHeight="500px">
+
+```dart
+class DropdownBreadcrumb extends StatelessWidget {
+  const DropdownBreadcrumb({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadBreadcrumb(
+      children: [
+        ShadBreadcrumbLink(
+          onPressed: () => print('Navigating to Home'),
+          child: const Text('Home'),
+        ),
+        ShadBreadcrumbDropdown(
+          items: [
+            ShadBreadcrumbDropMenuItem(
+              onPressed: () => print('Navigating to Documentation'),
+              child: const Text('Documentation'),
+            ),
+            ShadBreadcrumbDropMenuItem(
+              onPressed: () => print('Navigating to Themes'),
+              child: const Text('Themes'),
+            ),
+            ShadBreadcrumbDropMenuItem(
+              onPressed: () => print('Navigating to Github'),
+              child: const Text('Github'),
+            ),
+          ],
+          child: const Text('Components'),
+        ),
+        Text('Breadcrumb'),
+      ],
+    );
+  }
+}
+```
+
+</Preview>

@@ -31,7 +31,7 @@ class SelectExample extends StatelessWidget {
         placeholder: const Text('Select a fruit'),
         options: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
             child: Text(
               'Fruits',
               style: theme.textTheme.muted.copyWith(
@@ -104,7 +104,7 @@ List<Widget> getTimezonesWidgets(ShadThemeData theme) {
   for (final zone in timezones.entries) {
     widgets.add(
       Padding(
-        padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         child: Text(
           zone.key,
           style: theme.textTheme.muted.copyWith(
@@ -287,7 +287,7 @@ class SelectMultiple extends StatelessWidget {
       placeholder: const Text('Select multiple fruits'),
       options: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(32, 6, 6, 6),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           child: Text(
             'Fruits',
             style: theme.textTheme.large,

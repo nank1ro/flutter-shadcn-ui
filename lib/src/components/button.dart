@@ -478,14 +478,18 @@ class ShadButton extends StatefulWidget {
   final MouseCursor? cursor;
 
   /// {@template ShadButton.width}
-  /// The explicit width of the button, overriding size-based defaults if
-  /// specified. Falls back to theme or size-specific values if null.
+  /// The explicit minimum width of the button, overriding size-based defaults.
+  /// If null, it falls back to theme or size-specific minimums. When set to 0,
+  /// or a value smaller than the child's width the button's width will be
+  /// determined by its child.
   /// {@endtemplate}
   final double? width;
 
   /// {@template ShadButton.height}
-  /// The explicit height of the button, overriding size-based defaults if
-  /// specified. Falls back to theme or size-specific values if null.
+  /// The explicit minimum height of the button, overriding size-based defaults.
+  /// If null, it falls back to theme or size-specific minimums. When set to 0,
+  /// or a value smaller than the child's height the button's height will be
+  /// determined by its child.
   /// {@endtemplate}
   final double? height;
 
@@ -1005,6 +1009,9 @@ class _ShadButtonState extends State<ShadButton> {
         buttonTheme(theme).textStyle ??
         theme.textTheme.small;
 
+    final effectiveWidth = width(theme) ?? 0;
+    final effectiveHeight = height(theme);
+
     return CallbackShortcuts(
       bindings: {
         for (final trigger in keyboardTriggers)
@@ -1117,9 +1124,23 @@ class _ShadButtonState extends State<ShadButton> {
                         onLongPressStart: widget.onLongPressStart,
                         longPressDuration: effectiveLongPressDuration,
                         child: SelectionContainer.disabled(
-                          child: SizedBox(
-                            height: height(theme),
-                            width: width(theme),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minWidth: effectiveWidth,
+                              // When the width is 0 or null, we set maxWidth to
+                              // infinity to allow the button to size itself
+                              // based on its child.
+                              maxWidth: effectiveWidth == 0
+                                  ? double.infinity
+                                  : effectiveWidth,
+                              minHeight: effectiveHeight,
+                              // When the height is 0, we set maxHeight to
+                              // infinity to allow the button to size itself
+                              // based on its child.
+                              maxHeight: effectiveHeight == 0
+                                  ? double.infinity
+                                  : effectiveHeight,
+                            ),
                             child: Padding(
                               padding: padding(theme),
                               child: Row(
@@ -1128,9 +1149,9 @@ class _ShadButtonState extends State<ShadButton> {
                                 mainAxisAlignment: effectiveMainAxisAlignment,
                                 textDirection: effectiveTextDirection,
                                 children: [
-                                  ?widget.leading,
-                                  ?child,
-                                  ?widget.trailing,
+                                  if (widget.leading != null) widget.leading!,
+                                  if (widget.child != null) child!,
+                                  if (widget.trailing != null) widget.trailing!,
                                 ].separatedBy(SizedBox(width: effectiveGap)),
                               ),
                             ),

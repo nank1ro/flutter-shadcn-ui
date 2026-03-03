@@ -8,7 +8,14 @@ import 'package:shadcn_ui/src/theme/components/input_decorator.dart';
 ///
 /// Takes a value of type [T] and returns a transformed value of any type.
 /// Used to convert field values before saving or processing
-typedef ValueTransformer<T> = dynamic Function(T value);
+typedef ToValueTransformer<T> = dynamic Function(T value);
+
+/// A function that transforms a value from a different format into the form
+/// field's expected type.
+///
+/// Takes a value of any type and returns a transformed value of type [T].
+/// Used to convert values before populating the form field.
+typedef FromValueTransformer<T> = T Function(dynamic value);
 
 /// A customizable form field widget with built-in decoration and state
 /// management.
@@ -36,7 +43,9 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.error,
     this.description,
     this.onChanged,
-    this.valueTransformer,
+    @Deprecated('Use toValueTransformer instead') this.valueTransformer,
+    this.toValueTransformer,
+    this.fromValueTransformer,
     this.onReset,
     this.decorationBuilder,
     super.forceErrorText,
@@ -65,7 +74,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
   /// An optional identifier used to reference the field within a [ShadForm].
   /// Enables form data retrieval or field manipulation post-submission.
   /// {@endtemplate}
-  final Object? id;
+  final String? id;
 
   /// {@template ShadFormBuilderField.focusNode}
   /// The focus node for keyboard navigation and focus handling.
@@ -102,7 +111,22 @@ class ShadFormBuilderField<T> extends FormField<T> {
   /// Useful for formatting or converting data; defaults to null
   /// (no transformation).
   /// {@endtemplate}
-  final ValueTransformer<T?>? valueTransformer;
+  @Deprecated('Use toValueTransformer instead')
+  final ToValueTransformer<T?>? valueTransformer;
+
+  /// {@template ShadFormBuilderField.toValueTransformer}
+  /// A function to transform the field’s value before saving or processing.
+  /// Useful for formatting or converting data; defaults to null
+  /// (no transformation).
+  /// {@endtemplate}
+  final ToValueTransformer<T?>? toValueTransformer;
+
+  /// {@template ShadFormBuilderField.fromValueTransformer}
+  /// A function to transform a value into the field’s expected type.
+  /// Useful for converting data before populating the field; defaults to null
+  /// (no transformation).
+  /// {@endtemplate}
+  final FromValueTransformer<T?>? fromValueTransformer;
 
   /// {@template ShadFormBuilderField.onReset}
   /// Callback invoked when the field is reset to its initial value.
@@ -138,6 +162,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
 /// form.
 class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     extends FormFieldState<T> {
+  final String _internalId = UniqueKey().toString();
   FocusNode? _focusNode;
   ShadFormState? _parentForm;
 
@@ -160,7 +185,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   bool get hasError => forceErrorText != null || super.hasError;
 
   /// Sets an internal error message that overrides validation errors.
-  void setInternalError(String? error) {
+  void setError(String? error) {
     setState(() {
       _forceErrorText = error;
     });
@@ -170,12 +195,25 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   F get widget => super.widget as F;
 
   /// The initial value of the field, sourced from widget or parent form.
-  T? get initialValue =>
-      widget.initialValue ??
-      (_parentForm?.widget.initialValue[widget.id] as T?);
+  T? get initialValue {
+    if (widget.initialValue != null) return widget.initialValue;
+
+    // Use getFieldValue to support nested initial values with dot notation
+    if (widget.id == null || _parentForm == null) return null;
+
+    final value = _parentForm!.getFieldValue(widget.id!);
+    if (widget.fromValueTransformer != null) {
+      return widget.fromValueTransformer!(value);
+    }
+    return value as T?;
+  }
 
   /// Whether the field is enabled, factoring in parent form state.
   bool get enabled => widget.enabled && (_parentForm?.enabled ?? true);
+
+  /// The effective identifier for the field, using the provided ID or an
+  /// auto-generated one.
+  String get effectiveId => widget.id ?? _internalId;
 
   @override
   void initState() {
@@ -185,7 +223,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     }
     // Register this field when there is a parent ShadForm
     _parentForm = ShadForm.maybeOf(context);
-    if (widget.id != null) _parentForm?.registerField(widget.id!, this);
+    _parentForm?.registerField(effectiveId, this);
   }
 
   @override
@@ -194,8 +232,14 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     if (widget.id != oldWidget.id) {
       if (oldWidget.id != null) {
         _parentForm?.unregisterField(oldWidget.id!, this);
+      } else {
+        _parentForm?.unregisterField(_internalId, this);
       }
-      if (widget.id != null) _parentForm?.registerField(widget.id!, this);
+      if (widget.id != null) {
+        _parentForm?.registerField(widget.id!, this);
+      } else {
+        _parentForm?.registerField(_internalId, this);
+      }
     }
 
     if (oldWidget.focusNode != null && widget.focusNode == null) {
@@ -203,14 +247,14 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     }
 
     if (widget.readOnly != oldWidget.readOnly) {
-      _focusNode?.canRequestFocus = widget.readOnly;
+      _focusNode?.canRequestFocus = !widget.readOnly;
     }
   }
 
   @override
   void didChange(T? value) {
+    _parentForm?.setFieldValue<T>(effectiveId, value, notifyField: false);
     super.didChange(value);
-    _informFormForFieldChange();
     widget.onChanged?.call(value);
   }
 
@@ -223,7 +267,7 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
 
   @override
   void dispose() {
-    if (widget.id != null) _parentForm?.unregisterField(widget.id!, this);
+    _parentForm?.unregisterField(effectiveId, this);
     _focusNode?.dispose();
     super.dispose();
   }
@@ -247,23 +291,23 @@ class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
   }
 
   void _informFormForFieldChange() {
-    if (_parentForm != null) {
-      if (enabled) {
-        if (widget.id != null) {
-          _parentForm!.setInternalFieldValue<T>(widget.id!, value);
-        }
-        return;
-      }
-      if (widget.id != null) _parentForm!.removeInternalFieldValue(widget.id!);
-    }
+    _parentForm?.setFieldValue<T>(
+      effectiveId,
+      value,
+      notifyField: false,
+    );
   }
 
   /// Registers the field’s value transformer with the provided map.
-  void registerTransformer(Map<Object, Function> map) {
-    if (widget.id == null) return;
-    final fun = widget.valueTransformer;
-    if (fun != null) {
-      map[widget.id!] = fun;
-    }
+  void registerToValueTransformer(Map<String, Function> map) {
+    // ignore: deprecated_member_use_from_same_package
+    final fun = widget.valueTransformer ?? widget.toValueTransformer;
+    if (fun != null) map[effectiveId] = fun;
+  }
+
+  /// Registers the field’s from value transformer with the provided map.
+  void registerFromValueTransformer(Map<String, Function> map) {
+    final fun = widget.fromValueTransformer;
+    if (fun != null) map[effectiveId] = fun;
   }
 }

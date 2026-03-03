@@ -104,7 +104,7 @@ class ShadThemeDataTween extends Tween<ShadThemeData> {
   ShadThemeDataTween({super.begin, super.end});
 
   @override
-  ShadThemeData lerp(double t) => ShadThemeData.lerp(begin!, end!, t);
+  ShadThemeData lerp(double t) => ShadThemeData.lerp(begin, end, t)!;
 }
 
 /// Animated version of [ShadTheme] which automatically transitions the colors

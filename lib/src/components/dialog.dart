@@ -233,6 +233,9 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.titlePinned,
+    this.descriptionPinned,
+    this.actionsPinned,
   }) : variant = ShadDialogVariant.primary;
 
   /// Creates an alert variant dialog widget, typically for warnings or
@@ -270,6 +273,9 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.titlePinned,
+    this.descriptionPinned,
+    this.actionsPinned,
   }) : variant = ShadDialogVariant.alert;
 
   /// Creates a dialog widget with a specified [variant], offering full
@@ -308,6 +314,9 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.titlePinned,
+    this.descriptionPinned,
+    this.actionsPinned,
   });
 
   /// {@template ShadDialog.title}
@@ -511,6 +520,27 @@ class ShadDialog extends StatelessWidget {
   /// {@endtemplate}
   final bool? useSafeArea;
 
+  /// {@template ShadDialog.titlePinned}
+  /// Whether the title is pinned when scrolling and [scrollable] is true.
+  ///
+  /// Defaults to false if not specified.
+  /// {@endtemplate}
+  final bool? titlePinned;
+
+  /// {@template ShadDialog.descriptionPinned}
+  /// Whether the description is pinned when scrolling and [scrollable] is true.
+  ///
+  /// Defaults to false if not specified.
+  /// {@endtemplate}
+  final bool? descriptionPinned;
+
+  /// {@template ShadDialog.actionsPinned}
+  /// Whether the actions are pinned when scrolling and [scrollable] is true.
+  ///
+  /// Defaults to true if not specified.
+  /// {@endtemplate}
+  final bool? actionsPinned;
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -623,6 +653,15 @@ class ShadDialog extends StatelessWidget {
     final effectiveUseSafeArea =
         useSafeArea ?? effectiveDialogTheme.useSafeArea ?? true;
 
+    final effectiveTitlePinned =
+        titlePinned ?? effectiveDialogTheme.titlePinned ?? false;
+
+    final effectiveDescriptionPinned =
+        descriptionPinned ?? effectiveDialogTheme.descriptionPinned ?? false;
+
+    final effectiveActionsPinned =
+        actionsPinned ?? effectiveDialogTheme.actionsPinned ?? true;
+
     final dialog = ConstrainedBox(
       constraints: effectiveConstraints,
       child: ShadResponsiveBuilder(
@@ -659,19 +698,23 @@ class ShadDialog extends StatelessWidget {
               effectiveDialogTheme.descriptionTextAlign ??
               (sm ? TextAlign.start : TextAlign.center);
 
-          Widget effectiveActions = BoxyFlexible.align(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            child: Flex(
-              direction: effectiveActionsAxis,
-              mainAxisSize: effectiveActionsMainAxisSize,
-              mainAxisAlignment: effectiveActionsMainAxisAlignment,
-              verticalDirection: effectiveActionsVerticalDirection,
-              spacing: effectiveActionsGap,
-              children: actions,
-            ),
-          );
+          Widget? effectiveActions = actions.isEmpty
+              ? null
+              : BoxyFlexible.align(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  child: Flex(
+                    direction: effectiveActionsAxis,
+                    mainAxisSize: effectiveActionsMainAxisSize,
+                    mainAxisAlignment: effectiveActionsMainAxisAlignment,
+                    verticalDirection: effectiveActionsVerticalDirection,
+                    spacing: effectiveActionsGap,
+                    children: actions,
+                  ),
+                );
 
-          if (!sm && effectiveExpandActionsWhenTiny) {
+          if (!sm &&
+              effectiveExpandActionsWhenTiny &&
+              effectiveActions != null) {
             effectiveActions = ShadTheme(
               data: theme.copyWith(
                 primaryButtonTheme: theme.primaryButtonTheme.copyWith(
@@ -717,48 +760,59 @@ class ShadDialog extends StatelessWidget {
                 )
               : null;
 
-          List<Widget> columnChildren;
+          Widget widget = BoxyColumn(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: effectiveMainAxisAlignment,
+            crossAxisAlignment: effectiveCrossAxisAlignment,
+            children: [
+              // Only show title if not scrollable or scrollable but not pinned
+              if (effectiveTitle != null &&
+                  (!effectiveScrollable || !effectiveTitlePinned))
+                effectiveTitle,
+              // Only show description if not scrollable or scrollable but not
+              // pinned
+              if (effectiveDescription != null &&
+                  (!effectiveScrollable || !effectiveDescriptionPinned))
+                effectiveDescription,
+              if (effectiveChild != null) Flexible(child: effectiveChild),
+              // Only show actions if not scrollable or scrollable but not
+              // pinned
+              if (effectiveActions != null &&
+                  (!effectiveScrollable || !effectiveActionsPinned))
+                effectiveActions,
+            ].separatedBy(SizedBox(height: effectiveGap)),
+          );
+
           if (effectiveScrollable) {
-            columnChildren = [
-              if (title != null || child != null || description != null)
+            widget = BoxyColumn(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: effectiveMainAxisAlignment,
+              crossAxisAlignment: effectiveCrossAxisAlignment,
+              children: [
+                // Pinned title
+                if (effectiveTitle != null && effectiveTitlePinned)
+                  effectiveTitle,
+                // Pinned description
+                if (effectiveDescription != null && effectiveDescriptionPinned)
+                  effectiveDescription,
                 Flexible(
                   child: SingleChildScrollView(
                     padding: effectiveScrollPadding,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: effectiveMainAxisAlignment,
-                      crossAxisAlignment: effectiveCrossAxisAlignment,
-                      children: [
-                        ?effectiveTitle,
-                        ?effectiveDescription,
-                        ?effectiveChild,
-                      ].separatedBy(SizedBox(height: effectiveGap)),
-                    ),
+                    child: widget,
                   ),
                 ),
-              effectiveActions,
-            ];
-          } else {
-            columnChildren = [
-              ?effectiveTitle,
-              ?effectiveDescription,
-              if (effectiveChild != null) Flexible(child: effectiveChild),
-              effectiveActions,
-            ];
+                // Pinned actions
+                if (effectiveActions != null && effectiveActionsPinned)
+                  effectiveActions,
+              ].separatedBy(SizedBox(height: effectiveGap)),
+            );
           }
 
-          Widget widget = Stack(
+          widget = Stack(
             children: [
               Padding(
                 padding: effectivePadding,
-                child: BoxyColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: effectiveMainAxisAlignment,
-                  crossAxisAlignment: effectiveCrossAxisAlignment,
-                  children: columnChildren.separatedBy(
-                    SizedBox(height: effectiveGap),
-                  ),
-                ),
+                child: widget,
               ),
               if (effectiveCloseIcon != null)
                 effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),

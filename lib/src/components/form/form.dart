@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
+import 'package:shadcn_ui/src/utils/extensions/map.dart';
 
 /// Used to configure the auto validation of [FormField and [ShadForm]
 /// widgets.
@@ -23,7 +24,7 @@ enum ShadAutovalidateMode {
 /// A typedef representing a map of form field states with dynamic values.
 typedef ShadFormFields =
     Map<
-      Object,
+      String,
       ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic>
     >;
 
@@ -41,6 +42,7 @@ class ShadForm extends StatefulWidget {
     this.enabled = true,
     this.skipDisabled = false,
     this.clearValueOnUnregister = false,
+    this.fieldIdSeparator = '.',
   });
 
   /// Callback when form value changes
@@ -61,7 +63,7 @@ class ShadForm extends StatefulWidget {
   final Widget child;
 
   /// Initial values for form fields
-  final Map<Object, dynamic> initialValue;
+  final Map<String, dynamic> initialValue;
 
   /// Whether the form fields are enabled
   final bool enabled;
@@ -72,6 +74,13 @@ class ShadForm extends StatefulWidget {
   /// Whether to clear the value of fields when they are unregistered, defaults
   /// to false;
   final bool clearValueOnUnregister;
+
+  /// The separator to use for nested maps in the resulting form
+  /// [ShadFormState.value].
+  ///
+  /// Defaults to '.', but can be customized to any string (e.g., '/', ':').
+  /// Pass `null` to disable dot notation support.
+  final String? fieldIdSeparator;
 
   @override
   State<ShadForm> createState() => ShadFormState();
@@ -99,28 +108,48 @@ class ShadForm extends StatefulWidget {
 class ShadFormState extends State<ShadForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ShadFormFields _fields = {};
-  final Map<Object, dynamic> _value = {};
-  final Map<Object, Function> _transformers = {};
+  final Map<String, dynamic> _value = {};
+  final Map<String, Function> _toValueTransformers = {};
+  final Map<String, Function> _fromValueTransformers = {};
   late final ValueNotifier<AutovalidateMode> autovalidateMode;
 
   /// Returns the registered form fields
   ShadFormFields get fields => _fields;
 
   /// Returns the initial form values
-  Map<Object, dynamic> get initialValue => widget.initialValue;
+  Map<String, dynamic> get initialValue => widget.initialValue;
 
   /// Whether the form is enabled
   bool get enabled => widget.enabled;
 
+  /// Returns an unmodifiable view of the current form values without
+  /// transformations applied
+  Map<String, dynamic> get rawValue {
+    final base = Map<String, dynamic>.from(initialValue.deepCopy());
+    final result = widget.fieldIdSeparator != null
+        ? base.deepMerge(
+            _value.toNestedMap(separator: widget.fieldIdSeparator!),
+          )
+        : base.deepMerge(_value);
+    return Map<String, dynamic>.unmodifiable(result);
+  }
+
   /// Returns an unmodifiable view of the current form values with
   /// transformations applied
-  Map<Object, dynamic> get value => Map<Object, dynamic>.unmodifiable(
-    _value.map(
+  Map<String, dynamic> get value {
+    final base = Map<String, dynamic>.from(initialValue.deepCopy());
+    final transformedValue = _value.map(
       (key, value) =>
           // ignore: avoid_dynamic_calls
-          MapEntry(key, _transformers[key]?.call(value) ?? value),
-    ),
-  );
+          MapEntry(key, _toValueTransformers[key]?.call(value) ?? value),
+    );
+    final result = widget.fieldIdSeparator != null
+        ? base.deepMerge(
+            transformedValue.toNestedMap(separator: widget.fieldIdSeparator!),
+          )
+        : base.deepMerge(transformedValue);
+    return Map<String, dynamic>.unmodifiable(result);
+  }
 
   @override
   void initState() {
@@ -143,23 +172,91 @@ class ShadFormState extends State<ShadForm> {
 
   /// Registers a form field with the specified id
   void registerField(
-    Object id,
+    String id,
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
   ) {
     _fields[id] = field;
-    _value[id] = field.initialValue ?? initialValue[id];
+
+    // The field.initialValue already applies fromValueTransformer
+    // We just need to provide the nested value or use field's initialValue
+    _value[id] = field.initialValue ?? getFieldValue(id);
+
     field
-      ..registerTransformer(_transformers)
+      ..registerToValueTransformer(_toValueTransformers)
+      ..registerFromValueTransformer(_fromValueTransformers)
       ..setValue(_value[id]);
   }
 
-  void setInternalFieldValue<T>(Object id, T? value) {
+  /// Gets a value from the nested map value map using `fieldIdSeparator`.
+  ///
+  /// This method is public so that form fields can access it to get their
+  /// values from the nested structure.
+  dynamic getFieldValue(String id) {
+    // If no separator, just use the ID directly
+    if (widget.fieldIdSeparator == null) return rawValue[id];
+    // Otherwise, use getByPath to navigate the nested structure
+    return rawValue.getByPath(id, separator: widget.fieldIdSeparator!);
+  }
+
+  /// Sets the value for a form field with the specified id
+  ///
+  /// The [value] parameter is the new value to set for the field.
+  /// If [notifyField] is true (the default), this will call the `didChange`
+  /// method of the field state to update its value and all the side effects,
+  /// like validation and notifying listeners.
+  ///
+  /// If you don't want to trigger those side effects, but only want to change
+  /// the form's map value set [notifyField] to false.
+  void setFieldValue<T>(String id, T? value, {bool notifyField = true}) {
     _value[id] = value;
+    if (notifyField) {
+      // ignore: avoid_dynamic_calls
+      _fields[id]?.didChange(_fromValueTransformers[id]?.call(value) ?? value);
+    }
+  }
+
+  /// Merges the provided entries into the form value; optionally removes keys
+  /// missing from the provided map.
+  ///
+  /// If [notifyFields] is true (the default), this will call the `didChange`
+  /// method of each field state to update its value and all the side effects,
+  /// like validation and notifying listeners.
+  ///
+  /// Only the fields with an updated value will be notified.
+  void setValue(
+    Map<String, dynamic> value, {
+
+    /// When true, notifies the changed form fields of the value changes
+    bool notifyFields = true,
+
+    /// When true, removes keys from the form value that are not present in
+    /// the provided [value] map.
+    bool removeMissing = false,
+
+    /// When true (and `removeMissing` is true), notifies removed fields.
+    bool notifyRemovedFields = false,
+  }) {
+    if (removeMissing) {
+      final keysToRemove = _value.keys
+          .where((key) => !value.containsKey(key))
+          .toList();
+      for (final id in keysToRemove) {
+        removeFieldValue(id, notifyField: notifyRemovedFields);
+      }
+    }
+    for (final entry in value.entries) {
+      final field = _fields[entry.key];
+      final oldValue = _value[entry.key];
+      _value[entry.key] = entry.value;
+      if (notifyFields && field != null && oldValue != entry.value) {
+        field.didChange(entry.value);
+      }
+    }
   }
 
   /// Sets forced internal error for a form field
   /// Throws if the field with [id] is not registered with the form.
-  void setInternalFieldError(Object id, String? error) {
+  void setFieldError(String id, String? error) {
     final field = _fields[id];
     if (field == null) {
       throw FlutterError(
@@ -167,23 +264,32 @@ class ShadFormState extends State<ShadForm> {
         'Make sure the field is registered with the form.',
       );
     }
-    field.setInternalError(error);
+    field.setError(error);
   }
 
   /// Removes internal field value
-  void removeInternalFieldValue(Object id) {
+  ///
+  /// If [notifyField] is true, this will call the form field `didChange` method
+  /// with a `null` value
+  void removeFieldValue(String id, {bool notifyField = false}) {
     _value.remove(id);
+    if (notifyField) {
+      final field = _fields[id];
+      if (field != null) field.didChange(null);
+    }
   }
 
   /// Unregisters a form field
   void unregisterField(
-    Object id,
+    String id,
     ShadFormBuilderFieldState<ShadFormBuilderField<dynamic>, dynamic> field,
   ) {
     _fields.remove(id);
-    _transformers.remove(id);
+    _toValueTransformers.remove(id);
+    _fromValueTransformers.remove(id);
+
     if (widget.clearValueOnUnregister) {
-      _value.remove(id);
+      removeFieldValue(id);
     }
   }
 
@@ -234,6 +340,7 @@ class ShadFormState extends State<ShadForm> {
       ShadAutovalidateMode.alwaysAfterFirstValidation ||
       ShadAutovalidateMode.disabled => AutovalidateMode.disabled,
     };
+    _value.clear();
     _formKey.currentState?.reset();
   }
 

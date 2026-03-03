@@ -81,6 +81,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.controller,
     this.popoverReverseDuration,
     this.ensureSelectedVisible,
+    this.onPressed,
   }) : variant = ShadSelectVariant.primary,
        initialValues = const {},
        onSearchChanged = null,
@@ -146,6 +147,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.ensureSelectedVisible,
     this.searchFocusNode,
     this.onSearchSubmitted,
+    this.onPressed,
   }) : variant = ShadSelectVariant.search,
        selectedOptionsBuilder = null,
        onMultipleChanged = null,
@@ -197,6 +199,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.controller,
     this.popoverReverseDuration,
     this.ensureSelectedVisible,
+    this.onPressed,
   }) : variant = ShadSelectVariant.multiple,
        onSearchChanged = null,
        initialValue = null,
@@ -263,6 +266,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.ensureSelectedVisible,
     this.searchFocusNode,
     this.onSearchSubmitted,
+    this.onPressed,
   }) : variant = ShadSelectVariant.multipleWithSearch,
        selectedOptionBuilder = null,
        onChanged = null,
@@ -328,6 +332,7 @@ class ShadSelect<T> extends StatefulWidget {
     this.ensureSelectedVisible,
     this.searchFocusNode,
     this.onSearchSubmitted,
+    this.onPressed,
   }) : assert(
          variant == ShadSelectVariant.primary || onSearchChanged != null,
          'onSearchChanged must be provided when variant is search',
@@ -435,6 +440,9 @@ class ShadSelect<T> extends StatefulWidget {
   ///
   /// The builder is called with the [BuildContext] and the index of the option
   /// to build. It should return a widget, typically a [ShadOption].
+  ///
+  /// NOTE: By using this builder, you must handle the width of the options
+  /// yourself, because no intrinsic width calculation is performed.
   /// {@endtemplate}
   final Widget? Function(BuildContext, int)? optionsBuilder;
 
@@ -679,6 +687,14 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@endtemplate}
   final ValueChanged<String>? onSearchSubmitted;
 
+  /// {@template ShadSelect.onPressed}
+  /// Callback function invoked when the select input is pressed.
+  ///
+  /// If provided, this callback will be called instead of toggling the
+  /// popover.
+  /// {@endtemplate}
+  final VoidCallback? onPressed;
+
   @override
   ShadSelectState<T> createState() => ShadSelectState();
 }
@@ -692,11 +708,15 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
   ShadSelectController<T> get controller => widget.controller ?? _controller!;
 
+  VoidCallback? _popoverControllerListener;
+
   ShadPopoverController? _popoverController;
 
   ShadPopoverController get popoverController =>
       widget.popoverController ??
       (_popoverController ??= ShadPopoverController());
+
+  VoidCallback? _scrollControllerListener;
 
   ScrollController? _scrollController;
 
@@ -735,19 +755,26 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     if (widget.focusNode == null) internalFocusNode = FocusNode();
 
     // react to the scroll position
-    scrollController.addListener(() {
+    void scrollControllerListener() {
+      if (!context.mounted) return;
+
       if (!scrollController.hasClients) return;
       showScrollToBottom.value =
           scrollController.offset < scrollController.position.maxScrollExtent;
       showScrollToTop.value = scrollController.offset > 0;
-    });
+    }
 
-    final hasSearch =
-        widget.variant == ShadSelectVariant.search ||
-        widget.variant == ShadSelectVariant.multipleWithSearch;
-    if (hasSearch) {
-      popoverController.addListener(() {
+    _scrollControllerListener = scrollControllerListener;
+    scrollController.addListener(scrollControllerListener);
+
+    if (isSearchVariant()) {
+      void popoverListener() {
+        if (!context.mounted) return;
         if (popoverController.isOpen) return;
+
+        if (searchFocusNode.hasFocus) {
+          searchFocusNode.unfocus();
+        }
         final effectiveClearSearchOnClose =
             widget.clearSearchOnClose ??
             ShadTheme.of(
@@ -759,7 +786,22 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         if (effectiveClearSearchOnClose) {
           widget.onSearchChanged?.call('');
         }
-      });
+      }
+
+      _popoverControllerListener = popoverListener;
+      popoverController.addListener(popoverListener);
+    }
+  }
+
+  bool isSearchVariant() {
+    return widget.variant == ShadSelectVariant.search ||
+        widget.variant == ShadSelectVariant.multipleWithSearch;
+  }
+
+  void desktopTogglePopover() {
+    popoverController.toggle();
+    if (popoverController.isOpen && isSearchVariant()) {
+      searchFocusNode.requestFocus();
     }
   }
 
@@ -782,6 +824,18 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
 
   @override
   void dispose() {
+    final popoverControllerListener = _popoverControllerListener;
+    if (popoverControllerListener != null) {
+      popoverController.removeListener(popoverControllerListener);
+      _popoverControllerListener = null;
+    }
+
+    final scrollControllerListener = _scrollControllerListener;
+    if (scrollControllerListener != null) {
+      scrollController.removeListener(scrollControllerListener);
+      _scrollControllerListener = null;
+    }
+
     _internalSearchFocusNode?.dispose();
     _popoverController?.dispose();
     internalFocusNode?.dispose();
@@ -827,12 +881,14 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     final prevList = controller.value.toList(growable: false);
     if (widget.closeOnSelect) popoverController.hide();
     setState(() {
-      if (!isMultiSelection) controller.value.clear();
+      final newSet =
+          isMultiSelection ? Set<T>.from(controller.value) : <T>{};
       if (widget.allowDeselection && prevList.contains(value)) {
-        controller.value.remove(value);
+        newSet.remove(value);
       } else {
-        controller.value.add(value);
+        newSet.add(value);
       }
+      controller.value = newSet;
     });
 
     final newList = controller.value.toList(growable: false);
@@ -1000,9 +1056,9 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
               ? const {}
               : {
                   const SingleActivator(LogicalKeyboardKey.enter):
-                      popoverController.toggle,
+                      desktopTogglePopover,
                   const SingleActivator(LogicalKeyboardKey.space):
-                      popoverController.toggle,
+                      desktopTogglePopover,
                   const SingleActivator(LogicalKeyboardKey.escape):
                       popoverController.hide,
                 },
@@ -1061,9 +1117,17 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                 child: ShadGestureDetector(
                   cursor: SystemMouseCursors.click,
                   behavior: HitTestBehavior.opaque,
-                  onTap: () {
+                  onTapDown: (details) {
+                    if (widget.onPressed != null) {
+                      widget.onPressed!();
+                      return;
+                    }
                     FocusScope.of(context).unfocus();
-                    popoverController.toggle();
+                    if (details.kind == PointerDeviceKind.touch) {
+                      popoverController.toggle();
+                    } else {
+                      desktopTogglePopover();
+                    }
                   },
                   child: ConstrainedBox(
                     constraints: effectiveConstraints,
@@ -1174,35 +1238,14 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (search != null)
-                        Flexible(
-                          child: ConstrainedBox(
-                            constraints: effectiveConstraints,
-                            child: search,
-                          ),
-                        ),
+                      if (search != null) Flexible(child: search),
                       if (widget.header != null)
-                        Flexible(
-                          child: ConstrainedBox(
-                            constraints: effectiveConstraints,
-                            child: widget.header,
-                          ),
-                        ),
+                        Flexible(child: widget.header!),
                       ?scrollToTopChild,
-                      Flexible(
-                        child: ConstrainedBox(
-                          constraints: effectiveConstraints,
-                          child: effectiveChild,
-                        ),
-                      ),
+                      Flexible(child: effectiveChild),
                       ?scrollToBottomChild,
                       if (widget.footer != null)
-                        Flexible(
-                          child: ConstrainedBox(
-                            constraints: effectiveConstraints,
-                            child: widget.footer,
-                          ),
-                        ),
+                        Flexible(child: widget.footer!),
                     ],
                   );
 
@@ -1375,7 +1418,9 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
             child: Icon(
               LucideIcons.check,
               size: 16,
-              color: theme.colorScheme.popoverForeground,
+              color:
+                  theme.optionTheme.selectedIconColor ??
+                  theme.colorScheme.popoverForeground,
             ),
           ),
     );
@@ -1416,7 +1461,6 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
             child: Row(
               textDirection: widget.direction,
               children: [
-                effectiveSelectedIcon,
                 Expanded(
                   child: DefaultTextStyle(
                     style: selected
@@ -1425,6 +1469,7 @@ class _ShadOptionState<T> extends State<ShadOption<T>> {
                     child: widget.child,
                   ),
                 ),
+                effectiveSelectedIcon,
               ],
             ),
           ),

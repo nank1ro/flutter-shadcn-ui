@@ -1,3 +1,180 @@
+## 0.48.0
+
+- **FEAT**: Add `defaultContextMenuBuilder` implementation for `ShadInput` to show Cut/Copy and Paste buttons. This introduces the following new widgets: `ShadTextSelectionToolbar` and `ShadToolbarButton`.
+
+## 0.47.0
+
+- **FEAT**: `ShadAnchor` and `ShadAnchorAuto` now accept `AlignmentGeometry` instead of `Alignment`.
+
+## 0.46.4
+
+- **FIX**: `ShadForm.onChanged` now fires with the updated value already present in `formKey.currentState!.value`.
+
+## 0.46.3
+
+- **FIX**: `ShadSelectMultipleFormField` `onChanged` not firing after first selection due to in-place Set mutation.
+
+## 0.46.2
+
+- **FIX**: `ShadAnchorAuto` with followerAnchor: bottomCenter breaks tooltip visibility #575
+
+## 0.46.1
+
+- **FIX**: Add `forceErrorText` to `ShadSelectMultipleFormField`, `ShadSelectFormField` and `ShadTimePickerFormField` in constructors where it was missing.
+
+## 0.46.0
+
+- **FIX**: Do not remove form field value when the form field is disabled.
+- **FIX**: Revert last change about `readOnly` parameter.
+
+## 0.45.2
+
+- **FIX**: Add missing `readOnly` parameter to form fields.
+
+## 0.45.1
+
+- **FEAT**: Add `rawValue` method to `ShadForm` to get the raw form value without considering transformations.
+- **FIX**: Form Fields now correctly retrieve the latest value from `ShadForm` as initial value.
+- **FIX**: `ShadForm` now correctly resets to `initialValue`s when calling `reset()`.
+- **REFACTOR**: Rename ShadForm `getInitialValue` method into `getFieldValue`.
+
+## 0.45.0
+
+- **FEAT**: Add dot notation support for nested form values in `ShadForm`. Field IDs like `user.email` are automatically converted to nested maps like `{'user': {'email': value}}`. The `initialValue` should be provided as a nested map structure, and the form will automatically extract values based on field IDs.
+- **FEAT**: Add `fieldIdSeparator` parameter to `ShadForm` to customize the separator used for nested form values (defaults to `.`). You can use any string as a separator (e.g. `/`, `:`), or set it to `null` to disable dot notation support entirely.
+- **FEAT**: Add `toNestedMap`, `getByPath` and `deepMerge` extension methods on `Map<String, dynamic>`.
+- **FEAT**: Add `deepCopy` extension method to `Map`, `List` and `Set` to create deep copies of collections.
+
+## 0.44.1
+
+- **FIX**: `ShadForm` initial values were not considered when getting the form value for form fields that were not registered with the same `id`. Now, even custom values are returned, even if there is no form field associated with that `id`.
+
+## 0.44.0
+
+- **REFACTOR**: Deprecated `valueTransformer` in favor of `toValueTransformer`.
+- **FEAT**: Add `fromValueTransformer` to form fields to easily transform the form initial value to the field value.
+- **DOCS**: Add documentation about `fromValueTransformer` and `toValueTransformer` in form.
+
+## 0.43.4
+
+- **FIX**: `ShadForm` scroll to form fields without an associated `id`.
+
+## 0.43.3
+
+- **FIX**: Add `onPressed` to `ShadSelectMultipleFormField`.
+
+## 0.43.2
+
+- **FIX**: Correctly disable back and forth buttons in `ShadCalendar` when reaching min/max date.
+
+## 0.43.1
+
+- **FIX**: Improve `ShadPortal` scroll and resize handling.
+
+## 0.43.0
+
+- **BREAKING CHANGE**: Rename `icon` into `leading` in `ShadDatePicker` and `ShadDatePickerFormField` and add `trailing`.
+
+## 0.42.1
+
+- **CHORE**: Add `selectedIconColor` to `ShadOptionTheme` to allow customizing the color of the selected icon.
+
+## 0.42.0
+
+- **BREAKING CHANGE**: The old `setValue` has been renamed into `setFieldValue` to better reflect its purpose, and now accepts a `notifyField` boolean parameter (defaults to `true`) to control whether to notify the form field of the value change.
+- **BREAKING CHANGE**: `ShadFormBuilderFieldState.setInternalError` has been renamed into `setError` for consistency.
+- **BREAKING CHANGE**: `ShadFormState.removeInternalFieldValue` has been renamed into `removeFieldValue` for consistency.
+- **BREAKING CHANGE**: Now `setValue` takes a `Map<String, dynamic>` as value and updates the entire form value. It also accepts a `notifyFields` boolean parameter (defaults to `true`) to control whether to notify the changed form fields of the value changes.
+
+## 0.41.0
+
+- **FEAT**: Add `setValue` to `ShadForm` to manipulate the value of a form field programmatically.
+- **BREAKING CHANGE**: The map stored by `ShadForm` now uses `String` as a key instead of `Object`. Every form field `id` must be a `String` now. This change was made for convenience with JSON serialization.
+
+## 0.40.6
+
+- **FIX**: Add `maxLength` parameter to `ShadTextarea` (thanks to @mickey35vn).
+
+## 0.40.5
+
+- **FIX**: `ShadSonner` height normalization for stacked toasts with different heights.
+
+## 0.40.4
+
+- **FIX**: `ShadPopover` dismissal animation when multiple popovers were opened quickly one after another. This affected components like `ShadContextMenu` and `ShadMenubar`.
+- **FIX**: `ShadMenubar` onPressed behavior, so mobile taps now open/close the menubar items correctly.
+
+## 0.40.3
+
+- **FIX**: `ShadButton` constraints regression when using a `LayoutBuilder` as child.
+
+## 0.40.2
+
+- **FIX**: `ShadSelectFormField` `onChanged` callback being fired twice when changing the value.
+
+## 0.40.1
+
+- **FIX**: `ShadInput` constraints are applied at the top of the widget and not to the inner editable text.
+- **CHORE**: Run the Dart formatter.
+
+## 0.40.0
+
+- **FEAT**: Add new component `ShadBreadcrumb` and all of its related components (thanks to @MoazSalem).
+- **FIX**: Update `ShadButton` to allow for more flexibility with height and width properties (thanks to @MoazSalem).
+- **FIX**: Get `closeIcon` from theme in `ShadTheme` (thanks to @DMouayad).
+- **FIX**: Merge of `ShadDecoration` in the component themes.
+
+## 0.39.14
+
+- **CHORE**: Downgrade Dart SDK constraint to `3.6.0` to temporarely fix the pub dev score issue about the Dart formatter (see [#9091](https://github.com/dart-lang/pub-dev/issues/9091))
+
+## 0.39.13
+
+- **FIX**: Provide more fallback colors to `ShadCalendar`.
+
+## 0.39.12
+
+- **FIX**: `weekNumbersHeaderTextStyle` in `ShadCalendar` not having a default color.
+
+## 0.39.11
+
+- **FIX**: `ShadAvatar` with null source.
+
+## 0.39.10
+
+- **FIX**: Update `theme_extensions_builder` and fix merge issues in themes.
+
+## 0.39.9
+
+- **FIX**: Regression in `ShadSelect` where the dropdown no longer expanded to the intrinsic width of its options.
+- **FIX**: Select popover not respecting anchoring point when scrolling.
+- **CHORE**: Bump min Dart SDK version to `3.10.0`.
+
+## 0.39.8
+
+- **FIX**: Autofocus search input in select dropdown (thanks @Isakdl).
+
+## 0.39.7
+
+- **FIX**: `ShadOption` selectedIcon position doesn't match original shadcn/ui (thanks to @DMouayad).
+
+## 0.39.6
+
+- **FIX**: Assertion error when using `ShadSelect.withSearch`.
+
+## 0.39.5
+
+- **FEAT**: Add `onPressed` to `ShadSelect` and its form fields to provide a custom callback when the select input is pressed, instead of toggling the popover.
+
+## 0.39.4
+
+- **FIX**: `ShadDatePicker` selected range not updated inside `didUpdateWidget`.
+
+## 0.39.3
+
+- **FIX**: Remove extra gap when `actions` is empty in `ShadDialog`.
+- **FEAT**: Add `titlePinned`, `descriptionPinned` and `actionsPinned` to `ShadDialog` and `ShadSheet` to control whether to pin the title, description and actions when scrolling the content.
+
 ## 0.39.2
 
 - **FEAT**: Add `buttonTextStyle` to `ShadDateRangePickerFormField`.
@@ -110,8 +287,8 @@
 
 ## 0.33.0
 
-- **FEAT**: Allow extending `ShadTextTheme` with custom text styles through the `custom` parameter. [See docs](https://flutter-shadcn-ui.mariuti.com/typography#extend-with-custom-styles).
-- **FEAT**: Allow extending `ShadColorScheme` with custom colors through the `custom` parameter. [See docs](https://flutter-shadcn-ui.mariuti.com/theme/data/#extend-with-custom-colors).
+- **FEAT**: Allow extending `ShadTextTheme` with custom text styles through the `custom` parameter. [See docs](https://mariuti.com/flutter-shadcn-ui/typography#extend-with-custom-styles).
+- **FEAT**: Allow extending `ShadColorScheme` with custom colors through the `custom` parameter. [See docs](https://mariuti.com/flutter-shadcn-ui/theme/data/#extend-with-custom-colors).
 
 ## 0.32.2
 
