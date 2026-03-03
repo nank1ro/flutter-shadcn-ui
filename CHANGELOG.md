@@ -1,6 +1,7 @@
 ## 0.50.0
 
 - **FEAT**: Add `fallback` to `ShadAnchorAuto` to have another optimal position as fallback.
+- **FIX**: `ShadMenubar` now uses `ShadAnchor` instead of `ShadAnchorAuto` to always show the popover below the item.
 
 ## 0.49.0
 
