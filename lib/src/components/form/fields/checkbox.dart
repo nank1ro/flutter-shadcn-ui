@@ -23,7 +23,6 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
     super.restorationId,
     required bool super.initialValue,
     super.focusNode,
-    super.readOnly,
 
     /// {@macro ShadCheckbox.decoration}
     ShadDecoration? decoration,

@@ -26,10 +26,10 @@ class ShadAnchorAuto extends ShadAnchorBase {
 
   /// The coordinates of the overlay from which the overlay starts, which
   /// is calculated from the initial [targetAnchor].
-  final Alignment followerAnchor;
+  final AlignmentGeometry followerAnchor;
 
   /// The coordinates of the target from which the overlay starts.
-  final Alignment targetAnchor;
+  final AlignmentGeometry targetAnchor;
 
   @override
   bool operator ==(Object other) {
@@ -60,8 +60,8 @@ class ShadAnchor extends ShadAnchorBase {
     this.offset = Offset.zero,
   });
 
-  final Alignment childAlignment;
-  final Alignment overlayAlignment;
+  final AlignmentGeometry childAlignment;
+  final AlignmentGeometry overlayAlignment;
   final Offset offset;
 
   static const center = ShadAnchor(
@@ -70,8 +70,8 @@ class ShadAnchor extends ShadAnchorBase {
   );
 
   ShadAnchor copyWith({
-    Alignment? childAlignment,
-    Alignment? overlayAlignment,
+    AlignmentGeometry? childAlignment,
+    AlignmentGeometry? overlayAlignment,
     Offset? offset,
   }) {
     return ShadAnchor(
@@ -289,41 +289,26 @@ class _ShadPortalState extends State<ShadPortal> {
     final overlay = overlayKey.currentContext?.findRenderObject() as RenderBox?;
     final overlaySize = (true == overlay?.hasSize) ? overlay!.size : Size.zero;
 
-    final targetOffset = switch (anchor.targetAnchor) {
-      Alignment.topLeft => box.size.topLeft(Offset.zero),
-      Alignment.topCenter => box.size.topCenter(Offset.zero),
-      Alignment.topRight => box.size.topRight(Offset.zero),
-      Alignment.centerLeft => box.size.centerLeft(Offset.zero),
-      Alignment.center => box.size.center(Offset.zero),
-      Alignment.centerRight => box.size.centerRight(Offset.zero),
-      Alignment.bottomLeft => box.size.bottomLeft(Offset.zero),
-      Alignment.bottomCenter => box.size.bottomCenter(Offset.zero),
-      Alignment.bottomRight => box.size.bottomRight(Offset.zero),
-      final alignment => throw Exception(
-        """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
-      ),
-    };
+    final textDirection = Directionality.maybeOf(context);
+    final resolvedTargetAnchor = anchor.targetAnchor.resolve(textDirection);
+    final resolvedFollowerAnchor = anchor.followerAnchor.resolve(textDirection);
 
-    var followerOffset = switch (anchor.followerAnchor) {
-      Alignment.topLeft => Offset(-overlaySize.width / 2, -overlaySize.height),
-      Alignment.topCenter => Offset(0, -overlaySize.height),
-      Alignment.topRight => Offset(overlaySize.width / 2, -overlaySize.height),
-      Alignment.centerLeft => Offset(
-        -overlaySize.width / 2,
-        -overlaySize.height / 2,
-      ),
-      Alignment.center => Offset(0, -overlaySize.height / 2),
-      Alignment.centerRight => Offset(
-        overlaySize.width / 2,
-        -overlaySize.height / 2,
-      ),
-      Alignment.bottomLeft => Offset(-overlaySize.width / 2, 0),
-      Alignment.bottomCenter => Offset.zero,
-      Alignment.bottomRight => Offset(overlaySize.width / 2, 0),
-      final alignment => throw Exception(
-        """ShadAnchorAuto doesn't support the alignment $alignment you provided""",
-      ),
-    };
+    // Maps alignment coordinates (-1..1) to a position within the box.
+    // Formula: (1 + coord) / 2 * size gives 0 at -1, size/2 at 0, size at 1.
+    final targetOffset = Offset(
+      (1 + resolvedTargetAnchor.x) / 2 * box.size.width,
+      (1 + resolvedTargetAnchor.y) / 2 * box.size.height,
+    );
+
+    // Compute how much to shift the overlay so that the follower anchor point
+    // aligns with the target anchor.
+    // x: center the overlay horizontally around the anchor (x/2 * width).
+    // y: (y-1)/2 * height shifts the overlay so its follower anchor is at 0;
+    //    e.g. y=1 (bottom) → 0, y=0 (center) → -height/2, y=-1 (top) → -height.
+    var followerOffset = Offset(
+      resolvedFollowerAnchor.x / 2 * overlaySize.width,
+      (resolvedFollowerAnchor.y - 1) / 2 * overlaySize.height,
+    );
 
     followerOffset += targetOffset + anchor.offset;
 
@@ -342,6 +327,14 @@ class _ShadPortalState extends State<ShadPortal> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _calculatePosition();
       });
+    } else {
+      // The target is unchanged but the overlay render object now exists.
+      // Force a rebuild so that the overlay becomes visible (it was initially
+      // built with Visibility.maintain(visible: false) while the render
+      // object was being created).
+      if (mounted) {
+        setState(() {});
+      }
     }
   }
 
@@ -393,11 +386,12 @@ class _ShadPortalState extends State<ShadPortal> {
     BuildContext context,
     ShadAnchor anchor,
   ) {
+    final textDirection = Directionality.maybeOf(context);
     return CompositedTransformFollower(
       link: layerLink,
       offset: anchor.offset,
-      followerAnchor: anchor.childAlignment,
-      targetAnchor: anchor.overlayAlignment,
+      followerAnchor: anchor.childAlignment.resolve(textDirection),
+      targetAnchor: anchor.overlayAlignment.resolve(textDirection),
       child: widget.portalBuilder(context),
     );
   }

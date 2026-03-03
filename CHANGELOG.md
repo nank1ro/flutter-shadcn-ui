@@ -1,3 +1,36 @@
+## 0.49.0
+
+- **FEAT**: `ShadContextMenuRegion` now automatically supports tap to open the context menu on Android and iOS. Added `tapEnabled` parameter to override the default behavior on any platform.
+
+## 0.48.0
+
+- **FEAT**: Add `defaultContextMenuBuilder` implementation for `ShadInput` to show Cut/Copy and Paste buttons. This introduces the following new widgets: `ShadTextSelectionToolbar` and `ShadToolbarButton`.
+
+## 0.47.0
+
+- **FEAT**: `ShadAnchor` and `ShadAnchorAuto` now accept `AlignmentGeometry` instead of `Alignment`.
+
+## 0.46.4
+
+- **FIX**: `ShadForm.onChanged` now fires with the updated value already present in `formKey.currentState!.value`.
+
+## 0.46.3
+
+- **FIX**: `ShadSelectMultipleFormField` `onChanged` not firing after first selection due to in-place Set mutation.
+
+## 0.46.2
+
+- **FIX**: `ShadAnchorAuto` with followerAnchor: bottomCenter breaks tooltip visibility #575
+
+## 0.46.1
+
+- **FIX**: Add `forceErrorText` to `ShadSelectMultipleFormField`, `ShadSelectFormField` and `ShadTimePickerFormField` in constructors where it was missing.
+
+## 0.46.0
+
+- **FIX**: Do not remove form field value when the form field is disabled.
+- **FIX**: Revert last change about `readOnly` parameter.
+
 ## 0.45.2
 
 - **FIX**: Add missing `readOnly` parameter to form fields.

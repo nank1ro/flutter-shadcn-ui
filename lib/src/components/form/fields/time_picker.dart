@@ -21,7 +21,6 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     super.restorationId,
     super.validator,
     super.focusNode,
-    super.readOnly,
 
     /// {@macro ShadTimePicker.onChanged}
     super.onChanged,
@@ -172,6 +171,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     super.label,
     super.error,
     super.description,
+    super.forceErrorText,
     @Deprecated('Use toValueTransformer instead') super.valueTransformer,
     super.toValueTransformer,
     super.fromValueTransformer,
@@ -180,7 +180,6 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     super.autovalidateMode,
     super.restorationId,
     super.validator,
-    super.readOnly,
 
     /// {@macro ShadTimePicker.onChanged}
     super.onChanged,
@@ -356,6 +355,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     super.label,
     super.error,
     super.description,
+    super.forceErrorText,
     @Deprecated('Use toValueTransformer instead') super.valueTransformer,
     super.toValueTransformer,
     super.fromValueTransformer,
@@ -364,7 +364,6 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     super.autovalidateMode,
     super.restorationId,
     super.validator,
-    super.readOnly,
 
     /// {@macro ShadTimePicker.onChanged}
     super.onChanged,

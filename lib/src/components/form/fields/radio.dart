@@ -24,7 +24,6 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
     T? initialValue,
     super.focusNode,
     super.validator,
-    super.readOnly,
     required Iterable<Widget> items,
 
     /// {@macro ShadRadioGroup.axis}
