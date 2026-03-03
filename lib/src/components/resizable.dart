@@ -433,82 +433,104 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
       axisOffset = -axisOffset;
     }
 
-    var leadingIndex = index;
-    var remainingOffset = axisOffset;
-    var lastResult = ShadResizeResult.success;
+    if (axisOffset == 0) return;
 
-    // Cascade resize: when a panel hits its minSize, propagate the remaining
-    // drag delta to the next/previous panel pair.
-    while (remainingOffset.abs() > 0) {
-      if (leadingIndex < 0 ||
-          leadingIndex >= controller.panelsInfo.length - 1) {
-        break;
+    final panels = controller.panelsInfo;
+    final totalWidth = controller.totalAvailableWidth;
+    final ShadResizeResult lastResult;
+
+    if (axisOffset > 0) {
+      // Forward drag (right/down): panels[index] is the anchor and grows.
+      // Remaining delta cascades through trailing panels one by one until
+      // fully consumed or no more panels are available.
+      final anchorInfo = panels[index];
+      var remaining = axisOffset;
+      var trailingIdx = index + 1;
+      var result = ShadResizeResult.success;
+
+      while (remaining > 0 && trailingIdx < panels.length) {
+        final trailingInfo = panels[trailingIdx];
+        final canShrinkBy =
+            (trailingInfo.size - trailingInfo.minSize) * totalWidth;
+        final canGrowBy = (anchorInfo.maxSize - anchorInfo.size) * totalWidth;
+
+        if (canGrowBy < 1e-9) {
+          result = ShadResizeResult.failedTrailing;
+          break;
+        }
+
+        if (canShrinkBy < 1e-9) {
+          // Trailing is already at minSize, skip to the next panel.
+          trailingIdx++;
+          continue;
+        }
+
+        var delta = remaining;
+        if (delta > canShrinkBy) delta = canShrinkBy;
+        if (delta > canGrowBy) delta = canGrowBy;
+        delta = delta.asFixed(6);
+
+        if (delta == 0) break;
+
+        anchorInfo.size = (anchorInfo.size + delta / totalWidth).asFixed(6);
+        trailingInfo.size =
+            (trailingInfo.size - delta / totalWidth).asFixed(6);
+        remaining = (remaining - delta).asFixed(6);
+
+        if (remaining > 0) trailingIdx++;
       }
 
-      final leadingPanelInfo = getPanelInfo(leadingIndex);
-      final desiredLeadingSize =
-          (leadingPanelInfo.size * controller.totalAvailableWidth +
-                  remainingOffset) /
-          controller.totalAvailableWidth;
-
-      final result = controller.resize(
-        index: leadingIndex,
-        size: desiredLeadingSize,
-      );
+      if (remaining > 0 && result == ShadResizeResult.success) {
+        result = ShadResizeResult.failedTrailing;
+      }
       lastResult = result;
+    } else {
+      // Backward drag (left/up): panels[index+1] is the anchor and grows.
+      // Remaining delta cascades through leading panels one by one until
+      // fully consumed or no more panels are available.
+      final anchorInfo = panels[index + 1];
+      var remaining = -axisOffset;
+      var leadingIdx = index;
+      var result = ShadResizeResult.success;
 
-      if (result == ShadResizeResult.success) break;
+      while (remaining > 0 && leadingIdx >= 0) {
+        final leadingInfo = panels[leadingIdx];
+        final canShrinkBy =
+            (leadingInfo.size - leadingInfo.minSize) * totalWidth;
+        final canGrowBy = (anchorInfo.maxSize - anchorInfo.size) * totalWidth;
 
-      if (result == ShadResizeResult.failedLeading &&
-          desiredLeadingSize < leadingPanelInfo.minSize) {
-        // Leading panel would go below minSize – apply as much as possible
-        // then cascade the remaining delta to the next pair.
-        final actualDelta =
-            (leadingPanelInfo.minSize - leadingPanelInfo.size) *
-            controller.totalAvailableWidth;
-
-        if (actualDelta.abs() > 0) {
-          final partialResult = controller.resize(
-            index: leadingIndex,
-            size: leadingPanelInfo.minSize,
-          );
-          if (partialResult != ShadResizeResult.success) break;
-          remainingOffset = (remainingOffset - actualDelta).asFixed(6);
-        } else {
-          // Already at minSize; nothing more to do in this direction.
+        if (canGrowBy < 1e-9) {
+          result = ShadResizeResult.failedLeading;
           break;
         }
-        leadingIndex++;
-      } else if (result == ShadResizeResult.failedTrailing &&
-          desiredLeadingSize <= leadingPanelInfo.maxSize) {
-        // Trailing panel would go below minSize – apply as much as possible
-        // then cascade the remaining delta to the previous pair.
-        final trailingPanelInfo = getPanelInfo(leadingIndex + 1);
-        final actualTrailingDelta =
-            (trailingPanelInfo.size - trailingPanelInfo.minSize) *
-            controller.totalAvailableWidth;
 
-        if (actualTrailingDelta.abs() > 0) {
-          final newLeadingSize =
-              (leadingPanelInfo.size * controller.totalAvailableWidth +
-                      actualTrailingDelta) /
-              controller.totalAvailableWidth;
-          final partialResult = controller.resize(
-            index: leadingIndex,
-            size: newLeadingSize,
-          );
-          if (partialResult != ShadResizeResult.success) break;
-          remainingOffset = (remainingOffset - actualTrailingDelta).asFixed(6);
-        } else {
-          // Trailing already at minSize; nothing more to do in this direction.
-          break;
+        if (canShrinkBy < 1e-9) {
+          // Leading is already at minSize, skip to the previous panel.
+          leadingIdx--;
+          continue;
         }
-        leadingIndex--;
-      } else {
-        // maxSize constraint or other failure – stop cascading.
-        break;
+
+        var delta = remaining;
+        if (delta > canShrinkBy) delta = canShrinkBy;
+        if (delta > canGrowBy) delta = canGrowBy;
+        delta = delta.asFixed(6);
+
+        if (delta == 0) break;
+
+        leadingInfo.size = (leadingInfo.size - delta / totalWidth).asFixed(6);
+        anchorInfo.size = (anchorInfo.size + delta / totalWidth).asFixed(6);
+        remaining = (remaining - delta).asFixed(6);
+
+        if (remaining > 0) leadingIdx--;
       }
+
+      if (remaining > 0 && result == ShadResizeResult.success) {
+        result = ShadResizeResult.failedLeading;
+      }
+      lastResult = result;
     }
+
+    controller.notifyListeners();
 
     switch (lastResult) {
       case ShadResizeResult.success:
