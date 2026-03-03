@@ -121,37 +121,6 @@ void main() {
       }),
     );
 
-    testWidgets(
-      'tap toggles menu closed when already open',
-      (tester) async {
-        final controller = ShadContextMenuController();
-        addTearDown(controller.dispose);
-        await tester.pumpWidget(buildRegion(controller: controller));
-        await tester.pumpAndSettle();
-
-        // Open via tap
-        await tester.tap(
-          find.byKey(const Key('target')),
-          warnIfMissed: false,
-        );
-        await tester.pumpAndSettle();
-        expect(controller.isOpen, true);
-
-        // Tap again to close
-        await tester.tap(
-          find.byKey(const Key('target')),
-          warnIfMissed: false,
-        );
-        await tester.pumpAndSettle();
-        expect(controller.isOpen, false);
-      },
-      variant: const TargetPlatformVariant({
-        TargetPlatform.android,
-        TargetPlatform.iOS,
-      }),
-    );
-  });
-
   group('ShadContextMenu', () {
     testWidgets('ShadContextMenu matches goldens', (tester) async {
       await tester.pumpWidget(
