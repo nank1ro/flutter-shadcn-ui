@@ -12,7 +12,10 @@ void main() {
   }
 
   group('ShadContextMenuRegion tapEnabled', () {
-    Widget buildRegion({ShadContextMenuController? controller, bool? tapEnabled}) {
+    Widget buildRegion({
+      ShadContextMenuController? controller,
+      bool? tapEnabled,
+    }) {
       return ShadApp(
         home: Scaffold(
           body: ShadContextMenuRegion(
@@ -73,7 +76,9 @@ void main() {
 
       final controller = ShadContextMenuController();
       addTearDown(controller.dispose);
-      await tester.pumpWidget(buildRegion(controller: controller, tapEnabled: true));
+      await tester.pumpWidget(
+        buildRegion(controller: controller, tapEnabled: true),
+      );
 
       expect(controller.isOpen, false);
       await tester.tap(find.byKey(const Key('target')));
@@ -81,13 +86,17 @@ void main() {
       expect(controller.isOpen, true);
     });
 
-    testWidgets('tapEnabled: false prevents tap from opening menu on mobile', (tester) async {
+    testWidgets('tapEnabled: false prevents tap from opening menu on mobile', (
+      tester,
+    ) async {
       debugDefaultTargetPlatformOverride = TargetPlatform.android;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
 
       final controller = ShadContextMenuController();
       addTearDown(controller.dispose);
-      await tester.pumpWidget(buildRegion(controller: controller, tapEnabled: false));
+      await tester.pumpWidget(
+        buildRegion(controller: controller, tapEnabled: false),
+      );
 
       expect(controller.isOpen, false);
       await tester.tap(find.byKey(const Key('target')));
@@ -95,7 +104,9 @@ void main() {
       expect(controller.isOpen, false);
     });
 
-    testWidgets('tap toggles menu closed when already open on mobile', (tester) async {
+    testWidgets('tap toggles menu closed when already open on mobile', (
+      tester,
+    ) async {
       debugDefaultTargetPlatformOverride = TargetPlatform.android;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
 
