@@ -1,3 +1,8 @@
+## 0.50.0
+
+- **FEAT**: Add `fallback` to `ShadAnchorAuto` to have another optimal position as fallback.
+- **FIX**: `ShadMenubar` now uses `ShadAnchor` instead of `ShadAnchorAuto` to always show the popover below the item.
+
 ## 0.49.0
 
 - **FEAT**: `ShadContextMenuRegion` now automatically supports tap to open the context menu on Android and iOS. Added `tapEnabled` parameter to override the default behavior on any platform.
