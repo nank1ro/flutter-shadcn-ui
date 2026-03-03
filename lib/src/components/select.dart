@@ -881,8 +881,7 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
     final prevList = controller.value.toList(growable: false);
     if (widget.closeOnSelect) popoverController.hide();
     setState(() {
-      final newSet =
-          isMultiSelection ? Set<T>.from(controller.value) : <T>{};
+      final newSet = isMultiSelection ? Set<T>.from(controller.value) : <T>{};
       if (widget.allowDeselection && prevList.contains(value)) {
         newSet.remove(value);
       } else {
@@ -943,7 +942,16 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
         Duration.zero;
 
     final effectiveAnchor =
-        widget.anchor ?? theme.selectTheme.anchor ?? const ShadAnchorAuto();
+        widget.anchor ??
+        theme.selectTheme.anchor ??
+        const ShadAnchorAuto(
+          offset: Offset(0, 4),
+          fallback: ShadAnchorAuto(
+            offset: Offset(0, -4),
+            followerAnchor: Alignment.topCenter,
+            targetAnchor: Alignment.topCenter,
+          ),
+        );
 
     final effectiveEffects = widget.effects ?? theme.selectTheme.effects;
 

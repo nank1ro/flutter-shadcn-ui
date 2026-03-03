@@ -254,8 +254,13 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       ),
       dropdownMenuAnchor: const ShadAnchorAuto(
         offset: Offset(0, 4),
-        targetAnchor: Alignment.bottomLeft,
-        followerAnchor: Alignment.bottomRight,
+        targetAnchor: AlignmentDirectional.bottomStart,
+        followerAnchor: AlignmentDirectional.bottomEnd,
+        fallback: ShadAnchorAuto(
+          offset: Offset(0, -4),
+          targetAnchor: AlignmentDirectional.topStart,
+          followerAnchor: AlignmentDirectional.topEnd,
+        ),
       ),
       dropdownArrowGap: 4,
     );
@@ -283,6 +288,9 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
         offset: Offset(0, -4),
         followerAnchor: Alignment.topCenter,
         targetAnchor: Alignment.topCenter,
+        fallback: ShadAnchorAuto(
+          offset: Offset(0, 4),
+        ),
       ),
       duration: Animate.defaultDuration,
       reverseDuration: Duration.zero,
@@ -334,7 +342,14 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
           width: 1,
         ),
       ),
-      anchor: const ShadAnchorAuto(offset: Offset(0, 4)),
+      anchor: const ShadAnchorAuto(
+        offset: Offset(0, 4),
+        fallback: ShadAnchorAuto(
+          offset: Offset(0, -4),
+          followerAnchor: Alignment.topCenter,
+          targetAnchor: Alignment.topCenter,
+        ),
+      ),
     );
   }
 
@@ -405,7 +420,14 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       showScrollToTopChevron: true,
       showScrollToBottomChevron: true,
       popoverReverseDuration: Duration.zero,
-      anchor: const ShadAnchorAuto(offset: Offset(0, 4)),
+      anchor: const ShadAnchorAuto(
+        offset: Offset(0, 4),
+        fallback: ShadAnchorAuto(
+          offset: Offset(0, -4),
+          followerAnchor: Alignment.topCenter,
+          targetAnchor: Alignment.topCenter,
+        ),
+      ),
       searchPadding: const EdgeInsets.all(12),
     );
   }
@@ -1020,10 +1042,10 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       radius: radius,
       padding: const EdgeInsets.all(4),
       border: ShadBorder.all(color: colorScheme.border, width: 1),
-      anchor: const ShadAnchorAuto(
+      anchor: const ShadAnchor(
         offset: Offset(-4, 8),
-        followerAnchor: Alignment.bottomRight,
-        targetAnchor: Alignment.bottomLeft,
+        childAlignment: AlignmentDirectional.topStart,
+        overlayAlignment: AlignmentDirectional.bottomStart,
       ),
       buttonHeight: 32,
       buttonVariant: ShadButtonVariant.ghost,
