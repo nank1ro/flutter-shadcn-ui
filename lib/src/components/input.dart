@@ -866,20 +866,17 @@ class ShadInputState extends State<ShadInput>
   ) {
     final selection = editableTextState.textEditingValue.selection;
     final hasSelection = selection.isValid && !selection.isCollapsed;
-    final buttonItems = editableTextState.contextMenuButtonItems
-        .where(
-          (item) {
-            // Cut and Copy require text to be selected.
-            if (item.type == ContextMenuButtonType.cut ||
-                item.type == ContextMenuButtonType.copy) {
-              return hasSelection;
-            }
-            return (item.label ??
-                    ShadTextSelectionToolbar.labelForType(item.type))
-                .isNotEmpty;
-          },
-        )
-        .toList();
+    final buttonItems = editableTextState.contextMenuButtonItems.where(
+      (item) {
+        // Cut and Copy require text to be selected.
+        if (item.type == ContextMenuButtonType.cut ||
+            item.type == ContextMenuButtonType.copy) {
+          return hasSelection;
+        }
+        return (item.label ?? ShadTextSelectionToolbar.labelForType(item.type))
+            .isNotEmpty;
+      },
+    ).toList();
     if (buttonItems.isEmpty) return const SizedBox.shrink();
     return ShadTextSelectionToolbar(
       anchor: editableTextState.contextMenuAnchors.primaryAnchor,
@@ -1385,7 +1382,8 @@ class _ShadToolbarButtonState extends State<ShadToolbarButton> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveTextStyle = widget.textStyle ??
+    final effectiveTextStyle =
+        widget.textStyle ??
         theme.textTheme.small.copyWith(
           fontWeight: FontWeight.normal,
           color: theme.colorScheme.foreground,
@@ -1400,7 +1398,8 @@ class _ShadToolbarButtonState extends State<ShadToolbarButton> {
           widget.onPressed?.call();
         },
         child: Container(
-          padding: widget.padding ??
+          padding:
+              widget.padding ??
               const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           color: _hovered
               ? (widget.hoverColor ?? theme.colorScheme.accent)

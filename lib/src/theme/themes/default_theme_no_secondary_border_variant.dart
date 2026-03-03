@@ -306,8 +306,6 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         targetAnchor: Alignment.topCenter,
         fallback: ShadAnchorAuto(
           offset: Offset(0, 4),
-          followerAnchor: Alignment.bottomCenter,
-          targetAnchor: Alignment.bottomCenter,
         ),
       ),
       duration: Animate.defaultDuration,
