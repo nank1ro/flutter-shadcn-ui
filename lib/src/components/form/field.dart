@@ -50,13 +50,12 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.decorationBuilder,
     super.forceErrorText,
   }) : super(
-         builder: (field) {
-           final state =
-               field as ShadFormBuilderFieldState<ShadFormBuilderField<T>, T>;
-           final hasError = field.hasError;
+         builder: (state) {
+           state as ShadFormBuilderFieldState<ShadFormBuilderField<T>, T>;
+           final hasError = state.hasError;
 
            final effectiveError = hasError
-               ? error?.call(field.errorText!) ?? Text(field.errorText!)
+               ? error?.call(state.errorText!) ?? Text(state.errorText!)
                : null;
 
            return ShadInputDecorator(
@@ -64,7 +63,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
              error: effectiveError,
              description: description,
              decoration: state.decoration,
-             child: builder(field),
+             child: builder(state),
            );
          },
          onReset: onReset,

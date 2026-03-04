@@ -1,3 +1,8 @@
+## 0.50.1
+
+- **FIX**: `ShadDatePicker.didUpdateWidget` ignored `selected` and `selectedRange` null values.
+- **REFACTOR**: Make all form fields state public, to easily create a `GlobalKey` in the rare case you need it.
+
 ## 0.50.0
 
 - **FEAT**: Add `fallback` to `ShadAnchorAuto` to have another optimal position as fallback.
