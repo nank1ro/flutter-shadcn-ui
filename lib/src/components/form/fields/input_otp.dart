@@ -73,8 +73,8 @@ class ShadInputOTPFormField extends ShadFormBuilderField<String> {
        );
 
   @override
-  ShadFormBuilderFieldState<ShadFormBuilderField<String>, String>
-  createState() => ShadFormBuilderInputOTPState();
+  ShadFormBuilderFieldState<ShadInputOTPFormField, String> createState() =>
+      ShadFormBuilderInputOTPState();
 }
 
 class ShadFormBuilderInputOTPState
