@@ -51,8 +51,8 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
              ShadTheme.of(context).radioTheme.decoration ??
              const ShadDecoration(),
          initialValue: controller?.value ?? initialValue,
-         builder: (field) {
-           final state = field as ShadFormBuilderRadioGroupState;
+         builder: (state) {
+           state as ShadFormBuilderRadioGroupState<T>;
            return ShadRadioGroup(
              items: items,
              onChanged: state.didChange,

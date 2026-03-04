@@ -254,8 +254,8 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
              (ShadTheme.of(context).inputTheme.decoration ??
                      const ShadDecoration())
                  .merge(decoration),
-         builder: (field) {
-           final state = field as ShadFormBuilderInputState;
+         builder: (state) {
+           state as ShadFormBuilderInputState;
            return ShadInput(
              key: state.inputKey,
              controller: state.controller,
