@@ -255,7 +255,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
                      const ShadDecoration())
                  .merge(decoration),
          builder: (field) {
-           final state = field as _ShadFormBuilderInputState;
+           final state = field as ShadFormBuilderInputState;
            return ShadInput(
              key: state.inputKey,
              controller: state.controller,
@@ -342,10 +342,10 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
 
   @override
   ShadFormBuilderFieldState<ShadInputFormField, String> createState() =>
-      _ShadFormBuilderInputState();
+      ShadFormBuilderInputState();
 }
 
-class _ShadFormBuilderInputState
+class ShadFormBuilderInputState
     extends ShadFormBuilderFieldState<ShadInputFormField, String> {
   TextEditingController? _controller;
 

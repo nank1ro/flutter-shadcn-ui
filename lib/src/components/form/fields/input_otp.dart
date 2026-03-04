@@ -57,12 +57,7 @@ class ShadInputOTPFormField extends ShadFormBuilderField<String> {
              ? null
              : (v) => onChanged(v ?? ''.padRight(maxLength)),
          builder: (field) {
-           final state =
-               field
-                   as ShadFormBuilderFieldState<
-                     ShadFormBuilderField<String>,
-                     String
-                   >;
+           final state = field as ShadFormBuilderInputOTPState;
            return ShadInputOTP(
              enabled: state.enabled,
              keyboardType: keyboardType,
@@ -76,4 +71,11 @@ class ShadInputOTPFormField extends ShadFormBuilderField<String> {
            );
          },
        );
+
+  @override
+  ShadFormBuilderFieldState<ShadFormBuilderField<String>, String>
+  createState() => ShadFormBuilderInputOTPState();
 }
+
+class ShadFormBuilderInputOTPState
+    extends ShadFormBuilderFieldState<ShadInputOTPFormField, String> {}

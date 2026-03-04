@@ -122,7 +122,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     this.showSeconds,
   }) : super(
          builder: (field) {
-           final state = field as _ShadFormBuilderTimePickerState;
+           final state = field as ShadFormBuilderTimePickerState;
            return ShadTimePicker(
              controller: state.controller,
              onChanged: state.didChange,
@@ -299,7 +299,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     this.showSeconds,
   }) : super(
          builder: (field) {
-           final state = field as _ShadFormBuilderTimePickerState;
+           final state = field as ShadFormBuilderTimePickerState;
            return ShadTimePicker.period(
              controller: state.controller,
              onChanged: state.didChange,
@@ -483,7 +483,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
     this.showSeconds,
   }) : super(
          builder: (field) {
-           final state = field as _ShadFormBuilderTimePickerState;
+           final state = field as ShadFormBuilderTimePickerState;
            return ShadTimePicker.raw(
              variant: variant,
              controller: state.controller,
@@ -534,7 +534,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
 
   @override
   ShadFormBuilderFieldState<ShadTimePickerFormField, ShadTimeOfDay>
-  createState() => _ShadFormBuilderTimePickerState();
+  createState() => ShadFormBuilderTimePickerState();
 
   final ShadTimePickerController? controller;
 
@@ -548,7 +548,7 @@ class ShadTimePickerFormField extends ShadFormBuilderField<ShadTimeOfDay> {
   final bool? showSeconds;
 }
 
-class _ShadFormBuilderTimePickerState
+class ShadFormBuilderTimePickerState
     extends ShadFormBuilderFieldState<ShadTimePickerFormField, ShadTimeOfDay> {
   // ignore: use_late_for_private_fields_and_variables
   ShadTimePickerController? _controller;

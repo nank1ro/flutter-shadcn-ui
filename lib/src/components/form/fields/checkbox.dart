@@ -67,7 +67,7 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
                      const ShadDecoration())
                  .merge(decoration),
          builder: (field) {
-           final state = field as _ShadFormBuilderCheckboxState;
+           final state = field as ShadFormBuilderCheckboxState;
            return ShadCheckbox(
              value: state.value!,
              onChanged: state.didChange,
@@ -90,8 +90,8 @@ class ShadCheckboxFormField extends ShadFormBuilderField<bool> {
 
   @override
   ShadFormBuilderFieldState<ShadCheckboxFormField, bool> createState() =>
-      _ShadFormBuilderCheckboxState();
+      ShadFormBuilderCheckboxState();
 }
 
-class _ShadFormBuilderCheckboxState
+class ShadFormBuilderCheckboxState
     extends ShadFormBuilderFieldState<ShadCheckboxFormField, bool> {}

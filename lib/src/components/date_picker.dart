@@ -944,10 +944,10 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
   @override
   void didUpdateWidget(covariant ShadDatePicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.selected != null) {
+    if (widget.selected != oldWidget.selected) {
       selected = widget.selected;
     }
-    if (widget.selectedRange != null) {
+    if (widget.selectedRange != oldWidget.selectedRange) {
       selectedRange = widget.selectedRange;
     }
   }

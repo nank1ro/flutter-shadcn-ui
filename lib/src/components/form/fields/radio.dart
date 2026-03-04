@@ -52,7 +52,7 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
              const ShadDecoration(),
          initialValue: controller?.value ?? initialValue,
          builder: (field) {
-           final state = field as _ShadFormBuilderRadioGroupState;
+           final state = field as ShadFormBuilderRadioGroupState;
            return ShadRadioGroup(
              items: items,
              onChanged: state.didChange,
@@ -73,10 +73,10 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
 
   @override
   ShadFormBuilderFieldState<ShadRadioGroupFormField<T>, T> createState() =>
-      _ShadFormBuilderRadioGroupState<T>();
+      ShadFormBuilderRadioGroupState<T>();
 }
 
-class _ShadFormBuilderRadioGroupState<T>
+class ShadFormBuilderRadioGroupState<T>
     extends ShadFormBuilderFieldState<ShadRadioGroupFormField<T>, T> {
   ShadRadioController<T>? _controller;
 

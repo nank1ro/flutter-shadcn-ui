@@ -534,7 +534,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
                      const ShadDecoration())
                  .merge(decoration),
          builder: (field) {
-           final state = field as _ShadFormBuilderSelectMultipleState<T>;
+           final state = field as ShadFormBuilderSelectMultipleState<T>;
 
            return ShadSelect<T>.multiple(
              options: options,
@@ -643,7 +643,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
                      const ShadDecoration())
                  .merge(decoration),
          builder: (field) {
-           final state = field as _ShadFormBuilderSelectMultipleState<T>;
+           final state = field as ShadFormBuilderSelectMultipleState<T>;
 
            return ShadSelect<T>.multipleWithSearch(
              options: options,
@@ -764,7 +764,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
                      const ShadDecoration())
                  .merge(decoration),
          builder: (field) {
-           final state = field as _ShadFormBuilderSelectMultipleState<T>;
+           final state = field as ShadFormBuilderSelectMultipleState<T>;
 
            return ShadSelect<T>.raw(
              variant: variant,
@@ -813,10 +813,10 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
   @override
   ShadFormBuilderFieldState<ShadSelectMultipleFormField<T>, Set<T>>
-  createState() => _ShadFormBuilderSelectMultipleState<T>();
+  createState() => ShadFormBuilderSelectMultipleState<T>();
 }
 
-class _ShadFormBuilderSelectMultipleState<T>
+class ShadFormBuilderSelectMultipleState<T>
     extends ShadFormBuilderFieldState<ShadSelectMultipleFormField<T>, Set<T>> {
   ShadSelectController<T>? _controller;
 

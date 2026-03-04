@@ -431,7 +431,7 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     TextStyle? buttonTextStyle,
   }) : super(
          builder: (field) {
-           final state = field as _ShadFormBuilderDatePickerState;
+           final state = field as ShadFormBuilderDatePickerState;
            return ShadDatePicker(
              onChanged: state.didChange,
              enabled: state.enabled,
@@ -573,8 +573,8 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
 
   @override
   ShadFormBuilderFieldState<ShadDatePickerFormField, DateTime> createState() =>
-      _ShadFormBuilderDatePickerState();
+      ShadFormBuilderDatePickerState();
 }
 
-class _ShadFormBuilderDatePickerState
+class ShadFormBuilderDatePickerState
     extends ShadFormBuilderFieldState<ShadDatePickerFormField, DateTime> {}

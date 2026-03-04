@@ -76,7 +76,7 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
                      const ShadDecoration())
                  .merge(decoration),
          builder: (field) {
-           final state = field as _ShadFormBuilderSwitchState;
+           final state = field as ShadFormBuilderSwitchState;
 
            return ShadSwitch(
              value: state.value!,
@@ -100,8 +100,8 @@ class ShadSwitchFormField extends ShadFormBuilderField<bool> {
 
   @override
   ShadFormBuilderFieldState<ShadSwitchFormField, bool> createState() =>
-      _ShadFormBuilderSwitchState();
+      ShadFormBuilderSwitchState();
 }
 
-class _ShadFormBuilderSwitchState
+class ShadFormBuilderSwitchState
     extends ShadFormBuilderFieldState<ShadSwitchFormField, bool> {}
