@@ -35,6 +35,7 @@ import 'package:shadcn_ui/src/theme/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
+import 'package:shadcn_ui/src/theme/components/type_ahead.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
@@ -95,6 +96,7 @@ abstract class ShadBaseTheme {
     required this.separatorTheme,
     required this.sonnerTheme,
     required this.textareaTheme,
+    required this.typeAheadTheme,
     required this.defaultKeyboardToolbarTheme,
   });
 
@@ -151,6 +153,7 @@ abstract class ShadBaseTheme {
   final ShadSeparatorTheme separatorTheme;
   final ShadSonnerTheme sonnerTheme;
   final ShadTextareaTheme textareaTheme;
+  final ShadTypeAheadTheme typeAheadTheme;
   final ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme;
 }
 
@@ -203,5 +206,6 @@ abstract class ShadThemeVariant {
   ShadSeparatorTheme separatorTheme();
   ShadSonnerTheme sonnerTheme();
   ShadTextareaTheme textareaTheme();
+  ShadTypeAheadTheme typeAheadTheme();
   ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme();
 }

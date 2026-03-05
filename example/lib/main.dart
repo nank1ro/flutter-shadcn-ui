@@ -44,6 +44,7 @@ import 'package:example/pages/time_picker.dart';
 import 'package:example/pages/time_picker_form_field.dart';
 import 'package:example/pages/toast.dart';
 import 'package:example/pages/tooltip.dart';
+import 'package:example/pages/type_ahead.dart';
 import 'package:example/pages/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
@@ -99,6 +100,7 @@ final routes = <String, WidgetBuilder>{
   '/time-picker-form-field': (_) => const TimePickerFormFieldPage(),
   '/toast': (_) => const ToastPage(),
   '/tooltip': (_) => const TooltipPage(),
+  '/type-ahead': (_) => const TypeAheadPage(),
   '/typography': (_) => const TypographyPage(),
 };
 final routeToNameRegex = RegExp('(?:^/|-)([a-zA-Z])');
