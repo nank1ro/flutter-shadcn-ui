@@ -31,6 +31,7 @@ import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -1085,6 +1086,50 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       showDoneButton: true,
       showNextButton: true,
       showPreviousButton: true,
+    );
+  }
+
+  @override
+  ShadSidebarTheme sidebarTheme() {
+    return ShadSidebarTheme(
+      width: 256,
+      collapsedWidth: 48,
+      mobileBreakpoint: 768,
+      animationDuration: const Duration(milliseconds: 200),
+      animationCurve: Curves.linear,
+      decoration: ShadDecoration(
+        border: ShadBorder.all(
+          color: colorScheme.sidebarBorder ?? colorScheme.border,
+          width: 1,
+        ),
+      ),
+      headerPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      footerPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      contentPadding: EdgeInsets.zero,
+      groupPadding: const EdgeInsets.all(8),
+      groupLabelPadding: const EdgeInsets.symmetric(horizontal: 8),
+      itemHeight: 36,
+      itemPadding: const EdgeInsets.symmetric(horizontal: 8),
+      itemBorderRadius: BorderRadius.circular(6),
+      itemIconSize: 16,
+      itemSpacing: 8,
+      subItemHeight: 32,
+      subItemPadding: const EdgeInsets.symmetric(horizontal: 8),
+      subItemBorderRadius: BorderRadius.circular(6),
+      subItemsMargin: const EdgeInsets.symmetric(horizontal: 14),
+      subItemsPadding: const EdgeInsetsDirectional.only(
+        start: 10,
+        top: 2,
+        bottom: 2,
+      ),
+      subItemsBorderWidth: 1,
+      separatorPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      separatorThickness: 1,
+      triggerSize: 36,
+      triggerPadding: EdgeInsets.zero,
+      floatingMargin: const EdgeInsets.all(8),
+      floatingBorderRadius: BorderRadius.circular(8),
+      floatingShadow: ShadShadows.sm,
     );
   }
 }

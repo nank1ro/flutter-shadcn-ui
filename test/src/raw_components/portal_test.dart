@@ -7,7 +7,9 @@ import 'package:shadcn_ui/src/raw_components/portal.dart';
 
 void main() {
   Widget createTestWidget(Widget child) {
-    return ShadApp(home: Scaffold(body: Center(child: child)));
+    return ShadApp(
+      home: Scaffold(body: Center(child: child)),
+    );
   }
 
   group('ShadPortal with ShadAnchorAuto', () {
@@ -44,8 +46,9 @@ void main() {
           of: find.text('portal content'),
           matching: find.byType(Visibility),
         );
-        final visibilityWidget =
-            tester.widget<Visibility>(visibilityFinder.first);
+        final visibilityWidget = tester.widget<Visibility>(
+          visibilityFinder.first,
+        );
         expect(visibilityWidget.visible, isTrue);
       },
     );
@@ -74,8 +77,9 @@ void main() {
           of: find.text('portal content'),
           matching: find.byType(Visibility),
         );
-        final visibilityWidget =
-            tester.widget<Visibility>(visibilityFinder.first);
+        final visibilityWidget = tester.widget<Visibility>(
+          visibilityFinder.first,
+        );
         expect(visibilityWidget.visible, isTrue);
       },
     );
