@@ -26,6 +26,8 @@ import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar_scaffold.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -96,6 +98,8 @@ abstract class ShadBaseTheme {
     required this.sonnerTheme,
     required this.textareaTheme,
     required this.defaultKeyboardToolbarTheme,
+    required this.sidebarTheme,
+    required this.sidebarScaffoldTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -152,6 +156,8 @@ abstract class ShadBaseTheme {
   final ShadSonnerTheme sonnerTheme;
   final ShadTextareaTheme textareaTheme;
   final ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme;
+  final ShadSidebarTheme sidebarTheme;
+  final ShadSidebarScaffoldTheme sidebarScaffoldTheme;
 }
 
 @immutable
@@ -204,4 +210,6 @@ abstract class ShadThemeVariant {
   ShadSonnerTheme sonnerTheme();
   ShadTextareaTheme textareaTheme();
   ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme();
+  ShadSidebarTheme sidebarTheme();
+  ShadSidebarScaffoldTheme sidebarScaffoldTheme();
 }

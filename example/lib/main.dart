@@ -31,6 +31,7 @@ import 'package:example/pages/resizable.dart';
 import 'package:example/pages/select.dart';
 import 'package:example/pages/select_form_field.dart';
 import 'package:example/pages/sheet.dart';
+import 'package:example/pages/sidebar.dart';
 import 'package:example/pages/slider.dart';
 import 'package:example/pages/sonner.dart';
 import 'package:example/pages/switch.dart';
@@ -87,6 +88,7 @@ final routes = <String, WidgetBuilder>{
   '/select': (_) => const SelectPage(),
   '/select-form-field': (_) => const SelectFormFieldPage(),
   '/sheet': (_) => const SheetPage(),
+  '/sidebar': (_) => const SidebarPage(),
   '/slider': (_) => const SliderPage(),
   '/sonner': (_) => const SonnerPage(),
   '/switch': (_) => const SwitchPage(),

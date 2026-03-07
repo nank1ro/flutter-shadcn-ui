@@ -27,6 +27,8 @@ import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar.dart';
+import 'package:shadcn_ui/src/theme/components/sidebar_scaffold.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -109,6 +111,8 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
     ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
+    ShadSidebarTheme? sidebarTheme,
+    ShadSidebarScaffoldTheme? sidebarScaffoldTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -240,6 +244,9 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
       defaultKeyboardToolbarTheme: effectiveVariant
           .defaultKeyboardToolbarTheme()
           .merge(defaultKeyboardToolbarTheme),
+      sidebarTheme: effectiveVariant.sidebarTheme().merge(sidebarTheme),
+      sidebarScaffoldTheme:
+          effectiveVariant.sidebarScaffoldTheme().merge(sidebarScaffoldTheme),
     );
   }
 
@@ -298,6 +305,8 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     required super.sonnerTheme,
     required super.textareaTheme,
     required super.defaultKeyboardToolbarTheme,
+    required super.sidebarTheme,
+    required super.sidebarScaffoldTheme,
   });
 
   static ShadThemeData? lerp(

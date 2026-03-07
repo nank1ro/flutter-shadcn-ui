@@ -23,6 +23,7 @@ import 'package:playground/pages/radio_group.dart';
 import 'package:playground/pages/resizable.dart';
 import 'package:playground/pages/select.dart';
 import 'package:playground/pages/sheet.dart';
+import 'package:playground/pages/sidebar.dart';
 import 'package:playground/pages/slider.dart';
 import 'package:playground/pages/sonner.dart';
 import 'package:playground/pages/switch.dart';
@@ -300,6 +301,14 @@ final router = GoRouter(
       path: '/textarea',
       builder: (context, state) {
         return const TextareaPage();
+      },
+    ),
+    GoRoute(
+      path: '/sidebar',
+      builder: (context, state) {
+        final blockStr = state.uri.queryParameters['block'] ??
+            SidebarBlock.basicWithMenu.name;
+        return SidebarPage(block: SidebarBlock.values.byName(blockStr));
       },
     ),
   ],
