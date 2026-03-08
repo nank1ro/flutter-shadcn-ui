@@ -45,25 +45,42 @@ class ShadSidebarScaffold extends StatefulWidget {
 }
 
 class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late ShadSidebarController _controller;
   late AnimationController _animationController;
   late CurvedAnimation _animation;
   bool _ownsController = false;
+  bool _initialized = false;
   bool? _wasMobile;
+
+  // ---------------------------------------------------------------------------
+  // Lifecycle
+  // ---------------------------------------------------------------------------
 
   @override
   void initState() {
     super.initState();
     _setupController();
-    _setupAnimation();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!_initialized) {
+      // First call — create animation controllers using theme values.
+      _setupAnimation();
+      _initialized = true;
+    } else {
+      // Subsequent calls — theme or MediaQuery changed.
+      // Only update duration/curve.
+      _updateAnimationFromTheme();
+    }
   }
 
   @override
   void didUpdateWidget(ShadSidebarScaffold oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final theme = ShadTheme.of(context);
-    final sidebarTheme = theme.sidebarTheme;
 
     if (widget.controller != oldWidget.controller) {
       _controller.removeListener(_onControllerChanged);
@@ -73,27 +90,16 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     }
 
     if (widget.animationDuration != oldWidget.animationDuration) {
-      _animationController.duration =
-          widget.animationDuration ??
-          sidebarTheme.animationDuration ??
-          const Duration(milliseconds: 200);
+      _updateAnimationDuration();
     }
 
     if (widget.animationCurve != oldWidget.animationCurve) {
-      final curve =
-          widget.animationCurve ??
-          sidebarTheme.animationCurve ??
-          Curves.easeInOut;
-
-      _animation.dispose();
-      _animation = CurvedAnimation(
-        parent: _animationController,
-        curve: curve,
-      );
+      _updateAnimationCurve();
     }
 
     if (widget.collapsibleMode != oldWidget.collapsibleMode &&
         widget.collapsibleMode == ShadSidebarCollapsibleMode.none) {
+      _controller.open();
       _animationController.value = 1.0;
     }
   }
@@ -107,6 +113,10 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     super.dispose();
   }
 
+  // ---------------------------------------------------------------------------
+  // Setup — runs once
+  // ---------------------------------------------------------------------------
+
   void _setupController() {
     if (widget.controller != null) {
       _controller = widget.controller!;
@@ -119,18 +129,8 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   }
 
   void _setupAnimation() {
-    final theme = ShadTheme.of(context);
-    final sidebarTheme = theme.sidebarTheme;
-
-    final duration =
-        widget.animationDuration ??
-        sidebarTheme.animationDuration ??
-        const Duration(milliseconds: 200);
-
-    final curve =
-        widget.animationCurve ??
-        sidebarTheme.animationCurve ??
-        Curves.easeInOut;
+    final effectiveDuration = _resolveAnimationDuration();
+    final effectiveCurve = _resolveAnimationCurve();
 
     final initialValue =
         widget.collapsibleMode == ShadSidebarCollapsibleMode.none
@@ -139,15 +139,63 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
 
     _animationController = AnimationController(
       vsync: this,
-      duration: duration,
+      duration: effectiveDuration,
       value: initialValue,
     );
 
     _animation = CurvedAnimation(
       parent: _animationController,
-      curve: curve,
+      curve: effectiveCurve,
     );
   }
+
+  // ---------------------------------------------------------------------------
+  // Updates — runs on theme/widget changes without recreating controllers
+  // ---------------------------------------------------------------------------
+
+  void _updateAnimationFromTheme() {
+    _updateAnimationDuration();
+    // Curve only needs updating if widget param is null (theme-driven).
+    // If widget param is set, didUpdateWidget handles it.
+    if (widget.animationCurve == null) {
+      _updateAnimationCurve();
+    }
+  }
+
+  void _updateAnimationDuration() {
+    _animationController.duration = _resolveAnimationDuration();
+  }
+
+  void _updateAnimationCurve() {
+    final effectiveCurve = _resolveAnimationCurve();
+    _animation.dispose();
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: effectiveCurve,
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Resolution helpers
+  // ---------------------------------------------------------------------------
+
+  Duration _resolveAnimationDuration() {
+    final theme = ShadTheme.of(context);
+    return widget.animationDuration ??
+        theme.sidebarTheme.animationDuration ??
+        const Duration(milliseconds: 200);
+  }
+
+  Curve _resolveAnimationCurve() {
+    final theme = ShadTheme.of(context);
+    return widget.animationCurve ??
+        theme.sidebarTheme.animationCurve ??
+        Curves.linear;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Sync & events
+  // ---------------------------------------------------------------------------
 
   void _syncAnimationToController() {
     if (widget.collapsibleMode == ShadSidebarCollapsibleMode.none) {
@@ -162,12 +210,19 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   }
 
   void _onControllerChanged() {
-    if (widget.collapsibleMode == ShadSidebarCollapsibleMode.none) return;
+    if (widget.collapsibleMode == ShadSidebarCollapsibleMode.none) {
+      if (!_controller.isOpen) {
+        _controller.open();
+      }
+      return;
+    }
     _syncAnimationToController();
-    // Rebuild so ShadSidebarScope gets new `isOpen` value.
-    // This triggers updateShouldNotify → dependents rebuild.
     if (mounted) setState(() {});
   }
+
+  // ---------------------------------------------------------------------------
+  // Build
+  // ---------------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -179,13 +234,7 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     final effectiveWidth = widget.width ?? sidebarTheme.width ?? 256.0;
     final effectiveCollapsedWidth =
         widget.collapsedWidth ?? sidebarTheme.collapsedWidth ?? 48.0;
-    final effectiveDuration =
-        widget.animationDuration ??
-        sidebarTheme.animationDuration ??
-        const Duration(milliseconds: 200);
     final effectiveEnableShortcut = widget.enableShortcut ?? true;
-
-    _animationController.duration = effectiveDuration;
 
     final screenWidth = MediaQuery.sizeOf(context).width;
     final isMobile = screenWidth < effectiveBreakpoint;
@@ -212,7 +261,9 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
       expandedWidth: effectiveWidth,
       collapsedWidth: effectiveCollapsedWidth,
       isOpen: _controller.isOpen,
-      child: isMobile
+      child: widget.collapsibleMode == ShadSidebarCollapsibleMode.none
+          ? _buildDesktopLayout(theme, sidebarTheme)
+          : isMobile
           ? _buildMobileLayout(theme, sidebarTheme, effectiveWidth, context)
           : _buildDesktopLayout(theme, sidebarTheme),
     );
@@ -223,6 +274,10 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
 
     return result;
   }
+
+  // ---------------------------------------------------------------------------
+  // Keyboard shortcut
+  // ---------------------------------------------------------------------------
 
   Widget _wrapWithShortcut(Widget child) {
     return Shortcuts(
