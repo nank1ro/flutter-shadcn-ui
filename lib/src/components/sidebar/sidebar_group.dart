@@ -164,18 +164,21 @@ class _GroupLabel extends StatelessWidget {
       ),
     );
 
-    // In icon-collapse mode, animate the label away
-    if (scope.collapsibleMode == ShadSidebarCollapsibleMode.icon) {
+    final scope = ShadSidebarScope.maybeOf(context);
+    final animation = scope?.animation;
+
+    if (scope?.collapsibleMode == ShadSidebarCollapsibleMode.icon &&
+        animation != null) {
+      // In icon-collapse mode, animate the label away
       return SizeTransition(
-        sizeFactor: scope.animation,
+        sizeFactor: animation,
         axisAlignment: -1,
         child: FadeTransition(
-          opacity: scope.animation,
+          opacity: animation,
           child: labelRow,
         ),
       );
     }
-
     return labelRow;
   }
 }
