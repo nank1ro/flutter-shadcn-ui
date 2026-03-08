@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
 import 'package:shadcn_ui/src/components/sidebar/sidebar_scope.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -7,8 +8,7 @@ import 'package:shadcn_ui/src/theme/theme.dart';
 /// A button that toggles the sidebar open / closed.
 ///
 /// By default, finds the nearest [ShadSidebarScope] and toggles its
-/// controller. For **dual-sidebar** setups, pass an explicit [controller]
-/// to target a specific sidebar:
+/// controller. For dual-sidebar setups, pass an explicit [controller].
 ///
 /// ```dart
 /// ShadSidebarTrigger()                              // nearest sidebar
@@ -18,22 +18,18 @@ class ShadSidebarTrigger extends StatelessWidget {
   const ShadSidebarTrigger({
     super.key,
     this.controller,
-    this.child,
+    this.icon,
     this.size,
     this.padding,
     this.onPressed,
   });
 
-  /// If provided, this controller is toggled instead of looking up
-  /// the nearest [ShadSidebarScope].
-  ///
-  /// Useful in dual-sidebar setups where the trigger is placed in the
-  /// main content area and needs to target a specific sidebar.
+  /// If provided, this controller is toggled instead of the nearest scope.
   final ShadSidebarController? controller;
 
-  /// Custom content for the trigger button.
+  /// Custom icon for the trigger button.
   /// Defaults to a panel-left icon.
-  final Widget? child;
+  final Widget? icon;
 
   /// Size (width & height) of the trigger button.
   final double? size;
@@ -44,68 +40,66 @@ class ShadSidebarTrigger extends StatelessWidget {
   /// Optional callback invoked **in addition** to toggling the sidebar.
   final VoidCallback? onPressed;
 
-  ShadSidebarController _resolveController(BuildContext context) {
-    if (controller != null) return controller!;
-    return ShadSidebarScope.of(context).controller;
-  }
-
-  bool _resolveIsOpen(BuildContext context) {
-    if (controller != null) return controller!.isOpen;
-    return ShadSidebarScope.of(context).isOpen;
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final sidebarTheme = theme.sidebarTheme;
+    final scope = ShadSidebarScope.maybeOf(context);
+
+    final resolvedController = controller ?? scope?.controller;
+    final isOpen = controller?.isOpen ?? scope?.isOpen ?? true;
 
     final effectiveSize = size ?? sidebarTheme.triggerSize ?? 36.0;
     final effectivePadding =
         padding ?? sidebarTheme.triggerPadding ?? EdgeInsets.zero;
 
-    final resolvedController = _resolveController(context);
-    final isOpen = _resolveIsOpen(context);
+    final effectiveIcon =
+        icon ??
+        _DefaultTriggerIcon(
+          size: effectiveSize * 0.5,
+          color: theme.colorScheme.foreground,
+        );
 
-    return Padding(
-      padding: effectivePadding,
-      child: Semantics(
-        button: true,
-        label: isOpen ? 'Close sidebar' : 'Open sidebar',
-        child: MouseRegion(
-          cursor: SystemMouseCursors.click,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () {
-              resolvedController.toggle();
-              onPressed?.call();
-            },
-            child: SizedBox(
-              width: effectiveSize,
-              height: effectiveSize,
-              child: Center(
-                child: child ?? _DefaultTriggerIcon(size: effectiveSize * 0.5),
-              ),
-            ),
-          ),
+    return Semantics(
+      button: true,
+      label: isOpen ? 'Close sidebar' : 'Open sidebar',
+      child: Padding(
+        padding: effectivePadding,
+        child: ShadButton.ghost(
+          onPressed: () {
+            resolvedController?.toggle();
+            onPressed?.call();
+          },
+          width: effectiveSize,
+          height: effectiveSize,
+          padding: EdgeInsets.zero,
+          leading: effectiveIcon,
         ),
       ),
     );
   }
 }
 
+// ---------------------------------------------------------------------------
+// Default trigger icon
+// ---------------------------------------------------------------------------
+
 class _DefaultTriggerIcon extends StatelessWidget {
-  const _DefaultTriggerIcon({required this.size});
+  const _DefaultTriggerIcon({
+    required this.size,
+    required this.color,
+  });
 
   final double size;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
     return SizedBox(
       width: size,
       height: size,
       child: CustomPaint(
-        painter: _PanelLeftPainter(color: theme.colorScheme.foreground),
+        painter: _PanelLeftPainter(color: color),
       ),
     );
   }
