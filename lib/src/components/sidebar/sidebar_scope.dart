@@ -51,7 +51,7 @@ enum ShadSidebarCollapsibleMode {
 /// Inherited widget that provides sidebar state and configuration to
 /// all descendants.
 ///
-/// Placed by [ShadSidebarScaffold]. Consumers should use [of] or [maybeOf]
+/// Placed by `ShadSidebarScaffold`. Consumers should use [of] or [maybeOf]
 /// to access it.
 class ShadSidebarScope extends InheritedWidget {
   const ShadSidebarScope({

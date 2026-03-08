@@ -3,10 +3,10 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-/// A pinned slot at the top of a [ShadSidebar].
+/// A pinned slot at the top of a `ShadSidebar`.
 ///
 /// Typically used for a logo, app name, workspace switcher, or a
-/// search input. The header does **not** scroll with [ShadSidebarContent].
+/// search input. The header does **not** scroll with `ShadSidebarContent`.
 class ShadSidebarHeader extends StatelessWidget {
   const ShadSidebarHeader({
     super.key,

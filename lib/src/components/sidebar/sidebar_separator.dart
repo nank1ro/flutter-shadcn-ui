@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-/// A horizontal divider line used inside a [ShadSidebar] to visually
+/// A horizontal divider line used inside a `ShadSidebar` to visually
 /// separate groups or items.
 ///
 /// This is a thin wrapper that applies sidebar-specific padding and

@@ -5,7 +5,7 @@ import 'package:shadcn_ui/src/theme/components/sidebar.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-/// A visual section within a [ShadSidebar] that groups related items
+/// A visual section within a `ShadSidebar` that groups related items
 /// under an optional label.
 ///
 /// Merges the concepts of `SidebarGroup`, `SidebarGroupLabel`,
@@ -55,7 +55,7 @@ class ShadSidebarGroup extends StatelessWidget {
 
   /// The items inside this group.
   ///
-  /// Usually a list of [ShadSidebarItem], [ShadSidebarSeparator],
+  /// Usually a list of `ShadSidebarItem`, `ShadSidebarSeparator`,
   /// or nested [ShadSidebarGroup] widgets.
   final List<Widget> children;
 

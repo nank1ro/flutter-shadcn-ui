@@ -4,7 +4,7 @@ import 'package:theme_extensions_builder_annotation/theme_extensions_builder_ann
 
 part 'sidebar.g.theme.dart';
 
-/// Theme data for [ShadSidebar] and related widgets.
+/// Theme data for `ShadSidebar` and related widgets.
 @themeGen
 @immutable
 class ShadSidebarTheme with _$ShadSidebarTheme {

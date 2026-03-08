@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 
-/// Controls the open/close state of a [ShadSidebar].
+/// Controls the open/close state of a `ShadSidebar`.
 ///
 /// The controller only manages **logical** state (open vs closed).
-/// The animation is driven by the [ShadSidebarScaffold]'s State, which
+/// The animation is driven by the `ShadSidebarScaffold`'s State, which
 /// listens to this controller and forwards changes to an
-/// [AnimationController]. The running animation value is then exposed
-/// through [ShadSidebarScope] so any descendant can react to it.
+/// `AnimationController`. The running animation value is then exposed
+/// through `ShadSidebarScope` so any descendant can react to it.
 ///
 /// Usage:
 /// ```dart

@@ -207,14 +207,22 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   }
 
   Widget _wrapWithShortcut(Widget child) {
-    return CallbackShortcuts(
-      bindings: <ShortcutActivator, VoidCallback>{
-        const SingleActivator(LogicalKeyboardKey.keyB, meta: true):
-            _controller.toggle,
-        const SingleActivator(LogicalKeyboardKey.keyB, control: true):
-            _controller.toggle,
+    return Shortcuts(
+      shortcuts: const <ShortcutActivator, Intent>{
+        SingleActivator(LogicalKeyboardKey.keyB, meta: true):
+            _ToggleSidebarIntent(),
+        SingleActivator(LogicalKeyboardKey.keyB, control: true):
+            _ToggleSidebarIntent(),
       },
-      child: Focus(
+      child: Actions(
+        actions: <Type, Action<Intent>>{
+          _ToggleSidebarIntent: CallbackAction<_ToggleSidebarIntent>(
+            onInvoke: (_) {
+              _controller.toggle();
+              return null;
+            },
+          ),
+        },
         child: child,
       ),
     );
@@ -345,4 +353,8 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
       ],
     );
   }
+}
+
+class _ToggleSidebarIntent extends Intent {
+  const _ToggleSidebarIntent();
 }

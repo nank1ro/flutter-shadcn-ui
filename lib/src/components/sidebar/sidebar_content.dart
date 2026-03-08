@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/sidebar/sidebar_scope.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-/// The scrollable middle section of a [ShadSidebar].
+/// The scrollable middle section of a `ShadSidebar`.
 ///
-/// Placed between [ShadSidebarHeader] and [ShadSidebarFooter].
+/// Placed between `ShadSidebarHeader` and `ShadSidebarFooter`.
 /// Wraps its [children] in a vertically scrolling list.
 ///
 /// ```dart
@@ -28,7 +28,7 @@ class ShadSidebarContent extends StatelessWidget {
 
   /// The widgets displayed inside the scrollable area.
   ///
-  /// Typically a list of [ShadSidebarGroup], [ShadSidebarSeparator],
+  /// Typically a list of `ShadSidebarGroup`, `ShadSidebarSeparator`,
   /// or any other widget.
   final List<Widget> children;
 

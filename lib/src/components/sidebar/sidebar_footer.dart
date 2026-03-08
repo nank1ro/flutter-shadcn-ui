@@ -3,10 +3,10 @@ import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
 import 'package:shadcn_ui/src/theme/theme.dart';
 
-/// A pinned slot at the bottom of a [ShadSidebar].
+/// A pinned slot at the bottom of a `ShadSidebar`.
 ///
 /// Typically used for user profile info, settings links, or sign-out
-/// actions. The footer does **not** scroll with [ShadSidebarContent].
+/// actions. The footer does **not** scroll with `ShadSidebarContent`.
 class ShadSidebarFooter extends StatelessWidget {
   const ShadSidebarFooter({
     super.key,
