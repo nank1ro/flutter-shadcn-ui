@@ -79,8 +79,8 @@ class ShadSidebarGroup extends StatelessWidget {
     final effectivePadding =
         padding ?? sidebarTheme.groupPadding ?? const EdgeInsets.all(8);
 
-    return Padding(
-      padding: effectivePadding,
+    return Container(
+      margin: effectivePadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,

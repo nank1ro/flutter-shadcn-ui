@@ -1117,11 +1117,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       subItemPadding: const EdgeInsets.symmetric(horizontal: 8),
       subItemBorderRadius: BorderRadius.circular(6),
       subItemsMargin: const EdgeInsets.symmetric(horizontal: 14),
-      subItemsPadding: const EdgeInsetsDirectional.only(
-        start: 10,
-        top: 2,
-        bottom: 2,
-      ),
+      subItemsPadding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
       subItemsBorderWidth: 1,
       separatorPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       separatorThickness: 1,

@@ -48,9 +48,7 @@ class ShadSidebarContent extends StatelessWidget {
     final scope = ShadSidebarScope.maybeOf(context);
 
     final effectivePadding =
-        padding ??
-        sidebarTheme.contentPadding ??
-        const EdgeInsets.symmetric(vertical: 4);
+        padding ?? sidebarTheme.contentPadding ?? EdgeInsets.zero;
 
     final isIconCollapsed = scope?.isIconCollapsed ?? false;
 

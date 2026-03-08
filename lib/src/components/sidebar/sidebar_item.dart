@@ -299,7 +299,7 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
 
     // Active → sidebar primary
     final effectiveActiveColor =
-        widget.activeColor ?? sidebarTheme.itemActiveColor ?? colors.primary;
+        widget.activeColor ?? sidebarTheme.itemActiveColor ?? colors.accent;
 
     // Text color: active → primary foreground, normal → sidebar foreground
     final effectiveTextStyle = widget.selected
@@ -309,8 +309,8 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
                   : sidebarTheme.itemActiveTextStyle) ??
               TextStyle(
                 fontSize: isSubItem ? 13 : 14,
-                fontWeight: FontWeight.w500,
-                color: colors.primaryForeground,
+                fontWeight: FontWeight.w600,
+                color: colors.accentForeground,
               ))
         : (widget.textStyle ??
               (isSubItem
@@ -328,7 +328,7 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
     final effectiveIconColor = widget.selected
         ? (widget.activeIconColor ??
               sidebarTheme.itemActiveIconColor ??
-              colors.primaryForeground)
+              colors.accentForeground)
         : (widget.iconColor ?? sidebarTheme.itemIconColor ?? colors.foreground);
 
     final effectiveSpacing = widget.spacing ?? sidebarTheme.itemSpacing ?? 8.0;
@@ -419,6 +419,8 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
           selected: widget.selected,
           child: Container(
             height: effectiveHeight,
+            width: effectiveHeight,
+            margin: const EdgeInsets.only(bottom: 4),
             decoration: BoxDecoration(
               color: backgroundColor,
               borderRadius: effectiveBorderRadius,
@@ -484,8 +486,6 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
         child: subItems,
       );
     } else if (labelAnimation != null) {
-      // FIX: Standard with children in icon-collapse mode —
-      // fade and shrink sub-items with the sidebar animation
       subItems = SizeTransition(
         sizeFactor: labelAnimation,
         axisAlignment: -1,
@@ -592,8 +592,6 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
 
   // ---- Sub-items container ------------------------------------------------
 
-  /// FIX: Sub-items wrapped in a container with start border + margin,
-  /// matching the original shadcn `SidebarMenuSub` styling.
   Widget _buildSubItemsContainer({
     required int depth,
     required Color borderColor,
@@ -626,8 +624,7 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
     if (widget.leading == null) return null;
     return IconTheme(
       data: IconThemeData(size: iconSize, color: iconColor),
-      child: Container(
-        margin: const EdgeInsets.all(8),
+      child: SizedBox(
         width: iconSize,
         height: iconSize,
         child: widget.leading,
