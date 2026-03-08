@@ -236,7 +236,9 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
         actions: <Type, Action<Intent>>{
           _ToggleSidebarIntent: CallbackAction<_ToggleSidebarIntent>(
             onInvoke: (_) {
-              _controller.toggle();
+              if (widget.collapsibleMode != ShadSidebarCollapsibleMode.none) {
+                _controller.toggle();
+              }
               return null;
             },
           ),
