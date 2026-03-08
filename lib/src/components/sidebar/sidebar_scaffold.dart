@@ -76,10 +76,18 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     }
 
     if (widget.animationCurve != oldWidget.animationCurve) {
+      final theme = ShadTheme.of(context);
+      final sidebarTheme = theme.sidebarTheme;
+
+      final curve =
+          widget.animationCurve ??
+          sidebarTheme.animationCurve ??
+          Curves.easeInOut;
+
       _animation.dispose();
       _animation = CurvedAnimation(
         parent: _animationController,
-        curve: widget.animationCurve ?? Curves.easeInOut,
+        curve: curve,
       );
     }
 
@@ -110,9 +118,18 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   }
 
   void _setupAnimation() {
+    final theme = ShadTheme.of(context);
+    final sidebarTheme = theme.sidebarTheme;
+
     final duration =
-        widget.animationDuration ?? const Duration(milliseconds: 200);
-    final curve = widget.animationCurve ?? Curves.easeInOut;
+        widget.animationDuration ??
+        sidebarTheme.animationDuration ??
+        const Duration(milliseconds: 200);
+
+    final curve =
+        widget.animationCurve ??
+        sidebarTheme.animationCurve ??
+        Curves.easeInOut;
 
     final initialValue =
         widget.collapsibleMode == ShadSidebarCollapsibleMode.none
