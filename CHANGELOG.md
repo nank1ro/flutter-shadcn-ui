@@ -1,3 +1,7 @@
+## 0.50.2
+
+- **FIX**: Add missing "Select All" button to `ShadInput` default context menu.
+
 ## 0.50.1
 
 - **FIX**: `ShadDatePicker.didUpdateWidget` ignored `selected` and `selectedRange` null values.
