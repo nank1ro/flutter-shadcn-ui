@@ -74,7 +74,6 @@ class ShadSidebarGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final sidebarTheme = theme.sidebarTheme;
-    final scope = ShadSidebarScope.of(context);
 
     final effectivePadding =
         padding ?? sidebarTheme.groupPadding ?? const EdgeInsets.all(8);
@@ -93,7 +92,6 @@ class ShadSidebarGroup extends StatelessWidget {
               labelPadding: labelPadding,
               sidebarTheme: sidebarTheme,
               theme: theme,
-              scope: scope,
             ),
           ...children,
         ],
@@ -114,7 +112,6 @@ class _GroupLabel extends StatelessWidget {
     required this.labelPadding,
     required this.sidebarTheme,
     required this.theme,
-    required this.scope,
   });
 
   final Widget label;
@@ -123,7 +120,6 @@ class _GroupLabel extends StatelessWidget {
   final EdgeInsetsGeometry? labelPadding;
   final ShadSidebarTheme sidebarTheme;
   final ShadThemeData theme;
-  final ShadSidebarScope scope;
 
   @override
   Widget build(BuildContext context) {
