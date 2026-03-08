@@ -453,6 +453,7 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: 4,
           children: widget.children ?? const [],
         ),
       ),
