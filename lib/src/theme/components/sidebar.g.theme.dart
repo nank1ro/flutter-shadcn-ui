@@ -137,6 +137,7 @@ mixin _$ShadSidebarTheme {
         b.subItemActiveTextStyle,
         t,
       ),
+      subItemsSpacing: lerpDouble$(a.subItemsSpacing, b.subItemsSpacing, t),
       separatorPadding: EdgeInsetsGeometry.lerp(
         a.separatorPadding,
         b.separatorPadding,
@@ -204,6 +205,7 @@ mixin _$ShadSidebarTheme {
     BorderRadiusGeometry? subItemBorderRadius,
     TextStyle? subItemTextStyle,
     TextStyle? subItemActiveTextStyle,
+    double? subItemsSpacing,
     EdgeInsetsGeometry? separatorPadding,
     Color? separatorColor,
     double? separatorThickness,
@@ -252,6 +254,7 @@ mixin _$ShadSidebarTheme {
       subItemTextStyle: subItemTextStyle ?? _this.subItemTextStyle,
       subItemActiveTextStyle:
           subItemActiveTextStyle ?? _this.subItemActiveTextStyle,
+      subItemsSpacing: subItemsSpacing ?? _this.subItemsSpacing,
       separatorPadding: separatorPadding ?? _this.separatorPadding,
       separatorColor: separatorColor ?? _this.separatorColor,
       separatorThickness: separatorThickness ?? _this.separatorThickness,
@@ -324,6 +327,7 @@ mixin _$ShadSidebarTheme {
       subItemActiveTextStyle:
           _this.subItemActiveTextStyle?.merge(other.subItemActiveTextStyle) ??
           other.subItemActiveTextStyle,
+      subItemsSpacing: other.subItemsSpacing,
       separatorPadding: other.separatorPadding,
       separatorColor: other.separatorColor,
       separatorThickness: other.separatorThickness,
@@ -383,6 +387,7 @@ mixin _$ShadSidebarTheme {
         _other.subItemBorderRadius == _this.subItemBorderRadius &&
         _other.subItemTextStyle == _this.subItemTextStyle &&
         _other.subItemActiveTextStyle == _this.subItemActiveTextStyle &&
+        _other.subItemsSpacing == _this.subItemsSpacing &&
         _other.separatorPadding == _this.separatorPadding &&
         _other.separatorColor == _this.separatorColor &&
         _other.separatorThickness == _this.separatorThickness &&
@@ -434,6 +439,7 @@ mixin _$ShadSidebarTheme {
       _this.subItemBorderRadius,
       _this.subItemTextStyle,
       _this.subItemActiveTextStyle,
+      _this.subItemsSpacing,
       _this.separatorPadding,
       _this.separatorColor,
       _this.separatorThickness,

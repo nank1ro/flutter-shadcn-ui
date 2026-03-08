@@ -54,6 +54,7 @@ class ShadSidebarTheme with _$ShadSidebarTheme {
     this.subItemBorderRadius,
     this.subItemTextStyle,
     this.subItemActiveTextStyle,
+    this.subItemsSpacing,
     // Separator
     this.separatorPadding,
     this.separatorColor,
@@ -169,7 +170,7 @@ class ShadSidebarTheme with _$ShadSidebarTheme {
   /// Spacing between icon, label, and trailing widget inside an item.
   final double? itemSpacing;
 
-  // -- Sub-item (children of collapsible items) --
+  // -- Sub-items (children of collapsible items) --
 
   /// Margin around the sub-items container. Defaults to horizontal 14.
   final EdgeInsetsGeometry? subItemsMargin;
@@ -197,6 +198,9 @@ class ShadSidebarTheme with _$ShadSidebarTheme {
 
   /// Text style for active sub-items.
   final TextStyle? subItemActiveTextStyle;
+
+  /// Gap between sub-items.
+  final double? subItemsSpacing;
 
   // -- Separator --
 

@@ -1,4 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/sidebar/sidebar_scope.dart';
 import 'package:shadcn_ui/src/components/tooltip.dart';
@@ -67,6 +69,11 @@ class ShadSidebarItem extends StatefulWidget {
     this.iconColor,
     this.activeIconColor,
     this.spacing,
+    this.subItemsMargin,
+    this.subItemsPadding,
+    this.subItemsBorderColor,
+    this.subItemsBorderWidth,
+    this.subItemsSpacing,
   }) : variant = ShadSidebarItemVariant.standard,
        initiallyExpanded = false,
        onExpansionChanged = null;
@@ -94,6 +101,11 @@ class ShadSidebarItem extends StatefulWidget {
     this.iconColor,
     this.activeIconColor,
     this.spacing,
+    this.subItemsMargin,
+    this.subItemsPadding,
+    this.subItemsBorderColor,
+    this.subItemsBorderWidth,
+    this.subItemsSpacing,
   }) : variant = ShadSidebarItemVariant.collapsible;
 
   const ShadSidebarItem.raw({
@@ -119,6 +131,11 @@ class ShadSidebarItem extends StatefulWidget {
     this.iconColor,
     this.activeIconColor,
     this.spacing,
+    this.subItemsMargin,
+    this.subItemsPadding,
+    this.subItemsBorderColor,
+    this.subItemsBorderWidth,
+    this.subItemsSpacing,
   });
 
   final ShadSidebarItemVariant variant;
@@ -142,6 +159,11 @@ class ShadSidebarItem extends StatefulWidget {
   final Color? iconColor;
   final Color? activeIconColor;
   final double? spacing;
+  final EdgeInsetsGeometry? subItemsMargin;
+  final EdgeInsetsGeometry? subItemsPadding;
+  final Color? subItemsBorderColor;
+  final double? subItemsBorderWidth;
+  final double? subItemsSpacing;
 
   @override
   State<ShadSidebarItem> createState() => _ShadSidebarItemState();
@@ -285,8 +307,52 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
               sidebarAccentFg)
         : (widget.iconColor ?? sidebarTheme.itemIconColor ?? sidebarFg);
 
+    final effectiveTextStyle = widget.selected
+        ? (widget.activeTextStyle ??
+              (isSubItem
+                  ? sidebarTheme.subItemActiveTextStyle
+                  : sidebarTheme.itemActiveTextStyle) ??
+              TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: sidebarAccentFg,
+              ))
+        : (widget.textStyle ??
+              (isSubItem
+                  ? sidebarTheme.subItemTextStyle
+                  : sidebarTheme.itemTextStyle) ??
+              TextStyle(
+                fontSize: 14,
+                color: sidebarFg,
+              ));
+
     final effectiveIconSize =
         widget.iconSize ?? sidebarTheme.itemIconSize ?? 16.0;
+
+    final effectiveSpacing = widget.spacing ?? sidebarTheme.itemSpacing ?? 8.0;
+
+    // -- Sub-items theming --
+
+    final effectiveSubItemsMargin =
+        widget.subItemsMargin ??
+        sidebarTheme.subItemsMargin ??
+        const EdgeInsets.symmetric(horizontal: 14);
+
+    final effectiveSubItemsPadding =
+        widget.subItemsPadding ??
+        sidebarTheme.subItemsPadding ??
+        const EdgeInsetsDirectional.only(start: 10, top: 2, bottom: 2);
+
+    final effectiveSubItemsBorderColor =
+        widget.subItemsBorderColor ??
+        sidebarTheme.subItemsBorderColor ??
+        sidebarBorder;
+
+    final effectiveSubItemsBorderWidth =
+        widget.subItemsBorderWidth ?? sidebarTheme.subItemsBorderWidth ?? 1.0;
+
+    final effectiveSubItemsSpacing =
+        widget.subItemsSpacing ?? sidebarTheme.subItemsSpacing ?? 4.0;
 
     // -- Build icon --
 
@@ -311,7 +377,7 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
       );
     }
 
-    // -- Shared button styling --
+    // -- Shared button decoration --
 
     final buttonDecoration = ShadDecoration(
       border: ShadBorder.all(
@@ -328,7 +394,6 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
           // Fully collapsed → icon-only button with tooltip
           if (scope.animation.status == AnimationStatus.dismissed) {
             Widget button = ShadButton.ghost(
-              leading: iconWidget,
               onPressed: _handleTap,
               width: effectiveHeight,
               height: effectiveHeight,
@@ -338,6 +403,7 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
               foregroundColor: effectiveFgColor,
               hoverForegroundColor: sidebarAccentFg,
               decoration: buttonDecoration,
+              leading: iconWidget,
             );
 
             if (widget.tooltip != null) {
@@ -356,12 +422,18 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
             trailing: trailing,
             effectiveHeight: effectiveHeight,
             effectivePadding: effectivePadding,
+            effectiveTextStyle: effectiveTextStyle,
+            effectiveSpacing: effectiveSpacing,
             effectiveActiveColor: effectiveActiveColor,
             effectiveHoverColor: effectiveHoverColor,
             effectiveFgColor: effectiveFgColor,
             sidebarAccentFg: sidebarAccentFg,
             buttonDecoration: buttonDecoration,
-            sidebarBorder: sidebarBorder,
+            effectiveSubItemsMargin: effectiveSubItemsMargin,
+            effectiveSubItemsPadding: effectiveSubItemsPadding,
+            effectiveSubItemsBorderColor: effectiveSubItemsBorderColor,
+            effectiveSubItemsBorderWidth: effectiveSubItemsBorderWidth,
+            effectiveSubItemsSpacing: effectiveSubItemsSpacing,
             depth: depth,
             labelAnimation: scope.animation,
           );
@@ -376,12 +448,18 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
       trailing: trailing,
       effectiveHeight: effectiveHeight,
       effectivePadding: effectivePadding,
+      effectiveTextStyle: effectiveTextStyle,
+      effectiveSpacing: effectiveSpacing,
       effectiveActiveColor: effectiveActiveColor,
       effectiveHoverColor: effectiveHoverColor,
       effectiveFgColor: effectiveFgColor,
       sidebarAccentFg: sidebarAccentFg,
       buttonDecoration: buttonDecoration,
-      sidebarBorder: sidebarBorder,
+      effectiveSubItemsMargin: effectiveSubItemsMargin,
+      effectiveSubItemsPadding: effectiveSubItemsPadding,
+      effectiveSubItemsBorderColor: effectiveSubItemsBorderColor,
+      effectiveSubItemsBorderWidth: effectiveSubItemsBorderWidth,
+      effectiveSubItemsSpacing: effectiveSubItemsSpacing,
       depth: depth,
     );
   }
@@ -393,19 +471,38 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
     required Widget? trailing,
     required double effectiveHeight,
     required EdgeInsetsGeometry effectivePadding,
+    required TextStyle effectiveTextStyle,
+    required double effectiveSpacing,
     required Color effectiveActiveColor,
     required Color effectiveHoverColor,
     required Color effectiveFgColor,
     required Color sidebarAccentFg,
     required ShadDecoration buttonDecoration,
-    required Color sidebarBorder,
+    required EdgeInsetsGeometry effectiveSubItemsMargin,
+    required EdgeInsetsGeometry effectiveSubItemsPadding,
+    required Color effectiveSubItemsBorderColor,
+    required double effectiveSubItemsBorderWidth,
+    required double effectiveSubItemsSpacing,
     required int depth,
     Animation<double>? labelAnimation,
   }) {
-    // Optionally fade label + trailing during icon-collapse animation
-    var label = widget.child;
+    // Build label with text style applied
+    Widget? label;
+    if (widget.child != null) {
+      label = DefaultTextStyle(
+        style: effectiveTextStyle,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        child: Container(
+          alignment: AlignmentDirectional.centerStart,
+          child: widget.child,
+        ),
+      );
+    }
+
     var trailingWidget = trailing;
 
+    // Fade label and trailing during icon-collapse animation
     if (labelAnimation != null) {
       if (label != null) {
         label = FadeTransition(opacity: labelAnimation, child: label);
@@ -430,6 +527,7 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
       decoration: buttonDecoration,
       leading: iconWidget,
       trailing: trailingWidget,
+      gap: effectiveSpacing,
       expands: true,
       child: Container(
         alignment: AlignmentDirectional.centerStart,
@@ -439,21 +537,25 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
 
     if (!_hasChildren) return button;
 
-    // Sub-items
+    // -- Sub-items --
+
     Widget subItems = _ShadSidebarItemDepth(
       depth: depth + 1,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 14),
-        padding: const EdgeInsetsDirectional.only(start: 10, top: 2, bottom: 2),
+        margin: effectiveSubItemsMargin,
+        padding: effectiveSubItemsPadding,
         decoration: BoxDecoration(
           border: BorderDirectional(
-            start: BorderSide(color: sidebarBorder),
+            start: BorderSide(
+              color: effectiveSubItemsBorderColor,
+              width: effectiveSubItemsBorderWidth,
+            ),
           ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: 4,
+          spacing: effectiveSubItemsSpacing,
           children: widget.children ?? const [],
         ),
       ),
@@ -502,32 +604,13 @@ class _DefaultChevron extends StatelessWidget {
     return SizedBox(
       width: size,
       height: size,
-      child: CustomPaint(painter: _ChevronPainter(color: color)),
+      child: Icon(
+        Directionality.of(context) == TextDirection.ltr
+            ? LucideIcons.chevronRight
+            : LucideIcons.chevronLeft,
+        color: color,
+        size: 16,
+      ),
     );
   }
-}
-
-class _ChevronPainter extends CustomPainter {
-  _ChevronPainter({required this.color});
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 1.5
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-
-    final path = Path()
-      ..moveTo(size.width * 0.35, size.height * 0.25)
-      ..lineTo(size.width * 0.65, size.height * 0.5)
-      ..lineTo(size.width * 0.35, size.height * 0.75);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(_ChevronPainter oldDelegate) => oldDelegate.color != color;
 }
