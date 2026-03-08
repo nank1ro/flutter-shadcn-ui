@@ -94,7 +94,7 @@ class ShadGrayColorScheme extends ShadColorScheme {
     super.sidebarPrimaryForeground = const Color(0xFFf9fafb),
     super.sidebarAccent = const Color(0xFF1e2939),
     super.sidebarAccentForeground = const Color(0xFFf9fafb),
-    super.sidebarBorder = const Color(0xFFf9fafb),
+    super.sidebarBorder = const Color.fromRGBO(255, 255, 255, .1),
     super.sidebarRing = const Color(0xFF6a7282),
     super.custom,
   });
