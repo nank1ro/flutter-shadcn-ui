@@ -95,11 +95,6 @@ class ShadSidebarScope extends InheritedWidget {
   /// The width of the sidebar when collapsed in icon mode.
   final double collapsedWidth;
 
-  /// FIX: Explicit field instead of getter from controller.
-  ///
-  /// This allows [updateShouldNotify] to detect open/close changes
-  /// and notify all dependents (header, footer, groups, items, user
-  /// widgets that check [isIconCollapsed]).
   final bool isOpen;
 
   // ---------------------------------------------------------------------------

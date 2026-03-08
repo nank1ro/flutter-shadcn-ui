@@ -8,6 +8,23 @@ import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
+/// The root layout widget for a sidebar-based interface.
+///
+/// Positions a `ShadSidebar` alongside [child] (the main content).
+
+/// Provides [ShadSidebarScope] to all descendants,
+///
+/// Example:
+/// ```dart
+/// ShadSidebarScaffold(
+///   sidebar: ShadSidebar(
+///     header: ShadSidebarHeader(child: Logo()),
+///     content: ShadSidebarContent(children: [...]),
+///     footer: ShadSidebarFooter(child: UserInfo()),
+///   ),
+///   child: MainContent(),
+/// )
+/// ```
 class ShadSidebarScaffold extends StatefulWidget {
   const ShadSidebarScaffold({
     super.key,
@@ -45,7 +62,7 @@ class ShadSidebarScaffold extends StatefulWidget {
 }
 
 class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
-    with TickerProviderStateMixin {
+    with SingleTickerProviderStateMixin {
   late ShadSidebarController _controller;
   late AnimationController _animationController;
   late CurvedAnimation _animation;
