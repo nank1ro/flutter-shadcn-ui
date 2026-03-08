@@ -5,11 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-final collapseModeSignal = Signal<ShadSidebarCollapsibleMode>(
-  ShadSidebarCollapsibleMode.offcanvas,
-);
-final variantSignal = Signal<ShadSidebarVariant>(ShadSidebarVariant.sidebar);
-
 class SidebarPage extends StatefulWidget {
   const SidebarPage({super.key});
 
@@ -19,6 +14,11 @@ class SidebarPage extends StatefulWidget {
 
 class _SidebarPageState extends State<SidebarPage> {
   int _currentTab = 0;
+
+  final collapseModeSignal = Signal<ShadSidebarCollapsibleMode>(
+    ShadSidebarCollapsibleMode.offcanvas,
+  );
+  final variantSignal = Signal<ShadSidebarVariant>(ShadSidebarVariant.sidebar);
 
   static const _tabs = [
     'Single Sidebar',

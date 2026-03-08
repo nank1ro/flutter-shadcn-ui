@@ -21,6 +21,10 @@ class BaseScaffold extends StatelessWidget {
   }) : assert(
          editablePanelInitialWidth >= editablePanelMinWidth,
          "The editable panel's initial width must be greater than or equal to its minimum width.",
+       ),
+       assert(
+         childrenPanelInitialWidth >= childrenPanelMinWidth,
+         "The children panel's initial width must be greater than or equal to its minimum width.",
        );
 
   final List<Widget> children;
