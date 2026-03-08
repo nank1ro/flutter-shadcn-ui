@@ -22,7 +22,8 @@ class _SidebarPageState extends State<SidebarPage> {
 
   static const _tabs = [
     'Single Sidebar',
-    'Dual Sidebar',
+    'Dual Sidebars',
+    'Nested Sidebars',
   ];
   final colorSchemes = [
     'blue',
@@ -127,6 +128,7 @@ class _SidebarPageState extends State<SidebarPage> {
                   },
                 ),
                 1 => const _DualSidebarExample(),
+                2 => const _NestedSidebarExample(),
                 _ => const SizedBox.shrink(),
               },
             ],
@@ -307,6 +309,214 @@ class _DualSidebarMainContent extends StatelessWidget {
                     'Each sidebar has its own controller and trigger.',
                     style: ShadTheme.of(context).textTheme.muted,
                     textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// =============================================================================
+// 3. Nested Sidebar
+// =============================================================================
+final messages = [
+  (
+    sender: 'James Martin',
+    subject: 'Re: Conference Registration',
+    date: '1 Week ago',
+    preview:
+        'Hi, I would like to register for the conference. Please let me know if you can help me with the registration.',
+  ),
+  (
+    sender: 'John Smith',
+    subject: 'Important Announcement',
+    date: '2 Weeks ago',
+    preview:
+        'Please join us for the conference. We are excited to announce the launch of our new product.',
+  ),
+  (
+    sender: 'Sarah Lee',
+    subject: 'Conference Registration',
+    date: '1 Weeks ago',
+    preview:
+        'Hi, I would like to register for the conference. Please let me know if you can help me with the registration.',
+  ),
+];
+final inboxTabs = [
+  (title: 'Inbox', icon: LucideIcons.inbox),
+  (title: 'Draft', icon: LucideIcons.file),
+  (title: 'Sent', icon: LucideIcons.send),
+  (title: 'Archive', icon: LucideIcons.archive),
+  (title: 'Trash', icon: LucideIcons.trash2),
+];
+
+class _NestedSidebarExample extends StatefulWidget {
+  const _NestedSidebarExample();
+
+  @override
+  State<_NestedSidebarExample> createState() => _NestedSidebarExampleState();
+}
+
+class _NestedSidebarExampleState extends State<_NestedSidebarExample> {
+  final _pinnedController = ShadSidebarController(isOpen: false);
+  final _collapsibleController = ShadSidebarController();
+
+  @override
+  void dispose() {
+    _pinnedController.dispose();
+    _collapsibleController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadSidebarScaffold(
+      side: ShadSidebarSide.start,
+      controller: _pinnedController,
+      variant: ShadSidebarVariant.sidebar,
+      collapsibleMode: ShadSidebarCollapsibleMode.icon,
+      sidebar: ShadSidebar(
+        header: const ShadSidebarHeader(
+          child: _AppLogo(),
+        ),
+        content: ShadSidebarContent(
+          children: [
+            ShadSidebarGroup(
+              children: inboxTabs
+                  .map(
+                    (t) => ShadSidebarItem(
+                      leading: Icon(t.icon),
+                      child: Text(t.title),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ],
+        ),
+        footer: ShadSidebarFooter(
+          child: _UserFooter(),
+        ),
+      ),
+      // Nested scaffold for second sidebar
+      child: ShadSidebarScaffold(
+        side: ShadSidebarSide.start,
+        controller: _collapsibleController,
+        variant: ShadSidebarVariant.sidebar,
+        collapsibleMode: ShadSidebarCollapsibleMode.offcanvas,
+        width: 220,
+        sidebar: ShadSidebar(
+          header: const ShadSidebarHeader(
+            child: Text('Inbox'),
+          ),
+          content: ShadSidebarContent(
+            children: messages
+                .map(
+                  (m) => ShadButton.ghost(
+                    textStyle: TextStyle(
+                      color: ShadTheme.of(
+                        context,
+                      ).colorScheme.sidebarForeground,
+                    ),
+                    decoration: ShadDecoration(
+                      shadows: [],
+                      border: ShadBorder(
+                        radius: BorderRadius.zero,
+                        bottom: ShadBorderSide(
+                          width: 1,
+                          color: ShadTheme.of(
+                            context,
+                          ).colorScheme.border,
+                        ),
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(14.0),
+                    expands: true,
+                    height: 116,
+                    gap: 0,
+                    child: Column(
+                      spacing: 8,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(m.sender),
+                            Text(
+                              m.date,
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          m.subject,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          m.preview,
+                          style: TextStyle(
+                            fontSize: 12,
+                            height: 1.25,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+        child: _NestedSidebarMainContent(
+          collapsibleController: _collapsibleController,
+        ),
+      ),
+    );
+  }
+}
+
+class _NestedSidebarMainContent extends StatelessWidget {
+  const _NestedSidebarMainContent({
+    required this.collapsibleController,
+  });
+
+  final ShadSidebarController collapsibleController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Toolbar with both triggers
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: Row(
+            children: [
+              ShadSidebarTrigger(controller: collapsibleController),
+              Text(
+                'Nested Sidebars',
+                style: ShadTheme.of(context).textTheme.large,
+              ),
+            ],
+          ),
+        ),
+        const ShadSidebarSeparator(),
+        Expanded(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Nested Sidebar Layout',
+                    style: ShadTheme.of(context).textTheme.h3,
                   ),
                 ],
               ),
@@ -510,19 +720,19 @@ class _UserFooter extends StatelessWidget {
     final isIconCollapsed = scope?.isIconCollapsed ?? false;
 
     if (isIconCollapsed) {
-      return Center(
-        child: ShadAvatar(
-          size: const Size.square(28),
-          'https://i.pravatar.cc/100?u=sidebar',
-        ),
+      return const Center(
+        child: Icon(LucideIcons.userRound500),
       );
     }
 
     return Row(
       children: [
-        ShadAvatar(
-          size: const Size.square(28),
-          'https://i.pravatar.cc/100?u=sidebar',
+        Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(LucideIcons.userRound500),
         ),
         const SizedBox(width: 8),
         Expanded(
