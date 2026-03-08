@@ -93,7 +93,7 @@ class ShadSidebarTheme with _$ShadSidebarTheme {
   final Duration? animationDuration;
 
   /// Curve of the expand/collapse animation.
-  /// Defaults to `Curves.easeInOut`.
+  /// Defaults to `Curves.linear`.
   final Curve? animationCurve;
 
   // -- Sidebar container --
@@ -175,7 +175,7 @@ class ShadSidebarTheme with _$ShadSidebarTheme {
   /// Margin around the sub-items container. Defaults to horizontal 14.
   final EdgeInsetsGeometry? subItemsMargin;
 
-  /// Padding inside the sub-items container. Defaults to start 10, vertical 2.
+  /// Padding inside the sub-items container. Defaults to horizontal 8.
   final EdgeInsetsGeometry? subItemsPadding;
 
   /// Color of the start border on the sub-items container.

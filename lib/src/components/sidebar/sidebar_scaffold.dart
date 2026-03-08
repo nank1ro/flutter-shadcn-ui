@@ -62,6 +62,8 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   @override
   void didUpdateWidget(ShadSidebarScaffold oldWidget) {
     super.didUpdateWidget(oldWidget);
+    final theme = ShadTheme.of(context);
+    final sidebarTheme = theme.sidebarTheme;
 
     if (widget.controller != oldWidget.controller) {
       _controller.removeListener(_onControllerChanged);
@@ -72,13 +74,12 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
 
     if (widget.animationDuration != oldWidget.animationDuration) {
       _animationController.duration =
-          widget.animationDuration ?? const Duration(milliseconds: 200);
+          widget.animationDuration ??
+          sidebarTheme.animationDuration ??
+          const Duration(milliseconds: 200);
     }
 
     if (widget.animationCurve != oldWidget.animationCurve) {
-      final theme = ShadTheme.of(context);
-      final sidebarTheme = theme.sidebarTheme;
-
       final curve =
           widget.animationCurve ??
           sidebarTheme.animationCurve ??
