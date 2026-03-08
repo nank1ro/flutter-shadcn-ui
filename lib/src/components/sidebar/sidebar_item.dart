@@ -366,10 +366,13 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
 
     // -- Build trailing --
 
+    final chevronTurns = Directionality.of(context) == TextDirection.rtl
+        ? Tween<double>(begin: 0, end: -0.25)
+        : Tween<double>(begin: 0, end: 0.25);
     var trailing = widget.trailing;
     if (trailing == null && _isCollapsible) {
       trailing = RotationTransition(
-        turns: Tween<double>(begin: 0, end: 0.25).animate(_expansionAnimation!),
+        turns: chevronTurns.animate(_expansionAnimation!),
         child: _DefaultChevron(
           size: effectiveIconSize,
           color: effectiveFgColor,
@@ -609,7 +612,7 @@ class _DefaultChevron extends StatelessWidget {
             ? LucideIcons.chevronRight
             : LucideIcons.chevronLeft,
         color: color,
-        size: 16,
+        size: size,
       ),
     );
   }
