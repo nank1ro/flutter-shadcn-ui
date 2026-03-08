@@ -108,7 +108,10 @@ class ShadSidebar extends StatelessWidget {
         final currentWidth = scope.currentWidth;
         if (currentWidth <= 0) return const SizedBox.shrink();
         return ClipRect(
-          child: SizedBox(
+          child: Container(
+            margin: scope.variant == ShadSidebarVariant.floating
+                ? effectiveFloatingMargin
+                : null,
             width: currentWidth,
             child: child,
           ),
@@ -130,18 +133,15 @@ class ShadSidebar extends StatelessWidget {
     required Color effectiveBorderColor,
   }) {
     if (scope.variant == ShadSidebarVariant.floating) {
-      return Padding(
-        padding: effectiveFloatingMargin,
-        child: Container(
-          decoration: BoxDecoration(
-            color: effectiveBackgroundColor,
-            borderRadius: effectiveFloatingBorderRadius,
-            border: Border.all(color: effectiveBorderColor),
-            boxShadow: effectiveFloatingShadow,
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: sidebarBody,
+      return Container(
+        decoration: BoxDecoration(
+          color: effectiveBackgroundColor,
+          borderRadius: effectiveFloatingBorderRadius,
+          border: Border.all(color: effectiveBorderColor),
+          boxShadow: effectiveFloatingShadow,
         ),
+        clipBehavior: Clip.antiAlias,
+        child: sidebarBody,
       );
     }
 
