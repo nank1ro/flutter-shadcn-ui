@@ -36,7 +36,6 @@ class _InputPageState extends State<InputPage> {
           enabled: enabled,
           keyboardType: TextInputType.emailAddress,
         ),
-        TextField(),
         ShadInput(
           placeholder: const Text('Password'),
           enabled: enabled,
