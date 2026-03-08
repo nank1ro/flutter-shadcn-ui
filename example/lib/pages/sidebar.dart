@@ -389,7 +389,7 @@ class _NestedSidebarExampleState extends State<_NestedSidebarExample> {
               children: inboxTabs
                   .map(
                     (t) => ShadSidebarItem(
-                      leading: Icon(t.icon),
+                      icon: Icon(t.icon),
                       child: Text(t.title),
                     ),
                   )
@@ -775,12 +775,12 @@ class _PlatformGroup extends StatelessWidget {
       label: const Text('Platform'),
       children: [
         ShadSidebarItem(
-          leading: const Icon(Icons.search_rounded),
+          icon: const Icon(Icons.search_rounded),
           child: const Text('Search'),
           onPressed: () {},
         ),
         ShadSidebarItem.collapsible(
-          leading: const Icon(Icons.smart_toy_outlined),
+          icon: const Icon(Icons.smart_toy_outlined),
           child: const Text('Models'),
           children: [
             ShadSidebarItem(
@@ -799,7 +799,7 @@ class _PlatformGroup extends StatelessWidget {
           ],
         ),
         ShadSidebarItem.collapsible(
-          leading: const Icon(Icons.description_outlined),
+          icon: const Icon(Icons.description_outlined),
           child: const Text('Documentation'),
           initiallyExpanded: true,
           children: [
@@ -823,7 +823,7 @@ class _PlatformGroup extends StatelessWidget {
           ],
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.settings_outlined),
+          icon: const Icon(Icons.settings_outlined),
           child: const Text('Settings'),
           onPressed: () {},
         ),
@@ -840,19 +840,19 @@ class _ProjectsGroup extends StatelessWidget {
       label: const Text('Projects'),
       children: [
         ShadSidebarItem(
-          leading: const Icon(Icons.folder_outlined),
+          icon: const Icon(Icons.folder_outlined),
           trailing: _Badge('12'),
           onPressed: () {},
           child: const Text('Design Engineering'),
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.folder_outlined),
+          icon: const Icon(Icons.folder_outlined),
           trailing: _Badge('6'),
           onPressed: () {},
           child: const Text('Sales & Marketing'),
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.folder_outlined),
+          icon: const Icon(Icons.folder_outlined),
           trailing: _Badge('3'),
           onPressed: () {},
           child: const Text('Travel'),
@@ -870,22 +870,22 @@ class _SettingsGroup extends StatelessWidget {
       label: const Text('Settings'),
       children: [
         ShadSidebarItem(
-          leading: const Icon(Icons.person_outline),
+          icon: const Icon(Icons.person_outline),
           child: const Text('Account'),
           onPressed: () {},
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.notifications_outlined),
+          icon: const Icon(Icons.notifications_outlined),
           child: const Text('Notifications'),
           onPressed: () {},
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.security_outlined),
+          icon: const Icon(Icons.security_outlined),
           child: const Text('Security'),
           onPressed: () {},
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.palette_outlined),
+          icon: const Icon(Icons.palette_outlined),
           child: const Text('Appearance'),
           onPressed: () {},
         ),
@@ -906,33 +906,33 @@ class _PlatformGroupWithTooltips extends StatelessWidget {
       label: const Text('Platform'),
       children: [
         ShadSidebarItem(
-          leading: const Icon(Icons.home_outlined),
+          icon: const Icon(Icons.home_outlined),
           tooltip: 'Home',
           selected: true,
           onPressed: () {},
           child: const Text('Home'),
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.inbox_outlined),
+          icon: const Icon(Icons.inbox_outlined),
           tooltip: 'Inbox',
           trailing: _Badge('24'),
           onPressed: () {},
           child: const Text('Inbox'),
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.calendar_today_outlined),
+          icon: const Icon(Icons.calendar_today_outlined),
           tooltip: 'Calendar',
           onPressed: () {},
           child: const Text('Calendar'),
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.search_rounded),
+          icon: const Icon(Icons.search_rounded),
           tooltip: 'Search',
           onPressed: () {},
           child: const Text('Search'),
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.settings_outlined),
+          icon: const Icon(Icons.settings_outlined),
           tooltip: 'Settings',
           onPressed: () {},
           child: const Text('Settings'),
@@ -950,19 +950,19 @@ class _ProjectsGroupWithTooltips extends StatelessWidget {
       label: const Text('Projects'),
       children: [
         ShadSidebarItem(
-          leading: const Icon(Icons.folder_outlined),
+          icon: const Icon(Icons.folder_outlined),
           tooltip: 'Design Engineering',
           onPressed: () {},
           child: const Text('Design Engineering'),
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.folder_outlined),
+          icon: const Icon(Icons.folder_outlined),
           tooltip: 'Sales & Marketing',
           onPressed: () {},
           child: const Text('Sales & Marketing'),
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.folder_outlined),
+          icon: const Icon(Icons.folder_outlined),
           tooltip: 'Travel',
           onPressed: () {},
           child: const Text('Travel'),
@@ -984,7 +984,7 @@ class _PropertiesGroup extends StatelessWidget {
       label: Text('Properties'),
       children: [
         ShadSidebarItem(
-          leading: Icon(Icons.straighten_outlined),
+          icon: Icon(Icons.straighten_outlined),
           child: Text('Dimensions'),
           children: [
             ShadSidebarItem(
@@ -996,7 +996,7 @@ class _PropertiesGroup extends StatelessWidget {
           ],
         ),
         ShadSidebarItem(
-          leading: Icon(Icons.format_paint_outlined),
+          icon: Icon(Icons.format_paint_outlined),
           child: Text('Fill'),
           children: [
             ShadSidebarItem(
@@ -1008,7 +1008,7 @@ class _PropertiesGroup extends StatelessWidget {
           ],
         ),
         ShadSidebarItem(
-          leading: Icon(Icons.border_all_outlined),
+          icon: Icon(Icons.border_all_outlined),
           child: Text('Stroke'),
         ),
       ],
@@ -1024,28 +1024,28 @@ class _LayersGroup extends StatelessWidget {
       label: const Text('Layers'),
       children: [
         ShadSidebarItem(
-          leading: const Icon(Icons.image_outlined),
+          icon: const Icon(Icons.image_outlined),
           selected: true,
           onPressed: () {},
           child: const Text('Header Image'),
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.text_fields),
+          icon: const Icon(Icons.text_fields),
           child: const Text('Title Text'),
           onPressed: () {},
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.rectangle_outlined),
+          icon: const Icon(Icons.rectangle_outlined),
           child: const Text('Card Container'),
           onPressed: () {},
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.text_fields),
+          icon: const Icon(Icons.text_fields),
           child: const Text('Body Text'),
           onPressed: () {},
         ),
         ShadSidebarItem(
-          leading: const Icon(Icons.smart_button_outlined),
+          icon: const Icon(Icons.smart_button_outlined),
           child: const Text('CTA Button'),
           onPressed: () {},
         ),

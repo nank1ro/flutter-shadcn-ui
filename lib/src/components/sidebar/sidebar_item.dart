@@ -49,7 +49,7 @@ class ShadSidebarItem extends StatefulWidget {
   /// (not collapsible) with start-border indentation.
   const ShadSidebarItem({
     super.key,
-    this.leading,
+    this.icon,
     this.child,
     this.trailing,
     this.onPressed,
@@ -74,7 +74,7 @@ class ShadSidebarItem extends StatefulWidget {
   /// Collapsible item — [children] are shown/hidden with animation.
   const ShadSidebarItem.collapsible({
     super.key,
-    this.leading,
+    this.icon,
     this.child,
     this.trailing,
     this.onPressed,
@@ -99,7 +99,7 @@ class ShadSidebarItem extends StatefulWidget {
   const ShadSidebarItem.raw({
     super.key,
     required this.variant,
-    this.leading,
+    this.icon,
     this.child,
     this.trailing,
     this.onPressed,
@@ -122,7 +122,7 @@ class ShadSidebarItem extends StatefulWidget {
   });
 
   final ShadSidebarItemVariant variant;
-  final Widget? leading;
+  final Widget? icon;
   final Widget? child;
   final Widget? trailing;
   final VoidCallback? onPressed;
@@ -621,13 +621,13 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
     required double iconSize,
     required Color iconColor,
   }) {
-    if (widget.leading == null) return null;
+    if (widget.icon == null) return null;
     return IconTheme(
       data: IconThemeData(size: iconSize, color: iconColor),
       child: SizedBox(
         width: iconSize,
         height: iconSize,
-        child: widget.leading,
+        child: widget.icon,
       ),
     );
   }
