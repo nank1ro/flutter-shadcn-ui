@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
-
+import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/sidebar/sidebar_scope.dart';
 import 'package:shadcn_ui/src/components/tooltip.dart';
-import 'package:shadcn_ui/src/theme/components/sidebar.dart';
-import 'package:shadcn_ui/src/theme/data.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 
 // ---------------------------------------------------------------------------
 // Depth tracking
@@ -149,7 +149,6 @@ class ShadSidebarItem extends StatefulWidget {
 
 class _ShadSidebarItemState extends State<ShadSidebarItem>
     with SingleTickerProviderStateMixin {
-  bool _isHovered = false;
   bool _isExpanded = false;
 
   AnimationController? _expansionController;
@@ -235,43 +234,22 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
     widget.onPressed?.call();
   }
 
-  /// Resolves colors using the sidebar color scheme fields with
-  /// generic fallback: widget param → theme → sidebarColor → genericColor
-  _SidebarColors _resolveColors(
-    ShadThemeData theme,
-    ShadSidebarTheme sidebarTheme,
-  ) {
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final sidebarTheme = theme.sidebarTheme;
     final colorScheme = theme.colorScheme;
+    final scope = ShadSidebarScope.of(context);
+    final depth = _ShadSidebarItemDepth.of(context);
+    final isSubItem = depth > 0;
+
+    // -- Resolve sidebar colors --
 
     final sidebarFg = colorScheme.sidebarForeground ?? colorScheme.foreground;
     final sidebarAccent = colorScheme.sidebarAccent ?? colorScheme.accent;
     final sidebarAccentFg =
         colorScheme.sidebarAccentForeground ?? colorScheme.accentForeground;
-    final sidebarPrimary = colorScheme.sidebarPrimary ?? colorScheme.primary;
-    final sidebarPrimaryFg =
-        colorScheme.sidebarPrimaryForeground ?? colorScheme.primaryForeground;
     final sidebarBorder = colorScheme.sidebarBorder ?? colorScheme.border;
-    final sidebarRing = colorScheme.sidebarRing ?? colorScheme.ring;
-
-    return _SidebarColors(
-      foreground: sidebarFg,
-      accent: sidebarAccent,
-      accentForeground: sidebarAccentFg,
-      primary: sidebarPrimary,
-      primaryForeground: sidebarPrimaryFg,
-      border: sidebarBorder,
-      ring: sidebarRing,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-    final sidebarTheme = theme.sidebarTheme;
-    final scope = ShadSidebarScope.of(context);
-    final depth = _ShadSidebarItemDepth.of(context);
-    final isSubItem = depth > 0;
-    final colors = _resolveColors(theme, sidebarTheme);
 
     // -- Resolve effective values --
 
@@ -292,56 +270,54 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
     final effectiveBorderRadius =
         widget.borderRadius ??
         (isSubItem
-            ? sidebarTheme.subItemBorderRadius ?? BorderRadius.circular(6)
-            : sidebarTheme.itemBorderRadius ?? BorderRadius.circular(6));
+            ? sidebarTheme.subItemBorderRadius ?? BorderRadius.circular(8)
+            : sidebarTheme.itemBorderRadius ?? BorderRadius.circular(8));
+
     final effectiveHoverColor =
-        widget.hoverColor ?? sidebarTheme.itemHoverColor ?? colors.accent;
+        widget.hoverColor ?? sidebarTheme.itemHoverColor ?? sidebarAccent;
 
-    // Active → sidebar primary
     final effectiveActiveColor =
-        widget.activeColor ?? sidebarTheme.itemActiveColor ?? colors.accent;
+        widget.activeColor ?? sidebarTheme.itemActiveColor ?? sidebarAccent;
 
-    // Text color: active → primary foreground, normal → sidebar foreground
-    final effectiveTextStyle = widget.selected
-        ? (widget.activeTextStyle ??
-              (isSubItem
-                  ? sidebarTheme.subItemActiveTextStyle
-                  : sidebarTheme.itemActiveTextStyle) ??
-              TextStyle(
-                fontSize: isSubItem ? 13 : 14,
-                fontWeight: FontWeight.w600,
-                color: colors.accentForeground,
-              ))
-        : (widget.textStyle ??
-              (isSubItem
-                  ? sidebarTheme.subItemTextStyle
-                  : sidebarTheme.itemTextStyle) ??
-              TextStyle(
-                fontSize: isSubItem ? 13 : 14,
-                color: colors.foreground,
-              ));
+    final effectiveFgColor = widget.selected
+        ? (widget.activeIconColor ??
+              sidebarTheme.itemActiveIconColor ??
+              sidebarAccentFg)
+        : (widget.iconColor ?? sidebarTheme.itemIconColor ?? sidebarFg);
 
     final effectiveIconSize =
         widget.iconSize ?? sidebarTheme.itemIconSize ?? 16.0;
 
-    // Icon color: active → primary foreground, normal → sidebar foreground
-    final effectiveIconColor = widget.selected
-        ? (widget.activeIconColor ??
-              sidebarTheme.itemActiveIconColor ??
-              colors.accentForeground)
-        : (widget.iconColor ?? sidebarTheme.itemIconColor ?? colors.foreground);
+    // -- Build icon --
 
-    final effectiveSpacing = widget.spacing ?? sidebarTheme.itemSpacing ?? 8.0;
-
-    final effectiveSubItemsBorderColor =
-        sidebarTheme.subItemsBorderColor ?? colors.border;
-
-    Color? backgroundColor;
-    if (widget.selected) {
-      backgroundColor = effectiveActiveColor;
-    } else if (_isHovered) {
-      backgroundColor = effectiveHoverColor;
+    Widget? iconWidget;
+    if (widget.icon != null) {
+      iconWidget = IconTheme(
+        data: IconThemeData(size: effectiveIconSize, color: effectiveFgColor),
+        child: widget.icon!,
+      );
     }
+
+    // -- Build trailing --
+
+    var trailing = widget.trailing;
+    if (trailing == null && _isCollapsible) {
+      trailing = RotationTransition(
+        turns: Tween<double>(begin: 0, end: 0.25).animate(_expansionAnimation!),
+        child: _DefaultChevron(
+          size: effectiveIconSize,
+          color: effectiveFgColor,
+        ),
+      );
+    }
+
+    // -- Shared button styling --
+
+    final buttonDecoration = ShadDecoration(
+      border: ShadBorder.all(
+        radius: effectiveBorderRadius,
+      ),
+    );
 
     // -- Icon-collapsed mode --
 
@@ -349,137 +325,140 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
       return AnimatedBuilder(
         animation: scope.animation,
         builder: (context, _) {
+          // Fully collapsed → icon-only button with tooltip
           if (scope.animation.status == AnimationStatus.dismissed) {
-            return _buildIconCollapsed(
-              effectiveHeight: effectiveHeight,
-              effectiveBorderRadius: effectiveBorderRadius,
-              effectiveIconSize: effectiveIconSize,
-              effectiveIconColor: effectiveIconColor,
-              backgroundColor: backgroundColor,
+            Widget button = ShadButton.ghost(
+              leading: iconWidget,
+              onPressed: _handleTap,
+              width: effectiveHeight,
+              height: effectiveHeight,
+              padding: EdgeInsets.zero,
+              backgroundColor: widget.selected ? effectiveActiveColor : null,
+              hoverBackgroundColor: effectiveHoverColor,
+              foregroundColor: effectiveFgColor,
+              hoverForegroundColor: sidebarAccentFg,
+              decoration: buttonDecoration,
             );
+
+            if (widget.tooltip != null) {
+              button = ShadTooltip(
+                builder: (context) => Text(widget.tooltip!),
+                child: button,
+              );
+            }
+
+            return button;
           }
 
-          return _buildExpandedLayout(
-            scope: scope,
-            depth: depth,
+          // Animating → full row with fading label/trailing
+          return _buildButton(
+            iconWidget: iconWidget,
+            trailing: trailing,
             effectiveHeight: effectiveHeight,
             effectivePadding: effectivePadding,
-            effectiveBorderRadius: effectiveBorderRadius,
-            effectiveTextStyle: effectiveTextStyle,
-            effectiveIconSize: effectiveIconSize,
-            effectiveIconColor: effectiveIconColor,
-            effectiveSpacing: effectiveSpacing,
-            backgroundColor: backgroundColor,
-            subItemsBorderColor: effectiveSubItemsBorderColor,
+            effectiveActiveColor: effectiveActiveColor,
+            effectiveHoverColor: effectiveHoverColor,
+            effectiveFgColor: effectiveFgColor,
+            sidebarAccentFg: sidebarAccentFg,
+            buttonDecoration: buttonDecoration,
+            sidebarBorder: sidebarBorder,
+            depth: depth,
             labelAnimation: scope.animation,
           );
         },
       );
     }
 
-    return _buildExpandedLayout(
-      scope: scope,
-      depth: depth,
+    // -- Normal mode --
+
+    return _buildButton(
+      iconWidget: iconWidget,
+      trailing: trailing,
       effectiveHeight: effectiveHeight,
       effectivePadding: effectivePadding,
-      effectiveBorderRadius: effectiveBorderRadius,
-      effectiveTextStyle: effectiveTextStyle,
-      effectiveIconSize: effectiveIconSize,
-      effectiveIconColor: effectiveIconColor,
-      effectiveSpacing: effectiveSpacing,
-      backgroundColor: backgroundColor,
-      subItemsBorderColor: effectiveSubItemsBorderColor,
+      effectiveActiveColor: effectiveActiveColor,
+      effectiveHoverColor: effectiveHoverColor,
+      effectiveFgColor: effectiveFgColor,
+      sidebarAccentFg: sidebarAccentFg,
+      buttonDecoration: buttonDecoration,
+      sidebarBorder: sidebarBorder,
+      depth: depth,
     );
   }
 
-  // ---- Icon-collapsed layout ----------------------------------------------
+  // ---- Full button with optional children ---------------------------------
 
-  Widget _buildIconCollapsed({
+  Widget _buildButton({
+    required Widget? iconWidget,
+    required Widget? trailing,
     required double effectiveHeight,
-    required BorderRadiusGeometry effectiveBorderRadius,
-    required double effectiveIconSize,
-    required Color effectiveIconColor,
-    required Color? backgroundColor,
+    required EdgeInsetsGeometry effectivePadding,
+    required Color effectiveActiveColor,
+    required Color effectiveHoverColor,
+    required Color effectiveFgColor,
+    required Color sidebarAccentFg,
+    required ShadDecoration buttonDecoration,
+    required Color sidebarBorder,
+    required int depth,
+    Animation<double>? labelAnimation,
   }) {
-    final icon = _buildLeadingIcon(
-      iconSize: effectiveIconSize,
-      iconColor: effectiveIconColor,
+    // Optionally fade label + trailing during icon-collapse animation
+    var label = widget.child;
+    var trailingWidget = trailing;
+
+    if (labelAnimation != null) {
+      if (label != null) {
+        label = FadeTransition(opacity: labelAnimation, child: label);
+      }
+      if (trailingWidget != null) {
+        trailingWidget = FadeTransition(
+          opacity: labelAnimation,
+          child: trailingWidget,
+        );
+      }
+    }
+
+    final Widget button = ShadButton.ghost(
+      onPressed: _handleTap,
+      width: double.infinity,
+      height: effectiveHeight,
+      padding: effectivePadding,
+      backgroundColor: widget.selected ? effectiveActiveColor : null,
+      hoverBackgroundColor: effectiveHoverColor,
+      foregroundColor: effectiveFgColor,
+      hoverForegroundColor: sidebarAccentFg,
+      decoration: buttonDecoration,
+      leading: iconWidget,
+      trailing: trailingWidget,
+      expands: true,
+      child: Container(
+        alignment: AlignmentDirectional.centerStart,
+        child: label,
+      ),
     );
 
-    Widget result = MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: _handleTap,
-        child: Semantics(
-          button: true,
-          label: widget.tooltip,
-          selected: widget.selected,
-          child: Container(
-            height: effectiveHeight,
-            width: effectiveHeight,
-            margin: const EdgeInsets.only(bottom: 4),
-            decoration: BoxDecoration(
-              color: backgroundColor,
-              borderRadius: effectiveBorderRadius,
-            ),
-            alignment: Alignment.center,
-            child: icon ?? const SizedBox.shrink(),
+    if (!_hasChildren) return button;
+
+    // Sub-items
+    Widget subItems = _ShadSidebarItemDepth(
+      depth: depth + 1,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 14),
+        padding: const EdgeInsetsDirectional.only(start: 10, top: 2, bottom: 2),
+        decoration: BoxDecoration(
+          border: BorderDirectional(
+            start: BorderSide(color: sidebarBorder),
           ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: widget.children ?? const [],
         ),
       ),
     );
 
-    if (widget.tooltip != null) {
-      result = ShadTooltip(
-        builder: (context) => Text(widget.tooltip!),
-        child: result,
-      );
-    }
-
-    return result;
-  }
-
-  // ---- Expanded layout ----------------------------------------------------
-
-  Widget _buildExpandedLayout({
-    required ShadSidebarScope scope,
-    required int depth,
-    required double effectiveHeight,
-    required EdgeInsetsGeometry effectivePadding,
-    required BorderRadiusGeometry effectiveBorderRadius,
-    required TextStyle effectiveTextStyle,
-    required double effectiveIconSize,
-    required Color effectiveIconColor,
-    required double effectiveSpacing,
-    required Color? backgroundColor,
-    required Color subItemsBorderColor,
-    Animation<double>? labelAnimation,
-  }) {
-    final itemRow = _buildItemRow(
-      effectiveHeight: effectiveHeight,
-      effectivePadding: effectivePadding,
-      effectiveBorderRadius: effectiveBorderRadius,
-      effectiveTextStyle: effectiveTextStyle,
-      effectiveIconSize: effectiveIconSize,
-      effectiveIconColor: effectiveIconColor,
-      effectiveSpacing: effectiveSpacing,
-      backgroundColor: backgroundColor,
-      labelAnimation: labelAnimation,
-    );
-
-    if (!_hasChildren) return itemRow;
-
-    // Build sub-items container with start border
-    var subItems = _buildSubItemsContainer(
-      depth: depth,
-      borderColor: subItemsBorderColor,
-    );
-
     if (_isCollapsible) {
-      // Animated expand/collapse
       subItems = SizeTransition(
         sizeFactor: _expansionAnimation!,
         axisAlignment: -1,
@@ -500,150 +479,9 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        itemRow,
+        button,
         subItems,
       ],
-    );
-  }
-
-  // ---- Item row -----------------------------------------------------------
-
-  Widget _buildItemRow({
-    required double effectiveHeight,
-    required EdgeInsetsGeometry effectivePadding,
-    required BorderRadiusGeometry effectiveBorderRadius,
-    required TextStyle effectiveTextStyle,
-    required double effectiveIconSize,
-    required Color effectiveIconColor,
-    required double effectiveSpacing,
-    required Color? backgroundColor,
-    Animation<double>? labelAnimation,
-  }) {
-    final icon = _buildLeadingIcon(
-      iconSize: effectiveIconSize,
-      iconColor: effectiveIconColor,
-    );
-
-    var trailing = _buildTrailing(
-      iconSize: effectiveIconSize,
-      iconColor: effectiveIconColor,
-    );
-
-    Widget? label;
-    if (widget.child != null) {
-      label = DefaultTextStyle(
-        style: effectiveTextStyle,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 1,
-        child: widget.child!,
-      );
-    }
-
-    // Fade label and trailing during icon-collapse animation
-    if (labelAnimation != null) {
-      if (label != null) {
-        label = FadeTransition(opacity: labelAnimation, child: label);
-      }
-      if (trailing != null) {
-        trailing = FadeTransition(opacity: labelAnimation, child: trailing);
-      }
-    }
-
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: _handleTap,
-        child: Semantics(
-          button: true,
-          label: widget.tooltip,
-          selected: widget.selected,
-          child: ClipRRect(
-            borderRadius: effectiveBorderRadius,
-            clipBehavior: Clip.hardEdge,
-            child: Container(
-              height: effectiveHeight,
-              padding: effectivePadding,
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: effectiveBorderRadius,
-              ),
-              child: Row(
-                children: [
-                  if (icon != null) ...[
-                    icon,
-                    SizedBox(width: effectiveSpacing),
-                  ],
-                  if (label != null) Expanded(child: label),
-                  if (trailing != null) ...[
-                    SizedBox(width: effectiveSpacing),
-                    trailing,
-                  ],
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // ---- Sub-items container ------------------------------------------------
-
-  Widget _buildSubItemsContainer({
-    required int depth,
-    required Color borderColor,
-  }) {
-    return _ShadSidebarItemDepth(
-      depth: depth + 1,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 14),
-        padding: const EdgeInsetsDirectional.only(start: 10, top: 2, bottom: 2),
-        decoration: BoxDecoration(
-          border: BorderDirectional(
-            start: BorderSide(color: borderColor),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: widget.children ?? const [],
-        ),
-      ),
-    );
-  }
-
-  // ---- Leading icon -------------------------------------------------------
-
-  Widget? _buildLeadingIcon({
-    required double iconSize,
-    required Color iconColor,
-  }) {
-    if (widget.icon == null) return null;
-    return IconTheme(
-      data: IconThemeData(size: iconSize, color: iconColor),
-      child: SizedBox(
-        width: iconSize,
-        height: iconSize,
-        child: widget.icon,
-      ),
-    );
-  }
-
-  // ---- Trailing -----------------------------------------------------------
-
-  Widget? _buildTrailing({
-    required double iconSize,
-    required Color iconColor,
-  }) {
-    if (widget.trailing != null) return widget.trailing;
-    if (!_isCollapsible) return null;
-
-    return RotationTransition(
-      turns: Tween<double>(begin: 0, end: 0.25).animate(_expansionAnimation!),
-      child: _DefaultChevron(size: iconSize, color: iconColor),
     );
   }
 }
@@ -691,24 +529,4 @@ class _ChevronPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_ChevronPainter oldDelegate) => oldDelegate.color != color;
-}
-
-class _SidebarColors {
-  const _SidebarColors({
-    required this.foreground,
-    required this.accent,
-    required this.accentForeground,
-    required this.primary,
-    required this.primaryForeground,
-    required this.border,
-    required this.ring,
-  });
-
-  final Color foreground;
-  final Color accent;
-  final Color accentForeground;
-  final Color primary;
-  final Color primaryForeground;
-  final Color border;
-  final Color ring;
 }

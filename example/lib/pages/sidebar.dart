@@ -96,6 +96,7 @@ class _SidebarPageState extends State<SidebarPage> {
                 ),
                 const ShadSeparator.horizontal(),
               ],
+
               SizedBox(
                 child: Column(
                   spacing: 8,
@@ -936,36 +937,6 @@ class _PlatformGroupWithTooltips extends StatelessWidget {
           tooltip: 'Settings',
           onPressed: () {},
           child: const Text('Settings'),
-        ),
-      ],
-    );
-  }
-}
-
-class _ProjectsGroupWithTooltips extends StatelessWidget {
-  const _ProjectsGroupWithTooltips();
-  @override
-  Widget build(BuildContext context) {
-    return ShadSidebarGroup(
-      label: const Text('Projects'),
-      children: [
-        ShadSidebarItem(
-          icon: const Icon(Icons.folder_outlined),
-          tooltip: 'Design Engineering',
-          onPressed: () {},
-          child: const Text('Design Engineering'),
-        ),
-        ShadSidebarItem(
-          icon: const Icon(Icons.folder_outlined),
-          tooltip: 'Sales & Marketing',
-          onPressed: () {},
-          child: const Text('Sales & Marketing'),
-        ),
-        ShadSidebarItem(
-          icon: const Icon(Icons.folder_outlined),
-          tooltip: 'Travel',
-          onPressed: () {},
-          child: const Text('Travel'),
         ),
       ],
     );
