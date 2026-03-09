@@ -6,13 +6,13 @@ import 'package:shadcn_ui/src/i18n/strings.g.dart';
 ///
 /// Automatically added by `ShadApp`. Consumers can also provide it manually
 /// through `WidgetsApp.localizationsDelegates`.
-class ShadLocalizationsDelegate
+class GlobalShadLocalizations
     extends LocalizationsDelegate<ShadLocalizationsData> {
-  const ShadLocalizationsDelegate();
+  const GlobalShadLocalizations();
 
   /// The singleton instance of this delegate.
-  static const ShadLocalizationsDelegate instance =
-      ShadLocalizationsDelegate();
+  static const GlobalShadLocalizations delegate =
+      GlobalShadLocalizations();
 
   @override
   bool isSupported(Locale locale) => true;
@@ -44,7 +44,7 @@ class ShadLocalizationsDelegate
   }
 
   @override
-  bool shouldReload(ShadLocalizationsDelegate old) => false;
+  bool shouldReload(GlobalShadLocalizations old) => false;
 }
 
 /// Provides access to [ShadLocalizationsData] from the widget tree.

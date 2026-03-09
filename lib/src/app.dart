@@ -447,7 +447,7 @@ class _ShadAppState extends State<ShadApp> {
     if (localizationsDelegates != null) {
       yield* localizationsDelegates;
     }
-    yield ShadLocalizationsDelegate.instance;
+    yield GlobalShadLocalizations.delegate;
     yield GlobalMaterialLocalizations.delegate;
     yield GlobalCupertinoLocalizations.delegate;
     yield GlobalWidgetsLocalizations.delegate;
