@@ -6,7 +6,7 @@
 /// Locales: 82
 /// Strings: 902 (11 per locale)
 ///
-/// Built on 2026-03-09 at 08:28 UTC
+/// Built on 2026-03-09 at 11:20 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint, unused_import
@@ -107,7 +107,7 @@ part 'strings_en.g.dart';
 /// - LocaleSettings.setLocale(ShadLocale.en) // set locale
 /// - Locale locale = ShadLocale.en.flutterLocale // get flutter locale from enum
 /// - if (LocaleSettings.currentLocale == ShadLocale.en) // locale check
-enum ShadLocale with BaseAppLocale<ShadLocale, ShadLocalizations> {
+enum ShadLocale with BaseAppLocale<ShadLocale, ShadLocalizationsData> {
 	en(languageCode: 'en'),
 	af(languageCode: 'af'),
 	am(languageCode: 'am'),
@@ -202,581 +202,581 @@ enum ShadLocale with BaseAppLocale<ShadLocale, ShadLocalizations> {
 	@override final String? countryCode;
 
 	@override
-	Future<ShadLocalizations> build({
+	Future<ShadLocalizationsData> build({
 		Map<String, Node>? overrides,
 		PluralResolver? cardinalResolver,
 		PluralResolver? ordinalResolver,
 	}) async {
 		switch (this) {
 			case ShadLocale.en:
-				return ShadLocalizationsEn(
+				return ShadLocalizationsDataEn(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.af:
 				await l_af.loadLibrary();
-				return l_af.ShadLocalizationsAf(
+				return l_af.ShadLocalizationsDataAf(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.am:
 				await l_am.loadLibrary();
-				return l_am.ShadLocalizationsAm(
+				return l_am.ShadLocalizationsDataAm(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ar:
 				await l_ar.loadLibrary();
-				return l_ar.ShadLocalizationsAr(
+				return l_ar.ShadLocalizationsDataAr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.as:
 				await l_as.loadLibrary();
-				return l_as.ShadLocalizationsAs(
+				return l_as.ShadLocalizationsDataAs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.az:
 				await l_az.loadLibrary();
-				return l_az.ShadLocalizationsAz(
+				return l_az.ShadLocalizationsDataAz(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.be:
 				await l_be.loadLibrary();
-				return l_be.ShadLocalizationsBe(
+				return l_be.ShadLocalizationsDataBe(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.bg:
 				await l_bg.loadLibrary();
-				return l_bg.ShadLocalizationsBg(
+				return l_bg.ShadLocalizationsDataBg(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.bn:
 				await l_bn.loadLibrary();
-				return l_bn.ShadLocalizationsBn(
+				return l_bn.ShadLocalizationsDataBn(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.bo:
 				await l_bo.loadLibrary();
-				return l_bo.ShadLocalizationsBo(
+				return l_bo.ShadLocalizationsDataBo(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.bs:
 				await l_bs.loadLibrary();
-				return l_bs.ShadLocalizationsBs(
+				return l_bs.ShadLocalizationsDataBs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ca:
 				await l_ca.loadLibrary();
-				return l_ca.ShadLocalizationsCa(
+				return l_ca.ShadLocalizationsDataCa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.cs:
 				await l_cs.loadLibrary();
-				return l_cs.ShadLocalizationsCs(
+				return l_cs.ShadLocalizationsDataCs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.cy:
 				await l_cy.loadLibrary();
-				return l_cy.ShadLocalizationsCy(
+				return l_cy.ShadLocalizationsDataCy(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.da:
 				await l_da.loadLibrary();
-				return l_da.ShadLocalizationsDa(
+				return l_da.ShadLocalizationsDataDa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.de:
 				await l_de.loadLibrary();
-				return l_de.ShadLocalizationsDe(
+				return l_de.ShadLocalizationsDataDe(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.el:
 				await l_el.loadLibrary();
-				return l_el.ShadLocalizationsEl(
+				return l_el.ShadLocalizationsDataEl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.es:
 				await l_es.loadLibrary();
-				return l_es.ShadLocalizationsEs(
+				return l_es.ShadLocalizationsDataEs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.et:
 				await l_et.loadLibrary();
-				return l_et.ShadLocalizationsEt(
+				return l_et.ShadLocalizationsDataEt(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.eu:
 				await l_eu.loadLibrary();
-				return l_eu.ShadLocalizationsEu(
+				return l_eu.ShadLocalizationsDataEu(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.fa:
 				await l_fa.loadLibrary();
-				return l_fa.ShadLocalizationsFa(
+				return l_fa.ShadLocalizationsDataFa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.fi:
 				await l_fi.loadLibrary();
-				return l_fi.ShadLocalizationsFi(
+				return l_fi.ShadLocalizationsDataFi(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.fil:
 				await l_fil.loadLibrary();
-				return l_fil.ShadLocalizationsFil(
+				return l_fil.ShadLocalizationsDataFil(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.fr:
 				await l_fr.loadLibrary();
-				return l_fr.ShadLocalizationsFr(
+				return l_fr.ShadLocalizationsDataFr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ga:
 				await l_ga.loadLibrary();
-				return l_ga.ShadLocalizationsGa(
+				return l_ga.ShadLocalizationsDataGa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.gl:
 				await l_gl.loadLibrary();
-				return l_gl.ShadLocalizationsGl(
+				return l_gl.ShadLocalizationsDataGl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.gsw:
 				await l_gsw.loadLibrary();
-				return l_gsw.ShadLocalizationsGsw(
+				return l_gsw.ShadLocalizationsDataGsw(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.gu:
 				await l_gu.loadLibrary();
-				return l_gu.ShadLocalizationsGu(
+				return l_gu.ShadLocalizationsDataGu(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.he:
 				await l_he.loadLibrary();
-				return l_he.ShadLocalizationsHe(
+				return l_he.ShadLocalizationsDataHe(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.hi:
 				await l_hi.loadLibrary();
-				return l_hi.ShadLocalizationsHi(
+				return l_hi.ShadLocalizationsDataHi(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.hr:
 				await l_hr.loadLibrary();
-				return l_hr.ShadLocalizationsHr(
+				return l_hr.ShadLocalizationsDataHr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.hu:
 				await l_hu.loadLibrary();
-				return l_hu.ShadLocalizationsHu(
+				return l_hu.ShadLocalizationsDataHu(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.hy:
 				await l_hy.loadLibrary();
-				return l_hy.ShadLocalizationsHy(
+				return l_hy.ShadLocalizationsDataHy(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.id:
 				await l_id.loadLibrary();
-				return l_id.ShadLocalizationsId(
+				return l_id.ShadLocalizationsDataId(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.icelandic:
 				await l_is.loadLibrary();
-				return l_is.ShadLocalizationsIs(
+				return l_is.ShadLocalizationsDataIs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.it:
 				await l_it.loadLibrary();
-				return l_it.ShadLocalizationsIt(
+				return l_it.ShadLocalizationsDataIt(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ja:
 				await l_ja.loadLibrary();
-				return l_ja.ShadLocalizationsJa(
+				return l_ja.ShadLocalizationsDataJa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ka:
 				await l_ka.loadLibrary();
-				return l_ka.ShadLocalizationsKa(
+				return l_ka.ShadLocalizationsDataKa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.kk:
 				await l_kk.loadLibrary();
-				return l_kk.ShadLocalizationsKk(
+				return l_kk.ShadLocalizationsDataKk(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.km:
 				await l_km.loadLibrary();
-				return l_km.ShadLocalizationsKm(
+				return l_km.ShadLocalizationsDataKm(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.kn:
 				await l_kn.loadLibrary();
-				return l_kn.ShadLocalizationsKn(
+				return l_kn.ShadLocalizationsDataKn(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ko:
 				await l_ko.loadLibrary();
-				return l_ko.ShadLocalizationsKo(
+				return l_ko.ShadLocalizationsDataKo(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ky:
 				await l_ky.loadLibrary();
-				return l_ky.ShadLocalizationsKy(
+				return l_ky.ShadLocalizationsDataKy(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.lo:
 				await l_lo.loadLibrary();
-				return l_lo.ShadLocalizationsLo(
+				return l_lo.ShadLocalizationsDataLo(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.lt:
 				await l_lt.loadLibrary();
-				return l_lt.ShadLocalizationsLt(
+				return l_lt.ShadLocalizationsDataLt(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.lv:
 				await l_lv.loadLibrary();
-				return l_lv.ShadLocalizationsLv(
+				return l_lv.ShadLocalizationsDataLv(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.mk:
 				await l_mk.loadLibrary();
-				return l_mk.ShadLocalizationsMk(
+				return l_mk.ShadLocalizationsDataMk(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ml:
 				await l_ml.loadLibrary();
-				return l_ml.ShadLocalizationsMl(
+				return l_ml.ShadLocalizationsDataMl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.mn:
 				await l_mn.loadLibrary();
-				return l_mn.ShadLocalizationsMn(
+				return l_mn.ShadLocalizationsDataMn(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.mr:
 				await l_mr.loadLibrary();
-				return l_mr.ShadLocalizationsMr(
+				return l_mr.ShadLocalizationsDataMr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ms:
 				await l_ms.loadLibrary();
-				return l_ms.ShadLocalizationsMs(
+				return l_ms.ShadLocalizationsDataMs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.my:
 				await l_my.loadLibrary();
-				return l_my.ShadLocalizationsMy(
+				return l_my.ShadLocalizationsDataMy(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.nb:
 				await l_nb.loadLibrary();
-				return l_nb.ShadLocalizationsNb(
+				return l_nb.ShadLocalizationsDataNb(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ne:
 				await l_ne.loadLibrary();
-				return l_ne.ShadLocalizationsNe(
+				return l_ne.ShadLocalizationsDataNe(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.nl:
 				await l_nl.loadLibrary();
-				return l_nl.ShadLocalizationsNl(
+				return l_nl.ShadLocalizationsDataNl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.no:
 				await l_no.loadLibrary();
-				return l_no.ShadLocalizationsNo(
+				return l_no.ShadLocalizationsDataNo(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.or:
 				await l_or.loadLibrary();
-				return l_or.ShadLocalizationsOr(
+				return l_or.ShadLocalizationsDataOr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.pa:
 				await l_pa.loadLibrary();
-				return l_pa.ShadLocalizationsPa(
+				return l_pa.ShadLocalizationsDataPa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.pl:
 				await l_pl.loadLibrary();
-				return l_pl.ShadLocalizationsPl(
+				return l_pl.ShadLocalizationsDataPl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ps:
 				await l_ps.loadLibrary();
-				return l_ps.ShadLocalizationsPs(
+				return l_ps.ShadLocalizationsDataPs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.pt:
 				await l_pt.loadLibrary();
-				return l_pt.ShadLocalizationsPt(
+				return l_pt.ShadLocalizationsDataPt(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ro:
 				await l_ro.loadLibrary();
-				return l_ro.ShadLocalizationsRo(
+				return l_ro.ShadLocalizationsDataRo(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ru:
 				await l_ru.loadLibrary();
-				return l_ru.ShadLocalizationsRu(
+				return l_ru.ShadLocalizationsDataRu(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.si:
 				await l_si.loadLibrary();
-				return l_si.ShadLocalizationsSi(
+				return l_si.ShadLocalizationsDataSi(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.sk:
 				await l_sk.loadLibrary();
-				return l_sk.ShadLocalizationsSk(
+				return l_sk.ShadLocalizationsDataSk(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.sl:
 				await l_sl.loadLibrary();
-				return l_sl.ShadLocalizationsSl(
+				return l_sl.ShadLocalizationsDataSl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.sq:
 				await l_sq.loadLibrary();
-				return l_sq.ShadLocalizationsSq(
+				return l_sq.ShadLocalizationsDataSq(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.sr:
 				await l_sr.loadLibrary();
-				return l_sr.ShadLocalizationsSr(
+				return l_sr.ShadLocalizationsDataSr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.sv:
 				await l_sv.loadLibrary();
-				return l_sv.ShadLocalizationsSv(
+				return l_sv.ShadLocalizationsDataSv(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.sw:
 				await l_sw.loadLibrary();
-				return l_sw.ShadLocalizationsSw(
+				return l_sw.ShadLocalizationsDataSw(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ta:
 				await l_ta.loadLibrary();
-				return l_ta.ShadLocalizationsTa(
+				return l_ta.ShadLocalizationsDataTa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.te:
 				await l_te.loadLibrary();
-				return l_te.ShadLocalizationsTe(
+				return l_te.ShadLocalizationsDataTe(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.th:
 				await l_th.loadLibrary();
-				return l_th.ShadLocalizationsTh(
+				return l_th.ShadLocalizationsDataTh(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.tl:
 				await l_tl.loadLibrary();
-				return l_tl.ShadLocalizationsTl(
+				return l_tl.ShadLocalizationsDataTl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.tr:
 				await l_tr.loadLibrary();
-				return l_tr.ShadLocalizationsTr(
+				return l_tr.ShadLocalizationsDataTr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ug:
 				await l_ug.loadLibrary();
-				return l_ug.ShadLocalizationsUg(
+				return l_ug.ShadLocalizationsDataUg(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.uk:
 				await l_uk.loadLibrary();
-				return l_uk.ShadLocalizationsUk(
+				return l_uk.ShadLocalizationsDataUk(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ur:
 				await l_ur.loadLibrary();
-				return l_ur.ShadLocalizationsUr(
+				return l_ur.ShadLocalizationsDataUr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.uz:
 				await l_uz.loadLibrary();
-				return l_uz.ShadLocalizationsUz(
+				return l_uz.ShadLocalizationsDataUz(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.vi:
 				await l_vi.loadLibrary();
-				return l_vi.ShadLocalizationsVi(
+				return l_vi.ShadLocalizationsDataVi(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.zh:
 				await l_zh.loadLibrary();
-				return l_zh.ShadLocalizationsZh(
+				return l_zh.ShadLocalizationsDataZh(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.zu:
 				await l_zu.loadLibrary();
-				return l_zu.ShadLocalizationsZu(
+				return l_zu.ShadLocalizationsDataZu(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
@@ -785,500 +785,500 @@ enum ShadLocale with BaseAppLocale<ShadLocale, ShadLocalizations> {
 	}
 
 	@override
-	ShadLocalizations buildSync({
+	ShadLocalizationsData buildSync({
 		Map<String, Node>? overrides,
 		PluralResolver? cardinalResolver,
 		PluralResolver? ordinalResolver,
 	}) {
 		switch (this) {
 			case ShadLocale.en:
-				return ShadLocalizationsEn(
+				return ShadLocalizationsDataEn(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.af:
-				return l_af.ShadLocalizationsAf(
+				return l_af.ShadLocalizationsDataAf(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.am:
-				return l_am.ShadLocalizationsAm(
+				return l_am.ShadLocalizationsDataAm(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ar:
-				return l_ar.ShadLocalizationsAr(
+				return l_ar.ShadLocalizationsDataAr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.as:
-				return l_as.ShadLocalizationsAs(
+				return l_as.ShadLocalizationsDataAs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.az:
-				return l_az.ShadLocalizationsAz(
+				return l_az.ShadLocalizationsDataAz(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.be:
-				return l_be.ShadLocalizationsBe(
+				return l_be.ShadLocalizationsDataBe(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.bg:
-				return l_bg.ShadLocalizationsBg(
+				return l_bg.ShadLocalizationsDataBg(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.bn:
-				return l_bn.ShadLocalizationsBn(
+				return l_bn.ShadLocalizationsDataBn(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.bo:
-				return l_bo.ShadLocalizationsBo(
+				return l_bo.ShadLocalizationsDataBo(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.bs:
-				return l_bs.ShadLocalizationsBs(
+				return l_bs.ShadLocalizationsDataBs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ca:
-				return l_ca.ShadLocalizationsCa(
+				return l_ca.ShadLocalizationsDataCa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.cs:
-				return l_cs.ShadLocalizationsCs(
+				return l_cs.ShadLocalizationsDataCs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.cy:
-				return l_cy.ShadLocalizationsCy(
+				return l_cy.ShadLocalizationsDataCy(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.da:
-				return l_da.ShadLocalizationsDa(
+				return l_da.ShadLocalizationsDataDa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.de:
-				return l_de.ShadLocalizationsDe(
+				return l_de.ShadLocalizationsDataDe(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.el:
-				return l_el.ShadLocalizationsEl(
+				return l_el.ShadLocalizationsDataEl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.es:
-				return l_es.ShadLocalizationsEs(
+				return l_es.ShadLocalizationsDataEs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.et:
-				return l_et.ShadLocalizationsEt(
+				return l_et.ShadLocalizationsDataEt(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.eu:
-				return l_eu.ShadLocalizationsEu(
+				return l_eu.ShadLocalizationsDataEu(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.fa:
-				return l_fa.ShadLocalizationsFa(
+				return l_fa.ShadLocalizationsDataFa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.fi:
-				return l_fi.ShadLocalizationsFi(
+				return l_fi.ShadLocalizationsDataFi(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.fil:
-				return l_fil.ShadLocalizationsFil(
+				return l_fil.ShadLocalizationsDataFil(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.fr:
-				return l_fr.ShadLocalizationsFr(
+				return l_fr.ShadLocalizationsDataFr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ga:
-				return l_ga.ShadLocalizationsGa(
+				return l_ga.ShadLocalizationsDataGa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.gl:
-				return l_gl.ShadLocalizationsGl(
+				return l_gl.ShadLocalizationsDataGl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.gsw:
-				return l_gsw.ShadLocalizationsGsw(
+				return l_gsw.ShadLocalizationsDataGsw(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.gu:
-				return l_gu.ShadLocalizationsGu(
+				return l_gu.ShadLocalizationsDataGu(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.he:
-				return l_he.ShadLocalizationsHe(
+				return l_he.ShadLocalizationsDataHe(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.hi:
-				return l_hi.ShadLocalizationsHi(
+				return l_hi.ShadLocalizationsDataHi(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.hr:
-				return l_hr.ShadLocalizationsHr(
+				return l_hr.ShadLocalizationsDataHr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.hu:
-				return l_hu.ShadLocalizationsHu(
+				return l_hu.ShadLocalizationsDataHu(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.hy:
-				return l_hy.ShadLocalizationsHy(
+				return l_hy.ShadLocalizationsDataHy(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.id:
-				return l_id.ShadLocalizationsId(
+				return l_id.ShadLocalizationsDataId(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.icelandic:
-				return l_is.ShadLocalizationsIs(
+				return l_is.ShadLocalizationsDataIs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.it:
-				return l_it.ShadLocalizationsIt(
+				return l_it.ShadLocalizationsDataIt(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ja:
-				return l_ja.ShadLocalizationsJa(
+				return l_ja.ShadLocalizationsDataJa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ka:
-				return l_ka.ShadLocalizationsKa(
+				return l_ka.ShadLocalizationsDataKa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.kk:
-				return l_kk.ShadLocalizationsKk(
+				return l_kk.ShadLocalizationsDataKk(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.km:
-				return l_km.ShadLocalizationsKm(
+				return l_km.ShadLocalizationsDataKm(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.kn:
-				return l_kn.ShadLocalizationsKn(
+				return l_kn.ShadLocalizationsDataKn(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ko:
-				return l_ko.ShadLocalizationsKo(
+				return l_ko.ShadLocalizationsDataKo(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ky:
-				return l_ky.ShadLocalizationsKy(
+				return l_ky.ShadLocalizationsDataKy(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.lo:
-				return l_lo.ShadLocalizationsLo(
+				return l_lo.ShadLocalizationsDataLo(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.lt:
-				return l_lt.ShadLocalizationsLt(
+				return l_lt.ShadLocalizationsDataLt(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.lv:
-				return l_lv.ShadLocalizationsLv(
+				return l_lv.ShadLocalizationsDataLv(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.mk:
-				return l_mk.ShadLocalizationsMk(
+				return l_mk.ShadLocalizationsDataMk(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ml:
-				return l_ml.ShadLocalizationsMl(
+				return l_ml.ShadLocalizationsDataMl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.mn:
-				return l_mn.ShadLocalizationsMn(
+				return l_mn.ShadLocalizationsDataMn(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.mr:
-				return l_mr.ShadLocalizationsMr(
+				return l_mr.ShadLocalizationsDataMr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ms:
-				return l_ms.ShadLocalizationsMs(
+				return l_ms.ShadLocalizationsDataMs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.my:
-				return l_my.ShadLocalizationsMy(
+				return l_my.ShadLocalizationsDataMy(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.nb:
-				return l_nb.ShadLocalizationsNb(
+				return l_nb.ShadLocalizationsDataNb(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ne:
-				return l_ne.ShadLocalizationsNe(
+				return l_ne.ShadLocalizationsDataNe(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.nl:
-				return l_nl.ShadLocalizationsNl(
+				return l_nl.ShadLocalizationsDataNl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.no:
-				return l_no.ShadLocalizationsNo(
+				return l_no.ShadLocalizationsDataNo(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.or:
-				return l_or.ShadLocalizationsOr(
+				return l_or.ShadLocalizationsDataOr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.pa:
-				return l_pa.ShadLocalizationsPa(
+				return l_pa.ShadLocalizationsDataPa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.pl:
-				return l_pl.ShadLocalizationsPl(
+				return l_pl.ShadLocalizationsDataPl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ps:
-				return l_ps.ShadLocalizationsPs(
+				return l_ps.ShadLocalizationsDataPs(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.pt:
-				return l_pt.ShadLocalizationsPt(
+				return l_pt.ShadLocalizationsDataPt(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ro:
-				return l_ro.ShadLocalizationsRo(
+				return l_ro.ShadLocalizationsDataRo(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ru:
-				return l_ru.ShadLocalizationsRu(
+				return l_ru.ShadLocalizationsDataRu(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.si:
-				return l_si.ShadLocalizationsSi(
+				return l_si.ShadLocalizationsDataSi(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.sk:
-				return l_sk.ShadLocalizationsSk(
+				return l_sk.ShadLocalizationsDataSk(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.sl:
-				return l_sl.ShadLocalizationsSl(
+				return l_sl.ShadLocalizationsDataSl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.sq:
-				return l_sq.ShadLocalizationsSq(
+				return l_sq.ShadLocalizationsDataSq(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.sr:
-				return l_sr.ShadLocalizationsSr(
+				return l_sr.ShadLocalizationsDataSr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.sv:
-				return l_sv.ShadLocalizationsSv(
+				return l_sv.ShadLocalizationsDataSv(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.sw:
-				return l_sw.ShadLocalizationsSw(
+				return l_sw.ShadLocalizationsDataSw(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ta:
-				return l_ta.ShadLocalizationsTa(
+				return l_ta.ShadLocalizationsDataTa(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.te:
-				return l_te.ShadLocalizationsTe(
+				return l_te.ShadLocalizationsDataTe(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.th:
-				return l_th.ShadLocalizationsTh(
+				return l_th.ShadLocalizationsDataTh(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.tl:
-				return l_tl.ShadLocalizationsTl(
+				return l_tl.ShadLocalizationsDataTl(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.tr:
-				return l_tr.ShadLocalizationsTr(
+				return l_tr.ShadLocalizationsDataTr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ug:
-				return l_ug.ShadLocalizationsUg(
+				return l_ug.ShadLocalizationsDataUg(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.uk:
-				return l_uk.ShadLocalizationsUk(
+				return l_uk.ShadLocalizationsDataUk(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.ur:
-				return l_ur.ShadLocalizationsUr(
+				return l_ur.ShadLocalizationsDataUr(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.uz:
-				return l_uz.ShadLocalizationsUz(
+				return l_uz.ShadLocalizationsDataUz(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.vi:
-				return l_vi.ShadLocalizationsVi(
+				return l_vi.ShadLocalizationsDataVi(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.zh:
-				return l_zh.ShadLocalizationsZh(
+				return l_zh.ShadLocalizationsDataZh(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
 				);
 			case ShadLocale.zu:
-				return l_zu.ShadLocalizationsZu(
+				return l_zu.ShadLocalizationsDataZu(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,
@@ -1288,7 +1288,7 @@ enum ShadLocale with BaseAppLocale<ShadLocale, ShadLocalizations> {
 }
 
 /// Provides utility functions without any side effects.
-class AppLocaleUtils extends BaseAppLocaleUtils<ShadLocale, ShadLocalizations> {
+class AppLocaleUtils extends BaseAppLocaleUtils<ShadLocale, ShadLocalizationsData> {
 	AppLocaleUtils._() : super(
 		baseLocale: ShadLocale.en,
 		locales: ShadLocale.values,

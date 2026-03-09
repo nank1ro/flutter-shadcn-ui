@@ -69,7 +69,7 @@ export 'src/components/time_picker.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
 // Localizations
-export 'src/i18n/shad_localizations_delegate.dart';
+export 'src/i18n/localizations_delegate.dart';
 export 'src/i18n/strings.g.dart';
 // Raw Components
 export 'src/raw_components/focusable.dart';

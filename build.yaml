@@ -13,7 +13,7 @@ targets:
           output_file_name: strings.g.dart
           flutter_integration: true
           locale_handling: false
-          class_name: ShadLocalizations
+          class_name: ShadLocalizationsData
           enum_name: ShadLocale
           fallback_strategy: base_locale
           string_interpolation: dart

@@ -11,10 +11,10 @@ import 'package:slang/generated.dart';
 import 'strings.g.dart';
 
 // Path: <root>
-class ShadLocalizationsTr extends ShadLocalizations with BaseTranslations<ShadLocale, ShadLocalizations> {
+class ShadLocalizationsDataTr extends ShadLocalizationsData with BaseTranslations<ShadLocale, ShadLocalizationsData> {
 	/// You can call this constructor and build your own translation instance of this locale.
 	/// Constructing via the enum [ShadLocale.build] is preferred.
-	ShadLocalizationsTr({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver, TranslationMetadata<ShadLocale, ShadLocalizations>? meta})
+	ShadLocalizationsDataTr({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver, TranslationMetadata<ShadLocale, ShadLocalizationsData>? meta})
 		: assert(overrides == null, 'Set "translation_overrides: true" in order to enable this feature.'),
 		  $meta = meta ?? TranslationMetadata(
 		    locale: ShadLocale.tr,
@@ -28,28 +28,28 @@ class ShadLocalizationsTr extends ShadLocalizations with BaseTranslations<ShadLo
 	}
 
 	/// Metadata for the translations of <tr>.
-	@override final TranslationMetadata<ShadLocale, ShadLocalizations> $meta;
+	@override final TranslationMetadata<ShadLocale, ShadLocalizationsData> $meta;
 
 	/// Access flat map
 	@override dynamic operator[](String key) => $meta.getTranslation(key) ?? super.$meta.getTranslation(key);
 
-	late final ShadLocalizationsTr _root = this; // ignore: unused_field
+	late final ShadLocalizationsDataTr _root = this; // ignore: unused_field
 
 	@override 
-	ShadLocalizationsTr $copyWith({TranslationMetadata<ShadLocale, ShadLocalizations>? meta}) => ShadLocalizationsTr(meta: meta ?? this.$meta);
+	ShadLocalizationsDataTr $copyWith({TranslationMetadata<ShadLocale, ShadLocalizationsData>? meta}) => ShadLocalizationsDataTr(meta: meta ?? this.$meta);
 
 	// Translations
-	@override late final _ShadLocalizationsTimePickerTr timePicker = _ShadLocalizationsTimePickerTr._(_root);
-	@override late final _ShadLocalizationsDatePickerTr datePicker = _ShadLocalizationsDatePickerTr._(_root);
-	@override late final _ShadLocalizationsInputTr input = _ShadLocalizationsInputTr._(_root);
-	@override late final _ShadLocalizationsKeyboardToolbarTr keyboardToolbar = _ShadLocalizationsKeyboardToolbarTr._(_root);
+	@override late final _ShadLocalizationsDataTimePickerTr timePicker = _ShadLocalizationsDataTimePickerTr._(_root);
+	@override late final _ShadLocalizationsDataDatePickerTr datePicker = _ShadLocalizationsDataDatePickerTr._(_root);
+	@override late final _ShadLocalizationsDataInputTr input = _ShadLocalizationsDataInputTr._(_root);
+	@override late final _ShadLocalizationsDataKeyboardToolbarTr keyboardToolbar = _ShadLocalizationsDataKeyboardToolbarTr._(_root);
 }
 
 // Path: timePicker
-class _ShadLocalizationsTimePickerTr extends ShadLocalizationsTimePickerEn {
-	_ShadLocalizationsTimePickerTr._(ShadLocalizationsTr root) : this._root = root, super.internal(root);
+class _ShadLocalizationsDataTimePickerTr extends ShadLocalizationsDataTimePickerEn {
+	_ShadLocalizationsDataTimePickerTr._(ShadLocalizationsDataTr root) : this._root = root, super.internal(root);
 
-	final ShadLocalizationsTr _root; // ignore: unused_field
+	final ShadLocalizationsDataTr _root; // ignore: unused_field
 
 	// Translations
 	@override String get hours => 'Saat';
@@ -60,20 +60,20 @@ class _ShadLocalizationsTimePickerTr extends ShadLocalizationsTimePickerEn {
 }
 
 // Path: datePicker
-class _ShadLocalizationsDatePickerTr extends ShadLocalizationsDatePickerEn {
-	_ShadLocalizationsDatePickerTr._(ShadLocalizationsTr root) : this._root = root, super.internal(root);
+class _ShadLocalizationsDataDatePickerTr extends ShadLocalizationsDataDatePickerEn {
+	_ShadLocalizationsDataDatePickerTr._(ShadLocalizationsDataTr root) : this._root = root, super.internal(root);
 
-	final ShadLocalizationsTr _root; // ignore: unused_field
+	final ShadLocalizationsDataTr _root; // ignore: unused_field
 
 	// Translations
 	@override String get selectDate => 'Tarih seçin';
 }
 
 // Path: input
-class _ShadLocalizationsInputTr extends ShadLocalizationsInputEn {
-	_ShadLocalizationsInputTr._(ShadLocalizationsTr root) : this._root = root, super.internal(root);
+class _ShadLocalizationsDataInputTr extends ShadLocalizationsDataInputEn {
+	_ShadLocalizationsDataInputTr._(ShadLocalizationsDataTr root) : this._root = root, super.internal(root);
 
-	final ShadLocalizationsTr _root; // ignore: unused_field
+	final ShadLocalizationsDataTr _root; // ignore: unused_field
 
 	// Translations
 	@override String get cut => 'Kes';
@@ -83,10 +83,10 @@ class _ShadLocalizationsInputTr extends ShadLocalizationsInputEn {
 }
 
 // Path: keyboardToolbar
-class _ShadLocalizationsKeyboardToolbarTr extends ShadLocalizationsKeyboardToolbarEn {
-	_ShadLocalizationsKeyboardToolbarTr._(ShadLocalizationsTr root) : this._root = root, super.internal(root);
+class _ShadLocalizationsDataKeyboardToolbarTr extends ShadLocalizationsDataKeyboardToolbarEn {
+	_ShadLocalizationsDataKeyboardToolbarTr._(ShadLocalizationsDataTr root) : this._root = root, super.internal(root);
 
-	final ShadLocalizationsTr _root; // ignore: unused_field
+	final ShadLocalizationsDataTr _root; // ignore: unused_field
 
 	// Translations
 	@override String get done => 'Tamam';
@@ -97,7 +97,7 @@ class _ShadLocalizationsKeyboardToolbarTr extends ShadLocalizationsKeyboardToolb
 ///
 /// The Dart AOT compiler has issues with very large switch statements,
 /// so the map is split into smaller functions (512 entries each).
-extension on ShadLocalizationsTr {
+extension on ShadLocalizationsDataTr {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
 			'timePicker.hours' => 'Saat',

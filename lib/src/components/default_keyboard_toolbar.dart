@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/icon_button.dart';
-import 'package:shadcn_ui/src/i18n/shad_localizations_delegate.dart';
+import 'package:shadcn_ui/src/i18n/localizations_delegate.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 /// {@template ShadDefaultKeyboardToolbar}
@@ -53,7 +53,7 @@ class ShadDefaultKeyboardToolbar extends StatelessWidget {
         theme.defaultKeyboardToolbarTheme.backgroundColor ??
         theme.colorScheme.accent;
 
-    final l = ShadLocalizationsX.of(context);
+    final l = ShadLocalizations.of(context);
     final effectiveDoneText =
         doneText ??
         theme.defaultKeyboardToolbarTheme.doneText ??
