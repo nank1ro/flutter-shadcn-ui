@@ -85,6 +85,12 @@ class MyApp extends StatelessWidget {
 +      appBuilder: (context) {
 +        return MaterialApp(
 +          theme: Theme.of(context),
++          localizationsDelegates: const [
++            GlobalShadLocalizations.delegate,
++            GlobalMaterialLocalizations.delegate,
++            GlobalCupertinoLocalizations.delegate,
++            GlobalWidgetsLocalizations.delegate,
++          ],
 +          builder: (context, child) {
 +            return ShadAppBuilder(child: child!);
 +          },
@@ -175,6 +181,7 @@ class MyApp extends StatelessWidget {
 +        return CupertinoApp(
 +          theme: CupertinoTheme.of(context),
 +          localizationsDelegates: const [
++            GlobalShadLocalizations.delegate,
 +            DefaultMaterialLocalizations.delegate,
 +            DefaultCupertinoLocalizations.delegate,
 +            DefaultWidgetsLocalizations.delegate,
