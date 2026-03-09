@@ -9,6 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart'
         GlobalWidgetsLocalizations;
 import 'package:shadcn_ui/src/components/sonner.dart';
 import 'package:shadcn_ui/src/components/toast.dart';
+import 'package:shadcn_ui/src/i18n/shad_localizations_delegate.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
@@ -445,6 +446,7 @@ class _ShadAppState extends State<ShadApp> {
     if (localizationsDelegates != null) {
       yield* localizationsDelegates;
     }
+    yield ShadLocalizationsDelegate.instance;
     yield GlobalMaterialLocalizations.delegate;
     yield GlobalCupertinoLocalizations.delegate;
     yield GlobalWidgetsLocalizations.delegate;

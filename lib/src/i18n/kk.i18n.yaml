@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Сағат"
+  minutes: "Минут"
+  seconds: "Секунд"
+  period: "Кезең"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Күнді таңдаңыз"
+
+input:
+  cut: "Кесу"
+  copy: "Көшіру"
+  paste: "Қою"
+  selectAll: "Барлығын таңдау"
+
+keyboardToolbar:
+  done: "Дайын"

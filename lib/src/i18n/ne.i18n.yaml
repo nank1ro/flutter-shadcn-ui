@@ -1,0 +1,18 @@
+timePicker:
+  hours: "घण्टा"
+  minutes: "मिनेट"
+  seconds: "सेकेन्ड"
+  period: "अवधि"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "मिति छान्नुहोस्"
+
+input:
+  cut: "काट्नुहोस्"
+  copy: "प्रतिलिपि गर्नुहोस्"
+  paste: "टाँस्नुहोस्"
+  selectAll: "सबै चयन गर्नुहोस्"
+
+keyboardToolbar:
+  done: "सम्पन्न"

@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Hodiny"
+  minutes: "Minúty"
+  seconds: "Sekundy"
+  period: "Obdobie"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Vybrať dátum"
+
+input:
+  cut: "Vystrihnúť"
+  copy: "Kopírovať"
+  paste: "Vložiť"
+  selectAll: "Vybrať všetko"
+
+keyboardToolbar:
+  done: "Hotovo"

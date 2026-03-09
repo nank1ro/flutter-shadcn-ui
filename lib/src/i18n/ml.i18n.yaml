@@ -1,0 +1,18 @@
+timePicker:
+  hours: "മണിക്കൂർ"
+  minutes: "മിനിറ്റ്"
+  seconds: "സെക്കൻഡ്"
+  period: "കാലഘട്ടം"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "തീയതി തിരഞ്ഞെടുക്കുക"
+
+input:
+  cut: "മുറിക്കുക"
+  copy: "പകർത്തുക"
+  paste: "ഒട്ടിക്കുക"
+  selectAll: "എല്ലാം തിരഞ്ഞെടുക്കുക"
+
+keyboardToolbar:
+  done: "പൂർത്തിയായി"

@@ -1,0 +1,18 @@
+timePicker:
+  hours: "ཆུ་ཚོད།"
+  minutes: "སྐར་མ།"
+  seconds: "སྐར་ཆ།"
+  period: "དུས་ཚོད།"
+  periodPlaceholder: "སྔ་དྲོ།"
+
+datePicker:
+  selectDate: "ཚེས་གྲངས་འདེམས།"
+
+input:
+  cut: "གཅོད།"
+  copy: "བེད་སྤྱོད།"
+  paste: "སྦྱར།"
+  selectAll: "ཚང་མ་འདེམས།"
+
+keyboardToolbar:
+  done: "འགྲུབ།"

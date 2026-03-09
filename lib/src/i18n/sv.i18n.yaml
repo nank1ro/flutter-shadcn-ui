@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Timmar"
+  minutes: "Minuter"
+  seconds: "Sekunder"
+  period: "Period"
+  periodPlaceholder: "FM"
+
+datePicker:
+  selectDate: "Välj datum"
+
+input:
+  cut: "Klipp ut"
+  copy: "Kopiera"
+  paste: "Klistra in"
+  selectAll: "Markera allt"
+
+keyboardToolbar:
+  done: "Klar"

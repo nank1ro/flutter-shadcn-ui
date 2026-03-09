@@ -1,0 +1,18 @@
+timePicker:
+  hours: "ساعات"
+  minutes: "دقائق"
+  seconds: "ثواني"
+  period: "الفترة"
+  periodPlaceholder: "ص"
+
+datePicker:
+  selectDate: "اختر تاريخاً"
+
+input:
+  cut: "قص"
+  copy: "نسخ"
+  paste: "لصق"
+  selectAll: "تحديد الكل"
+
+keyboardToolbar:
+  done: "تم"

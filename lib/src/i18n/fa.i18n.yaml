@@ -1,0 +1,18 @@
+timePicker:
+  hours: "ساعت"
+  minutes: "دقیقه"
+  seconds: "ثانیه"
+  period: "دوره"
+  periodPlaceholder: "ق.ظ"
+
+datePicker:
+  selectDate: "انتخاب تاریخ"
+
+input:
+  cut: "برش"
+  copy: "کپی"
+  paste: "چسباندن"
+  selectAll: "انتخاب همه"
+
+keyboardToolbar:
+  done: "تمام"

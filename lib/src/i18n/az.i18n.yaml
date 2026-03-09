@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Saat"
+  minutes: "Dəqiqə"
+  seconds: "Saniyə"
+  period: "Dövr"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Tarix seçin"
+
+input:
+  cut: "Kəs"
+  copy: "Kopyala"
+  paste: "Yapışdır"
+  selectAll: "Hamısını seç"
+
+keyboardToolbar:
+  done: "Hazır"

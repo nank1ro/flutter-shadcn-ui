@@ -9,6 +9,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
+import 'package:shadcn_ui/src/i18n/shad_localizations_delegate.dart';
+import 'package:shadcn_ui/src/i18n/strings.g.dart';
 import 'package:shadcn_ui/src/raw_components/keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -1296,9 +1298,23 @@ class ShadTextSelectionToolbar extends StatelessWidget {
     };
   }
 
+  static String _localizedLabel(
+    ContextMenuButtonType type,
+    ShadLocalizations l,
+  ) {
+    return switch (type) {
+      ContextMenuButtonType.cut => l.input.cut,
+      ContextMenuButtonType.copy => l.input.copy,
+      ContextMenuButtonType.paste => l.input.paste,
+      ContextMenuButtonType.selectAll => l.input.selectAll,
+      _ => '',
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final l = ShadLocalizationsX.of(context);
 
     final effectiveBackgroundColor =
         backgroundColor ?? theme.colorScheme.popover;
@@ -1324,7 +1340,7 @@ class ShadTextSelectionToolbar extends StatelessWidget {
             children: [
               for (final item in buttonItems)
                 ShadToolbarButton(
-                  label: Text(item.label ?? labelForType(item.type)),
+                  label: Text(item.label ?? _localizedLabel(item.type, l)),
                   onPressed: item.onPressed,
                 ),
             ],

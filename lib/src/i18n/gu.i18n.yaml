@@ -1,0 +1,18 @@
+timePicker:
+  hours: "કલાક"
+  minutes: "મિનિટ"
+  seconds: "સેકન્ડ"
+  period: "સમયગાળો"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "તારીખ પસંદ કરો"
+
+input:
+  cut: "કાપો"
+  copy: "કૉપિ કરો"
+  paste: "પેસ્ટ કરો"
+  selectAll: "બધું પસંદ કરો"
+
+keyboardToolbar:
+  done: "થઈ ગયું"

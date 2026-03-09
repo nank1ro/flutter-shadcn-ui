@@ -1,0 +1,18 @@
+timePicker:
+  hours: "గంటలు"
+  minutes: "నిమిషాలు"
+  seconds: "సెకన్లు"
+  period: "కాలం"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "తేదీని ఎంచుకోండి"
+
+input:
+  cut: "కత్తిరించు"
+  copy: "కాపీ చేయి"
+  paste: "అతికించు"
+  selectAll: "అన్నీ ఎంచుకో"
+
+keyboardToolbar:
+  done: "పూర్తయింది"

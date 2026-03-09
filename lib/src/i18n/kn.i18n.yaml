@@ -1,0 +1,18 @@
+timePicker:
+  hours: "ಗಂಟೆಗಳು"
+  minutes: "ನಿಮಿಷಗಳು"
+  seconds: "ಸೆಕೆಂಡುಗಳು"
+  period: "ಅವಧಿ"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "ದಿನಾಂಕ ಆಯ್ಕೆಮಾಡಿ"
+
+input:
+  cut: "ಕಟ್"
+  copy: "ಕಾಪಿ"
+  paste: "ಪೇಸ್ಟ್"
+  selectAll: "ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆಮಾಡಿ"
+
+keyboardToolbar:
+  done: "ಮುಗಿದಿದೆ"

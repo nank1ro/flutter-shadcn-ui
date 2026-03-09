@@ -4,3 +4,16 @@ targets:
       theme_extensions_builder:
         generate_for:
           - lib/src/theme/**.dart
+      slang_build_runner:
+        options:
+          base_locale: en
+          input_directory: lib/src/i18n
+          input_file_pattern: .i18n.yaml
+          output_directory: lib/src/i18n
+          output_file_name: strings.g.dart
+          flutter_integration: true
+          locale_handling: false
+          class_name: ShadLocalizations
+          enum_name: ShadLocale
+          fallback_strategy: base_locale
+          string_interpolation: dart

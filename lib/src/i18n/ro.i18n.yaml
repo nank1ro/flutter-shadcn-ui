@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Ore"
+  minutes: "Minute"
+  seconds: "Secunde"
+  period: "Perioadă"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Selectați data"
+
+input:
+  cut: "Taie"
+  copy: "Copiază"
+  paste: "Lipește"
+  selectAll: "Selectează tot"
+
+keyboardToolbar:
+  done: "Terminat"

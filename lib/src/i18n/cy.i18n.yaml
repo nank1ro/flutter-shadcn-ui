@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Oriau"
+  minutes: "Munudau"
+  seconds: "Eiliadau"
+  period: "Cyfnod"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Dewiswch ddyddiad"
+
+input:
+  cut: "Torri"
+  copy: "Copïo"
+  paste: "Gludo"
+  selectAll: "Dewis y cyfan"
+
+keyboardToolbar:
+  done: "Gorffen"

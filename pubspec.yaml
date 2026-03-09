@@ -25,6 +25,8 @@ dependencies:
   flutter_svg: ">=2.0.0 <3.0.0"
   intl: ">=0.19.0 <1.0.0"
   lucide_icons_flutter: ">=3.0.0 <4.0.0"
+  slang: ^4.13.0
+  slang_flutter: ^4.13.0
   # used by Table
   theme_extensions_builder_annotation: ^7.1.0
   two_dimensional_scrollables: ">=0.2.1 <1.0.0"
@@ -36,6 +38,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.4
+  slang_build_runner: ^4.13.0
   theme_extensions_builder: ^7.1.0
   very_good_analysis: ^10.0.0
 
