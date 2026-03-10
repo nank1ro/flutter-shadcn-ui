@@ -1,3 +1,10 @@
+## 0.51.0
+
+- **REFACTOR**: `ShadInput.defaultContextMenuBuilder` now uses `ShadContextMenu` with `ShadContextMenuItem` for consistent styling with the rest of the component library.
+- **FEAT**: Add `onTapDown` to `ShadContextMenuItem` for cases where the action must fire immediately on pointer down (e.g. text selection context menus).
+- **FIX**: `ShadInput` now dismisses the context menu when the user types.
+- **DEPRECATED**: `ShadTextSelectionToolbar` and `ShadToolbarButton` — use `ShadContextMenu` with `ShadContextMenuItem` instead.
+
 ## 0.50.2
 
 - **FIX**: Add missing "Select All" button to `ShadInput` default context menu.
