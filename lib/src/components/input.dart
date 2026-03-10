@@ -8,16 +8,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/context_menu.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/raw_components/keyboard_toolbar.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
-import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
@@ -889,83 +889,26 @@ class ShadInputState extends State<ShadInput>
       },
     ).toList();
     if (buttonItems.isEmpty) return const SizedBox.shrink();
-    final theme = ShadTheme.of(context);
-
-    final effectiveConstraints =
-        theme.contextMenuTheme.constraints ??
-        const BoxConstraints(minWidth: 128);
-
-    final effectivePadding =
-        theme.contextMenuTheme.padding ??
-        const EdgeInsets.symmetric(vertical: 4);
-
-    final effectiveItemPadding =
-        theme.contextMenuTheme.itemPadding ??
-        const EdgeInsets.symmetric(horizontal: 4);
-
-    final effectiveHeight = theme.contextMenuTheme.height ?? 32;
-
-    final effectiveTextStyle =
-        (theme.contextMenuTheme.textStyle ??
-                theme.textTheme.small.copyWith(fontWeight: FontWeight.normal))
-            .fallback(color: theme.colorScheme.foreground);
-
-    final effectiveDecoration = ShadDecoration(
-      color: theme.colorScheme.popover,
-      shadows: ShadShadows.md,
-      border: ShadBorder.all(
-        radius: theme.radius,
-        color: theme.colorScheme.border,
-      ),
-    ).merge(theme.contextMenuTheme.decoration);
-
-    return CustomSingleChildLayout(
-      delegate: DesktopTextSelectionToolbarLayoutDelegate(
-        anchor: editableTextState.contextMenuAnchors.primaryAnchor,
-      ),
-      child: ShadDecorator(
-        decoration: effectiveDecoration,
-        child: Padding(
-          padding: effectivePadding,
-          child: ConstrainedBox(
-            constraints: effectiveConstraints,
-            child: IntrinsicWidth(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  for (final item in buttonItems)
-                    Padding(
-                      padding: effectiveItemPadding,
-                      child: ShadButton.raw(
-                        height: effectiveHeight,
-                        variant: ShadButtonVariant.ghost,
-                        width: double.infinity,
-                        canRequestFocus: false,
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: const ShadDecoration(
-                          secondaryBorder: ShadBorder.none,
-                          secondaryFocusedBorder: ShadBorder.none,
-                        ),
-                        // Use onTapDown because Flutter's context menu
-                        // overlay may be dismissed before a full tap
-                        // gesture completes.
-                        onTapDown: (_) => item.onPressed?.call(),
-                        child: Expanded(
-                          child: DefaultTextStyle(
-                            style: effectiveTextStyle,
-                            child: Text(
-                              item.label ?? _labelForType(item.type),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
+    return FocusScope(
+      // Prevent the context menu from stealing focus from the
+      // EditableText, which would cause Flutter to dismiss the overlay
+      // before the menu renders.
+      canRequestFocus: false,
+      child: ShadContextMenu(
+        visible: true,
+        anchor: ShadGlobalAnchor(
+          editableTextState.contextMenuAnchors.primaryAnchor,
         ),
+        items: [
+          for (final item in buttonItems)
+            ShadContextMenuItem(
+              onTapDown: item.onPressed != null
+                  ? (_) => item.onPressed!()
+                  : null,
+              child: Text(item.label ?? _labelForType(item.type)),
+            ),
+        ],
+        child: const SizedBox.shrink(),
       ),
     );
   }

@@ -551,6 +551,7 @@ class ShadContextMenuItem extends StatefulWidget {
     this.trailingPadding,
     this.padding,
     this.onPressed,
+    this.onTapDown,
     this.anchor,
     this.showDelay,
     this.height,
@@ -579,6 +580,7 @@ class ShadContextMenuItem extends StatefulWidget {
     this.padding,
     this.insetPadding,
     this.onPressed,
+    this.onTapDown,
     this.anchor,
     this.showDelay,
     this.height,
@@ -605,6 +607,7 @@ class ShadContextMenuItem extends StatefulWidget {
     this.padding,
     this.insetPadding,
     this.onPressed,
+    this.onTapDown,
     this.anchor,
     this.showDelay,
     this.height,
@@ -674,6 +677,13 @@ class ShadContextMenuItem extends StatefulWidget {
   /// The callback called when the context menu item is pressed.
   /// {@endtemplate}
   final VoidCallback? onPressed;
+
+  /// {@template ShadContextMenuItem.onTapDown}
+  /// The callback called when a pointer down event is detected on the context
+  /// menu item. Useful when the action must fire immediately before the
+  /// overlay is dismissed (e.g. text selection context menus).
+  /// {@endtemplate}
+  final ValueChanged<TapDownDetails>? onTapDown;
 
   /// {@template ShadContextMenuItem.anchor}
   /// The anchor of the context menu item, defaults to
@@ -897,6 +907,12 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
                   : effectiveBackgroundColor,
               hoverBackgroundColor: effectiveSelectedBackgroundColor,
               onFocusChange: controller.setFocused,
+              onTapDown: widget.onTapDown != null
+                  ? (details) {
+                      widget.onTapDown!(details);
+                      if (effectiveCloseOnTap) contextMenu.setVisible(false);
+                    }
+                  : null,
               onPressed: () {
                 widget.onPressed?.call();
                 if (effectiveCloseOnTap) contextMenu.setVisible(false);
