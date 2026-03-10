@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/raw_components/keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
@@ -16,6 +17,7 @@ import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/border.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
@@ -860,6 +862,16 @@ class ShadInputState extends State<ShadInput>
     }
   }
 
+  static String _labelForType(ContextMenuButtonType type) {
+    return switch (type) {
+      ContextMenuButtonType.cut => 'Cut',
+      ContextMenuButtonType.copy => 'Copy',
+      ContextMenuButtonType.paste => 'Paste',
+      ContextMenuButtonType.selectAll => 'Select All',
+      _ => '',
+    };
+  }
+
   static Widget defaultContextMenuBuilder(
     BuildContext context,
     EditableTextState editableTextState,
@@ -873,14 +885,88 @@ class ShadInputState extends State<ShadInput>
             item.type == ContextMenuButtonType.copy) {
           return hasSelection;
         }
-        return (item.label ?? ShadTextSelectionToolbar.labelForType(item.type))
-            .isNotEmpty;
+        return (item.label ?? _labelForType(item.type)).isNotEmpty;
       },
     ).toList();
     if (buttonItems.isEmpty) return const SizedBox.shrink();
-    return ShadTextSelectionToolbar(
-      anchor: editableTextState.contextMenuAnchors.primaryAnchor,
-      buttonItems: buttonItems,
+    final theme = ShadTheme.of(context);
+
+    final effectiveConstraints =
+        theme.contextMenuTheme.constraints ??
+        const BoxConstraints(minWidth: 128);
+
+    final effectivePadding =
+        theme.contextMenuTheme.padding ??
+        const EdgeInsets.symmetric(vertical: 4);
+
+    final effectiveItemPadding =
+        theme.contextMenuTheme.itemPadding ??
+        const EdgeInsets.symmetric(horizontal: 4);
+
+    final effectiveHeight = theme.contextMenuTheme.height ?? 32;
+
+    final effectiveTextStyle =
+        (theme.contextMenuTheme.textStyle ??
+                theme.textTheme.small.copyWith(fontWeight: FontWeight.normal))
+            .fallback(color: theme.colorScheme.foreground);
+
+    final effectiveDecoration = ShadDecoration(
+      color: theme.colorScheme.popover,
+      shadows: ShadShadows.md,
+      border: ShadBorder.all(
+        radius: theme.radius,
+        color: theme.colorScheme.border,
+      ),
+    ).merge(theme.contextMenuTheme.decoration);
+
+    return CustomSingleChildLayout(
+      delegate: DesktopTextSelectionToolbarLayoutDelegate(
+        anchor: editableTextState.contextMenuAnchors.primaryAnchor,
+      ),
+      child: ShadDecorator(
+        decoration: effectiveDecoration,
+        child: Padding(
+          padding: effectivePadding,
+          child: ConstrainedBox(
+            constraints: effectiveConstraints,
+            child: IntrinsicWidth(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final item in buttonItems)
+                    Padding(
+                      padding: effectiveItemPadding,
+                      child: ShadButton.raw(
+                        height: effectiveHeight,
+                        variant: ShadButtonVariant.ghost,
+                        width: double.infinity,
+                        canRequestFocus: false,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        decoration: const ShadDecoration(
+                          secondaryBorder: ShadBorder.none,
+                          secondaryFocusedBorder: ShadBorder.none,
+                        ),
+                        // Use onTapDown because Flutter's context menu
+                        // overlay may be dismissed before a full tap
+                        // gesture completes.
+                        onTapDown: (_) => item.onPressed?.call(),
+                        child: Expanded(
+                          child: DefaultTextStyle(
+                            style: effectiveTextStyle,
+                            child: Text(
+                              item.label ?? _labelForType(item.type),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -1063,9 +1149,8 @@ class ShadInputState extends State<ShadInput>
                         minLines: widget.minLines,
                         expands: widget.expands,
                         onChanged: (v) {
-                          widget.onChanged?.call(
-                            v,
-                          );
+                          _editableText?.hideToolbar();
+                          widget.onChanged?.call(v);
                         },
                         onEditingComplete: widget.onEditingComplete,
                         onSubmitted: widget.onSubmitted,
@@ -1260,6 +1345,10 @@ class _InputSelectionGestureDetectorBuilder
 
 /// A simple text-selection toolbar that shows copy/cut/paste buttons styled
 /// with [ShadTheme]. Used as the default [ShadInput.contextMenuBuilder].
+@Deprecated(
+  'Use ShadContextMenu with ShadContextMenuItem instead. '
+  'This widget will be removed in a future release.',
+)
 class ShadTextSelectionToolbar extends StatelessWidget {
   const ShadTextSelectionToolbar({
     super.key,
@@ -1340,6 +1429,10 @@ class ShadTextSelectionToolbar extends StatelessWidget {
 /// Displays a [label] widget with an optional hover highlight and
 /// custom styling. The [label] is wrapped in a [DefaultTextStyle] so
 /// plain [Text] widgets pick up the effective style automatically.
+@Deprecated(
+  'Use ShadContextMenuItem instead. '
+  'This widget will be removed in a future release.',
+)
 class ShadToolbarButton extends StatefulWidget {
   const ShadToolbarButton({
     super.key,
