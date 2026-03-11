@@ -1,0 +1,2 @@
+/*
+  Content-Security-Policy: frame-ancestors https://mariuti.com http://localhost:4321

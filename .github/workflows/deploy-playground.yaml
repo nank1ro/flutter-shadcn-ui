@@ -1,0 +1,40 @@
+name: Deploy Playground to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'playground/**'
+      - 'lib/**'
+      - 'pubspec.yaml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2.21.0
+        with:
+          channel: "stable"
+          cache: true
+
+      - name: Install dependencies
+        run: |
+          flutter pub get
+          cd playground && flutter pub get
+
+      - name: Build Flutter web app
+        working-directory: ./playground
+        run: flutter build web --release
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy build/web --project-name=shadcn-ui-playground
+          workingDirectory: ./playground
