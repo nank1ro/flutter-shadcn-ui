@@ -217,8 +217,8 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
              (ShadTheme.of(context).inputTheme.decoration ??
                      const ShadDecoration())
                  .merge(decoration),
-         builder: (field) {
-           final state = field as _ShadFormBuilderTextareaState;
+         builder: (state) {
+           state as ShadFormBuilderTextareaState;
            return ShadTextarea(
              key: state.textareaKey,
              controller: state.controller,
@@ -293,10 +293,10 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
 
   @override
   ShadFormBuilderFieldState<ShadTextareaFormField, String> createState() =>
-      _ShadFormBuilderTextareaState();
+      ShadFormBuilderTextareaState();
 }
 
-class _ShadFormBuilderTextareaState
+class ShadFormBuilderTextareaState
     extends ShadFormBuilderFieldState<ShadTextareaFormField, String> {
   final GlobalKey<State<StatefulWidget>> textareaKey = GlobalKey();
   TextEditingController? _controller;

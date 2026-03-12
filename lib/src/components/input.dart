@@ -1291,6 +1291,7 @@ class ShadTextSelectionToolbar extends StatelessWidget {
       ContextMenuButtonType.cut => 'Cut',
       ContextMenuButtonType.copy => 'Copy',
       ContextMenuButtonType.paste => 'Paste',
+      ContextMenuButtonType.selectAll => 'Select All',
       _ => '',
     };
   }

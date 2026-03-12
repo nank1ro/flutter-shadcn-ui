@@ -437,8 +437,8 @@ class ShadDateRangePickerFormField
     /// {@macro ShadButton.textStyle}
     TextStyle? buttonTextStyle,
   }) : super(
-         builder: (field) {
-           final state = field as _ShadFormBuilderDateRangePickerState;
+         builder: (state) {
+           state as ShadFormBuilderDateRangePickerState;
            return ShadDatePicker.range(
              onRangeChanged: state.didChange,
              enabled: state.enabled,
@@ -582,10 +582,10 @@ class ShadDateRangePickerFormField
 
   @override
   ShadFormBuilderFieldState<ShadDateRangePickerFormField, ShadDateTimeRange>
-  createState() => _ShadFormBuilderDateRangePickerState();
+  createState() => ShadFormBuilderDateRangePickerState();
 }
 
-class _ShadFormBuilderDateRangePickerState
+class ShadFormBuilderDateRangePickerState
     extends
         ShadFormBuilderFieldState<
           ShadDateRangePickerFormField,

@@ -160,6 +160,11 @@ export default defineConfig({
               label: 'Brew Better',
               link: 'https://brew-better.2ndbeststud.io',
               attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
+              label: 'Axichat',
+              link: 'https://axi.chat',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
             }
           ],
         }
