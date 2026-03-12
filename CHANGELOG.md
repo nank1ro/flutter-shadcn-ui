@@ -1,6 +1,17 @@
-## 0.51.0
+## 0.52.0
 
 - **FEAT**: Add built-in i18n support with 70+ locales using [slang](https://pub.dev/packages/slang). The `GlobalShadLocalizations` delegate is automatically included by `ShadApp`. Access translations via `ShadLocalizations.of(context)`.
+
+## 0.51.0
+
+- **REFACTOR**: `ShadInput.defaultContextMenuBuilder` now uses `ShadContextMenu` with `ShadContextMenuItem` for consistent styling with the rest of the component library.
+- **FEAT**: Add `onTapDown` to `ShadContextMenuItem` for cases where the action must fire immediately on pointer down (e.g. text selection context menus).
+- **FIX**: `ShadInput` now dismisses the context menu when the user types.
+- **DEPRECATED**: `ShadTextSelectionToolbar` and `ShadToolbarButton` — use `ShadContextMenu` with `ShadContextMenuItem` instead.
+
+## 0.50.3
+
+- **FIX**: Cascade resize behavior in ShadResizable now properly propagates remaining drag delta when a panel collapses to minSize.
 
 ## 0.50.2
 
