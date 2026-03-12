@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Soat"
+  minutes: "Daqiqa"
+  seconds: "Soniya"
+  period: "Davr"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Sana tanlang"
+
+input:
+  cut: "Kesish"
+  copy: "Nusxa olish"
+  paste: "Joylashtirish"
+  selectAll: "Hammasini tanlash"
+
+keyboardToolbar:
+  done: "Tayyor"

@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Гадзіны"
+  minutes: "Хвіліны"
+  seconds: "Секунды"
+  period: "Перыяд"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Выберыце дату"
+
+input:
+  cut: "Выразаць"
+  copy: "Капіяваць"
+  paste: "Уставіць"
+  selectAll: "Вылучыць усё"
+
+keyboardToolbar:
+  done: "Гатова"

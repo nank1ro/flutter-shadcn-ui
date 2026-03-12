@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Amahora"
+  minutes: "Amaminithi"
+  seconds: "Amasekhondi"
+  period: "Isikhathi"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Khetha usuku"
+
+input:
+  cut: "Sika"
+  copy: "Kopisha"
+  paste: "Namathisela"
+  selectAll: "Khetha konke"
+
+keyboardToolbar:
+  done: "Kuqediwe"

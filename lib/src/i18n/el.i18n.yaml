@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Ώρες"
+  minutes: "Λεπτά"
+  seconds: "Δευτερόλεπτα"
+  period: "Περίοδος"
+  periodPlaceholder: "πμ"
+
+datePicker:
+  selectDate: "Επιλογή ημερομηνίας"
+
+input:
+  cut: "Αποκοπή"
+  copy: "Αντιγραφή"
+  paste: "Επικόλληση"
+  selectAll: "Επιλογή όλων"
+
+keyboardToolbar:
+  done: "Τέλος"

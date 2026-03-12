@@ -1,0 +1,18 @@
+timePicker:
+  hours: "گھنٹے"
+  minutes: "منٹ"
+  seconds: "سیکنڈ"
+  period: "وقت"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "تاریخ منتخب کریں"
+
+input:
+  cut: "کاٹیں"
+  copy: "کاپی کریں"
+  paste: "چسپاں کریں"
+  selectAll: "سب منتخب کریں"
+
+keyboardToolbar:
+  done: "ہو گیا"

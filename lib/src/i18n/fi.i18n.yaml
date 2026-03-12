@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Tunnit"
+  minutes: "Minuutit"
+  seconds: "Sekunnit"
+  period: "Jakso"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Valitse päivämäärä"
+
+input:
+  cut: "Leikkaa"
+  copy: "Kopioi"
+  paste: "Liitä"
+  selectAll: "Valitse kaikki"
+
+keyboardToolbar:
+  done: "Valmis"

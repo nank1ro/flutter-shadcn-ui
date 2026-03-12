@@ -1,3 +1,7 @@
+## 0.52.0
+
+- **FEAT**: Add built-in i18n support with 70+ locales using [slang](https://pub.dev/packages/slang). The `GlobalShadLocalizations` delegate is automatically included by `ShadApp`. Access translations via `ShadLocalizations.of(context)`.
+
 ## 0.51.0
 
 - **REFACTOR**: `ShadInput.defaultContextMenuBuilder` now uses `ShadContextMenu` with `ShadContextMenuItem` for consistent styling with the rest of the component library.

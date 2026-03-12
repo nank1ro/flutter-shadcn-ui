@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/components/select.dart';
+import 'package:shadcn_ui/src/i18n/localizations_delegate.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
@@ -746,6 +747,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final l = ShadLocalizations.of(context);
     final effectiveAxis =
         widget.axis ?? theme.timePickerTheme.axis ?? Axis.horizontal;
     final effectiveSpacing =
@@ -759,19 +761,19 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     final effectiveHourLabel =
         widget.hourLabel ??
         theme.timePickerTheme.hourLabel ??
-        const Text('Hours');
+        Text(l.timePicker.hours);
     final effectiveMinuteLabel =
         widget.minuteLabel ??
         theme.timePickerTheme.minuteLabel ??
-        const Text('Minutes');
+        Text(l.timePicker.minutes);
     final effectiveSecondLabel =
         widget.secondLabel ??
         theme.timePickerTheme.secondLabel ??
-        const Text('Seconds');
+        Text(l.timePicker.seconds);
     final effectivePeriodLabel =
         widget.periodLabel ??
         theme.timePickerTheme.periodLabel ??
-        const Text('Period');
+        Text(l.timePicker.period);
 
     const defaultPlaceholder = Text('00');
     final effectiveHourPlaceholder =
@@ -789,7 +791,7 @@ class _ShadTimePickerState extends State<ShadTimePicker> {
     final effectivePeriodPlaceholder =
         widget.periodPlaceholder ??
         theme.timePickerTheme.periodPlaceholder ??
-        Text('AM', style: theme.textTheme.muted);
+        Text(l.timePicker.periodPlaceholder, style: theme.textTheme.muted);
 
     final effectiveAlignment =
         widget.alignment ??

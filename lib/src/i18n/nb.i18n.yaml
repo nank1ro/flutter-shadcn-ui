@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Timer"
+  minutes: "Minutter"
+  seconds: "Sekunder"
+  period: "Periode"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Velg dato"
+
+input:
+  cut: "Klipp ut"
+  copy: "Kopier"
+  paste: "Lim inn"
+  selectAll: "Merk alt"
+
+keyboardToolbar:
+  done: "Ferdig"

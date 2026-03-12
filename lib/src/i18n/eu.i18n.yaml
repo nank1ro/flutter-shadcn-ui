@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Orduak"
+  minutes: "Minutuak"
+  seconds: "Segundoak"
+  period: "Aldia"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Hautatu data"
+
+input:
+  cut: "Ebaki"
+  copy: "Kopiatu"
+  paste: "Itsatsi"
+  selectAll: "Hautatu dena"
+
+keyboardToolbar:
+  done: "Eginda"

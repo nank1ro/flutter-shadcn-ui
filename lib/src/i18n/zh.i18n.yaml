@@ -1,0 +1,18 @@
+timePicker:
+  hours: "时"
+  minutes: "分"
+  seconds: "秒"
+  period: "时段"
+  periodPlaceholder: "上午"
+
+datePicker:
+  selectDate: "选择日期"
+
+input:
+  cut: "剪切"
+  copy: "复制"
+  paste: "粘贴"
+  selectAll: "全选"
+
+keyboardToolbar:
+  done: "完成"

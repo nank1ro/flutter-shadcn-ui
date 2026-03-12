@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Ժամ"
+  minutes: "Րոպե"
+  seconds: "Վայրկյան"
+  period: "Ժամաշրջան"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Ընտրեք ամսաթիվ"
+
+input:
+  cut: "Կտրել"
+  copy: "Պատճենել"
+  paste: "Տեղադրել"
+  selectAll: "Ընտրել բոլորը"
+
+keyboardToolbar:
+  done: "Պատրաստ"

@@ -1,0 +1,18 @@
+timePicker:
+  hours: "سائەت"
+  minutes: "مىنۇت"
+  seconds: "سېكۇنت"
+  period: "ۋاقىت"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "چېسلا تاللاڭ"
+
+input:
+  cut: "كەس"
+  copy: "كۆچۈر"
+  paste: "چاپلا"
+  selectAll: "ھەممىنى تاللا"
+
+keyboardToolbar:
+  done: "تامام"

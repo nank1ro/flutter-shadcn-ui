@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Giờ"
+  minutes: "Phút"
+  seconds: "Giây"
+  period: "Buổi"
+  periodPlaceholder: "SA"
+
+datePicker:
+  selectDate: "Chọn ngày"
+
+input:
+  cut: "Cắt"
+  copy: "Sao chép"
+  paste: "Dán"
+  selectAll: "Chọn tất cả"
+
+keyboardToolbar:
+  done: "Xong"

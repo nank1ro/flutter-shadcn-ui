@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Stundas"
+  minutes: "Minūtes"
+  seconds: "Sekundes"
+  period: "Periods"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Atlasīt datumu"
+
+input:
+  cut: "Izgriezt"
+  copy: "Kopēt"
+  paste: "Ielīmēt"
+  selectAll: "Atlasīt visu"
+
+keyboardToolbar:
+  done: "Gatavs"

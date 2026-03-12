@@ -1,0 +1,18 @@
+timePicker:
+  hours: "ঘণ্টা"
+  minutes: "মিনিট"
+  seconds: "সেকেন্ড"
+  period: "সময়কাল"
+  periodPlaceholder: "পূর্বাহ্ন"
+
+datePicker:
+  selectDate: "তারিখ বেছে নিন"
+
+input:
+  cut: "কাট"
+  copy: "কপি"
+  paste: "পেস্ট"
+  selectAll: "সব নির্বাচন করুন"
+
+keyboardToolbar:
+  done: "সম্পন্ন"

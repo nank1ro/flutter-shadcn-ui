@@ -1,0 +1,18 @@
+timePicker:
+  hours: "ساعتونه"
+  minutes: "دقیقې"
+  seconds: "ثانیې"
+  period: "وخت"
+  periodPlaceholder: "غ.م"
+
+datePicker:
+  selectDate: "نیټه غوره کړئ"
+
+input:
+  cut: "پرې کړئ"
+  copy: "کاپي کړئ"
+  paste: "پیسټ کړئ"
+  selectAll: "ټول غوره کړئ"
+
+keyboardToolbar:
+  done: "سم دی"

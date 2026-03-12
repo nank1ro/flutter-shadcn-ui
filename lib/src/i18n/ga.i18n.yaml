@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Uaireanta"
+  minutes: "Nóiméid"
+  seconds: "Soicindí"
+  period: "Tréimhse"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Roghnaigh dáta"
+
+input:
+  cut: "Gearr"
+  copy: "Cóipeáil"
+  paste: "Greamaigh"
+  selectAll: "Roghnaigh uile"
+
+keyboardToolbar:
+  done: "Déanta"
