@@ -8,8 +8,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/components/context_menu.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/raw_components/keyboard_toolbar.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
@@ -860,6 +862,16 @@ class ShadInputState extends State<ShadInput>
     }
   }
 
+  static String _labelForType(ContextMenuButtonType type) {
+    return switch (type) {
+      ContextMenuButtonType.cut => 'Cut',
+      ContextMenuButtonType.copy => 'Copy',
+      ContextMenuButtonType.paste => 'Paste',
+      ContextMenuButtonType.selectAll => 'Select All',
+      _ => '',
+    };
+  }
+
   static Widget defaultContextMenuBuilder(
     BuildContext context,
     EditableTextState editableTextState,
@@ -873,14 +885,31 @@ class ShadInputState extends State<ShadInput>
             item.type == ContextMenuButtonType.copy) {
           return hasSelection;
         }
-        return (item.label ?? ShadTextSelectionToolbar.labelForType(item.type))
-            .isNotEmpty;
+        return (item.label ?? _labelForType(item.type)).isNotEmpty;
       },
     ).toList();
     if (buttonItems.isEmpty) return const SizedBox.shrink();
-    return ShadTextSelectionToolbar(
-      anchor: editableTextState.contextMenuAnchors.primaryAnchor,
-      buttonItems: buttonItems,
+    return FocusScope(
+      // Prevent the context menu from stealing focus from the
+      // EditableText, which would cause Flutter to dismiss the overlay
+      // before the menu renders.
+      canRequestFocus: false,
+      child: ShadContextMenu(
+        visible: true,
+        anchor: ShadGlobalAnchor(
+          editableTextState.contextMenuAnchors.primaryAnchor,
+        ),
+        items: [
+          for (final item in buttonItems)
+            ShadContextMenuItem(
+              onTapDown: item.onPressed != null
+                  ? (_) => item.onPressed!()
+                  : null,
+              child: Text(item.label ?? _labelForType(item.type)),
+            ),
+        ],
+        child: const SizedBox.shrink(),
+      ),
     );
   }
 
@@ -1063,9 +1092,8 @@ class ShadInputState extends State<ShadInput>
                         minLines: widget.minLines,
                         expands: widget.expands,
                         onChanged: (v) {
-                          widget.onChanged?.call(
-                            v,
-                          );
+                          _editableText?.hideToolbar();
+                          widget.onChanged?.call(v);
                         },
                         onEditingComplete: widget.onEditingComplete,
                         onSubmitted: widget.onSubmitted,
@@ -1260,7 +1288,12 @@ class _InputSelectionGestureDetectorBuilder
 
 /// A simple text-selection toolbar that shows copy/cut/paste buttons styled
 /// with [ShadTheme]. Used as the default [ShadInput.contextMenuBuilder].
+@Deprecated(
+  'Use ShadContextMenu with ShadContextMenuItem instead. '
+  'This widget will be removed in a future release.',
+)
 class ShadTextSelectionToolbar extends StatelessWidget {
+  // ignore: deprecated_consistency
   const ShadTextSelectionToolbar({
     super.key,
     required this.anchor,
@@ -1340,7 +1373,12 @@ class ShadTextSelectionToolbar extends StatelessWidget {
 /// Displays a [label] widget with an optional hover highlight and
 /// custom styling. The [label] is wrapped in a [DefaultTextStyle] so
 /// plain [Text] widgets pick up the effective style automatically.
+@Deprecated(
+  'Use ShadContextMenuItem instead. '
+  'This widget will be removed in a future release.',
+)
 class ShadToolbarButton extends StatefulWidget {
+  // ignore: deprecated_consistency
   const ShadToolbarButton({
     super.key,
     required this.label,
@@ -1377,6 +1415,7 @@ class ShadToolbarButton extends StatefulWidget {
   State<ShadToolbarButton> createState() => _ShadToolbarButtonState();
 }
 
+// ignore: deprecated_member_use_from_same_package
 class _ShadToolbarButtonState extends State<ShadToolbarButton> {
   bool _hovered = false;
 
