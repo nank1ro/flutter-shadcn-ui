@@ -1293,6 +1293,7 @@ class _InputSelectionGestureDetectorBuilder
   'This widget will be removed in a future release.',
 )
 class ShadTextSelectionToolbar extends StatelessWidget {
+  // ignore: deprecated_consistency
   const ShadTextSelectionToolbar({
     super.key,
     required this.anchor,
@@ -1377,6 +1378,7 @@ class ShadTextSelectionToolbar extends StatelessWidget {
   'This widget will be removed in a future release.',
 )
 class ShadToolbarButton extends StatefulWidget {
+  // ignore: deprecated_consistency
   const ShadToolbarButton({
     super.key,
     required this.label,
@@ -1413,6 +1415,7 @@ class ShadToolbarButton extends StatefulWidget {
   State<ShadToolbarButton> createState() => _ShadToolbarButtonState();
 }
 
+// ignore: deprecated_member_use_from_same_package
 class _ShadToolbarButtonState extends State<ShadToolbarButton> {
   bool _hovered = false;
 
