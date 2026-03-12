@@ -1,8 +1,7 @@
-<<<<<<< copilot/fix-resizing-logic-on-resizable
-## 0.50.1
+## 0.50.3
 
 - **FIX**: Cascade resize behavior in ShadResizable now properly propagates remaining drag delta when a panel collapses to minSize.
-=======
+
 ## 0.50.2
 
 - **FIX**: Add missing "Select All" button to `ShadInput` default context menu.
@@ -11,7 +10,6 @@
 
 - **FIX**: `ShadDatePicker.didUpdateWidget` ignored `selected` and `selectedRange` null values.
 - **REFACTOR**: Make all form fields state public, to easily create a `GlobalKey` in the rare case you need it.
->>>>>>> main
 
 ## 0.50.0
 
