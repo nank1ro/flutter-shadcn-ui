@@ -5,6 +5,10 @@
 - **FIX**: `ShadInput` now dismisses the context menu when the user types.
 - **DEPRECATED**: `ShadTextSelectionToolbar` and `ShadToolbarButton` — use `ShadContextMenu` with `ShadContextMenuItem` instead.
 
+## 0.50.3
+
+- **FIX**: Cascade resize behavior in ShadResizable now properly propagates remaining drag delta when a panel collapses to minSize.
+
 ## 0.50.2
 
 - **FIX**: Add missing "Select All" button to `ShadInput` default context menu.

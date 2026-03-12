@@ -125,43 +125,179 @@ class ShadResizableController extends ChangeNotifier {
     defaultSizes.clear();
   }
 
-  /// Sets the [size] of the panel at the given [index].
+  /// Adjusts the layout using an absolute percentage delta from the initial
+  /// layout snapshot (captured at drag start).
   ///
-  /// Returns the result of the resize operation:
-  /// - If the resize operation is successful, the panel info will be updated
-  /// - If the resize operation is unsuccessful, the panel info will not b
-  /// updated and the result will be [ShadResizeResult.failedLeading or
-  /// [ShadResizeResult.failedTrailing] depending on the resize direction
+  /// This mirrors the react-resizable-panels approach: rather than applying
+  /// incremental deltas, the entire layout is recalculated from the snapshot
+  /// on every pointer move event. This eliminates floating-point drift and
+  /// produces natural drag reversal behavior.
+  ///
+  /// [delta] is the total drag distance as a fraction of the total available
+  /// width (positive = forward/right/down, negative = backward/left/up).
+  ///
+  /// [initialLayout] is the layout snapshot taken at drag start.
+  ///
+  /// [pivotIndices] is the pair of panel indices adjacent to the dragged
+  /// divider: `[leadingIndex, trailingIndex]`.
   ShadResizeResult resize({
-    required int index,
-    required double size,
+    required double delta,
+    required List<double> initialLayout,
+    required List<int> pivotIndices,
   }) {
-    final leadingPanelInfo = getPanelInfo(index);
-    final trailingPanelInfo = getPanelInfo(index + 1);
-    final newLeadingSize = size;
-    final offset =
-        (-((leadingPanelInfo.size - newLeadingSize) *
-                (totalAvailableWidth * base)))
-            .asFixed(6);
-    final newTrailingSize =
-        (trailingPanelInfo.size * totalAvailableWidth - offset) /
-        totalAvailableWidth /
-        base;
-
-    if (newLeadingSize < leadingPanelInfo.minSize ||
-        newTrailingSize > trailingPanelInfo.maxSize) {
-      return ShadResizeResult.failedLeading;
+    if (delta.abs() < 1e-9) {
+      _applyLayout(initialLayout);
+      return ShadResizeResult.success;
     }
 
-    if (newTrailingSize < trailingPanelInfo.minSize ||
-        newLeadingSize > leadingPanelInfo.maxSize) {
-      return ShadResizeResult.failedTrailing;
+    final leadingPivot = pivotIndices[0];
+    final trailingPivot = pivotIndices[1];
+    final nextLayout = List<double>.from(initialLayout);
+    var deltaApplied = 0.0;
+
+    final originalDelta = delta;
+
+    if (delta > 0) {
+      // Forward drag: shrink trailing panels, grow leading pivot panel.
+
+      // Phase 0: cap delta to min(totalShrinkable, totalExpandable).
+      var totalShrinkable = 0.0;
+      for (var i = trailingPivot; i < panelsInfo.length; i++) {
+        totalShrinkable += initialLayout[i] - panelsInfo[i].minSize;
+      }
+      var totalExpandable = panelsInfo[leadingPivot].maxSize -
+          initialLayout[leadingPivot];
+      for (var i = leadingPivot - 1; i >= 0; i--) {
+        totalExpandable += panelsInfo[i].maxSize - initialLayout[i];
+      }
+      final maxDelta = totalShrinkable < totalExpandable
+          ? totalShrinkable
+          : totalExpandable;
+      final cappedDelta = delta > maxDelta ? maxDelta : delta;
+
+      // Phase 1: shrink trailing panels from pivot outward.
+      for (var i = trailingPivot; i < panelsInfo.length; i++) {
+        final info = panelsInfo[i];
+        final available = nextLayout[i] - info.minSize;
+        if (available < 1e-9) continue;
+        final shrink = (cappedDelta - deltaApplied).clamp(0.0, available);
+        nextLayout[i] = (nextLayout[i] - shrink).asFixed(6);
+        deltaApplied = (deltaApplied + shrink).asFixed(6);
+        if ((cappedDelta - deltaApplied).abs() < 1e-9) break;
+      }
+
+      // Phase 2: grow leading pivot panel.
+      final pivotInfo = panelsInfo[leadingPivot];
+      final canGrow = pivotInfo.maxSize - nextLayout[leadingPivot];
+      final grow = deltaApplied.clamp(0.0, canGrow);
+      nextLayout[leadingPivot] = (nextLayout[leadingPivot] + grow).asFixed(6);
+      var overflow = (deltaApplied - grow).asFixed(6);
+
+      // Phase 3: cascade overflow to other leading panels.
+      if (overflow > 1e-9) {
+        for (var i = leadingPivot - 1; i >= 0; i--) {
+          final info = panelsInfo[i];
+          final canGrowI = info.maxSize - nextLayout[i];
+          final growI = overflow.clamp(0.0, canGrowI);
+          nextLayout[i] = (nextLayout[i] + growI).asFixed(6);
+          overflow = (overflow - growI).asFixed(6);
+          if (overflow < 1e-9) break;
+        }
+      }
+    } else {
+      // Backward drag: shrink leading panels, grow trailing pivot panel.
+      final absDelta = -delta;
+      var absApplied = 0.0;
+
+      // Phase 0: cap delta to min(totalShrinkable, totalExpandable).
+      var totalShrinkable = 0.0;
+      for (var i = leadingPivot; i >= 0; i--) {
+        totalShrinkable += initialLayout[i] - panelsInfo[i].minSize;
+      }
+      var totalExpandable = panelsInfo[trailingPivot].maxSize -
+          initialLayout[trailingPivot];
+      for (var i = trailingPivot + 1; i < panelsInfo.length; i++) {
+        totalExpandable += panelsInfo[i].maxSize - initialLayout[i];
+      }
+      final maxDelta = totalShrinkable < totalExpandable
+          ? totalShrinkable
+          : totalExpandable;
+      final cappedDelta = absDelta > maxDelta ? maxDelta : absDelta;
+
+      // Phase 1: shrink leading panels from pivot outward.
+      for (var i = leadingPivot; i >= 0; i--) {
+        final info = panelsInfo[i];
+        final available = nextLayout[i] - info.minSize;
+        if (available < 1e-9) continue;
+        final shrink = (cappedDelta - absApplied).clamp(0.0, available);
+        nextLayout[i] = (nextLayout[i] - shrink).asFixed(6);
+        absApplied = (absApplied + shrink).asFixed(6);
+        if ((cappedDelta - absApplied).abs() < 1e-9) break;
+      }
+
+      deltaApplied = absApplied;
+
+      // Phase 2: grow trailing pivot panel.
+      final pivotInfo = panelsInfo[trailingPivot];
+      final canGrow = pivotInfo.maxSize - nextLayout[trailingPivot];
+      final grow = deltaApplied.clamp(0.0, canGrow);
+      nextLayout[trailingPivot] =
+          (nextLayout[trailingPivot] + grow).asFixed(6);
+      var overflow = (deltaApplied - grow).asFixed(6);
+
+      // Phase 3: cascade overflow to other trailing panels.
+      if (overflow > 1e-9) {
+        for (var i = trailingPivot + 1; i < panelsInfo.length; i++) {
+          final info = panelsInfo[i];
+          final canGrowI = info.maxSize - nextLayout[i];
+          final growI = overflow.clamp(0.0, canGrowI);
+          nextLayout[i] = (nextLayout[i] + growI).asFixed(6);
+          overflow = (overflow - growI).asFixed(6);
+          if (overflow < 1e-9) break;
+        }
+      }
     }
 
-    leadingPanelInfo.size = newLeadingSize;
-    trailingPanelInfo.size = newTrailingSize;
-    notifyListeners();
+    // Validation: layout must sum to ~1.0.
+    final sum = nextLayout.fold<double>(0, (a, b) => a + b);
+    if ((sum - 1.0).abs() > 0.01) {
+      // Layout is invalid; keep the current layout unchanged.
+      return delta > 0
+          ? ShadResizeResult.failedTrailing
+          : ShadResizeResult.failedLeading;
+    }
+
+    _applyLayout(nextLayout);
+
+    // Determine result based on whether the full original delta was consumed.
+    if (originalDelta > 0) {
+      // Total shrinkage on trailing side = total growth on leading side.
+      var totalGrowth = 0.0;
+      for (var i = 0; i <= leadingPivot; i++) {
+        totalGrowth += nextLayout[i] - initialLayout[i];
+      }
+      if ((totalGrowth - originalDelta).abs() > 1e-6) {
+        return ShadResizeResult.failedTrailing;
+      }
+    } else {
+      var totalGrowth = 0.0;
+      for (var i = trailingPivot; i < nextLayout.length; i++) {
+        totalGrowth += nextLayout[i] - initialLayout[i];
+      }
+      if ((totalGrowth - (-originalDelta)).abs() > 1e-6) {
+        return ShadResizeResult.failedLeading;
+      }
+    }
+
     return ShadResizeResult.success;
+  }
+
+  /// Applies a pre-validated layout directly to panel sizes.
+  void _applyLayout(List<double> layout) {
+    for (var i = 0; i < layout.length && i < panelsInfo.length; i++) {
+      panelsInfo[i]._size = layout[i];
+    }
+    notifyListeners();
   }
 
   /// Reset the default sizes of the leading and trailing panels.
@@ -340,6 +476,12 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
   BoxConstraints? currentConstraints;
 
+  /// Snapshot of panel sizes at drag start (absolute-delta approach).
+  List<double>? _initialLayout;
+
+  /// Global pointer position at drag start.
+  double? _pointerDownPosition;
+
   bool get isHorizontal => widget.axis == Axis.horizontal;
 
   bool get isVertical => widget.axis == Axis.vertical;
@@ -420,28 +562,51 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
 
   ShadPanelInfo getPanelInfo(int index) => controller.getPanelInfo(index);
 
-  void onHandleDrag({
+  void onHandleDragStart({
     required int index,
-    required Offset offset,
+    required DragStartDetails details,
   }) {
+    dragging.value = true;
+    _initialLayout =
+        controller.panelsInfo.map((p) => p.size).toList();
+    _pointerDownPosition = widget.axis == Axis.horizontal
+        ? details.globalPosition.dx
+        : details.globalPosition.dy;
+  }
+
+  void onHandleDragEnd() {
+    dragging.value = false;
+    _initialLayout = null;
+    _pointerDownPosition = null;
+  }
+
+  void onHandleDragUpdate({
+    required int index,
+    required DragUpdateDetails details,
+  }) {
+    if (_initialLayout == null || _pointerDownPosition == null) return;
+
     final rtl = Directionality.of(context) == TextDirection.rtl;
-    var axisOffset = (widget.axis == Axis.horizontal ? offset.dx : offset.dy)
-        .asFixed(6);
+    final currentPosition = widget.axis == Axis.horizontal
+        ? details.globalPosition.dx
+        : details.globalPosition.dy;
+
+    var pixelDelta = (currentPosition - _pointerDownPosition!).asFixed(6);
 
     // Invert the offset for RTL horizontal dragging
     if (rtl && widget.axis == Axis.horizontal) {
-      axisOffset = -axisOffset;
+      pixelDelta = -pixelDelta;
     }
 
-    final leadingPanelInfo = getPanelInfo(index);
-    final newLeadingSize =
-        (leadingPanelInfo.size * controller.totalAvailableWidth + axisOffset) /
-        controller.totalAvailableWidth;
+    // Convert pixel delta to percentage of total available width.
+    final delta = (pixelDelta / controller.totalAvailableWidth).asFixed(6);
 
     final result = controller.resize(
-      index: index,
-      size: newLeadingSize,
+      delta: delta,
+      initialLayout: _initialLayout!,
+      pivotIndices: [index, index + 1],
     );
+
     switch (result) {
       case ShadResizeResult.success:
         final cursor = switch (widget.axis) {
@@ -637,28 +802,30 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
                           resetDefaultSizes(i, i + 1);
                         },
                     onHorizontalDragStart: isHorizontal
-                        ? (_) => dragging.value = true
+                        ? (details) =>
+                            onHandleDragStart(index: i, details: details)
                         : null,
                     onHorizontalDragEnd: (_) =>
-                        isHorizontal ? dragging.value = false : null,
+                        isHorizontal ? onHandleDragEnd() : null,
                     onHorizontalDragCancel: () =>
-                        isHorizontal ? dragging.value = false : null,
+                        isHorizontal ? onHandleDragEnd() : null,
                     onHorizontalDragUpdate: (details) => isHorizontal
-                        ? onHandleDrag(
-                            offset: details.delta,
+                        ? onHandleDragUpdate(
+                            details: details,
                             index: i,
                           )
                         : null,
                     onVerticalDragStart: isVertical
-                        ? (_) => dragging.value = true
+                        ? (details) =>
+                            onHandleDragStart(index: i, details: details)
                         : null,
                     onVerticalDragEnd: (_) =>
-                        isVertical ? dragging.value = false : null,
+                        isVertical ? onHandleDragEnd() : null,
                     onVerticalDragCancel: () =>
-                        isVertical ? dragging.value = false : null,
+                        isVertical ? onHandleDragEnd() : null,
                     onVerticalDragUpdate: (details) => isVertical
-                        ? onHandleDrag(
-                            offset: details.delta,
+                        ? onHandleDragUpdate(
+                            details: details,
                             index: i,
                           )
                         : null,
