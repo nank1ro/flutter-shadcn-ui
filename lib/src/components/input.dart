@@ -891,7 +891,7 @@ class ShadInputState extends State<ShadInput>
             item.type == ContextMenuButtonType.copy) {
           return hasSelection;
         }
-        return (item.label ?? _localizedLabel(item.type, l) ?? '').isNotEmpty;
+        return (_localizedLabel(item.type, l) ?? item.label ?? '').isNotEmpty;
       },
     ).toList();
     if (buttonItems.isEmpty) return const SizedBox.shrink();
