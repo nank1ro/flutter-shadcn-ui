@@ -23,6 +23,19 @@ import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
+String? _localizedLabel(
+  ContextMenuButtonType type,
+  ShadLocalizationsData l,
+) {
+  return switch (type) {
+    ContextMenuButtonType.cut => l.input.cut,
+    ContextMenuButtonType.copy => l.input.copy,
+    ContextMenuButtonType.paste => l.input.paste,
+    ContextMenuButtonType.selectAll => l.input.selectAll,
+    _ => null,
+  };
+}
+
 /// A customizable text input field with optional leading and trailing widgets.
 ///
 /// The [ShadInput] widget provides a styled text field with support for
@@ -864,20 +877,11 @@ class ShadInputState extends State<ShadInput>
     }
   }
 
-  static String _labelForType(ContextMenuButtonType type) {
-    return switch (type) {
-      ContextMenuButtonType.cut => 'Cut',
-      ContextMenuButtonType.copy => 'Copy',
-      ContextMenuButtonType.paste => 'Paste',
-      ContextMenuButtonType.selectAll => 'Select All',
-      _ => '',
-    };
-  }
-
   static Widget defaultContextMenuBuilder(
     BuildContext context,
     EditableTextState editableTextState,
   ) {
+    final l = ShadLocalizations.of(context);
     final selection = editableTextState.textEditingValue.selection;
     final hasSelection = selection.isValid && !selection.isCollapsed;
     final buttonItems = editableTextState.contextMenuButtonItems.where(
@@ -887,7 +891,7 @@ class ShadInputState extends State<ShadInput>
             item.type == ContextMenuButtonType.copy) {
           return hasSelection;
         }
-        return (item.label ?? _labelForType(item.type)).isNotEmpty;
+        return (_localizedLabel(item.type, l) ?? item.label ?? '').isNotEmpty;
       },
     ).toList();
     if (buttonItems.isEmpty) return const SizedBox.shrink();
@@ -907,7 +911,9 @@ class ShadInputState extends State<ShadInput>
               onTapDown: item.onPressed != null
                   ? (_) => item.onPressed!()
                   : null,
-              child: Text(item.label ?? _labelForType(item.type)),
+              child: Text(
+                _localizedLabel(item.type, l) ?? item.label ?? '',
+              ),
             ),
         ],
         child: const SizedBox.shrink(),
@@ -1321,29 +1327,6 @@ class ShadTextSelectionToolbar extends StatelessWidget {
   /// Shadows of the toolbar. Defaults to [ShadShadows.md].
   final List<BoxShadow>? shadows;
 
-  static String labelForType(ContextMenuButtonType type) {
-    return switch (type) {
-      ContextMenuButtonType.cut => 'Cut',
-      ContextMenuButtonType.copy => 'Copy',
-      ContextMenuButtonType.paste => 'Paste',
-      ContextMenuButtonType.selectAll => 'Select All',
-      _ => '',
-    };
-  }
-
-  static String _localizedLabel(
-    ContextMenuButtonType type,
-    ShadLocalizationsData l,
-  ) {
-    return switch (type) {
-      ContextMenuButtonType.cut => l.input.cut,
-      ContextMenuButtonType.copy => l.input.copy,
-      ContextMenuButtonType.paste => l.input.paste,
-      ContextMenuButtonType.selectAll => l.input.selectAll,
-      _ => '',
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -1373,7 +1356,9 @@ class ShadTextSelectionToolbar extends StatelessWidget {
             children: [
               for (final item in buttonItems)
                 ShadToolbarButton(
-                  label: Text(item.label ?? _localizedLabel(item.type, l)),
+                  label: Text(
+                    _localizedLabel(item.type, l) ?? item.label ?? '',
+                  ),
                   onPressed: item.onPressed,
                 ),
             ],
