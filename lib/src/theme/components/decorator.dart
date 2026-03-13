@@ -184,7 +184,6 @@ class ShadDecorator extends StatelessWidget {
 
     Widget decorated = Container(
       decoration: primaryDecoration,
-      padding: border?.padding,
       child: child,
     );
 
