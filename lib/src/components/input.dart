@@ -1321,17 +1321,7 @@ class ShadTextSelectionToolbar extends StatelessWidget {
   /// Shadows of the toolbar. Defaults to [ShadShadows.md].
   final List<BoxShadow>? shadows;
 
-  static String labelForType(ContextMenuButtonType type) {
-    return switch (type) {
-      ContextMenuButtonType.cut => 'Cut',
-      ContextMenuButtonType.copy => 'Copy',
-      ContextMenuButtonType.paste => 'Paste',
-      ContextMenuButtonType.selectAll => 'Select All',
-      _ => '',
-    };
-  }
-
-  static String _localizedLabel(
+  static String? _localizedLabel(
     ContextMenuButtonType type,
     ShadLocalizationsData l,
   ) {
@@ -1340,7 +1330,7 @@ class ShadTextSelectionToolbar extends StatelessWidget {
       ContextMenuButtonType.copy => l.input.copy,
       ContextMenuButtonType.paste => l.input.paste,
       ContextMenuButtonType.selectAll => l.input.selectAll,
-      _ => '',
+      _ => null,
     };
   }
 
@@ -1373,7 +1363,9 @@ class ShadTextSelectionToolbar extends StatelessWidget {
             children: [
               for (final item in buttonItems)
                 ShadToolbarButton(
-                  label: Text(item.label ?? _localizedLabel(item.type, l)),
+                  label: Text(
+                    _localizedLabel(item.type, l) ?? item.label ?? '',
+                  ),
                   onPressed: item.onPressed,
                 ),
             ],
