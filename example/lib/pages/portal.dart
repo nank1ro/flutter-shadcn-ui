@@ -15,15 +15,15 @@ class _ShadPortalPageState extends State<ShadPortalPage> {
   late final Timer timer;
   var alignmentIndex = 0;
   final alignments = [
-    // AlignmentGeometry.topStart,
+    AlignmentGeometry.topStart,
     AlignmentGeometry.topCenter,
-    // AlignmentGeometry.topEnd,
-    // AlignmentGeometry.centerStart,
+    AlignmentGeometry.topEnd,
+    AlignmentGeometry.centerStart,
     AlignmentGeometry.center,
-    // AlignmentGeometry.centerEnd,
-    // AlignmentGeometry.bottomStart,
+    AlignmentGeometry.centerEnd,
+    AlignmentGeometry.bottomStart,
     AlignmentGeometry.bottomCenter,
-    // AlignmentGeometry.bottomEnd,
+    AlignmentGeometry.bottomEnd,
   ];
 
   @override
