@@ -8,8 +8,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shadcn_ui/src/components/context_menu.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
+import 'package:shadcn_ui/src/i18n/localizations_delegate.dart';
+import 'package:shadcn_ui/src/i18n/strings.g.dart';
 import 'package:shadcn_ui/src/raw_components/keyboard_toolbar.dart';
+import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
@@ -18,6 +22,19 @@ import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
+
+String? _localizedLabel(
+  ContextMenuButtonType type,
+  ShadLocalizationsData l,
+) {
+  return switch (type) {
+    ContextMenuButtonType.cut => l.input.cut,
+    ContextMenuButtonType.copy => l.input.copy,
+    ContextMenuButtonType.paste => l.input.paste,
+    ContextMenuButtonType.selectAll => l.input.selectAll,
+    _ => null,
+  };
+}
 
 /// A customizable text input field with optional leading and trailing widgets.
 ///
@@ -864,26 +881,43 @@ class ShadInputState extends State<ShadInput>
     BuildContext context,
     EditableTextState editableTextState,
   ) {
+    final l = ShadLocalizations.of(context);
     final selection = editableTextState.textEditingValue.selection;
     final hasSelection = selection.isValid && !selection.isCollapsed;
-    final buttonItems = editableTextState.contextMenuButtonItems
-        .where(
-          (item) {
-            // Cut and Copy require text to be selected.
-            if (item.type == ContextMenuButtonType.cut ||
-                item.type == ContextMenuButtonType.copy) {
-              return hasSelection;
-            }
-            return (item.label ??
-                    ShadTextSelectionToolbar.labelForType(item.type))
-                .isNotEmpty;
-          },
-        )
-        .toList();
+    final buttonItems = editableTextState.contextMenuButtonItems.where(
+      (item) {
+        // Cut and Copy require text to be selected.
+        if (item.type == ContextMenuButtonType.cut ||
+            item.type == ContextMenuButtonType.copy) {
+          return hasSelection;
+        }
+        return (_localizedLabel(item.type, l) ?? item.label ?? '').isNotEmpty;
+      },
+    ).toList();
     if (buttonItems.isEmpty) return const SizedBox.shrink();
-    return ShadTextSelectionToolbar(
-      anchor: editableTextState.contextMenuAnchors.primaryAnchor,
-      buttonItems: buttonItems,
+    return FocusScope(
+      // Prevent the context menu from stealing focus from the
+      // EditableText, which would cause Flutter to dismiss the overlay
+      // before the menu renders.
+      canRequestFocus: false,
+      child: ShadContextMenu(
+        visible: true,
+        anchor: ShadGlobalAnchor(
+          editableTextState.contextMenuAnchors.primaryAnchor,
+        ),
+        items: [
+          for (final item in buttonItems)
+            ShadContextMenuItem(
+              onTapDown: item.onPressed != null
+                  ? (_) => item.onPressed!()
+                  : null,
+              child: Text(
+                _localizedLabel(item.type, l) ?? item.label ?? '',
+              ),
+            ),
+        ],
+        child: const SizedBox.shrink(),
+      ),
     );
   }
 
@@ -1066,9 +1100,8 @@ class ShadInputState extends State<ShadInput>
                         minLines: widget.minLines,
                         expands: widget.expands,
                         onChanged: (v) {
-                          widget.onChanged?.call(
-                            v,
-                          );
+                          _editableText?.hideToolbar();
+                          widget.onChanged?.call(v);
                         },
                         onEditingComplete: widget.onEditingComplete,
                         onSubmitted: widget.onSubmitted,
@@ -1263,7 +1296,12 @@ class _InputSelectionGestureDetectorBuilder
 
 /// A simple text-selection toolbar that shows copy/cut/paste buttons styled
 /// with [ShadTheme]. Used as the default [ShadInput.contextMenuBuilder].
+@Deprecated(
+  'Use ShadContextMenu with ShadContextMenuItem instead. '
+  'This widget will be removed in a future release.',
+)
 class ShadTextSelectionToolbar extends StatelessWidget {
+  // ignore: deprecated_consistency
   const ShadTextSelectionToolbar({
     super.key,
     required this.anchor,
@@ -1289,18 +1327,10 @@ class ShadTextSelectionToolbar extends StatelessWidget {
   /// Shadows of the toolbar. Defaults to [ShadShadows.md].
   final List<BoxShadow>? shadows;
 
-  static String labelForType(ContextMenuButtonType type) {
-    return switch (type) {
-      ContextMenuButtonType.cut => 'Cut',
-      ContextMenuButtonType.copy => 'Copy',
-      ContextMenuButtonType.paste => 'Paste',
-      _ => '',
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final l = ShadLocalizations.of(context);
 
     final effectiveBackgroundColor =
         backgroundColor ?? theme.colorScheme.popover;
@@ -1326,7 +1356,9 @@ class ShadTextSelectionToolbar extends StatelessWidget {
             children: [
               for (final item in buttonItems)
                 ShadToolbarButton(
-                  label: Text(item.label ?? labelForType(item.type)),
+                  label: Text(
+                    _localizedLabel(item.type, l) ?? item.label ?? '',
+                  ),
                   onPressed: item.onPressed,
                 ),
             ],
@@ -1342,7 +1374,12 @@ class ShadTextSelectionToolbar extends StatelessWidget {
 /// Displays a [label] widget with an optional hover highlight and
 /// custom styling. The [label] is wrapped in a [DefaultTextStyle] so
 /// plain [Text] widgets pick up the effective style automatically.
+@Deprecated(
+  'Use ShadContextMenuItem instead. '
+  'This widget will be removed in a future release.',
+)
 class ShadToolbarButton extends StatefulWidget {
+  // ignore: deprecated_consistency
   const ShadToolbarButton({
     super.key,
     required this.label,
@@ -1379,13 +1416,15 @@ class ShadToolbarButton extends StatefulWidget {
   State<ShadToolbarButton> createState() => _ShadToolbarButtonState();
 }
 
+// ignore: deprecated_member_use_from_same_package
 class _ShadToolbarButtonState extends State<ShadToolbarButton> {
   bool _hovered = false;
 
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
-    final effectiveTextStyle = widget.textStyle ??
+    final effectiveTextStyle =
+        widget.textStyle ??
         theme.textTheme.small.copyWith(
           fontWeight: FontWeight.normal,
           color: theme.colorScheme.foreground,
@@ -1400,7 +1439,8 @@ class _ShadToolbarButtonState extends State<ShadToolbarButton> {
           widget.onPressed?.call();
         },
         child: Container(
-          padding: widget.padding ??
+          padding:
+              widget.padding ??
               const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           color: _hovered
               ? (widget.hoverColor ?? theme.colorScheme.accent)

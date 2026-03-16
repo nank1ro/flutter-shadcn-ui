@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Timer"
+  minutes: "Minutter"
+  seconds: "Sekunder"
+  period: "Periode"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Vælg dato"
+
+input:
+  cut: "Klip"
+  copy: "Kopiér"
+  paste: "Sæt ind"
+  selectAll: "Vælg alt"
+
+keyboardToolbar:
+  done: "Færdig"

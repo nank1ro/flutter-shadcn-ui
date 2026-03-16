@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Jam"
+  minutes: "Menit"
+  seconds: "Detik"
+  period: "Periode"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Pilih tanggal"
+
+input:
+  cut: "Potong"
+  copy: "Salin"
+  paste: "Tempel"
+  selectAll: "Pilih Semua"
+
+keyboardToolbar:
+  done: "Selesai"

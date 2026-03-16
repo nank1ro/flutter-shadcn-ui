@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Godziny"
+  minutes: "Minuty"
+  seconds: "Sekundy"
+  period: "Okres"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Wybierz datę"
+
+input:
+  cut: "Wytnij"
+  copy: "Kopiuj"
+  paste: "Wklej"
+  selectAll: "Zaznacz wszystko"
+
+keyboardToolbar:
+  done: "Gotowe"

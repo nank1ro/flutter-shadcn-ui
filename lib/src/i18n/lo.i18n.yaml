@@ -1,0 +1,18 @@
+timePicker:
+  hours: "ຊົ່ວໂມງ"
+  minutes: "ນາທີ"
+  seconds: "ວິນາທີ"
+  period: "ຊ່ວງເວລາ"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "ເລືອກວັນທີ"
+
+input:
+  cut: "ຕັດ"
+  copy: "ຄັດລອກ"
+  paste: "ວາງ"
+  selectAll: "ເລືອກທັງໝົດ"
+
+keyboardToolbar:
+  done: "ສຳເລັດ"

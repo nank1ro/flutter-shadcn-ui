@@ -1,3 +1,40 @@
+## 0.52.1
+
+- **FIX**: i18n localization for `ShadInput.defaultContextMenuBuilder`.
+
+## 0.52.0
+
+- **FEAT**: Add built-in i18n support with 70+ locales using [slang](https://pub.dev/packages/slang). The `GlobalShadLocalizations` delegate is automatically included by `ShadApp`. Access translations via `ShadLocalizations.of(context)`.
+
+## 0.51.0
+
+- **REFACTOR**: `ShadInput.defaultContextMenuBuilder` now uses `ShadContextMenu` with `ShadContextMenuItem` for consistent styling with the rest of the component library.
+- **FEAT**: Add `onTapDown` to `ShadContextMenuItem` for cases where the action must fire immediately on pointer down (e.g. text selection context menus).
+- **FIX**: `ShadInput` now dismisses the context menu when the user types.
+- **DEPRECATED**: `ShadTextSelectionToolbar` and `ShadToolbarButton` — use `ShadContextMenu` with `ShadContextMenuItem` instead.
+
+## 0.50.3
+
+- **FIX**: Cascade resize behavior in ShadResizable now properly propagates remaining drag delta when a panel collapses to minSize.
+
+## 0.50.2
+
+- **FIX**: Add missing "Select All" button to `ShadInput` default context menu.
+
+## 0.50.1
+
+- **FIX**: `ShadDatePicker.didUpdateWidget` ignored `selected` and `selectedRange` null values.
+- **REFACTOR**: Make all form fields state public, to easily create a `GlobalKey` in the rare case you need it.
+
+## 0.50.0
+
+- **FEAT**: Add `fallback` to `ShadAnchorAuto` to have another optimal position as fallback.
+- **FIX**: `ShadMenubar` now uses `ShadAnchor` instead of `ShadAnchorAuto` to always show the popover below the item.
+
+## 0.49.0
+
+- **FEAT**: `ShadContextMenuRegion` now automatically supports tap to open the context menu on Android and iOS. Added `tapEnabled` parameter to override the default behavior on any platform.
+
 ## 0.48.0
 
 - **FEAT**: Add `defaultContextMenuBuilder` implementation for `ShadInput` to show Cut/Copy and Paste buttons. This introduces the following new widgets: `ShadTextSelectionToolbar` and `ShadToolbarButton`.

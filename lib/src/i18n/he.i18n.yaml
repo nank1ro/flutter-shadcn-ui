@@ -1,0 +1,18 @@
+timePicker:
+  hours: "שעות"
+  minutes: "דקות"
+  seconds: "שניות"
+  period: "תקופה"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "בחר תאריך"
+
+input:
+  cut: "גזור"
+  copy: "העתק"
+  paste: "הדבק"
+  selectAll: "בחר הכל"
+
+keyboardToolbar:
+  done: "סיום"

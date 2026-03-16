@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Saat"
+  minutes: "Dakika"
+  seconds: "Saniye"
+  period: "Dönem"
+  periodPlaceholder: "ÖÖ"
+
+datePicker:
+  selectDate: "Tarih seçin"
+
+input:
+  cut: "Kes"
+  copy: "Kopyala"
+  paste: "Yapıştır"
+  selectAll: "Tümünü seç"
+
+keyboardToolbar:
+  done: "Tamam"

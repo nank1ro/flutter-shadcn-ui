@@ -1,0 +1,18 @@
+timePicker:
+  hours: "ម៉ោង"
+  minutes: "នាទី"
+  seconds: "វិនាទី"
+  period: "វេលា"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "ជ្រើសរើសកាលបរិច្ឆេទ"
+
+input:
+  cut: "កាត់"
+  copy: "ចម្លង"
+  paste: "បិទភ្ជាប់"
+  selectAll: "ជ្រើសរើសទាំងអស់"
+
+keyboardToolbar:
+  done: "រួចរាល់"

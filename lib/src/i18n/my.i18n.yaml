@@ -1,0 +1,18 @@
+timePicker:
+  hours: "နာရီ"
+  minutes: "မိနစ်"
+  seconds: "စက္ကန့်"
+  period: "အချိန်ကာလ"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "ရက်စွဲရွေးချယ်ပါ"
+
+input:
+  cut: "ဖြတ်"
+  copy: "မိတ္တူကူး"
+  paste: "ကူးထည့်"
+  selectAll: "အားလုံးရွေးချယ်"
+
+keyboardToolbar:
+  done: "ပြီးပြီ"

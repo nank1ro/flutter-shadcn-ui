@@ -462,10 +462,10 @@ class _ShadMenubarItemState extends State<ShadMenubarItem> {
     final effectiveAnchor =
         widget.anchor ??
         theme.menubarTheme.anchor ??
-        const ShadAnchorAuto(
+        const ShadAnchor(
           offset: Offset(-4, 8),
-          followerAnchor: Alignment.bottomRight,
-          targetAnchor: Alignment.bottomLeft,
+          childAlignment: AlignmentDirectional.topStart,
+          overlayAlignment: AlignmentDirectional.bottomStart,
         );
 
     final effectiveHeight =

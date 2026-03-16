@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Tunnid"
+  minutes: "Minutid"
+  seconds: "Sekundid"
+  period: "Periood"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Vali kuupäev"
+
+input:
+  cut: "Lõika"
+  copy: "Kopeeri"
+  paste: "Kleebi"
+  selectAll: "Vali kõik"
+
+keyboardToolbar:
+  done: "Valmis"

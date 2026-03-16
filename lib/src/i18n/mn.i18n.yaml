@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Цаг"
+  minutes: "Минут"
+  seconds: "Секунд"
+  period: "Хугацаа"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Огноо сонгох"
+
+input:
+  cut: "Тайрах"
+  copy: "Хуулах"
+  paste: "Буулгах"
+  selectAll: "Бүгдийг сонгох"
+
+keyboardToolbar:
+  done: "Болсон"

@@ -1,0 +1,18 @@
+timePicker:
+  hours: "පැය"
+  minutes: "මිනිත්තු"
+  seconds: "තත්පර"
+  period: "කාලය"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "දිනය තෝරන්න"
+
+input:
+  cut: "කපන්න"
+  copy: "පිටපත් කරන්න"
+  paste: "අලවන්න"
+  selectAll: "සියල්ල තෝරන්න"
+
+keyboardToolbar:
+  done: "සිදු විය"

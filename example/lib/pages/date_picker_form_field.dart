@@ -17,7 +17,6 @@ class DatePickerFormFieldPage extends StatefulWidget {
 class _DatePickerFormFieldPageState extends State<DatePickerFormFieldPage> {
   bool enabled = true;
   var autovalidateMode = ShadAutovalidateMode.alwaysAfterFirstValidation;
-  DateTime? initialValue;
   Map<Object, dynamic> formValue = {};
   final formKey = GlobalKey<ShadFormState>();
 
@@ -28,7 +27,6 @@ class _DatePickerFormFieldPageState extends State<DatePickerFormFieldPage> {
       key: formKey,
       enabled: enabled,
       autovalidateMode: autovalidateMode,
-      initialValue: {'date': initialValue},
       child: BaseScaffold(
         appBarTitle: 'DatePickerFormField',
         editable: [
@@ -57,7 +55,6 @@ class _DatePickerFormFieldPageState extends State<DatePickerFormFieldPage> {
                 Text('Single', style: theme.textTheme.h4),
                 ShadDatePickerFormField(
                   id: 'date',
-                  initialValue: initialValue,
                   label: const Text('Date of birth'),
                   onChanged: print,
                   description: const Text(

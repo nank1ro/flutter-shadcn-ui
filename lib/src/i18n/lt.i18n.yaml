@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Valandos"
+  minutes: "Minutės"
+  seconds: "Sekundės"
+  period: "Laikotarpis"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Pasirinkite datą"
+
+input:
+  cut: "Iškirpti"
+  copy: "Kopijuoti"
+  paste: "Įklijuoti"
+  selectAll: "Pasirinkti viską"
+
+keyboardToolbar:
+  done: "Atlikta"

@@ -1,0 +1,18 @@
+timePicker:
+  hours: "ሰዓቶች"
+  minutes: "ደቂቃዎች"
+  seconds: "ሰከንዶች"
+  period: "ወቅት"
+  periodPlaceholder: "ጥዋት"
+
+datePicker:
+  selectDate: "ቀን ይምረጡ"
+
+input:
+  cut: "ቁረጥ"
+  copy: "ቅዳ"
+  paste: "ለጥፍ"
+  selectAll: "ሁሉንም ይምረጡ"
+
+keyboardToolbar:
+  done: "ተከናውኗል"

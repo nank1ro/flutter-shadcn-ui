@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Klukkustundir"
+  minutes: "Mínútur"
+  seconds: "Sekúndur"
+  period: "Tímabil"
+  periodPlaceholder: "fh"
+
+datePicker:
+  selectDate: "Veldu dagsetningu"
+
+input:
+  cut: "Klippa"
+  copy: "Afrita"
+  paste: "Líma"
+  selectAll: "Velja allt"
+
+keyboardToolbar:
+  done: "Lokið"

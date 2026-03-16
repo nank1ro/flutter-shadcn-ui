@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Години"
+  minutes: "Хвилини"
+  seconds: "Секунди"
+  period: "Період"
+  periodPlaceholder: "ДП"
+
+datePicker:
+  selectDate: "Виберіть дату"
+
+input:
+  cut: "Вирізати"
+  copy: "Копіювати"
+  paste: "Вставити"
+  selectAll: "Вибрати все"
+
+keyboardToolbar:
+  done: "Готово"

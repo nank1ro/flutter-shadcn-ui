@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Ure"
+  minutes: "Minute"
+  seconds: "Sekunde"
+  period: "Obdobje"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Izberite datum"
+
+input:
+  cut: "Izreži"
+  copy: "Kopiraj"
+  paste: "Prilepi"
+  selectAll: "Izberi vse"
+
+keyboardToolbar:
+  done: "Končano"

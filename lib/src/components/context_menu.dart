@@ -22,6 +22,9 @@ const kContextMenuGroupId = ValueKey('context-menu');
 /// A widget that shows the context menu when the user right clicks the [child]
 /// or long presses it (only on android and ios), unless a value to
 /// [longPressEnabled] is provided.
+///
+/// On Android and iOS, tapping the [child] also shows the context menu by
+/// default. This can be overridden using [tapEnabled].
 /// {@endtemplate}
 class ShadContextMenuRegion extends StatefulWidget {
   /// {@macro ShadContextMenuRegion}
@@ -41,6 +44,7 @@ class ShadContextMenuRegion extends StatefulWidget {
     this.controller,
     this.supportedDevices,
     this.longPressEnabled,
+    this.tapEnabled,
     this.hitTestBehavior = HitTestBehavior.opaque,
     this.popoverReverseDuration,
   });
@@ -105,6 +109,14 @@ class ShadContextMenuRegion extends StatefulWidget {
   /// {@endtemplate}
   final bool? longPressEnabled;
 
+  /// {@template ShadContextMenuRegion.tapEnabled}
+  /// Whether the context menu should be shown when the user taps/left-clicks
+  /// the child.
+  ///
+  /// Defaults to true on Android and iOS, false on other platforms.
+  /// {@endtemplate}
+  final bool? tapEnabled;
+
   @override
   State<ShadContextMenuRegion> createState() => _ShadContextMenuRegionState();
 }
@@ -160,6 +172,11 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
         (defaultTargetPlatform == TargetPlatform.android ||
             defaultTargetPlatform == TargetPlatform.iOS);
 
+    final effectiveTapEnabled =
+        widget.tapEnabled ??
+        (defaultTargetPlatform == TargetPlatform.android ||
+            defaultTargetPlatform == TargetPlatform.iOS);
+
     final isWindows = defaultTargetPlatform == TargetPlatform.windows;
 
     return ShadContextMenu(
@@ -178,7 +195,17 @@ class _ShadContextMenuRegionState extends State<ShadContextMenuRegion> {
       child: ShadGestureDetector(
         behavior: widget.hitTestBehavior,
         supportedDevices: widget.supportedDevices,
-        onTapDown: (_) => hide(),
+        onTapDown: (d) {
+          if (effectiveTapEnabled) {
+            if (controller.isOpen) {
+              hide();
+            } else {
+              show(d.globalPosition);
+            }
+          } else {
+            hide();
+          }
+        },
         onSecondaryTapDown: (d) async {
           if (kIsWeb && !isContextMenuAlreadyDisabled) {
             await BrowserContextMenu.disableContextMenu();
@@ -524,6 +551,7 @@ class ShadContextMenuItem extends StatefulWidget {
     this.trailingPadding,
     this.padding,
     this.onPressed,
+    this.onTapDown,
     this.anchor,
     this.showDelay,
     this.height,
@@ -552,6 +580,7 @@ class ShadContextMenuItem extends StatefulWidget {
     this.padding,
     this.insetPadding,
     this.onPressed,
+    this.onTapDown,
     this.anchor,
     this.showDelay,
     this.height,
@@ -578,6 +607,7 @@ class ShadContextMenuItem extends StatefulWidget {
     this.padding,
     this.insetPadding,
     this.onPressed,
+    this.onTapDown,
     this.anchor,
     this.showDelay,
     this.height,
@@ -647,6 +677,13 @@ class ShadContextMenuItem extends StatefulWidget {
   /// The callback called when the context menu item is pressed.
   /// {@endtemplate}
   final VoidCallback? onPressed;
+
+  /// {@template ShadContextMenuItem.onTapDown}
+  /// The callback called when a pointer down event is detected on the context
+  /// menu item. Useful when the action must fire immediately before the
+  /// overlay is dismissed (e.g. text selection context menus).
+  /// {@endtemplate}
+  final ValueChanged<TapDownDetails>? onTapDown;
 
   /// {@template ShadContextMenuItem.anchor}
   /// The anchor of the context menu item, defaults to
@@ -870,6 +907,12 @@ class _ShadContextMenuItemState extends State<ShadContextMenuItem> {
                   : effectiveBackgroundColor,
               hoverBackgroundColor: effectiveSelectedBackgroundColor,
               onFocusChange: controller.setFocused,
+              onTapDown: widget.onTapDown != null
+                  ? (details) {
+                      widget.onTapDown!(details);
+                      if (effectiveCloseOnTap) contextMenu.setVisible(false);
+                    }
+                  : null,
               onPressed: () {
                 widget.onPressed?.call();
                 if (effectiveCloseOnTap) contextMenu.setVisible(false);

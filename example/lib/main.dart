@@ -132,6 +132,9 @@ class App extends StatelessWidget {
           //       routes: routes,
           //       theme: Theme.of(context),
           //       home: const MainPage(),
+          //       localizationsDelegates: const [
+          //         GlobalShadLocalizations.delegate,
+          //       ],
           //       builder: (context, child) {
           //         return Directionality(
           //           textDirection: directionality,

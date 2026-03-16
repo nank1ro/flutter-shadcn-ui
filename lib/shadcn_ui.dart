@@ -79,6 +79,9 @@ export 'src/components/textarea.dart';
 export 'src/components/time_picker.dart';
 export 'src/components/toast.dart';
 export 'src/components/tooltip.dart';
+// Localizations
+export 'src/i18n/localizations_delegate.dart';
+export 'src/i18n/strings.g.dart';
 // Raw Components
 export 'src/raw_components/focusable.dart';
 export 'src/raw_components/keyboard_toolbar.dart';

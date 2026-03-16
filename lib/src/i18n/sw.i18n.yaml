@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Masaa"
+  minutes: "Dakika"
+  seconds: "Sekunde"
+  period: "Kipindi"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Chagua tarehe"
+
+input:
+  cut: "Kata"
+  copy: "Nakili"
+  paste: "Bandika"
+  selectAll: "Chagua yote"
+
+keyboardToolbar:
+  done: "Imekamilika"

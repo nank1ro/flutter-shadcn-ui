@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Oras"
+  minutes: "Minuto"
+  seconds: "Segundo"
+  period: "Panahon"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Pumili ng petsa"
+
+input:
+  cut: "Gupitin"
+  copy: "Kopyahin"
+  paste: "I-paste"
+  selectAll: "Piliin lahat"
+
+keyboardToolbar:
+  done: "Tapos"

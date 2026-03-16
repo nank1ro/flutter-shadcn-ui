@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Óra"
+  minutes: "Perc"
+  seconds: "Másodperc"
+  period: "Időszak"
+  periodPlaceholder: "DE"
+
+datePicker:
+  selectDate: "Válasszon dátumot"
+
+input:
+  cut: "Kivágás"
+  copy: "Másolás"
+  paste: "Beillesztés"
+  selectAll: "Összes kijelölése"
+
+keyboardToolbar:
+  done: "Kész"

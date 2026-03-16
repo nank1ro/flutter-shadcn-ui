@@ -47,7 +47,7 @@ jobs:
           flutter analyze
 
       - name: Test
-        run: flutter test -r github
+        run: flutter test -r github --fail-fast
 
       - name: Downgrade dependencies
         run: |

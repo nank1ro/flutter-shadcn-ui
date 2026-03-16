@@ -270,7 +270,14 @@ class _ShadPopoverState extends State<ShadPopover>
     final effectiveAnchor =
         widget.anchor ??
         theme.popoverTheme.anchor ??
-        const ShadAnchorAuto(offset: Offset(0, 4));
+        const ShadAnchorAuto(
+          offset: Offset(0, 4),
+          fallback: ShadAnchorAuto(
+            offset: Offset(0, -4),
+            followerAnchor: Alignment.topCenter,
+            targetAnchor: Alignment.topCenter,
+          ),
+        );
 
     final effectiveFilter = widget.filter ?? theme.popoverTheme.filter;
 

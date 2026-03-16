@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Orët"
+  minutes: "Minutat"
+  seconds: "Sekondat"
+  period: "Periudha"
+  periodPlaceholder: "PD"
+
+datePicker:
+  selectDate: "Zgjidh datën"
+
+input:
+  cut: "Prit"
+  copy: "Kopjo"
+  paste: "Ngjit"
+  selectAll: "Zgjidh të gjitha"
+
+keyboardToolbar:
+  done: "U krye"

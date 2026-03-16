@@ -1,0 +1,18 @@
+timePicker:
+  hours: "時"
+  minutes: "分"
+  seconds: "秒"
+  period: "午前/午後"
+  periodPlaceholder: "午前"
+
+datePicker:
+  selectDate: "日付を選択"
+
+input:
+  cut: "カット"
+  copy: "コピー"
+  paste: "ペースト"
+  selectAll: "すべて選択"
+
+keyboardToolbar:
+  done: "完了"

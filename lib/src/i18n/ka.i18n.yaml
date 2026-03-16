@@ -1,0 +1,18 @@
+timePicker:
+  hours: "საათი"
+  minutes: "წუთი"
+  seconds: "წამი"
+  period: "პერიოდი"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "აირჩიეთ თარიღი"
+
+input:
+  cut: "ამოჭრა"
+  copy: "კოპირება"
+  paste: "ჩასმა"
+  selectAll: "ყველაფრის მონიშვნა"
+
+keyboardToolbar:
+  done: "მზადაა"

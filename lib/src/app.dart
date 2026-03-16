@@ -9,6 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart'
         GlobalWidgetsLocalizations;
 import 'package:shadcn_ui/src/components/sonner.dart';
 import 'package:shadcn_ui/src/components/toast.dart';
+import 'package:shadcn_ui/src/i18n/localizations_delegate.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/slate.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
@@ -440,11 +441,13 @@ class _ShadAppState extends State<ShadApp> {
   ///  DefaultCupertinoLocalizations.delegate,
   ///  DefaultWidgetsLocalizations.delegate
   /// ```
-  Iterable<LocalizationsDelegate<dynamic>> get localizationsDelegates sync* {
+  Iterable<LocalizationsDelegate<dynamic>>
+  get effectiveLocalizationsDelegates sync* {
     final localizationsDelegates = widget.localizationsDelegates;
     if (localizationsDelegates != null) {
       yield* localizationsDelegates;
     }
+    yield GlobalShadLocalizations.delegate;
     yield GlobalMaterialLocalizations.delegate;
     yield GlobalCupertinoLocalizations.delegate;
     yield GlobalWidgetsLocalizations.delegate;
@@ -611,7 +614,7 @@ class _ShadAppState extends State<ShadApp> {
               shortcuts: widget.shortcuts,
               actions: widget.actions,
               restorationScopeId: widget.restorationScopeId,
-              localizationsDelegates: localizationsDelegates,
+              localizationsDelegates: effectiveLocalizationsDelegates,
               textStyle: TextStyle(color: theme.colorScheme.foreground),
             ),
           );
@@ -644,7 +647,7 @@ class _ShadAppState extends State<ShadApp> {
             shortcuts: widget.shortcuts,
             actions: widget.actions,
             restorationScopeId: widget.restorationScopeId,
-            localizationsDelegates: localizationsDelegates,
+            localizationsDelegates: effectiveLocalizationsDelegates,
             textStyle: TextStyle(color: theme.colorScheme.foreground),
             pageRouteBuilder:
                 widget.pageRouteBuilder ??

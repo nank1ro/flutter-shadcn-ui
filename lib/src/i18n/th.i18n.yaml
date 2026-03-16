@@ -1,0 +1,18 @@
+timePicker:
+  hours: "ชั่วโมง"
+  minutes: "นาที"
+  seconds: "วินาที"
+  period: "ช่วงเวลา"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "เลือกวันที่"
+
+input:
+  cut: "ตัด"
+  copy: "คัดลอก"
+  paste: "วาง"
+  selectAll: "เลือกทั้งหมด"
+
+keyboardToolbar:
+  done: "เสร็จสิ้น"

@@ -1,0 +1,18 @@
+timePicker:
+  hours: "Sati"
+  minutes: "Minuti"
+  seconds: "Sekunde"
+  period: "Period"
+  periodPlaceholder: "AM"
+
+datePicker:
+  selectDate: "Izaberi datum"
+
+input:
+  cut: "Iseci"
+  copy: "Kopiraj"
+  paste: "Nalepi"
+  selectAll: "Izaberi sve"
+
+keyboardToolbar:
+  done: "Gotovo"

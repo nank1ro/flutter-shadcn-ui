@@ -8,6 +8,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/calendar.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
+import 'package:shadcn_ui/src/i18n/localizations_delegate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
@@ -944,10 +945,10 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
   @override
   void didUpdateWidget(covariant ShadDatePicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.selected != null) {
+    if (widget.selected != oldWidget.selected) {
       selected = widget.selected;
     }
-    if (widget.selectedRange != null) {
+    if (widget.selectedRange != oldWidget.selectedRange) {
       selectedRange = widget.selectedRange;
     }
   }
@@ -1355,7 +1356,11 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
                     style: theme.textTheme.muted.fallback(
                       color: theme.colorScheme.mutedForeground,
                     ),
-                    child: widget.placeholder ?? const Text('Select date'),
+                    child:
+                        widget.placeholder ??
+                        Text(
+                          ShadLocalizations.of(context).datePicker.selectDate,
+                        ),
                   )),
       ),
     );
