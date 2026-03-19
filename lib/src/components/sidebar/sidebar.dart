@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 
 import 'package:shadcn_ui/src/components/sidebar/sidebar_scope.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
-import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 
@@ -12,8 +11,6 @@ class ShadSidebar extends StatelessWidget {
     required this.content,
     this.header,
     this.footer,
-    this.width,
-    this.collapsedWidth,
     this.decoration,
     this.backgroundColor,
     this.floatingMargin,
@@ -24,8 +21,6 @@ class ShadSidebar extends StatelessWidget {
   final Widget content;
   final Widget? header;
   final Widget? footer;
-  final double? width;
-  final double? collapsedWidth;
   final ShadDecoration? decoration;
   final Color? backgroundColor;
   final EdgeInsetsGeometry? floatingMargin;
@@ -45,10 +40,10 @@ class ShadSidebar extends StatelessWidget {
         colorScheme.sidebarBackground ??
         colorScheme.card;
 
+    final effectiveDecoration = decoration ?? sidebarTheme.decoration;
+
     final effectiveBorderColor =
         colorScheme.sidebarBorder ?? colorScheme.border;
-
-    final effectiveDecoration = decoration ?? sidebarTheme.decoration;
 
     final effectiveFloatingMargin =
         floatingMargin ??
@@ -75,17 +70,15 @@ class ShadSidebar extends StatelessWidget {
     // Build variant-specific container
     final container = _buildVariantContainer(
       scope: scope,
-      theme: theme,
       sidebarBody: sidebarBody,
       effectiveBackgroundColor: effectiveBackgroundColor,
-      effectiveBorderColor: effectiveBorderColor,
       effectiveDecoration: effectiveDecoration,
+      effectiveBorderColor: effectiveBorderColor,
       effectiveFloatingMargin: effectiveFloatingMargin,
       effectiveFloatingBorderRadius: effectiveFloatingBorderRadius,
       effectiveFloatingShadow: effectiveFloatingShadow,
     );
 
-    // Mobile — full width, scaffold handles slide
     if (scope.isMobile) {
       return SizedBox(
         width: scope.expandedWidth,
@@ -108,10 +101,7 @@ class ShadSidebar extends StatelessWidget {
         final currentWidth = scope.currentWidth;
         if (currentWidth <= 0) return const SizedBox.shrink();
         return ClipRect(
-          child: Container(
-            margin: scope.variant == ShadSidebarVariant.floating
-                ? effectiveFloatingMargin
-                : null,
+          child: SizedBox(
             width: currentWidth,
             child: child,
           ),
@@ -123,25 +113,27 @@ class ShadSidebar extends StatelessWidget {
 
   Widget _buildVariantContainer({
     required ShadSidebarScope scope,
-    required ShadThemeData theme,
     required Widget sidebarBody,
     required Color effectiveBackgroundColor,
     required ShadDecoration? effectiveDecoration,
+    required Color effectiveBorderColor,
     required EdgeInsetsGeometry effectiveFloatingMargin,
     required BorderRadiusGeometry effectiveFloatingBorderRadius,
     required List<BoxShadow> effectiveFloatingShadow,
-    required Color effectiveBorderColor,
   }) {
     if (scope.variant == ShadSidebarVariant.floating) {
-      return Container(
-        decoration: BoxDecoration(
-          color: effectiveBackgroundColor,
-          borderRadius: effectiveFloatingBorderRadius,
-          border: Border.all(color: effectiveBorderColor),
-          boxShadow: effectiveFloatingShadow,
+      return Padding(
+        padding: effectiveFloatingMargin,
+        child: Container(
+          decoration: BoxDecoration(
+            color: effectiveBackgroundColor,
+            borderRadius: effectiveFloatingBorderRadius,
+            border: Border.all(color: effectiveBorderColor),
+            boxShadow: effectiveFloatingShadow,
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: sidebarBody,
         ),
-        clipBehavior: Clip.antiAlias,
-        child: sidebarBody,
       );
     }
 
@@ -152,9 +144,6 @@ class ShadSidebar extends StatelessWidget {
       );
     }
 
-    // -------------------------------------------------------------------
-    // Default — ShadDecorator with theme decoration
-    // -------------------------------------------------------------------
     return ShadDecorator(
       decoration: effectiveDecoration,
       child: ColoredBox(
