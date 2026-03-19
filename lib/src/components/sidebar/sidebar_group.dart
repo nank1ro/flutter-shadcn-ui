@@ -132,18 +132,17 @@ class _GroupLabel extends StatelessWidget {
 
     final sidebarFg = colorScheme.sidebarForeground ?? colorScheme.foreground;
 
-    final baseStyle = theme.textTheme.p;
-
-    final effectiveLabelStyle = baseStyle.merge(
-      labelStyle ??
-          sidebarTheme.groupLabelStyle ??
-          TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: sidebarFg,
-            letterSpacing: 0.5,
-          ),
+    final defaultLabelStyle = TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: sidebarFg,
+      letterSpacing: 0.5,
     );
+
+    final effectiveLabelStyle = theme.textTheme.p
+        .merge(defaultLabelStyle)
+        .merge(sidebarTheme.groupLabelStyle)
+        .merge(labelStyle);
 
     final labelRow = Container(
       height: 32,
