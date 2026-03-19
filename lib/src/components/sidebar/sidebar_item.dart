@@ -307,24 +307,28 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
               sidebarAccentFg)
         : (widget.iconColor ?? sidebarTheme.itemIconColor ?? sidebarFg);
 
-    final effectiveTextStyle = widget.selected
-        ? (widget.activeTextStyle ??
-              (isSubItem
-                  ? sidebarTheme.subItemActiveTextStyle
-                  : sidebarTheme.itemActiveTextStyle) ??
-              TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: sidebarAccentFg,
-              ))
-        : (widget.textStyle ??
-              (isSubItem
-                  ? sidebarTheme.subItemTextStyle
-                  : sidebarTheme.itemTextStyle) ??
-              TextStyle(
-                fontSize: 14,
-                color: sidebarFg,
-              ));
+    final baseTextStyle = theme.textTheme.p;
+
+    final effectiveTextStyle = baseTextStyle.merge(
+      widget.selected
+          ? (widget.activeTextStyle ??
+                (isSubItem
+                    ? sidebarTheme.subItemActiveTextStyle
+                    : sidebarTheme.itemActiveTextStyle) ??
+                TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: sidebarAccentFg,
+                ))
+          : (widget.textStyle ??
+                (isSubItem
+                    ? sidebarTheme.subItemTextStyle
+                    : sidebarTheme.itemTextStyle) ??
+                TextStyle(
+                  fontSize: 14,
+                  color: sidebarFg,
+                )),
+    );
 
     final effectiveIconSize =
         widget.iconSize ?? sidebarTheme.itemIconSize ?? 16.0;
