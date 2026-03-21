@@ -9,7 +9,12 @@ const { execSync } = require('node:child_process');
 function parseIssueBody(issueBody) {
   // Extract Site URL
   const urlMatch = issueBody.match(/### Site URL\s*\n\s*(.+)/i);
-  const siteUrl = urlMatch ? urlMatch[1].trim() : null;
+  let siteUrl = urlMatch ? urlMatch[1].trim() : null;
+
+  // Prepend https:// if no protocol is provided
+  if (siteUrl && !/^https?:\/\//i.test(siteUrl)) {
+    siteUrl = `https://${siteUrl}`;
+  }
 
   // Extract Site Name
   const nameMatch = issueBody.match(/### Site Name\s*\n\s*(.+)/i);
