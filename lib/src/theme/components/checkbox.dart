@@ -11,6 +11,7 @@ class ShadCheckboxTheme with _$ShadCheckboxTheme {
   const ShadCheckboxTheme({
     bool canMerge = true,
     this.color,
+    this.uncheckedColor,
     this.duration,
     this.decoration,
     this.size,
@@ -27,6 +28,9 @@ class ShadCheckboxTheme with _$ShadCheckboxTheme {
 
   /// {@macro ShadCheckbox.color}
   final Color? color;
+
+  /// {@macro ShadCheckbox.uncheckedColor}
+  final Color? uncheckedColor;
 
   /// {@macro ShadCheckbox.size}
   final double? size;
