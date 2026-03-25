@@ -1,3 +1,7 @@
+## 0.53.0
+
+- **FEAT**: Add `ShadSkeleton` component. (thanks to @Isakdl)
+
 ## 0.52.3
 
 - **FIX**: Add missing `groupId` to `ShadSelectMultipleFormField` constructors.
