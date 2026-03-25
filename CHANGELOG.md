@@ -1,3 +1,7 @@
+## 0.52.2
+
+- **FIX**: Add `uncheckedColor` to `ShadCheckbox` to allow customizing the color of the checkbox when unchecked. (thanks to @Isakdl)
+
 ## 0.52.1
 
 - **FIX**: i18n localization for `ShadInput.defaultContextMenuBuilder`.
