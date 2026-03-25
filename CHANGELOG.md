@@ -1,3 +1,7 @@
+## 0.52.3
+
+- **FIX**: Add missing `groupId` to `ShadSelectMultipleFormField` constructors.
+
 ## 0.52.2
 
 - **FIX**: Add `uncheckedColor` to `ShadCheckbox` to allow customizing the color of the checkbox when unchecked. (thanks to @Isakdl)
