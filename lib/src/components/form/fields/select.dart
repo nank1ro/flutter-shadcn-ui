@@ -528,6 +528,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.onPressed}
     VoidCallback? onPressed,
+
+    /// {@macro ShadPopover.groupId}
+    Object? groupId,
   }) : super(
          decorationBuilder: (context) =>
              (ShadTheme.of(context).selectTheme.decoration ??
@@ -564,6 +567,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
              controller: state.controller,
              ensureSelectedVisible: ensureSelectedVisible,
              onPressed: onPressed,
+             groupId: groupId,
            );
          },
        );
@@ -637,6 +641,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.onPressed}
     VoidCallback? onPressed,
+
+    /// {@macro ShadPopover.groupId}
+    Object? groupId,
   }) : super(
          decorationBuilder: (context) =>
              (ShadTheme.of(context).selectTheme.decoration ??
@@ -682,6 +689,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
              searchFocusNode: searchFocusNode,
              onSearchSubmitted: onSearchSubmitted,
              onPressed: onPressed,
+             groupId: groupId,
            );
          },
        );
@@ -753,6 +761,9 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
 
     /// {@macro ShadSelect.onPressed}
     VoidCallback? onPressed,
+
+    /// {@macro ShadPopover.groupId}
+    Object? groupId,
   }) : assert(
          variant == ShadSelectVariant.multiple ||
              variant == ShadSelectVariant.multipleWithSearch,
@@ -804,6 +815,7 @@ class ShadSelectMultipleFormField<T> extends ShadFormBuilderField<Set<T>> {
              searchFocusNode: searchFocusNode,
              onSearchSubmitted: onSearchSubmitted,
              onPressed: onPressed,
+             groupId: groupId,
            );
          },
        );
