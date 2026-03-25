@@ -26,6 +26,7 @@ import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
+import 'package:shadcn_ui/src/theme/components/skeleton.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -93,6 +94,7 @@ abstract class ShadBaseTheme {
     required this.inputOTPTheme,
     required this.menubarTheme,
     required this.separatorTheme,
+    required this.skeletonTheme,
     required this.sonnerTheme,
     required this.textareaTheme,
     required this.defaultKeyboardToolbarTheme,
@@ -149,6 +151,7 @@ abstract class ShadBaseTheme {
   final ShadInputOTPTheme inputOTPTheme;
   final ShadMenubarTheme menubarTheme;
   final ShadSeparatorTheme separatorTheme;
+  final ShadSkeletonTheme skeletonTheme;
   final ShadSonnerTheme sonnerTheme;
   final ShadTextareaTheme textareaTheme;
   final ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme;
@@ -201,6 +204,7 @@ abstract class ShadThemeVariant {
   ShadInputOTPTheme inputOTPTheme();
   ShadMenubarTheme menubarTheme();
   ShadSeparatorTheme separatorTheme();
+  ShadSkeletonTheme skeletonTheme();
   ShadSonnerTheme sonnerTheme();
   ShadTextareaTheme textareaTheme();
   ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme();

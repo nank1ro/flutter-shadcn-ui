@@ -31,6 +31,7 @@ import 'package:shadcn_ui/src/theme/components/resizable.dart';
 import 'package:shadcn_ui/src/theme/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
+import 'package:shadcn_ui/src/theme/components/skeleton.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
@@ -1062,6 +1063,19 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       color: colorScheme.border,
       verticalMargin: const EdgeInsets.symmetric(horizontal: 16),
       horizontalMargin: const EdgeInsets.symmetric(vertical: 16),
+    );
+  }
+
+  @override
+  ShadSkeletonTheme skeletonTheme() {
+    return const ShadSkeletonTheme(
+      pulseHalfDuration: Duration(seconds: 1),
+      pulseCurve: Cubic(0.4, 0, 0.6, 1),
+      minPulseOpacity: 0.5,
+      borderRadius: BorderRadius.horizontal(
+        left: Radius.circular(8),
+        right: Radius.circular(8),
+      ),
     );
   }
 
