@@ -105,13 +105,19 @@ class _ShadSkeletonState extends State<ShadSkeleton>
   void _syncDriving() {
     final theme = ShadTheme.of(context);
     final sk = theme.skeletonTheme;
-    final half =
+    var half =
         widget.pulseHalfDuration ??
         sk.pulseHalfDuration ??
         const Duration(seconds: 1);
+    if (half <= Duration.zero) {
+      half = const Duration(seconds: 1);
+    }
     final curve =
         widget.pulseCurve ?? sk.pulseCurve ?? const Cubic(0.4, 0, 0.6, 1);
-    final minOp = widget.minPulseOpacity ?? sk.minPulseOpacity ?? 0.5;
+    final minOp = (widget.minPulseOpacity ?? sk.minPulseOpacity ?? 0.5).clamp(
+      0.0,
+      1.0,
+    );
 
     _ensureAnimation(half, curve, minOp);
 
@@ -172,8 +178,8 @@ class _ShadSkeletonState extends State<ShadSkeleton>
         animation: opacityAnim,
         builder: (context, child) {
           final factor = opacityAnim.value;
-          final paintColor = effectiveColor.withValues(
-            alpha: (effectiveColor.a * factor).clamp(0.0, 1.0),
+          final paintColor = effectiveColor.withOpacity(
+            (effectiveColor.opacity * factor).clamp(0.0, 1.0),
           );
           return SizedBox(
             width: widget.width,
