@@ -23,6 +23,7 @@ import 'package:playground/pages/radio_group.dart';
 import 'package:playground/pages/resizable.dart';
 import 'package:playground/pages/select.dart';
 import 'package:playground/pages/sheet.dart';
+import 'package:playground/pages/skeleton.dart';
 import 'package:playground/pages/slider.dart';
 import 'package:playground/pages/sonner.dart';
 import 'package:playground/pages/switch.dart';
@@ -180,6 +181,10 @@ final router = GoRouter(
             state.uri.queryParameters['style'] ?? SheetStyle.primary.name;
         return SheetPage(style: SheetStyle.values.byName(style));
       },
+    ),
+    GoRoute(
+      path: '/skeleton',
+      builder: (context, state) => const SkeletonPage(),
     ),
     GoRoute(
       path: '/progress',

@@ -57,7 +57,7 @@ See the [documentation](https://mariuti.com/flutter-shadcn-ui/) to interact with
 - [x] [Select](https://mariuti.com/flutter-shadcn-ui/components/select/)
 - [x] [Separator](https://mariuti.com/flutter-shadcn-ui/components/separator/)
 - [x] [Sheet](https://mariuti.com/flutter-shadcn-ui/components/sheet/)
-- [ ] Skeleton
+- [x] [Skeleton](https://mariuti.com/flutter-shadcn-ui/components/skeleton/)
 - [x] [Slider](https://mariuti.com/flutter-shadcn-ui/components/slider/)
 - [x] [Sonner](https://mariuti.com/flutter-shadcn-ui/components/sonner/)
 - [x] [Switch](https://mariuti.com/flutter-shadcn-ui/components/switch/)

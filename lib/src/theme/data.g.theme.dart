@@ -191,6 +191,11 @@ mixin _$ShadThemeData {
         b.separatorTheme,
         t,
       )!,
+      skeletonTheme: ShadSkeletonTheme.lerp(
+        a.skeletonTheme,
+        b.skeletonTheme,
+        t,
+      )!,
       sonnerTheme: ShadSonnerTheme.lerp(a.sonnerTheme, b.sonnerTheme, t)!,
       textareaTheme: ShadTextareaTheme.lerp(
         a.textareaTheme,
@@ -257,6 +262,7 @@ mixin _$ShadThemeData {
     ShadInputOTPTheme? inputOTPTheme,
     ShadMenubarTheme? menubarTheme,
     ShadSeparatorTheme? separatorTheme,
+    ShadSkeletonTheme? skeletonTheme,
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
     ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
@@ -320,6 +326,7 @@ mixin _$ShadThemeData {
       inputOTPTheme: inputOTPTheme ?? _this.inputOTPTheme,
       menubarTheme: menubarTheme ?? _this.menubarTheme,
       separatorTheme: separatorTheme ?? _this.separatorTheme,
+      skeletonTheme: skeletonTheme ?? _this.skeletonTheme,
       sonnerTheme: sonnerTheme ?? _this.sonnerTheme,
       textareaTheme: textareaTheme ?? _this.textareaTheme,
       defaultKeyboardToolbarTheme:
@@ -408,6 +415,7 @@ mixin _$ShadThemeData {
       inputOTPTheme: _this.inputOTPTheme.merge(other.inputOTPTheme),
       menubarTheme: _this.menubarTheme.merge(other.menubarTheme),
       separatorTheme: _this.separatorTheme.merge(other.separatorTheme),
+      skeletonTheme: _this.skeletonTheme.merge(other.skeletonTheme),
       sonnerTheme: _this.sonnerTheme.merge(other.sonnerTheme),
       textareaTheme: _this.textareaTheme.merge(other.textareaTheme),
       defaultKeyboardToolbarTheme: _this.defaultKeyboardToolbarTheme.merge(
@@ -480,6 +488,7 @@ mixin _$ShadThemeData {
         _other.inputOTPTheme == _this.inputOTPTheme &&
         _other.menubarTheme == _this.menubarTheme &&
         _other.separatorTheme == _this.separatorTheme &&
+        _other.skeletonTheme == _this.skeletonTheme &&
         _other.sonnerTheme == _this.sonnerTheme &&
         _other.textareaTheme == _this.textareaTheme &&
         _other.defaultKeyboardToolbarTheme == _this.defaultKeyboardToolbarTheme;
@@ -542,6 +551,7 @@ mixin _$ShadThemeData {
       _this.inputOTPTheme,
       _this.menubarTheme,
       _this.separatorTheme,
+      _this.skeletonTheme,
       _this.sonnerTheme,
       _this.textareaTheme,
       _this.defaultKeyboardToolbarTheme,
