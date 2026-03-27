@@ -156,6 +156,7 @@ export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
 export 'src/utils/provider_index.dart';
 export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
+export 'src/utils/clipboard/clipboard_service.dart';
 export 'src/utils/text_editing_controller.dart';
 
 typedef AnimateEffect<T> = _animate.Effect<T>;

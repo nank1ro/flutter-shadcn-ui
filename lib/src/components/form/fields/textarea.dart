@@ -6,6 +6,7 @@ import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/clipboard/clipboard_service.dart';
 
 class ShadTextareaFormField extends ShadFormBuilderField<String> {
   ShadTextareaFormField({
@@ -209,6 +210,12 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadInput.verticalGap}
     double? verticalGap,
+
+    /// {@macro ShadInput.useBrowserContextMenu}
+    bool? useBrowserContextMenu,
+
+    /// {@macro ShadInput.onPasteFiles}
+    ValueChanged<List<ShadClipboardItem>>? onPasteFiles,
   }) : super(
          initialValue: controller != null ? controller.text : initialValue,
          validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -285,6 +292,8 @@ class ShadTextareaFormField extends ShadFormBuilderField<String> {
              trailing: trailing,
              onLineCountChange: onLineCountChange,
              verticalGap: verticalGap,
+             useBrowserContextMenu: useBrowserContextMenu,
+             onPasteFiles: onPasteFiles,
            );
          },
        );
