@@ -1,3 +1,7 @@
+## 0.53.0
+
+- **FEAT**: Use native browser context menu on web and support `onPasteFiles`.
+
 ## 0.52.3
 
 - **FIX**: Add missing `groupId` to `ShadSelectMultipleFormField` constructors.

@@ -137,6 +137,7 @@ export 'src/theme/themes/shadows.dart';
 export 'src/utils/animate.dart';
 export 'src/utils/animation_builder.dart';
 export 'src/utils/border.dart';
+export 'src/utils/clipboard/clipboard_service.dart';
 export 'src/utils/effects.dart';
 export 'src/utils/extensions/breakpoints.dart';
 export 'src/utils/extensions/date_time.dart';

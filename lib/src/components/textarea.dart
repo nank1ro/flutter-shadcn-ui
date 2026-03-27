@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/clipboard/clipboard_service.dart';
 
 /// A customizable multiline textarea widget with
 /// adjustable height and optional resizing grip.
@@ -96,6 +97,9 @@ class ShadTextarea extends StatefulWidget {
     this.trailing,
     this.onLineCountChange,
     this.verticalGap,
+    this.useBrowserContextMenu,
+    this.onPasteFiles,
+    this.onPasteFilesError,
   }) : enableInteractiveSelection = enableInteractiveSelection ?? !readOnly,
        assert(
          initialValue == null || controller == null,
@@ -453,6 +457,15 @@ class ShadTextarea extends StatefulWidget {
   /// {@macro ShadInput.onLineCountChange}
   final ValueChanged<int>? onLineCountChange;
 
+  /// {@macro ShadInput.useBrowserContextMenu}
+  final bool? useBrowserContextMenu;
+
+  /// {@macro ShadInput.onPasteFiles}
+  final ValueChanged<List<ShadClipboardItem>>? onPasteFiles;
+
+  /// {@macro ShadInput.onPasteFilesError}
+  final ValueChanged<Object>? onPasteFilesError;
+
   @override
   State<ShadTextarea> createState() => _ShadTextareaState();
 }
@@ -667,6 +680,9 @@ class _ShadTextareaState extends State<ShadTextarea> {
             trailing: widget.trailing,
             onLineCountChange: widget.onLineCountChange,
             verticalGap: widget.verticalGap,
+            useBrowserContextMenu: widget.useBrowserContextMenu,
+            onPasteFiles: widget.onPasteFiles,
+            onPasteFilesError: widget.onPasteFilesError,
           ),
         ),
         if (widget.resizable)
