@@ -301,13 +301,18 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   // Keyboard shortcut
   // ---------------------------------------------------------------------------
 
+  static const _defaultShortcuts = <ShortcutActivator>[
+    SingleActivator(LogicalKeyboardKey.keyB, meta: true),
+    SingleActivator(LogicalKeyboardKey.keyB, control: true),
+  ];
+
   Widget _wrapWithShortcut(Widget child) {
+    final activators = widget.shortcuts ?? _defaultShortcuts;
+
     return Shortcuts(
-      shortcuts: const <ShortcutActivator, Intent>{
-        SingleActivator(LogicalKeyboardKey.keyB, meta: true):
-            _ToggleSidebarIntent(),
-        SingleActivator(LogicalKeyboardKey.keyB, control: true):
-            _ToggleSidebarIntent(),
+      shortcuts: {
+        for (final activator in activators)
+          activator: const _ToggleSidebarIntent(),
       },
       child: Actions(
         actions: <Type, Action<Intent>>{
