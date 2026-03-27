@@ -1,3 +1,7 @@
+## 0.53.1
+
+- **FIX**: `ShadThemeData.merge` now properly merges the `ShadColorScheme` instead of replacing it. The `custom` color maps are combined, with the overriding theme's values taking precedence for duplicate keys.
+
 ## 0.53.0
 
 - **FEAT**: Use native browser context menu on web and support `onPasteFiles`.
