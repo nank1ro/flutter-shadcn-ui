@@ -234,6 +234,7 @@ class ShadColorScheme {
   /// for duplicate keys.
   ShadColorScheme merge(ShadColorScheme? other) {
     if (other == null) return this;
+    if (!other.canMerge) return other;
     return copyWith(
       background: other.background,
       foreground: other.foreground,
