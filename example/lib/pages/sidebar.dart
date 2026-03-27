@@ -15,7 +15,7 @@ class SidebarPage extends StatefulWidget {
 class _SidebarPageState extends State<SidebarPage> {
   int _currentTab = 0;
 
-  final collapseModeSignal = Signal<ShadSidebarCollapsibleMode>(
+  final collapseModeSignal = Signal(
     ShadSidebarCollapsibleMode.offcanvas,
   );
   final variantSignal = Signal<ShadSidebarVariant>(ShadSidebarVariant.sidebar);
