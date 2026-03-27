@@ -99,6 +99,7 @@ class ShadTextarea extends StatefulWidget {
     this.verticalGap,
     this.useBrowserContextMenu,
     this.onPasteFiles,
+    this.onPasteFilesError,
   }) : enableInteractiveSelection = enableInteractiveSelection ?? !readOnly,
        assert(
          initialValue == null || controller == null,
@@ -462,6 +463,9 @@ class ShadTextarea extends StatefulWidget {
   /// {@macro ShadInput.onPasteFiles}
   final ValueChanged<List<ShadClipboardItem>>? onPasteFiles;
 
+  /// {@macro ShadInput.onPasteFilesError}
+  final ValueChanged<Object>? onPasteFilesError;
+
   @override
   State<ShadTextarea> createState() => _ShadTextareaState();
 }
@@ -678,6 +682,7 @@ class _ShadTextareaState extends State<ShadTextarea> {
             verticalGap: widget.verticalGap,
             useBrowserContextMenu: widget.useBrowserContextMenu,
             onPasteFiles: widget.onPasteFiles,
+            onPasteFilesError: widget.onPasteFilesError,
           ),
         ),
         if (widget.resizable)

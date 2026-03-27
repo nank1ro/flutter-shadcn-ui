@@ -4,6 +4,7 @@ import 'package:shadcn_ui/src/utils/clipboard/clipboard_service.dart';
 import 'package:web/web.dart' as web;
 
 final _listeners = <PasteFilesCallback>{};
+final _errorListeners = <PasteFilesErrorCallback>{};
 bool _initialized = false;
 
 void _ensureInitialized() {
@@ -26,6 +27,10 @@ void _onPaste(web.Event event) {
       for (final listener in [..._listeners]) {
         listener(files);
       }
+    }
+  }, onError: (Object error) {
+    for (final listener in [..._errorListeners]) {
+      listener(error);
     }
   });
 }
@@ -56,4 +61,13 @@ void addPasteFilesListener(PasteFilesCallback callback) {
 
 void removePasteFilesListener(PasteFilesCallback callback) {
   _listeners.remove(callback);
+}
+
+void addPasteFilesErrorListener(PasteFilesErrorCallback callback) {
+  _ensureInitialized();
+  _errorListeners.add(callback);
+}
+
+void removePasteFilesErrorListener(PasteFilesErrorCallback callback) {
+  _errorListeners.remove(callback);
 }

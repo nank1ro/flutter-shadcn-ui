@@ -131,6 +131,7 @@ class ShadInput extends StatefulWidget {
     this.verticalGap,
     this.useBrowserContextMenu,
     this.onPasteFiles,
+    this.onPasteFilesError,
   }) : smartDashesType =
            smartDashesType ??
            (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
@@ -657,6 +658,13 @@ class ShadInput extends StatefulWidget {
   /// {@endtemplate}
   final ValueChanged<List<ShadClipboardItem>>? onPasteFiles;
 
+  /// {@template ShadInput.onPasteFilesError}
+  /// Called when an error occurs while extracting files from the clipboard.
+  ///
+  /// Only works on web. On other platforms, this callback is never invoked.
+  /// {@endtemplate}
+  final ValueChanged<Object>? onPasteFilesError;
+
   /// A constant representing no maximum length for the input.
   static const int noMaxLength = -1;
 
@@ -707,6 +715,9 @@ class ShadInputState extends State<ShadInput>
     if (widget.onPasteFiles != null && kIsWeb) {
       addPasteFilesListener(_onPasteFiles);
     }
+    if (widget.onPasteFilesError != null && kIsWeb) {
+      addPasteFilesErrorListener(_onPasteFilesError);
+    }
   }
 
   @override
@@ -733,6 +744,15 @@ class ShadInputState extends State<ShadInput>
       }
     }
 
+    if (kIsWeb && widget.onPasteFilesError != oldWidget.onPasteFilesError) {
+      if (oldWidget.onPasteFilesError != null) {
+        removePasteFilesErrorListener(_onPasteFilesError);
+      }
+      if (widget.onPasteFilesError != null) {
+        addPasteFilesErrorListener(_onPasteFilesError);
+      }
+    }
+
     if (widget.readOnly != oldWidget.readOnly) {
       effectiveFocusNode.canRequestFocus = !widget.readOnly;
       if (effectiveFocusNode.hasFocus &&
@@ -745,7 +765,12 @@ class ShadInputState extends State<ShadInput>
   @override
   void dispose() {
     effectiveFocusNode.removeListener(onFocusChange);
-    if (kIsWeb) removePasteFilesListener(_onPasteFiles);
+    if (kIsWeb && widget.onPasteFiles != null) {
+      removePasteFilesListener(_onPasteFiles);
+    }
+    if (kIsWeb && widget.onPasteFilesError != null) {
+      removePasteFilesErrorListener(_onPasteFilesError);
+    }
     if (widget.focusNode == null) effectiveFocusNode.dispose();
     _controller?.dispose();
     _scrollController?.dispose();
@@ -841,6 +866,11 @@ class ShadInputState extends State<ShadInput>
   void _onPasteFiles(List<ShadClipboardItem> files) {
     if (!effectiveFocusNode.hasFocus) return;
     widget.onPasteFiles?.call(files);
+  }
+
+  void _onPasteFilesError(Object error) {
+    if (!effectiveFocusNode.hasFocus) return;
+    widget.onPasteFilesError?.call(error);
   }
 
   bool _shouldShowSelectionHandles(SelectionChangedCause? cause) {

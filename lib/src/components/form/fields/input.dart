@@ -253,6 +253,9 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadInput.onPasteFiles}
     ValueChanged<List<ShadClipboardItem>>? onPasteFiles,
+
+    /// {@macro ShadInput.onPasteFilesError}
+    ValueChanged<Object>? onPasteFilesError,
   }) : super(
          initialValue: controller != null ? controller.text : initialValue,
          validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -343,6 +346,7 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
              editableTextSize: editableTextSize,
              useBrowserContextMenu: useBrowserContextMenu,
              onPasteFiles: onPasteFiles,
+             onPasteFilesError: onPasteFilesError,
            );
          },
        );
