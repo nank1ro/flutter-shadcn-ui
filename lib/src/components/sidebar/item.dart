@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:shadcn_ui/src/components/button.dart';
-import 'package:shadcn_ui/src/components/sidebar/sidebar_scope.dart';
+import 'package:shadcn_ui/src/components/sidebar/scope.dart';
 import 'package:shadcn_ui/src/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';

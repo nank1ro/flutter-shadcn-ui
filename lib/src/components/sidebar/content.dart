@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:shadcn_ui/src/components/sidebar/sidebar_scope.dart';
+import 'package:shadcn_ui/src/components/sidebar/scope.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 /// The scrollable middle section of a `ShadSidebar`.

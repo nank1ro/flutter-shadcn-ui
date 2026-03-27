@@ -9,7 +9,8 @@ part 'sidebar.g.theme.dart';
 @immutable
 class ShadSidebarTheme with _$ShadSidebarTheme {
   const ShadSidebarTheme({
-    bool canMerge = true, // Sizing
+    bool canMerge = true,
+    // Sizing
     this.width,
     this.collapsedWidth,
     this.mobileBreakpoint,

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-import 'package:shadcn_ui/src/components/sidebar/sidebar_scope.dart';
+import 'package:shadcn_ui/src/components/sidebar/scope.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 /// A section within a sidebar that groups related items.

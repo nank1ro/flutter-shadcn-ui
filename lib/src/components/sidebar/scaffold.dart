@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
-import 'package:shadcn_ui/src/components/sidebar/sidebar_scope.dart';
+import 'package:shadcn_ui/src/components/sidebar/controller.dart';
+import 'package:shadcn_ui/src/components/sidebar/scope.dart';
 import 'package:shadcn_ui/src/theme/components/sidebar.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';

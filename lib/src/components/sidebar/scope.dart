@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
+import 'package:shadcn_ui/src/components/sidebar/controller.dart';
 
 // ---------------------------------------------------------------------------
 // Enums
@@ -15,9 +15,7 @@ enum ShadSidebarSide {
   start,
 
   /// The ending edge: right in LTR, left in RTL.
-  end;
-
-  bool get isStart => this == start;
+  end,
 }
 
 /// Visual variant of the sidebar.
