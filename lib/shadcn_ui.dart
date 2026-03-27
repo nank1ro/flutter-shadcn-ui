@@ -137,6 +137,7 @@ export 'src/theme/themes/shadows.dart';
 export 'src/utils/animate.dart';
 export 'src/utils/animation_builder.dart';
 export 'src/utils/border.dart';
+export 'src/utils/clipboard/clipboard_service.dart';
 export 'src/utils/effects.dart';
 export 'src/utils/extensions/breakpoints.dart';
 export 'src/utils/extensions/date_time.dart';
@@ -156,7 +157,6 @@ export 'src/utils/provider.dart' hide ProviderReadExt, ProviderWatchExt;
 export 'src/utils/provider_index.dart';
 export 'src/utils/responsive.dart';
 export 'src/utils/states_controller.dart';
-export 'src/utils/clipboard/clipboard_service.dart';
 export 'src/utils/text_editing_controller.dart';
 
 typedef AnimateEffect<T> = _animate.Effect<T>;
