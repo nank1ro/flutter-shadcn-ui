@@ -34,7 +34,10 @@ class ShadSidebarFooter extends StatelessWidget {
         sidebarTheme.footerPadding ??
         const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
-    final effectiveDecoration = decoration ?? sidebarTheme.footerDecoration;
+    final effectiveDecoration =
+        (sidebarTheme.footerDecoration ?? const ShadDecoration()).merge(
+          decoration,
+        );
 
     return ShadDecorator(
       decoration: effectiveDecoration,

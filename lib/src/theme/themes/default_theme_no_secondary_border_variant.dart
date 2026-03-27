@@ -1167,13 +1167,13 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
         horizontal: 8,
       ),
       subItemsBorderWidth: 1,
-      separatorPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      separatorMargin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       separatorThickness: 1,
       triggerSize: 36,
       triggerPadding: EdgeInsets.zero,
       floatingMargin: const EdgeInsets.all(8),
       floatingBorderRadius: BorderRadius.circular(8),
-      floatingShadow: ShadShadows.sm,
+      floatingShadows: ShadShadows.sm,
     );
   }
 }

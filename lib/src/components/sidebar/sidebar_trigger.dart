@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/sidebar/sidebar_controller.dart';
@@ -19,9 +20,46 @@ class ShadSidebarTrigger extends StatelessWidget {
     super.key,
     this.controller,
     this.icon,
-    this.size,
-    this.padding,
     this.onPressed,
+    this.padding,
+    this.size,
+  }) : variant = ShadButtonVariant.ghost;
+
+  const ShadSidebarTrigger.primary({
+    super.key,
+    this.controller,
+    this.icon,
+    this.onPressed,
+    this.padding,
+    this.size,
+  }) : variant = ShadButtonVariant.primary;
+
+  const ShadSidebarTrigger.outline({
+    super.key,
+    this.controller,
+    this.icon,
+    this.onPressed,
+    this.padding,
+    this.size,
+  }) : variant = ShadButtonVariant.outline;
+
+  const ShadSidebarTrigger.secondary({
+    super.key,
+    this.controller,
+    this.icon,
+    this.onPressed,
+    this.padding,
+    this.size,
+  }) : variant = ShadButtonVariant.secondary;
+
+  const ShadSidebarTrigger.raw({
+    super.key,
+    required this.variant,
+    this.controller,
+    this.icon,
+    this.onPressed,
+    this.padding,
+    this.size,
   });
 
   /// If provided, this controller is toggled instead of the nearest scope.
@@ -40,6 +78,9 @@ class ShadSidebarTrigger extends StatelessWidget {
   /// Optional callback invoked **in addition** to toggling the sidebar.
   final VoidCallback? onPressed;
 
+  /// Defaults to `ShadButtonVariant.ghost`.
+  final ShadButtonVariant variant;
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
@@ -55,8 +96,8 @@ class ShadSidebarTrigger extends StatelessWidget {
 
     final effectiveIcon =
         icon ??
-        _DefaultTriggerIcon(
-          size: effectiveSize * 0.5,
+        Icon(
+          LucideIcons.panelLeft,
           color: theme.colorScheme.foreground,
         );
 
@@ -65,7 +106,8 @@ class ShadSidebarTrigger extends StatelessWidget {
       label: isOpen ? 'Close sidebar' : 'Open sidebar',
       child: Padding(
         padding: effectivePadding,
-        child: ShadButton.ghost(
+        child: ShadButton.raw(
+          variant: variant,
           onPressed: () {
             resolvedController?.toggle();
             onPressed?.call();
@@ -77,64 +119,5 @@ class ShadSidebarTrigger extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Default trigger icon
-// ---------------------------------------------------------------------------
-
-class _DefaultTriggerIcon extends StatelessWidget {
-  const _DefaultTriggerIcon({
-    required this.size,
-    required this.color,
-  });
-
-  final double size;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: CustomPaint(
-        painter: _PanelLeftPainter(color: color),
-      ),
-    );
-  }
-}
-
-class _PanelLeftPainter extends CustomPainter {
-  _PanelLeftPainter({required this.color});
-
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 1.5
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-
-    final rect = RRect.fromRectAndRadius(
-      Rect.fromLTWH(0, 0, size.width, size.height),
-      const Radius.circular(2),
-    );
-    canvas.drawRRect(rect, paint);
-
-    final dividerX = size.width * 0.33;
-    canvas.drawLine(
-      Offset(dividerX, 0),
-      Offset(dividerX, size.height),
-      paint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(_PanelLeftPainter oldDelegate) {
-    return oldDelegate.color != color;
   }
 }

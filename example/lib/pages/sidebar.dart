@@ -13,14 +13,18 @@ class SidebarPage extends StatefulWidget {
 }
 
 class _SidebarPageState extends State<SidebarPage> {
-  int _currentTab = 0;
+  int currentTab = 0;
 
   final collapseModeSignal = Signal(
+    autoDispose: false,
     ShadSidebarCollapsibleMode.offcanvas,
   );
-  final variantSignal = Signal<ShadSidebarVariant>(ShadSidebarVariant.sidebar);
+  final variantSignal = Signal(
+    ShadSidebarVariant.sidebar,
+    autoDispose: false,
+  );
 
-  static const _tabs = [
+  static const tabs = [
     'Single Sidebar',
     'Dual Sidebars',
     'Nested Sidebars',
@@ -80,7 +84,7 @@ class _SidebarPageState extends State<SidebarPage> {
                 },
               ),
               const ShadSeparator.horizontal(),
-              if (_currentTab == 0) ...[
+              if (currentTab == 0) ...[
                 MyEnumProperty(
                   label: 'Variant',
                   value: variantSignal.value,
@@ -97,29 +101,27 @@ class _SidebarPageState extends State<SidebarPage> {
                 const ShadSeparator.horizontal(),
               ],
 
-              SizedBox(
-                child: Column(
-                  spacing: 8,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(_tabs.length, (i) {
-                    final isSelected = _currentTab == i;
-                    return ShadButton.raw(
-                      onPressed: () => setState(() => _currentTab = i),
-                      size: ShadButtonSize.sm,
-                      variant: isSelected
-                          ? ShadButtonVariant.primary
-                          : ShadButtonVariant.outline,
-                      child: Text(_tabs[i]),
-                    );
-                  }),
-                ),
+              Column(
+                spacing: 8,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(tabs.length, (i) {
+                  final isSelected = currentTab == i;
+                  return ShadButton.raw(
+                    onPressed: () => setState(() => currentTab = i),
+                    size: ShadButtonSize.sm,
+                    variant: isSelected
+                        ? ShadButtonVariant.primary
+                        : ShadButtonVariant.outline,
+                    child: Text(tabs[i]),
+                  );
+                }),
               ),
             ],
             wrapChildrenInScrollable: false,
             wrapSingleChildInColumn: false,
             children: [
-              switch (_currentTab) {
+              switch (currentTab) {
                 0 => SignalBuilder(
                   builder: (context, _) {
                     return _DefaultSidebarExample(
@@ -200,13 +202,13 @@ class _DualSidebarExample extends StatefulWidget {
 }
 
 class _DualSidebarExampleState extends State<_DualSidebarExample> {
-  final _startController = ShadSidebarController();
-  final _endController = ShadSidebarController();
+  final startController = ShadSidebarController();
+  final endController = ShadSidebarController();
 
   @override
   void dispose() {
-    _startController.dispose();
-    _endController.dispose();
+    startController.dispose();
+    endController.dispose();
     super.dispose();
   }
 
@@ -214,7 +216,7 @@ class _DualSidebarExampleState extends State<_DualSidebarExample> {
   Widget build(BuildContext context) {
     return ShadSidebarScaffold(
       side: ShadSidebarSide.start,
-      controller: _startController,
+      controller: startController,
       variant: ShadSidebarVariant.sidebar,
       collapsibleMode: ShadSidebarCollapsibleMode.offcanvas,
       sidebar: ShadSidebar(
@@ -235,7 +237,7 @@ class _DualSidebarExampleState extends State<_DualSidebarExample> {
       // Nested scaffold for end sidebar
       child: ShadSidebarScaffold(
         side: ShadSidebarSide.end,
-        controller: _endController,
+        controller: endController,
         variant: ShadSidebarVariant.sidebar,
         collapsibleMode: ShadSidebarCollapsibleMode.offcanvas,
         width: 220,
@@ -255,8 +257,8 @@ class _DualSidebarExampleState extends State<_DualSidebarExample> {
           ),
         ),
         child: _DualSidebarMainContent(
-          startController: _startController,
-          endController: _endController,
+          startController: startController,
+          endController: endController,
         ),
       ),
     );
@@ -363,13 +365,13 @@ class _NestedSidebarExample extends StatefulWidget {
 }
 
 class _NestedSidebarExampleState extends State<_NestedSidebarExample> {
-  final _pinnedController = ShadSidebarController(isOpen: false);
-  final _collapsibleController = ShadSidebarController();
+  final pinnedController = ShadSidebarController(isOpen: false);
+  final collapsibleController = ShadSidebarController();
 
   @override
   void dispose() {
-    _pinnedController.dispose();
-    _collapsibleController.dispose();
+    pinnedController.dispose();
+    collapsibleController.dispose();
     super.dispose();
   }
 
@@ -377,7 +379,7 @@ class _NestedSidebarExampleState extends State<_NestedSidebarExample> {
   Widget build(BuildContext context) {
     return ShadSidebarScaffold(
       side: ShadSidebarSide.start,
-      controller: _pinnedController,
+      controller: pinnedController,
       variant: ShadSidebarVariant.sidebar,
       collapsibleMode: ShadSidebarCollapsibleMode.icon,
       sidebar: ShadSidebar(
@@ -405,7 +407,7 @@ class _NestedSidebarExampleState extends State<_NestedSidebarExample> {
       // Nested scaffold for second sidebar
       child: ShadSidebarScaffold(
         side: ShadSidebarSide.start,
-        controller: _collapsibleController,
+        controller: collapsibleController,
         variant: ShadSidebarVariant.sidebar,
         collapsibleMode: ShadSidebarCollapsibleMode.offcanvas,
         width: 220,
@@ -476,7 +478,7 @@ class _NestedSidebarExampleState extends State<_NestedSidebarExample> {
           ),
         ),
         child: _NestedSidebarMainContent(
-          collapsibleController: _collapsibleController,
+          collapsibleController: collapsibleController,
         ),
       ),
     );
@@ -908,33 +910,33 @@ class _PlatformGroupWithTooltips extends StatelessWidget {
       children: [
         ShadSidebarItem(
           icon: const Icon(Icons.home_outlined),
-          tooltip: 'Home',
+          tooltip: Text('Home'),
           selected: true,
           onPressed: () {},
           child: const Text('Home'),
         ),
         ShadSidebarItem(
           icon: const Icon(Icons.inbox_outlined),
-          tooltip: 'Inbox',
+          tooltip: Text('Inbox'),
           trailing: _Badge('24'),
           onPressed: () {},
           child: const Text('Inbox'),
         ),
         ShadSidebarItem(
           icon: const Icon(Icons.calendar_today_outlined),
-          tooltip: 'Calendar',
+          tooltip: Text('Calendar'),
           onPressed: () {},
           child: const Text('Calendar'),
         ),
         ShadSidebarItem(
           icon: const Icon(Icons.search_rounded),
-          tooltip: 'Search',
+          tooltip: Text('Search'),
           onPressed: () {},
           child: const Text('Search'),
         ),
         ShadSidebarItem(
           icon: const Icon(Icons.settings_outlined),
-          tooltip: 'Settings',
+          tooltip: Text('Settings'),
           onPressed: () {},
           child: const Text('Settings'),
         ),

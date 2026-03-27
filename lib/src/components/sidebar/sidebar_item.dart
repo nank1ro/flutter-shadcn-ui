@@ -12,8 +12,9 @@ import 'package:shadcn_ui/src/utils/border.dart';
 // Depth tracking
 // ---------------------------------------------------------------------------
 
-class _ShadSidebarItemDepth extends InheritedWidget {
-  const _ShadSidebarItemDepth({
+class ShadSidebarItemDepth extends InheritedWidget {
+  const ShadSidebarItemDepth({
+    super.key,
     required this.depth,
     required super.child,
   });
@@ -22,13 +23,13 @@ class _ShadSidebarItemDepth extends InheritedWidget {
 
   static int of(BuildContext context) {
     return context
-            .dependOnInheritedWidgetOfExactType<_ShadSidebarItemDepth>()
+            .dependOnInheritedWidgetOfExactType<ShadSidebarItemDepth>()
             ?.depth ??
         0;
   }
 
   @override
-  bool updateShouldNotify(_ShadSidebarItemDepth oldWidget) {
+  bool updateShouldNotify(ShadSidebarItemDepth oldWidget) {
     return depth != oldWidget.depth;
   }
 }
@@ -144,7 +145,7 @@ class ShadSidebarItem extends StatefulWidget {
   final Widget? trailing;
   final VoidCallback? onPressed;
   final bool selected;
-  final String? tooltip;
+  final Widget? tooltip;
   final List<Widget>? children;
   final bool initiallyExpanded;
   final ValueChanged<bool>? onExpansionChanged;
@@ -171,21 +172,21 @@ class ShadSidebarItem extends StatefulWidget {
 
 class _ShadSidebarItemState extends State<ShadSidebarItem>
     with SingleTickerProviderStateMixin {
-  bool _isExpanded = false;
+  bool isExpanded = false;
 
-  AnimationController? _expansionController;
-  CurvedAnimation? _expansionAnimation;
+  AnimationController? expansionController;
+  CurvedAnimation? expansionAnimation;
 
-  bool get _isCollapsible =>
+  bool get isCollapsible =>
       widget.variant == ShadSidebarItemVariant.collapsible;
 
-  bool get _hasChildren =>
+  bool get hasChildren =>
       widget.children != null && widget.children!.isNotEmpty;
 
   @override
   void initState() {
     super.initState();
-    _initExpansion();
+    initExpansion();
   }
 
   @override
@@ -193,65 +194,65 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
     super.didUpdateWidget(oldWidget);
     final wasCollapsible =
         oldWidget.variant == ShadSidebarItemVariant.collapsible;
-    if (_isCollapsible && !wasCollapsible) {
-      _initExpansion();
-    } else if (!_isCollapsible && wasCollapsible) {
-      _disposeExpansion();
+    if (isCollapsible && !wasCollapsible) {
+      initExpansion();
+    } else if (!isCollapsible && wasCollapsible) {
+      disposeExpansion();
     }
   }
 
   @override
   void dispose() {
-    _disposeExpansion();
+    disposeExpansion();
     super.dispose();
   }
 
-  void _initExpansion() {
-    if (!_isCollapsible) return;
-    _isExpanded = widget.initiallyExpanded;
-    _expansionController = AnimationController(
+  void initExpansion() {
+    if (!isCollapsible) return;
+    isExpanded = widget.initiallyExpanded;
+    expansionController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
-      value: _isExpanded ? 1.0 : 0.0,
+      value: isExpanded ? 1.0 : 0.0,
     );
-    _expansionAnimation = CurvedAnimation(
-      parent: _expansionController!,
+    expansionAnimation = CurvedAnimation(
+      parent: expansionController!,
       curve: Curves.easeInOut,
     );
   }
 
-  void _disposeExpansion() {
-    _expansionAnimation?.dispose();
-    _expansionAnimation = null;
-    _expansionController?.dispose();
-    _expansionController = null;
-    _isExpanded = false;
+  void disposeExpansion() {
+    expansionAnimation?.dispose();
+    expansionAnimation = null;
+    expansionController?.dispose();
+    expansionController = null;
+    isExpanded = false;
   }
 
-  void _toggleExpansion() {
-    setState(() => _isExpanded = !_isExpanded);
-    if (_isExpanded) {
-      _expansionController!.forward();
+  void toggleExpansion() {
+    setState(() => isExpanded = !isExpanded);
+    if (isExpanded) {
+      expansionController!.forward();
     } else {
-      _expansionController!.reverse();
+      expansionController!.reverse();
     }
-    widget.onExpansionChanged?.call(_isExpanded);
+    widget.onExpansionChanged?.call(isExpanded);
   }
 
-  void _handleTap() {
+  void handleTap() {
     final scope = ShadSidebarScope.maybeOf(context);
 
     if (scope != null &&
         scope.collapsibleMode == ShadSidebarCollapsibleMode.icon &&
         scope.animation.status == AnimationStatus.dismissed &&
-        _isCollapsible) {
+        isCollapsible) {
       scope.controller.open();
-      if (!_isExpanded) _toggleExpansion();
+      if (!isExpanded) toggleExpansion();
       return;
     }
 
-    if (_isCollapsible) {
-      _toggleExpansion();
+    if (isCollapsible) {
+      toggleExpansion();
     }
     widget.onPressed?.call();
   }
@@ -262,7 +263,7 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
     final sidebarTheme = theme.sidebarTheme;
     final colorScheme = theme.colorScheme;
     final scope = ShadSidebarScope.of(context);
-    final depth = _ShadSidebarItemDepth.of(context);
+    final depth = ShadSidebarItemDepth.of(context);
     final isSubItem = depth > 0;
 
     // -- Resolve sidebar colors --
@@ -370,9 +371,9 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
         ? Tween<double>(begin: 0, end: -0.25)
         : Tween<double>(begin: 0, end: 0.25);
     var trailing = widget.trailing;
-    if (trailing == null && _isCollapsible) {
+    if (trailing == null && isCollapsible) {
       trailing = RotationTransition(
-        turns: chevronTurns.animate(_expansionAnimation!),
+        turns: chevronTurns.animate(expansionAnimation!),
         child: _DefaultChevron(
           size: effectiveIconSize,
           color: effectiveFgColor,
@@ -397,7 +398,7 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
           // Fully collapsed → icon-only button with tooltip
           if (scope.animation.status == AnimationStatus.dismissed) {
             Widget button = ShadButton.ghost(
-              onPressed: _handleTap,
+              onPressed: handleTap,
               width: effectiveHeight,
               height: effectiveHeight,
               padding: EdgeInsets.zero,
@@ -411,7 +412,7 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
 
             if (widget.tooltip != null) {
               button = ShadTooltip(
-                builder: (context) => Text(widget.tooltip!),
+                builder: (context) => widget.tooltip!,
                 child: button,
               );
             }
@@ -519,7 +520,7 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
     }
 
     final Widget button = ShadButton.ghost(
-      onPressed: _handleTap,
+      onPressed: handleTap,
       width: double.infinity,
       height: effectiveHeight,
       padding: effectivePadding,
@@ -538,11 +539,11 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
       ),
     );
 
-    if (!_hasChildren) return button;
+    if (!hasChildren) return button;
 
     // -- Sub-items --
 
-    Widget subItems = _ShadSidebarItemDepth(
+    Widget subItems = ShadSidebarItemDepth(
       depth: depth + 1,
       child: Container(
         margin: effectiveSubItemsMargin,
@@ -564,9 +565,9 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
       ),
     );
 
-    if (_isCollapsible) {
+    if (isCollapsible) {
       subItems = SizeTransition(
-        sizeFactor: _expansionAnimation!,
+        sizeFactor: expansionAnimation!,
         axisAlignment: -1,
         child: subItems,
       );

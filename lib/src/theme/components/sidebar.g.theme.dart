@@ -138,9 +138,9 @@ mixin _$ShadSidebarTheme {
         t,
       ),
       subItemsSpacing: lerpDouble$(a.subItemsSpacing, b.subItemsSpacing, t),
-      separatorPadding: EdgeInsetsGeometry.lerp(
-        a.separatorPadding,
-        b.separatorPadding,
+      separatorMargin: EdgeInsetsGeometry.lerp(
+        a.separatorMargin,
+        b.separatorMargin,
         t,
       ),
       separatorColor: Color.lerp(a.separatorColor, b.separatorColor, t),
@@ -165,7 +165,7 @@ mixin _$ShadSidebarTheme {
         b.floatingBorderRadius,
         t,
       ),
-      floatingShadow: t < 0.5 ? a.floatingShadow : b.floatingShadow,
+      floatingShadows: t < 0.5 ? a.floatingShadows : b.floatingShadows,
     );
   }
 
@@ -255,14 +255,14 @@ mixin _$ShadSidebarTheme {
       subItemActiveTextStyle:
           subItemActiveTextStyle ?? _this.subItemActiveTextStyle,
       subItemsSpacing: subItemsSpacing ?? _this.subItemsSpacing,
-      separatorPadding: separatorPadding ?? _this.separatorPadding,
+      separatorMargin: separatorPadding ?? _this.separatorMargin,
       separatorColor: separatorColor ?? _this.separatorColor,
       separatorThickness: separatorThickness ?? _this.separatorThickness,
       triggerSize: triggerSize ?? _this.triggerSize,
       triggerPadding: triggerPadding ?? _this.triggerPadding,
       floatingMargin: floatingMargin ?? _this.floatingMargin,
       floatingBorderRadius: floatingBorderRadius ?? _this.floatingBorderRadius,
-      floatingShadow: floatingShadow ?? _this.floatingShadow,
+      floatingShadows: floatingShadow ?? _this.floatingShadows,
     );
   }
 
@@ -328,14 +328,14 @@ mixin _$ShadSidebarTheme {
           _this.subItemActiveTextStyle?.merge(other.subItemActiveTextStyle) ??
           other.subItemActiveTextStyle,
       subItemsSpacing: other.subItemsSpacing,
-      separatorPadding: other.separatorPadding,
+      separatorPadding: other.separatorMargin,
       separatorColor: other.separatorColor,
       separatorThickness: other.separatorThickness,
       triggerSize: other.triggerSize,
       triggerPadding: other.triggerPadding,
       floatingMargin: other.floatingMargin,
       floatingBorderRadius: other.floatingBorderRadius,
-      floatingShadow: other.floatingShadow,
+      floatingShadow: other.floatingShadows,
     );
   }
 
@@ -388,14 +388,14 @@ mixin _$ShadSidebarTheme {
         _other.subItemTextStyle == _this.subItemTextStyle &&
         _other.subItemActiveTextStyle == _this.subItemActiveTextStyle &&
         _other.subItemsSpacing == _this.subItemsSpacing &&
-        _other.separatorPadding == _this.separatorPadding &&
+        _other.separatorMargin == _this.separatorMargin &&
         _other.separatorColor == _this.separatorColor &&
         _other.separatorThickness == _this.separatorThickness &&
         _other.triggerSize == _this.triggerSize &&
         _other.triggerPadding == _this.triggerPadding &&
         _other.floatingMargin == _this.floatingMargin &&
         _other.floatingBorderRadius == _this.floatingBorderRadius &&
-        _other.floatingShadow == _this.floatingShadow;
+        _other.floatingShadows == _this.floatingShadows;
   }
 
   @override
@@ -440,14 +440,14 @@ mixin _$ShadSidebarTheme {
       _this.subItemTextStyle,
       _this.subItemActiveTextStyle,
       _this.subItemsSpacing,
-      _this.separatorPadding,
+      _this.separatorMargin,
       _this.separatorColor,
       _this.separatorThickness,
       _this.triggerSize,
       _this.triggerPadding,
       _this.floatingMargin,
       _this.floatingBorderRadius,
-      _this.floatingShadow,
+      _this.floatingShadows,
     ]);
   }
 }

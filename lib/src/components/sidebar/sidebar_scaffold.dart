@@ -41,6 +41,7 @@ class ShadSidebarScaffold extends StatefulWidget {
     this.animationCurve,
     this.scrimColor,
     this.enableShortcut,
+    this.shortcuts,
   });
 
   final Widget sidebar;
@@ -57,15 +58,19 @@ class ShadSidebarScaffold extends StatefulWidget {
   final Color? scrimColor;
   final bool? enableShortcut;
 
+  /// Custom shortcut activators for toggling the sidebar.
+  /// Defaults to `[Cmd+B, Ctrl+B]`.
+  final List<ShortcutActivator>? shortcuts;
+
   @override
   State<ShadSidebarScaffold> createState() => _ShadSidebarScaffoldState();
 }
 
 class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     with SingleTickerProviderStateMixin {
-  late ShadSidebarController _controller;
-  late AnimationController _animationController;
-  late CurvedAnimation _animation;
+  late ShadSidebarController controller;
+  late AnimationController animationController;
+  late CurvedAnimation animation;
   bool _ownsController = false;
   bool _initialized = false;
   bool? _wasMobile;
@@ -100,8 +105,8 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     super.didUpdateWidget(oldWidget);
 
     if (widget.controller != oldWidget.controller) {
-      _controller.removeListener(_onControllerChanged);
-      if (_ownsController) _controller.dispose();
+      controller.removeListener(_onControllerChanged);
+      if (_ownsController) controller.dispose();
       _setupController();
       _syncAnimationToController();
     }
@@ -116,17 +121,17 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
 
     if (widget.collapsibleMode != oldWidget.collapsibleMode &&
         widget.collapsibleMode == ShadSidebarCollapsibleMode.none) {
-      _controller.open();
-      _animationController.value = 1.0;
+      controller.open();
+      animationController.value = 1.0;
     }
   }
 
   @override
   void dispose() {
-    _controller.removeListener(_onControllerChanged);
-    if (_ownsController) _controller.dispose();
-    _animation.dispose();
-    _animationController.dispose();
+    controller.removeListener(_onControllerChanged);
+    if (_ownsController) controller.dispose();
+    animation.dispose();
+    animationController.dispose();
     super.dispose();
   }
 
@@ -136,13 +141,13 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
 
   void _setupController() {
     if (widget.controller != null) {
-      _controller = widget.controller!;
+      controller = widget.controller!;
       _ownsController = false;
     } else {
-      _controller = ShadSidebarController();
+      controller = ShadSidebarController();
       _ownsController = true;
     }
-    _controller.addListener(_onControllerChanged);
+    controller.addListener(_onControllerChanged);
   }
 
   void _setupAnimation() {
@@ -152,16 +157,16 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     final initialValue =
         widget.collapsibleMode == ShadSidebarCollapsibleMode.none
         ? 1.0
-        : (_controller.isOpen ? 1.0 : 0.0);
+        : (controller.isOpen ? 1.0 : 0.0);
 
-    _animationController = AnimationController(
+    animationController = AnimationController(
       vsync: this,
       duration: effectiveDuration,
       value: initialValue,
     );
 
-    _animation = CurvedAnimation(
-      parent: _animationController,
+    animation = CurvedAnimation(
+      parent: animationController,
       curve: effectiveCurve,
     );
   }
@@ -180,14 +185,14 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
   }
 
   void _updateAnimationDuration() {
-    _animationController.duration = _resolveAnimationDuration();
+    animationController.duration = _resolveAnimationDuration();
   }
 
   void _updateAnimationCurve() {
     final effectiveCurve = _resolveAnimationCurve();
-    _animation.dispose();
-    _animation = CurvedAnimation(
-      parent: _animationController,
+    animation.dispose();
+    animation = CurvedAnimation(
+      parent: animationController,
       curve: effectiveCurve,
     );
   }
@@ -216,20 +221,20 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
 
   void _syncAnimationToController() {
     if (widget.collapsibleMode == ShadSidebarCollapsibleMode.none) {
-      _animationController.value = 1.0;
+      animationController.value = 1.0;
       return;
     }
-    if (_controller.isOpen) {
-      _animationController.forward();
+    if (controller.isOpen) {
+      animationController.forward();
     } else {
-      _animationController.reverse();
+      animationController.reverse();
     }
   }
 
   void _onControllerChanged() {
     if (widget.collapsibleMode == ShadSidebarCollapsibleMode.none) {
-      if (!_controller.isOpen) {
-        _controller.open();
+      if (!controller.isOpen) {
+        controller.open();
       }
       return;
     }
@@ -260,24 +265,24 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
         if (isMobile) {
-          _controller.close();
+          controller.close();
         } else {
-          _controller.open();
+          controller.open();
         }
       });
     }
     _wasMobile = isMobile;
 
     Widget result = ShadSidebarScope(
-      controller: _controller,
-      animation: _animation,
+      controller: controller,
+      animation: animation,
       variant: widget.variant,
       side: widget.side,
       collapsibleMode: widget.collapsibleMode,
       isMobile: isMobile,
       expandedWidth: effectiveWidth,
       collapsedWidth: effectiveCollapsedWidth,
-      isOpen: _controller.isOpen,
+      isOpen: controller.isOpen,
       child: widget.collapsibleMode == ShadSidebarCollapsibleMode.none
           ? _buildDesktopLayout(theme, sidebarTheme)
           : isMobile
@@ -309,7 +314,7 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
           _ToggleSidebarIntent: CallbackAction<_ToggleSidebarIntent>(
             onInvoke: (_) {
               if (widget.collapsibleMode != ShadSidebarCollapsibleMode.none) {
-                _controller.toggle();
+                controller.toggle();
               }
               return null;
             },
@@ -402,9 +407,9 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
       children: [
         Positioned.fill(child: widget.child),
         AnimatedBuilder(
-          animation: _animation,
+          animation: animation,
           builder: (context, _) {
-            final isVisible = _animation.status != AnimationStatus.dismissed;
+            final isVisible = animation.status != AnimationStatus.dismissed;
 
             if (!isVisible) return const SizedBox.shrink();
 
@@ -412,12 +417,12 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
               children: [
                 Positioned.fill(
                   child: GestureDetector(
-                    onTap: _controller.close,
+                    onTap: controller.close,
                     child: ColoredBox(
                       color: Color.lerp(
                         const Color(0x00000000),
                         effectiveScrimColor,
-                        _animation.value,
+                        animation.value,
                       )!,
                     ),
                   ),
@@ -431,8 +436,8 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
                   child: FractionalTranslation(
                     translation: Offset(
                       physicallyLeft
-                          ? _animation.value - 1.0
-                          : 1.0 - _animation.value,
+                          ? animation.value - 1.0
+                          : 1.0 - animation.value,
                       0,
                     ),
                     child: widget.sidebar,

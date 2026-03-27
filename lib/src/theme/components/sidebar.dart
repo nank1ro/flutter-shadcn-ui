@@ -56,7 +56,7 @@ class ShadSidebarTheme with _$ShadSidebarTheme {
     this.subItemActiveTextStyle,
     this.subItemsSpacing,
     // Separator
-    this.separatorPadding,
+    this.separatorMargin,
     this.separatorColor,
     this.separatorThickness,
     // Trigger
@@ -65,7 +65,7 @@ class ShadSidebarTheme with _$ShadSidebarTheme {
     // Floating variant overrides
     this.floatingMargin,
     this.floatingBorderRadius,
-    this.floatingShadow,
+    this.floatingShadows,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -204,8 +204,8 @@ class ShadSidebarTheme with _$ShadSidebarTheme {
 
   // -- Separator --
 
-  /// Padding around sidebar separators.
-  final EdgeInsetsGeometry? separatorPadding;
+  /// The space around sidebar separators.
+  final EdgeInsetsGeometry? separatorMargin;
 
   /// Color of sidebar separators.
   final Color? separatorColor;
@@ -230,5 +230,5 @@ class ShadSidebarTheme with _$ShadSidebarTheme {
   final BorderRadiusGeometry? floatingBorderRadius;
 
   /// Shadow for the floating variant. Defaults to ShadShadows.sm.
-  final List<BoxShadow>? floatingShadow;
+  final List<BoxShadow>? floatingShadows;
 }
