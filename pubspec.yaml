@@ -28,6 +28,7 @@ dependencies:
   slang: ^4.13.0
   slang_flutter: ^4.13.0
   # used by Table
+  motor: ^1.1.0
   theme_extensions_builder_annotation: ^7.1.0
   two_dimensional_scrollables: ">=0.2.1 <1.0.0"
   universal_image: ">=1.0.3 <2.0.0"

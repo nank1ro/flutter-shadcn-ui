@@ -127,6 +127,15 @@ class _MyAppState extends State<MyApp> {
             colorScheme: getShadColorScheme(themeColor, true),
             brightness: Brightness.dark,
           ),
+          builder: (context, child) {
+            return ShadSonner(
+              alignment: Alignment.bottomRight,
+              child: ShadSonnerNew(
+                alignment: Alignment.bottomLeft,
+                child: child ?? const SizedBox.shrink(),
+              ),
+            );
+          },
         );
       },
     );
