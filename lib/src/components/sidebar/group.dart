@@ -21,14 +21,21 @@ import 'package:shadcn_ui/src/theme/theme.dart';
 class ShadSidebarGroup extends StatelessWidget {
   const ShadSidebarGroup({
     super.key,
-    this.label,
     required this.children,
+    this.label,
     this.padding,
-  });
+    this.labelText,
+  }) : assert(
+         label == null || labelText == null,
+         'Cannot provide both label and labelText',
+       );
 
-  /// Optional heading for this group.
+  /// A custom label widget.
   /// Typically a [ShadSidebarGroupLabel].
   final Widget? label;
+
+  /// Used in a [Text] widget inside [ShadSidebarGroupLabel].
+  final String? labelText;
 
   /// The items inside this group.
   final List<Widget> children;
@@ -43,6 +50,11 @@ class ShadSidebarGroup extends StatelessWidget {
 
     final effectivePadding =
         padding ?? sidebarTheme.groupPadding ?? const EdgeInsets.all(8);
+    final effectiveLabel =
+        label ??
+        (labelText != null
+            ? ShadSidebarGroupLabel(child: Text(labelText!))
+            : null);
 
     return Padding(
       padding: effectivePadding,
@@ -50,7 +62,7 @@ class ShadSidebarGroup extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          ?label,
+          ?effectiveLabel,
           ...children,
         ],
       ),

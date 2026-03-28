@@ -775,7 +775,7 @@ class _PlatformGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarGroup(
-      label: const Text('Platform'),
+      labelText: 'Platform',
       children: [
         ShadSidebarItem(
           icon: const Icon(Icons.search_rounded),
@@ -840,7 +840,7 @@ class _ProjectsGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarGroup(
-      label: const Text('Projects'),
+      labelText: 'Projects',
       children: [
         ShadSidebarItem(
           icon: const Icon(Icons.folder_outlined),
@@ -870,7 +870,7 @@ class _SettingsGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarGroup(
-      label: const Text('Settings'),
+      labelText: 'Settings',
       children: [
         ShadSidebarItem(
           icon: const Icon(Icons.person_outline),
@@ -906,7 +906,7 @@ class _PlatformGroupWithTooltips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarGroup(
-      label: const Text('Platform'),
+      labelText: 'Platform',
       children: [
         ShadSidebarItem(
           icon: const Icon(Icons.home_outlined),
@@ -954,7 +954,7 @@ class _PropertiesGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ShadSidebarGroup(
-      label: Text('Properties'),
+      labelText: 'Properties',
       children: [
         ShadSidebarItem(
           icon: Icon(Icons.straighten_outlined),
@@ -994,7 +994,7 @@ class _LayersGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadSidebarGroup(
-      label: const Text('Layers'),
+      labelText: 'Layers',
       children: [
         ShadSidebarItem(
           icon: const Icon(Icons.image_outlined),
