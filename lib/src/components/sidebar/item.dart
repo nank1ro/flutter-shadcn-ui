@@ -421,25 +421,38 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
           }
 
           // Animating → full row with fading label/trailing
-          return _buildButton(
+          return _SidebarItemButtonWithChildren(
+            onPressed: handleTap,
+            selected: widget.selected,
+            isCollapsible: isCollapsible,
+            expansionAnimation: expansionAnimation,
+            labelAnimation:
+                scope.collapsibleMode == ShadSidebarCollapsibleMode.icon
+                ? scope.animation
+                : null,
+
             iconWidget: iconWidget,
             trailing: trailing,
-            effectiveHeight: effectiveHeight,
-            effectivePadding: effectivePadding,
-            effectiveTextStyle: effectiveTextStyle,
-            effectiveSpacing: effectiveSpacing,
-            effectiveActiveColor: effectiveActiveColor,
-            effectiveHoverColor: effectiveHoverColor,
-            effectiveFgColor: effectiveFgColor,
-            sidebarAccentFg: sidebarAccentFg,
-            buttonDecoration: buttonDecoration,
-            effectiveSubItemsMargin: effectiveSubItemsMargin,
-            effectiveSubItemsPadding: effectiveSubItemsPadding,
-            effectiveSubItemsBorderColor: effectiveSubItemsBorderColor,
-            effectiveSubItemsBorderWidth: effectiveSubItemsBorderWidth,
-            effectiveSubItemsSpacing: effectiveSubItemsSpacing,
+            height: effectiveHeight,
+            padding: effectivePadding,
+            textStyle: effectiveTextStyle,
+            spacing: effectiveSpacing,
+
+            activeColor: effectiveActiveColor,
+            hoverColor: effectiveHoverColor,
+            fgColor: effectiveFgColor,
+            hoverFgColor: sidebarAccentFg,
+            decoration: buttonDecoration,
+
+            itemChild: widget.child,
             depth: depth,
-            labelAnimation: scope.animation,
+
+            subItemsMargin: effectiveSubItemsMargin,
+            subItemsPadding: effectiveSubItemsPadding,
+            subItemsBorderColor: effectiveSubItemsBorderColor,
+            subItemsBorderWidth: effectiveSubItemsBorderWidth,
+            subItemsSpacing: effectiveSubItemsSpacing,
+            children: widget.children,
           );
         },
       );
@@ -447,91 +460,146 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
 
     // -- Normal mode --
 
-    return _buildButton(
+    return _SidebarItemButtonWithChildren(
+      onPressed: handleTap,
+      selected: widget.selected,
+      isCollapsible: isCollapsible,
+      expansionAnimation: expansionAnimation,
+
       iconWidget: iconWidget,
       trailing: trailing,
-      effectiveHeight: effectiveHeight,
-      effectivePadding: effectivePadding,
-      effectiveTextStyle: effectiveTextStyle,
-      effectiveSpacing: effectiveSpacing,
-      effectiveActiveColor: effectiveActiveColor,
-      effectiveHoverColor: effectiveHoverColor,
-      effectiveFgColor: effectiveFgColor,
-      sidebarAccentFg: sidebarAccentFg,
-      buttonDecoration: buttonDecoration,
-      effectiveSubItemsMargin: effectiveSubItemsMargin,
-      effectiveSubItemsPadding: effectiveSubItemsPadding,
-      effectiveSubItemsBorderColor: effectiveSubItemsBorderColor,
-      effectiveSubItemsBorderWidth: effectiveSubItemsBorderWidth,
-      effectiveSubItemsSpacing: effectiveSubItemsSpacing,
+      height: effectiveHeight,
+      padding: effectivePadding,
+      textStyle: effectiveTextStyle,
+      spacing: effectiveSpacing,
+
+      activeColor: effectiveActiveColor,
+      hoverColor: effectiveHoverColor,
+      fgColor: effectiveFgColor,
+      hoverFgColor: sidebarAccentFg,
+      decoration: buttonDecoration,
+
+      itemChild: widget.child,
       depth: depth,
+
+      subItemsMargin: effectiveSubItemsMargin,
+      subItemsPadding: effectiveSubItemsPadding,
+      subItemsBorderColor: effectiveSubItemsBorderColor,
+      subItemsBorderWidth: effectiveSubItemsBorderWidth,
+      subItemsSpacing: effectiveSubItemsSpacing,
+      children: widget.children,
     );
   }
+}
 
-  // ---- Full button with optional children ---------------------------------
+class _SidebarItemButtonWithChildren extends StatelessWidget {
+  const _SidebarItemButtonWithChildren({
+    required this.onPressed,
+    required this.selected,
+    required this.isCollapsible,
+    required this.iconWidget,
+    required this.trailing,
+    required this.height,
+    required this.padding,
+    required this.textStyle,
+    required this.spacing,
+    required this.activeColor,
+    required this.hoverColor,
+    required this.fgColor,
+    required this.hoverFgColor,
+    required this.decoration,
+    required this.itemChild,
+    required this.children,
+    required this.depth,
+    required this.subItemsMargin,
+    required this.subItemsPadding,
+    required this.subItemsBorderColor,
+    required this.subItemsBorderWidth,
+    required this.subItemsSpacing,
+    this.expansionAnimation,
+    this.labelAnimation,
+  }) : assert(!isCollapsible || expansionAnimation != null);
 
-  Widget _buildButton({
-    required Widget? iconWidget,
-    required Widget? trailing,
-    required double effectiveHeight,
-    required EdgeInsetsGeometry effectivePadding,
-    required TextStyle effectiveTextStyle,
-    required double effectiveSpacing,
-    required Color effectiveActiveColor,
-    required Color effectiveHoverColor,
-    required Color effectiveFgColor,
-    required Color sidebarAccentFg,
-    required ShadDecoration buttonDecoration,
-    required EdgeInsetsGeometry effectiveSubItemsMargin,
-    required EdgeInsetsGeometry effectiveSubItemsPadding,
-    required Color effectiveSubItemsBorderColor,
-    required double effectiveSubItemsBorderWidth,
-    required double effectiveSubItemsSpacing,
-    required int depth,
-    Animation<double>? labelAnimation,
-  }) {
-    // Build label with text style applied
+  final VoidCallback onPressed;
+  final bool selected;
+
+  final bool isCollapsible;
+  final Animation<double>? expansionAnimation;
+  final Animation<double>? labelAnimation;
+
+  final Widget? iconWidget;
+  final Widget? trailing;
+
+  final double height;
+  final EdgeInsetsGeometry padding;
+  final TextStyle textStyle;
+  final double spacing;
+
+  final Color activeColor;
+  final Color hoverColor;
+  final Color fgColor;
+  final Color hoverFgColor;
+
+  final ShadDecoration decoration;
+
+  final Widget? itemChild;
+  final List<Widget>? children;
+  final int depth;
+
+  final EdgeInsetsGeometry subItemsMargin;
+  final EdgeInsetsGeometry subItemsPadding;
+  final Color subItemsBorderColor;
+  final double subItemsBorderWidth;
+  final double subItemsSpacing;
+
+  bool get _hasChildren => children != null && children!.isNotEmpty;
+
+  @override
+  Widget build(BuildContext context) {
+    // --- Label ---
     Widget? label;
-    if (widget.child != null) {
+    if (itemChild != null) {
       label = DefaultTextStyle(
-        style: effectiveTextStyle,
+        style: textStyle,
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
         child: Container(
           alignment: AlignmentDirectional.centerStart,
-          child: widget.child,
+          child: itemChild,
         ),
       );
     }
 
+    // --- Trailing ---
     var trailingWidget = trailing;
 
     // Fade label and trailing during icon-collapse animation
     if (labelAnimation != null) {
       if (label != null) {
-        label = FadeTransition(opacity: labelAnimation, child: label);
+        label = FadeTransition(opacity: labelAnimation!, child: label);
       }
       if (trailingWidget != null) {
         trailingWidget = FadeTransition(
-          opacity: labelAnimation,
+          opacity: labelAnimation!,
           child: trailingWidget,
         );
       }
     }
 
+    // --- Button ---
     final Widget button = ShadButton.ghost(
-      onPressed: handleTap,
+      onPressed: onPressed,
       width: double.infinity,
-      height: effectiveHeight,
-      padding: effectivePadding,
-      backgroundColor: widget.selected ? effectiveActiveColor : null,
-      hoverBackgroundColor: effectiveHoverColor,
-      foregroundColor: effectiveFgColor,
-      hoverForegroundColor: sidebarAccentFg,
-      decoration: buttonDecoration,
+      height: height,
+      padding: padding,
+      backgroundColor: selected ? activeColor : null,
+      hoverBackgroundColor: hoverColor,
+      foregroundColor: fgColor,
+      hoverForegroundColor: hoverFgColor,
+      decoration: decoration,
       leading: iconWidget,
       trailing: trailingWidget,
-      gap: effectiveSpacing,
+      gap: spacing,
       expands: true,
       child: Container(
         alignment: AlignmentDirectional.centerStart,
@@ -539,44 +607,46 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
       ),
     );
 
-    if (!hasChildren) return button;
+    if (!_hasChildren) return button;
 
-    // -- Sub-items --
-
+    // --- Sub-items container ---
     Widget subItems = ShadSidebarItemDepth(
       depth: depth + 1,
       child: Container(
-        margin: effectiveSubItemsMargin,
-        padding: effectiveSubItemsPadding,
+        margin: subItemsMargin,
+        padding: subItemsPadding,
         decoration: BoxDecoration(
           border: BorderDirectional(
             start: BorderSide(
-              color: effectiveSubItemsBorderColor,
-              width: effectiveSubItemsBorderWidth,
+              color: subItemsBorderColor,
+              width: subItemsBorderWidth,
             ),
           ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: effectiveSubItemsSpacing,
-          children: widget.children ?? const [],
+          spacing: subItemsSpacing,
+          children: children ?? const [],
         ),
       ),
     );
 
+    // Collapsible: size transition driven by expansion animation
     if (isCollapsible) {
       subItems = SizeTransition(
         sizeFactor: expansionAnimation!,
         axisAlignment: -1,
         child: subItems,
       );
-    } else if (labelAnimation != null) {
+    }
+    // Standard items in icon-collapse mode: collapse/fade with sidebar animation
+    else if (labelAnimation != null) {
       subItems = SizeTransition(
-        sizeFactor: labelAnimation,
+        sizeFactor: labelAnimation!,
         axisAlignment: -1,
         child: FadeTransition(
-          opacity: labelAnimation,
+          opacity: labelAnimation!,
           child: subItems,
         ),
       );
@@ -592,7 +662,6 @@ class _ShadSidebarItemState extends State<ShadSidebarItem>
     );
   }
 }
-
 // ---------------------------------------------------------------------------
 // Default chevron
 // ---------------------------------------------------------------------------
