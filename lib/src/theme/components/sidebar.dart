@@ -183,23 +183,23 @@ class ShadSidebarTheme with _$ShadSidebarTheme {
   /// {@macro ShadSidebarItem.subItemsBorderWidth}
   final double? subItemsBorderWidth;
 
-  /// Height of a sub-item, used by [ShadSidebarItem] when it is nested
+  /// Height of a sub-item, used by `ShadSidebarItem` when it is nested
   /// inside another item. Defaults to 32.
   final double? subItemHeight;
 
-  /// Padding inside a sub-item, used by [ShadSidebarItem] when it is
+  /// Padding inside a sub-item, used by `ShadSidebarItem` when it is
   /// nested inside another item.
   final EdgeInsetsGeometry? subItemPadding;
 
-  /// Border radius of a sub-item, used by [ShadSidebarItem] when it is
+  /// Border radius of a sub-item, used by `ShadSidebarItem` when it is
   /// nested inside another item.
   final BorderRadiusGeometry? subItemBorderRadius;
 
-  /// Text style for sub-items, used by [ShadSidebarItem] when it is
+  /// Text style for sub-items, used by `ShadSidebarItem` when it is
   /// nested inside another item.
   final TextStyle? subItemTextStyle;
 
-  /// Text style for active sub-items, used by [ShadSidebarItem] when it is
+  /// Text style for active sub-items, used by `ShadSidebarItem` when it is
   /// nested inside another item.
   final TextStyle? subItemActiveTextStyle;
 

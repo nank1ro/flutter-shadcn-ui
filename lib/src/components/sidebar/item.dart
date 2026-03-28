@@ -169,7 +169,7 @@ class ShadSidebarItem extends StatefulWidget {
   /// {@template ShadSidebarItem.borderRadius}
   /// The border radius of the item.
   ///
-  /// Defaults to `ShadSidebarTheme.subItemBorderRadius` if the item is a sub-item,
+  /// Defaults to `ShadSidebarTheme.subItemBorderRadius` if this is a sub-item,
   /// otherwise it defaults to `ShadSidebarTheme.itemBorderRadius`.
   /// {@endtemplate}
   final BorderRadiusGeometry? borderRadius;
@@ -196,7 +196,8 @@ class ShadSidebarItem extends StatefulWidget {
   /// The active text style of the item.
   ///
   /// Merges with `ShadSidebarTheme.subItemActiveTextStyle` or
-  /// `ShadSidebarTheme.itemActiveTextStyle` based on whether the item is a sub-item.
+  /// `ShadSidebarTheme.itemActiveTextStyle` based on whether
+  /// the item is a sub-item.
   /// {@endtemplate}
   final TextStyle? activeTextStyle;
 
