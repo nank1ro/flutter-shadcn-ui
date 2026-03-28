@@ -115,10 +115,13 @@ class ShadSidebar extends StatelessWidget {
       return SizedBox(width: scope.expandedWidth, child: container);
     }
 
+    final applyFloatingMargin = scope.isOpen || scope.isIconCollapsed;
+
     // Apply the margin to the sized-box and not the actual content
     // container. This to not take the margin from the content width.
     return Padding(
-      padding: scope.variant == ShadSidebarVariant.floating
+      padding:
+          (scope.variant == ShadSidebarVariant.floating && applyFloatingMargin)
           ? effectiveFloatingMargin
           : EdgeInsets.zero,
       child: _ShadSidebarAnimatedWidth(
