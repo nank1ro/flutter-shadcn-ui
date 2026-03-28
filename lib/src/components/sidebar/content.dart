@@ -32,7 +32,9 @@ class ShadSidebarContent extends StatelessWidget {
   /// or any other widget.
   final List<Widget> children;
 
+  /// {@template ShadSidebarContent.padding}
   /// Padding applied inside the scrollable area, around all [children].
+  /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
   /// An optional [ScrollController] for the internal scroll view.

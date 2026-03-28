@@ -149,21 +149,100 @@ class ShadSidebarItem extends StatefulWidget {
   final List<Widget>? children;
   final bool initiallyExpanded;
   final ValueChanged<bool>? onExpansionChanged;
+
+  /// {@template ShadSidebarItem.height}
+  /// The height of the item.
+  ///
+  /// Defaults to `ShadSidebarTheme.subItemHeight` if the item is a sub-item,
+  /// otherwise it defaults to `ShadSidebarTheme.itemHeight`.
+  /// {@endtemplate}
   final double? height;
+
+  /// {@template ShadSidebarItem.padding}
+  /// The padding of the item.
+  ///
+  /// Defaults to `ShadSidebarTheme.subItemPadding` if the item is a sub-item,
+  /// otherwise it defaults to `ShadSidebarTheme.itemPadding`.
+  /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
+
+  /// {@template ShadSidebarItem.borderRadius}
+  /// The border radius of the item.
+  ///
+  /// Defaults to `ShadSidebarTheme.subItemBorderRadius` if the item is a sub-item,
+  /// otherwise it defaults to `ShadSidebarTheme.itemBorderRadius`.
+  /// {@endtemplate}
   final BorderRadiusGeometry? borderRadius;
+
+  /// {@template ShadSidebarItem.hoverColor}
+  /// The hover color of the item.
+  /// {@endtemplate}
   final Color? hoverColor;
+
+  /// {@template ShadSidebarItem.activeColor}
+  /// The active color of the item.
+  /// {@endtemplate}
   final Color? activeColor;
+
+  /// {@template ShadSidebarItem.textStyle}
+  /// The text style of the item.
+  ///
+  /// Merges with `ShadSidebarTheme.subItemTextStyle` or
+  /// `ShadSidebarTheme.itemTextStyle` based on whether the item is a sub-item.
+  /// {@endtemplate}
   final TextStyle? textStyle;
+
+  /// {@template ShadSidebarItem.activeTextStyle}
+  /// The active text style of the item.
+  ///
+  /// Merges with `ShadSidebarTheme.subItemActiveTextStyle` or
+  /// `ShadSidebarTheme.itemActiveTextStyle` based on whether the item is a sub-item.
+  /// {@endtemplate}
   final TextStyle? activeTextStyle;
+
+  /// {@template ShadSidebarItem.iconSize}
+  /// The icon size of the item.
+  /// {@endtemplate}
   final double? iconSize;
+
+  /// {@template ShadSidebarItem.iconColor}
+  /// The icon color of the item.
+  /// {@endtemplate}
   final Color? iconColor;
+
+  /// {@template ShadSidebarItem.activeIconColor}
+  /// The active icon color of the item.
+  /// {@endtemplate}
   final Color? activeIconColor;
+
+  /// {@template ShadSidebarItem.spacing}
+  /// The spacing between the leading, title and trailing widgets.
+  /// {@endtemplate}
   final double? spacing;
+
+  /// {@template ShadSidebarItem.subItemsMargin}
+  /// The margin of the sub-items.
+  /// {@endtemplate}
   final EdgeInsetsGeometry? subItemsMargin;
+
+  /// {@template ShadSidebarItem.subItemsPadding}
+  /// The padding of the sub-items.
+  /// {@endtemplate}
   final EdgeInsetsGeometry? subItemsPadding;
+
+  /// {@template ShadSidebarItem.subItemsBorderColor}
+  /// The border color of the sub-items.
+  /// {@endtemplate}
   final Color? subItemsBorderColor;
+
+  /// {@template ShadSidebarItem.subItemsBorderWidth}
+  /// The border width of the sub-items.
+  /// {@endtemplate}
   final double? subItemsBorderWidth;
+
+  /// {@template ShadSidebarItem.subItemsSpacing}
+  /// The spacing between the sub-items.
+  /// {@endtemplate}
   final double? subItemsSpacing;
 
   @override

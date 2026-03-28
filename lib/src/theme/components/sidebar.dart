@@ -77,159 +77,162 @@ class ShadSidebarTheme with _$ShadSidebarTheme {
 
   // -- Sizing --
 
-  /// Width of the sidebar when expanded. Defaults to 256.
+  /// {@macro ShadSidebarScaffold.width}
   final double? width;
 
-  /// Width of the sidebar when collapsed in icon mode. Defaults to 48.
+  /// {@macro ShadSidebarScaffold.collapsedWidth}
   final double? collapsedWidth;
 
-  /// Screen width below which the sidebar switches to mobile (sheet) mode.
-  /// Defaults to 768.
+  /// {@macro ShadSidebarScaffold.breakpoint}
   final double? mobileBreakpoint;
 
   // -- Animation --
 
-  /// Duration of the expand/collapse animation.
-  /// Defaults to `Duration(milliseconds: 200)`.
+  /// {@macro ShadSidebarScaffold.animationDuration}
   final Duration? animationDuration;
 
-  /// Curve of the expand/collapse animation.
-  /// Defaults to `Curves.linear`.
+  /// {@macro ShadSidebarScaffold.animationCurve}
   final Curve? animationCurve;
 
   // -- Sidebar container --
 
-  /// Decoration for the sidebar container.
+  /// {@macro ShadSidebar.decoration}
   final ShadDecoration? decoration;
 
-  /// Background color of the sidebar. Convenience shorthand; if [decoration]
-  /// is also provided, [decoration] takes precedence.
+  /// {@macro ShadSidebar.backgroundColor}
   final Color? backgroundColor;
 
   // -- Header --
 
-  /// Padding for the sidebar header slot.
+  /// {@macro ShadSidebarHeader.padding}
   final EdgeInsetsGeometry? headerPadding;
 
+  /// {@macro ShadSidebarHeader.decoration}
   final ShadDecoration? headerDecoration;
 
   // -- Footer --
 
+  /// {@macro ShadSidebarFooter.decoration}
   final ShadDecoration? footerDecoration;
 
-  /// Padding for the sidebar footer slot.
+  /// {@macro ShadSidebarFooter.padding}
   final EdgeInsetsGeometry? footerPadding;
 
   // -- Content --
 
-  /// Padding for the scrollable content area.
+  /// {@macro ShadSidebarContent.padding}
   final EdgeInsetsGeometry? contentPadding;
 
   // -- Group --
 
-  /// Padding around each sidebar group.
+  /// {@macro ShadSidebarGroup.padding}
   final EdgeInsetsGeometry? groupPadding;
 
-  /// Text style for group labels.
+  /// {@macro ShadSidebarGroupLabel.textStyle}
   final TextStyle? groupLabelStyle;
 
-  /// Padding for the group label row.
+  /// {@macro ShadSidebarGroupLabel.padding}
   final EdgeInsetsGeometry? groupLabelPadding;
 
   // -- Item --
 
-  /// Height of a sidebar item. Defaults to 36.
+  /// {@macro ShadSidebarItem.height}
   final double? itemHeight;
 
-  /// Padding inside a sidebar item.
+  /// {@macro ShadSidebarItem.padding}
   final EdgeInsetsGeometry? itemPadding;
 
-  /// Border radius of a sidebar item.
+  /// {@macro ShadSidebarItem.borderRadius}
   final BorderRadiusGeometry? itemBorderRadius;
 
-  /// Background color when a sidebar item is hovered.
+  /// {@macro ShadSidebarItem.hoverColor}
   final Color? itemHoverColor;
 
-  /// Background color when a sidebar item is active/selected.
+  /// {@macro ShadSidebarItem.activeColor}
   final Color? itemActiveColor;
 
-  /// Default text style for sidebar items.
+  /// {@macro ShadSidebarItem.textStyle}
   final TextStyle? itemTextStyle;
 
-  /// Text style for active/selected sidebar items.
+  /// {@macro ShadSidebarItem.activeTextStyle}
   final TextStyle? itemActiveTextStyle;
 
-  /// Size of leading icons in sidebar items. Defaults to 16.
+  /// {@macro ShadSidebarItem.iconSize}
   final double? itemIconSize;
 
-  /// Color of leading icons in sidebar items.
+  /// {@macro ShadSidebarItem.iconColor}
   final Color? itemIconColor;
 
-  /// Color of leading icons in active sidebar items.
+  /// {@macro ShadSidebarItem.activeIconColor}
   final Color? itemActiveIconColor;
 
-  /// Spacing between icon, label, and trailing widget inside an item.
+  /// {@macro ShadSidebarItem.spacing}
   final double? itemSpacing;
 
   // -- Sub-items (children of collapsible items) --
 
-  /// Margin around the sub-items container. Defaults to horizontal 14.
+  /// {@macro ShadSidebarItem.subItemsMargin}
   final EdgeInsetsGeometry? subItemsMargin;
 
-  /// Padding inside the sub-items container. Defaults to horizontal 8.
+  /// {@macro ShadSidebarItem.subItemsPadding}
   final EdgeInsetsGeometry? subItemsPadding;
 
-  /// Color of the start border on the sub-items container.
+  /// {@macro ShadSidebarItem.subItemsBorderColor}
   final Color? subItemsBorderColor;
 
-  /// Width of the start border on the sub-items container. Defaults to 1.
+  /// {@macro ShadSidebarItem.subItemsBorderWidth}
   final double? subItemsBorderWidth;
 
-  /// Height of a sub-item. Defaults to 32.
+  /// Height of a sub-item, used by [ShadSidebarItem] when it is nested
+  /// inside another item. Defaults to 32.
   final double? subItemHeight;
 
-  /// Padding inside a sub-item.
+  /// Padding inside a sub-item, used by [ShadSidebarItem] when it is
+  /// nested inside another item.
   final EdgeInsetsGeometry? subItemPadding;
 
-  /// Border radius of a sub-item.
+  /// Border radius of a sub-item, used by [ShadSidebarItem] when it is
+  /// nested inside another item.
   final BorderRadiusGeometry? subItemBorderRadius;
 
-  /// Text style for sub-items.
+  /// Text style for sub-items, used by [ShadSidebarItem] when it is
+  /// nested inside another item.
   final TextStyle? subItemTextStyle;
 
-  /// Text style for active sub-items.
+  /// Text style for active sub-items, used by [ShadSidebarItem] when it is
+  /// nested inside another item.
   final TextStyle? subItemActiveTextStyle;
 
-  /// Gap between sub-items.
+  /// {@macro ShadSidebarItem.subItemsSpacing}
   final double? subItemsSpacing;
 
   // -- Separator --
 
-  /// The space around sidebar separators.
+  /// {@macro ShadSidebarSeparator.margin}
   final EdgeInsetsGeometry? separatorMargin;
 
-  /// Color of sidebar separators.
+  /// {@macro ShadSidebarSeparator.color}
   final Color? separatorColor;
 
-  /// Thickness of sidebar separators. Defaults to 1.
+  /// {@macro ShadSidebarSeparator.thickness}
   final double? separatorThickness;
 
   // -- Trigger --
 
-  /// Size (width & height) of the sidebar trigger button. Defaults to 36.
+  /// {@macro ShadSidebarTrigger.size}
   final double? triggerSize;
 
-  /// Padding around the sidebar trigger button.
+  /// {@macro ShadSidebarTrigger.padding}
   final EdgeInsetsGeometry? triggerPadding;
 
   // -- Floating variant --
 
-  /// Margin around the sidebar when using the floating variant.
+  /// {@macro ShadSidebar.floatingMargin}
   final EdgeInsetsGeometry? floatingMargin;
 
-  /// Border radius of the sidebar when using the floating variant.
+  /// {@macro ShadSidebar.floatingBorderRadius}
   final BorderRadiusGeometry? floatingBorderRadius;
 
-  /// Shadow for the floating variant. Defaults to ShadShadows.sm.
+  /// {@macro ShadSidebar.floatingShadow}
   final List<BoxShadow>? floatingShadows;
 }

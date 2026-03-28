@@ -18,10 +18,14 @@ class ShadSidebarFooter extends StatelessWidget {
   /// The content of the footer.
   final Widget child;
 
+  /// {@template ShadSidebarFooter.padding}
   /// Padding inside the footer.
+  /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
+  /// {@template ShadSidebarFooter.decoration}
   /// Optional decoration (border, background, etc.) for the footer container.
+  /// {@endtemplate}
   final ShadDecoration? decoration;
 
   @override

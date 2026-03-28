@@ -13,13 +13,19 @@ class ShadSidebarSeparator extends StatelessWidget {
     this.thickness,
   });
 
+  /// {@template ShadSidebarSeparator.margin}
   /// The space around the separator line.
+  /// {@endtemplate}
   final EdgeInsetsGeometry? margin;
 
+  /// {@template ShadSidebarSeparator.color}
   /// Color of the separator line.
+  /// {@endtemplate}
   final Color? color;
 
+  /// {@template ShadSidebarSeparator.thickness}
   /// Thickness of the separator line. Defaults to 1.
+  /// {@endtemplate}
   final double? thickness;
 
   @override

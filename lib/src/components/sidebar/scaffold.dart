@@ -50,10 +50,33 @@ class ShadSidebarScaffold extends StatefulWidget {
   final ShadSidebarSide side;
   final ShadSidebarVariant variant;
   final ShadSidebarCollapsibleMode collapsibleMode;
+
+  /// {@template ShadSidebarScaffold.breakpoint}
+  /// Screen width below which the sidebar switches to mobile (sheet) mode.
+  /// Defaults to 768.
+  /// {@endtemplate}
   final double? breakpoint;
+
+  /// {@template ShadSidebarScaffold.width}
+  /// Width of the sidebar when expanded. Defaults to 256.
+  /// {@endtemplate}
   final double? width;
+
+  /// {@template ShadSidebarScaffold.collapsedWidth}
+  /// Width of the sidebar when collapsed in icon mode. Defaults to 48.
+  /// {@endtemplate}
   final double? collapsedWidth;
+
+  /// {@template ShadSidebarScaffold.animationDuration}
+  /// Duration of the expand/collapse animation.
+  /// Defaults to `Duration(milliseconds: 200)`.
+  /// {@endtemplate}
   final Duration? animationDuration;
+
+  /// {@template ShadSidebarScaffold.animationCurve}
+  /// Curve of the expand/collapse animation.
+  /// Defaults to `Curves.linear`.
+  /// {@endtemplate}
   final Curve? animationCurve;
   final Color? scrimColor;
   final bool? enableShortcut;

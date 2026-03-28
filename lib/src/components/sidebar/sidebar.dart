@@ -21,10 +21,31 @@ class ShadSidebar extends StatelessWidget {
   final Widget content;
   final Widget? header;
   final Widget? footer;
+
+  /// {@template ShadSidebar.decoration}
+  /// Decoration for the sidebar container.
+  /// {@endtemplate}
   final ShadDecoration? decoration;
+
+  /// {@template ShadSidebar.backgroundColor}
+  /// Background color of the sidebar. Convenience shorthand; if [decoration]
+  /// is also provided, [decoration] takes precedence.
+  /// {@endtemplate}
   final Color? backgroundColor;
+
+  /// {@template ShadSidebar.floatingMargin}
+  /// Margin around the sidebar when using the floating variant.
+  /// {@endtemplate}
   final EdgeInsetsGeometry? floatingMargin;
+
+  /// {@template ShadSidebar.floatingBorderRadius}
+  /// Border radius of the sidebar when using the floating variant.
+  /// {@endtemplate}
   final BorderRadiusGeometry? floatingBorderRadius;
+
+  /// {@template ShadSidebar.floatingShadow}
+  /// Shadow for the floating variant. Defaults to ShadShadows.sm.
+  /// {@endtemplate}
   final List<BoxShadow>? floatingShadow;
 
   @override

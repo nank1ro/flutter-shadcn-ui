@@ -40,7 +40,9 @@ class ShadSidebarGroup extends StatelessWidget {
   /// The items inside this group.
   final List<Widget> children;
 
+  /// {@template ShadSidebarGroup.padding}
   /// Padding around the entire group.
+  /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
   @override
@@ -97,9 +99,14 @@ class ShadSidebarGroupLabel extends StatelessWidget {
   /// Optional trailing action on the label row.
   final Widget? action;
 
+  /// {@template ShadSidebarGroupLabel.textStyle}
+  /// The text style for the label.
+  /// {@endtemplate}
   final TextStyle? textStyle;
 
+  /// {@template ShadSidebarGroupLabel.padding}
   /// Padding around the label row.
+  /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
   final double? height;

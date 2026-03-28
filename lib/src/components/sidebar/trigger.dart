@@ -69,10 +69,14 @@ class ShadSidebarTrigger extends StatelessWidget {
   /// Defaults to a panel-left icon.
   final Widget? icon;
 
+  /// {@template ShadSidebarTrigger.size}
   /// Size (width & height) of the trigger button.
+  /// {@endtemplate}
   final double? size;
 
+  /// {@template ShadSidebarTrigger.padding}
   /// Padding around the trigger button.
+  /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
   /// Optional callback invoked **in addition** to toggling the sidebar.

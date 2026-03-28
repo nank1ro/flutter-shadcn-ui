@@ -18,10 +18,14 @@ class ShadSidebarHeader extends StatelessWidget {
   /// The content of the header.
   final Widget child;
 
+  /// {@template ShadSidebarHeader.padding}
   /// Padding inside the header.
+  /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
+  /// {@template ShadSidebarHeader.decoration}
   /// Optional decoration (border, background, etc.) for the header container.
+  /// {@endtemplate}
   final ShadDecoration? decoration;
 
   @override
