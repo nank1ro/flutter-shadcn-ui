@@ -129,9 +129,9 @@ class ShadSidebarGroupLabel extends StatelessWidget {
         .merge(sidebarTheme.groupLabelStyle)
         .merge(textStyle);
 
-    final duration =
-        sidebarTheme.animationDuration ?? const Duration(milliseconds: 200);
-    final curve = sidebarTheme.animationCurve ?? Curves.linear;
+    // Already resolved: widget → theme → default
+    final duration = scope.animationDuration;
+    final curve = scope.animationCurve;
 
     Widget result = Container(
       height: effectiveHeight,
@@ -153,7 +153,9 @@ class ShadSidebarGroupLabel extends StatelessWidget {
 
     if (scope.collapsibleMode == ShadSidebarCollapsibleMode.icon) {
       result = result
-          .animate(target: scope.isOpen ? 1 : 0)
+          .animate(
+            target: scope.isOpen ? 1 : 0,
+          )
           .fadeIn(duration: duration, curve: curve)
           .custom(
             duration: duration,

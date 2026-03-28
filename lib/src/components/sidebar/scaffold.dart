@@ -261,6 +261,9 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
     final screenWidth = MediaQuery.sizeOf(context).width;
     final isMobile = screenWidth < effectiveBreakpoint;
 
+    final effectiveDuration = _resolveAnimationDuration();
+    final effectiveCurve = _resolveAnimationCurve();
+
     if (_wasMobile != null && isMobile != _wasMobile) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
@@ -283,6 +286,8 @@ class _ShadSidebarScaffoldState extends State<ShadSidebarScaffold>
       expandedWidth: effectiveWidth,
       collapsedWidth: effectiveCollapsedWidth,
       isOpen: controller.isOpen,
+      animationDuration: effectiveDuration,
+      animationCurve: effectiveCurve,
       child: widget.collapsibleMode == ShadSidebarCollapsibleMode.none
           ? _buildDesktopLayout(theme, sidebarTheme)
           : isMobile

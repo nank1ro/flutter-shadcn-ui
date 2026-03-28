@@ -64,6 +64,8 @@ class ShadSidebarScope extends InheritedWidget {
     required this.collapsedWidth,
     required this.isOpen,
     required super.child,
+    required this.animationDuration,
+    required this.animationCurve,
   });
 
   /// The sidebar controller that manages open/close state.
@@ -94,6 +96,12 @@ class ShadSidebarScope extends InheritedWidget {
   final double collapsedWidth;
 
   final bool isOpen;
+
+  /// Pre-resolved animation duration: widget → theme → default.
+  final Duration animationDuration;
+
+  /// Pre-resolved animation curve: widget → theme → default.
+  final Curve animationCurve;
 
   // ---------------------------------------------------------------------------
   // Direction resolution
