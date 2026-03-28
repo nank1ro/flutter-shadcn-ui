@@ -90,7 +90,6 @@ class ShadSidebar extends StatelessWidget {
 
     final Widget container = switch (scope.variant) {
       ShadSidebarVariant.floating => _ShadSidebarFloatingContainer(
-        margin: effectiveFloatingMargin,
         borderRadius: effectiveFloatingBorderRadius,
         borderColor: effectiveBorderColor,
         backgroundColor: effectiveBackgroundColor,
@@ -116,9 +115,16 @@ class ShadSidebar extends StatelessWidget {
       return SizedBox(width: scope.expandedWidth, child: container);
     }
 
-    return _ShadSidebarAnimatedWidth(
-      animation: scope.animation,
-      child: container,
+    // Apply the margin to the sized-box and not the actual content
+    // container. This to not take the margin from the content width.
+    return Padding(
+      padding: scope.variant == ShadSidebarVariant.floating
+          ? effectiveFloatingMargin
+          : EdgeInsets.zero,
+      child: _ShadSidebarAnimatedWidth(
+        animation: scope.animation,
+        child: container,
+      ),
     );
   }
 }
@@ -160,7 +166,6 @@ class _ShadSidebarAnimatedWidth extends StatelessWidget {
 
 class _ShadSidebarFloatingContainer extends StatelessWidget {
   const _ShadSidebarFloatingContainer({
-    required this.margin,
     required this.borderRadius,
     required this.borderColor,
     required this.backgroundColor,
@@ -168,7 +173,6 @@ class _ShadSidebarFloatingContainer extends StatelessWidget {
     required this.child,
   });
 
-  final EdgeInsetsGeometry margin;
   final BorderRadiusGeometry borderRadius;
   final Color borderColor;
   final Color backgroundColor;
@@ -177,18 +181,15 @@ class _ShadSidebarFloatingContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: margin,
-      child: Container(
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: borderRadius,
-          border: Border.all(color: borderColor),
-          boxShadow: shadow,
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: child,
+    return Container(
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: borderRadius,
+        border: Border.all(color: borderColor),
+        boxShadow: shadow,
       ),
+      clipBehavior: Clip.antiAlias,
+      child: child,
     );
   }
 }
