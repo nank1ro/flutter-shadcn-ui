@@ -31,6 +31,7 @@ mixin _$ShadCheckboxTheme {
 
     return ShadCheckboxTheme(
       color: Color.lerp(a.color, b.color, t),
+      uncheckedColor: Color.lerp(a.uncheckedColor, b.uncheckedColor, t),
       size: lerpDouble$(a.size, b.size, t),
       duration: lerpDuration$(a.duration, b.duration, t),
       decoration: ShadDecoration.lerp(a.decoration, b.decoration, t),
@@ -46,6 +47,7 @@ mixin _$ShadCheckboxTheme {
 
   ShadCheckboxTheme copyWith({
     Color? color,
+    Color? uncheckedColor,
     double? size,
     Duration? duration,
     ShadDecoration? decoration,
@@ -57,6 +59,7 @@ mixin _$ShadCheckboxTheme {
 
     return ShadCheckboxTheme(
       color: color ?? _this.color,
+      uncheckedColor: uncheckedColor ?? _this.uncheckedColor,
       size: size ?? _this.size,
       duration: duration ?? _this.duration,
       decoration: decoration ?? _this.decoration,
@@ -79,6 +82,7 @@ mixin _$ShadCheckboxTheme {
 
     return copyWith(
       color: other.color,
+      uncheckedColor: other.uncheckedColor,
       size: other.size,
       duration: other.duration,
       decoration: _this.decoration?.merge(other.decoration) ?? other.decoration,
@@ -102,6 +106,7 @@ mixin _$ShadCheckboxTheme {
     final _other = (other as ShadCheckboxTheme);
 
     return _other.color == _this.color &&
+        _other.uncheckedColor == _this.uncheckedColor &&
         _other.size == _this.size &&
         _other.duration == _this.duration &&
         _other.decoration == _this.decoration &&
@@ -117,6 +122,7 @@ mixin _$ShadCheckboxTheme {
     return Object.hash(
       runtimeType,
       _this.color,
+      _this.uncheckedColor,
       _this.size,
       _this.duration,
       _this.decoration,

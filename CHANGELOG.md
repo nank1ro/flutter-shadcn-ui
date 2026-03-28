@@ -1,3 +1,19 @@
+## 0.53.1
+
+- **FIX**: `ShadThemeData.merge` now properly merges the `ShadColorScheme` instead of replacing it. The `custom` color maps are combined, with the overriding theme's values taking precedence for duplicate keys.
+
+## 0.53.0
+
+- **FEAT**: Use native browser context menu on web and support `onPasteFiles`.
+
+## 0.52.3
+
+- **FIX**: Add missing `groupId` to `ShadSelectMultipleFormField` constructors.
+
+## 0.52.2
+
+- **FIX**: Add `uncheckedColor` to `ShadCheckbox` to allow customizing the color of the checkbox when unchecked. (thanks to @Isakdl)
+
 ## 0.52.1
 
 - **FIX**: i18n localization for `ShadInput.defaultContextMenuBuilder`.

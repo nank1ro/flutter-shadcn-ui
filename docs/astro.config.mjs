@@ -165,6 +165,11 @@ export default defineConfig({
               label: 'Axichat',
               link: 'https://axi.chat',
               attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
+              label: 'Servicebay',
+              link: 'https://www.servicebay.io',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
             }
           ],
         }

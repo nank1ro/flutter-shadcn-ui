@@ -16,6 +16,7 @@ import 'package:shadcn_ui/src/theme/color_scheme/zinc.dart';
 @immutable
 class ShadColorScheme {
   const ShadColorScheme({
+    bool canMerge = true,
     required this.background,
     required this.foreground,
     required this.card,
@@ -36,7 +37,6 @@ class ShadColorScheme {
     required this.input,
     required this.ring,
     required this.selection,
-    this.custom = const {},
     this.sidebarBackground,
     this.sidebarForeground,
     this.sidebarPrimary,
@@ -45,7 +45,8 @@ class ShadColorScheme {
     this.sidebarAccentForeground,
     this.sidebarBorder,
     this.sidebarRing,
-  });
+    this.custom = const {},
+  }) : _canMerge = canMerge;
 
   factory ShadColorScheme.fromName(
     String name, {
@@ -104,6 +105,10 @@ class ShadColorScheme {
     };
   }
 
+  final bool _canMerge;
+
+  bool get canMerge => _canMerge;
+
   final Color background;
   final Color foreground;
   final Color card;
@@ -148,6 +153,7 @@ class ShadColorScheme {
 
   /// Focus ring color for sidebar elements. Falls back to [ring] if null.
   final Color? sidebarRing;
+  
   final Map<String, Color> custom;
 
   static ShadColorScheme lerp(
@@ -294,6 +300,39 @@ class ShadColorScheme {
       sidebarPrimaryForeground:
           sidebarPrimaryForeground ?? this.sidebarPrimaryForeground,
       custom: custom ?? this.custom,
+    );
+  }
+
+  /// Merges this [ShadColorScheme] with [other].
+  ///
+  /// If [other] is null, returns this instance unchanged.
+  /// The [custom] maps are combined, with [other]'s values taking precedence
+  /// for duplicate keys.
+  ShadColorScheme merge(ShadColorScheme? other) {
+    if (other == null) return this;
+    if (!other.canMerge) return other;
+    return copyWith(
+      background: other.background,
+      foreground: other.foreground,
+      card: other.card,
+      cardForeground: other.cardForeground,
+      popover: other.popover,
+      popoverForeground: other.popoverForeground,
+      primary: other.primary,
+      primaryForeground: other.primaryForeground,
+      secondary: other.secondary,
+      secondaryForeground: other.secondaryForeground,
+      muted: other.muted,
+      mutedForeground: other.mutedForeground,
+      accent: other.accent,
+      accentForeground: other.accentForeground,
+      destructive: other.destructive,
+      destructiveForeground: other.destructiveForeground,
+      border: other.border,
+      input: other.input,
+      ring: other.ring,
+      selection: other.selection,
+      custom: {...custom, ...other.custom},
     );
   }
 

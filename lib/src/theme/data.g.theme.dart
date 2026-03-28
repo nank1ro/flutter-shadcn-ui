@@ -342,7 +342,7 @@ mixin _$ShadThemeData {
     }
 
     return copyWith(
-      colorScheme: other.colorScheme,
+      colorScheme: _this.colorScheme.merge(other.colorScheme),
       brightness: other.brightness,
       primaryButtonTheme: _this.primaryButtonTheme.merge(
         other.primaryButtonTheme,

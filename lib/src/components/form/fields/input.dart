@@ -7,6 +7,7 @@ import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import 'package:shadcn_ui/src/utils/clipboard/clipboard_service.dart';
 
 class ShadInputFormField extends ShadFormBuilderField<String> {
   ShadInputFormField({
@@ -246,6 +247,15 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
 
     /// {@macro ShadInput.editableTextSize}
     Size? editableTextSize,
+
+    /// {@macro ShadInput.useBrowserContextMenu}
+    bool? useBrowserContextMenu,
+
+    /// {@macro ShadInput.onPasteFiles}
+    ValueChanged<List<ShadClipboardItem>>? onPasteFiles,
+
+    /// {@macro ShadInput.onPasteFilesError}
+    ValueChanged<Object>? onPasteFilesError,
   }) : super(
          initialValue: controller != null ? controller.text : initialValue,
          validator: validator == null ? null : (v) => validator(v ?? ''),
@@ -334,6 +344,9 @@ class ShadInputFormField extends ShadFormBuilderField<String> {
              bottom: bottom,
              onLineCountChange: onLineCountChange,
              editableTextSize: editableTextSize,
+             useBrowserContextMenu: useBrowserContextMenu,
+             onPasteFiles: onPasteFiles,
+             onPasteFilesError: onPasteFilesError,
            );
          },
        );

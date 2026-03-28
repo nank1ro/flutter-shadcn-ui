@@ -28,6 +28,7 @@ class ShadCheckbox extends StatefulWidget {
     this.duration,
     this.icon,
     this.color,
+    this.uncheckedColor,
     this.label,
     this.sublabel,
     this.padding,
@@ -89,6 +90,12 @@ class ShadCheckbox extends StatefulWidget {
   /// Defaults to the theme’s primary color if not specified.
   /// {@endtemplate}
   final Color? color;
+
+  /// {@template ShadCheckbox.uncheckedColor}
+  /// The color of the checkbox when unchecked.
+  /// Defaults to the theme’s input color if not specified.
+  /// {@endtemplate}
+  final Color? uncheckedColor;
 
   /// {@template ShadCheckbox.label}
   /// An optional label displayed next to the checkbox.
@@ -166,11 +173,16 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
     final effectiveColor =
         widget.color ?? theme.checkboxTheme.color ?? theme.colorScheme.primary;
 
+    final effectiveUncheckedColor =
+        widget.uncheckedColor ??
+        theme.checkboxTheme.uncheckedColor ??
+        theme.colorScheme.input;
+
     final effectiveDecoration =
         (theme.checkboxTheme.decoration ?? const ShadDecoration())
             .merge(widget.decoration)
             .copyWith(
-              color: widget.value ? effectiveColor : const Color(0x00000000),
+              color: widget.value ? effectiveColor : effectiveUncheckedColor,
             );
 
     final effectiveSize = widget.size ?? theme.checkboxTheme.size ?? 16;

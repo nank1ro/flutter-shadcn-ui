@@ -2,7 +2,7 @@ name: Auto Add App to Documentation
 
 on:
   issues:
-    types: [opened]
+    types: [opened, reopened]
 
 jobs:
   auto-add-app:

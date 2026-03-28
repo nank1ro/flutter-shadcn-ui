@@ -58,6 +58,9 @@ mixin _$ShadInputTheme {
         t,
       ),
       verticalGap: lerpDouble$(a.verticalGap, b.verticalGap, t),
+      useBrowserContextMenu: t < 0.5
+          ? a.useBrowserContextMenu
+          : b.useBrowserContextMenu,
     );
   }
 
@@ -80,6 +83,7 @@ mixin _$ShadInputTheme {
     BoxConstraints? constraints,
     EdgeInsetsGeometry? scrollbarPadding,
     double? verticalGap,
+    bool? useBrowserContextMenu,
   }) {
     final _this = (this as ShadInputTheme);
 
@@ -103,6 +107,8 @@ mixin _$ShadInputTheme {
       constraints: constraints ?? _this.constraints,
       scrollbarPadding: scrollbarPadding ?? _this.scrollbarPadding,
       verticalGap: verticalGap ?? _this.verticalGap,
+      useBrowserContextMenu:
+          useBrowserContextMenu ?? _this.useBrowserContextMenu,
     );
   }
 
@@ -138,6 +144,7 @@ mixin _$ShadInputTheme {
       constraints: other.constraints,
       scrollbarPadding: other.scrollbarPadding,
       verticalGap: other.verticalGap,
+      useBrowserContextMenu: other.useBrowserContextMenu,
     );
   }
 
@@ -171,7 +178,8 @@ mixin _$ShadInputTheme {
         _other.gap == _this.gap &&
         _other.constraints == _this.constraints &&
         _other.scrollbarPadding == _this.scrollbarPadding &&
-        _other.verticalGap == _this.verticalGap;
+        _other.verticalGap == _this.verticalGap &&
+        _other.useBrowserContextMenu == _this.useBrowserContextMenu;
   }
 
   @override
@@ -198,6 +206,7 @@ mixin _$ShadInputTheme {
       _this.constraints,
       _this.scrollbarPadding,
       _this.verticalGap,
+      _this.useBrowserContextMenu,
     );
   }
 }

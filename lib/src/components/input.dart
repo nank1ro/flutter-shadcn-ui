@@ -20,6 +20,7 @@ import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
+import 'package:shadcn_ui/src/utils/clipboard/clipboard_service.dart';
 import 'package:shadcn_ui/src/utils/extensions/text_style.dart';
 import 'package:shadcn_ui/src/utils/separated_iterable.dart';
 
@@ -128,6 +129,9 @@ class ShadInput extends StatefulWidget {
     this.onLineCountChange,
     this.editableTextSize,
     this.verticalGap,
+    this.useBrowserContextMenu,
+    this.onPasteFiles,
+    this.onPasteFilesError,
   }) : smartDashesType =
            smartDashesType ??
            (obscureText ? SmartDashesType.disabled : SmartDashesType.enabled),
@@ -631,6 +635,36 @@ class ShadInput extends StatefulWidget {
   /// {@macro ShadKeyboardToolbar.toolbarBuilder}
   final WidgetBuilder? keyboardToolbarBuilder;
 
+  /// {@template ShadInput.useBrowserContextMenu}
+  /// Whether to use the browser's native context menu on web.
+  ///
+  /// When `true` on web, the native browser context menu is shown instead of
+  /// the custom [ShadContextMenu]. This enables native paste (including file
+  /// paste), spellcheck, and browser accessibility features.
+  ///
+  /// Has no effect on non-web platforms.
+  ///
+  /// Defaults to `true` on web, `false` otherwise.
+  /// {@endtemplate}
+  final bool? useBrowserContextMenu;
+
+  /// {@template ShadInput.onPasteFiles}
+  /// Called when files are pasted from the clipboard on web.
+  ///
+  /// Invoked on Ctrl+V / Cmd+V when the input is focused and the clipboard
+  /// contains file data. Normal text paste still proceeds regardless.
+  ///
+  /// Only works on web. On other platforms, this callback is never invoked.
+  /// {@endtemplate}
+  final ValueChanged<List<ShadClipboardItem>>? onPasteFiles;
+
+  /// {@template ShadInput.onPasteFilesError}
+  /// Called when an error occurs while extracting files from the clipboard.
+  ///
+  /// Only works on web. On other platforms, this callback is never invoked.
+  /// {@endtemplate}
+  final ValueChanged<Object>? onPasteFilesError;
+
   /// A constant representing no maximum length for the input.
   static const int noMaxLength = -1;
 
@@ -678,6 +712,12 @@ class ShadInputState extends State<ShadInput>
       _createLocalController(TextEditingValue(text: widget.initialValue ?? ''));
     }
     if (widget.scrollController == null) _scrollController = ScrollController();
+    if (widget.onPasteFiles != null && kIsWeb) {
+      addPasteFilesListener(_onPasteFiles);
+    }
+    if (widget.onPasteFilesError != null && kIsWeb) {
+      addPasteFilesErrorListener(_onPasteFilesError);
+    }
   }
 
   @override
@@ -695,6 +735,24 @@ class ShadInputState extends State<ShadInput>
       _controller = null;
     }
 
+    if (kIsWeb && widget.onPasteFiles != oldWidget.onPasteFiles) {
+      if (oldWidget.onPasteFiles != null) {
+        removePasteFilesListener(_onPasteFiles);
+      }
+      if (widget.onPasteFiles != null) {
+        addPasteFilesListener(_onPasteFiles);
+      }
+    }
+
+    if (kIsWeb && widget.onPasteFilesError != oldWidget.onPasteFilesError) {
+      if (oldWidget.onPasteFilesError != null) {
+        removePasteFilesErrorListener(_onPasteFilesError);
+      }
+      if (widget.onPasteFilesError != null) {
+        addPasteFilesErrorListener(_onPasteFilesError);
+      }
+    }
+
     if (widget.readOnly != oldWidget.readOnly) {
       effectiveFocusNode.canRequestFocus = !widget.readOnly;
       if (effectiveFocusNode.hasFocus &&
@@ -707,7 +765,12 @@ class ShadInputState extends State<ShadInput>
   @override
   void dispose() {
     effectiveFocusNode.removeListener(onFocusChange);
-
+    if (kIsWeb && widget.onPasteFiles != null) {
+      removePasteFilesListener(_onPasteFiles);
+    }
+    if (kIsWeb && widget.onPasteFilesError != null) {
+      removePasteFilesErrorListener(_onPasteFilesError);
+    }
     if (widget.focusNode == null) effectiveFocusNode.dispose();
     _controller?.dispose();
     _scrollController?.dispose();
@@ -798,6 +861,16 @@ class ShadInputState extends State<ShadInput>
           _editableText?.hideToolbar();
         }
     }
+  }
+
+  void _onPasteFiles(List<ShadClipboardItem> files) {
+    if (!effectiveFocusNode.hasFocus) return;
+    widget.onPasteFiles?.call(files);
+  }
+
+  void _onPasteFilesError(Object error) {
+    if (!effectiveFocusNode.hasFocus) return;
+    widget.onPasteFilesError?.call(error);
   }
 
   bool _shouldShowSelectionHandles(SelectionChangedCause? cause) {
@@ -1031,6 +1104,11 @@ class ShadInputState extends State<ShadInput>
     final effectiveVerticalGap =
         widget.verticalGap ?? theme.inputTheme.verticalGap ?? 0.0;
 
+    final effectiveUseBrowserContextMenu =
+        widget.useBrowserContextMenu ??
+        theme.inputTheme.useBrowserContextMenu ??
+        kIsWeb;
+
     return ConstrainedBox(
       constraints: effectiveConstraints,
       child: ShadDisabled(
@@ -1065,9 +1143,10 @@ class ShadInputState extends State<ShadInput>
                             : null,
                         selectionHeightStyle: widget.selectionHeightStyle,
                         selectionWidthStyle: widget.selectionWidthStyle,
-                        contextMenuBuilder:
-                            widget.contextMenuBuilder ??
-                            defaultContextMenuBuilder,
+                        contextMenuBuilder: effectiveUseBrowserContextMenu
+                            ? null
+                            : (widget.contextMenuBuilder ??
+                                defaultContextMenuBuilder),
                         selectionControls: widget.selectionControls,
                         // ! End of selection handler
                         // ! section

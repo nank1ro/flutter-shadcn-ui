@@ -28,6 +28,7 @@ class ShadInputTheme with _$ShadInputTheme {
     this.constraints,
     this.scrollbarPadding,
     this.verticalGap,
+    this.useBrowserContextMenu,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -89,6 +90,9 @@ class ShadInputTheme with _$ShadInputTheme {
 
   /// {@macro ShadInput.verticalGap}
   final double? verticalGap;
+
+  /// {@macro ShadInput.useBrowserContextMenu}
+  final bool? useBrowserContextMenu;
 
   static ShadInputTheme? lerp(
     ShadInputTheme? a,
