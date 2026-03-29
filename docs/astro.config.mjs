@@ -170,6 +170,11 @@ export default defineConfig({
               label: 'Servicebay',
               link: 'https://www.servicebay.io',
               attrs: { target: '_blank', rel: 'noopener noreferrer' },
+            },
+            {
+              label: 'Rhex: HEX & RGB Editor',
+              link: 'https://odinlabs8.gumroad.com/l/rhex',
+              attrs: { target: '_blank', rel: 'noopener noreferrer' },
             }
           ],
         }
