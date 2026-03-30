@@ -1,3 +1,8 @@
+## 0.53.2
+
+- **FIX**: `ShadInput` context menu now stays open after tapping **Select All**, allowing the user to then tap **Copy** or **Cut**.
+- **FIX**: Hide **Select All** from the context menu when all text is already selected.
+
 ## 0.53.1
 
 - **FIX**: `ShadThemeData.merge` now properly merges the `ShadColorScheme` instead of replacing it. The `custom` color maps are combined, with the overriding theme's values taking precedence for duplicate keys.
