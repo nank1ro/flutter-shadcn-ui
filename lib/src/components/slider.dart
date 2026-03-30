@@ -370,14 +370,21 @@ class _ShadSliderState extends State<ShadSlider> {
       increment = range * 0.01; // 1% of range for smooth movement
     }
 
+    if (HardwareKeyboard.instance.isShiftPressed) {
+      increment *= 10;
+    }
+
     var newValue = controller.value;
 
-    if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-      newValue -= increment;
-    } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-      newValue += increment;
-    } else {
-      return false;
+    switch (event.logicalKey) {
+      case LogicalKeyboardKey.arrowLeft:
+      case LogicalKeyboardKey.arrowDown:
+        newValue -= increment;
+      case LogicalKeyboardKey.arrowRight:
+      case LogicalKeyboardKey.arrowUp:
+        newValue += increment;
+      default:
+        return false;
     }
 
     _updateSliderValue(newValue);
