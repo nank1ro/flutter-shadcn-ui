@@ -1,3 +1,7 @@
+## 0.53.4
+
+- **FIX**: `ShadCheckbox` unchecked color now matches the theme's `input` color. (thanks to @Isakdl)
+
 ## 0.53.3
 
 - **FIX**: Keyboard navigation in `ShadSlider` now works correctly with the Shift and arrow keys. (thanks to @Isakdl)
