@@ -955,14 +955,19 @@ class ShadInputState extends State<ShadInput>
     EditableTextState editableTextState,
   ) {
     final l = ShadLocalizations.of(context);
-    final selection = editableTextState.textEditingValue.selection;
+    final textValue = editableTextState.textEditingValue;
+    final selection = textValue.selection;
     final hasSelection = selection.isValid && !selection.isCollapsed;
     final buttonItems = editableTextState.contextMenuButtonItems.where(
       (item) {
-        // Cut and Copy require text to be selected.
         if (item.type == ContextMenuButtonType.cut ||
             item.type == ContextMenuButtonType.copy) {
           return hasSelection;
+        }
+        if (item.type == ContextMenuButtonType.selectAll) {
+          return !(hasSelection &&
+              selection.start == 0 &&
+              selection.end == textValue.text.length);
         }
         return (_localizedLabel(item.type, l) ?? item.label ?? '').isNotEmpty;
       },
@@ -982,7 +987,14 @@ class ShadInputState extends State<ShadInput>
           for (final item in buttonItems)
             ShadContextMenuItem(
               onTapDown: item.onPressed != null
-                  ? (_) => item.onPressed!()
+                  ? (_) {
+                      item.onPressed!();
+                      // After Select All, re-show the toolbar so the
+                      // user can tap Copy/Cut on the updated selection.
+                      if (item.type == ContextMenuButtonType.selectAll) {
+                        editableTextState.showToolbar();
+                      }
+                    }
                   : null,
               child: Text(
                 _localizedLabel(item.type, l) ?? item.label ?? '',
