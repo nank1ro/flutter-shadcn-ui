@@ -31,6 +31,14 @@ export default defineConfig({
             crossorigin: ''
           },
         },
+        {
+          tag: 'script',
+          attrs: {
+            defer: true,
+            src: 'https://umami.mariuti.com/script.js',
+            'data-website-id': '682aff24-32d8-48eb-b29a-a8ec596dc1e4',
+          },
+        },
       ],
       sidebar: [
         {
