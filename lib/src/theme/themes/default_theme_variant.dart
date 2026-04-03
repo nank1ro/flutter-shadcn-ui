@@ -487,12 +487,11 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       size: 16,
       duration: 100.milliseconds,
       color: colorScheme.primary,
-      uncheckedColor: colorScheme.input,
       padding: const EdgeInsetsDirectional.only(start: 8),
       checkboxPadding: const EdgeInsets.only(top: 1),
       decoration: ShadDecoration(
         border: ShadBorder.all(
-          color: colorScheme.primary,
+          color: colorScheme.border,
           radius: radius,
           width: 1,
         ),

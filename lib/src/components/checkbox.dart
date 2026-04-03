@@ -176,7 +176,7 @@ class _ShadCheckboxState extends State<ShadCheckbox> {
     final effectiveUncheckedColor =
         widget.uncheckedColor ??
         theme.checkboxTheme.uncheckedColor ??
-        theme.colorScheme.input;
+        const Color(0x00000000);
 
     final effectiveDecoration =
         (theme.checkboxTheme.decoration ?? const ShadDecoration())
