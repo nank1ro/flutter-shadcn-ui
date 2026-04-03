@@ -351,7 +351,9 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
               ...List<Widget>.generate(widget.tabs.length, (int index) {
                 final tab = widget.tabs[index];
                 final selected = tab.value == controller.selected;
-                if (!selected && !effectiveMaintainState) {
+                final effectiveTabMaintainState =
+                    tab.maintainState ?? effectiveMaintainState;
+                if (!selected && !effectiveTabMaintainState) {
                   return const SizedBox.shrink();
                 }
                 Widget content = Offstage(
@@ -449,6 +451,7 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
     this.onDoubleTapCancel,
     this.longPressDuration,
     this.expandContent,
+    this.maintainState,
   });
 
   /// {@template ShadTab.value}
@@ -713,6 +716,15 @@ class ShadTab<T> extends StatefulWidget implements PreferredSizeWidget {
   /// Whether the tab content should be expanded, defaults to `false`.
   /// {@endtemplate}
   final bool? expandContent;
+
+  /// {@template ShadTab.maintainState}
+  /// Whether to maintain the state of this tab when switching away from it.
+  ///
+  /// When set, overrides the global [ShadTabs.maintainState] for this specific
+  /// tab. When null, falls back to [ShadTabs.maintainState] (which defaults to
+  /// true).
+  /// {@endtemplate}
+  final bool? maintainState;
 
   @override
   State<ShadTab<T>> createState() => _ShadTabState<T>();
