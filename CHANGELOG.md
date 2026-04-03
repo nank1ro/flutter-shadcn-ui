@@ -1,3 +1,7 @@
+## 0.53.5
+
+- **FIX**: `ShadDatePicker` now correctly falls back to `datePickerTheme.buttonDecoration` when no explicit `buttonDecoration` is provided.
+
 ## 0.53.4
 
 - **FEAT**: Add per-tab `maintainState` support to `ShadTab`. Individual `ShadTab` widgets can now override the global `ShadTabs.maintainState` setting.
