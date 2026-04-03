@@ -1,3 +1,7 @@
+## 0.53.4
+
+- **FEAT**: Add per-tab `maintainState` support to `ShadTab`. Individual `ShadTab` widgets can now override the global `ShadTabs.maintainState` setting.
+
 ## 0.53.3
 
 - **FIX**: Keyboard navigation in `ShadSlider` now works correctly with the Shift and arrow keys. (thanks to @Isakdl)
