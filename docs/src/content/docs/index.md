@@ -14,7 +14,12 @@ This is the official documentation for Shadcn UI for Flutter.
 > The work is still in progress.
 
 :::tip[AI Editor Integration]
-If you want to consume the docs in a LLM that accepts markdown, you can use this link:
+For compatible coding agents that support [Agent Skills](https://agentskills.io), you can install with this command:
+```bash
+npx skills add nank1ro/flutter-shadcn-ui
+```
+
+Alternatively, you can use this link:
 <https://mariuti.com/flutter-shadcn-ui/llms.txt>
 :::
 
