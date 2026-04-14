@@ -17,6 +17,14 @@ Awesome UI components for Flutter, fully customizable.
 
 See the [documentation](https://mariuti.com/flutter-shadcn-ui/) to interact with the components and see the code.
 
+### Agent Skills
+
+You can install the [Agent Skills](https://agentskills.io) for this project with:
+
+```bash
+npx skills add nank1ro/flutter-shadcn-ui
+```
+
 ## Progress
 
 > Follow the progress on [X (Twitter)](https://twitter.com/nank1ro)

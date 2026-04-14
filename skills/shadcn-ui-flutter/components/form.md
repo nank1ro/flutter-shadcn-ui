@@ -1,0 +1,292 @@
+# Form
+
+Builds a form with validation and easy access to form fields values.
+
+The benefits of using `ShadForm` over managing form fields individually are:
+- Centralized form state management.
+- Easy access to all form field values as a single `Map<String, dynamic>`.
+- No need to manage individual controllers for each form field.
+
+
+
+```dart
+class FormPage extends StatefulWidget {
+  const FormPage({
+    super.key,
+  });
+
+  @override
+  State<FormPage> createState() => _FormPageState();
+}
+
+class _FormPageState extends State<FormPage> {
+  final formKey = GlobalKey<ShadFormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: ShadForm(
+          key: formKey,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 350),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ShadInputFormField(
+                  id: 'username',
+                  label: const Text('Username'),
+                  placeholder: const Text('Enter your username'),
+                  description: const Text('This is your public display name.'),
+                  validator: (v) {
+                    if (v.length < 2) {
+                      return 'Username must be at least 2 characters.';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                ShadButton(
+                  child: const Text('Submit'),
+                  onPressed: () {
+                    if (formKey.currentState!.saveAndValidate()) {
+                      print(
+                          'validation succeeded with ${formKey.currentState!.value}');
+                    } else {
+                      print('validation failed');
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+
+
+## Initial form value
+
+You can set the initial form value by passing a `Map<String, dynamic>` to the `initialValue` property of the `ShadForm` widget.
+
+```dart {2-5}
+ShadForm(
+  initialValue: {
+    'username': 'john_doe',
+    'email': 'john_doe@example.com'
+  },
+  child: // Your form fields here
+)
+```
+
+All form fields with matching `id`s will be initialized with the corresponding values from the `initialValue` map.
+Unless they have their own `initialValue` set.
+
+## Get the form value
+
+You can get the current form value by accessing the `value` property of `ShadFormState` using a `GlobalKey`.
+
+```dart {8-10}
+final formKey = GlobalKey<ShadFormState>();
+
+// Your Form widget
+ShadForm(
+  key: formKey,
+),
+
+// To get the form value
+final formValue = formKey.currentState!.value; // Returns a Map<String, dynamic> with the form field values
+```
+
+You typically need this after getting a successful value from the `saveAndValidate` method, for example:
+```dart {4-8}
+ShadButton(
+  child: const Text('Submit'),
+  onPressed: () {
+    final formState = formKey.currentState!;
+    // The form is not valid, return early
+    if (!formState.saveAndValidate()) return;
+    // The form is valid, print the form value
+    print('Form value: ${formState.value}');
+  },
+),
+```
+
+## Manipulate single form field value
+
+You can set or update the value of specific form fields using the `setFieldValue` method of `ShadFormState`.
+
+```dart {8-10}
+final formKey = GlobalKey<ShadFormState>();
+
+// Your Form widget
+ShadForm(
+  key: formKey,
+),
+
+// To set or update a specific field value
+formKey.currentState!.setFieldValue('username', 'new_username');
+```
+
+If you don't want to notify the field about the value change, you can pass `notifyField: false` as argument.
+This would only update the form value without updating the field UI.
+
+## Manipulate entire form value
+
+You can set or update the entire form value using the `setValue` method of `ShadFormState`.
+
+```dart {8-12}
+final formKey = GlobalKey<ShadFormState>();
+
+// Your Form widget
+ShadForm(
+  key: formKey,
+),
+
+// To set or update the entire form value
+formKey.currentState!.setValue({
+  'username': 'new_username',
+  'email': 'example@email.com'
+});
+```
+
+If you don't want to notify the fields about the value change, you can pass `notifyFields: false` as argument.
+This would only update the form value without updating the fields UI.
+
+## Value transformers
+
+You can use value transformers to convert the initial value from the form to the field value and vice versa.
+
+### fromValueTransformer
+
+If your `ShadForm` has an initial value like this one `{'date': '2024-02-01'}` and you need to convert the string value to a `DateTime` object for a `ShadDatePickerFormField`:
+```dart {3}
+ShadDatePickerFormField(
+  id: 'date',
+  fromValueTransformer: (value) => DateTime.tryParse(value ?? ''),
+),
+```
+
+Vice versa, you can use the `toValueTransformer` parameter to convert the field value back to the form value.
+```dart {3-5}
+ShadDatePickerFormField(
+  id: 'date',
+  toValueTransformer: (date) => date == null
+      ? null
+      : DateFormat('yyyy-MM-dd').format(date),
+),
+```
+
+In this way, the form field can work with `DateTime` objects while the form value remains a `String` both as initial value (input) and when getting the form value (output).
+
+## Dot notation for nested values
+
+By default, `ShadForm` supports dot notation in field IDs to automatically create nested map structures. This makes it easier to work with complex, hierarchical form data.
+
+### How it works
+
+When you use field IDs with dots (like `user.email` or `profile.settings.theme`), the form automatically converts them into nested maps:
+
+```dart
+ShadForm(
+  child: Column(
+    children: [
+      ShadInputFormField(
+        id: 'user.name',
+        label: const Text('Name'),
+      ),
+      ShadInputFormField(
+        id: 'user.email',
+        label: const Text('Email'),
+      ),
+      ShadInputFormField(
+        id: 'user.age',
+        label: const Text('Age'),
+      ),
+    ],
+  ),
+)
+```
+
+When you retrieve the form value, it will be structured as:
+```dart
+{
+  'user': {
+    'name': 'John Doe',
+    'email': 'john@example.com',
+    'age': '30'
+  }
+}
+```
+
+### Initial values with nested structure
+
+The `initialValue` should be provided as a nested map structure (not using dot notation):
+
+```dart
+ShadForm(
+  initialValue: {
+    'user': {
+      'name': 'John Doe',
+      'email': 'john@example.com',
+    },
+  },
+  child: // Your form fields with dot notation IDs
+)
+```
+
+The form will automatically extract values from the nested structure based on the field IDs. For example, a field with `id: 'user.name'` will get the value from `initialValue['user']['name']`.
+
+### Customizing the separator
+
+If you prefer a different separator, you can customize it using the `fieldIdSeparator` parameter:
+
+```dart {2}
+ShadForm(
+  fieldIdSeparator: '/',
+  child: Column(
+    children: [
+      ShadInputFormField(
+        id: 'user/name', // Using '/' instead of '.'
+        label: const Text('Name'),
+      ),
+    ],
+  ),
+)
+```
+
+### Disabling dot notation
+
+If you want to use dots in your field IDs without creating nested structures, you can disable the feature by setting `fieldIdSeparator` to `null`:
+
+```dart {2}
+ShadForm(
+  fieldIdSeparator: null,
+  child: Column(
+    children: [
+      ShadInputFormField(
+        id: 'user.email', // This will remain as a flat key
+        label: const Text('Email'),
+      ),
+    ],
+  ),
+)
+```
+
+## Examples
+
+See the following links for more examples on how to use the `ShadForm` component with other components:
+
+- [Checkbox](../checkbox#form)
+- [Switch](../switch#form)
+- [Input](../input#form)
+- [Select](../select#form)
+- [RadioGroup](../radio-group#form)
+- [DatePicker](../date-picker#form)
+- [TimePicker](../time-picker#form)
+
