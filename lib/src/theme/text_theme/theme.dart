@@ -249,6 +249,7 @@ class ShadTextTheme {
   factory ShadTextTheme.fromGoogleFont(
     GoogleFontBuilder fontBuilder, {
     ShadTextTheme? textTheme,
+    Map<String, TextStyle> custom = const {},
   }) {
     final effectiveTextTheme =
         textTheme ?? ShadDefaultThemeVariant.defaultTextTheme;
@@ -312,6 +313,11 @@ class ShadTextTheme {
       googleFontBuilder: fontBuilder,
       custom: {
         for (final e in effectiveTextTheme.custom.entries)
+          e.key: GoogleFontTextStyle(
+            e.value.omitFamilyAndPackage,
+            builder: fontBuilder,
+          ),
+        for (final e in custom.entries)
           e.key: GoogleFontTextStyle(
             e.value.omitFamilyAndPackage,
             builder: fontBuilder,

@@ -48,6 +48,7 @@ lcov.info
 .firebase
 .fvmrc
 .supermaven
+docs/superpowers/
 
 # MemPalace (personal tooling)
 mempalace.yaml

@@ -47,6 +47,7 @@ import 'package:example/pages/tooltip.dart';
 import 'package:example/pages/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 void main() {
@@ -157,7 +158,9 @@ class App extends StatelessWidget {
                   */
               ),
               // Example with google fonts
-              // textTheme: ShadTextTheme.fromGoogleFont(GoogleFonts.poppins),
+              // textTheme: ShadTextTheme.fromGoogleFont(
+              //   GoogleFonts.lavishlyYours,
+              // ),
 
               // Example of custom font family
               // textTheme: ShadTextTheme(family: 'UbuntuMono'),
