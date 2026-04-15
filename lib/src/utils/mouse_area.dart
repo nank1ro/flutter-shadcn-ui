@@ -151,7 +151,7 @@ class MouseAreaSurfaceRenderBox extends RenderProxyBoxWithHitTestBehavior
 
   @override
   bool hitTest(BoxHitTestResult result, {required Offset position}) {
-    if (!size.contains(position)) {
+    if (!hasSize || !size.contains(position)) {
       return false;
     }
 
