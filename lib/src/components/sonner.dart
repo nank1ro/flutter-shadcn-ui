@@ -311,6 +311,26 @@ class ShadSonnerState extends State<ShadSonner> with TickerProviderStateMixin {
     }
   }
 
+  /// Used for testing and demo
+  void setExpanded(bool expanded) {
+    if (expanded) {
+      if (hovered.value) return;
+      hovered.value = true;
+      for (final toast in _toasts) {
+        toast.timer?.cancel();
+      }
+    } else {
+      if (!hovered.value) return;
+      hovered.value = false;
+      for (final toast in _toasts) {
+        final effectiveDuration = toast.toast.duration ?? kDefaultToastDuration;
+        toast.timer = Timer(effectiveDuration, () {
+          hide(toast.id);
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
