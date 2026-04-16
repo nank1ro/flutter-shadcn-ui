@@ -1,3 +1,9 @@
+## 0.54.0
+
+- **FEAT**: `ShadTextTheme.fromGoogleFont` now accepts a `custom` parameter to include custom text styles in the Google Font text theme.
+- **CHORE**: Migrate Geist and GeistMono fonts from individual weight-specific `.otf` files to variable font `.ttf` files, reducing the number of bundled font assets from 18 to 2.
+- **BREAKING**: Minimum Flutter version raised to `3.41.0` (Dart `3.11.0`) for variable font weight support.
+
 ## 0.53.6
 
 - **FIX**: Add `!hasSize` check to `MouseAreaSurfaceRenderBox.hitTest` to prevent assertion failure during early pointer events on desktop.

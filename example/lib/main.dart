@@ -157,7 +157,9 @@ class App extends StatelessWidget {
                   */
               ),
               // Example with google fonts
-              // textTheme: ShadTextTheme.fromGoogleFont(GoogleFonts.poppins),
+              // textTheme: ShadTextTheme.fromGoogleFont(
+              //   GoogleFonts.lavishlyYours,
+              // ),
 
               // Example of custom font family
               // textTheme: ShadTextTheme(family: 'UbuntuMono'),
