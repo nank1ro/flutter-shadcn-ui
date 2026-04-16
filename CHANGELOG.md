@@ -114,6 +114,7 @@
 
 ## 0.45.0
 
+- **FEAT**: Add new component `ShadPagination` and all of its related components (thanks to @asare-21).
 - **FEAT**: Add dot notation support for nested form values in `ShadForm`. Field IDs like `user.email` are automatically converted to nested maps like `{'user': {'email': value}}`. The `initialValue` should be provided as a nested map structure, and the form will automatically extract values based on field IDs.
 - **FEAT**: Add `fieldIdSeparator` parameter to `ShadForm` to customize the separator used for nested form values (defaults to `.`). You can use any string as a separator (e.g. `/`, `:`), or set it to `null` to disable dot notation support entirely.
 - **FEAT**: Add `toNestedMap`, `getByPath` and `deepMerge` extension methods on `Map<String, dynamic>`.
