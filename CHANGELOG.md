@@ -1,3 +1,8 @@
+## 0.53.7
+
+- **FIX**: Migrate Geist fonts from individual weight-specific files to variable fonts (`Geist[wght].ttf` and `GeistMono[wght].ttf`) for improved efficiency.
+- **FEAT**: `ShadTextTheme` now accepts custom `TextStyle`s for greater design flexibility.
+
 ## 0.53.6
 
 - **FIX**: Add `!hasSize` check to `MouseAreaSurfaceRenderBox.hitTest` to prevent assertion failure during early pointer events on desktop.
