@@ -1,3 +1,7 @@
+## 0.53.6
+
+- **FIX**: Add `!hasSize` check to `MouseAreaSurfaceRenderBox.hitTest` to prevent assertion failure during early pointer events on desktop.
+
 ## 0.53.5
 
 - **FIX**: `ShadDatePicker` now correctly falls back to `datePickerTheme.buttonDecoration` when no explicit `buttonDecoration` is provided.
@@ -415,7 +419,7 @@
 ## 0.31.0
 
 - **FEAT**: Modify the `ShadTooltip` component and its hover strategies to work on mobile on tap without a long press.
-- **FEAT**: Add `ShadHoverStrategy.onTapOutside` to trigger unhover when tapping outside the widget. 
+- **FEAT**: Add `ShadHoverStrategy.onTapOutside` to trigger unhover when tapping outside the widget.
 - **FEAT**: Add `ShadHoverStrategy.onTap` to trigger hover/unhover when tapping inside the widget.
 - **FEAT**: Now if an hover strategy is present in both `hoverStrategies.hover` and `hoverStrategies.unhover`, the hover will be toggled.
 
@@ -442,7 +446,7 @@
 ## 0.30.1
 
 - **FIX**: Fix `ShadResizable` on RTL (for real this time).
-- **CHORE**: Bump min Flutter SDK version to `3.35.0` to support `FormField.onReset` and `Brightness` from `'package:flutter/widgets.dart'` 
+- **CHORE**: Bump min Flutter SDK version to `3.35.0` to support `FormField.onReset` and `Brightness` from `'package:flutter/widgets.dart'`
 
 ## 0.30.0
 
@@ -886,7 +890,7 @@
 
 ## 0.10.0
 
-- __BREAKING CHANGE__: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.
+- **BREAKING CHANGE**: Rename `children` parameter of `ShadContextMenu` and `ShadContextMenuRegion` into `items`.
 
 ## 0.9.8
 
