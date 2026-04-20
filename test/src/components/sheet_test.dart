@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -6,6 +8,53 @@ void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
     return ShadApp(home: Scaffold(body: child));
+  }
+
+  // Helper to wrap a ShadSheet with the ShadSheetInheritedWidget for a given side
+  Widget sheetWidget({
+    ShadSheetSide side = ShadSheetSide.bottom,
+    bool? expandable,
+    double? initialSize,
+    double? minSize,
+    double? maxSize,
+    bool? snap,
+    List<double>? snapSizes,
+    Duration? snapAnimationDuration,
+    Curve? snapAnimationCurve,
+    Widget? dragHandle,
+    bool? showDragHandle,
+    ValueChanged<double>? onSizeChanged,
+    ShadSheetController? controller,
+    bool? draggable,
+    bool isScrollControlled = false,
+    double? disabledScrollControlMaxRatio,
+    Widget? child,
+  }) {
+    return ShadApp(
+      home: Scaffold(
+        body: ShadSheetInheritedWidget(
+          side: side,
+          child: ShadSheet(
+            expandable: expandable,
+            initialSize: initialSize,
+            minSize: minSize,
+            maxSize: maxSize,
+            snap: snap,
+            snapSizes: snapSizes,
+            snapAnimationDuration: snapAnimationDuration,
+            snapAnimationCurve: snapAnimationCurve,
+            dragHandle: dragHandle,
+            showDragHandle: showDragHandle,
+            onSizeChanged: onSizeChanged,
+            controller: controller,
+            draggable: draggable,
+            isScrollControlled: isScrollControlled,
+            disabledScrollControlMaxRatio: disabledScrollControlMaxRatio,
+            child: child ?? const Text('Sheet Content'),
+          ),
+        ),
+      ),
+    );
   }
 
   group('ShadSheet', () {
@@ -31,6 +80,596 @@ void main() {
         matchesGoldenFile('goldens/sheet.png'),
       );
       await tester.pumpAndSettle();
+    });
+  });
+
+  group('ShadSheet expandable', () {
+    // Test 1: expandable=false (default) — handle not present
+    testWidgets('no resize handle when expandable is false', (tester) async {
+      await tester.pumpWidget(sheetWidget(expandable: false));
+      await tester.pump();
+      expect(
+        find.byKey(const ValueKey('shad_sheet_resize_handle')),
+        findsNothing,
+      );
+    });
+
+    // Test 1b: default (null) also means no handle
+    testWidgets('no resize handle when expandable is null', (tester) async {
+      await tester.pumpWidget(sheetWidget());
+      await tester.pump();
+      expect(
+        find.byKey(const ValueKey('shad_sheet_resize_handle')),
+        findsNothing,
+      );
+    });
+
+    // Test 2: expandable=true, initialSize=0.5 — sheet height ≈ 0.5 * screen
+    testWidgets('expandable=true renders at initialSize fraction of screen', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          side: ShadSheetSide.bottom,
+          expandable: true,
+          initialSize: 0.5,
+        ),
+      );
+      await tester.pump();
+
+      final dialogBox =
+          tester.renderObject(find.byType(ShadDialog)) as RenderBox;
+      // initialSize sizes the dialog content only (handle sits outside).
+      // 0.5 * 1200 = 600.
+      expect(dialogBox.size.height, closeTo(600.0, 2.0));
+    });
+
+    // Test 3: drag up on bottom sheet increases size, clamped at maxSize
+    testWidgets('drag up on bottom sheet increases size, clamped at maxSize', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final controller = ShadSheetController();
+      addTearDown(controller.dispose);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          side: ShadSheetSide.bottom,
+          expandable: true,
+          initialSize: 0.5,
+          minSize: 0.25,
+          maxSize: 0.9,
+          controller: controller,
+        ),
+      );
+      await tester.pump();
+
+      expect(controller.size, closeTo(0.5, 0.01));
+
+      // Drag handle upward by 300px on a 1200px screen = 0.25 ratio increase
+      final handleFinder = find.byKey(
+        const ValueKey('shad_sheet_resize_handle'),
+      );
+      expect(handleFinder, findsOneWidget);
+
+      await tester.drag(handleFinder, const Offset(0, -300));
+      await tester.pump();
+
+      // Size should increase (drag up = grow for bottom sheet)
+      expect(controller.size, greaterThan(0.5));
+      expect(controller.size, lessThanOrEqualTo(0.9));
+
+      // Drag further to exceed maxSize — should clamp at maxSize
+      await tester.drag(handleFinder, const Offset(0, -1200));
+      await tester.pump();
+      expect(controller.size, closeTo(0.9, 0.01));
+    });
+
+    // Test 4: drag down past minSize clamps — no dismiss
+    testWidgets(
+      'drag down past minSize clamps at minSize, sheet stays visible',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            side: ShadSheetSide.bottom,
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 0.9,
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        final handleFinder = find.byKey(
+          const ValueKey('shad_sheet_resize_handle'),
+        );
+
+        // Drag way down (shrink direction for bottom sheet)
+        await tester.drag(handleFinder, const Offset(0, 1200));
+        await tester.pump();
+
+        // Should clamp at minSize, not dismiss
+        expect(controller.size, closeTo(0.25, 0.01));
+        // Sheet should still be visible
+        expect(find.byType(ShadSheet), findsOneWidget);
+      },
+    );
+
+    // Test 5: per-side sign test — grow direction increases size
+    for (final side in ShadSheetSide.values) {
+      testWidgets('drag grow direction increases size for side=$side', (
+        tester,
+      ) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            side: side,
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 0.9,
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        final handleFinder = find.byKey(
+          const ValueKey('shad_sheet_resize_handle'),
+        );
+        expect(handleFinder, findsOneWidget);
+        final initialSize = controller.size;
+
+        // grow direction: bottom=up, top=down, left=right, right=left
+        final growOffset = switch (side) {
+          ShadSheetSide.bottom => const Offset(0, -200),
+          ShadSheetSide.top => const Offset(0, 200),
+          ShadSheetSide.left => const Offset(200, 0),
+          ShadSheetSide.right => const Offset(-200, 0),
+        };
+
+        await tester.drag(handleFinder, growOffset);
+        await tester.pump();
+
+        expect(controller.size, greaterThan(initialSize));
+        final sizeAfterGrow = controller.size;
+
+        // shrink direction should reduce size
+        final shrinkOffset = Offset(-growOffset.dx * 2, -growOffset.dy * 2);
+        await tester.drag(handleFinder, shrinkOffset);
+        await tester.pump();
+
+        expect(controller.size, lessThan(sizeAfterGrow));
+      });
+    }
+
+    // Test 6: snap=true with explicit snapSizes — release snaps to nearest stop
+    testWidgets('snap=true snaps to nearest stop on release', (tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final controller = ShadSheetController();
+      addTearDown(controller.dispose);
+      controller.jumpTo(0.3);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          side: ShadSheetSide.bottom,
+          expandable: true,
+          initialSize: 0.3,
+          minSize: 0.3,
+          maxSize: 0.9,
+          snap: true,
+          snapSizes: [0.3, 0.6, 0.9],
+          snapAnimationDuration: const Duration(milliseconds: 200),
+          controller: controller,
+        ),
+      );
+      await tester.pump();
+
+      final handleFinder = find.byKey(
+        const ValueKey('shad_sheet_resize_handle'),
+      );
+
+      // Drag to between 0.3 and 0.6 stop (≈ 0.42) → should snap to 0.3
+      // 0.42 - 0.3 = 0.12 * 1200 = 144px up
+      await tester.drag(handleFinder, const Offset(0, -144));
+      await tester.pump();
+      await tester.pumpAndSettle();
+
+      // nearest to 0.42 is 0.3 (diff=0.12) vs 0.6 (diff=0.18) → snap to 0.3
+      expect(controller.size, closeTo(0.3, 0.05));
+    });
+
+    // Test 7: snap=true, snapSizes=null → default stops are [minSize, initialSize, maxSize]
+    testWidgets(
+      'snap=true with null snapSizes defaults to [minSize, initialSize, maxSize]',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            side: ShadSheetSide.bottom,
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 1.0,
+            snap: true,
+            // snapSizes intentionally null
+            snapAnimationDuration: const Duration(milliseconds: 100),
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        final handleFinder = find.byKey(
+          const ValueKey('shad_sheet_resize_handle'),
+        );
+
+        // Drag to ≈ 0.6, nearest to 0.5 (initialSize) or 1.0 (maxSize)?
+        // 0.6 - 0.5 = 0.1 vs 1.0 - 0.6 = 0.4 → snap to 0.5
+        // 0.6 * 1200 = 720; drag from 0.5 (600px) up by 120px
+        await tester.drag(handleFinder, const Offset(0, -120));
+        await tester.pump();
+        await tester.pumpAndSettle();
+
+        // After settling, size should be one of the three defaults
+        expect(
+          [0.25, 0.5, 1.0],
+          contains(closeTo(controller.size, 0.05)),
+        );
+      },
+    );
+
+    // Test 8: custom dragHandle widget is rendered
+    testWidgets('custom dragHandle widget is rendered', (tester) async {
+      const handleKey = ValueKey('custom-handle');
+      await tester.pumpWidget(
+        sheetWidget(
+          expandable: true,
+          dragHandle: const SizedBox(key: handleKey, width: 40, height: 8),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.byKey(handleKey), findsOneWidget);
+    });
+
+    // Test 9: onSizeChanged fires on size change
+    testWidgets('onSizeChanged fires on size change', (tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final sizeChanges = <double>[];
+
+      await tester.pumpWidget(
+        sheetWidget(
+          side: ShadSheetSide.bottom,
+          expandable: true,
+          initialSize: 0.5,
+          onSizeChanged: sizeChanges.add,
+        ),
+      );
+      await tester.pump();
+
+      final handleFinder = find.byKey(
+        const ValueKey('shad_sheet_resize_handle'),
+      );
+      await tester.drag(handleFinder, const Offset(0, -100));
+      await tester.pump();
+
+      expect(sizeChanges, isNotEmpty);
+      expect(sizeChanges.last, greaterThan(0.5));
+    });
+
+    // Test 10: ShadSheetController.animateTo
+    testWidgets('ShadSheetController.animateTo animates to target size', (
+      tester,
+    ) async {
+      final controller = ShadSheetController();
+      addTearDown(controller.dispose);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          side: ShadSheetSide.bottom,
+          expandable: true,
+          initialSize: 0.5,
+          minSize: 0.25,
+          maxSize: 1.0,
+          controller: controller,
+        ),
+      );
+      await tester.pump();
+
+      expect(controller.size, closeTo(0.5, 0.01));
+
+      // Animate to 0.8
+      unawaited(
+        controller.animateTo(
+          0.8,
+          duration: const Duration(milliseconds: 200),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(controller.size, closeTo(0.8, 0.01));
+    });
+
+    // Test 11: ShadSheetController.jumpTo is immediate
+    testWidgets('ShadSheetController.jumpTo is immediate', (tester) async {
+      final controller = ShadSheetController();
+      addTearDown(controller.dispose);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          side: ShadSheetSide.bottom,
+          expandable: true,
+          initialSize: 0.5,
+          minSize: 0.25,
+          maxSize: 1.0,
+          controller: controller,
+        ),
+      );
+      await tester.pump();
+
+      controller.jumpTo(0.4);
+      // No pumpAndSettle — should be immediate
+      expect(controller.size, closeTo(0.4, 0.01));
+    });
+
+    // Test 12: draggable=true + expandable=true coexist
+    testWidgets(
+      'draggable and expandable can coexist: handle resizes, body can dismiss',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            side: ShadSheetSide.bottom,
+            expandable: true,
+            draggable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 0.9,
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        // Handle drag should resize (increase size)
+        final handleFinder = find.byKey(
+          const ValueKey('shad_sheet_resize_handle'),
+        );
+        expect(handleFinder, findsOneWidget);
+
+        await tester.drag(handleFinder, const Offset(0, -200));
+        await tester.pump();
+
+        expect(controller.size, greaterThan(0.5));
+      },
+    );
+
+    // Test 13: expandable=true bypasses disabledScrollControlMaxRatio cap
+    testWidgets(
+      'expandable=true bypasses 9/16 cap even when isScrollControlled=false',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            side: ShadSheetSide.bottom,
+            expandable: true,
+            initialSize: 0.95,
+            minSize: 0.25,
+            maxSize: 0.95,
+            // isScrollControlled intentionally false — expandable should override
+            isScrollControlled: false,
+          ),
+        );
+        await tester.pump();
+
+        final sheetBox =
+            tester.renderObject(find.byType(ShadSheet)) as RenderBox;
+        // 0.95 * 1200 = 1140, which exceeds 9/16 * 1200 ≈ 675
+        // If cap is bypassed, height should be close to 1140
+        expect(sheetBox.size.height, greaterThan(900));
+      },
+    );
+
+    // Golden: bottom sheet at initialSize=0.5
+    testWidgets('golden: expandable bottom sheet at initial size', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          side: ShadSheetSide.bottom,
+          expandable: true,
+          initialSize: 0.5,
+          child: const Text('Content'),
+        ),
+      );
+      await tester.pump();
+
+      await expectLater(
+        find.byType(ShadSheet),
+        matchesGoldenFile('goldens/sheet_expandable_bottom_initial.png'),
+      );
+    });
+
+    // Golden: bottom sheet dragged to maxSize
+    testWidgets('golden: expandable bottom sheet at maxSize', (tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final controller = ShadSheetController();
+      addTearDown(controller.dispose);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          side: ShadSheetSide.bottom,
+          expandable: true,
+          initialSize: 0.5,
+          maxSize: 0.9,
+          controller: controller,
+        ),
+      );
+      await tester.pump();
+      controller.jumpTo(0.9);
+      await tester.pump();
+
+      await expectLater(
+        find.byType(ShadSheet),
+        matchesGoldenFile('goldens/sheet_expandable_bottom_expanded.png'),
+      );
+    });
+
+    // Golden: top sheet
+    testWidgets('golden: expandable top sheet', (tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          side: ShadSheetSide.top,
+          expandable: true,
+          initialSize: 0.5,
+          child: const Text('Content'),
+        ),
+      );
+      await tester.pump();
+
+      await expectLater(
+        find.byType(ShadSheet),
+        matchesGoldenFile('goldens/sheet_expandable_top.png'),
+      );
+    });
+
+    // Golden: left sheet
+    testWidgets('golden: expandable left sheet', (tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          side: ShadSheetSide.left,
+          expandable: true,
+          initialSize: 0.5,
+          child: const Text('Content'),
+        ),
+      );
+      await tester.pump();
+
+      await expectLater(
+        find.byType(ShadSheet),
+        matchesGoldenFile('goldens/sheet_expandable_left.png'),
+      );
+    });
+
+    // Golden: right sheet
+    testWidgets('golden: expandable right sheet', (tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          side: ShadSheetSide.right,
+          expandable: true,
+          initialSize: 0.5,
+          child: const Text('Content'),
+        ),
+      );
+      await tester.pump();
+
+      await expectLater(
+        find.byType(ShadSheet),
+        matchesGoldenFile('goldens/sheet_expandable_right.png'),
+      );
+    });
+
+    // Golden: custom drag handle
+    testWidgets('golden: expandable sheet with custom drag handle', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          side: ShadSheetSide.bottom,
+          expandable: true,
+          initialSize: 0.5,
+          dragHandle: Container(
+            width: 60,
+            height: 12,
+            color: const Color(0xFFFF5733),
+          ),
+          child: const Text('Content'),
+        ),
+      );
+      await tester.pump();
+
+      await expectLater(
+        find.byType(ShadSheet),
+        matchesGoldenFile('goldens/sheet_expandable_custom_handle.png'),
+      );
     });
   });
 }

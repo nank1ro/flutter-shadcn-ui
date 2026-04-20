@@ -20,6 +20,8 @@ class SheetPage extends StatefulWidget {
 class _SheetPageState extends State<SheetPage> {
   var side = ShadSheetSide.bottom;
   var draggable = false;
+  var expandable = false;
+  var snap = false;
   var titlePinned = false;
   var descriptionPinned = false;
   var actionsPinned = true;
@@ -48,6 +50,16 @@ class _SheetPageState extends State<SheetPage> {
           onChanged: (value) => setState(() => draggable = value),
         ),
         MyBoolProperty(
+          label: 'Expandable',
+          value: expandable,
+          onChanged: (value) => setState(() => expandable = value),
+        ),
+        MyBoolProperty(
+          label: 'Snap',
+          value: snap,
+          onChanged: (value) => setState(() => snap = value),
+        ),
+        MyBoolProperty(
           label: 'titlePinned',
           value: titlePinned,
           onChanged: (v) => setState(() => titlePinned = v),
@@ -73,6 +85,12 @@ class _SheetPageState extends State<SheetPage> {
               builder: (context) {
                 return ShadSheet(
                   draggable: draggable,
+                  expandable: expandable,
+                  snap: snap,
+                  snapSizes: snap ? [0.3, 0.6, 0.9] : null,
+                  initialSize: 0.5,
+                  minSize: 0.25,
+                  maxSize: 0.9,
                   constraints:
                       side == ShadSheetSide.left || side == ShadSheetSide.right
                       ? const BoxConstraints(maxWidth: 512)

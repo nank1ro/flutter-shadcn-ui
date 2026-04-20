@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 enum SheetStyle {
   primary,
   side,
+  expandable,
 }
 
 class SheetPage extends StatelessWidget {
@@ -29,6 +30,24 @@ class SheetPage extends StatelessWidget {
                 context: context,
                 builder: (context) => const EditProfileSheet(
                   side: ShadSheetSide.right,
+                ),
+              ),
+            ),
+            SheetStyle.expandable => ShadButton.outline(
+              child: const Text('Open expandable sheet'),
+              onPressed: () => showShadSheet(
+                side: ShadSheetSide.bottom,
+                context: context,
+                builder: (context) => const ShadSheet(
+                  expandable: true,
+                  snap: true,
+                  snapSizes: [0.3, 0.6, 0.9],
+                  initialSize: 0.3,
+                  minSize: 0.3,
+                  maxSize: 0.9,
+                  title: Text('Expandable Sheet'),
+                  description: Text('Drag the handle to resize'),
+                  child: Text('Content here'),
                 ),
               ),
             ),

@@ -1,5 +1,7 @@
 // ignore_for_file: cascade_invocations
 
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -134,7 +136,8 @@ enum ShadSheetSide {
   bottom,
 
   /// Sheet slides in from the left.
-  left;
+  left
+  ;
 
   /// Converts the [ShadSheetSide] to an [Alignment].
   Alignment toAlignment() {
@@ -160,6 +163,66 @@ typedef SheetDragEndHandler =
       DragEndDetails details, {
       required bool isClosing,
     });
+
+/// Controller for an expandable [ShadSheet].
+///
+/// Exposes the current [size] ratio (0..1) and imperative methods [animateTo]
+/// and [jumpTo] that mirror [DraggableScrollableController] semantics.
+class ShadSheetController extends ChangeNotifier {
+  double _size = 0.5;
+
+  /// The current size ratio of the sheet (0.0..1.0).
+  double get size => _size;
+
+  // The AnimationController used for smooth transitions, injected by the state.
+  AnimationController? _animationController;
+
+  /// Animates the sheet to [size] using the provided [duration] and [curve].
+  ///
+  /// If no animation controller is attached yet (e.g. called before the sheet
+  /// is mounted), falls back to [jumpTo] — the size is set immediately without
+  /// animation.
+  Future<void> animateTo(
+    double size, {
+    Duration duration = const Duration(milliseconds: 250),
+    Curve curve = Curves.easeInOut,
+  }) async {
+    final ctrl = _animationController;
+    if (ctrl == null) {
+      jumpTo(size);
+      return;
+    }
+    final from = _size;
+    final to = size;
+    ctrl.duration = duration;
+    ctrl.value = 0;
+    void listener() {
+      _size = from + (to - from) * curve.transform(ctrl.value);
+      notifyListeners();
+    }
+
+    ctrl.addListener(listener);
+    await ctrl.animateTo(1, duration: duration, curve: curve);
+    ctrl.removeListener(listener);
+    // Ensure exact final value without floating-point drift.
+    _size = to;
+    notifyListeners();
+  }
+
+  /// Jumps the sheet to [size] immediately, without animation.
+  void jumpTo(double size) {
+    if (_size == size) return;
+    _size = size;
+    notifyListeners();
+  }
+
+  // Internal setter used by the state during drag updates.
+  void _setSize(double size) {
+    if (_size == size) return;
+    _size = size;
+    notifyListeners();
+  }
+}
 
 /// {@template ShadSheet}
 /// A customizable sheet component that slides in from the edges of the screen.
@@ -215,6 +278,18 @@ class ShadSheet extends StatefulWidget {
     this.titlePinned,
     this.descriptionPinned,
     this.actionsPinned,
+    this.expandable,
+    this.initialSize,
+    this.minSize,
+    this.maxSize,
+    this.snap,
+    this.snapSizes,
+    this.snapAnimationDuration,
+    this.snapAnimationCurve,
+    this.dragHandle,
+    this.showDragHandle,
+    this.onSizeChanged,
+    this.controller,
   });
 
   /// {@template ShadSheet.title}
@@ -459,19 +534,136 @@ class ShadSheet extends StatefulWidget {
   /// {@macro ShadDialog.actionsPinned}
   final bool? actionsPinned;
 
+  /// {@template ShadSheet.expandable}
+  /// Whether the sheet is expandable/resizable by dragging the handle.
+  /// When true, a drag handle is shown and the sheet can be resized.
+  /// Defaults to false.
+  /// {@endtemplate}
+  final bool? expandable;
+
+  /// {@template ShadSheet.initialSize}
+  /// The initial size of the sheet as a fraction of screen height (vertical
+  /// sides) or screen width (horizontal sides). Defaults to 0.5.
+  /// {@endtemplate}
+  final double? initialSize;
+
+  /// {@template ShadSheet.minSize}
+  /// The minimum size the sheet can be dragged to. Defaults to 0.25.
+  /// {@endtemplate}
+  final double? minSize;
+
+  /// {@template ShadSheet.maxSize}
+  /// The maximum size the sheet can be dragged to. Defaults to 1.0.
+  /// {@endtemplate}
+  final double? maxSize;
+
+  /// {@template ShadSheet.snap}
+  /// Whether the sheet snaps to stops after a drag. Defaults to false.
+  /// {@endtemplate}
+  final bool? snap;
+
+  /// {@template ShadSheet.snapSizes}
+  /// The size stops the sheet snaps to. Defaults to
+  /// [minSize, initialSize, maxSize] when null.
+  /// {@endtemplate}
+  final List<double>? snapSizes;
+
+  /// {@template ShadSheet.snapAnimationDuration}
+  /// Duration of the snap animation. Defaults to 250ms.
+  /// {@endtemplate}
+  final Duration? snapAnimationDuration;
+
+  /// {@template ShadSheet.snapAnimationCurve}
+  /// Curve of the snap animation. Defaults to [Curves.easeInOut].
+  /// {@endtemplate}
+  final Curve? snapAnimationCurve;
+
+  /// {@template ShadSheet.dragHandle}
+  /// Custom widget to use as the drag handle. When null, a default pill is
+  /// shown (only when [expandable] is true and [showDragHandle] is true).
+  /// {@endtemplate}
+  final Widget? dragHandle;
+
+  /// {@template ShadSheet.showDragHandle}
+  /// Whether to show the drag handle. Defaults to true when [expandable] is
+  /// true.
+  /// {@endtemplate}
+  final bool? showDragHandle;
+
+  /// {@template ShadSheet.onSizeChanged}
+  /// Called whenever the sheet size changes.
+  /// {@endtemplate}
+  final ValueChanged<double>? onSizeChanged;
+
+  /// {@template ShadSheet.controller}
+  /// Controller for programmatic size control. A private one is created
+  /// automatically if not provided.
+  /// {@endtemplate}
+  final ShadSheetController? controller;
+
   @override
   State<ShadSheet> createState() => _ShadSheetState();
 }
 
-class _ShadSheetState extends State<ShadSheet>
-    with SingleTickerProviderStateMixin {
+class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
   AnimationController? _animationController;
   final dragHandleMaterialState = <WidgetState>{};
   final GlobalKey childKey = GlobalKey(debugLabel: 'ShadSheet child');
   static const Curve legacyDecelerate = Cubic(0, 0, 0.2, 1);
 
+  // Expandable state
+  late ShadSheetController _sizeController;
+  AnimationController? _snapController;
+  double? _dragStartSizeRatio;
+  double? _dragStartPointer;
+  bool _ownsController = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initSizeController();
+  }
+
+  void _initSizeController() {
+    if (widget.controller != null) {
+      _sizeController = widget.controller!;
+      _ownsController = false;
+      // Do NOT override the caller's size.
+    } else {
+      _sizeController = ShadSheetController();
+      _ownsController = true;
+      _sizeController._size = widget.initialSize ?? 0.5;
+    }
+    _sizeController.addListener(_onSizeChanged);
+  }
+
+  void _onSizeChanged() {
+    setState(() {});
+    widget.onSizeChanged?.call(_sizeController.size);
+  }
+
+  @override
+  void didUpdateWidget(ShadSheet oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != oldWidget.controller) {
+      _sizeController.removeListener(_onSizeChanged);
+      if (_ownsController) {
+        _sizeController.dispose();
+      }
+      _initSizeController();
+    } else if (widget.initialSize != oldWidget.initialSize &&
+        _dragStartSizeRatio == null) {
+      _sizeController.jumpTo(widget.initialSize ?? 0.5);
+    }
+  }
+
   @override
   void dispose() {
+    _sizeController.removeListener(_onSizeChanged);
+    if (_ownsController) {
+      _sizeController.dispose();
+    }
+    _snapController?.dispose();
     _animationController?.dispose();
     super.dispose();
   }
@@ -694,7 +886,68 @@ class _ShadSheetState extends State<ShadSheet>
     final effectiveActionsPinned =
         widget.actionsPinned ?? theme.sheetTheme.actionsPinned ?? true;
 
-    Widget child = ShadDialog(
+    // Expandable fields
+    final effectiveExpandable =
+        widget.expandable ?? theme.sheetTheme.expandable ?? false;
+
+    final effectiveInitialSize =
+        widget.initialSize ?? theme.sheetTheme.initialSize ?? 0.5;
+
+    final effectiveMinSize = widget.minSize ?? theme.sheetTheme.minSize ?? 0.25;
+
+    final effectiveMaxSize = widget.maxSize ?? theme.sheetTheme.maxSize ?? 1.0;
+
+    final effectiveSnap = widget.snap ?? theme.sheetTheme.snap ?? false;
+
+    final effectiveSnapSizes =
+        widget.snapSizes ??
+        theme.sheetTheme.snapSizes ??
+        (effectiveSnap
+            ? [effectiveMinSize, effectiveInitialSize, effectiveMaxSize]
+            : null);
+
+    final effectiveSnapAnimationDuration =
+        widget.snapAnimationDuration ??
+        theme.sheetTheme.snapAnimationDuration ??
+        const Duration(milliseconds: 250);
+
+    final effectiveSnapAnimationCurve =
+        widget.snapAnimationCurve ??
+        theme.sheetTheme.snapAnimationCurve ??
+        Curves.easeInOut;
+
+    final effectiveShowDragHandle =
+        widget.showDragHandle ??
+        theme.sheetTheme.showDragHandle ??
+        effectiveExpandable;
+
+    final effectiveDragHandleColor =
+        theme.sheetTheme.dragHandleColor ?? theme.colorScheme.border;
+
+    final effectiveDragHandleWidth = theme.sheetTheme.dragHandleWidth ?? 36.0;
+
+    final effectiveDragHandleHeight = theme.sheetTheme.dragHandleHeight ?? 4.0;
+
+    final effectiveDragHandleRadius =
+        theme.sheetTheme.dragHandleRadius ?? BorderRadius.circular(2);
+
+    final isVertical =
+        side == ShadSheetSide.bottom || side == ShadSheetSide.top;
+
+    // Apply size-ratio constraints for expandable mode.
+    if (effectiveExpandable) {
+      final screenDim = isVertical ? mSize.height : mSize.width;
+      final targetPx = _sizeController.size * screenDim;
+      effectiveConstraints = (effectiveConstraints ?? const BoxConstraints())
+          .copyWith(
+            maxHeight: isVertical ? targetPx : null,
+            minHeight: isVertical ? targetPx : null,
+            maxWidth: isVertical ? null : targetPx,
+            minWidth: isVertical ? null : targetPx,
+          );
+    }
+
+    final Widget shadDialog = ShadDialog(
       key: childKey,
       title: widget.title,
       description: widget.description,
@@ -731,6 +984,115 @@ class _ShadSheetState extends State<ShadSheet>
       child: widget.child,
     );
 
+    Widget child;
+
+    if (effectiveExpandable) {
+      // Build the drag handle widget.
+      Widget handleWidget;
+      if (widget.dragHandle != null) {
+        handleWidget = widget.dragHandle!;
+      } else if (effectiveShowDragHandle) {
+        final pill = Container(
+          width: isVertical
+              ? effectiveDragHandleWidth
+              : effectiveDragHandleHeight,
+          height: isVertical
+              ? effectiveDragHandleHeight
+              : effectiveDragHandleWidth,
+          decoration: BoxDecoration(
+            color: effectiveDragHandleColor,
+            borderRadius: effectiveDragHandleRadius,
+          ),
+        );
+        handleWidget = isVertical
+            ? Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Center(child: pill),
+              )
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Center(child: pill),
+              );
+      } else {
+        handleWidget = const SizedBox.shrink();
+      }
+
+      final resizeHandle = _ShadSheetResizeHandle(
+        key: const ValueKey('shad_sheet_resize_handle'),
+        side: side,
+        onDragStart: (details) {
+          _dragStartSizeRatio = _sizeController.size;
+          _dragStartPointer = isVertical
+              ? details.globalPosition.dy
+              : details.globalPosition.dx;
+          // Cancel any in-flight snap animation.
+          _snapController?.stop();
+        },
+        onDragUpdate: (details) {
+          if (_dragStartSizeRatio == null || _dragStartPointer == null) return;
+          final pointer = isVertical
+              ? details.globalPosition.dy
+              : details.globalPosition.dx;
+          final pixelDelta = pointer - _dragStartPointer!;
+          final screenDim = isVertical ? mSize.height : mSize.width;
+          final ratioDelta = pixelDelta / screenDim;
+          final signed = switch (side) {
+            ShadSheetSide.bottom => -ratioDelta,
+            ShadSheetSide.top => ratioDelta,
+            ShadSheetSide.left => ratioDelta,
+            ShadSheetSide.right => -ratioDelta,
+          };
+          final next = (_dragStartSizeRatio! + signed).clamp(
+            effectiveMinSize,
+            effectiveMaxSize,
+          );
+          _sizeController._setSize(next);
+        },
+        onDragEnd: (details) {
+          if (effectiveSnap && effectiveSnapSizes != null) {
+            final current = _sizeController.size;
+            final target = effectiveSnapSizes.reduce(
+              (a, b) => (a - current).abs() < (b - current).abs() ? a : b,
+            );
+            // Lazy-create the snap animation controller.
+            _snapController ??= AnimationController(vsync: this);
+            _sizeController._animationController = _snapController;
+            unawaited(
+              _sizeController.animateTo(
+                target,
+                duration: effectiveSnapAnimationDuration,
+                curve: effectiveSnapAnimationCurve,
+              ),
+            );
+          }
+          _dragStartSizeRatio = null;
+          _dragStartPointer = null;
+        },
+        child: handleWidget,
+      );
+
+      child = switch (side) {
+        ShadSheetSide.bottom => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [resizeHandle, shadDialog],
+        ),
+        ShadSheetSide.top => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [shadDialog, resizeHandle],
+        ),
+        ShadSheetSide.left => Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [shadDialog, resizeHandle],
+        ),
+        ShadSheetSide.right => Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [resizeHandle, shadDialog],
+        ),
+      };
+    } else {
+      child = shadDialog;
+    }
+
     if (effectiveDraggable) {
       final effectiveDisabledScrollControlMaxRatio =
           widget.disabledScrollControlMaxRatio ??
@@ -744,6 +1106,10 @@ class _ShadSheetState extends State<ShadSheet>
           widget.closeProgressThreshold ??
           theme.sheetTheme.closeProgressThreshold ??
           0.5;
+
+      // When expandable is true, force isScrollControlled to bypass the 9/16 cap.
+      final effectiveIsScrollControlled =
+          effectiveExpandable || widget.isScrollControlled;
 
       child = ShadSheetGestureDetector(
         onDragStart: _handleDragStart,
@@ -766,7 +1132,7 @@ class _ShadSheetState extends State<ShadSheet>
               onChildSizeChanged: (_) {},
               scrollControlDisabledMaxRatio:
                   effectiveDisabledScrollControlMaxRatio,
-              isScrollControlled: widget.isScrollControlled,
+              isScrollControlled: effectiveIsScrollControlled,
               side: side,
               child: child,
             );
@@ -854,6 +1220,41 @@ class ShadSheetGestureDetector extends StatelessWidget {
                 },
               ),
       },
+      child: child,
+    );
+  }
+}
+
+/// A widget that wraps a drag handle child and wires drag gestures to resize
+/// the sheet. Used internally by [ShadSheet] when [ShadSheet.expandable] is
+/// true.
+class _ShadSheetResizeHandle extends StatelessWidget {
+  const _ShadSheetResizeHandle({
+    super.key,
+    required this.side,
+    required this.onDragStart,
+    required this.onDragUpdate,
+    required this.onDragEnd,
+    required this.child,
+  });
+
+  final ShadSheetSide side;
+  final GestureDragStartCallback onDragStart;
+  final GestureDragUpdateCallback onDragUpdate;
+  final GestureDragEndCallback onDragEnd;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final isVertical =
+        side == ShadSheetSide.bottom || side == ShadSheetSide.top;
+    return GestureDetector(
+      onVerticalDragStart: isVertical ? onDragStart : null,
+      onVerticalDragUpdate: isVertical ? onDragUpdate : null,
+      onVerticalDragEnd: isVertical ? onDragEnd : null,
+      onHorizontalDragStart: isVertical ? null : onDragStart,
+      onHorizontalDragUpdate: isVertical ? null : onDragUpdate,
+      onHorizontalDragEnd: isVertical ? null : onDragEnd,
       child: child,
     );
   }
