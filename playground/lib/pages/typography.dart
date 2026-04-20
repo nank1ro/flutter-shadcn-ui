@@ -18,10 +18,7 @@ enum TypographyStyle {
 }
 
 class TypographyPage extends StatelessWidget {
-  const TypographyPage({
-    super.key,
-    required this.style,
-  });
+  const TypographyPage({super.key, required this.style});
 
   final TypographyStyle style;
 

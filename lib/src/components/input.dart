@@ -1158,7 +1158,7 @@ class ShadInputState extends State<ShadInput>
                         contextMenuBuilder: effectiveUseBrowserContextMenu
                             ? null
                             : (widget.contextMenuBuilder ??
-                                defaultContextMenuBuilder),
+                                  defaultContextMenuBuilder),
                         selectionControls: widget.selectionControls,
                         // ! End of selection handler
                         // ! section

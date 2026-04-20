@@ -31,29 +31,32 @@ void main() {
     }
 
     test(
-        'forward drag: trailing panel collapses, leading pivot grows into next '
-        'trailing panel', () {
-      // 3 panels: 0.40, 0.30, 0.30 (totalWidth=200)
-      // Drag divider 0|1 by 90px right → delta = 90/200 = 0.45
-      // Leading pivot (0) grows, trailing panels shrink.
-      final controller =
-          buildController(sizes: [0.40, 0.30, 0.30], totalWidth: 200);
-      final initialLayout = [0.40, 0.30, 0.30];
+      'forward drag: trailing panel collapses, leading pivot grows into next '
+      'trailing panel',
+      () {
+        // 3 panels: 0.40, 0.30, 0.30 (totalWidth=200)
+        // Drag divider 0|1 by 90px right → delta = 90/200 = 0.45
+        // Leading pivot (0) grows, trailing panels shrink.
+        final controller = buildController(
+          sizes: [0.40, 0.30, 0.30],
+          totalWidth: 200,
+        );
+        final initialLayout = [0.40, 0.30, 0.30];
 
-      final result = controller.resize(
-        delta: 0.45, // 90px / 200px
-        initialLayout: initialLayout,
-        pivotIndices: [0, 1],
-      );
+        final result = controller.resize(
+          delta: 0.45, // 90px / 200px
+          initialLayout: initialLayout,
+          pivotIndices: [0, 1],
+        );
 
-      expect(result, ShadResizeResult.success);
-      expect(controller.getPanelInfo(0).size, closeTo(0.85, 1e-5));
-      expect(controller.getPanelInfo(1).size, closeTo(0.00, 1e-5));
-      expect(controller.getPanelInfo(2).size, closeTo(0.15, 1e-5));
-    });
+        expect(result, ShadResizeResult.success);
+        expect(controller.getPanelInfo(0).size, closeTo(0.85, 1e-5));
+        expect(controller.getPanelInfo(1).size, closeTo(0.00, 1e-5));
+        expect(controller.getPanelInfo(2).size, closeTo(0.15, 1e-5));
+      },
+    );
 
-    test(
-        'backward drag: leading panel collapses, trailing pivot grows, '
+    test('backward drag: leading panel collapses, trailing pivot grows, '
         'no further cascade when no more leading panels', () {
       // 3 panels: 0.25, 0.50, 0.25, totalWidth=100
       // Drag divider 0|1 left 30px → delta = -0.30
@@ -73,8 +76,7 @@ void main() {
       expect(controller.getPanelInfo(2).size, closeTo(0.25, 1e-5));
     });
 
-    test(
-        'forward drag: trailing collapses, no further cascade when no more '
+    test('forward drag: trailing collapses, no further cascade when no more '
         'trailing panels', () {
       // 3 panels: 0.25, 0.50, 0.25, totalWidth=100
       // Drag divider 1|2 right 30px → delta = 0.30
@@ -338,8 +340,10 @@ void main() {
       await tester.pumpAndSettle();
 
       // After dragging right, panel 0 should be larger and panel 1 smaller
-      expect(controller.getPanelInfo(0).size,
-          greaterThan(controller.getPanelInfo(1).size));
+      expect(
+        controller.getPanelInfo(0).size,
+        greaterThan(controller.getPanelInfo(1).size),
+      );
     });
   });
 }

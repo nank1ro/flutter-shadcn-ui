@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-enum SheetStyle {
-  primary,
-  side,
-  expandable,
-}
+enum SheetStyle { primary, side, expandable }
 
 class SheetPage extends StatelessWidget {
-  const SheetPage({
-    super.key,
-    required this.style,
-  });
+  const SheetPage({super.key, required this.style});
 
   final SheetStyle style;
 
@@ -28,9 +21,8 @@ class SheetPage extends StatelessWidget {
               onPressed: () => showShadSheet(
                 side: ShadSheetSide.right,
                 context: context,
-                builder: (context) => const EditProfileSheet(
-                  side: ShadSheetSide.right,
-                ),
+                builder: (context) =>
+                    const EditProfileSheet(side: ShadSheetSide.right),
               ),
             ),
             SheetStyle.expandable => ShadButton.outline(
@@ -122,10 +114,7 @@ final profile = [
 ];
 
 class EditProfileSheet extends StatelessWidget {
-  const EditProfileSheet({
-    super.key,
-    required this.side,
-  });
+  const EditProfileSheet({super.key, required this.side});
 
   final ShadSheetSide side;
 
@@ -140,9 +129,7 @@ class EditProfileSheet extends StatelessWidget {
       description: const Text(
         "Make changes to your profile here. Click save when you're done",
       ),
-      actions: const [
-        ShadButton(child: Text('Save changes')),
-      ],
+      actions: const [ShadButton(child: Text('Save changes'))],
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
@@ -161,10 +148,7 @@ class EditProfileSheet extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    Expanded(
-                      flex: 5,
-                      child: ShadInput(initialValue: p.value),
-                    ),
+                    Expanded(flex: 5, child: ShadInput(initialValue: p.value)),
                   ],
                 ),
               )

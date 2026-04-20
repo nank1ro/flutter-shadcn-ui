@@ -11,8 +11,7 @@ class GlobalShadLocalizations
   const GlobalShadLocalizations();
 
   /// The singleton instance of this delegate.
-  static const GlobalShadLocalizations delegate =
-      GlobalShadLocalizations();
+  static const GlobalShadLocalizations delegate = GlobalShadLocalizations();
 
   @override
   bool isSupported(Locale locale) => true;
@@ -25,7 +24,8 @@ class GlobalShadLocalizations
       return l.languageCode == locale.languageCode &&
           l.countryCode == locale.countryCode;
     }).firstOrNull;
-    final match = exact ??
+    final match =
+        exact ??
         ShadLocale.values
             .where((l) => l.languageCode == locale.languageCode)
             .firstOrNull ??
@@ -59,10 +59,10 @@ abstract class ShadLocalizations {
   ///
   /// Falls back to English when no delegate is found in the widget tree.
   static ShadLocalizationsData of(BuildContext context) {
-     final data= Localizations.of<ShadLocalizationsData>(
-        context,
-        ShadLocalizationsData
-      );
+    final data = Localizations.of<ShadLocalizationsData>(
+      context,
+      ShadLocalizationsData,
+    );
     return data ?? ShadLocalizationsData();
   }
 }

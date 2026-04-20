@@ -115,7 +115,6 @@ void main() {
 
       await tester.pumpWidget(
         sheetWidget(
-          side: ShadSheetSide.bottom,
           expandable: true,
           initialSize: 0.5,
         ),
@@ -143,7 +142,6 @@ void main() {
 
       await tester.pumpWidget(
         sheetWidget(
-          side: ShadSheetSide.bottom,
           expandable: true,
           initialSize: 0.5,
           minSize: 0.25,
@@ -188,7 +186,6 @@ void main() {
 
         await tester.pumpWidget(
           sheetWidget(
-            side: ShadSheetSide.bottom,
             expandable: true,
             initialSize: 0.5,
             minSize: 0.25,
@@ -280,7 +277,6 @@ void main() {
 
       await tester.pumpWidget(
         sheetWidget(
-          side: ShadSheetSide.bottom,
           expandable: true,
           initialSize: 0.3,
           minSize: 0.3,
@@ -321,11 +317,10 @@ void main() {
 
         await tester.pumpWidget(
           sheetWidget(
-            side: ShadSheetSide.bottom,
             expandable: true,
             initialSize: 0.5,
             minSize: 0.25,
-            maxSize: 1.0,
+            maxSize: 1,
             snap: true,
             // snapSizes intentionally null
             snapAnimationDuration: const Duration(milliseconds: 100),
@@ -378,7 +373,6 @@ void main() {
 
       await tester.pumpWidget(
         sheetWidget(
-          side: ShadSheetSide.bottom,
           expandable: true,
           initialSize: 0.5,
           onSizeChanged: sizeChanges.add,
@@ -405,11 +399,10 @@ void main() {
 
       await tester.pumpWidget(
         sheetWidget(
-          side: ShadSheetSide.bottom,
           expandable: true,
           initialSize: 0.5,
           minSize: 0.25,
-          maxSize: 1.0,
+          maxSize: 1,
           controller: controller,
         ),
       );
@@ -436,11 +429,10 @@ void main() {
 
       await tester.pumpWidget(
         sheetWidget(
-          side: ShadSheetSide.bottom,
           expandable: true,
           initialSize: 0.5,
           minSize: 0.25,
-          maxSize: 1.0,
+          maxSize: 1,
           controller: controller,
         ),
       );
@@ -465,7 +457,6 @@ void main() {
 
         await tester.pumpWidget(
           sheetWidget(
-            side: ShadSheetSide.bottom,
             expandable: true,
             draggable: true,
             initialSize: 0.5,
@@ -500,13 +491,10 @@ void main() {
 
         await tester.pumpWidget(
           sheetWidget(
-            side: ShadSheetSide.bottom,
             expandable: true,
             initialSize: 0.95,
             minSize: 0.25,
             maxSize: 0.95,
-            // isScrollControlled intentionally false — expandable should override
-            isScrollControlled: false,
           ),
         );
         await tester.pump();
@@ -530,7 +518,6 @@ void main() {
 
       await tester.pumpWidget(
         sheetWidget(
-          side: ShadSheetSide.bottom,
           expandable: true,
           initialSize: 0.5,
           child: const Text('Content'),
@@ -556,7 +543,6 @@ void main() {
 
       await tester.pumpWidget(
         sheetWidget(
-          side: ShadSheetSide.bottom,
           expandable: true,
           initialSize: 0.5,
           maxSize: 0.9,
@@ -653,7 +639,6 @@ void main() {
 
       await tester.pumpWidget(
         sheetWidget(
-          side: ShadSheetSide.bottom,
           expandable: true,
           initialSize: 0.5,
           dragHandle: Container(

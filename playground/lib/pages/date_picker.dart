@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-enum ShadDatePickerVariantPlayground {
-  single,
-  range,
-  presets,
-}
+enum ShadDatePickerVariantPlayground { single, range, presets }
 
 class DatePickerPage extends StatelessWidget {
-  const DatePickerPage({
-    super.key,
-    required this.style,
-  });
+  const DatePickerPage({super.key, required this.style});
 
   final ShadDatePickerVariantPlayground style;
 
@@ -59,12 +52,7 @@ class RangeDatePicker extends StatelessWidget {
   }
 }
 
-const presets = {
-  0: 'Today',
-  1: 'Tomorrow',
-  3: 'In 3 days',
-  7: 'In a week',
-};
+const presets = {0: 'Today', 1: 'Tomorrow', 3: 'In 3 days', 7: 'In a week'};
 
 class PresetsDatePicker extends StatefulWidget {
   const PresetsDatePicker({super.key});
