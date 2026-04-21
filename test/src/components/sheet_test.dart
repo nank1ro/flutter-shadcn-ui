@@ -28,6 +28,7 @@ void main() {
     bool? draggable,
     bool isScrollControlled = false,
     double? disabledScrollControlMaxRatio,
+    VoidCallback? onClosing,
     Widget? child,
   }) {
     return ShadApp(
@@ -50,6 +51,7 @@ void main() {
             draggable: draggable,
             isScrollControlled: isScrollControlled,
             disabledScrollControlMaxRatio: disabledScrollControlMaxRatio,
+            onClosing: onClosing,
             child: child ?? const Text('Sheet Content'),
           ),
         ),
@@ -350,15 +352,9 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
 
-        // After settling, size should be one of the three defaults.
-        expect(
-          controller.size,
-          anyOf(
-            closeTo(0.25, 0.05),
-            closeTo(0.5, 0.05),
-            closeTo(1.0, 0.05),
-          ),
-        );
+        // 0.6 is closest to 0.5 (diff 0.1) vs 0.25 (0.35) vs 1.0 (0.4);
+        // snap must land on the initialSize stop.
+        expect(controller.size, closeTo(0.5, 0.05));
       },
     );
 
@@ -468,6 +464,7 @@ void main() {
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
+        var closingCalls = 0;
 
         await tester.pumpWidget(
           sheetWidget(
@@ -477,11 +474,12 @@ void main() {
             minSize: 0.25,
             maxSize: 0.9,
             controller: controller,
+            onClosing: () => closingCalls++,
           ),
         );
         await tester.pump();
 
-        // Handle drag should resize (increase size)
+        // Handle drag should resize (increase size).
         final handleFinder = find.byKey(
           const ValueKey('shad_sheet_resize_handle'),
         );
@@ -489,8 +487,20 @@ void main() {
 
         await tester.drag(handleFinder, const Offset(0, -200));
         await tester.pump();
-
         expect(controller.size, greaterThan(0.5));
+        expect(closingCalls, 0);
+
+        // Body drag with sufficient fling velocity must dismiss the sheet
+        // (triggers onClosing). Use the sheet content as the drag origin
+        // so the gesture falls through to ShadSheetGestureDetector rather
+        // than the resize handle.
+        await tester.fling(
+          find.text('Sheet Content'),
+          const Offset(0, 600),
+          2000,
+        );
+        await tester.pumpAndSettle();
+        expect(closingCalls, greaterThanOrEqualTo(1));
       },
     );
 
