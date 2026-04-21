@@ -1006,6 +1006,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         handleWidget = widget.dragHandle!;
       } else if (effectiveShowDragHandle) {
         final pill = Container(
+          key: const ValueKey('shad_sheet_drag_pill'),
           width: isVertical
               ? effectiveDragHandleWidth
               : effectiveDragHandleHeight,
@@ -1017,19 +1018,33 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
             borderRadius: effectiveDragHandleRadius,
           ),
         );
-        // Padding of 20 on the drag axis yields a 44px touch target
-        // (20 + 4 pill + 20), meeting Apple HIG minimum so the handle is
-        // reachable on mobile. Consumers needing Material's 48dp target
-        // can supply a custom `dragHandle`.
-        handleWidget = isVertical
-            ? Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Center(child: pill),
-              )
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Center(child: pill),
-              );
+        // Asymmetric padding: 28px on the outer edge + 12px on the
+        // sheet-adjacent edge (+ 4px pill = 44px touch target). Keeps
+        // the Apple HIG minimum tap area while pulling the pill
+        // visually close to the sheet body. Consumers needing Material's
+        // 48dp target or symmetric spacing can supply a custom
+        // `dragHandle`.
+        const outerPad = 28.0;
+        const sheetPad = 12.0;
+        final padding = switch (side) {
+          ShadSheetSide.bottom => const EdgeInsets.only(
+            top: outerPad,
+            bottom: sheetPad,
+          ),
+          ShadSheetSide.top => const EdgeInsets.only(
+            top: sheetPad,
+            bottom: outerPad,
+          ),
+          ShadSheetSide.left => const EdgeInsets.only(
+            left: sheetPad,
+            right: outerPad,
+          ),
+          ShadSheetSide.right => const EdgeInsets.only(
+            left: outerPad,
+            right: sheetPad,
+          ),
+        };
+        handleWidget = Padding(padding: padding, child: Center(child: pill));
       } else {
         handleWidget = const SizedBox.shrink();
       }

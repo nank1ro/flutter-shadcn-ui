@@ -635,6 +635,67 @@ void main() {
       expect(controller.size, greaterThan(0.4));
     });
 
+    // Tests 21-24: default drag handle pill should sit visually close to
+    // the sheet body. For a bottom sheet the pill should be closer to the
+    // bottom edge of the handle strip (adjacent to the sheet) than to
+    // the top edge (outer). Same logic mirrored per side.
+    for (final side in ShadSheetSide.values) {
+      testWidgets(
+        'default drag pill sits near sheet body for side=$side',
+        (tester) async {
+          final isVertical =
+              side == ShadSheetSide.bottom || side == ShadSheetSide.top;
+          tester.view.physicalSize = isVertical
+              ? const Size(800, 1200)
+              : const Size(1200, 800);
+          tester.view.devicePixelRatio = 1.0;
+          addTearDown(tester.view.resetPhysicalSize);
+          addTearDown(tester.view.resetDevicePixelRatio);
+
+          await tester.pumpWidget(
+            sheetWidget(side: side, expandable: true),
+          );
+          await tester.pump();
+
+          final handleRect = tester.getRect(
+            find.byKey(const ValueKey('shad_sheet_resize_handle')),
+          );
+          final pillRect = tester.getRect(
+            find.byKey(const ValueKey('shad_sheet_drag_pill')),
+          );
+
+          // Upper bound guards against silent drift back toward a
+          // (nearly) symmetric 20/20 gap — the asymmetry must remain
+          // pronounced enough to read as "pill tucked next to sheet".
+          const maxSheetAdjacentGap = 16.0;
+          switch (side) {
+            case ShadSheetSide.bottom:
+              final sheetAdjacent = handleRect.bottom - pillRect.bottom;
+              expect(sheetAdjacent, lessThan(pillRect.top - handleRect.top));
+              expect(sheetAdjacent, lessThanOrEqualTo(maxSheetAdjacentGap));
+            case ShadSheetSide.top:
+              final sheetAdjacent = pillRect.top - handleRect.top;
+              expect(
+                sheetAdjacent,
+                lessThan(handleRect.bottom - pillRect.bottom),
+              );
+              expect(sheetAdjacent, lessThanOrEqualTo(maxSheetAdjacentGap));
+            case ShadSheetSide.left:
+              final sheetAdjacent = pillRect.left - handleRect.left;
+              expect(
+                sheetAdjacent,
+                lessThan(handleRect.right - pillRect.right),
+              );
+              expect(sheetAdjacent, lessThanOrEqualTo(maxSheetAdjacentGap));
+            case ShadSheetSide.right:
+              final sheetAdjacent = handleRect.right - pillRect.right;
+              expect(sheetAdjacent, lessThan(pillRect.left - handleRect.left));
+              expect(sheetAdjacent, lessThanOrEqualTo(maxSheetAdjacentGap));
+          }
+        },
+      );
+    }
+
     // Golden: bottom sheet at initialSize=0.5
     testWidgets('golden: expandable bottom sheet at initial size', (
       tester,
