@@ -507,6 +507,51 @@ void main() {
       },
     );
 
+    // Tests 14-17: expandable=true + draggable=false must anchor sheet to
+    // the configured side (regression for issue where sheet rendered at
+    // top-left instead of the expected side). For each side also assert the
+    // opposite-edge coordinate is inside the viewport to prove the sheet is
+    // partial-size (initialSize=0.5) and has not degenerated to fullscreen.
+    for (final side in ShadSheetSide.values) {
+      testWidgets(
+        'expandable+draggable=false: sheet anchors to side=$side',
+        (tester) async {
+          tester.view.physicalSize = const Size(800, 1200);
+          tester.view.devicePixelRatio = 1.0;
+          addTearDown(tester.view.resetPhysicalSize);
+          addTearDown(tester.view.resetDevicePixelRatio);
+
+          await tester.pumpWidget(
+            sheetWidget(
+              side: side,
+              expandable: true,
+              draggable: false,
+              initialSize: 0.5,
+            ),
+          );
+          await tester.pump();
+
+          final topLeft = tester.getTopLeft(find.byType(ShadDialog));
+          final bottomRight = tester.getBottomRight(find.byType(ShadDialog));
+
+          switch (side) {
+            case ShadSheetSide.bottom:
+              expect(bottomRight.dy, closeTo(1200, 1.0));
+              expect(topLeft.dy, greaterThan(0));
+            case ShadSheetSide.top:
+              expect(topLeft.dy, closeTo(0, 1.0));
+              expect(bottomRight.dy, lessThan(1200));
+            case ShadSheetSide.left:
+              expect(topLeft.dx, closeTo(0, 1.0));
+              expect(bottomRight.dx, lessThan(800));
+            case ShadSheetSide.right:
+              expect(bottomRight.dx, closeTo(800, 1.0));
+              expect(topLeft.dx, greaterThan(0));
+          }
+        },
+      );
+    }
+
     // Golden: bottom sheet at initialSize=0.5
     testWidgets('golden: expandable bottom sheet at initial size', (
       tester,
