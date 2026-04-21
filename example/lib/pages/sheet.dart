@@ -1,5 +1,4 @@
 import 'package:example/common/base_scaffold.dart';
-import 'package:example/common/extensions.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
 import 'package:flutter/material.dart';
@@ -108,29 +107,26 @@ class _SheetPageState extends State<SheetPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       spacing: 16,
-                      children:
-                          (profile.map(
-                                    (p) => Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            p.title,
-                                            textAlign: TextAlign.end,
-                                            style: theme.textTheme.small,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 16),
-                                        Expanded(
-                                          flex: 5,
-                                          child: ShadInput(
-                                            initialValue: p.value,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ) *
-                                  20)
-                              .toList(),
+                      children: profile
+                          .map(
+                            (p) => Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    p.title,
+                                    textAlign: TextAlign.end,
+                                    style: theme.textTheme.small,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  flex: 5,
+                                  child: ShadInput(initialValue: p.value),
+                                ),
+                              ],
+                            ),
+                          )
+                          .toList(),
                     ),
                   ),
                 );
