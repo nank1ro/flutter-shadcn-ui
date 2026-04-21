@@ -664,25 +664,35 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
   final GlobalKey childKey = GlobalKey(debugLabel: 'ShadSheet child');
   static const Curve legacyDecelerate = Cubic(0, 0, 0.2, 1);
 
-  // Expandable state
-  ShadSheetController? sizeController;
+  // Expandable state. `ownedController` is non-null only when the state
+  // created its own controller. When the caller supplies one via
+  // `widget.controller`, this stays null and `sizeController` resolves
+  // to the caller's instance — so presence of `ownedController` itself
+  // answers "do we own it?" without a separate flag.
+  ShadSheetController? ownedController;
   AnimationController? snapController;
   double? dragStartSizeRatio;
   double? dragStartPointer;
-  bool ownsController = false;
+  // Tracks whether `didChangeDependencies` has wired listeners /
+  // performed the one-shot seed. Separate from controller ownership.
+  bool sizeControllerReady = false;
+
+  // The resolved controller used by the sheet this frame. Prefers a
+  // caller-supplied controller; otherwise the one we own.
+  ShadSheetController get sizeController =>
+      widget.controller ?? ownedController!;
+
+  // Derived: we own the controller iff the caller didn't supply one.
+  bool get ownsController => widget.controller == null;
 
   void initSizeController() {
-    if (widget.controller != null) {
-      sizeController = widget.controller;
-      ownsController = false;
-      // Do NOT override the caller's size.
-    } else {
+    if (ownsController) {
       // `??=` keeps the same ShadSheetController instance across
       // rebuilds when we already own one, so listeners stay attached.
-      sizeController ??= ShadSheetController();
-      ownsController = true;
+      ownedController ??= ShadSheetController();
     }
-    sizeController!.addListener(handleSizeChanged);
+    sizeController.addListener(handleSizeChanged);
+    sizeControllerReady = true;
   }
 
   // Resolves the initial size via widget prop → themed value → hard
@@ -695,23 +705,21 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Lazy init. The nullable `sizeController` doubles as a "has not
-    // been seeded yet" flag: seeding happens exactly once (the first
-    // time the inherited ShadTheme is reachable from context), which
-    // avoids resetting the sheet on unrelated MediaQuery / orientation
-    // dependency changes, and also means caller-owned controllers are
-    // never mutated.
-    if (sizeController == null) {
+    // Lazy one-shot init: wires the listener and seeds an owned
+    // controller from the theme-aware chain. Later dependency changes
+    // (MediaQuery, orientation, font scale) leave the sheet alone so a
+    // user-dragged size isn't silently reset.
+    if (!sizeControllerReady) {
       initSizeController();
       if (ownsController) {
-        sizeController!._size = resolveSeedSize();
+        ownedController!._size = resolveSeedSize();
       }
     }
   }
 
   void handleSizeChanged() {
     setState(() {});
-    widget.onSizeChanged?.call(sizeController!.size);
+    widget.onSizeChanged?.call(sizeController.size);
   }
 
   @override
@@ -721,15 +729,18 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       // Release any snap-animation ref held by the outgoing controller so
       // the about-to-be-disposed AnimationController cannot be reached
       // via a retained external controller.
-      sizeController!._animationController = null;
-      sizeController!.removeListener(handleSizeChanged);
-      if (ownsController) {
-        sizeController!.dispose();
+      final outgoing = oldWidget.controller ?? ownedController;
+      outgoing?._animationController = null;
+      outgoing?.removeListener(handleSizeChanged);
+      if (oldWidget.controller == null) {
+        // We previously owned the controller; dispose it.
+        ownedController?.dispose();
+        ownedController = null;
       }
-      sizeController = null;
+      sizeControllerReady = false;
       initSizeController();
       if (ownsController) {
-        sizeController!._size = resolveSeedSize();
+        ownedController!._size = resolveSeedSize();
       }
     } else if (widget.initialSize != oldWidget.initialSize &&
         dragStartSizeRatio == null &&
@@ -737,7 +748,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       // Only seed a newly-supplied initialSize on a controller we own;
       // caller-owned controllers are the single source of truth for
       // their size and must not be mutated by widget rebuilds.
-      sizeController!.jumpTo(resolveSeedSize());
+      ownedController!.jumpTo(resolveSeedSize());
     }
   }
 
@@ -746,11 +757,9 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     // Null the AnimationController reference on the size controller so
     // an external (caller-owned) controller cannot dereference the
     // about-to-be-disposed snap controller.
-    sizeController!._animationController = null;
-    sizeController!.removeListener(handleSizeChanged);
-    if (ownsController) {
-      sizeController!.dispose();
-    }
+    sizeController._animationController = null;
+    sizeController.removeListener(handleSizeChanged);
+    ownedController?.dispose();
     snapController?.dispose();
     _animationController?.dispose();
     super.dispose();
@@ -854,7 +863,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       side == ShadSheetSide.bottom || side == ShadSheetSide.top;
 
   void handleResizeDragStart(DragStartDetails details, ShadSheetSide side) {
-    dragStartSizeRatio = sizeController!.size;
+    dragStartSizeRatio = sizeController.size;
     dragStartPointer = _isVertical(side)
         ? details.globalPosition.dy
         : details.globalPosition.dx;
@@ -884,7 +893,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       ShadSheetSide.right => -ratioDelta,
     };
     final next = (dragStartSizeRatio! + signed).clamp(minSize, maxSize);
-    sizeController!._setSize(next);
+    sizeController._setSize(next);
   }
 
   void handleResizeDragEnd(
@@ -895,15 +904,15 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     required Curve curve,
   }) {
     if (snap && snapSizes != null) {
-      final current = sizeController!.size;
+      final current = sizeController.size;
       final target = snapSizes.reduce(
         (a, b) => (a - current).abs() < (b - current).abs() ? a : b,
       );
       // Lazy-create the snap animation controller.
       snapController ??= AnimationController(vsync: this);
-      sizeController!._animationController = snapController;
+      sizeController._animationController = snapController;
       unawaited(
-        sizeController!.animateTo(
+        sizeController.animateTo(
           target,
           duration: duration,
           curve: curve,
@@ -1137,7 +1146,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     // total always equals `size * screenDim` regardless of which handle
     // the consumer supplies.
     final expandableCompositePx = effectiveExpandable
-        ? sizeController!.size * (isVertical ? mSize.height : mSize.width)
+        ? sizeController.size * (isVertical ? mSize.height : mSize.width)
         : 0.0;
 
     final Widget shadDialog = ShadDialog(
