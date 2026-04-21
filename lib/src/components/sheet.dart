@@ -625,58 +625,58 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
   static const Curve legacyDecelerate = Cubic(0, 0, 0.2, 1);
 
   // Expandable state
-  late ShadSheetController _sizeController;
-  AnimationController? _snapController;
-  double? _dragStartSizeRatio;
-  double? _dragStartPointer;
-  bool _ownsController = false;
+  late ShadSheetController sizeController;
+  AnimationController? snapController;
+  double? dragStartSizeRatio;
+  double? dragStartPointer;
+  bool ownsController = false;
 
   @override
   void initState() {
     super.initState();
-    _initSizeController();
+    initSizeController();
   }
 
-  void _initSizeController() {
+  void initSizeController() {
     if (widget.controller != null) {
-      _sizeController = widget.controller!;
-      _ownsController = false;
+      sizeController = widget.controller!;
+      ownsController = false;
       // Do NOT override the caller's size.
     } else {
-      _sizeController = ShadSheetController();
-      _ownsController = true;
-      _sizeController._size = widget.initialSize ?? 0.5;
+      sizeController = ShadSheetController();
+      ownsController = true;
+      sizeController._size = widget.initialSize ?? 0.5;
     }
-    _sizeController.addListener(_onSizeChanged);
+    sizeController.addListener(handleSizeChanged);
   }
 
-  void _onSizeChanged() {
+  void handleSizeChanged() {
     setState(() {});
-    widget.onSizeChanged?.call(_sizeController.size);
+    widget.onSizeChanged?.call(sizeController.size);
   }
 
   @override
   void didUpdateWidget(ShadSheet oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
-      _sizeController.removeListener(_onSizeChanged);
-      if (_ownsController) {
-        _sizeController.dispose();
+      sizeController.removeListener(handleSizeChanged);
+      if (ownsController) {
+        sizeController.dispose();
       }
-      _initSizeController();
+      initSizeController();
     } else if (widget.initialSize != oldWidget.initialSize &&
-        _dragStartSizeRatio == null) {
-      _sizeController.jumpTo(widget.initialSize ?? 0.5);
+        dragStartSizeRatio == null) {
+      sizeController.jumpTo(widget.initialSize ?? 0.5);
     }
   }
 
   @override
   void dispose() {
-    _sizeController.removeListener(_onSizeChanged);
-    if (_ownsController) {
-      _sizeController.dispose();
+    sizeController.removeListener(handleSizeChanged);
+    if (ownsController) {
+      sizeController.dispose();
     }
-    _snapController?.dispose();
+    snapController?.dispose();
     _animationController?.dispose();
     super.dispose();
   }
@@ -696,7 +696,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     return renderBox.size.height;
   }
 
-  void _handleDragStart(DragStartDetails details) {
+  void handleDragStart(DragStartDetails details) {
     setState(() {
       dragHandleMaterialState.add(WidgetState.dragged);
     });
@@ -705,11 +705,11 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
 
   bool get effectiveDraggable => widget.draggable ?? false;
 
-  bool get _dismissUnderway =>
+  bool get dismissUnderway =>
       animationController.status == AnimationStatus.reverse;
 
-  void _handleDragUpdate(DragUpdateDetails details, ShadSheetSide side) {
-    if (_dismissUnderway) {
+  void handleDragUpdate(DragUpdateDetails details, ShadSheetSide side) {
+    if (dismissUnderway) {
       return;
     }
 
@@ -725,13 +725,13 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     }
   }
 
-  void _handleDragEnd(
+  void handleDragEnd(
     DragEndDetails details, {
     required ShadSheetSide side,
     required double minFlingVelocity,
     required double closeProgressThreshold,
   }) {
-    if (_dismissUnderway) {
+    if (dismissUnderway) {
       return;
     }
     setState(() {
@@ -950,7 +950,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     // Apply size-ratio constraints for expandable mode.
     if (effectiveExpandable) {
       final screenDim = isVertical ? mSize.height : mSize.width;
-      final targetPx = _sizeController.size * screenDim;
+      final targetPx = sizeController.size * screenDim;
       effectiveConstraints = (effectiveConstraints ?? const BoxConstraints())
           .copyWith(
             maxHeight: isVertical ? targetPx : null,
@@ -1056,19 +1056,19 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         key: const ValueKey('shad_sheet_resize_handle'),
         side: side,
         onDragStart: (details) {
-          _dragStartSizeRatio = _sizeController.size;
-          _dragStartPointer = isVertical
+          dragStartSizeRatio = sizeController.size;
+          dragStartPointer = isVertical
               ? details.globalPosition.dy
               : details.globalPosition.dx;
           // Cancel any in-flight snap animation.
-          _snapController?.stop();
+          snapController?.stop();
         },
         onDragUpdate: (details) {
-          if (_dragStartSizeRatio == null || _dragStartPointer == null) return;
+          if (dragStartSizeRatio == null || dragStartPointer == null) return;
           final pointer = isVertical
               ? details.globalPosition.dy
               : details.globalPosition.dx;
-          final pixelDelta = pointer - _dragStartPointer!;
+          final pixelDelta = pointer - dragStartPointer!;
           final screenDim = isVertical ? mSize.height : mSize.width;
           final ratioDelta = pixelDelta / screenDim;
           final signed = switch (side) {
@@ -1077,31 +1077,31 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
             ShadSheetSide.left => ratioDelta,
             ShadSheetSide.right => -ratioDelta,
           };
-          final next = (_dragStartSizeRatio! + signed).clamp(
+          final next = (dragStartSizeRatio! + signed).clamp(
             effectiveMinSize,
             effectiveMaxSize,
           );
-          _sizeController._setSize(next);
+          sizeController._setSize(next);
         },
         onDragEnd: (details) {
           if (effectiveSnap && effectiveSnapSizes != null) {
-            final current = _sizeController.size;
+            final current = sizeController.size;
             final target = effectiveSnapSizes.reduce(
               (a, b) => (a - current).abs() < (b - current).abs() ? a : b,
             );
             // Lazy-create the snap animation controller.
-            _snapController ??= AnimationController(vsync: this);
-            _sizeController._animationController = _snapController;
+            snapController ??= AnimationController(vsync: this);
+            sizeController._animationController = snapController;
             unawaited(
-              _sizeController.animateTo(
+              sizeController.animateTo(
                 target,
                 duration: effectiveSnapAnimationDuration,
                 curve: effectiveSnapAnimationCurve,
               ),
             );
           }
-          _dragStartSizeRatio = null;
-          _dragStartPointer = null;
+          dragStartSizeRatio = null;
+          dragStartPointer = null;
         },
         child: handleWidget,
       );
@@ -1157,9 +1157,9 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
           effectiveExpandable || widget.isScrollControlled;
 
       child = ShadSheetGestureDetector(
-        onDragStart: _handleDragStart,
-        onDragUpdate: (details) => _handleDragUpdate(details, side),
-        onDragEnd: (details) => _handleDragEnd(
+        onDragStart: handleDragStart,
+        onDragUpdate: (details) => handleDragUpdate(details, side),
+        onDragEnd: (details) => handleDragEnd(
           details,
           side: side,
           minFlingVelocity: effectiveMinFlingVelocity,
