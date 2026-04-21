@@ -1044,7 +1044,10 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
             right: sheetPad,
           ),
         };
-        handleWidget = Padding(padding: padding, child: Center(child: pill));
+        handleWidget = Padding(
+          padding: padding,
+          child: Center(child: pill),
+        );
       } else {
         handleWidget = const SizedBox.shrink();
       }
