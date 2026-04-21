@@ -148,6 +148,19 @@ enum ShadSheetSide {
       ShadSheetSide.right => Alignment.topRight,
     };
   }
+
+  /// Converts the [ShadSheetSide] to an edge-centered [Alignment]. Unlike
+  /// [toAlignment], left/right return [Alignment.centerLeft]/[Alignment.centerRight]
+  /// so a partial-size sheet sits vertically centered on its edge rather
+  /// than at the corner.
+  Alignment toEdgeAlignment() {
+    return switch (this) {
+      ShadSheetSide.top => Alignment.topCenter,
+      ShadSheetSide.bottom => Alignment.bottomCenter,
+      ShadSheetSide.left => Alignment.centerLeft,
+      ShadSheetSide.right => Alignment.centerRight,
+    };
+  }
 }
 
 /// A callback for when the user begins dragging the sheet.
@@ -1090,22 +1103,14 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         ),
       };
 
-      // When draggable is false, ShadSheetLayoutWithSizeListener (which uses
-      // absolute child offsets and would conflict with Align) is skipped, so
-      // the composite must anchor itself to the configured side. Use edge
-      // alignments instead of ShadSheetSide.toAlignment() because that enum
-      // method returns topLeft/topRight for left/right (consumed by
-      // ShadDialog's own Align in its own context) whereas an expandable
-      // left/right sheet with partial content should sit at the vertical
-      // center of its edge, not the corner.
+      // Without this Align the composite (a shrinkwrapped Column/Row) would
+      // render at the overlay's top-left. Skipped when draggable because
+      // ShadSheetLayoutWithSizeListener positions via absolute child offsets
+      // and would conflict with Align. Uses toEdgeAlignment (not
+      // toAlignment) so left/right sheets center on their edge instead of
+      // the top corner.
       if (!effectiveDraggable) {
-        final compositeAlignment = switch (side) {
-          ShadSheetSide.bottom => Alignment.bottomCenter,
-          ShadSheetSide.top => Alignment.topCenter,
-          ShadSheetSide.left => Alignment.centerLeft,
-          ShadSheetSide.right => Alignment.centerRight,
-        };
-        child = Align(alignment: compositeAlignment, child: child);
+        child = Align(alignment: side.toEdgeAlignment(), child: child);
       }
     } else {
       child = shadDialog;
