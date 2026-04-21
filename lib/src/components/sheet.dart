@@ -200,13 +200,14 @@ class ShadSheetController extends ChangeNotifier {
     Duration duration = const Duration(milliseconds: 250),
     Curve curve = Curves.easeInOut,
   }) async {
+    final clamped = size.clamp(0.0, 1.0);
     final ctrl = _animationController;
     if (ctrl == null) {
-      jumpTo(size);
+      jumpTo(clamped);
       return;
     }
     final from = _size;
-    final to = size;
+    final to = clamped;
     ctrl.duration = duration;
     ctrl.value = 0;
     void listener() {
@@ -215,7 +216,10 @@ class ShadSheetController extends ChangeNotifier {
     }
 
     ctrl.addListener(listener);
-    await ctrl.animateTo(1, duration: duration, curve: curve);
+    // Drive the raw value linearly; the listener is the single place
+    // applying `curve.transform` so the caller-supplied curve isn't
+    // composed with itself.
+    await ctrl.animateTo(1, duration: duration);
     ctrl.removeListener(listener);
     // Ensure exact final value without floating-point drift.
     _size = to;
@@ -223,16 +227,21 @@ class ShadSheetController extends ChangeNotifier {
   }
 
   /// Jumps the sheet to [size] immediately, without animation.
+  /// [size] is clamped to the allowed `[0.0, 1.0]` range.
   void jumpTo(double size) {
-    if (_size == size) return;
-    _size = size;
+    final clamped = size.clamp(0.0, 1.0);
+    if (_size == clamped) return;
+    _size = clamped;
     notifyListeners();
   }
 
-  // Internal setter used by the state during drag updates.
+  // Internal setter used by the state during drag updates. Callers should
+  // have already clamped to effectiveMinSize/effectiveMaxSize; this guards
+  // against accidental out-of-range writes as a last line of defence.
   void _setSize(double size) {
-    if (_size == size) return;
-    _size = size;
+    final clamped = size.clamp(0.0, 1.0);
+    if (_size == clamped) return;
+    _size = clamped;
     notifyListeners();
   }
 }
@@ -303,7 +312,18 @@ class ShadSheet extends StatefulWidget {
     this.showDragHandle,
     this.onSizeChanged,
     this.controller,
-  });
+  }) : assert(
+         initialSize == null || (initialSize >= 0.0 && initialSize <= 1.0),
+         'initialSize must be in [0.0, 1.0]',
+       ),
+       assert(
+         minSize == null || (minSize >= 0.0 && minSize <= 1.0),
+         'minSize must be in [0.0, 1.0]',
+       ),
+       assert(
+         maxSize == null || (maxSize >= 0.0 && maxSize <= 1.0),
+         'maxSize must be in [0.0, 1.0]',
+       );
 
   /// {@template ShadSheet.title}
   /// The title widget of the sheet, typically displayed at the top.
@@ -659,19 +679,31 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
   void didUpdateWidget(ShadSheet oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
+      // Release any snap-animation ref held by the outgoing controller so
+      // the about-to-be-disposed AnimationController cannot be reached
+      // via a retained external controller.
+      sizeController._animationController = null;
       sizeController.removeListener(handleSizeChanged);
       if (ownsController) {
         sizeController.dispose();
       }
       initSizeController();
     } else if (widget.initialSize != oldWidget.initialSize &&
-        dragStartSizeRatio == null) {
+        dragStartSizeRatio == null &&
+        ownsController) {
+      // Only seed a newly-supplied initialSize on a controller we own;
+      // caller-owned controllers are the single source of truth for
+      // their size and must not be mutated by widget rebuilds.
       sizeController.jumpTo(widget.initialSize ?? 0.5);
     }
   }
 
   @override
   void dispose() {
+    // Null the AnimationController reference on the size controller so
+    // an external (caller-owned) controller cannot dereference the
+    // about-to-be-disposed snap controller.
+    sizeController._animationController = null;
     sizeController.removeListener(handleSizeChanged);
     if (ownsController) {
       sizeController.dispose();
@@ -947,18 +979,13 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     final isVertical =
         side == ShadSheetSide.bottom || side == ShadSheetSide.top;
 
-    // Apply size-ratio constraints for expandable mode.
-    if (effectiveExpandable) {
-      final screenDim = isVertical ? mSize.height : mSize.width;
-      final targetPx = sizeController.size * screenDim;
-      effectiveConstraints = (effectiveConstraints ?? const BoxConstraints())
-          .copyWith(
-            maxHeight: isVertical ? targetPx : null,
-            minHeight: isVertical ? targetPx : null,
-            maxWidth: isVertical ? null : targetPx,
-            minWidth: isVertical ? null : targetPx,
-          );
-    }
+    // Precompute the composite size for expandable mode. We constrain the
+    // composite (handle + dialog) rather than the dialog alone so the
+    // total always equals `size * screenDim` regardless of which handle
+    // the consumer supplies.
+    final expandableCompositePx = effectiveExpandable
+        ? sizeController.size * (isVertical ? mSize.height : mSize.width)
+        : 0.0;
 
     final Widget shadDialog = ShadDialog(
       key: childKey,
@@ -1106,24 +1133,30 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         child: handleWidget,
       );
 
-      child = switch (side) {
+      // Wrap the composite in a fixed-size box on the drag axis so
+      // handle + dialog sum exactly to `size * screenDim`. shadDialog is
+      // flexed to consume whatever remains after the handle, which keeps
+      // custom dragHandles accounted for without a hardcoded handle
+      // extent.
+      final composite = switch (side) {
         ShadSheetSide.bottom => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [resizeHandle, shadDialog],
+          children: [resizeHandle, Expanded(child: shadDialog)],
         ),
         ShadSheetSide.top => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [shadDialog, resizeHandle],
+          children: [Expanded(child: shadDialog), resizeHandle],
         ),
         ShadSheetSide.left => Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [shadDialog, resizeHandle],
+          children: [Expanded(child: shadDialog), resizeHandle],
         ),
         ShadSheetSide.right => Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [resizeHandle, shadDialog],
+          children: [resizeHandle, Expanded(child: shadDialog)],
         ),
       };
+      child = SizedBox(
+        height: isVertical ? expandableCompositePx : null,
+        width: isVertical ? null : expandableCompositePx,
+        child: composite,
+      );
 
       // Without this Align the composite (a shrinkwrapped Column/Row) would
       // render at the overlay's top-left. Skipped when draggable because

@@ -121,11 +121,14 @@ void main() {
       );
       await tester.pump();
 
-      final dialogBox =
-          tester.renderObject(find.byType(ShadDialog)) as RenderBox;
-      // initialSize sizes the dialog content only (handle sits outside).
-      // 0.5 * 1200 = 600.
-      expect(dialogBox.size.height, closeTo(600.0, 2.0));
+      // initialSize sizes the FULL composite (handle + dialog content),
+      // so dialog alone is ~600 - handleHeight.
+      final dialogHeight =
+          tester.getSize(find.byType(ShadDialog)).height;
+      final handleHeight = tester
+          .getSize(find.byKey(const ValueKey('shad_sheet_resize_handle')))
+          .height;
+      expect(dialogHeight + handleHeight, closeTo(600, 2.0));
     });
 
     // Test 3: drag up on bottom sheet increases size, clamped at maxSize
@@ -273,6 +276,10 @@ void main() {
 
       final controller = ShadSheetController();
       addTearDown(controller.dispose);
+      // Seed the caller-owned controller before mount; initSizeController
+      // deliberately does NOT override external controllers with
+      // widget.initialSize, so the sheet inherits whatever size the
+      // controller already holds.
       controller.jumpTo(0.3);
 
       await tester.pumpWidget(
@@ -293,14 +300,18 @@ void main() {
         const ValueKey('shad_sheet_resize_handle'),
       );
 
-      // Drag to between 0.3 and 0.6 stop (≈ 0.42) → should snap to 0.3
-      // 0.42 - 0.3 = 0.12 * 1200 = 144px up
+      // Drag 1: to between 0.3 and 0.6 stop (≈ 0.42) → snap to 0.3.
+      // From 0.3, +0.12 ratio (144px up on a 1200-tall view).
       await tester.drag(handleFinder, const Offset(0, -144));
       await tester.pump();
       await tester.pumpAndSettle();
-
-      // nearest to 0.42 is 0.3 (diff=0.12) vs 0.6 (diff=0.18) → snap to 0.3
       expect(controller.size, closeTo(0.3, 0.05));
+
+      // Drag 2: from ~0.3 by +0.2 ratio → ~0.5, nearest stop is 0.6.
+      await tester.drag(handleFinder, const Offset(0, -240));
+      await tester.pump();
+      await tester.pumpAndSettle();
+      expect(controller.size, closeTo(0.6, 0.05));
     });
 
     // Test 7: snap=true, snapSizes=null → defaults to [min, initial, max].
@@ -340,10 +351,14 @@ void main() {
         await tester.pump();
         await tester.pumpAndSettle();
 
-        // After settling, size should be one of the three defaults
+        // After settling, size should be one of the three defaults.
         expect(
-          [0.25, 0.5, 1.0],
-          contains(closeTo(controller.size, 0.05)),
+          controller.size,
+          anyOf(
+            closeTo(0.25, 0.05),
+            closeTo(0.5, 0.05),
+            closeTo(1.0, 0.05),
+          ),
         );
       },
     );
@@ -499,11 +514,12 @@ void main() {
         );
         await tester.pump();
 
-        final sheetBox =
-            tester.renderObject(find.byType(ShadSheet)) as RenderBox;
-        // 0.95 * 1200 = 1140, which exceeds 9/16 * 1200 ≈ 675
-        // If cap is bypassed, height should be close to 1140
-        expect(sheetBox.size.height, greaterThan(900));
+        // 0.95 * 1200 = 1140, which exceeds the 9/16 * 1200 ≈ 675 cap.
+        // If cap is bypassed, the dialog (which excludes the handle in
+        // expandable mode) should still read well above the cap.
+        final dialogHeight =
+            tester.getSize(find.byType(ShadDialog)).height;
+        expect(dialogHeight, greaterThan(900));
       },
     );
 
@@ -695,6 +711,136 @@ void main() {
         },
       );
     }
+
+    // Test 25: ShadSheetController.jumpTo clamps to [0, 1].
+    testWidgets('ShadSheetController.jumpTo clamps out-of-range values', (
+      tester,
+    ) async {
+      final controller = ShadSheetController();
+      addTearDown(controller.dispose);
+
+      await tester.pumpWidget(
+        sheetWidget(expandable: true, controller: controller),
+      );
+      await tester.pump();
+
+      controller.jumpTo(1.8);
+      expect(controller.size, 1.0);
+
+      controller.jumpTo(-0.5);
+      expect(controller.size, 0.0);
+    });
+
+    // Test 26: ShadSheetController.animateTo clamps to [0, 1] and
+    // actually animates (not jumpTo fallback). We trigger a snap drag
+    // first so the sheet wires up an AnimationController on the
+    // controller, then animateTo exercises the animated-clamp path.
+    testWidgets(
+      'ShadSheetController.animateTo clamps out-of-range target',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            snap: true,
+            snapAnimationDuration: const Duration(milliseconds: 50),
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        // Trigger a drag-end so the sheet wires snapController into
+        // `controller._animationController`.
+        await tester.drag(
+          find.byKey(const ValueKey('shad_sheet_resize_handle')),
+          const Offset(0, -20),
+        );
+        await tester.pumpAndSettle();
+
+        // Fire-and-forget: awaiting the future would deadlock because it
+        // completes only when the AnimationController ticks, which
+        // requires pumping frames.
+        unawaited(
+          controller.animateTo(2, duration: const Duration(milliseconds: 50)),
+        );
+        await tester.pumpAndSettle();
+        expect(controller.size, 1.0);
+      },
+    );
+
+    // Test 27: didUpdateWidget must NOT mutate a caller-owned controller
+    // when `initialSize` changes on the widget.
+    testWidgets('external controller not mutated on initialSize change', (
+      tester,
+    ) async {
+      final controller = ShadSheetController();
+      addTearDown(controller.dispose);
+      controller.jumpTo(0.3);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          expandable: true,
+          initialSize: 0.3,
+          controller: controller,
+        ),
+      );
+      await tester.pump();
+
+      // Rebuild with a different initialSize. The external controller's
+      // size must remain untouched.
+      await tester.pumpWidget(
+        sheetWidget(
+          expandable: true,
+          initialSize: 0.7,
+          controller: controller,
+        ),
+      );
+      await tester.pump();
+
+      expect(controller.size, closeTo(0.3, 1e-9));
+    });
+
+    // Test 28: composite (resize handle + sheet body) must fit within
+    // the size ratio; the handle footprint should not cause overflow.
+    testWidgets(
+      'composite height equals size * screenDim (handle fits inside)',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 1,
+          ),
+        );
+        await tester.pump();
+
+        final handleHeight = tester
+            .getSize(find.byKey(const ValueKey('shad_sheet_resize_handle')))
+            .height;
+        final dialogHeight = tester
+            .getSize(find.byType(ShadDialog))
+            .height;
+        // Screen = 1200; initialSize 0.5 → expected composite 600.
+        expect(
+          handleHeight + dialogHeight,
+          closeTo(600, 1.0),
+        );
+      },
+    );
 
     // Golden: bottom sheet at initialSize=0.5
     testWidgets('golden: expandable bottom sheet at initial size', (
