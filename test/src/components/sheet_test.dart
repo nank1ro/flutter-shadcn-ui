@@ -552,6 +552,89 @@ void main() {
       );
     }
 
+    // Tests 18-19: mobile touch-target ergonomics for the default drag
+    // handle. Apple HIG requires ≥ 44x44 hit area; the default handle
+    // needs to meet this on both vertical and horizontal sides, and the
+    // GestureDetector must use opaque hit-testing so the entire padded
+    // row absorbs touches (not only the visible pill).
+    testWidgets(
+      'default drag handle meets 44px minimum touch target on bottom sheet',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(sheetWidget(expandable: true));
+        await tester.pump();
+
+        final handleSize = tester.getSize(
+          find.byKey(const ValueKey('shad_sheet_resize_handle')),
+        );
+        expect(handleSize.height, greaterThanOrEqualTo(44));
+      },
+    );
+
+    testWidgets(
+      'default drag handle meets 44px minimum touch target on left sheet',
+      (tester) async {
+        tester.view.physicalSize = const Size(1200, 800);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(
+          sheetWidget(side: ShadSheetSide.left, expandable: true),
+        );
+        await tester.pump();
+
+        final handleSize = tester.getSize(
+          find.byKey(const ValueKey('shad_sheet_resize_handle')),
+        );
+        expect(handleSize.width, greaterThanOrEqualTo(44));
+      },
+    );
+
+    // Test 20: dragging from the padded edge of the handle (well away from
+    // the 4px pill) must register — proves HitTestBehavior.opaque is set on
+    // the GestureDetector.
+    testWidgets('drag from handle padding edge registers (opaque hit test)', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final controller = ShadSheetController();
+      addTearDown(controller.dispose);
+
+      await tester.pumpWidget(
+        sheetWidget(
+          expandable: true,
+          initialSize: 0.4,
+          minSize: 0.2,
+          maxSize: 0.8,
+          controller: controller,
+        ),
+      );
+      await tester.pump();
+
+      final handleFinder = find.byKey(
+        const ValueKey('shad_sheet_resize_handle'),
+      );
+      final handleRect = tester.getRect(handleFinder);
+      // Start 1px below the top edge of the handle — inside the padding
+      // but far from the center pill. Without opaque hit-testing this
+      // point would fall through to whatever is behind.
+      final edgeStart = Offset(handleRect.center.dx, handleRect.top + 1);
+
+      await tester.dragFrom(edgeStart, const Offset(0, -200));
+      await tester.pump();
+
+      expect(controller.size, greaterThan(0.4));
+    });
+
     // Golden: bottom sheet at initialSize=0.5
     testWidgets('golden: expandable bottom sheet at initial size', (
       tester,

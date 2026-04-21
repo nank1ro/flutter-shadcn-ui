@@ -1017,13 +1017,17 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
             borderRadius: effectiveDragHandleRadius,
           ),
         );
+        // Padding of 20 on the drag axis yields a 44px touch target
+        // (20 + 4 pill + 20), meeting Apple HIG minimum so the handle is
+        // reachable on mobile. Consumers needing Material's 48dp target
+        // can supply a custom `dragHandle`.
         handleWidget = isVertical
             ? Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Center(child: pill),
               )
             : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Center(child: pill),
               );
       } else {
@@ -1272,6 +1276,9 @@ class _ShadSheetResizeHandle extends StatelessWidget {
     final isVertical =
         side == ShadSheetSide.bottom || side == ShadSheetSide.top;
     return GestureDetector(
+      // Opaque so the full padded touch target absorbs drags, not only
+      // the visible pill.
+      behavior: HitTestBehavior.opaque,
       onVerticalDragStart: isVertical ? onDragStart : null,
       onVerticalDragUpdate: isVertical ? onDragUpdate : null,
       onVerticalDragEnd: isVertical ? onDragEnd : null,
