@@ -665,37 +665,24 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
   static const Curve legacyDecelerate = Cubic(0, 0, 0.2, 1);
 
   // Expandable state
-  late ShadSheetController sizeController;
+  ShadSheetController? sizeController;
   AnimationController? snapController;
   double? dragStartSizeRatio;
   double? dragStartPointer;
   bool ownsController = false;
 
-  @override
-  void initState() {
-    super.initState();
-    initSizeController();
-  }
-
-  // Tracks whether the first seed has happened. For owned controllers
-  // this is when `_size` was set from the theme-aware chain. For
-  // external controllers nothing is seeded, but the flag still flips
-  // so subsequent didChangeDependencies calls don't re-enter.
-  bool initialSeedDone = false;
-
   void initSizeController() {
     if (widget.controller != null) {
-      sizeController = widget.controller!;
+      sizeController = widget.controller;
       ownsController = false;
       // Do NOT override the caller's size.
     } else {
-      sizeController = ShadSheetController();
+      // `??=` keeps the same ShadSheetController instance across
+      // rebuilds when we already own one, so listeners stay attached.
+      sizeController ??= ShadSheetController();
       ownsController = true;
-      // Intentionally left at the controller's default (0.5);
-      // didChangeDependencies seeds with the theme-aware value once
-      // ShadTheme is reachable from context.
     }
-    sizeController.addListener(handleSizeChanged);
+    sizeController!.addListener(handleSizeChanged);
   }
 
   // Resolves the initial size via widget prop → themed value → hard
@@ -708,15 +695,23 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!initialSeedDone && ownsController) {
-      sizeController._size = resolveSeedSize();
+    // Lazy init. The nullable `sizeController` doubles as a "has not
+    // been seeded yet" flag: seeding happens exactly once (the first
+    // time the inherited ShadTheme is reachable from context), which
+    // avoids resetting the sheet on unrelated MediaQuery / orientation
+    // dependency changes, and also means caller-owned controllers are
+    // never mutated.
+    if (sizeController == null) {
+      initSizeController();
+      if (ownsController) {
+        sizeController!._size = resolveSeedSize();
+      }
     }
-    initialSeedDone = true;
   }
 
   void handleSizeChanged() {
     setState(() {});
-    widget.onSizeChanged?.call(sizeController.size);
+    widget.onSizeChanged?.call(sizeController!.size);
   }
 
   @override
@@ -726,23 +721,23 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       // Release any snap-animation ref held by the outgoing controller so
       // the about-to-be-disposed AnimationController cannot be reached
       // via a retained external controller.
-      sizeController._animationController = null;
-      sizeController.removeListener(handleSizeChanged);
+      sizeController!._animationController = null;
+      sizeController!.removeListener(handleSizeChanged);
       if (ownsController) {
-        sizeController.dispose();
+        sizeController!.dispose();
       }
+      sizeController = null;
       initSizeController();
       if (ownsController) {
-        sizeController._size = resolveSeedSize();
+        sizeController!._size = resolveSeedSize();
       }
-      initialSeedDone = true;
     } else if (widget.initialSize != oldWidget.initialSize &&
         dragStartSizeRatio == null &&
         ownsController) {
       // Only seed a newly-supplied initialSize on a controller we own;
       // caller-owned controllers are the single source of truth for
       // their size and must not be mutated by widget rebuilds.
-      sizeController.jumpTo(resolveSeedSize());
+      sizeController!.jumpTo(resolveSeedSize());
     }
   }
 
@@ -751,10 +746,10 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     // Null the AnimationController reference on the size controller so
     // an external (caller-owned) controller cannot dereference the
     // about-to-be-disposed snap controller.
-    sizeController._animationController = null;
-    sizeController.removeListener(handleSizeChanged);
+    sizeController!._animationController = null;
+    sizeController!.removeListener(handleSizeChanged);
     if (ownsController) {
-      sizeController.dispose();
+      sizeController!.dispose();
     }
     snapController?.dispose();
     _animationController?.dispose();
@@ -851,6 +846,113 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         Navigator.of(context).pop();
       }
     }
+  }
+
+  // --- Expandable resize handle callbacks ------------------------------------
+
+  bool _isVertical(ShadSheetSide side) =>
+      side == ShadSheetSide.bottom || side == ShadSheetSide.top;
+
+  void handleResizeDragStart(DragStartDetails details, ShadSheetSide side) {
+    dragStartSizeRatio = sizeController!.size;
+    dragStartPointer = _isVertical(side)
+        ? details.globalPosition.dy
+        : details.globalPosition.dx;
+    // Cancel any in-flight snap animation so the drag controls the sheet.
+    snapController?.stop();
+  }
+
+  void handleResizeDragUpdate(
+    DragUpdateDetails details, {
+    required ShadSheetSide side,
+    required Size mSize,
+    required double minSize,
+    required double maxSize,
+  }) {
+    if (dragStartSizeRatio == null || dragStartPointer == null) return;
+    final isVertical = _isVertical(side);
+    final pointer = isVertical
+        ? details.globalPosition.dy
+        : details.globalPosition.dx;
+    final pixelDelta = pointer - dragStartPointer!;
+    final screenDim = isVertical ? mSize.height : mSize.width;
+    final ratioDelta = pixelDelta / screenDim;
+    final signed = switch (side) {
+      ShadSheetSide.bottom => -ratioDelta,
+      ShadSheetSide.top => ratioDelta,
+      ShadSheetSide.left => ratioDelta,
+      ShadSheetSide.right => -ratioDelta,
+    };
+    final next = (dragStartSizeRatio! + signed).clamp(minSize, maxSize);
+    sizeController!._setSize(next);
+  }
+
+  void handleResizeDragEnd(
+    DragEndDetails details, {
+    required bool snap,
+    required List<double>? snapSizes,
+    required Duration duration,
+    required Curve curve,
+  }) {
+    if (snap && snapSizes != null) {
+      final current = sizeController!.size;
+      final target = snapSizes.reduce(
+        (a, b) => (a - current).abs() < (b - current).abs() ? a : b,
+      );
+      // Lazy-create the snap animation controller.
+      snapController ??= AnimationController(vsync: this);
+      sizeController!._animationController = snapController;
+      unawaited(
+        sizeController!.animateTo(
+          target,
+          duration: duration,
+          curve: curve,
+        ),
+      );
+    }
+    dragStartSizeRatio = null;
+    dragStartPointer = null;
+  }
+
+  Widget _buildDefaultHandlePill({
+    required ShadSheetSide side,
+    required bool isVertical,
+    required double width,
+    required double height,
+    required Color color,
+    required BorderRadius radius,
+  }) {
+    final pill = Container(
+      key: const ValueKey('shad_sheet_drag_pill'),
+      width: isVertical ? width : height,
+      height: isVertical ? height : width,
+      decoration: BoxDecoration(color: color, borderRadius: radius),
+    );
+    // Asymmetric padding: 28px on the outer edge + 12px on the
+    // sheet-adjacent edge (+ 4px pill = 44px touch target). Keeps the
+    // Apple HIG minimum tap area while pulling the pill visually close
+    // to the sheet body.
+    const outerPad = 28.0;
+    const sheetPad = 12.0;
+    final padding = switch (side) {
+      ShadSheetSide.bottom => const EdgeInsets.only(
+        top: outerPad,
+        bottom: sheetPad,
+      ),
+      ShadSheetSide.top => const EdgeInsets.only(
+        top: sheetPad,
+        bottom: outerPad,
+      ),
+      ShadSheetSide.left => const EdgeInsets.only(
+        left: sheetPad,
+        right: outerPad,
+      ),
+      ShadSheetSide.right => const EdgeInsets.only(
+        left: outerPad,
+        right: sheetPad,
+      ),
+    };
+    return Padding(padding: padding, child: Center(child: pill));
   }
 
   @override
@@ -1032,7 +1134,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     // total always equals `size * screenDim` regardless of which handle
     // the consumer supplies.
     final expandableCompositePx = effectiveExpandable
-        ? sizeController.size * (isVertical ? mSize.height : mSize.width)
+        ? sizeController!.size * (isVertical ? mSize.height : mSize.width)
         : 0.0;
 
     final Widget shadDialog = ShadDialog(
@@ -1075,109 +1177,36 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     Widget child;
 
     if (effectiveExpandable) {
-      // Build the drag handle widget.
-      Widget handleWidget;
-      if (widget.dragHandle != null) {
-        handleWidget = widget.dragHandle!;
-      } else if (effectiveShowDragHandle) {
-        final pill = Container(
-          key: const ValueKey('shad_sheet_drag_pill'),
-          width: isVertical
-              ? effectiveDragHandleWidth
-              : effectiveDragHandleHeight,
-          height: isVertical
-              ? effectiveDragHandleHeight
-              : effectiveDragHandleWidth,
-          decoration: BoxDecoration(
-            color: effectiveDragHandleColor,
-            borderRadius: effectiveDragHandleRadius,
-          ),
-        );
-        // Asymmetric padding: 28px on the outer edge + 12px on the
-        // sheet-adjacent edge (+ 4px pill = 44px touch target). Keeps
-        // the Apple HIG minimum tap area while pulling the pill
-        // visually close to the sheet body. Consumers needing Material's
-        // 48dp target or symmetric spacing can supply a custom
-        // `dragHandle`.
-        const outerPad = 28.0;
-        const sheetPad = 12.0;
-        final padding = switch (side) {
-          ShadSheetSide.bottom => const EdgeInsets.only(
-            top: outerPad,
-            bottom: sheetPad,
-          ),
-          ShadSheetSide.top => const EdgeInsets.only(
-            top: sheetPad,
-            bottom: outerPad,
-          ),
-          ShadSheetSide.left => const EdgeInsets.only(
-            left: sheetPad,
-            right: outerPad,
-          ),
-          ShadSheetSide.right => const EdgeInsets.only(
-            left: outerPad,
-            right: sheetPad,
-          ),
-        };
-        handleWidget = Padding(
-          padding: padding,
-          child: Center(child: pill),
-        );
-      } else {
-        handleWidget = const SizedBox.shrink();
-      }
+      final handleWidget =
+          widget.dragHandle ??
+          (effectiveShowDragHandle
+              ? _buildDefaultHandlePill(
+                  side: side,
+                  isVertical: isVertical,
+                  width: effectiveDragHandleWidth,
+                  height: effectiveDragHandleHeight,
+                  color: effectiveDragHandleColor,
+                  radius: effectiveDragHandleRadius,
+                )
+              : const SizedBox.shrink());
 
-      final resizeHandle = _ShadSheetResizeHandle(
-        key: const ValueKey('shad_sheet_resize_handle'),
+      final resizeHandle = ShadSheetResizeHandle(
         side: side,
-        onDragStart: (details) {
-          dragStartSizeRatio = sizeController.size;
-          dragStartPointer = isVertical
-              ? details.globalPosition.dy
-              : details.globalPosition.dx;
-          // Cancel any in-flight snap animation.
-          snapController?.stop();
-        },
-        onDragUpdate: (details) {
-          if (dragStartSizeRatio == null || dragStartPointer == null) return;
-          final pointer = isVertical
-              ? details.globalPosition.dy
-              : details.globalPosition.dx;
-          final pixelDelta = pointer - dragStartPointer!;
-          final screenDim = isVertical ? mSize.height : mSize.width;
-          final ratioDelta = pixelDelta / screenDim;
-          final signed = switch (side) {
-            ShadSheetSide.bottom => -ratioDelta,
-            ShadSheetSide.top => ratioDelta,
-            ShadSheetSide.left => ratioDelta,
-            ShadSheetSide.right => -ratioDelta,
-          };
-          final next = (dragStartSizeRatio! + signed).clamp(
-            effectiveMinSize,
-            effectiveMaxSize,
-          );
-          sizeController._setSize(next);
-        },
-        onDragEnd: (details) {
-          if (effectiveSnap && effectiveSnapSizes != null) {
-            final current = sizeController.size;
-            final target = effectiveSnapSizes.reduce(
-              (a, b) => (a - current).abs() < (b - current).abs() ? a : b,
-            );
-            // Lazy-create the snap animation controller.
-            snapController ??= AnimationController(vsync: this);
-            sizeController._animationController = snapController;
-            unawaited(
-              sizeController.animateTo(
-                target,
-                duration: effectiveSnapAnimationDuration,
-                curve: effectiveSnapAnimationCurve,
-              ),
-            );
-          }
-          dragStartSizeRatio = null;
-          dragStartPointer = null;
-        },
+        onDragStart: (details) => handleResizeDragStart(details, side),
+        onDragUpdate: (details) => handleResizeDragUpdate(
+          details,
+          side: side,
+          mSize: mSize,
+          minSize: effectiveMinSize,
+          maxSize: effectiveMaxSize,
+        ),
+        onDragEnd: (details) => handleResizeDragEnd(
+          details,
+          snap: effectiveSnap,
+          snapSizes: effectiveSnapSizes,
+          duration: effectiveSnapAnimationDuration,
+          curve: effectiveSnapAnimationCurve,
+        ),
         child: handleWidget,
       );
 
@@ -1366,8 +1395,21 @@ class ShadSheetGestureDetector extends StatelessWidget {
 /// A widget that wraps a drag handle child and wires drag gestures to resize
 /// the sheet. Used internally by [ShadSheet] when [ShadSheet.expandable] is
 /// true.
-class _ShadSheetResizeHandle extends StatelessWidget {
-  const _ShadSheetResizeHandle({
+/// The gesture target that resizes an expandable [ShadSheet] when dragged.
+///
+/// [ShadSheet] composes this widget internally when `expandable: true`.
+/// It is exposed publicly purely so widget tests can locate it via
+/// `find.byType(ShadSheetResizeHandle)`; direct external construction is
+/// not supported because the drag callbacks rely on internal sheet state
+/// ([ShadSheetController], drag snapshots, snap animation) that is not
+/// accessible from outside.
+///
+/// The detector uses [HitTestBehavior.opaque] so the entire padded touch
+/// area absorbs drags, not only the visible child.
+class ShadSheetResizeHandle extends StatelessWidget {
+  /// Creates a resize handle. Intended for [ShadSheet] internal use and
+  /// test discovery; see the class-level docs.
+  const ShadSheetResizeHandle({
     super.key,
     required this.side,
     required this.onDragStart,
@@ -1376,10 +1418,20 @@ class _ShadSheetResizeHandle extends StatelessWidget {
     required this.child,
   });
 
+  /// The side of the screen the parent sheet is anchored to. Determines
+  /// whether the handle listens for vertical or horizontal drags.
   final ShadSheetSide side;
+
+  /// Fired at the start of a drag on the handle.
   final GestureDragStartCallback onDragStart;
+
+  /// Fired for each drag update.
   final GestureDragUpdateCallback onDragUpdate;
+
+  /// Fired when the drag ends (and before any snap animation).
   final GestureDragEndCallback onDragEnd;
+
+  /// The visible content of the handle (typically a pill or custom widget).
   final Widget child;
 
   @override

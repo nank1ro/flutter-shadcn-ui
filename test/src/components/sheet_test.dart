@@ -29,6 +29,9 @@ void main() {
     bool isScrollControlled = false,
     double? disabledScrollControlMaxRatio,
     VoidCallback? onClosing,
+    Widget? title,
+    Widget? description,
+    List<Widget> actions = const [],
     Widget? child,
   }) {
     return ShadApp(
@@ -52,12 +55,49 @@ void main() {
             isScrollControlled: isScrollControlled,
             disabledScrollControlMaxRatio: disabledScrollControlMaxRatio,
             onClosing: onClosing,
+            title: title,
+            description: description,
+            actions: actions,
             child: child ?? const Text('Sheet Content'),
           ),
         ),
       ),
     );
   }
+
+  // Rich visual content for golden tests so the captured images show
+  // the handle, title, description, body, and actions — not just an
+  // empty sheet.
+  Widget goldenSheetBody() => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          height: 40,
+          decoration: BoxDecoration(
+            color: const Color(0xFFE5E7EB),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: const Text('Alexandru'),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          height: 40,
+          decoration: BoxDecoration(
+            color: const Color(0xFFE5E7EB),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: const Text('nank1ro'),
+        ),
+      ],
+    ),
+  );
 
   group('ShadSheet', () {
     testWidgets('ShadSheet matches goldens', (tester) async {
@@ -91,7 +131,7 @@ void main() {
       await tester.pumpWidget(sheetWidget(expandable: false));
       await tester.pump();
       expect(
-        find.byKey(const ValueKey('shad_sheet_resize_handle')),
+        find.byType(ShadSheetResizeHandle),
         findsNothing,
       );
     });
@@ -101,7 +141,7 @@ void main() {
       await tester.pumpWidget(sheetWidget());
       await tester.pump();
       expect(
-        find.byKey(const ValueKey('shad_sheet_resize_handle')),
+        find.byType(ShadSheetResizeHandle),
         findsNothing,
       );
     });
@@ -127,7 +167,7 @@ void main() {
       // so dialog alone is ~600 - handleHeight.
       final dialogHeight = tester.getSize(find.byType(ShadDialog)).height;
       final handleHeight = tester
-          .getSize(find.byKey(const ValueKey('shad_sheet_resize_handle')))
+          .getSize(find.byType(ShadSheetResizeHandle))
           .height;
       expect(dialogHeight + handleHeight, closeTo(600, 2.0));
     });
@@ -158,9 +198,7 @@ void main() {
       expect(controller.size, closeTo(0.5, 0.01));
 
       // Drag handle upward by 300px on a 1200px screen = 0.25 ratio increase
-      final handleFinder = find.byKey(
-        const ValueKey('shad_sheet_resize_handle'),
-      );
+      final handleFinder = find.byType(ShadSheetResizeHandle);
       expect(handleFinder, findsOneWidget);
 
       await tester.drag(handleFinder, const Offset(0, -300));
@@ -199,9 +237,7 @@ void main() {
         );
         await tester.pump();
 
-        final handleFinder = find.byKey(
-          const ValueKey('shad_sheet_resize_handle'),
-        );
+        final handleFinder = find.byType(ShadSheetResizeHandle);
 
         // Drag way down (shrink direction for bottom sheet)
         await tester.drag(handleFinder, const Offset(0, 1200));
@@ -239,9 +275,7 @@ void main() {
         );
         await tester.pump();
 
-        final handleFinder = find.byKey(
-          const ValueKey('shad_sheet_resize_handle'),
-        );
+        final handleFinder = find.byType(ShadSheetResizeHandle);
         expect(handleFinder, findsOneWidget);
         final initialSize = controller.size;
 
@@ -297,9 +331,7 @@ void main() {
       );
       await tester.pump();
 
-      final handleFinder = find.byKey(
-        const ValueKey('shad_sheet_resize_handle'),
-      );
+      final handleFinder = find.byType(ShadSheetResizeHandle);
 
       // Drag 1: to between 0.3 and 0.6 stop (≈ 0.42) → snap to 0.3.
       // From 0.3, +0.12 ratio (144px up on a 1200-tall view).
@@ -341,9 +373,7 @@ void main() {
         );
         await tester.pump();
 
-        final handleFinder = find.byKey(
-          const ValueKey('shad_sheet_resize_handle'),
-        );
+        final handleFinder = find.byType(ShadSheetResizeHandle);
 
         // Drag to ≈ 0.6, nearest to 0.5 (initialSize) or 1.0 (maxSize)?
         // 0.6 - 0.5 = 0.1 vs 1.0 - 0.6 = 0.4 → snap to 0.5
@@ -390,9 +420,7 @@ void main() {
       );
       await tester.pump();
 
-      final handleFinder = find.byKey(
-        const ValueKey('shad_sheet_resize_handle'),
-      );
+      final handleFinder = find.byType(ShadSheetResizeHandle);
       await tester.drag(handleFinder, const Offset(0, -100));
       await tester.pump();
 
@@ -480,9 +508,7 @@ void main() {
         await tester.pump();
 
         // Handle drag should resize (increase size).
-        final handleFinder = find.byKey(
-          const ValueKey('shad_sheet_resize_handle'),
-        );
+        final handleFinder = find.byType(ShadSheetResizeHandle);
         expect(handleFinder, findsOneWidget);
 
         await tester.drag(handleFinder, const Offset(0, -200));
@@ -593,7 +619,7 @@ void main() {
         await tester.pump();
 
         final handleSize = tester.getSize(
-          find.byKey(const ValueKey('shad_sheet_resize_handle')),
+          find.byType(ShadSheetResizeHandle),
         );
         expect(handleSize.height, greaterThanOrEqualTo(44));
       },
@@ -613,7 +639,7 @@ void main() {
         await tester.pump();
 
         final handleSize = tester.getSize(
-          find.byKey(const ValueKey('shad_sheet_resize_handle')),
+          find.byType(ShadSheetResizeHandle),
         );
         expect(handleSize.width, greaterThanOrEqualTo(44));
       },
@@ -644,9 +670,7 @@ void main() {
       );
       await tester.pump();
 
-      final handleFinder = find.byKey(
-        const ValueKey('shad_sheet_resize_handle'),
-      );
+      final handleFinder = find.byType(ShadSheetResizeHandle);
       final handleRect = tester.getRect(handleFinder);
       // Start 1px below the top edge of the handle — inside the padding
       // but far from the center pill. Without opaque hit-testing this
@@ -682,7 +706,7 @@ void main() {
           await tester.pump();
 
           final handleRect = tester.getRect(
-            find.byKey(const ValueKey('shad_sheet_resize_handle')),
+            find.byType(ShadSheetResizeHandle),
           );
           final pillRect = tester.getRect(
             find.byKey(const ValueKey('shad_sheet_drag_pill')),
@@ -768,7 +792,7 @@ void main() {
         // Trigger a drag-end so the sheet wires snapController into
         // `controller._animationController`.
         await tester.drag(
-          find.byKey(const ValueKey('shad_sheet_resize_handle')),
+          find.byType(ShadSheetResizeHandle),
           const Offset(0, -20),
         );
         await tester.pumpAndSettle();
@@ -837,7 +861,7 @@ void main() {
         await tester.pump();
 
         final handleHeight = tester
-            .getSize(find.byKey(const ValueKey('shad_sheet_resize_handle')))
+            .getSize(find.byType(ShadSheetResizeHandle))
             .height;
         final dialogHeight = tester.getSize(find.byType(ShadDialog)).height;
         // Screen = 1200; initialSize 0.5 → expected composite 600.
@@ -879,7 +903,7 @@ void main() {
         await tester.pump();
 
         final handleHeight = tester
-            .getSize(find.byKey(const ValueKey('shad_sheet_resize_handle')))
+            .getSize(find.byType(ShadSheetResizeHandle))
             .height;
         final dialogHeight = tester.getSize(find.byType(ShadDialog)).height;
         // 0.8 * 1200 = 960.
@@ -948,7 +972,10 @@ void main() {
         sheetWidget(
           expandable: true,
           initialSize: 0.5,
-          child: const Text('Content'),
+          title: const Text('Edit profile'),
+          description: const Text('Make changes to your profile here.'),
+          actions: const [ShadButton(child: Text('Save'))],
+          child: goldenSheetBody(),
         ),
       );
       await tester.pump();
@@ -975,6 +1002,10 @@ void main() {
           initialSize: 0.5,
           maxSize: 0.9,
           controller: controller,
+          title: const Text('Edit profile'),
+          description: const Text('Make changes to your profile here.'),
+          actions: const [ShadButton(child: Text('Save'))],
+          child: goldenSheetBody(),
         ),
       );
       await tester.pump();
@@ -999,7 +1030,10 @@ void main() {
           side: ShadSheetSide.top,
           expandable: true,
           initialSize: 0.5,
-          child: const Text('Content'),
+          title: const Text('Notifications'),
+          description: const Text('Manage your alerts.'),
+          actions: const [ShadButton(child: Text('Done'))],
+          child: goldenSheetBody(),
         ),
       );
       await tester.pump();
@@ -1022,7 +1056,10 @@ void main() {
           side: ShadSheetSide.left,
           expandable: true,
           initialSize: 0.5,
-          child: const Text('Content'),
+          title: const Text('Navigation'),
+          description: const Text('Jump anywhere.'),
+          actions: const [ShadButton(child: Text('Close'))],
+          child: goldenSheetBody(),
         ),
       );
       await tester.pump();
@@ -1045,7 +1082,10 @@ void main() {
           side: ShadSheetSide.right,
           expandable: true,
           initialSize: 0.5,
-          child: const Text('Content'),
+          title: const Text('Filters'),
+          description: const Text('Refine the list.'),
+          actions: const [ShadButton(child: Text('Apply'))],
+          child: goldenSheetBody(),
         ),
       );
       await tester.pump();
@@ -1074,7 +1114,10 @@ void main() {
             height: 12,
             color: const Color(0xFFFF5733),
           ),
-          child: const Text('Content'),
+          title: const Text('Edit profile'),
+          description: const Text('Make changes to your profile here.'),
+          actions: const [ShadButton(child: Text('Save'))],
+          child: goldenSheetBody(),
         ),
       );
       await tester.pump();
