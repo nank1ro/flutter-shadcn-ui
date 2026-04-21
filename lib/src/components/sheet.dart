@@ -1140,16 +1140,28 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       // extent.
       final composite = switch (side) {
         ShadSheetSide.bottom => Column(
-          children: [resizeHandle, Expanded(child: shadDialog)],
+          children: [
+            resizeHandle,
+            Expanded(child: shadDialog),
+          ],
         ),
         ShadSheetSide.top => Column(
-          children: [Expanded(child: shadDialog), resizeHandle],
+          children: [
+            Expanded(child: shadDialog),
+            resizeHandle,
+          ],
         ),
         ShadSheetSide.left => Row(
-          children: [Expanded(child: shadDialog), resizeHandle],
+          children: [
+            Expanded(child: shadDialog),
+            resizeHandle,
+          ],
         ),
         ShadSheetSide.right => Row(
-          children: [resizeHandle, Expanded(child: shadDialog)],
+          children: [
+            resizeHandle,
+            Expanded(child: shadDialog),
+          ],
         ),
       };
       child = SizedBox(

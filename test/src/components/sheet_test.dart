@@ -123,8 +123,7 @@ void main() {
 
       // initialSize sizes the FULL composite (handle + dialog content),
       // so dialog alone is ~600 - handleHeight.
-      final dialogHeight =
-          tester.getSize(find.byType(ShadDialog)).height;
+      final dialogHeight = tester.getSize(find.byType(ShadDialog)).height;
       final handleHeight = tester
           .getSize(find.byKey(const ValueKey('shad_sheet_resize_handle')))
           .height;
@@ -517,8 +516,7 @@ void main() {
         // 0.95 * 1200 = 1140, which exceeds the 9/16 * 1200 ≈ 675 cap.
         // If cap is bypassed, the dialog (which excludes the handle in
         // expandable mode) should still read well above the cap.
-        final dialogHeight =
-            tester.getSize(find.byType(ShadDialog)).height;
+        final dialogHeight = tester.getSize(find.byType(ShadDialog)).height;
         expect(dialogHeight, greaterThan(900));
       },
     );
@@ -831,9 +829,7 @@ void main() {
         final handleHeight = tester
             .getSize(find.byKey(const ValueKey('shad_sheet_resize_handle')))
             .height;
-        final dialogHeight = tester
-            .getSize(find.byType(ShadDialog))
-            .height;
+        final dialogHeight = tester.getSize(find.byType(ShadDialog)).height;
         // Screen = 1200; initialSize 0.5 → expected composite 600.
         expect(
           handleHeight + dialogHeight,
