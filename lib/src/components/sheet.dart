@@ -952,7 +952,10 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         right: sheetPad,
       ),
     };
-    return Padding(padding: padding, child: Center(child: pill));
+    return Padding(
+      padding: padding,
+      child: Center(child: pill),
+    );
   }
 
   @override
