@@ -978,14 +978,30 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     required Widget child,
   }) {
     return switch (side) {
-      ShadSheetSide.bottom =>
-        Positioned(top: 0, left: 0, right: 0, child: child),
-      ShadSheetSide.top =>
-        Positioned(bottom: 0, left: 0, right: 0, child: child),
-      ShadSheetSide.left =>
-        Positioned(top: 0, bottom: 0, right: 0, child: child),
-      ShadSheetSide.right =>
-        Positioned(top: 0, bottom: 0, left: 0, child: child),
+      ShadSheetSide.bottom => Positioned(
+        top: 0,
+        left: 0,
+        right: 0,
+        child: child,
+      ),
+      ShadSheetSide.top => Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: child,
+      ),
+      ShadSheetSide.left => Positioned(
+        top: 0,
+        bottom: 0,
+        right: 0,
+        child: child,
+      ),
+      ShadSheetSide.right => Positioned(
+        top: 0,
+        bottom: 0,
+        left: 0,
+        child: child,
+      ),
     };
   }
 
@@ -1202,9 +1218,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     final effectiveDragHandleHeight = theme.sheetTheme.dragHandleHeight ?? 4.0;
 
     final effectiveDragHandleExtent =
-        widget.dragHandleExtent ??
-        theme.sheetTheme.dragHandleExtent ??
-        56.0;
+        widget.dragHandleExtent ?? theme.sheetTheme.dragHandleExtent ?? 56.0;
 
     final effectiveDragHandleRadius =
         theme.sheetTheme.dragHandleRadius ?? BorderRadius.circular(2);
@@ -1316,9 +1330,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
               onHorizontalDragUpdate: isVertical ? null : onUpdate,
               onHorizontalDragEnd: isVertical ? null : onEnd,
               child: SizedBox(
-                width: isVertical
-                    ? double.infinity
-                    : effectiveDragHandleExtent,
+                width: isVertical ? double.infinity : effectiveDragHandleExtent,
                 height: isVertical
                     ? effectiveDragHandleExtent
                     : double.infinity,
