@@ -163,6 +163,14 @@ enum ShadSheetSide {
   }
 }
 
+/// Builds the drag handle widget for [ShadSheet] expandable mode.
+///
+/// Receives the current [ShadSheetSide] so the handle can adapt its
+/// shape or orientation to the sheet side. Returning a widget from
+/// this builder replaces the default pill entirely.
+typedef ShadSheetDragHandleBuilder =
+    Widget Function(BuildContext context, ShadSheetSide side);
+
 /// A callback for when the user begins dragging the sheet.
 ///
 /// Used by [ShadSheet.onDragStart].
@@ -309,7 +317,9 @@ class ShadSheet extends StatefulWidget {
     this.snapAnimationDuration,
     this.snapAnimationCurve,
     this.dragHandle,
+    this.dragHandleBuilder,
     this.showDragHandle,
+    this.dragHandleExtent,
     this.onSizeChanged,
     this.controller,
   }) : assert(
@@ -630,14 +640,50 @@ class ShadSheet extends StatefulWidget {
   /// {@template ShadSheet.dragHandle}
   /// Custom widget to use as the drag handle. When null, a default pill is
   /// shown (only when [expandable] is true and [showDragHandle] is true).
+  ///
+  /// Use [dragHandleBuilder] instead when the handle needs to adapt to
+  /// the sheet [ShadSheetSide] (e.g. a horizontal pill for top/bottom and
+  /// a vertical pill for left/right).
   /// {@endtemplate}
   final Widget? dragHandle;
+
+  /// {@template ShadSheet.dragHandleBuilder}
+  /// Side-aware builder for the drag handle. Takes precedence over
+  /// [dragHandle] when non-null. Return the fully-rendered handle widget,
+  /// including any padding or orientation logic your design needs — the
+  /// sheet wraps whatever you return in the resize gesture detector.
+  ///
+  /// Runs on every rebuild (including drag-triggered ticks while the
+  /// user is resizing), so keep the returned subtree cheap to build.
+  /// {@endtemplate}
+  final ShadSheetDragHandleBuilder? dragHandleBuilder;
 
   /// {@template ShadSheet.showDragHandle}
   /// Whether to show the drag handle. Defaults to true when [expandable] is
   /// true.
   /// {@endtemplate}
   final bool? showDragHandle;
+
+  /// {@template ShadSheet.dragHandleExtent}
+  /// Extra draggable extent along the sheet's drag axis that overlays the
+  /// sheet-adjacent edge of the body, in logical pixels.
+  ///
+  /// When non-zero, the top strip of a bottom sheet (or the corresponding
+  /// edge of top/left/right sheets) also triggers resize — so the user can
+  /// grab the visual top of the sheet (title area) instead of having to
+  /// hit the small pill. Descendant widgets still receive tap events
+  /// because the overlay uses translucent hit-testing; only drags are
+  /// captured by the resize detector.
+  ///
+  /// Falls back to the theme value, then to 56 logical pixels. Set to 0
+  /// to disable the body-edge drag region and limit resize to the pill.
+  ///
+  /// When combined with [draggable] = true, drags that start inside this
+  /// strip resize the sheet rather than dismiss it. Users must drag from
+  /// below the strip (or from below the title) to dismiss. Set a smaller
+  /// extent, or 0, if dismissal from the top is important for your UX.
+  /// {@endtemplate}
+  final double? dragHandleExtent;
 
   /// {@template ShadSheet.onSizeChanged}
   /// Called whenever the sheet size changes.
@@ -923,6 +969,26 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     dragStartPointer = null;
   }
 
+  // Pins the translucent body-edge overlay strip to the side adjacent
+  // to the sheet's handle. Horizontal sides span full height; vertical
+  // sides span full width. Abstraction keeps the four cases readable
+  // and self-documenting.
+  Widget _positionedBodyStrip({
+    required ShadSheetSide side,
+    required Widget child,
+  }) {
+    return switch (side) {
+      ShadSheetSide.bottom =>
+        Positioned(top: 0, left: 0, right: 0, child: child),
+      ShadSheetSide.top =>
+        Positioned(bottom: 0, left: 0, right: 0, child: child),
+      ShadSheetSide.left =>
+        Positioned(top: 0, bottom: 0, right: 0, child: child),
+      ShadSheetSide.right =>
+        Positioned(top: 0, bottom: 0, left: 0, child: child),
+    };
+  }
+
   Widget _buildDefaultHandlePill({
     required ShadSheetSide side,
     required bool isVertical,
@@ -1135,6 +1201,11 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
 
     final effectiveDragHandleHeight = theme.sheetTheme.dragHandleHeight ?? 4.0;
 
+    final effectiveDragHandleExtent =
+        widget.dragHandleExtent ??
+        theme.sheetTheme.dragHandleExtent ??
+        56.0;
+
     final effectiveDragHandleRadius =
         theme.sheetTheme.dragHandleRadius ?? BorderRadius.circular(2);
 
@@ -1189,7 +1260,9 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     Widget child;
 
     if (effectiveExpandable) {
+      // Precedence: builder (side-aware) > static widget > default pill.
       final handleWidget =
+          widget.dragHandleBuilder?.call(context, side) ??
           widget.dragHandle ??
           (effectiveShowDragHandle
               ? _buildDefaultHandlePill(
@@ -1202,25 +1275,65 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
                 )
               : const SizedBox.shrink());
 
+      // Shared drag-handler closures: reused by the pill handle and
+      // the optional translucent body-edge overlay strip so any change
+      // to signatures lands in one place.
+      void onStart(DragStartDetails d) => handleResizeDragStart(d, side);
+      void onUpdate(DragUpdateDetails d) => handleResizeDragUpdate(
+        d,
+        side: side,
+        mSize: mSize,
+        minSize: effectiveMinSize,
+        maxSize: effectiveMaxSize,
+      );
+      void onEnd(DragEndDetails d) => handleResizeDragEnd(
+        d,
+        snap: effectiveSnap,
+        snapSizes: effectiveSnapSizes,
+        duration: effectiveSnapAnimationDuration,
+        curve: effectiveSnapAnimationCurve,
+      );
+
       final resizeHandle = ShadSheetResizeHandle(
         side: side,
-        onDragStart: (details) => handleResizeDragStart(details, side),
-        onDragUpdate: (details) => handleResizeDragUpdate(
-          details,
-          side: side,
-          mSize: mSize,
-          minSize: effectiveMinSize,
-          maxSize: effectiveMaxSize,
-        ),
-        onDragEnd: (details) => handleResizeDragEnd(
-          details,
-          snap: effectiveSnap,
-          snapSizes: effectiveSnapSizes,
-          duration: effectiveSnapAnimationDuration,
-          curve: effectiveSnapAnimationCurve,
-        ),
+        onDragStart: onStart,
+        onDragUpdate: onUpdate,
+        onDragEnd: onEnd,
         child: handleWidget,
       );
+
+      // Translucent overlay strip that extends the drag zone onto the
+      // sheet-adjacent edge of the body. Raw GestureDetector (not a
+      // second ShadSheetResizeHandle) so `find.byType` stays unique;
+      // translucent so descendant taps still reach buttons/inputs.
+      final bodyDragStrip = effectiveDragHandleExtent > 0
+          ? GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onVerticalDragStart: isVertical ? onStart : null,
+              onVerticalDragUpdate: isVertical ? onUpdate : null,
+              onVerticalDragEnd: isVertical ? onEnd : null,
+              onHorizontalDragStart: isVertical ? null : onStart,
+              onHorizontalDragUpdate: isVertical ? null : onUpdate,
+              onHorizontalDragEnd: isVertical ? null : onEnd,
+              child: SizedBox(
+                width: isVertical
+                    ? double.infinity
+                    : effectiveDragHandleExtent,
+                height: isVertical
+                    ? effectiveDragHandleExtent
+                    : double.infinity,
+              ),
+            )
+          : null;
+
+      final dialogWithOverlay = bodyDragStrip == null
+          ? shadDialog
+          : Stack(
+              children: [
+                Positioned.fill(child: shadDialog),
+                _positionedBodyStrip(side: side, child: bodyDragStrip),
+              ],
+            );
 
       // Wrap the composite in a fixed-size box on the drag axis so
       // handle + dialog sum exactly to `size * screenDim`. shadDialog is
@@ -1231,25 +1344,25 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         ShadSheetSide.bottom => Column(
           children: [
             resizeHandle,
-            Expanded(child: shadDialog),
+            Expanded(child: dialogWithOverlay),
           ],
         ),
         ShadSheetSide.top => Column(
           children: [
-            Expanded(child: shadDialog),
+            Expanded(child: dialogWithOverlay),
             resizeHandle,
           ],
         ),
         ShadSheetSide.left => Row(
           children: [
-            Expanded(child: shadDialog),
+            Expanded(child: dialogWithOverlay),
             resizeHandle,
           ],
         ),
         ShadSheetSide.right => Row(
           children: [
             resizeHandle,
-            Expanded(child: shadDialog),
+            Expanded(child: dialogWithOverlay),
           ],
         ),
       };

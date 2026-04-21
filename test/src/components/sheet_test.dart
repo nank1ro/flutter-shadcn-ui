@@ -22,6 +22,8 @@ void main() {
     Duration? snapAnimationDuration,
     Curve? snapAnimationCurve,
     Widget? dragHandle,
+    ShadSheetDragHandleBuilder? dragHandleBuilder,
+    double? dragHandleExtent,
     bool? showDragHandle,
     ValueChanged<double>? onSizeChanged,
     ShadSheetController? controller,
@@ -48,6 +50,8 @@ void main() {
             snapAnimationDuration: snapAnimationDuration,
             snapAnimationCurve: snapAnimationCurve,
             dragHandle: dragHandle,
+            dragHandleBuilder: dragHandleBuilder,
+            dragHandleExtent: dragHandleExtent,
             showDragHandle: showDragHandle,
             onSizeChanged: onSizeChanged,
             controller: controller,
@@ -958,6 +962,110 @@ void main() {
         throwsAssertionError,
       );
     });
+
+    // Test 32: dragging the sheet's body-edge (not the pill) resizes the
+    // sheet. Addresses the UX feedback that users naturally grab the top
+    // of the sheet, not the small pill.
+    testWidgets(
+      'drag on sheet body-edge strip resizes (dragHandleExtent > 0)',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 0.9,
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        // Drag deep INSIDE the dialog (well below the pill handle) —
+        // the body-edge overlay strip should still grab the drag.
+        final dialogCenterTop =
+            tester.getTopLeft(find.byType(ShadDialog)) + const Offset(400, 20);
+        await tester.dragFrom(dialogCenterTop, const Offset(0, -200));
+        await tester.pump();
+
+        expect(controller.size, greaterThan(0.5));
+      },
+    );
+
+    // Test 33: dragHandleBuilder wins over dragHandle and the default
+    // pill; it also receives the current sheet side.
+    testWidgets(
+      'dragHandleBuilder is invoked with the current side and its '
+      'widget is used',
+      (tester) async {
+        ShadSheetSide? capturedSide;
+        await tester.pumpWidget(
+          sheetWidget(
+            side: ShadSheetSide.left,
+            expandable: true,
+            // Non-null `dragHandle` to prove the builder takes precedence.
+            dragHandle: const SizedBox(
+              key: ValueKey('unused_static_handle'),
+            ),
+            dragHandleBuilder: (context, side) {
+              capturedSide = side;
+              return const SizedBox(key: ValueKey('built_handle'));
+            },
+          ),
+        );
+        await tester.pump();
+
+        expect(capturedSide, ShadSheetSide.left);
+        expect(find.byKey(const ValueKey('built_handle')), findsOneWidget);
+        expect(
+          find.byKey(const ValueKey('unused_static_handle')),
+          findsNothing,
+        );
+      },
+    );
+
+    // Test 34: `dragHandleExtent: 0` disables the body-edge strip so only
+    // the pill drags. Protects the opt-out path.
+    testWidgets(
+      'dragHandleExtent:0 leaves body drag to dismiss/scroll',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 0.9,
+            dragHandleExtent: 0,
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        final dialogCenterTop =
+            tester.getTopLeft(find.byType(ShadDialog)) + const Offset(400, 20);
+        await tester.dragFrom(dialogCenterTop, const Offset(0, -200));
+        await tester.pump();
+
+        // No resize: body drag without the strip does not move the
+        // controller.
+        expect(controller.size, closeTo(0.5, 0.01));
+      },
+    );
 
     // Golden: bottom sheet at initialSize=0.5
     testWidgets('golden: expandable bottom sheet at initial size', (

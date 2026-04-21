@@ -60,6 +60,7 @@ class ShadSheetTheme with _$ShadSheetTheme {
     this.dragHandleWidth,
     this.dragHandleHeight,
     this.dragHandleRadius,
+    this.dragHandleExtent,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -211,6 +212,9 @@ class ShadSheetTheme with _$ShadSheetTheme {
 
   /// Border radius of the default drag handle pill.
   final BorderRadius? dragHandleRadius;
+
+  /// {@macro ShadSheet.dragHandleExtent}
+  final double? dragHandleExtent;
 
   static ShadSheetTheme? lerp(
     ShadSheetTheme? a,

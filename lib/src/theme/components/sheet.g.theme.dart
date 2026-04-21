@@ -114,6 +114,7 @@ mixin _$ShadSheetTheme {
         b.dragHandleRadius,
         t,
       ),
+      dragHandleExtent: lerpDouble$(a.dragHandleExtent, b.dragHandleExtent, t),
     );
   }
 
@@ -166,6 +167,7 @@ mixin _$ShadSheetTheme {
     double? dragHandleWidth,
     double? dragHandleHeight,
     BorderRadius? dragHandleRadius,
+    double? dragHandleExtent,
   }) {
     final _this = (this as ShadSheetTheme);
 
@@ -225,6 +227,7 @@ mixin _$ShadSheetTheme {
       dragHandleWidth: dragHandleWidth ?? _this.dragHandleWidth,
       dragHandleHeight: dragHandleHeight ?? _this.dragHandleHeight,
       dragHandleRadius: dragHandleRadius ?? _this.dragHandleRadius,
+      dragHandleExtent: dragHandleExtent ?? _this.dragHandleExtent,
     );
   }
 
@@ -290,6 +293,7 @@ mixin _$ShadSheetTheme {
       dragHandleWidth: other.dragHandleWidth,
       dragHandleHeight: other.dragHandleHeight,
       dragHandleRadius: other.dragHandleRadius,
+      dragHandleExtent: other.dragHandleExtent,
     );
   }
 
@@ -354,7 +358,8 @@ mixin _$ShadSheetTheme {
         _other.dragHandleColor == _this.dragHandleColor &&
         _other.dragHandleWidth == _this.dragHandleWidth &&
         _other.dragHandleHeight == _this.dragHandleHeight &&
-        _other.dragHandleRadius == _this.dragHandleRadius;
+        _other.dragHandleRadius == _this.dragHandleRadius &&
+        _other.dragHandleExtent == _this.dragHandleExtent;
   }
 
   @override
@@ -411,6 +416,7 @@ mixin _$ShadSheetTheme {
       _this.dragHandleWidth,
       _this.dragHandleHeight,
       _this.dragHandleRadius,
+      _this.dragHandleExtent,
     ]);
   }
 }
