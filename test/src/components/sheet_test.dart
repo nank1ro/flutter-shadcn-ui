@@ -10,7 +10,7 @@ void main() {
     return ShadApp(home: Scaffold(body: child));
   }
 
-  // Helper to wrap a ShadSheet with the ShadSheetInheritedWidget for a given side
+  // Helper to wrap a ShadSheet with the ShadSheetInheritedWidget for a side.
   Widget sheetWidget({
     ShadSheetSide side = ShadSheetSide.bottom,
     bool? expandable,
@@ -303,9 +303,9 @@ void main() {
       expect(controller.size, closeTo(0.3, 0.05));
     });
 
-    // Test 7: snap=true, snapSizes=null → default stops are [minSize, initialSize, maxSize]
+    // Test 7: snap=true, snapSizes=null → defaults to [min, initial, max].
     testWidgets(
-      'snap=true with null snapSizes defaults to [minSize, initialSize, maxSize]',
+      'snap=true with null snapSizes defaults to [min, initial, max]',
       (tester) async {
         tester.view.physicalSize = const Size(800, 1200);
         tester.view.devicePixelRatio = 1.0;
