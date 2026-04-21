@@ -871,8 +871,7 @@ void main() {
         final handleHeight = tester
             .getSize(find.byKey(const ValueKey('shad_sheet_resize_handle')))
             .height;
-        final dialogHeight =
-            tester.getSize(find.byType(ShadDialog)).height;
+        final dialogHeight = tester.getSize(find.byType(ShadDialog)).height;
         // 0.8 * 1200 = 960.
         expect(handleHeight + dialogHeight, closeTo(960, 1.0));
       },
