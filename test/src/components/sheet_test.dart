@@ -838,6 +838,94 @@ void main() {
       },
     );
 
+    // Test 29: themed initialSize is honoured when the widget does not
+    // override it and no external controller is supplied.
+    testWidgets(
+      'themed initialSize seeds the owned controller',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              brightness: Brightness.light,
+              colorScheme: const ShadZincColorScheme.light(),
+              sheetTheme: const ShadSheetTheme(initialSize: 0.8),
+            ),
+            home: const Scaffold(
+              body: ShadSheetInheritedWidget(
+                side: ShadSheetSide.bottom,
+                child: ShadSheet(
+                  expandable: true,
+                  child: Text('content'),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pump();
+
+        final handleHeight = tester
+            .getSize(find.byKey(const ValueKey('shad_sheet_resize_handle')))
+            .height;
+        final dialogHeight =
+            tester.getSize(find.byType(ShadDialog)).height;
+        // 0.8 * 1200 = 960.
+        expect(handleHeight + dialogHeight, closeTo(960, 1.0));
+      },
+    );
+
+    // Test 30: a caller-supplied controller is the single source of
+    // truth for size — widget.initialSize and themed initialSize must
+    // both be ignored on mount.
+    testWidgets(
+      'external controller size wins over widget + themed initialSize',
+      (tester) async {
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+        controller.jumpTo(0.3);
+
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              brightness: Brightness.light,
+              colorScheme: const ShadZincColorScheme.light(),
+              sheetTheme: const ShadSheetTheme(initialSize: 0.2),
+            ),
+            home: Scaffold(
+              body: ShadSheetInheritedWidget(
+                side: ShadSheetSide.bottom,
+                child: ShadSheet(
+                  expandable: true,
+                  initialSize: 0.7,
+                  controller: controller,
+                  child: const Text('content'),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pump();
+
+        expect(controller.size, closeTo(0.3, 1e-9));
+      },
+    );
+
+    // Test 31: cross-field asserts trip on contradictory bounds.
+    test('ShadSheet constructor rejects minSize > maxSize', () {
+      expect(
+        () => ShadSheet(
+          minSize: 0.8,
+          maxSize: 0.2,
+          child: const Text('x'),
+        ),
+        throwsAssertionError,
+      );
+    });
+
     // Golden: bottom sheet at initialSize=0.5
     testWidgets('golden: expandable bottom sheet at initial size', (
       tester,

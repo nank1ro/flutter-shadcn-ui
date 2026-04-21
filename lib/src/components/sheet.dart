@@ -323,6 +323,18 @@ class ShadSheet extends StatefulWidget {
        assert(
          maxSize == null || (maxSize >= 0.0 && maxSize <= 1.0),
          'maxSize must be in [0.0, 1.0]',
+       ),
+       assert(
+         minSize == null || maxSize == null || minSize <= maxSize,
+         'minSize must be <= maxSize',
+       ),
+       assert(
+         initialSize == null || minSize == null || initialSize >= minSize,
+         'initialSize must be >= minSize',
+       ),
+       assert(
+         initialSize == null || maxSize == null || initialSize <= maxSize,
+         'initialSize must be <= maxSize',
        );
 
   /// {@template ShadSheet.title}
@@ -577,6 +589,10 @@ class ShadSheet extends StatefulWidget {
   /// {@template ShadSheet.initialSize}
   /// The initial size of the sheet as a fraction of screen height (vertical
   /// sides) or screen width (horizontal sides). Defaults to 0.5.
+  ///
+  /// When a [controller] is supplied, this value is ignored — the controller
+  /// is the single source of truth for size and is not mutated on mount or
+  /// on prop updates.
   /// {@endtemplate}
   final double? initialSize;
 
@@ -631,6 +647,10 @@ class ShadSheet extends StatefulWidget {
   /// {@template ShadSheet.controller}
   /// Controller for programmatic size control. A private one is created
   /// automatically if not provided.
+  ///
+  /// When supplied, [initialSize] is ignored; the controller is the
+  /// single source of truth for size and is not mutated on mount or on
+  /// prop updates.
   /// {@endtemplate}
   final ShadSheetController? controller;
 
@@ -657,6 +677,12 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     initSizeController();
   }
 
+  // Tracks whether the first seed has happened. For owned controllers
+  // this is when `_size` was set from the theme-aware chain. For
+  // external controllers nothing is seeded, but the flag still flips
+  // so subsequent didChangeDependencies calls don't re-enter.
+  bool initialSeedDone = false;
+
   void initSizeController() {
     if (widget.controller != null) {
       sizeController = widget.controller!;
@@ -665,9 +691,27 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     } else {
       sizeController = ShadSheetController();
       ownsController = true;
-      sizeController._size = widget.initialSize ?? 0.5;
+      // Intentionally left at the controller's default (0.5);
+      // didChangeDependencies seeds with the theme-aware value once
+      // ShadTheme is reachable from context.
     }
     sizeController.addListener(handleSizeChanged);
+  }
+
+  // Resolves the initial size via widget prop → themed value → hard
+  // default. Requires a BuildContext where ShadTheme is reachable.
+  double resolveSeedSize() {
+    final themedInitialSize = ShadTheme.of(context).sheetTheme.initialSize;
+    return widget.initialSize ?? themedInitialSize ?? 0.5;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!initialSeedDone && ownsController) {
+      sizeController._size = resolveSeedSize();
+    }
+    initialSeedDone = true;
   }
 
   void handleSizeChanged() {
@@ -688,13 +732,17 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         sizeController.dispose();
       }
       initSizeController();
+      if (ownsController) {
+        sizeController._size = resolveSeedSize();
+      }
+      initialSeedDone = true;
     } else if (widget.initialSize != oldWidget.initialSize &&
         dragStartSizeRatio == null &&
         ownsController) {
       // Only seed a newly-supplied initialSize on a controller we own;
       // caller-owned controllers are the single source of truth for
       // their size and must not be mutated by widget rebuilds.
-      sizeController.jumpTo(widget.initialSize ?? 0.5);
+      sizeController.jumpTo(resolveSeedSize());
     }
   }
 
