@@ -161,6 +161,19 @@ enum ShadSheetSide {
       ShadSheetSide.right => Alignment.centerRight,
     };
   }
+
+  /// Returns the alignment for the inner [ShadDialog] in expandable mode.
+  ///
+  /// Aligns the content cluster adjacent to the drag pill so there is no
+  /// gap between the pill and the visible content area.
+  Alignment toInnerExpandableAlignment() {
+    return switch (this) {
+      ShadSheetSide.bottom => Alignment.topCenter,
+      ShadSheetSide.top => Alignment.bottomCenter,
+      ShadSheetSide.left => Alignment.centerRight,
+      ShadSheetSide.right => Alignment.centerLeft,
+    };
+  }
 }
 
 /// Builds the drag handle widget for [ShadSheet] expandable mode.
@@ -1287,9 +1300,14 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     // ShadDialog.padding. Widget inspectors (and tests) that read
     // ShadDialog.padding at runtime will see the merged value, not the
     // raw widget.padding.
+    //
+    // ShadDialog falls back to EdgeInsets.all(24) when padding is null.
+    // Expandable mode passes an explicit pre-merged value, so mirror that
+    // default here to keep the 24px breathing room content otherwise has.
+    const dialogDefaultPadding = EdgeInsets.all(24);
     final effectivePaddingWithSafeArea = effectiveExpandable
         ? EdgeInsets.zero
-              .add(effectivePadding ?? EdgeInsets.zero)
+              .add(effectivePadding ?? dialogDefaultPadding)
               .add(expandableSafeAreaInsets())
         : effectivePadding;
 
@@ -1297,14 +1315,18 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       key: childKey,
       title: widget.title,
       description: widget.description,
-      alignment: side.toAlignment(),
+      alignment: effectiveExpandable
+          ? side.toInnerExpandableAlignment()
+          : side.toAlignment(),
       constraints: effectiveConstraints,
       actions: widget.actions,
-      radius: effectiveRadius,
+      radius: effectiveExpandable ? BorderRadius.zero : effectiveRadius,
       closeIcon: effectiveCloseIcon,
       closeIconData: effectiveCloseIconData,
       closeIconPosition: effectiveCloseIconPosition,
-      backgroundColor: effectiveBackgroundColor,
+      backgroundColor: effectiveExpandable
+          ? const Color(0x00000000)
+          : effectiveBackgroundColor,
       expandActionsWhenTiny: effectiveExpandActionsWhenTiny,
       padding: effectivePaddingWithSafeArea,
       gap: effectiveGap,
@@ -1312,8 +1334,10 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       actionsMainAxisSize: effectiveActionsMainAxisSize,
       actionsMainAxisAlignment: effectiveActionsMainAxisAlignment,
       actionsVerticalDirection: effectiveActionsVerticalDirection,
-      border: effectiveBorder,
-      shadows: effectiveShadows,
+      border: effectiveExpandable
+          ? Border.all(color: const Color(0x00000000), width: 0)
+          : effectiveBorder,
+      shadows: effectiveExpandable ? const <BoxShadow>[] : effectiveShadows,
       removeBorderRadiusWhenTiny: effectiveRemoveBorderRadiusWhenTiny,
       titleStyle: effectiveTitleStyle,
       descriptionStyle: effectiveDescriptionStyle,
@@ -1419,7 +1443,12 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
             )
           : null;
 
-      final dialogWithOverlay = bodyDragStrip == null
+      // Paint the sheet decoration at full-bleed outside ShadDialog.
+      // ShadDialog's Align+shrink-wrap only covers the content cluster;
+      // DecoratedBox here fills the Expanded region via SizedBox.expand.
+      // childKey stays on ShadDialog so childHeight measures the content,
+      // not the full composite (required by draggable dismiss velocity math).
+      var decoratedDialog = bodyDragStrip == null
           ? shadDialog
           : Stack(
               children: [
@@ -1427,6 +1456,17 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
                 _positionedBodyStrip(side: side, child: bodyDragStrip),
               ],
             );
+      decoratedDialog = DecoratedBox(
+        key: const ValueKey('shad_sheet_expandable_fill'),
+        decoration: BoxDecoration(
+          color: effectiveBackgroundColor,
+          borderRadius: effectiveRadius,
+          border: effectiveBorder,
+          boxShadow: effectiveShadows,
+        ),
+        child: decoratedDialog,
+      );
+      final dialogWithOverlay = SizedBox.expand(child: decoratedDialog);
 
       // Wrap the composite in a fixed-size box on the drag axis so
       // handle + dialog sum exactly to `size * screenDim`. shadDialog is

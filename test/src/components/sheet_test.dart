@@ -36,6 +36,7 @@ void main() {
     Widget? description,
     List<Widget> actions = const [],
     Widget? child,
+    EdgeInsetsGeometry? padding,
   }) {
     return ShadApp(
       home: Scaffold(
@@ -64,6 +65,7 @@ void main() {
             title: title,
             description: description,
             actions: actions,
+            padding: padding,
             child: child ?? const Text('Sheet Content'),
           ),
         ),
@@ -523,14 +525,14 @@ void main() {
         expect(closingCalls, 0);
 
         // Body drag with sufficient fling velocity must dismiss the sheet
-        // (triggers onClosing). Use the sheet content as the drag origin
-        // so the gesture falls through to ShadSheetGestureDetector rather
-        // than the resize handle.
-        await tester.fling(
-          find.text('Sheet Content'),
-          const Offset(0, 600),
-          2000,
+        // (triggers onClosing). Fling from the lower half of the fill area so
+        // the drag origin is clear of the resize handle and bodyDragStrip
+        // at the top edge (which would route to resize, not dismiss).
+        final fillRect = tester.getRect(
+          find.byKey(const ValueKey('shad_sheet_expandable_fill')),
         );
+        final flingOrigin = fillRect.center + const Offset(0, 100);
+        await tester.flingFrom(flingOrigin, const Offset(0, 600), 2000);
         await tester.pumpAndSettle();
         expect(closingCalls, greaterThanOrEqualTo(1));
       },
@@ -1365,6 +1367,220 @@ void main() {
         matchesGoldenFile('goldens/sheet_expandable_right.png'),
       );
     });
+
+    // Test 39: expandable decoration fills composite (bottom)
+    testWidgets('expandable decoration fills composite on bottom', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        sheetWidget(expandable: true, initialSize: 0.5),
+      );
+      await tester.pump();
+
+      final fillFinder = find.byKey(
+        const ValueKey('shad_sheet_expandable_fill'),
+      );
+      expect(fillFinder, findsOneWidget);
+
+      final handleRect = tester.getRect(find.byType(ShadSheetResizeHandle));
+      final fillRect = tester.getRect(fillFinder);
+
+      // Fill top must be adjacent to the pill handle bottom (no gap).
+      expect(fillRect.top, closeTo(handleRect.bottom, 1.0));
+      // Fill bottom must reach the viewport bottom.
+      expect(fillRect.bottom, closeTo(1200, 1.0));
+      // Fill width must span the full viewport.
+      expect(fillRect.width, closeTo(800, 1.0));
+    });
+
+    // Test 40: expandable decoration fills composite on all sides
+    for (final side in ShadSheetSide.values) {
+      testWidgets(
+        'expandable decoration fills composite for side=$side',
+        (tester) async {
+          final isVertical =
+              side == ShadSheetSide.bottom || side == ShadSheetSide.top;
+          final physicalSize = isVertical
+              ? const Size(800, 1200)
+              : const Size(1200, 800);
+          tester.view.physicalSize = physicalSize;
+          tester.view.devicePixelRatio = 1.0;
+          addTearDown(tester.view.resetPhysicalSize);
+          addTearDown(tester.view.resetDevicePixelRatio);
+
+          await tester.pumpWidget(
+            sheetWidget(side: side, expandable: true, initialSize: 0.5),
+          );
+          await tester.pump();
+
+          final fillFinder = find.byKey(
+            const ValueKey('shad_sheet_expandable_fill'),
+          );
+          expect(fillFinder, findsOneWidget);
+
+          final handleRect = tester.getRect(find.byType(ShadSheetResizeHandle));
+          final fillRect = tester.getRect(fillFinder);
+          final vw = physicalSize.width;
+          final vh = physicalSize.height;
+
+          switch (side) {
+            case ShadSheetSide.bottom:
+              expect(fillRect.top, closeTo(handleRect.bottom, 1.0));
+              expect(fillRect.bottom, closeTo(vh, 1.0));
+            case ShadSheetSide.top:
+              expect(fillRect.bottom, closeTo(handleRect.top, 1.0));
+              expect(fillRect.top, closeTo(0, 1.0));
+            case ShadSheetSide.left:
+              expect(fillRect.right, closeTo(handleRect.left, 1.0));
+              expect(fillRect.left, closeTo(0, 1.0));
+            case ShadSheetSide.right:
+              expect(fillRect.left, closeTo(handleRect.right, 1.0));
+              expect(fillRect.right, closeTo(vw, 1.0));
+          }
+        },
+      );
+    }
+
+    // Test 41: expandable pill stays adjacent to sheet after drag
+    testWidgets('expandable pill stays adjacent to sheet after drag', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        sheetWidget(expandable: true, initialSize: 0.5, minSize: 0.25),
+      );
+      await tester.pump();
+
+      // Drag the pill up by 200px.
+      await tester.drag(
+        find.byType(ShadSheetResizeHandle),
+        const Offset(0, -200),
+      );
+      await tester.pump();
+
+      final fillFinder = find.byKey(
+        const ValueKey('shad_sheet_expandable_fill'),
+      );
+      expect(fillFinder, findsOneWidget);
+
+      final handleRect = tester.getRect(find.byType(ShadSheetResizeHandle));
+      final fillRect = tester.getRect(fillFinder);
+
+      // Pill and fill must still be adjacent after drag.
+      expect(fillRect.top, closeTo(handleRect.bottom, 1.0));
+    });
+
+    // Test 42: non-expandable path has no fill key
+    testWidgets('non-expandable path has no fill key', (tester) async {
+      await tester.pumpWidget(sheetWidget(expandable: false));
+      await tester.pump();
+
+      expect(
+        find.byKey(const ValueKey('shad_sheet_expandable_fill')),
+        findsNothing,
+      );
+    });
+
+    // Test 43: expandable + draggable fill box adjacent to pill
+    testWidgets('expandable + draggable: fill box adjacent to pill', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        sheetWidget(expandable: true, draggable: true, initialSize: 0.5),
+      );
+      await tester.pump();
+
+      final fillFinder = find.byKey(
+        const ValueKey('shad_sheet_expandable_fill'),
+      );
+      expect(fillFinder, findsOneWidget);
+
+      final handleRect = tester.getRect(find.byType(ShadSheetResizeHandle));
+      final fillRect = tester.getRect(fillFinder);
+
+      // Fill top must be adjacent to the pill handle bottom (no gap).
+      expect(fillRect.top, closeTo(handleRect.bottom, 1.0));
+      // Fill bottom must reach the viewport bottom.
+      expect(fillRect.bottom, closeTo(1200, 1.0));
+
+      // The sheet content must be anchored near the top of the fill area
+      // (topCenter alignment), not drifting to the bottom (bottomCenter).
+      // With the wrong alignment the text sits near fillRect.bottom;
+      // with the correct alignment it sits near fillRect.top.
+      final contentRect = tester.getRect(find.text('Sheet Content'));
+      final distanceFromTop = (contentRect.top - fillRect.top).abs();
+      final distanceFromBottom = (fillRect.bottom - contentRect.bottom).abs();
+      expect(
+        distanceFromTop,
+        lessThan(distanceFromBottom),
+        reason:
+            'Sheet content should be anchored near the top of the fill area '
+            '(topCenter), not the bottom (bottomCenter).',
+      );
+    });
+
+    testWidgets(
+      'expandable keeps default 24 content padding when widget.padding is null',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+          ),
+        );
+        await tester.pump();
+
+        final dialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+        final padding = dialog.padding! as EdgeInsets;
+        // Safe-area is zero in test env, so merged padding == dialog default.
+        expect(padding.left, 24.0);
+        expect(padding.right, 24.0);
+      },
+    );
+
+    testWidgets(
+      'expandable explicit padding overrides the 24 default',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+          ),
+        );
+        await tester.pump();
+
+        final dialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+        final padding = dialog.padding! as EdgeInsets;
+        // Explicit 40px wins; must not be 40+24=64.
+        expect(padding.left, 40.0);
+        expect(padding.right, 40.0);
+      },
+    );
 
     // Golden: custom drag handle
     testWidgets('golden: expandable sheet with custom drag handle', (
