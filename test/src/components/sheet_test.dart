@@ -1069,51 +1069,22 @@ void main() {
       },
     );
 
-    // Tests 35-37: expandable sheets should only apply SafeArea insets
-    // on the edges that actually touch the screen edge — the anchor
-    // edge + any cross-axis edges always, but the OPPOSITE edge only
-    // when the sheet reaches full size. Prevents wasted padding at the
-    // top of a half-size bottom sheet (issue #655 comment 4294664469).
+    // Tests 35-37: expandable sheets should let the dialog's background
+    // cover the full render box (including safe-area edges the sheet
+    // touches) while only the CONTENT is inset. Fix for issue #655
+    // comment 4296947019. We inspect the actual `padding` prop the
+    // sheet passes to ShadDialog, which carries the per-edge safe-area
+    // merge — directly asserts the contract without being muddied by
+    // ShadDialog's own internal layout alignments.
     testWidgets(
-      'expandable bottom sheet size<1 disables top SafeArea',
+      'expandable sheet passes safe-area merged padding at full size',
       (tester) async {
         tester.view.physicalSize = const Size(800, 1200);
         tester.view.devicePixelRatio = 1.0;
+        tester.view.viewPadding = const FakeViewPadding(top: 40);
         addTearDown(tester.view.resetPhysicalSize);
         addTearDown(tester.view.resetDevicePixelRatio);
-
-        await tester.pumpWidget(
-          sheetWidget(
-            expandable: true,
-            initialSize: 0.5,
-            useSafeArea: true,
-          ),
-        );
-        await tester.pump();
-
-        // Scope to SafeAreas INSIDE the sheet so ambient ancestors
-        // (future ShadApp/MediaQuery plumbing) don't contaminate the
-        // assertion.
-        final sheetSafeAreas = tester.widgetList<SafeArea>(
-          find.descendant(
-            of: find.byType(ShadSheet),
-            matching: find.byType(SafeArea),
-          ),
-        );
-        expect(sheetSafeAreas, hasLength(1));
-        final sa = sheetSafeAreas.single;
-        expect(sa.top, isFalse);
-        expect(sa.bottom, isTrue);
-      },
-    );
-
-    testWidgets(
-      'expandable bottom sheet at full size enables top SafeArea',
-      (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        addTearDown(tester.view.resetViewPadding);
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -1128,34 +1099,47 @@ void main() {
           ),
         );
         await tester.pump();
+
+        EdgeInsets dialogPadding() {
+          final p = tester.widget<ShadDialog>(find.byType(ShadDialog)).padding;
+          return p?.resolve(TextDirection.ltr) ?? EdgeInsets.zero;
+        }
+
+        final halfPad = dialogPadding();
         controller.jumpTo(1);
         await tester.pump();
+        final fullPad = dialogPadding();
 
-        final sheetSafeAreas = tester.widgetList<SafeArea>(
-          find.descendant(
-            of: find.byType(ShadSheet),
-            matching: find.byType(SafeArea),
-          ),
-        );
-        expect(sheetSafeAreas, hasLength(1));
-        final sa = sheetSafeAreas.single;
-        expect(sa.top, isTrue);
-        expect(sa.bottom, isTrue);
+        // At full size the top inset grows by 40 (the notch). Bottom,
+        // left, right stay identical between sizes.
+        expect(fullPad.top - halfPad.top, closeTo(40, 0.01));
+        expect(fullPad.bottom, closeTo(halfPad.bottom, 0.01));
+        expect(fullPad.left, closeTo(halfPad.left, 0.01));
+        expect(fullPad.right, closeTo(halfPad.right, 0.01));
       },
     );
 
     testWidgets(
-      'expandable useSafeArea:false skips SafeArea entirely',
+      'expandable sheet does not touch composite outer size with SafeArea',
       (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        tester.view.viewPadding = const FakeViewPadding(top: 40);
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        addTearDown(tester.view.resetViewPadding);
+
         await tester.pumpWidget(
           sheetWidget(
             expandable: true,
             initialSize: 0.5,
-            useSafeArea: false,
+            useSafeArea: true,
           ),
         );
         await tester.pump();
 
+        // No SafeArea widgets INSIDE the sheet (safe-area merged into
+        // dialog padding instead).
         expect(
           find.descendant(
             of: find.byType(ShadSheet),
@@ -1163,6 +1147,45 @@ void main() {
           ),
           findsNothing,
         );
+      },
+    );
+
+    testWidgets(
+      'expandable useSafeArea:false does not merge safe-area padding',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        tester.view.viewPadding = const FakeViewPadding(top: 40);
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        addTearDown(tester.view.resetViewPadding);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            maxSize: 1,
+            controller: controller,
+            useSafeArea: false,
+          ),
+        );
+        await tester.pump();
+
+        EdgeInsets dialogPadding() {
+          final p = tester.widget<ShadDialog>(find.byType(ShadDialog)).padding;
+          return p?.resolve(TextDirection.ltr) ?? EdgeInsets.zero;
+        }
+
+        final halfPad = dialogPadding();
+        controller.jumpTo(1);
+        await tester.pump();
+        final fullPad = dialogPadding();
+
+        // Padding never gets the safe-area bump when useSafeArea is false.
+        expect(fullPad, equals(halfPad));
       },
     );
 

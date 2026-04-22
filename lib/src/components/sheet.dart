@@ -410,6 +410,13 @@ class ShadSheet extends StatefulWidget {
 
   /// {@template ShadSheet.padding}
   /// Padding around the content of the sheet.
+  ///
+  /// When [expandable] is true and [useSafeArea] is true, the sheet
+  /// merges the relevant safe-area insets into this padding before
+  /// passing it to the underlying [ShadDialog]. This lets the sheet
+  /// background cover the notch / home-indicator while the content
+  /// stays inset; widget inspectors that read the dialog's padding at
+  /// runtime will see the merged value, not the raw value set here.
   /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
@@ -1234,6 +1241,58 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         ? sizeController.size * (isVertical ? mSize.height : mSize.width)
         : 0.0;
 
+    // For expandable sheets we merge per-edge safe-area insets into the
+    // dialog's content padding instead of wrapping the sheet in an
+    // outer SafeArea. ShadDialog's DecoratedBox keeps covering the full
+    // composite render box — so the sheet visually reaches the notch
+    // and home indicator — and only the content is inset. Insets are
+    // only added for edges the sheet actually touches; the opposite-
+    // anchor edge is added only when `size >= effectiveMaxSize`.
+    EdgeInsets expandableSafeAreaInsets() {
+      if (!effectiveExpandable || !effectiveUseSafeArea) {
+        return EdgeInsets.zero;
+      }
+      final viewPadding = MediaQuery.viewPaddingOf(context);
+      final atFull = sizeController.size >= effectiveMaxSize;
+      return switch (side) {
+        ShadSheetSide.bottom => EdgeInsets.only(
+          top: atFull ? viewPadding.top : 0,
+          bottom: viewPadding.bottom,
+          left: viewPadding.left,
+          right: viewPadding.right,
+        ),
+        ShadSheetSide.top => EdgeInsets.only(
+          top: viewPadding.top,
+          bottom: atFull ? viewPadding.bottom : 0,
+          left: viewPadding.left,
+          right: viewPadding.right,
+        ),
+        ShadSheetSide.left => EdgeInsets.only(
+          top: viewPadding.top,
+          bottom: viewPadding.bottom,
+          left: viewPadding.left,
+          right: atFull ? viewPadding.right : 0,
+        ),
+        ShadSheetSide.right => EdgeInsets.only(
+          top: viewPadding.top,
+          bottom: viewPadding.bottom,
+          left: atFull ? viewPadding.left : 0,
+          right: viewPadding.right,
+        ),
+      };
+    }
+
+    // Merge safe-area insets into the caller-provided padding via
+    // EdgeInsets.add; the resulting EdgeInsetsGeometry is passed to
+    // ShadDialog.padding. Widget inspectors (and tests) that read
+    // ShadDialog.padding at runtime will see the merged value, not the
+    // raw widget.padding.
+    final effectivePaddingWithSafeArea = effectiveExpandable
+        ? EdgeInsets.zero
+              .add(effectivePadding ?? EdgeInsets.zero)
+              .add(expandableSafeAreaInsets())
+        : effectivePadding;
+
     final Widget shadDialog = ShadDialog(
       key: childKey,
       title: widget.title,
@@ -1247,7 +1306,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       closeIconPosition: effectiveCloseIconPosition,
       backgroundColor: effectiveBackgroundColor,
       expandActionsWhenTiny: effectiveExpandActionsWhenTiny,
-      padding: effectivePadding,
+      padding: effectivePaddingWithSafeArea,
       gap: effectiveGap,
       actionsAxis: effectiveActionsAxis,
       actionsMainAxisSize: effectiveActionsMainAxisSize,
@@ -1388,31 +1447,13 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         child: composite,
       );
 
-      // Apply SafeArea only on edges that actually touch the screen.
-      // The anchor edge + cross-axis edges always touch (sheet spans
-      // full cross axis). The edge OPPOSITE the anchor only touches
-      // when the sheet reaches its maximum size, which may be < 1.0
-      // when the caller caps maxSize. Using effectiveMaxSize (instead
-      // of 1.0) means opposite-edge insets still engage when the sheet
-      // sits flush against the screen edge at its configured maximum.
-      // Prevents wasted padding at the top of a half-size bottom sheet
-      // (issue #655).
-      if (effectiveUseSafeArea) {
-        final atFull = sizeController.size >= effectiveMaxSize;
-        final (top, bottom, left, right) = switch (side) {
-          ShadSheetSide.bottom => (atFull, true, true, true),
-          ShadSheetSide.top => (true, atFull, true, true),
-          ShadSheetSide.left => (true, true, true, atFull),
-          ShadSheetSide.right => (true, true, atFull, true),
-        };
-        child = SafeArea(
-          top: top,
-          bottom: bottom,
-          left: left,
-          right: right,
-          child: child,
-        );
-      }
+      // Safe-area handling for expandable sheets is performed via
+      // ShadDialog's `padding` above (safe-area insets merged into
+      // `effectivePadding`). This keeps ShadDialog's DecoratedBox
+      // covering the full sheet render box while only the content is
+      // inset — matching the "slick" full-screen look users expect on
+      // iOS/Android bottom sheets. See the `padding` computation before
+      // the `shadDialog = ShadDialog(...)` call.
 
       // Without this Align the composite (a shrinkwrapped Column/Row) would
       // render at the overlay's top-left. Skipped when draggable because
