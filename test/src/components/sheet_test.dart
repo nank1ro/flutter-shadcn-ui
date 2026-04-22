@@ -1212,7 +1212,8 @@ void main() {
         expect(
           ancestors,
           findsWidgets,
-          reason: 'expected at least one PrimaryScrollController(null) '
+          reason:
+              'expected at least one PrimaryScrollController(null) '
               'ancestor of ShadDialog',
         );
 
@@ -1227,7 +1228,6 @@ void main() {
         expect(sheetScoped, findsWidgets);
       },
     );
-
 
     // Golden: bottom sheet at initialSize=0.5
     testWidgets('golden: expandable bottom sheet at initial size', (
