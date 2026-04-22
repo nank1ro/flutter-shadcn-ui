@@ -36,6 +36,7 @@ void main() {
     Widget? description,
     List<Widget> actions = const [],
     Widget? child,
+    EdgeInsetsGeometry? padding,
   }) {
     return ShadApp(
       home: Scaffold(
@@ -64,6 +65,7 @@ void main() {
             title: title,
             description: description,
             actions: actions,
+            padding: padding,
             child: child ?? const Text('Sheet Content'),
           ),
         ),
@@ -1530,6 +1532,55 @@ void main() {
             '(topCenter), not the bottom (bottomCenter).',
       );
     });
+
+    testWidgets(
+      'expandable keeps default 24 content padding when widget.padding is null',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+          ),
+        );
+        await tester.pump();
+
+        final dialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+        final padding = dialog.padding! as EdgeInsets;
+        // Safe-area is zero in test env, so merged padding == dialog default.
+        expect(padding.left, 24.0);
+        expect(padding.right, 24.0);
+      },
+    );
+
+    testWidgets(
+      'expandable explicit padding overrides the 24 default',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+          ),
+        );
+        await tester.pump();
+
+        final dialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+        final padding = dialog.padding! as EdgeInsets;
+        // Explicit 40px wins; must not be 40+24=64.
+        expect(padding.left, 40.0);
+        expect(padding.right, 40.0);
+      },
+    );
 
     // Golden: custom drag handle
     testWidgets('golden: expandable sheet with custom drag handle', (

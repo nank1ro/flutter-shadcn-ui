@@ -1300,9 +1300,14 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     // ShadDialog.padding. Widget inspectors (and tests) that read
     // ShadDialog.padding at runtime will see the merged value, not the
     // raw widget.padding.
+    //
+    // ShadDialog falls back to EdgeInsets.all(24) when padding is null.
+    // Expandable mode passes an explicit pre-merged value, so mirror that
+    // default here to keep the 24px breathing room content otherwise has.
+    const dialogDefaultPadding = EdgeInsets.all(24);
     final effectivePaddingWithSafeArea = effectiveExpandable
         ? EdgeInsets.zero
-              .add(effectivePadding ?? EdgeInsets.zero)
+              .add(effectivePadding ?? dialogDefaultPadding)
               .add(expandableSafeAreaInsets())
         : effectivePadding;
 
