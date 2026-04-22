@@ -1293,7 +1293,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
               .add(expandableSafeAreaInsets())
         : effectivePadding;
 
-    final Widget shadDialog = ShadDialog(
+    Widget shadDialog = ShadDialog(
       key: childKey,
       title: widget.title,
       description: widget.description,
@@ -1333,6 +1333,24 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       actionsPinned: effectiveActionsPinned,
       child: widget.child,
     );
+
+    // When `scrollable` is true (the default), ShadDialog builds its
+    // own internal SingleChildScrollView that attaches to the ambient
+    // PrimaryScrollController. Wrapping in `PrimaryScrollController
+    // .none` isolates that ScrollView from the ambient controller, so
+    // a caller-provided Scrollable in `widget.child` cannot end up
+    // sharing a controller with the dialog's wrapper. Shared
+    // controllers crash Flutter's Scrollbar with "ScrollController
+    // attached to more than one ScrollPosition" during snap animations
+    // (issue #655).
+    //
+    // Only applied to expandable sheets. Non-expandable sheets have the
+    // same theoretical risk but the crash was user-reported only for
+    // expandable mode; scoping keeps the blast radius of the fix small.
+    // The wrap is a no-op when ShadDialog itself has `scrollable: false`.
+    if (effectiveExpandable) {
+      shadDialog = PrimaryScrollController.none(child: shadDialog);
+    }
 
     Widget child;
 

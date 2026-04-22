@@ -1189,6 +1189,46 @@ void main() {
       },
     );
 
+    // Test 38: the expandable path inserts a `PrimaryScrollController
+    // .none` directly above its ShadDialog so the dialog's internal
+    // SingleChildScrollView cannot share a controller with a caller-
+    // provided Scrollable. Sharing triggered the "ScrollController
+    // attached to more than one ScrollPosition" assertion during snap
+    // animations (issue #655 comment 4296947019).
+    testWidgets(
+      'expandable wraps ShadDialog in PrimaryScrollController.none',
+      (tester) async {
+        await tester.pumpWidget(
+          sheetWidget(expandable: true, initialSize: 0.5),
+        );
+        await tester.pump();
+
+        final ancestors = find.ancestor(
+          of: find.byType(ShadDialog),
+          matching: find.byWidgetPredicate(
+            (w) => w is PrimaryScrollController && w.controller == null,
+          ),
+        );
+        expect(
+          ancestors,
+          findsWidgets,
+          reason: 'expected at least one PrimaryScrollController(null) '
+              'ancestor of ShadDialog',
+        );
+
+        // Verify the wrapper is inside the sheet (i.e. our isolation
+        // was added by ShadSheet, not just ambient framework plumbing).
+        final sheetScoped = find.descendant(
+          of: find.byType(ShadSheet),
+          matching: find.byWidgetPredicate(
+            (w) => w is PrimaryScrollController && w.controller == null,
+          ),
+        );
+        expect(sheetScoped, findsWidgets);
+      },
+    );
+
+
     // Golden: bottom sheet at initialSize=0.5
     testWidgets('golden: expandable bottom sheet at initial size', (
       tester,
