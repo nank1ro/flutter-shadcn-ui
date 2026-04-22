@@ -1310,7 +1310,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       key: childKey,
       title: widget.title,
       description: widget.description,
-      alignment: (effectiveExpandable && !effectiveDraggable)
+      alignment: effectiveExpandable
           ? side.toInnerExpandableAlignment()
           : side.toAlignment(),
       constraints: effectiveConstraints,

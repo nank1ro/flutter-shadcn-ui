@@ -523,14 +523,14 @@ void main() {
         expect(closingCalls, 0);
 
         // Body drag with sufficient fling velocity must dismiss the sheet
-        // (triggers onClosing). Use the sheet content as the drag origin
-        // so the gesture falls through to ShadSheetGestureDetector rather
-        // than the resize handle.
-        await tester.fling(
-          find.text('Sheet Content'),
-          const Offset(0, 600),
-          2000,
+        // (triggers onClosing). Fling from the lower half of the fill area so
+        // the drag origin is clear of the resize handle and bodyDragStrip
+        // at the top edge (which would route to resize, not dismiss).
+        final fillRect = tester.getRect(
+          find.byKey(const ValueKey('shad_sheet_expandable_fill')),
         );
+        final flingOrigin = fillRect.center + const Offset(0, 100);
+        await tester.flingFrom(flingOrigin, const Offset(0, 600), 2000);
         await tester.pumpAndSettle();
         expect(closingCalls, greaterThanOrEqualTo(1));
       },
@@ -1485,6 +1485,49 @@ void main() {
       expect(
         find.byKey(const ValueKey('shad_sheet_expandable_fill')),
         findsNothing,
+      );
+    });
+
+    // Test 43: expandable + draggable fill box adjacent to pill
+    testWidgets('expandable + draggable: fill box adjacent to pill', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        sheetWidget(expandable: true, draggable: true, initialSize: 0.5),
+      );
+      await tester.pump();
+
+      final fillFinder = find.byKey(
+        const ValueKey('shad_sheet_expandable_fill'),
+      );
+      expect(fillFinder, findsOneWidget);
+
+      final handleRect = tester.getRect(find.byType(ShadSheetResizeHandle));
+      final fillRect = tester.getRect(fillFinder);
+
+      // Fill top must be adjacent to the pill handle bottom (no gap).
+      expect(fillRect.top, closeTo(handleRect.bottom, 1.0));
+      // Fill bottom must reach the viewport bottom.
+      expect(fillRect.bottom, closeTo(1200, 1.0));
+
+      // The sheet content must be anchored near the top of the fill area
+      // (topCenter alignment), not drifting to the bottom (bottomCenter).
+      // With the wrong alignment the text sits near fillRect.bottom;
+      // with the correct alignment it sits near fillRect.top.
+      final contentRect = tester.getRect(find.text('Sheet Content'));
+      final distanceFromTop = (contentRect.top - fillRect.top).abs();
+      final distanceFromBottom = (fillRect.bottom - contentRect.bottom).abs();
+      expect(
+        distanceFromTop,
+        lessThan(distanceFromBottom),
+        reason:
+            'Sheet content should be anchored near the top of the fill area '
+            '(topCenter), not the bottom (bottomCenter).',
       );
     });
 
