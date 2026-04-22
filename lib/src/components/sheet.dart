@@ -1264,7 +1264,11 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       mainAxisAlignment: effectiveMainAxisAlignment,
       scrollable: effectiveScrollable,
       scrollPadding: effectiveScrollPadding,
-      useSafeArea: effectiveUseSafeArea,
+      // For expandable sheets we apply SafeArea OUTSIDE the dialog with
+      // per-edge flags based on `side` and the current size, so insets
+      // only appear on edges that actually touch the screen. For the
+      // non-expandable path ShadDialog keeps its own behaviour.
+      useSafeArea: !effectiveExpandable && effectiveUseSafeArea,
       titlePinned: effectiveTitlePinned,
       descriptionPinned: effectiveDescriptionPinned,
       actionsPinned: effectiveActionsPinned,
@@ -1383,6 +1387,32 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         width: isVertical ? null : expandableCompositePx,
         child: composite,
       );
+
+      // Apply SafeArea only on edges that actually touch the screen.
+      // The anchor edge + cross-axis edges always touch (sheet spans
+      // full cross axis). The edge OPPOSITE the anchor only touches
+      // when the sheet reaches its maximum size, which may be < 1.0
+      // when the caller caps maxSize. Using effectiveMaxSize (instead
+      // of 1.0) means opposite-edge insets still engage when the sheet
+      // sits flush against the screen edge at its configured maximum.
+      // Prevents wasted padding at the top of a half-size bottom sheet
+      // (issue #655).
+      if (effectiveUseSafeArea) {
+        final atFull = sizeController.size >= effectiveMaxSize;
+        final (top, bottom, left, right) = switch (side) {
+          ShadSheetSide.bottom => (atFull, true, true, true),
+          ShadSheetSide.top => (true, atFull, true, true),
+          ShadSheetSide.left => (true, true, true, atFull),
+          ShadSheetSide.right => (true, true, atFull, true),
+        };
+        child = SafeArea(
+          top: top,
+          bottom: bottom,
+          left: left,
+          right: right,
+          child: child,
+        );
+      }
 
       // Without this Align the composite (a shrinkwrapped Column/Row) would
       // render at the overlay's top-left. Skipped when draggable because

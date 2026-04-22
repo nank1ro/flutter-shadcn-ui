@@ -30,6 +30,7 @@ void main() {
     bool? draggable,
     bool isScrollControlled = false,
     double? disabledScrollControlMaxRatio,
+    bool? useSafeArea,
     VoidCallback? onClosing,
     Widget? title,
     Widget? description,
@@ -58,6 +59,7 @@ void main() {
             draggable: draggable,
             isScrollControlled: isScrollControlled,
             disabledScrollControlMaxRatio: disabledScrollControlMaxRatio,
+            useSafeArea: useSafeArea,
             onClosing: onClosing,
             title: title,
             description: description,
@@ -1064,6 +1066,103 @@ void main() {
         // No resize: body drag without the strip does not move the
         // controller.
         expect(controller.size, closeTo(0.5, 0.01));
+      },
+    );
+
+    // Tests 35-37: expandable sheets should only apply SafeArea insets
+    // on the edges that actually touch the screen edge — the anchor
+    // edge + any cross-axis edges always, but the OPPOSITE edge only
+    // when the sheet reaches full size. Prevents wasted padding at the
+    // top of a half-size bottom sheet (issue #655 comment 4294664469).
+    testWidgets(
+      'expandable bottom sheet size<1 disables top SafeArea',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            useSafeArea: true,
+          ),
+        );
+        await tester.pump();
+
+        // Scope to SafeAreas INSIDE the sheet so ambient ancestors
+        // (future ShadApp/MediaQuery plumbing) don't contaminate the
+        // assertion.
+        final sheetSafeAreas = tester.widgetList<SafeArea>(
+          find.descendant(
+            of: find.byType(ShadSheet),
+            matching: find.byType(SafeArea),
+          ),
+        );
+        expect(sheetSafeAreas, hasLength(1));
+        final sa = sheetSafeAreas.single;
+        expect(sa.top, isFalse);
+        expect(sa.bottom, isTrue);
+      },
+    );
+
+    testWidgets(
+      'expandable bottom sheet at full size enables top SafeArea',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            maxSize: 1,
+            controller: controller,
+            useSafeArea: true,
+          ),
+        );
+        await tester.pump();
+        controller.jumpTo(1);
+        await tester.pump();
+
+        final sheetSafeAreas = tester.widgetList<SafeArea>(
+          find.descendant(
+            of: find.byType(ShadSheet),
+            matching: find.byType(SafeArea),
+          ),
+        );
+        expect(sheetSafeAreas, hasLength(1));
+        final sa = sheetSafeAreas.single;
+        expect(sa.top, isTrue);
+        expect(sa.bottom, isTrue);
+      },
+    );
+
+    testWidgets(
+      'expandable useSafeArea:false skips SafeArea entirely',
+      (tester) async {
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            useSafeArea: false,
+          ),
+        );
+        await tester.pump();
+
+        expect(
+          find.descendant(
+            of: find.byType(ShadSheet),
+            matching: find.byType(SafeArea),
+          ),
+          findsNothing,
+        );
       },
     );
 
