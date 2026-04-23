@@ -1295,6 +1295,20 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       };
     }
 
+    // Null fields must stay null so Positioned leaves that axis un-anchored
+    // — only bump the axes the caller actually set.
+    ShadPosition augmentCloseIconPositionForSafeArea(
+      ShadPosition base,
+      EdgeInsets insets,
+    ) {
+      return ShadPosition(
+        top: base.top != null ? base.top! + insets.top : null,
+        bottom: base.bottom != null ? base.bottom! + insets.bottom : null,
+        left: base.left != null ? base.left! + insets.left : null,
+        right: base.right != null ? base.right! + insets.right : null,
+      );
+    }
+
     // Merge safe-area insets into the caller-provided padding via
     // EdgeInsets.add; the resulting EdgeInsetsGeometry is passed to
     // ShadDialog.padding. Widget inspectors (and tests) that read
@@ -1305,11 +1319,36 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     // Expandable mode passes an explicit pre-merged value, so mirror that
     // default here to keep the 24px breathing room content otherwise has.
     const dialogDefaultPadding = EdgeInsets.all(24);
+    final safeAreaInsets = expandableSafeAreaInsets();
     final effectivePaddingWithSafeArea = effectiveExpandable
         ? EdgeInsets.zero
               .add(effectivePadding ?? dialogDefaultPadding)
-              .add(expandableSafeAreaInsets())
+              .add(safeAreaInsets)
         : effectivePadding;
+
+    // Shift the close icon position by the same safe-area insets that are
+    // merged into padding for expandable sheets. When no position is
+    // supplied, resolve the ShadDialog default so there is a concrete base
+    // to offset. The literal below mirrors the default in
+    // dialog.dart's build() (ShadPosition.directional(top: 8, end: 8)); if
+    // that default changes, update this fallback to match or the icon will
+    // visually drift by the delta at full expansion.
+    final ShadPosition? adjustedCloseIconPosition;
+    if (effectiveExpandable && effectiveUseSafeArea) {
+      final base =
+          effectiveCloseIconPosition ??
+          ShadPosition.directional(
+            top: 8,
+            end: 8,
+            textDirection: Directionality.of(context),
+          );
+      adjustedCloseIconPosition = augmentCloseIconPositionForSafeArea(
+        base,
+        safeAreaInsets,
+      );
+    } else {
+      adjustedCloseIconPosition = effectiveCloseIconPosition;
+    }
 
     Widget shadDialog = ShadDialog(
       key: childKey,
@@ -1323,7 +1362,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       radius: effectiveExpandable ? BorderRadius.zero : effectiveRadius,
       closeIcon: effectiveCloseIcon,
       closeIconData: effectiveCloseIconData,
-      closeIconPosition: effectiveCloseIconPosition,
+      closeIconPosition: adjustedCloseIconPosition,
       backgroundColor: effectiveExpandable
           ? const Color(0x00000000)
           : effectiveBackgroundColor,

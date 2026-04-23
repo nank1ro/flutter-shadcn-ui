@@ -4,6 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+// Returns the Positioned widget that directly anchors the sheet's close
+// ShadIconButton. find.ancestor yields ancestors nearest-first, so .first
+// is the immediate Positioned parent — the one set by ShadDialog's
+// `closeIcon.positionedWith(...)`, not an outer layout Positioned.
+Positioned findClosePositioned(WidgetTester tester) {
+  final iconButton = find.descendant(
+    of: find.byType(ShadSheet),
+    matching: find.byType(ShadIconButton),
+  );
+  final positioned = find.ancestor(
+    of: iconButton,
+    matching: find.byType(Positioned),
+  );
+  return tester.widget<Positioned>(positioned.first);
+}
+
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
@@ -37,6 +53,9 @@ void main() {
     List<Widget> actions = const [],
     Widget? child,
     EdgeInsetsGeometry? padding,
+    Widget? closeIcon,
+    IconData? closeIconData,
+    ShadPosition? closeIconPosition,
   }) {
     return ShadApp(
       home: Scaffold(
@@ -66,6 +85,9 @@ void main() {
             description: description,
             actions: actions,
             padding: padding,
+            closeIcon: closeIcon,
+            closeIconData: closeIconData,
+            closeIconPosition: closeIconPosition,
             child: child ?? const Text('Sheet Content'),
           ),
         ),
@@ -1579,6 +1601,130 @@ void main() {
         // Explicit 40px wins; must not be 40+24=64.
         expect(padding.left, 40.0);
         expect(padding.right, 40.0);
+      },
+    );
+
+    // Tests for close icon safe-area bump (issue #655 comment 4301645380).
+    testWidgets(
+      'expandable sheet bumps default close icon top by safe-area inset at full size',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        tester.view.viewPadding = const FakeViewPadding(top: 40);
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        addTearDown(tester.view.resetViewPadding);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            maxSize: 1,
+            controller: controller,
+            useSafeArea: true,
+            closeIconData: LucideIcons.x,
+          ),
+        );
+        await tester.pump();
+
+        // At partial size (bottom sheet doesn't touch top) icon stays at raw 8.
+        expect(findClosePositioned(tester).top, 8);
+
+        controller.jumpTo(1);
+        await tester.pump();
+
+        // At full size the top inset is 40, so icon must be at 8 + 40 = 48.
+        expect(findClosePositioned(tester).top, 48);
+      },
+    );
+
+    testWidgets(
+      'expandable sheet with user-supplied closeIconPosition bumps additively',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        tester.view.viewPadding = const FakeViewPadding(top: 40, right: 10);
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        addTearDown(tester.view.resetViewPadding);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            maxSize: 1,
+            controller: controller,
+            useSafeArea: true,
+            closeIconData: LucideIcons.x,
+            closeIconPosition: const ShadPosition(top: 16, right: 16),
+          ),
+        );
+        await tester.pump();
+        controller.jumpTo(1);
+        await tester.pump();
+
+        // top: 16 + 40 = 56, right: 16 + 10 = 26.
+        final positioned = findClosePositioned(tester);
+        expect(positioned.top, 56);
+        expect(positioned.right, 26);
+      },
+    );
+
+    testWidgets(
+      'non-expandable sheet does not explicitly bump close icon position',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        tester.view.viewPadding = const FakeViewPadding(top: 40);
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        addTearDown(tester.view.resetViewPadding);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            closeIconData: LucideIcons.x,
+          ),
+        );
+        await tester.pump();
+
+        // SafeArea inside ShadDialog shifts the whole stack; Positioned stays at 8.
+        expect(findClosePositioned(tester).top, 8);
+      },
+    );
+
+    testWidgets(
+      'expandable with useSafeArea:false does not bump close icon',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        tester.view.viewPadding = const FakeViewPadding(top: 40);
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        addTearDown(tester.view.resetViewPadding);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            useSafeArea: false,
+            closeIconData: LucideIcons.x,
+            maxSize: 1,
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+        controller.jumpTo(1);
+        await tester.pump();
+
+        // useSafeArea:false — no bump expected.
+        expect(findClosePositioned(tester).top, 8);
       },
     );
 
