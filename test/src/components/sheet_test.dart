@@ -41,6 +41,7 @@ void main() {
     ShadSheetDragHandleBuilder? dragHandleBuilder,
     double? dragHandleExtent,
     bool? showDragHandle,
+    double? snapFlingVelocity,
     ValueChanged<double>? onSizeChanged,
     ShadSheetController? controller,
     bool? draggable,
@@ -70,6 +71,7 @@ void main() {
             snapSizes: snapSizes,
             snapAnimationDuration: snapAnimationDuration,
             snapAnimationCurve: snapAnimationCurve,
+            snapFlingVelocity: snapFlingVelocity,
             dragHandle: dragHandle,
             dragHandleBuilder: dragHandleBuilder,
             dragHandleExtent: dragHandleExtent,
@@ -1759,5 +1761,303 @@ void main() {
         matchesGoldenFile('goldens/sheet_expandable_custom_handle.png'),
       );
     });
+
+    // ── Fling-snap tests (issue #655) ──────────────────────────────────────
+    //
+    // A 150px offset at 1500 px/s gives the velocity tracker ~100ms of samples,
+    // which is needed for its least-squares fit. Smaller offsets flake out.
+
+    ShadSheetController setUpFling(
+      WidgetTester tester, {
+      Size size = const Size(800, 1200),
+    }) {
+      tester.view.physicalSize = size;
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final controller = ShadSheetController();
+      addTearDown(controller.dispose);
+      return controller;
+    }
+
+    // Test A (reported bug): snap=false, fast flick up → snaps to maxSize.
+    testWidgets(
+      'fling up on bottom sheet snaps to maxSize (snap=false)',
+      (tester) async {
+        final controller = setUpFling(tester);
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 1,
+            snap: false,
+            snapAnimationDuration: const Duration(milliseconds: 200),
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        expect(controller.size, closeTo(0.5, 0.01));
+
+        await tester.fling(
+          find.byType(ShadSheetResizeHandle),
+          const Offset(0, -150),
+          1500,
+        );
+        await tester.pumpAndSettle();
+
+        expect(controller.size, closeTo(1.0, 0.05));
+      },
+    );
+
+    // Test B: snap=false, fast flick down → snaps to minSize.
+    testWidgets(
+      'fling down on bottom sheet snaps to minSize (snap=false)',
+      (tester) async {
+        final controller = setUpFling(tester);
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 1,
+            snap: false,
+            snapAnimationDuration: const Duration(milliseconds: 200),
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        await tester.fling(
+          find.byType(ShadSheetResizeHandle),
+          const Offset(0, 150),
+          1500,
+        );
+        await tester.pumpAndSettle();
+
+        expect(controller.size, closeTo(0.25, 0.05));
+      },
+    );
+
+    // Test C (regression guard): snap=false, slow drag up → stays near lift.
+    testWidgets(
+      'slow drag on bottom sheet stays near lift position (snap=false)',
+      (tester) async {
+        final controller = setUpFling(tester);
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 1,
+            snap: false,
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        // Drag up 120px = +0.1 ratio on a 1200px screen → ~0.6, zero velocity.
+        await tester.drag(
+          find.byType(ShadSheetResizeHandle),
+          const Offset(0, -120),
+        );
+        await tester.pump();
+
+        expect(controller.size, closeTo(0.6, 0.05));
+        expect(controller.size, lessThan(0.95));
+      },
+    );
+
+    // Test D: snap=true, snapSizes=[0.25,0.5,0.9], at 0.5, fling up → 0.9.
+    testWidgets(
+      'fling up with snap=true snaps to highest stop',
+      (tester) async {
+        final controller = setUpFling(tester);
+        controller.jumpTo(0.5);
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 0.9,
+            snap: true,
+            snapSizes: [0.25, 0.5, 0.9],
+            snapAnimationDuration: const Duration(milliseconds: 200),
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        await tester.fling(
+          find.byType(ShadSheetResizeHandle),
+          const Offset(0, -150),
+          1500,
+        );
+        await tester.pumpAndSettle();
+
+        expect(controller.size, closeTo(0.9, 0.05));
+      },
+    );
+
+    // Test E: snap=true, snapSizes=[0.25,0.5,0.9], at 0.5, fling down → 0.25.
+    testWidgets(
+      'fling down with snap=true snaps to lowest stop',
+      (tester) async {
+        final controller = setUpFling(tester);
+        controller.jumpTo(0.5);
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 0.9,
+            snap: true,
+            snapSizes: [0.25, 0.5, 0.9],
+            snapAnimationDuration: const Duration(milliseconds: 200),
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        await tester.fling(
+          find.byType(ShadSheetResizeHandle),
+          const Offset(0, 150),
+          1500,
+        );
+        await tester.pumpAndSettle();
+
+        expect(controller.size, closeTo(0.25, 0.05));
+      },
+    );
+
+    // Test F (regression): snap=true, slow drag → nearest-snap still works.
+    testWidgets(
+      'slow drag with snap=true still snaps to nearest stop',
+      (tester) async {
+        final controller = setUpFling(tester);
+        controller.jumpTo(0.5);
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 0.9,
+            snap: true,
+            snapSizes: [0.25, 0.5, 0.9],
+            snapAnimationDuration: const Duration(milliseconds: 200),
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        // drag up 84px = +0.07 ratio → ~0.57, nearest stop is 0.5.
+        await tester.drag(
+          find.byType(ShadSheetResizeHandle),
+          const Offset(0, -84),
+        );
+        await tester.pumpAndSettle();
+
+        expect(controller.size, closeTo(0.5, 0.05));
+      },
+    );
+
+    // Test G: fling grow direction on top/left/right sides → snaps to maxSize.
+    for (final config in [
+      (side: ShadSheetSide.top, growOffset: const Offset(0, 150)),
+      (side: ShadSheetSide.left, growOffset: const Offset(150, 0)),
+      (side: ShadSheetSide.right, growOffset: const Offset(-150, 0)),
+    ]) {
+      testWidgets(
+        'fling in grow direction on ${config.side.name} sheet snaps to maxSize',
+        (tester) async {
+          final controller = setUpFling(tester, size: const Size(1200, 800));
+          await tester.pumpWidget(
+            sheetWidget(
+              side: config.side,
+              expandable: true,
+              initialSize: 0.5,
+              minSize: 0.25,
+              maxSize: 1,
+              snap: false,
+              snapAnimationDuration: const Duration(milliseconds: 200),
+              controller: controller,
+            ),
+          );
+          await tester.pump();
+
+          await tester.fling(
+            find.byType(ShadSheetResizeHandle),
+            config.growOffset,
+            1500,
+          );
+          await tester.pumpAndSettle();
+
+          expect(controller.size, closeTo(1.0, 0.05));
+        },
+      );
+    }
+
+    // Test H: custom snapFlingVelocity=2000 — sub-threshold fling does NOT
+    // trigger fling path; super-threshold fling does.
+    testWidgets(
+      'custom snapFlingVelocity respected: sub-threshold fling stays near lift',
+      (tester) async {
+        final controller = setUpFling(tester);
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 1,
+            snap: false,
+            snapFlingVelocity: 2000,
+            snapAnimationDuration: const Duration(milliseconds: 200),
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        // 1200 px/s is below 2000 threshold — should stay near lift position.
+        await tester.fling(
+          find.byType(ShadSheetResizeHandle),
+          const Offset(0, -120),
+          1200,
+        );
+        await tester.pump();
+
+        expect(controller.size, lessThan(0.95));
+      },
+    );
+
+    testWidgets(
+      'custom snapFlingVelocity respected: super-threshold fling snaps to max',
+      (tester) async {
+        final controller = setUpFling(tester);
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 1,
+            snap: false,
+            snapFlingVelocity: 2000,
+            snapAnimationDuration: const Duration(milliseconds: 200),
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        // 2500 px/s is above 2000 threshold — should snap to maxSize.
+        await tester.fling(
+          find.byType(ShadSheetResizeHandle),
+          const Offset(0, -150),
+          2500,
+        );
+        await tester.pumpAndSettle();
+
+        expect(controller.size, closeTo(1.0, 0.05));
+      },
+    );
   });
 }
