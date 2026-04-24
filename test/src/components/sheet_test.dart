@@ -1869,9 +1869,9 @@ void main() {
       },
     );
 
-    // Test D: snap=true, snapSizes=[0.25,0.5,0.9], at 0.5, fling up → 0.9.
+    // Test D: snap=true, snapSizes=[0.25,0.5,0.9], at 0.5, fling up → maxSize.
     testWidgets(
-      'fling up with snap=true snaps to highest stop',
+      'fling up with snap=true snaps to maxSize',
       (tester) async {
         final controller = setUpFling(tester);
         controller.jumpTo(0.5);
@@ -1900,9 +1900,10 @@ void main() {
       },
     );
 
-    // Test E: snap=true, snapSizes=[0.25,0.5,0.9], at 0.5, fling down → 0.25.
+    // Test E: snap=true, snapSizes=[0.25,0.5,0.9], at 0.5, fling down →
+    // minSize.
     testWidgets(
-      'fling down with snap=true snaps to lowest stop',
+      'fling down with snap=true snaps to minSize',
       (tester) async {
         final controller = setUpFling(tester);
         controller.jumpTo(0.5);
@@ -2057,6 +2058,39 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(controller.size, closeTo(1.0, 0.05));
+      },
+    );
+
+    // Test I (regression for the max-size constraint): snapSizes contains
+    // 1.0 but maxSize is 0.9. closeTo proves the fling activated; the
+    // strict <=0.9 ceiling is the actual regression guard.
+    testWidgets(
+      'fling never lands above maxSize even when snapSizes goes higher',
+      (tester) async {
+        final controller = setUpFling(tester);
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            minSize: 0.25,
+            maxSize: 0.9,
+            snap: true,
+            snapSizes: [0.25, 0.5, 0.9, 1.0],
+            snapAnimationDuration: const Duration(milliseconds: 200),
+            controller: controller,
+          ),
+        );
+        await tester.pump();
+
+        await tester.fling(
+          find.byType(ShadSheetResizeHandle),
+          const Offset(0, -150),
+          1500,
+        );
+        await tester.pumpAndSettle();
+
+        expect(controller.size, closeTo(0.9, 0.05));
+        expect(controller.size, lessThanOrEqualTo(0.9));
       },
     );
   });

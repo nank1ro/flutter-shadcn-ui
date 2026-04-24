@@ -1,7 +1,6 @@
 // ignore_for_file: cascade_invocations
 
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
@@ -661,9 +660,9 @@ class ShadSheet extends StatefulWidget {
 
   /// {@template ShadSheet.snapFlingVelocity}
   /// Minimum velocity (px/s) in the resize axis to treat a drag release as a
-  /// fling. A fling snaps the sheet to the extreme size in the fling direction
-  /// regardless of where the finger lifted, and applies even when [snap] is
-  /// false.
+  /// fling. Flings always target [maxSize] or [minSize], ignoring [snapSizes],
+  /// so reaching the full screen requires [maxSize] to be `1.0`. Applies even
+  /// when [snap] is false.
   ///
   /// Defaults to 700.
   /// {@endtemplate}
@@ -996,13 +995,9 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
 
     double? target;
     if (growingVelocity.abs() >= snapFlingVelocity) {
-      // Fling bypasses snap=false so a flick always reaches an extreme.
-      final stops = (snap && snapSizes != null)
-          ? snapSizes
-          : [minSize, maxSize];
-      target = growingVelocity > 0
-          ? stops.reduce(math.max)
-          : stops.reduce(math.min);
+      // Ignore snapSizes so a fling cannot overshoot maxSize; reaching 1.0
+      // therefore requires maxSize == 1.0. Activates even when snap=false.
+      target = growingVelocity > 0 ? maxSize : minSize;
     } else if (snap && snapSizes != null) {
       final current = sizeController.size;
       target = snapSizes.reduce(
