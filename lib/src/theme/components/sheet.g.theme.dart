@@ -83,6 +83,11 @@ mixin _$ShadSheetTheme {
         t,
       ),
       minFlingVelocity: lerpDouble$(a.minFlingVelocity, b.minFlingVelocity, t),
+      snapFlingVelocity: lerpDouble$(
+        a.snapFlingVelocity,
+        b.snapFlingVelocity,
+        t,
+      ),
       closeProgressThreshold: lerpDouble$(
         a.closeProgressThreshold,
         b.closeProgressThreshold,
@@ -148,6 +153,7 @@ mixin _$ShadSheetTheme {
     EdgeInsetsGeometry? scrollPadding,
     double? disabledScrollControlMaxRatio,
     double? minFlingVelocity,
+    double? snapFlingVelocity,
     double? closeProgressThreshold,
     ShadSheetSide? side,
     bool? useSafeArea,
@@ -206,6 +212,7 @@ mixin _$ShadSheetTheme {
       disabledScrollControlMaxRatio:
           disabledScrollControlMaxRatio ?? _this.disabledScrollControlMaxRatio,
       minFlingVelocity: minFlingVelocity ?? _this.minFlingVelocity,
+      snapFlingVelocity: snapFlingVelocity ?? _this.snapFlingVelocity,
       closeProgressThreshold:
           closeProgressThreshold ?? _this.closeProgressThreshold,
       side: side ?? _this.side,
@@ -274,6 +281,7 @@ mixin _$ShadSheetTheme {
       scrollPadding: other.scrollPadding,
       disabledScrollControlMaxRatio: other.disabledScrollControlMaxRatio,
       minFlingVelocity: other.minFlingVelocity,
+      snapFlingVelocity: other.snapFlingVelocity,
       closeProgressThreshold: other.closeProgressThreshold,
       side: other.side,
       useSafeArea: other.useSafeArea,
@@ -340,6 +348,7 @@ mixin _$ShadSheetTheme {
         _other.disabledScrollControlMaxRatio ==
             _this.disabledScrollControlMaxRatio &&
         _other.minFlingVelocity == _this.minFlingVelocity &&
+        _other.snapFlingVelocity == _this.snapFlingVelocity &&
         _other.closeProgressThreshold == _this.closeProgressThreshold &&
         _other.side == _this.side &&
         _other.useSafeArea == _this.useSafeArea &&
@@ -397,6 +406,7 @@ mixin _$ShadSheetTheme {
       _this.scrollPadding,
       _this.disabledScrollControlMaxRatio,
       _this.minFlingVelocity,
+      _this.snapFlingVelocity,
       _this.closeProgressThreshold,
       _this.side,
       _this.useSafeArea,

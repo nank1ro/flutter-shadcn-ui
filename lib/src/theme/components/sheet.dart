@@ -41,6 +41,7 @@ class ShadSheetTheme with _$ShadSheetTheme {
     this.scrollPadding,
     this.disabledScrollControlMaxRatio,
     this.minFlingVelocity,
+    this.snapFlingVelocity,
     this.closeProgressThreshold,
     this.side,
     this.useSafeArea,
@@ -155,6 +156,9 @@ class ShadSheetTheme with _$ShadSheetTheme {
 
   /// {@macro ShadSheet.minFlingVelocity}
   final double? minFlingVelocity;
+
+  /// {@macro ShadSheet.snapFlingVelocity}
+  final double? snapFlingVelocity;
 
   /// {@macro ShadSheet.closeProgressThreshold}
   final double? closeProgressThreshold;

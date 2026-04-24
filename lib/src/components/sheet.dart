@@ -329,6 +329,7 @@ class ShadSheet extends StatefulWidget {
     this.snapSizes,
     this.snapAnimationDuration,
     this.snapAnimationCurve,
+    this.snapFlingVelocity,
     this.dragHandle,
     this.dragHandleBuilder,
     this.showDragHandle,
@@ -657,6 +658,16 @@ class ShadSheet extends StatefulWidget {
   /// {@endtemplate}
   final Curve? snapAnimationCurve;
 
+  /// {@template ShadSheet.snapFlingVelocity}
+  /// Minimum velocity (px/s) in the resize axis to treat a drag release as a
+  /// fling. Flings always target [maxSize] or [minSize], ignoring [snapSizes],
+  /// so reaching the full screen requires [maxSize] to be `1.0`. Applies even
+  /// when [snap] is false.
+  ///
+  /// Defaults to 700.
+  /// {@endtemplate}
+  final double? snapFlingVelocity;
+
   /// {@template ShadSheet.dragHandle}
   /// Custom widget to use as the drag handle. When null, a default pill is
   /// shown (only when [expandable] is true and [showDragHandle] is true).
@@ -928,6 +939,14 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
   bool _isVertical(ShadSheetSide side) =>
       side == ShadSheetSide.bottom || side == ShadSheetSide.top;
 
+  // +1 where increasing pointer coordinate grows the sheet, -1 otherwise.
+  double _growthSign(ShadSheetSide side) => switch (side) {
+    ShadSheetSide.bottom => -1,
+    ShadSheetSide.top => 1,
+    ShadSheetSide.left => 1,
+    ShadSheetSide.right => -1,
+  };
+
   void handleResizeDragStart(DragStartDetails details, ShadSheetSide side) {
     dragStartSizeRatio = sizeController.size;
     dragStartPointer = _isVertical(side)
@@ -952,39 +971,48 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     final pixelDelta = pointer - dragStartPointer!;
     final screenDim = isVertical ? mSize.height : mSize.width;
     final ratioDelta = pixelDelta / screenDim;
-    final signed = switch (side) {
-      ShadSheetSide.bottom => -ratioDelta,
-      ShadSheetSide.top => ratioDelta,
-      ShadSheetSide.left => ratioDelta,
-      ShadSheetSide.right => -ratioDelta,
-    };
+    final signed = ratioDelta * _growthSign(side);
     final next = (dragStartSizeRatio! + signed).clamp(minSize, maxSize);
     sizeController._setSize(next);
   }
 
   void handleResizeDragEnd(
     DragEndDetails details, {
+    required ShadSheetSide side,
     required bool snap,
     required List<double>? snapSizes,
+    required double minSize,
+    required double maxSize,
     required Duration duration,
     required Curve curve,
+    required double snapFlingVelocity,
   }) {
-    if (snap && snapSizes != null) {
+    final isVertical = _isVertical(side);
+    final rawVelocity = isVertical
+        ? details.velocity.pixelsPerSecond.dy
+        : details.velocity.pixelsPerSecond.dx;
+    final growingVelocity = rawVelocity * _growthSign(side);
+
+    double? target;
+    if (growingVelocity.abs() >= snapFlingVelocity) {
+      // Ignore snapSizes so a fling cannot overshoot maxSize; reaching 1.0
+      // therefore requires maxSize == 1.0. Activates even when snap=false.
+      target = growingVelocity > 0 ? maxSize : minSize;
+    } else if (snap && snapSizes != null) {
       final current = sizeController.size;
-      final target = snapSizes.reduce(
+      target = snapSizes.reduce(
         (a, b) => (a - current).abs() < (b - current).abs() ? a : b,
       );
-      // Lazy-create the snap animation controller.
+    }
+
+    if (target != null) {
       snapController ??= AnimationController(vsync: this);
       sizeController._animationController = snapController;
       unawaited(
-        sizeController.animateTo(
-          target,
-          duration: duration,
-          curve: curve,
-        ),
+        sizeController.animateTo(target, duration: duration, curve: curve),
       );
     }
+
     dragStartSizeRatio = null;
     dragStartPointer = null;
   }
@@ -1225,6 +1253,9 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         theme.sheetTheme.snapAnimationCurve ??
         Curves.easeInOut;
 
+    final effectiveSnapFlingVelocity =
+        widget.snapFlingVelocity ?? theme.sheetTheme.snapFlingVelocity ?? 700;
+
     final effectiveShowDragHandle =
         widget.showDragHandle ??
         theme.sheetTheme.showDragHandle ??
@@ -1446,10 +1477,14 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       );
       void onEnd(DragEndDetails d) => handleResizeDragEnd(
         d,
+        side: side,
         snap: effectiveSnap,
         snapSizes: effectiveSnapSizes,
+        minSize: effectiveMinSize,
+        maxSize: effectiveMaxSize,
         duration: effectiveSnapAnimationDuration,
         curve: effectiveSnapAnimationCurve,
+        snapFlingVelocity: effectiveSnapFlingVelocity,
       );
 
       final resizeHandle = ShadSheetResizeHandle(
