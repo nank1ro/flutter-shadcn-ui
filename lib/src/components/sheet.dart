@@ -36,18 +36,26 @@ Future<T?> showShadSheet<T>({
     ShadSheetSide.top => const SlideEffect(
       begin: Offset(0, -1),
       end: Offset.zero,
+      duration: ShadSheet.defaultEnterDuration,
+      curve: ShadSheet.defaultAnimationCurve,
     ),
     ShadSheetSide.bottom => const SlideEffect(
       begin: Offset(0, 1),
       end: Offset.zero,
+      duration: ShadSheet.defaultEnterDuration,
+      curve: ShadSheet.defaultAnimationCurve,
     ),
     ShadSheetSide.left => const SlideEffect(
       begin: Offset(-1, 0),
       end: Offset.zero,
+      duration: ShadSheet.defaultEnterDuration,
+      curve: ShadSheet.defaultAnimationCurve,
     ),
     ShadSheetSide.right => const SlideEffect(
       begin: Offset(1, 0),
       end: Offset.zero,
+      duration: ShadSheet.defaultEnterDuration,
+      curve: ShadSheet.defaultAnimationCurve,
     ),
   };
 
@@ -58,18 +66,26 @@ Future<T?> showShadSheet<T>({
     ShadSheetSide.top => const SlideEffect(
       begin: Offset.zero,
       end: Offset(0, -1),
+      duration: ShadSheet.defaultExitDuration,
+      curve: ShadSheet.defaultAnimationCurve,
     ),
     ShadSheetSide.bottom => const SlideEffect(
       begin: Offset.zero,
       end: Offset(0, 1),
+      duration: ShadSheet.defaultExitDuration,
+      curve: ShadSheet.defaultAnimationCurve,
     ),
     ShadSheetSide.left => const SlideEffect(
       begin: Offset.zero,
       end: Offset(-1, 0),
+      duration: ShadSheet.defaultExitDuration,
+      curve: ShadSheet.defaultAnimationCurve,
     ),
     ShadSheetSide.right => const SlideEffect(
       begin: Offset.zero,
       end: Offset(1, 0),
+      duration: ShadSheet.defaultExitDuration,
+      curve: ShadSheet.defaultAnimationCurve,
     ),
   };
 
@@ -361,6 +377,21 @@ class ShadSheet extends StatefulWidget {
          initialSize == null || maxSize == null || initialSize <= maxSize,
          'initialSize must be <= maxSize',
        );
+
+  /// Default open-transition duration for sheets shown via [showShadSheet].
+  /// Matches Material's `BottomSheet` enter timing. Override per call via
+  /// `animateIn`, or globally via `ShadSheetTheme.animateIn`.
+  static const defaultEnterDuration = Duration(milliseconds: 250);
+
+  /// Default close-transition duration for sheets shown via [showShadSheet].
+  /// Matches Material's `BottomSheet` exit timing. Override per call via
+  /// `animateOut`, or globally via `ShadSheetTheme.animateOut`.
+  static const defaultExitDuration = Duration(milliseconds: 200);
+
+  /// Default easing for the open/close transitions of sheets shown via
+  /// [showShadSheet]. M3 `emphasizedDecelerate` token — recommended by the
+  /// Material 3 motion spec for sheets and dialogs entering view.
+  static const defaultAnimationCurve = Cubic(0.05, 0.7, 0.1, 1);
 
   /// {@template ShadSheet.title}
   /// The title widget of the sheet, typically displayed at the top.
