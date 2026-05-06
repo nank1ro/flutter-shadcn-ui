@@ -1608,7 +1608,8 @@ void main() {
 
     // Tests for close icon safe-area bump (issue #655 comment 4301645380).
     testWidgets(
-      'expandable sheet bumps default close icon top by safe-area inset at full size',
+      'expandable sheet bumps default close icon top by safe-area inset '
+      'at full size',
       (tester) async {
         tester.view.physicalSize = const Size(800, 1200);
         tester.view.devicePixelRatio = 1.0;
@@ -1694,7 +1695,8 @@ void main() {
         );
         await tester.pump();
 
-        // SafeArea inside ShadDialog shifts the whole stack; Positioned stays at 8.
+        // SafeArea inside ShadDialog shifts the whole stack; Positioned
+        // stays at 8.
         expect(findClosePositioned(tester).top, 8);
       },
     );
