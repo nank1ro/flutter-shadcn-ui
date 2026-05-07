@@ -28,6 +28,7 @@ class ShadDialogRoute<T> extends PopupRoute<T> {
     this.reverseTransitionDuration = const Duration(milliseconds: 200),
     this.transitionBuilder,
     this.anchorPoint,
+    this.opaque = true,
     super.settings,
   });
 
@@ -51,6 +52,9 @@ class ShadDialogRoute<T> extends PopupRoute<T> {
   final RouteTransitionsBuilder? transitionBuilder;
 
   final Offset? anchorPoint;
+
+  @override
+  final bool opaque;
 
   @override
   Widget buildPage(
@@ -122,6 +126,12 @@ Future<T?> showShadDialog<T>({
   /// The variant of the dialog to display.
   /// Defaults to [ShadDialogVariant.primary].
   ShadDialogVariant variant = ShadDialogVariant.primary,
+
+  /// Whether the route occludes the routes behind it.
+  /// When false, [MediaQuery.viewInsetsOf] from the host scaffold will be
+  /// available in the dialog context, allowing keyboard-aware content.
+  /// Defaults to true (standard dialog behavior).
+  bool opaque = true,
 }) {
   final theme = ShadTheme.of(context);
   final effectiveDialogTheme = switch (variant) {
@@ -169,6 +179,7 @@ Future<T?> showShadDialog<T>({
       barrierLabel: barrierLabel,
       anchorPoint: anchorPoint,
       settings: routeSettings,
+      opaque: opaque,
       transitionDuration: maxCompletionDuration(effectiveAnimateIn),
       reverseTransitionDuration: maxCompletionDuration(effectiveAnimateOut),
       transitionBuilder: (context, animation, secondaryAnimation, child) {

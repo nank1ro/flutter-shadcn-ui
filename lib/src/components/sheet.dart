@@ -93,10 +93,38 @@ Future<T?> showShadSheet<T>({
 
   return showShadDialog(
     context: context,
+    opaque: false,
     builder: (context) {
-      return ShadSheetInheritedWidget(
-        side: effectiveSide,
-        child: builder(context),
+      final viewInsets = MediaQuery.of(context).viewInsets;
+      final hasInset = effectiveSide == ShadSheetSide.bottom
+          ? viewInsets.bottom > 0
+          : effectiveSide == ShadSheetSide.top
+              ? viewInsets.top > 0
+              : effectiveSide == ShadSheetSide.left
+                  ? viewInsets.left > 0
+                  : viewInsets.right > 0;
+      return AnimatedPadding(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.linearToEaseOut,
+        padding: EdgeInsets.only(
+          bottom: effectiveSide == ShadSheetSide.bottom
+              ? viewInsets.bottom
+              : 0,
+          top: effectiveSide == ShadSheetSide.top ? viewInsets.top : 0,
+          left: effectiveSide == ShadSheetSide.left ? viewInsets.left : 0,
+          right: effectiveSide == ShadSheetSide.right ? viewInsets.right : 0,
+        ),
+        child: MediaQuery.removeViewInsets(
+          context: context,
+          removeBottom: hasInset,
+          removeTop: hasInset,
+          removeLeft: hasInset,
+          removeRight: hasInset,
+          child: ShadSheetInheritedWidget(
+            side: effectiveSide,
+            child: builder(context),
+          ),
+        ),
       );
     },
     barrierColor: barrierColor,
