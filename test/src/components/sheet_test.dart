@@ -1095,15 +1095,17 @@ void main() {
       },
     );
 
-    // Tests 35-37: expandable sheets should let the dialog's background
-    // cover the full render box (including safe-area edges the sheet
-    // touches) while only the CONTENT is inset. Fix for issue #655
-    // comment 4296947019. We inspect the actual `padding` prop the
-    // sheet passes to ShadDialog, which carries the per-edge safe-area
-    // merge — directly asserts the contract without being muddied by
-    // ShadDialog's own internal layout alignments.
+    // Expandable sheets split safe-area handling across two layers:
+    // anchor-and-side insets are merged into the dialog's content
+    // padding (so content doesn't sit under the home indicator / side
+    // notches), and the free-edge inset is applied as outer padding
+    // around the whole composite at full size — so the resize handle
+    // stays reachable below the notch / Dynamic Island. The DecoratedBox
+    // wraps both layers so the sheet still paints behind the notch.
+    // Originally fix for issue #655 comment 4296947019; revisited for
+    // comment 4366282508 where users couldn't grab the handle at full.
     testWidgets(
-      'expandable sheet passes safe-area merged padding at full size',
+      'expandable sheet keeps dialog padding stable across sizes',
       (tester) async {
         tester.view.physicalSize = const Size(800, 1200);
         tester.view.devicePixelRatio = 1.0;
@@ -1136,12 +1138,46 @@ void main() {
         await tester.pump();
         final fullPad = dialogPadding();
 
-        // At full size the top inset grows by 40 (the notch). Bottom,
-        // left, right stay identical between sizes.
-        expect(fullPad.top - halfPad.top, closeTo(40, 0.01));
-        expect(fullPad.bottom, closeTo(halfPad.bottom, 0.01));
-        expect(fullPad.left, closeTo(halfPad.left, 0.01));
-        expect(fullPad.right, closeTo(halfPad.right, 0.01));
+        // Free-edge top inset is now applied at the composite outer
+        // (not merged into dialog padding), so the dialog padding does
+        // not change between sizes for a bottom sheet.
+        expect(fullPad, equals(halfPad));
+      },
+    );
+
+    testWidgets(
+      'expandable bottom sheet pushes resize handle below safe-area at full',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 1200);
+        tester.view.devicePixelRatio = 1.0;
+        tester.view.viewPadding = const FakeViewPadding(top: 40);
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        addTearDown(tester.view.resetViewPadding);
+
+        final controller = ShadSheetController();
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          sheetWidget(
+            expandable: true,
+            initialSize: 0.5,
+            maxSize: 1,
+            controller: controller,
+            useSafeArea: true,
+          ),
+        );
+        await tester.pump();
+        controller.jumpTo(1);
+        await tester.pump();
+
+        // Composite spans the whole screen at full size; the resize
+        // handle must sit at y == viewPadding.top so the user can reach
+        // it past the notch / Dynamic Island.
+        final handleTop = tester
+            .getTopLeft(find.byType(ShadSheetResizeHandle))
+            .dy;
+        expect(handleTop, closeTo(40, 0.01));
       },
     );
 
@@ -1392,7 +1428,11 @@ void main() {
       );
     });
 
-    // Test 39: expandable decoration fills composite (bottom)
+    // Test 39: expandable decoration fills the entire composite (pill +
+    // dialog) so the sheet background paints behind the resize handle
+    // too — matching iOS/Material bottom-sheet visuals where the pill
+    // sits on the sheet's surface, not floating against the modal
+    // barrier.
     testWidgets('expandable decoration fills composite on bottom', (
       tester,
     ) async {
@@ -1414,12 +1454,15 @@ void main() {
       final handleRect = tester.getRect(find.byType(ShadSheetResizeHandle));
       final fillRect = tester.getRect(fillFinder);
 
-      // Fill top must be adjacent to the pill handle bottom (no gap).
-      expect(fillRect.top, closeTo(handleRect.bottom, 1.0));
+      // Fill must contain the pill: pill is now inside the decoration.
+      expect(fillRect.top, lessThanOrEqualTo(handleRect.top + 0.01));
+      expect(fillRect.bottom, greaterThanOrEqualTo(handleRect.bottom - 0.01));
       // Fill bottom must reach the viewport bottom.
       expect(fillRect.bottom, closeTo(1200, 1.0));
       // Fill width must span the full viewport.
       expect(fillRect.width, closeTo(800, 1.0));
+      // Fill height equals size * screenDim at half size.
+      expect(fillRect.height, closeTo(600, 1.0));
     });
 
     // Test 40: expandable decoration fills composite on all sides
@@ -1452,18 +1495,28 @@ void main() {
           final vw = physicalSize.width;
           final vh = physicalSize.height;
 
+          // Fill always contains the pill — the decoration wraps the whole
+          // composite (pill + dialog).
+          expect(fillRect.top, lessThanOrEqualTo(handleRect.top + 0.01));
+          expect(
+            fillRect.bottom,
+            greaterThanOrEqualTo(handleRect.bottom - 0.01),
+          );
+          expect(fillRect.left, lessThanOrEqualTo(handleRect.left + 0.01));
+          expect(
+            fillRect.right,
+            greaterThanOrEqualTo(handleRect.right - 0.01),
+          );
+
+          // At the anchor edge the fill must reach the viewport edge.
           switch (side) {
             case ShadSheetSide.bottom:
-              expect(fillRect.top, closeTo(handleRect.bottom, 1.0));
               expect(fillRect.bottom, closeTo(vh, 1.0));
             case ShadSheetSide.top:
-              expect(fillRect.bottom, closeTo(handleRect.top, 1.0));
               expect(fillRect.top, closeTo(0, 1.0));
             case ShadSheetSide.left:
-              expect(fillRect.right, closeTo(handleRect.left, 1.0));
               expect(fillRect.left, closeTo(0, 1.0));
             case ShadSheetSide.right:
-              expect(fillRect.left, closeTo(handleRect.right, 1.0));
               expect(fillRect.right, closeTo(vw, 1.0));
           }
         },
@@ -1499,8 +1552,8 @@ void main() {
       final handleRect = tester.getRect(find.byType(ShadSheetResizeHandle));
       final fillRect = tester.getRect(fillFinder);
 
-      // Pill and fill must still be adjacent after drag.
-      expect(fillRect.top, closeTo(handleRect.bottom, 1.0));
+      // After drag, the pill must still be inside the fill area.
+      expect(fillRect.top, closeTo(handleRect.top, 1.0));
     });
 
     // Test 42: non-expandable path has no fill key
@@ -1514,8 +1567,8 @@ void main() {
       );
     });
 
-    // Test 43: expandable + draggable fill box adjacent to pill
-    testWidgets('expandable + draggable: fill box adjacent to pill', (
+    // Test 43: expandable + draggable fill box contains the pill
+    testWidgets('expandable + draggable: fill box contains the pill', (
       tester,
     ) async {
       tester.view.physicalSize = const Size(800, 1200);
@@ -1536,8 +1589,9 @@ void main() {
       final handleRect = tester.getRect(find.byType(ShadSheetResizeHandle));
       final fillRect = tester.getRect(fillFinder);
 
-      // Fill top must be adjacent to the pill handle bottom (no gap).
-      expect(fillRect.top, closeTo(handleRect.bottom, 1.0));
+      // Fill must contain the pill — decoration wraps the whole composite.
+      expect(fillRect.top, lessThanOrEqualTo(handleRect.top + 0.01));
+      expect(fillRect.bottom, greaterThanOrEqualTo(handleRect.bottom - 0.01));
       // Fill bottom must reach the viewport bottom.
       expect(fillRect.bottom, closeTo(1200, 1.0));
 
@@ -1606,10 +1660,13 @@ void main() {
       },
     );
 
-    // Tests for close icon safe-area bump (issue #655 comment 4301645380).
+    // Tests for close icon safe-area handling (issue #655 comments
+    // 4301645380 and 4366282508). With composite-outer safe-area, the
+    // dialog already sits below the free-edge notch at full size, so
+    // the close icon's `top` Positioned offset stays at its raw value
+    // — only side-edge insets (left/right) still bump additively.
     testWidgets(
-      'expandable sheet bumps default close icon top by safe-area inset '
-      'at full size',
+      'expandable sheet keeps default close icon top at raw value at full',
       (tester) async {
         tester.view.physicalSize = const Size(800, 1200);
         tester.view.devicePixelRatio = 1.0;
@@ -1633,19 +1690,24 @@ void main() {
         );
         await tester.pump();
 
-        // At partial size (bottom sheet doesn't touch top) icon stays at raw 8.
+        // At partial size: raw 8 (bottom sheet doesn't touch top edge).
         expect(findClosePositioned(tester).top, 8);
 
         controller.jumpTo(1);
         await tester.pump();
 
-        // At full size the top inset is 40, so icon must be at 8 + 40 = 48.
-        expect(findClosePositioned(tester).top, 48);
+        // At full size: still 8. The composite is pushed down by
+        // viewPadding.top, so the icon lands below the notch in screen
+        // space without needing a Positioned bump.
+        expect(findClosePositioned(tester).top, 8);
+        // Verify it's actually rendered below the notch in absolute coords.
+        final iconTop = tester.getTopLeft(find.byIcon(LucideIcons.x)).dy;
+        expect(iconTop, greaterThanOrEqualTo(40));
       },
     );
 
     testWidgets(
-      'expandable sheet with user-supplied closeIconPosition bumps additively',
+      'expandable sheet still bumps close icon by side-edge inset at full',
       (tester) async {
         tester.view.physicalSize = const Size(800, 1200);
         tester.view.devicePixelRatio = 1.0;
@@ -1671,9 +1733,10 @@ void main() {
         controller.jumpTo(1);
         await tester.pump();
 
-        // top: 16 + 40 = 56, right: 16 + 10 = 26.
+        // top: free edge — no bump (handled by composite outer instead).
+        // right: side edge — still bumped additively (16 + 10 = 26).
         final positioned = findClosePositioned(tester);
-        expect(positioned.top, 56);
+        expect(positioned.top, 16);
         expect(positioned.right, 26);
       },
     );

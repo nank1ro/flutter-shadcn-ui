@@ -1316,29 +1316,31 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         ? sizeController.size * (isVertical ? mSize.height : mSize.width)
         : 0.0;
 
-    // For expandable sheets we merge per-edge safe-area insets into the
-    // dialog's content padding instead of wrapping the sheet in an
-    // outer SafeArea. ShadDialog's DecoratedBox keeps covering the full
-    // composite render box — so the sheet visually reaches the notch
-    // and home indicator — and only the content is inset. Insets are
-    // only added for edges the sheet actually touches; the opposite-
-    // anchor edge is added only when `size >= effectiveMaxSize`.
+    // For expandable sheets we split safe-area handling into two layers:
+    //
+    // 1. `expandableSafeAreaInsets` — anchor-and-side insets that always
+    //    apply (home indicator, side gutters). Merged into ShadDialog's
+    //    content padding so content doesn't sit under hardware affordances.
+    //
+    // 2. `expandableCompositeOuterInsets` — free-edge inset that only
+    //    kicks in at full size, applied as outer padding around the whole
+    //    composite (handle + dialog). This pushes the resize handle and
+    //    body-edge strip below the notch / Dynamic Island so they stay
+    //    reachable at full screen, while the DecoratedBox still paints
+    //    behind the inset region — keeping the sheet visually full-bleed.
     EdgeInsets expandableSafeAreaInsets() {
       if (!effectiveExpandable || !effectiveUseSafeArea) {
         return EdgeInsets.zero;
       }
       final viewPadding = MediaQuery.viewPaddingOf(context);
-      final atFull = sizeController.size >= effectiveMaxSize;
       return switch (side) {
         ShadSheetSide.bottom => EdgeInsets.only(
-          top: atFull ? viewPadding.top : 0,
           bottom: viewPadding.bottom,
           left: viewPadding.left,
           right: viewPadding.right,
         ),
         ShadSheetSide.top => EdgeInsets.only(
           top: viewPadding.top,
-          bottom: atFull ? viewPadding.bottom : 0,
           left: viewPadding.left,
           right: viewPadding.right,
         ),
@@ -1346,14 +1348,31 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
           top: viewPadding.top,
           bottom: viewPadding.bottom,
           left: viewPadding.left,
-          right: atFull ? viewPadding.right : 0,
         ),
         ShadSheetSide.right => EdgeInsets.only(
           top: viewPadding.top,
           bottom: viewPadding.bottom,
-          left: atFull ? viewPadding.left : 0,
           right: viewPadding.right,
         ),
+      };
+    }
+
+    // Outer inset for the free edge at full size: pushes the resize
+    // handle off the notch / Dynamic Island so the user can grab it to
+    // shrink the sheet back down. Returns zero when the sheet isn't at
+    // full size or safe-area handling is disabled.
+    EdgeInsets expandableCompositeOuterInsets() {
+      if (!effectiveExpandable || !effectiveUseSafeArea) {
+        return EdgeInsets.zero;
+      }
+      final atFull = sizeController.size >= effectiveMaxSize;
+      if (!atFull) return EdgeInsets.zero;
+      final viewPadding = MediaQuery.viewPaddingOf(context);
+      return switch (side) {
+        ShadSheetSide.bottom => EdgeInsets.only(top: viewPadding.top),
+        ShadSheetSide.top => EdgeInsets.only(bottom: viewPadding.bottom),
+        ShadSheetSide.left => EdgeInsets.only(right: viewPadding.right),
+        ShadSheetSide.right => EdgeInsets.only(left: viewPadding.left),
       };
     }
 
@@ -1548,12 +1567,13 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
             )
           : null;
 
-      // Paint the sheet decoration at full-bleed outside ShadDialog.
-      // ShadDialog's Align+shrink-wrap only covers the content cluster;
-      // DecoratedBox here fills the Expanded region via SizedBox.expand.
-      // childKey stays on ShadDialog so childHeight measures the content,
-      // not the full composite (required by draggable dismiss velocity math).
-      var decoratedDialog = bodyDragStrip == null
+      // The dialog + body-edge strip overlay. Decoration is applied
+      // higher up — around the entire composite — so it paints through
+      // the safe-area outer inset region and keeps the sheet looking
+      // full-bleed at full size. childKey stays on ShadDialog so
+      // childHeight measures the content, not the full composite
+      // (required by draggable dismiss velocity math).
+      final decoratedDialog = bodyDragStrip == null
           ? shadDialog
           : Stack(
               children: [
@@ -1561,16 +1581,6 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
                 _positionedBodyStrip(side: side, child: bodyDragStrip),
               ],
             );
-      decoratedDialog = DecoratedBox(
-        key: const ValueKey('shad_sheet_expandable_fill'),
-        decoration: BoxDecoration(
-          color: effectiveBackgroundColor,
-          borderRadius: effectiveRadius,
-          border: effectiveBorder,
-          boxShadow: effectiveShadows,
-        ),
-        child: decoratedDialog,
-      );
       final dialogWithOverlay = SizedBox.expand(child: decoratedDialog);
 
       // Wrap the composite in a fixed-size box on the drag axis so
@@ -1604,10 +1614,29 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
           ],
         ),
       };
+
+      // Apply free-edge safe-area padding outside the composite so the
+      // resize handle and body-edge strip stay reachable below the notch
+      // at full size; the DecoratedBox wraps the padding so the sheet's
+      // background still paints behind the notch area.
+      final compositeOuterInsets = expandableCompositeOuterInsets();
+      final paddedComposite = compositeOuterInsets == EdgeInsets.zero
+          ? composite
+          : Padding(padding: compositeOuterInsets, child: composite);
+      final decoratedComposite = DecoratedBox(
+        key: const ValueKey('shad_sheet_expandable_fill'),
+        decoration: BoxDecoration(
+          color: effectiveBackgroundColor,
+          borderRadius: effectiveRadius,
+          border: effectiveBorder,
+          boxShadow: effectiveShadows,
+        ),
+        child: paddedComposite,
+      );
       child = SizedBox(
         height: isVertical ? expandableCompositePx : null,
         width: isVertical ? null : expandableCompositePx,
-        child: composite,
+        child: decoratedComposite,
       );
 
       // Safe-area handling for expandable sheets is performed via
