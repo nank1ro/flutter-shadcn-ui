@@ -1,3 +1,7 @@
+## 0.54.1
+
+- **CHORE**: Migrate component golden tests to `golden_matrix`. Each component's variant tests are collapsed into a single `screenMatrixGolden` call with `light` and `dark` theme scenarios; goldens move to `goldens/<test>/<scenario>/<theme>_<locale>_<dir>_<scale>_<device>.png`. Icon fonts are loaded via `loadAppFonts(textFonts: false)`; text stays Ahem.
+
 ## 0.54.0
 
 - **FEAT**: `ShadTextTheme.fromGoogleFont` now accepts a `custom` parameter to include custom text styles in the Google Font text theme.

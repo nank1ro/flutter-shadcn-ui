@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:golden_matrix/golden_matrix.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/app.dart';
-import 'package:shadcn_ui/src/components/avatar.dart'; // Adjust import path based on your project structure
+import 'package:shadcn_ui/src/components/avatar.dart';
 import 'package:universal_image/universal_image.dart';
+import '_golden_helpers.dart';
 
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
@@ -149,17 +151,23 @@ void main() {
       expect(decoration?.shape, isA<CircleBorder>());
     });
 
-    testWidgets('ShadAvatar matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadAvatar(LucideIcons.mail),
-        ),
-      );
-
-      expect(
-        find.byType(ShadAvatar),
-        matchesGoldenFile('goldens/avatar.png'),
-      );
-    });
   });
+
+  screenMatrixGolden(
+    'avatar',
+    reportFormats: const {},
+    axes: goldenAxes,
+    appBuilder: (combination) => shadAppForCombination(
+      combination,
+      home: Scaffold(
+        body: Center(child: combination.scenario.builder()),
+      ),
+    ),
+    states: [
+      MatrixScenario(
+        'default',
+        builder: () => const ShadAvatar(LucideIcons.mail),
+      ),
+    ],
+  );
 }

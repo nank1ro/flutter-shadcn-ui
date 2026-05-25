@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:golden_matrix/golden_matrix.dart';
 import 'package:shadcn_ui/src/app.dart';
-import 'package:shadcn_ui/src/components/button.dart'; // Adjust import path based on your project structure
+import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import '_golden_helpers.dart';
 
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
@@ -357,107 +359,67 @@ void main() {
       // Verify onPressed was called
       expect(pressed, true);
     });
-
-    testWidgets('ShadButton matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadButton(
-            leading: Icon(Icons.star),
-            trailing: Icon(Icons.arrow_forward),
-            child: Text('Button'),
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadButton),
-        matchesGoldenFile('goldens/button.png'),
-      );
-    });
-
-    testWidgets('ShadButton.destructive matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadButton.destructive(
-            leading: Icon(Icons.star),
-            trailing: Icon(Icons.arrow_forward),
-            child: Text('Button'),
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadButton),
-        matchesGoldenFile('goldens/button_destructive.png'),
-      );
-    });
-
-    testWidgets('ShadButton.outline matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadButton.outline(
-            leading: Icon(Icons.star),
-            trailing: Icon(Icons.arrow_forward),
-            child: Text('Button'),
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadButton),
-        matchesGoldenFile('goldens/button_outline.png'),
-      );
-    });
-
-    testWidgets('ShadButton.secondary matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadButton.secondary(
-            leading: Icon(Icons.star),
-            trailing: Icon(Icons.arrow_forward),
-            child: Text('Button'),
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadButton),
-        matchesGoldenFile('goldens/button_secondary.png'),
-      );
-    });
-
-    testWidgets('ShadButton.ghost matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadButton.ghost(
-            leading: Icon(Icons.star),
-            trailing: Icon(Icons.arrow_forward),
-            child: Text('Button'),
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadButton),
-        matchesGoldenFile('goldens/button_ghost.png'),
-      );
-    });
-
-    testWidgets('ShadButton.link matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadButton.link(
-            leading: Icon(Icons.star),
-            trailing: Icon(Icons.arrow_forward),
-            child: Text('Button'),
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadButton),
-        matchesGoldenFile('goldens/button_link.png'),
-      );
-    });
   });
+
+  screenMatrixGolden(
+    'button',
+    reportFormats: const {},
+    axes: goldenAxes,
+    appBuilder: (combination) => shadAppForCombination(
+      combination,
+      home: Scaffold(
+        body: Center(child: combination.scenario.builder()),
+      ),
+    ),
+    states: [
+      MatrixScenario(
+        'primary',
+        builder: () => const ShadButton(
+          leading: Icon(Icons.star),
+          trailing: Icon(Icons.arrow_forward),
+          child: Text('Button'),
+        ),
+      ),
+      MatrixScenario(
+        'destructive',
+        builder: () => const ShadButton.destructive(
+          leading: Icon(Icons.star),
+          trailing: Icon(Icons.arrow_forward),
+          child: Text('Button'),
+        ),
+      ),
+      MatrixScenario(
+        'outline',
+        builder: () => const ShadButton.outline(
+          leading: Icon(Icons.star),
+          trailing: Icon(Icons.arrow_forward),
+          child: Text('Button'),
+        ),
+      ),
+      MatrixScenario(
+        'secondary',
+        builder: () => const ShadButton.secondary(
+          leading: Icon(Icons.star),
+          trailing: Icon(Icons.arrow_forward),
+          child: Text('Button'),
+        ),
+      ),
+      MatrixScenario(
+        'ghost',
+        builder: () => const ShadButton.ghost(
+          leading: Icon(Icons.star),
+          trailing: Icon(Icons.arrow_forward),
+          child: Text('Button'),
+        ),
+      ),
+      MatrixScenario(
+        'link',
+        builder: () => const ShadButton.link(
+          leading: Icon(Icons.star),
+          trailing: Icon(Icons.arrow_forward),
+          child: Text('Button'),
+        ),
+      ),
+    ],
+  );
 }

@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:shadcn_ui/src/app.dart';
+import 'package:golden_matrix/golden_matrix.dart';
 import 'package:shadcn_ui/src/components/tooltip.dart';
 
+import '_golden_helpers.dart';
+
 void main() {
-  // Helper method to create a test widget wrapped in ShadApp and Scaffold
-  Widget createTestWidget(Widget child) {
-    return ShadApp(home: Scaffold(body: child));
-  }
-
-  group('ShadTooltip', () {
-    testWidgets('ShadDatePicker matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          ShadTooltip(
-            builder: (context) {
-              return const Text('Tooltip');
-            },
-            child: const Text('trigger'),
-          ),
+  screenMatrixGolden(
+    'tooltip',
+    reportFormats: const {},
+    axes: goldenAxes,
+    appBuilder: (combination) => shadAppForCombination(
+      combination,
+      home: Scaffold(
+        body: Center(child: combination.scenario.builder()),
+      ),
+    ),
+    states: [
+      MatrixScenario(
+        'default',
+        builder: () => ShadTooltip(
+          builder: (context) => const Text('Tooltip'),
+          child: const Text('trigger'),
         ),
-      );
-
-      expect(
-        find.byType(ShadTooltip),
-        matchesGoldenFile('goldens/tooltip.png'),
-      );
-      await tester.pumpAndSettle();
-    });
-  });
+      ),
+    ],
+  );
 }

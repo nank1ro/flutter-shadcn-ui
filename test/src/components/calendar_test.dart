@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:golden_matrix/golden_matrix.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/button.dart';
-import 'package:shadcn_ui/src/components/calendar.dart'; // Adjust import path based on your project structure
+import 'package:shadcn_ui/src/components/calendar.dart';
 import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/utils/extensions/date_time.dart';
+import '_golden_helpers.dart';
 
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
@@ -445,145 +447,88 @@ void main() {
       );
     });
 
-    testWidgets('ShadCalendar matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          ShadCalendar(
-            initialMonth: DateTime(2024),
-            fromMonth: DateTime(2023),
-            toMonth: DateTime(2024, 12),
-            hideNavigation: true,
-            captionLayout: ShadCalendarCaptionLayout.label,
-            showWeekNumbers: false,
-            showOutsideDays: false,
-            fixedWeeks: false,
-            hideWeekdayNames: false,
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadCalendar),
-        matchesGoldenFile('goldens/calendar.png'),
-      );
-    });
-
-    testWidgets('ShadCalendar hideNavigation false matches goldens', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          ShadCalendar(
-            initialMonth: DateTime(2024),
-            fromMonth: DateTime(2023),
-            toMonth: DateTime(2024, 12),
-            hideNavigation: false,
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadCalendar),
-        matchesGoldenFile('goldens/calendar_no_hide_navigation.png'),
-      );
-    });
-
-    testWidgets('ShadCalendar showWeekNumbers matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          ShadCalendar(
-            initialMonth: DateTime(2024),
-            fromMonth: DateTime(2023),
-            toMonth: DateTime(2024, 12),
-            showWeekNumbers: true,
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadCalendar),
-        matchesGoldenFile('goldens/calendar_show_week_numbers.png'),
-      );
-    });
-
-    testWidgets('ShadCalendar fixedWeeks matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          ShadCalendar(
-            initialMonth: DateTime(2024),
-            fromMonth: DateTime(2023),
-            toMonth: DateTime(2024, 12),
-            captionLayout: ShadCalendarCaptionLayout.label,
-            fixedWeeks: true,
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadCalendar),
-        matchesGoldenFile('goldens/calendar_fixed_weeks.png'),
-      );
-    });
-
-    testWidgets('ShadCalendar hideWeekdayNames matches goldens', (
-      tester,
-    ) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          ShadCalendar(
-            initialMonth: DateTime(2024),
-            fromMonth: DateTime(2023),
-            toMonth: DateTime(2024, 12),
-            captionLayout: ShadCalendarCaptionLayout.label,
-            hideWeekdayNames: true,
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadCalendar),
-        matchesGoldenFile('goldens/calendar_hide_weekday_names.png'),
-      );
-    });
-
-    testWidgets('ShadCalendar.multiple matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          ShadCalendar.multiple(
-            initialMonth: DateTime(2024),
-            numberOfMonths: 2,
-            fromMonth: DateTime(2024),
-            toMonth: DateTime(2024, 12),
-            min: 5,
-            max: 10,
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadCalendar),
-        matchesGoldenFile('goldens/calendar_multiple.png'),
-      );
-    });
-
-    testWidgets('ShadCalendar.range matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          ShadCalendar.range(
-            initialMonth: DateTime(2024),
-            numberOfMonths: 2,
-            fromMonth: DateTime(2024),
-            toMonth: DateTime(2024, 12),
-            min: 5,
-            max: 10,
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadCalendar),
-        matchesGoldenFile('goldens/calendar_range.png'),
-      );
-    });
   });
+
+  screenMatrixGolden(
+    'calendar',
+    reportFormats: const {},
+    axes: goldenAxes,
+    appBuilder: (combination) => shadAppForCombination(
+      combination,
+      home: Scaffold(
+        body: Center(child: combination.scenario.builder()),
+      ),
+    ),
+    states: [
+      MatrixScenario(
+        'default',
+        builder: () => ShadCalendar(
+          initialMonth: DateTime(2024),
+          fromMonth: DateTime(2023),
+          toMonth: DateTime(2024, 12),
+          hideNavigation: true,
+          captionLayout: ShadCalendarCaptionLayout.label,
+        ),
+      ),
+      MatrixScenario(
+        'no_hide_navigation',
+        builder: () => ShadCalendar(
+          initialMonth: DateTime(2024),
+          fromMonth: DateTime(2023),
+          toMonth: DateTime(2024, 12),
+        ),
+      ),
+      MatrixScenario(
+        'show_week_numbers',
+        builder: () => ShadCalendar(
+          initialMonth: DateTime(2024),
+          fromMonth: DateTime(2023),
+          toMonth: DateTime(2024, 12),
+          showWeekNumbers: true,
+        ),
+      ),
+      MatrixScenario(
+        'fixed_weeks',
+        builder: () => ShadCalendar(
+          initialMonth: DateTime(2024),
+          fromMonth: DateTime(2023),
+          toMonth: DateTime(2024, 12),
+          captionLayout: ShadCalendarCaptionLayout.label,
+          fixedWeeks: true,
+        ),
+      ),
+      MatrixScenario(
+        'hide_weekday_names',
+        builder: () => ShadCalendar(
+          initialMonth: DateTime(2024),
+          fromMonth: DateTime(2023),
+          toMonth: DateTime(2024, 12),
+          captionLayout: ShadCalendarCaptionLayout.label,
+          hideWeekdayNames: true,
+        ),
+      ),
+      MatrixScenario(
+        'multiple',
+        builder: () => ShadCalendar.multiple(
+          initialMonth: DateTime(2024),
+          numberOfMonths: 2,
+          fromMonth: DateTime(2024),
+          toMonth: DateTime(2024, 12),
+          min: 5,
+          max: 10,
+        ),
+      ),
+      MatrixScenario(
+        'range',
+        builder: () => ShadCalendar.range(
+          initialMonth: DateTime(2024),
+          numberOfMonths: 2,
+          fromMonth: DateTime(2024),
+          toMonth: DateTime(2024, 12),
+          min: 5,
+          max: 10,
+        ),
+      ),
+    ],
+  );
 }

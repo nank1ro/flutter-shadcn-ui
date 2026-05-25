@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:golden_matrix/golden_matrix.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/resizable.dart';
+import '_golden_helpers.dart';
 
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
@@ -264,40 +266,6 @@ void main() {
   });
 
   group('ShadResizable', () {
-    testWidgets('ShadResizable matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          ShadResizablePanelGroup(
-            children: [
-              ShadResizablePanel(
-                id: 1,
-                defaultSize: 0.5,
-                child: Container(
-                  color: Colors.red,
-                  alignment: Alignment.center,
-                  child: const Text('One'),
-                ),
-              ),
-              ShadResizablePanel(
-                id: 2,
-                defaultSize: 0.5,
-                child: Container(
-                  color: Colors.blue,
-                  alignment: Alignment.center,
-                  child: const Text('Two'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadResizablePanelGroup),
-        matchesGoldenFile('goldens/resizable.png'),
-      );
-    });
-
     testWidgets('drag start → update → verify layout changes', (tester) async {
       final controller = ShadResizableController();
 
@@ -342,4 +310,43 @@ void main() {
           greaterThan(controller.getPanelInfo(1).size));
     });
   });
+
+  screenMatrixGolden(
+    'resizable',
+    reportFormats: const {},
+    axes: goldenAxes,
+    appBuilder: (combination) => shadAppForCombination(
+      combination,
+      home: Scaffold(
+        body: combination.scenario.builder(),
+      ),
+    ),
+    states: [
+      MatrixScenario(
+        'default',
+        builder: () => ShadResizablePanelGroup(
+          children: [
+            ShadResizablePanel(
+              id: 1,
+              defaultSize: 0.5,
+              child: Container(
+                color: Colors.red,
+                alignment: Alignment.center,
+                child: const Text('One'),
+              ),
+            ),
+            ShadResizablePanel(
+              id: 2,
+              defaultSize: 0.5,
+              child: Container(
+                color: Colors.blue,
+                alignment: Alignment.center,
+                child: const Text('Two'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
 }

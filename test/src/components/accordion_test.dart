@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:golden_matrix/golden_matrix.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/accordion.dart';
+import '_golden_helpers.dart';
 
 void main() {
   /// Wraps a widget with necessary providers and material app structure for
@@ -234,25 +236,34 @@ void main() {
       );
     });
 
-    testWidgets('ShadAccordion matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          ShadAccordion<String>(
-            children: List.generate(2, (index) {
-              return ShadAccordionItem(
-                value: 'item$index',
-                title: Text('Item $index'),
-                child: Text('Content $index'),
-              );
-            }),
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadAccordion<String>),
-        matchesGoldenFile('goldens/accordion.png'),
-      );
-    });
   });
+
+  screenMatrixGolden(
+    'accordion',
+    reportFormats: const {},
+    axes: goldenAxes,
+    appBuilder: (combination) => shadAppForCombination(
+      combination,
+      home: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Center(child: combination.scenario.builder()),
+        ),
+      ),
+    ),
+    states: [
+      MatrixScenario(
+        'default',
+        builder: () => ShadAccordion<String>(
+          children: List.generate(2, (index) {
+            return ShadAccordionItem(
+              value: 'item$index',
+              title: Text('Item $index'),
+              child: Text('Content $index'),
+            );
+          }),
+        ),
+      ),
+    ],
+  );
 }

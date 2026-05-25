@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:shadcn_ui/src/app.dart';
+import 'package:golden_matrix/golden_matrix.dart';
 import 'package:shadcn_ui/src/components/input.dart';
 
+import '_golden_helpers.dart';
+
 void main() {
-  // Helper method to create a test widget wrapped in ShadApp and Scaffold
-  Widget createTestWidget(Widget child) {
-    return ShadApp(home: Scaffold(body: child));
-  }
-
-  group('ShadInput', () {
-    testWidgets('ShadInput matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadInput(placeholder: Text('Email')),
+  screenMatrixGolden(
+    'input',
+    reportFormats: const {},
+    axes: goldenAxes,
+    appBuilder: (combination) => shadAppForCombination(
+      combination,
+      home: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Center(child: combination.scenario.builder()),
         ),
-      );
-
-      expect(
-        find.byType(ShadInput),
-        matchesGoldenFile('goldens/input.png'),
-      );
-    });
-  });
+      ),
+    ),
+    states: [
+      MatrixScenario(
+        'default',
+        builder: () => const ShadInput(placeholder: Text('Email')),
+      ),
+    ],
+  );
 }

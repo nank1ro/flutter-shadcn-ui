@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:golden_matrix/golden_matrix.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import '_golden_helpers.dart';
 
 void main() {
   group('ShadSeparator', () {
@@ -98,24 +99,6 @@ void main() {
         );
       });
 
-      testWidgets('matches goldens', (tester) async {
-        const widget = ShadApp(
-          home: Column(
-            children: [
-              SizedBox(width: 40),
-              ShadSeparator.horizontal(),
-            ],
-          ),
-        );
-
-        await tester.pumpWidget(widget);
-        await tester.pumpAndSettle();
-
-        expect(
-          find.byType(ShadSeparator),
-          matchesGoldenFile('goldens/horizontal_separator.png'),
-        );
-      });
     });
 
     group('.vertical', () {
@@ -215,24 +198,38 @@ void main() {
         );
       });
 
-      testWidgets('matches goldens', (tester) async {
-        const widget = ShadApp(
-          home: Row(
-            children: [
-              SizedBox(height: 40),
-              ShadSeparator.vertical(),
-            ],
-          ),
-        );
-
-        await tester.pumpWidget(widget);
-        await tester.pumpAndSettle();
-
-        expect(
-          find.byType(ShadSeparator),
-          matchesGoldenFile('goldens/vertical_separator.png'),
-        );
-      });
     });
   });
+
+  screenMatrixGolden(
+    'separator',
+    reportFormats: const {},
+    axes: goldenAxes,
+    appBuilder: (combination) => shadAppForCombination(
+      combination,
+      home: Scaffold(
+        body: combination.scenario.builder(),
+      ),
+    ),
+    states: [
+      MatrixScenario(
+        'horizontal',
+        builder: () => const Column(
+          children: [
+            SizedBox(width: 40),
+            ShadSeparator.horizontal(),
+          ],
+        ),
+      ),
+      MatrixScenario(
+        'vertical',
+        builder: () => const Row(
+          children: [
+            SizedBox(height: 40),
+            ShadSeparator.vertical(),
+          ],
+        ),
+      ),
+    ],
+  );
 }
