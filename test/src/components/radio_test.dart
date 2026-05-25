@@ -422,11 +422,11 @@ void main() {
     states: [
       MatrixScenario(
         'default',
-        builder: () => ShadRadioGroup<bool>(
+        builder: () => ShadRadioGroup<int>(
           items: List.generate(
             3,
-            (index) => ShadRadio<bool>(
-              value: index.isEven,
+            (index) => ShadRadio<int>(
+              value: index,
               label: Text('Label $index'),
               sublabel: Text('Sublabel $index'),
             ),

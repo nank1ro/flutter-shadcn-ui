@@ -73,7 +73,7 @@ void main() {
             ShadTableCell.header(child: Text('Status')),
             ShadTableCell.header(child: Text('Method')),
             ShadTableCell.header(
-              alignment: Alignment.centerRight,
+              alignment: AlignmentDirectional.centerEnd,
               child: Text('Amount'),
             ),
           ],
@@ -82,7 +82,7 @@ void main() {
             ShadTableCell.footer(child: Text('')),
             ShadTableCell.footer(child: Text('')),
             ShadTableCell.footer(
-              alignment: Alignment.centerRight,
+              alignment: AlignmentDirectional.centerEnd,
               child: Text(r'$2500.00'),
             ),
           ],
@@ -107,7 +107,7 @@ void main() {
               ShadTableCell(child: Text(invoice.paymentStatus)),
               ShadTableCell(child: Text(invoice.paymentMethod)),
               ShadTableCell(
-                alignment: Alignment.centerRight,
+                alignment: AlignmentDirectional.centerEnd,
                 child: Text(invoice.totalAmount),
               ),
             ],
