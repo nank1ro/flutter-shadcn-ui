@@ -1385,22 +1385,53 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       };
     }
 
-    // Outer inset for the free edge at full size: pushes the resize
-    // handle off the notch / Dynamic Island so the user can grab it to
-    // shrink the sheet back down. Returns zero when the sheet isn't at
-    // full size or safe-area handling is disabled.
+    // Outer inset for the free edge: keeps the resize handle reachable
+    // below the notch / Dynamic Island.  Uses a proportional inset so
+    // dragging down from full size doesn't trigger a hard layout jump
+    // (the old `atFull` gate would drop the padding on the first drag
+    // tick, breaking the gesture).
     EdgeInsets expandableCompositeOuterInsets() {
       if (!effectiveExpandable || !effectiveUseSafeArea) {
         return EdgeInsets.zero;
       }
-      final atFull = sizeController.size >= effectiveMaxSize;
-      if (!atFull) return EdgeInsets.zero;
       final viewPadding = MediaQuery.viewPaddingOf(context);
+      final isVertical =
+          side == ShadSheetSide.bottom || side == ShadSheetSide.top;
+      final screenDim = isVertical ? mSize.height : mSize.width;
+      // Distance from the free edge of the screen to the near edge of
+      // the sheet composite.  When this is smaller than the safe-area
+      // inset the handle would be covered by the system UI.
+      final freeEdgeOffset = (1.0 - sizeController.size) * screenDim;
+
       return switch (side) {
-        ShadSheetSide.bottom => EdgeInsets.only(top: viewPadding.top),
-        ShadSheetSide.top => EdgeInsets.only(bottom: viewPadding.bottom),
-        ShadSheetSide.left => EdgeInsets.only(right: viewPadding.right),
-        ShadSheetSide.right => EdgeInsets.only(left: viewPadding.left),
+        ShadSheetSide.bottom => EdgeInsets.only(
+          top:
+              (viewPadding.top - freeEdgeOffset).clamp(
+                0.0,
+                viewPadding.top,
+              ),
+        ),
+        ShadSheetSide.top => EdgeInsets.only(
+          bottom:
+              (viewPadding.bottom - freeEdgeOffset).clamp(
+                0.0,
+                viewPadding.bottom,
+              ),
+        ),
+        ShadSheetSide.left => EdgeInsets.only(
+          right:
+              (viewPadding.right - freeEdgeOffset).clamp(
+                0.0,
+                viewPadding.right,
+              ),
+        ),
+        ShadSheetSide.right => EdgeInsets.only(
+          left:
+              (viewPadding.left - freeEdgeOffset).clamp(
+                0.0,
+                viewPadding.left,
+              ),
+        ),
       };
     }
 
