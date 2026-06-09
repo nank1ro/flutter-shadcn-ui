@@ -1,0 +1,9 @@
+version: 2
+updates:
+  # Keep SHA-pinned GitHub Actions current (pins without updates accrue CVEs).
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
