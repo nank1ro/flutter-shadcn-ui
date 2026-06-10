@@ -2,8 +2,6 @@
 
 Extends the Dialog component to display content that complements the main content of the screen.
 
-
-
 ```dart
 ShadButton.outline(
   child: const Text('Open'),
@@ -70,13 +68,9 @@ class EditProfileSheet extends StatelessWidget {
 }
 ```
 
-
-
 ## Side
 
 Use the `side` property to `showShadSheet` to indicate the edge of the screen where the component will appear. The values can be `top`, `right`, `bottom` or `left`.
-
-
 
 ```dart
 Row(
@@ -141,7 +135,152 @@ Row(
 // See EditProfileSheet code in the previous code example
 ```
 
+## Dynamic Sticky Title with List
+
+Use a `ShadSheet` with `scrollable: false` and manage the scroll + title
+yourself. The title bar sits outside the scroll view so it stays pinned,
+and a `ScrollController` listener updates the title text based on which
+section is currently visible.
+
+```dart
+showShadSheet(
+  context: context,
+  builder: (context) => const _ListSheetContent(),
+);
+
+class _ListSheetContent extends StatefulWidget {
+  const _ListSheetContent();
+
+  @override
+  State<_ListSheetContent> createState() => _ListSheetContentState();
+}
+
+class _ListSheetContentState extends State<_ListSheetContent> {
+  late final ScrollController _scrollController;
+  String _currentSection = sections.first.title;
+  late final List<double> _sectionOffsets;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()
+      ..addListener(_onScroll);
+
+    _sectionOffsets = [];
+    double offset = 0;
+    for (final s in sections) {
+      _sectionOffsets.add(offset);
+      offset += 48; // section header height
+      offset += s.products.length * 72; // item height
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final offset = _scrollController.position.pixels;
+    for (var i = _sectionOffsets.length - 1; i >= 0; i--) {
+      if (offset >= _sectionOffsets[i] - 1) {
+        if (_currentSection != sections[i].title) {
+          setState(() => _currentSection = sections[i].title);
+        }
+        return;
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
+    final s = sections;
+
+    return ShadSheet(
+      scrollable: false,
+      expandable: true,
+      initialSize: 1.0,
+      minSize: 0.3,
+      maxSize: 1.0,
+      padding: EdgeInsets.zero,
+      child: Column(
+        children: [
+          // Pinned title — outside the scroll view
+          Container(
+            padding: const EdgeInsets.fromLTRB(24, 20, 24, 12),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.background,
+              border: Border(
+                bottom: BorderSide(
+                  color: theme.colorScheme.border,
+                ),
+              ),
+            ),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: Text(
+                _currentSection,
+                key: ValueKey(_currentSection),
+                style: theme.textTheme.large.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+          // Scrollable list with section headers + items
+          Expanded(
+            child: ListView.builder(
+              controller: _scrollController,
+              padding: EdgeInsets.zero,
+              itemCount: s.fold<int>(
+                0,
+                (sum, sec) => sum + 1 + sec.products.length,
+              ),
+              itemBuilder: (context, index) {
+                var remaining = index;
+                for (final section in s) {
+                  if (remaining == 0) {
+                    // Section header
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                      color: theme.colorScheme.muted
+                          .withValues(alpha: 0.3),
+                      child: Text(section.title),
+                    );
+                  }
+                  remaining--;
+                  if (remaining < section.products.length) {
+                    // Product item
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                      child: Text(
+                        section.products[remaining].name,
+                      ),
+                    );
+                  }
+                  remaining -= section.products.length;
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
 ## Example
+
 ```dart
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/extensions.dart';
