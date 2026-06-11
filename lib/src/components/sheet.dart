@@ -95,25 +95,18 @@ Future<T?> showShadSheet<T>({
     context: context,
     opaque: false,
     builder: (context) {
-      final viewInsets = MediaQuery.of(context).viewInsets;
-      final hasInset = effectiveSide == ShadSheetSide.bottom
-          ? viewInsets.bottom > 0
-          : effectiveSide == ShadSheetSide.top
-              ? viewInsets.top > 0
-              : effectiveSide == ShadSheetSide.left
-                  ? viewInsets.left > 0
-                  : viewInsets.right > 0;
+      final viewInsets = MediaQuery.viewInsetsOf(context);
+      final padding = switch (effectiveSide) {
+        ShadSheetSide.bottom => EdgeInsets.only(bottom: viewInsets.bottom),
+        ShadSheetSide.top => EdgeInsets.only(top: viewInsets.top),
+        ShadSheetSide.left => EdgeInsets.only(left: viewInsets.left),
+        ShadSheetSide.right => EdgeInsets.only(right: viewInsets.right),
+      };
+      final hasInset = padding != EdgeInsets.zero;
       return AnimatedPadding(
         duration: const Duration(milliseconds: 200),
         curve: Curves.linearToEaseOut,
-        padding: EdgeInsets.only(
-          bottom: effectiveSide == ShadSheetSide.bottom
-              ? viewInsets.bottom
-              : 0,
-          top: effectiveSide == ShadSheetSide.top ? viewInsets.top : 0,
-          left: effectiveSide == ShadSheetSide.left ? viewInsets.left : 0,
-          right: effectiveSide == ShadSheetSide.right ? viewInsets.right : 0,
-        ),
+        padding: padding,
         child: MediaQuery.removeViewInsets(
           context: context,
           removeBottom: hasInset,
@@ -180,8 +173,11 @@ enum ShadSheetSide {
   bottom,
 
   /// Sheet slides in from the left.
-  left
-  ;
+  left;
+
+  /// Whether the sheet slides along the vertical axis.
+  bool get isVertical =>
+      this == ShadSheetSide.top || this == ShadSheetSide.bottom;
 
   /// Converts the [ShadSheetSide] to an [Alignment].
   Alignment toAlignment() {
@@ -252,43 +248,26 @@ class ShadSheetController extends ChangeNotifier {
   /// The current size ratio of the sheet (0.0..1.0).
   double get size => _size;
 
-  // The AnimationController used for smooth transitions, injected by the state.
-  AnimationController? _animationController;
+  // Drives the animation; supplied by the sheet state while mounted.
+  Future<void> Function(double size, Duration duration, Curve curve)?
+  _animateDelegate;
 
   /// Animates the sheet to [size] using the provided [duration] and [curve].
   ///
-  /// If no animation controller is attached yet (e.g. called before the sheet
-  /// is mounted), falls back to [jumpTo] — the size is set immediately without
-  /// animation.
+  /// If no sheet is mounted yet (e.g. called before the sheet is built),
+  /// falls back to [jumpTo] — the size is set immediately without animation.
   Future<void> animateTo(
     double size, {
     Duration duration = const Duration(milliseconds: 250),
     Curve curve = Curves.easeInOut,
   }) async {
     final clamped = size.clamp(0.0, 1.0);
-    final ctrl = _animationController;
-    if (ctrl == null) {
+    final delegate = _animateDelegate;
+    if (delegate == null) {
       jumpTo(clamped);
       return;
     }
-    final from = _size;
-    final to = clamped;
-    ctrl.duration = duration;
-    ctrl.value = 0;
-    void listener() {
-      _size = from + (to - from) * curve.transform(ctrl.value);
-      notifyListeners();
-    }
-
-    ctrl.addListener(listener);
-    // Drive the raw value linearly; the listener is the single place
-    // applying `curve.transform` so the caller-supplied curve isn't
-    // composed with itself.
-    await ctrl.animateTo(1, duration: duration);
-    ctrl.removeListener(listener);
-    // Ensure exact final value without floating-point drift.
-    _size = to;
-    notifyListeners();
+    await delegate(clamped, duration, curve);
   }
 
   /// Jumps the sheet to [size] immediately, without animation.
@@ -794,45 +773,49 @@ class ShadSheet extends StatefulWidget {
   State<ShadSheet> createState() => _ShadSheetState();
 }
 
+// Shifts a [ShadPosition] by [insets], leaving null axes null so Positioned
+// stays un-anchored on those axes.
+ShadPosition _shiftPosition(ShadPosition base, EdgeInsets insets) {
+  return ShadPosition(
+    top: base.top != null ? base.top! + insets.top : null,
+    bottom: base.bottom != null ? base.bottom! + insets.bottom : null,
+    left: base.left != null ? base.left! + insets.left : null,
+    right: base.right != null ? base.right! + insets.right : null,
+  );
+}
+
 class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
   AnimationController? _animationController;
   final dragHandleMaterialState = <WidgetState>{};
   final GlobalKey childKey = GlobalKey(debugLabel: 'ShadSheet child');
   static const Curve legacyDecelerate = Cubic(0, 0, 0.2, 1);
 
-  // Expandable state. `ownedController` is non-null only when the state
-  // created its own controller. When the caller supplies one via
-  // `widget.controller`, this stays null and `sizeController` resolves
-  // to the caller's instance — so presence of `ownedController` itself
-  // answers "do we own it?" without a separate flag.
+  // Non-null only when the state created its own controller; null means the
+  // caller supplied one via `widget.controller`.
   ShadSheetController? ownedController;
   AnimationController? snapController;
   double? dragStartSizeRatio;
   double? dragStartPointer;
-  // Tracks whether `didChangeDependencies` has wired listeners /
-  // performed the one-shot seed. Separate from controller ownership.
+  // Whether the one-shot listener wiring / theme seed has run.
   bool sizeControllerReady = false;
 
-  // The resolved controller used by the sheet this frame. Prefers a
-  // caller-supplied controller; otherwise the one we own.
+  // The controller used this frame: caller-supplied, else the one we own.
   ShadSheetController get sizeController =>
       widget.controller ?? ownedController!;
 
-  // Derived: we own the controller iff the caller didn't supply one.
   bool get ownsController => widget.controller == null;
 
   void initSizeController() {
     if (ownsController) {
-      // `??=` keeps the same ShadSheetController instance across
-      // rebuilds when we already own one, so listeners stay attached.
       ownedController ??= ShadSheetController();
     }
-    sizeController.addListener(handleSizeChanged);
+    sizeController
+      ..addListener(handleSizeChanged)
+      .._animateDelegate = animateSheetTo;
     sizeControllerReady = true;
   }
 
-  // Resolves the initial size via widget prop → themed value → hard
-  // default. Requires a BuildContext where ShadTheme is reachable.
+  // Resolves the initial size via widget prop → themed value → hard default.
   double resolveSeedSize() {
     final themedInitialSize = ShadTheme.of(context).sheetTheme.initialSize;
     return widget.initialSize ?? themedInitialSize ?? 0.5;
@@ -841,10 +824,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Lazy one-shot init: wires the listener and seeds an owned
-    // controller from the theme-aware chain. Later dependency changes
-    // (MediaQuery, orientation, font scale) leave the sheet alone so a
-    // user-dragged size isn't silently reset.
+    // One-shot init; later dependency changes leave a user-dragged size alone.
     if (!sizeControllerReady) {
       initSizeController();
       if (ownsController) {
@@ -862,14 +842,11 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
   void didUpdateWidget(ShadSheet oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
-      // Release any snap-animation ref held by the outgoing controller so
-      // the about-to-be-disposed AnimationController cannot be reached
-      // via a retained external controller.
+      // Detach from the outgoing controller before rewiring the new one.
       final outgoing = oldWidget.controller ?? ownedController;
-      outgoing?._animationController = null;
+      outgoing?._animateDelegate = null;
       outgoing?.removeListener(handleSizeChanged);
       if (oldWidget.controller == null) {
-        // We previously owned the controller; dispose it.
         ownedController?.dispose();
         ownedController = null;
       }
@@ -881,19 +858,15 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     } else if (widget.initialSize != oldWidget.initialSize &&
         dragStartSizeRatio == null &&
         ownsController) {
-      // Only seed a newly-supplied initialSize on a controller we own;
-      // caller-owned controllers are the single source of truth for
-      // their size and must not be mutated by widget rebuilds.
+      // Caller-owned controllers are the single source of truth, so only
+      // re-seed one we own.
       ownedController!.jumpTo(resolveSeedSize());
     }
   }
 
   @override
   void dispose() {
-    // Null the AnimationController reference on the size controller so
-    // an external (caller-owned) controller cannot dereference the
-    // about-to-be-disposed snap controller.
-    sizeController._animationController = null;
+    sizeController._animateDelegate = null;
     sizeController.removeListener(handleSizeChanged);
     ownedController?.dispose();
     snapController?.dispose();
@@ -993,11 +966,6 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     }
   }
 
-  // --- Expandable resize handle callbacks ------------------------------------
-
-  bool _isVertical(ShadSheetSide side) =>
-      side == ShadSheetSide.bottom || side == ShadSheetSide.top;
-
   // +1 where increasing pointer coordinate grows the sheet, -1 otherwise.
   double _growthSign(ShadSheetSide side) => switch (side) {
     ShadSheetSide.bottom => -1,
@@ -1008,7 +976,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
 
   void handleResizeDragStart(DragStartDetails details, ShadSheetSide side) {
     dragStartSizeRatio = sizeController.size;
-    dragStartPointer = _isVertical(side)
+    dragStartPointer = side.isVertical
         ? details.globalPosition.dy
         : details.globalPosition.dx;
     // Cancel any in-flight snap animation so the drag controls the sheet.
@@ -1023,7 +991,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     required double maxSize,
   }) {
     if (dragStartSizeRatio == null || dragStartPointer == null) return;
-    final isVertical = _isVertical(side);
+    final isVertical = side.isVertical;
     final pointer = isVertical
         ? details.globalPosition.dy
         : details.globalPosition.dx;
@@ -1046,7 +1014,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     required Curve curve,
     required double snapFlingVelocity,
   }) {
-    final isVertical = _isVertical(side);
+    final isVertical = side.isVertical;
     final rawVelocity = isVertical
         ? details.velocity.pixelsPerSecond.dy
         : details.velocity.pixelsPerSecond.dx;
@@ -1065,15 +1033,39 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     }
 
     if (target != null) {
-      snapController ??= AnimationController(vsync: this);
-      sizeController._animationController = snapController;
-      unawaited(
-        sizeController.animateTo(target, duration: duration, curve: curve),
-      );
+      unawaited(animateSheetTo(target, duration, curve));
     }
 
     dragStartSizeRatio = null;
     dragStartPointer = null;
+  }
+
+  // The single place that animates the sheet size. Drives the snap
+  // AnimationController; a drag can cancel it mid-flight via
+  // [handleResizeDragStart], in which case the size stays where the drag
+  // takes over instead of jumping.
+  Future<void> animateSheetTo(
+    double size,
+    Duration duration,
+    Curve curve,
+  ) async {
+    snapController ??= AnimationController(vsync: this);
+    final ctrl = snapController!..stop();
+    final animation = CurvedAnimation(parent: ctrl, curve: curve);
+    final tween = Tween<double>(begin: sizeController.size, end: size);
+    void tick() => sizeController._setSize(tween.evaluate(animation));
+    ctrl
+      ..duration = duration
+      ..value = 0
+      ..addListener(tick);
+    try {
+      await ctrl.forward().orCancel;
+    } on TickerCanceled {
+      // Interrupted by a drag; leave the size where the drag takes over.
+    } finally {
+      ctrl.removeListener(tick);
+      animation.dispose();
+    }
   }
 
   // Pins the translucent body-edge overlay strip to the side adjacent
@@ -1282,197 +1274,28 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     final effectiveActionsPinned =
         widget.actionsPinned ?? theme.sheetTheme.actionsPinned ?? true;
 
-    // Expandable fields
     final effectiveExpandable =
         widget.expandable ?? theme.sheetTheme.expandable ?? false;
 
-    final effectiveInitialSize =
-        widget.initialSize ?? theme.sheetTheme.initialSize ?? 0.5;
+    // Anchor + side safe-area insets, merged into the dialog's content
+    // padding (below) and into the close-icon position so content clears
+    // hardware affordances. The free-edge inset is handled separately in
+    // [buildExpandable] (it depends on the live drag size).
+    final safeAreaInsets = effectiveExpandable && effectiveUseSafeArea
+        ? expandableSafeAreaInsets(side)
+        : EdgeInsets.zero;
 
-    final effectiveMinSize = widget.minSize ?? theme.sheetTheme.minSize ?? 0.25;
-
-    final effectiveMaxSize = widget.maxSize ?? theme.sheetTheme.maxSize ?? 1.0;
-
-    final effectiveSnap = widget.snap ?? theme.sheetTheme.snap ?? false;
-
-    final effectiveSnapSizes =
-        widget.snapSizes ??
-        theme.sheetTheme.snapSizes ??
-        (effectiveSnap
-            ? [effectiveMinSize, effectiveInitialSize, effectiveMaxSize]
-            : null);
-
-    final effectiveSnapAnimationDuration =
-        widget.snapAnimationDuration ??
-        theme.sheetTheme.snapAnimationDuration ??
-        const Duration(milliseconds: 250);
-
-    final effectiveSnapAnimationCurve =
-        widget.snapAnimationCurve ??
-        theme.sheetTheme.snapAnimationCurve ??
-        Curves.easeInOut;
-
-    final effectiveSnapFlingVelocity =
-        widget.snapFlingVelocity ?? theme.sheetTheme.snapFlingVelocity ?? 700;
-
-    final effectiveShowDragHandle =
-        widget.showDragHandle ??
-        theme.sheetTheme.showDragHandle ??
-        effectiveExpandable;
-
-    final effectiveDragHandleColor =
-        theme.sheetTheme.dragHandleColor ?? theme.colorScheme.border;
-
-    final effectiveDragHandleWidth = theme.sheetTheme.dragHandleWidth ?? 36.0;
-
-    final effectiveDragHandleHeight = theme.sheetTheme.dragHandleHeight ?? 4.0;
-
-    final effectiveDragHandleExtent =
-        widget.dragHandleExtent ?? theme.sheetTheme.dragHandleExtent ?? 56.0;
-
-    final effectiveDragHandleRadius =
-        theme.sheetTheme.dragHandleRadius ?? BorderRadius.circular(2);
-
-    final isVertical =
-        side == ShadSheetSide.bottom || side == ShadSheetSide.top;
-
-    // Precompute the composite size for expandable mode. We constrain the
-    // composite (handle + dialog) rather than the dialog alone so the
-    // total always equals `size * screenDim` regardless of which handle
-    // the consumer supplies.
-    final expandableCompositePx = effectiveExpandable
-        ? sizeController.size * (isVertical ? mSize.height : mSize.width)
-        : 0.0;
-
-    // For expandable sheets we split safe-area handling into two layers:
-    //
-    // 1. `expandableSafeAreaInsets` — anchor-and-side insets that always
-    //    apply (home indicator, side gutters). Merged into ShadDialog's
-    //    content padding so content doesn't sit under hardware affordances.
-    //
-    // 2. `expandableCompositeOuterInsets` — free-edge inset that only
-    //    kicks in at full size, applied as outer padding around the whole
-    //    composite (handle + dialog). This pushes the resize handle and
-    //    body-edge strip below the notch / Dynamic Island so they stay
-    //    reachable at full screen, while the DecoratedBox still paints
-    //    behind the inset region — keeping the sheet visually full-bleed.
-    EdgeInsets expandableSafeAreaInsets() {
-      if (!effectiveExpandable || !effectiveUseSafeArea) {
-        return EdgeInsets.zero;
-      }
-      final viewPadding = MediaQuery.viewPaddingOf(context);
-      return switch (side) {
-        ShadSheetSide.bottom => EdgeInsets.only(
-          bottom: viewPadding.bottom,
-          left: viewPadding.left,
-          right: viewPadding.right,
-        ),
-        ShadSheetSide.top => EdgeInsets.only(
-          top: viewPadding.top,
-          left: viewPadding.left,
-          right: viewPadding.right,
-        ),
-        ShadSheetSide.left => EdgeInsets.only(
-          top: viewPadding.top,
-          bottom: viewPadding.bottom,
-          left: viewPadding.left,
-        ),
-        ShadSheetSide.right => EdgeInsets.only(
-          top: viewPadding.top,
-          bottom: viewPadding.bottom,
-          right: viewPadding.right,
-        ),
-      };
-    }
-
-    // Outer inset for the free edge: keeps the resize handle reachable
-    // below the notch / Dynamic Island.  Uses a proportional inset so
-    // dragging down from full size doesn't trigger a hard layout jump
-    // (the old `atFull` gate would drop the padding on the first drag
-    // tick, breaking the gesture).
-    EdgeInsets expandableCompositeOuterInsets() {
-      if (!effectiveExpandable || !effectiveUseSafeArea) {
-        return EdgeInsets.zero;
-      }
-      final viewPadding = MediaQuery.viewPaddingOf(context);
-      final isVertical =
-          side == ShadSheetSide.bottom || side == ShadSheetSide.top;
-      final screenDim = isVertical ? mSize.height : mSize.width;
-      // Distance from the free edge of the screen to the near edge of
-      // the sheet composite.  When this is smaller than the safe-area
-      // inset the handle would be covered by the system UI.
-      final freeEdgeOffset = (1.0 - sizeController.size) * screenDim;
-
-      return switch (side) {
-        ShadSheetSide.bottom => EdgeInsets.only(
-          top:
-              (viewPadding.top - freeEdgeOffset).clamp(
-                0.0,
-                viewPadding.top,
-              ),
-        ),
-        ShadSheetSide.top => EdgeInsets.only(
-          bottom:
-              (viewPadding.bottom - freeEdgeOffset).clamp(
-                0.0,
-                viewPadding.bottom,
-              ),
-        ),
-        ShadSheetSide.left => EdgeInsets.only(
-          right:
-              (viewPadding.right - freeEdgeOffset).clamp(
-                0.0,
-                viewPadding.right,
-              ),
-        ),
-        ShadSheetSide.right => EdgeInsets.only(
-          left:
-              (viewPadding.left - freeEdgeOffset).clamp(
-                0.0,
-                viewPadding.left,
-              ),
-        ),
-      };
-    }
-
-    // Null fields must stay null so Positioned leaves that axis un-anchored
-    // — only bump the axes the caller actually set.
-    ShadPosition augmentCloseIconPositionForSafeArea(
-      ShadPosition base,
-      EdgeInsets insets,
-    ) {
-      return ShadPosition(
-        top: base.top != null ? base.top! + insets.top : null,
-        bottom: base.bottom != null ? base.bottom! + insets.bottom : null,
-        left: base.left != null ? base.left! + insets.left : null,
-        right: base.right != null ? base.right! + insets.right : null,
-      );
-    }
-
-    // Merge safe-area insets into the caller-provided padding via
-    // EdgeInsets.add; the resulting EdgeInsetsGeometry is passed to
-    // ShadDialog.padding. Widget inspectors (and tests) that read
-    // ShadDialog.padding at runtime will see the merged value, not the
-    // raw widget.padding.
-    //
-    // ShadDialog falls back to EdgeInsets.all(24) when padding is null.
-    // Expandable mode passes an explicit pre-merged value, so mirror that
-    // default here to keep the 24px breathing room content otherwise has.
+    // ShadDialog falls back to EdgeInsets.all(24) when padding is null;
+    // expandable mode passes an explicit pre-merged value, so mirror that.
     const dialogDefaultPadding = EdgeInsets.all(24);
-    final safeAreaInsets = expandableSafeAreaInsets();
     final effectivePaddingWithSafeArea = effectiveExpandable
         ? EdgeInsets.zero
               .add(effectivePadding ?? dialogDefaultPadding)
               .add(safeAreaInsets)
         : effectivePadding;
 
-    // Shift the close icon position by the same safe-area insets that are
-    // merged into padding for expandable sheets. When no position is
-    // supplied, resolve the ShadDialog default so there is a concrete base
-    // to offset. The literal below mirrors the default in
-    // dialog.dart's build() (ShadPosition.directional(top: 8, end: 8)); if
-    // that default changes, update this fallback to match or the icon will
-    // visually drift by the delta at full expansion.
+    // Mirrors ShadDialog's default close-icon position so it shifts with the
+    // safe-area insets merged into the padding above.
     final ShadPosition? adjustedCloseIconPosition;
     if (effectiveExpandable && effectiveUseSafeArea) {
       final base =
@@ -1482,10 +1305,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
             end: 8,
             textDirection: Directionality.of(context),
           );
-      adjustedCloseIconPosition = augmentCloseIconPositionForSafeArea(
-        base,
-        safeAreaInsets,
-      );
+      adjustedCloseIconPosition = _shiftPosition(base, safeAreaInsets);
     } else {
       adjustedCloseIconPosition = effectiveCloseIconPosition;
     }
@@ -1526,10 +1346,8 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       mainAxisAlignment: effectiveMainAxisAlignment,
       scrollable: effectiveScrollable,
       scrollPadding: effectiveScrollPadding,
-      // For expandable sheets we apply SafeArea OUTSIDE the dialog with
-      // per-edge flags based on `side` and the current size, so insets
-      // only appear on edges that actually touch the screen. For the
-      // non-expandable path ShadDialog keeps its own behaviour.
+      // Expandable sheets handle safe area themselves (merged into padding +
+      // an outer inset); only the non-expandable path defers to ShadDialog.
       useSafeArea: !effectiveExpandable && effectiveUseSafeArea,
       titlePinned: effectiveTitlePinned,
       descriptionPinned: effectiveDescriptionPinned,
@@ -1537,187 +1355,26 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       child: widget.child,
     );
 
-    // When `scrollable` is true (the default), ShadDialog builds its
-    // own internal SingleChildScrollView that attaches to the ambient
-    // PrimaryScrollController. Wrapping in `PrimaryScrollController
-    // .none` isolates that ScrollView from the ambient controller, so
-    // a caller-provided Scrollable in `widget.child` cannot end up
-    // sharing a controller with the dialog's wrapper. Shared
-    // controllers crash Flutter's Scrollbar with "ScrollController
-    // attached to more than one ScrollPosition" during snap animations
-    // (issue #655).
-    //
-    // Only applied to expandable sheets. Non-expandable sheets have the
-    // same theoretical risk but the crash was user-reported only for
-    // expandable mode; scoping keeps the blast radius of the fix small.
-    // The wrap is a no-op when ShadDialog itself has `scrollable: false`.
+    // Isolate the dialog's internal scroll view from the ambient
+    // PrimaryScrollController; a shared controller crashes the Scrollbar
+    // ("attached to more than one ScrollPosition") during snap animations
+    // (issue #655). No-op when ShadDialog has `scrollable: false`.
     if (effectiveExpandable) {
       shadDialog = PrimaryScrollController.none(child: shadDialog);
     }
 
-    Widget child;
-
-    if (effectiveExpandable) {
-      // Precedence: builder (side-aware) > static widget > default pill.
-      final handleWidget =
-          widget.dragHandleBuilder?.call(context, side) ??
-          widget.dragHandle ??
-          (effectiveShowDragHandle
-              ? _buildDefaultHandlePill(
-                  side: side,
-                  isVertical: isVertical,
-                  width: effectiveDragHandleWidth,
-                  height: effectiveDragHandleHeight,
-                  color: effectiveDragHandleColor,
-                  radius: effectiveDragHandleRadius,
-                )
-              : const SizedBox.shrink());
-
-      // Shared drag-handler closures: reused by the pill handle and
-      // the optional translucent body-edge overlay strip so any change
-      // to signatures lands in one place.
-      void onStart(DragStartDetails d) => handleResizeDragStart(d, side);
-      void onUpdate(DragUpdateDetails d) => handleResizeDragUpdate(
-        d,
-        side: side,
-        mSize: mSize,
-        minSize: effectiveMinSize,
-        maxSize: effectiveMaxSize,
-      );
-      void onEnd(DragEndDetails d) => handleResizeDragEnd(
-        d,
-        side: side,
-        snap: effectiveSnap,
-        snapSizes: effectiveSnapSizes,
-        minSize: effectiveMinSize,
-        maxSize: effectiveMaxSize,
-        duration: effectiveSnapAnimationDuration,
-        curve: effectiveSnapAnimationCurve,
-        snapFlingVelocity: effectiveSnapFlingVelocity,
-      );
-
-      final resizeHandle = ShadSheetResizeHandle(
-        side: side,
-        onDragStart: onStart,
-        onDragUpdate: onUpdate,
-        onDragEnd: onEnd,
-        child: handleWidget,
-      );
-
-      // Translucent overlay strip that extends the drag zone onto the
-      // sheet-adjacent edge of the body. Raw GestureDetector (not a
-      // second ShadSheetResizeHandle) so `find.byType` stays unique;
-      // translucent so descendant taps still reach buttons/inputs.
-      final bodyDragStrip = effectiveDragHandleExtent > 0
-          ? GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onVerticalDragStart: isVertical ? onStart : null,
-              onVerticalDragUpdate: isVertical ? onUpdate : null,
-              onVerticalDragEnd: isVertical ? onEnd : null,
-              onHorizontalDragStart: isVertical ? null : onStart,
-              onHorizontalDragUpdate: isVertical ? null : onUpdate,
-              onHorizontalDragEnd: isVertical ? null : onEnd,
-              child: SizedBox(
-                width: isVertical ? double.infinity : effectiveDragHandleExtent,
-                height: isVertical
-                    ? effectiveDragHandleExtent
-                    : double.infinity,
-              ),
-            )
-          : null;
-
-      // The dialog + body-edge strip overlay. Decoration is applied
-      // higher up — around the entire composite — so it paints through
-      // the safe-area outer inset region and keeps the sheet looking
-      // full-bleed at full size. childKey stays on ShadDialog so
-      // childHeight measures the content, not the full composite
-      // (required by draggable dismiss velocity math).
-      final decoratedDialog = bodyDragStrip == null
-          ? shadDialog
-          : Stack(
-              children: [
-                Positioned.fill(child: shadDialog),
-                _positionedBodyStrip(side: side, child: bodyDragStrip),
-              ],
-            );
-      final dialogWithOverlay = SizedBox.expand(child: decoratedDialog);
-
-      // Wrap the composite in a fixed-size box on the drag axis so
-      // handle + dialog sum exactly to `size * screenDim`. shadDialog is
-      // flexed to consume whatever remains after the handle, which keeps
-      // custom dragHandles accounted for without a hardcoded handle
-      // extent.
-      final composite = switch (side) {
-        ShadSheetSide.bottom => Column(
-          children: [
-            resizeHandle,
-            Expanded(child: dialogWithOverlay),
-          ],
-        ),
-        ShadSheetSide.top => Column(
-          children: [
-            Expanded(child: dialogWithOverlay),
-            resizeHandle,
-          ],
-        ),
-        ShadSheetSide.left => Row(
-          children: [
-            Expanded(child: dialogWithOverlay),
-            resizeHandle,
-          ],
-        ),
-        ShadSheetSide.right => Row(
-          children: [
-            resizeHandle,
-            Expanded(child: dialogWithOverlay),
-          ],
-        ),
-      };
-
-      // Apply free-edge safe-area padding outside the composite so the
-      // resize handle and body-edge strip stay reachable below the notch
-      // at full size; the DecoratedBox wraps the padding so the sheet's
-      // background still paints behind the notch area.
-      final compositeOuterInsets = expandableCompositeOuterInsets();
-      final paddedComposite = compositeOuterInsets == EdgeInsets.zero
-          ? composite
-          : Padding(padding: compositeOuterInsets, child: composite);
-      final decoratedComposite = DecoratedBox(
-        key: const ValueKey('shad_sheet_expandable_fill'),
-        decoration: BoxDecoration(
-          color: effectiveBackgroundColor,
-          borderRadius: effectiveRadius,
-          border: effectiveBorder,
-          boxShadow: effectiveShadows,
-        ),
-        child: paddedComposite,
-      );
-      child = SizedBox(
-        height: isVertical ? expandableCompositePx : null,
-        width: isVertical ? null : expandableCompositePx,
-        child: decoratedComposite,
-      );
-
-      // Safe-area handling for expandable sheets is performed via
-      // ShadDialog's `padding` above (safe-area insets merged into
-      // `effectivePadding`). This keeps ShadDialog's DecoratedBox
-      // covering the full sheet render box while only the content is
-      // inset — matching the "slick" full-screen look users expect on
-      // iOS/Android bottom sheets. See the `padding` computation before
-      // the `shadDialog = ShadDialog(...)` call.
-
-      // Without this Align the composite (a shrinkwrapped Column/Row) would
-      // render at the overlay's top-left. Skipped when draggable because
-      // ShadSheetLayoutWithSizeListener positions via absolute child offsets
-      // and would conflict with Align. Uses toEdgeAlignment (not
-      // toAlignment) so left/right sheets center on their edge instead of
-      // the top corner.
-      if (!effectiveDraggable) {
-        child = Align(alignment: side.toEdgeAlignment(), child: child);
-      }
-    } else {
-      child = shadDialog;
-    }
+    var child = effectiveExpandable
+        ? buildExpandable(
+            context,
+            shadDialog,
+            side,
+            radius: effectiveRadius,
+            backgroundColor: effectiveBackgroundColor,
+            border: effectiveBorder,
+            shadows: effectiveShadows,
+            useSafeArea: effectiveUseSafeArea,
+          )
+        : shadDialog;
 
     if (effectiveDraggable) {
       final effectiveDisabledScrollControlMaxRatio =
@@ -1733,7 +1390,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
           theme.sheetTheme.closeProgressThreshold ??
           0.5;
 
-      // When expandable is true, force isScrollControlled to bypass the 9/16 cap.
+      // Expandable forces isScrollControlled to bypass the 9/16 cap.
       final effectiveIsScrollControlled =
           effectiveExpandable || widget.isScrollControlled;
 
@@ -1769,6 +1426,254 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     }
 
     return child;
+  }
+
+  // Builds the resizable composite (drag handle + dialog) for expandable
+  // mode. Only called when `expandable` is true; reads the expandable-only
+  // theme/widget values itself and reuses the decoration resolved in build().
+  Widget buildExpandable(
+    BuildContext context,
+    Widget shadDialog,
+    ShadSheetSide side, {
+    required BorderRadius radius,
+    required Color backgroundColor,
+    required BoxBorder border,
+    required List<BoxShadow>? shadows,
+    required bool useSafeArea,
+  }) {
+    final theme = ShadTheme.of(context);
+    final mSize = MediaQuery.sizeOf(context);
+    final isVertical = side.isVertical;
+
+    final effectiveInitialSize = resolveSeedSize();
+    final effectiveMinSize = widget.minSize ?? theme.sheetTheme.minSize ?? 0.25;
+    final effectiveMaxSize = widget.maxSize ?? theme.sheetTheme.maxSize ?? 1.0;
+    final effectiveSnap = widget.snap ?? theme.sheetTheme.snap ?? false;
+    final effectiveSnapSizes =
+        widget.snapSizes ??
+        theme.sheetTheme.snapSizes ??
+        (effectiveSnap
+            ? [effectiveMinSize, effectiveInitialSize, effectiveMaxSize]
+            : null);
+    final effectiveSnapAnimationDuration =
+        widget.snapAnimationDuration ??
+        theme.sheetTheme.snapAnimationDuration ??
+        const Duration(milliseconds: 250);
+    final effectiveSnapAnimationCurve =
+        widget.snapAnimationCurve ??
+        theme.sheetTheme.snapAnimationCurve ??
+        Curves.easeInOut;
+    final effectiveSnapFlingVelocity =
+        widget.snapFlingVelocity ?? theme.sheetTheme.snapFlingVelocity ?? 700;
+    final effectiveShowDragHandle =
+        widget.showDragHandle ?? theme.sheetTheme.showDragHandle ?? true;
+    final effectiveDragHandleColor =
+        theme.sheetTheme.dragHandleColor ?? theme.colorScheme.border;
+    final effectiveDragHandleWidth = theme.sheetTheme.dragHandleWidth ?? 36.0;
+    final effectiveDragHandleHeight = theme.sheetTheme.dragHandleHeight ?? 4.0;
+    final effectiveDragHandleExtent =
+        widget.dragHandleExtent ?? theme.sheetTheme.dragHandleExtent ?? 56.0;
+    final effectiveDragHandleRadius =
+        theme.sheetTheme.dragHandleRadius ?? BorderRadius.circular(2);
+
+    // Constrain the composite (handle + dialog) so the total always equals
+    // `size * screenDim`, regardless of which handle the consumer supplies.
+    final compositePx =
+        sizeController.size * (isVertical ? mSize.height : mSize.width);
+
+    // Precedence: builder (side-aware) > static widget > default pill.
+    final handleWidget =
+        widget.dragHandleBuilder?.call(context, side) ??
+        widget.dragHandle ??
+        (effectiveShowDragHandle
+            ? _buildDefaultHandlePill(
+                side: side,
+                isVertical: isVertical,
+                width: effectiveDragHandleWidth,
+                height: effectiveDragHandleHeight,
+                color: effectiveDragHandleColor,
+                radius: effectiveDragHandleRadius,
+              )
+            : const SizedBox.shrink());
+
+    void onStart(DragStartDetails d) => handleResizeDragStart(d, side);
+    void onUpdate(DragUpdateDetails d) => handleResizeDragUpdate(
+      d,
+      side: side,
+      mSize: mSize,
+      minSize: effectiveMinSize,
+      maxSize: effectiveMaxSize,
+    );
+    void onEnd(DragEndDetails d) => handleResizeDragEnd(
+      d,
+      side: side,
+      snap: effectiveSnap,
+      snapSizes: effectiveSnapSizes,
+      minSize: effectiveMinSize,
+      maxSize: effectiveMaxSize,
+      duration: effectiveSnapAnimationDuration,
+      curve: effectiveSnapAnimationCurve,
+      snapFlingVelocity: effectiveSnapFlingVelocity,
+    );
+
+    final resizeHandle = ShadSheetResizeHandle(
+      side: side,
+      onDragStart: onStart,
+      onDragUpdate: onUpdate,
+      onDragEnd: onEnd,
+      child: handleWidget,
+    );
+
+    // Translucent strip extending the drag zone onto the body's sheet-adjacent
+    // edge. Raw GestureDetector (not a second ShadSheetResizeHandle) so
+    // find.byType stays unique; translucent so descendant taps still land.
+    final bodyDragStrip = effectiveDragHandleExtent > 0
+        ? GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onVerticalDragStart: isVertical ? onStart : null,
+            onVerticalDragUpdate: isVertical ? onUpdate : null,
+            onVerticalDragEnd: isVertical ? onEnd : null,
+            onHorizontalDragStart: isVertical ? null : onStart,
+            onHorizontalDragUpdate: isVertical ? null : onUpdate,
+            onHorizontalDragEnd: isVertical ? null : onEnd,
+            child: SizedBox(
+              width: isVertical ? double.infinity : effectiveDragHandleExtent,
+              height: isVertical ? effectiveDragHandleExtent : double.infinity,
+            ),
+          )
+        : null;
+
+    // childKey stays on ShadDialog so childHeight measures the content, not
+    // the composite (needed by the draggable-dismiss velocity math).
+    // SizedBox.expand fills the composite's cross axis (the Column/Row
+    // centers its children).
+    final dialogWithStrip = SizedBox.expand(
+      child: bodyDragStrip == null
+          ? shadDialog
+          : Stack(
+              children: [
+                Positioned.fill(child: shadDialog),
+                _positionedBodyStrip(side: side, child: bodyDragStrip),
+              ],
+            ),
+    );
+
+    final composite = switch (side) {
+      ShadSheetSide.bottom => Column(
+        children: [
+          resizeHandle,
+          Expanded(child: dialogWithStrip),
+        ],
+      ),
+      ShadSheetSide.top => Column(
+        children: [
+          Expanded(child: dialogWithStrip),
+          resizeHandle,
+        ],
+      ),
+      ShadSheetSide.left => Row(
+        children: [
+          Expanded(child: dialogWithStrip),
+          resizeHandle,
+        ],
+      ),
+      ShadSheetSide.right => Row(
+        children: [
+          resizeHandle,
+          Expanded(child: dialogWithStrip),
+        ],
+      ),
+    };
+
+    // Free-edge inset outside the composite keeps the handle and body strip
+    // reachable below the notch; the DecoratedBox wraps it so the background
+    // still paints behind the notch.
+    final outerInsets = useSafeArea
+        ? expandableOuterInsets(side, mSize)
+        : EdgeInsets.zero;
+    final paddedComposite = outerInsets == EdgeInsets.zero
+        ? composite
+        : Padding(padding: outerInsets, child: composite);
+
+    Widget child = SizedBox(
+      height: isVertical ? compositePx : null,
+      width: isVertical ? null : compositePx,
+      child: DecoratedBox(
+        key: const ValueKey('shad_sheet_expandable_fill'),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: radius,
+          border: border,
+          boxShadow: shadows,
+        ),
+        child: paddedComposite,
+      ),
+    );
+
+    // Align the shrinkwrapped composite to its edge (toEdgeAlignment centers
+    // left/right sheets). Skipped when draggable: ShadSheetLayoutWithSizeListener
+    // positions via absolute offsets and would conflict with Align.
+    if (!effectiveDraggable) {
+      child = Align(alignment: side.toEdgeAlignment(), child: child);
+    }
+    return child;
+  }
+
+  // Anchor + side safe-area insets (home indicator, side gutters); the guard
+  // for `useSafeArea` lives at the call site.
+  EdgeInsets expandableSafeAreaInsets(ShadSheetSide side) {
+    final viewPadding = MediaQuery.viewPaddingOf(context);
+    return switch (side) {
+      ShadSheetSide.bottom => EdgeInsets.only(
+        bottom: viewPadding.bottom,
+        left: viewPadding.left,
+        right: viewPadding.right,
+      ),
+      ShadSheetSide.top => EdgeInsets.only(
+        top: viewPadding.top,
+        left: viewPadding.left,
+        right: viewPadding.right,
+      ),
+      ShadSheetSide.left => EdgeInsets.only(
+        top: viewPadding.top,
+        bottom: viewPadding.bottom,
+        left: viewPadding.left,
+      ),
+      ShadSheetSide.right => EdgeInsets.only(
+        top: viewPadding.top,
+        bottom: viewPadding.bottom,
+        right: viewPadding.right,
+      ),
+    };
+  }
+
+  // Proportional free-edge inset that keeps the resize handle reachable below
+  // the notch / Dynamic Island. Proportional (not gated at full size) so a
+  // drag away from full size doesn't cause a hard layout jump.
+  EdgeInsets expandableOuterInsets(ShadSheetSide side, Size mSize) {
+    final viewPadding = MediaQuery.viewPaddingOf(context);
+    final screenDim = side.isVertical ? mSize.height : mSize.width;
+    final freeEdgeOffset = (1.0 - sizeController.size) * screenDim;
+    return switch (side) {
+      ShadSheetSide.bottom => EdgeInsets.only(
+        top: (viewPadding.top - freeEdgeOffset).clamp(0.0, viewPadding.top),
+      ),
+      ShadSheetSide.top => EdgeInsets.only(
+        bottom: (viewPadding.bottom - freeEdgeOffset).clamp(
+          0.0,
+          viewPadding.bottom,
+        ),
+      ),
+      ShadSheetSide.left => EdgeInsets.only(
+        right: (viewPadding.right - freeEdgeOffset).clamp(
+          0.0,
+          viewPadding.right,
+        ),
+      ),
+      ShadSheetSide.right => EdgeInsets.only(
+        left: (viewPadding.left - freeEdgeOffset).clamp(0.0, viewPadding.left),
+      ),
+    };
   }
 }
 
@@ -1817,7 +1722,7 @@ class ShadSheetGestureDetector extends StatelessWidget {
     return RawGestureDetector(
       excludeFromSemantics: true,
       gestures: <Type, GestureRecognizerFactory<GestureRecognizer>>{
-        if (side == ShadSheetSide.bottom || side == ShadSheetSide.top)
+        if (side.isVertical)
           VerticalDragGestureRecognizer:
               GestureRecognizerFactoryWithHandlers<
                 VerticalDragGestureRecognizer
@@ -1851,23 +1756,16 @@ class ShadSheetGestureDetector extends StatelessWidget {
   }
 }
 
-/// A widget that wraps a drag handle child and wires drag gestures to resize
-/// the sheet. Used internally by [ShadSheet] when [ShadSheet.expandable] is
-/// true.
 /// The gesture target that resizes an expandable [ShadSheet] when dragged.
 ///
-/// [ShadSheet] composes this widget internally when `expandable: true`.
-/// It is exposed publicly purely so widget tests can locate it via
-/// `find.byType(ShadSheetResizeHandle)`; direct external construction is
-/// not supported because the drag callbacks rely on internal sheet state
-/// ([ShadSheetController], drag snapshots, snap animation) that is not
-/// accessible from outside.
+/// [ShadSheet] composes this widget internally when `expandable: true`, wiring
+/// the drag callbacks to its resize logic. It can also be used directly to
+/// build a custom resizable composition.
 ///
 /// The detector uses [HitTestBehavior.opaque] so the entire padded touch
 /// area absorbs drags, not only the visible child.
 class ShadSheetResizeHandle extends StatelessWidget {
-  /// Creates a resize handle. Intended for [ShadSheet] internal use and
-  /// test discovery; see the class-level docs.
+  /// Creates a resize handle for an expandable [ShadSheet].
   const ShadSheetResizeHandle({
     super.key,
     required this.side,
@@ -1895,8 +1793,7 @@ class ShadSheetResizeHandle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isVertical =
-        side == ShadSheetSide.bottom || side == ShadSheetSide.top;
+    final isVertical = side.isVertical;
     return GestureDetector(
       // Opaque so the full padded touch target absorbs drags, not only
       // the visible pill.

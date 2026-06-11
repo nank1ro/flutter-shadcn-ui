@@ -1,3 +1,8 @@
+## 0.55.0
+
+- **FEAT**: Add expandable/resizable `ShadSheet` (#655): new `expandable`, `initialSize`, `minSize`, `maxSize`, `snap`, `snapSizes`, `snapAnimationDuration`, `snapAnimationCurve`, `snapFlingVelocity`, `dragHandle`, `dragHandleBuilder`, `showDragHandle`, `dragHandleExtent`, `onSizeChanged` and `controller` parameters, a public `ShadSheetController` (`animateTo`/`jumpTo`), `ShadSheetResizeHandle`, and matching `ShadSheetTheme` fields.
+- **FEAT**: `showShadDialog` accepts `opaque`; `showShadSheet` now follows keyboard insets so sheets move with the keyboard.
+
 ## 0.54.0
 
 - **FEAT**: `ShadTextTheme.fromGoogleFont` now accepts a `custom` parameter to include custom text styles in the Google Font text theme.

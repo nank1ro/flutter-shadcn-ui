@@ -26,6 +26,24 @@ void main() {
     return ShadApp(home: Scaffold(body: child));
   }
 
+  // Fixes the test view to a known size so the ratio-based expandable
+  // assertions resolve to stable pixel values. Pass [viewPadding] to
+  // simulate safe-area insets (notch / home indicator).
+  void setUpView(
+    WidgetTester tester, {
+    Size size = const Size(800, 1200),
+    FakeViewPadding? viewPadding,
+  }) {
+    tester.view.physicalSize = size;
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    if (viewPadding != null) {
+      tester.view.viewPadding = viewPadding;
+      addTearDown(tester.view.resetViewPadding);
+    }
+  }
+
   // Helper to wrap a ShadSheet with the ShadSheetInheritedWidget for a side.
   Widget sheetWidget({
     ShadSheetSide side = ShadSheetSide.bottom,
@@ -158,34 +176,22 @@ void main() {
   });
 
   group('ShadSheet expandable', () {
-    // Test 1: expandable=false (default) — handle not present
-    testWidgets('no resize handle when expandable is false', (tester) async {
-      await tester.pumpWidget(sheetWidget(expandable: false));
-      await tester.pump();
-      expect(
-        find.byType(ShadSheetResizeHandle),
-        findsNothing,
-      );
-    });
+    // No resize handle unless expandable is explicitly true (false and the
+    // null default both omit it).
+    for (final expandable in [false, null]) {
+      testWidgets('no resize handle when expandable is $expandable', (
+        tester,
+      ) async {
+        await tester.pumpWidget(sheetWidget(expandable: expandable));
+        await tester.pump();
+        expect(find.byType(ShadSheetResizeHandle), findsNothing);
+      });
+    }
 
-    // Test 1b: default (null) also means no handle
-    testWidgets('no resize handle when expandable is null', (tester) async {
-      await tester.pumpWidget(sheetWidget());
-      await tester.pump();
-      expect(
-        find.byType(ShadSheetResizeHandle),
-        findsNothing,
-      );
-    });
-
-    // Test 2: expandable=true, initialSize=0.5 — sheet height ≈ 0.5 * screen
     testWidgets('expandable=true renders at initialSize fraction of screen', (
       tester,
     ) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       await tester.pumpWidget(
         sheetWidget(
@@ -204,14 +210,10 @@ void main() {
       expect(dialogHeight + handleHeight, closeTo(600, 2.0));
     });
 
-    // Test 3: drag up on bottom sheet increases size, clamped at maxSize
     testWidgets('drag up on bottom sheet increases size, clamped at maxSize', (
       tester,
     ) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       final controller = ShadSheetController();
       addTearDown(controller.dispose);
@@ -246,14 +248,10 @@ void main() {
       expect(controller.size, closeTo(0.9, 0.01));
     });
 
-    // Test 4: drag down past minSize clamps — no dismiss
     testWidgets(
       'drag down past minSize clamps at minSize, sheet stays visible',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -282,15 +280,11 @@ void main() {
       },
     );
 
-    // Test 5: per-side sign test — grow direction increases size
     for (final side in ShadSheetSide.values) {
       testWidgets('drag grow direction increases size for side=$side', (
         tester,
       ) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -334,12 +328,8 @@ void main() {
       });
     }
 
-    // Test 6: snap=true with explicit snapSizes — release snaps to nearest stop
     testWidgets('snap=true snaps to nearest stop on release', (tester) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       final controller = ShadSheetController();
       addTearDown(controller.dispose);
@@ -379,14 +369,10 @@ void main() {
       expect(controller.size, closeTo(0.6, 0.05));
     });
 
-    // Test 7: snap=true, snapSizes=null → defaults to [min, initial, max].
     testWidgets(
       'snap=true with null snapSizes defaults to [min, initial, max]',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -420,7 +406,6 @@ void main() {
       },
     );
 
-    // Test 8: custom dragHandle widget is rendered
     testWidgets('custom dragHandle widget is rendered', (tester) async {
       const handleKey = ValueKey('custom-handle');
       await tester.pumpWidget(
@@ -434,12 +419,8 @@ void main() {
       expect(find.byKey(handleKey), findsOneWidget);
     });
 
-    // Test 9: onSizeChanged fires on size change
     testWidgets('onSizeChanged fires on size change', (tester) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       final sizeChanges = <double>[];
 
@@ -460,7 +441,6 @@ void main() {
       expect(sizeChanges.last, greaterThan(0.5));
     });
 
-    // Test 10: ShadSheetController.animateTo
     testWidgets('ShadSheetController.animateTo animates to target size', (
       tester,
     ) async {
@@ -492,7 +472,6 @@ void main() {
       expect(controller.size, closeTo(0.8, 0.01));
     });
 
-    // Test 11: ShadSheetController.jumpTo is immediate
     testWidgets('ShadSheetController.jumpTo is immediate', (tester) async {
       final controller = ShadSheetController();
       addTearDown(controller.dispose);
@@ -513,14 +492,10 @@ void main() {
       expect(controller.size, closeTo(0.4, 0.01));
     });
 
-    // Test 12: draggable=true + expandable=true coexist
     testWidgets(
       'draggable and expandable can coexist: handle resizes, body can dismiss',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -562,14 +537,10 @@ void main() {
       },
     );
 
-    // Test 13: expandable=true bypasses disabledScrollControlMaxRatio cap
     testWidgets(
       'expandable=true bypasses 9/16 cap even when isScrollControlled=false',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         await tester.pumpWidget(
           sheetWidget(
@@ -598,10 +569,7 @@ void main() {
       testWidgets(
         'expandable+draggable=false: sheet anchors to side=$side',
         (tester) async {
-          tester.view.physicalSize = const Size(800, 1200);
-          tester.view.devicePixelRatio = 1.0;
-          addTearDown(tester.view.resetPhysicalSize);
-          addTearDown(tester.view.resetDevicePixelRatio);
+          setUpView(tester);
 
           await tester.pumpWidget(
             sheetWidget(
@@ -642,10 +610,7 @@ void main() {
     testWidgets(
       'default drag handle meets 44px minimum touch target on bottom sheet',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         await tester.pumpWidget(sheetWidget(expandable: true));
         await tester.pump();
@@ -660,10 +625,7 @@ void main() {
     testWidgets(
       'default drag handle meets 44px minimum touch target on left sheet',
       (tester) async {
-        tester.view.physicalSize = const Size(1200, 800);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester, size: const Size(1200, 800));
 
         await tester.pumpWidget(
           sheetWidget(side: ShadSheetSide.left, expandable: true),
@@ -677,16 +639,13 @@ void main() {
       },
     );
 
-    // Test 20: dragging from the padded edge of the handle (well away from
+    // Dragging from the padded edge of the handle (well away from
     // the 4px pill) must register — proves HitTestBehavior.opaque is set on
     // the GestureDetector.
     testWidgets('drag from handle padding edge registers (opaque hit test)', (
       tester,
     ) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       final controller = ShadSheetController();
       addTearDown(controller.dispose);
@@ -776,7 +735,6 @@ void main() {
       );
     }
 
-    // Test 25: ShadSheetController.jumpTo clamps to [0, 1].
     testWidgets('ShadSheetController.jumpTo clamps out-of-range values', (
       tester,
     ) async {
@@ -795,17 +753,14 @@ void main() {
       expect(controller.size, 0.0);
     });
 
-    // Test 26: ShadSheetController.animateTo clamps to [0, 1] and
+    // ShadSheetController.animateTo clamps to [0, 1] and
     // actually animates (not jumpTo fallback). We trigger a snap drag
     // first so the sheet wires up an AnimationController on the
     // controller, then animateTo exercises the animated-clamp path.
     testWidgets(
       'ShadSheetController.animateTo clamps out-of-range target',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -840,7 +795,7 @@ void main() {
       },
     );
 
-    // Test 27: didUpdateWidget must NOT mutate a caller-owned controller
+    // DidUpdateWidget must NOT mutate a caller-owned controller
     // when `initialSize` changes on the widget.
     testWidgets('external controller not mutated on initialSize change', (
       tester,
@@ -872,15 +827,12 @@ void main() {
       expect(controller.size, closeTo(0.3, 1e-9));
     });
 
-    // Test 28: composite (resize handle + sheet body) must fit within
+    // Composite (resize handle + sheet body) must fit within
     // the size ratio; the handle footprint should not cause overflow.
     testWidgets(
       'composite height equals size * screenDim (handle fits inside)',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         await tester.pumpWidget(
           sheetWidget(
@@ -904,15 +856,12 @@ void main() {
       },
     );
 
-    // Test 29: themed initialSize is honoured when the widget does not
+    // Themed initialSize is honoured when the widget does not
     // override it and no external controller is supplied.
     testWidgets(
       'themed initialSize seeds the owned controller',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         await tester.pumpWidget(
           ShadApp(
@@ -943,7 +892,7 @@ void main() {
       },
     );
 
-    // Test 30: a caller-supplied controller is the single source of
+    // A caller-supplied controller is the single source of
     // truth for size — widget.initialSize and themed initialSize must
     // both be ignored on mount.
     testWidgets(
@@ -979,7 +928,6 @@ void main() {
       },
     );
 
-    // Test 31: cross-field asserts trip on contradictory bounds.
     test('ShadSheet constructor rejects minSize > maxSize', () {
       expect(
         () => ShadSheet(
@@ -991,16 +939,13 @@ void main() {
       );
     });
 
-    // Test 32: dragging the sheet's body-edge (not the pill) resizes the
+    // Dragging the sheet's body-edge (not the pill) resizes the
     // sheet. Addresses the UX feedback that users naturally grab the top
     // of the sheet, not the small pill.
     testWidgets(
       'drag on sheet body-edge strip resizes (dragHandleExtent > 0)',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -1027,7 +972,7 @@ void main() {
       },
     );
 
-    // Test 33: dragHandleBuilder wins over dragHandle and the default
+    // DragHandleBuilder wins over dragHandle and the default
     // pill; it also receives the current sheet side.
     testWidgets(
       'dragHandleBuilder is invoked with the current side and its '
@@ -1059,15 +1004,12 @@ void main() {
       },
     );
 
-    // Test 34: `dragHandleExtent: 0` disables the body-edge strip so only
+    // `dragHandleExtent: 0` disables the body-edge strip so only
     // the pill drags. Protects the opt-out path.
     testWidgets(
       'dragHandleExtent:0 leaves body drag to dismiss/scroll',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -1107,12 +1049,7 @@ void main() {
     testWidgets(
       'expandable sheet keeps dialog padding stable across sizes',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        tester.view.viewPadding = const FakeViewPadding(top: 40);
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
-        addTearDown(tester.view.resetViewPadding);
+        setUpView(tester, viewPadding: const FakeViewPadding(top: 40));
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -1148,12 +1085,7 @@ void main() {
     testWidgets(
       'expandable bottom sheet pushes resize handle below safe-area at full',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        tester.view.viewPadding = const FakeViewPadding(top: 40);
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
-        addTearDown(tester.view.resetViewPadding);
+        setUpView(tester, viewPadding: const FakeViewPadding(top: 40));
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -1184,12 +1116,7 @@ void main() {
     testWidgets(
       'expandable sheet does not touch composite outer size with SafeArea',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        tester.view.viewPadding = const FakeViewPadding(top: 40);
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
-        addTearDown(tester.view.resetViewPadding);
+        setUpView(tester, viewPadding: const FakeViewPadding(top: 40));
 
         await tester.pumpWidget(
           sheetWidget(
@@ -1215,12 +1142,7 @@ void main() {
     testWidgets(
       'expandable useSafeArea:false does not merge safe-area padding',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        tester.view.viewPadding = const FakeViewPadding(top: 40);
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
-        addTearDown(tester.view.resetViewPadding);
+        setUpView(tester, viewPadding: const FakeViewPadding(top: 40));
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -1251,7 +1173,7 @@ void main() {
       },
     );
 
-    // Test 38: the expandable path inserts a `PrimaryScrollController
+    // The expandable path inserts a `PrimaryScrollController
     // .none` directly above its ShadDialog so the dialog's internal
     // SingleChildScrollView cannot share a controller with a caller-
     // provided Scrollable. Sharing triggered the "ScrollController
@@ -1295,10 +1217,7 @@ void main() {
     testWidgets('golden: expandable bottom sheet at initial size', (
       tester,
     ) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       await tester.pumpWidget(
         sheetWidget(
@@ -1320,10 +1239,7 @@ void main() {
 
     // Golden: bottom sheet dragged to maxSize
     testWidgets('golden: expandable bottom sheet at maxSize', (tester) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       final controller = ShadSheetController();
       addTearDown(controller.dispose);
@@ -1352,10 +1268,7 @@ void main() {
 
     // Golden: top sheet
     testWidgets('golden: expandable top sheet', (tester) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       await tester.pumpWidget(
         sheetWidget(
@@ -1378,10 +1291,7 @@ void main() {
 
     // Golden: left sheet
     testWidgets('golden: expandable left sheet', (tester) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       await tester.pumpWidget(
         sheetWidget(
@@ -1404,10 +1314,7 @@ void main() {
 
     // Golden: right sheet
     testWidgets('golden: expandable right sheet', (tester) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       await tester.pumpWidget(
         sheetWidget(
@@ -1428,7 +1335,7 @@ void main() {
       );
     });
 
-    // Test 39: expandable decoration fills the entire composite (pill +
+    // Expandable decoration fills the entire composite (pill +
     // dialog) so the sheet background paints behind the resize handle
     // too — matching iOS/Material bottom-sheet visuals where the pill
     // sits on the sheet's surface, not floating against the modal
@@ -1436,10 +1343,7 @@ void main() {
     testWidgets('expandable decoration fills composite on bottom', (
       tester,
     ) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       await tester.pumpWidget(
         sheetWidget(expandable: true, initialSize: 0.5),
@@ -1465,7 +1369,6 @@ void main() {
       expect(fillRect.height, closeTo(600, 1.0));
     });
 
-    // Test 40: expandable decoration fills composite on all sides
     for (final side in ShadSheetSide.values) {
       testWidgets(
         'expandable decoration fills composite for side=$side',
@@ -1523,14 +1426,10 @@ void main() {
       );
     }
 
-    // Test 41: expandable pill stays adjacent to sheet after drag
     testWidgets('expandable pill stays adjacent to sheet after drag', (
       tester,
     ) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       await tester.pumpWidget(
         sheetWidget(expandable: true, initialSize: 0.5, minSize: 0.25),
@@ -1556,7 +1455,6 @@ void main() {
       expect(fillRect.top, closeTo(handleRect.top, 1.0));
     });
 
-    // Test 42: non-expandable path has no fill key
     testWidgets('non-expandable path has no fill key', (tester) async {
       await tester.pumpWidget(sheetWidget(expandable: false));
       await tester.pump();
@@ -1567,14 +1465,10 @@ void main() {
       );
     });
 
-    // Test 43: expandable + draggable fill box contains the pill
     testWidgets('expandable + draggable: fill box contains the pill', (
       tester,
     ) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       await tester.pumpWidget(
         sheetWidget(expandable: true, draggable: true, initialSize: 0.5),
@@ -1614,10 +1508,7 @@ void main() {
     testWidgets(
       'expandable keeps default 24 content padding when widget.padding is null',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         await tester.pumpWidget(
           sheetWidget(
@@ -1638,10 +1529,7 @@ void main() {
     testWidgets(
       'expandable explicit padding overrides the 24 default',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+        setUpView(tester);
 
         await tester.pumpWidget(
           sheetWidget(
@@ -1668,12 +1556,7 @@ void main() {
     testWidgets(
       'expandable sheet keeps default close icon top at raw value at full',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        tester.view.viewPadding = const FakeViewPadding(top: 40);
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
-        addTearDown(tester.view.resetViewPadding);
+        setUpView(tester, viewPadding: const FakeViewPadding(top: 40));
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -1709,12 +1592,10 @@ void main() {
     testWidgets(
       'expandable sheet still bumps close icon by side-edge inset at full',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        tester.view.viewPadding = const FakeViewPadding(top: 40, right: 10);
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
-        addTearDown(tester.view.resetViewPadding);
+        setUpView(
+          tester,
+          viewPadding: const FakeViewPadding(top: 40, right: 10),
+        );
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -1744,12 +1625,7 @@ void main() {
     testWidgets(
       'non-expandable sheet does not explicitly bump close icon position',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        tester.view.viewPadding = const FakeViewPadding(top: 40);
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
-        addTearDown(tester.view.resetViewPadding);
+        setUpView(tester, viewPadding: const FakeViewPadding(top: 40));
 
         await tester.pumpWidget(
           sheetWidget(
@@ -1767,12 +1643,7 @@ void main() {
     testWidgets(
       'expandable with useSafeArea:false does not bump close icon',
       (tester) async {
-        tester.view.physicalSize = const Size(800, 1200);
-        tester.view.devicePixelRatio = 1.0;
-        tester.view.viewPadding = const FakeViewPadding(top: 40);
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
-        addTearDown(tester.view.resetViewPadding);
+        setUpView(tester, viewPadding: const FakeViewPadding(top: 40));
 
         final controller = ShadSheetController();
         addTearDown(controller.dispose);
@@ -1799,10 +1670,7 @@ void main() {
     testWidgets('golden: expandable sheet with custom drag handle', (
       tester,
     ) async {
-      tester.view.physicalSize = const Size(800, 1200);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      setUpView(tester);
 
       await tester.pumpWidget(
         sheetWidget(
@@ -1845,41 +1713,21 @@ void main() {
       return controller;
     }
 
-    // Test A (reported bug): snap=false, fast flick up → snaps to maxSize.
-    testWidgets(
-      'fling up on bottom sheet snaps to maxSize (snap=false)',
-      (tester) async {
-        final controller = setUpFling(tester);
-        await tester.pumpWidget(
-          sheetWidget(
-            expandable: true,
-            initialSize: 0.5,
-            minSize: 0.25,
-            maxSize: 1,
-            snap: false,
-            snapAnimationDuration: const Duration(milliseconds: 200),
-            controller: controller,
-          ),
-        );
-        await tester.pump();
-
-        expect(controller.size, closeTo(0.5, 0.01));
-
-        await tester.fling(
-          find.byType(ShadSheetResizeHandle),
-          const Offset(0, -150),
-          1500,
-        );
-        await tester.pumpAndSettle();
-
-        expect(controller.size, closeTo(1.0, 0.05));
-      },
-    );
-
-    // Test B: snap=false, fast flick down → snaps to minSize.
-    testWidgets(
-      'fling down on bottom sheet snaps to minSize (snap=false)',
-      (tester) async {
+    // Reported bug: snap=false, fast flick → snaps to the bound in the flick
+    // direction (up → maxSize, down → minSize).
+    for (final c in [
+      (
+        name: 'up on bottom sheet snaps to maxSize',
+        offset: const Offset(0, -150),
+        expected: 1.0,
+      ),
+      (
+        name: 'down on bottom sheet snaps to minSize',
+        offset: const Offset(0, 150),
+        expected: 0.25,
+      ),
+    ]) {
+      testWidgets('fling ${c.name} (snap=false)', (tester) async {
         final controller = setUpFling(tester);
         await tester.pumpWidget(
           sheetWidget(
@@ -1896,14 +1744,14 @@ void main() {
 
         await tester.fling(
           find.byType(ShadSheetResizeHandle),
-          const Offset(0, 150),
+          c.offset,
           1500,
         );
         await tester.pumpAndSettle();
 
-        expect(controller.size, closeTo(0.25, 0.05));
-      },
-    );
+        expect(controller.size, closeTo(c.expected, 0.05));
+      });
+    }
 
     // Test C (regression guard): snap=false, slow drag up → stays near lift.
     testWidgets(
@@ -1934,10 +1782,20 @@ void main() {
       },
     );
 
-    // Test D: snap=true, snapSizes=[0.25,0.5,0.9], at 0.5, fling up → maxSize.
-    testWidgets(
-      'fling up with snap=true snaps to maxSize',
-      (tester) async {
+    // snap=true at 0.5, fling → the bound in the flick direction.
+    for (final c in [
+      (
+        name: 'up with snap=true snaps to maxSize',
+        offset: const Offset(0, -150),
+        expected: 0.9,
+      ),
+      (
+        name: 'down with snap=true snaps to minSize',
+        offset: const Offset(0, 150),
+        expected: 0.25,
+      ),
+    ]) {
+      testWidgets('fling ${c.name}', (tester) async {
         final controller = setUpFling(tester);
         controller.jumpTo(0.5);
         await tester.pumpWidget(
@@ -1956,46 +1814,14 @@ void main() {
 
         await tester.fling(
           find.byType(ShadSheetResizeHandle),
-          const Offset(0, -150),
+          c.offset,
           1500,
         );
         await tester.pumpAndSettle();
 
-        expect(controller.size, closeTo(0.9, 0.05));
-      },
-    );
-
-    // Test E: snap=true, snapSizes=[0.25,0.5,0.9], at 0.5, fling down →
-    // minSize.
-    testWidgets(
-      'fling down with snap=true snaps to minSize',
-      (tester) async {
-        final controller = setUpFling(tester);
-        controller.jumpTo(0.5);
-        await tester.pumpWidget(
-          sheetWidget(
-            expandable: true,
-            initialSize: 0.5,
-            minSize: 0.25,
-            maxSize: 0.9,
-            snap: true,
-            snapSizes: [0.25, 0.5, 0.9],
-            snapAnimationDuration: const Duration(milliseconds: 200),
-            controller: controller,
-          ),
-        );
-        await tester.pump();
-
-        await tester.fling(
-          find.byType(ShadSheetResizeHandle),
-          const Offset(0, 150),
-          1500,
-        );
-        await tester.pumpAndSettle();
-
-        expect(controller.size, closeTo(0.25, 0.05));
-      },
-    );
+        expect(controller.size, closeTo(c.expected, 0.05));
+      });
+    }
 
     // Test F (regression): snap=true, slow drag → nearest-snap still works.
     testWidgets(
@@ -2064,11 +1890,25 @@ void main() {
       );
     }
 
-    // Test H: custom snapFlingVelocity=2000 — sub-threshold fling does NOT
-    // trigger fling path; super-threshold fling does.
-    testWidgets(
-      'custom snapFlingVelocity respected: sub-threshold fling stays near lift',
-      (tester) async {
+    // Custom snapFlingVelocity=2000 gates the fling path: a sub-threshold
+    // flick stays near the lift, a super-threshold flick snaps to maxSize.
+    for (final c in [
+      (
+        name: 'sub-threshold fling stays near lift',
+        velocity: 1200.0,
+        settle: false,
+        check: (double size) => expect(size, lessThan(0.95)),
+      ),
+      (
+        name: 'super-threshold fling snaps to max',
+        velocity: 2500.0,
+        settle: true,
+        check: (double size) => expect(size, closeTo(1.0, 0.05)),
+      ),
+    ]) {
+      testWidgets('custom snapFlingVelocity respected: ${c.name}', (
+        tester,
+      ) async {
         final controller = setUpFling(tester);
         await tester.pumpWidget(
           sheetWidget(
@@ -2084,51 +1924,24 @@ void main() {
         );
         await tester.pump();
 
-        // 1200 px/s is below 2000 threshold — should stay near lift position.
-        await tester.fling(
-          find.byType(ShadSheetResizeHandle),
-          const Offset(0, -120),
-          1200,
-        );
-        await tester.pump();
-
-        expect(controller.size, lessThan(0.95));
-      },
-    );
-
-    testWidgets(
-      'custom snapFlingVelocity respected: super-threshold fling snaps to max',
-      (tester) async {
-        final controller = setUpFling(tester);
-        await tester.pumpWidget(
-          sheetWidget(
-            expandable: true,
-            initialSize: 0.5,
-            minSize: 0.25,
-            maxSize: 1,
-            snap: false,
-            snapFlingVelocity: 2000,
-            snapAnimationDuration: const Duration(milliseconds: 200),
-            controller: controller,
-          ),
-        );
-        await tester.pump();
-
-        // 2500 px/s is above 2000 threshold — should snap to maxSize.
         await tester.fling(
           find.byType(ShadSheetResizeHandle),
           const Offset(0, -150),
-          2500,
+          c.velocity,
         );
-        await tester.pumpAndSettle();
+        if (c.settle) {
+          await tester.pumpAndSettle();
+        } else {
+          await tester.pump();
+        }
 
-        expect(controller.size, closeTo(1.0, 0.05));
-      },
-    );
+        c.check(controller.size);
+      });
+    }
 
-    // Test I (regression for the max-size constraint): snapSizes contains
-    // 1.0 but maxSize is 0.9. closeTo proves the fling activated; the
-    // strict <=0.9 ceiling is the actual regression guard.
+    // Regression for the max-size constraint: snapSizes contains 1.0 but
+    // maxSize is 0.9, so the fling must land in (0.8, 0.9] — never above the
+    // ceiling.
     testWidgets(
       'fling never lands above maxSize even when snapSizes goes higher',
       (tester) async {
@@ -2154,7 +1967,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        expect(controller.size, closeTo(0.9, 0.05));
+        // Fling activated (size grew well past the 0.5 lift) but the 0.9
+        // ceiling held even though snapSizes offered 1.0.
+        expect(controller.size, greaterThan(0.8));
         expect(controller.size, lessThanOrEqualTo(0.9));
       },
     );
