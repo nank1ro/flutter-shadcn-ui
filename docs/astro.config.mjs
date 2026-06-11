@@ -1,6 +1,15 @@
 // @ts-check
+import { readFileSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+
+// The "Apps created with Flutter Shadcn UI" entries live in a plain JSON data
+// file. They are appended by .github/scripts/add-app-to-docs.js from issue
+// submissions. Loading them as data (JSON.parse), rather than generating/eval'ing
+// JS, keeps attacker-influenced values inert. See GHSA-r2gv-jrj7-hp4v.
+const apps = JSON.parse(
+  readFileSync(new URL('./apps.json', import.meta.url), 'utf8'),
+);
 
 // https://astro.build/config
 export default defineConfig({
@@ -78,113 +87,7 @@ export default defineConfig({
         {
           label: 'Apps created with Flutter Shadcn UI',
           collapsed: false,
-          items: [
-            {
-              label: 'Submit your app',
-              link: 'submit-your-app',
-            },
-            {
-              label: 'Notes Calculator',
-              link: 'https://notescalculator.com',
-              badge: { text: 'Author' },
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'ATColombia',
-              link: 'https://atcolombia.co',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'AV8',
-              link: 'https://www.av8.app/',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'buildr.studio',
-              link: 'https://github.com/code-on-sunday/buildr.studio',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Cleaner for Flutter',
-              link: 'https://apps.apple.com/us/app/cleaner-for-flutter/id6661026876',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Due Kasir',
-              link: 'https://play.google.com/store/apps/details?id=com.devindo.due_kasir',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Gessential',
-              link: 'https://github.com/mirarr-app/Gessential',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Gift Grab',
-              link: 'https://giftgrab.codemagic.app',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Human Design - Joy',
-              link: 'https://getjoy.app/',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Movie Paradise',
-              link: 'https://movieparadise.app/',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Pic Gen',
-              link: 'https://apps.apple.com/ca/app/pic-gen-generate-ai-pictures/id6670408981',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Prompt Builder',
-              link: 'https://promptbuilder.site/',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Snap Ink',
-              link: 'https://www.snapink.pro/',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Yandex Eats Clone',
-              link: 'https://github.com/itsezlife/yandex-eats-clone',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'ZikZak AI',
-              link: 'https://zuzu.dev',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'GrantWeave',
-              link: 'https://grantweave.com',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Brew Better',
-              link: 'https://brew-better.2ndbeststud.io',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Axichat',
-              link: 'https://axi.chat',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Servicebay',
-              link: 'https://www.servicebay.io',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            },
-            {
-              label: 'Rhex: HEX & RGB Editor',
-              link: 'https://odinlabs8.gumroad.com/l/rhex',
-              attrs: { target: '_blank', rel: 'noopener noreferrer' },
-            }
-          ],
+          items: apps,
         }
       ],
     }),

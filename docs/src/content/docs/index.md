@@ -4,6 +4,31 @@ description: Shadcn UI - The famous UI library ported in Flutter.
 prev: false
 sidebar:
   order: 1
+banner:
+  content: |
+    <style>
+      .sl-banner{padding:0 !important;background:transparent !important;border:0 !important;}
+      .promo-rotator{position:relative;display:block;line-height:0;}
+      .promo-slide{display:block;line-height:0;text-decoration:none;}
+      .promo-slide img{display:block;width:100%;height:auto;}
+      .promo-slide.s2{position:absolute;top:0;left:0;width:100%;}
+      .promo-badge{position:absolute;top:0.5rem;right:0.5rem;font-size:0.65rem;font-weight:600;background:rgba(0,0,0,0.65);color:#fff;padding:0.15rem 0.45rem;border-radius:0.25rem;text-transform:uppercase;letter-spacing:0.06em;font-family:system-ui,-apple-system,sans-serif;line-height:1.4;pointer-events:none;}
+      .promo-slide.s1{animation:promo-1 14s ease-in-out infinite;}
+      .promo-slide.s2{animation:promo-2 14s ease-in-out infinite;}
+      @keyframes promo-1{0%,45%{opacity:1;pointer-events:auto;}50%,95%{opacity:0;pointer-events:none;}100%{opacity:1;pointer-events:auto;}}
+      @keyframes promo-2{0%,45%{opacity:0;pointer-events:none;}50%,95%{opacity:1;pointer-events:auto;}100%{opacity:0;pointer-events:none;}}
+      @media (prefers-reduced-motion: reduce){.promo-slide.s1,.promo-slide.s2{animation:none;}.promo-slide.s2{display:none;}}
+    </style>
+    <div class="promo-rotator">
+      <a class="promo-slide s1" href="https://notescalculator.com/" target="_blank" rel="noopener" aria-label="Sponsored: Notes Calculator — Math at the speed of thought" data-umami-event="promo-banner-click" data-umami-event-app="notes-calculator" data-umami-event-placement="docs-landing">
+        <span class="promo-badge">Sponsored</span>
+        <img src="/flutter-shadcn-ui/notes-calculator-banner.webp" alt="Notes Calculator — Math at the speed of thought" />
+      </a>
+      <a class="promo-slide s2" href="https://manico.mariuti.com/" target="_blank" rel="noopener" aria-label="Sponsored: Manico — One key. One app. No cycling." data-umami-event="promo-banner-click" data-umami-event-app="manico" data-umami-event-placement="docs-landing">
+        <span class="promo-badge">Sponsored</span>
+        <img src="/flutter-shadcn-ui/manico-banner.webp" alt="Manico — One key. One app. No cycling." />
+      </a>
+    </div>
 ---
 
 Welcome to Shadcn UI for Flutter.
