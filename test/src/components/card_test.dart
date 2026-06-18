@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:golden_matrix/golden_matrix.dart';
 import 'package:shadcn_ui/src/app.dart';
-import 'package:shadcn_ui/src/components/card.dart'; // Adjust import path based on your project structure
+import 'package:shadcn_ui/src/components/card.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
+import '_golden_helpers.dart';
 
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
@@ -227,24 +229,33 @@ void main() {
       expect(decoration?.border, isNotNull);
     });
 
-    testWidgets('ShadCard matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadCard(
-            title: Text('title'),
-            description: Text('description'),
-            footer: Text('footer'),
-            leading: Text('leading'),
-            trailing: Text('trailing'),
-            child: Text('content'),
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadCard),
-        matchesGoldenFile('goldens/card.png'),
-      );
-    });
   });
+
+  screenMatrixGolden(
+    'card',
+    reportFormats: const {},
+    axes: goldenAxes,
+    appBuilder: (combination) => shadAppForCombination(
+      combination,
+      home: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Center(child: combination.scenario.builder()),
+        ),
+      ),
+    ),
+    states: [
+      MatrixScenario(
+        'default',
+        builder: () => const ShadCard(
+          title: Text('title'),
+          description: Text('description'),
+          footer: Text('footer'),
+          leading: Text('leading'),
+          trailing: Text('trailing'),
+          child: Text('content'),
+        ),
+      ),
+    ],
+  );
 }

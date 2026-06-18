@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:golden_matrix/golden_matrix.dart';
 import 'package:shadcn_ui/src/app.dart';
-import 'package:shadcn_ui/src/components/checkbox.dart'; // Adjust import path based on your project structure
+import 'package:shadcn_ui/src/components/checkbox.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import '_golden_helpers.dart';
 
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
@@ -323,40 +325,41 @@ void main() {
       expect(find.text('Label'), findsNothing);
     });
 
-    testWidgets('ShadCheckbox on matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadCheckbox(
-            value: true,
-            icon: Icon(Icons.air_rounded),
-            label: Text('Label'),
-            sublabel: Text('Sublabel'),
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadCheckbox),
-        matchesGoldenFile('goldens/checkbox_on.png'),
-      );
-    });
-
-    testWidgets('ShadCheckbox off matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadCheckbox(
-            value: false,
-            icon: Icon(Icons.air_rounded),
-            label: Text('Label'),
-            sublabel: Text('Sublabel'),
-          ),
-        ),
-      );
-
-      expect(
-        find.byType(ShadCheckbox),
-        matchesGoldenFile('goldens/checkbox_off.png'),
-      );
-    });
   });
+
+  screenMatrixGolden(
+    'checkbox',
+    reportFormats: const {},
+    axes: goldenAxes,
+    appBuilder: (combination) => shadAppForCombination(
+      combination,
+      home: Scaffold(
+        body: Center(child: combination.scenario.builder()),
+      ),
+    ),
+    states: [
+      MatrixScenario(
+        'on_off',
+        builder: () => const Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ShadCheckbox(
+              value: true,
+              icon: Icon(Icons.air_rounded),
+              label: Text('Label'),
+              sublabel: Text('Sublabel'),
+            ),
+            SizedBox(height: 16),
+            ShadCheckbox(
+              value: false,
+              icon: Icon(Icons.air_rounded),
+              label: Text('Label'),
+              sublabel: Text('Sublabel'),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
 }

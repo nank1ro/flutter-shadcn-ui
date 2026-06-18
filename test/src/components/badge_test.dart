@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:golden_matrix/golden_matrix.dart';
 import 'package:shadcn_ui/src/app.dart';
-import 'package:shadcn_ui/src/components/badge.dart'; // Adjust import path based on your project structure
+import 'package:shadcn_ui/src/components/badge.dart';
+import '_golden_helpers.dart';
 
 void main() {
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
@@ -242,57 +244,35 @@ void main() {
       final decoration = container.decoration as ShapeDecoration?;
       expect(decoration?.shape, isA<StadiumBorder>());
     });
-
-    testWidgets('ShadBadge matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadBadge(child: Text('Badge')),
-        ),
-      );
-
-      expect(
-        find.byType(ShadBadge),
-        matchesGoldenFile('goldens/badge.png'),
-      );
-    });
-
-    testWidgets('ShadBadge.secondary matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadBadge.secondary(child: Text('Badge')),
-        ),
-      );
-
-      expect(
-        find.byType(ShadBadge),
-        matchesGoldenFile('goldens/badge_secondary.png'),
-      );
-    });
-
-    testWidgets('ShadBadge.outline matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadBadge.outline(child: Text('Badge')),
-        ),
-      );
-
-      expect(
-        find.byType(ShadBadge),
-        matchesGoldenFile('goldens/badge_outline.png'),
-      );
-    });
-
-    testWidgets('ShadBadge.destructive matches goldens', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadBadge.destructive(child: Text('Badge')),
-        ),
-      );
-
-      expect(
-        find.byType(ShadBadge),
-        matchesGoldenFile('goldens/badge_destructive.png'),
-      );
-    });
   });
+
+  screenMatrixGolden(
+    'badge',
+    appBuilder: (combination) => shadAppForCombination(
+      combination,
+      home: Scaffold(
+        body: Center(child: combination.scenario.builder()),
+      ),
+    ),
+    states: [
+      MatrixScenario(
+        'primary',
+        builder: () => const ShadBadge(child: Text('Badge')),
+      ),
+      MatrixScenario(
+        'secondary',
+        builder: () => const ShadBadge.secondary(child: Text('Badge')),
+      ),
+      MatrixScenario(
+        'outline',
+        builder: () => const ShadBadge.outline(child: Text('Badge')),
+      ),
+      MatrixScenario(
+        'destructive',
+        builder: () => const ShadBadge.destructive(child: Text('Badge')),
+      ),
+    ],
+    reportFormats: const {},
+  axes: goldenAxes,
+  );
 }

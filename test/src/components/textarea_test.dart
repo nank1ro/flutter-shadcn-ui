@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:shadcn_ui/src/app.dart';
+import 'package:golden_matrix/golden_matrix.dart';
 import 'package:shadcn_ui/src/components/textarea.dart';
 
+import '_golden_helpers.dart';
+
 void main() {
-  Widget createTestWidget(Widget child) {
-    return ShadApp(home: Scaffold(body: child));
-  }
-
-  group('ShadTextarea', () {
-    testWidgets('ShadTextarea matches golden', (tester) async {
-      await tester.pumpWidget(
-        createTestWidget(
-          const ShadTextarea(
-            placeholder: Text('Enter your message'),
-          ),
+  screenMatrixGolden(
+    'textarea',
+    reportFormats: const {},
+    axes: goldenAxes,
+    appBuilder: (combination) => shadAppForCombination(
+      combination,
+      home: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Center(child: combination.scenario.builder()),
         ),
-      );
-
-      expect(
-        find.byType(ShadTextarea),
-        matchesGoldenFile('goldens/textarea.png'),
-      );
-    });
-  });
+      ),
+    ),
+    states: [
+      MatrixScenario(
+        'default',
+        builder: () => const ShadTextarea(
+          placeholder: Text('Enter your message'),
+        ),
+      ),
+    ],
+  );
 }
