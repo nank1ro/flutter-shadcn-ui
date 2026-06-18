@@ -1,0 +1,25 @@
+name: Test .github scripts
+
+on:
+  pull_request:
+    paths:
+      - ".github/scripts/**"
+  push:
+    branches: [main]
+    paths:
+      - ".github/scripts/**"
+
+permissions: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "20"
+      - name: Run script tests
+        run: node --test .github/scripts/*.test.js
