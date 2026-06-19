@@ -72,6 +72,7 @@ class ShadStickySectionList extends StatefulWidget {
     this.inlineHeaderPadding,
     this.inlineHeaderBackgroundColor,
     this.clipBehavior = Clip.hardEdge,
+    this.onSectionChanged,
   });
 
   /// The sections to display in the list.
@@ -121,6 +122,15 @@ class ShadStickySectionList extends StatefulWidget {
 
   /// {@macro flutter.widgets.Clip}
   final Clip clipBehavior;
+
+  /// {@template ShadStickySectionList.onSectionChanged}
+  /// Called when the active section changes during scrolling.
+  ///
+  /// The callback receives the zero-based index of the newly active section.
+  /// Useful for tracking which section is currently in view, for example
+  /// to prefetch data or update external state.
+  /// {@endtemplate}
+  final ValueChanged<int>? onSectionChanged;
 
   @override
   State<ShadStickySectionList> createState() => _ShadStickySectionListState();
@@ -208,6 +218,7 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
 
     if (_currentSectionIndex != active) {
       setState(() => _currentSectionIndex = active);
+      widget.onSectionChanged?.call(active);
     }
   }
 

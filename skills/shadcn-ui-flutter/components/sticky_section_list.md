@@ -81,6 +81,52 @@ showShadSheet(
 );
 ```
 
+## Tracking the Current Section
+
+Use `onSectionChanged` to track which section is currently active. This is useful for:
+
+- Prefetching data for upcoming sections
+- Analytics and user behavior tracking
+- Updating external state or UI based on the visible section
+- Enriching listings or loading related content
+
+```dart
+class _MySheetState extends State<MySheet> {
+  int _currentSection = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return ShadSheet(
+      scrollable: false,
+      child: ShadStickySectionList(
+        sections: sections,
+        onSectionChanged: (sectionIndex) {
+          setState(() => _currentSection = sectionIndex);
+
+          // Example: Prefetch next section's data
+          if (sectionIndex < sections.length - 1) {
+            _prefetchSectionData(sectionIndex + 1);
+          }
+
+          // Example: Track analytics
+          analytics.logEvent('section_viewed', {
+            'section_index': sectionIndex,
+            'section_name': getSectionName(sectionIndex),
+          });
+        },
+      ),
+    );
+  }
+
+  Future<void> _prefetchSectionData(int sectionIndex) async {
+    // Load data for upcoming section
+    await dataService.prefetch(sectionIndex);
+  }
+}
+```
+
+The callback receives the zero-based index of the newly active section and is called whenever the user scrolls into a different section.
+
 ## Customization
 
 ### Styling
@@ -236,25 +282,26 @@ class StickySectionListPage extends StatelessWidget {
 
 ### ShadStickySectionList
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `sections` | `List<ShadListSection>` | The sections to display in the list (required) |
-| `controller` | `ScrollController?` | Optional scroll controller for the internal scroll view |
-| `physics` | `ScrollPhysics?` | Scroll physics for the list |
-| `padding` | `EdgeInsetsGeometry?` | Padding around the entire scrollable content |
-| `headerPadding` | `EdgeInsetsGeometry?` | Padding inside the sticky header pinned at the top |
-| `headerBackgroundColor` | `Color?` | Background color of the sticky header |
-| `headerBorder` | `ShadBorder?` | Border surrounding the sticky header |
-| `inlineHeaderPadding` | `EdgeInsetsGeometry?` | Padding inside the inline section headers |
-| `inlineHeaderBackgroundColor` | `Color?` | Background color of the inline section headers |
-| `clipBehavior` | `Clip` | How to clip the list content (default: `Clip.hardEdge`) |
+| Property                      | Type                    | Description                                                                          |
+| ----------------------------- | ----------------------- | ------------------------------------------------------------------------------------ |
+| `sections`                    | `List<ShadListSection>` | The sections to display in the list (required)                                       |
+| `controller`                  | `ScrollController?`     | Optional scroll controller for the internal scroll view                              |
+| `physics`                     | `ScrollPhysics?`        | Scroll physics for the list                                                          |
+| `padding`                     | `EdgeInsetsGeometry?`   | Padding around the entire scrollable content                                         |
+| `headerPadding`               | `EdgeInsetsGeometry?`   | Padding inside the sticky header pinned at the top                                   |
+| `headerBackgroundColor`       | `Color?`                | Background color of the sticky header                                                |
+| `headerBorder`                | `ShadBorder?`           | Border surrounding the sticky header                                                 |
+| `inlineHeaderPadding`         | `EdgeInsetsGeometry?`   | Padding inside the inline section headers                                            |
+| `inlineHeaderBackgroundColor` | `Color?`                | Background color of the inline section headers                                       |
+| `clipBehavior`                | `Clip`                  | How to clip the list content (default: `Clip.hardEdge`)                              |
+| `onSectionChanged`            | `ValueChanged<int>?`    | Called when the active section changes; receives the zero-based index of the section |
 
 ### ShadListSection
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `header` | `Widget` | The header widget displayed at the top of the section |
-| `items` | `List<Widget>` | The item widgets contained in this section |
+| Property | Type           | Description                                           |
+| -------- | -------------- | ----------------------------------------------------- |
+| `header` | `Widget`       | The header widget displayed at the top of the section |
+| `items`  | `List<Widget>` | The item widgets contained in this section            |
 
 ## Notes
 
