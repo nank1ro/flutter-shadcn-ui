@@ -33,6 +33,7 @@ import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
+import 'package:shadcn_ui/src/theme/components/sticky_section_list.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
@@ -1075,6 +1076,24 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       scaleFactor: 0.05,
       animationDuration: Duration(milliseconds: 300),
       animationCurve: Cubic(0.215, 0.61, 0.355, 1),
+    );
+  }
+
+  @override
+  ShadStickySectionListTheme stickySectionListTheme() {
+    return ShadStickySectionListTheme(
+      padding: EdgeInsets.zero,
+      headerPadding: const EdgeInsets.fromLTRB(24, 20, 24, 12),
+      headerBackgroundColor: colorScheme.background,
+      headerBorder: ShadBorder(
+        bottom: ShadBorderSide(color: colorScheme.border),
+      ),
+      inlineHeaderPadding: const EdgeInsets.symmetric(
+        horizontal: 24,
+        vertical: 12,
+      ),
+      inlineHeaderBackgroundColor: colorScheme.muted.withValues(alpha: 0.3),
+      clipBehavior: Clip.hardEdge,
     );
   }
 

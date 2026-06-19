@@ -29,6 +29,7 @@ import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
+import 'package:shadcn_ui/src/theme/components/sticky_section_list.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
@@ -107,6 +108,7 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     ShadMenubarTheme? menubarTheme,
     ShadSeparatorTheme? separatorTheme,
     ShadSonnerTheme? sonnerTheme,
+    ShadStickySectionListTheme? stickySectionListTheme,
     ShadTextareaTheme? textareaTheme,
     ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
   }) {
@@ -236,6 +238,9 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
       menubarTheme: effectiveVariant.menubarTheme().merge(menubarTheme),
       separatorTheme: effectiveVariant.separatorTheme().merge(separatorTheme),
       sonnerTheme: effectiveVariant.sonnerTheme().merge(sonnerTheme),
+      stickySectionListTheme: effectiveVariant.stickySectionListTheme().merge(
+        stickySectionListTheme,
+      ),
       textareaTheme: effectiveVariant.textareaTheme().merge(textareaTheme),
       defaultKeyboardToolbarTheme: effectiveVariant
           .defaultKeyboardToolbarTheme()
@@ -296,6 +301,7 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     required super.menubarTheme,
     required super.separatorTheme,
     required super.sonnerTheme,
+    required super.stickySectionListTheme,
     required super.textareaTheme,
     required super.defaultKeyboardToolbarTheme,
   });

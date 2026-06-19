@@ -28,6 +28,7 @@ import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
+import 'package:shadcn_ui/src/theme/components/sticky_section_list.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
@@ -94,6 +95,7 @@ abstract class ShadBaseTheme {
     required this.menubarTheme,
     required this.separatorTheme,
     required this.sonnerTheme,
+    required this.stickySectionListTheme,
     required this.textareaTheme,
     required this.defaultKeyboardToolbarTheme,
   });
@@ -150,6 +152,7 @@ abstract class ShadBaseTheme {
   final ShadMenubarTheme menubarTheme;
   final ShadSeparatorTheme separatorTheme;
   final ShadSonnerTheme sonnerTheme;
+  final ShadStickySectionListTheme stickySectionListTheme;
   final ShadTextareaTheme textareaTheme;
   final ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme;
 }
@@ -202,6 +205,7 @@ abstract class ShadThemeVariant {
   ShadMenubarTheme menubarTheme();
   ShadSeparatorTheme separatorTheme();
   ShadSonnerTheme sonnerTheme();
+  ShadStickySectionListTheme stickySectionListTheme();
   ShadTextareaTheme textareaTheme();
   ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme();
 }

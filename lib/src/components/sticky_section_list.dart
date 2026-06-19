@@ -214,20 +214,29 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final stickyListTheme = theme.stickySectionListTheme;
 
-    final effectivePadding = widget.padding ?? EdgeInsets.zero;
+    final effectivePadding =
+        widget.padding ?? stickyListTheme.padding ?? EdgeInsets.zero;
     final effectiveHeaderPadding =
-        widget.headerPadding ?? const EdgeInsets.fromLTRB(24, 20, 24, 12);
+        widget.headerPadding ??
+        stickyListTheme.headerPadding ??
+        const EdgeInsets.fromLTRB(24, 20, 24, 12);
     final effectiveHeaderBackgroundColor =
-        widget.headerBackgroundColor ?? theme.colorScheme.background;
+        widget.headerBackgroundColor ??
+        stickyListTheme.headerBackgroundColor ??
+        theme.colorScheme.background;
     final effectiveHeaderBorder =
         widget.headerBorder ??
+        stickyListTheme.headerBorder ??
         ShadBorder(bottom: ShadBorderSide(color: theme.colorScheme.border));
     final effectiveInlineHeaderPadding =
         widget.inlineHeaderPadding ??
+        stickyListTheme.inlineHeaderPadding ??
         const EdgeInsets.symmetric(horizontal: 24, vertical: 12);
     final effectiveInlineHeaderBackgroundColor =
         widget.inlineHeaderBackgroundColor ??
+        stickyListTheme.inlineHeaderBackgroundColor ??
         theme.colorScheme.muted.withValues(alpha: 0.3);
 
     final currentSection =
