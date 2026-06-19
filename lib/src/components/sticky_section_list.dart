@@ -180,8 +180,12 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
     super.dispose();
   }
 
-  void _registerHeader(int sectionIndex, _InlineSectionHeaderState state) {
+  void _onHeaderMounted(int sectionIndex, _InlineSectionHeaderState state) {
     _mountedHeaders[sectionIndex] = state;
+    // Measure immediately after the frame when it's first laid out
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _updateCurrentSection();
+    });
   }
 
   void _unregisterHeader(int sectionIndex) {
@@ -307,7 +311,7 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
           section: section,
           padding: inlineHeaderPadding,
           backgroundColor: inlineHeaderBackgroundColor,
-          onMounted: _registerHeader,
+          onMounted: _onHeaderMounted,
           onUnmounted: _unregisterHeader,
         );
       }
