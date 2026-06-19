@@ -23,7 +23,6 @@ import 'package:example/pages/input_form_field.dart';
 import 'package:example/pages/input_otp.dart';
 import 'package:example/pages/input_otp_form_field.dart';
 import 'package:example/pages/list_sheet.dart';
-import 'package:example/pages/sticky_section_list_page.dart';
 import 'package:example/pages/menubar.dart';
 import 'package:example/pages/popover.dart';
 import 'package:example/pages/progress.dart';
@@ -50,6 +49,8 @@ import 'package:example/pages/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+
+import 'pages/sticky_section_list.dart';
 
 void main() {
   SolidartConfig.devToolsEnabled = false;

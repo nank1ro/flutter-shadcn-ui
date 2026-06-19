@@ -28,9 +28,10 @@ class ShadListSection {
 /// The header at the top changes instantly (no animation) to reflect
 /// the section currently being scrolled through. Section headers appear
 /// inline within the scrollable content. The active section is detected
-/// by measuring the real position of each inline header, so the title
-/// switches exactly when a section's header reaches the top of the
-/// scroll area — regardless of item heights.
+/// by measuring the real, live position of each inline header on every
+/// scroll frame, so the title switches exactly when a section's header
+/// reaches the top of the scroll area — regardless of item heights,
+/// async image loads, or viewport resizes.
 ///
 /// Use as the `child` of a `ShadSheet` with `scrollable: false`:
 ///
@@ -129,9 +130,14 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
   late final ScrollController _scrollController;
   int _currentSectionIndex = 0;
 
-  /// Maps section index → the scroll offset at which that section's inline
-  /// header reaches the top of the viewport. Measured lazily as headers get
-  /// laid out via [RenderAbstractViewport.getOffsetToReveal].
+  /// Currently-mounted inline headers, keyed by section index.
+  /// Only visible (and cache-extent) headers are present, so iterating
+  /// this map on every scroll tick is cheap.
+  final Map<int, _InlineSectionHeaderState> _mountedHeaders = {};
+
+  /// Cached reveal offsets, kept fresh by [ _mountedHeaders] on every scroll.
+  /// Entries for unmounted (recycled) headers keep their last value, which
+  /// remains accurate as long as the layout above them hasn't changed.
   final Map<int, double> _headerRevealOffsets = {};
 
   @override
@@ -139,6 +145,9 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
     super.initState();
     _scrollController = widget.controller ?? ScrollController();
     _scrollController.addListener(_onScroll);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _updateCurrentSection();
+    });
   }
 
   @override
@@ -146,6 +155,7 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.sections != widget.sections) {
       _headerRevealOffsets.clear();
+      _mountedHeaders.clear();
       _currentSectionIndex = 0;
     }
   }
@@ -160,13 +170,12 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
     super.dispose();
   }
 
-  void _onHeaderRevealMeasured(int sectionIndex, double revealOffset) {
-    if (_headerRevealOffsets[sectionIndex] != revealOffset) {
-      _headerRevealOffsets[sectionIndex] = revealOffset;
-      // Re-evaluate the active section right away so the title is in sync
-      // even when not actively scrolling.
-      _updateCurrentSection();
-    }
+  void _registerHeader(int sectionIndex, _InlineSectionHeaderState state) {
+    _mountedHeaders[sectionIndex] = state;
+  }
+
+  void _unregisterHeader(int sectionIndex) {
+    _mountedHeaders.remove(sectionIndex);
   }
 
   void _onScroll() {
@@ -175,14 +184,24 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
   }
 
   void _updateCurrentSection() {
-    final offset = _scrollController.position.pixels;
+    if (!_scrollController.hasClients) return;
+    final scrollOffset = _scrollController.position.pixels;
 
-    // Find the highest section index whose measured reveal offset is at or
-    // below the current scroll position — i.e. the last header that has
-    // already passed the top of the viewport.
+    // Refresh live offsets for every mounted header. This reads the current
+    // layout, so async image loads and resizes are reflected immediately.
+    for (final entry in _mountedHeaders.entries) {
+      final renderObject = entry.value.renderObject;
+      if (renderObject == null || !renderObject.attached) continue;
+      final viewport = RenderAbstractViewport.of(renderObject);
+      final revealOffset = viewport.getOffsetToReveal(renderObject, 0.0).offset;
+      _headerRevealOffsets[entry.key] = revealOffset;
+    }
+
+    // Find the highest section index whose header has reached (or passed)
+    // the top of the viewport — i.e. the last header that scrolled by.
     var active = 0;
     for (final entry in _headerRevealOffsets.entries) {
-      if (entry.value <= offset + 1 && entry.key > active) {
+      if (entry.value <= scrollOffset + 1 && entry.key > active) {
         active = entry.key;
       }
     }
@@ -268,7 +287,8 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
           section: section,
           padding: inlineHeaderPadding,
           backgroundColor: inlineHeaderBackgroundColor,
-          onRevealMeasured: _onHeaderRevealMeasured,
+          onMounted: _registerHeader,
+          onUnmounted: _unregisterHeader,
         );
       }
       remaining--;
@@ -311,8 +331,8 @@ class _StickyHeader extends StatelessWidget {
 
 /// Inline section header rendered within the scrollable list.
 ///
-/// After layout, it reports the scroll offset at which it reaches the top of
-/// the viewport so the parent can keep the sticky title in sync.
+/// Registers itself with the parent on mount so the parent can read its
+/// live render-object position on every scroll frame.
 class _InlineSectionHeader extends StatefulWidget {
   const _InlineSectionHeader({
     super.key,
@@ -320,44 +340,39 @@ class _InlineSectionHeader extends StatefulWidget {
     required this.section,
     required this.padding,
     required this.backgroundColor,
-    required this.onRevealMeasured,
+    required this.onMounted,
+    required this.onUnmounted,
   });
 
   final int sectionIndex;
   final ShadListSection section;
   final EdgeInsetsGeometry padding;
   final Color backgroundColor;
-  final void Function(int sectionIndex, double revealOffset) onRevealMeasured;
+  final void Function(int sectionIndex, _InlineSectionHeaderState state)
+  onMounted;
+  final void Function(int sectionIndex) onUnmounted;
 
   @override
   State<_InlineSectionHeader> createState() => _InlineSectionHeaderState();
 }
 
 class _InlineSectionHeaderState extends State<_InlineSectionHeader> {
+  /// The current render object, or null if not yet laid out / detached.
+  RenderObject? get renderObject {
+    if (!mounted) return null;
+    return context.findRenderObject();
+  }
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _measureRevealOffset());
+    widget.onMounted(widget.sectionIndex, this);
   }
 
   @override
-  void didUpdateWidget(covariant _InlineSectionHeader oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.section != widget.section ||
-        oldWidget.padding != widget.padding) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _measureRevealOffset(),
-      );
-    }
-  }
-
-  void _measureRevealOffset() {
-    if (!mounted) return;
-    final renderObject = context.findRenderObject();
-    if (renderObject == null || !renderObject.attached) return;
-    final viewport = RenderAbstractViewport.of(renderObject);
-    final revealOffset = viewport.getOffsetToReveal(renderObject, 0.0).offset;
-    widget.onRevealMeasured(widget.sectionIndex, revealOffset);
+  void dispose() {
+    widget.onUnmounted(widget.sectionIndex);
+    super.dispose();
   }
 
   @override
