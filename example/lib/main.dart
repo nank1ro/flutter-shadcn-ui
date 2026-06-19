@@ -23,6 +23,7 @@ import 'package:example/pages/input_form_field.dart';
 import 'package:example/pages/input_otp.dart';
 import 'package:example/pages/input_otp_form_field.dart';
 import 'package:example/pages/list_sheet.dart';
+import 'package:example/pages/sticky_section_list_page.dart';
 import 'package:example/pages/menubar.dart';
 import 'package:example/pages/popover.dart';
 import 'package:example/pages/progress.dart';
@@ -91,6 +92,7 @@ final routes = <String, WidgetBuilder>{
   '/sheet': (_) => const SheetPage(),
   '/slider': (_) => const SliderPage(),
   '/sonner': (_) => const SonnerPage(),
+  '/sticky-section-list': (_) => const StickySectionListPage(),
   '/switch': (_) => const SwitchPage(),
   '/switch-form-field': (_) => const SwitchFormFieldPage(),
   '/table': (_) => const TablePage(),
