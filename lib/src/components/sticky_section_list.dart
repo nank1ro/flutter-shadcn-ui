@@ -196,6 +196,7 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
   void _updateCurrentSection() {
     if (!_scrollController.hasClients) return;
 
+    final scrollOffset = _scrollController.position.pixels;
     int? lastPassedHeaderIndex;
     int? firstMountedIndex;
 
