@@ -145,11 +145,6 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
   /// this map on every scroll tick is cheap.
   final Map<int, _InlineSectionHeaderState> _mountedHeaders = {};
 
-  /// Cached reveal offsets, kept fresh by [ _mountedHeaders] on every scroll.
-  /// Entries for unmounted (recycled) headers keep their last value, which
-  /// remains accurate as long as the layout above them hasn't changed.
-  final Map<int, double> _headerRevealOffsets = {};
-
   @override
   void initState() {
     super.initState();
@@ -164,7 +159,6 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
   void didUpdateWidget(covariant ShadStickySectionList oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.sections != widget.sections) {
-      _headerRevealOffsets.clear();
       _mountedHeaders.clear();
       _currentSectionIndex = 0;
     }
@@ -199,25 +193,51 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
 
   void _updateCurrentSection() {
     if (!_scrollController.hasClients) return;
-    final scrollOffset = _scrollController.position.pixels;
 
-    // Refresh live offsets for every mounted header. This reads the current
-    // layout, so async image loads and resizes are reflected immediately.
+    int? lastPassedHeaderIndex;
+    int? firstMountedIndex;
+
     for (final entry in _mountedHeaders.entries) {
+      final idx = entry.key;
       final renderObject = entry.value.renderObject;
       if (renderObject == null || !renderObject.attached) continue;
+
       final viewport = RenderAbstractViewport.of(renderObject);
-      final revealOffset = viewport.getOffsetToReveal(renderObject, 0.0).offset;
-      _headerRevealOffsets[entry.key] = revealOffset;
+      if (viewport is! RenderBox) continue;
+
+      if (firstMountedIndex == null || idx < firstMountedIndex) {
+        firstMountedIndex = idx;
+      }
+
+      try {
+        final viewportBox = viewport as RenderBox;
+        final headerBox = renderObject as RenderBox;
+        final dy =
+            headerBox.localToGlobal(Offset.zero).dy -
+            viewportBox.localToGlobal(Offset.zero).dy;
+
+        // If dy <= 1.0, the header has reached or passed the top boundary.
+        if (dy <= 1.0) {
+          if (lastPassedHeaderIndex == null || idx > lastPassedHeaderIndex) {
+            lastPassedHeaderIndex = idx;
+          }
+        }
+      } catch (_) {
+        // Ignore headers that can't be measured during complex layout frames
+      }
     }
 
-    // Find the highest section index whose header has reached (or passed)
-    // the top of the viewport — i.e. the last header that scrolled by.
-    var active = 0;
-    for (final entry in _headerRevealOffsets.entries) {
-      if (entry.value <= scrollOffset + 1 && entry.key > active) {
-        active = entry.key;
-      }
+    int active;
+    if (lastPassedHeaderIndex != null) {
+      // The highest-index header that has passed the top of the viewport.
+      active = lastPassedHeaderIndex;
+    } else if (firstMountedIndex != null) {
+      // No mounted header has passed the top. That means the active section
+      // is the one *before* the first mounted header.
+      active = (firstMountedIndex - 1).clamp(0, widget.sections.length - 1);
+    } else {
+      // Fallback if absolutely no headers are mounted.
+      active = _currentSectionIndex;
     }
 
     if (_currentSectionIndex != active) {
