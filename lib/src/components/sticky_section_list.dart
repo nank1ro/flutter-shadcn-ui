@@ -182,8 +182,10 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
     });
   }
 
-  void _unregisterHeader(int sectionIndex) {
-    _mountedHeaders.remove(sectionIndex);
+  void _unregisterHeader(int sectionIndex, _InlineSectionHeaderState state) {
+    if (_mountedHeaders[sectionIndex] == state) {
+      _mountedHeaders.remove(sectionIndex);
+    }
   }
 
   void _onScroll() {
@@ -210,14 +212,12 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
       }
 
       try {
-        final viewportBox = viewport as RenderBox;
-        final headerBox = renderObject as RenderBox;
-        final dy =
-            headerBox.localToGlobal(Offset.zero).dy -
-            viewportBox.localToGlobal(Offset.zero).dy;
+        final revealOffset = viewport
+            .getOffsetToReveal(renderObject, 0.0)
+            .offset;
 
-        // If dy <= 1.0, the header has reached or passed the top boundary.
-        if (dy <= 1.0) {
+        // If the current scroll position has reached or passed this header's reveal offset.
+        if (scrollOffset >= revealOffset - 1.0) {
           if (lastPassedHeaderIndex == null || idx > lastPassedHeaderIndex) {
             lastPassedHeaderIndex = idx;
           }
@@ -394,7 +394,8 @@ class _InlineSectionHeader extends StatefulWidget {
   final Color backgroundColor;
   final void Function(int sectionIndex, _InlineSectionHeaderState state)
   onMounted;
-  final void Function(int sectionIndex) onUnmounted;
+  final void Function(int sectionIndex, _InlineSectionHeaderState state)
+  onUnmounted;
 
   @override
   State<_InlineSectionHeader> createState() => _InlineSectionHeaderState();
@@ -415,7 +416,7 @@ class _InlineSectionHeaderState extends State<_InlineSectionHeader> {
 
   @override
   void dispose() {
-    widget.onUnmounted(widget.sectionIndex);
+    widget.onUnmounted(widget.sectionIndex, this);
     super.dispose();
   }
 
