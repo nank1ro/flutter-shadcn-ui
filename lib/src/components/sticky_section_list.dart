@@ -158,10 +158,10 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
   @override
   void didUpdateWidget(covariant ShadStickySectionList oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.sections != widget.sections) {
-      _mountedHeaders.clear();
-      _currentSectionIndex = 0;
-    }
+    // Don't clear _mountedHeaders here just because widget.sections changed.
+    // If sections change identity (e.g. built dynamically), clearing the map
+    // breaks tracking because already-mounted headers won't re-run initState.
+    // The headers manage their own presence in the map via build/dispose.
   }
 
   @override
@@ -200,25 +200,29 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
     int? lastPassedHeaderIndex;
     int? firstMountedIndex;
 
+    final listBox = context.findRenderObject() as RenderBox?;
+    if (listBox == null) return;
+
     for (final entry in _mountedHeaders.entries) {
       final idx = entry.key;
       final renderObject = entry.value.renderObject;
       if (renderObject == null || !renderObject.attached) continue;
-
-      final viewport = RenderAbstractViewport.of(renderObject);
-      if (viewport is! RenderBox) continue;
 
       if (firstMountedIndex == null || idx < firstMountedIndex) {
         firstMountedIndex = idx;
       }
 
       try {
-        final revealOffset = viewport
-            .getOffsetToReveal(renderObject, 0.0)
-            .offset;
+        final headerBox = renderObject as RenderBox;
+        // Measure the header's Y position exactly relative to THIS widget,
+        // ignoring all external sheet animations or scroll viewports.
+        final offsetInList = headerBox.localToGlobal(
+          Offset.zero,
+          ancestor: listBox,
+        );
 
-        // If the current scroll position has reached or passed this header's reveal offset.
-        if (scrollOffset >= revealOffset - 1.0) {
+        // If the header's top edge is at or above the top of our list (0.0).
+        if (offsetInList.dy <= 1.0) {
           if (lastPassedHeaderIndex == null || idx > lastPassedHeaderIndex) {
             lastPassedHeaderIndex = idx;
           }
@@ -423,6 +427,10 @@ class _InlineSectionHeaderState extends State<_InlineSectionHeader> {
 
   @override
   Widget build(BuildContext context) {
+    // Ensure the header is registered whenever it builds. This protects against
+    // the parent state losing track of it due to rebuilds.
+    widget.onMounted(widget.sectionIndex, this);
+
     return Container(
       padding: widget.padding,
       color: widget.backgroundColor,
