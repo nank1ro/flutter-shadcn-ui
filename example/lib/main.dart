@@ -22,6 +22,7 @@ import 'package:example/pages/input.dart';
 import 'package:example/pages/input_form_field.dart';
 import 'package:example/pages/input_otp.dart';
 import 'package:example/pages/input_otp_form_field.dart';
+import 'package:example/pages/list_sheet.dart';
 import 'package:example/pages/menubar.dart';
 import 'package:example/pages/popover.dart';
 import 'package:example/pages/progress.dart';
@@ -77,6 +78,7 @@ final routes = <String, WidgetBuilder>{
   '/input-OTP-form-field': (_) => const InputOTPFormFieldPage(),
   '/input-form-field': (_) => const InputFormFieldPage(),
   '/keyboard-toolbar': (_) => const KeyboardToolbarPage(),
+  '/list-sheet': (_) => const ListSheetPage(),
   '/menubar': (_) => const MenubarPage(),
   '/popover': (_) => const PopoverPage(),
   '/portal': (_) => const ShadPortalPage(),
@@ -150,7 +152,7 @@ class App extends StatelessWidget {
               brightness: Brightness.light,
               colorScheme: const ShadZincColorScheme.light(
                 // Example of adding a custom color to the color scheme
-                /* 
+                /*
                   custom: {
                      'myCustomColor': Color.fromARGB(255, 177, 4, 196),
                    },
