@@ -1,4 +1,3 @@
-import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
@@ -140,9 +139,6 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
   late final ScrollController _scrollController;
   int _currentSectionIndex = 0;
 
-  /// Currently-mounted inline headers, keyed by section index.
-  /// Only visible (and cache-extent) headers are present, so iterating
-  /// this map on every scroll tick is cheap.
   final Map<int, _InlineSectionHeaderState> _mountedHeaders = {};
 
   @override
@@ -196,9 +192,9 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
   void _updateCurrentSection() {
     if (!_scrollController.hasClients) return;
 
-    final scrollOffset = _scrollController.position.pixels;
-    int? lastPassedHeaderIndex;
     int? firstMountedIndex;
+    int? closestHeaderIndex;
+    double? closestOffset;
 
     final listBox = context.findRenderObject() as RenderBox?;
     if (listBox == null) return;
@@ -212,36 +208,28 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
         firstMountedIndex = idx;
       }
 
-      try {
-        final headerBox = renderObject as RenderBox;
-        // Measure the header's Y position exactly relative to THIS widget,
-        // ignoring all external sheet animations or scroll viewports.
-        final offsetInList = headerBox.localToGlobal(
-          Offset.zero,
-          ancestor: listBox,
-        );
+      final headerBox = renderObject as RenderBox;
+      final offsetInList = headerBox.localToGlobal(
+        Offset.zero,
+        ancestor: listBox,
+      );
 
-        // If the header's top edge is at or above the top of our list (0.0).
-        if (offsetInList.dy <= 1.0) {
-          if (lastPassedHeaderIndex == null || idx > lastPassedHeaderIndex) {
-            lastPassedHeaderIndex = idx;
-          }
-        }
-      } catch (_) {
-        // Ignore headers that can't be measured during complex layout frames
+      // Find the header that is closest to the top of the viewport.
+      // A header becomes active when its top is at or near the viewport top.
+      // We track the header with the smallest positive offset (closest to top).
+      if (offsetInList.dy >= 0 &&
+          (closestOffset == null || offsetInList.dy < closestOffset)) {
+        closestOffset = offsetInList.dy;
+        closestHeaderIndex = idx < 1 ? 0 : idx - 1;
       }
     }
 
     int active;
-    if (lastPassedHeaderIndex != null) {
-      // The highest-index header that has passed the top of the viewport.
-      active = lastPassedHeaderIndex;
+    if (closestHeaderIndex != null) {
+      active = closestHeaderIndex;
     } else if (firstMountedIndex != null) {
-      // No mounted header has passed the top. That means the active section
-      // is the one *before* the first mounted header.
-      active = (firstMountedIndex - 1).clamp(0, widget.sections.length - 1);
+      active = firstMountedIndex;
     } else {
-      // Fallback if absolutely no headers are mounted.
       active = _currentSectionIndex;
     }
 
