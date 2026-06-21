@@ -318,6 +318,9 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
     for (var i = 0; i < widget.sections.length; i++) {
       final section = widget.sections[i];
       if (remaining == 0) {
+        // Skip rendering the inline header for the first section — the sticky
+        // header at the top already displays it. We still need a zero-height
+        // widget so the scroll-position tracking (renderObject lookup) works.
         return _InlineSectionHeader(
           key: ValueKey('shad-sticky-header-$i'),
           sectionIndex: i,
@@ -326,6 +329,7 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
           backgroundColor: inlineHeaderBackgroundColor,
           onMounted: _onHeaderMounted,
           onUnmounted: _unregisterHeader,
+          visible: i != 0,
         );
       }
       remaining--;
@@ -379,6 +383,7 @@ class _InlineSectionHeader extends StatefulWidget {
     required this.backgroundColor,
     required this.onMounted,
     required this.onUnmounted,
+    this.visible = true,
   });
 
   final int sectionIndex;
@@ -389,6 +394,10 @@ class _InlineSectionHeader extends StatefulWidget {
   onMounted;
   final void Function(int sectionIndex, _InlineSectionHeaderState state)
   onUnmounted;
+
+  /// When false the widget renders invisible (zero height) but still registers
+  /// itself for scroll-position tracking.
+  final bool visible;
 
   @override
   State<_InlineSectionHeader> createState() => _InlineSectionHeaderState();
@@ -418,6 +427,8 @@ class _InlineSectionHeaderState extends State<_InlineSectionHeader> {
     // Ensure the header is registered whenever it builds. This protects against
     // the parent state losing track of it due to rebuilds.
     widget.onMounted(widget.sectionIndex, this);
+
+    if (!widget.visible) return const SizedBox.shrink();
 
     return Container(
       padding: widget.padding,
