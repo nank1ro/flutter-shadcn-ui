@@ -1,3 +1,5 @@
+## [Unreleased]
+
 ## 0.54.0
 
 - **FEAT**: `ShadTextTheme.fromGoogleFont` now accepts a `custom` parameter to include custom text styles in the Google Font text theme.

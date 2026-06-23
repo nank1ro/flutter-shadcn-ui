@@ -68,6 +68,7 @@ class ShadStickySectionList extends StatefulWidget {
     this.headerPadding,
     this.headerBackgroundColor,
     this.headerBorder,
+    this.headerAlignment,
     this.inlineHeaderPadding,
     this.inlineHeaderBackgroundColor,
     this.clipBehavior = Clip.hardEdge,
@@ -106,6 +107,12 @@ class ShadStickySectionList extends StatefulWidget {
   /// Defaults to a bottom border using the theme's border color.
   /// {@endtemplate}
   final ShadBorder? headerBorder;
+
+  /// {@template ShadStickySectionList.headerAlignment}
+  /// Alignment of the header content within the sticky header bar.
+  /// Defaults to [Alignment.centerLeft].
+  /// {@endtemplate}
+  final AlignmentGeometry? headerAlignment;
 
   /// {@template ShadStickySectionList.inlineHeaderPadding}
   /// Padding inside the inline section headers within the scroll content.
@@ -258,6 +265,10 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
         widget.headerBorder ??
         stickyListTheme.headerBorder ??
         ShadBorder(bottom: ShadBorderSide(color: theme.colorScheme.border));
+    final effectiveHeaderAlignment =
+        widget.headerAlignment ??
+        stickyListTheme.headerAlignment ??
+        Alignment.centerLeft;
     final effectiveInlineHeaderPadding =
         widget.inlineHeaderPadding ??
         stickyListTheme.inlineHeaderPadding ??
@@ -281,6 +292,7 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
             padding: effectiveHeaderPadding,
             backgroundColor: effectiveHeaderBackgroundColor,
             border: effectiveHeaderBorder,
+            alignment: effectiveHeaderAlignment,
           ),
         Expanded(
           child: ListView.builder(
@@ -294,6 +306,7 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
               index,
               effectiveInlineHeaderPadding,
               effectiveInlineHeaderBackgroundColor,
+              effectiveHeaderAlignment,
             ),
           ),
         ),
@@ -313,6 +326,7 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
     int index,
     EdgeInsetsGeometry inlineHeaderPadding,
     Color inlineHeaderBackgroundColor,
+    AlignmentGeometry headerAlignment,
   ) {
     var remaining = index;
     for (var i = 0; i < widget.sections.length; i++) {
@@ -327,6 +341,7 @@ class _ShadStickySectionListState extends State<ShadStickySectionList> {
           section: section,
           padding: inlineHeaderPadding,
           backgroundColor: inlineHeaderBackgroundColor,
+          alignment: headerAlignment,
           onMounted: _onHeaderMounted,
           onUnmounted: _unregisterHeader,
           visible: i != 0,
@@ -349,12 +364,14 @@ class _StickyHeader extends StatelessWidget {
     required this.padding,
     required this.backgroundColor,
     required this.border,
+    required this.alignment,
   });
 
   final ShadListSection section;
   final EdgeInsetsGeometry padding;
   final Color backgroundColor;
   final ShadBorder border;
+  final AlignmentGeometry alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -365,7 +382,7 @@ class _StickyHeader extends StatelessWidget {
         color: backgroundColor,
         border: border.toBorder(),
       ),
-      child: section.header,
+      child: Align(alignment: alignment, child: section.header),
     );
   }
 }
@@ -381,6 +398,7 @@ class _InlineSectionHeader extends StatefulWidget {
     required this.section,
     required this.padding,
     required this.backgroundColor,
+    required this.alignment,
     required this.onMounted,
     required this.onUnmounted,
     this.visible = true,
@@ -390,6 +408,7 @@ class _InlineSectionHeader extends StatefulWidget {
   final ShadListSection section;
   final EdgeInsetsGeometry padding;
   final Color backgroundColor;
+  final AlignmentGeometry alignment;
   final void Function(int sectionIndex, _InlineSectionHeaderState state)
   onMounted;
   final void Function(int sectionIndex, _InlineSectionHeaderState state)
@@ -434,7 +453,7 @@ class _InlineSectionHeaderState extends State<_InlineSectionHeader> {
       padding: widget.padding,
       color: widget.backgroundColor,
       child: Align(
-        alignment: Alignment.centerLeft,
+        alignment: widget.alignment,
         child: widget.section.header,
       ),
     );

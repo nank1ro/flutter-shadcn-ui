@@ -192,6 +192,11 @@ mixin _$ShadThemeData {
         t,
       )!,
       sonnerTheme: ShadSonnerTheme.lerp(a.sonnerTheme, b.sonnerTheme, t)!,
+      stickySectionListTheme: ShadStickySectionListTheme.lerp(
+        a.stickySectionListTheme,
+        b.stickySectionListTheme,
+        t,
+      )!,
       textareaTheme: ShadTextareaTheme.lerp(
         a.textareaTheme,
         b.textareaTheme,
@@ -258,6 +263,7 @@ mixin _$ShadThemeData {
     ShadMenubarTheme? menubarTheme,
     ShadSeparatorTheme? separatorTheme,
     ShadSonnerTheme? sonnerTheme,
+    ShadStickySectionListTheme? stickySectionListTheme,
     ShadTextareaTheme? textareaTheme,
     ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
   }) {
@@ -321,6 +327,8 @@ mixin _$ShadThemeData {
       menubarTheme: menubarTheme ?? _this.menubarTheme,
       separatorTheme: separatorTheme ?? _this.separatorTheme,
       sonnerTheme: sonnerTheme ?? _this.sonnerTheme,
+      stickySectionListTheme:
+          stickySectionListTheme ?? _this.stickySectionListTheme,
       textareaTheme: textareaTheme ?? _this.textareaTheme,
       defaultKeyboardToolbarTheme:
           defaultKeyboardToolbarTheme ?? _this.defaultKeyboardToolbarTheme,
@@ -409,6 +417,9 @@ mixin _$ShadThemeData {
       menubarTheme: _this.menubarTheme.merge(other.menubarTheme),
       separatorTheme: _this.separatorTheme.merge(other.separatorTheme),
       sonnerTheme: _this.sonnerTheme.merge(other.sonnerTheme),
+      stickySectionListTheme: _this.stickySectionListTheme.merge(
+        other.stickySectionListTheme,
+      ),
       textareaTheme: _this.textareaTheme.merge(other.textareaTheme),
       defaultKeyboardToolbarTheme: _this.defaultKeyboardToolbarTheme.merge(
         other.defaultKeyboardToolbarTheme,
@@ -481,6 +492,7 @@ mixin _$ShadThemeData {
         _other.menubarTheme == _this.menubarTheme &&
         _other.separatorTheme == _this.separatorTheme &&
         _other.sonnerTheme == _this.sonnerTheme &&
+        _other.stickySectionListTheme == _this.stickySectionListTheme &&
         _other.textareaTheme == _this.textareaTheme &&
         _other.defaultKeyboardToolbarTheme == _this.defaultKeyboardToolbarTheme;
   }
@@ -543,6 +555,7 @@ mixin _$ShadThemeData {
       _this.menubarTheme,
       _this.separatorTheme,
       _this.sonnerTheme,
+      _this.stickySectionListTheme,
       _this.textareaTheme,
       _this.defaultKeyboardToolbarTheme,
     ]);

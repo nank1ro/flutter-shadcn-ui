@@ -13,6 +13,7 @@ class ShadStickySectionListTheme with _$ShadStickySectionListTheme {
     this.headerPadding,
     this.headerBackgroundColor,
     this.headerBorder,
+    this.headerAlignment,
     this.inlineHeaderPadding,
     this.inlineHeaderBackgroundColor,
     this.clipBehavior,
@@ -35,6 +36,9 @@ class ShadStickySectionListTheme with _$ShadStickySectionListTheme {
 
   /// {@macro ShadStickySectionList.headerBorder}
   final ShadBorder? headerBorder;
+
+  /// {@macro ShadStickySectionList.headerAlignment}
+  final AlignmentGeometry? headerAlignment;
 
   /// {@macro ShadStickySectionList.inlineHeaderPadding}
   final EdgeInsetsGeometry? inlineHeaderPadding;

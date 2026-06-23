@@ -42,6 +42,11 @@ mixin _$ShadStickySectionListTheme {
         t,
       ),
       headerBorder: ShadBorder.lerp(a.headerBorder, b.headerBorder, t),
+      headerAlignment: AlignmentGeometry.lerp(
+        a.headerAlignment,
+        b.headerAlignment,
+        t,
+      ),
       inlineHeaderPadding: EdgeInsetsGeometry.lerp(
         a.inlineHeaderPadding,
         b.inlineHeaderPadding,
@@ -61,6 +66,7 @@ mixin _$ShadStickySectionListTheme {
     EdgeInsetsGeometry? headerPadding,
     Color? headerBackgroundColor,
     ShadBorder? headerBorder,
+    AlignmentGeometry? headerAlignment,
     EdgeInsetsGeometry? inlineHeaderPadding,
     Color? inlineHeaderBackgroundColor,
     Clip? clipBehavior,
@@ -73,6 +79,7 @@ mixin _$ShadStickySectionListTheme {
       headerBackgroundColor:
           headerBackgroundColor ?? _this.headerBackgroundColor,
       headerBorder: headerBorder ?? _this.headerBorder,
+      headerAlignment: headerAlignment ?? _this.headerAlignment,
       inlineHeaderPadding: inlineHeaderPadding ?? _this.inlineHeaderPadding,
       inlineHeaderBackgroundColor:
           inlineHeaderBackgroundColor ?? _this.inlineHeaderBackgroundColor,
@@ -97,6 +104,7 @@ mixin _$ShadStickySectionListTheme {
       headerBackgroundColor: other.headerBackgroundColor,
       headerBorder:
           _this.headerBorder?.merge(other.headerBorder) ?? other.headerBorder,
+      headerAlignment: other.headerAlignment,
       inlineHeaderPadding: other.inlineHeaderPadding,
       inlineHeaderBackgroundColor: other.inlineHeaderBackgroundColor,
       clipBehavior: other.clipBehavior,
@@ -120,6 +128,7 @@ mixin _$ShadStickySectionListTheme {
         _other.headerPadding == _this.headerPadding &&
         _other.headerBackgroundColor == _this.headerBackgroundColor &&
         _other.headerBorder == _this.headerBorder &&
+        _other.headerAlignment == _this.headerAlignment &&
         _other.inlineHeaderPadding == _this.inlineHeaderPadding &&
         _other.inlineHeaderBackgroundColor ==
             _this.inlineHeaderBackgroundColor &&
@@ -136,6 +145,7 @@ mixin _$ShadStickySectionListTheme {
       _this.headerPadding,
       _this.headerBackgroundColor,
       _this.headerBorder,
+      _this.headerAlignment,
       _this.inlineHeaderPadding,
       _this.inlineHeaderBackgroundColor,
       _this.clipBehavior,
