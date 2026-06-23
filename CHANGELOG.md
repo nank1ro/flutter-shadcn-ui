@@ -1,4 +1,14 @@
-## [Unreleased]
+## 0.58.0 - 2026-06-23
+
+- **FEAT**: Add `ShadStickySectionList` component with dynamic sticky headers, section tracking, and `headerAlignment` customization.
+- **FEAT**: Add expandable/resizable `ShadSheet` with per-edge SafeArea, body-edge drag to resize, and `dragHandleBuilder` customization.
+- **FEAT**: Add `ShadStickySectionListTheme` for theming sticky section lists.
+- **FIX**: Fix sheet velocity-aware fling for smooth expandable resize.
+- **FIX**: Fix sheet keyboard insets handling and safe-area edge decoration.
+- **FIX**: Fix sticky section list header measurement and state management on rebuilds.
+- **REFACTOR**: Improve sheet controller ownership, resize handle, and side alignment extraction.
+- **REFACTOR**: Use live header measurement for sticky title positioning.
+- **CHORE**: Update tests for sheet expandable mode and regenerate goldens.
 
 ## 0.54.0
 
