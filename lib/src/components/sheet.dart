@@ -99,17 +99,15 @@ Future<T?> showShadSheet<T>({
       final hasInset = effectiveSide == ShadSheetSide.bottom
           ? viewInsets.bottom > 0
           : effectiveSide == ShadSheetSide.top
-              ? viewInsets.top > 0
-              : effectiveSide == ShadSheetSide.left
-                  ? viewInsets.left > 0
-                  : viewInsets.right > 0;
+          ? viewInsets.top > 0
+          : effectiveSide == ShadSheetSide.left
+          ? viewInsets.left > 0
+          : viewInsets.right > 0;
       return AnimatedPadding(
         duration: const Duration(milliseconds: 200),
         curve: Curves.linearToEaseOut,
         padding: EdgeInsets.only(
-          bottom: effectiveSide == ShadSheetSide.bottom
-              ? viewInsets.bottom
-              : 0,
+          bottom: effectiveSide == ShadSheetSide.bottom ? viewInsets.bottom : 0,
           top: effectiveSide == ShadSheetSide.top ? viewInsets.top : 0,
           left: effectiveSide == ShadSheetSide.left ? viewInsets.left : 0,
           right: effectiveSide == ShadSheetSide.right ? viewInsets.right : 0,
@@ -180,8 +178,7 @@ enum ShadSheetSide {
   bottom,
 
   /// Sheet slides in from the left.
-  left
-  ;
+  left;
 
   /// Converts the [ShadSheetSide] to an [Alignment].
   Alignment toAlignment() {
@@ -1405,32 +1402,28 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
 
       return switch (side) {
         ShadSheetSide.bottom => EdgeInsets.only(
-          top:
-              (viewPadding.top - freeEdgeOffset).clamp(
-                0.0,
-                viewPadding.top,
-              ),
+          top: (viewPadding.top - freeEdgeOffset).clamp(
+            0.0,
+            viewPadding.top,
+          ),
         ),
         ShadSheetSide.top => EdgeInsets.only(
-          bottom:
-              (viewPadding.bottom - freeEdgeOffset).clamp(
-                0.0,
-                viewPadding.bottom,
-              ),
+          bottom: (viewPadding.bottom - freeEdgeOffset).clamp(
+            0.0,
+            viewPadding.bottom,
+          ),
         ),
         ShadSheetSide.left => EdgeInsets.only(
-          right:
-              (viewPadding.right - freeEdgeOffset).clamp(
-                0.0,
-                viewPadding.right,
-              ),
+          right: (viewPadding.right - freeEdgeOffset).clamp(
+            0.0,
+            viewPadding.right,
+          ),
         ),
         ShadSheetSide.right => EdgeInsets.only(
-          left:
-              (viewPadding.left - freeEdgeOffset).clamp(
-                0.0,
-                viewPadding.left,
-              ),
+          left: (viewPadding.left - freeEdgeOffset).clamp(
+            0.0,
+            viewPadding.left,
+          ),
         ),
       };
     }
