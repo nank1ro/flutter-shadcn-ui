@@ -1,3 +1,8 @@
+## 0.56.0
+
+- **BREAKING**: `slang` 4.18 renames the generated localization classes: `ShadLocalizationsDataTimePickerEn`, `ShadLocalizationsDataDatePickerEn`, `ShadLocalizationsDataInputEn` and `ShadLocalizationsDataKeyboardToolbarEn` are now `ShadLocalizationsData$timePicker$en`, `ShadLocalizationsData$datePicker$en`, `ShadLocalizationsData$input$en` and `ShadLocalizationsData$keyboardToolbar$en`.
+- **CHORE**: Opt into `slang_build_runner`'s `legacy` builder. `dart run build_runner build` failed on a fresh checkout with `InvalidOutputException: Asset already exists`, because slang's default builder writes through build_runner's asset writer and cannot overwrite the committed `strings*.g.dart`. The `slang` header timestamp is also disabled, so regenerating produces identical output instead of a spurious diff on every run.
+
 ## 0.55.1
 
 - **FIX**: Regression on `ShadSheet`'s opaque parameter; default is back to `false`.
