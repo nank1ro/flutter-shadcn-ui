@@ -1,3 +1,7 @@
+## 0.55.1
+
+- **FIX**: Regression on `ShadSheet`'s opaque parameter; default is back to `false`.
+
 ## 0.55.0
 
 - **FEAT**: Add expandable/resizable `ShadSheet` (#655): new `expandable`, `initialSize`, `minSize`, `maxSize`, `snap`, `snapSizes`, `snapAnimationDuration`, `snapAnimationCurve`, `snapFlingVelocity`, `dragHandle`, `dragHandleBuilder`, `showDragHandle`, `dragHandleExtent`, `onSizeChanged` and `controller` parameters, a public `ShadSheetController` (`animateTo`/`jumpTo`), `ShadSheetResizeHandle`, and matching `ShadSheetTheme` fields.

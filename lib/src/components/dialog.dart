@@ -28,7 +28,7 @@ class ShadDialogRoute<T> extends PopupRoute<T> {
     this.reverseTransitionDuration = const Duration(milliseconds: 200),
     this.transitionBuilder,
     this.anchorPoint,
-    this.opaque = true,
+    this.opaque = false,
     super.settings,
   });
 
@@ -131,7 +131,7 @@ Future<T?> showShadDialog<T>({
   /// When false, [MediaQuery.viewInsetsOf] from the host scaffold will be
   /// available in the dialog context, allowing keyboard-aware content.
   /// Defaults to true (standard dialog behavior).
-  bool opaque = true,
+  bool opaque = false,
 }) {
   final theme = ShadTheme.of(context);
   final effectiveDialogTheme = switch (variant) {
