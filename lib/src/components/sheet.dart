@@ -32,8 +32,8 @@ Future<T?> showShadSheet<T>({
   /// Whether the route occludes the routes behind it.
   /// When false, [MediaQuery.viewInsetsOf] from the host scaffold will be
   /// available in the sheet context, allowing keyboard-aware content.
-  /// Defaults to true (standard dialog behavior).
-  bool? opaque = true,
+  /// Defaults to false.
+  bool? opaque = false,
 }) {
   final theme = ShadTheme.of(context);
   final effectiveSide = side ?? theme.sheetTheme.side ?? ShadSheetSide.bottom;
@@ -99,7 +99,7 @@ Future<T?> showShadSheet<T>({
 
   return showShadDialog(
     context: context,
-    opaque: opaque ?? true,
+    opaque: opaque ?? false,
     builder: (context) {
       final viewInsets = MediaQuery.viewInsetsOf(context);
       final padding = switch (effectiveSide) {
