@@ -1,3 +1,7 @@
+## 0.56.1
+
+- **FIX**: Expose `ShadInput.enabled` in the semantics tree so assistive technologies and web tests can distinguish enabled and disabled inputs.
+
 ## 0.56.0
 
 - **BREAKING**: `slang` 4.18 renames the generated localization classes: `ShadLocalizationsDataTimePickerEn`, `ShadLocalizationsDataDatePickerEn`, `ShadLocalizationsDataInputEn` and `ShadLocalizationsDataKeyboardToolbarEn` are now `ShadLocalizationsData$timePicker$en`, `ShadLocalizationsData$datePicker$en`, `ShadLocalizationsData$input$en` and `ShadLocalizationsData$keyboardToolbar$en`.
