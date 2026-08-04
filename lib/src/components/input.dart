@@ -1137,7 +1137,7 @@ class ShadInputState extends State<ShadInput>
                   valueListenable: effectiveController,
                   builder: (context, textEditingValue, child) {
                     final Widget editableText;
-                    final rawEditableText = SizedBox(
+                    final rawEditableTextContent = SizedBox(
                       width: widget.editableTextSize?.width,
                       height: widget.editableTextSize?.height,
                       child: EditableText(
@@ -1230,6 +1230,10 @@ class ShadInputState extends State<ShadInput>
                         showCursor: widget.showCursor,
                         groupId: effectiveGroupId,
                       ),
+                    );
+                    final rawEditableText = Semantics(
+                      enabled: widget.enabled,
+                      child: rawEditableTextContent,
                     );
 
                     if (widget.onLineCountChange != null) {
