@@ -830,10 +830,6 @@ class ShadDialog extends StatelessWidget {
             ],
           );
 
-          if (effectiveUseSafeArea) {
-            widget = SafeArea(child: widget);
-          }
-
           return DecoratedBox(
             decoration: BoxDecoration(
               color: effectiveBackgroundColor,
@@ -852,12 +848,18 @@ class ShadDialog extends StatelessWidget {
     // Get the current view padding
     final viewPadding = MediaQuery.viewInsetsOf(context);
 
-    return Align(
+    Widget result = Align(
       alignment: effectiveAlignment,
       child: Padding(
         padding: viewPadding,
         child: dialog,
       ),
     );
+
+    if (effectiveUseSafeArea) {
+      result = SafeArea(child: result);
+    }
+
+    return result;
   }
 }
