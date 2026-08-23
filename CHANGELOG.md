@@ -1,3 +1,7 @@
+## 0.56.2
+
+- **FIX**: `ShadDialog` no longer bakes unnecessary status bar/navigation bar padding into a centered dialog. `SafeArea` is now applied at the route level (matching Material's `Dialog`) instead of inside the dialog card, fixing a large blank space above the title on Android (#681).
+
 ## 0.56.1
 
 - **FIX**: Expose `ShadInput.enabled` in the semantics tree so assistive technologies and web tests can distinguish enabled and disabled inputs.
