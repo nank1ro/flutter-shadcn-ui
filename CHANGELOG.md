@@ -1,3 +1,7 @@
+## 0.56.2
+
+- **FIX**: Guard `ShadSelect`'s `animateToTop`/`animateToBottom` against a detached `ScrollController`. The scroll-to-top/bottom buttons kick off an animation on hover, but if the popover closed before or during it, reading `scrollController.offset`/`.position` threw `Bad state: No element` out of the async loop (the scroll listener already had this `hasClients` guard) (#686).
+
 ## 0.56.1
 
 - **FIX**: Expose `ShadInput.enabled` in the semantics tree so assistive technologies and web tests can distinguish enabled and disabled inputs.
