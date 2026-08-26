@@ -173,5 +173,13 @@
       "target": "_blank",
       "rel": "noopener noreferrer"
     }
+  },
+  {
+    "label": "EasyTimeManager",
+    "link": "https://easytimemanager.com/",
+    "attrs": {
+      "target": "_blank",
+      "rel": "noopener noreferrer"
+    }
   }
 ]
