@@ -1465,6 +1465,28 @@ void main() {
       );
     });
 
+    testWidgets(
+      'non-expandable sheet passes safe-area inset as ShadDialog padding '
+      'instead of useSafeArea, so the background paints behind it (#685)',
+      (tester) async {
+        setUpView(tester, viewPadding: const FakeViewPadding(bottom: 40));
+
+        await tester.pumpWidget(sheetWidget());
+        await tester.pump();
+
+        final shadDialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+
+        // ShadDialog's own SafeArea would leave the inset barrier-colored;
+        // the inset is merged into padding instead, so the sheet's
+        // DecoratedBox paints its background under it.
+        expect(shadDialog.useSafeArea, isFalse);
+        expect(
+          shadDialog.padding?.resolve(TextDirection.ltr).bottom,
+          closeTo(24 + 40, 0.5), // default 24 padding + the 40px inset.
+        );
+      },
+    );
+
     testWidgets('expandable + draggable: fill box contains the pill', (
       tester,
     ) async {

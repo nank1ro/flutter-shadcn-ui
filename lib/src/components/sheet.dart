@@ -1285,25 +1285,26 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
 
     // Anchor + side safe-area insets, merged into the dialog's content
     // padding (below) and into the close-icon position so content clears
-    // hardware affordances. The free-edge inset is handled separately in
+    // hardware affordances. Applied for both expandable and non-expandable
+    // paths, so the sheet's background paints behind the status bar / notch
+    // / gesture bar instead of leaving a barrier-colored gap (#685). The
+    // free-edge inset for expandable sheets is handled separately in
     // [buildExpandable] (it depends on the live drag size).
-    final safeAreaInsets = effectiveExpandable && effectiveUseSafeArea
+    final safeAreaInsets = effectiveUseSafeArea
         ? expandableSafeAreaInsets(side)
         : EdgeInsets.zero;
 
     // ShadDialog falls back to EdgeInsets.all(24) when padding is null;
-    // expandable mode passes an explicit pre-merged value, so mirror that.
+    // mirror that default so it's still merged with safeAreaInsets below.
     const dialogDefaultPadding = EdgeInsets.all(24);
-    final effectivePaddingWithSafeArea = effectiveExpandable
-        ? EdgeInsets.zero
-              .add(effectivePadding ?? dialogDefaultPadding)
-              .add(safeAreaInsets)
-        : effectivePadding;
+    final effectivePaddingWithSafeArea = EdgeInsets.zero
+        .add(effectivePadding ?? dialogDefaultPadding)
+        .add(safeAreaInsets);
 
     // Mirrors ShadDialog's default close-icon position so it shifts with the
     // safe-area insets merged into the padding above.
     final ShadPosition? adjustedCloseIconPosition;
-    if (effectiveExpandable && effectiveUseSafeArea) {
+    if (effectiveUseSafeArea) {
       final base =
           effectiveCloseIconPosition ??
           ShadPosition.directional(
@@ -1352,9 +1353,10 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       mainAxisAlignment: effectiveMainAxisAlignment,
       scrollable: effectiveScrollable,
       scrollPadding: effectiveScrollPadding,
-      // Expandable sheets handle safe area themselves (merged into padding +
-      // an outer inset); only the non-expandable path defers to ShadDialog.
-      useSafeArea: !effectiveExpandable && effectiveUseSafeArea,
+      // Safe area handled above (merged into padding, plus an outer inset
+      // for expandable sheets) so the background paints behind system UI;
+      // ShadDialog's own SafeArea would leave that gap barrier-colored.
+      useSafeArea: false,
       titlePinned: effectiveTitlePinned,
       descriptionPinned: effectiveDescriptionPinned,
       actionsPinned: effectiveActionsPinned,
