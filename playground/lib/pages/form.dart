@@ -32,10 +32,7 @@ enum NotifyAbout {
 }
 
 class FormPage extends StatefulWidget {
-  const FormPage({
-    super.key,
-    required this.style,
-  });
+  const FormPage({super.key, required this.style});
 
   final FormStyle style;
 
@@ -46,11 +43,7 @@ class FormPage extends StatefulWidget {
 class _FormPageState extends State<FormPage> {
   final formKey = GlobalKey<ShadFormState>();
 
-  final verifiedEmails = [
-    'm@example.com',
-    'm@google.com',
-    'm@support.com',
-  ];
+  final verifiedEmails = ['m@example.com', 'm@google.com', 'm@support.com'];
 
   @override
   Widget build(BuildContext context) {
@@ -136,10 +129,7 @@ class _FormPageState extends State<FormPage> {
                   FormStyle.radioField => ShadRadioGroupFormField<NotifyAbout>(
                     label: const Text('Notify me about'),
                     items: NotifyAbout.values.map(
-                      (e) => ShadRadio(
-                        value: e,
-                        label: Text(e.message),
-                      ),
+                      (e) => ShadRadio(value: e, label: Text(e.message)),
                     ),
                     validator: (v) {
                       if (v == null) {

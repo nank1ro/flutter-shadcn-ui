@@ -3,16 +3,10 @@ import 'package:flutter/services.dart';
 
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-enum ShadInputOTPVariant {
-  primary,
-  pattern,
-}
+enum ShadInputOTPVariant { primary, pattern }
 
 class InputOTPPage extends StatelessWidget {
-  const InputOTPPage({
-    super.key,
-    required this.style,
-  });
+  const InputOTPPage({super.key, required this.style});
 
   final ShadInputOTPVariant style;
 
@@ -48,9 +42,7 @@ class InputOTPPage extends StatelessWidget {
               onChanged: (v) => print('OTP: $v'),
               maxLength: 4,
               keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               children: const [
                 ShadInputOTPGroup(
                   children: [

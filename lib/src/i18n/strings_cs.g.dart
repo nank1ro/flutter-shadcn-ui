@@ -39,15 +39,15 @@ class ShadLocalizationsDataCs extends ShadLocalizationsData with BaseTranslation
 	ShadLocalizationsDataCs $copyWith({TranslationMetadata<ShadLocale, ShadLocalizationsData>? meta}) => ShadLocalizationsDataCs(meta: meta ?? this.$meta);
 
 	// Translations
-	@override late final _ShadLocalizationsDataTimePickerCs timePicker = _ShadLocalizationsDataTimePickerCs._(_root);
-	@override late final _ShadLocalizationsDataDatePickerCs datePicker = _ShadLocalizationsDataDatePickerCs._(_root);
-	@override late final _ShadLocalizationsDataInputCs input = _ShadLocalizationsDataInputCs._(_root);
-	@override late final _ShadLocalizationsDataKeyboardToolbarCs keyboardToolbar = _ShadLocalizationsDataKeyboardToolbarCs._(_root);
+	@override late final _ShadLocalizationsData$timePicker$cs timePicker = _ShadLocalizationsData$timePicker$cs._(_root);
+	@override late final _ShadLocalizationsData$datePicker$cs datePicker = _ShadLocalizationsData$datePicker$cs._(_root);
+	@override late final _ShadLocalizationsData$input$cs input = _ShadLocalizationsData$input$cs._(_root);
+	@override late final _ShadLocalizationsData$keyboardToolbar$cs keyboardToolbar = _ShadLocalizationsData$keyboardToolbar$cs._(_root);
 }
 
 // Path: timePicker
-class _ShadLocalizationsDataTimePickerCs extends ShadLocalizationsDataTimePickerEn {
-	_ShadLocalizationsDataTimePickerCs._(ShadLocalizationsDataCs root) : this._root = root, super.internal(root);
+class _ShadLocalizationsData$timePicker$cs extends ShadLocalizationsData$timePicker$en {
+	_ShadLocalizationsData$timePicker$cs._(ShadLocalizationsDataCs root) : this._root = root, super.internal(root);
 
 	final ShadLocalizationsDataCs _root; // ignore: unused_field
 
@@ -60,8 +60,8 @@ class _ShadLocalizationsDataTimePickerCs extends ShadLocalizationsDataTimePicker
 }
 
 // Path: datePicker
-class _ShadLocalizationsDataDatePickerCs extends ShadLocalizationsDataDatePickerEn {
-	_ShadLocalizationsDataDatePickerCs._(ShadLocalizationsDataCs root) : this._root = root, super.internal(root);
+class _ShadLocalizationsData$datePicker$cs extends ShadLocalizationsData$datePicker$en {
+	_ShadLocalizationsData$datePicker$cs._(ShadLocalizationsDataCs root) : this._root = root, super.internal(root);
 
 	final ShadLocalizationsDataCs _root; // ignore: unused_field
 
@@ -70,8 +70,8 @@ class _ShadLocalizationsDataDatePickerCs extends ShadLocalizationsDataDatePicker
 }
 
 // Path: input
-class _ShadLocalizationsDataInputCs extends ShadLocalizationsDataInputEn {
-	_ShadLocalizationsDataInputCs._(ShadLocalizationsDataCs root) : this._root = root, super.internal(root);
+class _ShadLocalizationsData$input$cs extends ShadLocalizationsData$input$en {
+	_ShadLocalizationsData$input$cs._(ShadLocalizationsDataCs root) : this._root = root, super.internal(root);
 
 	final ShadLocalizationsDataCs _root; // ignore: unused_field
 
@@ -83,8 +83,8 @@ class _ShadLocalizationsDataInputCs extends ShadLocalizationsDataInputEn {
 }
 
 // Path: keyboardToolbar
-class _ShadLocalizationsDataKeyboardToolbarCs extends ShadLocalizationsDataKeyboardToolbarEn {
-	_ShadLocalizationsDataKeyboardToolbarCs._(ShadLocalizationsDataCs root) : this._root = root, super.internal(root);
+class _ShadLocalizationsData$keyboardToolbar$cs extends ShadLocalizationsData$keyboardToolbar$en {
+	_ShadLocalizationsData$keyboardToolbar$cs._(ShadLocalizationsDataCs root) : this._root = root, super.internal(root);
 
 	final ShadLocalizationsDataCs _root; // ignore: unused_field
 

@@ -20,10 +20,7 @@ final details = [
 ];
 
 class AccordionPage extends StatelessWidget {
-  const AccordionPage({
-    super.key,
-    required this.style,
-  });
+  const AccordionPage({super.key, required this.style});
 
   final ShadAccordionVariant style;
 
@@ -32,9 +29,7 @@ class AccordionPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Container(
-          constraints: const BoxConstraints(
-            maxWidth: 600,
-          ),
+          constraints: const BoxConstraints(maxWidth: 600),
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: switch (style) {
             ShadAccordionVariant.single =>

@@ -80,14 +80,8 @@ final router = GoRouter(
         return BreadcrumbPage(style: ShadBreadcrumbStyle.values.byName(style));
       },
     ),
-    GoRoute(
-      path: '/avatar',
-      builder: (context, state) => const AvatarPage(),
-    ),
-    GoRoute(
-      path: '/tooltip',
-      builder: (context, state) => const TooltipPage(),
-    ),
+    GoRoute(path: '/avatar', builder: (context, state) => const AvatarPage()),
+    GoRoute(path: '/tooltip', builder: (context, state) => const TooltipPage()),
     GoRoute(
       path: '/input',
       builder: (context, state) {
@@ -96,10 +90,7 @@ final router = GoRouter(
         return InputPage(style: InputStyle.values.byName(style));
       },
     ),
-    GoRoute(
-      path: '/popover',
-      builder: (context, state) => const PopoverPage(),
-    ),
+    GoRoute(path: '/popover', builder: (context, state) => const PopoverPage()),
     GoRoute(
       path: '/typography',
       builder: (context, state) {
@@ -122,10 +113,7 @@ final router = GoRouter(
         return CardPage(style: CardStyle.values.byName(style));
       },
     ),
-    GoRoute(
-      path: '/switch',
-      builder: (context, state) => const SwitchPage(),
-    ),
+    GoRoute(path: '/switch', builder: (context, state) => const SwitchPage()),
     GoRoute(
       path: '/checkbox',
       builder: (context, state) => const CheckboxPage(),
@@ -147,9 +135,7 @@ final router = GoRouter(
       builder: (context, state) {
         final style =
             state.uri.queryParameters['style'] ?? ToastStyle.schedule.name;
-        return ToastPage(
-          style: ToastStyle.values.byName(style),
-        );
+        return ToastPage(style: ToastStyle.values.byName(style));
       },
     ),
     GoRoute(
@@ -169,10 +155,7 @@ final router = GoRouter(
         return DialogPage(style: ShadDialogVariant.values.byName(style));
       },
     ),
-    GoRoute(
-      path: '/slider',
-      builder: (context, state) => const SliderPage(),
-    ),
+    GoRoute(path: '/slider', builder: (context, state) => const SliderPage()),
     GoRoute(
       path: '/sheet',
       builder: (context, state) {
@@ -199,10 +182,7 @@ final router = GoRouter(
         return AccordionPage(style: ShadAccordionVariant.values.byName(style));
       },
     ),
-    GoRoute(
-      path: '/table',
-      builder: (context, state) => const TablePage(),
-    ),
+    GoRoute(path: '/table', builder: (context, state) => const TablePage()),
     GoRoute(
       path: '/resizable',
       builder: (context, state) {
@@ -211,10 +191,7 @@ final router = GoRouter(
         return ResizablePage(style: ShadResizableStyle.values.byName(style));
       },
     ),
-    GoRoute(
-      path: '/tabs',
-      builder: (context, state) => const TabsPage(),
-    ),
+    GoRoute(path: '/tabs', builder: (context, state) => const TabsPage()),
     GoRoute(
       path: '/context-menu',
       builder: (context, state) => const ContextMenuPage(),

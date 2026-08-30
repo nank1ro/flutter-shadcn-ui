@@ -2,17 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-enum ShadResizableStyle {
-  basic,
-  vertical,
-  handle,
-}
+enum ShadResizableStyle { basic, vertical, handle }
 
 class ResizablePage extends StatelessWidget {
-  const ResizablePage({
-    super.key,
-    required this.style,
-  });
+  const ResizablePage({super.key, required this.style});
 
   final ShadResizableStyle style;
 
@@ -45,9 +38,7 @@ class BasicResizable extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: theme.radius,
-          border: Border.all(
-            color: theme.colorScheme.border,
-          ),
+          border: Border.all(color: theme.colorScheme.border),
         ),
         child: ClipRRect(
           borderRadius: theme.radius,
@@ -58,9 +49,7 @@ class BasicResizable extends StatelessWidget {
                 defaultSize: .5,
                 minSize: .2,
                 maxSize: .8,
-                child: Center(
-                  child: Text('One', style: theme.textTheme.large),
-                ),
+                child: Center(child: Text('One', style: theme.textTheme.large)),
               ),
               ShadResizablePanel(
                 id: 1,
@@ -104,9 +93,7 @@ class VerticalResizable extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: theme.radius,
-          border: Border.all(
-            color: theme.colorScheme.border,
-          ),
+          border: Border.all(color: theme.colorScheme.border),
         ),
         child: ClipRRect(
           borderRadius: theme.radius,
@@ -148,9 +135,7 @@ class HandleResizable extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: theme.radius,
-          border: Border.all(
-            color: theme.colorScheme.border,
-          ),
+          border: Border.all(color: theme.colorScheme.border),
         ),
         child: ClipRRect(
           borderRadius: theme.radius,

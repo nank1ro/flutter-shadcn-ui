@@ -47,9 +47,7 @@ const invoices = [
 ];
 
 class TablePage extends StatelessWidget {
-  const TablePage({
-    super.key,
-  });
+  const TablePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -96,18 +94,14 @@ class TablePage extends StatelessWidget {
                 ShadTableCell(
                   child: Text(
                     invoice.invoice,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ),
                 ShadTableCell(child: Text(invoice.paymentStatus)),
                 ShadTableCell(child: Text(invoice.paymentMethod)),
                 ShadTableCell(
                   alignment: Alignment.centerRight,
-                  child: Text(
-                    invoice.totalAmount,
-                  ),
+                  child: Text(invoice.totalAmount),
                 ),
               ],
             ),
