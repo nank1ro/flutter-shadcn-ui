@@ -39,13 +39,13 @@ jobs:
       # Set up the Dart SDK and provision the OIDC token used for publishing.
       # The `dart` command from this step will be shadowed by the one from the
       # Flutter SDK below.
-      - uses: dart-lang/setup-dart@e51d8e571e22473a2ddebf0ef8a2123f0ab2c02c
+      - uses: dart-lang/setup-dart@65eb853c7ba17dde3be364c3d2858773e7144260
       # Download flutter SDK - needed for publishing Flutter packages. Can also
       # publish pure Dart packages.
       #
       # The dart binary from a Flutter SDK facilitates publishing both Flutter
       # and pure-dart packages.
-      - uses: subosito/flutter-action@fd55f4c5af5b953cc57a2be44cb082c8f6635e8e # v2.21.0
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         if: ${{ inputs.install_flutter == true }}
         with:
           channel: "stable"

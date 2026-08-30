@@ -2,16 +2,10 @@ import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-enum CardStyle {
-  project,
-  notifications,
-}
+enum CardStyle { project, notifications }
 
 class CardPage extends StatelessWidget {
-  const CardPage({
-    super.key,
-    required this.style,
-  });
+  const CardPage({super.key, required this.style});
 
   final CardStyle style;
 
@@ -48,14 +42,8 @@ class CardProject extends StatelessWidget {
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ShadButton.outline(
-            child: const Text('Cancel'),
-            onPressed: () {},
-          ),
-          ShadButton(
-            child: const Text('Deploy'),
-            onPressed: () {},
-          ),
+          ShadButton.outline(child: const Text('Cancel'), onPressed: () {}),
+          ShadButton(child: const Text('Deploy'), onPressed: () {}),
         ],
       ),
       child: Padding(
@@ -88,18 +76,9 @@ class CardProject extends StatelessWidget {
 }
 
 const notifications = [
-  (
-    title: "Your call has been confirmed.",
-    description: "1 hour ago",
-  ),
-  (
-    title: "You have a new message!",
-    description: "1 hour ago",
-  ),
-  (
-    title: "Your subscription is expiring soon!",
-    description: "2 hours ago",
-  ),
+  (title: "Your call has been confirmed.", description: "1 hour ago"),
+  (title: "You have a new message!", description: "1 hour ago"),
+  (title: "Your subscription is expiring soon!", description: "2 hours ago"),
 ];
 
 class CardNotifications extends StatefulWidget {

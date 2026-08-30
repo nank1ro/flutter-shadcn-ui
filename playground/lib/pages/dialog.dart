@@ -8,10 +8,7 @@ final profile = [
 ];
 
 class DialogPage extends StatelessWidget {
-  const DialogPage({
-    super.key,
-    required this.style,
-  });
+  const DialogPage({super.key, required this.style});
 
   final ShadDialogVariant style;
 

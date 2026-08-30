@@ -66,10 +66,7 @@ class ButtonPage extends StatelessWidget {
           PlagroundButtonStyle.gradientShadow => ShadButton(
             onPressed: () {},
             gradient: const LinearGradient(
-              colors: [
-                Colors.cyan,
-                Colors.indigo,
-              ],
+              colors: [Colors.cyan, Colors.indigo],
             ),
             shadows: [
               BoxShadow(

@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-enum InputStyle {
-  email,
-  password,
-}
+enum InputStyle { email, password }
 
 class InputPage extends StatelessWidget {
-  const InputPage({
-    super.key,
-    required this.style,
-  });
+  const InputPage({super.key, required this.style});
 
   final InputStyle style;
 

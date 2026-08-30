@@ -3,6 +3,14 @@ analyzer:
     specify_nonobvious_property_types: ignore
     discarded_futures: ignore
     cascade_invocations: ignore
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 include: package:very_good_analysis/analysis_options.yaml
 exclude:
   - "**/*.g.dart"

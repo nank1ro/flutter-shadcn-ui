@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -37,6 +39,61 @@ void main() {
         find.byType(ShadSelect<String>),
         matchesGoldenFile('goldens/select.png'),
       );
+    });
+
+    // Regression: the scroll-to-top/bottom buttons start animateToTop/
+    // animateToBottom on hover, but each opens with a 200ms delay and then
+    // awaits a scroll step per loop iteration. If the overlay (and its scroll
+    // view) is torn down in between — the popover closing mid-animation — the
+    // ScrollController has no attached position, so reading `.offset` /
+    // `.position` threw `StateError('Bad state: No element')` out of the async
+    // loop, unguarded (unlike the scroll listener, which checks `hasClients`).
+    // https://github.com/nank1ro/flutter-shadcn-ui/issues/686
+    Future<void> pumpSelect(WidgetTester tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadSelect<String>(
+            placeholder: const Text('Select a fruit'),
+            options: ['apple', 'banana', 'watermelon']
+                .map((f) => ShadOption(value: f, child: Text(f)))
+                .toList(),
+            selectedOptionBuilder: (context, value) => Text(value),
+          ),
+        ),
+      );
+    }
+
+    testWidgets('animateToTop is safe when the scroll view is detached (#686)',
+        (tester) async {
+      await pumpSelect(tester);
+      final state = tester.state<ShadSelectState<String>>(
+        find.byType(ShadSelect<String>),
+      );
+      // Popover never opened -> controller has no attached position, exactly
+      // like the state left behind when the popover closes mid-animation.
+      expect(state.scrollController.hasClients, isFalse);
+
+      state.shouldAnimateToTop = true;
+      unawaited(state.animateToTop());
+      await tester.pump(const Duration(milliseconds: 250));
+
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets(
+        'animateToBottom is safe when the scroll view is detached (#686)',
+        (tester) async {
+      await pumpSelect(tester);
+      final state = tester.state<ShadSelectState<String>>(
+        find.byType(ShadSelect<String>),
+      );
+      expect(state.scrollController.hasClients, isFalse);
+
+      state.shouldAnimateToBottom = true;
+      unawaited(state.animateToBottom());
+      await tester.pump(const Duration(milliseconds: 250));
+
+      expect(tester.takeException(), isNull);
     });
   });
 
