@@ -848,6 +848,12 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
   Future<void> animateToTop() async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
     while (shouldAnimateToTop) {
+      // The overlay (and its scroll view) can be torn down while this loop is
+      // suspended on the delay or an animateTo step; reading offset/position
+      // with no attached position then throws — 'Bad state: No element' in a
+      // release build (#686), a '_positions.isNotEmpty' assert in debug. Bail
+      // out like the scroll listener does.
+      if (!scrollController.hasClients) return;
       shouldAnimateToTop = scrollController.offset > 0;
       await scrollController.animateTo(
         max(scrollController.offset - 30, 0),
@@ -860,6 +866,8 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
   Future<void> animateToBottom() async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
     while (shouldAnimateToBottom) {
+      // See animateToTop: the scroll view may have detached while suspended.
+      if (!scrollController.hasClients) return;
       shouldAnimateToBottom =
           scrollController.offset < scrollController.position.maxScrollExtent;
       await scrollController.animateTo(

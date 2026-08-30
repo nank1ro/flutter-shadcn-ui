@@ -6,6 +6,7 @@
 ## 0.56.2
 
 - **FIX**: `ShadDialog` no longer bakes unnecessary status bar/navigation bar padding into a centered dialog. `SafeArea` is now applied at the route level (matching Material's `Dialog`) instead of inside the dialog card, fixing a large blank space above the title on Android (#681).
+- **FIX**: Guard `ShadSelect`'s `animateToTop`/`animateToBottom` against a detached `ScrollController`. The scroll-to-top/bottom buttons kick off an animation on hover, but if the popover closed before or during it, reading `scrollController.offset`/`.position` threw `Bad state: No element` out of the async loop (the scroll listener already had this `hasClients` guard) (#686).
 
 ## 0.56.1
 
