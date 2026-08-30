@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class AlertPage extends StatelessWidget {
-  const AlertPage({
-    super.key,
-    required this.style,
-  });
+  const AlertPage({super.key, required this.style});
 
   final ShadAlertVariant style;
 

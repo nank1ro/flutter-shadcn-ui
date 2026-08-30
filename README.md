@@ -93,4 +93,4 @@ Another library could probably come first with more widgets, but in the long run
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=nank1ro/flutter-shadcn-ui&type=Date)](https://star-history.com/#nank1ro/flutter-shadcn-ui&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=nank1ro/flutter-shadcn-ui&type=Date)](https://star-history.dera.page/#nank1ro/flutter-shadcn-ui&Date)

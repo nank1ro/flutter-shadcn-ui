@@ -16,32 +16,20 @@ class ContextMenuPage extends StatelessWidget {
         child: ShadContextMenuRegion(
           constraints: const BoxConstraints(minWidth: 300),
           items: [
-            const ShadContextMenuItem.inset(
-              child: Text('Back'),
-            ),
+            const ShadContextMenuItem.inset(child: Text('Back')),
             const ShadContextMenuItem.inset(
               enabled: false,
               child: Text('Forward'),
             ),
-            const ShadContextMenuItem.inset(
-              child: Text('Reload'),
-            ),
+            const ShadContextMenuItem.inset(child: Text('Reload')),
             const ShadContextMenuItem.inset(
               trailing: Icon(LucideIcons.chevronRight),
               items: [
-                ShadContextMenuItem(
-                  child: Text('Save Page As...'),
-                ),
-                ShadContextMenuItem(
-                  child: Text('Create Shortcut...'),
-                ),
-                ShadContextMenuItem(
-                  child: Text('Name Window...'),
-                ),
+                ShadContextMenuItem(child: Text('Save Page As...')),
+                ShadContextMenuItem(child: Text('Create Shortcut...')),
+                ShadContextMenuItem(child: Text('Name Window...')),
                 divider,
-                ShadContextMenuItem(
-                  child: Text('Developer Tools'),
-                ),
+                ShadContextMenuItem(child: Text('Developer Tools')),
               ],
               child: Text('More Tools'),
             ),

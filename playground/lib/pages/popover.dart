@@ -41,14 +41,8 @@ class _PopoverPageState extends State<PopoverPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'Dimensions',
-                    style: textTheme.h4,
-                  ),
-                  Text(
-                    'Set the dimensions for the layer.',
-                    style: textTheme.p,
-                  ),
+                  Text('Dimensions', style: textTheme.h4),
+                  Text('Set the dimensions for the layer.', style: textTheme.p),
                   const SizedBox(height: 4),
                   ...layer
                       .map(
@@ -56,16 +50,11 @@ class _PopoverPageState extends State<PopoverPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Expanded(
-                              child: Text(
-                                e.name,
-                                textAlign: TextAlign.start,
-                              ),
+                              child: Text(e.name, textAlign: TextAlign.start),
                             ),
                             Expanded(
                               flex: 2,
-                              child: ShadInput(
-                                initialValue: e.initialValue,
-                              ),
+                              child: ShadInput(initialValue: e.initialValue),
                             ),
                           ],
                         ),

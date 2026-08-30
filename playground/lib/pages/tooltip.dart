@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class TooltipPage extends StatefulWidget {
-  const TooltipPage({
-    super.key,
-  });
+  const TooltipPage({super.key});
 
   @override
   State<TooltipPage> createState() => _TooltipPageState();

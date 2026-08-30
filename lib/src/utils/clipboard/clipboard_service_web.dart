@@ -22,17 +22,20 @@ void _onPaste(web.Event event) {
   final data = clipboardEvent.clipboardData;
   if (data == null) return;
 
-  _extractFiles(data).then((files) {
-    if (files.isNotEmpty) {
-      for (final listener in [..._listeners]) {
-        listener(files);
+  _extractFiles(data).then(
+    (files) {
+      if (files.isNotEmpty) {
+        for (final listener in [..._listeners]) {
+          listener(files);
+        }
       }
-    }
-  }, onError: (Object error) {
-    for (final listener in [..._errorListeners]) {
-      listener(error);
-    }
-  });
+    },
+    onError: (Object error) {
+      for (final listener in [..._errorListeners]) {
+        listener(error);
+      }
+    },
+  );
 }
 
 Future<List<ShadClipboardItem>> _extractFiles(web.DataTransfer data) async {

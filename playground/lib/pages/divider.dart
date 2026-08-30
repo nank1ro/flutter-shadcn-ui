@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class SeparatorPage extends StatelessWidget {
-  const SeparatorPage({
-    super.key,
-    required this.style,
-  });
+  const SeparatorPage({super.key, required this.style});
 
   final ShadSeparatorVariant style;
 

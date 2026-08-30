@@ -10,10 +10,7 @@ class MenubarPage extends StatelessWidget {
     return const Scaffold(
       body: Padding(
         padding: EdgeInsets.all(40),
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: MenubarExample(),
-        ),
+        child: Align(alignment: Alignment.topCenter, child: MenubarExample()),
       ),
     );
   }
@@ -107,9 +104,7 @@ class MenubarExample extends StatelessWidget {
               child: Text('Force Reload'),
             ),
             divider,
-            const ShadContextMenuItem.inset(
-              child: Text('Toggle Full Screen'),
-            ),
+            const ShadContextMenuItem.inset(child: Text('Toggle Full Screen')),
             divider,
             const ShadContextMenuItem.inset(child: Text('Hide Sidebar')),
           ],

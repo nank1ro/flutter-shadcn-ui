@@ -149,9 +149,6 @@ class RangeCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ShadCalendar.range(
-      min: 2,
-      max: 5,
-    );
+    return const ShadCalendar.range(min: 2, max: 5);
   }
 }
