@@ -244,6 +244,7 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.extendBackground,
     this.titlePinned,
     this.descriptionPinned,
     this.actionsPinned,
@@ -284,6 +285,7 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.extendBackground,
     this.titlePinned,
     this.descriptionPinned,
     this.actionsPinned,
@@ -325,6 +327,7 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.extendBackground,
     this.titlePinned,
     this.descriptionPinned,
     this.actionsPinned,
@@ -531,6 +534,26 @@ class ShadDialog extends StatelessWidget {
   /// {@endtemplate}
   final bool? useSafeArea;
 
+  /// {@template ShadDialog.extendBackground}
+  /// Whether to extend the dialog's background color to fill the whole
+  /// screen, behind the status bar / notch / gesture bar, instead of
+  /// stopping at the safe-area boundary.
+  ///
+  /// When true, the [DecoratedBox] background expands to the full screen
+  /// (via an outer [SizedBox.expand]) and [SafeArea] moves inside it to
+  /// keep the content clear of system UI, so there is no barrier-colored
+  /// gap at the edges. Useful for near-full-screen dialogs that touch
+  /// screen edges; a small centered dialog looks the same either way.
+  ///
+  /// Intended for full-screen dialogs: while true, [border], [shadows],
+  /// and border radius are always forced off (radius, if set, is ignored),
+  /// since those only make visual sense on a card with edges that don't
+  /// sit behind system UI.
+  ///
+  /// Defaults to false if not specified.
+  /// {@endtemplate}
+  final bool? extendBackground;
+
   /// {@template ShadDialog.titlePinned}
   /// Whether the title is pinned when scrolling and [scrollable] is true.
   ///
@@ -610,13 +633,24 @@ class ShadDialog extends StatelessWidget {
         effectiveDialogTheme.constraints ??
         const BoxConstraints(maxWidth: 512);
 
+    final effectiveExtendBackground =
+        extendBackground ?? effectiveDialogTheme.extendBackground ?? false;
+
+    // Computed before effectiveBorder/effectiveShadows: a full-screen
+    // dialog shouldn't draw a border or drop shadow at its edges, since
+    // those edges sit behind system UI, not against visible app content.
     final effectiveBorder =
         border ??
         effectiveDialogTheme.border ??
-        Border.all(color: theme.colorScheme.border);
+        (effectiveExtendBackground
+            ? null
+            : Border.all(color: theme.colorScheme.border));
 
     final effectiveShadows =
-        shadows ?? effectiveDialogTheme.shadows ?? ShadShadows.lg;
+        shadows ??
+        (effectiveExtendBackground
+            ? const <BoxShadow>[]
+            : effectiveDialogTheme.shadows ?? ShadShadows.lg);
 
     final effectiveRemoveBorderRadiusWhenTiny =
         removeBorderRadiusWhenTiny ??
@@ -833,7 +867,9 @@ class ShadDialog extends StatelessWidget {
           return DecoratedBox(
             decoration: BoxDecoration(
               color: effectiveBackgroundColor,
-              borderRadius: (!sm && effectiveRemoveBorderRadiusWhenTiny)
+              borderRadius: effectiveExtendBackground
+                  ? null
+                  : (!sm && effectiveRemoveBorderRadiusWhenTiny)
                   ? null
                   : effectiveRadius,
               border: effectiveBorder,
@@ -845,13 +881,38 @@ class ShadDialog extends StatelessWidget {
       ),
     );
 
-    // Get the current view padding
-    final viewPadding = MediaQuery.viewInsetsOf(context);
+    // Keyboard insets, so the dialog shifts clear of the keyboard.
+    final effectiveViewInsets = MediaQuery.viewInsetsOf(context);
+
+    if (effectiveExtendBackground) {
+      // Paint the background color across the whole screen (SizedBox.expand
+      // below), then apply SafeArea inside it instead of outside, so
+      // content stays clear of system UI while the color underneath still
+      // reaches the true screen edges — no barrier-colored gap.
+      Widget result = Align(
+        alignment: effectiveAlignment,
+        child: effectiveViewInsets == EdgeInsets.zero
+            ? dialog
+            : Padding(
+                padding: effectiveViewInsets,
+                child: dialog,
+              ),
+      );
+      if (effectiveUseSafeArea) {
+        result = SafeArea(child: result);
+      }
+      return SizedBox.expand(
+        child: DecoratedBox(
+          decoration: BoxDecoration(color: effectiveBackgroundColor),
+          child: result,
+        ),
+      );
+    }
 
     Widget result = Align(
       alignment: effectiveAlignment,
       child: Padding(
-        padding: viewPadding,
+        padding: effectiveViewInsets,
         child: dialog,
       ),
     );

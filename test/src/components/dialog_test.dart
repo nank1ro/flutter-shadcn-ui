@@ -266,5 +266,756 @@ void main() {
         expect(builtPadding, widgetPadding);
       },
     );
+
+    testWidgets(
+      'extendBackground: true fills the full screen with the background '
+      'color instead of shrinking it away from the true screen edges',
+      (tester) async {
+        const systemPadding = EdgeInsets.only(top: 62.4, bottom: 24.2);
+
+        await tester.pumpWidget(
+          const ShadApp(
+            home: MediaQuery(
+              data: MediaQueryData(padding: systemPadding),
+              child: Scaffold(
+                body: ShadDialog(
+                  extendBackground: true,
+                  title: Text('Title'),
+                  description: Text('Description'),
+                  child: Text('Child'),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // SafeArea still protects the content — it just sits inside the
+        // full-screen DecoratedBox instead of wrapping it from outside.
+        expect(find.byType(SafeArea), findsOneWidget);
+
+        // The outermost DecoratedBox (with the background color) must not
+        // be shrunk by a Padding sitting directly between it and the rest
+        // of the tree — that would leave a barrier-colored gap at the
+        // edges, which is the bug this fix addresses. It should span the
+        // full screen (SizedBox.expand ancestor).
+        final shadDialog = find.byType(ShadDialog);
+        final outerDecoratedBox = find
+            .descendant(
+              of: shadDialog,
+              matching: find.byWidgetPredicate(
+                (widget) =>
+                    widget is DecoratedBox &&
+                    widget.decoration is BoxDecoration &&
+                    (widget.decoration as BoxDecoration).color != null,
+              ),
+            )
+            .first;
+        expect(
+          find.ancestor(
+            of: outerDecoratedBox,
+            matching: find.byType(SizedBox),
+          ),
+          findsWidgets,
+          reason: 'the colored box should expand to fill the screen',
+        );
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true with zero viewPadding still works',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Dialog should still render normally.
+        expect(find.text('Title'), findsOneWidget);
+        expect(find.text('Description'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'extendBackground defaults to false (SafeArea is used)',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestWidget(
+            const ShadDialog(
+              title: Text('Title'),
+              description: Text('Description'),
+              child: Text('Child'),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Default behavior: SafeArea wraps the dialog.
+        expect(find.byType(SafeArea), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'extendBackground via theme',
+      (tester) async {
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              primaryDialogTheme: const ShadDialogTheme(
+                extendBackground: true,
+              ),
+            ),
+            home: const Scaffold(
+              body: ShadDialog(
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Theme-level extendBackground should be honored — SafeArea still
+        // present, just relocated inside the full-screen background.
+        expect(find.byType(SafeArea), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true defaults border to null (no visible border)',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Find the inner DecoratedBox (the dialog card) by color.
+        final innerDecoratedBoxes = find.descendant(
+          of: find.byType(ShadDialog),
+          matching: find.byWidgetPredicate(
+            (widget) =>
+                widget is DecoratedBox &&
+                widget.decoration is BoxDecoration &&
+                (widget.decoration as BoxDecoration).color != null,
+          ),
+        );
+        // The first DecoratedBox with color is the outer background one;
+        // the second is the inner dialog card.
+        final innerDecoratedBox = innerDecoratedBoxes.at(1);
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        // Border should be null when extendBackground is true.
+        expect(decoration.border, isNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: false defaults border to theme border',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Find the inner DecoratedBox (the dialog card).
+        final innerDecoratedBox = find
+            .descendant(
+              of: find.byType(ShadDialog),
+              matching: find.byWidgetPredicate(
+                (widget) =>
+                    widget is DecoratedBox &&
+                    widget.decoration is BoxDecoration &&
+                    (widget.decoration as BoxDecoration).border != null,
+              ),
+            )
+            .last;
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        // Default border should be present.
+        expect(decoration.border, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true shadows default to empty list',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final innerDecoratedBox = find
+            .descendant(
+              of: find.byType(ShadDialog),
+              matching: find.byWidgetPredicate(
+                (widget) =>
+                    widget is DecoratedBox &&
+                    widget.decoration is BoxDecoration &&
+                    (widget.decoration as BoxDecoration).color != null,
+              ),
+            )
+            .last;
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        // Shadows should be empty when extendBackground is true.
+        expect(decoration.boxShadow, isEmpty);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: false shadows default to ShadShadows.lg',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final innerDecoratedBox = find
+            .descendant(
+              of: find.byType(ShadDialog),
+              matching: find.byWidgetPredicate(
+                (widget) =>
+                    widget is DecoratedBox &&
+                    widget.decoration is BoxDecoration &&
+                    (widget.decoration as BoxDecoration).color != null,
+              ),
+            )
+            .last;
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        // Default shadows should be present.
+        expect(decoration.boxShadow, isNotEmpty);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true borderRadius defaults to null',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final innerDecoratedBox = find
+            .descendant(
+              of: find.byType(ShadDialog),
+              matching: find.byWidgetPredicate(
+                (widget) =>
+                    widget is DecoratedBox &&
+                    widget.decoration is BoxDecoration &&
+                    (widget.decoration as BoxDecoration).color != null,
+              ),
+            )
+            .last;
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        // BorderRadius should be null (no rounding) when extendBackground.
+        expect(decoration.borderRadius, isNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: false borderRadius defaults to effectiveRadius',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final innerDecoratedBox = find
+            .descendant(
+              of: find.byType(ShadDialog),
+              matching: find.byWidgetPredicate(
+                (widget) =>
+                    widget is DecoratedBox &&
+                    widget.decoration is BoxDecoration &&
+                    (widget.decoration as BoxDecoration).color != null,
+              ),
+            )
+            .last;
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        // BorderRadius should be present by default.
+        expect(decoration.borderRadius, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true with useSafeArea: false skips SafeArea entirely',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                useSafeArea: false,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // No SafeArea at all when useSafeArea: false.
+        expect(find.byType(SafeArea), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true with useSafeArea: true keeps SafeArea inside',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                useSafeArea: true,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // SafeArea should still be present inside.
+        expect(find.byType(SafeArea), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true with keyboard insets applies viewInsets padding',
+      (tester) async {
+        await tester.pumpWidget(
+          const MediaQuery(
+            data: MediaQueryData(
+              viewInsets: EdgeInsets.only(bottom: 300),
+            ),
+            child: ShadApp(
+              home: Scaffold(
+                body: ShadDialog(
+                  extendBackground: true,
+                  title: Text('Title'),
+                  description: Text('Description'),
+                  child: Text('Child'),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // The dialog should still render with keyboard padding applied.
+        expect(find.text('Title'), findsOneWidget);
+        expect(find.text('Description'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true with custom border uses the custom border',
+      (tester) async {
+        const customBorder = Border.fromBorderSide(
+          BorderSide(width: 3, color: Colors.red),
+        );
+
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                border: customBorder,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final innerDecoratedBox = find
+            .descendant(
+              of: find.byType(ShadDialog),
+              matching: find.byWidgetPredicate(
+                (widget) =>
+                    widget is DecoratedBox &&
+                    widget.decoration is BoxDecoration &&
+                    (widget.decoration as BoxDecoration).border != null,
+              ),
+            )
+            .last;
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        // Custom border should win over the null default.
+        expect(decoration.border, equals(customBorder));
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true with custom shadows uses the custom shadows',
+      (tester) async {
+        const customShadows = [BoxShadow(blurRadius: 99)];
+
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                shadows: customShadows,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final innerDecoratedBox = find
+            .descendant(
+              of: find.byType(ShadDialog),
+              matching: find.byWidgetPredicate(
+                (widget) =>
+                    widget is DecoratedBox &&
+                    widget.decoration is BoxDecoration &&
+                    (widget.decoration as BoxDecoration).color != null,
+              ),
+            )
+            .last;
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        // Custom shadows should win over the empty default.
+        expect(decoration.boxShadow, equals(customShadows));
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true with custom radius forces borderRadius to null',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                radius: BorderRadius.all(Radius.circular(42)),
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final innerDecoratedBoxes = find.descendant(
+          of: find.byType(ShadDialog),
+          matching: find.byWidgetPredicate(
+            (widget) =>
+                widget is DecoratedBox &&
+                widget.decoration is BoxDecoration &&
+                (widget.decoration as BoxDecoration).color != null,
+          ),
+        );
+        final innerDecoratedBox = innerDecoratedBoxes.at(1);
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        // Even with a custom radius, extendBackground forces borderRadius
+        // to null since the dialog edges sit behind system UI.
+        expect(decoration.borderRadius, isNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true via theme sets border to null',
+      (tester) async {
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              primaryDialogTheme: const ShadDialogTheme(
+                extendBackground: true,
+              ),
+            ),
+            home: const Scaffold(
+              body: ShadDialog(
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final innerDecoratedBoxes = find.descendant(
+          of: find.byType(ShadDialog),
+          matching: find.byWidgetPredicate(
+            (widget) =>
+                widget is DecoratedBox &&
+                widget.decoration is BoxDecoration &&
+                (widget.decoration as BoxDecoration).color != null,
+          ),
+        );
+        final innerDecoratedBox = innerDecoratedBoxes.at(1);
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        expect(decoration.border, isNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true via theme sets borderRadius to null',
+      (tester) async {
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              primaryDialogTheme: const ShadDialogTheme(
+                extendBackground: true,
+              ),
+            ),
+            home: const Scaffold(
+              body: ShadDialog(
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final innerDecoratedBox = find
+            .descendant(
+              of: find.byType(ShadDialog),
+              matching: find.byWidgetPredicate(
+                (widget) =>
+                    widget is DecoratedBox &&
+                    widget.decoration is BoxDecoration &&
+                    (widget.decoration as BoxDecoration).color != null,
+              ),
+            )
+            .last;
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        expect(decoration.borderRadius, isNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true via theme sets shadows to empty',
+      (tester) async {
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              primaryDialogTheme: const ShadDialogTheme(
+                extendBackground: true,
+              ),
+            ),
+            home: const Scaffold(
+              body: ShadDialog(
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final innerDecoratedBox = find
+            .descendant(
+              of: find.byType(ShadDialog),
+              matching: find.byWidgetPredicate(
+                (widget) =>
+                    widget is DecoratedBox &&
+                    widget.decoration is BoxDecoration &&
+                    (widget.decoration as BoxDecoration).color != null,
+              ),
+            )
+            .last;
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        expect(decoration.boxShadow, isEmpty);
+      },
+    );
+
+    testWidgets(
+      'widget-level extendBackground: false overrides theme-level true',
+      (tester) async {
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              primaryDialogTheme: const ShadDialogTheme(
+                extendBackground: true,
+              ),
+            ),
+            home: const Scaffold(
+              body: ShadDialog(
+                extendBackground: false,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Widget-level false overrides theme-level true.
+        final innerDecoratedBox = find
+            .descendant(
+              of: find.byType(ShadDialog),
+              matching: find.byWidgetPredicate(
+                (widget) =>
+                    widget is DecoratedBox &&
+                    widget.decoration is BoxDecoration &&
+                    (widget.decoration as BoxDecoration).border != null,
+              ),
+            )
+            .last;
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        // Default border should be present (extendBackground=false).
+        expect(decoration.border, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true fills screen and does not shrink from edges '
+      '(same DecoratedBox size regardless of system padding)',
+      (tester) async {
+        const systemPadding = EdgeInsets.only(top: 62.4, bottom: 24.2);
+
+        Future<Size> getDecoratedBoxSize(EdgeInsets padding) async {
+          await tester.pumpWidget(
+            MediaQuery(
+              data: MediaQueryData(padding: padding),
+              child: const ShadApp(
+                home: Scaffold(
+                  body: ShadDialog(
+                    extendBackground: true,
+                    title: Text('Title'),
+                    description: Text('Description'),
+                    child: Text('Child'),
+                  ),
+                ),
+              ),
+            ),
+          );
+          await tester.pumpAndSettle();
+
+          // The outermost DecoratedBox with background color.
+          final outerDecoratedBox = find
+              .descendant(
+                of: find.byType(SizedBox),
+                matching: find.byWidgetPredicate(
+                  (widget) =>
+                      widget is DecoratedBox &&
+                      widget.decoration is BoxDecoration &&
+                      (widget.decoration as BoxDecoration).color != null,
+                ),
+              )
+              .first;
+          return tester.getSize(outerDecoratedBox);
+        }
+
+        final sizeWithInsets = await getDecoratedBoxSize(systemPadding);
+        final sizeWithoutInsets = await getDecoratedBoxSize(EdgeInsets.zero);
+
+        // Both DecoratedBoxes should fill the full screen — system padding
+        // must not shrink the background.
+        expect(sizeWithInsets.width, closeTo(sizeWithoutInsets.width, 0.5));
+        expect(sizeWithInsets.height, closeTo(sizeWithoutInsets.height, 0.5));
+      },
+    );
   });
 }

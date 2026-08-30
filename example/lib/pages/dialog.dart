@@ -1,6 +1,6 @@
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 final profile = [
@@ -117,6 +117,49 @@ class _DialogPageState extends State<DialogPage> {
                     onPressed: () => Navigator.of(context).pop(true),
                   ),
                 ],
+              ),
+            );
+          },
+        ),
+        ShadButton.outline(
+          child: const Text('Full Screen Dialog'),
+          onPressed: () {
+            showShadDialog(
+              context: context,
+              opaque: true,
+              barrierDismissible: true,
+              builder: (context) => ShadDialog(
+                extendBackground: true,
+                constraints: BoxConstraints.expand(
+                  width: MediaQuery.sizeOf(context).width,
+                  height: MediaQuery.sizeOf(context).height,
+                ),
+                title: const Text('Full Screen Dialog'),
+                description: const Text(
+                  'A dialog that fills the screen, with its background '
+                  'extending behind the status bar and gesture bar.',
+                ),
+                actions: [
+                  ShadButton.outline(
+                    child: const Text('Close'),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.muted,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Content Area',
+                      style: theme.textTheme.muted,
+                    ),
+                  ),
+                ),
               ),
             );
           },
