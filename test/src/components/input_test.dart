@@ -10,6 +10,35 @@ void main() {
   }
 
   group('ShadInput', () {
+    testWidgets('publishes enabled state on the editable semantics node', (
+      tester,
+    ) async {
+      final semanticsHandle = tester.ensureSemantics();
+      try {
+        await tester.pumpWidget(createTestWidget(const ShadInput()));
+        final enabledData = tester
+            .getSemantics(find.byType(EditableText))
+            .getSemanticsData();
+        expect(
+          enabledData.flagsCollection.isEnabled.toBoolOrNull(),
+          isTrue,
+        );
+
+        await tester.pumpWidget(
+          createTestWidget(const ShadInput(enabled: false)),
+        );
+        final disabledData = tester
+            .getSemantics(find.byType(EditableText))
+            .getSemanticsData();
+        expect(
+          disabledData.flagsCollection.isEnabled.toBoolOrNull(),
+          isFalse,
+        );
+      } finally {
+        semanticsHandle.dispose();
+      }
+    });
+
     testWidgets('ShadInput matches goldens', (tester) async {
       await tester.pumpWidget(
         createTestWidget(

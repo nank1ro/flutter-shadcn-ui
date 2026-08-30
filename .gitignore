@@ -53,3 +53,6 @@ docs/superpowers/
 # MemPalace (personal tooling)
 mempalace.yaml
 entities.json
+
+# Golden test failure artifacts (regenerated per test run)
+test/**/failures/
