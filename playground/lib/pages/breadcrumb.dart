@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-enum ShadBreadcrumbStyle {
-  primary,
-  customSeparator,
-  dropdown,
-}
+enum ShadBreadcrumbStyle { primary, customSeparator, dropdown }
 
 class BreadcrumbPage extends StatelessWidget {
-  const BreadcrumbPage({
-    super.key,
-    required this.style,
-  });
+  const BreadcrumbPage({super.key, required this.style});
 
   final ShadBreadcrumbStyle style;
 

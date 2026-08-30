@@ -52,10 +52,7 @@ class IconButtonPage extends StatelessWidget {
           ),
           PlagroundIconButtonStyle.gradientShadow => ShadIconButton(
             gradient: const LinearGradient(
-              colors: [
-                Colors.cyan,
-                Colors.indigo,
-              ],
+              colors: [Colors.cyan, Colors.indigo],
             ),
             shadows: [
               BoxShadow(

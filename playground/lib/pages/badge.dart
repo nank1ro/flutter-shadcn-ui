@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class BadgePage extends StatelessWidget {
-  const BadgePage({
-    super.key,
-    required this.variant,
-  });
+  const BadgePage({super.key, required this.variant});
 
   final ShadBadgeVariant variant;
 
@@ -14,9 +11,7 @@ class BadgePage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: switch (variant) {
-          ShadBadgeVariant.primary => const ShadBadge(
-            child: Text('Primary'),
-          ),
+          ShadBadgeVariant.primary => const ShadBadge(child: Text('Primary')),
           ShadBadgeVariant.secondary => const ShadBadge.secondary(
             child: Text('Secondary'),
           ),

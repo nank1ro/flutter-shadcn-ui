@@ -148,3 +148,39 @@ Row(
 ```
 
 </Preview>
+
+## Expandable
+
+Set `expandable: true` to let the user drag the handle (or the sheet's body
+edge) to resize the sheet between `minSize` and `maxSize`, starting at
+`initialSize`. Enable `snap` with `snapSizes` to make releases settle on the
+nearest stop, and a fast flick always goes straight to `maxSize` or `minSize`.
+
+Drive the size programmatically with a `ShadSheetController` (`jumpTo`,
+`animateTo`), and replace the default pill with `dragHandle` or the
+side-aware `dragHandleBuilder`.
+
+<Preview src="sheet?style=expandable" minHeight="600px">
+
+```dart
+ShadButton.outline(
+  child: const Text('Open expandable sheet'),
+  onPressed: () => showShadSheet(
+    side: ShadSheetSide.bottom,
+    context: context,
+    builder: (context) => const ShadSheet(
+      expandable: true,
+      snap: true,
+      snapSizes: [0.3, 0.6, 0.9],
+      initialSize: 0.3,
+      minSize: 0.3,
+      maxSize: 0.9,
+      title: Text('Expandable Sheet'),
+      description: Text('Drag the handle to resize'),
+      child: Text('Content here'),
+    ),
+  ),
+)
+```
+
+</Preview>

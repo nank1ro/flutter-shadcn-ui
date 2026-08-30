@@ -83,6 +83,11 @@ mixin _$ShadSheetTheme {
         t,
       ),
       minFlingVelocity: lerpDouble$(a.minFlingVelocity, b.minFlingVelocity, t),
+      snapFlingVelocity: lerpDouble$(
+        a.snapFlingVelocity,
+        b.snapFlingVelocity,
+        t,
+      ),
       closeProgressThreshold: lerpDouble$(
         a.closeProgressThreshold,
         b.closeProgressThreshold,
@@ -93,6 +98,28 @@ mixin _$ShadSheetTheme {
       titlePinned: t < 0.5 ? a.titlePinned : b.titlePinned,
       descriptionPinned: t < 0.5 ? a.descriptionPinned : b.descriptionPinned,
       actionsPinned: t < 0.5 ? a.actionsPinned : b.actionsPinned,
+      expandable: t < 0.5 ? a.expandable : b.expandable,
+      initialSize: lerpDouble$(a.initialSize, b.initialSize, t),
+      minSize: lerpDouble$(a.minSize, b.minSize, t),
+      maxSize: lerpDouble$(a.maxSize, b.maxSize, t),
+      snap: t < 0.5 ? a.snap : b.snap,
+      snapSizes: t < 0.5 ? a.snapSizes : b.snapSizes,
+      snapAnimationDuration: lerpDuration$(
+        a.snapAnimationDuration,
+        b.snapAnimationDuration,
+        t,
+      ),
+      snapAnimationCurve: t < 0.5 ? a.snapAnimationCurve : b.snapAnimationCurve,
+      showDragHandle: t < 0.5 ? a.showDragHandle : b.showDragHandle,
+      dragHandleColor: Color.lerp(a.dragHandleColor, b.dragHandleColor, t),
+      dragHandleWidth: lerpDouble$(a.dragHandleWidth, b.dragHandleWidth, t),
+      dragHandleHeight: lerpDouble$(a.dragHandleHeight, b.dragHandleHeight, t),
+      dragHandleRadius: BorderRadius.lerp(
+        a.dragHandleRadius,
+        b.dragHandleRadius,
+        t,
+      ),
+      dragHandleExtent: lerpDouble$(a.dragHandleExtent, b.dragHandleExtent, t),
     );
   }
 
@@ -126,12 +153,27 @@ mixin _$ShadSheetTheme {
     EdgeInsetsGeometry? scrollPadding,
     double? disabledScrollControlMaxRatio,
     double? minFlingVelocity,
+    double? snapFlingVelocity,
     double? closeProgressThreshold,
     ShadSheetSide? side,
     bool? useSafeArea,
     bool? titlePinned,
     bool? descriptionPinned,
     bool? actionsPinned,
+    bool? expandable,
+    double? initialSize,
+    double? minSize,
+    double? maxSize,
+    bool? snap,
+    List<double>? snapSizes,
+    Duration? snapAnimationDuration,
+    Curve? snapAnimationCurve,
+    bool? showDragHandle,
+    Color? dragHandleColor,
+    double? dragHandleWidth,
+    double? dragHandleHeight,
+    BorderRadius? dragHandleRadius,
+    double? dragHandleExtent,
   }) {
     final _this = (this as ShadSheetTheme);
 
@@ -170,6 +212,7 @@ mixin _$ShadSheetTheme {
       disabledScrollControlMaxRatio:
           disabledScrollControlMaxRatio ?? _this.disabledScrollControlMaxRatio,
       minFlingVelocity: minFlingVelocity ?? _this.minFlingVelocity,
+      snapFlingVelocity: snapFlingVelocity ?? _this.snapFlingVelocity,
       closeProgressThreshold:
           closeProgressThreshold ?? _this.closeProgressThreshold,
       side: side ?? _this.side,
@@ -177,6 +220,21 @@ mixin _$ShadSheetTheme {
       titlePinned: titlePinned ?? _this.titlePinned,
       descriptionPinned: descriptionPinned ?? _this.descriptionPinned,
       actionsPinned: actionsPinned ?? _this.actionsPinned,
+      expandable: expandable ?? _this.expandable,
+      initialSize: initialSize ?? _this.initialSize,
+      minSize: minSize ?? _this.minSize,
+      maxSize: maxSize ?? _this.maxSize,
+      snap: snap ?? _this.snap,
+      snapSizes: snapSizes ?? _this.snapSizes,
+      snapAnimationDuration:
+          snapAnimationDuration ?? _this.snapAnimationDuration,
+      snapAnimationCurve: snapAnimationCurve ?? _this.snapAnimationCurve,
+      showDragHandle: showDragHandle ?? _this.showDragHandle,
+      dragHandleColor: dragHandleColor ?? _this.dragHandleColor,
+      dragHandleWidth: dragHandleWidth ?? _this.dragHandleWidth,
+      dragHandleHeight: dragHandleHeight ?? _this.dragHandleHeight,
+      dragHandleRadius: dragHandleRadius ?? _this.dragHandleRadius,
+      dragHandleExtent: dragHandleExtent ?? _this.dragHandleExtent,
     );
   }
 
@@ -223,12 +281,27 @@ mixin _$ShadSheetTheme {
       scrollPadding: other.scrollPadding,
       disabledScrollControlMaxRatio: other.disabledScrollControlMaxRatio,
       minFlingVelocity: other.minFlingVelocity,
+      snapFlingVelocity: other.snapFlingVelocity,
       closeProgressThreshold: other.closeProgressThreshold,
       side: other.side,
       useSafeArea: other.useSafeArea,
       titlePinned: other.titlePinned,
       descriptionPinned: other.descriptionPinned,
       actionsPinned: other.actionsPinned,
+      expandable: other.expandable,
+      initialSize: other.initialSize,
+      minSize: other.minSize,
+      maxSize: other.maxSize,
+      snap: other.snap,
+      snapSizes: other.snapSizes,
+      snapAnimationDuration: other.snapAnimationDuration,
+      snapAnimationCurve: other.snapAnimationCurve,
+      showDragHandle: other.showDragHandle,
+      dragHandleColor: other.dragHandleColor,
+      dragHandleWidth: other.dragHandleWidth,
+      dragHandleHeight: other.dragHandleHeight,
+      dragHandleRadius: other.dragHandleRadius,
+      dragHandleExtent: other.dragHandleExtent,
     );
   }
 
@@ -275,12 +348,27 @@ mixin _$ShadSheetTheme {
         _other.disabledScrollControlMaxRatio ==
             _this.disabledScrollControlMaxRatio &&
         _other.minFlingVelocity == _this.minFlingVelocity &&
+        _other.snapFlingVelocity == _this.snapFlingVelocity &&
         _other.closeProgressThreshold == _this.closeProgressThreshold &&
         _other.side == _this.side &&
         _other.useSafeArea == _this.useSafeArea &&
         _other.titlePinned == _this.titlePinned &&
         _other.descriptionPinned == _this.descriptionPinned &&
-        _other.actionsPinned == _this.actionsPinned;
+        _other.actionsPinned == _this.actionsPinned &&
+        _other.expandable == _this.expandable &&
+        _other.initialSize == _this.initialSize &&
+        _other.minSize == _this.minSize &&
+        _other.maxSize == _this.maxSize &&
+        _other.snap == _this.snap &&
+        _other.snapSizes == _this.snapSizes &&
+        _other.snapAnimationDuration == _this.snapAnimationDuration &&
+        _other.snapAnimationCurve == _this.snapAnimationCurve &&
+        _other.showDragHandle == _this.showDragHandle &&
+        _other.dragHandleColor == _this.dragHandleColor &&
+        _other.dragHandleWidth == _this.dragHandleWidth &&
+        _other.dragHandleHeight == _this.dragHandleHeight &&
+        _other.dragHandleRadius == _this.dragHandleRadius &&
+        _other.dragHandleExtent == _this.dragHandleExtent;
   }
 
   @override
@@ -318,12 +406,27 @@ mixin _$ShadSheetTheme {
       _this.scrollPadding,
       _this.disabledScrollControlMaxRatio,
       _this.minFlingVelocity,
+      _this.snapFlingVelocity,
       _this.closeProgressThreshold,
       _this.side,
       _this.useSafeArea,
       _this.titlePinned,
       _this.descriptionPinned,
       _this.actionsPinned,
+      _this.expandable,
+      _this.initialSize,
+      _this.minSize,
+      _this.maxSize,
+      _this.snap,
+      _this.snapSizes,
+      _this.snapAnimationDuration,
+      _this.snapAnimationCurve,
+      _this.showDragHandle,
+      _this.dragHandleColor,
+      _this.dragHandleWidth,
+      _this.dragHandleHeight,
+      _this.dragHandleRadius,
+      _this.dragHandleExtent,
     ]);
   }
 }
