@@ -1293,7 +1293,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     // free-edge inset for expandable sheets is handled separately in
     // [buildExpandable] (it depends on the live drag size).
     final safeAreaInsets = effectiveUseSafeArea
-        ? expandableSafeAreaInsets(side, effectiveConstraints)
+        ? expandableSafeAreaInsets(side, effectiveExpandCrossSide)
         : EdgeInsets.zero;
 
     // ShadDialog falls back to EdgeInsets.all(24) when padding is null;
@@ -1631,67 +1631,39 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
 
   // Anchor + side safe-area insets (home indicator, side gutters); the guard
   // for `useSafeArea` lives at the call site.
+  //
+  // Cross-axis insets (left/right for bottom/top, top/bottom for left/right)
+  // only apply when expandCrossSide is true — that's what actually stretches
+  // the sheet to those screen edges (via effectiveConstraints.enforce in
+  // build()). A maxWidth/maxHeight check here doesn't work: enforce()
+  // overrides it back to the full cross-axis size whenever expandCrossSide
+  // is true, so a merely-narrow constraint doesn't mean the sheet is
+  // actually narrow.
   EdgeInsets expandableSafeAreaInsets(
     ShadSheetSide side,
-    BoxConstraints? constraints,
+    bool expandCrossSide,
   ) {
     final viewPadding = MediaQuery.viewPaddingOf(context);
-    final screenSize = MediaQuery.sizeOf(context);
+    final crossInset = expandCrossSide ? viewPadding : EdgeInsets.zero;
     return switch (side) {
       ShadSheetSide.bottom => EdgeInsets.only(
         bottom: viewPadding.bottom,
-        // Only add cross-axis insets if the sheet actually touches the
-        // screen edge. A constrained sheet (maxWidth < screen width)
-        // sits away from the left/right edges, so those insets would
-        // leak into unrelated whitespace.
-        left:
-            constraints?.maxWidth == null ||
-                constraints!.maxWidth >= screenSize.width
-            ? viewPadding.left
-            : 0,
-        right:
-            constraints?.maxWidth == null ||
-                constraints!.maxWidth >= screenSize.width
-            ? viewPadding.right
-            : 0,
+        left: crossInset.left,
+        right: crossInset.right,
       ),
       ShadSheetSide.top => EdgeInsets.only(
         top: viewPadding.top,
-        left:
-            constraints?.maxWidth == null ||
-                constraints!.maxWidth >= screenSize.width
-            ? viewPadding.left
-            : 0,
-        right:
-            constraints?.maxWidth == null ||
-                constraints!.maxWidth >= screenSize.width
-            ? viewPadding.right
-            : 0,
+        left: crossInset.left,
+        right: crossInset.right,
       ),
       ShadSheetSide.left => EdgeInsets.only(
-        top:
-            constraints?.maxHeight == null ||
-                constraints!.maxHeight >= screenSize.height
-            ? viewPadding.top
-            : 0,
-        bottom:
-            constraints?.maxHeight == null ||
-                constraints!.maxHeight >= screenSize.height
-            ? viewPadding.bottom
-            : 0,
+        top: crossInset.top,
+        bottom: crossInset.bottom,
         left: viewPadding.left,
       ),
       ShadSheetSide.right => EdgeInsets.only(
-        top:
-            constraints?.maxHeight == null ||
-                constraints!.maxHeight >= screenSize.height
-            ? viewPadding.top
-            : 0,
-        bottom:
-            constraints?.maxHeight == null ||
-                constraints!.maxHeight >= screenSize.height
-            ? viewPadding.bottom
-            : 0,
+        top: crossInset.top,
+        bottom: crossInset.bottom,
         right: viewPadding.right,
       ),
     };

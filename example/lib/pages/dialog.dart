@@ -164,6 +164,53 @@ class _DialogPageState extends State<DialogPage> {
             );
           },
         ),
+        ShadButton.outline(
+          child: const Text('Full Screen Scrollable Dialog'),
+          onPressed: () {
+            showShadDialog(
+              context: context,
+              opaque: true,
+              barrierDismissible: true,
+              builder: (context) => ShadDialog(
+                extendBackground: true,
+                constraints: BoxConstraints.expand(
+                  width: MediaQuery.sizeOf(context).width,
+                  height: MediaQuery.sizeOf(context).height,
+                ),
+                title: const Text('Terms and Conditions'),
+                titlePinned: titlePinned,
+                descriptionPinned: descriptionPinned,
+                actionsPinned: actionsPinned,
+                description: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List.generate(
+                    30,
+                    (i) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Text(
+                        'Paragraph ${i + 1}: A full-screen dialog with '
+                        'long content still scrolls correctly, and stays '
+                        'clear of the status bar and gesture bar while the '
+                        'background extends behind them.',
+                      ),
+                    ),
+                  ),
+                ),
+                actions: [
+                  ShadButton.outline(
+                    child: const Text('Decline'),
+                    onPressed: () => Navigator.of(context).pop(false),
+                  ),
+                  ShadButton(
+                    child: const Text('Accept'),
+                    onPressed: () => Navigator.of(context).pop(true),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ],
     );
   }

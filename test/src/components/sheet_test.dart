@@ -1492,6 +1492,26 @@ void main() {
     );
 
     testWidgets(
+      'non-expandable sheet with padding: EdgeInsets.zero still gets the '
+      'safe-area inset, not the default 24 padding (#685)',
+      (tester) async {
+        setUpView(tester, viewPadding: const FakeViewPadding(bottom: 40));
+
+        await tester.pumpWidget(sheetWidget(padding: EdgeInsets.zero));
+        await tester.pump();
+
+        final shadDialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+
+        // Explicit zero must not be replaced by the 24 default before the
+        // inset is merged in — bottom should be exactly the 40px inset.
+        expect(
+          shadDialog.padding?.resolve(TextDirection.ltr).bottom,
+          closeTo(40, 0.5),
+        );
+      },
+    );
+
+    testWidgets(
       'narrow centered bottom sheet does not get cross-axis (left/right) '
       'insets it does not need (#685 cross-axis leak)',
       (tester) async {
@@ -1538,6 +1558,46 @@ void main() {
           padding.bottom,
           closeTo(24 + 40, 0.5),
           reason: 'bottom inset (home indicator) plus default padding',
+        );
+      },
+    );
+
+    testWidgets(
+      'expandCrossSide: false with no explicit constraints still skips '
+      'cross-axis insets (#685 cross-axis leak, no-constraints case)',
+      (tester) async {
+        // Screen has side insets (e.g. landscape notch / display cutout).
+        setUpView(
+          tester,
+          viewPadding: const FakeViewPadding(
+            bottom: 40,
+            left: 44,
+            right: 44,
+          ),
+        );
+
+        await tester.pumpWidget(
+          sheetWidget(
+            // No constraints passed at all — expandCrossSide alone must
+            // decide the cross-axis insets, since a null maxWidth doesn't
+            // mean the sheet stretches to the edge.
+            expandCrossSide: false,
+          ),
+        );
+        await tester.pump();
+
+        final dialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+        final padding = dialog.padding! as EdgeInsets;
+
+        expect(
+          padding.left,
+          closeTo(24, 0.5),
+          reason: 'only default padding, no leaked cross-axis inset',
+        );
+        expect(
+          padding.right,
+          closeTo(24, 0.5),
+          reason: 'only default padding, no leaked cross-axis inset',
         );
       },
     );

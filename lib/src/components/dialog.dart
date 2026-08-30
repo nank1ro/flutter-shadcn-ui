@@ -545,10 +545,12 @@ class ShadDialog extends StatelessWidget {
   /// gap at the edges. Useful for near-full-screen dialogs that touch
   /// screen edges; a small centered dialog looks the same either way.
   ///
-  /// Intended for full-screen dialogs: while true, [border], [shadows],
-  /// and border radius are always forced off (radius, if set, is ignored),
-  /// since those only make visual sense on a card with edges that don't
-  /// sit behind system UI.
+  /// Intended for full-screen dialogs: while true, the default border and
+  /// shadow are suppressed, but an explicit [border] or [shadows] passed to
+  /// this widget still applies on top — widget-level values take priority.
+  /// The border radius is always forced off regardless of [radius], since
+  /// rounded corners never make visual sense on edges that sit behind
+  /// system UI.
   ///
   /// Defaults to false if not specified.
   /// {@endtemplate}
