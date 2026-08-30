@@ -75,6 +75,8 @@ void main() {
     Widget? closeIcon,
     IconData? closeIconData,
     ShadPosition? closeIconPosition,
+    BoxConstraints? constraints,
+    bool? expandCrossSide,
   }) {
     return ShadApp(
       home: Scaffold(
@@ -82,6 +84,8 @@ void main() {
           side: side,
           child: ShadSheet(
             expandable: expandable,
+            constraints: constraints,
+            expandCrossSide: expandCrossSide,
             initialSize: initialSize,
             minSize: minSize,
             maxSize: maxSize,
@@ -1483,6 +1487,106 @@ void main() {
         expect(
           shadDialog.padding?.resolve(TextDirection.ltr).bottom,
           closeTo(24 + 40, 0.5), // default 24 padding + the 40px inset.
+        );
+      },
+    );
+
+    testWidgets(
+      'narrow centered bottom sheet does not get cross-axis (left/right) '
+      'insets it does not need (#685 cross-axis leak)',
+      (tester) async {
+        // Screen has side insets (e.g. landscape notch / display cutout).
+        setUpView(
+          tester,
+          viewPadding: const FakeViewPadding(
+            bottom: 40,
+            left: 44,
+            right: 44,
+          ),
+        );
+
+        await tester.pumpWidget(
+          sheetWidget(
+            // Narrower than the 800-wide screen → centered, not edge-to-edge.
+            // expandCrossSide defaults to true and stretches the sheet to
+            // fill the cross axis regardless of maxWidth, so it must be
+            // disabled here to actually produce a narrow, centered sheet.
+            constraints: const BoxConstraints(maxWidth: 400),
+            expandCrossSide: false,
+          ),
+        );
+        await tester.pump();
+
+        final dialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+        final padding = dialog.padding! as EdgeInsets;
+
+        // A bottom sheet that doesn't stretch to the left/right screen
+        // edges must NOT pick up left/right safe-area insets.
+        // The bottom inset (home indicator) should still be present.
+        // The 24px left/right is the default dialog padding, not a leaked inset.
+        expect(
+          padding.left,
+          closeTo(24, 0.5),
+          reason: 'only default padding, no leaked cross-axis inset',
+        );
+        expect(
+          padding.right,
+          closeTo(24, 0.5),
+          reason: 'only default padding, no leaked cross-axis inset',
+        );
+        expect(
+          padding.bottom,
+          closeTo(24 + 40, 0.5),
+          reason: 'bottom inset (home indicator) plus default padding',
+        );
+      },
+    );
+
+    testWidgets(
+      'keyboard insets are not double-counted with safe-area insets '
+      'when keyboard is open (#685 keyboard stacking)',
+      (tester) async {
+        // Simulate a device with a home indicator (viewPadding).
+        setUpView(
+          tester,
+          viewPadding: const FakeViewPadding(bottom: 40),
+        );
+
+        // Pump with viewInsets to simulate an open keyboard.
+        // In Flutter, viewInsets are set via MediaQueryData.
+        await tester.pumpWidget(
+          MediaQuery(
+            data: const MediaQueryData(
+              viewInsets: EdgeInsets.only(bottom: 300),
+              viewPadding: EdgeInsets.only(bottom: 40),
+            ),
+            child: sheetWidget(
+              child: const TextField(),
+            ),
+          ),
+        );
+        await tester.pump();
+
+        final shadDialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+        final dialogPadding = shadDialog.padding! as EdgeInsets;
+
+        // The outer showShadSheet wraps the dialog in AnimatedPadding
+        // with viewInsets.bottom (300) and calls MediaQuery.removeViewInsets.
+        // The inner ShadDialog should see zero viewInsets for its own padding.
+        //
+        // So dialog.padding should contain:
+        //   - bottom: 40 (home indicator from viewPadding, via safeAreaInsets)
+        //            + 24 (default dialog padding)
+        //            = NOT 40 + 300 + 24 (which would be double-counting)
+        //
+        // The keyboard (300) is handled by the outer AnimatedPadding,
+        // NOT by dialog.padding.
+        expect(
+          dialogPadding.bottom,
+          lessThan(100),
+          reason:
+              'keyboard insets (300) must not leak into dialog.padding — '
+              'they are handled by the outer AnimatedPadding layer',
         );
       },
     );

@@ -469,12 +469,14 @@ class ShadSheet extends StatefulWidget {
   /// {@template ShadSheet.padding}
   /// Padding around the content of the sheet.
   ///
-  /// When [expandable] is true and [useSafeArea] is true, the sheet
-  /// merges the relevant safe-area insets into this padding before
-  /// passing it to the underlying [ShadDialog]. This lets the sheet
-  /// background cover the notch / home-indicator while the content
-  /// stays inset; widget inspectors that read the dialog's padding at
-  /// runtime will see the merged value, not the raw value set here.
+  /// When [useSafeArea] is true, the sheet merges the relevant safe-area
+  /// insets into this padding before passing it to the underlying
+  /// [ShadDialog], for both expandable and non-expandable sheets. This
+  /// lets the sheet's own background cover the notch / home-indicator
+  /// / gesture bar instead of leaving a gap where the barrier color
+  /// shows through, while content stays inset; widget inspectors that
+  /// read the dialog's padding at runtime will see the merged value,
+  /// not the raw value set here.
   /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
@@ -1291,7 +1293,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     // free-edge inset for expandable sheets is handled separately in
     // [buildExpandable] (it depends on the live drag size).
     final safeAreaInsets = effectiveUseSafeArea
-        ? expandableSafeAreaInsets(side)
+        ? expandableSafeAreaInsets(side, effectiveConstraints)
         : EdgeInsets.zero;
 
     // ShadDialog falls back to EdgeInsets.all(24) when padding is null;
@@ -1629,27 +1631,67 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
 
   // Anchor + side safe-area insets (home indicator, side gutters); the guard
   // for `useSafeArea` lives at the call site.
-  EdgeInsets expandableSafeAreaInsets(ShadSheetSide side) {
+  EdgeInsets expandableSafeAreaInsets(
+    ShadSheetSide side,
+    BoxConstraints? constraints,
+  ) {
     final viewPadding = MediaQuery.viewPaddingOf(context);
+    final screenSize = MediaQuery.sizeOf(context);
     return switch (side) {
       ShadSheetSide.bottom => EdgeInsets.only(
         bottom: viewPadding.bottom,
-        left: viewPadding.left,
-        right: viewPadding.right,
+        // Only add cross-axis insets if the sheet actually touches the
+        // screen edge. A constrained sheet (maxWidth < screen width)
+        // sits away from the left/right edges, so those insets would
+        // leak into unrelated whitespace.
+        left:
+            constraints?.maxWidth == null ||
+                constraints!.maxWidth >= screenSize.width
+            ? viewPadding.left
+            : 0,
+        right:
+            constraints?.maxWidth == null ||
+                constraints!.maxWidth >= screenSize.width
+            ? viewPadding.right
+            : 0,
       ),
       ShadSheetSide.top => EdgeInsets.only(
         top: viewPadding.top,
-        left: viewPadding.left,
-        right: viewPadding.right,
+        left:
+            constraints?.maxWidth == null ||
+                constraints!.maxWidth >= screenSize.width
+            ? viewPadding.left
+            : 0,
+        right:
+            constraints?.maxWidth == null ||
+                constraints!.maxWidth >= screenSize.width
+            ? viewPadding.right
+            : 0,
       ),
       ShadSheetSide.left => EdgeInsets.only(
-        top: viewPadding.top,
-        bottom: viewPadding.bottom,
+        top:
+            constraints?.maxHeight == null ||
+                constraints!.maxHeight >= screenSize.height
+            ? viewPadding.top
+            : 0,
+        bottom:
+            constraints?.maxHeight == null ||
+                constraints!.maxHeight >= screenSize.height
+            ? viewPadding.bottom
+            : 0,
         left: viewPadding.left,
       ),
       ShadSheetSide.right => EdgeInsets.only(
-        top: viewPadding.top,
-        bottom: viewPadding.bottom,
+        top:
+            constraints?.maxHeight == null ||
+                constraints!.maxHeight >= screenSize.height
+            ? viewPadding.top
+            : 0,
+        bottom:
+            constraints?.maxHeight == null ||
+                constraints!.maxHeight >= screenSize.height
+            ? viewPadding.bottom
+            : 0,
         right: viewPadding.right,
       ),
     };
