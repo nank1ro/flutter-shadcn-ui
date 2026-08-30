@@ -165,8 +165,8 @@ class ShadResizableController extends ChangeNotifier {
       for (var i = trailingPivot; i < panelsInfo.length; i++) {
         totalShrinkable += initialLayout[i] - panelsInfo[i].minSize;
       }
-      var totalExpandable = panelsInfo[leadingPivot].maxSize -
-          initialLayout[leadingPivot];
+      var totalExpandable =
+          panelsInfo[leadingPivot].maxSize - initialLayout[leadingPivot];
       for (var i = leadingPivot - 1; i >= 0; i--) {
         totalExpandable += panelsInfo[i].maxSize - initialLayout[i];
       }
@@ -214,8 +214,8 @@ class ShadResizableController extends ChangeNotifier {
       for (var i = leadingPivot; i >= 0; i--) {
         totalShrinkable += initialLayout[i] - panelsInfo[i].minSize;
       }
-      var totalExpandable = panelsInfo[trailingPivot].maxSize -
-          initialLayout[trailingPivot];
+      var totalExpandable =
+          panelsInfo[trailingPivot].maxSize - initialLayout[trailingPivot];
       for (var i = trailingPivot + 1; i < panelsInfo.length; i++) {
         totalExpandable += panelsInfo[i].maxSize - initialLayout[i];
       }
@@ -241,8 +241,7 @@ class ShadResizableController extends ChangeNotifier {
       final pivotInfo = panelsInfo[trailingPivot];
       final canGrow = pivotInfo.maxSize - nextLayout[trailingPivot];
       final grow = deltaApplied.clamp(0.0, canGrow);
-      nextLayout[trailingPivot] =
-          (nextLayout[trailingPivot] + grow).asFixed(6);
+      nextLayout[trailingPivot] = (nextLayout[trailingPivot] + grow).asFixed(6);
       var overflow = (deltaApplied - grow).asFixed(6);
 
       // Phase 3: cascade overflow to other trailing panels.
@@ -567,8 +566,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
     required DragStartDetails details,
   }) {
     dragging.value = true;
-    _initialLayout =
-        controller.panelsInfo.map((p) => p.size).toList();
+    _initialLayout = controller.panelsInfo.map((p) => p.size).toList();
     _pointerDownPosition = widget.axis == Axis.horizontal
         ? details.globalPosition.dx
         : details.globalPosition.dy;
@@ -803,7 +801,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
                         },
                     onHorizontalDragStart: isHorizontal
                         ? (details) =>
-                            onHandleDragStart(index: i, details: details)
+                              onHandleDragStart(index: i, details: details)
                         : null,
                     onHorizontalDragEnd: (_) =>
                         isHorizontal ? onHandleDragEnd() : null,
@@ -817,7 +815,7 @@ class ShadResizablePanelGroupState extends State<ShadResizablePanelGroup> {
                         : null,
                     onVerticalDragStart: isVertical
                         ? (details) =>
-                            onHandleDragStart(index: i, details: details)
+                              onHandleDragStart(index: i, details: details)
                         : null,
                     onVerticalDragEnd: (_) =>
                         isVertical ? onHandleDragEnd() : null,

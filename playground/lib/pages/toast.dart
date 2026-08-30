@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-enum ToastStyle {
-  schedule,
-  simple,
-  withTitle,
-  withAction,
-  destructive,
-}
+enum ToastStyle { schedule, simple, withTitle, withAction, destructive }
 
 class ToastPage extends StatelessWidget {
-  const ToastPage({
-    super.key,
-    required this.style,
-  });
+  const ToastPage({super.key, required this.style});
 
   final ToastStyle style;
 

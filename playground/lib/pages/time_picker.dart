@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class TimePickerPage extends StatelessWidget {
-  const TimePickerPage({
-    super.key,
-    required this.style,
-  });
+  const TimePickerPage({super.key, required this.style});
 
   final ShadTimePickerVariant style;
 

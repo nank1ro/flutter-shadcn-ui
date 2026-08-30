@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class SwitchPage extends StatefulWidget {
-  const SwitchPage({
-    super.key,
-  });
+  const SwitchPage({super.key});
 
   @override
   State<SwitchPage> createState() => _SwitchPageState();

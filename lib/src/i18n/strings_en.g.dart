@@ -34,15 +34,15 @@ class ShadLocalizationsData with BaseTranslations<ShadLocale, ShadLocalizationsD
 	ShadLocalizationsData $copyWith({TranslationMetadata<ShadLocale, ShadLocalizationsData>? meta}) => ShadLocalizationsData(meta: meta ?? this.$meta);
 
 	// Translations
-	late final ShadLocalizationsDataTimePickerEn timePicker = ShadLocalizationsDataTimePickerEn.internal(_root);
-	late final ShadLocalizationsDataDatePickerEn datePicker = ShadLocalizationsDataDatePickerEn.internal(_root);
-	late final ShadLocalizationsDataInputEn input = ShadLocalizationsDataInputEn.internal(_root);
-	late final ShadLocalizationsDataKeyboardToolbarEn keyboardToolbar = ShadLocalizationsDataKeyboardToolbarEn.internal(_root);
+	late final ShadLocalizationsData$timePicker$en timePicker = ShadLocalizationsData$timePicker$en.internal(_root);
+	late final ShadLocalizationsData$datePicker$en datePicker = ShadLocalizationsData$datePicker$en.internal(_root);
+	late final ShadLocalizationsData$input$en input = ShadLocalizationsData$input$en.internal(_root);
+	late final ShadLocalizationsData$keyboardToolbar$en keyboardToolbar = ShadLocalizationsData$keyboardToolbar$en.internal(_root);
 }
 
 // Path: timePicker
-class ShadLocalizationsDataTimePickerEn {
-	ShadLocalizationsDataTimePickerEn.internal(this._root);
+class ShadLocalizationsData$timePicker$en {
+	ShadLocalizationsData$timePicker$en.internal(this._root);
 
 	final ShadLocalizationsData _root; // ignore: unused_field
 
@@ -65,8 +65,8 @@ class ShadLocalizationsDataTimePickerEn {
 }
 
 // Path: datePicker
-class ShadLocalizationsDataDatePickerEn {
-	ShadLocalizationsDataDatePickerEn.internal(this._root);
+class ShadLocalizationsData$datePicker$en {
+	ShadLocalizationsData$datePicker$en.internal(this._root);
 
 	final ShadLocalizationsData _root; // ignore: unused_field
 
@@ -77,8 +77,8 @@ class ShadLocalizationsDataDatePickerEn {
 }
 
 // Path: input
-class ShadLocalizationsDataInputEn {
-	ShadLocalizationsDataInputEn.internal(this._root);
+class ShadLocalizationsData$input$en {
+	ShadLocalizationsData$input$en.internal(this._root);
 
 	final ShadLocalizationsData _root; // ignore: unused_field
 
@@ -98,8 +98,8 @@ class ShadLocalizationsDataInputEn {
 }
 
 // Path: keyboardToolbar
-class ShadLocalizationsDataKeyboardToolbarEn {
-	ShadLocalizationsDataKeyboardToolbarEn.internal(this._root);
+class ShadLocalizationsData$keyboardToolbar$en {
+	ShadLocalizationsData$keyboardToolbar$en.internal(this._root);
 
 	final ShadLocalizationsData _root; // ignore: unused_field
 

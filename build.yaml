@@ -4,16 +4,28 @@ targets:
       theme_extensions_builder:
         generate_for:
           - lib/src/theme/**.dart
+      # slang's default builder writes through build_runner's asset writer,
+      # which cannot overwrite the committed strings*.g.dart and fails with
+      # "Asset already exists" on a fresh checkout. The legacy builder writes
+      # to disk directly instead. See slang_build_runner's README and
+      # https://github.com/slang-i18n/slang/issues/351
+      # The options stay on the disabled builder too, anchored: that is where
+      # the `dart run slang` CLI reads its config from.
       slang_build_runner:
-        options:
+        enabled: false
+        options: &slang_options
           base_locale: en
           input_directory: lib/src/i18n
           input_file_pattern: .i18n.yaml
           output_directory: lib/src/i18n
           output_file_name: strings.g.dart
+          timestamp: false
           flutter_integration: true
           locale_handling: false
           class_name: ShadLocalizationsData
           enum_name: ShadLocale
           fallback_strategy: base_locale
           string_interpolation: dart
+      slang_build_runner:legacy:
+        enabled: true
+        options: *slang_options

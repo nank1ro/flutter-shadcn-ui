@@ -41,12 +41,27 @@ class ShadSheetTheme with _$ShadSheetTheme {
     this.scrollPadding,
     this.disabledScrollControlMaxRatio,
     this.minFlingVelocity,
+    this.snapFlingVelocity,
     this.closeProgressThreshold,
     this.side,
     this.useSafeArea,
     this.titlePinned,
     this.descriptionPinned,
     this.actionsPinned,
+    this.expandable,
+    this.initialSize,
+    this.minSize,
+    this.maxSize,
+    this.snap,
+    this.snapSizes,
+    this.snapAnimationDuration,
+    this.snapAnimationCurve,
+    this.showDragHandle,
+    this.dragHandleColor,
+    this.dragHandleWidth,
+    this.dragHandleHeight,
+    this.dragHandleRadius,
+    this.dragHandleExtent,
   }) : _canMerge = canMerge;
 
   @ignore
@@ -142,6 +157,9 @@ class ShadSheetTheme with _$ShadSheetTheme {
   /// {@macro ShadSheet.minFlingVelocity}
   final double? minFlingVelocity;
 
+  /// {@macro ShadSheet.snapFlingVelocity}
+  final double? snapFlingVelocity;
+
   /// {@macro ShadSheet.closeProgressThreshold}
   final double? closeProgressThreshold;
 
@@ -159,6 +177,48 @@ class ShadSheetTheme with _$ShadSheetTheme {
 
   /// {@macro ShadDialog.actionsPinned}
   final bool? actionsPinned;
+
+  /// {@macro ShadSheet.expandable}
+  final bool? expandable;
+
+  /// {@macro ShadSheet.initialSize}
+  final double? initialSize;
+
+  /// {@macro ShadSheet.minSize}
+  final double? minSize;
+
+  /// {@macro ShadSheet.maxSize}
+  final double? maxSize;
+
+  /// {@macro ShadSheet.snap}
+  final bool? snap;
+
+  /// {@macro ShadSheet.snapSizes}
+  final List<double>? snapSizes;
+
+  /// {@macro ShadSheet.snapAnimationDuration}
+  final Duration? snapAnimationDuration;
+
+  /// {@macro ShadSheet.snapAnimationCurve}
+  final Curve? snapAnimationCurve;
+
+  /// {@macro ShadSheet.showDragHandle}
+  final bool? showDragHandle;
+
+  /// Color of the default drag handle pill.
+  final Color? dragHandleColor;
+
+  /// Width of the default drag handle pill. Defaults to 36.0.
+  final double? dragHandleWidth;
+
+  /// Height of the default drag handle pill. Defaults to 4.0.
+  final double? dragHandleHeight;
+
+  /// Border radius of the default drag handle pill.
+  final BorderRadius? dragHandleRadius;
+
+  /// {@macro ShadSheet.dragHandleExtent}
+  final double? dragHandleExtent;
 
   static ShadSheetTheme? lerp(
     ShadSheetTheme? a,

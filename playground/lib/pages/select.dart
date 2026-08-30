@@ -2,12 +2,7 @@ import 'package:awesome_flutter_extensions/awesome_flutter_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-enum SelectVariant {
-  fruits,
-  timezone,
-  frameworks,
-  multiple,
-}
+enum SelectVariant { fruits, timezone, frameworks, multiple }
 
 final fruits = {
   'apple': 'Apple',
@@ -58,10 +53,7 @@ final timezones = {
 };
 
 class SelectPage extends StatelessWidget {
-  const SelectPage({
-    super.key,
-    required this.variant,
-  });
+  const SelectPage({super.key, required this.variant});
 
   final SelectVariant variant;
 
@@ -184,19 +176,17 @@ class _SelectWithSearchState extends State<SelectWithSearch> {
             padding: EdgeInsets.symmetric(vertical: 24),
             child: Text('No framework found'),
           ),
-        ...frameworks.entries.map(
-          (framework) {
-            // this offstage is used to avoid the focus loss when the search results appear again
-            // because it keeps the widget in the tree.
-            return Offstage(
-              offstage: !filteredFrameworks.containsKey(framework.key),
-              child: ShadOption(
-                value: framework.key,
-                child: Text(framework.value),
-              ),
-            );
-          },
-        ),
+        ...frameworks.entries.map((framework) {
+          // this offstage is used to avoid the focus loss when the search results appear again
+          // because it keeps the widget in the tree.
+          return Offstage(
+            offstage: !filteredFrameworks.containsKey(framework.key),
+            child: ShadOption(
+              value: framework.key,
+              child: Text(framework.value),
+            ),
+          );
+        }),
       ],
       selectedOptionBuilder: (context, value) => Text(frameworks[value]!),
     );
@@ -225,10 +215,7 @@ class SelectMultiple extends StatelessWidget {
           ),
         ),
         ...fruits.entries.map(
-          (e) => ShadOption(
-            value: e.key,
-            child: Text(e.value),
-          ),
+          (e) => ShadOption(value: e.key, child: Text(e.value)),
         ),
       ],
       selectedOptionsBuilder: (context, values) =>
