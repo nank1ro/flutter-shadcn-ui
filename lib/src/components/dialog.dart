@@ -545,12 +545,11 @@ class ShadDialog extends StatelessWidget {
   /// gap at the edges. Useful for near-full-screen dialogs that touch
   /// screen edges; a small centered dialog looks the same either way.
   ///
-  /// Intended for full-screen dialogs: while true, the default border and
-  /// shadow are suppressed, but an explicit [border] or [shadows] passed to
-  /// this widget still applies on top — widget-level values take priority.
-  /// The border radius is always forced off regardless of [radius], since
-  /// rounded corners never make visual sense on edges that sit behind
-  /// system UI.
+  /// Intended for full-screen dialogs: while true, the default border is
+  /// suppressed, but an explicit [border] passed to this widget still
+  /// applies on top. [shadows] and the border radius are always forced
+  /// off regardless of [shadows] or [radius] — a shadow or rounded corner
+  /// never makes visual sense on edges that sit behind system UI.
   ///
   /// Defaults to false if not specified.
   /// {@endtemplate}
@@ -641,18 +640,23 @@ class ShadDialog extends StatelessWidget {
     // Computed before effectiveBorder/effectiveShadows: a full-screen
     // dialog shouldn't draw a border or drop shadow at its edges, since
     // those edges sit behind system UI, not against visible app content.
+    //
+    // border: an explicit widget-level value still wins (someone may want
+    // a border on a full-screen dialog); extendBackground only overrides
+    // the theme-level default.
     final effectiveBorder =
         border ??
-        effectiveDialogTheme.border ??
         (effectiveExtendBackground
             ? null
-            : Border.all(color: theme.colorScheme.border));
+            : effectiveDialogTheme.border ??
+                  Border.all(color: theme.colorScheme.border));
 
-    final effectiveShadows =
-        shadows ??
-        (effectiveExtendBackground
-            ? const <BoxShadow>[]
-            : effectiveDialogTheme.shadows ?? ShadShadows.lg);
+    // shadows: extendBackground always wins, even over an explicit
+    // widget-level value — a shadow painted behind system UI never makes
+    // visual sense, unlike a border.
+    final effectiveShadows = effectiveExtendBackground
+        ? const <BoxShadow>[]
+        : shadows ?? effectiveDialogTheme.shadows ?? ShadShadows.lg;
 
     final effectiveRemoveBorderRadiusWhenTiny =
         removeBorderRadiusWhenTiny ??

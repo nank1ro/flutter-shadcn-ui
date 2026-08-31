@@ -730,7 +730,8 @@ void main() {
     );
 
     testWidgets(
-      'extendBackground: true with custom shadows uses the custom shadows',
+      'extendBackground: true ignores custom shadows — a shadow never '
+      'makes sense behind system UI',
       (tester) async {
         const customShadows = [BoxShadow(blurRadius: 99)];
 
@@ -764,8 +765,10 @@ void main() {
             tester.widget<DecoratedBox>(innerDecoratedBox).decoration
                 as BoxDecoration;
 
-        // Custom shadows should win over the empty default.
-        expect(decoration.boxShadow, equals(customShadows));
+        // Unlike border, extendBackground always wins over an explicit
+        // shadows value — see the dialog.dart comment above
+        // effectiveShadows for why.
+        expect(decoration.boxShadow, isEmpty);
       },
     );
 
@@ -842,6 +845,54 @@ void main() {
             tester.widget<DecoratedBox>(innerDecoratedBox).decoration
                 as BoxDecoration;
 
+        expect(decoration.border, isNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true beats a theme-level border (widget-level '
+      'border would still win, but theme-level does not)',
+      (tester) async {
+        const themeBorder = Border.fromBorderSide(
+          BorderSide(width: 3, color: Colors.red),
+        );
+
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              primaryDialogTheme: const ShadDialogTheme(
+                extendBackground: true,
+                border: themeBorder,
+              ),
+            ),
+            home: const Scaffold(
+              body: ShadDialog(
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final innerDecoratedBoxes = find.descendant(
+          of: find.byType(ShadDialog),
+          matching: find.byWidgetPredicate(
+            (widget) =>
+                widget is DecoratedBox &&
+                widget.decoration is BoxDecoration &&
+                (widget.decoration as BoxDecoration).color != null,
+          ),
+        );
+        final innerDecoratedBox = innerDecoratedBoxes.at(1);
+        final decoration =
+            tester.widget<DecoratedBox>(innerDecoratedBox).decoration
+                as BoxDecoration;
+
+        // extendBackground is checked before falling back to the theme
+        // border, so the theme border never renders here — only an
+        // explicit widget-level border would win over extendBackground.
         expect(decoration.border, isNull);
       },
     );
