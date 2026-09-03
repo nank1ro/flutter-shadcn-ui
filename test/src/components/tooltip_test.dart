@@ -80,6 +80,13 @@ void main() {
       // On touch devices a tap shows the tooltip, and there is no pointer to
       // exit the button and hide it again.
       await tester.tap(find.text('trigger'));
+      // Two pumps: one for the tap's onTap to toggle the tooltip open and
+      // push the route, another for the pushed route and the reopened
+      // tooltip to actually build, before anything settles and this fix
+      // hides the tooltip again.
+      await tester.pump();
+      await tester.pump();
+      expect(find.text('Tooltip'), findsOneWidget);
       await tester.pumpAndSettle();
       await popSecondPage(tester);
 
@@ -91,6 +98,13 @@ void main() {
       await pumpNavigationApp(tester, nested: true);
 
       await tester.tap(find.text('trigger'));
+      // Two pumps: one for the tap's onTap to toggle the tooltip open and
+      // push the route, another for the pushed route and the reopened
+      // tooltip to actually build, before anything settles and this fix
+      // hides the tooltip again.
+      await tester.pump();
+      await tester.pump();
+      expect(find.text('Tooltip'), findsOneWidget);
       await tester.pumpAndSettle();
       await popSecondPage(tester);
 
@@ -105,6 +119,13 @@ void main() {
       await pumpNavigationApp(tester, opaque: false);
 
       await tester.tap(find.text('trigger'));
+      // Two pumps: one for the tap's onTap to toggle the tooltip open and
+      // push the route, another for the pushed route and the reopened
+      // tooltip to actually build, before anything settles and this fix
+      // hides the tooltip again.
+      await tester.pump();
+      await tester.pump();
+      expect(find.text('Tooltip'), findsOneWidget);
       await tester.pumpAndSettle();
       await popSecondPage(tester);
 
