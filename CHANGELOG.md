@@ -1,3 +1,7 @@
+## 0.56.3
+
+- **FIX**: Hide a `ShadTooltip` shown by a tap when another page or dialog opens on top of it, so it is not shown again once that page or dialog is dismissed.
+
 ## 0.56.2
 
 - **FIX**: Guard `ShadSelect`'s `animateToTop`/`animateToBottom` against a detached `ScrollController`. The scroll-to-top/bottom buttons kick off an animation on hover, but if the popover closed before or during it, reading `scrollController.offset`/`.position` threw `Bad state: No element` out of the async loop (the scroll listener already had this `hasClients` guard) (#686).

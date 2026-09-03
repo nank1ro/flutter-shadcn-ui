@@ -256,6 +256,38 @@ class ShadGestureDetector extends StatefulWidget {
 class _ShadGestureDetectorState extends State<ShadGestureDetector> {
   bool hovered = false;
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Reset the hover state when another route covers this widget. A hover
+    // started by a tap (see [ShadHoverStrategies]) has no pointer that can
+    // exit the widget, so without this it would survive the navigation and be
+    // restored, eg showing a tooltip again, once the route is displayed again.
+    //
+    // [ModalRoute.isCurrentOf] covers the routes pushed on the same navigator,
+    // including the non-opaque ones such as a dialog, while [TickerMode]
+    // covers the opaque routes pushed on a parent navigator, because the
+    // overlay disables the tickers of the entries it hides. Both are read
+    // unconditionally so that both dependencies are registered.
+    final isCurrent = ModalRoute.isCurrentOf(context) ?? true;
+    final tickersEnabled = TickerMode.valuesOf(context).enabled;
+    if ((isCurrent && tickersEnabled) || !hovered) return;
+    // Resolved here because [ShadTheme.of] must not be called from a
+    // post-frame callback.
+    final hoverStrategies =
+        widget.hoverStrategies ?? ShadTheme.of(context).hoverStrategies;
+    // Deferred because the listeners may rebuild widgets outside of this
+    // subtree, eg the overlay of a tooltip, which is not allowed during a
+    // build. The state is cleared inside the callback so that it never
+    // disagrees with what the listeners were told.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      hovered = false;
+      widget.onHoverChange?.call(false);
+      hoverStrategies.onHoverChange?.call(false);
+    });
+  }
+
   // See https://github.com/nank1ro/flutter-shadcn-ui/issues/319
   Offset correctGlobalPosition(BuildContext context, Offset globalPosition) {
     // Get the root navigator's overlay (screen coordinates)
@@ -569,11 +601,13 @@ class _ShadGestureDetectorState extends State<ShadGestureDetector> {
       child: MouseRegion(
         cursor: widget.cursor,
         onEnter: (_) {
+          if (hovered) return;
           hovered = true;
           widget.onHoverChange?.call(true);
           effectiveHoverStrategies.onHoverChange?.call(true);
         },
         onExit: (_) {
+          if (!hovered) return;
           hovered = false;
           widget.onHoverChange?.call(false);
           effectiveHoverStrategies.onHoverChange?.call(false);
