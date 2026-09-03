@@ -527,8 +527,8 @@ class ShadDialog extends StatelessWidget {
   final double? actionsGap;
 
   /// {@template ShadDialog.useSafeArea}
-  /// Whether to wrap the dialog in a SafeArea widget to avoid system UI
-  /// intrusions.
+  /// Whether to wrap the dialog's route-level alignment in a SafeArea widget
+  /// to avoid system UI intrusions.
   ///
   /// Defaults to true if not specified.
   /// {@endtemplate}
