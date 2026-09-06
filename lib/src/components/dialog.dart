@@ -524,8 +524,13 @@ class ShadDialog extends StatelessWidget {
   final double? actionsGap;
 
   /// {@template ShadDialog.useSafeArea}
-  /// Whether to wrap the dialog in a SafeArea widget to avoid system UI
-  /// intrusions.
+  /// Whether to inset the dialog's alignment area with a SafeArea so the
+  /// dialog does not overlap system UI.
+  ///
+  /// The SafeArea is applied around the route-level alignment, not around
+  /// the dialog card itself, so system UI insets do not shrink a centered
+  /// dialog. A dialog with a non-centered alignment will stop at the
+  /// safe-area boundary rather than the screen edge.
   ///
   /// Defaults to true if not specified.
   /// {@endtemplate}
@@ -830,10 +835,6 @@ class ShadDialog extends StatelessWidget {
             ],
           );
 
-          if (effectiveUseSafeArea) {
-            widget = SafeArea(child: widget);
-          }
-
           return DecoratedBox(
             decoration: BoxDecoration(
               color: effectiveBackgroundColor,
@@ -849,15 +850,21 @@ class ShadDialog extends StatelessWidget {
       ),
     );
 
-    // Get the current view padding
-    final viewPadding = MediaQuery.viewInsetsOf(context);
+    // Keyboard insets, so the dialog shifts clear of the keyboard.
+    final effectiveViewInsets = MediaQuery.viewInsetsOf(context);
 
-    return Align(
+    Widget result = Align(
       alignment: effectiveAlignment,
       child: Padding(
-        padding: viewPadding,
+        padding: effectiveViewInsets,
         child: dialog,
       ),
     );
+
+    if (effectiveUseSafeArea) {
+      result = SafeArea(child: result);
+    }
+
+    return result;
   }
 }
