@@ -1,6 +1,6 @@
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 final profile = [
@@ -114,96 +114,6 @@ class _DialogPageState extends State<DialogPage> {
                   ),
                   ShadButton(
                     child: const Text('Continue'),
-                    onPressed: () => Navigator.of(context).pop(true),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-        ShadButton.outline(
-          child: const Text('Full Screen Dialog'),
-          onPressed: () {
-            showShadDialog(
-              context: context,
-              opaque: true,
-              barrierDismissible: true,
-              builder: (context) => ShadDialog(
-                extendBackground: true,
-                constraints: BoxConstraints.expand(
-                  width: MediaQuery.sizeOf(context).width,
-                  height: MediaQuery.sizeOf(context).height,
-                ),
-                title: const Text('Full Screen Dialog'),
-                description: const Text(
-                  'A dialog that fills the screen, with its background '
-                  'extending behind the status bar and gesture bar.',
-                ),
-                actions: [
-                  ShadButton.outline(
-                    child: const Text('Close'),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24),
-                  child: Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.muted,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Content Area',
-                      style: theme.textTheme.muted,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-        ShadButton.outline(
-          child: const Text('Full Screen Scrollable Dialog'),
-          onPressed: () {
-            showShadDialog(
-              context: context,
-              opaque: true,
-              barrierDismissible: true,
-              builder: (context) => ShadDialog(
-                extendBackground: true,
-                constraints: BoxConstraints.expand(
-                  width: MediaQuery.sizeOf(context).width,
-                  height: MediaQuery.sizeOf(context).height,
-                ),
-                title: const Text('Terms and Conditions'),
-                titlePinned: titlePinned,
-                descriptionPinned: descriptionPinned,
-                actionsPinned: actionsPinned,
-                description: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(
-                    30,
-                    (i) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Text(
-                        'Paragraph ${i + 1}: A full-screen dialog with '
-                        'long content still scrolls correctly, and stays '
-                        'clear of the status bar and gesture bar while the '
-                        'background extends behind them.',
-                      ),
-                    ),
-                  ),
-                ),
-                actions: [
-                  ShadButton.outline(
-                    child: const Text('Decline'),
-                    onPressed: () => Navigator.of(context).pop(false),
-                  ),
-                  ShadButton(
-                    child: const Text('Accept'),
                     onPressed: () => Navigator.of(context).pop(true),
                   ),
                 ],

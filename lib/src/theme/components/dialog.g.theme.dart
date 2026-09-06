@@ -82,7 +82,6 @@ mixin _$ShadDialogTheme {
       ),
       actionsGap: lerpDouble$(a.actionsGap, b.actionsGap, t),
       useSafeArea: t < 0.5 ? a.useSafeArea : b.useSafeArea,
-      extendBackground: t < 0.5 ? a.extendBackground : b.extendBackground,
       titlePinned: t < 0.5 ? a.titlePinned : b.titlePinned,
       descriptionPinned: t < 0.5 ? a.descriptionPinned : b.descriptionPinned,
       actionsPinned: t < 0.5 ? a.actionsPinned : b.actionsPinned,
@@ -118,7 +117,6 @@ mixin _$ShadDialogTheme {
     EdgeInsetsGeometry? scrollPadding,
     double? actionsGap,
     bool? useSafeArea,
-    bool? extendBackground,
     bool? titlePinned,
     bool? descriptionPinned,
     bool? actionsPinned,
@@ -158,7 +156,6 @@ mixin _$ShadDialogTheme {
       scrollPadding: scrollPadding ?? _this.scrollPadding,
       actionsGap: actionsGap ?? _this.actionsGap,
       useSafeArea: useSafeArea ?? _this.useSafeArea,
-      extendBackground: extendBackground ?? _this.extendBackground,
       titlePinned: titlePinned ?? _this.titlePinned,
       descriptionPinned: descriptionPinned ?? _this.descriptionPinned,
       actionsPinned: actionsPinned ?? _this.actionsPinned,
@@ -207,7 +204,6 @@ mixin _$ShadDialogTheme {
       scrollPadding: other.scrollPadding,
       actionsGap: other.actionsGap,
       useSafeArea: other.useSafeArea,
-      extendBackground: other.extendBackground,
       titlePinned: other.titlePinned,
       descriptionPinned: other.descriptionPinned,
       actionsPinned: other.actionsPinned,
@@ -255,7 +251,6 @@ mixin _$ShadDialogTheme {
         _other.scrollPadding == _this.scrollPadding &&
         _other.actionsGap == _this.actionsGap &&
         _other.useSafeArea == _this.useSafeArea &&
-        _other.extendBackground == _this.extendBackground &&
         _other.titlePinned == _this.titlePinned &&
         _other.descriptionPinned == _this.descriptionPinned &&
         _other.actionsPinned == _this.actionsPinned;
@@ -295,7 +290,6 @@ mixin _$ShadDialogTheme {
       _this.scrollPadding,
       _this.actionsGap,
       _this.useSafeArea,
-      _this.extendBackground,
       _this.titlePinned,
       _this.descriptionPinned,
       _this.actionsPinned,
