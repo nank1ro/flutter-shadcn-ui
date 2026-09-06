@@ -1643,7 +1643,7 @@ void main() {
         // NOT by dialog.padding.
         expect(
           dialogPadding.bottom,
-          lessThan(100),
+          closeTo(24, 0.5),
           reason:
               'keyboard insets (300) must not leak into dialog.padding — '
               'they are handled by the outer AnimatedPadding layer',
