@@ -1643,7 +1643,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     ShadSheetSide side,
     bool expandCrossSide,
   ) {
-    final viewPadding = MediaQuery.viewPaddingOf(context);
+    final viewPadding = MediaQuery.paddingOf(context);
     final crossInset = expandCrossSide ? viewPadding : EdgeInsets.zero;
     return switch (side) {
       ShadSheetSide.bottom => EdgeInsets.only(
