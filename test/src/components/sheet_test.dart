@@ -39,8 +39,13 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     if (viewPadding != null) {
+      // Set both: viewPadding for the raw safe-area inset, padding for the
+      // keyboard-aware inset (MediaQuery.paddingOf) the sheet reads from.
+      // With no keyboard up in these tests, they should match.
       tester.view.viewPadding = viewPadding;
+      tester.view.padding = viewPadding;
       addTearDown(tester.view.resetViewPadding);
+      addTearDown(tester.view.resetPadding);
     }
   }
 
