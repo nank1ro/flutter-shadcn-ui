@@ -1296,11 +1296,13 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
         ? expandableSafeAreaInsets(side, effectiveExpandCrossSide)
         : EdgeInsets.zero;
 
-    // ShadDialog falls back to EdgeInsets.all(24) when padding is null;
-    // mirror that default so it's still merged with safeAreaInsets below.
+    // ShadDialog falls back to its dialog theme padding, then
+    // EdgeInsets.all(24), when padding is null; mirror that whole chain so
+    // ShadDialogTheme.padding isn't bypassed, then merge safeAreaInsets.
+    final dialogTheme = theme.primaryDialogTheme;
     const dialogDefaultPadding = EdgeInsets.all(24);
     final effectivePaddingWithSafeArea = EdgeInsets.zero
-        .add(effectivePadding ?? dialogDefaultPadding)
+        .add(effectivePadding ?? dialogTheme.padding ?? dialogDefaultPadding)
         .add(safeAreaInsets);
 
     // Mirrors ShadDialog's default close-icon position so it shifts with the
@@ -1309,6 +1311,7 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
     if (effectiveUseSafeArea) {
       final base =
           effectiveCloseIconPosition ??
+          dialogTheme.closeIconPosition ??
           ShadPosition.directional(
             top: 8,
             end: 8,
