@@ -1,11 +1,11 @@
 ## 0.57.0
 
 - **FEAT**: Add `ShadDialog.extendBackground` (and matching `ShadDialogTheme.extendBackground`) to extend a dialog's background color behind the status bar, notch, and gesture bar instead of stopping at the safe-area boundary — useful for near-full-screen dialogs. `border`, `shadows`, and border radius are forced off while enabled, since a full-screen dialog's edges sit behind system UI.
-- **FIX**: `ShadSheet` no longer bakes unnecessary status bar/navigation bar padding into non-expandable sheets, matching the `ShadDialog` fix in 0.56.2. Also fixes cross-axis safe-area insets (e.g. side gutters) leaking into narrower, constrained sheets that don't actually touch the screen edge (#685).
+- **FIX**: `ShadDialog` no longer bakes unnecessary status bar/navigation bar padding into a centered dialog. `SafeArea` is now applied at the route level (matching Material's `Dialog`) instead of inside the dialog card, fixing a large blank space above the title on Android (#681).
+- **FIX**: `ShadSheet` no longer bakes unnecessary status bar/navigation bar padding into non-expandable sheets, matching the `ShadDialog` fix. Also fixes cross-axis safe-area insets (e.g. side gutters) leaking into narrower, constrained sheets that don't actually touch the screen edge (#685).
 
 ## 0.56.2
 
-- **FIX**: `ShadDialog` no longer bakes unnecessary status bar/navigation bar padding into a centered dialog. `SafeArea` is now applied at the route level (matching Material's `Dialog`) instead of inside the dialog card, fixing a large blank space above the title on Android (#681).
 - **FIX**: Guard `ShadSelect`'s `animateToTop`/`animateToBottom` against a detached `ScrollController`. The scroll-to-top/bottom buttons kick off an animation on hover, but if the popover closed before or during it, reading `scrollController.offset`/`.position` threw `Bad state: No element` out of the async loop (the scroll listener already had this `hasClients` guard) (#686).
 
 ## 0.56.1
