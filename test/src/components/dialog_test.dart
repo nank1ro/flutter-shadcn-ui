@@ -35,16 +35,19 @@ void main() {
       required EdgeInsets systemPadding,
       EdgeInsetsGeometry? dialogPadding,
     }) async {
+      tester.view.viewPadding = FakeViewPadding(
+        left: systemPadding.left,
+        top: systemPadding.top,
+        right: systemPadding.right,
+        bottom: systemPadding.bottom,
+      );
       await tester.pumpWidget(
-        MediaQuery(
-          data: MediaQueryData(padding: systemPadding),
-          child: createTestWidget(
-            ShadDialog(
-              padding: dialogPadding,
-              title: const Text('Title'),
-              description: const Text('Description'),
-              child: const Text('Child'),
-            ),
+        createTestWidget(
+          ShadDialog(
+            padding: dialogPadding,
+            title: const Text('Title'),
+            description: const Text('Description'),
+            child: const Text('Child'),
           ),
         ),
       );
@@ -120,16 +123,19 @@ void main() {
       (tester) async {
         const systemPadding = EdgeInsets.only(top: 62.4, bottom: 24.2);
 
+        tester.view.viewPadding = FakeViewPadding(
+          left: systemPadding.left,
+          top: systemPadding.top,
+          right: systemPadding.right,
+          bottom: systemPadding.bottom,
+        );
         await tester.pumpWidget(
-          MediaQuery(
-            data: const MediaQueryData(padding: systemPadding),
-            child: createTestWidget(
-              const ShadDialog(
-                padding: EdgeInsets.zero,
-                title: Text('Title'),
-                description: Text('Description'),
-                child: Text('Child'),
-              ),
+          createTestWidget(
+            const ShadDialog(
+              padding: EdgeInsets.zero,
+              title: Text('Title'),
+              description: Text('Description'),
+              child: Text('Child'),
             ),
           ),
         );
@@ -273,17 +279,20 @@ void main() {
       (tester) async {
         const systemPadding = EdgeInsets.only(top: 62.4, bottom: 24.2);
 
+        tester.view.viewPadding = FakeViewPadding(
+          left: systemPadding.left,
+          top: systemPadding.top,
+          right: systemPadding.right,
+          bottom: systemPadding.bottom,
+        );
         await tester.pumpWidget(
           const ShadApp(
-            home: MediaQuery(
-              data: MediaQueryData(padding: systemPadding),
-              child: Scaffold(
-                body: ShadDialog(
-                  extendBackground: true,
-                  title: Text('Title'),
-                  description: Text('Description'),
-                  child: Text('Child'),
-                ),
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
               ),
             ),
           ),
@@ -1027,17 +1036,20 @@ void main() {
         const systemPadding = EdgeInsets.only(top: 62.4, bottom: 24.2);
 
         Future<Size> getDecoratedBoxSize(EdgeInsets padding) async {
+          tester.view.viewPadding = FakeViewPadding(
+            left: padding.left,
+            top: padding.top,
+            right: padding.right,
+            bottom: padding.bottom,
+          );
           await tester.pumpWidget(
-            MediaQuery(
-              data: MediaQueryData(padding: padding),
-              child: const ShadApp(
-                home: Scaffold(
-                  body: ShadDialog(
-                    extendBackground: true,
-                    title: Text('Title'),
-                    description: Text('Description'),
-                    child: Text('Child'),
-                  ),
+            const ShadApp(
+              home: Scaffold(
+                body: ShadDialog(
+                  extendBackground: true,
+                  title: Text('Title'),
+                  description: Text('Description'),
+                  child: Text('Child'),
                 ),
               ),
             ),
