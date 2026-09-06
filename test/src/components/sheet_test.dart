@@ -1832,6 +1832,57 @@ void main() {
     );
 
     testWidgets(
+      'non-expandable sheet uses ShadDialogTheme.padding and '
+      'closeIconPosition instead of the hardcoded defaults (#685)',
+      (tester) async {
+        setUpView(tester);
+
+        const themePadding = EdgeInsets.all(40);
+        const themeCloseIconPosition = ShadPosition(top: 20, right: 20);
+
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              brightness: Brightness.light,
+              colorScheme: const ShadZincColorScheme.light(),
+              primaryDialogTheme: const ShadDialogTheme(
+                padding: themePadding,
+                closeIconPosition: themeCloseIconPosition,
+              ),
+            ),
+            home: const Scaffold(
+              body: ShadSheetInheritedWidget(
+                side: ShadSheetSide.bottom,
+                child: ShadSheet(
+                  closeIconData: LucideIcons.x,
+                  child: Text('content'),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pump();
+
+        // Before the fix, ShadSheet always passed a non-null padding and
+        // closeIconPosition to ShadDialog, short-circuiting ShadDialog's
+        // own theme fallback chain — the sheet silently got 24px padding
+        // and the hardcoded top: 8, end: 8 close icon instead.
+        final dialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+        final padding = dialog.padding! as EdgeInsets;
+        expect(padding.left, themePadding.left);
+        expect(padding.right, themePadding.right);
+
+        // Safe-area is zero in the test env, so the close icon sits at
+        // exactly the theme's position with no additional bump.
+        expect(findClosePositioned(tester).top, themeCloseIconPosition.top);
+        expect(
+          findClosePositioned(tester).right,
+          themeCloseIconPosition.right,
+        );
+      },
+    );
+
+    testWidgets(
       'expandable with useSafeArea:false does not bump close icon',
       (tester) async {
         setUpView(tester, viewPadding: const FakeViewPadding(top: 40));
