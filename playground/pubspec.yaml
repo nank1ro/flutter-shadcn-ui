@@ -18,6 +18,7 @@ dependencies:
   shadcn_ui:
     path: ..
   awesome_flutter_extensions: ^2.0.1
+  motor: ^1.1.0
   web: ^1.1.0
 
 dev_dependencies:
