@@ -527,8 +527,14 @@ class ShadDialog extends StatelessWidget {
   final double? actionsGap;
 
   /// {@template ShadDialog.useSafeArea}
-  /// Whether to wrap the dialog's route-level alignment in a SafeArea widget
-  /// to avoid system UI intrusions.
+  /// Whether to inset the dialog's alignment area with a SafeArea so the
+  /// dialog does not overlap system UI.
+  ///
+  /// The SafeArea is applied around the route-level alignment, not around
+  /// the dialog card itself, so system UI insets do not shrink a centered
+  /// dialog. A dialog with a non-centered alignment will stop at the
+  /// safe-area boundary rather than the screen edge — pass `false` to
+  /// restore the old behaviour.
   ///
   /// Defaults to true if not specified.
   /// {@endtemplate}
