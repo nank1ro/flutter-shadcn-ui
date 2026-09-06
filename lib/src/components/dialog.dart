@@ -897,12 +897,10 @@ class ShadDialog extends StatelessWidget {
       // reaches the true screen edges — no barrier-colored gap.
       Widget result = Align(
         alignment: effectiveAlignment,
-        child: effectiveViewInsets == EdgeInsets.zero
-            ? dialog
-            : Padding(
-                padding: effectiveViewInsets,
-                child: dialog,
-              ),
+        child: Padding(
+          padding: effectiveViewInsets,
+          child: dialog,
+        ),
       );
       if (effectiveUseSafeArea) {
         result = SafeArea(child: result);
