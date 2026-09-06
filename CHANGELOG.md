@@ -1,9 +1,12 @@
 ## 0.57.0
 
-- **FEAT**: Add `ShadDialog.extendBackground` (and matching `ShadDialogTheme.extendBackground`) to extend a dialog's background color behind the status bar, notch, and gesture bar instead of stopping at the safe-area boundary — useful for near-full-screen dialogs. `border`, `shadows`, and border radius are forced off while enabled, since a full-screen dialog's edges sit behind system UI.
 - **FIX**: `ShadDialog` no longer bakes unnecessary status bar/navigation bar padding into a centered dialog. `SafeArea` is now applied at the route level (matching Material's `Dialog`) instead of inside the dialog card, fixing a large blank space above the title on Android (#681).
 - **FIX**: `ShadSheet` no longer bakes unnecessary status bar/navigation bar padding into non-expandable sheets, matching the `ShadDialog` fix. Also fixes cross-axis safe-area insets (e.g. side gutters) leaking into narrower, constrained sheets that don't actually touch the screen edge (#685).
 - **CHANGE**: A `ShadDialog` with a non-centered alignment (e.g. `Alignment.bottomCenter`) no longer paints into the safe-area strip; the barrier colour now shows in the status-bar / gesture-bar region. Pass `useSafeArea: false` to restore the old behaviour.
+
+## 0.56.3
+
+- **FIX**: Hide a `ShadTooltip` shown by a tap when another page or dialog opens on top of it, so it is not shown again once that page or dialog is dismissed.
 
 ## 0.56.2
 
