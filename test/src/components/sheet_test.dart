@@ -39,8 +39,13 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     if (viewPadding != null) {
+      // Set both: viewPadding for the raw safe-area inset, padding for the
+      // keyboard-aware inset (MediaQuery.paddingOf) the sheet reads from.
+      // With no keyboard up in these tests, they should match.
       tester.view.viewPadding = viewPadding;
+      tester.view.padding = viewPadding;
       addTearDown(tester.view.resetViewPadding);
+      addTearDown(tester.view.resetPadding);
     }
   }
 
@@ -75,6 +80,8 @@ void main() {
     Widget? closeIcon,
     IconData? closeIconData,
     ShadPosition? closeIconPosition,
+    BoxConstraints? constraints,
+    bool? expandCrossSide,
   }) {
     return ShadApp(
       home: Scaffold(
@@ -82,6 +89,8 @@ void main() {
           side: side,
           child: ShadSheet(
             expandable: expandable,
+            constraints: constraints,
+            expandCrossSide: expandCrossSide,
             initialSize: initialSize,
             minSize: minSize,
             maxSize: maxSize,
@@ -1465,6 +1474,188 @@ void main() {
       );
     });
 
+    testWidgets(
+      'non-expandable sheet passes safe-area inset as ShadDialog padding '
+      'instead of useSafeArea, so the background paints behind it (#685)',
+      (tester) async {
+        setUpView(tester, viewPadding: const FakeViewPadding(bottom: 40));
+
+        await tester.pumpWidget(sheetWidget());
+        await tester.pump();
+
+        final shadDialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+
+        // ShadDialog's own SafeArea would leave the inset barrier-colored;
+        // the inset is merged into padding instead, so the sheet's
+        // DecoratedBox paints its background under it.
+        expect(shadDialog.useSafeArea, isFalse);
+        expect(
+          shadDialog.padding?.resolve(TextDirection.ltr).bottom,
+          closeTo(24 + 40, 0.5), // default 24 padding + the 40px inset.
+        );
+      },
+    );
+
+    testWidgets(
+      'non-expandable sheet with padding: EdgeInsets.zero still gets the '
+      'safe-area inset, not the default 24 padding (#685)',
+      (tester) async {
+        setUpView(tester, viewPadding: const FakeViewPadding(bottom: 40));
+
+        await tester.pumpWidget(sheetWidget(padding: EdgeInsets.zero));
+        await tester.pump();
+
+        final shadDialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+
+        // Explicit zero must not be replaced by the 24 default before the
+        // inset is merged in — bottom should be exactly the 40px inset.
+        expect(
+          shadDialog.padding?.resolve(TextDirection.ltr).bottom,
+          closeTo(40, 0.5),
+        );
+      },
+    );
+
+    testWidgets(
+      'narrow centered bottom sheet does not get cross-axis (left/right) '
+      'insets it does not need (#685 cross-axis leak)',
+      (tester) async {
+        // Screen has side insets (e.g. landscape notch / display cutout).
+        setUpView(
+          tester,
+          viewPadding: const FakeViewPadding(
+            bottom: 40,
+            left: 44,
+            right: 44,
+          ),
+        );
+
+        await tester.pumpWidget(
+          sheetWidget(
+            // Narrower than the 800-wide screen → centered, not edge-to-edge.
+            // expandCrossSide defaults to true and stretches the sheet to
+            // fill the cross axis regardless of maxWidth, so it must be
+            // disabled here to actually produce a narrow, centered sheet.
+            constraints: const BoxConstraints(maxWidth: 400),
+            expandCrossSide: false,
+          ),
+        );
+        await tester.pump();
+
+        final dialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+        final padding = dialog.padding! as EdgeInsets;
+
+        // A bottom sheet that doesn't stretch to the left/right screen
+        // edges must NOT pick up left/right safe-area insets.
+        // The bottom inset (home indicator) should still be present.
+        // The 24px left/right is the default dialog padding, not a leaked inset.
+        expect(
+          padding.left,
+          closeTo(24, 0.5),
+          reason: 'only default padding, no leaked cross-axis inset',
+        );
+        expect(
+          padding.right,
+          closeTo(24, 0.5),
+          reason: 'only default padding, no leaked cross-axis inset',
+        );
+        expect(
+          padding.bottom,
+          closeTo(24 + 40, 0.5),
+          reason: 'bottom inset (home indicator) plus default padding',
+        );
+      },
+    );
+
+    testWidgets(
+      'expandCrossSide: false with no explicit constraints still skips '
+      'cross-axis insets (#685 cross-axis leak, no-constraints case)',
+      (tester) async {
+        // Screen has side insets (e.g. landscape notch / display cutout).
+        setUpView(
+          tester,
+          viewPadding: const FakeViewPadding(
+            bottom: 40,
+            left: 44,
+            right: 44,
+          ),
+        );
+
+        await tester.pumpWidget(
+          sheetWidget(
+            // No constraints passed at all — expandCrossSide alone must
+            // decide the cross-axis insets, since a null maxWidth doesn't
+            // mean the sheet stretches to the edge.
+            expandCrossSide: false,
+          ),
+        );
+        await tester.pump();
+
+        final dialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+        final padding = dialog.padding! as EdgeInsets;
+
+        expect(
+          padding.left,
+          closeTo(24, 0.5),
+          reason: 'only default padding, no leaked cross-axis inset',
+        );
+        expect(
+          padding.right,
+          closeTo(24, 0.5),
+          reason: 'only default padding, no leaked cross-axis inset',
+        );
+      },
+    );
+
+    testWidgets(
+      'keyboard insets are not double-counted with safe-area insets '
+      'when keyboard is open (#685 keyboard stacking)',
+      (tester) async {
+        // Simulate a device with a home indicator (viewPadding).
+        setUpView(
+          tester,
+          viewPadding: const FakeViewPadding(bottom: 40),
+        );
+
+        // Pump with viewInsets to simulate an open keyboard.
+        // In Flutter, viewInsets are set via MediaQueryData.
+        await tester.pumpWidget(
+          MediaQuery(
+            data: const MediaQueryData(
+              viewInsets: EdgeInsets.only(bottom: 300),
+              viewPadding: EdgeInsets.only(bottom: 40),
+            ),
+            child: sheetWidget(
+              child: const TextField(),
+            ),
+          ),
+        );
+        await tester.pump();
+
+        final shadDialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+        final dialogPadding = shadDialog.padding! as EdgeInsets;
+
+        // The outer showShadSheet wraps the dialog in AnimatedPadding
+        // with viewInsets.bottom (300) and calls MediaQuery.removeViewInsets.
+        // The inner ShadDialog should see zero viewInsets for its own padding.
+        //
+        // So dialog.padding should contain:
+        //   - bottom: 40 (home indicator from viewPadding, via safeAreaInsets)
+        //            + 24 (default dialog padding)
+        //            = NOT 40 + 300 + 24 (which would be double-counting)
+        //
+        // The keyboard (300) is handled by the outer AnimatedPadding,
+        // NOT by dialog.padding.
+        expect(
+          dialogPadding.bottom,
+          closeTo(24, 0.5),
+          reason:
+              'keyboard insets (300) must not leak into dialog.padding — '
+              'they are handled by the outer AnimatedPadding layer',
+        );
+      },
+    );
+
     testWidgets('expandable + draggable: fill box contains the pill', (
       tester,
     ) async {
@@ -1637,6 +1828,57 @@ void main() {
         // SafeArea inside ShadDialog shifts the whole stack; Positioned
         // stays at 8.
         expect(findClosePositioned(tester).top, 8);
+      },
+    );
+
+    testWidgets(
+      'non-expandable sheet uses ShadDialogTheme.padding and '
+      'closeIconPosition instead of the hardcoded defaults (#685)',
+      (tester) async {
+        setUpView(tester);
+
+        const themePadding = EdgeInsets.all(40);
+        const themeCloseIconPosition = ShadPosition(top: 20, right: 20);
+
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              brightness: Brightness.light,
+              colorScheme: const ShadZincColorScheme.light(),
+              primaryDialogTheme: const ShadDialogTheme(
+                padding: themePadding,
+                closeIconPosition: themeCloseIconPosition,
+              ),
+            ),
+            home: const Scaffold(
+              body: ShadSheetInheritedWidget(
+                side: ShadSheetSide.bottom,
+                child: ShadSheet(
+                  closeIconData: LucideIcons.x,
+                  child: Text('content'),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pump();
+
+        // Before the fix, ShadSheet always passed a non-null padding and
+        // closeIconPosition to ShadDialog, short-circuiting ShadDialog's
+        // own theme fallback chain — the sheet silently got 24px padding
+        // and the hardcoded top: 8, end: 8 close icon instead.
+        final dialog = tester.widget<ShadDialog>(find.byType(ShadDialog));
+        final padding = dialog.padding! as EdgeInsets;
+        expect(padding.left, themePadding.left);
+        expect(padding.right, themePadding.right);
+
+        // Safe-area is zero in the test env, so the close icon sits at
+        // exactly the theme's position with no additional bump.
+        expect(findClosePositioned(tester).top, themeCloseIconPosition.top);
+        expect(
+          findClosePositioned(tester).right,
+          themeCloseIconPosition.right,
+        );
       },
     );
 

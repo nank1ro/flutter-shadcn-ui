@@ -469,12 +469,14 @@ class ShadSheet extends StatefulWidget {
   /// {@template ShadSheet.padding}
   /// Padding around the content of the sheet.
   ///
-  /// When [expandable] is true and [useSafeArea] is true, the sheet
-  /// merges the relevant safe-area insets into this padding before
-  /// passing it to the underlying [ShadDialog]. This lets the sheet
-  /// background cover the notch / home-indicator while the content
-  /// stays inset; widget inspectors that read the dialog's padding at
-  /// runtime will see the merged value, not the raw value set here.
+  /// When [useSafeArea] is true, the sheet merges the relevant safe-area
+  /// insets into this padding before passing it to the underlying
+  /// [ShadDialog], for both expandable and non-expandable sheets. This
+  /// lets the sheet's own background cover the notch / home-indicator
+  /// / gesture bar instead of leaving a gap where the barrier color
+  /// shows through, while content stays inset; widget inspectors that
+  /// read the dialog's padding at runtime will see the merged value,
+  /// not the raw value set here.
   /// {@endtemplate}
   final EdgeInsetsGeometry? padding;
 
@@ -1285,27 +1287,31 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
 
     // Anchor + side safe-area insets, merged into the dialog's content
     // padding (below) and into the close-icon position so content clears
-    // hardware affordances. The free-edge inset is handled separately in
+    // hardware affordances. Applied for both expandable and non-expandable
+    // paths, so the sheet's background paints behind the status bar / notch
+    // / gesture bar instead of leaving a barrier-colored gap (#685). The
+    // free-edge inset for expandable sheets is handled separately in
     // [buildExpandable] (it depends on the live drag size).
-    final safeAreaInsets = effectiveExpandable && effectiveUseSafeArea
-        ? expandableSafeAreaInsets(side)
+    final safeAreaInsets = effectiveUseSafeArea
+        ? expandableSafeAreaInsets(side, effectiveExpandCrossSide)
         : EdgeInsets.zero;
 
-    // ShadDialog falls back to EdgeInsets.all(24) when padding is null;
-    // expandable mode passes an explicit pre-merged value, so mirror that.
+    // ShadDialog falls back to its dialog theme padding, then
+    // EdgeInsets.all(24), when padding is null; mirror that whole chain so
+    // ShadDialogTheme.padding isn't bypassed, then merge safeAreaInsets.
+    final dialogTheme = theme.primaryDialogTheme;
     const dialogDefaultPadding = EdgeInsets.all(24);
-    final effectivePaddingWithSafeArea = effectiveExpandable
-        ? EdgeInsets.zero
-              .add(effectivePadding ?? dialogDefaultPadding)
-              .add(safeAreaInsets)
-        : effectivePadding;
+    final effectivePaddingWithSafeArea = EdgeInsets.zero
+        .add(effectivePadding ?? dialogTheme.padding ?? dialogDefaultPadding)
+        .add(safeAreaInsets);
 
     // Mirrors ShadDialog's default close-icon position so it shifts with the
     // safe-area insets merged into the padding above.
     final ShadPosition? adjustedCloseIconPosition;
-    if (effectiveExpandable && effectiveUseSafeArea) {
+    if (effectiveUseSafeArea) {
       final base =
           effectiveCloseIconPosition ??
+          dialogTheme.closeIconPosition ??
           ShadPosition.directional(
             top: 8,
             end: 8,
@@ -1352,9 +1358,10 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
       mainAxisAlignment: effectiveMainAxisAlignment,
       scrollable: effectiveScrollable,
       scrollPadding: effectiveScrollPadding,
-      // Expandable sheets handle safe area themselves (merged into padding +
-      // an outer inset); only the non-expandable path defers to ShadDialog.
-      useSafeArea: !effectiveExpandable && effectiveUseSafeArea,
+      // Safe area handled above (merged into padding, plus an outer inset
+      // for expandable sheets) so the background paints behind system UI;
+      // ShadDialog's own SafeArea would leave that gap barrier-colored.
+      useSafeArea: false,
       titlePinned: effectiveTitlePinned,
       descriptionPinned: effectiveDescriptionPinned,
       actionsPinned: effectiveActionsPinned,
@@ -1627,27 +1634,39 @@ class _ShadSheetState extends State<ShadSheet> with TickerProviderStateMixin {
 
   // Anchor + side safe-area insets (home indicator, side gutters); the guard
   // for `useSafeArea` lives at the call site.
-  EdgeInsets expandableSafeAreaInsets(ShadSheetSide side) {
-    final viewPadding = MediaQuery.viewPaddingOf(context);
+  //
+  // Cross-axis insets (left/right for bottom/top, top/bottom for left/right)
+  // only apply when expandCrossSide is true — that's what actually stretches
+  // the sheet to those screen edges (via effectiveConstraints.enforce in
+  // build()). A maxWidth/maxHeight check here doesn't work: enforce()
+  // overrides it back to the full cross-axis size whenever expandCrossSide
+  // is true, so a merely-narrow constraint doesn't mean the sheet is
+  // actually narrow.
+  EdgeInsets expandableSafeAreaInsets(
+    ShadSheetSide side,
+    bool expandCrossSide,
+  ) {
+    final viewPadding = MediaQuery.paddingOf(context);
+    final crossInset = expandCrossSide ? viewPadding : EdgeInsets.zero;
     return switch (side) {
       ShadSheetSide.bottom => EdgeInsets.only(
         bottom: viewPadding.bottom,
-        left: viewPadding.left,
-        right: viewPadding.right,
+        left: crossInset.left,
+        right: crossInset.right,
       ),
       ShadSheetSide.top => EdgeInsets.only(
         top: viewPadding.top,
-        left: viewPadding.left,
-        right: viewPadding.right,
+        left: crossInset.left,
+        right: crossInset.right,
       ),
       ShadSheetSide.left => EdgeInsets.only(
-        top: viewPadding.top,
-        bottom: viewPadding.bottom,
+        top: crossInset.top,
+        bottom: crossInset.bottom,
         left: viewPadding.left,
       ),
       ShadSheetSide.right => EdgeInsets.only(
-        top: viewPadding.top,
-        bottom: viewPadding.bottom,
+        top: crossInset.top,
+        bottom: crossInset.bottom,
         right: viewPadding.right,
       ),
     };
