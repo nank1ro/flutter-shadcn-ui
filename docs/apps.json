@@ -189,5 +189,13 @@
       "target": "_blank",
       "rel": "noopener noreferrer"
     }
+  },
+  {
+    "label": "CASE | Be Heard",
+    "link": "https://casebeheard.com/",
+    "attrs": {
+      "target": "_blank",
+      "rel": "noopener noreferrer"
+    }
   }
 ]

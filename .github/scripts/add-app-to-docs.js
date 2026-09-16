@@ -32,7 +32,7 @@ const MAX_NAME_LENGTH = 80;
 // digits are handled separately). Chosen to accept real names such as
 // "Rhex: HEX & RGB Editor", "buildr.studio", "Human Design - Joy", "iOS/macOS".
 const ALLOWED_ASCII_PUNCTUATION = new Set([
-  ' ', '&', '.', ',', ':', "'", '-', '_', '/', '(', ')', '+',
+  ' ', '&', '.', ',', ':', "'", '-', '_', '/', '(', ')', '+', '|',
 ]);
 
 /**
