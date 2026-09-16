@@ -26,6 +26,7 @@ test('validateSiteName accepts legitimate names (incl. existing ones)', () => {
     'iOS/macOS App',
     'Café Münster',
     'ZikZak AI',
+    'CASE | Be Heard',
   ];
   for (const name of accepted) {
     assert.strictEqual(validateSiteName(name), name, `should accept: ${name}`);
@@ -39,7 +40,6 @@ test('validateSiteName rejects injection / control / spoofing payloads', () => {
     'x"; touch /tmp/pwned; #', // double quote + shell metachars
     '$(id)', // command substitution
     '`id`', // backtick substitution
-    "a'||curl evil||'", // pipe
     'legit\nsite_name=evil', // newline -> $GITHUB_OUTPUT injection
     '<img onerror=x>', // angle brackets / =
     '‮evil', // RTL override
