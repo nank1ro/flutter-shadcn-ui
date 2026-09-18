@@ -387,49 +387,122 @@ void main() {
     );
 
     testWidgets(
-      'extendBackground: true wraps the full-screen background in an '
-      'opaque GestureDetector so it absorbs taps instead of letting them '
-      'fall through to the barrier (#702)',
+      'extendBackground: true absorbs a tap inside the system-inset strip '
+      'instead of letting it fall through to the barrier (#702)',
       (tester) async {
+        tester.view.padding = const FakeViewPadding(top: 40);
+        addTearDown(tester.view.resetPadding);
+
         await tester.pumpWidget(
-          const ShadApp(
-            home: Scaffold(
-              body: ShadDialog(
-                extendBackground: true,
-                title: Text('Title'),
-                description: Text('Description'),
-                child: Text('Child'),
-              ),
+          ShadApp(
+            home: Builder(
+              builder: (context) {
+                return Scaffold(
+                  body: Center(
+                    child: TextButton(
+                      onPressed: () {
+                        showShadDialog<void>(
+                          context: context,
+                          builder: (context) => const ShadDialog(
+                            extendBackground: true,
+                            constraints: BoxConstraints(maxWidth: 200),
+                            alignment: Alignment.center,
+                            title: Text('Title'),
+                            child: Text('Child'),
+                          ),
+                        );
+                      },
+                      child: const Text('Open'),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         );
+
+        await tester.tap(find.text('Open'));
+        await tester.pumpAndSettle();
+        expect(find.byType(ShadDialog), findsOneWidget);
+
+        // The status-bar strip (top: 40) now visually looks like part of
+        // the dialog (the background paints through it), so a tap there
+        // must be claimed instead of reaching the ModalBarrier beneath.
+        final screenSize =
+            tester.view.physicalSize / tester.view.devicePixelRatio;
+        await tester.tapAt(Offset(screenSize.width / 2, 5));
         await tester.pumpAndSettle();
 
-        // The status-bar / gesture-bar strip now visually looks like part
-        // of the dialog (the background paints through it), so a tap
-        // there must be claimed instead of reaching the ModalBarrier
-        // beneath. A plain DecoratedBox doesn't do that on its own — it
-        // takes an explicit opaque hit-test consumer above it.
-        final gestureDetectorFinder = find.ancestor(
-          of: find.byWidgetPredicate(
-            (widget) =>
-                widget is DecoratedBox &&
-                widget.decoration is BoxDecoration &&
-                (widget.decoration as BoxDecoration).color != null,
-          ),
-          matching: find.byType(GestureDetector),
-        );
         expect(
-          gestureDetectorFinder,
+          find.byType(ShadDialog),
           findsOneWidget,
           reason:
-              'the full-screen background must be wrapped in a '
-              'GestureDetector to absorb taps',
+              'a tap inside the system-inset strip must not dismiss '
+              'the dialog',
         );
-        final gestureDetector = tester.widget<GestureDetector>(
-          gestureDetectorFinder,
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true still lets barrierDismissible dismiss a '
+      'constrained dialog by tapping outside the card and outside the '
+      'system-inset strips (#702: the opaque area must not cover the '
+      'whole screen)',
+      (tester) async {
+        tester.view.padding = const FakeViewPadding(top: 40);
+        addTearDown(tester.view.resetPadding);
+
+        await tester.pumpWidget(
+          ShadApp(
+            home: Builder(
+              builder: (context) {
+                return Scaffold(
+                  body: Center(
+                    child: TextButton(
+                      onPressed: () {
+                        showShadDialog<void>(
+                          context: context,
+                          builder: (context) => const ShadDialog(
+                            extendBackground: true,
+                            constraints: BoxConstraints(maxWidth: 200),
+                            alignment: Alignment.center,
+                            title: Text('Title'),
+                            child: Text('Child'),
+                          ),
+                        );
+                      },
+                      child: const Text('Open'),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
         );
-        expect(gestureDetector.behavior, HitTestBehavior.opaque);
+
+        await tester.tap(find.text('Open'));
+        await tester.pumpAndSettle();
+        expect(find.byType(ShadDialog), findsOneWidget);
+
+        // Tap at the bottom of the screen — clear of the centered card and
+        // clear of the top inset strip (no bottom inset is set here) —
+        // this is barrier territory and must still dismiss the dialog.
+        // Before the fix, the outer DecoratedBox painting
+        // effectiveBackgroundColor hit-tested its entire bounds by
+        // default (BoxDecoration.hitTest), silently reclaiming the whole
+        // screen regardless of any explicit opaque strip.
+        final screenSize =
+            tester.view.physicalSize / tester.view.devicePixelRatio;
+        await tester.tapAt(Offset(screenSize.width / 2, screenSize.height - 5));
+        await tester.pumpAndSettle();
+
+        expect(
+          find.byType(ShadDialog),
+          findsNothing,
+          reason:
+              'tapping outside the card and outside the inset strips must '
+              'still dismiss the dialog via barrierDismissible',
+        );
       },
     );
 
