@@ -1,6 +1,7 @@
 ## 0.57.2
 
 - **FIX**: `ShadTabs` tab bar decoration now respects `tabBarConstraints` when `tabBarAlignment` is set, instead of stretching to the full width (#695).
+- **FEAT**: Add `ShadDialog.extendBackground` (and matching `ShadDialogTheme.extendBackground`) to extend a dialog's background color behind the status bar, notch, and gesture bar instead of stopping at the safe-area boundary — useful for near-full-screen dialogs. `border`, `shadows`, and border radius are forced off while enabled, since a full-screen dialog's edges sit behind system UI; an explicit `border` still applies on top (#702).
 
 ## 0.57.1
 
