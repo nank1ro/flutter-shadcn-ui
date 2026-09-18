@@ -49,6 +49,7 @@ Use `ShadThemeData` within `ShadApp` to define your light and dark themes.
 | Sheet | Extends the Dialog component to display content that complements the main content of the screen. | [sheet.md](components/sheet.md) |
 | Slider | An input where the user selects a value from within a given range. | [slider.md](components/slider.md) |
 | Sonner | An opinionated toast component. | [sonner.md](components/sonner.md) |
+| Spinner | An indeterminate loading indicator, for async work whose completion amount is unknown. | [spinner.md](components/spinner.md) |
 | Switch | A control that allows the user to toggle between checked and not checked. | [switch.md](components/switch.md) |
 | Table | A responsive table component. | [table.md](components/table.md) |
 | Tabs | A set of layered sections of content—known as tab panels—that are displayed one at a time. | [tabs.md](components/tabs.md) |
