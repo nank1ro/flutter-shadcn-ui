@@ -916,19 +916,74 @@ class ShadDialog extends StatelessWidget {
       if (effectiveUseSafeArea) {
         result = SafeArea(child: result);
       }
-      return SizedBox.expand(
-        child: GestureDetector(
-          // The status-bar / gesture-bar strip now visually looks like
-          // part of the dialog (the background paints through it), so it
-          // must behave like part of the dialog too: absorb taps there
-          // instead of letting them fall through to the barrier below and
-          // dismiss the dialog.
-          behavior: HitTestBehavior.opaque,
-          onTap: () {},
-          child: DecoratedBox(
-            decoration: BoxDecoration(color: effectiveBackgroundColor),
-            child: result,
+
+      // Only the system-inset strips (status bar / notch / gesture bar)
+      // visually look like part of the dialog now, so only they should
+      // absorb taps — everywhere else must stay tap-through so
+      // barrierDismissible still dismisses a constrained (non-full-screen)
+      // extendBackground dialog by tapping outside the card, same as any
+      // other ShadDialog.
+      final effectiveInsets = MediaQuery.paddingOf(context);
+
+      Widget insetStrip({
+        required Alignment alignment,
+        required double width,
+        required double height,
+      }) {
+        if (width <= 0 || height <= 0) return const SizedBox.shrink();
+        return Align(
+          alignment: alignment,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {},
+            child: SizedBox(width: width, height: height),
           ),
+        );
+      }
+
+      return SizedBox.expand(
+        child: Stack(
+          children: [
+            // IgnorePointer: a DecoratedBox with a color hit-tests its
+            // entire bounds by default (BoxDecoration.hitTest), which
+            // would silently reclaim the whole screen for taps regardless
+            // of the explicit opaque strips below — defeating the point of
+            // scoping them to just the system-inset area.
+            Positioned.fill(
+              child: IgnorePointer(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(color: effectiveBackgroundColor),
+                ),
+              ),
+            ),
+            Positioned.fill(child: result),
+            Positioned.fill(
+              child: Stack(
+                children: [
+                  insetStrip(
+                    alignment: Alignment.topCenter,
+                    width: double.infinity,
+                    height: effectiveInsets.top,
+                  ),
+                  insetStrip(
+                    alignment: Alignment.bottomCenter,
+                    width: double.infinity,
+                    height: effectiveInsets.bottom,
+                  ),
+                  insetStrip(
+                    alignment: Alignment.centerLeft,
+                    width: effectiveInsets.left,
+                    height: double.infinity,
+                  ),
+                  insetStrip(
+                    alignment: Alignment.centerRight,
+                    width: effectiveInsets.right,
+                    height: double.infinity,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       );
     }
