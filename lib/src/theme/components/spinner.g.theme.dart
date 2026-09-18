@@ -34,7 +34,6 @@ mixin _$ShadSpinnerTheme {
       color: Color.lerp(a.color, b.color, t),
       icon: t < 0.5 ? a.icon : b.icon,
       duration: lerpDuration$(a.duration, b.duration, t),
-      animate: t < 0.5 ? a.animate : b.animate,
       semanticsLabel: t < 0.5 ? a.semanticsLabel : b.semanticsLabel,
     );
   }
@@ -44,7 +43,6 @@ mixin _$ShadSpinnerTheme {
     Color? color,
     IconData? icon,
     Duration? duration,
-    bool? animate,
     String? semanticsLabel,
   }) {
     final _this = (this as ShadSpinnerTheme);
@@ -54,7 +52,6 @@ mixin _$ShadSpinnerTheme {
       color: color ?? _this.color,
       icon: icon ?? _this.icon,
       duration: duration ?? _this.duration,
-      animate: animate ?? _this.animate,
       semanticsLabel: semanticsLabel ?? _this.semanticsLabel,
     );
   }
@@ -75,7 +72,6 @@ mixin _$ShadSpinnerTheme {
       color: other.color,
       icon: other.icon,
       duration: other.duration,
-      animate: other.animate,
       semanticsLabel: other.semanticsLabel,
     );
   }
@@ -97,7 +93,6 @@ mixin _$ShadSpinnerTheme {
         _other.color == _this.color &&
         _other.icon == _this.icon &&
         _other.duration == _this.duration &&
-        _other.animate == _this.animate &&
         _other.semanticsLabel == _this.semanticsLabel;
   }
 
@@ -111,7 +106,6 @@ mixin _$ShadSpinnerTheme {
       _this.color,
       _this.icon,
       _this.duration,
-      _this.animate,
       _this.semanticsLabel,
     );
   }

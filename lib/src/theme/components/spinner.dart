@@ -12,7 +12,6 @@ class ShadSpinnerTheme with _$ShadSpinnerTheme {
     this.color,
     this.icon,
     this.duration,
-    this.animate,
     this.semanticsLabel,
   }) : _canMerge = canMerge;
 
@@ -33,9 +32,6 @@ class ShadSpinnerTheme with _$ShadSpinnerTheme {
 
   /// {@macro ShadSpinner.duration}
   final Duration? duration;
-
-  /// {@macro ShadSpinner.animate}
-  final bool? animate;
 
   /// {@macro ShadSpinner.semanticsLabel}
   final String? semanticsLabel;
