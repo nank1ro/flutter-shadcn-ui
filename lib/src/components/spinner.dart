@@ -20,7 +20,14 @@ class ShadSpinner extends StatefulWidget {
     this.duration,
     this.animate = true,
     this.semanticsLabel,
-  });
+  }) : assert(
+         size == null || size >= 0,
+         'ShadSpinner.size must not be negative',
+       ),
+       assert(
+         duration == null || duration > Duration.zero,
+         'ShadSpinner.duration must be greater than zero',
+       );
 
   /// {@template ShadSpinner.size}
   /// The width and height of the spinner.
@@ -49,7 +56,11 @@ class ShadSpinner extends StatefulWidget {
   /// Whether the spinner rotates.
   ///
   /// Set to false to render a static icon, which is useful in golden tests or
-  /// when honouring a reduced-motion preference. Defaults to true.
+  /// to honour a reduced-motion preference. This is not wired to the platform
+  /// accessibility setting automatically: pass
+  /// `!MediaQuery.disableAnimationsOf(context)` to follow it.
+  ///
+  /// Defaults to true.
   final bool animate;
 
   /// {@template ShadSpinner.semanticsLabel}
@@ -82,6 +93,12 @@ class _ShadSpinnerState extends State<ShadSpinner>
     required Duration duration,
     required bool animate,
   }) {
+    assert(
+      duration > Duration.zero,
+      'The effective ShadSpinner duration must be greater than zero, '
+      'but ShadSpinnerTheme.duration resolved to $duration',
+    );
+
     final durationChanged = controller.duration != duration;
     if (durationChanged) controller.duration = duration;
 
@@ -108,6 +125,12 @@ class _ShadSpinnerState extends State<ShadSpinner>
         const Duration(seconds: 1);
     final effectiveSemanticsLabel =
         widget.semanticsLabel ?? theme.spinnerTheme.semanticsLabel;
+
+    assert(
+      effectiveSize >= 0,
+      'The effective ShadSpinner size must not be negative, '
+      'but ShadSpinnerTheme.size resolved to $effectiveSize',
+    );
 
     syncAnimation(duration: effectiveDuration, animate: widget.animate);
 
