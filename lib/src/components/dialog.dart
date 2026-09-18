@@ -923,7 +923,15 @@ class ShadDialog extends StatelessWidget {
       // barrierDismissible still dismisses a constrained (non-full-screen)
       // extendBackground dialog by tapping outside the card, same as any
       // other ShadDialog.
-      final effectiveInsets = MediaQuery.paddingOf(context);
+      //
+      // Only when useSafeArea is true: SafeArea is what pushes dialog
+      // content clear of this region in the first place. With
+      // useSafeArea: false there is no such guarantee — real content may
+      // sit directly under the inset — so an absorber there would swallow
+      // taps meant for that content instead of the barrier.
+      final effectiveInsets = effectiveUseSafeArea
+          ? MediaQuery.paddingOf(context)
+          : EdgeInsets.zero;
 
       Widget insetStrip({
         required Alignment alignment,
@@ -944,16 +952,14 @@ class ShadDialog extends StatelessWidget {
       return SizedBox.expand(
         child: Stack(
           children: [
-            // IgnorePointer: a DecoratedBox with a color hit-tests its
-            // entire bounds by default (BoxDecoration.hitTest), which
-            // would silently reclaim the whole screen for taps regardless
-            // of the explicit opaque strips below — defeating the point of
-            // scoping them to just the system-inset area.
+            // IgnorePointer: a plain colored box would otherwise hit-test
+            // its entire bounds (e.g. DecoratedBox's BoxDecoration.hitTest
+            // does this), silently reclaiming the whole screen for taps
+            // regardless of the explicit opaque strips below — defeating
+            // the point of scoping them to just the system-inset area.
             Positioned.fill(
               child: IgnorePointer(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(color: effectiveBackgroundColor),
-                ),
+                child: ColoredBox(color: effectiveBackgroundColor),
               ),
             ),
             Positioned.fill(child: result),
