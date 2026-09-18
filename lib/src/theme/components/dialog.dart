@@ -39,6 +39,7 @@ class ShadDialogTheme with _$ShadDialogTheme {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.extendBackground,
     this.titlePinned,
     this.descriptionPinned,
     this.actionsPinned,
@@ -133,6 +134,9 @@ class ShadDialogTheme with _$ShadDialogTheme {
 
   /// {@macro ShadDialog.useSafeArea}
   final bool? useSafeArea;
+
+  /// {@macro ShadDialog.extendBackground}
+  final bool? extendBackground;
 
   /// {@macro ShadDialog.titlePinned}
   final bool? titlePinned;
