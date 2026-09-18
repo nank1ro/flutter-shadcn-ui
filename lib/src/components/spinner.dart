@@ -18,7 +18,7 @@ class ShadSpinner extends StatefulWidget {
     this.color,
     this.icon,
     this.duration,
-    this.animate,
+    this.animate = true,
     this.semanticsLabel,
   });
 
@@ -46,12 +46,11 @@ class ShadSpinner extends StatefulWidget {
   /// {@endtemplate}
   final Duration? duration;
 
-  /// {@template ShadSpinner.animate}
   /// Whether the spinner rotates.
-  /// Set to false to render a static icon, useful for tests and golden files.
-  /// Defaults to true if not specified.
-  /// {@endtemplate}
-  final bool? animate;
+  ///
+  /// Set to false to render a static icon, which is useful in golden tests or
+  /// when honouring a reduced-motion preference. Defaults to true.
+  final bool animate;
 
   /// {@template ShadSpinner.semanticsLabel}
   /// The accessibility label announced by screen readers.
@@ -73,6 +72,9 @@ class _ShadSpinnerState extends State<ShadSpinner>
     super.dispose();
   }
 
+  /// Keeps the controller in sync with the effective duration and animate
+  /// flag, both of which may come from the theme and can therefore change
+  /// without this widget being rebuilt with new parameters.
   void syncAnimation({
     required Duration duration,
     required bool animate,
@@ -97,12 +99,10 @@ class _ShadSpinnerState extends State<ShadSpinner>
         widget.duration ??
         theme.spinnerTheme.duration ??
         const Duration(seconds: 1);
-    final effectiveAnimate =
-        widget.animate ?? theme.spinnerTheme.animate ?? true;
     final effectiveSemanticsLabel =
         widget.semanticsLabel ?? theme.spinnerTheme.semanticsLabel;
 
-    syncAnimation(duration: effectiveDuration, animate: effectiveAnimate);
+    syncAnimation(duration: effectiveDuration, animate: widget.animate);
 
     final icon = Icon(
       effectiveIcon,
@@ -115,7 +115,7 @@ class _ShadSpinnerState extends State<ShadSpinner>
       liveRegion: effectiveSemanticsLabel != null,
       child: SizedBox.square(
         dimension: effectiveSize,
-        child: effectiveAnimate
+        child: widget.animate
             ? RotationTransition(turns: controller, child: icon)
             : icon,
       ),

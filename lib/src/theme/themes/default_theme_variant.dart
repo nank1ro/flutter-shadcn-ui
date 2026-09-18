@@ -736,7 +736,6 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       color: colorScheme.primary,
       icon: LucideIcons.loaderCircle,
       duration: const Duration(seconds: 1),
-      animate: true,
     );
   }
 
