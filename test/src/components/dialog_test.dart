@@ -274,18 +274,18 @@ void main() {
       },
     );
 
-    // extendBackground: the outer DecoratedBox (under a SizedBox) paints
-    // the full-screen background; the card's own DecoratedBox is the one
-    // built directly inside ShadResponsiveBuilder (dialog.dart's `return
+    // extendBackground: the outer ColoredBox (under a SizedBox) paints the
+    // full-screen background; the card's own DecoratedBox is the one built
+    // directly inside ShadResponsiveBuilder (dialog.dart's `return
     // DecoratedBox(...)` in the builder callback) — unlike a raw first/last
     // index, this stays correct regardless of whether a close icon (which
     // renders its own unrelated DecoratedBox) is present.
-    DecoratedBox outerDecoratedBox(WidgetTester tester) {
-      return tester.widget<DecoratedBox>(
+    ColoredBox outerColoredBox(WidgetTester tester) {
+      return tester.widget<ColoredBox>(
         find
             .descendant(
               of: find.byType(SizedBox),
-              matching: find.byType(DecoratedBox),
+              matching: find.byType(ColoredBox),
             )
             .first,
       );
@@ -337,14 +337,12 @@ void main() {
         // padding — that would leave a barrier-colored gap at the edges,
         // which is the bug the route-level SafeArea fix (#681/#685)
         // otherwise reintroduces for edge-reaching dialogs.
-        final decoration =
-            outerDecoratedBox(tester).decoration as BoxDecoration;
-        expect(decoration.color, isNotNull);
+        expect(outerColoredBox(tester).color, isNotNull);
 
         final outerBoxFinder = find
             .descendant(
               of: find.byType(SizedBox),
-              matching: find.byType(DecoratedBox),
+              matching: find.byType(ColoredBox),
             )
             .first;
         expect(
@@ -373,9 +371,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // The outer, full-screen layer paints the background color...
-        final outerDecoration =
-            outerDecoratedBox(tester).decoration as BoxDecoration;
-        expect(outerDecoration.color, isNotNull);
+        expect(outerColoredBox(tester).color, isNotNull);
 
         // ...so the inner dialog card must not paint it again. Before the
         // fix, both boxes painted effectiveBackgroundColor, visibly
@@ -390,6 +386,12 @@ void main() {
       'extendBackground: true absorbs a tap inside the system-inset strip '
       'instead of letting it fall through to the barrier (#702)',
       (tester) async {
+        // devicePixelRatio: 1.0 so the FakeViewPadding value below (in
+        // physical pixels) maps 1:1 to the logical pixels MediaQuery
+        // exposes — otherwise the default ratio of 3.0 would divide it
+        // down to a third of the intended inset.
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetDevicePixelRatio);
         tester.view.padding = const FakeViewPadding(top: 40);
         addTearDown(tester.view.resetPadding);
 
@@ -449,6 +451,8 @@ void main() {
       'system-inset strips (#702: the opaque area must not cover the '
       'whole screen)',
       (tester) async {
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetDevicePixelRatio);
         tester.view.padding = const FakeViewPadding(top: 40);
         addTearDown(tester.view.resetPadding);
 
@@ -543,13 +547,13 @@ void main() {
         await tester.pumpAndSettle();
 
         // Default: only ShadDialog's own SafeArea exists, and no outer
-        // full-screen background layer (a DecoratedBox under a SizedBox)
-        // is rendered.
+        // full-screen background layer (a ColoredBox under a SizedBox) is
+        // rendered.
         expect(find.byType(SafeArea), findsOneWidget);
         expect(
           find.descendant(
             of: find.byType(SizedBox),
-            matching: find.byType(DecoratedBox),
+            matching: find.byType(ColoredBox),
           ),
           findsNothing,
         );
@@ -580,9 +584,7 @@ void main() {
         // Theme-level extendBackground should be honored — SafeArea still
         // present, just relocated inside the full-screen background.
         expect(find.byType(SafeArea), findsOneWidget);
-        final decoration =
-            outerDecoratedBox(tester).decoration as BoxDecoration;
-        expect(decoration.color, isNotNull);
+        expect(outerColoredBox(tester).color, isNotNull);
       },
     );
 
@@ -656,6 +658,54 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.byType(SafeArea), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true with useSafeArea: false does not swallow '
+      'taps on content placed under the system inset (no inset-strip '
+      'absorber without SafeArea protecting that content)',
+      (tester) async {
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetDevicePixelRatio);
+        tester.view.padding = const FakeViewPadding(top: 40);
+        addTearDown(tester.view.resetPadding);
+
+        var tapped = false;
+
+        await tester.pumpWidget(
+          ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                useSafeArea: false,
+                alignment: Alignment.topCenter,
+                padding: EdgeInsets.zero,
+                title: TextButton(
+                  onPressed: () => tapped = true,
+                  child: const Text('Title button'),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // With useSafeArea: false, nothing pushes this button clear of the
+        // top system inset — it renders directly under it. The
+        // inset-strip absorber must not be built here, or it would sit on
+        // top of the button and swallow the tap.
+        await tester.tap(find.text('Title button'));
+        await tester.pumpAndSettle();
+
+        expect(
+          tapped,
+          isTrue,
+          reason:
+              'a tap on real content under the system inset must '
+              'reach it, not an inset-strip absorber meant only to '
+              'protect the SafeArea-guarded gap',
+        );
       },
     );
 
@@ -807,7 +857,7 @@ void main() {
         expect(
           find.descendant(
             of: find.byType(SizedBox),
-            matching: find.byType(DecoratedBox),
+            matching: find.byType(ColoredBox),
           ),
           findsNothing,
         );
@@ -848,7 +898,7 @@ void main() {
             find
                 .descendant(
                   of: find.byType(SizedBox),
-                  matching: find.byType(DecoratedBox),
+                  matching: find.byType(ColoredBox),
                 )
                 .first,
           );
@@ -857,7 +907,7 @@ void main() {
         final sizeWithInsets = await getDecoratedBoxSize(systemPadding);
         final sizeWithoutInsets = await getDecoratedBoxSize(EdgeInsets.zero);
 
-        // Both DecoratedBoxes should fill the full screen — system padding
+        // Both ColoredBoxes should fill the full screen — system padding
         // must not shrink the background.
         expect(sizeWithInsets.width, closeTo(sizeWithoutInsets.width, 0.5));
         expect(sizeWithInsets.height, closeTo(sizeWithoutInsets.height, 0.5));
