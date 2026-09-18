@@ -69,6 +69,7 @@ npx skills add nank1ro/flutter-shadcn-ui
 - [ ] Skeleton
 - [x] [Slider](https://mariuti.com/flutter-shadcn-ui/components/slider/)
 - [x] [Sonner](https://mariuti.com/flutter-shadcn-ui/components/sonner/)
+- [x] [Spinner](https://mariuti.com/flutter-shadcn-ui/components/spinner/)
 - [x] [Switch](https://mariuti.com/flutter-shadcn-ui/components/switch/)
 - [x] [Table](https://mariuti.com/flutter-shadcn-ui/components/table/)
 - [x] [Tabs](https://mariuti.com/flutter-shadcn-ui/components/tabs/)

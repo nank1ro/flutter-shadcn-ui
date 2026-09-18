@@ -25,6 +25,7 @@ import 'package:playground/pages/select.dart';
 import 'package:playground/pages/sheet.dart';
 import 'package:playground/pages/slider.dart';
 import 'package:playground/pages/sonner.dart';
+import 'package:playground/pages/spinner.dart';
 import 'package:playground/pages/switch.dart';
 import 'package:playground/pages/table.dart';
 import 'package:playground/pages/tabs.dart';
@@ -171,6 +172,14 @@ final router = GoRouter(
             state.uri.queryParameters['style'] ??
             ProgressStyle.determinate.name;
         return ProgressPage(style: ProgressStyle.values.byName(style));
+      },
+    ),
+    GoRoute(
+      path: '/spinner',
+      builder: (context, state) {
+        final style =
+            state.uri.queryParameters['style'] ?? SpinnerStyle.primary.name;
+        return SpinnerPage(style: SpinnerStyle.values.byName(style));
       },
     ),
     GoRoute(
