@@ -46,6 +46,7 @@ class _SpinnerPageState extends State<SpinnerPage> {
         ),
       ],
       children: [
+        const Text('Default'),
         ShadSpinner(
           size: size,
           animate: animate,
