@@ -72,18 +72,25 @@ class _ShadSpinnerState extends State<ShadSpinner>
     super.dispose();
   }
 
-  /// Keeps the controller in sync with the effective duration and animate
-  /// flag, both of which may come from the theme and can therefore change
-  /// without this widget being rebuilt with new parameters.
+  /// Keeps the controller in sync with the effective duration, which may come
+  /// from the theme and can therefore change without this widget being
+  /// rebuilt with new parameters.
+  ///
+  /// [AnimationController.repeat] captures the duration when it starts, so a
+  /// changed duration only takes effect by restarting the repetition.
   void syncAnimation({
     required Duration duration,
     required bool animate,
   }) {
-    controller.duration = duration;
-    if (animate) {
-      if (!controller.isAnimating) controller.repeat();
-    } else {
+    final durationChanged = controller.duration != duration;
+    if (durationChanged) controller.duration = duration;
+
+    if (!animate) {
       if (controller.isAnimating) controller.stop();
+      return;
+    }
+    if (!controller.isAnimating || durationChanged) {
+      controller.repeat();
     }
   }
 
@@ -104,6 +111,8 @@ class _ShadSpinnerState extends State<ShadSpinner>
 
     syncAnimation(duration: effectiveDuration, animate: widget.animate);
 
+    // RotationTransition drives the rotation at the render-object level, so
+    // this icon is built once per parameter change rather than once per frame.
     final icon = Icon(
       effectiveIcon,
       size: effectiveSize,

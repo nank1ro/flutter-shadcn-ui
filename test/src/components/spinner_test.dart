@@ -194,6 +194,37 @@ void main() {
       await tester.pumpWidget(createTestWidget(const SizedBox()));
     });
 
+    testWidgets('applies a changed duration to the running rotation',
+        (tester) async {
+      Widget build(Duration d) => createTestWidget(ShadSpinner(duration: d));
+
+      await tester.pumpWidget(build(const Duration(seconds: 1)));
+      final controller =
+          tester.widget<RotationTransition>(
+                find.descendant(
+                  of: find.byType(ShadSpinner),
+                  matching: find.byType(RotationTransition),
+                ),
+              ).turns
+              as AnimationController;
+
+      await tester.pump(const Duration(milliseconds: 500));
+
+      // repeat() captures the duration when it starts, so the repetition has
+      // to be restarted for a new duration to take effect. It resumes from the
+      // current value, so the spinner speeds up without visually jumping.
+      await tester.pumpWidget(build(const Duration(seconds: 3)));
+      expect(controller.duration, const Duration(seconds: 3));
+      expect(controller.isAnimating, isTrue);
+
+      // The new duration is actually in force: at 1s/turn the rotation would
+      // have wrapped past 0.5 after 900ms, at 3s/turn it advances ~0.3.
+      await tester.pump(const Duration(milliseconds: 900));
+      expect(controller.value, closeTo(0.8, 0.05));
+
+      await tester.pumpWidget(createTestWidget(const SizedBox()));
+    });
+
     testWidgets('constructor values win over the theme', (tester) async {
       await tester.pumpWidget(
         createTestWidget(
