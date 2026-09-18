@@ -13,7 +13,10 @@ For determinate progress, use [Progress](/flutter-shadcn-ui/components/progress/
 
 <Preview src="spinner">
  ```dart
-const ShadSpinner(),
+const ShadSpinner(
+  size: 32,
+  semanticsLabel: 'Loading',
+),
 ```
 </Preview>
 
@@ -23,11 +26,30 @@ const ShadSpinner(),
  ```dart
 const Row(
   mainAxisAlignment: MainAxisAlignment.center,
-  spacing: 16,
+  spacing: 32,
   children: [
     ShadSpinner(size: 16),
     ShadSpinner(size: 24),
     ShadSpinner(size: 32),
+    ShadSpinner(size: 48),
+  ],
+),
+```
+</Preview>
+
+## Colors
+
+<Preview src="spinner?style=colors">
+ ```dart
+final colorScheme = ShadTheme.of(context).colorScheme;
+
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  spacing: 32,
+  children: [
+    ShadSpinner(size: 32, color: colorScheme.primary),
+    ShadSpinner(size: 32, color: colorScheme.mutedForeground),
+    ShadSpinner(size: 32, color: colorScheme.destructive),
   ],
 ),
 ```
@@ -48,6 +70,28 @@ ShadButton(
         color: ShadTheme.of(context).colorScheme.primaryForeground,
       ),
       const Text('Please wait'),
+    ],
+  ),
+),
+```
+</Preview>
+
+## Inline
+
+<Preview src="spinner?style=inline">
+ ```dart
+final theme = ShadTheme.of(context);
+
+ShadCard(
+  width: 320,
+  child: Row(
+    mainAxisSize: MainAxisSize.min,
+    spacing: 12,
+    children: [
+      ShadSpinner(size: 20, color: theme.colorScheme.mutedForeground),
+      Flexible(
+        child: Text('Fetching your data…', style: theme.textTheme.muted),
+      ),
     ],
   ),
 ),

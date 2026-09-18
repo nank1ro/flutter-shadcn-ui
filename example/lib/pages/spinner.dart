@@ -26,10 +26,15 @@ class _SpinnerPageState extends State<SpinnerPage> {
           value: animate,
           onChanged: (value) => setState(() => animate = value),
         ),
-        Row(
+        Column(
           children: [
-            const Text('Size'),
-            Expanded(
+            Text(
+              'Size (${size.toStringAsFixed(0)})',
+              style: const TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: 200,
               child: ShadSlider(
                 initialValue: size,
                 min: 8,
@@ -37,7 +42,6 @@ class _SpinnerPageState extends State<SpinnerPage> {
                 onChanged: (value) => setState(() => size = value),
               ),
             ),
-            Text(size.toStringAsFixed(0)),
           ],
         ),
       ],
