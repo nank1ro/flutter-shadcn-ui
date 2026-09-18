@@ -1,0 +1,74 @@
+---
+title: Spinner
+sidebar:
+  order: 4
+---
+import Preview from '../../../components/Preview.astro';
+
+An indeterminate loading indicator, for async work whose completion amount is unknown.
+
+For determinate progress, use [Progress](/flutter-shadcn-ui/components/progress/) instead.
+
+## Default
+
+<Preview src="spinner">
+ ```dart
+const ShadSpinner(),
+```
+</Preview>
+
+## Sizes
+
+<Preview src="spinner?style=sizes">
+ ```dart
+const Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  spacing: 16,
+  children: [
+    ShadSpinner(size: 16),
+    ShadSpinner(size: 24),
+    ShadSpinner(size: 32),
+  ],
+),
+```
+</Preview>
+
+## Inside a button
+
+<Preview src="spinner?style=button">
+ ```dart
+ShadButton(
+  onPressed: () {},
+  child: Row(
+    mainAxisSize: MainAxisSize.min,
+    spacing: 8,
+    children: [
+      ShadSpinner(
+        size: 16,
+        color: ShadTheme.of(context).colorScheme.primaryForeground,
+      ),
+      const Text('Please wait'),
+    ],
+  ),
+),
+```
+</Preview>
+
+## Accessibility
+
+Pass a `semanticsLabel` to announce the loading state to screen readers. The
+spinner is then marked as a live region, so assistive technology announces it
+when it appears.
+
+```dart
+const ShadSpinner(semanticsLabel: 'Loading'),
+```
+
+## Disabling the animation
+
+Set `animate` to `false` to render a static icon, which is useful in golden
+tests or when honouring a reduced-motion preference.
+
+```dart
+const ShadSpinner(animate: false),
+```
