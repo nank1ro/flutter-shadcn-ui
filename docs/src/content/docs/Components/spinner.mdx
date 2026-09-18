@@ -113,9 +113,15 @@ const ShadSpinner(semanticsLabel: 'Loading'),
 
 ## Disabling the animation
 
-Set `animate` to `false` to render a static icon, which is useful in golden
-tests or when honouring a reduced-motion preference. The rotation duration is
+Set `animate` to `false` to render a static icon. The rotation duration is
 themeable via `ShadSpinnerTheme.duration`.
+
+This is not wired to the platform's "reduce motion" accessibility setting
+automatically. To follow it:
+
+```dart
+ShadSpinner(animate: !MediaQuery.disableAnimationsOf(context)),
+```
 
 ```dart
 const ShadSpinner(animate: false),

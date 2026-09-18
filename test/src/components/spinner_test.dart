@@ -225,6 +225,38 @@ void main() {
       await tester.pumpWidget(createTestWidget(const SizedBox()));
     });
 
+    test('rejects a negative size', () {
+      expect(() => ShadSpinner(size: -1), throwsAssertionError);
+    });
+
+    test('rejects a non-positive duration', () {
+      expect(
+        () => ShadSpinner(duration: Duration.zero),
+        throwsAssertionError,
+      );
+      expect(
+        () => ShadSpinner(duration: const Duration(seconds: -1)),
+        throwsAssertionError,
+      );
+    });
+
+    testWidgets('rejects a non-positive duration from the theme',
+        (tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          const ShadSpinner(),
+          theme: ShadThemeData(
+            brightness: Brightness.light,
+            colorScheme: const ShadSlateColorScheme.light(),
+            spinnerTheme: const ShadSpinnerTheme(duration: Duration.zero),
+          ),
+        ),
+      );
+
+      expect(tester.takeException(), isAssertionError);
+      await tester.pumpWidget(createTestWidget(const SizedBox()));
+    });
+
     testWidgets('constructor values win over the theme', (tester) async {
       await tester.pumpWidget(
         createTestWidget(
