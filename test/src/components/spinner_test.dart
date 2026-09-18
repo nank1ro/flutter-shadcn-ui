@@ -166,6 +166,34 @@ void main() {
       expect(icon.icon, LucideIcons.loader);
     });
 
+    testWidgets('takes the rotation duration from the theme', (tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          const ShadSpinner(),
+          theme: ShadThemeData(
+            brightness: Brightness.light,
+            colorScheme: const ShadSlateColorScheme.light(),
+            spinnerTheme: const ShadSpinnerTheme(
+              duration: Duration(seconds: 4),
+            ),
+          ),
+        ),
+      );
+
+      final transition = tester.widget<RotationTransition>(
+        find.descendant(
+          of: find.byType(ShadSpinner),
+          matching: find.byType(RotationTransition),
+        ),
+      );
+      expect(
+        (transition.turns as AnimationController).duration,
+        const Duration(seconds: 4),
+      );
+
+      await tester.pumpWidget(createTestWidget(const SizedBox()));
+    });
+
     testWidgets('constructor values win over the theme', (tester) async {
       await tester.pumpWidget(
         createTestWidget(
