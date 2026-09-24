@@ -16,6 +16,9 @@ jobs:
     uses: ./.github/workflows/check-imports.yaml
   build-runner:
     uses: ./.github/workflows/build-runner.yml
+    # Dependabot PRs get a read-only token unless write is granted explicitly.
+    permissions:
+      contents: write
 
   build:
     name: Flutter test
