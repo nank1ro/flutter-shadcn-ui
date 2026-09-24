@@ -8,6 +8,24 @@ import Preview from "../../../components/Preview.astro";
 
 A modal dialog that interrupts the user.
 
+## Full-screen background
+
+Set `extendBackground: true` only on a dialog whose `constraints` fill the
+screen. This extends the dialog background behind the status bar, notch, and
+gesture bar. Smaller centered dialogs ignore this option and keep their normal
+card background, border, shadow, and radius.
+
+```dart
+ShadDialog(
+  extendBackground: true,
+  constraints: BoxConstraints.expand(
+    width: MediaQuery.sizeOf(context).width,
+    height: MediaQuery.sizeOf(context).height,
+  ),
+  title: const Text('Full-screen dialog'),
+)
+```
+
 <Preview src="dialog?style=primary" minHeight="500px">
 
 ```dart
