@@ -640,10 +640,12 @@ class ShadDialog extends StatelessWidget {
 
         final requestedExtendBackground =
             extendBackground ?? effectiveDialogTheme.extendBackground ?? false;
+        final parentIsBounded =
+            parentConstraints.hasBoundedWidth &&
+            parentConstraints.hasBoundedHeight;
         final screenSize = MediaQuery.sizeOf(context);
         final parentFillsViewport =
-            parentConstraints.hasBoundedWidth &&
-            parentConstraints.hasBoundedHeight &&
+            parentIsBounded &&
             parentConstraints.biggest.width >= screenSize.width &&
             parentConstraints.biggest.height >= screenSize.height;
         bool fillsScreen(double dimension, double screenDimension) =>
@@ -928,6 +930,7 @@ class ShadDialog extends StatelessWidget {
           viewInsets: effectiveViewInsets,
           useSafeArea: effectiveUseSafeArea,
           requestedExtendBackground: requestedExtendBackground,
+          parentIsBounded: parentIsBounded,
           extendBackground: effectiveExtendBackground,
           backgroundColor: effectiveBackgroundColor,
           child: dialog,
@@ -943,6 +946,7 @@ class _DialogViewport extends StatelessWidget {
     required this.viewInsets,
     required this.useSafeArea,
     required this.requestedExtendBackground,
+    required this.parentIsBounded,
     required this.extendBackground,
     required this.backgroundColor,
     required this.child,
@@ -952,6 +956,7 @@ class _DialogViewport extends StatelessWidget {
   final EdgeInsets viewInsets;
   final bool useSafeArea;
   final bool requestedExtendBackground;
+  final bool parentIsBounded;
   final bool extendBackground;
   final Color backgroundColor;
   final Widget child;
@@ -970,7 +975,7 @@ class _DialogViewport extends StatelessWidget {
       result = SafeArea(child: result);
     }
 
-    if (!requestedExtendBackground) {
+    if (!requestedExtendBackground || !parentIsBounded) {
       return result;
     }
 
