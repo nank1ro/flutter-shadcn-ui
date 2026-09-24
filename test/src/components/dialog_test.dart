@@ -487,6 +487,39 @@ void main() {
     );
 
     testWidgets(
+      'theme-level extendBackground is ignored in an unbounded parent',
+      (tester) async {
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              primaryDialogTheme: const ShadDialogTheme(
+                extendBackground: true,
+              ),
+            ),
+            home: const Scaffold(
+              body: SingleChildScrollView(
+                child: ShadDialog(
+                  title: Text('Title'),
+                  child: Text('Child'),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('Title'), findsOneWidget);
+        expect(
+          find.descendant(
+            of: find.byType(SizedBox),
+            matching: find.byType(ColoredBox),
+          ),
+          findsNothing,
+        );
+      },
+    );
+
+    testWidgets(
       'extendBackground: true absorbs a tap inside the system-inset strip '
       'for a full-screen dialog',
       (tester) async {
