@@ -1,3 +1,7 @@
+## 0.57.1
+
+- **FIX**: Form fields without an `id` could get the same generated id in large forms (the id came from a 20-bit hash), which seeded a field with another field's value, dropped entries from `ShadForm.value`, or threw a `TypeError` when the fields had different types. Generated ids are now unique, and explicit ids starting with `__shad_field_` are reserved for them (#707).
+
 ## 0.57.0
 
 - **FIX**: `ShadDialog` no longer bakes unnecessary status bar/navigation bar padding into a centered dialog. `SafeArea` is now applied at the route level (matching Material's `Dialog`) instead of inside the dialog card, fixing a large blank space above the title on Android (#681).

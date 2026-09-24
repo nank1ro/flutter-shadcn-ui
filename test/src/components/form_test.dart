@@ -424,4 +424,44 @@ void main() {
       });
     });
   });
+
+  group('ShadForm - Internal Ids', () {
+    // Regression for #707: ids from UniqueKey().toString() had only 2^20
+    // possible values, so 2^20 + 1 of them must contain a duplicate.
+    test('generated ids are unique', () {
+      const n = (1 << 20) + 1;
+      final ids = <String>{
+        for (var i = 0; i < n; i++)
+          ShadFormBuilderFieldState<ShadFormBuilderField<String>, String>()
+              .internalId,
+      };
+      expect(ids.length, n);
+    });
+
+    test('explicit ids cannot use the generated id prefix', () {
+      expect(
+        () => ShadFormBuilderField<String>(
+          id: '__shad_field_0',
+          builder: (_) => const SizedBox.shrink(),
+        ),
+        throwsArgumentError,
+      );
+    });
+
+    test('non-reserved explicit ids and no id do not throw', () {
+      expect(
+        () => ShadFormBuilderField<String>(
+          id: 'shad_field_0',
+          builder: (_) => const SizedBox.shrink(),
+        ),
+        returnsNormally,
+      );
+      expect(
+        () => ShadFormBuilderField<String>(
+          builder: (_) => const SizedBox.shrink(),
+        ),
+        returnsNormally,
+      );
+    });
+  });
 }

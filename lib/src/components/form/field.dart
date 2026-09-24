@@ -17,6 +17,8 @@ typedef ToValueTransformer<T> = dynamic Function(T value);
 /// Used to convert values before populating the form field.
 typedef FromValueTransformer<T> = T Function(dynamic value);
 
+const _internalIdPrefix = '__shad_field_';
+
 /// A customizable form field widget with built-in decoration and state
 /// management.
 ///
@@ -67,7 +69,16 @@ class ShadFormBuilderField<T> extends FormField<T> {
            );
          },
          onReset: onReset,
-       );
+       ) {
+    final effectiveId = id;
+    if (effectiveId != null && effectiveId.startsWith(_internalIdPrefix)) {
+      throw ArgumentError.value(
+        effectiveId,
+        'id',
+        'Ids starting with "$_internalIdPrefix" are reserved',
+      );
+    }
+  }
 
   /// {@template ShadFormBuilderField.id}
   /// An optional identifier used to reference the field within a [ShadForm].
@@ -161,9 +172,14 @@ class ShadFormBuilderField<T> extends FormField<T> {
 /// form.
 class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     extends FormFieldState<T> {
-  final String _internalId = UniqueKey().toString();
+  static int _nextInternalId = 0;
+  final String _internalId = '$_internalIdPrefix${_nextInternalId++}';
   FocusNode? _focusNode;
   ShadFormState? _parentForm;
+
+  /// The id used to register the field when [ShadFormBuilderField.id] is null.
+  @visibleForTesting
+  String get internalId => _internalId;
 
   /// The effective focus node, either provided or internally managed.
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
