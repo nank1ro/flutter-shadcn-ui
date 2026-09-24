@@ -244,6 +244,7 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.extendBackground,
     this.titlePinned,
     this.descriptionPinned,
     this.actionsPinned,
@@ -284,6 +285,7 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.extendBackground,
     this.titlePinned,
     this.descriptionPinned,
     this.actionsPinned,
@@ -325,6 +327,7 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.extendBackground,
     this.titlePinned,
     this.descriptionPinned,
     this.actionsPinned,
@@ -536,6 +539,27 @@ class ShadDialog extends StatelessWidget {
   /// {@endtemplate}
   final bool? useSafeArea;
 
+  /// {@template ShadDialog.extendBackground}
+  /// Whether to extend the dialog's background color to fill the whole
+  /// screen, behind the status bar / notch / gesture bar, instead of
+  /// stopping at the safe-area boundary.
+  ///
+  /// When true and [constraints] fill the screen, the [DecoratedBox]
+  /// background expands to the full screen (via an outer [SizedBox.expand])
+  /// and [SafeArea] moves inside it to keep the content clear of system UI,
+  /// so there is no barrier-colored gap at the edges. This is useful for
+  /// full-screen dialogs that touch screen edges. For a smaller dialog, the
+  /// option is ignored and the normal card appearance is kept.
+  ///
+  /// Intended for full-screen dialogs: when effective, [extendBackground]
+  /// takes precedence over widget- and theme-level [border], [shadows], and
+  /// [radius] values. They are all suppressed because those decorations do
+  /// not make visual sense on edges that sit behind system UI.
+  ///
+  /// Defaults to false if not specified.
+  /// {@endtemplate}
+  final bool? extendBackground;
+
   /// {@template ShadDialog.titlePinned}
   /// Whether the title is pinned when scrolling and [scrollable] is true.
   ///
@@ -559,312 +583,474 @@ class ShadDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ShadTheme.of(context);
-    final effectiveDialogTheme = switch (variant) {
-      ShadDialogVariant.primary => theme.primaryDialogTheme,
-      ShadDialogVariant.alert => theme.alertDialogTheme,
-    };
+    return LayoutBuilder(
+      builder: (context, parentConstraints) {
+        final theme = ShadTheme.of(context);
+        final effectiveDialogTheme = switch (variant) {
+          .primary => theme.primaryDialogTheme,
+          .alert => theme.alertDialogTheme,
+        };
 
-    final effectiveBackgroundColor =
-        backgroundColor ??
-        effectiveDialogTheme.backgroundColor ??
-        theme.colorScheme.background;
+        final effectiveBackgroundColor =
+            backgroundColor ??
+            effectiveDialogTheme.backgroundColor ??
+            theme.colorScheme.background;
 
-    final effectiveCloseIcon =
-        closeIcon ??
-        (closeIconData == null && effectiveDialogTheme.closeIconData == null
-            ? null
-            : ShadIconButton.ghost(
-                icon: Icon(
-                  size: 16,
-                  closeIconData ??
-                      effectiveDialogTheme.closeIconData ??
-                      LucideIcons.x,
-                ),
-                width: 20,
-                height: 20,
-                padding: EdgeInsets.zero,
-                foregroundColor: theme.colorScheme.foreground.withValues(
-                  alpha: .5,
-                ),
-                hoverBackgroundColor: const Color(0x00000000),
-                hoverForegroundColor: theme.colorScheme.foreground,
-                pressedForegroundColor: theme.colorScheme.foreground,
-                onPressed: () => Navigator.of(context).pop(),
-              ));
+        final effectiveCloseIcon =
+            closeIcon ??
+            (closeIconData == null && effectiveDialogTheme.closeIconData == null
+                ? null
+                : ShadIconButton.ghost(
+                    icon: Icon(
+                      size: 16,
+                      closeIconData ??
+                          effectiveDialogTheme.closeIconData ??
+                          LucideIcons.x,
+                    ),
+                    width: 20,
+                    height: 20,
+                    padding: EdgeInsets.zero,
+                    foregroundColor: theme.colorScheme.foreground.withValues(
+                      alpha: .5,
+                    ),
+                    hoverBackgroundColor: const Color(0x00000000),
+                    hoverForegroundColor: theme.colorScheme.foreground,
+                    pressedForegroundColor: theme.colorScheme.foreground,
+                    onPressed: () => Navigator.of(context).pop(),
+                  ));
 
-    final effectiveCloseIconPosition =
-        closeIconPosition ??
-        effectiveDialogTheme.closeIconPosition ??
-        ShadPosition.directional(
-          top: 8,
-          end: 8,
-          textDirection: Directionality.of(context),
-        );
-
-    final effectiveRadius =
-        radius ?? effectiveDialogTheme.radius ?? theme.radius;
-
-    final effectiveExpandActionsWhenTiny =
-        expandActionsWhenTiny ??
-        effectiveDialogTheme.expandActionsWhenTiny ??
-        true;
-
-    final effectiveConstraints =
-        constraints ??
-        effectiveDialogTheme.constraints ??
-        const BoxConstraints(maxWidth: 512);
-
-    final effectiveBorder =
-        border ??
-        effectiveDialogTheme.border ??
-        Border.all(color: theme.colorScheme.border);
-
-    final effectiveShadows =
-        shadows ?? effectiveDialogTheme.shadows ?? ShadShadows.lg;
-
-    final effectiveRemoveBorderRadiusWhenTiny =
-        removeBorderRadiusWhenTiny ??
-        effectiveDialogTheme.removeBorderRadiusWhenTiny ??
-        true;
-    final effectivePadding =
-        padding ?? effectiveDialogTheme.padding ?? const EdgeInsets.all(24);
-
-    final effectiveGap = gap ?? effectiveDialogTheme.gap ?? 8;
-
-    final effectiveTitleStyle =
-        (titleStyle ?? effectiveDialogTheme.titleStyle ?? theme.textTheme.large)
-            .fallback(color: theme.colorScheme.foreground);
-
-    final effectiveDescriptionStyle =
-        (descriptionStyle ??
-                effectiveDialogTheme.descriptionStyle ??
-                theme.textTheme.muted)
-            .fallback(
-              color: theme.colorScheme.mutedForeground,
+        final effectiveCloseIconPosition =
+            closeIconPosition ??
+            effectiveDialogTheme.closeIconPosition ??
+            ShadPosition.directional(
+              top: 8,
+              end: 8,
+              textDirection: Directionality.of(context),
             );
 
-    final effectiveAlignment =
-        alignment ?? effectiveDialogTheme.alignment ?? Alignment.center;
+        final effectiveExpandActionsWhenTiny =
+            expandActionsWhenTiny ??
+            effectiveDialogTheme.expandActionsWhenTiny ??
+            true;
 
-    final effectiveMainAxisAlignment =
-        mainAxisAlignment ??
-        effectiveDialogTheme.mainAxisAlignment ??
-        MainAxisAlignment.start;
+        final effectiveConstraints =
+            constraints ??
+            effectiveDialogTheme.constraints ??
+            const BoxConstraints(maxWidth: 512);
 
-    final effectiveCrossAxisAlignment =
-        crossAxisAlignment ??
-        effectiveDialogTheme.crossAxisAlignment ??
-        CrossAxisAlignment.start;
+        final requestedExtendBackground =
+            extendBackground ?? effectiveDialogTheme.extendBackground ?? false;
+        final parentIsBounded =
+            parentConstraints.hasBoundedWidth &&
+            parentConstraints.hasBoundedHeight;
+        final screenSize = MediaQuery.sizeOf(context);
+        final parentFillsViewport =
+            parentIsBounded &&
+            parentConstraints.biggest.width >= screenSize.width &&
+            parentConstraints.biggest.height >= screenSize.height;
+        bool fillsScreen(double dimension, double screenDimension) =>
+            dimension == double.infinity || dimension >= screenDimension;
+        final effectiveExtendBackground =
+            requestedExtendBackground &&
+            parentFillsViewport &&
+            effectiveConstraints.isTight &&
+            fillsScreen(effectiveConstraints.minWidth, screenSize.width) &&
+            fillsScreen(effectiveConstraints.minHeight, screenSize.height);
+        final effectiveRadius = effectiveExtendBackground
+            ? null
+            : radius ?? effectiveDialogTheme.radius ?? theme.radius;
 
-    final effectiveScrollable =
-        scrollable ?? effectiveDialogTheme.scrollable ?? true;
+        // extendBackground takes precedence over decoration values when it is
+        // active. Otherwise, widget-level values take precedence over theme
+        // values.
+        //
+        // extendBackground is only meaningful for a dialog whose constraints
+        // fill the viewport. A smaller dialog keeps the normal card appearance
+        // instead of painting the whole screen with its background color.
+        //
+        final effectiveBorder = effectiveExtendBackground
+            ? null
+            : border ??
+                  effectiveDialogTheme.border ??
+                  Border.all(color: theme.colorScheme.border);
 
-    final effectiveScrollPadding =
-        scrollPadding ?? effectiveDialogTheme.scrollPadding;
+        final effectiveShadows = effectiveExtendBackground
+            ? const <BoxShadow>[]
+            : shadows ?? effectiveDialogTheme.shadows ?? ShadShadows.lg;
 
-    final effectiveActionsGap =
-        actionsGap ?? effectiveDialogTheme.actionsGap ?? 8;
+        final effectiveRemoveBorderRadiusWhenTiny =
+            removeBorderRadiusWhenTiny ??
+            effectiveDialogTheme.removeBorderRadiusWhenTiny ??
+            true;
+        final effectivePadding =
+            padding ?? effectiveDialogTheme.padding ?? const EdgeInsets.all(24);
 
-    final effectiveUseSafeArea =
-        useSafeArea ?? effectiveDialogTheme.useSafeArea ?? true;
+        final effectiveGap = gap ?? effectiveDialogTheme.gap ?? 8;
 
-    final effectiveTitlePinned =
-        titlePinned ?? effectiveDialogTheme.titlePinned ?? false;
+        final effectiveTitleStyle =
+            (titleStyle ??
+                    effectiveDialogTheme.titleStyle ??
+                    theme.textTheme.large)
+                .fallback(color: theme.colorScheme.foreground);
 
-    final effectiveDescriptionPinned =
-        descriptionPinned ?? effectiveDialogTheme.descriptionPinned ?? false;
-
-    final effectiveActionsPinned =
-        actionsPinned ?? effectiveDialogTheme.actionsPinned ?? true;
-
-    final dialog = ConstrainedBox(
-      constraints: effectiveConstraints,
-      child: ShadResponsiveBuilder(
-        builder: (context, breakpoint) {
-          final sm = breakpoint >= theme.breakpoints.sm;
-
-          final effectiveActionsAxis =
-              actionsAxis ??
-              effectiveDialogTheme.actionsAxis ??
-              (sm ? Axis.horizontal : Axis.vertical);
-
-          final effectiveActionsMainAxisSize =
-              actionsMainAxisSize ??
-              effectiveDialogTheme.actionsMainAxisSize ??
-              MainAxisSize.min;
-
-          final effectiveActionsMainAxisAlignment =
-              actionsMainAxisAlignment ??
-              effectiveDialogTheme.actionsMainAxisAlignment ??
-              MainAxisAlignment.end;
-
-          final effectiveActionsVerticalDirection =
-              actionsVerticalDirection ??
-              effectiveDialogTheme.actionsVerticalDirection ??
-              (sm ? VerticalDirection.down : VerticalDirection.up);
-
-          final effectiveTitleTextAlign =
-              titleTextAlign ??
-              effectiveDialogTheme.titleTextAlign ??
-              (sm ? TextAlign.start : TextAlign.center);
-
-          final effectiveDescriptionTextAlign =
-              descriptionTextAlign ??
-              effectiveDialogTheme.descriptionTextAlign ??
-              (sm ? TextAlign.start : TextAlign.center);
-
-          Widget? effectiveActions = actions.isEmpty
-              ? null
-              : BoxyFlexible.align(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  child: Flex(
-                    direction: effectiveActionsAxis,
-                    mainAxisSize: effectiveActionsMainAxisSize,
-                    mainAxisAlignment: effectiveActionsMainAxisAlignment,
-                    verticalDirection: effectiveActionsVerticalDirection,
-                    spacing: effectiveActionsGap,
-                    children: actions,
-                  ),
+        final effectiveDescriptionStyle =
+            (descriptionStyle ??
+                    effectiveDialogTheme.descriptionStyle ??
+                    theme.textTheme.muted)
+                .fallback(
+                  color: theme.colorScheme.mutedForeground,
                 );
 
-          if (!sm &&
-              effectiveExpandActionsWhenTiny &&
-              effectiveActions != null) {
-            effectiveActions = ShadTheme(
-              data: theme.copyWith(
-                primaryButtonTheme: theme.primaryButtonTheme.copyWith(
-                  width: double.infinity,
-                ),
-                secondaryButtonTheme: theme.secondaryButtonTheme.copyWith(
-                  width: double.infinity,
-                ),
-                outlineButtonTheme: theme.outlineButtonTheme.copyWith(
-                  width: double.infinity,
-                ),
-                ghostButtonTheme: theme.ghostButtonTheme.copyWith(
-                  width: double.infinity,
-                ),
-                destructiveButtonTheme: theme.destructiveButtonTheme.copyWith(
-                  width: double.infinity,
-                ),
-              ),
-              child: effectiveActions,
-            );
-          }
+        final effectiveAlignment =
+            alignment ?? effectiveDialogTheme.alignment ?? Alignment.center;
 
-          final effectiveTitle = title != null
-              ? DefaultTextStyle(
-                  style: effectiveTitleStyle,
-                  textAlign: effectiveTitleTextAlign,
-                  child: title!,
-                )
-              : null;
+        final effectiveMainAxisAlignment =
+            mainAxisAlignment ??
+            effectiveDialogTheme.mainAxisAlignment ??
+            MainAxisAlignment.start;
 
-          final effectiveDescription = description != null
-              ? DefaultTextStyle(
-                  style: effectiveDescriptionStyle,
-                  textAlign: effectiveDescriptionTextAlign,
-                  child: description!,
-                )
-              : null;
+        final effectiveCrossAxisAlignment =
+            crossAxisAlignment ??
+            effectiveDialogTheme.crossAxisAlignment ??
+            CrossAxisAlignment.start;
 
-          final effectiveChild = child != null
-              ? DefaultTextStyle(
-                  style: effectiveDescriptionStyle,
-                  child: child!,
-                )
-              : null;
+        final effectiveScrollable =
+            scrollable ?? effectiveDialogTheme.scrollable ?? true;
 
-          Widget widget = BoxyColumn(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: effectiveMainAxisAlignment,
-            crossAxisAlignment: effectiveCrossAxisAlignment,
-            children: [
-              // Only show title if not scrollable or scrollable but not pinned
-              if (effectiveTitle != null &&
-                  (!effectiveScrollable || !effectiveTitlePinned))
-                effectiveTitle,
-              // Only show description if not scrollable or scrollable but not
-              // pinned
-              if (effectiveDescription != null &&
-                  (!effectiveScrollable || !effectiveDescriptionPinned))
-                effectiveDescription,
-              if (effectiveChild != null) Flexible(child: effectiveChild),
-              // Only show actions if not scrollable or scrollable but not
-              // pinned
-              if (effectiveActions != null &&
-                  (!effectiveScrollable || !effectiveActionsPinned))
-                effectiveActions,
-            ].separatedBy(SizedBox(height: effectiveGap)),
-          );
+        final effectiveScrollPadding =
+            scrollPadding ?? effectiveDialogTheme.scrollPadding;
 
-          if (effectiveScrollable) {
-            widget = BoxyColumn(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: effectiveMainAxisAlignment,
-              crossAxisAlignment: effectiveCrossAxisAlignment,
-              children: [
-                // Pinned title
-                if (effectiveTitle != null && effectiveTitlePinned)
-                  effectiveTitle,
-                // Pinned description
-                if (effectiveDescription != null && effectiveDescriptionPinned)
-                  effectiveDescription,
-                Flexible(
-                  child: SingleChildScrollView(
-                    padding: effectiveScrollPadding,
+        final effectiveActionsGap =
+            actionsGap ?? effectiveDialogTheme.actionsGap ?? 8;
+
+        final effectiveUseSafeArea =
+            useSafeArea ?? effectiveDialogTheme.useSafeArea ?? true;
+
+        final effectiveTitlePinned =
+            titlePinned ?? effectiveDialogTheme.titlePinned ?? false;
+
+        final effectiveDescriptionPinned =
+            descriptionPinned ??
+            effectiveDialogTheme.descriptionPinned ??
+            false;
+
+        final effectiveActionsPinned =
+            actionsPinned ?? effectiveDialogTheme.actionsPinned ?? true;
+
+        final dialog = ConstrainedBox(
+          constraints: effectiveConstraints,
+          child: ShadResponsiveBuilder(
+            builder: (context, breakpoint) {
+              final sm = breakpoint >= theme.breakpoints.sm;
+
+              final effectiveActionsAxis =
+                  actionsAxis ??
+                  effectiveDialogTheme.actionsAxis ??
+                  (sm ? Axis.horizontal : Axis.vertical);
+
+              final effectiveActionsMainAxisSize =
+                  actionsMainAxisSize ??
+                  effectiveDialogTheme.actionsMainAxisSize ??
+                  MainAxisSize.min;
+
+              final effectiveActionsMainAxisAlignment =
+                  actionsMainAxisAlignment ??
+                  effectiveDialogTheme.actionsMainAxisAlignment ??
+                  MainAxisAlignment.end;
+
+              final effectiveActionsVerticalDirection =
+                  actionsVerticalDirection ??
+                  effectiveDialogTheme.actionsVerticalDirection ??
+                  (sm ? VerticalDirection.down : VerticalDirection.up);
+
+              final effectiveTitleTextAlign =
+                  titleTextAlign ??
+                  effectiveDialogTheme.titleTextAlign ??
+                  (sm ? TextAlign.start : TextAlign.center);
+
+              final effectiveDescriptionTextAlign =
+                  descriptionTextAlign ??
+                  effectiveDialogTheme.descriptionTextAlign ??
+                  (sm ? TextAlign.start : TextAlign.center);
+
+              Widget? effectiveActions = actions.isEmpty
+                  ? null
+                  : BoxyFlexible.align(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      child: Flex(
+                        direction: effectiveActionsAxis,
+                        mainAxisSize: effectiveActionsMainAxisSize,
+                        mainAxisAlignment: effectiveActionsMainAxisAlignment,
+                        verticalDirection: effectiveActionsVerticalDirection,
+                        spacing: effectiveActionsGap,
+                        children: actions,
+                      ),
+                    );
+
+              if (!sm &&
+                  effectiveExpandActionsWhenTiny &&
+                  effectiveActions != null) {
+                effectiveActions = ShadTheme(
+                  data: theme.copyWith(
+                    primaryButtonTheme: theme.primaryButtonTheme.copyWith(
+                      width: double.infinity,
+                    ),
+                    secondaryButtonTheme: theme.secondaryButtonTheme.copyWith(
+                      width: double.infinity,
+                    ),
+                    outlineButtonTheme: theme.outlineButtonTheme.copyWith(
+                      width: double.infinity,
+                    ),
+                    ghostButtonTheme: theme.ghostButtonTheme.copyWith(
+                      width: double.infinity,
+                    ),
+                    destructiveButtonTheme: theme.destructiveButtonTheme
+                        .copyWith(
+                          width: double.infinity,
+                        ),
+                  ),
+                  child: effectiveActions,
+                );
+              }
+
+              final effectiveTitle = title != null
+                  ? DefaultTextStyle(
+                      style: effectiveTitleStyle,
+                      textAlign: effectiveTitleTextAlign,
+                      child: title!,
+                    )
+                  : null;
+
+              final effectiveDescription = description != null
+                  ? DefaultTextStyle(
+                      style: effectiveDescriptionStyle,
+                      textAlign: effectiveDescriptionTextAlign,
+                      child: description!,
+                    )
+                  : null;
+
+              final effectiveChild = child != null
+                  ? DefaultTextStyle(
+                      style: effectiveDescriptionStyle,
+                      child: child!,
+                    )
+                  : null;
+
+              Widget widget = BoxyColumn(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: effectiveMainAxisAlignment,
+                crossAxisAlignment: effectiveCrossAxisAlignment,
+                children: [
+                  // Only show title if not scrollable or scrollable but
+                  // not pinned
+                  if (effectiveTitle != null &&
+                      (!effectiveScrollable || !effectiveTitlePinned))
+                    effectiveTitle,
+                  // Only show description if not scrollable or scrollable
+                  // but not pinned
+                  if (effectiveDescription != null &&
+                      (!effectiveScrollable || !effectiveDescriptionPinned))
+                    effectiveDescription,
+                  if (effectiveChild != null) Flexible(child: effectiveChild),
+                  // Only show actions if not scrollable or scrollable but not
+                  // pinned
+                  if (effectiveActions != null &&
+                      (!effectiveScrollable || !effectiveActionsPinned))
+                    effectiveActions,
+                ].separatedBy(SizedBox(height: effectiveGap)),
+              );
+
+              if (effectiveScrollable) {
+                widget = BoxyColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: effectiveMainAxisAlignment,
+                  crossAxisAlignment: effectiveCrossAxisAlignment,
+                  children: [
+                    // Pinned title
+                    if (effectiveTitle != null && effectiveTitlePinned)
+                      effectiveTitle,
+                    // Pinned description
+                    if (effectiveDescription != null &&
+                        effectiveDescriptionPinned)
+                      effectiveDescription,
+                    Flexible(
+                      child: SingleChildScrollView(
+                        padding: effectiveScrollPadding,
+                        child: widget,
+                      ),
+                    ),
+                    // Pinned actions
+                    if (effectiveActions != null && effectiveActionsPinned)
+                      effectiveActions,
+                  ].separatedBy(SizedBox(height: effectiveGap)),
+                );
+              }
+
+              widget = Stack(
+                children: [
+                  Padding(
+                    padding: effectivePadding,
                     child: widget,
                   ),
+                  if (effectiveCloseIcon != null)
+                    effectiveCloseIcon.positionedWith(
+                      effectiveCloseIconPosition,
+                    ),
+                ],
+              );
+
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  // When extendBackground is true, the outer full-screen layer
+                  // (below) already paints effectiveBackgroundColor; painting
+                  // it here too would double it up, visibly darkening the
+                  // overlap for a translucent color.
+                  color: effectiveExtendBackground
+                      ? null
+                      : effectiveBackgroundColor,
+                  borderRadius: effectiveExtendBackground
+                      ? null
+                      : (!sm && effectiveRemoveBorderRadiusWhenTiny)
+                      ? null
+                      : effectiveRadius,
+                  border: effectiveBorder,
+                  boxShadow: effectiveShadows,
                 ),
-                // Pinned actions
-                if (effectiveActions != null && effectiveActionsPinned)
-                  effectiveActions,
-              ].separatedBy(SizedBox(height: effectiveGap)),
-            );
-          }
-
-          widget = Stack(
-            children: [
-              Padding(
-                padding: effectivePadding,
                 child: widget,
-              ),
-              if (effectiveCloseIcon != null)
-                effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),
-            ],
-          );
+              );
+            },
+          ),
+        );
 
-          return DecoratedBox(
-            decoration: BoxDecoration(
-              color: effectiveBackgroundColor,
-              borderRadius: (!sm && effectiveRemoveBorderRadiusWhenTiny)
-                  ? null
-                  : effectiveRadius,
-              border: effectiveBorder,
-              boxShadow: effectiveShadows,
-            ),
-            child: widget,
-          );
-        },
-      ),
+        // Keyboard insets, so the dialog shifts clear of the keyboard.
+        final effectiveViewInsets = MediaQuery.viewInsetsOf(context);
+
+        return _DialogViewport(
+          alignment: effectiveAlignment,
+          viewInsets: effectiveViewInsets,
+          useSafeArea: effectiveUseSafeArea,
+          requestedExtendBackground: requestedExtendBackground,
+          parentIsBounded: parentIsBounded,
+          extendBackground: effectiveExtendBackground,
+          backgroundColor: effectiveBackgroundColor,
+          child: dialog,
+        );
+      },
     );
+  }
+}
 
-    // Keyboard insets, so the dialog shifts clear of the keyboard.
-    final effectiveViewInsets = MediaQuery.viewInsetsOf(context);
+class _DialogViewport extends StatelessWidget {
+  const _DialogViewport({
+    required this.alignment,
+    required this.viewInsets,
+    required this.useSafeArea,
+    required this.requestedExtendBackground,
+    required this.parentIsBounded,
+    required this.extendBackground,
+    required this.backgroundColor,
+    required this.child,
+  });
 
+  final Alignment alignment;
+  final EdgeInsets viewInsets;
+  final bool useSafeArea;
+  final bool requestedExtendBackground;
+  final bool parentIsBounded;
+  final bool extendBackground;
+  final Color backgroundColor;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
     Widget result = Align(
-      alignment: effectiveAlignment,
+      alignment: alignment,
       child: Padding(
-        padding: effectiveViewInsets,
-        child: dialog,
+        padding: viewInsets,
+        child: child,
       ),
     );
 
-    if (effectiveUseSafeArea) {
+    if (useSafeArea) {
       result = SafeArea(child: result);
     }
 
-    return result;
+    if (!requestedExtendBackground || !parentIsBounded) {
+      return result;
+    }
+
+    // Only the system-inset strips need an explicit hit-test target: the
+    // full-screen dialog covers the rest of the viewport. Keeping the
+    // surrounding layer transparent lets the route handle any uncovered
+    // taps normally.
+    //
+    // Only when useSafeArea is true: SafeArea is what pushes dialog content
+    // clear of this region in the first place. With useSafeArea: false there
+    // is no such guarantee — real content may sit directly under the inset —
+    // so an absorber there would swallow taps meant for that content instead
+    // of the content itself.
+    final effectiveInsets = extendBackground && useSafeArea
+        ? MediaQuery.paddingOf(context)
+        : EdgeInsets.zero;
+
+    Widget insetStrip({
+      required Alignment alignment,
+      required double width,
+      required double height,
+    }) {
+      if (width <= 0 || height <= 0) return const SizedBox.shrink();
+      return Align(
+        alignment: alignment,
+        child: Listener(
+          behavior: HitTestBehavior.opaque,
+          child: SizedBox(width: width, height: height),
+        ),
+      );
+    }
+
+    return SizedBox.expand(
+      child: Stack(
+        children: [
+          // Keep the layer in a stable child position when the viewport
+          // changes, so the dialog subtree is not remounted.
+          Positioned.fill(
+            child: extendBackground
+                ? IgnorePointer(
+                    child: ColoredBox(color: backgroundColor),
+                  )
+                : const SizedBox.shrink(),
+          ),
+          Positioned.fill(child: result),
+          Positioned.fill(
+            child: extendBackground
+                ? Stack(
+                    children: [
+                      insetStrip(
+                        alignment: Alignment.topCenter,
+                        width: double.infinity,
+                        height: effectiveInsets.top,
+                      ),
+                      insetStrip(
+                        alignment: Alignment.bottomCenter,
+                        width: double.infinity,
+                        height: effectiveInsets.bottom,
+                      ),
+                      insetStrip(
+                        alignment: Alignment.centerLeft,
+                        width: effectiveInsets.left,
+                        height: double.infinity,
+                      ),
+                      insetStrip(
+                        alignment: Alignment.centerRight,
+                        width: effectiveInsets.right,
+                        height: double.infinity,
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ],
+      ),
+    );
   }
 }

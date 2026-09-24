@@ -1,3 +1,7 @@
+## 0.58.0
+
+- **FEAT**: Add `ShadDialog.extendBackground` (and matching `ShadDialogTheme.extendBackground`) to extend a full-screen dialog's background color behind the status bar, notch, and gesture bar instead of stopping at the safe-area boundary. Smaller dialogs keep their normal card appearance. When effective, `extendBackground` takes precedence over `border`, `shadows`, and border radius because those decorations do not make visual sense on edges that sit behind system UI (#702).
+
 ## 0.57.1
 
 - **FIX**: Form fields without an `id` could get the same generated id in large forms (the id came from a 20-bit hash), which seeded a field with another field's value, dropped entries from `ShadForm.value`, or threw a `TypeError` when the fields had different types. Generated ids are now unique, and explicit ids starting with `__shad_field_` are reserved for them (#707).
