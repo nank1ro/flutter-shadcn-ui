@@ -424,4 +424,18 @@ void main() {
       });
     });
   });
+
+  group('ShadForm - Internal Ids', () {
+    // Regression for #707: ids from UniqueKey().toString() had only 2^20
+    // possible values, so 2^20 + 1 of them must contain a duplicate.
+    test('generated ids are unique', () {
+      const n = (1 << 20) + 1;
+      final ids = <String>{
+        for (var i = 0; i < n; i++)
+          ShadFormBuilderFieldState<ShadFormBuilderField<String>, String>()
+              .internalId,
+      };
+      expect(ids.length, n);
+    });
+  });
 }

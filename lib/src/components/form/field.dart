@@ -161,9 +161,14 @@ class ShadFormBuilderField<T> extends FormField<T> {
 /// form.
 class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     extends FormFieldState<T> {
-  final String _internalId = UniqueKey().toString();
+  static int _nextInternalId = 0;
+  final String _internalId = '__shad_field_${_nextInternalId++}';
   FocusNode? _focusNode;
   ShadFormState? _parentForm;
+
+  /// The id used to register the field when [ShadFormBuilderField.id] is null.
+  @visibleForTesting
+  String get internalId => _internalId;
 
   /// The effective focus node, either provided or internally managed.
   FocusNode get focusNode => widget.focusNode ?? _focusNode!;
