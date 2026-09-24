@@ -77,9 +77,11 @@ jobs:
 
       - name: Commit and push generated files
         # This job never runs PR-controlled code, so the token is safe here.
+        env:
+          HEAD_REF: ${{ github.head_ref }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git apply --index "$RUNNER_TEMP/generated.patch"
           git commit -m "chore: regenerate build_runner output"
-          git push origin HEAD:${{ github.head_ref }}
+          git push origin "HEAD:$HEAD_REF"
