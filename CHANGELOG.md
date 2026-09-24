@@ -1,6 +1,6 @@
 ## 0.58.0
 
-- **FEAT**: Add `ShadDialog.extendBackground` (and matching `ShadDialogTheme.extendBackground`) to extend a dialog's background color behind the status bar, notch, and gesture bar instead of stopping at the safe-area boundary — useful for near-full-screen dialogs. `border`, `shadows`, and border radius are forced off while enabled, since a full-screen dialog's edges sit behind system UI; an explicit `border` still applies on top (#702).
+- **FEAT**: Add `ShadDialog.extendBackground` (and matching `ShadDialogTheme.extendBackground`) to extend a full-screen dialog's background color behind the status bar, notch, and gesture bar instead of stopping at the safe-area boundary. Smaller dialogs keep their normal card appearance. `border`, `shadows`, and border radius are forced off while enabled, since a full-screen dialog's edges sit behind system UI; an explicit `border` still applies on top (#702).
 
 ## 0.57.1
 
