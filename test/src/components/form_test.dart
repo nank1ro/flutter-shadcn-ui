@@ -437,5 +437,15 @@ void main() {
       };
       expect(ids.length, n);
     });
+
+    test('explicit ids cannot use the generated id prefix', () {
+      expect(
+        () => ShadFormBuilderField<String>(
+          id: '__shad_field_0',
+          builder: (_) => const SizedBox.shrink(),
+        ),
+        throwsAssertionError,
+      );
+    });
   });
 }

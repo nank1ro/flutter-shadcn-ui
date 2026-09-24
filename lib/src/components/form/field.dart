@@ -17,6 +17,8 @@ typedef ToValueTransformer<T> = dynamic Function(T value);
 /// Used to convert values before populating the form field.
 typedef FromValueTransformer<T> = T Function(dynamic value);
 
+const _internalIdPrefix = '__shad_field_';
+
 /// A customizable form field widget with built-in decoration and state
 /// management.
 ///
@@ -49,7 +51,11 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.onReset,
     this.decorationBuilder,
     super.forceErrorText,
-  }) : super(
+  }) : assert(
+         id == null || !id.startsWith(_internalIdPrefix),
+         'Field ids starting with "$_internalIdPrefix" are reserved.',
+       ),
+       super(
          builder: (state) {
            state as ShadFormBuilderFieldState<ShadFormBuilderField<T>, T>;
            final hasError = state.hasError;
@@ -162,7 +168,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
 class ShadFormBuilderFieldState<F extends ShadFormBuilderField<T>, T>
     extends FormFieldState<T> {
   static int _nextInternalId = 0;
-  final String _internalId = '__shad_field_${_nextInternalId++}';
+  final String _internalId = '$_internalIdPrefix${_nextInternalId++}';
   FocusNode? _focusNode;
   ShadFormState? _parentForm;
 
