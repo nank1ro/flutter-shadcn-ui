@@ -115,4 +115,3 @@ extension on ShadLocalizationsDataAf {
 		};
 	}
 }
-// stale on purpose: build_runner should remove this line
