@@ -828,8 +828,7 @@ void main() {
     );
 
     testWidgets(
-      'extendBackground: true with custom border uses the custom border '
-      'on the card',
+      'extendBackground: true ignores a custom border on the card',
       (tester) async {
         const customBorder = Border.fromBorderSide(
           BorderSide(width: 3, color: Colors.red),
@@ -854,8 +853,8 @@ void main() {
         final decoration =
             innerCardDecoratedBox(tester).decoration as BoxDecoration;
 
-        // An explicit widget-level border still wins over extendBackground.
-        expect(decoration.border, equals(customBorder));
+        // extendBackground consistently wins over explicit decoration values.
+        expect(decoration.border, isNull);
       },
     );
 
@@ -884,16 +883,40 @@ void main() {
         final decoration =
             innerCardDecoratedBox(tester).decoration as BoxDecoration;
 
-        // Unlike border, extendBackground always wins over an explicit
-        // shadows value — see the dialog.dart comment above
-        // effectiveShadows for why.
+        // extendBackground consistently wins over explicit decoration values.
         expect(decoration.boxShadow, isEmpty);
       },
     );
 
     testWidgets(
-      'extendBackground: true beats a theme-level border (widget-level '
-      'border would still win, but theme-level does not)',
+      'extendBackground: true ignores a custom radius on the card',
+      (tester) async {
+        const customRadius = BorderRadius.all(Radius.circular(32));
+
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: fullScreenConstraints,
+                radius: customRadius,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final decoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+        expect(decoration.borderRadius, isNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true beats theme-level decoration values',
       (tester) async {
         const themeBorder = Border.fromBorderSide(
           BorderSide(width: 3, color: Colors.red),
@@ -922,9 +945,8 @@ void main() {
         final decoration =
             innerCardDecoratedBox(tester).decoration as BoxDecoration;
 
-        // extendBackground is checked before falling back to the theme
-        // border, so the theme border never renders here — only an
-        // explicit widget-level border would win over extendBackground.
+        // extendBackground wins over the theme border and any widget-level
+        // decoration values when the flag is effective.
         expect(decoration.border, isNull);
       },
     );

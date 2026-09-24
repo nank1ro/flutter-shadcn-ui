@@ -13,7 +13,8 @@ A modal dialog that interrupts the user.
 Set `extendBackground: true` only on a dialog whose `constraints` fill the
 screen. This extends the dialog background behind the status bar, notch, and
 gesture bar. Smaller centered dialogs ignore this option and keep their normal
-card background, border, shadow, and radius.
+card background, border, shadow, and radius. For a full-screen dialog, the
+option takes precedence over explicit border, shadow, and radius values.
 
 ```dart
 ShadDialog(

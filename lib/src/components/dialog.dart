@@ -551,11 +551,10 @@ class ShadDialog extends StatelessWidget {
   /// full-screen dialogs that touch screen edges. For a smaller dialog, the
   /// option is ignored and the normal card appearance is kept.
   ///
-  /// Intended for full-screen dialogs: while true, the default border is
-  /// suppressed, but an explicit [border] passed to this widget still
-  /// applies on top. [shadows] and the border radius are always forced
-  /// off regardless of [shadows] or [radius] — a shadow or rounded corner
-  /// never makes visual sense on edges that sit behind system UI.
+  /// Intended for full-screen dialogs: when effective, [extendBackground]
+  /// takes precedence over widget- and theme-level [border], [shadows], and
+  /// [radius] values. They are all suppressed because those decorations do
+  /// not make visual sense on edges that sit behind system UI.
   ///
   /// Defaults to false if not specified.
   /// {@endtemplate}
@@ -629,9 +628,6 @@ class ShadDialog extends StatelessWidget {
               textDirection: Directionality.of(context),
             );
 
-        final effectiveRadius =
-            radius ?? effectiveDialogTheme.radius ?? theme.radius;
-
         final effectiveExpandActionsWhenTiny =
             expandActionsWhenTiny ??
             effectiveDialogTheme.expandActionsWhenTiny ??
@@ -658,28 +654,24 @@ class ShadDialog extends StatelessWidget {
             effectiveConstraints.isTight &&
             fillsScreen(effectiveConstraints.minWidth, screenSize.width) &&
             fillsScreen(effectiveConstraints.minHeight, screenSize.height);
+        final effectiveRadius = effectiveExtendBackground
+            ? null
+            : radius ?? effectiveDialogTheme.radius ?? theme.radius;
 
+        // extendBackground takes precedence over decoration values when it is
+        // active. Otherwise, widget-level values take precedence over theme
+        // values.
+        //
         // extendBackground is only meaningful for a dialog whose constraints
         // fill the viewport. A smaller dialog keeps the normal card appearance
         // instead of painting the whole screen with its background color.
         //
-        // Computed before effectiveBorder/effectiveShadows: a full-screen
-        // dialog shouldn't draw a border or drop shadow at its edges, since
-        // those edges sit behind system UI, not against visible app content.
-        //
-        // border: an explicit widget-level value still wins (someone may want
-        // a border on a full-screen dialog); extendBackground only overrides
-        // the theme-level default.
-        final effectiveBorder =
-            border ??
-            (effectiveExtendBackground
-                ? null
-                : effectiveDialogTheme.border ??
-                      Border.all(color: theme.colorScheme.border));
+        final effectiveBorder = effectiveExtendBackground
+            ? null
+            : border ??
+                  effectiveDialogTheme.border ??
+                  Border.all(color: theme.colorScheme.border);
 
-        // shadows: extendBackground always wins, even over an explicit
-        // widget-level value — a shadow painted behind system UI never makes
-        // visual sense, unlike a border.
         final effectiveShadows = effectiveExtendBackground
             ? const <BoxShadow>[]
             : shadows ?? effectiveDialogTheme.shadows ?? ShadShadows.lg;
