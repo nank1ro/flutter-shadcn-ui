@@ -51,11 +51,7 @@ class ShadFormBuilderField<T> extends FormField<T> {
     this.onReset,
     this.decorationBuilder,
     super.forceErrorText,
-  }) : assert(
-         id == null || !id.startsWith(_internalIdPrefix),
-         'Field ids starting with "$_internalIdPrefix" are reserved.',
-       ),
-       super(
+  }) : super(
          builder: (state) {
            state as ShadFormBuilderFieldState<ShadFormBuilderField<T>, T>;
            final hasError = state.hasError;
@@ -73,7 +69,16 @@ class ShadFormBuilderField<T> extends FormField<T> {
            );
          },
          onReset: onReset,
-       );
+       ) {
+    final effectiveId = id;
+    if (effectiveId != null && effectiveId.startsWith(_internalIdPrefix)) {
+      throw ArgumentError.value(
+        effectiveId,
+        'id',
+        'Ids starting with "$_internalIdPrefix" are reserved',
+      );
+    }
+  }
 
   /// {@template ShadFormBuilderField.id}
   /// An optional identifier used to reference the field within a [ShadForm].

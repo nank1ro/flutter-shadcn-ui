@@ -444,7 +444,23 @@ void main() {
           id: '__shad_field_0',
           builder: (_) => const SizedBox.shrink(),
         ),
-        throwsAssertionError,
+        throwsArgumentError,
+      );
+    });
+
+    test('non-reserved explicit ids and no id do not throw', () {
+      expect(
+        () => ShadFormBuilderField<String>(
+          id: 'shad_field_0',
+          builder: (_) => const SizedBox.shrink(),
+        ),
+        returnsNormally,
+      );
+      expect(
+        () => ShadFormBuilderField<String>(
+          builder: (_) => const SizedBox.shrink(),
+        ),
+        returnsNormally,
       );
     });
   });
