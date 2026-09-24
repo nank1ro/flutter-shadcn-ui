@@ -8,6 +8,8 @@ import 'package:shadcn_ui/src/utils/position.dart';
 import 'package:shadcn_ui/src/utils/responsive.dart';
 
 void main() {
+  const fullScreenConstraints = BoxConstraints.expand();
+
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
     return ShadApp(home: Scaffold(body: child));
@@ -319,6 +321,7 @@ void main() {
             home: Scaffold(
               body: ShadDialog(
                 extendBackground: true,
+                constraints: fullScreenConstraints,
                 title: Text('Title'),
                 description: Text('Description'),
                 child: Text('Child'),
@@ -345,11 +348,13 @@ void main() {
               matching: find.byType(ColoredBox),
             )
             .first;
-        expect(
-          find.ancestor(of: outerBoxFinder, matching: find.byType(SizedBox)),
-          findsWidgets,
-          reason: 'the colored box should expand to fill the screen',
-        );
+        final outerRect = tester.getRect(outerBoxFinder);
+        final screenSize =
+            tester.view.physicalSize / tester.view.devicePixelRatio;
+        expect(outerRect.left, closeTo(0, 0.5));
+        expect(outerRect.top, closeTo(0, 0.5));
+        expect(outerRect.width, closeTo(screenSize.width, 0.5));
+        expect(outerRect.height, closeTo(screenSize.height, 0.5));
       },
     );
 
@@ -361,6 +366,7 @@ void main() {
             home: Scaffold(
               body: ShadDialog(
                 extendBackground: true,
+                constraints: fullScreenConstraints,
                 title: Text('Title'),
                 description: Text('Description'),
                 child: Text('Child'),
@@ -383,13 +389,107 @@ void main() {
     );
 
     testWidgets(
-      'extendBackground: true absorbs a tap inside the system-inset strip '
-      'instead of letting it fall through to the barrier (#702)',
+      'extendBackground: true is ignored for a constrained dialog',
       (tester) async {
-        // devicePixelRatio: 1.0 so the FakeViewPadding value below (in
-        // physical pixels) maps 1:1 to the logical pixels MediaQuery
-        // exposes — otherwise the default ratio of 3.0 would divide it
-        // down to a third of the intended inset.
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: BoxConstraints(maxWidth: 200),
+                alignment: Alignment.center,
+                title: Text('Title'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // A small dialog must keep its card appearance and must not paint
+        // its background across the whole screen.
+        expect(
+          find.descendant(
+            of: find.byType(SizedBox),
+            matching: find.byType(ColoredBox),
+          ),
+          findsNothing,
+        );
+        final decoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+        expect(decoration.color, isNotNull);
+        expect(decoration.border, isNotNull);
+        expect(decoration.boxShadow, isNotEmpty);
+        expect(decoration.borderRadius, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true accepts tight viewport constraints',
+      (tester) async {
+        final screenSize =
+            tester.view.physicalSize / tester.view.devicePixelRatio;
+        await tester.pumpWidget(
+          ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: BoxConstraints.tight(screenSize),
+                title: const Text('Title'),
+                child: const Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(outerColoredBox(tester).color, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true is ignored inside a smaller parent',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: Center(
+                child: SizedBox(
+                  width: 300,
+                  height: 300,
+                  child: ShadDialog(
+                    extendBackground: true,
+                    constraints: BoxConstraints.expand(),
+                    title: Text('Title'),
+                    child: Text('Child'),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(
+          find.descendant(
+            of: find.byType(SizedBox),
+            matching: find.byType(ColoredBox),
+          ),
+          findsNothing,
+        );
+        final decoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+        expect(decoration.color, isNotNull);
+        expect(decoration.border, isNotNull);
+        expect(decoration.boxShadow, isNotEmpty);
+        expect(decoration.borderRadius, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true absorbs a tap inside the system-inset strip '
+      'for a full-screen dialog',
+      (tester) async {
         tester.view.devicePixelRatio = 1.0;
         addTearDown(tester.view.resetDevicePixelRatio);
         tester.view.padding = const FakeViewPadding(top: 40);
@@ -407,7 +507,7 @@ void main() {
                           context: context,
                           builder: (context) => const ShadDialog(
                             extendBackground: true,
-                            constraints: BoxConstraints(maxWidth: 200),
+                            constraints: fullScreenConstraints,
                             alignment: Alignment.center,
                             title: Text('Title'),
                             child: Text('Child'),
@@ -427,9 +527,6 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(ShadDialog), findsOneWidget);
 
-        // The status-bar strip (top: 40) now visually looks like part of
-        // the dialog (the background paints through it), so a tap there
-        // must be claimed instead of reaching the ModalBarrier beneath.
         final screenSize =
             tester.view.physicalSize / tester.view.devicePixelRatio;
         await tester.tapAt(Offset(screenSize.width / 2, 5));
@@ -440,16 +537,14 @@ void main() {
           findsOneWidget,
           reason:
               'a tap inside the system-inset strip must not dismiss '
-              'the dialog',
+              'the full-screen dialog',
         );
       },
     );
 
     testWidgets(
-      'extendBackground: true still lets barrierDismissible dismiss a '
-      'constrained dialog by tapping outside the card and outside the '
-      'system-inset strips (#702: the opaque area must not cover the '
-      'whole screen)',
+      'a constrained extendBackground dialog still lets barrierDismissible '
+      'dismiss by tapping outside the card',
       (tester) async {
         tester.view.devicePixelRatio = 1.0;
         addTearDown(tester.view.resetDevicePixelRatio);
@@ -488,13 +583,8 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(ShadDialog), findsOneWidget);
 
-        // Tap at the bottom of the screen — clear of the centered card and
-        // clear of the top inset strip (no bottom inset is set here) —
-        // this is barrier territory and must still dismiss the dialog.
-        // Before the fix, the outer DecoratedBox painting
-        // effectiveBackgroundColor hit-tested its entire bounds by
-        // default (BoxDecoration.hitTest), silently reclaiming the whole
-        // screen regardless of any explicit opaque strip.
+        // The option is ignored for this constrained dialog, so this area
+        // remains barrier territory and must dismiss the dialog.
         final screenSize =
             tester.view.physicalSize / tester.view.devicePixelRatio;
         await tester.tapAt(Offset(screenSize.width / 2, screenSize.height - 5));
@@ -518,6 +608,7 @@ void main() {
             home: Scaffold(
               body: ShadDialog(
                 extendBackground: true,
+                constraints: fullScreenConstraints,
                 title: Text('Title'),
                 description: Text('Description'),
                 child: Text('Child'),
@@ -572,6 +663,7 @@ void main() {
             ),
             home: const Scaffold(
               body: ShadDialog(
+                constraints: fullScreenConstraints,
                 title: Text('Title'),
                 description: Text('Description'),
                 child: Text('Child'),
@@ -597,6 +689,7 @@ void main() {
             home: Scaffold(
               body: ShadDialog(
                 extendBackground: true,
+                constraints: fullScreenConstraints,
                 title: Text('Title'),
                 description: Text('Description'),
                 child: Text('Child'),
@@ -647,6 +740,7 @@ void main() {
             home: Scaffold(
               body: ShadDialog(
                 extendBackground: true,
+                constraints: fullScreenConstraints,
                 useSafeArea: false,
                 title: Text('Title'),
                 description: Text('Description'),
@@ -678,6 +772,7 @@ void main() {
             home: Scaffold(
               body: ShadDialog(
                 extendBackground: true,
+                constraints: fullScreenConstraints,
                 useSafeArea: false,
                 alignment: Alignment.topCenter,
                 padding: EdgeInsets.zero,
@@ -717,6 +812,7 @@ void main() {
             home: Scaffold(
               body: ShadDialog(
                 extendBackground: true,
+                constraints: fullScreenConstraints,
                 useSafeArea: true,
                 title: Text('Title'),
                 description: Text('Description'),
@@ -744,6 +840,7 @@ void main() {
             home: Scaffold(
               body: ShadDialog(
                 extendBackground: true,
+                constraints: fullScreenConstraints,
                 border: customBorder,
                 title: Text('Title'),
                 description: Text('Description'),
@@ -773,6 +870,7 @@ void main() {
             home: Scaffold(
               body: ShadDialog(
                 extendBackground: true,
+                constraints: fullScreenConstraints,
                 shadows: customShadows,
                 title: Text('Title'),
                 description: Text('Description'),
@@ -811,6 +909,7 @@ void main() {
             ),
             home: const Scaffold(
               body: ShadDialog(
+                constraints: fullScreenConstraints,
                 title: Text('Title'),
                 description: Text('Description'),
                 child: Text('Child'),
@@ -885,6 +984,7 @@ void main() {
               home: Scaffold(
                 body: ShadDialog(
                   extendBackground: true,
+                  constraints: fullScreenConstraints,
                   title: Text('Title'),
                   description: Text('Description'),
                   child: Text('Child'),
@@ -932,6 +1032,7 @@ void main() {
               resizeToAvoidBottomInset: false,
               body: ShadDialog(
                 extendBackground: true,
+                constraints: fullScreenConstraints,
                 title: const Text('Title'),
                 child: _InitStateCountingTextField(
                   focusNode: focusNode,
