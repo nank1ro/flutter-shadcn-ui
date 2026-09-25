@@ -8,6 +8,13 @@
       "type": "dart"
     },
     {
+      "name": "Example (Profile)",
+      "cwd": "example",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
       "name": "Playground",
       "cwd": "playground",
       "request": "launch",

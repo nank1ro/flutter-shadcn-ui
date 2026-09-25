@@ -202,6 +202,7 @@ mixin _$ShadThemeData {
         b.defaultKeyboardToolbarTheme,
         t,
       )!,
+      sidebarTheme: t < 0.5 ? a.sidebarTheme : b.sidebarTheme,
     );
   }
 
@@ -260,6 +261,7 @@ mixin _$ShadThemeData {
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
     ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
+    ShadSidebarTheme? sidebarTheme,
   }) {
     final _this = (this as ShadThemeData);
 
@@ -324,6 +326,7 @@ mixin _$ShadThemeData {
       textareaTheme: textareaTheme ?? _this.textareaTheme,
       defaultKeyboardToolbarTheme:
           defaultKeyboardToolbarTheme ?? _this.defaultKeyboardToolbarTheme,
+      sidebarTheme: sidebarTheme ?? _this.sidebarTheme,
     );
   }
 
@@ -413,6 +416,7 @@ mixin _$ShadThemeData {
       defaultKeyboardToolbarTheme: _this.defaultKeyboardToolbarTheme.merge(
         other.defaultKeyboardToolbarTheme,
       ),
+      sidebarTheme: _this.sidebarTheme.merge(other.sidebarTheme),
     );
   }
 
@@ -482,7 +486,9 @@ mixin _$ShadThemeData {
         _other.separatorTheme == _this.separatorTheme &&
         _other.sonnerTheme == _this.sonnerTheme &&
         _other.textareaTheme == _this.textareaTheme &&
-        _other.defaultKeyboardToolbarTheme == _this.defaultKeyboardToolbarTheme;
+        _other.defaultKeyboardToolbarTheme ==
+            _this.defaultKeyboardToolbarTheme &&
+        _other.sidebarTheme == _this.sidebarTheme;
   }
 
   @override
@@ -545,6 +551,7 @@ mixin _$ShadThemeData {
       _this.sonnerTheme,
       _this.textareaTheme,
       _this.defaultKeyboardToolbarTheme,
+      _this.sidebarTheme,
     ]);
   }
 }
