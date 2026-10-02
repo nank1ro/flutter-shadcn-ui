@@ -1,3 +1,7 @@
+## 0.58.0
+
+- **FEAT**: Add `ShadCalendarController` for programmatic selection and month navigation in calendars, date pickers, and date picker form fields (#382).
+
 ## 0.57.1
 
 - **FIX**: Form fields without an `id` could get the same generated id in large forms (the id came from a 20-bit hash), which seeded a field with another field's value, dropped entries from `ShadForm.value`, or threw a `TypeError` when the fields had different types. Generated ids are now unique, and explicit ids starting with `__shad_field_` are reserved for them (#707).
