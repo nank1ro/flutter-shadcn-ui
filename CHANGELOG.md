@@ -4,6 +4,7 @@
 
 ## 0.58.0
 
+- **FIX**: Localizations are compiled into the main web bundle instead of deferred locale chunks, preventing stale tabs from requesting missing chunks after a deployment. The bundle grows by about 18 KB gzipped.
 - **FEAT**: Add `ShadToggle` and `ShadToggleGroup` components (#723).
 
 ## 0.57.4
