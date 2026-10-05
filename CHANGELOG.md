@@ -1,3 +1,7 @@
+## 0.57.2
+
+- **FIX**: The localizations are no longer deferred libraries. Each of the 81 non-English locales was its own `.part.js` on the web, and apps kept them even if they never load a shadcn locale: slang's `loadLocale` calls `build()` on any `BaseAppLocale`, so `ShadLocale.build` stays reachable in an app that also uses slang. A tab opened before a deploy then fetches the next build's chunk and throws a `DeferredLoadException`. Compiled in, all locales add about 18 KB gzipped. The `build`/`buildSync` API is unchanged.
+
 ## 0.57.1
 
 - **FIX**: Form fields without an `id` could get the same generated id in large forms (the id came from a 20-bit hash), which seeded a field with another field's value, dropped entries from `ShadForm.value`, or threw a `TypeError` when the fields had different types. Generated ids are now unique, and explicit ids starting with `__shad_field_` are reserved for them (#707).
