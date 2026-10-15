@@ -329,6 +329,10 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
       tabBar = Padding(padding: effectivePadding, child: tabBar);
     }
 
+    // Decorate before aligning, otherwise the decoration fills the whole
+    // Align instead of respecting tabBarConstraints (#695).
+    tabBar = ShadDecorator(decoration: effectiveDecoration, child: tabBar);
+
     final effectiveTabBarAlignment =
         widget.tabBarAlignment ?? tabsTheme.tabBarAlignment;
     if (effectiveTabBarAlignment != null) {
@@ -343,10 +347,7 @@ class ShadTabsState<T> extends State<ShadTabs<T>> with RestorationMixin {
         builder: (context, _) {
           return Column(
             children: [
-              ShadDecorator(
-                decoration: effectiveDecoration,
-                child: tabBar,
-              ),
+              tabBar,
               SizedBox(height: effectiveGap),
               ...List<Widget>.generate(widget.tabs.length, (int index) {
                 final tab = widget.tabs[index];
