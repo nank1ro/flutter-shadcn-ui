@@ -162,31 +162,34 @@ void main() {
 
     testWidgets('exposes the toggled state to semantics', (tester) async {
       final handle = tester.ensureSemantics();
-      await tester.pumpWidget(
-        createTestWidget(
-          ShadToggle(
-            value: true,
-            onChanged: (_) {},
-            child: const Text('Bold'),
+      try {
+        await tester.pumpWidget(
+          createTestWidget(
+            ShadToggle(
+              value: true,
+              onChanged: (_) {},
+              child: const Text('Bold'),
+            ),
           ),
-        ),
-      );
+        );
 
-      expect(
-        tester.getSemantics(find.byType(ShadToggle)),
-        matchesSemantics(
-          label: 'Bold',
-          isButton: true,
-          hasToggledState: true,
-          isToggled: true,
-          hasEnabledState: true,
-          isEnabled: true,
-          isFocusable: true,
-          hasTapAction: true,
-          hasFocusAction: true,
-        ),
-      );
-      handle.dispose();
+        expect(
+          tester.getSemantics(find.byType(ShadToggle)),
+          matchesSemantics(
+            label: 'Bold',
+            isButton: true,
+            hasToggledState: true,
+            isToggled: true,
+            hasEnabledState: true,
+            isEnabled: true,
+            isFocusable: true,
+            hasTapAction: true,
+            hasFocusAction: true,
+          ),
+        );
+      } finally {
+        handle.dispose();
+      }
     });
 
     testWidgets('matches goldens', (tester) async {

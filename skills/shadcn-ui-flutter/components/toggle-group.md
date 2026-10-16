@@ -42,7 +42,7 @@ ShadToggleGroup<String>.multiple(
 
 ## Single
 
-At most one item can be pressed. Set `allowDeselection: false` to always keep one item pressed.
+At most one item can be pressed. Set `allowDeselection: false` so the pressed item can't be turned off, and pass an `initialValue` to keep one item pressed from the start.
 
 
 
