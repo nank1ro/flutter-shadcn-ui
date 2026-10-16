@@ -75,8 +75,8 @@ npx skills add nank1ro/flutter-shadcn-ui
 - [x] [TextArea](https://mariuti.com/flutter-shadcn-ui/components/text-area/)
 - [x] [Time Picker](https://mariuti.com/flutter-shadcn-ui/components/time-picker/)
 - [x] [Toast](https://mariuti.com/flutter-shadcn-ui/components/toast/)
-- [ ] Toggle
-- [ ] ToggleGroup
+- [x] [Toggle](https://mariuti.com/flutter-shadcn-ui/components/toggle/)
+- [x] [ToggleGroup](https://mariuti.com/flutter-shadcn-ui/components/toggle-group/)
 - [x] [Tooltip](https://mariuti.com/flutter-shadcn-ui/components/tooltip/)
 
 ## FAQs

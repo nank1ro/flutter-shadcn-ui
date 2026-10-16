@@ -39,6 +39,8 @@ import 'package:shadcn_ui/src/theme/components/tabs.dart';
 import 'package:shadcn_ui/src/theme/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
+import 'package:shadcn_ui/src/theme/components/toggle.dart';
+import 'package:shadcn_ui/src/theme/components/toggle_group.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/text_styles_default.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
@@ -1132,6 +1134,76 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       showDoneButton: true,
       showNextButton: true,
       showPreviousButton: true,
+    );
+  }
+
+  @override
+  ShadToggleTheme primaryToggleTheme() {
+    return ShadToggleTheme(
+      hoverBackgroundColor: colorScheme.muted,
+      selectedBackgroundColor: colorScheme.accent,
+      selectedHoverBackgroundColor: colorScheme.accent,
+      foregroundColor: colorScheme.foreground,
+      hoverForegroundColor: colorScheme.mutedForeground,
+      selectedForegroundColor: colorScheme.accentForeground,
+      selectedHoverForegroundColor: colorScheme.accentForeground,
+      decoration: ShadDecoration(
+        border: ShadBorder.all(
+          radius: radius,
+          width: 0,
+          padding: const EdgeInsets.all(2),
+        ),
+      ),
+      gap: 8,
+    );
+  }
+
+  @override
+  ShadToggleTheme outlineToggleTheme() {
+    return ShadToggleTheme(
+      hoverBackgroundColor: colorScheme.accent,
+      selectedBackgroundColor: colorScheme.accent,
+      selectedHoverBackgroundColor: colorScheme.accent,
+      foregroundColor: colorScheme.foreground,
+      hoverForegroundColor: colorScheme.accentForeground,
+      selectedForegroundColor: colorScheme.accentForeground,
+      selectedHoverForegroundColor: colorScheme.accentForeground,
+      decoration: ShadDecoration(
+        border: ShadBorder.all(
+          radius: radius,
+          color: colorScheme.input,
+          padding: const EdgeInsets.all(1),
+          width: 1,
+        ),
+      ),
+      gap: 8,
+    );
+  }
+
+  @override
+  ShadButtonSizesTheme toggleSizesTheme() {
+    return const ShadButtonSizesTheme(
+      regular: ShadButtonSizeTheme(
+        height: 36,
+        padding: EdgeInsets.symmetric(horizontal: 8),
+      ),
+      sm: ShadButtonSizeTheme(
+        height: 32,
+        padding: EdgeInsets.symmetric(horizontal: 6),
+      ),
+      lg: ShadButtonSizeTheme(
+        height: 40,
+        padding: EdgeInsets.symmetric(horizontal: 10),
+      ),
+    );
+  }
+
+  @override
+  ShadToggleGroupTheme toggleGroupTheme() {
+    return const ShadToggleGroupTheme(
+      axis: Axis.horizontal,
+      spacing: 0,
+      itemPadding: EdgeInsets.symmetric(horizontal: 12),
     );
   }
 }
