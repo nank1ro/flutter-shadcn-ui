@@ -17,6 +17,7 @@ import 'package:shadcn_ui/src/theme/components/default_keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
+import 'package:shadcn_ui/src/theme/components/item.dart';
 import 'package:shadcn_ui/src/theme/components/menubar.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
@@ -96,6 +97,9 @@ abstract class ShadBaseTheme {
     required this.sonnerTheme,
     required this.textareaTheme,
     required this.defaultKeyboardToolbarTheme,
+    required this.primaryItemTheme,
+    required this.outlineItemTheme,
+    required this.mutedItemTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -152,6 +156,9 @@ abstract class ShadBaseTheme {
   final ShadSonnerTheme sonnerTheme;
   final ShadTextareaTheme textareaTheme;
   final ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme;
+  final ShadItemTheme primaryItemTheme;
+  final ShadItemTheme outlineItemTheme;
+  final ShadItemTheme mutedItemTheme;
 }
 
 @immutable
@@ -204,4 +211,7 @@ abstract class ShadThemeVariant {
   ShadSonnerTheme sonnerTheme();
   ShadTextareaTheme textareaTheme();
   ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme();
+  ShadItemTheme primaryItemTheme();
+  ShadItemTheme outlineItemTheme();
+  ShadItemTheme mutedItemTheme();
 }
