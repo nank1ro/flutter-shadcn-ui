@@ -67,6 +67,8 @@ export 'src/components/tabs.dart';
 export 'src/components/textarea.dart';
 export 'src/components/time_picker.dart';
 export 'src/components/toast.dart';
+export 'src/components/toggle.dart';
+export 'src/components/toggle_group.dart';
 export 'src/components/tooltip.dart';
 // Localizations
 export 'src/i18n/localizations_delegate.dart';
@@ -125,6 +127,8 @@ export 'src/theme/components/tabs.dart';
 export 'src/theme/components/textarea.dart';
 export 'src/theme/components/time_picker.dart';
 export 'src/theme/components/toast.dart';
+export 'src/theme/components/toggle.dart';
+export 'src/theme/components/toggle_group.dart';
 export 'src/theme/components/tooltip.dart';
 export 'src/theme/data.dart';
 export 'src/theme/text_theme/text_styles_default.dart';

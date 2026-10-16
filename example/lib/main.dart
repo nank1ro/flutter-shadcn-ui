@@ -43,6 +43,8 @@ import 'package:example/pages/textarea_form_field.dart';
 import 'package:example/pages/time_picker.dart';
 import 'package:example/pages/time_picker_form_field.dart';
 import 'package:example/pages/toast.dart';
+import 'package:example/pages/toggle.dart';
+import 'package:example/pages/toggle_group.dart';
 import 'package:example/pages/tooltip.dart';
 import 'package:example/pages/typography.dart';
 import 'package:flutter/material.dart';
@@ -98,6 +100,8 @@ final routes = <String, WidgetBuilder>{
   '/time-picker': (_) => const TimePickerPage(),
   '/time-picker-form-field': (_) => const TimePickerFormFieldPage(),
   '/toast': (_) => const ToastPage(),
+  '/toggle': (_) => const TogglePage(),
+  '/toggle-group': (_) => const ToggleGroupPage(),
   '/tooltip': (_) => const TooltipPage(),
   '/typography': (_) => const TypographyPage(),
 };

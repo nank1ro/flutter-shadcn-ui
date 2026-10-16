@@ -202,6 +202,26 @@ mixin _$ShadThemeData {
         b.defaultKeyboardToolbarTheme,
         t,
       )!,
+      primaryToggleTheme: ShadToggleTheme.lerp(
+        a.primaryToggleTheme,
+        b.primaryToggleTheme,
+        t,
+      )!,
+      outlineToggleTheme: ShadToggleTheme.lerp(
+        a.outlineToggleTheme,
+        b.outlineToggleTheme,
+        t,
+      )!,
+      toggleSizesTheme: ShadButtonSizesTheme.lerp(
+        a.toggleSizesTheme,
+        b.toggleSizesTheme,
+        t,
+      )!,
+      toggleGroupTheme: ShadToggleGroupTheme.lerp(
+        a.toggleGroupTheme,
+        b.toggleGroupTheme,
+        t,
+      )!,
     );
   }
 
@@ -260,6 +280,10 @@ mixin _$ShadThemeData {
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
     ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
+    ShadToggleTheme? primaryToggleTheme,
+    ShadToggleTheme? outlineToggleTheme,
+    ShadButtonSizesTheme? toggleSizesTheme,
+    ShadToggleGroupTheme? toggleGroupTheme,
   }) {
     final _this = (this as ShadThemeData);
 
@@ -324,6 +348,10 @@ mixin _$ShadThemeData {
       textareaTheme: textareaTheme ?? _this.textareaTheme,
       defaultKeyboardToolbarTheme:
           defaultKeyboardToolbarTheme ?? _this.defaultKeyboardToolbarTheme,
+      primaryToggleTheme: primaryToggleTheme ?? _this.primaryToggleTheme,
+      outlineToggleTheme: outlineToggleTheme ?? _this.outlineToggleTheme,
+      toggleSizesTheme: toggleSizesTheme ?? _this.toggleSizesTheme,
+      toggleGroupTheme: toggleGroupTheme ?? _this.toggleGroupTheme,
     );
   }
 
@@ -413,6 +441,14 @@ mixin _$ShadThemeData {
       defaultKeyboardToolbarTheme: _this.defaultKeyboardToolbarTheme.merge(
         other.defaultKeyboardToolbarTheme,
       ),
+      primaryToggleTheme: _this.primaryToggleTheme.merge(
+        other.primaryToggleTheme,
+      ),
+      outlineToggleTheme: _this.outlineToggleTheme.merge(
+        other.outlineToggleTheme,
+      ),
+      toggleSizesTheme: _this.toggleSizesTheme.merge(other.toggleSizesTheme),
+      toggleGroupTheme: _this.toggleGroupTheme.merge(other.toggleGroupTheme),
     );
   }
 
@@ -482,7 +518,12 @@ mixin _$ShadThemeData {
         _other.separatorTheme == _this.separatorTheme &&
         _other.sonnerTheme == _this.sonnerTheme &&
         _other.textareaTheme == _this.textareaTheme &&
-        _other.defaultKeyboardToolbarTheme == _this.defaultKeyboardToolbarTheme;
+        _other.defaultKeyboardToolbarTheme ==
+            _this.defaultKeyboardToolbarTheme &&
+        _other.primaryToggleTheme == _this.primaryToggleTheme &&
+        _other.outlineToggleTheme == _this.outlineToggleTheme &&
+        _other.toggleSizesTheme == _this.toggleSizesTheme &&
+        _other.toggleGroupTheme == _this.toggleGroupTheme;
   }
 
   @override
@@ -545,6 +586,10 @@ mixin _$ShadThemeData {
       _this.sonnerTheme,
       _this.textareaTheme,
       _this.defaultKeyboardToolbarTheme,
+      _this.primaryToggleTheme,
+      _this.outlineToggleTheme,
+      _this.toggleSizesTheme,
+      _this.toggleGroupTheme,
     ]);
   }
 }

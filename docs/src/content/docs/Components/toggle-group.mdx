@@ -1,0 +1,138 @@
+---
+title: Toggle Group
+sidebar:
+  order: 4
+---
+
+import Preview from "../../../components/Preview.astro";
+
+A set of two-state buttons that can be toggled on or off.
+
+<Preview src="toggle-group?style=primary">
+
+```dart
+ShadToggleGroup<String>.multiple(
+  onChanged: (values) => print(values),
+  items: const [
+    ShadToggleGroupItem(value: 'bold', child: Icon(LucideIcons.bold)),
+    ShadToggleGroupItem(value: 'italic', child: Icon(LucideIcons.italic)),
+    ShadToggleGroupItem(
+      value: 'underline',
+      child: Icon(LucideIcons.underline),
+    ),
+  ],
+)
+```
+
+</Preview>
+
+## Outline
+
+<Preview src="toggle-group?style=outline">
+
+```dart
+ShadToggleGroup<String>.multiple(
+  variant: ShadToggleVariant.outline,
+  items: const [
+    ShadToggleGroupItem(value: 'bold', child: Icon(LucideIcons.bold)),
+    ShadToggleGroupItem(value: 'italic', child: Icon(LucideIcons.italic)),
+    ShadToggleGroupItem(
+      value: 'underline',
+      child: Icon(LucideIcons.underline),
+    ),
+  ],
+)
+```
+
+</Preview>
+
+## Single
+
+At most one item can be pressed. Set `allowDeselection: false` so the pressed item can't be turned off, and pass an `initialValue` to keep one item pressed from the start.
+
+<Preview src="toggle-group?style=single">
+
+```dart
+ShadToggleGroup<String>(
+  initialValue: 'center',
+  onChanged: (value) => print(value),
+  items: const [
+    ShadToggleGroupItem(
+      value: 'left',
+      child: Icon(LucideIcons.textAlignStart),
+    ),
+    ShadToggleGroupItem(
+      value: 'center',
+      child: Icon(LucideIcons.textAlignCenter),
+    ),
+    ShadToggleGroupItem(
+      value: 'right',
+      child: Icon(LucideIcons.textAlignEnd),
+    ),
+  ],
+)
+```
+
+</Preview>
+
+## Vertical
+
+<Preview src="toggle-group?style=vertical">
+
+```dart
+ShadToggleGroup<String>.multiple(
+  variant: ShadToggleVariant.outline,
+  axis: Axis.vertical,
+  items: const [
+    ShadToggleGroupItem(value: 'bold', child: Icon(LucideIcons.bold)),
+    ShadToggleGroupItem(value: 'italic', child: Icon(LucideIcons.italic)),
+    ShadToggleGroupItem(
+      value: 'underline',
+      child: Icon(LucideIcons.underline),
+    ),
+  ],
+)
+```
+
+</Preview>
+
+## Spacing
+
+<Preview src="toggle-group?style=spacing">
+
+```dart
+ShadToggleGroup<String>.multiple(
+  variant: ShadToggleVariant.outline,
+  spacing: 8,
+  items: const [
+    ShadToggleGroupItem(value: 'bold', child: Icon(LucideIcons.bold)),
+    ShadToggleGroupItem(value: 'italic', child: Icon(LucideIcons.italic)),
+    ShadToggleGroupItem(
+      value: 'underline',
+      child: Icon(LucideIcons.underline),
+    ),
+  ],
+)
+```
+
+</Preview>
+
+## Disabled
+
+<Preview src="toggle-group?style=disabled">
+
+```dart
+ShadToggleGroup<String>.multiple(
+  enabled: false,
+  items: const [
+    ShadToggleGroupItem(value: 'bold', child: Icon(LucideIcons.bold)),
+    ShadToggleGroupItem(value: 'italic', child: Icon(LucideIcons.italic)),
+    ShadToggleGroupItem(
+      value: 'underline',
+      child: Icon(LucideIcons.underline),
+    ),
+  ],
+)
+```
+
+</Preview>
