@@ -1,3 +1,7 @@
+## 0.58.0
+
+- **FEAT**: Add `ShadToggle` and `ShadToggleGroup` components (#723).
+
 ## 0.57.2
 
 - **FIX**: `ShadTabs` tab bar decoration now respects `tabBarConstraints` when `tabBarAlignment` is set, instead of stretching to the full width (#695).

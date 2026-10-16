@@ -34,6 +34,8 @@ import 'package:shadcn_ui/src/theme/components/tabs.dart';
 import 'package:shadcn_ui/src/theme/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
+import 'package:shadcn_ui/src/theme/components/toggle.dart';
+import 'package:shadcn_ui/src/theme/components/toggle_group.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
@@ -96,6 +98,10 @@ abstract class ShadBaseTheme {
     required this.sonnerTheme,
     required this.textareaTheme,
     required this.defaultKeyboardToolbarTheme,
+    required this.primaryToggleTheme,
+    required this.outlineToggleTheme,
+    required this.toggleSizesTheme,
+    required this.toggleGroupTheme,
   });
 
   final ShadColorScheme colorScheme;
@@ -152,6 +158,10 @@ abstract class ShadBaseTheme {
   final ShadSonnerTheme sonnerTheme;
   final ShadTextareaTheme textareaTheme;
   final ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme;
+  final ShadToggleTheme primaryToggleTheme;
+  final ShadToggleTheme outlineToggleTheme;
+  final ShadButtonSizesTheme toggleSizesTheme;
+  final ShadToggleGroupTheme toggleGroupTheme;
 }
 
 @immutable
@@ -204,4 +214,8 @@ abstract class ShadThemeVariant {
   ShadSonnerTheme sonnerTheme();
   ShadTextareaTheme textareaTheme();
   ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme();
+  ShadToggleTheme primaryToggleTheme();
+  ShadToggleTheme outlineToggleTheme();
+  ShadButtonSizesTheme toggleSizesTheme();
+  ShadToggleGroupTheme toggleGroupTheme();
 }
