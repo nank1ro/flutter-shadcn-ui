@@ -52,6 +52,7 @@ export 'src/components/icon_button.dart';
 export 'src/components/input.dart';
 export 'src/components/input_otp.dart';
 export 'src/components/menubar.dart';
+export 'src/components/pagination.dart';
 export 'src/components/popover.dart';
 export 'src/components/progress.dart';
 export 'src/components/radio.dart';
