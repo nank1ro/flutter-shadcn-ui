@@ -22,6 +22,7 @@ import 'package:example/pages/input.dart';
 import 'package:example/pages/input_form_field.dart';
 import 'package:example/pages/input_otp.dart';
 import 'package:example/pages/input_otp_form_field.dart';
+import 'package:example/pages/item.dart';
 import 'package:example/pages/menubar.dart';
 import 'package:example/pages/popover.dart';
 import 'package:example/pages/progress.dart';
@@ -76,6 +77,7 @@ final routes = <String, WidgetBuilder>{
   '/input-OTP': (_) => const InputOTPPage(),
   '/input-OTP-form-field': (_) => const InputOTPFormFieldPage(),
   '/input-form-field': (_) => const InputFormFieldPage(),
+  '/item': (_) => const ItemPage(),
   '/keyboard-toolbar': (_) => const KeyboardToolbarPage(),
   '/menubar': (_) => const MenubarPage(),
   '/popover': (_) => const PopoverPage(),

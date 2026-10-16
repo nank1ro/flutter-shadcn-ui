@@ -202,6 +202,21 @@ mixin _$ShadThemeData {
         b.defaultKeyboardToolbarTheme,
         t,
       )!,
+      primaryItemTheme: ShadItemTheme.lerp(
+        a.primaryItemTheme,
+        b.primaryItemTheme,
+        t,
+      )!,
+      outlineItemTheme: ShadItemTheme.lerp(
+        a.outlineItemTheme,
+        b.outlineItemTheme,
+        t,
+      )!,
+      mutedItemTheme: ShadItemTheme.lerp(
+        a.mutedItemTheme,
+        b.mutedItemTheme,
+        t,
+      )!,
     );
   }
 
@@ -260,6 +275,9 @@ mixin _$ShadThemeData {
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
     ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
+    ShadItemTheme? primaryItemTheme,
+    ShadItemTheme? outlineItemTheme,
+    ShadItemTheme? mutedItemTheme,
   }) {
     final _this = (this as ShadThemeData);
 
@@ -324,6 +342,9 @@ mixin _$ShadThemeData {
       textareaTheme: textareaTheme ?? _this.textareaTheme,
       defaultKeyboardToolbarTheme:
           defaultKeyboardToolbarTheme ?? _this.defaultKeyboardToolbarTheme,
+      primaryItemTheme: primaryItemTheme ?? _this.primaryItemTheme,
+      outlineItemTheme: outlineItemTheme ?? _this.outlineItemTheme,
+      mutedItemTheme: mutedItemTheme ?? _this.mutedItemTheme,
     );
   }
 
@@ -413,6 +434,9 @@ mixin _$ShadThemeData {
       defaultKeyboardToolbarTheme: _this.defaultKeyboardToolbarTheme.merge(
         other.defaultKeyboardToolbarTheme,
       ),
+      primaryItemTheme: _this.primaryItemTheme.merge(other.primaryItemTheme),
+      outlineItemTheme: _this.outlineItemTheme.merge(other.outlineItemTheme),
+      mutedItemTheme: _this.mutedItemTheme.merge(other.mutedItemTheme),
     );
   }
 
@@ -482,7 +506,11 @@ mixin _$ShadThemeData {
         _other.separatorTheme == _this.separatorTheme &&
         _other.sonnerTheme == _this.sonnerTheme &&
         _other.textareaTheme == _this.textareaTheme &&
-        _other.defaultKeyboardToolbarTheme == _this.defaultKeyboardToolbarTheme;
+        _other.defaultKeyboardToolbarTheme ==
+            _this.defaultKeyboardToolbarTheme &&
+        _other.primaryItemTheme == _this.primaryItemTheme &&
+        _other.outlineItemTheme == _this.outlineItemTheme &&
+        _other.mutedItemTheme == _this.mutedItemTheme;
   }
 
   @override
@@ -545,6 +573,9 @@ mixin _$ShadThemeData {
       _this.sonnerTheme,
       _this.textareaTheme,
       _this.defaultKeyboardToolbarTheme,
+      _this.primaryItemTheme,
+      _this.outlineItemTheme,
+      _this.mutedItemTheme,
     ]);
   }
 }

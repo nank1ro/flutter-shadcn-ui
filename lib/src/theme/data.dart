@@ -18,6 +18,7 @@ import 'package:shadcn_ui/src/theme/components/default_keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
+import 'package:shadcn_ui/src/theme/components/item.dart';
 import 'package:shadcn_ui/src/theme/components/menubar.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
@@ -109,6 +110,9 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
     ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
+    ShadItemTheme? primaryItemTheme,
+    ShadItemTheme? outlineItemTheme,
+    ShadItemTheme? mutedItemTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -240,6 +244,15 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
       defaultKeyboardToolbarTheme: effectiveVariant
           .defaultKeyboardToolbarTheme()
           .merge(defaultKeyboardToolbarTheme),
+      primaryItemTheme: effectiveVariant.primaryItemTheme().merge(
+        primaryItemTheme,
+      ),
+      outlineItemTheme: effectiveVariant.outlineItemTheme().merge(
+        outlineItemTheme,
+      ),
+      mutedItemTheme: effectiveVariant.mutedItemTheme().merge(
+        mutedItemTheme,
+      ),
     );
   }
 
@@ -298,6 +311,9 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     required super.sonnerTheme,
     required super.textareaTheme,
     required super.defaultKeyboardToolbarTheme,
+    required super.primaryItemTheme,
+    required super.outlineItemTheme,
+    required super.mutedItemTheme,
   });
 
   static ShadThemeData? lerp(
