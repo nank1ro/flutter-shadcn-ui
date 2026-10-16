@@ -54,6 +54,7 @@ npx skills add nank1ro/flutter-shadcn-ui
 - [x] <strike>Hover Card</strike> Use Popover instead
 - [x] [Input](https://mariuti.com/flutter-shadcn-ui/components/input/)
 - [x] [Input OTP](https://mariuti.com/flutter-shadcn-ui/components/input-otp/)
+- [x] [Item](https://mariuti.com/flutter-shadcn-ui/components/item/)
 - [x] <strike>Label</strike> Use Text instead
 - [x] [Menubar](https://mariuti.com/flutter-shadcn-ui/components/menubar/)
 - [ ] Navigation Menu
