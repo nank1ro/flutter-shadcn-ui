@@ -1,3 +1,12 @@
+## 0.58.0
+
+- **CHANGE**: An uncontrolled `ShadCalendar` keeps the user selection when rebuilt with an unchanged `selected`, `multipleSelected`, or `selectedRange` property.
+- **FIX**: Changing an uncontrolled calendar selection property to `null` clears the selection.
+- **FIX**: Updating calendar or date picker selection properties during a rebuild no longer calls a month callback during the build.
+- **CHANGE**: Programmatic date picker controller changes no longer call `onChanged` or `onRangeChanged`. Form fields listen to the controller directly.
+
+- **FEAT**: Add `ShadCalendarController` for programmatic selection and month navigation in calendars, date pickers, and date picker form fields (#382).
+
 ## 0.57.2
 
 - **FIX**: `ShadTabs` tab bar decoration now respects `tabBarConstraints` when `tabBarAlignment` is set, instead of stretching to the full width (#695).
