@@ -33,6 +33,7 @@ class ShadDatePicker extends StatefulWidget {
   const ShadDatePicker({
     super.key,
     this.placeholder,
+    this.controller,
     this.popoverController,
     this.selected,
     this.closeOnSelection,
@@ -176,6 +177,7 @@ class ShadDatePicker extends StatefulWidget {
   /// Creates a date range picker widget with a button and popover calendar.
   const ShadDatePicker.range({
     super.key,
+    this.controller,
     this.popoverController,
     this.placeholder,
     ShadDateTimeRange? selected,
@@ -323,6 +325,7 @@ class ShadDatePicker extends StatefulWidget {
   const ShadDatePicker.raw({
     super.key,
     required this.variant,
+    this.controller,
     this.popoverController,
     this.selected,
     this.closeOnSelection,
@@ -509,6 +512,14 @@ class ShadDatePicker extends StatefulWidget {
   /// The variant of the date picker.
   /// {@endtemplate}
   final ShadDatePickerVariant variant;
+
+  /// {@template ShadDatePicker.controller}
+  /// An optional controller for selection and visible month navigation.
+  ///
+  /// When provided, its selection takes precedence over [selected] and
+  /// [selectedRange]. The caller owns and disposes this controller.
+  /// {@endtemplate}
+  final ShadCalendarController? controller;
 
   /// {@template ShadDatePicker.header}
   /// The header of the date picker.
@@ -925,14 +936,34 @@ class ShadDatePicker extends StatefulWidget {
 }
 
 class _ShadDatePickerState extends State<ShadDatePicker> {
-  late DateTime? selected = widget.selected;
-  late ShadDateTimeRange? selectedRange = widget.selectedRange;
+  DateTime? selected;
+  ShadDateTimeRange? selectedRange;
   final _groupId = UniqueKey();
+
+  ShadCalendarController? _controller;
+  ShadCalendarController get controller => widget.controller ?? _controller!;
 
   ShadPopoverController? _popoverController;
 
   ShadPopoverController get popoverController =>
       widget.popoverController ?? _popoverController!;
+
+  ShadCalendarController _createController({
+    DateTime? selected,
+    ShadDateTimeRange? selectedRange,
+    DateTime? visibleMonth,
+  }) {
+    return switch (widget.variant) {
+      ShadDatePickerVariant.single => ShadCalendarController(
+        selected: selected,
+        visibleMonth: visibleMonth,
+      ),
+      ShadDatePickerVariant.range => ShadCalendarController.range(
+        selected: selectedRange,
+        visibleMonth: visibleMonth,
+      ),
+    };
+  }
 
   @override
   void initState() {
@@ -940,23 +971,74 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
     if (widget.popoverController == null) {
       _popoverController = ShadPopoverController();
     }
+    if (widget.controller == null) {
+      _controller = _createController(
+        selected: widget.selected,
+        selectedRange: widget.selectedRange,
+      );
+    }
+    _syncFromController(force: true);
+    controller.addListener(_handleControllerChanged);
   }
 
   @override
   void didUpdateWidget(covariant ShadDatePicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.selected != oldWidget.selected) {
-      selected = widget.selected;
-    }
-    if (widget.selectedRange != oldWidget.selectedRange) {
-      selectedRange = widget.selectedRange;
+    if (oldWidget.controller != widget.controller ||
+        oldWidget.variant != widget.variant) {
+      final previousController = oldWidget.controller ?? _controller;
+      previousController?.removeListener(_handleControllerChanged);
+      if (oldWidget.controller == null) {
+        _controller?.dispose();
+        _controller = null;
+      }
+      if (widget.controller == null) {
+        final sameVariant = oldWidget.variant == widget.variant;
+        _controller = _createController(
+          selected: sameVariant ? selected : widget.selected,
+          selectedRange: sameVariant ? selectedRange : widget.selectedRange,
+          visibleMonth: previousController?.visibleMonth,
+        );
+      }
+      controller.addListener(_handleControllerChanged);
+      _syncFromController(force: true);
+    } else if (widget.controller == null) {
+      if (widget.selected != oldWidget.selected) {
+        controller.selected = widget.selected;
+      }
+      if (widget.selectedRange != oldWidget.selectedRange) {
+        controller.selectedRange = widget.selectedRange;
+      }
     }
   }
 
   @override
   void dispose() {
+    controller.removeListener(_handleControllerChanged);
+    _controller?.dispose();
     _popoverController?.dispose();
     super.dispose();
+  }
+
+  void _handleControllerChanged() {
+    final selectionChanged = switch (widget.variant) {
+      ShadDatePickerVariant.single => controller.selected != selected,
+      ShadDatePickerVariant.range => controller.selectedRange != selectedRange,
+    };
+    if (!selectionChanged) return;
+    setState(_syncFromController);
+    final anchor = switch (widget.variant) {
+      ShadDatePickerVariant.single => selected,
+      ShadDatePickerVariant.range => selectedRange?.start,
+    };
+    if (!popoverController.isOpen && anchor != null) {
+      controller.visibleMonth = anchor.startOfMonth;
+    }
+  }
+
+  void _syncFromController({bool force = false}) {
+    selected = controller.selected;
+    selectedRange = controller.selectedRange;
   }
 
   String defaultDateFormat(DateTime date, Locale locale) {
@@ -1079,6 +1161,7 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
           children: [
             if (widget.header != null) widget.header!,
             ShadCalendar.raw(
+              controller: controller,
               variant: switch (widget.variant) {
                 ShadDatePickerVariant.single => ShadCalendarVariant.single,
                 ShadDatePickerVariant.range => ShadCalendarVariant.range,
@@ -1091,7 +1174,7 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
                   widget.showOutsideDays ??
                   theme.datePickerTheme.showOutsideDays,
               decoration: effectiveCalendarDecoration,
-              initialMonth: widget.initialMonth,
+              initialMonth: controller.visibleMonth ?? widget.initialMonth,
               formatMonthYear:
                   widget.formatMonthYear ??
                   theme.datePickerTheme.formatMonthYear,
@@ -1241,14 +1324,12 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
                   widget.gridCrossAxisSpacing ??
                   theme.datePickerTheme.gridCrossAxisSpacing,
               onChanged: (selected) {
-                setState(() => this.selected = selected);
                 if (true == widget.closeOnSelection) {
                   popoverController.hide();
                 }
                 widget.onChanged?.call(selected);
               },
               onRangeChanged: (range) {
-                setState(() => selectedRange = range);
                 if (true == widget.closeOnSelection &&
                     range?.start != null &&
                     range?.end != null) {
