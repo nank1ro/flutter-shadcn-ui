@@ -7,6 +7,8 @@
 
 - **FIX**: Form fields without an `id` could get the same generated id in large forms (the id came from a 20-bit hash), which seeded a field with another field's value, dropped entries from `ShadForm.value`, or threw a `TypeError` when the fields had different types. Generated ids are now unique, and explicit ids starting with `__shad_field_` are reserved for them (#707).
 
+## 0.57.0
+
 - **FIX**: `ShadDialog` no longer bakes unnecessary status bar/navigation bar padding into a centered dialog. `SafeArea` is now applied at the route level (matching Material's `Dialog`) instead of inside the dialog card, fixing a large blank space above the title on Android (#681).
 - **FIX**: `ShadSheet` no longer bakes unnecessary status bar/navigation bar padding into non-expandable sheets, matching the `ShadDialog` fix. Also fixes cross-axis safe-area insets (e.g. side gutters) leaking into narrower, constrained sheets that don't actually touch the screen edge (#685).
 - **CHANGE**: A `ShadDialog` with a non-centered alignment (e.g. `Alignment.bottomCenter`) no longer paints into the safe-area strip; the barrier colour now shows in the status-bar / gesture-bar region. Pass `useSafeArea: false` to restore the old behaviour.
