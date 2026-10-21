@@ -1,3 +1,7 @@
+## 0.60.0
+
+- **FEAT**: Added `ShadSpinner`, an indeterminate loading indicator with a rotating loader icon, plus the `ShadSpinnerTheme` component theme (#704).
+
 ## 0.59.0
 
 - **FEAT**: Add new component `ShadItem` and all of its related components (#705).
@@ -17,7 +21,6 @@
 ## 0.57.2
 
 - **FIX**: `ShadTabs` tab bar decoration now respects `tabBarConstraints` when `tabBarAlignment` is set, instead of stretching to the full width (#695).
-- **FEAT**: Added `ShadSpinner`, an indeterminate loading indicator with a rotating loader icon, plus the `ShadSpinnerTheme` component theme (#704).
 
 ## 0.57.1
 
