@@ -1,0 +1,128 @@
+---
+title: Spinner
+sidebar:
+  order: 4
+---
+import Preview from '../../../components/Preview.astro';
+
+An indeterminate loading indicator, for async work whose completion amount is unknown.
+
+It rotates `LucideIcons.loaderCircle` once per second. Pass `icon` to use a
+different one, such as `LucideIcons.loader`.
+
+For determinate progress, use [Progress](/flutter-shadcn-ui/components/progress/) instead.
+
+## Default
+
+<Preview src="spinner">
+ ```dart
+const ShadSpinner(
+  size: 32,
+  semanticsLabel: 'Loading',
+),
+```
+</Preview>
+
+## Sizes
+
+<Preview src="spinner?style=sizes">
+ ```dart
+const Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  spacing: 32,
+  children: [
+    ShadSpinner(size: 16),
+    ShadSpinner(size: 24),
+    ShadSpinner(size: 32),
+    ShadSpinner(size: 48),
+  ],
+),
+```
+</Preview>
+
+## Colors
+
+<Preview src="spinner?style=colors">
+ ```dart
+final colorScheme = ShadTheme.of(context).colorScheme;
+
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  spacing: 32,
+  children: [
+    ShadSpinner(size: 32, color: colorScheme.primary),
+    ShadSpinner(size: 32, color: colorScheme.mutedForeground),
+    ShadSpinner(size: 32, color: colorScheme.destructive),
+  ],
+),
+```
+</Preview>
+
+## Inside a button
+
+<Preview src="spinner?style=button">
+ ```dart
+ShadButton(
+  onPressed: () {},
+  child: Row(
+    mainAxisSize: MainAxisSize.min,
+    spacing: 8,
+    children: [
+      ShadSpinner(
+        size: 16,
+        color: ShadTheme.of(context).colorScheme.primaryForeground,
+      ),
+      const Text('Please wait'),
+    ],
+  ),
+),
+```
+</Preview>
+
+## Inline
+
+<Preview src="spinner?style=inline">
+ ```dart
+final theme = ShadTheme.of(context);
+
+ShadCard(
+  width: 320,
+  child: Row(
+    mainAxisSize: MainAxisSize.min,
+    spacing: 12,
+    children: [
+      ShadSpinner(size: 20, color: theme.colorScheme.mutedForeground),
+      Flexible(
+        child: Text('Fetching your data…', style: theme.textTheme.muted),
+      ),
+    ],
+  ),
+),
+```
+</Preview>
+
+## Accessibility
+
+Pass a `semanticsLabel` to announce the loading state to screen readers. The
+spinner is then marked as a live region, so assistive technology announces it
+when it appears.
+
+```dart
+const ShadSpinner(semanticsLabel: 'Loading'),
+```
+
+## Disabling the animation
+
+Set `animate` to `false` to render a static icon. The rotation duration is
+themeable via `ShadSpinnerTheme.duration`.
+
+This is not wired to the platform's "reduce motion" accessibility setting
+automatically. To follow it:
+
+```dart
+ShadSpinner(animate: !MediaQuery.disableAnimationsOf(context)),
+```
+
+```dart
+const ShadSpinner(animate: false),
+```

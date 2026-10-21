@@ -29,6 +29,7 @@ import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
+import 'package:shadcn_ui/src/theme/components/spinner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
@@ -92,6 +93,7 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     ShadSliderTheme? sliderTheme,
     ShadSheetTheme? sheetTheme,
     ShadProgressTheme? progressTheme,
+    ShadSpinnerTheme? spinnerTheme,
     ShadAccordionTheme? accordionTheme,
     ShadTableTheme? tableTheme,
     ShadResizableTheme? resizableTheme,
@@ -216,6 +218,7 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
       sliderTheme: effectiveVariant.sliderTheme().merge(sliderTheme),
       sheetTheme: effectiveVariant.sheetTheme().merge(sheetTheme),
       progressTheme: effectiveVariant.progressTheme().merge(progressTheme),
+      spinnerTheme: effectiveVariant.spinnerTheme().merge(spinnerTheme),
       accordionTheme: effectiveVariant.accordionTheme().merge(accordionTheme),
       tableTheme: effectiveVariant.tableTheme().merge(tableTheme),
       resizableTheme: effectiveVariant.resizableTheme().merge(resizableTheme),
@@ -282,6 +285,7 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     required super.sliderTheme,
     required super.sheetTheme,
     required super.progressTheme,
+    required super.spinnerTheme,
     required super.accordionTheme,
     required super.tableTheme,
     required super.resizableTheme,
