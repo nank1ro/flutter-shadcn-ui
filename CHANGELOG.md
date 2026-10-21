@@ -1,3 +1,7 @@
+## 0.58.0
+
+- **FEAT**: Added `ShadSpinner`, an indeterminate loading indicator with a rotating loader icon, plus the `ShadSpinnerTheme` component theme (#704).
+
 ## 0.57.4
 
 - **FIX**: `ShadRadioGroupFormField` calls `onChanged` once per selection change. A controller update ran `didChange` (which already notifies `onChanged`), then called `onChanged` again, and the inner `ShadRadioGroup` listener called `didChange` a third time (#735).
@@ -9,7 +13,6 @@
 ## 0.57.2
 
 - **FIX**: `ShadTabs` tab bar decoration now respects `tabBarConstraints` when `tabBarAlignment` is set, instead of stretching to the full width (#695).
-- **FEAT**: Added `ShadSpinner`, an indeterminate loading indicator with a rotating loader icon, plus the `ShadSpinnerTheme` component theme (#704).
 
 ## 0.57.1
 
