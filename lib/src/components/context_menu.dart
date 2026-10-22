@@ -394,10 +394,6 @@ class ShadContextMenuState extends State<ShadContextMenu> {
         isOpen: widget.visible ?? false,
       ));
 
-  /// The tap region group of this menu, shared with its submenus so that a
-  /// tap inside a submenu does not close the parent menu.
-  final _tapGroupId = Object();
-
   @override
   void didUpdateWidget(covariant ShadContextMenu oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -444,9 +440,11 @@ class ShadContextMenuState extends State<ShadContextMenu> {
 
     final effectiveShadows = widget.shadows ?? theme.contextMenuTheme.shadows;
 
-    // the root context menu, if this one is a submenu
+    // the root context menu, if this one is a submenu; its state is the tap
+    // region group shared with its submenus, so a tap inside a submenu does
+    // not close it
     final contextMenu = context.maybeRead<ShadContextMenuState>();
-    final tapGroupId = contextMenu?._tapGroupId ?? _tapGroupId;
+    final tapGroupId = contextMenu ?? this;
 
     Widget child = ShadPopover(
       controller: controller,
