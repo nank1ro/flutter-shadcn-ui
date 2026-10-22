@@ -5,8 +5,11 @@ import 'package:shadcn_ui/src/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/utils/position.dart';
+import 'package:shadcn_ui/src/utils/responsive.dart';
 
 void main() {
+  const fullScreenConstraints = BoxConstraints.expand();
+
   // Helper method to create a test widget wrapped in ShadApp and Scaffold
   Widget createTestWidget(Widget child) {
     return ShadApp(home: Scaffold(body: child));
@@ -272,5 +275,898 @@ void main() {
         expect(builtPadding, widgetPadding);
       },
     );
+
+    // extendBackground: the outer ColoredBox (under a SizedBox) paints the
+    // full-screen background; the card's own DecoratedBox is the one built
+    // directly inside ShadResponsiveBuilder (dialog.dart's `return
+    // DecoratedBox(...)` in the builder callback) — unlike a raw first/last
+    // index, this stays correct regardless of whether a close icon (which
+    // renders its own unrelated DecoratedBox) is present.
+    ColoredBox outerColoredBox(WidgetTester tester) {
+      return tester.widget<ColoredBox>(
+        find
+            .descendant(
+              of: find.byType(SizedBox),
+              matching: find.byType(ColoredBox),
+            )
+            .first,
+      );
+    }
+
+    DecoratedBox innerCardDecoratedBox(WidgetTester tester) {
+      return tester.widget<DecoratedBox>(
+        find
+            .descendant(
+              of: find.byType(ShadResponsiveBuilder),
+              matching: find.byType(DecoratedBox),
+            )
+            .first,
+      );
+    }
+
+    testWidgets(
+      'extendBackground: true fills the full screen with the background '
+      'color instead of shrinking it away from the true screen edges',
+      (tester) async {
+        const systemPadding = EdgeInsets.only(top: 62.4, bottom: 24.2);
+
+        tester.view.viewPadding = FakeViewPadding(
+          left: systemPadding.left,
+          top: systemPadding.top,
+          right: systemPadding.right,
+          bottom: systemPadding.bottom,
+        );
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: fullScreenConstraints,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // SafeArea still protects the content — it just sits inside the
+        // full-screen DecoratedBox instead of wrapping it from outside.
+        expect(find.byType(SafeArea), findsOneWidget);
+
+        // The outer, background-painting DecoratedBox must span the full
+        // screen (SizedBox.expand ancestor), not shrink with system
+        // padding — that would leave a barrier-colored gap at the edges,
+        // which is the bug the route-level SafeArea fix (#681/#685)
+        // otherwise reintroduces for edge-reaching dialogs.
+        expect(outerColoredBox(tester).color, isNotNull);
+
+        final outerBoxFinder = find
+            .descendant(
+              of: find.byType(SizedBox),
+              matching: find.byType(ColoredBox),
+            )
+            .first;
+        final outerRect = tester.getRect(outerBoxFinder);
+        final screenSize =
+            tester.view.physicalSize / tester.view.devicePixelRatio;
+        expect(outerRect.left, closeTo(0, 0.5));
+        expect(outerRect.top, closeTo(0, 0.5));
+        expect(outerRect.width, closeTo(screenSize.width, 0.5));
+        expect(outerRect.height, closeTo(screenSize.height, 0.5));
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true does not paint the background color twice',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: fullScreenConstraints,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // The outer, full-screen layer paints the background color...
+        expect(outerColoredBox(tester).color, isNotNull);
+
+        // ...so the inner dialog card must not paint it again. Before the
+        // fix, both boxes painted effectiveBackgroundColor, visibly
+        // darkening the overlap for a translucent color.
+        final innerDecoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+        expect(innerDecoration.color, isNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true is ignored for a constrained dialog',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: BoxConstraints(maxWidth: 200),
+                alignment: Alignment.center,
+                title: Text('Title'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // A small dialog must keep its card appearance and must not paint
+        // its background across the whole screen.
+        expect(
+          find.descendant(
+            of: find.byType(SizedBox),
+            matching: find.byType(ColoredBox),
+          ),
+          findsNothing,
+        );
+        final decoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+        expect(decoration.color, isNotNull);
+        expect(decoration.border, isNotNull);
+        expect(decoration.boxShadow, isNotEmpty);
+        expect(decoration.borderRadius, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true accepts tight viewport constraints',
+      (tester) async {
+        final screenSize =
+            tester.view.physicalSize / tester.view.devicePixelRatio;
+        await tester.pumpWidget(
+          ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: BoxConstraints.tight(screenSize),
+                title: const Text('Title'),
+                child: const Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(outerColoredBox(tester).color, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true is ignored inside a smaller parent',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: Center(
+                child: SizedBox(
+                  width: 300,
+                  height: 300,
+                  child: ShadDialog(
+                    extendBackground: true,
+                    constraints: BoxConstraints.expand(),
+                    title: Text('Title'),
+                    child: Text('Child'),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(
+          find.descendant(
+            of: find.byType(SizedBox),
+            matching: find.byType(ColoredBox),
+          ),
+          findsNothing,
+        );
+        final decoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+        expect(decoration.color, isNotNull);
+        expect(decoration.border, isNotNull);
+        expect(decoration.boxShadow, isNotEmpty);
+        expect(decoration.borderRadius, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'theme-level extendBackground is ignored in an unbounded parent',
+      (tester) async {
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              primaryDialogTheme: const ShadDialogTheme(
+                extendBackground: true,
+              ),
+            ),
+            home: const Scaffold(
+              body: SingleChildScrollView(
+                child: ShadDialog(
+                  title: Text('Title'),
+                  child: Text('Child'),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('Title'), findsOneWidget);
+        expect(
+          find.descendant(
+            of: find.byType(SizedBox),
+            matching: find.byType(ColoredBox),
+          ),
+          findsNothing,
+        );
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true absorbs a tap inside the system-inset strip '
+      'for a full-screen dialog',
+      (tester) async {
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetDevicePixelRatio);
+        tester.view.padding = const FakeViewPadding(top: 40);
+        addTearDown(tester.view.resetPadding);
+
+        await tester.pumpWidget(
+          ShadApp(
+            home: Builder(
+              builder: (context) {
+                return Scaffold(
+                  body: Center(
+                    child: TextButton(
+                      onPressed: () {
+                        showShadDialog<void>(
+                          context: context,
+                          builder: (context) => const ShadDialog(
+                            extendBackground: true,
+                            constraints: fullScreenConstraints,
+                            alignment: Alignment.center,
+                            title: Text('Title'),
+                            child: Text('Child'),
+                          ),
+                        );
+                      },
+                      child: const Text('Open'),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Open'));
+        await tester.pumpAndSettle();
+        expect(find.byType(ShadDialog), findsOneWidget);
+
+        final screenSize =
+            tester.view.physicalSize / tester.view.devicePixelRatio;
+        await tester.tapAt(Offset(screenSize.width / 2, 5));
+        await tester.pumpAndSettle();
+
+        expect(
+          find.byType(ShadDialog),
+          findsOneWidget,
+          reason:
+              'a tap inside the system-inset strip must not dismiss '
+              'the full-screen dialog',
+        );
+      },
+    );
+
+    testWidgets(
+      'a constrained extendBackground dialog still lets barrierDismissible '
+      'dismiss by tapping outside the card',
+      (tester) async {
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetDevicePixelRatio);
+        tester.view.padding = const FakeViewPadding(top: 40);
+        addTearDown(tester.view.resetPadding);
+
+        await tester.pumpWidget(
+          ShadApp(
+            home: Builder(
+              builder: (context) {
+                return Scaffold(
+                  body: Center(
+                    child: TextButton(
+                      onPressed: () {
+                        showShadDialog<void>(
+                          context: context,
+                          builder: (context) => const ShadDialog(
+                            extendBackground: true,
+                            constraints: BoxConstraints(maxWidth: 200),
+                            alignment: Alignment.center,
+                            title: Text('Title'),
+                            child: Text('Child'),
+                          ),
+                        );
+                      },
+                      child: const Text('Open'),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Open'));
+        await tester.pumpAndSettle();
+        expect(find.byType(ShadDialog), findsOneWidget);
+
+        // The option is ignored for this constrained dialog, so this area
+        // remains barrier territory and must dismiss the dialog.
+        final screenSize =
+            tester.view.physicalSize / tester.view.devicePixelRatio;
+        await tester.tapAt(Offset(screenSize.width / 2, screenSize.height - 5));
+        await tester.pumpAndSettle();
+
+        expect(
+          find.byType(ShadDialog),
+          findsNothing,
+          reason:
+              'tapping outside the card and outside the inset strips must '
+              'still dismiss the dialog via barrierDismissible',
+        );
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true with zero viewPadding still works',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: fullScreenConstraints,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('Title'), findsOneWidget);
+        expect(find.text('Description'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'extendBackground defaults to false (SafeArea is used)',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestWidget(
+            const ShadDialog(
+              title: Text('Title'),
+              description: Text('Description'),
+              child: Text('Child'),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Default: only ShadDialog's own SafeArea exists, and no outer
+        // full-screen background layer (a ColoredBox under a SizedBox) is
+        // rendered.
+        expect(find.byType(SafeArea), findsOneWidget);
+        expect(
+          find.descendant(
+            of: find.byType(SizedBox),
+            matching: find.byType(ColoredBox),
+          ),
+          findsNothing,
+        );
+      },
+    );
+
+    testWidgets(
+      'extendBackground via theme is honored',
+      (tester) async {
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              primaryDialogTheme: const ShadDialogTheme(
+                extendBackground: true,
+              ),
+            ),
+            home: const Scaffold(
+              body: ShadDialog(
+                constraints: fullScreenConstraints,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Theme-level extendBackground should be honored — SafeArea still
+        // present, just relocated inside the full-screen background.
+        expect(find.byType(SafeArea), findsOneWidget);
+        expect(outerColoredBox(tester).color, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true defaults border to null on the card, '
+      'shadows to empty, and borderRadius to null',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: fullScreenConstraints,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final decoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+        expect(decoration.border, isNull);
+        expect(decoration.boxShadow, isEmpty);
+        expect(decoration.borderRadius, isNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: false keeps the default card border, shadows, '
+      'and borderRadius',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final decoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+        expect(decoration.border, isNotNull);
+        expect(decoration.boxShadow, isNotEmpty);
+        expect(decoration.borderRadius, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true with useSafeArea: false skips SafeArea entirely',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: fullScreenConstraints,
+                useSafeArea: false,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SafeArea), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true with useSafeArea: false does not swallow '
+      'taps on content placed under the system inset (no inset-strip '
+      'absorber without SafeArea protecting that content)',
+      (tester) async {
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetDevicePixelRatio);
+        tester.view.padding = const FakeViewPadding(top: 40);
+        addTearDown(tester.view.resetPadding);
+
+        var tapped = false;
+
+        await tester.pumpWidget(
+          ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: fullScreenConstraints,
+                useSafeArea: false,
+                alignment: Alignment.topCenter,
+                padding: EdgeInsets.zero,
+                title: TextButton(
+                  onPressed: () => tapped = true,
+                  child: const Text('Title button'),
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // With useSafeArea: false, nothing pushes this button clear of the
+        // top system inset — it renders directly under it. The
+        // inset-strip absorber must not be built here, or it would sit on
+        // top of the button and swallow the tap.
+        await tester.tap(find.text('Title button'));
+        await tester.pumpAndSettle();
+
+        expect(
+          tapped,
+          isTrue,
+          reason:
+              'a tap on real content under the system inset must '
+              'reach it, not an inset-strip absorber meant only to '
+              'protect the SafeArea-guarded gap',
+        );
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true with useSafeArea: true keeps SafeArea inside',
+      (tester) async {
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: fullScreenConstraints,
+                useSafeArea: true,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SafeArea), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true ignores a custom border on the card',
+      (tester) async {
+        const customBorder = Border.fromBorderSide(
+          BorderSide(width: 3, color: Colors.red),
+        );
+
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: fullScreenConstraints,
+                border: customBorder,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final decoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+
+        // extendBackground consistently wins over explicit decoration values.
+        expect(decoration.border, isNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true ignores custom shadows — a shadow never '
+      'makes sense behind system UI',
+      (tester) async {
+        const customShadows = [BoxShadow(blurRadius: 99)];
+
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: fullScreenConstraints,
+                shadows: customShadows,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final decoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+
+        // extendBackground consistently wins over explicit decoration values.
+        expect(decoration.boxShadow, isEmpty);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true ignores a custom radius on the card',
+      (tester) async {
+        const customRadius = BorderRadius.all(Radius.circular(32));
+
+        await tester.pumpWidget(
+          const ShadApp(
+            home: Scaffold(
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: fullScreenConstraints,
+                radius: customRadius,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final decoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+        expect(decoration.borderRadius, isNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true beats theme-level decoration values',
+      (tester) async {
+        const themeBorder = Border.fromBorderSide(
+          BorderSide(width: 3, color: Colors.red),
+        );
+
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              primaryDialogTheme: const ShadDialogTheme(
+                extendBackground: true,
+                border: themeBorder,
+              ),
+            ),
+            home: const Scaffold(
+              body: ShadDialog(
+                constraints: fullScreenConstraints,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final decoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+
+        // extendBackground wins over the theme border and any widget-level
+        // decoration values when the flag is effective.
+        expect(decoration.border, isNull);
+      },
+    );
+
+    testWidgets(
+      'widget-level extendBackground: false overrides theme-level true',
+      (tester) async {
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              primaryDialogTheme: const ShadDialogTheme(
+                extendBackground: true,
+              ),
+            ),
+            home: const Scaffold(
+              body: ShadDialog(
+                extendBackground: false,
+                title: Text('Title'),
+                description: Text('Description'),
+                child: Text('Child'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Widget-level false overrides theme-level true: no outer
+        // full-screen layer, and the card keeps its default border.
+        expect(
+          find.descendant(
+            of: find.byType(SizedBox),
+            matching: find.byType(ColoredBox),
+          ),
+          findsNothing,
+        );
+        final decoration =
+            innerCardDecoratedBox(tester).decoration as BoxDecoration;
+        expect(decoration.border, isNotNull);
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true fills screen and does not shrink from edges '
+      '(same DecoratedBox size regardless of system padding)',
+      (tester) async {
+        const systemPadding = EdgeInsets.only(top: 62.4, bottom: 24.2);
+
+        Future<Size> getDecoratedBoxSize(EdgeInsets padding) async {
+          tester.view.viewPadding = FakeViewPadding(
+            left: padding.left,
+            top: padding.top,
+            right: padding.right,
+            bottom: padding.bottom,
+          );
+          await tester.pumpWidget(
+            const ShadApp(
+              home: Scaffold(
+                body: ShadDialog(
+                  extendBackground: true,
+                  constraints: fullScreenConstraints,
+                  title: Text('Title'),
+                  description: Text('Description'),
+                  child: Text('Child'),
+                ),
+              ),
+            ),
+          );
+          await tester.pumpAndSettle();
+
+          return tester.getSize(
+            find
+                .descendant(
+                  of: find.byType(SizedBox),
+                  matching: find.byType(ColoredBox),
+                )
+                .first,
+          );
+        }
+
+        final sizeWithInsets = await getDecoratedBoxSize(systemPadding);
+        final sizeWithoutInsets = await getDecoratedBoxSize(EdgeInsets.zero);
+
+        // Both ColoredBoxes should fill the full screen — system padding
+        // must not shrink the background.
+        expect(sizeWithInsets.width, closeTo(sizeWithoutInsets.width, 0.5));
+        expect(sizeWithInsets.height, closeTo(sizeWithoutInsets.height, 0.5));
+      },
+    );
+
+    testWidgets(
+      'extendBackground: true does not remount the dialog subtree when '
+      'the keyboard opens (focused TextField keeps focus)',
+      (tester) async {
+        final focusNode = FocusNode();
+        addTearDown(focusNode.dispose);
+        final initStateCounter = _InitStateCounter();
+
+        await tester.pumpWidget(
+          ShadApp(
+            home: Scaffold(
+              // resizeToAvoidBottomInset defaults to true, which would
+              // consume the keyboard inset itself and zero out
+              // MediaQuery.viewInsetsOf for the dialog below — exactly
+              // the signal this test needs to reach ShadDialog.
+              resizeToAvoidBottomInset: false,
+              body: ShadDialog(
+                extendBackground: true,
+                constraints: fullScreenConstraints,
+                title: const Text('Title'),
+                child: _InitStateCountingTextField(
+                  focusNode: focusNode,
+                  counter: initStateCounter,
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        focusNode.requestFocus();
+        await tester.pump();
+        expect(focusNode.hasFocus, isTrue);
+        expect(initStateCounter.count, 1);
+
+        // Simulate the keyboard opening: viewInsets goes from zero to
+        // non-zero. Before the fix, the conditional
+        // `viewInsets == EdgeInsets.zero ? dialog : Padding(child: dialog)`
+        // swapped the child's runtimeType here, unmounting and remounting
+        // the whole subtree — losing focus and re-running initState.
+        await tester.binding.setSurfaceSize(const Size(800, 1200));
+        tester.view.viewInsets = const FakeViewPadding(bottom: 300);
+        addTearDown(tester.view.resetViewInsets);
+        await tester.pump();
+
+        expect(
+          focusNode.hasFocus,
+          isTrue,
+          reason:
+              'the TextField must not lose focus when the keyboard '
+              'opens',
+        );
+        expect(
+          initStateCounter.count,
+          1,
+          reason:
+              'initState must not run again — the element must be '
+              'reused, not remounted',
+        );
+      },
+    );
   });
+}
+
+class _InitStateCounter {
+  int count = 0;
+}
+
+class _InitStateCountingTextField extends StatefulWidget {
+  const _InitStateCountingTextField({
+    required this.focusNode,
+    required this.counter,
+  });
+
+  final FocusNode focusNode;
+  final _InitStateCounter counter;
+
+  @override
+  State<_InitStateCountingTextField> createState() =>
+      _InitStateCountingTextFieldState();
+}
+
+class _InitStateCountingTextFieldState
+    extends State<_InitStateCountingTextField> {
+  @override
+  void initState() {
+    super.initState();
+    widget.counter.count++;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return EditableText(
+      focusNode: widget.focusNode,
+      controller: TextEditingController(),
+      cursorColor: const Color(0xFF000000),
+      backgroundCursorColor: const Color(0xFF000000),
+      style: const TextStyle(color: Color(0xFF000000)),
+    );
+  }
 }
