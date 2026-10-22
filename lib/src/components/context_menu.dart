@@ -16,6 +16,10 @@ import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/mouse_area.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 
+@Deprecated(
+  'Context menus no longer share a tap region group. Each menu uses its own '
+  'group, shared with its submenus.',
+)
 const kContextMenuGroupId = ValueKey('context-menu');
 
 /// {@template ShadContextMenuRegion}
@@ -436,11 +440,17 @@ class ShadContextMenuState extends State<ShadContextMenu> {
 
     final effectiveShadows = widget.shadows ?? theme.contextMenuTheme.shadows;
 
+    // the root context menu, if this one is a submenu; its state is the tap
+    // region group shared with its submenus, so a tap inside a submenu does
+    // not close it
+    final contextMenu = context.maybeRead<ShadContextMenuState>();
+    final tapGroupId = contextMenu ?? this;
+
     Widget child = ShadPopover(
       controller: controller,
       padding: effectivePadding,
       areaGroupId: widget.groupId,
-      groupId: kContextMenuGroupId,
+      groupId: tapGroupId,
       anchor: widget.anchor,
       decoration: effectiveDecoration,
       effects: effectiveEffects,
@@ -460,7 +470,7 @@ class ShadContextMenuState extends State<ShadContextMenu> {
                 onTapOutside: widget.onTapOutside,
                 onTapUpInside: widget.onTapUpInside,
                 onTapUpOutside: widget.onTapUpOutside,
-                groupId: kContextMenuGroupId,
+                groupId: tapGroupId,
                 child: FocusTraversalGroup(
                   policy: OrderedTraversalPolicy(),
                   child: Column(
@@ -478,12 +488,11 @@ class ShadContextMenuState extends State<ShadContextMenu> {
         groupId: widget.groupId,
         onEnter: (_) => widget.onHoverArea?.call(true),
         onExit: (_) => widget.onHoverArea?.call(false),
-        child: TapRegion(groupId: kContextMenuGroupId, child: widget.child),
+        child: TapRegion(groupId: tapGroupId, child: widget.child),
       ),
     );
 
     // just put one context menu inherited widget.
-    final contextMenu = context.maybeRead<ShadContextMenuState>();
     if (contextMenu == null) {
       child = ShadProvider(data: this, child: child);
     }
