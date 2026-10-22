@@ -1,3 +1,7 @@
+## 0.57.3
+
+- **FIX**: Opening a `ShadContextMenu` now closes another one that is already open. All context menus shared one tap region group, so a tap on another menu's trigger counted as a tap inside every open menu. Each menu now has its own tap region group, shared with its submenus. `kContextMenuGroupId` is deprecated and no longer used (#728).
+
 ## 0.57.2
 
 - **FIX**: `ShadTabs` tab bar decoration now respects `tabBarConstraints` when `tabBarAlignment` is set, instead of stretching to the full width (#695).
