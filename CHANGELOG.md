@@ -1,3 +1,11 @@
+## 0.57.3
+
+- **FIX**: Opening a `ShadContextMenu` now closes another one that is already open. All context menus shared one tap region group, so a tap on another menu's trigger counted as a tap inside every open menu. Each menu now has its own tap region group, shared with its submenus. `kContextMenuGroupId` is deprecated and no longer used (#728).
+
+## 0.57.2
+
+- **FIX**: `ShadTabs` tab bar decoration now respects `tabBarConstraints` when `tabBarAlignment` is set, instead of stretching to the full width (#695).
+
 ## 0.57.1
 
 - **FIX**: Form fields without an `id` could get the same generated id in large forms (the id came from a 20-bit hash), which seeded a field with another field's value, dropped entries from `ShadForm.value`, or threw a `TypeError` when the fields had different types. Generated ids are now unique, and explicit ids starting with `__shad_field_` are reserved for them (#707).
