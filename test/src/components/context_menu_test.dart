@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -201,6 +202,92 @@ void main() {
           find.byType(ShadContextMenuRegion),
           matchesGoldenFile('goldens/context_menu_region.png'),
         );
+      });
+
+      // Regression test for #728.
+      testWidgets('opening another menu closes the open one', (tester) async {
+        final controllerA = ShadContextMenuController();
+        final controllerB = ShadContextMenuController();
+        addTearDown(controllerA.dispose);
+        addTearDown(controllerB.dispose);
+
+        Widget menu(String label, ShadContextMenuController controller) {
+          return ShadContextMenu(
+            controller: controller,
+            items: [ShadContextMenuItem(child: Text('$label item'))],
+            child: GestureDetector(
+              onTap: controller.toggle,
+              child: Text(label),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(
+          createTestWidget(
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                spacing: 200,
+                children: [menu('A', controllerA), menu('B', controllerB)],
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('A'));
+        await tester.pumpAndSettle();
+        expect(find.text('A item'), findsOneWidget);
+
+        await tester.tap(find.text('B'));
+        await tester.pumpAndSettle();
+        expect(find.text('B item'), findsOneWidget);
+        expect(find.text('A item'), findsNothing);
+      });
+
+      testWidgets('tapping a submenu item keeps the parent menu open', (
+        tester,
+      ) async {
+        final controller = ShadContextMenuController(isOpen: true);
+        addTearDown(controller.dispose);
+
+        await tester.pumpWidget(
+          createTestWidget(
+            Center(
+              child: ShadContextMenu(
+                controller: controller,
+                items: const [
+                  ShadContextMenuItem(
+                    items: [
+                      ShadContextMenuItem(
+                        closeOnTap: false,
+                        child: Text('Sub item'),
+                      ),
+                    ],
+                    child: Text('More'),
+                  ),
+                ],
+                child: const Text('Trigger'),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final gesture = await tester.createGesture(
+          kind: PointerDeviceKind.mouse,
+        );
+        addTearDown(gesture.removePointer);
+        await gesture.addPointer(location: Offset.zero);
+        await gesture.moveTo(tester.getCenter(find.text('More')));
+        await tester.pumpAndSettle();
+        expect(find.text('Sub item'), findsOneWidget);
+
+        await gesture.moveTo(tester.getCenter(find.text('Sub item')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Sub item'));
+        await tester.pumpAndSettle();
+        expect(controller.isOpen, true);
+        expect(find.text('More'), findsOneWidget);
       });
     });
   });
