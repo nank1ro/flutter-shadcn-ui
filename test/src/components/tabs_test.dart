@@ -6,6 +6,7 @@ import 'package:shadcn_ui/src/components/card.dart';
 import 'package:shadcn_ui/src/components/form/fields/input.dart';
 import 'package:shadcn_ui/src/components/tabs.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/green.dart';
+import 'package:shadcn_ui/src/theme/components/decorator.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 
@@ -172,6 +173,98 @@ void main() {
       );
       await tester.pumpAndSettle();
     });
+
+    testWidgets(
+      'ShadTabs tab bar decoration respects tabBarConstraints when aligned '
+      '(#695)',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestWidget(
+            const ShadTabs<String>(
+              value: 'first',
+              tabBarAlignment: Alignment.center,
+              tabBarConstraints: BoxConstraints.tightFor(width: 300),
+              tabs: [
+                ShadTab<String>(
+                  value: 'first',
+                  expandContent: true,
+                  content: SizedBox(
+                    width: double.infinity,
+                    child: Placeholder(key: Key('first-content')),
+                  ),
+                  child: Text('First'),
+                ),
+                ShadTab<String>(
+                  value: 'second',
+                  expandContent: true,
+                  content: SizedBox(
+                    width: double.infinity,
+                    child: Placeholder(),
+                  ),
+                  child: Text('Second'),
+                ),
+              ],
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final tabsRect = tester.getRect(find.byType(ShadTabs<String>));
+        // The tab bar decoration is the ShadDecorator wrapping the tab row
+        // (the tabs themselves are decorated too).
+        final decorationRect = tester.getRect(
+          find.ancestor(
+            of: find.widgetWithText(ShadTab<String>, 'First'),
+            matching: find.byType(ShadDecorator),
+          ),
+        );
+
+        // The decoration must be as wide as the tab bar constraints and
+        // centered, not stretched to the full width of ShadTabs.
+        expect(decorationRect.width, 300);
+        expect(decorationRect.center.dx, tabsRect.center.dx);
+
+        // The selected tab content must keep the full width.
+        final contentRect = tester.getRect(
+          find.byKey(const Key('first-content')),
+        );
+        expect(contentRect.width, tabsRect.width);
+      },
+    );
+
+    testWidgets(
+      'ShadTabs scrollable tab bar decoration hugs the tabs when aligned '
+      '(#695)',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestWidget(
+            const ShadTabs<String>(
+              value: 'first',
+              scrollable: true,
+              tabBarAlignment: Alignment.center,
+              tabs: [
+                ShadTab<String>(value: 'first', child: Text('First')),
+                ShadTab<String>(value: 'second', child: Text('Second')),
+              ],
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final tabsRect = tester.getRect(find.byType(ShadTabs<String>));
+        final decorationRect = tester.getRect(
+          find.ancestor(
+            of: find.widgetWithText(ShadTab<String>, 'First'),
+            matching: find.byType(ShadDecorator),
+          ),
+        );
+
+        // Like the non-aligned scrollable tab bar, the decoration wraps the
+        // tabs instead of stretching to the full width of ShadTabs.
+        expect(decorationRect.width, lessThan(tabsRect.width));
+        expect(decorationRect.center.dx, tabsRect.center.dx);
+      },
+    );
 
     testWidgets('ShadTab applies the correct color to the button when provided '
         'from ShadTab', (tester) async {
