@@ -1,3 +1,11 @@
+## 0.58.0
+
+- **FEAT**: Add `ShadCalendarController` for programmatic selection and month navigation in calendars, date pickers, and date picker form fields (#382). Assigning `visibleMonth` moves the displayed months even when that month is already shown, and a `visibleMonth` outside `fromMonth` and `toMonth` is clamped to the nearest allowed month. Changing the controller selection does not call `onChanged` or `onRangeChanged`, and form fields listen to the controller directly.
+- **CHANGE**: An uncontrolled `ShadCalendar` or `ShadDatePicker` that has a `selected` date and no `initialMonth` now opens at the month of the selected date instead of the current month.
+- **CHANGE**: An uncontrolled `ShadDatePicker` now remembers the last displayed month when it is closed and reopened, so `initialMonth` only applies the first time it opens.
+- **CHANGE**: An uncontrolled `ShadCalendar` keeps the user selection when rebuilt with an unchanged `selected`, `multipleSelected`, or `selectedRange` property.
+- **FIX**: Changing an uncontrolled calendar selection property to `null` clears the selection.
+
 ## 0.57.3
 
 - **FIX**: Opening a `ShadContextMenu` now closes another one that is already open. All context menus shared one tap region group, so a tap on another menu's trigger counted as a tap inside every open menu. Each menu now has its own tap region group, shared with its submenus. `kContextMenuGroupId` is deprecated and no longer used (#728).

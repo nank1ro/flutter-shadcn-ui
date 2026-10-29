@@ -108,6 +108,22 @@ ShadCalendar(
 
 </Preview>
 
+### Controller
+
+Pass a `ShadCalendarController` to read or change the selection and the displayed month from code. Use `ShadCalendarController.multiple` or `ShadCalendarController.range` for the other selection modes.
+
+```dart
+final controller = ShadCalendarController(visibleMonth: DateTime(2024, 6));
+
+ShadCalendar(
+  controller: controller,
+);
+
+// Later: select a date and move the calendar to another month.
+controller.selected = DateTime(2024, 6, 19);
+controller.visibleMonth = DateTime(2024, 9);
+```
+
 ### Hide Navigation
 
 <Preview src="calendar?hideNavigation" minHeight="450px">
