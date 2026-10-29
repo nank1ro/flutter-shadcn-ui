@@ -1,3 +1,7 @@
+## 0.57.4
+
+- **FIX**: `ShadRadioGroup` and `ShadSelect` no longer overwrite an external controller when `initialValue` or `initialValues` changes. The controller wins when both are given. An internally created controller still follows those values. `ShadRadioGroupFormField` and single-value `ShadSelectFormField` apply the same rule to the controller they own (#734).
+
 ## 0.57.3
 
 - **FIX**: Opening a `ShadContextMenu` now closes another one that is already open. All context menus shared one tap region group, so a tap on another menu's trigger counted as a tap inside every open menu. Each menu now has its own tap region group, shared with its submenus. `kContextMenuGroupId` is deprecated and no longer used (#728).

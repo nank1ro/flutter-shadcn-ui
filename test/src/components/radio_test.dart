@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
+import 'package:shadcn_ui/src/components/form/fields/radio.dart';
 import 'package:shadcn_ui/src/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
@@ -426,5 +427,119 @@ void main() {
         matchesGoldenFile('goldens/radio.png'),
       );
     });
+  });
+
+  // https://github.com/nank1ro/flutter-shadcn-ui/issues/734
+  group('ShadRadioGroup initialValue and controller', () {
+    const items = <Widget>[
+      ShadRadio<String>(value: 'a', label: Text('A')),
+      ShadRadio<String>(value: 'b', label: Text('B')),
+      ShadRadio<String>(value: 'c', label: Text('C')),
+    ];
+
+    Widget buildGroup({
+      required String? initialValue,
+      ShadRadioController<String>? controller,
+    }) {
+      return createTestWidget(
+        ShadRadioGroup<String>(
+          controller: controller,
+          initialValue: initialValue,
+          items: items,
+        ),
+      );
+    }
+
+    testWidgets(
+      'external controller is not overwritten when initialValue changes',
+      (tester) async {
+        final controller = ShadRadioController<String>(value: 'b');
+
+        await tester.pumpWidget(
+          buildGroup(initialValue: 'a', controller: controller),
+        );
+        expect(controller.value, 'b');
+
+        await tester.pumpWidget(
+          buildGroup(initialValue: 'c', controller: controller),
+        );
+        expect(controller.value, 'b');
+
+        await tester.pumpWidget(const SizedBox());
+        controller.dispose();
+      },
+    );
+
+    testWidgets('initialValue updates the internal controller', (tester) async {
+      await tester.pumpWidget(buildGroup(initialValue: 'a'));
+
+      ShadRadioController<String> internal() {
+        return tester
+            .state<ShadRadioGroupState<String>>(
+              find.byType(ShadRadioGroup<String>),
+            )
+            .effectiveController;
+      }
+
+      expect(internal().value, 'a');
+
+      await tester.pumpWidget(buildGroup(initialValue: 'c'));
+      expect(internal().value, 'c');
+    });
+
+    testWidgets(
+      'form field external controller is not overwritten by initialValue',
+      (tester) async {
+        final controller = ShadRadioController<String>(value: 'b');
+
+        Widget field(String? initialValue) {
+          return createTestWidget(
+            ShadRadioGroupFormField<String>(
+              controller: controller,
+              initialValue: initialValue,
+              items: items,
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('a'));
+        expect(controller.value, 'b');
+
+        await tester.pumpWidget(field('c'));
+        expect(controller.value, 'b');
+
+        await tester.pumpWidget(const SizedBox());
+        controller.dispose();
+      },
+    );
+
+    testWidgets(
+      'form field initialValue updates the internal controller',
+      (tester) async {
+        Widget field(String? initialValue) {
+          return createTestWidget(
+            ShadRadioGroupFormField<String>(
+              initialValue: initialValue,
+              items: items,
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('a'));
+
+        ShadRadioController<String> internal() {
+          return tester
+              .state<ShadFormBuilderRadioGroupState<String>>(
+                find.byType(ShadRadioGroupFormField<String>),
+              )
+              .controller;
+        }
+
+        expect(internal().value, 'a');
+
+        await tester.pumpWidget(field('c'));
+        expect(internal().value, 'c');
+      },
+    );
   });
 }

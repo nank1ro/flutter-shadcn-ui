@@ -241,4 +241,165 @@ void main() {
       },
     );
   });
+
+  // https://github.com/nank1ro/flutter-shadcn-ui/issues/734
+  group('ShadSelect initialValue and controller', () {
+    const options = <Widget>[
+      ShadOption(value: 'a', child: Text('a')),
+      ShadOption(value: 'b', child: Text('b')),
+      ShadOption(value: 'c', child: Text('c')),
+    ];
+
+    Widget single({
+      required String? initialValue,
+      ShadSelectController<String>? controller,
+    }) {
+      return createTestWidget(
+        ShadSelect<String>(
+          controller: controller,
+          initialValue: initialValue,
+          placeholder: const Text('Select'),
+          selectedOptionBuilder: (context, value) => Text(value),
+          options: options,
+        ),
+      );
+    }
+
+    Widget multiple({
+      required Set<String> initialValues,
+      ShadSelectController<String>? controller,
+    }) {
+      return createTestWidget(
+        ShadSelect<String>.multiple(
+          controller: controller,
+          initialValues: initialValues,
+          placeholder: const Text('Select'),
+          selectedOptionsBuilder: (context, values) => Text(values.join(',')),
+          options: options,
+        ),
+      );
+    }
+
+    ShadSelectController<String> internalSelect(WidgetTester tester) {
+      return tester
+          .state<ShadSelectState<String>>(find.byType(ShadSelect<String>))
+          .controller;
+    }
+
+    testWidgets(
+      'external controller is not overwritten when initialValue changes',
+      (tester) async {
+        final controller = ShadSelectController<String>(initialValue: {'b'});
+
+        await tester.pumpWidget(
+          single(initialValue: 'a', controller: controller),
+        );
+        expect(controller.value, {'b'});
+
+        await tester.pumpWidget(
+          single(initialValue: 'c', controller: controller),
+        );
+        expect(controller.value, {'b'});
+
+        await tester.pumpWidget(const SizedBox());
+        controller.dispose();
+      },
+    );
+
+    testWidgets('initialValue updates the internal controller', (tester) async {
+      await tester.pumpWidget(single(initialValue: 'a'));
+      expect(internalSelect(tester).value, {'a'});
+
+      await tester.pumpWidget(single(initialValue: 'c'));
+      expect(internalSelect(tester).value, {'c'});
+    });
+
+    testWidgets(
+      'external controller is not overwritten when initialValues changes',
+      (tester) async {
+        final controller = ShadSelectController<String>(initialValue: {'b'});
+
+        await tester.pumpWidget(
+          multiple(initialValues: {'a'}, controller: controller),
+        );
+        expect(controller.value, {'b'});
+
+        await tester.pumpWidget(
+          multiple(initialValues: {'c'}, controller: controller),
+        );
+        expect(controller.value, {'b'});
+
+        await tester.pumpWidget(const SizedBox());
+        controller.dispose();
+      },
+    );
+
+    testWidgets('initialValues updates the internal controller', (
+      tester,
+    ) async {
+      await tester.pumpWidget(multiple(initialValues: {'a'}));
+      expect(internalSelect(tester).value, {'a'});
+
+      await tester.pumpWidget(multiple(initialValues: {'c'}));
+      expect(internalSelect(tester).value, {'c'});
+    });
+
+    testWidgets(
+      'form field external controller is not overwritten by initialValue',
+      (tester) async {
+        final controller = ShadSelectController<String>(initialValue: {'b'});
+
+        Widget field(String? initialValue) {
+          return createTestWidget(
+            ShadSelectFormField<String>(
+              controller: controller,
+              initialValue: initialValue,
+              placeholder: const Text('Select'),
+              selectedOptionBuilder: (context, value) => Text(value),
+              options: options,
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('a'));
+        expect(controller.value, {'b'});
+
+        await tester.pumpWidget(field('c'));
+        expect(controller.value, {'b'});
+
+        await tester.pumpWidget(const SizedBox());
+        controller.dispose();
+      },
+    );
+
+    testWidgets('form field initialValue updates the internal controller', (
+      tester,
+    ) async {
+      Widget field(String? initialValue) {
+        return createTestWidget(
+          ShadSelectFormField<String>(
+            initialValue: initialValue,
+            placeholder: const Text('Select'),
+            selectedOptionBuilder: (context, value) => Text(value),
+            options: options,
+          ),
+        );
+      }
+
+      await tester.pumpWidget(field('a'));
+
+      ShadSelectController<String> internal() {
+        return tester
+            .state<ShadFormBuilderSelectState<String>>(
+              find.byType(ShadSelectFormField<String>),
+            )
+            .controller;
+      }
+
+      expect(internal().value, {'a'});
+
+      await tester.pumpWidget(field('c'));
+      expect(internal().value, {'c'});
+    });
+  });
 }

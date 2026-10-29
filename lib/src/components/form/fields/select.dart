@@ -465,6 +465,22 @@ class ShadFormBuilderSelectState<T>
   }
 
   @override
+  void didUpdateWidget(covariant ShadSelectFormField<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // ShadSelect always receives this field's controller, so it will not
+    // apply initialValue itself. Keep tracking it on the controller this
+    // field owns, and leave an external controller alone.
+    if (widget.controller != null ||
+        widget.initialValue == oldWidget.initialValue ||
+        widget.initialValue is! T) {
+      return;
+    }
+    controller.value
+      ..clear()
+      ..add(widget.initialValue as T);
+  }
+
+  @override
   void reset() {
     super.reset();
     controller.value = initialValue is T ? <T>{initialValue as T} : <T>{};

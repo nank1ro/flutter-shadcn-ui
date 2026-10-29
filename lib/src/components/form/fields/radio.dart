@@ -21,6 +21,8 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
     super.enabled,
     super.autovalidateMode,
     super.restorationId,
+
+    /// {@macro ShadRadioGroup.initialValue}
     T? initialValue,
     super.focusNode,
     super.validator,
@@ -110,6 +112,12 @@ class ShadFormBuilderRadioGroupState<T>
     }
     if (oldWidget.controller != null && widget.controller == null) {
       _controller = ShadRadioController(value: value, enabled: enabled);
+    }
+    // The group always receives this field's controller, so it will not apply
+    // initialValue itself. Keep tracking it on the controller this field owns.
+    if (widget.controller == null &&
+        oldWidget.initialValue != widget.initialValue) {
+      controller.value = widget.initialValue;
     }
   }
 
