@@ -55,7 +55,6 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
            state as ShadFormBuilderRadioGroupState<T>;
            return ShadRadioGroup(
              items: items,
-             onChanged: state.didChange,
              enabled: state.enabled,
              initialValue: initialValue,
              axis: axis,
@@ -129,7 +128,6 @@ class ShadFormBuilderRadioGroupState<T>
   void onControllerChanged() {
     if (controller.value != value) {
       didChange(controller.value);
-      widget.onChanged?.call(controller.value);
     }
   }
 }

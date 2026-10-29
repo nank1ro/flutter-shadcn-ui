@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
+import 'package:shadcn_ui/src/components/form/fields/radio.dart';
+import 'package:shadcn_ui/src/components/form/form.dart';
 import 'package:shadcn_ui/src/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
@@ -425,6 +427,88 @@ void main() {
         find.byType(ShadRadioGroup<bool>),
         matchesGoldenFile('goldens/radio.png'),
       );
+    });
+  });
+
+  group('ShadRadioGroupFormField', () {
+    testWidgets('calls onChanged once per selection change', (
+      WidgetTester tester,
+    ) async {
+      // Repro from https://github.com/nank1ro/flutter-shadcn-ui/issues/735.
+      final controller = ShadRadioController<String>(value: 'a');
+      final calls = <String?>[];
+      final formKey = GlobalKey<ShadFormState>();
+
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadForm(
+            key: formKey,
+            child: ShadRadioGroupFormField<String>(
+              id: 'r',
+              controller: controller,
+              onChanged: calls.add,
+              items: const [
+                ShadRadio(value: 'a', label: Text('A')),
+                ShadRadio(value: 'b', label: Text('B')),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      ShadFormBuilderRadioGroupState<String> fieldState() {
+        return tester.state<ShadFormBuilderRadioGroupState<String>>(
+          find.byType(ShadRadioGroupFormField<String>),
+        );
+      }
+
+      expect(calls, isEmpty);
+      expect(fieldState().value, 'a');
+      expect(controller.value, 'a');
+      expect(formKey.currentState!.value['r'], 'a');
+
+      controller.value = 'b';
+      await tester.pump();
+
+      expect(calls, ['b']);
+      expect(fieldState().value, 'b');
+      expect(controller.value, 'b');
+      expect(formKey.currentState!.value['r'], 'b');
+
+      calls.clear();
+      await tester.tap(find.text('A'));
+      await tester.pump();
+
+      expect(calls, ['a']);
+      expect(fieldState().value, 'a');
+      expect(controller.value, 'a');
+      expect(formKey.currentState!.value['r'], 'a');
+
+      // Selecting the current value again must not notify.
+      calls.clear();
+      await tester.tap(find.text('A'));
+      await tester.pump();
+      controller.value = 'a';
+      await tester.pump();
+
+      expect(calls, isEmpty);
+      expect(fieldState().value, 'a');
+      expect(controller.value, 'a');
+      expect(formKey.currentState!.value['r'], 'a');
+
+      calls.clear();
+      controller.value = 'b';
+      await tester.pump();
+      expect(calls, ['b']);
+
+      calls.clear();
+      formKey.currentState!.reset();
+      await tester.pump();
+
+      expect(calls, ['a']);
+      expect(fieldState().value, 'a');
+      expect(controller.value, 'a');
+      expect(formKey.currentState!.value['r'], 'a');
     });
   });
 }
