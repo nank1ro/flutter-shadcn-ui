@@ -110,6 +110,22 @@ class _PresetsDatePickerState extends State<PresetsDatePicker> {
 
 </Preview>
 
+## Controller
+
+Pass a `ShadCalendarController` to change the selected date or range and the displayed month from code. The same controller can be passed to `ShadDatePickerFormField`.
+
+```dart
+final controller = ShadCalendarController();
+
+ShadDatePicker(
+  controller: controller,
+);
+
+// Later: select a date and show another month when the picker opens.
+controller.selected = DateTime(2024, 6, 19);
+controller.visibleMonth = DateTime(2024, 9);
+```
+
 ## Form
 
 <Preview src="form?style=datePickerField" minHeight="700px">
