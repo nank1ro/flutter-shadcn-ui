@@ -577,7 +577,7 @@ void main() {
           await tester.pump();
 
           expect(paintedBorder().top.color, colorScheme.ring);
-          expect(paintedBorder().top.width, 1);
+          expect(paintedBorder().top.width, disableSecondaryBorder ? 2 : 1);
           expect(tester.getTopLeft(find.text('Title')), titleBefore);
         },
       );
@@ -631,6 +631,280 @@ void main() {
             .cursor,
         SystemMouseCursors.click,
       );
+    });
+
+    testWidgets(
+      'paints the focus ring only for its own focus, not a focused action',
+      (tester) async {
+        final itemNode = FocusNode();
+        final buttonNode = FocusNode();
+        addTearDown(itemNode.dispose);
+        addTearDown(buttonNode.dispose);
+        final focusChanges = <bool>[];
+        await tester.pumpWidget(
+          createTestWidget(
+            ShadItem(
+              focusNode: itemNode,
+              onFocusChange: focusChanges.add,
+              onPressed: () {},
+              title: const Text('Title'),
+              actions: ShadButton(
+                focusNode: buttonNode,
+                onPressed: () {},
+                child: const Text('Action'),
+              ),
+            ),
+          ),
+        );
+
+        buttonNode.requestFocus();
+        await tester.pump();
+        expect(itemDecorator(tester).focused, isFalse);
+        expect(focusChanges, isEmpty);
+
+        itemNode.requestFocus();
+        await tester.pump();
+        expect(itemDecorator(tester).focused, isTrue);
+        expect(focusChanges, [true]);
+
+        buttonNode.requestFocus();
+        await tester.pump();
+        expect(itemDecorator(tester).focused, isFalse);
+        expect(focusChanges, [true, false]);
+      },
+    );
+
+    testWidgets('paints the focus ring when it already has the focus', (
+      tester,
+    ) async {
+      final focusNode = FocusNode();
+      addTearDown(focusNode.dispose);
+      await tester.pumpWidget(
+        createTestWidget(Focus(focusNode: focusNode, child: const SizedBox())),
+      );
+      focusNode.requestFocus();
+      await tester.pump();
+
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadItem(
+            focusNode: focusNode,
+            onPressed: () {},
+            title: const Text('Title'),
+          ),
+        ),
+      );
+      expect(focusNode.hasPrimaryFocus, isTrue);
+      expect(itemDecorator(tester).focused, isTrue);
+    });
+
+    testWidgets('places actions without media and content at the start', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          const ShadItem(
+            actions: SizedBox(width: 50, height: 20, key: ValueKey('actions')),
+          ),
+        ),
+      );
+
+      final item = tester.getRect(find.byType(ShadItem));
+      final actions = tester.getRect(find.byKey(const ValueKey('actions')));
+      // 16 padding + 1 border
+      expect(actions.left, item.left + 17);
+      expect(item.height, 20 + 2 * 17);
+    });
+
+    testWidgets('ignores Enter and Space bubbling from a focused action', (
+      tester,
+    ) async {
+      var pressed = 0;
+      final actionNode = FocusNode();
+      addTearDown(actionNode.dispose);
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadItem(
+            onPressed: () => pressed++,
+            title: const Text('Title'),
+            actions: Focus(focusNode: actionNode, child: const Text('Action')),
+          ),
+        ),
+      );
+
+      actionNode.requestFocus();
+      await tester.pump();
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.sendKeyEvent(LogicalKeyboardKey.space);
+      await tester.pump();
+      expect(pressed, 0);
+    });
+
+    testWidgets('excludes its actions from focus when disabled', (
+      tester,
+    ) async {
+      final buttonNode = FocusNode();
+      addTearDown(buttonNode.dispose);
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadItem(
+            enabled: false,
+            onPressed: () {},
+            title: const Text('Title'),
+            actions: ShadButton(
+              focusNode: buttonNode,
+              onPressed: () {},
+              child: const Text('Action'),
+            ),
+          ),
+        ),
+      );
+
+      buttonNode.requestFocus();
+      await tester.pump();
+      expect(buttonNode.hasFocus, isFalse);
+    });
+
+    testWidgets('has link semantics and activates with Enter only', (
+      tester,
+    ) async {
+      var pressed = 0;
+      final focusNode = FocusNode();
+      addTearDown(focusNode.dispose);
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadItem(
+            link: true,
+            focusNode: focusNode,
+            onPressed: () => pressed++,
+            title: const Text('Title'),
+          ),
+        ),
+      );
+
+      expect(buttonSemantics, findsNothing);
+      expect(
+        find.descendant(
+          of: find.byType(ShadItem),
+          matching: find.byWidgetPredicate(
+            (widget) => widget is Semantics && widget.properties.link == true,
+          ),
+        ),
+        findsOneWidget,
+      );
+
+      focusNode.requestFocus();
+      await tester.pump();
+      await tester.sendKeyEvent(LogicalKeyboardKey.space);
+      await tester.pump();
+      expect(pressed, 0);
+
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.pump();
+      expect(pressed, 1);
+    });
+
+    testWidgets('moves the actions below the content when they do not fit', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          const Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+              width: 160,
+              child: ShadItem.outline(
+                title: Text('Title'),
+                description: Text('Short text'),
+                actions: ShadButton(child: Text('Action')),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(tester.takeException(), isNull);
+      final item = tester.getRect(find.byType(ShadItem));
+      final content = tester.getRect(find.byType(ShadItemContent));
+      final actions = tester.getRect(find.byType(ShadButton));
+      expect(item.width, 160);
+      expect(actions.top, content.bottom + 16);
+      expect(actions.left, content.left);
+    });
+
+    testWidgets(
+      'keeps the actions at the end and vertically centered when they fit',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestWidget(
+            const ShadItem(
+              title: Text('Title'),
+              actions: SizedBox.square(
+                dimension: 50,
+                key: ValueKey('actions'),
+              ),
+            ),
+          ),
+        );
+
+        final item = tester.getRect(find.byType(ShadItem));
+        final content = tester.getRect(find.byType(ShadItemContent));
+        final actions = tester.getRect(find.byKey(const ValueKey('actions')));
+        // 16 padding + 1 border
+        expect(actions.right, item.right - 17);
+        expect(actions.center.dy, content.center.dy);
+        expect(content.right, actions.left - 16);
+      },
+    );
+
+    testWidgets('supports intrinsic sizing', (tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          const IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: ShadItem(
+                    title: Text('Title'),
+                    description: Text('Description'),
+                    actions: ShadButton(child: Text('Action')),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      expect(tester.takeException(), isNull);
+      expect(
+        tester.getSize(find.byType(ShadItem)).height,
+        tester.getSize(find.byType(IntrinsicHeight)).height,
+      );
+    });
+
+    testWidgets('does not add a gap for an empty middle row', (tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          const ShadItem(
+            header: SizedBox(height: 10, key: ValueKey('header')),
+            footer: SizedBox(height: 10, key: ValueKey('footer')),
+          ),
+        ),
+      );
+
+      final header = tester.getRect(find.byKey(const ValueKey('header')));
+      final footer = tester.getRect(find.byKey(const ValueKey('footer')));
+      expect(footer.top - header.bottom, 16);
+
+      await tester.pumpWidget(
+        createTestWidget(
+          const ShadItem(header: SizedBox(height: 10)),
+        ),
+      );
+      // 10 header + 2 * (16 padding + 1 border)
+      expect(tester.getSize(find.byType(ShadItem)).height, 44);
     });
 
     testWidgets('does not call onPressed when disabled', (tester) async {
@@ -786,22 +1060,22 @@ void main() {
       );
     });
 
-    testWidgets('image variant is a clipped 40px square', (tester) async {
+    testWidgets('image variant is a clipped 40px square covered by the image', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const Align(
-            child: ShadItemMedia.image(
-              child: ColoredBox(color: Colors.red, key: ValueKey('image')),
-            ),
+            child: ShadItemMedia.image(src: 'assets/test_image.png'),
           ),
         ),
       );
 
       expect(tester.getSize(find.byType(ShadItemMedia)), const Size(40, 40));
-      expect(
-        tester.getSize(find.byKey(const ValueKey('image'))),
-        const Size(40, 40),
-      );
+      final image = tester.widget<UniversalImage>(find.byType(UniversalImage));
+      expect(image.width, 40);
+      expect(image.height, 40);
+      expect(image.fit, BoxFit.cover);
       expect(
         find.descendant(
           of: find.byType(ShadItemMedia),
@@ -836,6 +1110,38 @@ void main() {
       expect(separator.height, 1);
       expect(separator.top, first.bottom);
       expect(second.top, separator.bottom);
+    });
+    testWidgets('reads groupSpacing and textDirection from the theme', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          theme: ShadThemeData(
+            colorScheme: const ShadSlateColorScheme.light(),
+            primaryItemTheme: const ShadItemTheme(
+              groupSpacing: 8,
+              textDirection: TextDirection.rtl,
+            ),
+          ),
+          const ShadItemGroup(
+            children: [
+              ShadItem(
+                media: SizedBox.square(dimension: 20, key: ValueKey('media')),
+                title: Text('First'),
+              ),
+              ShadItem(title: Text('Second')),
+            ],
+          ),
+        ),
+      );
+
+      final first = tester.getRect(find.byType(ShadItem).first);
+      final second = tester.getRect(find.byType(ShadItem).last);
+      expect(second.top - first.bottom, 8);
+
+      final media = tester.getRect(find.byKey(const ValueKey('media')));
+      final title = tester.getRect(find.text('First'));
+      expect(media.left, greaterThan(title.right));
     });
   });
 }

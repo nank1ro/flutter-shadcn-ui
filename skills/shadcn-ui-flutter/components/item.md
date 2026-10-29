@@ -238,7 +238,7 @@ class ItemAvatar extends StatelessWidget {
 
 ## Image
 
-Use `ShadItemMedia.image` to display a clipped image. Use `BoxFit.cover` to keep the aspect ratio of the image.
+Use `ShadItemMedia.image` to display a clipped image from a `src` (network url, asset or file). The image covers the square by default, use `fit` to change it.
 
 
 
@@ -276,16 +276,15 @@ class ItemImage extends StatelessWidget {
       children: [
         for (final song in music)
           ShadItem.outline(
+            link: true,
             onPressed: () {},
             media: ShadItemMedia.image(
-              child: Image.network(
-                'https://avatar.vercel.sh/${Uri.encodeComponent(song.title)}',
-                fit: BoxFit.cover,
-              ),
+              src:
+                  'https://avatar.vercel.sh/${Uri.encodeComponent(song.title)}',
             ),
             title: Text('${song.title} - ${song.album}'),
             description: Text(song.artist),
-            actions: Text(song.duration),
+            actions: ShadItemDescription(child: Text(song.duration)),
           ),
       ],
     );
@@ -399,7 +398,9 @@ class ItemHeader extends StatelessWidget {
 
 ## Link
 
-Pass `onPressed` to make the whole item interactive. It becomes focusable, shows a hover background, a focus ring, and can be activated with Enter or Space.
+Pass `onPressed` to make the whole item interactive. It becomes focusable, shows a hover background and a focus ring, and can be activated with Enter or Space.
+
+Set `link: true` for items that navigate somewhere: they are announced as links instead of buttons and are activated with Enter only, like a link on the web.
 
 
 
@@ -415,6 +416,7 @@ class ItemLink extends StatelessWidget {
       spacing: 16,
       children: [
         ShadItem(
+          link: true,
           onPressed: () {},
           title: const Text('Visit our documentation'),
           description: const Text(
@@ -423,6 +425,7 @@ class ItemLink extends StatelessWidget {
           actions: const Icon(LucideIcons.chevronRight, size: 16),
         ),
         ShadItem.outline(
+          link: true,
           onPressed: () {},
           title: const Text('External resource'),
           description: const Text(

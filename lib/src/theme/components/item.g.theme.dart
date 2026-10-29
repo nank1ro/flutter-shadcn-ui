@@ -34,6 +34,7 @@ mixin _$ShadItemTheme {
         t,
       ),
       cursor: t < 0.5 ? a.cursor : b.cursor,
+      textDirection: t < 0.5 ? a.textDirection : b.textDirection,
       size: t < 0.5 ? a.size : b.size,
       padding: EdgeInsetsGeometry.lerp(a.padding, b.padding, t),
       gap: lerpDouble$(a.gap, b.gap, t),
@@ -50,6 +51,7 @@ mixin _$ShadItemTheme {
       actionsSpacing: lerpDouble$(a.actionsSpacing, b.actionsSpacing, t),
       headerSpacing: lerpDouble$(a.headerSpacing, b.headerSpacing, t),
       footerSpacing: lerpDouble$(a.footerSpacing, b.footerSpacing, t),
+      groupSpacing: lerpDouble$(a.groupSpacing, b.groupSpacing, t),
       mediaIconSize: lerpDouble$(a.mediaIconSize, b.mediaIconSize, t),
       mediaIconContainerSize: lerpDouble$(
         a.mediaIconContainerSize,
@@ -58,6 +60,7 @@ mixin _$ShadItemTheme {
       ),
       mediaImageSize: lerpDouble$(a.mediaImageSize, b.mediaImageSize, t),
       mediaRadius: BorderRadius.lerp(a.mediaRadius, b.mediaRadius, t),
+      mediaImageFit: t < 0.5 ? a.mediaImageFit : b.mediaImageFit,
       mediaBackgroundColor: Color.lerp(
         a.mediaBackgroundColor,
         b.mediaBackgroundColor,
@@ -72,6 +75,7 @@ mixin _$ShadItemTheme {
     Color? backgroundColor,
     Color? hoverBackgroundColor,
     MouseCursor? cursor,
+    TextDirection? textDirection,
     ShadItemSize? size,
     EdgeInsetsGeometry? padding,
     double? gap,
@@ -82,10 +86,12 @@ mixin _$ShadItemTheme {
     double? actionsSpacing,
     double? headerSpacing,
     double? footerSpacing,
+    double? groupSpacing,
     double? mediaIconSize,
     double? mediaIconContainerSize,
     double? mediaImageSize,
     BorderRadius? mediaRadius,
+    BoxFit? mediaImageFit,
     Color? mediaBackgroundColor,
     Color? mediaBorderColor,
   }) {
@@ -96,6 +102,7 @@ mixin _$ShadItemTheme {
       backgroundColor: backgroundColor ?? _this.backgroundColor,
       hoverBackgroundColor: hoverBackgroundColor ?? _this.hoverBackgroundColor,
       cursor: cursor ?? _this.cursor,
+      textDirection: textDirection ?? _this.textDirection,
       size: size ?? _this.size,
       padding: padding ?? _this.padding,
       gap: gap ?? _this.gap,
@@ -106,11 +113,13 @@ mixin _$ShadItemTheme {
       actionsSpacing: actionsSpacing ?? _this.actionsSpacing,
       headerSpacing: headerSpacing ?? _this.headerSpacing,
       footerSpacing: footerSpacing ?? _this.footerSpacing,
+      groupSpacing: groupSpacing ?? _this.groupSpacing,
       mediaIconSize: mediaIconSize ?? _this.mediaIconSize,
       mediaIconContainerSize:
           mediaIconContainerSize ?? _this.mediaIconContainerSize,
       mediaImageSize: mediaImageSize ?? _this.mediaImageSize,
       mediaRadius: mediaRadius ?? _this.mediaRadius,
+      mediaImageFit: mediaImageFit ?? _this.mediaImageFit,
       mediaBackgroundColor: mediaBackgroundColor ?? _this.mediaBackgroundColor,
       mediaBorderColor: mediaBorderColor ?? _this.mediaBorderColor,
     );
@@ -132,6 +141,7 @@ mixin _$ShadItemTheme {
       backgroundColor: other.backgroundColor,
       hoverBackgroundColor: other.hoverBackgroundColor,
       cursor: other.cursor,
+      textDirection: other.textDirection,
       size: other.size,
       padding: other.padding,
       gap: other.gap,
@@ -144,10 +154,12 @@ mixin _$ShadItemTheme {
       actionsSpacing: other.actionsSpacing,
       headerSpacing: other.headerSpacing,
       footerSpacing: other.footerSpacing,
+      groupSpacing: other.groupSpacing,
       mediaIconSize: other.mediaIconSize,
       mediaIconContainerSize: other.mediaIconContainerSize,
       mediaImageSize: other.mediaImageSize,
       mediaRadius: other.mediaRadius,
+      mediaImageFit: other.mediaImageFit,
       mediaBackgroundColor: other.mediaBackgroundColor,
       mediaBorderColor: other.mediaBorderColor,
     );
@@ -170,6 +182,7 @@ mixin _$ShadItemTheme {
         _other.backgroundColor == _this.backgroundColor &&
         _other.hoverBackgroundColor == _this.hoverBackgroundColor &&
         _other.cursor == _this.cursor &&
+        _other.textDirection == _this.textDirection &&
         _other.size == _this.size &&
         _other.padding == _this.padding &&
         _other.gap == _this.gap &&
@@ -180,10 +193,12 @@ mixin _$ShadItemTheme {
         _other.actionsSpacing == _this.actionsSpacing &&
         _other.headerSpacing == _this.headerSpacing &&
         _other.footerSpacing == _this.footerSpacing &&
+        _other.groupSpacing == _this.groupSpacing &&
         _other.mediaIconSize == _this.mediaIconSize &&
         _other.mediaIconContainerSize == _this.mediaIconContainerSize &&
         _other.mediaImageSize == _this.mediaImageSize &&
         _other.mediaRadius == _this.mediaRadius &&
+        _other.mediaImageFit == _this.mediaImageFit &&
         _other.mediaBackgroundColor == _this.mediaBackgroundColor &&
         _other.mediaBorderColor == _this.mediaBorderColor;
   }
@@ -198,6 +213,7 @@ mixin _$ShadItemTheme {
       _this.backgroundColor,
       _this.hoverBackgroundColor,
       _this.cursor,
+      _this.textDirection,
       _this.size,
       _this.padding,
       _this.gap,
@@ -208,10 +224,12 @@ mixin _$ShadItemTheme {
       _this.actionsSpacing,
       _this.headerSpacing,
       _this.footerSpacing,
+      _this.groupSpacing,
       _this.mediaIconSize,
       _this.mediaIconContainerSize,
       _this.mediaImageSize,
       _this.mediaRadius,
+      _this.mediaImageFit,
       _this.mediaBackgroundColor,
       _this.mediaBorderColor,
     ]);

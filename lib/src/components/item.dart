@@ -1,3 +1,6 @@
+import 'dart:math' as math;
+
+import 'package:boxy/boxy.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
@@ -11,6 +14,7 @@ import 'package:shadcn_ui/src/utils/debug_check.dart';
 import 'package:shadcn_ui/src/utils/gesture_detector.dart';
 import 'package:shadcn_ui/src/utils/provider.dart';
 import 'package:shadcn_ui/src/utils/states_controller.dart';
+import 'package:universal_image/universal_image.dart';
 
 /// The variant of the [ShadItem].
 enum ShadItemVariant { primary, outline, muted }
@@ -60,6 +64,7 @@ class ShadItem extends StatefulWidget {
     this.textDirection,
     this.onPressed,
     this.enabled = true,
+    this.link = false,
     this.focusNode,
     this.autofocus = false,
     this.onFocusChange,
@@ -91,6 +96,7 @@ class ShadItem extends StatefulWidget {
     this.textDirection,
     this.onPressed,
     this.enabled = true,
+    this.link = false,
     this.focusNode,
     this.autofocus = false,
     this.onFocusChange,
@@ -122,6 +128,7 @@ class ShadItem extends StatefulWidget {
     this.textDirection,
     this.onPressed,
     this.enabled = true,
+    this.link = false,
     this.focusNode,
     this.autofocus = false,
     this.onFocusChange,
@@ -154,6 +161,7 @@ class ShadItem extends StatefulWidget {
     this.textDirection,
     this.onPressed,
     this.enabled = true,
+    this.link = false,
     this.focusNode,
     this.autofocus = false,
     this.onFocusChange,
@@ -282,9 +290,19 @@ class ShadItem extends StatefulWidget {
   /// {@template ShadItem.enabled}
   /// Whether the item is enabled, defaults to true.
   ///
-  /// Only used when [onPressed] is not null.
+  /// Only used when [onPressed] is not null. A static item is never disabled.
+  /// A disabled item also prevents its [actions] from getting the focus.
   /// {@endtemplate}
   final bool enabled;
+
+  /// {@template ShadItem.link}
+  /// Whether the item navigates somewhere, like a link on the web, defaults to
+  /// false.
+  ///
+  /// A link item is announced as a link instead of a button and is activated
+  /// with Enter only, not with Space.
+  /// {@endtemplate}
+  final bool link;
 
   /// {@macro ShadButton.focusNode}
   final FocusNode? focusNode;
@@ -292,7 +310,11 @@ class ShadItem extends StatefulWidget {
   /// {@macro ShadButton.autofocus}
   final bool autofocus;
 
-  /// {@macro ShadButton.onFocusChange}
+  /// {@template ShadItem.onFocusChange}
+  /// Called when the item gains or loses the focus.
+  ///
+  /// Only the item's own focus is reported, not the focus of its [actions].
+  /// {@endtemplate}
   final ValueChanged<bool>? onFocusChange;
 
   /// {@macro ShadButton.onHoverChange}
@@ -321,7 +343,9 @@ class _ShadItemState extends State<ShadItem> {
       _statesController = ShadStatesController();
     }
     if (widget.focusNode == null) _focusNode = FocusNode();
-    statesController.update(ShadState.disabled, !widget.enabled);
+    statesController
+      ..update(ShadState.disabled, !widget.enabled)
+      ..update(ShadState.focused, focusNode.hasPrimaryFocus);
     focusNode.addListener(onFocusChange);
   }
 
@@ -354,8 +378,13 @@ class _ShadItemState extends State<ShadItem> {
     super.dispose();
   }
 
+  // Only the item's own focus counts, otherwise focusing one of the actions
+  // would paint the focus ring around the whole item.
   void onFocusChange() {
-    statesController.update(ShadState.focused, focusNode.hasFocus);
+    final focused = focusNode.hasPrimaryFocus;
+    if (statesController.value.contains(ShadState.focused) == focused) return;
+    statesController.update(ShadState.focused, focused);
+    widget.onFocusChange?.call(focused);
   }
 
   ShadItemTheme variantTheme(ShadThemeData theme) {
@@ -434,6 +463,7 @@ class _ShadItemState extends State<ShadItem> {
 
     // The media and the content are grouped, so that the media can be top
     // aligned to the content while the actions stay vertically centered.
+    final hasMain = media != null || content != null;
     final main = Row(
       crossAxisAlignment: hasDescription
           ? CrossAxisAlignment.start
@@ -445,6 +475,9 @@ class _ShadItemState extends State<ShadItem> {
       ],
     );
 
+    final effectiveTextDirection =
+        widget.textDirection ?? itemTheme.textDirection;
+
     Widget item = Padding(
       padding: effectivePadding,
       child: Column(
@@ -453,13 +486,19 @@ class _ShadItemState extends State<ShadItem> {
         spacing: effectiveGap,
         children: [
           ?widget.header,
-          Row(
-            spacing: effectiveGap,
-            children: [
-              Expanded(child: main),
-              ?widget.actions,
-            ],
-          ),
+          if (hasMain || widget.actions != null)
+            CustomBoxy(
+              delegate: _ShadItemRowBoxy(
+                gap: effectiveGap,
+                textDirection:
+                    effectiveTextDirection ?? Directionality.of(context),
+              ),
+              children: [
+                if (hasMain) BoxyId(id: #main, child: main),
+                if (widget.actions != null)
+                  BoxyId(id: #actions, child: widget.actions!),
+              ],
+            ),
           ?widget.footer,
         ],
       ),
@@ -471,8 +510,8 @@ class _ShadItemState extends State<ShadItem> {
       child: item,
     );
 
-    if (widget.textDirection != null) {
-      item = Directionality(textDirection: widget.textDirection!, child: item);
+    if (effectiveTextDirection != null) {
+      item = Directionality(textDirection: effectiveTextDirection, child: item);
     }
 
     if (widget.onPressed == null) {
@@ -486,28 +525,31 @@ class _ShadItemState extends State<ShadItem> {
 
     return CallbackShortcuts(
       bindings: {
-        const SingleActivator(LogicalKeyboardKey.enter): onPressed,
-        const SingleActivator(LogicalKeyboardKey.space): onPressed,
+        const SingleActivator(LogicalKeyboardKey.enter): onShortcut,
+        if (!widget.link)
+          const SingleActivator(LogicalKeyboardKey.space): onShortcut,
       },
       child: ValueListenableBuilder(
         valueListenable: statesController,
         builder: (context, states, child) {
           final hovered = states.contains(ShadState.hovered);
+          final focused = states.contains(ShadState.focused);
           final enabled = !states.contains(ShadState.disabled);
 
           return Semantics(
             container: true,
-            button: true,
+            button: !widget.link,
+            link: widget.link,
             focusable: enabled,
             enabled: enabled,
             child: ShadDisabled(
               disabled: !enabled,
               child: ShadFocusable(
                 canRequestFocus: enabled,
+                descendantsAreFocusable: enabled,
                 autofocus: widget.autofocus,
                 focusNode: focusNode,
-                onFocusChange: widget.onFocusChange,
-                builder: (context, focused, child) => ShadDecorator(
+                builder: (context, _, child) => ShadDecorator(
                   decoration: effectiveDecoration.copyWith(
                     color: hovered
                         ? effectiveHoverBackgroundColor
@@ -542,6 +584,128 @@ class _ShadItemState extends State<ShadItem> {
     if (!widget.enabled) return;
     widget.onPressed?.call();
   }
+
+  // Keys that a focused action doesn't handle bubble up to the item, they
+  // must not activate it.
+  void onShortcut() {
+    if (focusNode.hasPrimaryFocus) onPressed();
+  }
+}
+
+/// Lays out the media and content of a [ShadItem] next to its actions, and
+/// moves the actions below the content when they don't fit.
+///
+/// Like `flex-wrap` on the web, the line breaks when the min-content width of
+/// the content plus the actions doesn't fit, not its natural width, so long
+/// titles and descriptions wrap first.
+class _ShadItemRowBoxy extends BoxyDelegate {
+  _ShadItemRowBoxy({required this.gap, required this.textDirection});
+
+  final double gap;
+  final TextDirection textDirection;
+
+  BoxyChild? get _main => hasChild(#main) ? getChild(#main) : null;
+  BoxyChild? get _actions => hasChild(#actions) ? getChild(#actions) : null;
+
+  bool _fits(BoxyChild main, double actionsWidth, double width) {
+    return main.render.getMinIntrinsicWidth(double.infinity) +
+            gap +
+            actionsWidth <=
+        width;
+  }
+
+  BoxConstraints _width(double width) =>
+      BoxConstraints.tightFor(width: width).enforce(constraints.loosen());
+
+  @override
+  Size layout() {
+    final main = _main;
+    final actions = _actions;
+    final maxWidth = constraints.maxWidth;
+    final rtl = textDirection == TextDirection.rtl;
+
+    if (actions == null) {
+      main!.position(Offset.zero);
+      return main.layout(_width(maxWidth));
+    }
+
+    final actionsSize = actions.layout(constraints.loosen());
+
+    // Like the web version, actions without media and content sit at the
+    // start of the item.
+    if (main == null) {
+      actions.position(Offset(rtl ? maxWidth - actionsSize.width : 0, 0));
+      return Size(maxWidth, actionsSize.height);
+    }
+
+    if (_fits(main, actionsSize.width, maxWidth)) {
+      final mainWidth = maxWidth - gap - actionsSize.width;
+      final mainSize = main.layout(_width(mainWidth));
+      final height = math.max(mainSize.height, actionsSize.height);
+      main.position(
+        Offset(
+          rtl ? actionsSize.width + gap : 0,
+          (height - mainSize.height) / 2,
+        ),
+      );
+      actions.position(
+        Offset(rtl ? 0 : mainWidth + gap, (height - actionsSize.height) / 2),
+      );
+      return Size(maxWidth, height);
+    }
+
+    final mainSize = main.layout(_width(maxWidth));
+    main.position(Offset.zero);
+    actions.position(
+      Offset(rtl ? maxWidth - actionsSize.width : 0, mainSize.height + gap),
+    );
+    return Size(maxWidth, mainSize.height + gap + actionsSize.height);
+  }
+
+  @override
+  double minIntrinsicWidth(double height) => children
+      .map((child) => child.render.getMinIntrinsicWidth(height))
+      .reduce(math.max);
+
+  @override
+  double maxIntrinsicWidth(double height) =>
+      children
+          .map((child) => child.render.getMaxIntrinsicWidth(height))
+          .reduce((a, b) => a + b) +
+      (children.length - 1) * gap;
+
+  @override
+  double minIntrinsicHeight(double width) => _intrinsicHeight(
+    width,
+    (child, width) => child.render.getMinIntrinsicHeight(width),
+  );
+
+  @override
+  double maxIntrinsicHeight(double width) => _intrinsicHeight(
+    width,
+    (child, width) => child.render.getMaxIntrinsicHeight(width),
+  );
+
+  double _intrinsicHeight(
+    double width,
+    double Function(BoxyChild child, double width) height,
+  ) {
+    final main = _main;
+    final actions = _actions;
+    if (actions == null) return height(main!, width);
+
+    final actionsWidth = actions.render.getMaxIntrinsicWidth(double.infinity);
+    final actionsHeight = height(actions, actionsWidth);
+    if (main == null) return actionsHeight;
+    if (_fits(main, actionsWidth, width)) {
+      return math.max(height(main, width - gap - actionsWidth), actionsHeight);
+    }
+    return height(main, width) + gap + actionsHeight;
+  }
+
+  @override
+  bool shouldRelayout(_ShadItemRowBoxy oldDelegate) =>
+      gap != oldDelegate.gap || textDirection != oldDelegate.textDirection;
 }
 
 /// {@template ShadItemMedia}
@@ -551,8 +715,11 @@ class ShadItemMedia extends StatelessWidget {
   /// {@macro ShadItemMedia}
   const ShadItemMedia({
     super.key,
-    required this.child,
+    required Widget this.child,
   }) : variant = ShadItemMediaVariant.primary,
+       src = null,
+       fit = null,
+       placeholder = null,
        size = null,
        iconSize = null,
        radius = null,
@@ -562,24 +729,28 @@ class ShadItemMedia extends StatelessWidget {
   /// Displays the [child] icon inside a bordered, muted square.
   const ShadItemMedia.icon({
     super.key,
-    required this.child,
+    required Widget this.child,
     this.size,
     this.iconSize,
     this.radius,
     this.backgroundColor,
     this.borderColor,
-  }) : variant = ShadItemMediaVariant.icon;
+  }) : variant = ShadItemMediaVariant.icon,
+       src = null,
+       fit = null,
+       placeholder = null;
 
-  /// Displays the [child] image clipped inside a square.
-  ///
-  /// The [child] is sized to fill the square, so use `BoxFit.cover` on images
-  /// to keep their aspect ratio.
+  /// Displays the [src] image clipped inside a square, covering it by
+  /// default.
   const ShadItemMedia.image({
     super.key,
-    required this.child,
+    required this.src,
+    this.fit,
+    this.placeholder,
     this.size,
     this.radius,
   }) : variant = ShadItemMediaVariant.image,
+       child = null,
        iconSize = null,
        backgroundColor = null,
        borderColor = null;
@@ -588,13 +759,19 @@ class ShadItemMedia extends StatelessWidget {
   const ShadItemMedia.raw({
     super.key,
     required this.variant,
-    required this.child,
+    this.child,
+    this.src,
+    this.fit,
+    this.placeholder,
     this.size,
     this.iconSize,
     this.radius,
     this.backgroundColor,
     this.borderColor,
-  });
+  }) : assert(
+         variant == ShadItemMediaVariant.image ? src != null : child != null,
+         'An image media needs a src, the other variants need a child',
+       );
 
   /// {@template ShadItemMedia.variant}
   /// The variant of the media, defaults to [ShadItemMediaVariant.primary].
@@ -602,9 +779,29 @@ class ShadItemMedia extends StatelessWidget {
   final ShadItemMediaVariant variant;
 
   /// {@template ShadItemMedia.child}
-  /// The content of the media.
+  /// The content of the media, not used by [ShadItemMediaVariant.image].
   /// {@endtemplate}
-  final Widget child;
+  final Widget? child;
+
+  /// {@template ShadItemMedia.src}
+  /// The source of a [ShadItemMediaVariant.image] media, like a network url,
+  /// an asset path or a file.
+  ///
+  /// Handled by [UniversalImage] for rendering.
+  /// {@endtemplate}
+  final dynamic src;
+
+  /// {@template ShadItemMedia.fit}
+  /// How the image of a [ShadItemMediaVariant.image] media fits the square,
+  /// defaults to [BoxFit.cover].
+  /// {@endtemplate}
+  final BoxFit? fit;
+
+  /// {@template ShadItemMedia.placeholder}
+  /// The widget displayed while the image of a [ShadItemMediaVariant.image]
+  /// media is loading or when it fails to load.
+  /// {@endtemplate}
+  final Widget? placeholder;
 
   /// {@template ShadItemMedia.size}
   /// The size of the media square, defaults to 32 for
@@ -646,7 +843,7 @@ class ShadItemMedia extends StatelessWidget {
 
     switch (variant) {
       case ShadItemMediaVariant.primary:
-        return child;
+        return child!;
       case ShadItemMediaVariant.icon:
         final effectiveSize = size ?? itemTheme.mediaIconContainerSize ?? 32;
         return SizedBox.square(
@@ -670,7 +867,7 @@ class ShadItemMedia extends StatelessWidget {
                 data: IconThemeData(
                   size: iconSize ?? itemTheme.mediaIconSize ?? 16,
                 ),
-                child: child,
+                child: child!,
               ),
             ),
           ),
@@ -681,7 +878,13 @@ class ShadItemMedia extends StatelessWidget {
           dimension: effectiveSize,
           child: ClipRRect(
             borderRadius: effectiveRadius,
-            child: child,
+            child: UniversalImage(
+              src,
+              width: effectiveSize,
+              height: effectiveSize,
+              fit: fit ?? itemTheme.mediaImageFit ?? BoxFit.cover,
+              placeholder: placeholder,
+            ),
           ),
         );
     }
@@ -921,7 +1124,7 @@ class ShadItemGroup extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: spacing ?? 0,
+      spacing: spacing ?? _itemTheme(context).groupSpacing ?? 0,
       children: children,
     );
   }

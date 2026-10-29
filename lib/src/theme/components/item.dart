@@ -18,6 +18,7 @@ class ShadItemTheme with _$ShadItemTheme {
     this.backgroundColor,
     this.hoverBackgroundColor,
     this.cursor,
+    this.textDirection,
     this.size,
     this.padding,
     this.gap,
@@ -28,10 +29,12 @@ class ShadItemTheme with _$ShadItemTheme {
     this.actionsSpacing,
     this.headerSpacing,
     this.footerSpacing,
+    this.groupSpacing,
     this.mediaIconSize,
     this.mediaIconContainerSize,
     this.mediaImageSize,
     this.mediaRadius,
+    this.mediaImageFit,
     this.mediaBackgroundColor,
     this.mediaBorderColor,
   }) : _canMerge = canMerge;
@@ -53,6 +56,9 @@ class ShadItemTheme with _$ShadItemTheme {
 
   /// {@macro ShadItem.cursor}
   final MouseCursor? cursor;
+
+  /// {@macro ShadItem.textDirection}
+  final TextDirection? textDirection;
 
   /// {@macro ShadItem.size}
   final ShadItemSize? size;
@@ -84,6 +90,9 @@ class ShadItemTheme with _$ShadItemTheme {
   /// {@macro ShadItemFooter.spacing}
   final double? footerSpacing;
 
+  /// {@macro ShadItemGroup.spacing}
+  final double? groupSpacing;
+
   /// {@macro ShadItemMedia.iconSize}
   final double? mediaIconSize;
 
@@ -95,6 +104,9 @@ class ShadItemTheme with _$ShadItemTheme {
 
   /// {@macro ShadItemMedia.radius}
   final BorderRadius? mediaRadius;
+
+  /// {@macro ShadItemMedia.fit}
+  final BoxFit? mediaImageFit;
 
   /// {@macro ShadItemMedia.backgroundColor}
   final Color? mediaBackgroundColor;

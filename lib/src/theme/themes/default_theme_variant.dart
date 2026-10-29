@@ -1147,6 +1147,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       mediaIconContainerSize: 32,
       mediaImageSize: 40,
       mediaRadius: const BorderRadius.all(Radius.circular(4)),
+      mediaImageFit: BoxFit.cover,
       mediaBackgroundColor: colorScheme.muted,
       mediaBorderColor: colorScheme.border,
     );
@@ -1186,6 +1187,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       mediaIconContainerSize: 32,
       mediaImageSize: 40,
       mediaRadius: const BorderRadius.all(Radius.circular(4)),
+      mediaImageFit: BoxFit.cover,
       mediaBackgroundColor: colorScheme.muted,
       mediaBorderColor: colorScheme.border,
     );
@@ -1226,6 +1228,7 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       mediaIconContainerSize: 32,
       mediaImageSize: 40,
       mediaRadius: const BorderRadius.all(Radius.circular(4)),
+      mediaImageFit: BoxFit.cover,
       mediaBackgroundColor: colorScheme.muted,
       mediaBorderColor: colorScheme.border,
     );

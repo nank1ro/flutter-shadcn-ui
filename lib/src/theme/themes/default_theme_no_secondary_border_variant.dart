@@ -1145,9 +1145,10 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           width: 1,
           color: const Color(0x00000000),
           radius: radius,
+          padding: const EdgeInsets.all(1),
         ),
         focusedBorder: ShadBorder.all(
-          width: 1,
+          width: 2,
           color: colorScheme.ring,
           radius: radius,
         ),
@@ -1171,6 +1172,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       mediaIconContainerSize: 32,
       mediaImageSize: 40,
       mediaRadius: const BorderRadius.all(Radius.circular(4)),
+      mediaImageFit: BoxFit.cover,
       mediaBackgroundColor: colorScheme.muted,
       mediaBorderColor: colorScheme.border,
     );
@@ -1184,9 +1186,10 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           width: 1,
           color: colorScheme.border,
           radius: radius,
+          padding: const EdgeInsets.all(1),
         ),
         focusedBorder: ShadBorder.all(
-          width: 1,
+          width: 2,
           color: colorScheme.ring,
           radius: radius,
         ),
@@ -1210,6 +1213,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       mediaIconContainerSize: 32,
       mediaImageSize: 40,
       mediaRadius: const BorderRadius.all(Radius.circular(4)),
+      mediaImageFit: BoxFit.cover,
       mediaBackgroundColor: colorScheme.muted,
       mediaBorderColor: colorScheme.border,
     );
@@ -1223,9 +1227,10 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
           width: 1,
           color: const Color(0x00000000),
           radius: radius,
+          padding: const EdgeInsets.all(1),
         ),
         focusedBorder: ShadBorder.all(
-          width: 1,
+          width: 2,
           color: colorScheme.ring,
           radius: radius,
         ),
@@ -1250,6 +1255,7 @@ class ShadDefaultThemeNoSecondaryBorderVariant extends ShadThemeVariant {
       mediaIconContainerSize: 32,
       mediaImageSize: 40,
       mediaRadius: const BorderRadius.all(Radius.circular(4)),
+      mediaImageFit: BoxFit.cover,
       mediaBackgroundColor: colorScheme.muted,
       mediaBorderColor: colorScheme.border,
     );
