@@ -523,59 +523,53 @@ class _ShadItemState extends State<ShadItem> {
       );
     }
 
-    return CallbackShortcuts(
-      bindings: {
-        const SingleActivator(LogicalKeyboardKey.enter): onShortcut,
-        if (!widget.link)
-          const SingleActivator(LogicalKeyboardKey.space): onShortcut,
-      },
-      child: ValueListenableBuilder(
-        valueListenable: statesController,
-        builder: (context, states, child) {
-          final hovered = states.contains(ShadState.hovered);
-          final focused = states.contains(ShadState.focused);
-          final enabled = !states.contains(ShadState.disabled);
+    return ValueListenableBuilder(
+      valueListenable: statesController,
+      builder: (context, states, child) {
+        final hovered = states.contains(ShadState.hovered);
+        final focused = states.contains(ShadState.focused);
+        final enabled = !states.contains(ShadState.disabled);
 
-          return Semantics(
-            container: true,
-            button: !widget.link,
-            link: widget.link,
-            focusable: enabled,
-            enabled: enabled,
-            child: ShadDisabled(
-              disabled: !enabled,
-              child: ShadFocusable(
-                canRequestFocus: enabled,
-                descendantsAreFocusable: enabled,
-                autofocus: widget.autofocus,
-                focusNode: focusNode,
-                builder: (context, _, child) => ShadDecorator(
-                  decoration: effectiveDecoration.copyWith(
-                    color: hovered
-                        ? effectiveHoverBackgroundColor
-                        : effectiveBackgroundColor,
-                  ),
-                  focused: focused,
-                  child: child,
+        return Semantics(
+          container: true,
+          button: !widget.link,
+          link: widget.link,
+          focusable: enabled,
+          enabled: enabled,
+          child: ShadDisabled(
+            disabled: !enabled,
+            child: ShadFocusable(
+              canRequestFocus: enabled,
+              descendantsAreFocusable: enabled,
+              autofocus: widget.autofocus,
+              focusNode: focusNode,
+              onKeyEvent: onKeyEvent,
+              builder: (context, _, child) => ShadDecorator(
+                decoration: effectiveDecoration.copyWith(
+                  color: hovered
+                      ? effectiveHoverBackgroundColor
+                      : effectiveBackgroundColor,
                 ),
+                focused: focused,
                 child: child,
               ),
+              child: child,
             ),
-          );
+          ),
+        );
+      },
+      child: ShadGestureDetector(
+        behavior: HitTestBehavior.opaque,
+        cursor: widget.cursor ?? itemTheme.cursor ?? SystemMouseCursors.click,
+        onHoverChange: (value) {
+          statesController.update(ShadState.hovered, value);
+          widget.onHoverChange?.call(value);
         },
-        child: ShadGestureDetector(
-          behavior: HitTestBehavior.opaque,
-          cursor: widget.cursor ?? itemTheme.cursor ?? SystemMouseCursors.click,
-          onHoverChange: (value) {
-            statesController.update(ShadState.hovered, value);
-            widget.onHoverChange?.call(value);
-          },
-          onTap: onPressed,
-          onTapDown: (_) => statesController.update(ShadState.pressed, true),
-          onTapUp: (_) => statesController.update(ShadState.pressed, false),
-          onTapCancel: () => statesController.update(ShadState.pressed, false),
-          child: item,
-        ),
+        onTap: onPressed,
+        onTapDown: (_) => statesController.update(ShadState.pressed, true),
+        onTapUp: (_) => statesController.update(ShadState.pressed, false),
+        onTapCancel: () => statesController.update(ShadState.pressed, false),
+        child: item,
       ),
     );
   }
@@ -585,10 +579,20 @@ class _ShadItemState extends State<ShadItem> {
     widget.onPressed?.call();
   }
 
-  // Keys that a focused action doesn't handle bubble up to the item, they
-  // must not activate it.
-  void onShortcut() {
-    if (focusNode.hasPrimaryFocus) onPressed();
+  // Keys that a focused action doesn't handle bubble up to the item: they
+  // must neither activate it nor be swallowed, so ancestors still get them.
+  KeyEventResult onKeyEvent(FocusNode node, KeyEvent event) {
+    if (!node.hasPrimaryFocus) return KeyEventResult.ignored;
+    final activators = [
+      const SingleActivator(LogicalKeyboardKey.enter),
+      if (!widget.link) const SingleActivator(LogicalKeyboardKey.space),
+    ];
+    final keyboard = HardwareKeyboard.instance;
+    if (!activators.any((activator) => activator.accepts(event, keyboard))) {
+      return KeyEventResult.ignored;
+    }
+    onPressed();
+    return KeyEventResult.handled;
   }
 }
 

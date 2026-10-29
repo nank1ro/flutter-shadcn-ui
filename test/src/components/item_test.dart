@@ -740,6 +740,39 @@ void main() {
       expect(pressed, 0);
     });
 
+    testWidgets('lets ancestors handle keys that a focused action ignores', (
+      tester,
+    ) async {
+      var ancestor = 0;
+      var pressed = 0;
+      final actionNode = FocusNode();
+      addTearDown(actionNode.dispose);
+      await tester.pumpWidget(
+        createTestWidget(
+          CallbackShortcuts(
+            bindings: {
+              const SingleActivator(LogicalKeyboardKey.enter): () => ancestor++,
+            },
+            child: ShadItem(
+              onPressed: () => pressed++,
+              title: const Text('Title'),
+              actions: Focus(
+                focusNode: actionNode,
+                child: const Text('Action'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      actionNode.requestFocus();
+      await tester.pump();
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.pump();
+      expect(pressed, 0);
+      expect(ancestor, 1);
+    });
+
     testWidgets('excludes its actions from focus when disabled', (
       tester,
     ) async {
