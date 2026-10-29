@@ -1,8 +1,13 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:collection/collection.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/toggle.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
+import 'package:shadcn_ui/src/theme/components/toggle.dart';
 import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/utils/border.dart';
@@ -25,6 +30,10 @@ enum ShadToggleGroupType { single, multiple }
 ///
 /// Use the default constructor to allow at most one pressed item, or
 /// [ShadToggleGroup.multiple] to allow any number of pressed items.
+///
+/// The group is a single Tab stop. The arrow keys move the focus between the
+/// items and wrap around, Home and End move it to the first and last item, and
+/// disabled items are skipped.
 /// {@endtemplate}
 class ShadToggleGroup<T> extends StatefulWidget {
   /// Creates a toggle group where at most one item can be pressed.
@@ -119,12 +128,17 @@ class ShadToggleGroup<T> extends StatefulWidget {
   /// {@template ShadToggleGroup.spacing}
   /// The space between the items, defaults to 0.
   ///
-  /// When 0, the items are joined together, sharing their borders.
+  /// When 0, the items are joined together, sharing their borders. Joined items
+  /// draw the focus ring inside their bounds instead of around them, otherwise
+  /// the next item would paint over it.
   /// {@endtemplate}
   final double? spacing;
 
   /// {@template ShadToggleGroup.controller}
   /// An optional controller to read or change the pressed values.
+  ///
+  /// With the single type, only the first pressed value (in the order of
+  /// [items]) is used.
   /// {@endtemplate}
   final ShadToggleGroupController<T>? controller;
 
@@ -134,6 +148,10 @@ class ShadToggleGroup<T> extends StatefulWidget {
 
 class ShadToggleGroupState<T> extends State<ShadToggleGroup<T>> {
   ShadToggleGroupController<T>? _controller;
+  final _focusNodes = <T, FocusNode>{};
+
+  /// The item that was focused or pressed last, used as the Tab stop.
+  ({T value})? _tabStop;
 
   ShadToggleGroupController<T> get controller =>
       widget.controller ??
@@ -157,19 +175,58 @@ class ShadToggleGroupState<T> extends State<ShadToggleGroup<T>> {
       widget.initialValues,
     )) {
       controller.value = Set<T>.of(widget.initialValues);
+    } else if (oldWidget.type != widget.type && widget.controller == null) {
+      controller.value = _normalize(controller.value);
     }
+
+    final values = widget.items.map((e) => e.value).toSet();
+    _focusNodes.removeWhere((value, node) {
+      if (values.contains(value)) return false;
+      // The removed item still uses its node until the end of this frame.
+      WidgetsBinding.instance.addPostFrameCallback((_) => node.dispose());
+      return true;
+    });
   }
 
   @override
   void dispose() {
     _controller?.dispose();
+    for (final node in _focusNodes.values) {
+      node.dispose();
+    }
     super.dispose();
   }
 
-  List<T> get orderedValues => widget.items.map((e) => e.value).toList();
+  /// Keeps only the first pressed item (in the order of the items) for the
+  /// single type.
+  Set<T> _normalize(Set<T> values) {
+    if (widget.type == ShadToggleGroupType.multiple || values.length <= 1) {
+      return values;
+    }
+    final first = widget.items.firstWhereOrNull(
+      (item) => values.contains(item.value),
+    );
+    return {first?.value ?? values.first};
+  }
+
+  /// The pressed values.
+  Set<T> get selectedValues => _normalize(controller.value);
+
+  bool isSelected(T value) => selectedValues.contains(value);
+
+  bool _isEnabled(ShadToggleGroupItem<T> item) =>
+      widget.enabled && item.enabled;
+
+  FocusNode focusNodeFor(ShadToggleGroupItem<T> item) {
+    return item.focusNode ??
+        _focusNodes.putIfAbsent(
+          item.value,
+          () => FocusNode(debugLabel: 'ShadToggleGroupItem(${item.value})'),
+        );
+  }
 
   void select(T value) {
-    final previous = controller.value;
+    final previous = selectedValues;
     final next = switch (widget.type) {
       ShadToggleGroupType.single =>
         previous.contains(value)
@@ -180,9 +237,13 @@ class ShadToggleGroupState<T> extends State<ShadToggleGroup<T>> {
             ? (Set<T>.of(previous)..remove(value))
             : (Set<T>.of(previous)..add(value)),
     };
-    if (const SetEquality<Object?>().equals(previous, next)) return;
+    _tabStop = (value: value);
+    _updateTabStop();
 
-    controller.value = next;
+    if (!const SetEquality<Object?>().equals(controller.value, next)) {
+      controller.value = next;
+    }
+    if (const SetEquality<Object?>().equals(previous, next)) return;
     switch (widget.type) {
       case ShadToggleGroupType.single:
         widget.onChanged?.call(next.firstOrNull);
@@ -191,11 +252,64 @@ class ShadToggleGroupState<T> extends State<ShadToggleGroup<T>> {
     }
   }
 
+  void onItemFocused(T value) {
+    _tabStop = (value: value);
+    // Focus listeners run while the focus manager applies its changes, which
+    // must not be modified until it is done.
+    scheduleMicrotask(() {
+      if (mounted) _updateTabStop();
+    });
+  }
+
+  /// Like Radix, the Tab stop is the last focused item, then the first
+  /// pressed item, then the first enabled item.
+  ShadToggleGroupItem<T>? _tabStopItem() {
+    final enabledItems = widget.items.where(_isEnabled);
+    final tabStop = _tabStop;
+    final selected = selectedValues;
+    return (tabStop == null
+            ? null
+            : enabledItems.firstWhereOrNull((i) => i.value == tabStop.value)) ??
+        enabledItems.firstWhereOrNull((i) => selected.contains(i.value)) ??
+        enabledItems.firstOrNull;
+  }
+
+  /// Makes the group a single Tab stop.
+  void _updateTabStop() {
+    final tabStop = _tabStopItem();
+    for (final item in widget.items) {
+      focusNodeFor(item).skipTraversal = item.value != tabStop?.value;
+    }
+  }
+
+  void _focus(ShadToggleGroupItem<T> item) {
+    _tabStop = (value: item.value);
+    _updateTabStop();
+    focusNodeFor(item).requestFocus();
+  }
+
+  void _moveFocus(int step) {
+    final items = widget.items;
+    var index = items.indexWhere((item) => focusNodeFor(item).hasFocus);
+    if (index == -1) return;
+    for (var i = 0; i < items.length; i++) {
+      index = (index + step) % items.length;
+      if (_isEnabled(items[index])) return _focus(items[index]);
+    }
+  }
+
+  void _focusEdge({required bool first}) {
+    final enabledItems = widget.items.where(_isEnabled);
+    final item = first ? enabledItems.firstOrNull : enabledItems.lastOrNull;
+    if (item != null) _focus(item);
+  }
+
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
     final theme = ShadTheme.of(context);
     final groupTheme = theme.toggleGroupTheme;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     final effectiveAxis = widget.axis ?? groupTheme.axis ?? Axis.horizontal;
     final effectiveSpacing = widget.spacing ?? groupTheme.spacing ?? 0;
@@ -221,7 +335,36 @@ class ShadToggleGroupState<T> extends State<ShadToggleGroup<T>> {
     return ShadProvider(
       data: this as ShadToggleGroupState<dynamic>,
       notifyUpdate: (_) => true,
-      child: FocusTraversalGroup(child: group),
+      child: CallbackShortcuts(
+        bindings: {
+          const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
+              _moveFocus(isRtl ? 1 : -1),
+          const SingleActivator(LogicalKeyboardKey.arrowRight): () =>
+              _moveFocus(isRtl ? -1 : 1),
+          const SingleActivator(LogicalKeyboardKey.arrowUp): () =>
+              _moveFocus(-1),
+          const SingleActivator(LogicalKeyboardKey.arrowDown): () =>
+              _moveFocus(1),
+          const SingleActivator(LogicalKeyboardKey.home): () =>
+              _focusEdge(first: true),
+          const SingleActivator(LogicalKeyboardKey.end): () =>
+              _focusEdge(first: false),
+          const SingleActivator(LogicalKeyboardKey.pageUp): () =>
+              _focusEdge(first: true),
+          const SingleActivator(LogicalKeyboardKey.pageDown): () =>
+              _focusEdge(first: false),
+        },
+        child: FocusTraversalGroup(
+          child: ListenableBuilder(
+            listenable: controller,
+            builder: (context, child) {
+              _updateTabStop();
+              return child!;
+            },
+            child: group,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -281,7 +424,11 @@ class ShadToggleGroupItem<T> extends StatelessWidget {
   /// {@macro ShadToggle.decoration}
   final ShadDecoration? decoration;
 
-  /// {@macro ShadButton.focusNode}
+  /// {@template ShadToggleGroupItem.focusNode}
+  /// The focus node of the item, created by the group if null.
+  ///
+  /// The group sets its `skipTraversal` so that only one item is a Tab stop.
+  /// {@endtemplate}
   final FocusNode? focusNode;
 
   /// {@macro ShadButton.autofocus}
@@ -310,24 +457,24 @@ class ShadToggleGroupItem<T> extends StatelessWidget {
 
     var effectiveDecoration = decoration;
     if (effectiveSpacing == 0) {
-      final orderedValues = group.orderedValues;
+      final items = group.widget.items;
       effectiveDecoration = _joinedDecoration(
         context,
         theme: theme,
         variant: effectiveVariant,
         axis: effectiveAxis,
-        isFirst: orderedValues.first == value,
-        isLast: orderedValues.last == value,
+        isFirst: items.first.value == value,
+        isLast: items.last.value == value,
       ).merge(decoration);
     }
 
     return ValueListenableBuilder(
       valueListenable: group.controller,
-      builder: (context, values, _) {
+      builder: (context, _, _) {
         return ShadToggle.raw(
           variant: effectiveVariant,
           size: group.widget.size ?? groupTheme.size,
-          value: values.contains(value),
+          value: group.isSelected(value),
           onChanged: (_) => group.select(value),
           enabled: group.widget.enabled && enabled,
           padding:
@@ -335,10 +482,15 @@ class ShadToggleGroupItem<T> extends StatelessWidget {
               groupTheme.itemPadding ??
               const EdgeInsets.symmetric(horizontal: 12),
           width: width,
+          minWidth: 0,
+          mutuallyExclusive: group.widget.type == ShadToggleGroupType.single,
           decoration: effectiveDecoration,
-          focusNode: focusNode,
+          focusNode: group.focusNodeFor(this),
           autofocus: autofocus,
-          onFocusChange: onFocusChange,
+          onFocusChange: (focused) {
+            if (focused) group.onItemFocused(value);
+            onFocusChange?.call(focused);
+          },
           onHoverChange: onHoverChange,
           leading: leading,
           trailing: trailing,
@@ -364,31 +516,41 @@ class ShadToggleGroupItem<T> extends StatelessWidget {
       ShadToggleVariant.outline => theme.outlineToggleTheme,
     };
 
+    final isLtr = textDirection == TextDirection.ltr;
+    final (keepLeft, keepRight, keepTop, keepBottom) = switch (axis) {
+      Axis.horizontal => (
+        isLtr ? isFirst : isLast,
+        isLtr ? isLast : isFirst,
+        true,
+        true,
+      ),
+      Axis.vertical => (true, true, isFirst, isLast),
+    };
+
     BorderRadiusGeometry? join(BorderRadiusGeometry? radius) {
       if (radius == null) return null;
       final r = radius.resolve(textDirection);
-      return switch (axis) {
-        Axis.horizontal => BorderRadiusDirectional.horizontal(
-          start: isFirst ? r.topLeft : Radius.zero,
-          end: isLast ? r.topRight : Radius.zero,
-        ),
-        Axis.vertical => BorderRadius.vertical(
-          top: isFirst ? r.topLeft : Radius.zero,
-          bottom: isLast ? r.bottomLeft : Radius.zero,
-        ),
-      };
+      return BorderRadius.only(
+        topLeft: keepLeft && keepTop ? r.topLeft : Radius.zero,
+        topRight: keepRight && keepTop ? r.topRight : Radius.zero,
+        bottomLeft: keepLeft && keepBottom ? r.bottomLeft : Radius.zero,
+        bottomRight: keepRight && keepBottom ? r.bottomRight : Radius.zero,
+      );
     }
 
     const noSide = ShadBorderSide(width: 0);
     final dropSharedSide = !isFirst && variant == ShadToggleVariant.outline;
     final dropStart = dropSharedSide && axis == Axis.horizontal;
+    final left = dropStart && isLtr ? noSide : null;
+    final right = dropStart && !isLtr ? noSide : null;
+    final top = dropSharedSide && axis == Axis.vertical ? noSide : null;
 
     final radius = join(toggleTheme.decoration?.border?.radius ?? theme.radius);
     final border = ShadBorder(
       radius: radius,
-      left: dropStart && textDirection == TextDirection.ltr ? noSide : null,
-      right: dropStart && textDirection == TextDirection.rtl ? noSide : null,
-      top: dropSharedSide && axis == Axis.vertical ? noSide : null,
+      left: left,
+      right: right,
+      top: top,
     );
 
     // Only override the focus ring the theme actually uses, otherwise the
@@ -402,10 +564,61 @@ class ShadToggleGroupItem<T> extends StatelessWidget {
       ),
       true => ShadDecoration(
         border: border,
-        focusedBorder: ShadBorder(
-          radius: join(theme.decoration.focusedBorder?.radius),
-        ),
+        focusedBorder: dropSharedSide
+            ? _focusedBorderWithSharedSide(
+                theme,
+                toggleTheme,
+                textDirection,
+                radius: join(theme.decoration.focusedBorder?.radius),
+                left: left != null,
+                right: right != null,
+                top: top != null,
+              )
+            : ShadBorder(radius: join(theme.decoration.focusedBorder?.radius)),
       ),
     };
+  }
+
+  /// The focused border replaces the border, so on the shared side it must
+  /// take the same space as the unfocused border, otherwise the item changes
+  /// size when focused. That side gets a ring as wide as that space allows.
+  ShadBorder _focusedBorderWithSharedSide(
+    ShadThemeData theme,
+    ShadToggleTheme toggleTheme,
+    TextDirection textDirection, {
+    required BorderRadiusGeometry? radius,
+    required bool left,
+    required bool right,
+    required bool top,
+  }) {
+    // The same layers ShadDecorator merges.
+    final unfocused = const ShadBorder()
+        .merge(theme.decoration.border)
+        .merge(theme.ghostButtonTheme.decoration?.border)
+        .merge(toggleTheme.decoration?.border);
+    final focused = const ShadBorder()
+        .merge(theme.decoration.focusedBorder)
+        .merge(theme.ghostButtonTheme.decoration?.focusedBorder)
+        .merge(toggleTheme.decoration?.focusedBorder);
+    // The dropped side has no width, so its space is only the padding.
+    final space = (unfocused.padding ?? EdgeInsets.zero).resolve(textDirection);
+    final padding = (focused.padding ?? EdgeInsets.zero).resolve(textDirection);
+
+    ShadBorderSide? side(bool dropped, ShadBorderSide? focusedSide, double s) =>
+        dropped ? ShadBorderSide(width: min(focusedSide?.width ?? 0, s)) : null;
+    double? inset(bool dropped, ShadBorderSide? focusedSide, double s) =>
+        dropped ? s - min(focusedSide?.width ?? 0, s) : null;
+
+    return ShadBorder(
+      radius: radius,
+      left: side(left, focused.left, space.left),
+      right: side(right, focused.right, space.right),
+      top: side(top, focused.top, space.top),
+      padding: padding.copyWith(
+        left: inset(left, focused.left, space.left),
+        right: inset(right, focused.right, space.right),
+        top: inset(top, focused.top, space.top),
+      ),
+    );
   }
 }

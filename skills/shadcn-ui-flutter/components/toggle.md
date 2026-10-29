@@ -21,20 +21,31 @@ class _ToggleExampleState extends State<ToggleExample> {
       value: value,
       onChanged: (v) => setState(() => value = v),
       size: ShadButtonSize.sm,
-      leading: BookmarkIcon(filled: value),
+      selectedBackgroundColor: Colors.transparent,
+      selectedHoverBackgroundColor: Colors.transparent,
+      leading: BookmarkIcon(
+        filled: value,
+        color: value ? blue500 : null,
+      ),
       child: const Text('Bookmark'),
     );
   }
 }
 
-/// Lucide's bookmark icon, filled with the icon color when [filled].
+/// Tailwind's blue-500, used by the shadcn/ui toggle demo.
+const blue500 = Color(0xFF2B7FFF);
+
+/// Lucide's bookmark icon, filled when [filled].
 ///
 /// The Lucide icon font only has outlined glyphs, so the SVG is used to fill
 /// it.
 class BookmarkIcon extends StatelessWidget {
-  const BookmarkIcon({super.key, required this.filled});
+  const BookmarkIcon({super.key, required this.filled, this.color});
 
   final bool filled;
+
+  /// The color of the icon, defaults to the icon theme color.
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +58,9 @@ class BookmarkIcon extends StatelessWidget {
 </svg>''',
       width: size,
       height: size,
-      theme: SvgTheme(currentColor: iconTheme.color ?? const Color(0xFF000000)),
+      theme: SvgTheme(
+        currentColor: color ?? iconTheme.color ?? const Color(0xFF000000),
+      ),
     );
   }
 }
@@ -63,7 +76,7 @@ class BookmarkIcon extends StatelessWidget {
 ShadToggle.outline(
   value: value,
   onChanged: (v) => setState(() => value = v),
-  child: const Icon(LucideIcons.italic),
+  child: const Icon(LucideIcons.italic, semanticLabel: 'Toggle italic'),
 )
 ```
 
@@ -93,7 +106,7 @@ ShadToggle(
   value: value,
   onChanged: (v) => setState(() => value = v),
   size: ShadButtonSize.sm,
-  child: const Icon(LucideIcons.italic),
+  child: const Icon(LucideIcons.italic, semanticLabel: 'Toggle italic'),
 )
 ```
 
@@ -108,7 +121,7 @@ ShadToggle(
   value: value,
   onChanged: (v) => setState(() => value = v),
   size: ShadButtonSize.lg,
-  child: const Icon(LucideIcons.italic),
+  child: const Icon(LucideIcons.italic, semanticLabel: 'Toggle italic'),
 )
 ```
 
@@ -123,7 +136,7 @@ ShadToggle(
   value: value,
   onChanged: (v) => setState(() => value = v),
   enabled: false,
-  child: const Icon(LucideIcons.underline),
+  child: const Icon(LucideIcons.underline, semanticLabel: 'Toggle underline'),
 )
 ```
 
@@ -184,7 +197,13 @@ class _TogglePageState extends State<TogglePage> {
           enabled: enabled,
           value: bookmark,
           onChanged: (value) => setState(() => bookmark = value),
-          leading: BookmarkIcon(filled: bookmark),
+          // Like the shadcn/ui demo: no background and a blue icon when on.
+          selectedBackgroundColor: Colors.transparent,
+          selectedHoverBackgroundColor: Colors.transparent,
+          leading: BookmarkIcon(
+            filled: bookmark,
+            color: bookmark ? blue500 : null,
+          ),
           child: const Text('Bookmark'),
         ),
         ShadToggle.raw(
@@ -202,21 +221,24 @@ class _TogglePageState extends State<TogglePage> {
           enabled: enabled,
           value: bold,
           onChanged: (value) => setState(() => bold = value),
-          child: const Icon(LucideIcons.bold),
+          child: const Icon(LucideIcons.bold, semanticLabel: 'Toggle bold'),
         ),
       ],
     );
   }
 }
 
-/// Lucide's bookmark icon, filled with the icon color when [filled].
+/// Lucide's bookmark icon, filled when [filled].
 ///
 /// The Lucide icon font only has outlined glyphs, so the SVG is used to fill
 /// it.
 class BookmarkIcon extends StatelessWidget {
-  const BookmarkIcon({super.key, required this.filled});
+  const BookmarkIcon({super.key, required this.filled, this.color});
 
   final bool filled;
+
+  /// The color of the icon, defaults to the icon theme color.
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -229,9 +251,14 @@ class BookmarkIcon extends StatelessWidget {
 </svg>''',
       width: size,
       height: size,
-      theme: SvgTheme(currentColor: iconTheme.color ?? const Color(0xFF000000)),
+      theme: SvgTheme(
+        currentColor: color ?? iconTheme.color ?? const Color(0xFF000000),
+      ),
     );
   }
 }
+
+/// Tailwind's blue-500, used by the shadcn/ui toggle demo.
+const blue500 = Color(0xFF2B7FFF);
 
 ```

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -38,6 +39,45 @@ void main() {
           ),
         )
         .decoration!;
+  }
+
+  String? focusedLabel() => FocusManager.instance.primaryFocus?.debugLabel;
+
+  Future<void> pressKey(
+    WidgetTester tester,
+    LogicalKeyboardKey key, {
+    bool shift = false,
+  }) async {
+    if (shift) await tester.sendKeyDownEvent(LogicalKeyboardKey.shiftLeft);
+    await tester.sendKeyEvent(key);
+    if (shift) await tester.sendKeyUpEvent(LogicalKeyboardKey.shiftLeft);
+    await tester.pump();
+  }
+
+  // A group between two buttons, to check how Tab enters and leaves it.
+  Widget focusTestWidget(
+    Widget group, {
+    TextDirection textDirection = TextDirection.ltr,
+  }) {
+    return createTestWidget(
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ShadButton(
+            focusNode: FocusNode(debugLabel: 'before'),
+            onPressed: () {},
+            child: const Text('before'),
+          ),
+          group,
+          ShadButton(
+            focusNode: FocusNode(debugLabel: 'after'),
+            onPressed: () {},
+            child: const Text('after'),
+          ),
+        ],
+      ),
+      textDirection: textDirection,
+    );
   }
 
   group('ShadToggleGroup', () {
@@ -369,6 +409,318 @@ void main() {
       final second = tester.getRect(find.byType(ShadToggle).at(1));
       expect(first.width, second.width);
       expect(second.top, first.bottom);
+    });
+
+    testWidgets('single type keeps one item pressed after a type change', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(const ShadToggleGroup<String>.multiple(items: items)),
+      );
+      await tester.tap(find.text('B'));
+      await tester.tap(find.text('A'));
+      await tester.pump();
+
+      await tester.pumpWidget(
+        createTestWidget(ShadToggleGroup<String>(items: items)),
+      );
+      expect(isPressed(tester, 'A'), isTrue);
+      expect(isPressed(tester, 'B'), isFalse);
+
+      await tester.tap(find.text('C'));
+      await tester.pump();
+      expect(isPressed(tester, 'A'), isFalse);
+      expect(isPressed(tester, 'C'), isTrue);
+    });
+
+    testWidgets('single type uses only the first value of the controller', (
+      tester,
+    ) async {
+      final controller = ShadToggleGroupController<String>(
+        initialValue: {'c', 'b'},
+      );
+      addTearDown(controller.dispose);
+      final changes = <String?>[];
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadToggleGroup<String>(
+            controller: controller,
+            onChanged: changes.add,
+            items: items,
+          ),
+        ),
+      );
+
+      expect(isPressed(tester, 'B'), isTrue);
+      expect(isPressed(tester, 'C'), isFalse);
+
+      await tester.tap(find.text('A'));
+      await tester.pump();
+      expect(controller.value, {'a'});
+      expect(changes, ['a']);
+    });
+
+    testWidgets('single items are exposed as mutually exclusive checked '
+        'items', (tester) async {
+      final handle = tester.ensureSemantics();
+      try {
+        await tester.pumpWidget(
+          createTestWidget(
+            ShadToggleGroup<String>(initialValue: 'b', items: items),
+          ),
+        );
+
+        expect(
+          tester.getSemantics(find.text('B')),
+          matchesSemantics(
+            label: 'B',
+            isButton: true,
+            hasCheckedState: true,
+            isChecked: true,
+            isInMutuallyExclusiveGroup: true,
+            hasEnabledState: true,
+            isEnabled: true,
+            isFocusable: true,
+            hasTapAction: true,
+            hasFocusAction: true,
+          ),
+        );
+      } finally {
+        handle.dispose();
+      }
+    });
+
+    testWidgets('multiple items are exposed as toggle buttons', (
+      tester,
+    ) async {
+      final handle = tester.ensureSemantics();
+      try {
+        await tester.pumpWidget(
+          createTestWidget(
+            const ShadToggleGroup<String>.multiple(
+              initialValues: {'b'},
+              items: items,
+            ),
+          ),
+        );
+
+        expect(
+          tester.getSemantics(find.text('B')),
+          matchesSemantics(
+            label: 'B',
+            isButton: true,
+            hasToggledState: true,
+            isToggled: true,
+            hasEnabledState: true,
+            isEnabled: true,
+            isFocusable: true,
+            hasTapAction: true,
+            hasFocusAction: true,
+          ),
+        );
+      } finally {
+        handle.dispose();
+      }
+    });
+
+    testWidgets('is a single Tab stop entering at the pressed item', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        focusTestWidget(
+          ShadToggleGroup<String>(initialValue: 'b', items: items),
+        ),
+      );
+
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      expect(focusedLabel(), 'before');
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      expect(focusedLabel(), 'ShadToggleGroupItem(b)');
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      expect(focusedLabel(), 'after');
+      await pressKey(tester, LogicalKeyboardKey.tab, shift: true);
+      expect(focusedLabel(), 'ShadToggleGroupItem(b)');
+    });
+
+    testWidgets('Tab enters at the last focused item', (tester) async {
+      await tester.pumpWidget(
+        focusTestWidget(ShadToggleGroup<String>(items: items)),
+      );
+
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      expect(focusedLabel(), 'ShadToggleGroupItem(a)');
+      await pressKey(tester, LogicalKeyboardKey.arrowRight);
+      expect(focusedLabel(), 'ShadToggleGroupItem(b)');
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      expect(focusedLabel(), 'after');
+      await pressKey(tester, LogicalKeyboardKey.tab, shift: true);
+      expect(focusedLabel(), 'ShadToggleGroupItem(b)');
+    });
+
+    testWidgets('arrow keys move, skip disabled items and wrap', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        focusTestWidget(
+          ShadToggleGroup<String>(
+            initialValue: 'b',
+            items: const [
+              ShadToggleGroupItem(value: 'a', child: Text('A')),
+              ShadToggleGroupItem(value: 'b', child: Text('B')),
+              ShadToggleGroupItem(
+                value: 'c',
+                enabled: false,
+                child: Text('C'),
+              ),
+            ],
+          ),
+        ),
+      );
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      expect(focusedLabel(), 'ShadToggleGroupItem(b)');
+
+      await pressKey(tester, LogicalKeyboardKey.arrowRight);
+      expect(focusedLabel(), 'ShadToggleGroupItem(a)');
+      await pressKey(tester, LogicalKeyboardKey.arrowLeft);
+      expect(focusedLabel(), 'ShadToggleGroupItem(b)');
+      await pressKey(tester, LogicalKeyboardKey.home);
+      expect(focusedLabel(), 'ShadToggleGroupItem(a)');
+      await pressKey(tester, LogicalKeyboardKey.end);
+      expect(focusedLabel(), 'ShadToggleGroupItem(b)');
+    });
+
+    testWidgets('arrow keys are mirrored in RTL', (tester) async {
+      await tester.pumpWidget(
+        focusTestWidget(
+          ShadToggleGroup<String>(initialValue: 'a', items: items),
+          textDirection: TextDirection.rtl,
+        ),
+      );
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      expect(focusedLabel(), 'ShadToggleGroupItem(a)');
+
+      await pressKey(tester, LogicalKeyboardKey.arrowLeft);
+      expect(focusedLabel(), 'ShadToggleGroupItem(b)');
+      await pressKey(tester, LogicalKeyboardKey.arrowRight);
+      expect(focusedLabel(), 'ShadToggleGroupItem(a)');
+    });
+
+    testWidgets('up and down arrows move in a vertical group', (tester) async {
+      await tester.pumpWidget(
+        focusTestWidget(
+          ShadToggleGroup<String>(
+            initialValue: 'a',
+            axis: Axis.vertical,
+            items: items,
+          ),
+        ),
+      );
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      await pressKey(tester, LogicalKeyboardKey.tab);
+
+      await pressKey(tester, LogicalKeyboardKey.arrowDown);
+      expect(focusedLabel(), 'ShadToggleGroupItem(b)');
+      await pressKey(tester, LogicalKeyboardKey.arrowUp);
+      await pressKey(tester, LogicalKeyboardKey.arrowUp);
+      expect(focusedLabel(), 'ShadToggleGroupItem(c)');
+    });
+
+    testWidgets('items are not wider than their content', (tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadToggleGroup<String>(
+            size: ShadButtonSize.sm,
+            items: const [
+              ShadToggleGroupItem(
+                value: 'a',
+                padding: EdgeInsets.symmetric(horizontal: 4),
+                child: Text('A'),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      // 14px of text plus 8px of padding, not the 32px height.
+      expect(tester.getSize(find.byType(ShadToggle)).width, 22);
+    });
+
+    testWidgets('focusing a joined outline item does not resize it', (
+      tester,
+    ) async {
+      final focusNode = FocusNode();
+      addTearDown(focusNode.dispose);
+      await tester.pumpWidget(
+        ShadApp(
+          theme: ShadThemeData(
+            brightness: Brightness.light,
+            colorScheme: const ShadSlateColorScheme.light(),
+            disableSecondaryBorder: true,
+          ),
+          home: Scaffold(
+            body: Center(
+              child: ShadToggleGroup<String>(
+                variant: ShadToggleVariant.outline,
+                items: [
+                  const ShadToggleGroupItem(value: 'a', child: Text('A')),
+                  ShadToggleGroupItem(
+                    value: 'b',
+                    focusNode: focusNode,
+                    child: const Text('B'),
+                  ),
+                  const ShadToggleGroupItem(value: 'c', child: Text('C')),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      final size = tester.getSize(find.byType(ShadToggle).at(1));
+      final lastLeft = tester.getTopLeft(find.byType(ShadToggle).at(2)).dx;
+
+      focusNode.requestFocus();
+      await tester.pumpAndSettle();
+      expect(tester.getSize(find.byType(ShadToggle).at(1)), size);
+      expect(tester.getTopLeft(find.byType(ShadToggle).at(2)).dx, lastLeft);
+      // The ring still has an edge on the shared side.
+      expect(itemDecoration(tester, 'B').focusedBorder!.left!.width, 1);
+    });
+
+    testWidgets('joined items keep the radius of each corner', (tester) async {
+      const radius = BorderRadius.only(
+        topLeft: Radius.circular(12),
+        bottomLeft: Radius.circular(2),
+        topRight: Radius.circular(8),
+        bottomRight: Radius.circular(4),
+      );
+      await tester.pumpWidget(
+        ShadApp(
+          theme: ShadThemeData(
+            brightness: Brightness.light,
+            colorScheme: const ShadSlateColorScheme.light(),
+            radius: radius,
+          ),
+          home: Scaffold(
+            body: Center(child: ShadToggleGroup<String>(items: items)),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      const ltr = TextDirection.ltr;
+
+      final first = itemDecoration(tester, 'A').border!.radius!.resolve(ltr);
+      expect(first.topLeft, radius.topLeft);
+      expect(first.bottomLeft, radius.bottomLeft);
+      expect(first.topRight, Radius.zero);
+
+      final last = itemDecoration(tester, 'C').border!.radius!.resolve(ltr);
+      expect(last.topRight, radius.topRight);
+      expect(last.bottomRight, radius.bottomRight);
+      expect(last.bottomLeft, Radius.zero);
     });
 
     testWidgets('matches goldens', (tester) async {

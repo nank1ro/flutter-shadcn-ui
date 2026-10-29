@@ -48,7 +48,9 @@ class ShadToggle extends StatelessWidget {
     this.textStyle,
     this.gap,
     this.textDirection,
-  }) : variant = ShadToggleVariant.primary;
+  }) : variant = ShadToggleVariant.primary,
+       minWidth = null,
+       mutuallyExclusive = false;
 
   /// {@macro ShadToggle}
   const ShadToggle.outline({
@@ -82,7 +84,9 @@ class ShadToggle extends StatelessWidget {
     this.textStyle,
     this.gap,
     this.textDirection,
-  }) : variant = ShadToggleVariant.outline;
+  }) : variant = ShadToggleVariant.outline,
+       minWidth = null,
+       mutuallyExclusive = false;
 
   /// {@macro ShadToggle}
   const ShadToggle.raw({
@@ -117,6 +121,8 @@ class ShadToggle extends StatelessWidget {
     this.textStyle,
     this.gap,
     this.textDirection,
+    this.minWidth,
+    this.mutuallyExclusive = false,
   });
 
   /// {@template ShadToggle.variant}
@@ -263,6 +269,22 @@ class ShadToggle extends StatelessWidget {
   /// {@macro ShadButton.textDirection}
   final TextDirection? textDirection;
 
+  /// {@template ShadToggle.minWidth}
+  /// The minimum width of the toggle when [width] is null, defaults to its
+  /// height so icon-only toggles are square.
+  ///
+  /// `ShadToggleGroup` sets it to 0, like shadcn/ui toggle group items.
+  /// {@endtemplate}
+  final double? minWidth;
+
+  /// {@template ShadToggle.mutuallyExclusive}
+  /// Whether the toggle is announced as a checked radio item instead of a
+  /// toggle button, defaults to false.
+  ///
+  /// Set by `ShadToggleGroup` for the items of a single selection group.
+  /// {@endtemplate}
+  final bool mutuallyExclusive;
+
   ShadToggleTheme _toggleTheme(ShadThemeData theme) {
     return switch (variant) {
       ShadToggleVariant.primary => theme.primaryToggleTheme,
@@ -298,6 +320,7 @@ class ShadToggle extends StatelessWidget {
     final effectiveHeight = height ?? toggleTheme.height ?? sizeTheme.height;
     final effectivePadding =
         padding ?? toggleTheme.padding ?? sizeTheme.padding;
+    final effectiveWidth = width ?? sizeTheme.width;
 
     final effectiveBackgroundColor =
         backgroundColor ??
@@ -341,7 +364,7 @@ class ShadToggle extends StatelessWidget {
       onPressed: onChanged == null ? null : () => onChanged!(!value),
       leading: leading,
       trailing: trailing,
-      width: width,
+      width: effectiveWidth,
       height: effectiveHeight,
       padding: effectivePadding,
       backgroundColor: value
@@ -370,15 +393,20 @@ class ShadToggle extends StatelessWidget {
       child: child,
     );
 
-    if (width == null) {
+    if (effectiveWidth == null) {
       toggle = ConstrainedBox(
-        constraints: BoxConstraints(minWidth: effectiveHeight),
+        constraints: BoxConstraints(minWidth: minWidth ?? effectiveHeight),
         child: toggle,
       );
     }
 
     return MergeSemantics(
-      child: Semantics(toggled: value, child: toggle),
+      child: Semantics(
+        toggled: mutuallyExclusive ? null : value,
+        checked: mutuallyExclusive ? value : null,
+        inMutuallyExclusiveGroup: mutuallyExclusive ? true : null,
+        child: toggle,
+      ),
     );
   }
 }

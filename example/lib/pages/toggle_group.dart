@@ -81,15 +81,18 @@ class _ToggleGroupPageState extends State<ToggleGroupPage> {
           items: const [
             ShadToggleGroupItem(
               value: TextFormat.bold,
-              child: Icon(LucideIcons.bold),
+              child: Icon(LucideIcons.bold, semanticLabel: 'Toggle bold'),
             ),
             ShadToggleGroupItem(
               value: TextFormat.italic,
-              child: Icon(LucideIcons.italic),
+              child: Icon(LucideIcons.italic, semanticLabel: 'Toggle italic'),
             ),
             ShadToggleGroupItem(
               value: TextFormat.underline,
-              child: Icon(LucideIcons.underline),
+              child: Icon(
+                LucideIcons.underline,
+                semanticLabel: 'Toggle underline',
+              ),
             ),
           ],
         ),

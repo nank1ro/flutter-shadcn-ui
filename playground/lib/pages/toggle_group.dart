@@ -18,11 +18,17 @@ class ToggleGroupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const items = [
-      ShadToggleGroupItem(value: 'bold', child: Icon(LucideIcons.bold)),
-      ShadToggleGroupItem(value: 'italic', child: Icon(LucideIcons.italic)),
+      ShadToggleGroupItem(
+        value: 'bold',
+        child: Icon(LucideIcons.bold, semanticLabel: 'Toggle bold'),
+      ),
+      ShadToggleGroupItem(
+        value: 'italic',
+        child: Icon(LucideIcons.italic, semanticLabel: 'Toggle italic'),
+      ),
       ShadToggleGroupItem(
         value: 'underline',
-        child: Icon(LucideIcons.underline),
+        child: Icon(LucideIcons.underline, semanticLabel: 'Toggle underline'),
       ),
     ];
 
@@ -43,15 +49,24 @@ class ToggleGroupPage extends StatelessWidget {
             items: const [
               ShadToggleGroupItem(
                 value: 'left',
-                child: Icon(LucideIcons.textAlignStart),
+                child: Icon(
+                  LucideIcons.textAlignStart,
+                  semanticLabel: 'Align left',
+                ),
               ),
               ShadToggleGroupItem(
                 value: 'center',
-                child: Icon(LucideIcons.textAlignCenter),
+                child: Icon(
+                  LucideIcons.textAlignCenter,
+                  semanticLabel: 'Align center',
+                ),
               ),
               ShadToggleGroupItem(
                 value: 'right',
-                child: Icon(LucideIcons.textAlignEnd),
+                child: Icon(
+                  LucideIcons.textAlignEnd,
+                  semanticLabel: 'Align right',
+                ),
               ),
             ],
           ),

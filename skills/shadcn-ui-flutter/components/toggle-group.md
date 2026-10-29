@@ -2,17 +2,25 @@
 
 A set of two-state buttons that can be toggled on or off.
 
+The group is a single Tab stop: the arrow keys move the focus between the items and wrap around, Home and End move it to the first and last item, and disabled items are skipped. When the items are joined (`spacing` is 0), they draw the focus ring inside their bounds, because the next item would paint over a ring drawn around them.
+
 
 
 ```dart
 ShadToggleGroup<String>.multiple(
   onChanged: (values) => print(values),
   items: const [
-    ShadToggleGroupItem(value: 'bold', child: Icon(LucideIcons.bold)),
-    ShadToggleGroupItem(value: 'italic', child: Icon(LucideIcons.italic)),
+    ShadToggleGroupItem(
+      value: 'bold',
+      child: Icon(LucideIcons.bold, semanticLabel: 'Toggle bold'),
+    ),
+    ShadToggleGroupItem(
+      value: 'italic',
+      child: Icon(LucideIcons.italic, semanticLabel: 'Toggle italic'),
+    ),
     ShadToggleGroupItem(
       value: 'underline',
-      child: Icon(LucideIcons.underline),
+      child: Icon(LucideIcons.underline, semanticLabel: 'Toggle underline'),
     ),
   ],
 )
@@ -28,11 +36,17 @@ ShadToggleGroup<String>.multiple(
 ShadToggleGroup<String>.multiple(
   variant: ShadToggleVariant.outline,
   items: const [
-    ShadToggleGroupItem(value: 'bold', child: Icon(LucideIcons.bold)),
-    ShadToggleGroupItem(value: 'italic', child: Icon(LucideIcons.italic)),
+    ShadToggleGroupItem(
+      value: 'bold',
+      child: Icon(LucideIcons.bold, semanticLabel: 'Toggle bold'),
+    ),
+    ShadToggleGroupItem(
+      value: 'italic',
+      child: Icon(LucideIcons.italic, semanticLabel: 'Toggle italic'),
+    ),
     ShadToggleGroupItem(
       value: 'underline',
-      child: Icon(LucideIcons.underline),
+      child: Icon(LucideIcons.underline, semanticLabel: 'Toggle underline'),
     ),
   ],
 )
@@ -53,15 +67,15 @@ ShadToggleGroup<String>(
   items: const [
     ShadToggleGroupItem(
       value: 'left',
-      child: Icon(LucideIcons.textAlignStart),
+      child: Icon(LucideIcons.textAlignStart, semanticLabel: 'Align left'),
     ),
     ShadToggleGroupItem(
       value: 'center',
-      child: Icon(LucideIcons.textAlignCenter),
+      child: Icon(LucideIcons.textAlignCenter, semanticLabel: 'Align center'),
     ),
     ShadToggleGroupItem(
       value: 'right',
-      child: Icon(LucideIcons.textAlignEnd),
+      child: Icon(LucideIcons.textAlignEnd, semanticLabel: 'Align right'),
     ),
   ],
 )
@@ -78,11 +92,17 @@ ShadToggleGroup<String>.multiple(
   variant: ShadToggleVariant.outline,
   axis: Axis.vertical,
   items: const [
-    ShadToggleGroupItem(value: 'bold', child: Icon(LucideIcons.bold)),
-    ShadToggleGroupItem(value: 'italic', child: Icon(LucideIcons.italic)),
+    ShadToggleGroupItem(
+      value: 'bold',
+      child: Icon(LucideIcons.bold, semanticLabel: 'Toggle bold'),
+    ),
+    ShadToggleGroupItem(
+      value: 'italic',
+      child: Icon(LucideIcons.italic, semanticLabel: 'Toggle italic'),
+    ),
     ShadToggleGroupItem(
       value: 'underline',
-      child: Icon(LucideIcons.underline),
+      child: Icon(LucideIcons.underline, semanticLabel: 'Toggle underline'),
     ),
   ],
 )
@@ -99,11 +119,17 @@ ShadToggleGroup<String>.multiple(
   variant: ShadToggleVariant.outline,
   spacing: 8,
   items: const [
-    ShadToggleGroupItem(value: 'bold', child: Icon(LucideIcons.bold)),
-    ShadToggleGroupItem(value: 'italic', child: Icon(LucideIcons.italic)),
+    ShadToggleGroupItem(
+      value: 'bold',
+      child: Icon(LucideIcons.bold, semanticLabel: 'Toggle bold'),
+    ),
+    ShadToggleGroupItem(
+      value: 'italic',
+      child: Icon(LucideIcons.italic, semanticLabel: 'Toggle italic'),
+    ),
     ShadToggleGroupItem(
       value: 'underline',
-      child: Icon(LucideIcons.underline),
+      child: Icon(LucideIcons.underline, semanticLabel: 'Toggle underline'),
     ),
   ],
 )
@@ -119,11 +145,17 @@ ShadToggleGroup<String>.multiple(
 ShadToggleGroup<String>.multiple(
   enabled: false,
   items: const [
-    ShadToggleGroupItem(value: 'bold', child: Icon(LucideIcons.bold)),
-    ShadToggleGroupItem(value: 'italic', child: Icon(LucideIcons.italic)),
+    ShadToggleGroupItem(
+      value: 'bold',
+      child: Icon(LucideIcons.bold, semanticLabel: 'Toggle bold'),
+    ),
+    ShadToggleGroupItem(
+      value: 'italic',
+      child: Icon(LucideIcons.italic, semanticLabel: 'Toggle italic'),
+    ),
     ShadToggleGroupItem(
       value: 'underline',
-      child: Icon(LucideIcons.underline),
+      child: Icon(LucideIcons.underline, semanticLabel: 'Toggle underline'),
     ),
   ],
 )
@@ -214,15 +246,18 @@ class _ToggleGroupPageState extends State<ToggleGroupPage> {
           items: const [
             ShadToggleGroupItem(
               value: TextFormat.bold,
-              child: Icon(LucideIcons.bold),
+              child: Icon(LucideIcons.bold, semanticLabel: 'Toggle bold'),
             ),
             ShadToggleGroupItem(
               value: TextFormat.italic,
-              child: Icon(LucideIcons.italic),
+              child: Icon(LucideIcons.italic, semanticLabel: 'Toggle italic'),
             ),
             ShadToggleGroupItem(
               value: TextFormat.underline,
-              child: Icon(LucideIcons.underline),
+              child: Icon(
+                LucideIcons.underline,
+                semanticLabel: 'Toggle underline',
+              ),
             ),
           ],
         ),

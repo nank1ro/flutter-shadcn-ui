@@ -145,6 +145,31 @@ void main() {
       }
     });
 
+    testWidgets('uses the width of the sizes theme', (tester) async {
+      await tester.pumpWidget(
+        ShadApp(
+          theme: ShadThemeData(
+            brightness: Brightness.light,
+            colorScheme: const ShadSlateColorScheme.light(),
+            toggleSizesTheme: const ShadButtonSizesTheme(
+              regular: ShadButtonSizeTheme(
+                height: 36,
+                width: 80,
+                padding: EdgeInsets.symmetric(horizontal: 8),
+              ),
+            ),
+          ),
+          home: const Scaffold(
+            body: Center(
+              child: ShadToggle(value: false, child: Icon(LucideIcons.bold)),
+            ),
+          ),
+        ),
+      );
+
+      expect(tester.getSize(find.byType(ShadToggle)).width, 80);
+    });
+
     testWidgets('outline variant has a border', (tester) async {
       await tester.pumpWidget(
         createTestWidget(
@@ -198,18 +223,12 @@ void main() {
           const Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ShadToggle(value: false, child: Icon(LucideIcons.bold)),
-              ShadToggle(value: true, child: Icon(LucideIcons.italic)),
-              ShadToggle.outline(
-                value: false,
-                leading: Icon(LucideIcons.bookmark),
-                child: Text('Bookmark'),
-              ),
-              ShadToggle.outline(
-                value: true,
-                leading: Icon(LucideIcons.bookmark),
-                child: Text('Bookmark'),
-              ),
+              // Text only: no icon font is loaded in tests, so icons render as
+              // fallback glyphs that differ between machines.
+              ShadToggle(value: false, child: Text('B')),
+              ShadToggle(value: true, child: Text('I')),
+              ShadToggle.outline(value: false, child: Text('Bookmark')),
+              ShadToggle.outline(value: true, child: Text('Bookmark')),
             ],
           ),
         ),
