@@ -55,7 +55,6 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
            state as ShadFormBuilderRadioGroupState<T>;
            return ShadRadioGroup(
              items: items,
-             onChanged: state.didChange,
              enabled: state.enabled,
              initialValue: initialValue,
              axis: axis,
@@ -105,11 +104,23 @@ class ShadFormBuilderRadioGroupState<T>
   @override
   void didUpdateWidget(covariant ShadRadioGroupFormField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller == null && widget.controller != null) {
-      _controller?.dispose();
-    }
-    if (oldWidget.controller != null && widget.controller == null) {
-      _controller = ShadRadioController(value: value, enabled: enabled);
+    if (oldWidget.controller != widget.controller) {
+      final previousController = oldWidget.controller ?? _controller;
+      previousController?.removeListener(onControllerChanged);
+      if (oldWidget.controller == null && widget.controller != null) {
+        _controller?.dispose();
+        _controller = null;
+      }
+      if (oldWidget.controller != null && widget.controller == null) {
+        _controller = ShadRadioController(value: value, enabled: enabled);
+      }
+      controller.addListener(onControllerChanged);
+      // The listener does not replay a value the controller already holds.
+      // didChange would setState on Form during this build and invoke the
+      // user's onChanged synchronously, so adopt the selection with setValue.
+      if (controller.value != value) {
+        setValue(controller.value);
+      }
     }
   }
 
@@ -129,7 +140,6 @@ class ShadFormBuilderRadioGroupState<T>
   void onControllerChanged() {
     if (controller.value != value) {
       didChange(controller.value);
-      widget.onChanged?.call(controller.value);
     }
   }
 }
