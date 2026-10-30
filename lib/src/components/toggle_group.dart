@@ -31,9 +31,10 @@ enum ShadToggleGroupType { single, multiple }
 /// Use the default constructor to allow at most one pressed item, or
 /// [ShadToggleGroup.multiple] to allow any number of pressed items.
 ///
-/// The group is a single Tab stop. The arrow keys move the focus between the
-/// items and wrap around, Home and End move it to the first and last item, and
-/// disabled items are skipped.
+/// The group is a single Tab stop, entered on the first pressed item (or the
+/// last focused one). The arrow keys move the focus between the items and wrap
+/// around (only Up and Down in a vertical group), Home/PageUp and End/PageDown
+/// move it to the first and last item, and disabled items are skipped.
 /// {@endtemplate}
 class ShadToggleGroup<T> extends StatefulWidget {
   /// Creates a toggle group where at most one item can be pressed.
@@ -150,7 +151,11 @@ class ShadToggleGroupState<T> extends State<ShadToggleGroup<T>> {
   ShadToggleGroupController<T>? _controller;
   final _focusNodes = <T, FocusNode>{};
 
-  /// The item that was focused or pressed last, used as the Tab stop.
+  /// The original `skipTraversal` of the focus nodes given by the items,
+  /// restored when they leave the group.
+  final _externalSkipTraversal = <FocusNode, bool>{};
+
+  /// The item that was focused or pressed last.
   ({T value})? _tabStop;
 
   ShadToggleGroupController<T> get controller =>
@@ -191,6 +196,7 @@ class ShadToggleGroupState<T> extends State<ShadToggleGroup<T>> {
   @override
   void dispose() {
     _controller?.dispose();
+    _restoreExternalFocusNodes();
     for (final node in _focusNodes.values) {
       node.dispose();
     }
@@ -252,8 +258,8 @@ class ShadToggleGroupState<T> extends State<ShadToggleGroup<T>> {
     }
   }
 
-  void onItemFocused(T value) {
-    _tabStop = (value: value);
+  void onItemFocusChange(T value, {required bool focused}) {
+    if (focused) _tabStop = (value: value);
     // Focus listeners run while the focus manager applies its changes, which
     // must not be modified until it is done.
     scheduleMicrotask(() {
@@ -261,32 +267,48 @@ class ShadToggleGroupState<T> extends State<ShadToggleGroup<T>> {
     });
   }
 
-  /// Like Radix, the Tab stop is the last focused item, then the first
-  /// pressed item, then the first enabled item.
+  /// While an item has focus it is the Tab stop, so Tab leaves the group from
+  /// it. Otherwise, like Radix, focus enters on the first pressed item, then
+  /// the last focused item, then the first enabled item.
   ShadToggleGroupItem<T>? _tabStopItem() {
     final enabledItems = widget.items.where(_isEnabled);
     final tabStop = _tabStop;
     final selected = selectedValues;
-    return (tabStop == null
+    return enabledItems.firstWhereOrNull(
+          (i) => focusNodeFor(i).hasFocus,
+        ) ??
+        enabledItems.firstWhereOrNull((i) => selected.contains(i.value)) ??
+        (tabStop == null
             ? null
             : enabledItems.firstWhereOrNull((i) => i.value == tabStop.value)) ??
-        enabledItems.firstWhereOrNull((i) => selected.contains(i.value)) ??
         enabledItems.firstOrNull;
   }
 
   /// Makes the group a single Tab stop.
   void _updateTabStop() {
+    final externalNodes = {
+      for (final item in widget.items) ?item.focusNode,
+    };
+    _restoreExternalFocusNodes(except: externalNodes);
+    for (final node in externalNodes) {
+      _externalSkipTraversal.putIfAbsent(node, () => node.skipTraversal);
+    }
+
     final tabStop = _tabStopItem();
     for (final item in widget.items) {
       focusNodeFor(item).skipTraversal = item.value != tabStop?.value;
     }
   }
 
-  void _focus(ShadToggleGroupItem<T> item) {
-    _tabStop = (value: item.value);
-    _updateTabStop();
-    focusNodeFor(item).requestFocus();
+  void _restoreExternalFocusNodes({Set<FocusNode> except = const {}}) {
+    _externalSkipTraversal.removeWhere((node, skipTraversal) {
+      if (except.contains(node)) return false;
+      node.skipTraversal = skipTraversal;
+      return true;
+    });
   }
+
+  void _focus(ShadToggleGroupItem<T> item) => focusNodeFor(item).requestFocus();
 
   void _moveFocus(int step) {
     final items = widget.items;
@@ -337,10 +359,14 @@ class ShadToggleGroupState<T> extends State<ShadToggleGroup<T>> {
       notifyUpdate: (_) => true,
       child: CallbackShortcuts(
         bindings: {
-          const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
-              _moveFocus(isRtl ? 1 : -1),
-          const SingleActivator(LogicalKeyboardKey.arrowRight): () =>
-              _moveFocus(isRtl ? -1 : 1),
+          // Like shadcn/ui, a horizontal group also moves with Up and Down,
+          // while a vertical group ignores Left and Right.
+          if (effectiveAxis == Axis.horizontal) ...{
+            const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
+                _moveFocus(isRtl ? 1 : -1),
+            const SingleActivator(LogicalKeyboardKey.arrowRight): () =>
+                _moveFocus(isRtl ? -1 : 1),
+          },
           const SingleActivator(LogicalKeyboardKey.arrowUp): () =>
               _moveFocus(-1),
           const SingleActivator(LogicalKeyboardKey.arrowDown): () =>
@@ -427,7 +453,8 @@ class ShadToggleGroupItem<T> extends StatelessWidget {
   /// {@template ShadToggleGroupItem.focusNode}
   /// The focus node of the item, created by the group if null.
   ///
-  /// The group sets its `skipTraversal` so that only one item is a Tab stop.
+  /// The group sets its `skipTraversal` so that only one item is a Tab stop,
+  /// and restores it when the item leaves the group.
   /// {@endtemplate}
   final FocusNode? focusNode;
 
@@ -488,7 +515,7 @@ class ShadToggleGroupItem<T> extends StatelessWidget {
           focusNode: group.focusNodeFor(this),
           autofocus: autofocus,
           onFocusChange: (focused) {
-            if (focused) group.onItemFocused(value);
+            group.onItemFocusChange(value, focused: focused);
             onFocusChange?.call(focused);
           },
           onHoverChange: onHoverChange,

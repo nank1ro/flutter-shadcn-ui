@@ -558,6 +558,97 @@ void main() {
       expect(focusedLabel(), 'ShadToggleGroupItem(b)');
     });
 
+    testWidgets('Tab enters at the pressed item, not the last focused one', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        focusTestWidget(
+          ShadToggleGroup<String>(initialValue: 'a', items: items),
+        ),
+      );
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      await pressKey(tester, LogicalKeyboardKey.arrowRight);
+      expect(focusedLabel(), 'ShadToggleGroupItem(b)');
+
+      await pressKey(tester, LogicalKeyboardKey.tab, shift: true);
+      expect(focusedLabel(), 'before');
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      expect(focusedLabel(), 'ShadToggleGroupItem(a)');
+    });
+
+    testWidgets('Tab leaves the group after clicking another item', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        focusTestWidget(ShadToggleGroup<String>(items: items)),
+      );
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      expect(focusedLabel(), 'ShadToggleGroupItem(a)');
+
+      // A click presses the item without moving the keyboard focus.
+      await tester.tap(find.text('B'));
+      await tester.pump();
+      expect(isPressed(tester, 'B'), isTrue);
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      expect(focusedLabel(), 'after');
+    });
+
+    testWidgets('a vertical group ignores left and right arrows', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        focusTestWidget(
+          ShadToggleGroup<String>(
+            initialValue: 'a',
+            axis: Axis.vertical,
+            items: items,
+          ),
+        ),
+      );
+      await pressKey(tester, LogicalKeyboardKey.tab);
+      await pressKey(tester, LogicalKeyboardKey.tab);
+
+      await pressKey(tester, LogicalKeyboardKey.arrowRight);
+      expect(focusedLabel(), 'ShadToggleGroupItem(a)');
+      await pressKey(tester, LogicalKeyboardKey.arrowLeft);
+      expect(focusedLabel(), 'ShadToggleGroupItem(a)');
+    });
+
+    testWidgets('restores skipTraversal of item focus nodes', (tester) async {
+      final focusNode = FocusNode();
+      addTearDown(focusNode.dispose);
+      Widget build({required bool withB, required bool showGroup}) {
+        return createTestWidget(
+          showGroup
+              ? ShadToggleGroup<String>(
+                  initialValue: 'a',
+                  items: [
+                    const ShadToggleGroupItem(value: 'a', child: Text('A')),
+                    if (withB)
+                      ShadToggleGroupItem(
+                        value: 'b',
+                        focusNode: focusNode,
+                        child: const Text('B'),
+                      ),
+                  ],
+                )
+              : const SizedBox(),
+        );
+      }
+
+      await tester.pumpWidget(build(withB: true, showGroup: true));
+      expect(focusNode.skipTraversal, isTrue);
+      await tester.pumpWidget(build(withB: false, showGroup: true));
+      expect(focusNode.skipTraversal, isFalse);
+
+      await tester.pumpWidget(build(withB: true, showGroup: true));
+      expect(focusNode.skipTraversal, isTrue);
+      await tester.pumpWidget(build(withB: true, showGroup: false));
+      expect(focusNode.skipTraversal, isFalse);
+    });
+
     testWidgets('arrow keys move, skip disabled items and wrap', (
       tester,
     ) async {

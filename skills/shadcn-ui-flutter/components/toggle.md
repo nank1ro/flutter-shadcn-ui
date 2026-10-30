@@ -25,7 +25,7 @@ class _ToggleExampleState extends State<ToggleExample> {
       selectedHoverBackgroundColor: Colors.transparent,
       leading: BookmarkIcon(
         filled: value,
-        color: value ? blue500 : null,
+        fillColor: blue500,
       ),
       child: const Text('Bookmark'),
     );
@@ -40,26 +40,32 @@ const blue500 = Color(0xFF2B7FFF);
 /// The Lucide icon font only has outlined glyphs, so the SVG is used to fill
 /// it.
 class BookmarkIcon extends StatelessWidget {
-  const BookmarkIcon({super.key, required this.filled, this.color});
+  const BookmarkIcon({super.key, required this.filled, this.fillColor});
 
   final bool filled;
 
-  /// The color of the icon, defaults to the icon theme color.
-  final Color? color;
+  /// The color inside the icon when [filled], defaults to the icon color.
+  final Color? fillColor;
 
   @override
   Widget build(BuildContext context) {
     final iconTheme = IconTheme.of(context);
     final size = iconTheme.size ?? 16;
+    final fill = switch ((filled, fillColor)) {
+      (false, _) => 'none',
+      (true, null) => 'currentColor',
+      (true, final Color color) =>
+        '#${(color.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0')}',
+    };
     return SvgPicture.string(
       '''
-<svg viewBox="0 0 24 24" fill="${filled ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<svg viewBox="0 0 24 24" fill="$fill" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>
 </svg>''',
       width: size,
       height: size,
       theme: SvgTheme(
-        currentColor: color ?? iconTheme.color ?? const Color(0xFF000000),
+        currentColor: iconTheme.color ?? const Color(0xFF000000),
       ),
     );
   }
@@ -197,12 +203,12 @@ class _TogglePageState extends State<TogglePage> {
           enabled: enabled,
           value: bookmark,
           onChanged: (value) => setState(() => bookmark = value),
-          // Like the shadcn/ui demo: no background and a blue icon when on.
+          // Like the shadcn/ui demo: no background and a blue fill when on.
           selectedBackgroundColor: Colors.transparent,
           selectedHoverBackgroundColor: Colors.transparent,
           leading: BookmarkIcon(
             filled: bookmark,
-            color: bookmark ? blue500 : null,
+            fillColor: blue500,
           ),
           child: const Text('Bookmark'),
         ),
@@ -233,26 +239,32 @@ class _TogglePageState extends State<TogglePage> {
 /// The Lucide icon font only has outlined glyphs, so the SVG is used to fill
 /// it.
 class BookmarkIcon extends StatelessWidget {
-  const BookmarkIcon({super.key, required this.filled, this.color});
+  const BookmarkIcon({super.key, required this.filled, this.fillColor});
 
   final bool filled;
 
-  /// The color of the icon, defaults to the icon theme color.
-  final Color? color;
+  /// The color inside the icon when [filled], defaults to the icon color.
+  final Color? fillColor;
 
   @override
   Widget build(BuildContext context) {
     final iconTheme = IconTheme.of(context);
     final size = iconTheme.size ?? 16;
+    final fill = switch ((filled, fillColor)) {
+      (false, _) => 'none',
+      (true, null) => 'currentColor',
+      (true, final Color color) =>
+        '#${(color.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0')}',
+    };
     return SvgPicture.string(
       '''
-<svg viewBox="0 0 24 24" fill="${filled ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<svg viewBox="0 0 24 24" fill="$fill" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/>
 </svg>''',
       width: size,
       height: size,
       theme: SvgTheme(
-        currentColor: color ?? iconTheme.color ?? const Color(0xFF000000),
+        currentColor: iconTheme.color ?? const Color(0xFF000000),
       ),
     );
   }
