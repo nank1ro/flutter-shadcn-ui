@@ -107,9 +107,12 @@ void main() {
           ),
         );
 
+        // Like the web, the media sits at the top of the line, which is as
+        // tall as the actions here, nudged down by 2px.
+        final item = tester.getTopLeft(find.byType(ShadItem));
         final media = tester.getTopLeft(find.byType(ShadItemMedia));
-        final content = tester.getTopLeft(find.byType(ShadItemContent));
-        expect(media.dy, content.dy + 2);
+        // 16 padding + 1 border
+        expect(media.dy, item.dy + 17 + 2);
 
         // The actions are taller than the content and the content is
         // centered with them.
@@ -914,6 +917,208 @@ void main() {
       expect(
         tester.getSize(find.byType(ShadItem)).height,
         tester.getSize(find.byType(IntrinsicHeight)).height,
+      );
+    });
+
+    testWidgets('supports content without intrinsics next to actions', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadItem(
+            actions: const SizedBox(
+              width: 50,
+              height: 20,
+              key: ValueKey('actions'),
+            ),
+            child: LayoutBuilder(builder: (context, _) => const Text('Title')),
+          ),
+        ),
+      );
+
+      expect(tester.takeException(), isNull);
+      final item = tester.getRect(find.byType(ShadItem));
+      final actions = tester.getRect(find.byKey(const ValueKey('actions')));
+      // The actions stay at the end of the line.
+      expect(actions.right, item.right - 17);
+      expect(tester.getCenter(find.text('Title')).dy, actions.center.dy);
+    });
+
+    testWidgets(
+      'keeps the title min-content width next to content without intrinsics',
+      (tester) async {
+        await tester.pumpWidget(
+          createTestWidget(
+            Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(
+                width: 140,
+                child: ShadItem(
+                  title: const Text('Title'),
+                  actions: const SizedBox(
+                    width: 50,
+                    height: 20,
+                    key: ValueKey('actions'),
+                  ),
+                  child: LayoutBuilder(builder: (context, _) => const Text('')),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        expect(tester.takeException(), isNull);
+        final title = tester.getRect(find.text('Title'));
+        final actions = tester.getRect(find.byKey(const ValueKey('actions')));
+        // "Title" doesn't fit next to the actions, so they wrap below it.
+        expect(title.width, greaterThan(0));
+        expect(actions.top, greaterThan(title.bottom));
+      },
+    );
+
+    testWidgets('wraps the lines from the right in RTL', (tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          textDirection: TextDirection.rtl,
+          const Align(
+            alignment: Alignment.topRight,
+            child: SizedBox(
+              width: 100,
+              child: ShadItem(
+                media: SizedBox.square(dimension: 32, key: ValueKey('media')),
+                title: Text('Title'),
+                actions: SizedBox(
+                  width: 50,
+                  height: 20,
+                  key: ValueKey('actions'),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(tester.takeException(), isNull);
+      final item = tester.getRect(find.byType(ShadItem));
+      final media = tester.getRect(find.byKey(const ValueKey('media')));
+      final content = tester.getRect(find.byType(ShadItemContent));
+      final actions = tester.getRect(find.byKey(const ValueKey('actions')));
+      // 16 padding + 1 border
+      expect(media.right, item.right - 17);
+      expect(content.top, media.bottom + 16);
+      expect(content.width, 100 - 2 * 17);
+      expect(actions.top, content.bottom + 16);
+      expect(actions.right, item.right - 17);
+    });
+
+    testWidgets('reports the height of wrapping actions in intrinsic sizing', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          const Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+              width: 160,
+              child: IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: ShadItem(
+                        title: Text('Title'),
+                        actions: Text(
+                          'An action label long enough to wrap',
+                          key: ValueKey('actions'),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(tester.takeException(), isNull);
+      final item = tester.getRect(find.byType(ShadItem));
+      final actions = tester.getRect(find.byKey(const ValueKey('actions')));
+      expect(actions.width, lessThanOrEqualTo(126));
+      // 16 padding + 1 border
+      expect(item.bottom, actions.bottom + 17);
+    });
+
+    testWidgets('places the actions right after the media without content', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          const ShadItem(
+            media: SizedBox.square(dimension: 20, key: ValueKey('media')),
+            actions: SizedBox.square(dimension: 20, key: ValueKey('actions')),
+          ),
+        ),
+      );
+
+      final media = tester.getRect(find.byKey(const ValueKey('media')));
+      final actions = tester.getRect(find.byKey(const ValueKey('actions')));
+      expect(actions.left, media.right + 16);
+      expect(actions.top, media.top);
+    });
+
+    testWidgets('moves the content below the media when it does not fit', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          const Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+              width: 100,
+              child: ShadItem(
+                media: SizedBox.square(dimension: 32, key: ValueKey('media')),
+                title: Text('Title'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(tester.takeException(), isNull);
+      final item = tester.getRect(find.byType(ShadItem));
+      final media = tester.getRect(find.byKey(const ValueKey('media')));
+      final content = tester.getRect(find.byType(ShadItemContent));
+      expect(content.left, item.left + 17);
+      expect(content.width, 100 - 2 * 17);
+      expect(content.top, media.bottom + 16);
+    });
+
+    testWidgets('aligns its baseline with neighbouring text', (tester) async {
+      // Same metrics as the title, so equal baselines mean equal tops.
+      const style = TextStyle(fontSize: 14, height: 1.375);
+      await tester.pumpWidget(
+        createTestWidget(
+          const Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              Text('Label', style: style),
+              Expanded(
+                child: ShadItem(
+                  titleStyle: style,
+                  title: Text('Title'),
+                  actions: SizedBox.square(dimension: 60),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      expect(
+        tester.getTopLeft(find.text('Title')).dy,
+        tester.getTopLeft(find.text('Label')).dy,
       );
     });
 

@@ -461,20 +461,6 @@ class _ShadItemState extends State<ShadItem> {
       );
     }
 
-    // The media and the content are grouped, so that the media can be top
-    // aligned to the content while the actions stay vertically centered.
-    final hasMain = media != null || content != null;
-    final main = Row(
-      crossAxisAlignment: hasDescription
-          ? CrossAxisAlignment.start
-          : CrossAxisAlignment.center,
-      spacing: effectiveGap,
-      children: [
-        ?media,
-        if (content != null) Expanded(child: content),
-      ],
-    );
-
     final effectiveTextDirection =
         widget.textDirection ?? itemTheme.textDirection;
 
@@ -486,17 +472,19 @@ class _ShadItemState extends State<ShadItem> {
         spacing: effectiveGap,
         children: [
           ?widget.header,
-          if (hasMain || widget.actions != null)
+          if (media != null || content != null || widget.actions != null)
             CustomBoxy(
               delegate: _ShadItemRowBoxy(
                 gap: effectiveGap,
                 textDirection:
                     effectiveTextDirection ?? Directionality.of(context),
+                alignMediaToTop: hasDescription,
               ),
               children: [
-                if (hasMain) BoxyId(id: #main, child: main),
+                if (media != null) BoxyId(id: _media, child: media),
+                if (content != null) BoxyId(id: _content, child: content),
                 if (widget.actions != null)
-                  BoxyId(id: #actions, child: widget.actions!),
+                  BoxyId(id: _actions, child: widget.actions!),
               ],
             ),
           ?widget.footer,
@@ -596,120 +584,215 @@ class _ShadItemState extends State<ShadItem> {
   }
 }
 
-/// Lays out the media and content of a [ShadItem] next to its actions, and
-/// moves the actions below the content when they don't fit.
+const _media = #media;
+const _content = #content;
+const _actions = #actions;
+
+/// Lays out the media, the content and the actions of a [ShadItem] like
+/// `flex flex-wrap items-center` on the web.
 ///
-/// Like `flex-wrap` on the web, the line breaks when the min-content width of
-/// the content plus the actions doesn't fit, not its natural width, so long
-/// titles and descriptions wrap first.
+/// The items are placed on a line in order, and an item moves to the next
+/// line when it doesn't fit. The content counts with its min-content width
+/// and then expands to fill its line, so long titles and descriptions wrap
+/// before the actions move down. Each item is vertically centered in its
+/// line, except the media which sits at the top of its line when
+/// [alignMediaToTop] is true.
 class _ShadItemRowBoxy extends BoxyDelegate {
-  _ShadItemRowBoxy({required this.gap, required this.textDirection});
+  _ShadItemRowBoxy({
+    required this.gap,
+    required this.textDirection,
+    required this.alignMediaToTop,
+  });
 
   final double gap;
   final TextDirection textDirection;
+  final bool alignMediaToTop;
 
-  BoxyChild? get _main => hasChild(#main) ? getChild(#main) : null;
-  BoxyChild? get _actions => hasChild(#actions) ? getChild(#actions) : null;
+  List<BoxyChild> get _items => [
+    for (final id in const [_media, _content, _actions])
+      if (hasChild(id)) getChild(id),
+  ];
 
-  bool _fits(BoxyChild main, double actionsWidth, double width) {
-    return main.render.getMinIntrinsicWidth(double.infinity) +
-            gap +
-            actionsWidth <=
-        width;
+  // The min-content width of the content, the widest min-content width of
+  // its title, description and child.
+  //
+  // Widgets without intrinsic dimensions, like a LayoutBuilder, return 0 in
+  // release mode but throw in debug mode, and there is no API to ask whether
+  // a render object supports them. Each child is measured on its own and a
+  // throw counts as 0, so debug lays out like release. In debug mode only,
+  // this leaves the framework's intrinsic timeline events unbalanced.
+  double _minContentWidth(BoxyChild content) {
+    var width = 0.0;
+    content.render.visitChildren((child) {
+      try {
+        width = math.max(
+          width,
+          (child as RenderBox).getMinIntrinsicWidth(double.infinity),
+        );
+        // ignore: avoid_catching_errors
+      } on FlutterError {
+        // Counts as 0, like in release mode.
+      }
+    });
+    return width;
   }
 
-  BoxConstraints _width(double width) =>
-      BoxConstraints.tightFor(width: width).enforce(constraints.loosen());
+  /// Splits the items, given their widths, into lines of at most [maxWidth].
+  List<List<int>> _lines(List<double> widths, double maxWidth) {
+    final lines = <List<int>>[];
+    var lineWidth = 0.0;
+    for (var i = 0; i < widths.length; i++) {
+      if (lines.isEmpty || lineWidth + gap + widths[i] > maxWidth) {
+        lines.add([i]);
+        lineWidth = widths[i];
+      } else {
+        lines.last.add(i);
+        lineWidth += gap + widths[i];
+      }
+    }
+    return lines;
+  }
+
+  /// The width left to the content on a line, after the other items.
+  double _contentWidth(
+    List<int> line,
+    List<double> widths,
+    int contentIndex,
+    double maxWidth,
+  ) {
+    var width = maxWidth - (line.length - 1) * gap;
+    for (final i in line) {
+      if (i != contentIndex) width -= widths[i];
+    }
+    return math.max(0, width);
+  }
 
   @override
   Size layout() {
-    final main = _main;
-    final actions = _actions;
-    final maxWidth = constraints.maxWidth;
-    final rtl = textDirection == TextDirection.rtl;
-
-    if (actions == null) {
-      main!.position(Offset.zero);
-      return main.layout(_width(maxWidth));
-    }
-
-    final actionsSize = actions.layout(constraints.loosen());
-
-    // Like the web version, actions without media and content sit at the
-    // start of the item.
-    if (main == null) {
-      actions.position(Offset(rtl ? maxWidth - actionsSize.width : 0, 0));
-      return Size(maxWidth, actionsSize.height);
-    }
-
-    if (_fits(main, actionsSize.width, maxWidth)) {
-      final mainWidth = maxWidth - gap - actionsSize.width;
-      final mainSize = main.layout(_width(mainWidth));
-      final height = math.max(mainSize.height, actionsSize.height);
-      main.position(
-        Offset(
-          rtl ? actionsSize.width + gap : 0,
-          (height - mainSize.height) / 2,
-        ),
-      );
-      actions.position(
-        Offset(rtl ? 0 : mainWidth + gap, (height - actionsSize.height) / 2),
-      );
-      return Size(maxWidth, height);
-    }
-
-    final mainSize = main.layout(_width(maxWidth));
-    main.position(Offset.zero);
-    actions.position(
-      Offset(rtl ? maxWidth - actionsSize.width : 0, mainSize.height + gap),
+    assert(
+      constraints.hasBoundedWidth,
+      'ShadItem needs a bounded width, wrap it in an Expanded or a SizedBox.',
     );
-    return Size(maxWidth, mainSize.height + gap + actionsSize.height);
+    final items = _items;
+    final maxWidth = constraints.maxWidth;
+    final loose = constraints.loosen();
+    final contentIndex = items.indexWhere((item) => item.id == _content);
+
+    final widths = [
+      for (final item in items)
+        if (item.id == _content)
+          _minContentWidth(item)
+        else
+          item.layout(loose).width,
+    ];
+    final lines = _lines(widths, maxWidth);
+
+    var top = 0.0;
+    for (final line in lines) {
+      if (line.contains(contentIndex)) {
+        final width = _contentWidth(line, widths, contentIndex, maxWidth);
+        items[contentIndex].layout(
+          BoxConstraints.tightFor(width: width).enforce(loose),
+        );
+      }
+
+      final height = line.map((i) => items[i].size.height).reduce(math.max);
+      var x = 0.0;
+      for (final i in line) {
+        final item = items[i];
+        final size = item.size;
+        final y = alignMediaToTop && item.id == _media
+            ? 0.0
+            : (height - size.height) / 2;
+        final dx = textDirection == TextDirection.rtl
+            ? maxWidth - x - size.width
+            : x;
+        item.position(Offset(dx, top + y));
+        x += size.width + gap;
+      }
+      top += height + gap;
+    }
+    return Size(maxWidth, top - gap);
   }
 
   @override
-  double minIntrinsicWidth(double height) => children
-      .map((child) => child.render.getMinIntrinsicWidth(height))
+  double? distanceToBaseline(TextBaseline baseline) {
+    double? result;
+    for (final item in _items) {
+      // This is the call a parent RenderBox makes on its children while
+      // computing its own baseline, the RenderBoxy is the parent of the item
+      // but boxy's child handles don't expose it.
+      // ignore: invalid_use_of_protected_member
+      final distance = item.render.getDistanceToActualBaseline(baseline);
+      if (distance == null) continue;
+      final y = item.rect.top + distance;
+      result = result == null ? y : math.min(result, y);
+    }
+    return result;
+  }
+
+  @override
+  double minIntrinsicWidth(double height) => _items
+      .map((item) => item.render.getMinIntrinsicWidth(height))
       .reduce(math.max);
 
   @override
   double maxIntrinsicWidth(double height) =>
-      children
-          .map((child) => child.render.getMaxIntrinsicWidth(height))
+      _items
+          .map((item) => item.render.getMaxIntrinsicWidth(height))
           .reduce((a, b) => a + b) +
-      (children.length - 1) * gap;
+      (_items.length - 1) * gap;
 
   @override
   double minIntrinsicHeight(double width) => _intrinsicHeight(
     width,
-    (child, width) => child.render.getMinIntrinsicHeight(width),
+    (item, width) => item.render.getMinIntrinsicHeight(width),
   );
 
   @override
   double maxIntrinsicHeight(double width) => _intrinsicHeight(
     width,
-    (child, width) => child.render.getMaxIntrinsicHeight(width),
+    (item, width) => item.render.getMaxIntrinsicHeight(width),
   );
 
+  // Mirrors layout(): the media and the actions are constrained to the width
+  // like in layout, so wrapping actions report their real height. The
+  // content doesn't need the _minContentWidth fallback here: content without
+  // intrinsics can't report an intrinsic height either, in any widget.
   double _intrinsicHeight(
     double width,
-    double Function(BoxyChild child, double width) height,
+    double Function(BoxyChild item, double width) heightOf,
   ) {
-    final main = _main;
-    final actions = _actions;
-    if (actions == null) return height(main!, width);
+    final items = _items;
+    final contentIndex = items.indexWhere((item) => item.id == _content);
+    final widths = [
+      for (final item in items)
+        if (item.id == _content)
+          item.render.getMinIntrinsicWidth(double.infinity)
+        else
+          math.min(item.render.getMaxIntrinsicWidth(double.infinity), width),
+    ];
 
-    final actionsWidth = actions.render.getMaxIntrinsicWidth(double.infinity);
-    final actionsHeight = height(actions, actionsWidth);
-    if (main == null) return actionsHeight;
-    if (_fits(main, actionsWidth, width)) {
-      return math.max(height(main, width - gap - actionsWidth), actionsHeight);
+    var height = 0.0;
+    final lines = _lines(widths, width);
+    for (final line in lines) {
+      height += line
+          .map((i) {
+            final itemWidth = i == contentIndex
+                ? _contentWidth(line, widths, contentIndex, width)
+                : widths[i];
+            return heightOf(items[i], itemWidth);
+          })
+          .reduce(math.max);
     }
-    return height(main, width) + gap + actionsHeight;
+    return height + (lines.length - 1) * gap;
   }
 
   @override
   bool shouldRelayout(_ShadItemRowBoxy oldDelegate) =>
-      gap != oldDelegate.gap || textDirection != oldDelegate.textDirection;
+      gap != oldDelegate.gap ||
+      textDirection != oldDelegate.textDirection ||
+      alignMediaToTop != oldDelegate.alignMediaToTop;
 }
 
 /// {@template ShadItemMedia}
