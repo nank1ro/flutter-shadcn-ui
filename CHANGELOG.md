@@ -1,6 +1,6 @@
 ## 0.57.4
 
-- **FIX**: `ShadRadioGroup` and `ShadSelect` no longer overwrite an external controller when `initialValue` or `initialValues` changes. The controller wins when both are given. An internally created controller still follows those values. `ShadRadioGroupFormField` and single-value `ShadSelectFormField` apply the same rule to the controller they own (#734).
+- **FIX**: `ShadRadioGroup` and `ShadSelect` no longer overwrite an external controller when `initialValue` or `initialValues` changes. The controller wins when both are given. An internally created controller still follows those values. `ShadRadioGroupFormField` and single-value `ShadSelectFormField` apply the same rule to the controller they own. An owned `ShadSelectFormField` controller notifies the form when `initialValue` changes, and clears the selection and registered form value when `initialValue` becomes null (#734).
 
 ## 0.57.3
 

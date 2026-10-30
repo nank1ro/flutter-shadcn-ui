@@ -471,13 +471,29 @@ class ShadFormBuilderSelectState<T>
     // apply initialValue itself. Keep tracking it on the controller this
     // field owns, and leave an external controller alone.
     if (widget.controller != null ||
-        widget.initialValue == oldWidget.initialValue ||
-        widget.initialValue is! T) {
+        widget.initialValue == oldWidget.initialValue) {
       return;
     }
-    controller.value
-      ..clear()
-      ..add(widget.initialValue as T);
+    // A non-null value of the wrong type is ignored. Null clears the
+    // selection.
+    if (widget.initialValue != null && widget.initialValue is! T) {
+      return;
+    }
+
+    final next = widget.initialValue == null ? null : widget.initialValue as T;
+    // Assign a new set so ValueNotifier notifies listeners. Mutating the
+    // current set in place would skip that and leave the displayed selection
+    // stale. onControllerChange is detached because it calls didChange, and
+    // Form.setState is illegal while this field is updating. setValue is the
+    // build-phase path that still writes the registered form value.
+    final updated = next == null ? <T>{} : <T>{next as T};
+    controller.removeListener(onControllerChange);
+    controller.value = updated;
+    controller.addListener(onControllerChange);
+    if (value != next) {
+      setValue(next);
+      widget.onChanged?.call(next);
+    }
   }
 
   @override
