@@ -485,14 +485,14 @@ class ShadFormBuilderSelectState<T>
     // current set in place would skip that and leave the displayed selection
     // stale. onControllerChange is detached because it calls didChange, and
     // Form.setState is illegal while this field is updating. setValue is the
-    // build-phase path that still writes the registered form value.
+    // build-phase path that still writes the registered form value. onChanged
+    // is not called here: a parent setState inside it would run during build.
     final updated = next == null ? <T>{} : <T>{next as T};
     controller.removeListener(onControllerChange);
     controller.value = updated;
     controller.addListener(onControllerChange);
     if (value != next) {
       setValue(next);
-      widget.onChanged?.call(next);
     }
   }
 

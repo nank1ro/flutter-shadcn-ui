@@ -471,6 +471,70 @@ void main() {
     );
 
     testWidgets(
+      'parent setState inside onChanged does not throw when initialValue '
+      'changes',
+      (tester) async {
+        final formKey = GlobalKey<ShadFormState>();
+        final fieldKey = GlobalKey();
+        late StateSetter parentSetState;
+        var initialValue = 'a';
+        final changes = <String?>[];
+
+        Widget field() {
+          return createTestWidget(
+            StatefulBuilder(
+              builder: (context, setState) {
+                parentSetState = setState;
+                return ShadForm(
+                  key: formKey,
+                  child: ShadSelectFormField<String>(
+                    key: fieldKey,
+                    id: 'fruit',
+                    initialValue: initialValue,
+                    placeholder: const Text('Select'),
+                    selectedOptionBuilder: (context, value) => Text(value),
+                    options: options,
+                    onChanged: (value) {
+                      changes.add(value);
+                      // Would throw "setState() called during build" if
+                      // didUpdateWidget invoked onChanged synchronously.
+                      parentSetState(() {});
+                    },
+                  ),
+                );
+              },
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field());
+        expect(tester.takeException(), isNull);
+        expect(changes, isEmpty);
+        expect(formKey.currentState!.value['fruit'], 'a');
+
+        final stateBefore = tester.state<ShadFormBuilderSelectState<String>>(
+          find.byKey(fieldKey),
+        );
+
+        initialValue = 'c';
+        await tester.pumpWidget(field());
+
+        expect(tester.takeException(), isNull);
+        expect(changes, isEmpty);
+        expect(formKey.currentState!.value['fruit'], 'c');
+        expect(
+          tester.state<ShadFormBuilderSelectState<String>>(
+            find.byKey(fieldKey),
+          ),
+          same(stateBefore),
+        );
+        expect(stateBefore.value, 'c');
+        expect(find.text('c'), findsOneWidget);
+        expect(find.text('a'), findsNothing);
+      },
+    );
+
+    testWidgets(
       'form field external controller is not overwritten when initialValue '
       'changes',
       (tester) async {
