@@ -814,6 +814,23 @@ void main() {
       expect(last.bottomLeft, Radius.zero);
     });
 
+    testWidgets('accepts items of a narrower type than the group', (
+      tester,
+    ) async {
+      final changes = <Object?>[];
+      await tester.pumpWidget(
+        createTestWidget(
+          // items is a List<ShadToggleGroupItem<String>>.
+          ShadToggleGroup<Object>(onChanged: changes.add, items: items),
+        ),
+      );
+
+      await tester.tap(find.text('B'));
+      await tester.pump();
+      expect(isPressed(tester, 'B'), isTrue);
+      expect(changes, ['b']);
+    });
+
     testWidgets('matches goldens', (tester) async {
       await tester.pumpWidget(
         createTestWidget(

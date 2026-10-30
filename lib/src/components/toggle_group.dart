@@ -472,9 +472,9 @@ class ShadToggleGroupItem<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     assert(debugCheckHasShadTheme(context));
     final theme = ShadTheme.of(context);
-    final group =
-        context.watch<ShadToggleGroupState<dynamic>>()
-            as ShadToggleGroupState<T>;
+    // No cast to the item's type: a group can hold items of a narrower type,
+    // e.g. ShadToggleGroupItem<String> in a ShadToggleGroup<Object>.
+    final group = context.watch<ShadToggleGroupState<dynamic>>();
     final groupTheme = theme.toggleGroupTheme;
 
     final effectiveVariant =
