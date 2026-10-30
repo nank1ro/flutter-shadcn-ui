@@ -9,7 +9,7 @@
 [![Join Discord](https://dcbadge.limes.pink/api/server/ZhRMAPNh5Y?style=flat)](https://discord.gg/ZhRMAPNh5Y)
 [![Supported by ufirst](https://custom-icon-badges.demolab.com/badge/Supported%20by-ufirst-blue?logo=heart)](https://ufirst.com)
 
-<a href="https://www.buymeacoffee.com/nank1ro" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+<a href="https://www.buymeacoffee.com/nank1ro" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a> <a href="https://trendshift.io/repositories/9443?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-9443" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/9443/daily?language=Dart" alt="nank1ro%2Fflutter-shadcn-ui | Trendshift" width="186" height="41"/></a>
 
 Shadcn UI ported in Flutter.
 Awesome UI components for Flutter, fully customizable.
