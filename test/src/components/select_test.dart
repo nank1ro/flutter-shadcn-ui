@@ -433,42 +433,85 @@ void main() {
       },
     );
 
-    testWidgets(
-      'form field initialValue null clears selection and form value',
-      (tester) async {
-        final formKey = GlobalKey<ShadFormState>();
+    testWidgets('form field ignores a null initialValue on update', (
+      tester,
+    ) async {
+      final formKey = GlobalKey<ShadFormState>();
 
-        Widget field(String? initialValue) {
-          return createTestWidget(
-            ShadForm(
-              key: formKey,
-              child: ShadSelectFormField<String>(
-                id: 'fruit',
-                initialValue: initialValue,
-                placeholder: const Text('Select'),
-                selectedOptionBuilder: (context, value) => Text(value),
-                options: options,
-              ),
+      // No placeholder: clearing the selection would throw
+      // "placeholder must not be null when value is null".
+      Widget field(String? initial) {
+        return createTestWidget(
+          ShadForm(
+            key: formKey,
+            initialValue: const {'s': 'b'},
+            child: ShadSelectFormField<String>(
+              id: 's',
+              initialValue: initial,
+              options: options,
+              selectedOptionBuilder: (context, value) =>
+                  Text('selected:$value'),
             ),
-          );
-        }
-
-        await tester.pumpWidget(field('a'));
-        expect(formKey.currentState!.value['fruit'], 'a');
-        expect(find.text('a'), findsOneWidget);
-
-        await tester.pumpWidget(field(null));
-
-        final state = tester.state<ShadFormBuilderSelectState<String>>(
-          find.byType(ShadSelectFormField<String>),
+          ),
         );
-        expect(state.controller.value, isEmpty);
-        expect(state.value, isNull);
-        expect(formKey.currentState!.value['fruit'], isNull);
-        expect(find.text('Select'), findsOneWidget);
-        expect(find.text('a'), findsNothing);
-      },
-    );
+      }
+
+      await tester.pumpWidget(field('a'));
+      expect(tester.takeException(), isNull);
+      expect(formKey.currentState!.value['s'], 'a');
+      expect(find.text('selected:a'), findsOneWidget);
+
+      await tester.pumpWidget(field(null));
+      expect(tester.takeException(), isNull);
+
+      final state = tester.state<ShadFormBuilderSelectState<String>>(
+        find.byType(ShadSelectFormField<String>),
+      );
+      expect(state.controller.value, {'a'});
+      expect(state.value, 'a');
+      expect(formKey.currentState!.value['s'], 'a');
+      expect(find.text('selected:a'), findsOneWidget);
+    });
+
+    testWidgets('form field shows the form value after its id changes', (
+      tester,
+    ) async {
+      final formKey = GlobalKey<ShadFormState>();
+      var id = 'first';
+
+      Widget field() {
+        return createTestWidget(
+          ShadForm(
+            key: formKey,
+            initialValue: const {'first': 'a', 'second': 'b'},
+            child: ShadSelectFormField<String>(
+              id: id,
+              options: options,
+              selectedOptionBuilder: (context, value) =>
+                  Text('selected:$value'),
+            ),
+          ),
+        );
+      }
+
+      await tester.pumpWidget(field());
+      expect(tester.takeException(), isNull);
+      expect(formKey.currentState!.value['first'], 'a');
+      expect(find.text('selected:a'), findsOneWidget);
+
+      id = 'second';
+      await tester.pumpWidget(field());
+      expect(tester.takeException(), isNull);
+
+      final state = tester.state<ShadFormBuilderSelectState<String>>(
+        find.byType(ShadSelectFormField<String>),
+      );
+      expect(state.value, 'b');
+      expect(state.controller.value, {'b'});
+      expect(formKey.currentState!.value['second'], 'b');
+      expect(find.text('selected:b'), findsOneWidget);
+      expect(find.text('selected:a'), findsNothing);
+    });
 
     testWidgets(
       'parent setState inside onChanged does not throw when initialValue '

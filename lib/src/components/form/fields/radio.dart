@@ -110,12 +110,19 @@ class ShadFormBuilderRadioGroupState<T>
     if (oldWidget.controller == null && widget.controller != null) {
       _controller?.dispose();
     }
-    if (oldWidget.controller != null && widget.controller == null) {
-      _controller = ShadRadioController(value: value, enabled: enabled);
+    // The constructor passes `controller?.value ?? initialValue` to super, so
+    // removing the external controller looks like an initialValue change:
+    // the previous value was the controller's, the new one is initialValue.
+    // Seed the replacement from the current field value instead.
+    final swappedToInternal =
+        oldWidget.controller != null && widget.controller == null;
+    if (swappedToInternal) {
+      _controller = ShadRadioController<T>(value: value, enabled: enabled);
     }
     // The group always receives this field's controller, so it will not apply
     // initialValue itself. Keep tracking it on the controller this field owns.
-    if (widget.controller == null &&
+    if (!swappedToInternal &&
+        widget.controller == null &&
         oldWidget.initialValue != widget.initialValue) {
       controller.value = widget.initialValue;
     }

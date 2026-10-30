@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/src/app.dart';
 import 'package:shadcn_ui/src/components/disabled.dart';
 import 'package:shadcn_ui/src/components/form/fields/radio.dart';
+import 'package:shadcn_ui/src/components/form/form.dart';
 import 'package:shadcn_ui/src/components/radio.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
 
@@ -539,6 +540,49 @@ void main() {
 
         await tester.pumpWidget(field('c'));
         expect(internal().value, 'c');
+      },
+    );
+
+    testWidgets(
+      'removing the external controller keeps the current field value',
+      (tester) async {
+        final formKey = GlobalKey<ShadFormState>();
+        final external = ShadRadioController<String>(value: 'b');
+        ShadRadioController<String>? controller = external;
+
+        Widget field() {
+          return createTestWidget(
+            ShadForm(
+              key: formKey,
+              child: ShadRadioGroupFormField<String>(
+                id: 'choice',
+                controller: controller,
+                initialValue: 'a',
+                items: items,
+              ),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field());
+        expect(tester.takeException(), isNull);
+        expect(external.value, 'b');
+        expect(formKey.currentState!.value['choice'], 'b');
+
+        controller = null;
+        await tester.pumpWidget(field());
+        expect(tester.takeException(), isNull);
+
+        final state = tester.state<ShadFormBuilderRadioGroupState<String>>(
+          find.byType(ShadRadioGroupFormField<String>),
+        );
+        expect(state.controller.value, 'b');
+        expect(state.controller, isNot(same(external)));
+        expect(state.value, 'b');
+        expect(formKey.currentState!.value['choice'], 'b');
+
+        await tester.pumpWidget(const SizedBox());
+        external.dispose();
       },
     );
   });

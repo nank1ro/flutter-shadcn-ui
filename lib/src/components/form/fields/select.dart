@@ -468,32 +468,38 @@ class ShadFormBuilderSelectState<T>
   void didUpdateWidget(covariant ShadSelectFormField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     // ShadSelect always receives this field's controller, so it will not
-    // apply initialValue itself. Keep tracking it on the controller this
-    // field owns, and leave an external controller alone.
-    if (widget.controller != null ||
-        widget.initialValue == oldWidget.initialValue) {
-      return;
+    // apply an initial value itself.
+    if (widget.id != oldWidget.id) {
+      // Re-registration stored the form value for the new id on this field.
+      // Copy it into the controller the child displays.
+      _setControllerValue(value);
     }
-    // A non-null value of the wrong type is ignored. Null clears the
-    // selection.
-    if (widget.initialValue != null && widget.initialValue is! T) {
+
+    // initialValue only drives a controller this field created. Null is
+    // ignored, matching ShadSelect: a null initialValue means the form value
+    // already in use.
+    final next = widget.initialValue;
+    if (widget.controller != null ||
+        next == oldWidget.initialValue ||
+        next == null) {
       return;
     }
 
-    final next = widget.initialValue == null ? null : widget.initialValue as T;
-    // Assign a new set so ValueNotifier notifies listeners. Mutating the
-    // current set in place would skip that and leave the displayed selection
-    // stale. onControllerChange is detached because it calls didChange, and
-    // Form.setState is illegal while this field is updating. setValue is the
-    // build-phase path that still writes the registered form value. onChanged
-    // is not called here: a parent setState inside it would run during build.
-    final updated = next == null ? <T>{} : <T>{next as T};
-    controller.removeListener(onControllerChange);
-    controller.value = updated;
-    controller.addListener(onControllerChange);
+    // onChanged is not called here: a parent setState inside it would run
+    // during build. setValue still writes the registered form value.
+    _setControllerValue(next);
     if (value != next) {
       setValue(next);
     }
+  }
+
+  // New set so ValueNotifier notifies. The listener is detached because it
+  // calls didChange, and the form cannot setState during this update.
+  void _setControllerValue(T? next) {
+    final updated = next == null ? <T>{} : <T>{next};
+    controller.removeListener(onControllerChange);
+    controller.value = updated;
+    controller.addListener(onControllerChange);
   }
 
   @override
