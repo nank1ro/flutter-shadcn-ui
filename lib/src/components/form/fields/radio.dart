@@ -104,11 +104,17 @@ class ShadFormBuilderRadioGroupState<T>
   @override
   void didUpdateWidget(covariant ShadRadioGroupFormField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller == null && widget.controller != null) {
-      _controller?.dispose();
-    }
-    if (oldWidget.controller != null && widget.controller == null) {
-      _controller = ShadRadioController(value: value, enabled: enabled);
+    if (oldWidget.controller != widget.controller) {
+      final previousController = oldWidget.controller ?? _controller;
+      previousController?.removeListener(onControllerChanged);
+      if (oldWidget.controller == null && widget.controller != null) {
+        _controller?.dispose();
+        _controller = null;
+      }
+      if (oldWidget.controller != null && widget.controller == null) {
+        _controller = ShadRadioController(value: value, enabled: enabled);
+      }
+      controller.addListener(onControllerChanged);
     }
   }
 
