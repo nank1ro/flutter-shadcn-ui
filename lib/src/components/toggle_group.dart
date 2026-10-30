@@ -33,8 +33,9 @@ enum ShadToggleGroupType { single, multiple }
 ///
 /// The group is a single Tab stop, entered on the first pressed item (or the
 /// last focused one). The arrow keys move the focus between the items and wrap
-/// around (only Up and Down in a vertical group), Home/PageUp and End/PageDown
-/// move it to the first and last item, and disabled items are skipped.
+/// around: a horizontal group uses all four arrows, like shadcn/ui, while a
+/// vertical group ignores Left and Right. Home/PageUp and End/PageDown move it
+/// to the first and last item, and disabled items are skipped.
 /// {@endtemplate}
 class ShadToggleGroup<T> extends StatefulWidget {
   /// Creates a toggle group where at most one item can be pressed.

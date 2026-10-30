@@ -2,7 +2,7 @@
 
 A set of two-state buttons that can be toggled on or off.
 
-The group is a single Tab stop, entered on the first pressed item (or the last focused one): the arrow keys move the focus between the items and wrap around (only Up and Down in a vertical group), Home/PageUp and End/PageDown move it to the first and last item, and disabled items are skipped. When the items are joined (`spacing` is 0), they draw the focus ring inside their bounds, because the next item would paint over a ring drawn around them.
+The group is a single Tab stop, entered on the first pressed item (or the last focused one): the arrow keys move the focus between the items and wrap around (a horizontal group uses all four arrows, like shadcn/ui, while a vertical group ignores Left and Right), Home/PageUp and End/PageDown move it to the first and last item, and disabled items are skipped. When the items are joined (`spacing` is 0), they draw the focus ring inside their bounds, because the next item would paint over a ring drawn around them.
 
 
 
