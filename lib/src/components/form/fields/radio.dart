@@ -115,6 +115,12 @@ class ShadFormBuilderRadioGroupState<T>
         _controller = ShadRadioController(value: value, enabled: enabled);
       }
       controller.addListener(onControllerChanged);
+      // The listener does not replay a value the controller already holds.
+      // didChange would setState on Form during this build and invoke the
+      // user's onChanged synchronously, so adopt the selection with setValue.
+      if (controller.value != value) {
+        setValue(controller.value);
+      }
     }
   }
 

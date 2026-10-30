@@ -618,5 +618,62 @@ void main() {
       expect(owned.value, 'b');
       expect(formKey.currentState!.value['r'], 'b');
     });
+
+    testWidgets(
+      'syncs the field when a replacement controller already differs',
+      (WidgetTester tester) async {
+        final calls = <String?>[];
+        final formKey = GlobalKey<ShadFormState>();
+        final fieldKey = GlobalKey<ShadFormBuilderRadioGroupState<String>>();
+        final external = ShadRadioController<String>(value: 'b');
+        addTearDown(external.dispose);
+
+        Widget buildField({ShadRadioController<String>? controller}) {
+          return createTestWidget(
+            ShadForm(
+              key: formKey,
+              child: ShadRadioGroupFormField<String>(
+                key: fieldKey,
+                id: 'r',
+                initialValue: 'a',
+                controller: controller,
+                onChanged: calls.add,
+                items: const [
+                  ShadRadio(value: 'a', label: Text('A')),
+                  ShadRadio(value: 'b', label: Text('B')),
+                ],
+              ),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(buildField());
+
+        final fieldState = fieldKey.currentState!;
+        expect(calls, isEmpty);
+        expect(fieldState.value, 'a');
+        expect(formKey.currentState!.value['r'], 'a');
+
+        // Owned -> external, where the external controller already holds a
+        // different selection than the field.
+        await tester.pumpWidget(buildField(controller: external));
+
+        expect(fieldKey.currentState, same(fieldState));
+        expect(fieldState.controller, same(external));
+        expect(fieldState.value, 'b');
+        expect(external.value, 'b');
+        expect(formKey.currentState!.value['r'], 'b');
+        // Attaching the controller is not a selection change.
+        expect(calls, isEmpty);
+
+        external.value = 'a';
+        await tester.pump();
+
+        expect(calls, ['a']);
+        expect(fieldState.value, 'a');
+        expect(external.value, 'a');
+        expect(formKey.currentState!.value['r'], 'a');
+      },
+    );
   });
 }
