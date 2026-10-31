@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/item.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
 import 'package:shadcn_ui/src/theme/color_scheme/base.dart';
 import 'package:shadcn_ui/src/theme/components/accordion.dart';
@@ -22,6 +23,7 @@ import 'package:shadcn_ui/src/theme/components/default_keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
+import 'package:shadcn_ui/src/theme/components/item.dart';
 import 'package:shadcn_ui/src/theme/components/menubar.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
@@ -1108,6 +1110,127 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
       showDoneButton: true,
       showNextButton: true,
       showPreviousButton: true,
+    );
+  }
+
+  @override
+  ShadItemTheme primaryItemTheme() {
+    return ShadItemTheme(
+      decoration: ShadDecoration(
+        border: ShadBorder.all(
+          width: 1,
+          color: const Color(0x00000000),
+          radius: radius,
+        ),
+        focusedBorder: ShadBorder.all(
+          width: 1,
+          color: colorScheme.ring,
+          radius: radius,
+        ),
+      ),
+      hoverBackgroundColor: colorScheme.accent.withValues(alpha: .5),
+      size: ShadItemSize.regular,
+      titleStyle: effectiveTextTheme.small.copyWith(
+        color: colorScheme.foreground,
+        height: 1.375,
+      ),
+      descriptionStyle: effectiveTextTheme.muted.copyWith(
+        color: colorScheme.mutedForeground,
+        height: 1.5,
+      ),
+      descriptionMaxLines: 2,
+      contentSpacing: 4,
+      actionsSpacing: 8,
+      headerSpacing: 8,
+      footerSpacing: 8,
+      mediaIconSize: 16,
+      mediaIconContainerSize: 32,
+      mediaImageSize: 40,
+      mediaRadius: const BorderRadius.all(Radius.circular(4)),
+      mediaImageFit: BoxFit.cover,
+      mediaBackgroundColor: colorScheme.muted,
+      mediaBorderColor: colorScheme.border,
+    );
+  }
+
+  @override
+  ShadItemTheme outlineItemTheme() {
+    return ShadItemTheme(
+      decoration: ShadDecoration(
+        border: ShadBorder.all(
+          width: 1,
+          color: colorScheme.border,
+          radius: radius,
+        ),
+        focusedBorder: ShadBorder.all(
+          width: 1,
+          color: colorScheme.ring,
+          radius: radius,
+        ),
+      ),
+      hoverBackgroundColor: colorScheme.accent.withValues(alpha: .5),
+      size: ShadItemSize.regular,
+      titleStyle: effectiveTextTheme.small.copyWith(
+        color: colorScheme.foreground,
+        height: 1.375,
+      ),
+      descriptionStyle: effectiveTextTheme.muted.copyWith(
+        color: colorScheme.mutedForeground,
+        height: 1.5,
+      ),
+      descriptionMaxLines: 2,
+      contentSpacing: 4,
+      actionsSpacing: 8,
+      headerSpacing: 8,
+      footerSpacing: 8,
+      mediaIconSize: 16,
+      mediaIconContainerSize: 32,
+      mediaImageSize: 40,
+      mediaRadius: const BorderRadius.all(Radius.circular(4)),
+      mediaImageFit: BoxFit.cover,
+      mediaBackgroundColor: colorScheme.muted,
+      mediaBorderColor: colorScheme.border,
+    );
+  }
+
+  @override
+  ShadItemTheme mutedItemTheme() {
+    return ShadItemTheme(
+      decoration: ShadDecoration(
+        border: ShadBorder.all(
+          width: 1,
+          color: const Color(0x00000000),
+          radius: radius,
+        ),
+        focusedBorder: ShadBorder.all(
+          width: 1,
+          color: colorScheme.ring,
+          radius: radius,
+        ),
+      ),
+      backgroundColor: colorScheme.muted.withValues(alpha: .5),
+      hoverBackgroundColor: colorScheme.accent.withValues(alpha: .5),
+      size: ShadItemSize.regular,
+      titleStyle: effectiveTextTheme.small.copyWith(
+        color: colorScheme.foreground,
+        height: 1.375,
+      ),
+      descriptionStyle: effectiveTextTheme.muted.copyWith(
+        color: colorScheme.mutedForeground,
+        height: 1.5,
+      ),
+      descriptionMaxLines: 2,
+      contentSpacing: 4,
+      actionsSpacing: 8,
+      headerSpacing: 8,
+      footerSpacing: 8,
+      mediaIconSize: 16,
+      mediaIconContainerSize: 32,
+      mediaImageSize: 40,
+      mediaRadius: const BorderRadius.all(Radius.circular(4)),
+      mediaImageFit: BoxFit.cover,
+      mediaBackgroundColor: colorScheme.muted,
+      mediaBorderColor: colorScheme.border,
     );
   }
 }

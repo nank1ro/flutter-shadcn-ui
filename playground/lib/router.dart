@@ -16,6 +16,7 @@ import 'package:playground/pages/form.dart';
 import 'package:playground/pages/icon_button.dart';
 import 'package:playground/pages/input.dart';
 import 'package:playground/pages/input_otp.dart';
+import 'package:playground/pages/item.dart';
 import 'package:playground/pages/menubar.dart';
 import 'package:playground/pages/popover.dart';
 import 'package:playground/pages/progress.dart';
@@ -252,6 +253,14 @@ final router = GoRouter(
       builder: (context, state) {
         final style = state.uri.queryParameters['style'] ?? 'primary';
         return InputOTPPage(style: ShadInputOTPVariant.values.byName(style));
+      },
+    ),
+    GoRoute(
+      path: '/item',
+      builder: (context, state) {
+        final style =
+            state.uri.queryParameters['style'] ?? ItemStyle.primary.name;
+        return ItemPage(style: ItemStyle.values.byName(style));
       },
     ),
     GoRoute(
