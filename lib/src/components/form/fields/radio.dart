@@ -135,10 +135,18 @@ class ShadFormBuilderRadioGroupState<T>
     }
     // The group always receives this field's controller, so it will not apply
     // initialValue itself. Keep tracking it on the controller this field owns.
+    // The listener calls didChange, which setStates Form during this build, so
+    // write the registered value with setValue instead.
     if (!swappedToInternal &&
         widget.controller == null &&
         oldWidget.initialValue != widget.initialValue) {
-      controller.value = widget.initialValue;
+      final next = widget.initialValue;
+      controller.removeListener(onControllerChanged);
+      controller.value = next;
+      controller.addListener(onControllerChanged);
+      if (value != next) {
+        setValue(next);
+      }
     }
   }
 

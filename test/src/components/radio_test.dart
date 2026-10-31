@@ -544,6 +544,68 @@ void main() {
     );
 
     testWidgets(
+      'form field initialValue change does not call onChanged during build',
+      (tester) async {
+        final formKey = GlobalKey<ShadFormState>();
+        final fieldKey = GlobalKey<ShadFormBuilderRadioGroupState<String>>();
+        late StateSetter parentSetState;
+        var initialValue = 'a';
+        final changes = <String?>[];
+
+        Widget field() {
+          return createTestWidget(
+            StatefulBuilder(
+              builder: (context, setState) {
+                parentSetState = setState;
+                return ShadForm(
+                  key: formKey,
+                  child: ShadRadioGroupFormField<String>(
+                    key: fieldKey,
+                    id: 'choice',
+                    initialValue: initialValue,
+                    onChanged: (value) {
+                      changes.add(value);
+                      // Would throw "setState() called during build" if
+                      // didUpdateWidget invoked onChanged synchronously.
+                      parentSetState(() {});
+                    },
+                    items: items,
+                  ),
+                );
+              },
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field());
+        expect(tester.takeException(), isNull);
+        expect(changes, isEmpty);
+        expect(formKey.currentState!.value['choice'], 'a');
+
+        final stateBefore = fieldKey.currentState!;
+        expect(stateBefore.controller.value, 'a');
+
+        initialValue = 'c';
+        await tester.pumpWidget(field());
+
+        expect(tester.takeException(), isNull);
+        expect(changes, isEmpty);
+        expect(formKey.currentState!.value['choice'], 'c');
+        expect(fieldKey.currentState, same(stateBefore));
+        expect(stateBefore.value, 'c');
+        expect(stateBefore.controller.value, 'c');
+
+        // The listener must still be attached after the initialValue update.
+        stateBefore.controller.value = 'b';
+        await tester.pump();
+        expect(tester.takeException(), isNull);
+        expect(changes, ['b']);
+        expect(stateBefore.value, 'b');
+        expect(formKey.currentState!.value['choice'], 'b');
+      },
+    );
+
+    testWidgets(
       'removing the external controller keeps the current field value',
       (tester) async {
         final formKey = GlobalKey<ShadFormState>();

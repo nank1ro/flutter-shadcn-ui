@@ -470,9 +470,18 @@ class ShadFormBuilderSelectState<T>
     // ShadSelect always receives this field's controller, so it will not
     // apply an initial value itself.
     if (widget.id != oldWidget.id) {
-      // Re-registration stored the form value for the new id on this field.
-      // Copy it into the controller the child displays.
-      _setControllerValue(value);
+      if (widget.controller == null) {
+        // Re-registration stored the form value for the new id on this field.
+        // Copy it into the controller this field owns.
+        _setControllerValue(value);
+      } else {
+        // An external controller keeps its selection. Register that selection
+        // under the new id instead of writing the new id's value into it.
+        final selection = controller.value.firstOrNull;
+        if (value != selection) {
+          setValue(selection);
+        }
+      }
     }
 
     // initialValue only drives a controller this field created. Null is

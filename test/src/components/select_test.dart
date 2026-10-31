@@ -514,6 +514,55 @@ void main() {
     });
 
     testWidgets(
+      'form field id change keeps an external controller selection',
+      (tester) async {
+        final formKey = GlobalKey<ShadFormState>();
+        final controller = ShadSelectController<String>(initialValue: {'a'});
+        addTearDown(controller.dispose);
+        var id = 'first';
+        final changes = <String?>[];
+
+        Widget field() {
+          return createTestWidget(
+            ShadForm(
+              key: formKey,
+              initialValue: const {'first': 'a', 'second': 'b'},
+              child: ShadSelectFormField<String>(
+                id: id,
+                controller: controller,
+                options: options,
+                selectedOptionBuilder: (context, value) =>
+                    Text('selected:$value'),
+                onChanged: changes.add,
+              ),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field());
+        expect(tester.takeException(), isNull);
+        expect(controller.value, {'a'});
+        expect(formKey.currentState!.value['first'], 'a');
+        expect(find.text('selected:a'), findsOneWidget);
+
+        id = 'second';
+        await tester.pumpWidget(field());
+        expect(tester.takeException(), isNull);
+        expect(changes, isEmpty);
+        expect(controller.value, {'a'});
+        expect(formKey.currentState!.value['second'], 'a');
+        expect(find.text('selected:a'), findsOneWidget);
+        expect(find.text('selected:b'), findsNothing);
+
+        final state = tester.state<ShadFormBuilderSelectState<String>>(
+          find.byType(ShadSelectFormField<String>),
+        );
+        expect(state.value, 'a');
+        expect(state.controller, same(controller));
+      },
+    );
+
+    testWidgets(
       'parent setState inside onChanged does not throw when initialValue '
       'changes',
       (tester) async {
