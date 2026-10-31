@@ -241,4 +241,434 @@ void main() {
       },
     );
   });
+
+  // https://github.com/nank1ro/flutter-shadcn-ui/issues/734
+  group('ShadSelect initialValue and controller', () {
+    const options = <Widget>[
+      ShadOption(value: 'a', child: Text('a')),
+      ShadOption(value: 'b', child: Text('b')),
+      ShadOption(value: 'c', child: Text('c')),
+    ];
+
+    Widget single({
+      required String? initialValue,
+      ShadSelectController<String>? controller,
+    }) {
+      return createTestWidget(
+        ShadSelect<String>(
+          controller: controller,
+          initialValue: initialValue,
+          placeholder: const Text('Select'),
+          selectedOptionBuilder: (context, value) => Text(value),
+          options: options,
+        ),
+      );
+    }
+
+    Widget multiple({
+      required Set<String> initialValues,
+      ShadSelectController<String>? controller,
+    }) {
+      return createTestWidget(
+        ShadSelect<String>.multiple(
+          controller: controller,
+          initialValues: initialValues,
+          placeholder: const Text('Select'),
+          selectedOptionsBuilder: (context, values) => Text(values.join(',')),
+          options: options,
+        ),
+      );
+    }
+
+    ShadSelectController<String> internalSelect(WidgetTester tester) {
+      return tester
+          .state<ShadSelectState<String>>(find.byType(ShadSelect<String>))
+          .controller;
+    }
+
+    testWidgets(
+      'external controller is not overwritten when initialValue changes',
+      (tester) async {
+        final controller = ShadSelectController<String>(initialValue: {'b'});
+
+        await tester.pumpWidget(
+          single(initialValue: 'a', controller: controller),
+        );
+        expect(controller.value, {'b'});
+
+        await tester.pumpWidget(
+          single(initialValue: 'c', controller: controller),
+        );
+        expect(controller.value, {'b'});
+
+        await tester.pumpWidget(const SizedBox());
+        controller.dispose();
+      },
+    );
+
+    testWidgets('initialValue updates the internal controller', (tester) async {
+      await tester.pumpWidget(single(initialValue: 'a'));
+      expect(internalSelect(tester).value, {'a'});
+
+      await tester.pumpWidget(single(initialValue: 'c'));
+      expect(internalSelect(tester).value, {'c'});
+    });
+
+    testWidgets(
+      'external controller is not overwritten when initialValues changes',
+      (tester) async {
+        final controller = ShadSelectController<String>(initialValue: {'b'});
+
+        await tester.pumpWidget(
+          multiple(initialValues: {'a'}, controller: controller),
+        );
+        expect(controller.value, {'b'});
+
+        await tester.pumpWidget(
+          multiple(initialValues: {'c'}, controller: controller),
+        );
+        expect(controller.value, {'b'});
+
+        await tester.pumpWidget(const SizedBox());
+        controller.dispose();
+      },
+    );
+
+    testWidgets('initialValues updates the internal controller', (
+      tester,
+    ) async {
+      await tester.pumpWidget(multiple(initialValues: {'a'}));
+      expect(internalSelect(tester).value, {'a'});
+
+      await tester.pumpWidget(multiple(initialValues: {'c'}));
+      expect(internalSelect(tester).value, {'c'});
+    });
+
+    testWidgets(
+      'form field external controller is not overwritten by initialValue',
+      (tester) async {
+        final controller = ShadSelectController<String>(initialValue: {'b'});
+
+        Widget field(String? initialValue) {
+          return createTestWidget(
+            ShadSelectFormField<String>(
+              controller: controller,
+              initialValue: initialValue,
+              placeholder: const Text('Select'),
+              selectedOptionBuilder: (context, value) => Text(value),
+              options: options,
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('a'));
+        expect(controller.value, {'b'});
+
+        await tester.pumpWidget(field('c'));
+        expect(controller.value, {'b'});
+
+        await tester.pumpWidget(const SizedBox());
+        controller.dispose();
+      },
+    );
+
+    testWidgets('form field initialValue updates the internal controller', (
+      tester,
+    ) async {
+      Widget field(String? initialValue) {
+        return createTestWidget(
+          ShadSelectFormField<String>(
+            initialValue: initialValue,
+            placeholder: const Text('Select'),
+            selectedOptionBuilder: (context, value) => Text(value),
+            options: options,
+          ),
+        );
+      }
+
+      await tester.pumpWidget(field('a'));
+
+      ShadSelectController<String> internal() {
+        return tester
+            .state<ShadFormBuilderSelectState<String>>(
+              find.byType(ShadSelectFormField<String>),
+            )
+            .controller;
+      }
+
+      expect(internal().value, {'a'});
+
+      await tester.pumpWidget(field('c'));
+      expect(internal().value, {'c'});
+    });
+
+    testWidgets(
+      'form field initialValue on rebuild updates the form value',
+      (tester) async {
+        final formKey = GlobalKey<ShadFormState>();
+
+        Widget field(String? initialValue) {
+          return createTestWidget(
+            ShadForm(
+              key: formKey,
+              child: ShadSelectFormField<String>(
+                id: 'fruit',
+                initialValue: initialValue,
+                placeholder: const Text('Select'),
+                selectedOptionBuilder: (context, value) => Text(value),
+                options: options,
+              ),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('a'));
+        expect(formKey.currentState!.value['fruit'], 'a');
+        expect(find.text('a'), findsOneWidget);
+
+        await tester.pumpWidget(field('c'));
+        expect(formKey.currentState!.value['fruit'], 'c');
+        expect(find.text('c'), findsOneWidget);
+        expect(find.text('a'), findsNothing);
+      },
+    );
+
+    testWidgets('form field ignores a null initialValue on update', (
+      tester,
+    ) async {
+      final formKey = GlobalKey<ShadFormState>();
+
+      // No placeholder: clearing the selection would throw
+      // "placeholder must not be null when value is null".
+      Widget field(String? initial) {
+        return createTestWidget(
+          ShadForm(
+            key: formKey,
+            initialValue: const {'s': 'b'},
+            child: ShadSelectFormField<String>(
+              id: 's',
+              initialValue: initial,
+              options: options,
+              selectedOptionBuilder: (context, value) =>
+                  Text('selected:$value'),
+            ),
+          ),
+        );
+      }
+
+      await tester.pumpWidget(field('a'));
+      expect(tester.takeException(), isNull);
+      expect(formKey.currentState!.value['s'], 'a');
+      expect(find.text('selected:a'), findsOneWidget);
+
+      await tester.pumpWidget(field(null));
+      expect(tester.takeException(), isNull);
+
+      final state = tester.state<ShadFormBuilderSelectState<String>>(
+        find.byType(ShadSelectFormField<String>),
+      );
+      expect(state.controller.value, {'a'});
+      expect(state.value, 'a');
+      expect(formKey.currentState!.value['s'], 'a');
+      expect(find.text('selected:a'), findsOneWidget);
+    });
+
+    testWidgets('form field shows the form value after its id changes', (
+      tester,
+    ) async {
+      final formKey = GlobalKey<ShadFormState>();
+      var id = 'first';
+
+      Widget field() {
+        return createTestWidget(
+          ShadForm(
+            key: formKey,
+            initialValue: const {'first': 'a', 'second': 'b'},
+            child: ShadSelectFormField<String>(
+              id: id,
+              options: options,
+              selectedOptionBuilder: (context, value) =>
+                  Text('selected:$value'),
+            ),
+          ),
+        );
+      }
+
+      await tester.pumpWidget(field());
+      expect(tester.takeException(), isNull);
+      expect(formKey.currentState!.value['first'], 'a');
+      expect(find.text('selected:a'), findsOneWidget);
+
+      id = 'second';
+      await tester.pumpWidget(field());
+      expect(tester.takeException(), isNull);
+
+      final state = tester.state<ShadFormBuilderSelectState<String>>(
+        find.byType(ShadSelectFormField<String>),
+      );
+      expect(state.value, 'b');
+      expect(state.controller.value, {'b'});
+      expect(formKey.currentState!.value['second'], 'b');
+      expect(find.text('selected:b'), findsOneWidget);
+      expect(find.text('selected:a'), findsNothing);
+    });
+
+    testWidgets(
+      'form field id change keeps an external controller selection',
+      (tester) async {
+        final formKey = GlobalKey<ShadFormState>();
+        final controller = ShadSelectController<String>(initialValue: {'a'});
+        addTearDown(controller.dispose);
+        var id = 'first';
+        final changes = <String?>[];
+
+        Widget field() {
+          return createTestWidget(
+            ShadForm(
+              key: formKey,
+              initialValue: const {'first': 'a', 'second': 'b'},
+              child: ShadSelectFormField<String>(
+                id: id,
+                controller: controller,
+                options: options,
+                selectedOptionBuilder: (context, value) =>
+                    Text('selected:$value'),
+                onChanged: changes.add,
+              ),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field());
+        expect(tester.takeException(), isNull);
+        expect(controller.value, {'a'});
+        expect(formKey.currentState!.value['first'], 'a');
+        expect(find.text('selected:a'), findsOneWidget);
+
+        id = 'second';
+        await tester.pumpWidget(field());
+        expect(tester.takeException(), isNull);
+        expect(changes, isEmpty);
+        expect(controller.value, {'a'});
+        expect(formKey.currentState!.value['second'], 'a');
+        expect(find.text('selected:a'), findsOneWidget);
+        expect(find.text('selected:b'), findsNothing);
+
+        final state = tester.state<ShadFormBuilderSelectState<String>>(
+          find.byType(ShadSelectFormField<String>),
+        );
+        expect(state.value, 'a');
+        expect(state.controller, same(controller));
+      },
+    );
+
+    testWidgets(
+      'parent setState inside onChanged does not throw when initialValue '
+      'changes',
+      (tester) async {
+        final formKey = GlobalKey<ShadFormState>();
+        final fieldKey = GlobalKey();
+        late StateSetter parentSetState;
+        var initialValue = 'a';
+        final changes = <String?>[];
+
+        Widget field() {
+          return createTestWidget(
+            StatefulBuilder(
+              builder: (context, setState) {
+                parentSetState = setState;
+                return ShadForm(
+                  key: formKey,
+                  child: ShadSelectFormField<String>(
+                    key: fieldKey,
+                    id: 'fruit',
+                    initialValue: initialValue,
+                    placeholder: const Text('Select'),
+                    selectedOptionBuilder: (context, value) => Text(value),
+                    options: options,
+                    onChanged: (value) {
+                      changes.add(value);
+                      // Would throw "setState() called during build" if
+                      // didUpdateWidget invoked onChanged synchronously.
+                      parentSetState(() {});
+                    },
+                  ),
+                );
+              },
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field());
+        expect(tester.takeException(), isNull);
+        expect(changes, isEmpty);
+        expect(formKey.currentState!.value['fruit'], 'a');
+
+        final stateBefore = tester.state<ShadFormBuilderSelectState<String>>(
+          find.byKey(fieldKey),
+        );
+
+        initialValue = 'c';
+        await tester.pumpWidget(field());
+
+        expect(tester.takeException(), isNull);
+        expect(changes, isEmpty);
+        expect(formKey.currentState!.value['fruit'], 'c');
+        expect(
+          tester.state<ShadFormBuilderSelectState<String>>(
+            find.byKey(fieldKey),
+          ),
+          same(stateBefore),
+        );
+        expect(stateBefore.value, 'c');
+        expect(find.text('c'), findsOneWidget);
+        expect(find.text('a'), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'form field external controller is not overwritten when initialValue '
+      'changes',
+      (tester) async {
+        final controller = ShadSelectController<String>(initialValue: {'b'});
+        final formKey = GlobalKey<ShadFormState>();
+
+        Widget field(String? initialValue) {
+          return createTestWidget(
+            ShadForm(
+              key: formKey,
+              child: ShadSelectFormField<String>(
+                id: 'fruit',
+                controller: controller,
+                initialValue: initialValue,
+                placeholder: const Text('Select'),
+                selectedOptionBuilder: (context, value) => Text(value),
+                options: options,
+              ),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('a'));
+        expect(controller.value, {'b'});
+        expect(find.text('b'), findsOneWidget);
+        expect(formKey.currentState!.value['fruit'], 'a');
+
+        await tester.pumpWidget(field('c'));
+        expect(controller.value, {'b'});
+        expect(find.text('b'), findsOneWidget);
+        expect(find.text('c'), findsNothing);
+        expect(formKey.currentState!.value['fruit'], 'a');
+
+        await tester.pumpWidget(field(null));
+        expect(controller.value, {'b'});
+        expect(find.text('b'), findsOneWidget);
+        expect(find.text('Select'), findsNothing);
+        expect(formKey.currentState!.value['fruit'], 'a');
+
+        await tester.pumpWidget(const SizedBox());
+        controller.dispose();
+      },
+    );
+  });
 }
