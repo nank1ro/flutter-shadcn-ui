@@ -586,4 +586,251 @@ void main() {
       },
     );
   });
+
+  group('ShadRadioGroupFormField', () {
+    testWidgets('calls onChanged once per selection change', (
+      WidgetTester tester,
+    ) async {
+      // Repro from https://github.com/nank1ro/flutter-shadcn-ui/issues/735.
+      final controller = ShadRadioController<String>(value: 'a');
+      final calls = <String?>[];
+      final formKey = GlobalKey<ShadFormState>();
+
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadForm(
+            key: formKey,
+            child: ShadRadioGroupFormField<String>(
+              id: 'r',
+              controller: controller,
+              onChanged: calls.add,
+              items: const [
+                ShadRadio(value: 'a', label: Text('A')),
+                ShadRadio(value: 'b', label: Text('B')),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      ShadFormBuilderRadioGroupState<String> fieldState() {
+        return tester.state<ShadFormBuilderRadioGroupState<String>>(
+          find.byType(ShadRadioGroupFormField<String>),
+        );
+      }
+
+      expect(calls, isEmpty);
+      expect(fieldState().value, 'a');
+      expect(controller.value, 'a');
+      expect(formKey.currentState!.value['r'], 'a');
+
+      controller.value = 'b';
+      await tester.pump();
+
+      expect(calls, ['b']);
+      expect(fieldState().value, 'b');
+      expect(controller.value, 'b');
+      expect(formKey.currentState!.value['r'], 'b');
+
+      calls.clear();
+      await tester.tap(find.text('A'));
+      await tester.pump();
+
+      expect(calls, ['a']);
+      expect(fieldState().value, 'a');
+      expect(controller.value, 'a');
+      expect(formKey.currentState!.value['r'], 'a');
+
+      // Selecting the current value again must not notify.
+      calls.clear();
+      await tester.tap(find.text('A'));
+      await tester.pump();
+      controller.value = 'a';
+      await tester.pump();
+
+      expect(calls, isEmpty);
+      expect(fieldState().value, 'a');
+      expect(controller.value, 'a');
+      expect(formKey.currentState!.value['r'], 'a');
+
+      calls.clear();
+      controller.value = 'b';
+      await tester.pump();
+      expect(calls, ['b']);
+
+      calls.clear();
+      formKey.currentState!.reset();
+      await tester.pump();
+
+      expect(calls, ['a']);
+      expect(fieldState().value, 'a');
+      expect(controller.value, 'a');
+      expect(formKey.currentState!.value['r'], 'a');
+    });
+
+    testWidgets('updates the field after the controller is swapped', (
+      WidgetTester tester,
+    ) async {
+      final calls = <String?>[];
+      final formKey = GlobalKey<ShadFormState>();
+      final fieldKey = GlobalKey<ShadFormBuilderRadioGroupState<String>>();
+      // Matches the value selected while the field still owns its controller.
+      final external = ShadRadioController<String>(value: 'b');
+      addTearDown(external.dispose);
+
+      Widget buildField({ShadRadioController<String>? controller}) {
+        return createTestWidget(
+          ShadForm(
+            key: formKey,
+            child: ShadRadioGroupFormField<String>(
+              key: fieldKey,
+              id: 'r',
+              initialValue: 'a',
+              controller: controller,
+              onChanged: calls.add,
+              items: const [
+                ShadRadio(value: 'a', label: Text('A')),
+                ShadRadio(value: 'b', label: Text('B')),
+              ],
+            ),
+          ),
+        );
+      }
+
+      await tester.pumpWidget(buildField());
+
+      final fieldState = fieldKey.currentState!;
+      expect(calls, isEmpty);
+      expect(fieldState.value, 'a');
+      expect(fieldState.controller.value, 'a');
+
+      await tester.tap(find.text('B'));
+      await tester.pump();
+
+      expect(calls, ['b']);
+      expect(fieldState.value, 'b');
+      expect(fieldState.controller.value, 'b');
+      expect(formKey.currentState!.value['r'], 'b');
+
+      // Owned -> external. The same state must keep listening on the new
+      // controller, or later writes and taps never reach the field.
+      calls.clear();
+      await tester.pumpWidget(buildField(controller: external));
+
+      expect(fieldKey.currentState, same(fieldState));
+      expect(fieldState.controller, same(external));
+      expect(calls, isEmpty);
+
+      external.value = 'a';
+      await tester.pump();
+
+      expect(calls, ['a']);
+      expect(fieldState.value, 'a');
+      expect(external.value, 'a');
+      expect(formKey.currentState!.value['r'], 'a');
+
+      calls.clear();
+      await tester.tap(find.text('B'));
+      await tester.pump();
+
+      expect(calls, ['b']);
+      expect(fieldState.value, 'b');
+      expect(external.value, 'b');
+      expect(formKey.currentState!.value['r'], 'b');
+
+      // External -> owned. Selections and writes must follow the new internal
+      // controller, and the detached external controller must not notify.
+      calls.clear();
+      await tester.pumpWidget(buildField());
+
+      final owned = fieldState.controller;
+      expect(fieldKey.currentState, same(fieldState));
+      expect(owned, isNot(same(external)));
+      expect(owned.value, 'b');
+      expect(calls, isEmpty);
+
+      owned.value = 'a';
+      await tester.pump();
+
+      expect(calls, ['a']);
+      expect(fieldState.value, 'a');
+      expect(owned.value, 'a');
+      expect(formKey.currentState!.value['r'], 'a');
+
+      calls.clear();
+      await tester.tap(find.text('B'));
+      await tester.pump();
+
+      expect(calls, ['b']);
+      expect(fieldState.value, 'b');
+      expect(owned.value, 'b');
+      expect(formKey.currentState!.value['r'], 'b');
+
+      calls.clear();
+      external.value = 'a';
+      await tester.pump();
+
+      expect(calls, isEmpty);
+      expect(fieldState.value, 'b');
+      expect(owned.value, 'b');
+      expect(formKey.currentState!.value['r'], 'b');
+    });
+
+    testWidgets(
+      'syncs the field when a replacement controller already differs',
+      (WidgetTester tester) async {
+        final calls = <String?>[];
+        final formKey = GlobalKey<ShadFormState>();
+        final fieldKey = GlobalKey<ShadFormBuilderRadioGroupState<String>>();
+        final external = ShadRadioController<String>(value: 'b');
+        addTearDown(external.dispose);
+
+        Widget buildField({ShadRadioController<String>? controller}) {
+          return createTestWidget(
+            ShadForm(
+              key: formKey,
+              child: ShadRadioGroupFormField<String>(
+                key: fieldKey,
+                id: 'r',
+                initialValue: 'a',
+                controller: controller,
+                onChanged: calls.add,
+                items: const [
+                  ShadRadio(value: 'a', label: Text('A')),
+                  ShadRadio(value: 'b', label: Text('B')),
+                ],
+              ),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(buildField());
+
+        final fieldState = fieldKey.currentState!;
+        expect(calls, isEmpty);
+        expect(fieldState.value, 'a');
+        expect(formKey.currentState!.value['r'], 'a');
+
+        // Owned -> external, where the external controller already holds a
+        // different selection than the field.
+        await tester.pumpWidget(buildField(controller: external));
+
+        expect(fieldKey.currentState, same(fieldState));
+        expect(fieldState.controller, same(external));
+        expect(fieldState.value, 'b');
+        expect(external.value, 'b');
+        expect(formKey.currentState!.value['r'], 'b');
+        // Attaching the controller is not a selection change.
+        expect(calls, isEmpty);
+
+        external.value = 'a';
+        await tester.pump();
+
+        expect(calls, ['a']);
+        expect(fieldState.value, 'a');
+        expect(external.value, 'a');
+        expect(formKey.currentState!.value['r'], 'a');
+      },
+    );
+  });
 }
