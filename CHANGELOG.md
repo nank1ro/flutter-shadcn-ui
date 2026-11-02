@@ -1,3 +1,7 @@
+## 0.60.0
+
+- **FEAT**: Add `ShadDialog.extendBackground` (and matching `ShadDialogTheme.extendBackground`) to extend a full-screen dialog's background color behind the status bar, notch, and gesture bar instead of stopping at the safe-area boundary. Smaller dialogs keep their normal card appearance. When effective, `extendBackground` takes precedence over `border`, `shadows`, and border radius because those decorations do not make visual sense on edges that sit behind system UI (#702).
+
 ## 0.59.0
 
 - **FEAT**: Add new component `ShadItem` and all of its related components (#705).
@@ -17,7 +21,6 @@
 ## 0.57.2
 
 - **FIX**: `ShadTabs` tab bar decoration now respects `tabBarConstraints` when `tabBarAlignment` is set, instead of stretching to the full width (#695).
-- **FEAT**: Add `ShadDialog.extendBackground` (and matching `ShadDialogTheme.extendBackground`) to extend a full-screen dialog's background color behind the status bar, notch, and gesture bar instead of stopping at the safe-area boundary. Smaller dialogs keep their normal card appearance. When effective, `extendBackground` takes precedence over `border`, `shadows`, and border radius because those decorations do not make visual sense on edges that sit behind system UI (#702).
 
 ## 0.57.1
 
