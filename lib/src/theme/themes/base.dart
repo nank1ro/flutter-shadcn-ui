@@ -138,7 +138,6 @@ abstract class ShadBaseTheme {
   final ShadSliderTheme sliderTheme;
   final ShadSheetTheme sheetTheme;
   final ShadProgressTheme progressTheme;
-
   final ShadSpinnerTheme spinnerTheme;
   final ShadAccordionTheme accordionTheme;
   final ShadTableTheme tableTheme;
@@ -193,7 +192,6 @@ abstract class ShadThemeVariant {
   ShadSliderTheme sliderTheme();
   ShadSheetTheme sheetTheme();
   ShadProgressTheme progressTheme();
-
   ShadSpinnerTheme spinnerTheme();
   ShadAccordionTheme accordionTheme();
   ShadTableTheme tableTheme();

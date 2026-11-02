@@ -731,11 +731,10 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
 
   @override
   ShadSpinnerTheme spinnerTheme() {
-    return ShadSpinnerTheme(
+    return const ShadSpinnerTheme(
       size: 16,
-      color: colorScheme.primary,
       icon: LucideIcons.loaderCircle,
-      duration: const Duration(seconds: 1),
+      duration: Duration(seconds: 1),
     );
   }
 

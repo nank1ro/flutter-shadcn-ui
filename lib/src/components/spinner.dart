@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:shadcn_ui/src/i18n/localizations_delegate.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 
 /// A customizable indeterminate loading spinner.
@@ -37,7 +38,7 @@ class ShadSpinner extends StatefulWidget {
 
   /// {@template ShadSpinner.color}
   /// The color of the spinner icon.
-  /// Defaults to the theme's primary color if not specified.
+  /// Defaults to the nearest [IconTheme] color, then the theme foreground.
   /// {@endtemplate}
   final Color? color;
 
@@ -65,7 +66,7 @@ class ShadSpinner extends StatefulWidget {
 
   /// {@template ShadSpinner.semanticsLabel}
   /// The accessibility label announced by screen readers.
-  /// Defaults to null.
+  /// Defaults to the localized loading label.
   /// {@endtemplate}
   final String? semanticsLabel;
 
@@ -114,9 +115,16 @@ class _ShadSpinnerState extends State<ShadSpinner>
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+    final iconThemeColor = context
+        .dependOnInheritedWidgetOfExactType<IconTheme>()
+        ?.data
+        .color;
     final effectiveSize = widget.size ?? theme.spinnerTheme.size ?? 16.0;
     final effectiveColor =
-        widget.color ?? theme.spinnerTheme.color ?? theme.colorScheme.primary;
+        widget.color ??
+        theme.spinnerTheme.color ??
+        iconThemeColor ??
+        theme.colorScheme.foreground;
     final effectiveIcon =
         widget.icon ?? theme.spinnerTheme.icon ?? LucideIcons.loaderCircle;
     final effectiveDuration =
@@ -124,7 +132,9 @@ class _ShadSpinnerState extends State<ShadSpinner>
         theme.spinnerTheme.duration ??
         const Duration(seconds: 1);
     final effectiveSemanticsLabel =
-        widget.semanticsLabel ?? theme.spinnerTheme.semanticsLabel;
+        widget.semanticsLabel ??
+        theme.spinnerTheme.semanticsLabel ??
+        ShadLocalizations.of(context).loading;
 
     assert(
       effectiveSize >= 0,
@@ -144,7 +154,7 @@ class _ShadSpinnerState extends State<ShadSpinner>
 
     return Semantics(
       label: effectiveSemanticsLabel,
-      liveRegion: effectiveSemanticsLabel != null,
+      liveRegion: true,
       child: SizedBox.square(
         dimension: effectiveSize,
         child: widget.animate

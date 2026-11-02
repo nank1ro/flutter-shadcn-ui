@@ -114,8 +114,9 @@ void main() {
       );
     });
 
-    testWidgets('exposes the semantics label to screen readers',
-        (tester) async {
+    testWidgets('exposes the semantics label to screen readers', (
+      tester,
+    ) async {
       final handle = tester.ensureSemantics();
 
       await tester.pumpWidget(
@@ -128,15 +129,32 @@ void main() {
       handle.dispose();
     });
 
-    testWidgets('has no semantics label by default', (tester) async {
+    testWidgets('uses a localized semantics label by default', (tester) async {
       final handle = tester.ensureSemantics();
 
       await tester.pumpWidget(createTestWidget(const ShadSpinner()));
 
-      expect(find.bySemanticsLabel('Loading'), findsNothing);
+      expect(find.bySemanticsLabel('Loading'), findsOneWidget);
 
       await tester.pumpWidget(createTestWidget(const SizedBox()));
       handle.dispose();
+    });
+
+    testWidgets('inherits the icon color inside a button', (tester) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          const ShadButton(child: ShadSpinner(animate: false)),
+        ),
+      );
+
+      final icon = tester.widget<Icon>(
+        find.descendant(
+          of: find.byType(ShadSpinner),
+          matching: find.byType(Icon),
+        ),
+      );
+      final context = tester.element(find.byType(ShadSpinner));
+      expect(icon.color, ShadTheme.of(context).colorScheme.primaryForeground);
     });
 
     testWidgets('falls back to the theme values', (tester) async {
@@ -194,18 +212,21 @@ void main() {
       await tester.pumpWidget(createTestWidget(const SizedBox()));
     });
 
-    testWidgets('applies a changed duration to the running rotation',
-        (tester) async {
+    testWidgets('applies a changed duration to the running rotation', (
+      tester,
+    ) async {
       Widget build(Duration d) => createTestWidget(ShadSpinner(duration: d));
 
       await tester.pumpWidget(build(const Duration(seconds: 1)));
       final controller =
-          tester.widget<RotationTransition>(
-                find.descendant(
-                  of: find.byType(ShadSpinner),
-                  matching: find.byType(RotationTransition),
-                ),
-              ).turns
+          tester
+                  .widget<RotationTransition>(
+                    find.descendant(
+                      of: find.byType(ShadSpinner),
+                      matching: find.byType(RotationTransition),
+                    ),
+                  )
+                  .turns
               as AnimationController;
 
       await tester.pump(const Duration(milliseconds: 500));
@@ -240,8 +261,9 @@ void main() {
       );
     });
 
-    testWidgets('rejects a non-positive duration from the theme',
-        (tester) async {
+    testWidgets('rejects a non-positive duration from the theme', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         createTestWidget(
           const ShadSpinner(),

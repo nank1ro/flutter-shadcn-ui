@@ -63,10 +63,7 @@ ShadButton(
     mainAxisSize: MainAxisSize.min,
     spacing: 8,
     children: [
-      ShadSpinner(
-        size: 16,
-        color: ShadTheme.of(context).colorScheme.primaryForeground,
-      ),
+      const ShadSpinner(size: 16),
       const Text('Please wait'),
     ],
   ),
@@ -194,7 +191,6 @@ class _SpinnerPageState extends State<SpinnerPage> {
               ShadSpinner(
                 size: 16,
                 animate: animate,
-                color: theme.colorScheme.primaryForeground,
               ),
               const Text('Please wait'),
             ],
