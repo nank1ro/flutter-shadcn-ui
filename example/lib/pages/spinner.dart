@@ -47,11 +47,7 @@ class _SpinnerPageState extends State<SpinnerPage> {
       ],
       children: [
         const Text('Default'),
-        ShadSpinner(
-          size: size,
-          animate: animate,
-          semanticsLabel: 'Loading',
-        ),
+        ShadSpinner(size: size, animate: animate, semanticsLabel: 'Loading'),
         const Text('Colored'),
         ShadSpinner(
           size: size,
@@ -65,11 +61,7 @@ class _SpinnerPageState extends State<SpinnerPage> {
             mainAxisSize: MainAxisSize.min,
             spacing: 8,
             children: [
-              ShadSpinner(
-                size: 16,
-                animate: animate,
-                color: theme.colorScheme.primaryForeground,
-              ),
+              ShadSpinner(size: 16, animate: animate),
               const Text('Please wait'),
             ],
           ),

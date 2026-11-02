@@ -66,10 +66,10 @@ class _Sizes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.end,
+    return const Wrap(
+      alignment: WrapAlignment.center,
       spacing: 8,
+      runSpacing: 8,
       children: [
         _Labeled(label: '16', child: ShadSpinner(size: 16)),
         _Labeled(label: '24', child: ShadSpinner(size: 24)),
@@ -87,10 +87,10 @@ class _Colors extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = ShadTheme.of(context).colorScheme;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.end,
+    return Wrap(
+      alignment: WrapAlignment.center,
       spacing: 8,
+      runSpacing: 8,
       children: [
         _Labeled(
           label: 'primary',
@@ -125,10 +125,7 @@ class _Button extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             spacing: 8,
-            children: [
-              ShadSpinner(size: 16, color: colorScheme.primaryForeground),
-              const Text('Please wait'),
-            ],
+            children: [const ShadSpinner(size: 16), const Text('Please wait')],
           ),
         ),
         ShadButton.outline(
@@ -162,10 +159,7 @@ class _Inline extends StatelessWidget {
         children: [
           ShadSpinner(size: 20, color: theme.colorScheme.mutedForeground),
           Flexible(
-            child: Text(
-              'Fetching your data…',
-              style: theme.textTheme.muted,
-            ),
+            child: Text('Fetching your data…', style: theme.textTheme.muted),
           ),
         ],
       ),
