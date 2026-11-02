@@ -33,6 +33,22 @@ void main() {
       );
     });
 
+    testWidgets('ShadDialog works inside IntrinsicHeight', (tester) async {
+      await tester.pumpWidget(
+        const ShadApp(
+          home: Scaffold(
+            body: Center(
+              child: IntrinsicHeight(
+                child: ShadDialog(title: Text('Title')),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(tester.takeException(), isNull);
+    });
+
     Future<Rect> pumpAndGetDialogRect(
       WidgetTester tester, {
       required EdgeInsets systemPadding,
