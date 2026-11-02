@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/icon_button.dart';
+import 'package:shadcn_ui/src/theme/components/dialog.dart';
+import 'package:shadcn_ui/src/theme/data.dart';
 import 'package:shadcn_ui/src/theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/shadows.dart';
 import 'package:shadcn_ui/src/utils/animate.dart';
@@ -244,6 +246,7 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.extendBackground,
     this.titlePinned,
     this.descriptionPinned,
     this.actionsPinned,
@@ -284,6 +287,7 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.extendBackground,
     this.titlePinned,
     this.descriptionPinned,
     this.actionsPinned,
@@ -325,6 +329,7 @@ class ShadDialog extends StatelessWidget {
     this.scrollPadding,
     this.actionsGap,
     this.useSafeArea,
+    this.extendBackground,
     this.titlePinned,
     this.descriptionPinned,
     this.actionsPinned,
@@ -536,6 +541,29 @@ class ShadDialog extends StatelessWidget {
   /// {@endtemplate}
   final bool? useSafeArea;
 
+  /// {@template ShadDialog.extendBackground}
+  /// Whether to extend the dialog's background color to fill the whole
+  /// screen, behind the status bar / notch / gesture bar, instead of
+  /// stopping at the safe-area boundary.
+  ///
+  /// When true and [constraints] fill the screen, the [DecoratedBox]
+  /// background expands to the full screen (via an outer [SizedBox.expand])
+  /// and [SafeArea] moves inside it to keep the content clear of system UI,
+  /// so there is no barrier-colored gap at the edges. This is useful for
+  /// full-screen dialogs that touch screen edges. For a smaller dialog, the
+  /// option is ignored and the normal card appearance is kept.
+  /// The full-screen mode requires a bounded parent and is not intended for
+  /// intrinsic-sizing parents such as [IntrinsicHeight].
+  ///
+  /// Intended for full-screen dialogs: when effective, [extendBackground]
+  /// takes precedence over widget- and theme-level [border], [shadows], and
+  /// [radius] values. They are all suppressed because those decorations do
+  /// not make visual sense on edges that sit behind system UI.
+  ///
+  /// Defaults to false if not specified.
+  /// {@endtemplate}
+  final bool? extendBackground;
+
   /// {@template ShadDialog.titlePinned}
   /// Whether the title is pinned when scrolling and [scrollable] is true.
   ///
@@ -561,10 +589,40 @@ class ShadDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
     final effectiveDialogTheme = switch (variant) {
-      ShadDialogVariant.primary => theme.primaryDialogTheme,
-      ShadDialogVariant.alert => theme.alertDialogTheme,
+      .primary => theme.primaryDialogTheme,
+      .alert => theme.alertDialogTheme,
     };
+    final requestedExtendBackground =
+        extendBackground ?? effectiveDialogTheme.extendBackground ?? false;
 
+    if (!requestedExtendBackground) {
+      return _buildDialogContent(
+        context,
+        const BoxConstraints(),
+        theme,
+        effectiveDialogTheme,
+        requestedExtendBackground,
+      );
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) => _buildDialogContent(
+        context,
+        constraints,
+        theme,
+        effectiveDialogTheme,
+        requestedExtendBackground,
+      ),
+    );
+  }
+
+  Widget _buildDialogContent(
+    BuildContext context,
+    BoxConstraints parentConstraints,
+    ShadThemeData theme,
+    ShadDialogTheme effectiveDialogTheme,
+    bool requestedExtendBackground,
+  ) {
     final effectiveBackgroundColor =
         backgroundColor ??
         effectiveDialogTheme.backgroundColor ??
@@ -602,9 +660,6 @@ class ShadDialog extends StatelessWidget {
           textDirection: Directionality.of(context),
         );
 
-    final effectiveRadius =
-        radius ?? effectiveDialogTheme.radius ?? theme.radius;
-
     final effectiveExpandActionsWhenTiny =
         expandActionsWhenTiny ??
         effectiveDialogTheme.expandActionsWhenTiny ??
@@ -615,13 +670,42 @@ class ShadDialog extends StatelessWidget {
         effectiveDialogTheme.constraints ??
         const BoxConstraints(maxWidth: 512);
 
-    final effectiveBorder =
-        border ??
-        effectiveDialogTheme.border ??
-        Border.all(color: theme.colorScheme.border);
+    final parentIsBounded =
+        parentConstraints.hasBoundedWidth && parentConstraints.hasBoundedHeight;
+    final screenSize = MediaQuery.sizeOf(context);
+    final parentFillsViewport =
+        parentIsBounded &&
+        parentConstraints.biggest.width >= screenSize.width &&
+        parentConstraints.biggest.height >= screenSize.height;
+    bool fillsScreen(double dimension, double screenDimension) =>
+        dimension == double.infinity || dimension >= screenDimension;
+    final effectiveExtendBackground =
+        requestedExtendBackground &&
+        parentFillsViewport &&
+        effectiveConstraints.isTight &&
+        fillsScreen(effectiveConstraints.minWidth, screenSize.width) &&
+        fillsScreen(effectiveConstraints.minHeight, screenSize.height);
+    final effectiveRadius = effectiveExtendBackground
+        ? null
+        : radius ?? effectiveDialogTheme.radius ?? theme.radius;
 
-    final effectiveShadows =
-        shadows ?? effectiveDialogTheme.shadows ?? ShadShadows.lg;
+    // extendBackground takes precedence over decoration values when it is
+    // active. Otherwise, widget-level values take precedence over theme
+    // values.
+    //
+    // extendBackground is only meaningful for a dialog whose constraints
+    // fill the viewport. A smaller dialog keeps the normal card appearance
+    // instead of painting the whole screen with its background color.
+    //
+    final effectiveBorder = effectiveExtendBackground
+        ? null
+        : border ??
+              effectiveDialogTheme.border ??
+              Border.all(color: theme.colorScheme.border);
+
+    final effectiveShadows = effectiveExtendBackground
+        ? const <BoxShadow>[]
+        : shadows ?? effectiveDialogTheme.shadows ?? ShadShadows.lg;
 
     final effectiveRemoveBorderRadiusWhenTiny =
         removeBorderRadiusWhenTiny ??
@@ -781,12 +865,13 @@ class ShadDialog extends StatelessWidget {
             mainAxisAlignment: effectiveMainAxisAlignment,
             crossAxisAlignment: effectiveCrossAxisAlignment,
             children: [
-              // Only show title if not scrollable or scrollable but not pinned
+              // Only show title if not scrollable or scrollable but
+              // not pinned
               if (effectiveTitle != null &&
                   (!effectiveScrollable || !effectiveTitlePinned))
                 effectiveTitle,
-              // Only show description if not scrollable or scrollable but not
-              // pinned
+              // Only show description if not scrollable or scrollable
+              // but not pinned
               if (effectiveDescription != null &&
                   (!effectiveScrollable || !effectiveDescriptionPinned))
                 effectiveDescription,
@@ -831,14 +916,24 @@ class ShadDialog extends StatelessWidget {
                 child: widget,
               ),
               if (effectiveCloseIcon != null)
-                effectiveCloseIcon.positionedWith(effectiveCloseIconPosition),
+                effectiveCloseIcon.positionedWith(
+                  effectiveCloseIconPosition,
+                ),
             ],
           );
 
           return DecoratedBox(
             decoration: BoxDecoration(
-              color: effectiveBackgroundColor,
-              borderRadius: (!sm && effectiveRemoveBorderRadiusWhenTiny)
+              // When extendBackground is true, the outer full-screen layer
+              // (below) already paints effectiveBackgroundColor; painting
+              // it here too would double it up, visibly darkening the
+              // overlap for a translucent color.
+              color: effectiveExtendBackground
+                  ? null
+                  : effectiveBackgroundColor,
+              borderRadius: effectiveExtendBackground
+                  ? null
+                  : (!sm && effectiveRemoveBorderRadiusWhenTiny)
                   ? null
                   : effectiveRadius,
               border: effectiveBorder,
@@ -853,18 +948,130 @@ class ShadDialog extends StatelessWidget {
     // Keyboard insets, so the dialog shifts clear of the keyboard.
     final effectiveViewInsets = MediaQuery.viewInsetsOf(context);
 
-    Widget result = Align(
+    return _DialogViewport(
       alignment: effectiveAlignment,
+      viewInsets: effectiveViewInsets,
+      useSafeArea: effectiveUseSafeArea,
+      requestedExtendBackground: requestedExtendBackground,
+      parentIsBounded: parentIsBounded,
+      extendBackground: effectiveExtendBackground,
+      backgroundColor: effectiveBackgroundColor,
+      child: dialog,
+    );
+  }
+}
+
+class _DialogViewport extends StatelessWidget {
+  const _DialogViewport({
+    required this.alignment,
+    required this.viewInsets,
+    required this.useSafeArea,
+    required this.requestedExtendBackground,
+    required this.parentIsBounded,
+    required this.extendBackground,
+    required this.backgroundColor,
+    required this.child,
+  });
+
+  final Alignment alignment;
+  final EdgeInsets viewInsets;
+  final bool useSafeArea;
+  final bool requestedExtendBackground;
+  final bool parentIsBounded;
+  final bool extendBackground;
+  final Color backgroundColor;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget result = Align(
+      alignment: alignment,
       child: Padding(
-        padding: effectiveViewInsets,
-        child: dialog,
+        padding: viewInsets,
+        child: child,
       ),
     );
 
-    if (effectiveUseSafeArea) {
+    if (useSafeArea) {
       result = SafeArea(child: result);
     }
 
-    return result;
+    if (!requestedExtendBackground || !parentIsBounded) {
+      return result;
+    }
+
+    // Only the system-inset strips need an explicit hit-test target: the
+    // full-screen dialog covers the rest of the viewport. Keeping the
+    // surrounding layer transparent lets the route handle any uncovered
+    // taps normally.
+    //
+    // Only when useSafeArea is true: SafeArea is what pushes dialog content
+    // clear of this region in the first place. With useSafeArea: false there
+    // is no such guarantee — real content may sit directly under the inset —
+    // so an absorber there would swallow taps meant for that content instead
+    // of the content itself.
+    final effectiveInsets = extendBackground && useSafeArea
+        ? MediaQuery.paddingOf(context)
+        : EdgeInsets.zero;
+
+    Widget insetStrip({
+      required Alignment alignment,
+      required double width,
+      required double height,
+    }) {
+      if (width <= 0 || height <= 0) return const SizedBox.shrink();
+      return Align(
+        alignment: alignment,
+        child: Listener(
+          behavior: HitTestBehavior.opaque,
+          child: SizedBox(width: width, height: height),
+        ),
+      );
+    }
+
+    return SizedBox.expand(
+      child: Stack(
+        children: [
+          // Keep the layer in a stable child position when the viewport
+          // changes, so the dialog subtree is not remounted.
+          Positioned.fill(
+            child: extendBackground
+                ? IgnorePointer(
+                    child: ColoredBox(color: backgroundColor),
+                  )
+                : const SizedBox.shrink(),
+          ),
+          Positioned.fill(child: result),
+          Positioned.fill(
+            child: extendBackground
+                ? Stack(
+                    children: [
+                      insetStrip(
+                        alignment: Alignment.topCenter,
+                        width: double.infinity,
+                        height: effectiveInsets.top,
+                      ),
+                      insetStrip(
+                        alignment: Alignment.bottomCenter,
+                        width: double.infinity,
+                        height: effectiveInsets.bottom,
+                      ),
+                      insetStrip(
+                        alignment: Alignment.centerLeft,
+                        width: effectiveInsets.left,
+                        height: double.infinity,
+                      ),
+                      insetStrip(
+                        alignment: Alignment.centerRight,
+                        width: effectiveInsets.right,
+                        height: double.infinity,
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ],
+      ),
+    );
   }
 }
