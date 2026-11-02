@@ -12,22 +12,27 @@ class SpinnerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: TickerMode(
-              enabled: !MediaQuery.disableAnimationsOf(context),
-              child: switch (style) {
-                SpinnerStyle.primary => const _Labeled(
-                  label: 'Loading',
-                  child: ShadSpinner(size: 32, semanticsLabel: 'Loading'),
+      body: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: TickerMode(
+                  enabled: !MediaQuery.disableAnimationsOf(context),
+                  child: switch (style) {
+                    SpinnerStyle.primary => const _Labeled(
+                      label: 'Loading',
+                      child: ShadSpinner(size: 32, semanticsLabel: 'Loading'),
+                    ),
+                    SpinnerStyle.sizes => const _Sizes(),
+                    SpinnerStyle.colors => const _Colors(),
+                    SpinnerStyle.button => const _Button(),
+                    SpinnerStyle.inline => const _Inline(),
+                  },
                 ),
-                SpinnerStyle.sizes => const _Sizes(),
-                SpinnerStyle.colors => const _Colors(),
-                SpinnerStyle.button => const _Button(),
-                SpinnerStyle.inline => const _Inline(),
-              },
+              ),
             ),
           ),
         ),
