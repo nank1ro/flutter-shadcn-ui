@@ -1,5 +1,6 @@
 ## 0.58.0
 
+- **BREAKING**: `ShadThemeVariant` now requires `spinnerTheme()`. Custom variants must implement this method.
 - **FEAT**: Added `ShadSpinner`, an indeterminate loading indicator with a rotating loader icon, plus the `ShadSpinnerTheme` component theme (#704).
 
 ## 0.57.4

@@ -12,19 +12,24 @@ class SpinnerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: switch (style) {
-            SpinnerStyle.primary => const _Labeled(
-              label: 'Loading',
-              child: ShadSpinner(size: 32, semanticsLabel: 'Loading'),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: TickerMode(
+              enabled: !MediaQuery.disableAnimationsOf(context),
+              child: switch (style) {
+                SpinnerStyle.primary => const _Labeled(
+                  label: 'Loading',
+                  child: ShadSpinner(size: 32, semanticsLabel: 'Loading'),
+                ),
+                SpinnerStyle.sizes => const _Sizes(),
+                SpinnerStyle.colors => const _Colors(),
+                SpinnerStyle.button => const _Button(),
+                SpinnerStyle.inline => const _Inline(),
+              },
             ),
-            SpinnerStyle.sizes => const _Sizes(),
-            SpinnerStyle.colors => const _Colors(),
-            SpinnerStyle.button => const _Button(),
-            SpinnerStyle.inline => const _Inline(),
-          },
+          ),
         ),
       ),
     );
@@ -116,9 +121,10 @@ class _Button extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = ShadTheme.of(context).colorScheme;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Wrap(
+      alignment: WrapAlignment.center,
       spacing: 16,
+      runSpacing: 16,
       children: [
         ShadButton(
           onPressed: () {},
@@ -151,17 +157,20 @@ class _Inline extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
 
-    return ShadCard(
-      width: 320,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        spacing: 12,
-        children: [
-          ShadSpinner(size: 20, color: theme.colorScheme.mutedForeground),
-          Flexible(
-            child: Text('Fetching your data…', style: theme.textTheme.muted),
-          ),
-        ],
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 320),
+      child: ShadCard(
+        width: double.infinity,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 12,
+          children: [
+            ShadSpinner(size: 20, color: theme.colorScheme.mutedForeground),
+            Flexible(
+              child: Text('Fetching your data…', style: theme.textTheme.muted),
+            ),
+          ],
+        ),
       ),
     );
   }

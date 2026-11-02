@@ -22,9 +22,10 @@ const ShadSpinner(
 
 
  ```dart
-const Row(
-  mainAxisAlignment: MainAxisAlignment.center,
+const Wrap(
+  alignment: WrapAlignment.center,
   spacing: 32,
+  runSpacing: 8,
   children: [
     ShadSpinner(size: 16),
     ShadSpinner(size: 24),
@@ -41,9 +42,10 @@ const Row(
  ```dart
 final colorScheme = ShadTheme.of(context).colorScheme;
 
-Row(
-  mainAxisAlignment: MainAxisAlignment.center,
+Wrap(
+  alignment: WrapAlignment.center,
   spacing: 32,
+  runSpacing: 8,
   children: [
     ShadSpinner(size: 32, color: colorScheme.primary),
     ShadSpinner(size: 32, color: colorScheme.mutedForeground),
@@ -77,17 +79,20 @@ ShadButton(
  ```dart
 final theme = ShadTheme.of(context);
 
-ShadCard(
-  width: 320,
-  child: Row(
-    mainAxisSize: MainAxisSize.min,
-    spacing: 12,
-    children: [
-      ShadSpinner(size: 20, color: theme.colorScheme.mutedForeground),
-      Flexible(
-        child: Text('Fetching your data…', style: theme.textTheme.muted),
-      ),
-    ],
+ConstrainedBox(
+  constraints: const BoxConstraints(maxWidth: 320),
+  child: ShadCard(
+    width: double.infinity,
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: 12,
+      children: [
+        ShadSpinner(size: 20, color: theme.colorScheme.mutedForeground),
+        Flexible(
+          child: Text('Fetching your data…', style: theme.textTheme.muted),
+        ),
+      ],
+    ),
   ),
 ),
 ```
