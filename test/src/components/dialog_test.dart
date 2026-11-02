@@ -54,12 +54,15 @@ void main() {
       required EdgeInsets systemPadding,
       EdgeInsetsGeometry? dialogPadding,
     }) async {
-      tester.view.viewPadding = FakeViewPadding(
+      final fakePadding = FakeViewPadding(
         left: systemPadding.left,
         top: systemPadding.top,
         right: systemPadding.right,
         bottom: systemPadding.bottom,
       );
+      tester.view.viewPadding = fakePadding;
+      tester.view.padding = fakePadding;
+      addTearDown(tester.view.resetPadding);
       await tester.pumpWidget(
         createTestWidget(
           ShadDialog(
@@ -142,12 +145,15 @@ void main() {
       (tester) async {
         const systemPadding = EdgeInsets.only(top: 62.4, bottom: 24.2);
 
-        tester.view.viewPadding = FakeViewPadding(
+        final fakePadding = FakeViewPadding(
           left: systemPadding.left,
           top: systemPadding.top,
           right: systemPadding.right,
           bottom: systemPadding.bottom,
         );
+        tester.view.viewPadding = fakePadding;
+        tester.view.padding = fakePadding;
+        addTearDown(tester.view.resetPadding);
         await tester.pumpWidget(
           createTestWidget(
             const ShadDialog(
@@ -325,13 +331,15 @@ void main() {
       'color instead of shrinking it away from the true screen edges',
       (tester) async {
         const systemPadding = EdgeInsets.only(top: 62.4, bottom: 24.2);
-
-        tester.view.viewPadding = FakeViewPadding(
+        final fakePadding = FakeViewPadding(
           left: systemPadding.left,
           top: systemPadding.top,
           right: systemPadding.right,
           bottom: systemPadding.bottom,
         );
+        tester.view.viewPadding = fakePadding;
+        tester.view.padding = fakePadding;
+        addTearDown(tester.view.resetPadding);
         await tester.pumpWidget(
           const ShadApp(
             home: Scaffold(
@@ -1044,12 +1052,15 @@ void main() {
         const systemPadding = EdgeInsets.only(top: 62.4, bottom: 24.2);
 
         Future<Size> getDecoratedBoxSize(EdgeInsets padding) async {
-          tester.view.viewPadding = FakeViewPadding(
+          final fakePadding = FakeViewPadding(
             left: padding.left,
             top: padding.top,
             right: padding.right,
             bottom: padding.bottom,
           );
+          tester.view.viewPadding = fakePadding;
+          tester.view.padding = fakePadding;
+          addTearDown(tester.view.resetPadding);
           await tester.pumpWidget(
             const ShadApp(
               home: Scaffold(
@@ -1169,17 +1180,26 @@ class _InitStateCountingTextField extends StatefulWidget {
 
 class _InitStateCountingTextFieldState
     extends State<_InitStateCountingTextField> {
+  late final TextEditingController controller;
+
   @override
   void initState() {
     super.initState();
     widget.counter.count++;
+    controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return EditableText(
       focusNode: widget.focusNode,
-      controller: TextEditingController(),
+      controller: controller,
       cursorColor: const Color(0xFF000000),
       backgroundCursorColor: const Color(0xFF000000),
       style: const TextStyle(color: Color(0xFF000000)),

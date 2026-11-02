@@ -181,7 +181,20 @@ class _DialogPageState extends State<DialogPage> {
                 titlePinned: titlePinned,
                 descriptionPinned: descriptionPinned,
                 actionsPinned: actionsPinned,
-                description: Column(
+                description: const Text(
+                  'Please review the terms before accepting.',
+                ),
+                actions: [
+                  ShadButton.outline(
+                    child: const Text('Decline'),
+                    onPressed: () => Navigator.of(context).pop(false),
+                  ),
+                  ShadButton(
+                    child: const Text('Accept'),
+                    onPressed: () => Navigator.of(context).pop(true),
+                  ),
+                ],
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: List.generate(
@@ -197,16 +210,6 @@ class _DialogPageState extends State<DialogPage> {
                     ),
                   ),
                 ),
-                actions: [
-                  ShadButton.outline(
-                    child: const Text('Decline'),
-                    onPressed: () => Navigator.of(context).pop(false),
-                  ),
-                  ShadButton(
-                    child: const Text('Accept'),
-                    onPressed: () => Navigator.of(context).pop(true),
-                  ),
-                ],
               ),
             );
           },
