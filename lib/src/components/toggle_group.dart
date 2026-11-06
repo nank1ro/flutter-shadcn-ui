@@ -213,7 +213,8 @@ class ShadToggleGroupState<T> extends State<ShadToggleGroup<T>> {
     final first = widget.items.firstWhereOrNull(
       (item) => values.contains(item.value),
     );
-    return {first?.value ?? values.first};
+    // Not `first?.value ?? …`: an item's value can be null.
+    return {if (first != null) first.value else values.first};
   }
 
   /// The pressed values.
@@ -361,12 +362,14 @@ class ShadToggleGroupState<T> extends State<ShadToggleGroup<T>> {
       child: CallbackShortcuts(
         bindings: {
           // Like shadcn/ui, a horizontal group also moves with Up and Down,
-          // while a vertical group ignores Left and Right.
-          if (effectiveAxis == Axis.horizontal) ...{
-            const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
-                _moveFocus(isRtl ? 1 : -1),
-            const SingleActivator(LogicalKeyboardKey.arrowRight): () =>
-                _moveFocus(isRtl ? -1 : 1),
+          // while a vertical group ignores Left and Right. They are still
+          // bound there, otherwise the default directional focus would move
+          // the focus out of the group.
+          const SingleActivator(LogicalKeyboardKey.arrowLeft): () {
+            if (effectiveAxis == Axis.horizontal) _moveFocus(isRtl ? 1 : -1);
+          },
+          const SingleActivator(LogicalKeyboardKey.arrowRight): () {
+            if (effectiveAxis == Axis.horizontal) _moveFocus(isRtl ? -1 : 1);
           },
           const SingleActivator(LogicalKeyboardKey.arrowUp): () =>
               _moveFocus(-1),

@@ -460,6 +460,29 @@ void main() {
       expect(changes, ['a']);
     });
 
+    testWidgets('single type keeps the first item when its value is null', (
+      tester,
+    ) async {
+      final controller = ShadToggleGroupController<String?>(
+        initialValue: {'b', null},
+      );
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(
+        createTestWidget(
+          ShadToggleGroup<String?>(
+            controller: controller,
+            items: const [
+              ShadToggleGroupItem<String?>(value: null, child: Text('None')),
+              ShadToggleGroupItem<String?>(value: 'b', child: Text('B')),
+            ],
+          ),
+        ),
+      );
+
+      expect(isPressed(tester, 'None'), isTrue);
+      expect(isPressed(tester, 'B'), isFalse);
+    });
+
     testWidgets('single items are exposed as mutually exclusive checked '
         'items', (tester) async {
       final handle = tester.ensureSemantics();
@@ -598,16 +621,29 @@ void main() {
     testWidgets('a vertical group ignores left and right arrows', (
       tester,
     ) async {
+      final neighbour = FocusNode(debugLabel: 'neighbour');
+      addTearDown(neighbour.dispose);
+      // A focusable widget beside the group, which the default directional
+      // focus would move to.
       await tester.pumpWidget(
-        focusTestWidget(
-          ShadToggleGroup<String>(
-            initialValue: 'a',
-            axis: Axis.vertical,
-            items: items,
+        createTestWidget(
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ShadToggleGroup<String>(
+                initialValue: 'a',
+                axis: Axis.vertical,
+                items: items,
+              ),
+              ShadButton(
+                focusNode: neighbour,
+                onPressed: () {},
+                child: const Text('neighbour'),
+              ),
+            ],
           ),
         ),
       );
-      await pressKey(tester, LogicalKeyboardKey.tab);
       await pressKey(tester, LogicalKeyboardKey.tab);
 
       await pressKey(tester, LogicalKeyboardKey.arrowRight);
