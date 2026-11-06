@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -1047,6 +1048,104 @@ void main() {
       expect(actions.width, lessThanOrEqualTo(126));
       // 16 padding + 1 border
       expect(item.bottom, actions.bottom + 17);
+    });
+
+    testWidgets('supports dry baseline in an intrinsic baseline row', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          const IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [Expanded(child: ShadItem(title: Text('Title')))],
+            ),
+          ),
+        ),
+      );
+
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('matches layout in intrinsic height with expanding actions', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        createTestWidget(
+          const Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+              width: 300,
+              child: IntrinsicHeight(
+                child: ShadItem(
+                  title: Text('Title'),
+                  actions: Row(children: [Text('Action')]),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(tester.takeException(), isNull);
+      final item = tester.getRect(find.byType(ShadItem));
+      final action = tester.getRect(find.text('Action'));
+      // The expanding actions take a line of their own below the title.
+      expect(
+        action.top,
+        greaterThan(tester.getRect(find.text('Title')).bottom),
+      );
+      // 16 padding + 1 border
+      expect(item.bottom, action.bottom + 17);
+    });
+
+    testWidgets('dry layout and dry baseline match the real layout', (
+      tester,
+    ) async {
+      // Makes the framework assert that every render object's dry layout and
+      // dry baseline match its real size and baseline.
+      // The flag must be reset before the test ends, not in a tear down.
+      debugCheckIntrinsicSizes = true;
+      try {
+        for (final textDirection in TextDirection.values) {
+          for (final width in [400.0, 200.0]) {
+            await tester.pumpWidget(
+              createTestWidget(
+                textDirection: textDirection,
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: SizedBox(
+                    width: width,
+                    child: const IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.alphabetic,
+                        children: [
+                          Text('L'),
+                          Expanded(
+                            child: ShadItem(
+                              media: ShadItemMedia.icon(
+                                child: Icon(LucideIcons.user),
+                              ),
+                              title: Text('Title'),
+                              description: Text('Description'),
+                              actions: ShadButton(child: Text('Action')),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+            expect(tester.takeException(), isNull);
+          }
+        }
+      } finally {
+        debugCheckIntrinsicSizes = false;
+      }
     });
 
     testWidgets('places the actions right after the media without content', (
