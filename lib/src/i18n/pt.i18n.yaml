@@ -1,3 +1,5 @@
+loading: "Carregando"
+
 timePicker:
   hours: "Horas"
   minutes: "Minutos"

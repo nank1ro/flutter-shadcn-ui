@@ -1,3 +1,5 @@
+loading: "加载中"
+
 timePicker:
   hours: "时"
   minutes: "分"

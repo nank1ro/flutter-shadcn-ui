@@ -24,7 +24,7 @@ class SpinnerPage extends StatelessWidget {
                   child: switch (style) {
                     SpinnerStyle.primary => const _Labeled(
                       label: 'Loading',
-                      child: ShadSpinner(size: 32, semanticsLabel: 'Loading'),
+                      child: ShadSpinner(size: 32),
                     ),
                     SpinnerStyle.sizes => const _Sizes(),
                     SpinnerStyle.colors => const _Colors(),
@@ -124,8 +124,6 @@ class _Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = ShadTheme.of(context).colorScheme;
-
     return Wrap(
       alignment: WrapAlignment.center,
       spacing: 16,
@@ -145,7 +143,7 @@ class _Button extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             spacing: 8,
             children: [
-              ShadSpinner(size: 16, color: colorScheme.foreground),
+              ShadSpinner(size: 16),
               const Text('Saving'),
             ],
           ),

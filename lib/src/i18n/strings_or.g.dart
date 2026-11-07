@@ -39,6 +39,7 @@ class ShadLocalizationsDataOr extends ShadLocalizationsData with BaseTranslation
 	ShadLocalizationsDataOr $copyWith({TranslationMetadata<ShadLocale, ShadLocalizationsData>? meta}) => ShadLocalizationsDataOr(meta: meta ?? this.$meta);
 
 	// Translations
+	@override String get loading => 'ଲୋଡ୍ ହେଉଛି';
 	@override late final _ShadLocalizationsData$timePicker$or timePicker = _ShadLocalizationsData$timePicker$or._(_root);
 	@override late final _ShadLocalizationsData$datePicker$or datePicker = _ShadLocalizationsData$datePicker$or._(_root);
 	@override late final _ShadLocalizationsData$input$or input = _ShadLocalizationsData$input$or._(_root);
@@ -100,6 +101,7 @@ class _ShadLocalizationsData$keyboardToolbar$or extends ShadLocalizationsData$ke
 extension on ShadLocalizationsDataOr {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
+			'loading' => 'ଲୋଡ୍ ହେଉଛି',
 			'timePicker.hours' => 'ଘଣ୍ଟା',
 			'timePicker.minutes' => 'ମିନିଟ',
 			'timePicker.seconds' => 'ସେକେଣ୍ଡ',

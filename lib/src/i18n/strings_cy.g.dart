@@ -39,6 +39,7 @@ class ShadLocalizationsDataCy extends ShadLocalizationsData with BaseTranslation
 	ShadLocalizationsDataCy $copyWith({TranslationMetadata<ShadLocale, ShadLocalizationsData>? meta}) => ShadLocalizationsDataCy(meta: meta ?? this.$meta);
 
 	// Translations
+	@override String get loading => 'Yn llwytho';
 	@override late final _ShadLocalizationsData$timePicker$cy timePicker = _ShadLocalizationsData$timePicker$cy._(_root);
 	@override late final _ShadLocalizationsData$datePicker$cy datePicker = _ShadLocalizationsData$datePicker$cy._(_root);
 	@override late final _ShadLocalizationsData$input$cy input = _ShadLocalizationsData$input$cy._(_root);
@@ -100,6 +101,7 @@ class _ShadLocalizationsData$keyboardToolbar$cy extends ShadLocalizationsData$ke
 extension on ShadLocalizationsDataCy {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
+			'loading' => 'Yn llwytho',
 			'timePicker.hours' => 'Oriau',
 			'timePicker.minutes' => 'Munudau',
 			'timePicker.seconds' => 'Eiliadau',
