@@ -39,6 +39,7 @@ Use `ShadThemeData` within `ShadApp` to define your light and dark themes.
 | IconButton | Displays an icon button or a component that looks like a button with an icon. | [icon-button.md](components/icon-button.md) |
 | Input | Displays a form input field or a component that looks like an input field. | [input.md](components/input.md) |
 | InputOTP | Accessible one-time password component with copy paste functionality. | [input-otp.md](components/input-otp.md) |
+| Item | A versatile component that you can use to display any content. | [item.md](components/item.md) |
 | Menubar | A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands. | [menubar.md](components/menubar.md) |
 | Popover | Displays rich content in a portal, triggered by a button. | [popover.md](components/popover.md) |
 | Progress | Displays an indicator showing the completion progress of a task, typically displayed as a progress bar. | [progress.md](components/progress.md) |

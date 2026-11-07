@@ -17,6 +17,7 @@ import 'package:shadcn_ui/src/theme/components/default_keyboard_toolbar.dart';
 import 'package:shadcn_ui/src/theme/components/dialog.dart';
 import 'package:shadcn_ui/src/theme/components/input.dart';
 import 'package:shadcn_ui/src/theme/components/input_otp.dart';
+import 'package:shadcn_ui/src/theme/components/item.dart';
 import 'package:shadcn_ui/src/theme/components/menubar.dart';
 import 'package:shadcn_ui/src/theme/components/option.dart';
 import 'package:shadcn_ui/src/theme/components/popover.dart';
@@ -98,6 +99,9 @@ abstract class ShadBaseTheme {
     required this.sonnerTheme,
     required this.textareaTheme,
     required this.defaultKeyboardToolbarTheme,
+    required this.primaryItemTheme,
+    required this.outlineItemTheme,
+    required this.mutedItemTheme,
     required this.primaryToggleTheme,
     required this.outlineToggleTheme,
     required this.toggleSizesTheme,
@@ -158,6 +162,9 @@ abstract class ShadBaseTheme {
   final ShadSonnerTheme sonnerTheme;
   final ShadTextareaTheme textareaTheme;
   final ShadDefaultKeyboardToolbarTheme defaultKeyboardToolbarTheme;
+  final ShadItemTheme primaryItemTheme;
+  final ShadItemTheme outlineItemTheme;
+  final ShadItemTheme mutedItemTheme;
   final ShadToggleTheme primaryToggleTheme;
   final ShadToggleTheme outlineToggleTheme;
   final ShadButtonSizesTheme toggleSizesTheme;
@@ -218,4 +225,7 @@ abstract class ShadThemeVariant {
   ShadToggleTheme outlineToggleTheme();
   ShadButtonSizesTheme toggleSizesTheme();
   ShadToggleGroupTheme toggleGroupTheme();
+  ShadItemTheme primaryItemTheme();
+  ShadItemTheme outlineItemTheme();
+  ShadItemTheme mutedItemTheme();
 }

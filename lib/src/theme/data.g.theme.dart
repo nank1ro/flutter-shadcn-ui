@@ -202,6 +202,21 @@ mixin _$ShadThemeData {
         b.defaultKeyboardToolbarTheme,
         t,
       )!,
+      primaryItemTheme: ShadItemTheme.lerp(
+        a.primaryItemTheme,
+        b.primaryItemTheme,
+        t,
+      )!,
+      outlineItemTheme: ShadItemTheme.lerp(
+        a.outlineItemTheme,
+        b.outlineItemTheme,
+        t,
+      )!,
+      mutedItemTheme: ShadItemTheme.lerp(
+        a.mutedItemTheme,
+        b.mutedItemTheme,
+        t,
+      )!,
       primaryToggleTheme: ShadToggleTheme.lerp(
         a.primaryToggleTheme,
         b.primaryToggleTheme,
@@ -280,6 +295,9 @@ mixin _$ShadThemeData {
     ShadSonnerTheme? sonnerTheme,
     ShadTextareaTheme? textareaTheme,
     ShadDefaultKeyboardToolbarTheme? defaultKeyboardToolbarTheme,
+    ShadItemTheme? primaryItemTheme,
+    ShadItemTheme? outlineItemTheme,
+    ShadItemTheme? mutedItemTheme,
     ShadToggleTheme? primaryToggleTheme,
     ShadToggleTheme? outlineToggleTheme,
     ShadButtonSizesTheme? toggleSizesTheme,
@@ -348,6 +366,9 @@ mixin _$ShadThemeData {
       textareaTheme: textareaTheme ?? _this.textareaTheme,
       defaultKeyboardToolbarTheme:
           defaultKeyboardToolbarTheme ?? _this.defaultKeyboardToolbarTheme,
+      primaryItemTheme: primaryItemTheme ?? _this.primaryItemTheme,
+      outlineItemTheme: outlineItemTheme ?? _this.outlineItemTheme,
+      mutedItemTheme: mutedItemTheme ?? _this.mutedItemTheme,
       primaryToggleTheme: primaryToggleTheme ?? _this.primaryToggleTheme,
       outlineToggleTheme: outlineToggleTheme ?? _this.outlineToggleTheme,
       toggleSizesTheme: toggleSizesTheme ?? _this.toggleSizesTheme,
@@ -441,6 +462,9 @@ mixin _$ShadThemeData {
       defaultKeyboardToolbarTheme: _this.defaultKeyboardToolbarTheme.merge(
         other.defaultKeyboardToolbarTheme,
       ),
+      primaryItemTheme: _this.primaryItemTheme.merge(other.primaryItemTheme),
+      outlineItemTheme: _this.outlineItemTheme.merge(other.outlineItemTheme),
+      mutedItemTheme: _this.mutedItemTheme.merge(other.mutedItemTheme),
       primaryToggleTheme: _this.primaryToggleTheme.merge(
         other.primaryToggleTheme,
       ),
@@ -520,6 +544,9 @@ mixin _$ShadThemeData {
         _other.textareaTheme == _this.textareaTheme &&
         _other.defaultKeyboardToolbarTheme ==
             _this.defaultKeyboardToolbarTheme &&
+        _other.primaryItemTheme == _this.primaryItemTheme &&
+        _other.outlineItemTheme == _this.outlineItemTheme &&
+        _other.mutedItemTheme == _this.mutedItemTheme &&
         _other.primaryToggleTheme == _this.primaryToggleTheme &&
         _other.outlineToggleTheme == _this.outlineToggleTheme &&
         _other.toggleSizesTheme == _this.toggleSizesTheme &&
@@ -586,6 +613,9 @@ mixin _$ShadThemeData {
       _this.sonnerTheme,
       _this.textareaTheme,
       _this.defaultKeyboardToolbarTheme,
+      _this.primaryItemTheme,
+      _this.outlineItemTheme,
+      _this.mutedItemTheme,
       _this.primaryToggleTheme,
       _this.outlineToggleTheme,
       _this.toggleSizesTheme,
