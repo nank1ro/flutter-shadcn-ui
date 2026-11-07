@@ -54,47 +54,52 @@ void main() {
         createTestWidget(
           ShadSelect<String>(
             placeholder: const Text('Select a fruit'),
-            options: ['apple', 'banana', 'watermelon']
-                .map((f) => ShadOption(value: f, child: Text(f)))
-                .toList(),
+            options: [
+              'apple',
+              'banana',
+              'watermelon',
+            ].map((f) => ShadOption(value: f, child: Text(f))).toList(),
             selectedOptionBuilder: (context, value) => Text(value),
           ),
         ),
       );
     }
 
-    testWidgets('animateToTop is safe when the scroll view is detached (#686)',
-        (tester) async {
-      await pumpSelect(tester);
-      final state = tester.state<ShadSelectState<String>>(
-        find.byType(ShadSelect<String>),
-      );
-      // Popover never opened -> controller has no attached position, exactly
-      // like the state left behind when the popover closes mid-animation.
-      expect(state.scrollController.hasClients, isFalse);
+    testWidgets(
+      'animateToTop is safe when the scroll view is detached (#686)',
+      (tester) async {
+        await pumpSelect(tester);
+        final state = tester.state<ShadSelectState<String>>(
+          find.byType(ShadSelect<String>),
+        );
+        // Popover never opened -> controller has no attached position, exactly
+        // like the state left behind when the popover closes mid-animation.
+        expect(state.scrollController.hasClients, isFalse);
 
-      state.shouldAnimateToTop = true;
-      unawaited(state.animateToTop());
-      await tester.pump(const Duration(milliseconds: 250));
+        state.shouldAnimateToTop = true;
+        unawaited(state.animateToTop());
+        await tester.pump(const Duration(milliseconds: 250));
 
-      expect(tester.takeException(), isNull);
-    });
+        expect(tester.takeException(), isNull);
+      },
+    );
 
     testWidgets(
-        'animateToBottom is safe when the scroll view is detached (#686)',
-        (tester) async {
-      await pumpSelect(tester);
-      final state = tester.state<ShadSelectState<String>>(
-        find.byType(ShadSelect<String>),
-      );
-      expect(state.scrollController.hasClients, isFalse);
+      'animateToBottom is safe when the scroll view is detached (#686)',
+      (tester) async {
+        await pumpSelect(tester);
+        final state = tester.state<ShadSelectState<String>>(
+          find.byType(ShadSelect<String>),
+        );
+        expect(state.scrollController.hasClients, isFalse);
 
-      state.shouldAnimateToBottom = true;
-      unawaited(state.animateToBottom());
-      await tester.pump(const Duration(milliseconds: 250));
+        state.shouldAnimateToBottom = true;
+        unawaited(state.animateToBottom());
+        await tester.pump(const Duration(milliseconds: 250));
 
-      expect(tester.takeException(), isNull);
-    });
+        expect(tester.takeException(), isNull);
+      },
+    );
   });
 
   group('ShadSelectMultipleFormField', () {
