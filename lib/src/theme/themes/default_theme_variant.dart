@@ -33,6 +33,7 @@ import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
+import 'package:shadcn_ui/src/theme/components/spinner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
@@ -725,6 +726,15 @@ class ShadDefaultThemeVariant extends ShadThemeVariant {
     return const ShadSheetTheme(
       radius: BorderRadius.zero,
       expandCrossSide: true,
+    );
+  }
+
+  @override
+  ShadSpinnerTheme spinnerTheme() {
+    return const ShadSpinnerTheme(
+      size: 16,
+      icon: LucideIcons.loaderCircle,
+      duration: Duration(seconds: 1),
     );
   }
 

@@ -33,6 +33,7 @@ import 'package:example/pages/select_form_field.dart';
 import 'package:example/pages/sheet.dart';
 import 'package:example/pages/slider.dart';
 import 'package:example/pages/sonner.dart';
+import 'package:example/pages/spinner.dart';
 import 'package:example/pages/switch.dart';
 import 'package:example/pages/switch_form_field.dart';
 import 'package:example/pages/table.dart';
@@ -89,6 +90,7 @@ final routes = <String, WidgetBuilder>{
   '/sheet': (_) => const SheetPage(),
   '/slider': (_) => const SliderPage(),
   '/sonner': (_) => const SonnerPage(),
+  '/spinner': (_) => const SpinnerPage(),
   '/switch': (_) => const SwitchPage(),
   '/switch-form-field': (_) => const SwitchFormFieldPage(),
   '/table': (_) => const TablePage(),

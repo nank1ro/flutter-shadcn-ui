@@ -1,3 +1,5 @@
+loading: "読み込み中"
+
 timePicker:
   hours: "時"
   minutes: "分"
