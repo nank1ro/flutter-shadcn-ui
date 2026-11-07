@@ -348,6 +348,10 @@ class ShadSelect<T> extends StatefulWidget {
 
   /// {@template ShadSelect.controller}
   /// The controller of the [ShadSelect].
+  ///
+  /// When a controller is given together with [initialValue] or
+  /// [initialValues], the controller wins and those values do not overwrite
+  /// it. If null, an internal controller is created from them.
   /// {@endtemplate}
   final ShadSelectController<T>? controller;
 
@@ -381,12 +385,19 @@ class ShadSelect<T> extends StatefulWidget {
   /// {@template ShadSelect.initialValue}
   /// The initially selected value for single select [ShadSelect] variants.
   ///
-  /// Defaults to `null`.
+  /// Defaults to `null`. When [controller] is null, this seeds the internally
+  /// created controller, and later changes update that controller. When
+  /// [controller] is also given, the controller wins and changes to
+  /// [initialValue] are ignored.
   /// {@endtemplate}
   final T? initialValue;
 
   /// {@template ShadSelect.initialValues}
   /// The initial values of the [ShadSelect], defaults to `[]`.
+  ///
+  /// When [controller] is null, these seed the internally created controller,
+  /// and later changes update that controller. When [controller] is also
+  /// given, the controller wins and changes to [initialValues] are ignored.
   /// {@endtemplate}
   final Set<T> initialValues;
 
@@ -808,6 +819,9 @@ class ShadSelectState<T> extends State<ShadSelect<T>> {
   @override
   void didUpdateWidget(covariant ShadSelect<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // initialValue / initialValues only drive the controller this widget
+    // created. An external controller wins when both are given.
+    if (widget.controller != null) return;
     if (widget.initialValue != oldWidget.initialValue) {
       if (widget.initialValue is T) {
         controller.value

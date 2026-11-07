@@ -465,6 +465,53 @@ class ShadFormBuilderSelectState<T>
   }
 
   @override
+  void didUpdateWidget(covariant ShadSelectFormField<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // ShadSelect always receives this field's controller, so it will not
+    // apply an initial value itself.
+    if (widget.id != oldWidget.id) {
+      if (widget.controller == null) {
+        // Re-registration stored the form value for the new id on this field.
+        // Copy it into the controller this field owns.
+        _setControllerValue(value);
+      } else {
+        // An external controller keeps its selection. Register that selection
+        // under the new id instead of writing the new id's value into it.
+        final selection = controller.value.firstOrNull;
+        if (value != selection) {
+          setValue(selection);
+        }
+      }
+    }
+
+    // initialValue only drives a controller this field created. Null is
+    // ignored, matching ShadSelect: a null initialValue means the form value
+    // already in use.
+    final next = widget.initialValue;
+    if (widget.controller != null ||
+        next == oldWidget.initialValue ||
+        next == null) {
+      return;
+    }
+
+    // onChanged is not called here: a parent setState inside it would run
+    // during build. setValue still writes the registered form value.
+    _setControllerValue(next);
+    if (value != next) {
+      setValue(next);
+    }
+  }
+
+  // New set so ValueNotifier notifies. The listener is detached because it
+  // calls didChange, and the form cannot setState during this update.
+  void _setControllerValue(T? next) {
+    final updated = next == null ? <T>{} : <T>{next};
+    controller.removeListener(onControllerChange);
+    controller.value = updated;
+    controller.addListener(onControllerChange);
+  }
+
+  @override
   void reset() {
     super.reset();
     controller.value = initialValue is T ? <T>{initialValue as T} : <T>{};
