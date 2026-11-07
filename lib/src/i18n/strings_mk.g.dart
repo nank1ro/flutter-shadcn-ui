@@ -39,6 +39,7 @@ class ShadLocalizationsDataMk extends ShadLocalizationsData with BaseTranslation
 	ShadLocalizationsDataMk $copyWith({TranslationMetadata<ShadLocale, ShadLocalizationsData>? meta}) => ShadLocalizationsDataMk(meta: meta ?? this.$meta);
 
 	// Translations
+	@override String get loading => 'Вчитување';
 	@override late final _ShadLocalizationsData$timePicker$mk timePicker = _ShadLocalizationsData$timePicker$mk._(_root);
 	@override late final _ShadLocalizationsData$datePicker$mk datePicker = _ShadLocalizationsData$datePicker$mk._(_root);
 	@override late final _ShadLocalizationsData$input$mk input = _ShadLocalizationsData$input$mk._(_root);
@@ -100,6 +101,7 @@ class _ShadLocalizationsData$keyboardToolbar$mk extends ShadLocalizationsData$ke
 extension on ShadLocalizationsDataMk {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
+			'loading' => 'Вчитување',
 			'timePicker.hours' => 'Часови',
 			'timePicker.minutes' => 'Минути',
 			'timePicker.seconds' => 'Секунди',

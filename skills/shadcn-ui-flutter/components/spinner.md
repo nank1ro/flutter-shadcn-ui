@@ -13,7 +13,6 @@ For determinate progress, use [Progress](/flutter-shadcn-ui/components/progress/
  ```dart
 const ShadSpinner(
   size: 32,
-  semanticsLabel: 'Loading',
 ),
 ```
 
@@ -100,12 +99,13 @@ ConstrainedBox(
 
 ## Accessibility
 
-Pass a `semanticsLabel` to announce the loading state to screen readers. The
-spinner is then marked as a live region, so assistive technology announces it
-when it appears.
+The spinner uses a localized loading label by default and is marked as a live
+region, so assistive technology announces it when it appears. Set
+`semanticsLabel` to override the default when a more specific announcement is
+needed. Custom labels are used as-is, so localize them in your app.
 
 ```dart
-const ShadSpinner(semanticsLabel: 'Loading'),
+const ShadSpinner(semanticsLabel: 'Loading more results'),
 ```
 
 ## Disabling the animation
@@ -178,7 +178,6 @@ class _SpinnerPageState extends State<SpinnerPage> {
         ShadSpinner(
           size: size,
           animate: animate,
-          semanticsLabel: 'Loading',
         ),
         const Text('Colored'),
         ShadSpinner(

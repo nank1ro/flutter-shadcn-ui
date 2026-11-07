@@ -1,3 +1,5 @@
+loading: "불러오는 중"
+
 timePicker:
   hours: "시간"
   minutes: "분"
