@@ -1,6 +1,7 @@
 ## 0.58.0
 
 - **FEAT**: Add new component `ShadItem` and all of its related components (#705).
+- **FEAT**: Add `ShadToggle` and `ShadToggleGroup` components (#723).
 
 ## 0.57.4
 

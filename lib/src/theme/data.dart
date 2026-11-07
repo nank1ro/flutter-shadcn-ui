@@ -36,6 +36,8 @@ import 'package:shadcn_ui/src/theme/components/tabs.dart';
 import 'package:shadcn_ui/src/theme/components/textarea.dart';
 import 'package:shadcn_ui/src/theme/components/time_picker.dart';
 import 'package:shadcn_ui/src/theme/components/toast.dart';
+import 'package:shadcn_ui/src/theme/components/toggle.dart';
+import 'package:shadcn_ui/src/theme/components/toggle_group.dart';
 import 'package:shadcn_ui/src/theme/components/tooltip.dart';
 import 'package:shadcn_ui/src/theme/text_theme/theme.dart';
 import 'package:shadcn_ui/src/theme/themes/base.dart';
@@ -113,6 +115,10 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     ShadItemTheme? primaryItemTheme,
     ShadItemTheme? outlineItemTheme,
     ShadItemTheme? mutedItemTheme,
+    ShadToggleTheme? primaryToggleTheme,
+    ShadToggleTheme? outlineToggleTheme,
+    ShadButtonSizesTheme? toggleSizesTheme,
+    ShadToggleGroupTheme? toggleGroupTheme,
   }) {
     final effectiveRadius =
         radius ?? const BorderRadius.all(Radius.circular(6));
@@ -253,6 +259,18 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
       mutedItemTheme: effectiveVariant.mutedItemTheme().merge(
         mutedItemTheme,
       ),
+      primaryToggleTheme: effectiveVariant.primaryToggleTheme().merge(
+        primaryToggleTheme,
+      ),
+      outlineToggleTheme: effectiveVariant.outlineToggleTheme().merge(
+        outlineToggleTheme,
+      ),
+      toggleSizesTheme: effectiveVariant.toggleSizesTheme().merge(
+        toggleSizesTheme,
+      ),
+      toggleGroupTheme: effectiveVariant.toggleGroupTheme().merge(
+        toggleGroupTheme,
+      ),
     );
   }
 
@@ -314,6 +332,10 @@ class ShadThemeData extends ShadBaseTheme with _$ShadThemeData {
     required super.primaryItemTheme,
     required super.outlineItemTheme,
     required super.mutedItemTheme,
+    required super.primaryToggleTheme,
+    required super.outlineToggleTheme,
+    required super.toggleSizesTheme,
+    required super.toggleGroupTheme,
   });
 
   static ShadThemeData? lerp(
