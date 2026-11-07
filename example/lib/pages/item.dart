@@ -104,8 +104,9 @@ class _ItemPageState extends State<ItemPage> {
                 children: [
                   for (final (index, person) in _people.indexed) ...[
                     if (index > 0) const ShadItemSeparator(),
-                    ShadItem.raw(
-                      variant: variant,
+                    // Like upstream, grouped items use the default variant
+                    // so the separator is the only line between them.
+                    ShadItem(
                       size: size,
                       enabled: enabled,
                       onPressed: onPressed,
