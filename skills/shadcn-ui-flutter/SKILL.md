@@ -55,6 +55,8 @@ Use `ShadThemeData` within `ShadApp` to define your light and dark themes.
 | Textarea | Displays a form textarea or a component that looks like a textarea. | [textarea.md](components/textarea.md) |
 | Time Picker | A time picker component. | [time-picker.md](components/time-picker.md) |
 | Toast | A succinct message that is displayed temporarily. | [toast.md](components/toast.md) |
+| Toggle | A two-state button that can be either on or off. | [toggle.md](components/toggle.md) |
+| Toggle Group | A set of two-state buttons that can be toggled on or off. | [toggle-group.md](components/toggle-group.md) |
 | Tooltip | A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it. | [tooltip.md](components/tooltip.md) |
 
 ## Usage Examples
