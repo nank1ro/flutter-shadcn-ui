@@ -137,12 +137,12 @@ const _people = [
     name: 'shadcn',
     initials: 'CN',
     email: 'shadcn@vercel.com',
-    avatar: 'https://github.com/shadcn.png',
+    avatar: 'https://avatars.githubusercontent.com/shadcn',
   ),
   (
     name: 'nank1ro',
     initials: 'AM',
     email: 'alexandru@mariuti.com',
-    avatar: 'https://github.com/nank1ro.png',
+    avatar: 'https://avatars.githubusercontent.com/nank1ro',
   ),
 ];
