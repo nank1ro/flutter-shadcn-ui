@@ -136,10 +136,8 @@ class ItemSize extends StatelessWidget {
       spacing: 24,
       children: [
         ShadItem.outline(
-          title: const Text('Default Size'),
-          description: const Text(
-            'The standard size for most use cases.',
-          ),
+          title: const Text('Basic Item'),
+          description: const Text('A simple item with title and description.'),
           actions: ShadButton.outline(
             size: ShadButtonSize.sm,
             onPressed: () {},
@@ -148,13 +146,10 @@ class ItemSize extends StatelessWidget {
         ),
         ShadItem.outline(
           size: ShadItemSize.sm,
-          title: const Text('Small Size'),
-          description: const Text('A compact size for dense layouts.'),
-          actions: ShadButton.outline(
-            size: ShadButtonSize.sm,
-            onPressed: () {},
-            child: const Text('Action'),
-          ),
+          onPressed: () {},
+          media: const Icon(LucideIcons.badgeCheck, size: 20),
+          title: const Text('Your profile has been verified.'),
+          actions: const Icon(LucideIcons.chevronRight, size: 16),
         ),
       ],
     );
@@ -181,11 +176,14 @@ class ItemIcon extends StatelessWidget {
   }
 }
 
+const team = ['shadcn', 'nank1ro', 'evilrabbit'];
+
 class ItemAvatar extends StatelessWidget {
   const ItemAvatar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = ShadTheme.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -193,7 +191,7 @@ class ItemAvatar extends StatelessWidget {
       children: [
         ShadItem.outline(
           media: const ShadAvatar(
-            'https://github.com/nank1ro.png',
+            'https://avatars.githubusercontent.com/nank1ro',
             placeholder: Text('AM'),
           ),
           title: const Text('Alexandru Mariuti'),
@@ -207,18 +205,28 @@ class ItemAvatar extends StatelessWidget {
           ),
         ),
         ShadItem.outline(
-          media: const Row(
+          media: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              ShadAvatar(
-                'https://github.com/shadcn.png',
-                placeholder: Text('CN'),
-                size: Size.square(32),
-              ),
-              ShadAvatar(
-                'https://github.com/nank1ro.png',
-                placeholder: Text('AM'),
-                size: Size.square(32),
-              ),
+              for (final (index, username) in team.indexed)
+                // Overlap each avatar with the next one by 8px.
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  widthFactor: index < team.length - 1 ? 28 / 36 : 1,
+                  heightFactor: 1,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: theme.colorScheme.background,
+                    ),
+                    child: ShadAvatar(
+                      'https://avatars.githubusercontent.com/$username',
+                      placeholder: Text(username[0].toUpperCase()),
+                      size: const Size.square(32),
+                    ),
+                  ),
+                ),
             ],
           ),
           title: const Text('No Team Members'),
@@ -240,18 +248,24 @@ const music = [
     artist: 'Neon Dreams',
     album: 'Electric Nights',
     duration: '3:45',
+    image:
+        'https://images.unsplash.com/photo-1650804068570-7fb2e3dbf888?q=80&w=128&fit=crop',
   ),
   (
     title: 'Coffee Shop Conversations',
     artist: 'The Morning Brew',
     album: 'Urban Stories',
     duration: '4:05',
+    image:
+        'https://images.unsplash.com/photo-1610280777472-54133d004c8c?q=80&w=128&fit=crop',
   ),
   (
     title: 'Digital Rain',
     artist: 'Cyber Symphony',
     album: 'Binary Beats',
     duration: '3:30',
+    image:
+        'https://images.unsplash.com/photo-1602146057681-08560aee8cde?q=80&w=128&fit=crop',
   ),
 ];
 
@@ -269,10 +283,7 @@ class ItemImage extends StatelessWidget {
           ShadItem.outline(
             link: true,
             onPressed: () {},
-            media: ShadItemMedia.image(
-              src:
-                  'https://avatar.vercel.sh/${Uri.encodeComponent(song.title)}',
-            ),
+            media: ShadItemMedia.image(src: song.image),
             title: Text('${song.title} - ${song.album}'),
             description: Text(song.artist),
             actions: ShadItemDescription(child: Text(song.duration)),
@@ -299,8 +310,9 @@ class ItemGroup extends StatelessWidget {
           if (index > 0) const ShadItemSeparator(),
           ShadItem(
             media: ShadAvatar(
-              'https://github.com/${person.username}.png',
+              'https://avatars.githubusercontent.com/${person.username}',
               placeholder: Text(person.name[0].toUpperCase()),
+              size: const Size.square(32),
             ),
             title: Text(person.name),
             description: Text(person.email),
@@ -322,14 +334,20 @@ const models = [
   (
     name: 'v0-1.5-sm',
     description: 'Everyday tasks and UI generation.',
+    image:
+        'https://images.unsplash.com/photo-1650804068570-7fb2e3dbf888?q=80&w=640&fit=crop',
   ),
   (
     name: 'v0-1.5-lg',
     description: 'Advanced thinking or reasoning.',
+    image:
+        'https://images.unsplash.com/photo-1610280777472-54133d004c8c?q=80&w=640&fit=crop',
   ),
   (
     name: 'v0-2.0-mini',
     description: 'Open Source model for everyone.',
+    image:
+        'https://images.unsplash.com/photo-1602146057681-08560aee8cde?q=80&w=640&fit=crop',
   ),
 ];
 
@@ -350,7 +368,7 @@ class ItemHeader extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: Image.network(
-                    'https://avatar.vercel.sh/${model.name}',
+                    model.image,
                     fit: BoxFit.cover,
                   ),
                 ),
