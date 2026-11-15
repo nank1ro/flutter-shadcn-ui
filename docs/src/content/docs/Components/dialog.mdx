@@ -72,6 +72,25 @@ class DialogExample extends StatelessWidget {
 
 </Preview>
 
+## Full-screen background
+
+Set `extendBackground: true` only on a dialog whose `constraints` fill the
+screen. This extends the dialog background behind the status bar, notch, and
+gesture bar. Smaller centered dialogs ignore this option and keep their normal
+card background, border, shadow, and radius. For a full-screen dialog, the
+option takes precedence over explicit border, shadow, and radius values. The
+parent must span the viewport, such as a dialog route or `SizedBox.expand`.
+Full-screen mode is not intended for intrinsic-sizing parents such as
+`IntrinsicHeight`.
+
+```dart
+ShadDialog(
+  extendBackground: true,
+  constraints: const BoxConstraints.expand(),
+  title: const Text('Full-screen dialog'),
+)
+```
+
 ## Alert
 
 <Preview src="dialog?style=alert" minHeight="500px">
