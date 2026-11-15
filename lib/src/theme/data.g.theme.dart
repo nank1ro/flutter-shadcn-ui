@@ -144,6 +144,7 @@ mixin _$ShadThemeData {
         b.progressTheme,
         t,
       )!,
+      spinnerTheme: ShadSpinnerTheme.lerp(a.spinnerTheme, b.spinnerTheme, t)!,
       accordionTheme: ShadAccordionTheme.lerp(
         a.accordionTheme,
         b.accordionTheme,
@@ -279,6 +280,7 @@ mixin _$ShadThemeData {
     ShadSliderTheme? sliderTheme,
     ShadSheetTheme? sheetTheme,
     ShadProgressTheme? progressTheme,
+    ShadSpinnerTheme? spinnerTheme,
     ShadAccordionTheme? accordionTheme,
     ShadTableTheme? tableTheme,
     ShadResizableTheme? resizableTheme,
@@ -348,6 +350,7 @@ mixin _$ShadThemeData {
       sliderTheme: sliderTheme ?? _this.sliderTheme,
       sheetTheme: sheetTheme ?? _this.sheetTheme,
       progressTheme: progressTheme ?? _this.progressTheme,
+      spinnerTheme: spinnerTheme ?? _this.spinnerTheme,
       accordionTheme: accordionTheme ?? _this.accordionTheme,
       tableTheme: tableTheme ?? _this.tableTheme,
       resizableTheme: resizableTheme ?? _this.resizableTheme,
@@ -444,6 +447,7 @@ mixin _$ShadThemeData {
       sliderTheme: _this.sliderTheme.merge(other.sliderTheme),
       sheetTheme: _this.sheetTheme.merge(other.sheetTheme),
       progressTheme: _this.progressTheme.merge(other.progressTheme),
+      spinnerTheme: _this.spinnerTheme.merge(other.spinnerTheme),
       accordionTheme: _this.accordionTheme.merge(other.accordionTheme),
       tableTheme: _this.tableTheme.merge(other.tableTheme),
       resizableTheme: _this.resizableTheme.merge(other.resizableTheme),
@@ -527,6 +531,7 @@ mixin _$ShadThemeData {
         _other.sliderTheme == _this.sliderTheme &&
         _other.sheetTheme == _this.sheetTheme &&
         _other.progressTheme == _this.progressTheme &&
+        _other.spinnerTheme == _this.spinnerTheme &&
         _other.accordionTheme == _this.accordionTheme &&
         _other.tableTheme == _this.tableTheme &&
         _other.resizableTheme == _this.resizableTheme &&
@@ -597,6 +602,7 @@ mixin _$ShadThemeData {
       _this.sliderTheme,
       _this.sheetTheme,
       _this.progressTheme,
+      _this.spinnerTheme,
       _this.accordionTheme,
       _this.tableTheme,
       _this.resizableTheme,

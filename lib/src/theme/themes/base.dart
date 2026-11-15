@@ -29,6 +29,7 @@ import 'package:shadcn_ui/src/theme/components/separator.dart';
 import 'package:shadcn_ui/src/theme/components/sheet.dart';
 import 'package:shadcn_ui/src/theme/components/slider.dart';
 import 'package:shadcn_ui/src/theme/components/sonner.dart';
+import 'package:shadcn_ui/src/theme/components/spinner.dart';
 import 'package:shadcn_ui/src/theme/components/switch.dart';
 import 'package:shadcn_ui/src/theme/components/table.dart';
 import 'package:shadcn_ui/src/theme/components/tabs.dart';
@@ -83,6 +84,7 @@ abstract class ShadBaseTheme {
     required this.sliderTheme,
     required this.sheetTheme,
     required this.progressTheme,
+    required this.spinnerTheme,
     required this.accordionTheme,
     required this.tableTheme,
     required this.resizableTheme,
@@ -146,6 +148,7 @@ abstract class ShadBaseTheme {
   final ShadSliderTheme sliderTheme;
   final ShadSheetTheme sheetTheme;
   final ShadProgressTheme progressTheme;
+  final ShadSpinnerTheme spinnerTheme;
   final ShadAccordionTheme accordionTheme;
   final ShadTableTheme tableTheme;
   final ShadResizableTheme resizableTheme;
@@ -206,6 +209,7 @@ abstract class ShadThemeVariant {
   ShadSliderTheme sliderTheme();
   ShadSheetTheme sheetTheme();
   ShadProgressTheme progressTheme();
+  ShadSpinnerTheme spinnerTheme();
   ShadAccordionTheme accordionTheme();
   ShadTableTheme tableTheme();
   ShadResizableTheme resizableTheme();
