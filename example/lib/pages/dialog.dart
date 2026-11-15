@@ -130,10 +130,7 @@ class _DialogPageState extends State<DialogPage> {
               barrierDismissible: true,
               builder: (context) => ShadDialog(
                 extendBackground: true,
-                constraints: BoxConstraints.expand(
-                  width: MediaQuery.sizeOf(context).width,
-                  height: MediaQuery.sizeOf(context).height,
-                ),
+                constraints: const BoxConstraints.expand(),
                 title: const Text('Full Screen Dialog'),
                 description: const Text(
                   'A dialog that fills the screen, with its background '
@@ -173,10 +170,7 @@ class _DialogPageState extends State<DialogPage> {
               barrierDismissible: true,
               builder: (context) => ShadDialog(
                 extendBackground: true,
-                constraints: BoxConstraints.expand(
-                  width: MediaQuery.sizeOf(context).width,
-                  height: MediaQuery.sizeOf(context).height,
-                ),
+                constraints: const BoxConstraints.expand(),
                 title: const Text('Terms and Conditions'),
                 titlePinned: titlePinned,
                 descriptionPinned: descriptionPinned,

@@ -552,8 +552,9 @@ class ShadDialog extends StatelessWidget {
   /// so there is no barrier-colored gap at the edges. This is useful for
   /// full-screen dialogs that touch screen edges. For a smaller dialog, the
   /// option is ignored and the normal card appearance is kept.
-  /// The full-screen mode requires a bounded parent and is not intended for
-  /// intrinsic-sizing parents such as [IntrinsicHeight].
+  /// The parent must span the viewport, such as a dialog route or
+  /// [SizedBox.expand]. Full-screen mode is not intended for intrinsic-sizing
+  /// parents such as [IntrinsicHeight].
   ///
   /// Intended for full-screen dialogs: when effective, [extendBackground]
   /// takes precedence over widget- and theme-level [border], [shadows], and
@@ -588,20 +589,41 @@ class ShadDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = ShadTheme.of(context);
+
     final effectiveDialogTheme = switch (variant) {
       .primary => theme.primaryDialogTheme,
       .alert => theme.alertDialogTheme,
     };
+
     final requestedExtendBackground =
         extendBackground ?? effectiveDialogTheme.extendBackground ?? false;
 
-    if (!requestedExtendBackground) {
+    final effectiveConstraints =
+        constraints ??
+        effectiveDialogTheme.constraints ??
+        const BoxConstraints(maxWidth: 512);
+
+    final screenSize = MediaQuery.sizeOf(context);
+
+    bool fillsScreen(double dimension, double screenDimension) =>
+        dimension == double.infinity || dimension >= screenDimension;
+
+    final constraintsFillViewport =
+        effectiveConstraints.isTight &&
+        fillsScreen(effectiveConstraints.minWidth, screenSize.width) &&
+        fillsScreen(effectiveConstraints.minHeight, screenSize.height);
+
+    // LayoutBuilder cannot provide intrinsic dimensions, so only use it for
+    // dialogs whose constraints can fill the viewport.
+    if (!requestedExtendBackground || !constraintsFillViewport) {
       return _buildDialogContent(
         context,
-        const BoxConstraints(),
+        null,
         theme,
         effectiveDialogTheme,
+        effectiveConstraints,
         requestedExtendBackground,
+        constraintsFillViewport,
       );
     }
 
@@ -611,17 +633,21 @@ class ShadDialog extends StatelessWidget {
         constraints,
         theme,
         effectiveDialogTheme,
+        effectiveConstraints,
         requestedExtendBackground,
+        constraintsFillViewport,
       ),
     );
   }
 
   Widget _buildDialogContent(
     BuildContext context,
-    BoxConstraints parentConstraints,
+    BoxConstraints? parentConstraints,
     ShadThemeData theme,
     ShadDialogTheme effectiveDialogTheme,
+    BoxConstraints effectiveConstraints,
     bool requestedExtendBackground,
+    bool constraintsFillViewport,
   ) {
     final effectiveBackgroundColor =
         backgroundColor ??
@@ -665,26 +691,22 @@ class ShadDialog extends StatelessWidget {
         effectiveDialogTheme.expandActionsWhenTiny ??
         true;
 
-    final effectiveConstraints =
-        constraints ??
-        effectiveDialogTheme.constraints ??
-        const BoxConstraints(maxWidth: 512);
-
     final parentIsBounded =
-        parentConstraints.hasBoundedWidth && parentConstraints.hasBoundedHeight;
+        parentConstraints?.hasBoundedWidth == true &&
+        parentConstraints?.hasBoundedHeight == true;
+
     final screenSize = MediaQuery.sizeOf(context);
+
     final parentFillsViewport =
         parentIsBounded &&
-        parentConstraints.biggest.width >= screenSize.width &&
+        parentConstraints!.biggest.width >= screenSize.width &&
         parentConstraints.biggest.height >= screenSize.height;
-    bool fillsScreen(double dimension, double screenDimension) =>
-        dimension == double.infinity || dimension >= screenDimension;
+
     final effectiveExtendBackground =
         requestedExtendBackground &&
         parentFillsViewport &&
-        effectiveConstraints.isTight &&
-        fillsScreen(effectiveConstraints.minWidth, screenSize.width) &&
-        fillsScreen(effectiveConstraints.minHeight, screenSize.height);
+        constraintsFillViewport;
+
     final effectiveRadius = effectiveExtendBackground
         ? null
         : radius ?? effectiveDialogTheme.radius ?? theme.radius;

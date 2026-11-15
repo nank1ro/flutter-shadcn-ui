@@ -49,6 +49,31 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
+    testWidgets(
+      'ShadDialog with theme-level extendBackground works inside '
+      'IntrinsicHeight',
+      (tester) async {
+        await tester.pumpWidget(
+          ShadApp(
+            theme: ShadThemeData(
+              primaryDialogTheme: const ShadDialogTheme(
+                extendBackground: true,
+              ),
+            ),
+            home: const Scaffold(
+              body: Center(
+                child: IntrinsicHeight(
+                  child: ShadDialog(title: Text('Title')),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        expect(tester.takeException(), isNull);
+      },
+    );
+
     Future<Rect> pumpAndGetDialogRect(
       WidgetTester tester, {
       required EdgeInsets systemPadding,
