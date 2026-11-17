@@ -59,7 +59,7 @@ ShadTimePickerFormField.period(
 ```dart
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class TimePickerPage extends StatefulWidget {
@@ -140,7 +140,7 @@ class _TimePickerPageState extends State<TimePickerPage> {
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/bool_property.dart';
 import 'package:example/common/properties/enum_property.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 class TimePickerFormFieldPage extends StatefulWidget {
