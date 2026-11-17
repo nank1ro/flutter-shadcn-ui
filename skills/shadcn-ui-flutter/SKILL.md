@@ -66,6 +66,7 @@ Examples are available at the bottom of each component page.
 ### Basic Setup
 Here is a complete example of a Counter App using `shadcn_ui`, including light and dark theme support.
 ```dart
+import 'package:material_ui/material_ui.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 void main() {

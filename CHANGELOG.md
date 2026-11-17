@@ -1,3 +1,7 @@
+## 0.60.0
+
+- **BREAKING**: Migrate from the deprecated `package:flutter/material.dart` and `package:flutter/cupertino.dart` to the standalone `material_ui` and `cupertino_ui` packages. The minimum Flutter version is now 3.47. The types in these packages are different from the SDK types, so apps must migrate too: run `flutter pub add material_ui` (and `cupertino_ui` if you use Cupertino), then `dart fix --apply --code=migrate_design_widgets`. See the [Flutter migration guide](https://docs.flutter.dev/release/breaking-changes/material-ui-and-cupertino-ui).
+
 ## 0.59.0
 
 - **FEAT**: Add new component `ShadItem` and all of its related components (#705).
