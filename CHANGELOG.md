@@ -1,6 +1,9 @@
-## 0.59.0
+## 0.59.1
 
 - **FIX**: Localizations are compiled into the main web bundle instead of deferred locale chunks, preventing stale tabs from requesting missing chunks after a deployment. The bundle grows by about 18 KB gzipped.
+
+## 0.59.0
+
 - **FEAT**: Add new component `ShadItem` and all of its related components (#705).
 
 ## 0.58.0
