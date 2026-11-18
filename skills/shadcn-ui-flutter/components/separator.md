@@ -30,7 +30,7 @@ const ShadSeparator.vertical(
 ```dart
 import 'package:example/common/base_scaffold.dart';
 import 'package:example/common/properties/string_property.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
