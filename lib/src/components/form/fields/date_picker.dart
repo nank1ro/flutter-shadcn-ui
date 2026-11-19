@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/button.dart';
@@ -37,6 +38,9 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
     @Deprecated('Use toValueTransformer instead') super.valueTransformer,
     super.toValueTransformer,
     super.fromValueTransformer,
+
+    /// {@macro ShadDatePicker.controller}
+    this.controller,
 
     /// {@macro ShadDatePicker.placeholder}
     Widget? placeholder,
@@ -433,13 +437,12 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
          builder: (state) {
            state as ShadFormBuilderDatePickerState;
            return ShadDatePicker(
-             onChanged: state.didChange,
              enabled: state.enabled,
              focusNode: state.focusNode,
              leading: leading,
              trailing: trailing,
              decoration: state.decoration,
-             selected: state.value,
+             controller: state.controller,
              popoverController: popoverController,
              closeOnSelection: closeOnSelection,
              formatDate: formatDate,
@@ -571,10 +574,117 @@ class ShadDatePickerFormField extends ShadFormBuilderField<DateTime> {
          },
        );
 
+  /// {@macro ShadDatePicker.controller}
+  final ShadCalendarController? controller;
+
   @override
   ShadFormBuilderFieldState<ShadDatePickerFormField, DateTime> createState() =>
       ShadFormBuilderDatePickerState();
 }
 
 class ShadFormBuilderDatePickerState
-    extends ShadFormBuilderFieldState<ShadDatePickerFormField, DateTime> {}
+    extends ShadFormBuilderFieldState<ShadDatePickerFormField, DateTime> {
+  ShadCalendarController? _controller;
+  bool _controllerInitialized = false;
+  bool _writingController = false;
+  DateTime? _lastControllerSelected;
+
+  ShadCalendarController get controller => widget.controller ?? _controller!;
+
+  @override
+  void initState() {
+    super.initState();
+    _bindController();
+    _controllerInitialized = true;
+  }
+
+  void _bindController() {
+    final external = widget.controller;
+    if (external == null) {
+      _controller = ShadCalendarController(selected: value);
+    } else if (external.selected != null) {
+      super.setValue(external.selected);
+    } else if (value != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted &&
+            identical(external, controller) &&
+            external.selected == null) {
+          _syncController(value);
+        }
+      });
+    }
+    _lastControllerSelected = controller.selected;
+    controller.addListener(_handleControllerChanged);
+  }
+
+  void _handleControllerChanged() {
+    final selected = controller.selected;
+    if (selected == _lastControllerSelected) return;
+    _lastControllerSelected = selected;
+    if (!_writingController) didChange(selected);
+  }
+
+  void _syncController(DateTime? value) {
+    // The base class registers with the form before this controller exists.
+    if (!_controllerInitialized || controller.selected == value) return;
+    // Registering the field with the form on an `id` change calls setValue
+    // while building, and listeners outside this subtree must not be notified
+    // then.
+    if (SchedulerBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      final source = controller;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && identical(source, controller)) {
+          _syncController(this.value);
+        }
+      });
+      return;
+    }
+    final wasWritingController = _writingController;
+    _writingController = true;
+    try {
+      controller.selected = value;
+    } finally {
+      _writingController = wasWritingController;
+    }
+  }
+
+  @override
+  void didChange(DateTime? value) {
+    _syncController(value);
+    super.didChange(value);
+  }
+
+  @override
+  void setValue(DateTime? value, {bool populateForm = true}) {
+    super.setValue(value, populateForm: populateForm);
+    _syncController(value);
+  }
+
+  @override
+  void didUpdateWidget(covariant ShadDatePickerFormField oldWidget) {
+    final previous = oldWidget.controller ?? _controller!;
+    final replacingController = oldWidget.controller != widget.controller;
+    if (replacingController) _controllerInitialized = false;
+    try {
+      super.didUpdateWidget(oldWidget);
+    } finally {
+      _controllerInitialized = true;
+    }
+    if (replacingController) {
+      previous.removeListener(_handleControllerChanged);
+      if (oldWidget.controller == null) {
+        _controller?.dispose();
+        _controller = null;
+      }
+      _bindController();
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_handleControllerChanged);
+    _controller?.dispose();
+    super.dispose();
+  }
+}
