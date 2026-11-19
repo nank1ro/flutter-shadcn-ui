@@ -1,3 +1,7 @@
+## 0.61.1
+
+- **FIX**: Localizations are compiled into the main web bundle instead of deferred locale chunks, preventing stale tabs from requesting missing chunks after a deployment. The bundle grows by about 18 KB gzipped.
+
 ## 0.61.0
 
 - **CHORE**: Allow `lucide_icons_flutter` 4.x (the constraint is now `>=3.0.0 <5.0.0`). Regular icons, such as `LucideIcons.activity`, do not change. In 4.x, the weight icons moved to separate libraries: `LucideIcons.activity300` is now `LucideIcons300.activity` in `package:lucide_icons_flutter/lucide_icons_300.dart`. `shadcn_ui` exports only the regular icons. If your app uses weight icons, import the weight library directly, or keep `lucide_icons_flutter` on 3.x until you migrate.

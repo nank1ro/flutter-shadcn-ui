@@ -31,16 +31,7 @@ class GlobalShadLocalizations
             .firstOrNull ??
         ShadLocale.en;
 
-    // English is the base locale (not deferred) — load synchronously so the
-    // widget tree is ready on the first frame, keeping tests fast.
-    if (match == ShadLocale.en) {
-      return SynchronousFuture<ShadLocalizationsData>(match.buildSync());
-    }
-
-    // All other locales are deferred imports. Must use the async build() so
-    // loadLibrary() is called before accessing the locale class (required on
-    // Flutter web / dart2js / wasm).
-    return match.build();
+    return SynchronousFuture<ShadLocalizationsData>(match.buildSync());
   }
 
   @override
