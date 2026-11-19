@@ -1,6 +1,10 @@
-## 0.60.1
+## 0.61.1
 
 - **FIX**: `ShadRadioGroup` and `ShadSelect` no longer overwrite an external controller when `initialValue` or `initialValues` changes. The controller wins when both are given. An internally created controller still follows those values. `ShadRadioGroupFormField` and single-value `ShadSelectFormField` apply the same rule to the controller they own. An owned `ShadSelectFormField` controller notifies the form when `initialValue` changes. A null `initialValue` on update is ignored, matching `ShadSelect`. Changing the field id copies the registered form value into an owned `ShadSelect` controller. An external controller keeps its selection, and that selection is registered under the new id. `ShadRadioGroupFormField` seeds the controller it creates when an external controller is removed from the current field value, and applies a later `initialValue` without calling `onChanged` during build (#734).
+
+## 0.61.0
+
+- **CHORE**: Allow `lucide_icons_flutter` 4.x (the constraint is now `>=3.0.0 <5.0.0`). Regular icons, such as `LucideIcons.activity`, do not change. In 4.x, the weight icons moved to separate libraries: `LucideIcons.activity300` is now `LucideIcons300.activity` in `package:lucide_icons_flutter/lucide_icons_300.dart`. `shadcn_ui` exports only the regular icons. If your app uses weight icons, import the weight library directly, or keep `lucide_icons_flutter` on 3.x until you migrate.
 
 ## 0.60.0
 
