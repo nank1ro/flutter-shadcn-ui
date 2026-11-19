@@ -26,6 +26,9 @@ targets:
           enum_name: ShadLocale
           fallback_strategy: base_locale
           string_interpolation: dart
+          # Deferred locales put a .part.js chunk per locale into every web app,
+          # and a tab opened before a deploy then loads the next build's chunk.
+          lazy: false
       slang_build_runner:legacy:
         enabled: true
         options: *slang_options
