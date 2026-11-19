@@ -1,3 +1,11 @@
+## 0.62.0
+
+- **FEAT**: Add `ShadCalendarController` for programmatic selection and month navigation in calendars, date pickers, and date picker form fields (#382). Assigning `visibleMonth` moves the displayed months even when that month is already shown, and a `visibleMonth` outside `fromMonth` and `toMonth` is clamped to the nearest allowed month. Changing the controller selection does not call `onChanged` or `onRangeChanged`, and form fields listen to the controller directly.
+- **CHANGE**: An uncontrolled `ShadCalendar` or `ShadDatePicker` that has a `selected` date and no `initialMonth` now opens at the month of the selected date instead of the current month.
+- **CHANGE**: An uncontrolled `ShadDatePicker` now remembers the last displayed month when it is closed and reopened, so `initialMonth` only applies the first time it opens.
+- **CHANGE**: An uncontrolled `ShadCalendar` keeps the user selection when rebuilt with an unchanged `selected`, `multipleSelected`, or `selectedRange` property.
+- **FIX**: Changing an uncontrolled calendar selection property to `null` clears the selection.
+
 ## 0.61.0
 
 - **CHORE**: Allow `lucide_icons_flutter` 4.x (the constraint is now `>=3.0.0 <5.0.0`). Regular icons, such as `LucideIcons.activity`, do not change. In 4.x, the weight icons moved to separate libraries: `LucideIcons.activity300` is now `LucideIcons300.activity` in `package:lucide_icons_flutter/lucide_icons_300.dart`. `shadcn_ui` exports only the regular icons. If your app uses weight icons, import the weight library directly, or keep `lucide_icons_flutter` on 3.x until you migrate.
