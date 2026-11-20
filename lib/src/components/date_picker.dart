@@ -1,13 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/calendar.dart';
+import 'package:shadcn_ui/src/components/calendar_sync.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
 import 'package:shadcn_ui/src/i18n/localizations_delegate.dart';
 import 'package:shadcn_ui/src/raw_components/portal.dart';
@@ -1004,12 +1004,14 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
       controller.addListener(_handleControllerChanged);
       _syncFromController();
     } else if (widget.controller == null) {
-      if (widget.selected != oldWidget.selected) {
-        controller.selected = widget.selected;
-      }
-      if (widget.selectedRange != oldWidget.selectedRange) {
-        controller.selectedRange = widget.selectedRange;
-      }
+      writeFromParent(controller, () {
+        if (widget.selected != oldWidget.selected) {
+          controller.selected = widget.selected;
+        }
+        if (widget.selectedRange != oldWidget.selectedRange) {
+          controller.selectedRange = widget.selectedRange;
+        }
+      });
       _syncFromController();
     }
   }
@@ -1028,28 +1030,12 @@ class _ShadDatePickerState extends State<ShadDatePicker> {
       ShadDatePickerVariant.range => controller.selectedRange != selectedRange,
     };
     if (!selectionChanged) return;
-    if (SchedulerBinding.instance.schedulerPhase ==
-        SchedulerPhase.persistentCallbacks) {
-      final source = controller;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted || !identical(source, controller)) return;
+    final source = controller;
+    runAfterBuild(() {
+      if (mounted && identical(source, controller)) {
         setState(_syncFromController);
-        _showSelectedMonth();
-      });
-      return;
-    }
-    setState(_syncFromController);
-    _showSelectedMonth();
-  }
-
-  void _showSelectedMonth() {
-    final anchor = switch (widget.variant) {
-      ShadDatePickerVariant.single => selected,
-      ShadDatePickerVariant.range => selectedRange?.start,
-    };
-    if (!popoverController.isOpen && anchor != null) {
-      controller.visibleMonth = anchor.startOfMonth;
-    }
+      }
+    });
   }
 
   void _syncFromController() {

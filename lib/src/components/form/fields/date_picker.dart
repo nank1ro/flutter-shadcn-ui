@@ -1,11 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shadcn_ui/src/components/button.dart';
 import 'package:shadcn_ui/src/components/calendar.dart';
+import 'package:shadcn_ui/src/components/calendar_sync.dart';
 import 'package:shadcn_ui/src/components/date_picker.dart';
 import 'package:shadcn_ui/src/components/form/field.dart';
 import 'package:shadcn_ui/src/components/popover.dart';
@@ -618,10 +618,15 @@ class ShadFormBuilderDatePickerState
   }
 
   void _handleControllerChanged() {
-    final selected = controller.selected;
-    if (selected == _lastControllerSelected) return;
-    _lastControllerSelected = selected;
-    if (!_writingController) didChange(selected);
+    // A sibling may assign the controller while the framework is building.
+    final source = controller;
+    runAfterBuild(() {
+      if (!mounted || !identical(source, controller)) return;
+      final selected = controller.selected;
+      if (selected == _lastControllerSelected) return;
+      _lastControllerSelected = selected;
+      if (!_writingController) didChange(selected);
+    });
   }
 
   void _syncController(DateTime? value) {
@@ -630,10 +635,9 @@ class ShadFormBuilderDatePickerState
     // Registering the field with the form on an `id` change calls setValue
     // while building, and listeners outside this subtree must not be notified
     // then.
-    if (SchedulerBinding.instance.schedulerPhase ==
-        SchedulerPhase.persistentCallbacks) {
+    if (isBuilding) {
       final source = controller;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      runAfterBuild(() {
         if (mounted && identical(source, controller)) {
           _syncController(this.value);
         }

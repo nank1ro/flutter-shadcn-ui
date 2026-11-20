@@ -1,11 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shadcn_ui/src/components/button.dart';
+import 'package:shadcn_ui/src/components/calendar_sync.dart';
 import 'package:shadcn_ui/src/components/icon_button.dart';
 import 'package:shadcn_ui/src/components/select.dart';
 import 'package:shadcn_ui/src/theme/components/decorator.dart';
@@ -107,7 +107,7 @@ class ShadCalendarController extends ChangeNotifier {
        _selected = selected,
        _multipleSelected = const <DateTime>[],
        _selectedRange = null,
-       _visibleMonth = visibleMonth;
+       _visibleMonth = visibleMonth?.startOfMonth;
 
   /// Creates a [ShadCalendarController] for multiple date selection.
   ShadCalendarController.multiple({
@@ -117,7 +117,7 @@ class ShadCalendarController extends ChangeNotifier {
        _selected = null,
        _multipleSelected = List<DateTime>.from(selected ?? const []),
        _selectedRange = null,
-       _visibleMonth = visibleMonth;
+       _visibleMonth = visibleMonth?.startOfMonth;
 
   /// Creates a [ShadCalendarController] for date range selection.
   ShadCalendarController.range({
@@ -127,7 +127,7 @@ class ShadCalendarController extends ChangeNotifier {
        _selected = null,
        _multipleSelected = const <DateTime>[],
        _selectedRange = selected,
-       _visibleMonth = visibleMonth;
+       _visibleMonth = visibleMonth?.startOfMonth;
 
   final ShadCalendarVariant _variant;
   DateTime? _selected;
@@ -175,11 +175,17 @@ class ShadCalendarController extends ChangeNotifier {
 
   /// {@template ShadCalendarController.visibleMonth}
   /// The month currently visible in the calendar, independent of selection.
+  ///
+  /// Assigning it moves the displayed months. A month outside `fromMonth` and
+  /// `toMonth` shows the nearest allowed month, and the controller keeps the
+  /// assigned value. The value is always the first day of a month. A calendar
+  /// that is mounted without one sets it to the month it shows.
   /// {@endtemplate}
   DateTime? get visibleMonth => _visibleMonth;
   set visibleMonth(DateTime? value) {
-    if (_visibleMonth == value) return;
-    _visibleMonth = value;
+    final month = value?.startOfMonth;
+    if (_visibleMonth == month) return;
+    _visibleMonth = month;
     notifyListeners();
   }
 }
@@ -1014,8 +1020,9 @@ class _ShadCalendarState extends State<ShadCalendar> {
     ShadCalendarVariant.range => controller.selectedRange?.start,
   };
 
-  DateTime? get _controllerMonth =>
-      (controller.visibleMonth ?? _selectionAnchor)?.startOfMonth;
+  // A copy of the last `multipleSelected` the parent passed, because the
+  // parent may change the same list in place.
+  List<DateTime> _lastMultipleSelected = const [];
 
   // The `controller.visibleMonth` this state has already acted on. A different
   // value means someone assigned it, as opposed to a selection change.
@@ -1024,28 +1031,32 @@ class _ShadCalendarState extends State<ShadCalendar> {
   DateTime _clampMonth(DateTime month) {
     var result = month.startOfMonth;
     final from = widget.fromMonth?.startOfMonth;
-    final to = widget.toMonth?.startOfMonth;
-    if (to != null && result.isAfter(to)) result = to;
+    final toMonth = widget.toMonth?.startOfMonth;
+    if (toMonth != null) {
+      // The last of the shown months must not pass `toMonth`.
+      final to = DateTime(
+        toMonth.year,
+        toMonth.month - (widget.numberOfMonths - 1),
+      );
+      if (result.isAfter(to)) result = to;
+    }
     if (from != null && result.isBefore(from)) result = from;
     return result;
   }
 
   /// Writes [currentMonth] to the controller. During build the write is
-  /// deferred so listeners outside this subtree are not notified mid-build.
+  /// deferred, and skipped when the month was assigned in the meantime.
   void _publishMonth() {
     _seenVisibleMonth = currentMonth;
-    if (controller.visibleMonth == currentMonth) return;
-    if (SchedulerBinding.instance.schedulerPhase ==
-        SchedulerPhase.persistentCallbacks) {
-      final source = controller;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted || !identical(source, controller)) return;
-        _seenVisibleMonth = currentMonth;
-        source.visibleMonth = currentMonth;
-      });
-      return;
-    }
-    controller.visibleMonth = currentMonth;
+    final source = controller;
+    final before = source.visibleMonth;
+    if (before == currentMonth) return;
+    runAfterBuild(() {
+      if (!mounted || !identical(source, controller)) return;
+      if (source.visibleMonth != before) return;
+      _seenVisibleMonth = currentMonth;
+      source.visibleMonth = currentMonth;
+    });
   }
 
   bool _debugAssertControllerVariant(
@@ -1156,18 +1167,20 @@ class _ShadCalendarState extends State<ShadCalendar> {
     }
     controller.addListener(_handleControllerChanged);
 
-    if (widget.initialMonth == null && _controllerMonth != null) {
-      currentMonth = _controllerMonth!;
-    }
+    // The month of the controller wins over `initialMonth`, then the month
+    // of the selection when there is no `initialMonth`.
     _seenVisibleMonth = controller.visibleMonth;
-    if (_seenVisibleMonth != null) currentMonth = _clampMonth(currentMonth);
+    if (_seenVisibleMonth != null) {
+      currentMonth = _clampMonth(_seenVisibleMonth!);
+    } else if (widget.initialMonth == null && _selectionAnchor != null) {
+      currentMonth = _clampMonth(_selectionAnchor!);
+    }
+    _lastMultipleSelected = [...?widget.multipleSelected];
 
     _syncFromController(force: true);
     generateDates();
     generateAvailableYears();
-    if (widget.initialMonth != null || _seenVisibleMonth != null) {
-      _publishMonth();
-    }
+    if (_seenVisibleMonth == null) _publishMonth();
   }
 
   @override
@@ -1209,15 +1222,16 @@ class _ShadCalendarState extends State<ShadCalendar> {
       // picker always passes.
       final nextMonth = controller.visibleMonth != null
           ? _clampMonth(controller.visibleMonth!)
-          : widget.initialMonth == null
-          ? _controllerMonth
+          : widget.initialMonth == null && _selectionAnchor != null
+          ? _clampMonth(_selectionAnchor!)
           : null;
       if (nextMonth != null) {
         currentMonth = nextMonth;
         generateDates();
         controllerMonthApplied = true;
       }
-      _publishMonth();
+      _seenVisibleMonth = controller.visibleMonth;
+      if (_seenVisibleMonth == null) _publishMonth();
     } else if (widget.controller == null) {
       controller.removeListener(_handleControllerChanged);
       try {
@@ -1228,8 +1242,8 @@ class _ShadCalendarState extends State<ShadCalendar> {
             }
           case ShadCalendarVariant.multiple:
             if (!listEquals(
-              widget.multipleSelected,
-              oldWidget.multipleSelected,
+              widget.multipleSelected ?? const <DateTime>[],
+              _lastMultipleSelected,
             )) {
               controller.multipleSelected = widget.multipleSelected ?? const [];
             }
@@ -1238,11 +1252,13 @@ class _ShadCalendarState extends State<ShadCalendar> {
               controller.selectedRange = widget.selectedRange;
             }
         }
-        _updateFromController(notifyMonth: false);
+        _updateFromController(followSelection: false);
       } finally {
         controller.addListener(_handleControllerChanged);
       }
     }
+
+    _lastMultipleSelected = [...?widget.multipleSelected];
 
     final bool initialMonthChanged;
     if (!controllerMonthApplied &&
@@ -1285,81 +1301,76 @@ class _ShadCalendarState extends State<ShadCalendar> {
   }
 
   void _handleControllerChanged() {
-    if (SchedulerBinding.instance.schedulerPhase ==
-        SchedulerPhase.persistentCallbacks) {
-      final source = controller;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted && identical(source, controller)) _updateFromController();
-      });
-      return;
-    }
-    _updateFromController();
+    final source = controller;
+    runAfterBuild(() {
+      if (mounted && identical(source, controller)) _updateFromController();
+    });
   }
 
-  void _updateFromController({bool notifyMonth = true}) {
-    final selectionChanged = switch (widget.variant) {
-      ShadCalendarVariant.single => !setEquals(
-        selectedDays,
-        {if (controller.selected != null) controller.selected!.startOfDay},
-      ),
-      ShadCalendarVariant.multiple => !setEquals(
-        selectedDays,
-        controller.multipleSelected.map((date) => date.startOfDay).toSet(),
-      ),
-      ShadCalendarVariant.range =>
-        startRange != controller.selectedRange?.start ||
-            endRange != controller.selectedRange?.end,
-    };
+  /// Applies what changed on the controller. [followSelection] is false when
+  /// the parent passed a new selection: the displayed month stays as it is.
+  void _updateFromController({bool followSelection = true}) {
+    final selectionChanged = _selectionDiffers;
     final visibleMonth = controller.visibleMonth;
     final visibleMonthAssigned = visibleMonth != _seenVisibleMonth;
     _seenVisibleMonth = visibleMonth;
     var viewChanged = false;
-    if (visibleMonthAssigned && visibleMonth != null) {
-      // An explicit assignment moves the displayed window even when the month
-      // is already one of the visible months.
-      final targetMonth = _clampMonth(visibleMonth);
-      if (targetMonth != currentMonth) {
-        currentMonth = targetMonth;
-        generateDates();
-        viewChanged = true;
+    var publish = false;
+    if (visibleMonthAssigned) {
+      if (visibleMonth == null) {
+        // The controller reports what is shown again.
+        publish = true;
+      } else {
+        // An explicit assignment moves the displayed window even when the
+        // month is already one of the visible months. A month outside the
+        // bounds is shown as the nearest allowed one and is not written back,
+        // so calendars with different bounds can share a controller.
+        final targetMonth = _clampMonth(visibleMonth);
+        if (targetMonth != currentMonth) {
+          currentMonth = targetMonth;
+          generateDates();
+          viewChanged = true;
+        }
       }
-    } else if (selectionChanged && _selectionAnchor != null) {
-      final targetMonth = _selectionAnchor!.startOfMonth;
+    } else if (selectionChanged &&
+        followSelection &&
+        !isWrittenByParent(controller) &&
+        _selectionAnchor != null) {
+      final targetMonth = _clampMonth(_selectionAnchor!);
       final visibleMonths = datesModels.map((m) => m.month.startOfMonth);
       if (!visibleMonths.contains(targetMonth)) {
         currentMonth = targetMonth;
         generateDates();
         viewChanged = true;
+        publish = true;
       }
     }
     _syncFromController(force: viewChanged);
-    if (viewChanged || (visibleMonthAssigned && visibleMonth != null)) {
-      _publishMonth();
-    }
-    if (viewChanged && notifyMonth) widget.onMonthChanged?.call(currentMonth);
+    if (publish) _publishMonth();
+    if (viewChanged) widget.onMonthChanged?.call(currentMonth);
   }
 
-  void _syncFromController({bool force = false}) {
-    final controllerSelectedDays = switch (widget.variant) {
-      ShadCalendarVariant.single =>
-        controller.selected == null
-            ? <DateTime>{}
-            : <DateTime>{controller.selected!.startOfDay},
-      ShadCalendarVariant.multiple =>
-        controller.multipleSelected.map((date) => date.startOfDay).toSet(),
-      ShadCalendarVariant.range => <DateTime>{},
-    };
+  Set<DateTime> get _controllerSelectedDays => switch (widget.variant) {
+    ShadCalendarVariant.single =>
+      controller.selected == null
+          ? <DateTime>{}
+          : <DateTime>{controller.selected!.startOfDay},
+    ShadCalendarVariant.multiple =>
+      controller.multipleSelected.map((date) => date.startOfDay).toSet(),
+    ShadCalendarVariant.range => <DateTime>{},
+  };
 
+  /// Whether the selection shown differs from the one on the controller.
+  bool get _selectionDiffers =>
+      !setEquals(selectedDays, _controllerSelectedDays) ||
+      startRange != controller.selectedRange?.start ||
+      endRange != controller.selectedRange?.end;
+
+  void _syncFromController({bool force = false}) {
+    if (!force && !_selectionDiffers) return;
+    final controllerSelectedDays = _controllerSelectedDays;
     final newStartRange = controller.selectedRange?.start;
     final newEndRange = controller.selectedRange?.end;
-
-    final shouldUpdate =
-        force ||
-        !setEquals(selectedDays, controllerSelectedDays) ||
-        startRange != newStartRange ||
-        endRange != newEndRange;
-
-    if (!shouldUpdate) return;
 
     setState(() {
       selectedDays

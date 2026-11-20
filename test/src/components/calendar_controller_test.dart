@@ -633,7 +633,7 @@ void main() {
     });
   }
 
-  testWidgets('a selection keeps the month shown from initialMonth', (
+  testWidgets('a controller month wins over initialMonth at mount', (
     tester,
   ) async {
     final controller = ShadCalendarController(visibleMonth: DateTime(2024));
@@ -649,12 +649,13 @@ void main() {
       ),
     );
     await tester.pump();
-    expect(controller.visibleMonth, DateTime(2024, 6));
+    expect(controller.visibleMonth, DateTime(2024));
+    expect(find.text('January 2024'), findsOneWidget);
     await tester.tap(find.widgetWithText(ShadButton, '19'));
     await tester.pumpAndSettle();
-    expect(controller.selected, DateTime(2024, 6, 19));
-    expect(find.text('June 2024'), findsOneWidget);
-    expect(controller.visibleMonth, DateTime(2024, 6));
+    expect(controller.selected, DateTime(2024, 1, 19));
+    expect(find.text('January 2024'), findsOneWidget);
+    expect(controller.visibleMonth, DateTime(2024));
     expect(months, isEmpty);
   });
 
@@ -755,11 +756,11 @@ void main() {
     controller.visibleMonth = DateTime(2025);
     await tester.pumpAndSettle();
     expect(find.text('August 2024'), findsOneWidget);
-    expect(controller.visibleMonth, DateTime(2024, 8));
+    expect(controller.visibleMonth, DateTime(2025));
     controller.visibleMonth = DateTime(2023);
     await tester.pumpAndSettle();
     expect(find.text('March 2024'), findsOneWidget);
-    expect(controller.visibleMonth, DateTime(2024, 3));
+    expect(controller.visibleMonth, DateTime(2023));
   });
 
   testWidgets('an uncontrolled picker remembers the displayed month', (
@@ -800,7 +801,7 @@ void main() {
     );
     await tester.pump();
     expect(find.text('August 2024'), findsOneWidget);
-    expect(controller.visibleMonth, DateTime(2024, 8));
+    expect(controller.visibleMonth, DateTime(2025));
   });
 
   testWidgets('a picker opens inside fromMonth and toMonth', (tester) async {
@@ -819,7 +820,7 @@ void main() {
     await tester.tap(find.byType(ShadButton));
     await tester.pumpAndSettle();
     expect(find.text('August 2024'), findsOneWidget);
-    expect(controller.visibleMonth, DateTime(2024, 8));
+    expect(controller.visibleMonth, DateTime(2025));
   });
 
   testWidgets('a picker shows a changed selected property right away', (
@@ -836,5 +837,56 @@ void main() {
     await tester.tap(find.byType(ShadButton));
     await tester.pumpAndSettle();
     expect(find.text('June 2024'), findsOneWidget);
+  });
+
+  testWidgets('a new selected on an open picker keeps the displayed month', (
+    tester,
+  ) async {
+    var selected = DateTime(2024, 1, 10);
+    late StateSetter outer;
+    final months = <DateTime>[];
+    await tester.pumpWidget(
+      createTestWidget(
+        StatefulBuilder(
+          builder: (context, setState) {
+            outer = setState;
+            return ShadDatePicker(
+              selected: selected,
+              width: 500,
+              onMonthChanged: months.add,
+            );
+          },
+        ),
+      ),
+    );
+    await tester.tap(find.byType(ShadButton));
+    await tester.pumpAndSettle();
+    expect(find.text('January 2024'), findsOneWidget);
+    outer(() => selected = DateTime(2024, 6, 10));
+    await tester.pumpAndSettle();
+    expect(find.text('January 2024'), findsOneWidget);
+    expect(months, isEmpty);
+  });
+
+  testWidgets('a controller selection moves an open calendar inside toMonth '
+      'for every shown month', (tester) async {
+    final controller = ShadCalendarController(visibleMonth: DateTime(2024, 3));
+    addTearDown(controller.dispose);
+    await tester.pumpWidget(
+      createTestWidget(
+        ShadCalendar(
+          controller: controller,
+          numberOfMonths: 2,
+          fromMonth: DateTime(2024),
+          toMonth: DateTime(2024, 6),
+        ),
+      ),
+    );
+    controller.selected = DateTime(2024, 12, 10);
+    await tester.pumpAndSettle();
+    expect(find.text('May 2024'), findsOneWidget);
+    expect(find.text('June 2024'), findsOneWidget);
+    expect(find.text('July 2024'), findsNothing);
+    expect(controller.visibleMonth, DateTime(2024, 5));
   });
 }
