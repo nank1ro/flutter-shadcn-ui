@@ -726,5 +726,102 @@ void main() {
         expect(find.text('None'), findsOneWidget);
       },
     );
+
+    // Inside a ShadForm, a null initialValue means "use the form value".
+    testWidgets(
+      'form field in a ShadForm keeps its value when initialValue becomes '
+      'null and T is nullable',
+      (tester) async {
+        final formKey = GlobalKey<ShadFormState>();
+        Widget field(String? initial) {
+          return createTestWidget(
+            ShadForm(
+              key: formKey,
+              initialValue: const {'s': 'b'},
+              child: ShadSelectFormField<String?>(
+                id: 's',
+                initialValue: initial,
+                options: const [
+                  ShadOption<String?>(value: null, child: Text('None')),
+                  ShadOption<String?>(value: 'a', child: Text('A')),
+                  ShadOption<String?>(value: 'b', child: Text('B')),
+                ],
+                selectedOptionBuilder: (_, v) => Text('selected:$v'),
+              ),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('a'));
+        await tester.pumpWidget(field(null));
+        expect(find.text('selected:a'), findsOneWidget);
+        expect(formKey.currentState!.value['s'], 'a');
+      },
+    );
+
+    testWidgets(
+      'form field keeps the new id form value when id and initialValue '
+      'change together and T is nullable',
+      (tester) async {
+        final formKey = GlobalKey<ShadFormState>();
+        Widget field(String id, String? initial) {
+          return createTestWidget(
+            ShadForm(
+              key: formKey,
+              initialValue: const {'second': 'b'},
+              child: ShadSelectFormField<String?>(
+                id: id,
+                initialValue: initial,
+                options: const [
+                  ShadOption<String?>(value: null, child: Text('None')),
+                  ShadOption<String?>(value: 'a', child: Text('A')),
+                  ShadOption<String?>(value: 'b', child: Text('B')),
+                ],
+                selectedOptionBuilder: (_, v) => Text('selected:$v'),
+              ),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('first', 'a'));
+        await tester.pumpWidget(field('second', null));
+        expect(find.text('selected:b'), findsOneWidget);
+        expect(formKey.currentState!.value['second'], 'b');
+      },
+    );
+
+    testWidgets(
+      'form field id change outside a ShadForm keeps a cleared selection '
+      'when T is nullable',
+      (tester) async {
+        final fieldKey = GlobalKey<ShadFormBuilderSelectState<String?>>();
+        Widget field(String id) {
+          return createTestWidget(
+            ShadSelectFormField<String?>(
+              key: fieldKey,
+              id: id,
+              allowDeselection: true,
+              placeholder: const Text('Empty'),
+              options: const [
+                ShadOption<String?>(value: null, child: Text('Null option')),
+              ],
+              selectedOptionBuilder: (_, v) => Text(v ?? 'None'),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('first'));
+        // Deselect the null option: {} is "nothing is selected".
+        await tester.tap(find.text('None'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Null option'));
+        await tester.pumpAndSettle();
+        expect(fieldKey.currentState!.controller.value, isEmpty);
+
+        await tester.pumpWidget(field('second'));
+        expect(fieldKey.currentState!.controller.value, isEmpty);
+        expect(find.text('Empty'), findsOneWidget);
+      },
+    );
   });
 }

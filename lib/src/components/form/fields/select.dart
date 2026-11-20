@@ -473,7 +473,7 @@ class ShadFormBuilderSelectState<T>
       if (widget.controller == null) {
         // Re-registration stored the form value for the new id on this field.
         // Copy it into the controller this field owns.
-        _setControllerValue(value);
+        if (controller.value.firstOrNull != value) _setControllerValue(value);
       } else {
         // An external controller keeps its selection. Register that selection
         // under the new id instead of writing the new id's value into it.
@@ -484,15 +484,16 @@ class ShadFormBuilderSelectState<T>
       }
     }
 
-    // initialValue only drives a controller this field created. A value that
-    // is not a T is ignored, matching ShadSelect (`initialValue is T`). Null
-    // is a valid selection when T is nullable, and ignored when it is not.
-    final next = widget.initialValue;
+    // initialValue only drives a controller this field created. The resolved
+    // initialValue falls back to the form value, so inside a ShadForm a null
+    // initialValue keeps that value. Otherwise null is a valid selection when
+    // T is nullable, and ignored when it is not, matching ShadSelect.
     if (widget.controller != null ||
-        next == oldWidget.initialValue ||
-        next is! T) {
+        widget.initialValue == oldWidget.initialValue) {
       return;
     }
+    final next = initialValue;
+    if (next is! T) return;
 
     // onChanged is not called here: a parent setState inside it would run
     // during build. setValue still writes the registered form value.
