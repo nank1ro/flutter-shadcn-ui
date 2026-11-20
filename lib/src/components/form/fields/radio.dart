@@ -21,6 +21,8 @@ class ShadRadioGroupFormField<T> extends ShadFormBuilderField<T> {
     super.enabled,
     super.autovalidateMode,
     super.restorationId,
+
+    /// {@macro ShadRadioGroup.initialValue}
     T? initialValue,
     super.focusNode,
     super.validator,
@@ -104,15 +106,24 @@ class ShadFormBuilderRadioGroupState<T>
   @override
   void didUpdateWidget(covariant ShadRadioGroupFormField<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // The constructor passes `controller?.value ?? initialValue` to super, so
+    // removing the external controller looks like an initialValue change:
+    // the previous value was the controller's, the new one is initialValue.
+    // Seed the replacement from the current field value instead.
+    final swappedToInternal =
+        oldWidget.controller != null && widget.controller == null;
     if (oldWidget.controller != widget.controller) {
       final previousController = oldWidget.controller ?? _controller;
+      // Drop the listener from the controller being replaced. A caller-owned
+      // controller is left alive; only the controller this field created is
+      // disposed.
       previousController?.removeListener(onControllerChanged);
       if (oldWidget.controller == null && widget.controller != null) {
         _controller?.dispose();
         _controller = null;
       }
-      if (oldWidget.controller != null && widget.controller == null) {
-        _controller = ShadRadioController(value: value, enabled: enabled);
+      if (swappedToInternal) {
+        _controller = ShadRadioController<T>(value: value, enabled: enabled);
       }
       controller.addListener(onControllerChanged);
       // The listener does not replay a value the controller already holds.
@@ -120,6 +131,21 @@ class ShadFormBuilderRadioGroupState<T>
       // user's onChanged synchronously, so adopt the selection with setValue.
       if (controller.value != value) {
         setValue(controller.value);
+      }
+    }
+    // The group always receives this field's controller, so it will not apply
+    // initialValue itself. Keep tracking it on the controller this field owns.
+    // The listener calls didChange, which setStates Form during this build, so
+    // write the registered value with setValue instead.
+    if (!swappedToInternal &&
+        widget.controller == null &&
+        oldWidget.initialValue != widget.initialValue) {
+      final next = widget.initialValue;
+      controller.removeListener(onControllerChanged);
+      controller.value = next;
+      controller.addListener(onControllerChanged);
+      if (value != next) {
+        setValue(next);
       }
     }
   }

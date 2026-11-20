@@ -430,6 +430,225 @@ void main() {
     });
   });
 
+  // https://github.com/nank1ro/flutter-shadcn-ui/issues/734
+  group('ShadRadioGroup initialValue and controller', () {
+    const items = <Widget>[
+      ShadRadio<String>(value: 'a', label: Text('A')),
+      ShadRadio<String>(value: 'b', label: Text('B')),
+      ShadRadio<String>(value: 'c', label: Text('C')),
+    ];
+
+    Widget buildGroup({
+      required String? initialValue,
+      ShadRadioController<String>? controller,
+    }) {
+      return createTestWidget(
+        ShadRadioGroup<String>(
+          controller: controller,
+          initialValue: initialValue,
+          items: items,
+        ),
+      );
+    }
+
+    testWidgets(
+      'external controller is not overwritten when initialValue changes',
+      (tester) async {
+        final controller = ShadRadioController<String>(value: 'b');
+
+        await tester.pumpWidget(
+          buildGroup(initialValue: 'a', controller: controller),
+        );
+        expect(controller.value, 'b');
+
+        await tester.pumpWidget(
+          buildGroup(initialValue: 'c', controller: controller),
+        );
+        expect(controller.value, 'b');
+
+        await tester.pumpWidget(const SizedBox());
+        controller.dispose();
+      },
+    );
+
+    testWidgets('initialValue updates the internal controller', (tester) async {
+      await tester.pumpWidget(buildGroup(initialValue: 'a'));
+
+      ShadRadioController<String> internal() {
+        return tester
+            .state<ShadRadioGroupState<String>>(
+              find.byType(ShadRadioGroup<String>),
+            )
+            .effectiveController;
+      }
+
+      expect(internal().value, 'a');
+
+      await tester.pumpWidget(buildGroup(initialValue: 'c'));
+      expect(internal().value, 'c');
+    });
+
+    testWidgets(
+      'form field external controller is not overwritten by initialValue',
+      (tester) async {
+        final controller = ShadRadioController<String>(value: 'b');
+
+        Widget field(String? initialValue) {
+          return createTestWidget(
+            ShadRadioGroupFormField<String>(
+              controller: controller,
+              initialValue: initialValue,
+              items: items,
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('a'));
+        expect(controller.value, 'b');
+
+        await tester.pumpWidget(field('c'));
+        expect(controller.value, 'b');
+
+        await tester.pumpWidget(const SizedBox());
+        controller.dispose();
+      },
+    );
+
+    testWidgets(
+      'form field initialValue updates the internal controller',
+      (tester) async {
+        Widget field(String? initialValue) {
+          return createTestWidget(
+            ShadRadioGroupFormField<String>(
+              initialValue: initialValue,
+              items: items,
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('a'));
+
+        ShadRadioController<String> internal() {
+          return tester
+              .state<ShadFormBuilderRadioGroupState<String>>(
+                find.byType(ShadRadioGroupFormField<String>),
+              )
+              .controller;
+        }
+
+        expect(internal().value, 'a');
+
+        await tester.pumpWidget(field('c'));
+        expect(internal().value, 'c');
+      },
+    );
+
+    testWidgets(
+      'form field initialValue change does not call onChanged during build',
+      (tester) async {
+        final formKey = GlobalKey<ShadFormState>();
+        final fieldKey = GlobalKey<ShadFormBuilderRadioGroupState<String>>();
+        late StateSetter parentSetState;
+        var initialValue = 'a';
+        final changes = <String?>[];
+
+        Widget field() {
+          return createTestWidget(
+            StatefulBuilder(
+              builder: (context, setState) {
+                parentSetState = setState;
+                return ShadForm(
+                  key: formKey,
+                  child: ShadRadioGroupFormField<String>(
+                    key: fieldKey,
+                    id: 'choice',
+                    initialValue: initialValue,
+                    onChanged: (value) {
+                      changes.add(value);
+                      // Would throw "setState() called during build" if
+                      // didUpdateWidget invoked onChanged synchronously.
+                      parentSetState(() {});
+                    },
+                    items: items,
+                  ),
+                );
+              },
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field());
+        expect(tester.takeException(), isNull);
+        expect(changes, isEmpty);
+        expect(formKey.currentState!.value['choice'], 'a');
+
+        final stateBefore = fieldKey.currentState!;
+        expect(stateBefore.controller.value, 'a');
+
+        initialValue = 'c';
+        await tester.pumpWidget(field());
+
+        expect(tester.takeException(), isNull);
+        expect(changes, isEmpty);
+        expect(formKey.currentState!.value['choice'], 'c');
+        expect(fieldKey.currentState, same(stateBefore));
+        expect(stateBefore.value, 'c');
+        expect(stateBefore.controller.value, 'c');
+
+        // The listener must still be attached after the initialValue update.
+        stateBefore.controller.value = 'b';
+        await tester.pump();
+        expect(tester.takeException(), isNull);
+        expect(changes, ['b']);
+        expect(stateBefore.value, 'b');
+        expect(formKey.currentState!.value['choice'], 'b');
+      },
+    );
+
+    testWidgets(
+      'removing the external controller keeps the current field value',
+      (tester) async {
+        final formKey = GlobalKey<ShadFormState>();
+        final external = ShadRadioController<String>(value: 'b');
+        ShadRadioController<String>? controller = external;
+
+        Widget field() {
+          return createTestWidget(
+            ShadForm(
+              key: formKey,
+              child: ShadRadioGroupFormField<String>(
+                id: 'choice',
+                controller: controller,
+                initialValue: 'a',
+                items: items,
+              ),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field());
+        expect(tester.takeException(), isNull);
+        expect(external.value, 'b');
+        expect(formKey.currentState!.value['choice'], 'b');
+
+        controller = null;
+        await tester.pumpWidget(field());
+        expect(tester.takeException(), isNull);
+
+        final state = tester.state<ShadFormBuilderRadioGroupState<String>>(
+          find.byType(ShadRadioGroupFormField<String>),
+        );
+        expect(state.controller.value, 'b');
+        expect(state.controller, isNot(same(external)));
+        expect(state.value, 'b');
+        expect(formKey.currentState!.value['choice'], 'b');
+
+        await tester.pumpWidget(const SizedBox());
+        external.dispose();
+      },
+    );
+  });
+
   group('ShadRadioGroupFormField', () {
     testWidgets('calls onChanged once per selection change', (
       WidgetTester tester,

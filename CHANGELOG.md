@@ -1,3 +1,7 @@
+## 0.61.2
+
+- **FIX**: The controller wins over `initialValue` on `ShadRadioGroup`, `ShadSelect`, and their form fields. Only an internal controller follows `initialValue` (#734, #739).
+
 ## 0.61.1
 
 - **FIX**: Localizations are compiled into the main web bundle instead of deferred locale chunks, preventing stale tabs from requesting missing chunks after a deployment. The bundle grows by about 18 KB gzipped.
