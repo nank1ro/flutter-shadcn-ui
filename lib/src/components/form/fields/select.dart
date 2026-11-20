@@ -484,13 +484,13 @@ class ShadFormBuilderSelectState<T>
       }
     }
 
-    // initialValue only drives a controller this field created. Null is
-    // ignored, matching ShadSelect: a null initialValue means the form value
-    // already in use.
+    // initialValue only drives a controller this field created. A value that
+    // is not a T is ignored, matching ShadSelect (`initialValue is T`). Null
+    // is a valid selection when T is nullable, and ignored when it is not.
     final next = widget.initialValue;
     if (widget.controller != null ||
         next == oldWidget.initialValue ||
-        next == null) {
+        next is! T) {
       return;
     }
 
@@ -505,7 +505,7 @@ class ShadFormBuilderSelectState<T>
   // New set so ValueNotifier notifies. The listener is detached because it
   // calls didChange, and the form cannot setState during this update.
   void _setControllerValue(T? next) {
-    final updated = next == null ? <T>{} : <T>{next};
+    final updated = next is T ? <T>{next} : <T>{};
     controller.removeListener(onControllerChange);
     controller.value = updated;
     controller.addListener(onControllerChange);

@@ -675,5 +675,56 @@ void main() {
         controller.dispose();
       },
     );
+
+    // {null} is "the null option is selected"; {} is "nothing is selected".
+    testWidgets(
+      'form field id change keeps a valid null selection when T is nullable',
+      (tester) async {
+        Widget field(String id) {
+          return createTestWidget(
+            ShadForm(
+              initialValue: const {'first': 'a', 'second': null},
+              child: ShadSelectFormField<String?>(
+                id: id,
+                options: const [
+                  ShadOption<String?>(value: null, child: Text('None')),
+                  ShadOption<String?>(value: 'a', child: Text('A')),
+                ],
+                selectedOptionBuilder: (_, v) => Text(v ?? 'None'),
+              ),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('first'));
+        await tester.pumpWidget(field('second'));
+        // Without a placeholder, dropping the null option throws
+        // "placeholder must not be null when value is null".
+        expect(tester.takeException(), isNull);
+        expect(find.text('None'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'form field applies a null initialValue when T is nullable',
+      (tester) async {
+        Widget field(String? initial) {
+          return createTestWidget(
+            ShadSelectFormField<String?>(
+              initialValue: initial,
+              options: const [
+                ShadOption<String?>(value: null, child: Text('None')),
+                ShadOption<String?>(value: 'a', child: Text('A')),
+              ],
+              selectedOptionBuilder: (_, v) => Text(v ?? 'None'),
+            ),
+          );
+        }
+
+        await tester.pumpWidget(field('a'));
+        await tester.pumpWidget(field(null));
+        expect(find.text('None'), findsOneWidget);
+      },
+    );
   });
 }
