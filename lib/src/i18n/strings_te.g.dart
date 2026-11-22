@@ -39,6 +39,7 @@ class ShadLocalizationsDataTe extends ShadLocalizationsData with BaseTranslation
 	ShadLocalizationsDataTe $copyWith({TranslationMetadata<ShadLocale, ShadLocalizationsData>? meta}) => ShadLocalizationsDataTe(meta: meta ?? this.$meta);
 
 	// Translations
+	@override String get loading => 'లోడ్ అవుతోంది';
 	@override late final _ShadLocalizationsData$timePicker$te timePicker = _ShadLocalizationsData$timePicker$te._(_root);
 	@override late final _ShadLocalizationsData$datePicker$te datePicker = _ShadLocalizationsData$datePicker$te._(_root);
 	@override late final _ShadLocalizationsData$input$te input = _ShadLocalizationsData$input$te._(_root);
@@ -100,6 +101,7 @@ class _ShadLocalizationsData$keyboardToolbar$te extends ShadLocalizationsData$ke
 extension on ShadLocalizationsDataTe {
 	dynamic _flatMapFunction(String path) {
 		return switch (path) {
+			'loading' => 'లోడ్ అవుతోంది',
 			'timePicker.hours' => 'గంటలు',
 			'timePicker.minutes' => 'నిమిషాలు',
 			'timePicker.seconds' => 'సెకన్లు',
