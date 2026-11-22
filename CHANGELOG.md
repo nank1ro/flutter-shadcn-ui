@@ -1,3 +1,7 @@
+## 0.62.0
+
+- **FEAT**: Add `ShadDialog.extendBackground` (and matching `ShadDialogTheme.extendBackground`) to extend a full-screen dialog's background color behind the status bar, notch, and gesture bar instead of stopping at the safe-area boundary. Smaller dialogs keep their normal card appearance. When effective, `extendBackground` takes precedence over `border`, `shadows`, and border radius because those decorations do not make visual sense on edges that sit behind system UI (#702).
+
 ## 0.61.2
 
 - **FIX**: The controller wins over `initialValue` on `ShadRadioGroup`, `ShadSelect`, and their form fields. Only an internal controller follows `initialValue` (#734, #739).
