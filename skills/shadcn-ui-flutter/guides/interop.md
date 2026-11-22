@@ -3,11 +3,11 @@
 ## Shadcn + Material
 
 We are the first Flutter UI library to allow shadcn components to be used simultaneously with Material components.
-The setup is simple:
+The setup is simple. First add the `material_ui` package with `flutter pub add material_ui`, then:
 
 ```diff lang="dart"
 import 'package:shadcn_ui/shadcn_ui.dart';
-+ import 'package:flutter/material.dart';
++ import 'package:material_ui/material_ui.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,9 +30,7 @@ class MyApp extends StatelessWidget {
 +          theme: Theme.of(context),
 +          localizationsDelegates: const [
 +            GlobalShadLocalizations.delegate,
-+            GlobalMaterialLocalizations.delegate,
-+            GlobalCupertinoLocalizations.delegate,
-+            GlobalWidgetsLocalizations.delegate,
++            ...GlobalMaterialLocalizations.delegates,
 +          ],
 +          builder: (context, child) {
 +            return ShadAppBuilder(child: child!);
@@ -97,12 +95,12 @@ Use `Theme.of(context).copyWith(...)` to override the default theme, without los
 
 ## Shadcn + Cupertino
 
-If you need to use shadcn components with Cupertino components, use `CupertinoApp` instead of `MaterialApp`, like you are already used to.
+If you need to use shadcn components with Cupertino components, use `CupertinoApp` instead of `MaterialApp`, like you are already used to. Add the `cupertino_ui` and `material_ui` packages with `flutter pub add cupertino_ui material_ui` (`ShadApp` uses `ThemeMode` from `material_ui`).
 
 ```diff lang="dart"
 import 'package:shadcn_ui/shadcn_ui.dart';
-+ import 'package:flutter/cupertino.dart';
-+ import 'package:flutter_localizations/flutter_localizations.dart';
++ import 'package:cupertino_ui/cupertino_ui.dart';
++ import 'package:material_ui/material_ui.dart';
 
 void main() {
   runApp(const MyApp());

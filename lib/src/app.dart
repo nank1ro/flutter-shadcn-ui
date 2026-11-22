@@ -1,12 +1,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart'
-    show
-        GlobalCupertinoLocalizations,
-        GlobalMaterialLocalizations,
-        GlobalWidgetsLocalizations;
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shadcn_ui/src/components/sonner.dart';
 import 'package:shadcn_ui/src/components/toast.dart';
 import 'package:shadcn_ui/src/i18n/localizations_delegate.dart';
@@ -448,9 +443,7 @@ class _ShadAppState extends State<ShadApp> {
       yield* localizationsDelegates;
     }
     yield GlobalShadLocalizations.delegate;
-    yield GlobalMaterialLocalizations.delegate;
-    yield GlobalCupertinoLocalizations.delegate;
-    yield GlobalWidgetsLocalizations.delegate;
+    yield* GlobalMaterialLocalizations.delegates;
   }
 
   @override

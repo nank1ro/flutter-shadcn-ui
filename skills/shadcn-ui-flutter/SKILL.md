@@ -65,8 +65,9 @@ Use `ShadThemeData` within `ShadApp` to define your light and dark themes.
 Examples are available at the bottom of each component page.
 
 ### Basic Setup
-Here is a complete example of a Counter App using `shadcn_ui`, including light and dark theme support.
+Here is a complete example of a Counter App using `shadcn_ui`, including light and dark theme support. The example also uses Material widgets, so first add `material_ui` with `flutter pub add material_ui`.
 ```dart
+import 'package:material_ui/material_ui.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 void main() {

@@ -34,8 +34,8 @@ class ShadRadioGroup<T> extends StatefulWidget {
   ///
   /// The [items] parameter is required and should contain the list of radio
   /// options. The [initialValue] can be used to set the initially selected
-  /// item. The [onChanged] callback is triggered when the selected value
-  /// changes.
+  /// item when [controller] is null. When both are given, [controller] wins.
+  /// The [onChanged] callback is triggered when the selected value changes.
   const ShadRadioGroup({
     super.key,
     required this.items,
@@ -53,6 +53,10 @@ class ShadRadioGroup<T> extends StatefulWidget {
 
   /// {@template ShadRadioGroup.initialValue}
   /// The initial value of the radio group.
+  ///
+  /// When [controller] is null, this seeds the internally created controller,
+  /// and later changes update that controller. When [controller] is also
+  /// given, the controller wins and changes to [initialValue] are ignored.
   /// {@endtemplate}
   final T? initialValue;
 
@@ -106,6 +110,10 @@ class ShadRadioGroup<T> extends StatefulWidget {
 
   /// {@template ShadRadioGroup.controller}
   /// An optional controller to programmatically control the selected value.
+  ///
+  /// When both [controller] and [initialValue] are given, the controller wins
+  /// and [initialValue] does not overwrite it. If null, an internal controller
+  /// is created from [initialValue].
   /// {@endtemplate}
   final ShadRadioController<T>? controller;
 
@@ -149,7 +157,9 @@ class ShadRadioGroupState<T> extends State<ShadRadioGroup<T>> {
       effectiveController.addListener(onValueChanged);
     }
 
-    if (oldWidget.initialValue != widget.initialValue) {
+    // initialValue only drives the controller this widget created.
+    if (widget.controller == null &&
+        oldWidget.initialValue != widget.initialValue) {
       effectiveController.value = widget.initialValue;
     }
 
