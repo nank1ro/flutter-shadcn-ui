@@ -1,6 +1,22 @@
-## 0.60.0
+## 0.62.0
 
 - **FEAT**: Add `ShadDialog.extendBackground` (and matching `ShadDialogTheme.extendBackground`) to extend a full-screen dialog's background color behind the status bar, notch, and gesture bar instead of stopping at the safe-area boundary. Smaller dialogs keep their normal card appearance. When effective, `extendBackground` takes precedence over `border`, `shadows`, and border radius because those decorations do not make visual sense on edges that sit behind system UI (#702).
+
+## 0.61.2
+
+- **FIX**: The controller wins over `initialValue` on `ShadRadioGroup`, `ShadSelect`, and their form fields. Only an internal controller follows `initialValue` (#734, #739).
+
+## 0.61.1
+
+- **FIX**: Localizations are compiled into the main web bundle instead of deferred locale chunks, preventing stale tabs from requesting missing chunks after a deployment. The bundle grows by about 18 KB gzipped.
+
+## 0.61.0
+
+- **CHORE**: Allow `lucide_icons_flutter` 4.x (the constraint is now `>=3.0.0 <5.0.0`). Regular icons, such as `LucideIcons.activity`, do not change. In 4.x, the weight icons moved to separate libraries: `LucideIcons.activity300` is now `LucideIcons300.activity` in `package:lucide_icons_flutter/lucide_icons_300.dart`. `shadcn_ui` exports only the regular icons. If your app uses weight icons, import the weight library directly, or keep `lucide_icons_flutter` on 3.x until you migrate.
+
+## 0.60.0
+
+- **BREAKING**: Migrate from the deprecated `package:flutter/material.dart` and `package:flutter/cupertino.dart` to the standalone `material_ui` and `cupertino_ui` packages. The minimum Flutter version is now 3.47. The types in these packages are different from the SDK types, so apps must migrate too: run `flutter pub add material_ui` (and `cupertino_ui` if you use Cupertino), then `dart fix --apply --code=migrate_design_widgets`. `dart fix` does not rewrite `export` directives, so update any `export 'package:flutter/material.dart'` or `export 'package:flutter/cupertino.dart'` by hand. If you import `flutter_localizations` for `GlobalMaterialLocalizations` or `GlobalCupertinoLocalizations`, remove that import and use `GlobalMaterialLocalizations.delegates` from `material_ui`, which also includes the Cupertino and Widgets delegates. Otherwise the names are ambiguous and the file does not compile. See the [Flutter migration guide](https://docs.flutter.dev/release/breaking-changes/material-ui-and-cupertino-ui). Dependencies that still use `package:flutter/material.dart` (for example, one that calls `showDatePicker`) no longer get a Material theme or `MaterialLocalizations` from `ShadApp`, and throw "No MaterialLocalizations found". Until they migrate, wrap them with the temporary `MaterialUiCompatibilityBridge` from `material_ui`, for example `ShadApp(builder: (context, child) => MaterialUiCompatibilityBridge(child: child!))`. The bridge is deprecated, so it reports a `deprecated_member_use` info.
 
 ## 0.59.0
 
